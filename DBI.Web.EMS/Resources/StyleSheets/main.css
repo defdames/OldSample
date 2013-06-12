@@ -1,0 +1,16 @@
+﻿
+      .header-actions-button a{
+          color:#fff;
+          cursor:pointer;
+          text-decoration:underline;
+      }
+      .x-toolbar.my-toolbar {
+            background-image: none !important;
+            background-repeat: no-repeat !important;
+            background-color:black !important;
+        }
+        .x-toolbar.my-toolbar-blue {
+            background-image: none !important;
+            background-repeat: no-repeat !important;
+            background-color:steelblue !important;
+        }
