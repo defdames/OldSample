@@ -39,18 +39,23 @@
     <DocumentationFile>bin\DBI.Web.EMS.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ext.Net, Version=2.2.0.21883, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
+    <Reference Include="Ext.Net, Version=2.2.0.22489, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\root\Ext.Net\bin\WebForm NET40 Release\Ext.Net.dll</HintPath>
     </Reference>
     <Reference Include="Ext.Net.Utilities, Version=2.2.0.0, Culture=neutral, PublicKeyToken=2c34ac34702a3c23, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\root\Ext.Net\bin\Release\Ext.Net.Utilities.dll</HintPath>
+      <HintPath>..\..\..\root\Ext.Net\bin\WebForm NET40 Release\Ext.Net.Utilities.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\root\Ext.Net\bin\Release\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\root\Ext.Net\bin\WebForm NET40 Release\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.112.3.60, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\app\ljankowski\product\11.2.0\client_2\odp.net\managed\common\Oracle.ManagedDataAccess.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -70,7 +75,7 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="Transformer.NET, Version=2.1.1.22883, Culture=neutral, PublicKeyToken=e274d618e7c603a7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\root\Ext.Net\bin\Release\Transformer.NET.dll</HintPath>
+      <HintPath>..\..\..\root\Ext.Net\bin\WebForm NET40 Release\Transformer.NET.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -87,12 +92,19 @@
     <Content Include="Resources\Images\wwbnight.png" />
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
+    <Content Include="Views\SYS\ucSecurity.ascx" />
     <Content Include="Views\uxDefault.aspx" />
-    <Content Include="Web.config" />
+    <Content Include="Views\ucSystemMenu.ascx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\DBI.AssemblyVersion\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="BaseUserCTL.cs">
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -105,12 +117,26 @@
       <DependentUpon>uxLogin.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\SYS\ucSecurity.ascx.cs">
+      <DependentUpon>ucSecurity.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\SYS\ucSecurity.ascx.designer.cs">
+      <DependentUpon>ucSecurity.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Views\uxDefault.aspx.cs">
       <DependentUpon>uxDefault.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\uxDefault.aspx.designer.cs">
       <DependentUpon>uxDefault.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ucSystemMenu.ascx.cs">
+      <DependentUpon>ucSystemMenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\ucSystemMenu.ascx.designer.cs">
+      <DependentUpon>ucSystemMenu.ascx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

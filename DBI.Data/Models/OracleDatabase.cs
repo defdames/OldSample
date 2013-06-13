@@ -29,7 +29,7 @@ namespace DBI.Data.Models
         /// <summary>
         /// Property for the SecurityRole Table Entity Object
         /// </summary>
-        public DbSet<SecurityRole> SECURITYROLEs { get; set; }
+        public DbSet<SECURITYROLE> SECURITYROLEs { get; set; }
 
         /// <summary>
         /// Adds the mapping to the Oracle tables for all Entity objects.

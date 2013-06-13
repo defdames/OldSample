@@ -1,5 +1,8 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="uxDefault.aspx.cs" Inherits="DBI.Web.EMS.Views.uxDefault" %>
 
+<%@ Register Src="~/Views/ucSystemMenu.ascx" TagPrefix="uc1" TagName="ucSystemMenu" %>
+
+
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -40,8 +43,15 @@
                 </ext:Panel>
                 <ext:Panel ID="uxWest" runat="server" Layout="accordion" Region="West" Collapsible="true" Split="true" Width="230" Margins="0px 0px 5px 5px">
                     <Items>
-                        <ext:Panel ID="uxApplications" runat="server" Border="false" Collapsed="True" Title="Applications" AutoScroll="true">
-
+                        <ext:Panel ID="uxApplications" runat="server" Border="false"  Title="Applications" AutoScroll="true" Icon="ApplicationForm">
+                             <Content>
+                                <uc1:ucSystemMenu runat="server" ID="ucSystemMenu" />
+                            </Content>
+                        </ext:Panel>
+                         <ext:Panel ID="uxSystem" runat="server" Border="false"  Title="System Administration" AutoScroll="true" Icon="Server">
+                             <Content>
+                                <uc1:ucSystemMenu runat="server" ID="ucSystemMenu1" />
+                            </Content>
                         </ext:Panel>
                     </Items>
                 </ext:Panel>

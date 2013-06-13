@@ -68,6 +68,7 @@
                         runat="server" 
                         FieldLabel="Username"
                         Name="user"
+                        AutoFocus="true"
                         EmptyText="username" meta:resourcekey="usernameFieldResource1" />
 
                     <ext:TextField ID="uxPassword" 
@@ -120,9 +121,6 @@
                         </DirectEvents>
                     </ext:Button>
                 </Buttons>
-                <Listeners>
-                    <AfterRender Handler="#{uxUsername}.focus();" />
-                </Listeners>
                 <BottomBar>
                     <ext:StatusBar runat="server" ID="uxStatus" StatusAlign="Left" meta:resourcekey="stsLoginBarResource1" ></ext:StatusBar>
                 </BottomBar>
