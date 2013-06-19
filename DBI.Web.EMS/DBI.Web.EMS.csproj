@@ -39,7 +39,7 @@
     <DocumentationFile>bin\DBI.Web.EMS.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ext.Net, Version=2.2.0.22489, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
+    <Reference Include="Ext.Net, Version=2.2.0.25389, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\root\Ext.Net\bin\WebForm NET40 Release\Ext.Net.dll</HintPath>
     </Reference>
@@ -82,6 +82,7 @@
     <None Include="Properties\PublishProfiles\EMSV2.pubxml" />
     <None Include="Resources\Scripts\jquery-2.0.1.intellisense.js" />
     <Content Include="Global.asax" />
+    <Content Include="Resources\Images\bgimage.jpg" />
     <Content Include="uxLogin.aspx" />
     <Content Include="Resources\Images\background.jpg" />
     <Content Include="Resources\Images\dbis_logo.png" />
@@ -92,9 +93,9 @@
     <Content Include="Resources\Images\wwbnight.png" />
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
-    <Content Include="Views\SYS\ucSecurity.ascx" />
+    <Content Include="Views\Modules\Security\umSecurityUsers.aspx" />
+    <Content Include="Views\Modules\Security\umSecurityRoles.aspx" />
     <Content Include="Views\uxDefault.aspx" />
-    <Content Include="Views\ucSystemMenu.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -102,9 +103,6 @@
   <ItemGroup>
     <Compile Include="..\DBI.AssemblyVersion\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
-    </Compile>
-    <Compile Include="BaseUserCTL.cs">
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -117,12 +115,19 @@
       <DependentUpon>uxLogin.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\SYS\ucSecurity.ascx.cs">
-      <DependentUpon>ucSecurity.ascx</DependentUpon>
+    <Compile Include="Views\Modules\Security\umSecurityUsers.aspx.cs">
+      <DependentUpon>umSecurityUsers.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\SYS\ucSecurity.ascx.designer.cs">
-      <DependentUpon>ucSecurity.ascx</DependentUpon>
+    <Compile Include="Views\Modules\Security\umSecurityUsers.aspx.designer.cs">
+      <DependentUpon>umSecurityUsers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Security\umSecurityRoles.aspx.cs">
+      <DependentUpon>umSecurityRoles.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Security\umSecurityRoles.aspx.designer.cs">
+      <DependentUpon>umSecurityRoles.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\uxDefault.aspx.cs">
       <DependentUpon>uxDefault.aspx</DependentUpon>
@@ -130,13 +135,6 @@
     </Compile>
     <Compile Include="Views\uxDefault.aspx.designer.cs">
       <DependentUpon>uxDefault.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ucSystemMenu.ascx.cs">
-      <DependentUpon>ucSystemMenu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\ucSystemMenu.ascx.designer.cs">
-      <DependentUpon>ucSystemMenu.ascx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -162,11 +160,16 @@
     <Content Include="App_LocalResources\uxLogin.aspx.resx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_LocalResources\uxLogin.aspx.fr.resx" />
+    <Content Include="App_LocalResources\uxLogin.aspx.fr.resx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_LocalResources\uxLogin.aspx.ar.resx" />
+    <Content Include="App_LocalResources\uxLogin.aspx.ar.resx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

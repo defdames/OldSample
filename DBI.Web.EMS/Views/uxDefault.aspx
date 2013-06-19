@@ -1,9 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="uxDefault.aspx.cs" Inherits="DBI.Web.EMS.Views.uxDefault" %>
 
-<%@ Register Src="~/Views/ucSystemMenu.ascx" TagPrefix="uc1" TagName="ucSystemMenu" %>
-
-
-<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
@@ -11,7 +7,7 @@
     <link href="../Resources/StyleSheets/main.css" rel="stylesheet" />
 </head>
 <body>
-    <ext:ResourceManager ID="uxResourceManager" runat="server">
+    <ext:ResourceManager ID="uxResourceManager" runat="server" DisableViewState="false">
     </ext:ResourceManager>
     <form id="form1" runat="server">
         <ext:Viewport ID="uxViewPort" runat="server" Layout="border">
@@ -44,20 +40,37 @@
                 <ext:Panel ID="uxWest" runat="server" Layout="accordion" Region="West" Collapsible="true" Split="true" Width="230" Margins="0px 0px 5px 5px">
                     <Items>
                         <ext:Panel ID="uxApplications" runat="server" Border="false"  Title="Applications" AutoScroll="true" Icon="ApplicationForm">
-                             <Content>
-                                <uc1:ucSystemMenu runat="server" ID="ucSystemMenu" />
-                            </Content>
                         </ext:Panel>
-                         <ext:Panel ID="uxSystem" runat="server" Border="false"  Title="System Administration" AutoScroll="true" Icon="Server">
-                             <Content>
-                                <uc1:ucSystemMenu runat="server" ID="ucSystemMenu1" />
-                            </Content>
+                        <ext:Panel ID="uxSystem" runat="server" Border="false" Title="System Administration" AutoScroll="true" Icon="Server">
+                            <Items>
+                                <ext:Menu ID="uxMenu"
+                                    runat="server"
+                                    Floating="false"
+                                    Layout="VBoxLayout"
+                                    ShowSeparator="false" Border="false">
+                                    <Defaults>
+                                        <ext:Parameter Name="MenuAlign" Value="tl-bl?" Mode="Value" />
+                                    </Defaults>
+                                    <Items>
+                                       <ext:MenuItem ID="uxSecurityRoles" runat="server" Text="Roles" Icon="Lock">
+                                           <DirectEvents>
+                                               <Click OnEvent="deLoadSecurityRoles" ></Click>
+                                           </DirectEvents>
+                                        </ext:MenuItem>
+                                         <ext:MenuItem ID="uxSecurityUsers" runat="server" Text="Users" Icon="User">
+                                           <DirectEvents>
+                                               <Click OnEvent="deLoadSecurityUsers" ></Click>
+                                           </DirectEvents>
+                                        </ext:MenuItem>
+                                    </Items>
+                                </ext:Menu>
+                            </Items>
                         </ext:Panel>
                     </Items>
                 </ext:Panel>
-                <ext:Panel ID="uxCenter" runat="server" Layout="Fit" Region="Center" Header="true" Margins="0px 5px 5px 0px">
+                <ext:Panel ID="uxCenter" runat="server" Region="Center" Header="true" Margins="0px 5px 5px 0px">
                     <Items>
-                    </Items>
+                    </Items> 
                 </ext:Panel>
             </Items>
         </ext:Viewport>

@@ -8,7 +8,7 @@
     <style type="text/css">
         body
         {
-            background: #3263A8 url("Resources/Images/background.jpg");
+            background: #3263A8 url("Resources/Images/bgimage.jpg");
             background-position: center center;
         }
         #container #banner 
@@ -40,7 +40,7 @@
 <body>
     <ext:ResourceManager ID="uxResourceManager" runat="server" IsDynamic="False">
     </ext:ResourceManager>
-
+    <ext:Label runat="server" ID="uxDatabaseVer" StyleSpec="position:fixed;bottom: 1em; right: 1em; color:white;"></ext:Label>
     <ext:Viewport ID="uxViewPort" runat="server" IDMode="Explicit" IsDynamic="False" Namespace="App" RenderXType="True">
         <LayoutConfig>
             <ext:VBoxLayoutConfig Align="Center" Pack="Center" />
@@ -49,7 +49,7 @@
             <ext:FormPanel ID="uxFormPanel" 
                 runat="server" 
                 Title="Enterprise Management System"
-                Width="485" 
+                Width="530" 
                 Frame="true"
                 BodyPadding="13"
                 Height="400"
@@ -58,10 +58,10 @@
                     <ext:Container ID="uxBannerContainer" runat="server">
                     <Content>
                     <div id="banner"> 
-                    <img src="Resources/Images/highways.png" width="450" height="184"/> 
-                    <img src="Resources/Images/striping.jpg" width="450" height="184"/> 
-                    <img src="Resources/Images/train-on-tracks-rs.jpg" width="450" height="184"/> 
-                    <img src="Resources/Images/wwbnight.png" width="450" height="184"/> 
+                    <img src="Resources/Images/highways.png" width="497" height="184"/> 
+                    <img src="Resources/Images/striping.jpg" width="497" height="184"/> 
+                    <img src="Resources/Images/train-on-tracks-rs.jpg" width="497" height="184"/> 
+                    <img src="Resources/Images/wwbnight.png" width="497" height="184"/> 
                     </div>
                 </Content></ext:Container>
                     <ext:TextField ID="uxUsername" 

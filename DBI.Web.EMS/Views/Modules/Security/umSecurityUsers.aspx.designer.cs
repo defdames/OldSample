@@ -7,28 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DBI.Web.EMS {
+namespace DBI.Web.EMS.Views.Modules.Security {
     
     
-    public partial class uxLogin {
-        
-        /// <summary>
-        /// uxResourceManager control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ResourceManager uxResourceManager;
-        
-        /// <summary>
-        /// uxDatabaseVer control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label uxDatabaseVer;
+    public partial class umSecurityUsers {
         
         /// <summary>
         /// uxViewPort control.
@@ -40,75 +22,75 @@ namespace DBI.Web.EMS {
         protected global::Ext.Net.Viewport uxViewPort;
         
         /// <summary>
-        /// uxFormPanel control.
+        /// Panel1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FormPanel uxFormPanel;
+        protected global::Ext.Net.Panel Panel1;
         
         /// <summary>
-        /// uxBannerContainer control.
+        /// uxSecurityRoleGridPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Container uxBannerContainer;
+        protected global::Ext.Net.GridPanel uxSecurityRoleGridPanel;
         
         /// <summary>
-        /// uxUsername control.
+        /// uxSecurityRoleStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxUsername;
+        protected global::Ext.Net.Store uxSecurityRoleStore;
         
         /// <summary>
-        /// uxPassword control.
+        /// uxSecurityRoleModel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxPassword;
+        protected global::Ext.Net.Model uxSecurityRoleModel;
         
         /// <summary>
-        /// uxRegion control.
+        /// uxID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ComboBox uxRegion;
+        protected global::Ext.Net.Column uxID;
         
         /// <summary>
-        /// regionModel control.
+        /// uxName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Model regionModel;
+        protected global::Ext.Net.Column uxName;
         
         /// <summary>
-        /// uxLoginButton control.
+        /// uxDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxLoginButton;
+        protected global::Ext.Net.Column uxDescription;
         
         /// <summary>
-        /// uxStatus control.
+        /// uxSecurityRolePaging control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.StatusBar uxStatus;
+        protected global::Ext.Net.PagingToolbar uxSecurityRolePaging;
     }
 }

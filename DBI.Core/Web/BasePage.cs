@@ -47,5 +47,34 @@ namespace DBI.Core.Web
             FormsAuthentication.SignOut();
             X.Redirect("~/uxLogin.aspx");
         }
+
+        /// <summary>
+        /// Load Module Webpage for data contained in other panels
+        /// </summary>
+        /// <param name="url">Url Address for page you want to load</param>
+        /// <param name="panel">Panel name you want to load into</param>
+        /// <param name="paramCollection">Collection of parameters if you need any</param>
+        protected void deLoadModule(string url, string panel, Ext.Net.ParameterCollection paramCollection = null)
+        {
+            //Find the panel that's been rendered
+            Ext.Net.Panel clPanel = X.GetCmp<Ext.Net.Panel>(panel);
+
+            Ext.Net.ComponentLoader cl = new Ext.Net.ComponentLoader();
+            cl.Url = url;
+            cl.Mode = LoadMode.Frame;
+            cl.Scripts = true;
+            cl.LoadMask.ShowMask = true;
+
+            // Only add a param collection if it's not null, otherwise this will cause an error.
+            if (paramCollection != null)
+            {
+                cl.Params.AddRange(paramCollection);
+            }
+            clPanel.ClearContent();
+            clPanel.Loader = cl;
+            clPanel.Render();
+        }
+
+
     }
 }

@@ -112,15 +112,6 @@ namespace DBI.Web.EMS.Views {
         protected global::Ext.Net.Panel uxApplications;
         
         /// <summary>
-        /// ucSystemMenu control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DBI.Web.EMS.Views.ucSystemMenu ucSystemMenu;
-        
-        /// <summary>
         /// uxSystem control.
         /// </summary>
         /// <remarks>
@@ -130,13 +121,31 @@ namespace DBI.Web.EMS.Views {
         protected global::Ext.Net.Panel uxSystem;
         
         /// <summary>
-        /// ucSystemMenu1 control.
+        /// uxMenu control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DBI.Web.EMS.Views.ucSystemMenu ucSystemMenu1;
+        protected global::Ext.Net.Menu uxMenu;
+        
+        /// <summary>
+        /// uxSecurityRoles control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.MenuItem uxSecurityRoles;
+        
+        /// <summary>
+        /// uxSecurityUsers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.MenuItem uxSecurityUsers;
         
         /// <summary>
         /// uxCenter control.

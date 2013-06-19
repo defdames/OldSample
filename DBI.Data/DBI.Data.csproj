@@ -31,11 +31,10 @@
     <DocumentationFile>bin\Release\DBI.Data.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Ext.Net, Version=2.2.0.22489, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
+    <Reference Include="Ext.Net, Version=2.2.0.25389, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\root\Ext.Net\bin\WebForm NET40 Release\Ext.Net.dll</HintPath>
     </Reference>
@@ -55,6 +54,8 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -72,6 +73,9 @@
     </Compile>
     <Compile Include="DataFactory\SecurityRoles.cs" />
     <Compile Include="DataFactory\StaticLists.cs" />
+    <Compile Include="DataFactory\EMS\SystemSecurity.cs" />
+    <Compile Include="Models\Mapping\SYS_USERS_Map.cs" />
+    <Compile Include="Models\SYS_USERS.cs" />
     <Compile Include="Models\Mapping\NamespaceDoc.cs" />
     <Compile Include="Models\Mapping\SecurityRoleMap.cs" />
     <Compile Include="Models\OracleDatabase.cs" />
@@ -86,6 +90,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\test\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -31,7 +31,7 @@
     <DocumentationFile>bin\Release\DBI.Core.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ext.Net, Version=2.2.0.22489, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
+    <Reference Include="Ext.Net, Version=2.2.0.25389, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\root\Ext.Net\bin\WebForm NET40 Release\Ext.Net.dll</HintPath>
     </Reference>
@@ -69,11 +69,9 @@
     <Compile Include="Web\BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Web\BaseUserControl.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Web\CustomIdentity.cs" />
     <Compile Include="Web\CustomPrincipal.cs" />
+    <Compile Include="Web\Security\Permissions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

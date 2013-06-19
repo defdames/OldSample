@@ -32,12 +32,18 @@ namespace DBI.Data.Models
         public DbSet<SECURITYROLE> SECURITYROLEs { get; set; }
 
         /// <summary>
+        /// Property for the User Table Entity Object
+        /// </summary>
+        public DbSet<SYS_USERS> SYS_USERS { get; set; }
+
+        /// <summary>
         /// Adds the mapping to the Oracle tables for all Entity objects.
         /// </summary>
         /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new SecurityRoleMap());
+            modelBuilder.Configurations.Add(new SYS_USERS_MAP());
         }
     }
 }

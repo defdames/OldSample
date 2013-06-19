@@ -28,7 +28,8 @@ namespace DBI.Web.EMS
         /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!X.IsAjaxRequest)
+         
+          if (!X.IsAjaxRequest)
             {
 
                if (Request.Cookies["UserSettings"] != null)
@@ -100,7 +101,7 @@ namespace DBI.Web.EMS
 
                 FileVersionInfo buildInfo = FileVersionInfo.GetVersionInfo(Server.MapPath("~/bin/DBI.Web.EMS.dll"));
                 uxStatus.Text = string.Format("{0}: {1} - {2}: {3}", (string)GetLocalResourceObject("loginDatabase"), Global.serverInstance, (string)GetLocalResourceObject("loginVersion"), buildInfo.FileVersion);
-
+                uxDatabaseVer.Text = uxStatus.Text;
             }
 
 
