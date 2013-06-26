@@ -18,14 +18,17 @@ namespace DBI.Web.EMS.Views
         }
 
 
-        protected void deLoadSecurityRoles(object sender, DirectEventArgs e)
-        {
-            deLoadModule("~/Views/Modules/Security/umSecurityRoles.aspx", "uxCenter");
-        }
 
         protected void deLoadSecurityUsers(object sender, DirectEventArgs e)
         {
-            deLoadModule("~/Views/Modules/Security/umSecurityUsers.aspx", "uxCenter");
+            LoadModule("~/Views/Modules/Security/umSecurityUsersList.aspx", "uxCenter");
         }
+
+        protected void deLoadSecurityRoles(object sender, DirectEventArgs e)
+        {
+            LoadModule("~/Views/Modules/Security/umSecurityRolesList.aspx", "uxCenter");
+        }
+
+
     }
 }

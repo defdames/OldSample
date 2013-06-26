@@ -10,7 +10,25 @@
 namespace DBI.Web.EMS.Views.Modules.Security {
     
     
-    public partial class umSecurityRoles {
+    public partial class umSecurityRolesList {
+        
+        /// <summary>
+        /// Head1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlHead Head1;
+        
+        /// <summary>
+        /// test control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlForm test;
         
         /// <summary>
         /// uxViewPort control.
@@ -22,15 +40,6 @@ namespace DBI.Web.EMS.Views.Modules.Security {
         protected global::Ext.Net.Viewport uxViewPort;
         
         /// <summary>
-        /// Panel1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel Panel1;
-        
-        /// <summary>
         /// uxSecurityRoleGridPanel control.
         /// </summary>
         /// <remarks>
@@ -38,6 +47,15 @@ namespace DBI.Web.EMS.Views.Modules.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.GridPanel uxSecurityRoleGridPanel;
+        
+        /// <summary>
+        /// ToolbarSeparator1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ToolbarSeparator ToolbarSeparator1;
         
         /// <summary>
         /// uxSecurityRoleStore control.
@@ -58,31 +76,40 @@ namespace DBI.Web.EMS.Views.Modules.Security {
         protected global::Ext.Net.Model uxSecurityRoleModel;
         
         /// <summary>
-        /// uxID control.
+        /// cID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column uxID;
+        protected global::Ext.Net.Column cID;
         
         /// <summary>
-        /// uxName control.
+        /// cName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column uxName;
+        protected global::Ext.Net.Column cName;
         
         /// <summary>
-        /// uxDescription control.
+        /// cDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column uxDescription;
+        protected global::Ext.Net.Column cDescription;
+        
+        /// <summary>
+        /// uxSecurityRoleGridFilters control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridFilters uxSecurityRoleGridFilters;
         
         /// <summary>
         /// uxSecurityRolePaging control.

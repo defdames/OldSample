@@ -31,6 +31,24 @@ namespace DBI.Web.EMS {
         protected global::Ext.Net.Label uxDatabaseVer;
         
         /// <summary>
+        /// uxCopyRight control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Label uxCopyRight;
+        
+        /// <summary>
+        /// uxLogo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Image uxLogo;
+        
+        /// <summary>
         /// uxViewPort control.
         /// </summary>
         /// <remarks>

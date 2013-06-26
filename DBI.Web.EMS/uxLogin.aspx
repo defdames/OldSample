@@ -40,7 +40,9 @@
 <body>
     <ext:ResourceManager ID="uxResourceManager" runat="server" IsDynamic="False">
     </ext:ResourceManager>
-    <ext:Label runat="server" ID="uxDatabaseVer" StyleSpec="position:fixed;bottom: 1em; right: 1em; color:white;"></ext:Label>
+    <ext:Label runat="server" ID="uxDatabaseVer" StyleSpec="position:fixed;bottom: 1em; right: 1em; color:lightgray;"></ext:Label>
+     <ext:Label runat="server" ID="uxCopyRight" Text="Copyright 2013 DBI Services, All Rights Reserved." StyleSpec="position:fixed;bottom: 1em; left: 1em; color: lightgray;"></ext:Label>
+     <ext:Image runat="server" ID="uxLogo" ImageUrl="~/Resources/Images/dbis_logo.png" StyleSpec="position:fixed;bottom: 3em; right: 1em;"></ext:Image>
     <ext:Viewport ID="uxViewPort" runat="server" IDMode="Explicit" IsDynamic="False" Namespace="App" RenderXType="True">
         <LayoutConfig>
             <ext:VBoxLayoutConfig Align="Center" Pack="Center" />

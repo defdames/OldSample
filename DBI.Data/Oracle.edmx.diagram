@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="8b6e550daa334a819f81705cc030411f" Name="Diagram1" ZoomLevel="74">
+        <EntityTypeShape EntityType="OracleModel.SYS_PERMISSIONS" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OracleModel.SYS_ROLES" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OracleModel.XX_FND_USER_V" Width="1.5" PointX="4.625" PointY="0.75" />
+        <EntityTypeShape EntityType="OracleModel.SYS_USERS" Width="1.5" PointX="0.875" PointY="2.75" />
+        <AssociationConnector Association="OracleModel.SYS_USERSXX_FND_USER_V" />
+        <EntityTypeShape EntityType="OracleModel.SYS_USERS_V" Width="1.5" PointX="6.375" PointY="0.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

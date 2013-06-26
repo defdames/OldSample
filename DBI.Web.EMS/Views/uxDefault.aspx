@@ -7,7 +7,7 @@
     <link href="../Resources/StyleSheets/main.css" rel="stylesheet" />
 </head>
 <body>
-    <ext:ResourceManager ID="uxResourceManager" runat="server" DisableViewState="false">
+    <ext:ResourceManager ID="uxResourceManager" runat="server" >
     </ext:ResourceManager>
     <form id="form1" runat="server">
         <ext:Viewport ID="uxViewPort" runat="server" Layout="border">
@@ -52,14 +52,14 @@
                                         <ext:Parameter Name="MenuAlign" Value="tl-bl?" Mode="Value" />
                                     </Defaults>
                                     <Items>
-                                       <ext:MenuItem ID="uxSecurityRoles" runat="server" Text="Roles" Icon="Lock">
-                                           <DirectEvents>
-                                               <Click OnEvent="deLoadSecurityRoles" ></Click>
-                                           </DirectEvents>
-                                        </ext:MenuItem>
                                          <ext:MenuItem ID="uxSecurityUsers" runat="server" Text="Users" Icon="User">
                                            <DirectEvents>
                                                <Click OnEvent="deLoadSecurityUsers" ></Click>
+                                           </DirectEvents>
+                                        </ext:MenuItem>
+                                         <ext:MenuItem ID="uxSecurityRoles" runat="server" Text="Roles" Icon="UserEdit">
+                                           <DirectEvents>
+                                               <Click OnEvent="deLoadSecurityRoles" ></Click>
                                            </DirectEvents>
                                         </ext:MenuItem>
                                     </Items>

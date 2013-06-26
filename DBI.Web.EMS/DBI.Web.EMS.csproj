@@ -93,8 +93,9 @@
     <Content Include="Resources\Images\wwbnight.png" />
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
-    <Content Include="Views\Modules\Security\umSecurityUsers.aspx" />
-    <Content Include="Views\Modules\Security\umSecurityRoles.aspx" />
+    <Content Include="Views\Modules\Security\umSecurityAddRole.aspx" />
+    <Content Include="Views\Modules\Security\umSecurityRolesList.aspx" />
+    <Content Include="Views\Modules\Security\umSecurityUsersList.aspx" />
     <Content Include="Views\uxDefault.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -115,19 +116,26 @@
       <DependentUpon>uxLogin.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\Modules\Security\umSecurityUsers.aspx.cs">
-      <DependentUpon>umSecurityUsers.aspx</DependentUpon>
+    <Compile Include="Views\Modules\Security\umSecurityAddRole.aspx.cs">
+      <DependentUpon>umSecurityAddRole.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\Security\umSecurityUsers.aspx.designer.cs">
-      <DependentUpon>umSecurityUsers.aspx</DependentUpon>
+    <Compile Include="Views\Modules\Security\umSecurityAddRole.aspx.designer.cs">
+      <DependentUpon>umSecurityAddRole.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\Security\umSecurityRoles.aspx.cs">
-      <DependentUpon>umSecurityRoles.aspx</DependentUpon>
+    <Compile Include="Views\Modules\Security\umSecurityRolesList.aspx.cs">
+      <DependentUpon>umSecurityRolesList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\Security\umSecurityRoles.aspx.designer.cs">
-      <DependentUpon>umSecurityRoles.aspx</DependentUpon>
+    <Compile Include="Views\Modules\Security\umSecurityRolesList.aspx.designer.cs">
+      <DependentUpon>umSecurityRolesList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Security\umSecurityUsersList.aspx.cs">
+      <DependentUpon>umSecurityUsersList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Security\umSecurityUsersList.aspx.designer.cs">
+      <DependentUpon>umSecurityUsersList.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\uxDefault.aspx.cs">
       <DependentUpon>uxDefault.aspx</DependentUpon>
@@ -169,7 +177,6 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

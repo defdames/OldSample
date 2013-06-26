@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
+using Ext.Net;
 
 namespace DBI.Web.EMS
 {
@@ -31,6 +32,21 @@ namespace DBI.Web.EMS
 
         protected void Application_Error(object sender, EventArgs e)
         {
+            try
+            {
+                Exception ex = HttpContext.Current.Server.GetLastError();
+                HttpContext.Current.Server.ClearError();
+                if (Ext.Net.X.IsAjaxRequest)
+                {
+                    X.Msg.Alert("Error", ex.InnerException).Show();
+                }
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+
 
         }
 

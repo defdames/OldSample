@@ -71,16 +71,44 @@
     <Compile Include="..\DBI.AssemblyVersion\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="DataFactory\SecurityRoles.cs" />
+    <Compile Include="DataFactory\Security\Roles.cs" />
     <Compile Include="DataFactory\StaticLists.cs" />
-    <Compile Include="DataFactory\EMS\SystemSecurity.cs" />
-    <Compile Include="Models\Mapping\SYS_USERS_Map.cs" />
-    <Compile Include="Models\SYS_USERS.cs" />
-    <Compile Include="Models\Mapping\NamespaceDoc.cs" />
-    <Compile Include="Models\Mapping\SecurityRoleMap.cs" />
-    <Compile Include="Models\OracleDatabase.cs" />
-    <Compile Include="Models\SecurityRole.cs" />
+    <Compile Include="DataFactory\Security\Users.cs" />
+    <Compile Include="DataFactory\Utilities\GenericData.cs" />
+    <Compile Include="Oracle.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Oracle.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Oracle.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Oracle.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Oracle.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SYS_PERMISSIONS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SYS_ROLES.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SYS_USERS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SYS_USERS_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserDetail.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="XX_FND_USER_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -89,11 +117,26 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <EntityDeploy Include="Oracle.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Oracle.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Oracle.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Oracle.edmx</DependentUpon>
+      <LastGenOutput>Oracle.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Oracle.edmx.diagram">
+      <DependentUpon>Oracle.edmx</DependentUpon>
+    </None>
+    <None Include="Oracle.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Oracle.edmx</DependentUpon>
+      <LastGenOutput>Oracle.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\test\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

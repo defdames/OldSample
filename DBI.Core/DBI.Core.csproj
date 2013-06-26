@@ -71,7 +71,6 @@
     </Compile>
     <Compile Include="Web\CustomIdentity.cs" />
     <Compile Include="Web\CustomPrincipal.cs" />
-    <Compile Include="Web\Security\Permissions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

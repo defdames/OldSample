@@ -1,0 +1,485 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="OracleModel.Store" Alias="Self" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="OracleModelStoreContainer">
+          <EntitySet Name="SYS_PERMISSIONS" EntityType="OracleModel.Store.SYS_PERMISSIONS" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="SYS_ROLES" EntityType="OracleModel.Store.SYS_ROLES" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="SYS_USERS" EntityType="OracleModel.Store.SYS_USERS" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="SYS_USERS_V" EntityType="OracleModel.Store.SYS_USERS_V" store:Type="Views" store:Schema="XXEMS" store:Name="SYS_USERS_V">
+            <DefiningQuery>SELECT 
+      "SYS_USERS_V"."SYSTEM_USER_ID" AS "SYSTEM_USER_ID", 
+      "SYS_USERS_V"."FND_USER_ID" AS "FND_USER_ID", 
+      "SYS_USERS_V"."USER_ID" AS "USER_ID", 
+      "SYS_USERS_V"."USER_NAME" AS "USER_NAME", 
+      "SYS_USERS_V"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE", 
+      "SYS_USERS_V"."LAST_UPDATED_BY" AS "LAST_UPDATED_BY", 
+      "SYS_USERS_V"."CREATION_DATE" AS "CREATION_DATE", 
+      "SYS_USERS_V"."CREATED_BY" AS "CREATED_BY", 
+      "SYS_USERS_V"."LAST_UPDATE_LOGIN" AS "LAST_UPDATE_LOGIN", 
+      "SYS_USERS_V"."ENCRYPTED_FOUNDATION_PASSWORD" AS "ENCRYPTED_FOUNDATION_PASSWORD", 
+      "SYS_USERS_V"."ENCRYPTED_USER_PASSWORD" AS "ENCRYPTED_USER_PASSWORD", 
+      "SYS_USERS_V"."SESSION_NUMBER" AS "SESSION_NUMBER", 
+      "SYS_USERS_V"."START_DATE" AS "START_DATE", 
+      "SYS_USERS_V"."END_DATE" AS "END_DATE", 
+      "SYS_USERS_V"."DESCRIPTION" AS "DESCRIPTION", 
+      "SYS_USERS_V"."LAST_LOGON_DATE" AS "LAST_LOGON_DATE", 
+      "SYS_USERS_V"."PASSWORD_DATE" AS "PASSWORD_DATE", 
+      "SYS_USERS_V"."PASSWORD_ACCESSES_LEFT" AS "PASSWORD_ACCESSES_LEFT", 
+      "SYS_USERS_V"."PASSWORD_LIFESPAN_ACCESSES" AS "PASSWORD_LIFESPAN_ACCESSES", 
+      "SYS_USERS_V"."PASSWORD_LIFESPAN_DAYS" AS "PASSWORD_LIFESPAN_DAYS", 
+      "SYS_USERS_V"."EMPLOYEE_ID" AS "EMPLOYEE_ID", 
+      "SYS_USERS_V"."EMAIL_ADDRESS" AS "EMAIL_ADDRESS", 
+      "SYS_USERS_V"."FAX" AS "FAX", 
+      "SYS_USERS_V"."CUSTOMER_ID" AS "CUSTOMER_ID", 
+      "SYS_USERS_V"."SUPPLIER_ID" AS "SUPPLIER_ID", 
+      "SYS_USERS_V"."WEB_PASSWORD" AS "WEB_PASSWORD", 
+      "SYS_USERS_V"."USER_GUID" AS "USER_GUID", 
+      "SYS_USERS_V"."GCN_CODE_COMBINATION_ID" AS "GCN_CODE_COMBINATION_ID", 
+      "SYS_USERS_V"."PERSON_PARTY_ID" AS "PERSON_PARTY_ID", 
+      "SYS_USERS_V"."FIRST_NAME" AS "FIRST_NAME", 
+      "SYS_USERS_V"."MIDDLE_NAMES" AS "MIDDLE_NAMES", 
+      "SYS_USERS_V"."LAST_NAME" AS "LAST_NAME", 
+      "SYS_USERS_V"."EMPLOYEE_NUMBER" AS "EMPLOYEE_NUMBER", 
+      "SYS_USERS_V"."CURRENT_EMPLOYEE_FLAG" AS "CURRENT_EMPLOYEE_FLAG", 
+      "SYS_USERS_V"."ORGANIZATION_NAME" AS "ORGANIZATION_NAME", 
+      "SYS_USERS_V"."JOB_TITLE" AS "JOB_TITLE", 
+      "SYS_USERS_V"."ORACLE_ACCOUNT_STATUS" AS "ORACLE_ACCOUNT_STATUS"
+      FROM "XXEMS"."SYS_USERS_V" "SYS_USERS_V"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="XX_FND_USER_V" EntityType="OracleModel.Store.XX_FND_USER_V" store:Type="Views" store:Schema="XXEMS" store:Name="XX_FND_USER_V">
+            <DefiningQuery>SELECT 
+      "XX_FND_USER_V"."USER_ID" AS "USER_ID", 
+      "XX_FND_USER_V"."USER_NAME" AS "USER_NAME", 
+      "XX_FND_USER_V"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE", 
+      "XX_FND_USER_V"."LAST_UPDATED_BY" AS "LAST_UPDATED_BY", 
+      "XX_FND_USER_V"."CREATION_DATE" AS "CREATION_DATE", 
+      "XX_FND_USER_V"."CREATED_BY" AS "CREATED_BY", 
+      "XX_FND_USER_V"."LAST_UPDATE_LOGIN" AS "LAST_UPDATE_LOGIN", 
+      "XX_FND_USER_V"."ENCRYPTED_FOUNDATION_PASSWORD" AS "ENCRYPTED_FOUNDATION_PASSWORD", 
+      "XX_FND_USER_V"."ENCRYPTED_USER_PASSWORD" AS "ENCRYPTED_USER_PASSWORD", 
+      "XX_FND_USER_V"."SESSION_NUMBER" AS "SESSION_NUMBER", 
+      "XX_FND_USER_V"."START_DATE" AS "START_DATE", 
+      "XX_FND_USER_V"."END_DATE" AS "END_DATE", 
+      "XX_FND_USER_V"."DESCRIPTION" AS "DESCRIPTION", 
+      "XX_FND_USER_V"."LAST_LOGON_DATE" AS "LAST_LOGON_DATE", 
+      "XX_FND_USER_V"."PASSWORD_DATE" AS "PASSWORD_DATE", 
+      "XX_FND_USER_V"."PASSWORD_ACCESSES_LEFT" AS "PASSWORD_ACCESSES_LEFT", 
+      "XX_FND_USER_V"."PASSWORD_LIFESPAN_ACCESSES" AS "PASSWORD_LIFESPAN_ACCESSES", 
+      "XX_FND_USER_V"."PASSWORD_LIFESPAN_DAYS" AS "PASSWORD_LIFESPAN_DAYS", 
+      "XX_FND_USER_V"."EMPLOYEE_ID" AS "EMPLOYEE_ID", 
+      "XX_FND_USER_V"."EMAIL_ADDRESS" AS "EMAIL_ADDRESS", 
+      "XX_FND_USER_V"."FAX" AS "FAX", 
+      "XX_FND_USER_V"."CUSTOMER_ID" AS "CUSTOMER_ID", 
+      "XX_FND_USER_V"."SUPPLIER_ID" AS "SUPPLIER_ID", 
+      "XX_FND_USER_V"."WEB_PASSWORD" AS "WEB_PASSWORD", 
+      "XX_FND_USER_V"."USER_GUID" AS "USER_GUID", 
+      "XX_FND_USER_V"."GCN_CODE_COMBINATION_ID" AS "GCN_CODE_COMBINATION_ID", 
+      "XX_FND_USER_V"."PERSON_PARTY_ID" AS "PERSON_PARTY_ID"
+      FROM "XXEMS"."XX_FND_USER_V" "XX_FND_USER_V"</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+        <EntityType Name="SYS_PERMISSIONS">
+          <Key>
+            <PropertyRef Name="PERMISSION_ID" />
+          </Key>
+          <Property Name="PERMISSION_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
+          <Property Name="CODE" Type="varchar2" Nullable="false" MaxLength="500" />
+          <Property Name="DESCRIPTION" Type="varchar2" Nullable="false" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="SYS_ROLES">
+          <Key>
+            <PropertyRef Name="ROLE_ID" />
+          </Key>
+          <Property Name="ROLE_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="varchar2" Nullable="false" MaxLength="500" />
+          <Property Name="DESCRIPTION" Type="varchar2" Nullable="false" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="SYS_USERS">
+          <Key>
+            <PropertyRef Name="SYSTEM_USER_ID" />
+          </Key>
+          <Property Name="SYSTEM_USER_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
+          <Property Name="FND_USER_ID" Type="number" Nullable="false" Precision="15" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXEMS.SYS_USERS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="SYS_USERS_V">
+          <Key>
+            <PropertyRef Name="USER_ID" />
+            <PropertyRef Name="USER_NAME" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+            <PropertyRef Name="LAST_UPDATED_BY" />
+            <PropertyRef Name="CREATION_DATE" />
+            <PropertyRef Name="CREATED_BY" />
+            <PropertyRef Name="ENCRYPTED_FOUNDATION_PASSWORD" />
+            <PropertyRef Name="ENCRYPTED_USER_PASSWORD" />
+            <PropertyRef Name="SESSION_NUMBER" />
+            <PropertyRef Name="START_DATE" />
+          </Key>
+          <Property Name="SYSTEM_USER_ID" Type="number" />
+          <Property Name="FND_USER_ID" Type="number" Precision="15" />
+          <Property Name="USER_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="USER_NAME" Type="varchar2" Nullable="false" MaxLength="100" />
+          <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" />
+          <Property Name="LAST_UPDATED_BY" Type="number" Nullable="false" Precision="15" />
+          <Property Name="CREATION_DATE" Type="date" Nullable="false" />
+          <Property Name="CREATED_BY" Type="number" Nullable="false" Precision="15" />
+          <Property Name="LAST_UPDATE_LOGIN" Type="number" Precision="15" />
+          <Property Name="ENCRYPTED_FOUNDATION_PASSWORD" Type="varchar2" Nullable="false" MaxLength="100" />
+          <Property Name="ENCRYPTED_USER_PASSWORD" Type="varchar2" Nullable="false" MaxLength="100" />
+          <Property Name="SESSION_NUMBER" Type="number" Nullable="false" />
+          <Property Name="START_DATE" Type="date" Nullable="false" />
+          <Property Name="END_DATE" Type="date" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="240" />
+          <Property Name="LAST_LOGON_DATE" Type="date" />
+          <Property Name="PASSWORD_DATE" Type="date" />
+          <Property Name="PASSWORD_ACCESSES_LEFT" Type="number" Precision="15" />
+          <Property Name="PASSWORD_LIFESPAN_ACCESSES" Type="number" Precision="15" />
+          <Property Name="PASSWORD_LIFESPAN_DAYS" Type="number" Precision="15" />
+          <Property Name="EMPLOYEE_ID" Type="number" Precision="15" />
+          <Property Name="EMAIL_ADDRESS" Type="varchar2" MaxLength="240" />
+          <Property Name="FAX" Type="varchar2" MaxLength="80" />
+          <Property Name="CUSTOMER_ID" Type="number" Precision="15" />
+          <Property Name="SUPPLIER_ID" Type="number" Precision="15" />
+          <Property Name="WEB_PASSWORD" Type="varchar2" MaxLength="240" />
+          <Property Name="USER_GUID" Type="raw" MaxLength="16" />
+          <Property Name="GCN_CODE_COMBINATION_ID" Type="number" Precision="15" />
+          <Property Name="PERSON_PARTY_ID" Type="number" />
+          <Property Name="FIRST_NAME" Type="varchar2" MaxLength="150" />
+          <Property Name="MIDDLE_NAMES" Type="varchar2" MaxLength="60" />
+          <Property Name="LAST_NAME" Type="varchar2" MaxLength="150" />
+          <Property Name="EMPLOYEE_NUMBER" Type="varchar2" MaxLength="30" />
+          <Property Name="CURRENT_EMPLOYEE_FLAG" Type="varchar2" MaxLength="30" />
+          <Property Name="ORGANIZATION_NAME" Type="varchar2" MaxLength="240" />
+          <Property Name="JOB_TITLE" Type="varchar2" MaxLength="700" />
+          <Property Name="ORACLE_ACCOUNT_STATUS" Type="char" MaxLength="1" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXEMS.XX_FND_USER_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="XX_FND_USER_V">
+          <Key>
+            <PropertyRef Name="USER_ID" />
+            <PropertyRef Name="USER_NAME" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+            <PropertyRef Name="LAST_UPDATED_BY" />
+            <PropertyRef Name="CREATION_DATE" />
+            <PropertyRef Name="CREATED_BY" />
+            <PropertyRef Name="ENCRYPTED_FOUNDATION_PASSWORD" />
+            <PropertyRef Name="ENCRYPTED_USER_PASSWORD" />
+            <PropertyRef Name="SESSION_NUMBER" />
+            <PropertyRef Name="START_DATE" />
+          </Key>
+          <Property Name="USER_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="USER_NAME" Type="varchar2" Nullable="false" MaxLength="100" />
+          <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" />
+          <Property Name="LAST_UPDATED_BY" Type="number" Nullable="false" Precision="15" />
+          <Property Name="CREATION_DATE" Type="date" Nullable="false" />
+          <Property Name="CREATED_BY" Type="number" Nullable="false" Precision="15" />
+          <Property Name="LAST_UPDATE_LOGIN" Type="number" Precision="15" />
+          <Property Name="ENCRYPTED_FOUNDATION_PASSWORD" Type="varchar2" Nullable="false" MaxLength="100" />
+          <Property Name="ENCRYPTED_USER_PASSWORD" Type="varchar2" Nullable="false" MaxLength="100" />
+          <Property Name="SESSION_NUMBER" Type="number" Nullable="false" />
+          <Property Name="START_DATE" Type="date" Nullable="false" />
+          <Property Name="END_DATE" Type="date" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="240" />
+          <Property Name="LAST_LOGON_DATE" Type="date" />
+          <Property Name="PASSWORD_DATE" Type="date" />
+          <Property Name="PASSWORD_ACCESSES_LEFT" Type="number" Precision="15" />
+          <Property Name="PASSWORD_LIFESPAN_ACCESSES" Type="number" Precision="15" />
+          <Property Name="PASSWORD_LIFESPAN_DAYS" Type="number" Precision="15" />
+          <Property Name="EMPLOYEE_ID" Type="number" Precision="15" />
+          <Property Name="EMAIL_ADDRESS" Type="varchar2" MaxLength="240" />
+          <Property Name="FAX" Type="varchar2" MaxLength="80" />
+          <Property Name="CUSTOMER_ID" Type="number" Precision="15" />
+          <Property Name="SUPPLIER_ID" Type="number" Precision="15" />
+          <Property Name="WEB_PASSWORD" Type="varchar2" MaxLength="240" />
+          <Property Name="USER_GUID" Type="raw" MaxLength="16" />
+          <Property Name="GCN_CODE_COMBINATION_ID" Type="number" Precision="15" />
+          <Property Name="PERSON_PARTY_ID" Type="number" />
+        </EntityType>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="OracleModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="Entities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="SYS_PERMISSIONS" EntityType="OracleModel.SYS_PERMISSIONS" />
+          <EntitySet Name="SYS_ROLES" EntityType="OracleModel.SYS_ROLES" />
+          <EntitySet Name="XX_FND_USER_V" EntityType="OracleModel.XX_FND_USER_V" />
+          <EntitySet Name="SYS_USERS" EntityType="OracleModel.SYS_USERS" />
+          <AssociationSet Name="SYS_USERSXX_FND_USER_V" Association="OracleModel.SYS_USERSXX_FND_USER_V">
+            <End Role="SYS_USERS" EntitySet="SYS_USERS" />
+            <End Role="XX_FND_USER_V" EntitySet="XX_FND_USER_V" />
+          </AssociationSet>
+          <EntitySet Name="SYS_USERS_V" EntityType="OracleModel.SYS_USERS_V" />
+        </EntityContainer>
+        <EntityType Name="SYS_PERMISSIONS">
+          <Key>
+            <PropertyRef Name="PERMISSION_ID" />
+          </Key>
+          <Property Name="PERMISSION_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CODE" Type="String" Nullable="false" MaxLength="500" Unicode="false" FixedLength="false" />
+          <Property Name="DESCRIPTION" Type="String" Nullable="false" MaxLength="500" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="SYS_ROLES">
+          <Key>
+            <PropertyRef Name="ROLE_ID" />
+          </Key>
+          <Property Name="ROLE_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" Nullable="false" MaxLength="500" Unicode="false" FixedLength="false" />
+          <Property Name="DESCRIPTION" Type="String" Nullable="false" MaxLength="500" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="XX_FND_USER_V">
+          <Key>
+            <PropertyRef Name="USER_ID" />
+            <PropertyRef Name="USER_NAME" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+            <PropertyRef Name="LAST_UPDATED_BY" />
+            <PropertyRef Name="CREATION_DATE" />
+            <PropertyRef Name="CREATED_BY" />
+            <PropertyRef Name="ENCRYPTED_FOUNDATION_PASSWORD" />
+            <PropertyRef Name="ENCRYPTED_USER_PASSWORD" />
+            <PropertyRef Name="SESSION_NUMBER" />
+            <PropertyRef Name="START_DATE" />
+          </Key>
+          <Property Type="Int64" Name="USER_ID" Nullable="false" />
+          <Property Type="String" Name="USER_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
+          <Property Type="Int64" Name="LAST_UPDATED_BY" Nullable="false" />
+          <Property Type="DateTime" Name="CREATION_DATE" Nullable="false" />
+          <Property Type="Int64" Name="CREATED_BY" Nullable="false" />
+          <Property Type="Int64" Name="LAST_UPDATE_LOGIN" />
+          <Property Type="String" Name="ENCRYPTED_FOUNDATION_PASSWORD" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ENCRYPTED_USER_PASSWORD" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="SESSION_NUMBER" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="START_DATE" Nullable="false" />
+          <Property Type="DateTime" Name="END_DATE" />
+          <Property Type="String" Name="DESCRIPTION" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_LOGON_DATE" />
+          <Property Type="DateTime" Name="PASSWORD_DATE" />
+          <Property Type="Int64" Name="PASSWORD_ACCESSES_LEFT" />
+          <Property Type="Int64" Name="PASSWORD_LIFESPAN_ACCESSES" />
+          <Property Type="Int64" Name="PASSWORD_LIFESPAN_DAYS" />
+          <Property Type="Int64" Name="EMPLOYEE_ID" />
+          <Property Type="String" Name="EMAIL_ADDRESS" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="FAX" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="CUSTOMER_ID" />
+          <Property Type="Int64" Name="SUPPLIER_ID" />
+          <Property Type="String" Name="WEB_PASSWORD" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="Guid" Name="USER_GUID" />
+          <Property Type="Int64" Name="GCN_CODE_COMBINATION_ID" />
+          <Property Type="Decimal" Name="PERSON_PARTY_ID" Precision="38" Scale="0" />
+          <NavigationProperty Name="SYS_USERS" Relationship="OracleModel.SYS_USERSXX_FND_USER_V" FromRole="XX_FND_USER_V" ToRole="SYS_USERS" />
+        </EntityType>
+        <ComplexType Name="UserDetail" >
+          <Property Type="Int64" Name="USER_ID" Nullable="false" />
+          <Property Type="String" Name="USER_NAME" Nullable="false" />
+          <Property Type="Int64" Name="EMPLOYEE_ID" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="SYS_USERS">
+          <Key>
+            <PropertyRef Name="SYSTEM_USER_ID" />
+          </Key>
+          <Property Type="Int64" Name="SYSTEM_USER_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="FND_USER_ID" Nullable="false" />
+          <NavigationProperty Name="XX_FND_USER_V" Relationship="OracleModel.SYS_USERSXX_FND_USER_V" FromRole="SYS_USERS" ToRole="XX_FND_USER_V" />
+        </EntityType>
+        <Association Name="SYS_USERSXX_FND_USER_V">
+          <End Type="OracleModel.SYS_USERS" Role="SYS_USERS" Multiplicity="1" />
+          <End Type="OracleModel.XX_FND_USER_V" Role="XX_FND_USER_V" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SYS_USERS">
+              <PropertyRef Name="SYSTEM_USER_ID" />
+            </Principal>
+            <Dependent Role="XX_FND_USER_V">
+              <PropertyRef Name="USER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="SYS_USERS_V">
+          <Key>
+            <PropertyRef Name="USER_ID" />
+            <PropertyRef Name="USER_NAME" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+            <PropertyRef Name="LAST_UPDATED_BY" />
+            <PropertyRef Name="CREATION_DATE" />
+            <PropertyRef Name="CREATED_BY" />
+            <PropertyRef Name="ENCRYPTED_FOUNDATION_PASSWORD" />
+            <PropertyRef Name="ENCRYPTED_USER_PASSWORD" />
+            <PropertyRef Name="SESSION_NUMBER" />
+            <PropertyRef Name="START_DATE" />
+          </Key>
+          <Property Type="Decimal" Name="SYSTEM_USER_ID" Precision="38" Scale="0" />
+          <Property Type="Int64" Name="FND_USER_ID" />
+          <Property Type="Int64" Name="USER_ID" Nullable="false" />
+          <Property Type="String" Name="USER_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
+          <Property Type="Int64" Name="LAST_UPDATED_BY" Nullable="false" />
+          <Property Type="DateTime" Name="CREATION_DATE" Nullable="false" />
+          <Property Type="Int64" Name="CREATED_BY" Nullable="false" />
+          <Property Type="Int64" Name="LAST_UPDATE_LOGIN" />
+          <Property Type="String" Name="ENCRYPTED_FOUNDATION_PASSWORD" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ENCRYPTED_USER_PASSWORD" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="SESSION_NUMBER" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="START_DATE" Nullable="false" />
+          <Property Type="DateTime" Name="END_DATE" />
+          <Property Type="String" Name="DESCRIPTION" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_LOGON_DATE" />
+          <Property Type="DateTime" Name="PASSWORD_DATE" />
+          <Property Type="Int64" Name="PASSWORD_ACCESSES_LEFT" />
+          <Property Type="Int64" Name="PASSWORD_LIFESPAN_ACCESSES" />
+          <Property Type="Int64" Name="PASSWORD_LIFESPAN_DAYS" />
+          <Property Type="Int64" Name="EMPLOYEE_ID" />
+          <Property Type="String" Name="EMAIL_ADDRESS" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="FAX" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="CUSTOMER_ID" />
+          <Property Type="Int64" Name="SUPPLIER_ID" />
+          <Property Type="String" Name="WEB_PASSWORD" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="Guid" Name="USER_GUID" />
+          <Property Type="Int64" Name="GCN_CODE_COMBINATION_ID" />
+          <Property Type="Decimal" Name="PERSON_PARTY_ID" Precision="38" Scale="0" />
+          <Property Type="String" Name="FIRST_NAME" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MIDDLE_NAMES" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="LAST_NAME" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EMPLOYEE_NUMBER" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CURRENT_EMPLOYEE_FLAG" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ORGANIZATION_NAME" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="JOB_TITLE" MaxLength="700" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ORACLE_ACCOUNT_STATUS" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="OracleModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="SYS_PERMISSIONS">
+            <EntityTypeMapping TypeName="OracleModel.SYS_PERMISSIONS">
+              <MappingFragment StoreEntitySet="SYS_PERMISSIONS">
+                <ScalarProperty Name="PERMISSION_ID" ColumnName="PERMISSION_ID" />
+                <ScalarProperty Name="CODE" ColumnName="CODE" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_ROLES">
+            <EntityTypeMapping TypeName="OracleModel.SYS_ROLES">
+              <MappingFragment StoreEntitySet="SYS_ROLES">
+                <ScalarProperty Name="ROLE_ID" ColumnName="ROLE_ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="XX_FND_USER_V">
+            <EntityTypeMapping TypeName="OracleModel.XX_FND_USER_V">
+              <MappingFragment StoreEntitySet="XX_FND_USER_V">
+                <ScalarProperty Name="PERSON_PARTY_ID" ColumnName="PERSON_PARTY_ID" />
+                <ScalarProperty Name="GCN_CODE_COMBINATION_ID" ColumnName="GCN_CODE_COMBINATION_ID" />
+                <ScalarProperty Name="USER_GUID" ColumnName="USER_GUID" />
+                <ScalarProperty Name="WEB_PASSWORD" ColumnName="WEB_PASSWORD" />
+                <ScalarProperty Name="SUPPLIER_ID" ColumnName="SUPPLIER_ID" />
+                <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+                <ScalarProperty Name="FAX" ColumnName="FAX" />
+                <ScalarProperty Name="EMAIL_ADDRESS" ColumnName="EMAIL_ADDRESS" />
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+                <ScalarProperty Name="PASSWORD_LIFESPAN_DAYS" ColumnName="PASSWORD_LIFESPAN_DAYS" />
+                <ScalarProperty Name="PASSWORD_LIFESPAN_ACCESSES" ColumnName="PASSWORD_LIFESPAN_ACCESSES" />
+                <ScalarProperty Name="PASSWORD_ACCESSES_LEFT" ColumnName="PASSWORD_ACCESSES_LEFT" />
+                <ScalarProperty Name="PASSWORD_DATE" ColumnName="PASSWORD_DATE" />
+                <ScalarProperty Name="LAST_LOGON_DATE" ColumnName="LAST_LOGON_DATE" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
+                <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
+                <ScalarProperty Name="SESSION_NUMBER" ColumnName="SESSION_NUMBER" />
+                <ScalarProperty Name="ENCRYPTED_USER_PASSWORD" ColumnName="ENCRYPTED_USER_PASSWORD" />
+                <ScalarProperty Name="ENCRYPTED_FOUNDATION_PASSWORD" ColumnName="ENCRYPTED_FOUNDATION_PASSWORD" />
+                <ScalarProperty Name="LAST_UPDATE_LOGIN" ColumnName="LAST_UPDATE_LOGIN" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATION_DATE" ColumnName="CREATION_DATE" />
+                <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="USER_NAME" ColumnName="USER_NAME" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_USERS">
+            <EntityTypeMapping TypeName="OracleModel.SYS_USERS">
+              <MappingFragment StoreEntitySet="SYS_USERS">
+                <ScalarProperty Name="FND_USER_ID" ColumnName="FND_USER_ID" />
+                <ScalarProperty Name="SYSTEM_USER_ID" ColumnName="SYSTEM_USER_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_USERS_V">
+            <EntityTypeMapping TypeName="OracleModel.SYS_USERS_V">
+              <MappingFragment StoreEntitySet="SYS_USERS_V">
+                <ScalarProperty Name="ORACLE_ACCOUNT_STATUS" ColumnName="ORACLE_ACCOUNT_STATUS" />
+                <ScalarProperty Name="JOB_TITLE" ColumnName="JOB_TITLE" />
+                <ScalarProperty Name="ORGANIZATION_NAME" ColumnName="ORGANIZATION_NAME" />
+                <ScalarProperty Name="CURRENT_EMPLOYEE_FLAG" ColumnName="CURRENT_EMPLOYEE_FLAG" />
+                <ScalarProperty Name="EMPLOYEE_NUMBER" ColumnName="EMPLOYEE_NUMBER" />
+                <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
+                <ScalarProperty Name="MIDDLE_NAMES" ColumnName="MIDDLE_NAMES" />
+                <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
+                <ScalarProperty Name="PERSON_PARTY_ID" ColumnName="PERSON_PARTY_ID" />
+                <ScalarProperty Name="GCN_CODE_COMBINATION_ID" ColumnName="GCN_CODE_COMBINATION_ID" />
+                <ScalarProperty Name="USER_GUID" ColumnName="USER_GUID" />
+                <ScalarProperty Name="WEB_PASSWORD" ColumnName="WEB_PASSWORD" />
+                <ScalarProperty Name="SUPPLIER_ID" ColumnName="SUPPLIER_ID" />
+                <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+                <ScalarProperty Name="FAX" ColumnName="FAX" />
+                <ScalarProperty Name="EMAIL_ADDRESS" ColumnName="EMAIL_ADDRESS" />
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+                <ScalarProperty Name="PASSWORD_LIFESPAN_DAYS" ColumnName="PASSWORD_LIFESPAN_DAYS" />
+                <ScalarProperty Name="PASSWORD_LIFESPAN_ACCESSES" ColumnName="PASSWORD_LIFESPAN_ACCESSES" />
+                <ScalarProperty Name="PASSWORD_ACCESSES_LEFT" ColumnName="PASSWORD_ACCESSES_LEFT" />
+                <ScalarProperty Name="PASSWORD_DATE" ColumnName="PASSWORD_DATE" />
+                <ScalarProperty Name="LAST_LOGON_DATE" ColumnName="LAST_LOGON_DATE" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
+                <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
+                <ScalarProperty Name="SESSION_NUMBER" ColumnName="SESSION_NUMBER" />
+                <ScalarProperty Name="ENCRYPTED_USER_PASSWORD" ColumnName="ENCRYPTED_USER_PASSWORD" />
+                <ScalarProperty Name="ENCRYPTED_FOUNDATION_PASSWORD" ColumnName="ENCRYPTED_FOUNDATION_PASSWORD" />
+                <ScalarProperty Name="LAST_UPDATE_LOGIN" ColumnName="LAST_UPDATE_LOGIN" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATION_DATE" ColumnName="CREATION_DATE" />
+                <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="USER_NAME" ColumnName="USER_NAME" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="FND_USER_ID" ColumnName="FND_USER_ID" />
+                <ScalarProperty Name="SYSTEM_USER_ID" ColumnName="SYSTEM_USER_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
