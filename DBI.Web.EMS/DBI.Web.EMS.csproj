@@ -93,7 +93,6 @@
     <Content Include="Resources\Images\wwbnight.png" />
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
-    <Content Include="Views\Modules\Security\umSecurityAddRole.aspx" />
     <Content Include="Views\Modules\Security\umSecurityRolesList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityUsersList.aspx" />
     <Content Include="Views\uxDefault.aspx" />
@@ -116,13 +115,6 @@
       <DependentUpon>uxLogin.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\Modules\Security\umSecurityAddRole.aspx.cs">
-      <DependentUpon>umSecurityAddRole.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Modules\Security\umSecurityAddRole.aspx.designer.cs">
-      <DependentUpon>umSecurityAddRole.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Views\Modules\Security\umSecurityRolesList.aspx.cs">
       <DependentUpon>umSecurityRolesList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -121,8 +121,6 @@ namespace DBI.Core.Web
             clWindow.Loader = cl;
             clWindow.Render(this.Form);
         }
-
-       
       
     }
 }

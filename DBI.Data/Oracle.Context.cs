@@ -30,5 +30,7 @@ namespace DBI.Data
         public DbSet<XX_FND_USER_V> XX_FND_USER_V { get; set; }
         public DbSet<SYS_USERS> SYS_USERS { get; set; }
         public DbSet<SYS_USERS_V> SYS_USERS_V { get; set; }
+        public DbSet<SYS_USER_ROLES> SYS_USER_ROLES { get; set; }
+        public DbSet<SYS_USER_ROLES_V> SYS_USER_ROLES_V { get; set; }
     }
 }

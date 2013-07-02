@@ -103,6 +103,12 @@
     <Compile Include="SYS_USERS_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="SYS_USER_ROLES.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SYS_USER_ROLES_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="UserDetail.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>

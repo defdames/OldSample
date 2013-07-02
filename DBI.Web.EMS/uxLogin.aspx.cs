@@ -148,7 +148,6 @@ namespace DBI.Web.EMS
             {
                 X.Msg.Alert((string)GetLocalResourceObject("loginErrorTitle"), (string)GetLocalResourceObject("loginInvalid")).Show();
                 uxPassword.Reset();
-                uxPassword.Focus(true, 400);
             }
         }
 

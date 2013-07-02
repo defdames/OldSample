@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using DBI.Data.DataFactory.Utilities;
+using Ext.Net;
 
 namespace DBI.Data.DataFactory.Security
 {
     public class Users
     {
-        /// <summary>
-        /// Entity function that returns a list of all users in the system for EMS
-        /// This view is an left outer join to the FND_USER table that shows oracle user data.
-        /// </summary>
-        /// <returns></returns>
-        public static IEnumerable<SYS_USERS_V> UserList()
+
+        public static IEnumerable<SYS_USERS_V> UserList(int start, int limit, DataSorter[] sort, string filter, out int count)
         {
-            Entities db = new Entities();
-            return db.SYS_USERS_V.AsEnumerable();             
+            return GenericData.EnumerableFilter<SYS_USERS_V>(start, limit, sort, filter, out count);
         }
 
         public static IEnumerable<SYS_USERS> OracleUserList()
@@ -29,6 +27,19 @@ namespace DBI.Data.DataFactory.Security
         {
             Entities db = new Entities();
             return db.SYS_USERS_V.Where(u => u.SYSTEM_USER_ID == pUserID).FirstOrDefault();
+        }
+
+        public static SYS_USERS_V UserDetailsByUsername(string userName)
+        {
+            Entities db = new Entities();
+            return db.SYS_USERS_V.Where(u => u.USER_NAME == userName).FirstOrDefault();
+        }
+
+        public static decimal? UserSystemIDByOracleUserID(long oracleUserID)
+        {
+            Entities db = new Entities();
+            return db.SYS_USERS_V.Where(u => u.USER_ID == oracleUserID).Max(m => m.SYSTEM_USER_ID);
+
         }
 
 

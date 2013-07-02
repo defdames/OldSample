@@ -32,21 +32,7 @@ namespace DBI.Web.EMS
 
         protected void Application_Error(object sender, EventArgs e)
         {
-            try
-            {
-                Exception ex = HttpContext.Current.Server.GetLastError();
-                HttpContext.Current.Server.ClearError();
-                if (Ext.Net.X.IsAjaxRequest)
-                {
-                    X.Msg.Alert("Error", ex.InnerException).Show();
-                }
-            }
-            catch (Exception)
-            {
-                
-                throw;
-            }
-
+           
 
         }
 

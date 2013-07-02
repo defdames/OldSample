@@ -52,12 +52,12 @@
                                         <ext:Parameter Name="MenuAlign" Value="tl-bl?" Mode="Value" />
                                     </Defaults>
                                     <Items>
-                                         <ext:MenuItem ID="uxSecurityUsers" runat="server" Text="Users" Icon="User">
+                                         <ext:MenuItem ID="uxSecurityUsers" runat="server" Text="Security Users" Icon="User">
                                            <DirectEvents>
                                                <Click OnEvent="deLoadSecurityUsers" ></Click>
                                            </DirectEvents>
                                         </ext:MenuItem>
-                                         <ext:MenuItem ID="uxSecurityRoles" runat="server" Text="Roles" Icon="UserEdit">
+                                         <ext:MenuItem ID="uxSecurityRoles" runat="server" Text="Security Roles" Icon="UserBrown">
                                            <DirectEvents>
                                                <Click OnEvent="deLoadSecurityRoles" ></Click>
                                            </DirectEvents>
