@@ -27,10 +27,8 @@ namespace DBI.Data
     
         public DbSet<SYS_PERMISSIONS> SYS_PERMISSIONS { get; set; }
         public DbSet<SYS_ROLES> SYS_ROLES { get; set; }
-        public DbSet<XX_FND_USER_V> XX_FND_USER_V { get; set; }
         public DbSet<SYS_USERS> SYS_USERS { get; set; }
-        public DbSet<SYS_USERS_V> SYS_USERS_V { get; set; }
         public DbSet<SYS_USER_ROLES> SYS_USER_ROLES { get; set; }
-        public DbSet<SYS_USER_ROLES_V> SYS_USER_ROLES_V { get; set; }
+        public DbSet<SYS_USER_INFORMATION> SYS_USER_INFORMATION { get; set; }
     }
 }

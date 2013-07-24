@@ -15,7 +15,10 @@ namespace DBI.Data
     public partial class SYS_USER_ROLES
     {
         public long USER_ROLE_ID { get; set; }
-        public long SYSTEM_USER_ID { get; set; }
+        public long USER_ID { get; set; }
         public long ROLE_ID { get; set; }
+    
+        public virtual SYS_ROLES SYS_ROLES { get; set; }
+        public virtual SYS_USERS SYS_USERS { get; set; }
     }
 }

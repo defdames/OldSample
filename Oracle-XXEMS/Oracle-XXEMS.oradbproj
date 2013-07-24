@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProductVersion>$(ProductVersion)</ProductVersion>
+    <ProjectGuid>
+    </ProjectGuid>
+    <AssemblyName>Oracle-XXEMS</AssemblyName>
+    <Name>Oracle-XXEMS</Name>
+    <RootNamespace>Oracle-XXEMS</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Functions\" />
+    <Folder Include="Packages\" />
+    <Folder Include="Procedures\" />
+    <Folder Include="Scripts\" />
+    <Folder Include="Security\" />
+    <Folder Include="Security\Permissions\" />
+    <Folder Include="Security\Roles\" />
+    <Folder Include="Security\Users\" />
+    <Folder Include="Sequences\" />
+    <Folder Include="Synonyms\" />
+    <Folder Include="Tables\" />
+    <Folder Include="Tables\Triggers\" />
+    <Folder Include="User Defined Types\" />
+    <Folder Include="User Defined Types\Nested Tables\" />
+    <Folder Include="User Defined Types\Objects\" />
+    <Folder Include="User Defined Types\VARRAYs\" />
+    <Folder Include="Views\" />
+    <Folder Include="Views\Triggers\" />
+    <Folder Include="XML Schemas\" />
+    <Folder Include="AQ\" />
+    <Folder Include="AQ\Queues\" />
+    <Folder Include="AQ\Queue Tables\" />
+    <DBRefs Include="Database References\" />
+  </ItemGroup>
+</Project>

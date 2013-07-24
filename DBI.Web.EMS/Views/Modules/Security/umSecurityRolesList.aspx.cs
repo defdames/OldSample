@@ -42,12 +42,6 @@ namespace DBI.Web.EMS.Views.Modules.Security
         }
 
 
-        protected void deAddRole(object sender, DirectEventArgs e)
-        {
-            //Need to open via javascript so it renders to the main window.
-            X.Js.Call("App.direct.dmLoadModuleIntoWindow", "~/Views/Modules/Security/umSecurityAddRole.aspx", "Add Role", Ext.Net.Icon.UserAdd, 330, 150, null);
-        }
-
         public void deDeleteRole(object sender, DirectEventArgs e)
         {
             RowSelectionModel sm = uxSecurityRoleGridPanel.GetSelectionModel() as RowSelectionModel;

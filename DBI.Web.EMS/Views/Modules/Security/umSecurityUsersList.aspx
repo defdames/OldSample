@@ -14,7 +14,7 @@
         <Items>
             <ext:GridPanel ID="uxSecurityUserGridPanel"
                 runat="server"
-                Title="System Users"
+                Title="Security Users"
                 Padding="5"
                 Icon="User"
                 Region="Center"
@@ -27,25 +27,19 @@
                         runat="server" 
                         RemoteSort="true" 
                         PageSize="25"
-                            OnReadData="UsersDatabind">
+                        OnReadData="UsersDatabind">
                         <Proxy>
                         <ext:PageProxy />
                         </Proxy>
                         <Model>
-                            <ext:Model ID="uxSecurityAddUserModel" runat="server" IDProperty="SYSTEM_USER_ID">
+                            <ext:Model ID="uxSecurityAddUserModel" runat="server" IDProperty="USER_ID">
                                 <Fields>
-                                    <ext:ModelField Name="SYSTEM_USER_ID" />
                                     <ext:ModelField Name="USER_ID" />
                                     <ext:ModelField Name="USER_NAME" />
-                                    <ext:ModelField Name="DESCRIPTION" />
-                                    <ext:ModelField Name="FIRST_NAME" />
-                                    <ext:ModelField Name="MIDDLE_NAMES" />
-                                    <ext:ModelField Name="LAST_NAME" />
+                                    <ext:ModelField Name="EMPLOYEE_NAME" />
                                     <ext:ModelField Name="EMPLOYEE_NUMBER" />
-                                    <ext:ModelField Name="CURRENT_EMPLOYEE_FLAG" />
-                                    <ext:ModelField Name="ORGANIZATION_NAME" />
-                                    <ext:ModelField Name="JOB_TITLE" />
-                                    <ext:ModelField Name="ORACLE_ACCOUNT_STATUS" />
+                                    <ext:ModelField Name="CURRENT_ORGANIZATION" />
+                                    <ext:ModelField Name="JOB_NAME" />
                                 </Fields>
                             </ext:Model>
                         </Model>
@@ -56,32 +50,24 @@
                 </Store>
                 <ColumnModel ID="uxSecurityAddUserColumns" runat="server">
                     <Columns>
-                        <ext:Column ID="cUsername" runat="server" DataIndex="USER_NAME" Text="Username" Width="150" meta:resourcekey="cUsernameResource1" />
-                        <ext:Column ID="cFirstName" runat="server" DataIndex="FIRST_NAME" Text="First Name" Flex="1" meta:resourcekey="cFirstNameResource1" />
-                        <ext:Column ID="cMiddleName" runat="server" DataIndex="MIDDLE_NAMES" Text="Middle Name" Flex="1" meta:resourcekey="cMiddleNameResource1" />
-                        <ext:Column ID="cLastName" runat="server" DataIndex="LAST_NAME" Text="Last Name" Flex="1" meta:resourcekey="cLastNameResource1" />
-                        <ext:Column ID="cEmployeeNumber" runat="server" DataIndex="EMPLOYEE_NUMBER" Text="Employee Number" Flex="1" Hidden="true" meta:resourcekey="cEmployeeNumberResource1" />
-                        <ext:Column ID="cOrganization" runat="server" DataIndex="ORGANIZATION_NAME" Text="Organization" Flex="1" Hidden="true" meta:resourcekey="cOrganizationResource1" />
-                        <ext:Column ID="cJobTitle" runat="server" DataIndex="JOB_TITLE" Text="Job Title" Flex="1" Hidden="true" meta:resourcekey="cJobTitleResource1" />
-                        <ext:Column ID="cCurrentEmpFlag" runat="server" DataIndex="CURRENT_EMPLOYEE_FLAG" Text="Current Employee" Flex="1" Hidden="true" meta:resourcekey="cCurrentEmpFlagResource1" />
-                        <ext:Column ID="cAccountStatus" runat="server" DataIndex="ORACLE_ACCOUNT_STATUS" Text="Oracle Account Status" Flex="1" Hidden="true" meta:resourcekey="cAccountStatusResource1" />
+                        <ext:Column ID="cUsername" runat="server" DataIndex="USER_NAME" Text="Username" Width="150"  />
+                        <ext:Column ID="cEmployeeName" runat="server" DataIndex="EMPLOYEE_NAME" Text="Employee Name" Flex="1"  />
+                        <ext:Column ID="cEmployeeNumber" runat="server" DataIndex="EMPLOYEE_NUMBER" Text="Employee Number" Flex="1"   />
+                        <ext:Column ID="cOrganization" runat="server" DataIndex="CURRENT_ORGANIZATION" Text="Organization" Flex="1"   />
+                        <ext:Column ID="cJobTitle" runat="server" DataIndex="JOB_NAME" Text="Job Title" Flex="1"   />
                     </Columns>
                 </ColumnModel>
-                <Features>
-                    <ext:GridFilters runat="server" ID="uxSecurityGridFilters">
-                        <Filters>
-                            <ext:StringFilter DataIndex="USER_NAME" />
-                            <ext:StringFilter DataIndex="FIRST_NAME" />
-                            <ext:StringFilter DataIndex="MIDDLE_NAMES" />
-                            <ext:StringFilter DataIndex="LAST_NAME" />
-                            <ext:StringFilter DataIndex="EMPLOYEE_NUMBER" />
-                            <ext:StringFilter DataIndex="ORGANIZATION_NAME" />
-                            <ext:StringFilter DataIndex="JOB_TITLE" />
-                            <ext:ListFilter DataIndex="CURRENT_EMPLOYEE_FLAG" Options="Y,N" meta:resourcekey="ListFilterResource1" />
-                            <ext:ListFilter DataIndex="ORACLE_ACCOUNT_STATUS" Options="1,0" meta:resourcekey="ListFilterResource2" />
-                        </Filters>
-                    </ext:GridFilters>
-                </Features>
+                 <Features>
+                        <ext:GridFilters ID="uxSecurityUserFilters" runat="server">
+                            <Filters>
+                                <ext:StringFilter DataIndex="USER_NAME" />
+                                <ext:StringFilter DataIndex="EMPLOYEE_NAME" />
+                                <ext:StringFilter DataIndex="EMPLOYEE_NUMBER" />
+                                <ext:StringFilter DataIndex="CURRENT_ORGANIZATION" />
+                                <ext:StringFilter DataIndex="JOB_NAME" />
+                            </Filters>
+                        </ext:GridFilters>
+                    </Features>
                 <BottomBar>
                     <ext:PagingToolbar ID="uxSecurityUserPaging" runat="server" meta:resourcekey="uxSecurityUserPagingResource1" />
                 </BottomBar>
@@ -98,41 +84,15 @@
                     </ext:RowSelectionModel>
                 </SelectionModel>
             </ext:GridPanel>
-            <ext:FormPanel
-                ID="uxSecurityUserDetails"
-                runat="server"
-                Region="East"
-                Split="true"
-                Margins="5 5 5 0"
-                BodyPadding="2"
-                Frame="true"
-                Title="User Details"
-                Width="380"
-                Icon="User"
-                DefaultAnchor="100%"
-                AutoScroll="True">
-                <Items>
-                    <ext:TextField Name="USER_NAME" runat="server" FieldLabel="Username" ReadOnly="true" meta:resourcekey="TextFieldResource1" />
-                    <ext:TextField Name="FIRST_NAME" runat="server" FieldLabel="First Name" ReadOnly="true" meta:resourcekey="TextFieldResource2" />
-                    <ext:TextField Name="MIDDLE_NAMES" runat="server" FieldLabel="Middle Name" ReadOnly="true" meta:resourcekey="TextFieldResource3" />
-                    <ext:TextField Name="LAST_NAME" runat="server" FieldLabel="Last Name" ReadOnly="true" meta:resourcekey="TextFieldResource4" />
-                    <ext:TextField Name="EMPLOYEE_NUMBER" runat="server" FieldLabel="Employee No" ReadOnly="true" meta:resourcekey="TextFieldResource5" />
-                    <ext:TextField Name="ORGANIZATION_NAME" runat="server" FieldLabel="Organization" ReadOnly="true" meta:resourcekey="TextFieldResource6" />
-                    <ext:TextField Name="JOB_TITLE" runat="server" FieldLabel="Job Title" ReadOnly="true" meta:resourcekey="TextFieldResource7" />
-                    <ext:TextField Name="CURRENT_EMPLOYEE_FLAG" runat="server" FieldLabel="Current Employee" ReadOnly="true" meta:resourcekey="TextFieldResource8" />
-                    <ext:TextField Name="ORACLE_ACCOUNT_STATUS" runat="server" FieldLabel="Oracle Status" ReadOnly="true" meta:resourcekey="TextFieldResource9" />
-                </Items>
-            </ext:FormPanel>
             <ext:GridPanel ID="uxSecurityRoleGridPanel"
                 runat="server"
-                Title="System Roles"
+                Title="Security Roles"
                 Padding="5"
-                Icon="User"
+                Icon="UserBrown"
                 Region="South"
                 Height="250"
                 Frame="true"
-                Margins="0 5 5 5"
-                SelectionMemory="false">
+                Margins="0 5 5 5">
                 <Store>
                     <ext:Store
                         ID="uxSecurityRoleStore"
@@ -146,7 +106,8 @@
                                 </Fields>
                             </ext:Model>
                         </Model>
-                        <Sorters><ext:DataSorter Property="NAME" Direction="ASC"></ext:DataSorter></Sorters>
+                        <Sorters><ext:DataSorter Property="NAME" Direction="ASC"></ext:DataSorter>
+                        </Sorters>
                     </ext:Store>
                 </Store>
                 <ColumnModel ID="uxSecurityRoleColumns" runat="server">
@@ -166,18 +127,27 @@
                 <BottomBar>
                     <ext:PagingToolbar ID="uxSecurityRolePaging" runat="server" />
                 </BottomBar>
-                 <SelectionModel>
-                        <ext:CheckboxSelectionModel ID="uxSecurityRoleCheckSelectionModel" Mode="Multi" runat="server">
-                            <DirectEvents>
-                                <Select OnEvent="deMaintUserRoles">
+                <SelectionModel>
+                    <ext:CheckboxSelectionModel ID="uxSecurityRoleCheckSelectionModel" Mode="Multi" runat="server" ShowHeaderCheckbox="false">
+                        <DirectEvents>
+                             <Select OnEvent="deAddSecurityRole" Buffer="250">
                                 <EventMask ShowMask="true"></EventMask>
                                 <ExtraParams>
-                                    <ext:Parameter Name="pRoleID" Value="record.getId()" Mode="Raw" />
+                                    <ext:Parameter Name="epRecordID" Value="record.internalId" Mode="Raw" />
                                 </ExtraParams>
-                            </Select>
+                                 <Confirmation ConfirmRequest="true" Message="Are you sure you want to add this security role to the user?"></Confirmation>
+                         </Select>
+                            <Deselect
+                             OnEvent="deDeleteSecurityRole" Buffer="250">
+                                <EventMask ShowMask="true"></EventMask>
+                                <ExtraParams>
+                                    <ext:Parameter Name="epRecordID" Value="record.internalId" Mode="Raw" />
+                                </ExtraParams>
+                                <Confirmation ConfirmRequest="true" Message="Are you sure you want to remove this security role from this user?"></Confirmation>
+                            </Deselect>
                         </DirectEvents>
-                        </ext:CheckboxSelectionModel>
-                    </SelectionModel>
+                    </ext:CheckboxSelectionModel>
+                </SelectionModel>
             </ext:GridPanel>
 
         </Items>

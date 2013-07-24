@@ -58,31 +58,13 @@ namespace DBI.Web.EMS.Views.Modules.Security {
         protected global::Ext.Net.Column cUsername;
         
         /// <summary>
-        /// cFirstName control.
+        /// cEmployeeName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column cFirstName;
-        
-        /// <summary>
-        /// cMiddleName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column cMiddleName;
-        
-        /// <summary>
-        /// cLastName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column cLastName;
+        protected global::Ext.Net.Column cEmployeeName;
         
         /// <summary>
         /// cEmployeeNumber control.
@@ -112,31 +94,13 @@ namespace DBI.Web.EMS.Views.Modules.Security {
         protected global::Ext.Net.Column cJobTitle;
         
         /// <summary>
-        /// cCurrentEmpFlag control.
+        /// uxSecurityUserFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column cCurrentEmpFlag;
-        
-        /// <summary>
-        /// cAccountStatus control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column cAccountStatus;
-        
-        /// <summary>
-        /// uxSecurityGridFilters control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.GridFilters uxSecurityGridFilters;
+        protected global::Ext.Net.GridFilters uxSecurityUserFilters;
         
         /// <summary>
         /// uxSecurityUserPaging control.
@@ -155,15 +119,6 @@ namespace DBI.Web.EMS.Views.Modules.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.RowSelectionModel uxSecurityUserSelectionModel;
-        
-        /// <summary>
-        /// uxSecurityUserDetails control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FormPanel uxSecurityUserDetails;
         
         /// <summary>
         /// uxSecurityRoleGridPanel control.

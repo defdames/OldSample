@@ -16,12 +16,12 @@ namespace DBI.Data
     {
         public SYS_USERS()
         {
-            this.XX_FND_USER_V = new HashSet<XX_FND_USER_V>();
+            this.SYS_USER_ROLES = new HashSet<SYS_USER_ROLES>();
         }
     
-        public long SYSTEM_USER_ID { get; set; }
-        public long FND_USER_ID { get; set; }
+        public long USER_ID { get; set; }
     
-        public virtual ICollection<XX_FND_USER_V> XX_FND_USER_V { get; set; }
+        public virtual SYS_USER_INFORMATION SYS_USER_INFORMATION { get; set; }
+        public virtual ICollection<SYS_USER_ROLES> SYS_USER_ROLES { get; set; }
     }
 }

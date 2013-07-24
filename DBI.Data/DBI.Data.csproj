@@ -54,6 +54,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
@@ -100,19 +101,10 @@
     <Compile Include="SYS_USERS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
-    <Compile Include="SYS_USERS_V.cs">
+    <Compile Include="SYS_USER_INFORMATION.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="SYS_USER_ROLES.cs">
-      <DependentUpon>Oracle.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SYS_USER_ROLES_V.cs">
-      <DependentUpon>Oracle.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UserDetail.cs">
-      <DependentUpon>Oracle.tt</DependentUpon>
-    </Compile>
-    <Compile Include="XX_FND_USER_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
   </ItemGroup>

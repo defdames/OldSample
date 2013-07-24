@@ -14,8 +14,15 @@ namespace DBI.Data
     
     public partial class SYS_ROLES
     {
+        public SYS_ROLES()
+        {
+            this.SYS_USER_ROLES = new HashSet<SYS_USER_ROLES>();
+        }
+    
         public long ROLE_ID { get; set; }
         public string NAME { get; set; }
         public string DESCRIPTION { get; set; }
+    
+        public virtual ICollection<SYS_USER_ROLES> SYS_USER_ROLES { get; set; }
     }
 }
