@@ -14,6 +14,20 @@ namespace DBI.Core.Web
 {
     public class BasePage : System.Web.UI.Page
     {
+
+        /// <summary>
+        /// Override the onload to register the exception override script.
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnLoad(EventArgs e)
+        {
+            ResourceManager.GetInstance(this).Listeners.AjaxRequestException.Handler = GetExceptionHandlerScript(String.Empty);
+            ResourceManager.GetInstance(this).RegisterClientScriptBlock("Localization", "Ext.override({showFailure: " + GetExceptionHandlerScript(String.Empty) + "});");
+
+            base.OnLoad(e);
+        }
+
+
         /// <summary>
         /// Allows user to override the culture for the page, needs to have httpcookie set.
         /// </summary>
@@ -121,6 +135,51 @@ namespace DBI.Core.Web
             clWindow.Loader = cl;
             clWindow.Render(this.Form);
         }
-      
+
+        /// <summary>
+        /// This displays a nice error message for all exceptions, handled and unhandled
+        /// </summary>
+        /// <param name="onRequestFailureScript"></param>
+        /// <returns></returns>
+        protected string GetExceptionHandlerScript(string onRequestFailureScript)
+        {
+            StringBuilder script = new StringBuilder();
+
+            // overriding default exception handler here (AjaxEvent, AjaxMethod and Server-side event) to display a custom "beautified" error dialog
+
+            script.Append(@"function(response,errorMsg) {");
+            script.Append("errorMsg = response.responseText;");
+            script.Append("if(errorMsg.charAt(0) == '{') errorMsg = Ext.decode(errorMsg);");
+            script.Append("if(!Ext.isEmpty(errorMsg.errorMessage)) errorMsg = errorMsg.errorMessage; else if(!Ext.isEmpty(errorMsg.serviceResponse)) errorMsg = errorMsg.serviceResponse.Msg;");
+            script.Append("var stack0 = errorMsg.indexOf('\\r\\n');");
+            script.Append("var stack1 = errorMsg.length;");
+            script.Append("var desc0 = errorMsg.indexOf(':') + 1;");
+            script.Append("var desc1 = stack0;");
+            script.Append("parent.Ext.MessageBox.show({");
+            script.Append("title: 'System Error',");
+            script.Append("msg: errorMsg.substring(desc0, desc1),"); // error message
+            script.Append("value: errorMsg.substring(stack0, stack1).trim(),"); // display stack
+            script.Append("buttons: Ext.MessageBox.OK,");
+
+#if (DEBUG)
+            script.Append("multiline: true,");
+#else
+            script.Append("multiline: false,"); // ==> "value" textfield gets hidden
+#endif
+
+            script.Append("width: 400,");
+            script.Append("icon: Ext.MessageBox.ERROR");
+            script.Append("});");
+
+
+            if (!String.IsNullOrEmpty(onRequestFailureScript))
+                script.Append(onRequestFailureScript);
+
+            script.Append("return false;");
+
+            script.Append(@"}");
+
+            return script.ToString();
+        }
     }
 }

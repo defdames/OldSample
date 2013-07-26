@@ -15,6 +15,7 @@ namespace DBI.Web.EMS.Views.Modules.Security
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+
             if (!X.IsAjaxRequest)
             {
 
@@ -33,19 +34,32 @@ namespace DBI.Web.EMS.Views.Modules.Security
             }
         }
 
-        public void RolesDatabind(object sender, StoreReadDataEventArgs e)
+        /// <summary>
+        /// Data bind system roles to the gridpanel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void deRolesDatabind(object sender, StoreReadDataEventArgs e)
         {
-            int total;
-            IEnumerable<SYS_ROLES> data = DBI.Data.DataFactory.Security.Roles.RoleList(e.Start, e.Limit, e.Sort, e.Parameters["filter"], out total);
-            e.Total = total;
-            uxSecurityRoleGridPanel.GetStore().DataSource = data;
+                int total;
+                IEnumerable<SYS_ROLES> data = DBI.Data.DataFactory.Security.Roles.RoleList(e.Start, e.Limit, e.Sort, e.Parameters["filter"], out total);
+                e.Total = total;
+                uxSecurityRoleGridPanel.GetStore().DataSource = data;
+                //throw new Exception(string.Format("Error getting roles from the server</br>{0}",Guid.NewGuid().ToString()));
         }
 
 
+
+        /// <summary>
+        /// Deletes a System Role
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void deDeleteRole(object sender, DirectEventArgs e)
         {
             RowSelectionModel sm = uxSecurityRoleGridPanel.GetSelectionModel() as RowSelectionModel;
             long ROLE_ID = long.Parse(sm.SelectedRow.RecordID);
+
             DBI.Data.DataFactory.Security.Roles.DeleteRoleByID(ROLE_ID);
 
             //Refresh the view.
@@ -53,6 +67,11 @@ namespace DBI.Web.EMS.Views.Modules.Security
            
         }
 
+        /// <summary>
+        /// Edits a system role
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void deEditRole(object sender, DirectEventArgs e)
         {
             RowSelectionModel sm = uxSecurityRoleGridPanel.GetSelectionModel() as RowSelectionModel;
@@ -72,6 +91,11 @@ namespace DBI.Web.EMS.Views.Modules.Security
 
         }
 
+        /// <summary>
+        /// Save a system role after it has been created or modified.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deSaveRole(object sender, DirectEventArgs e)
         {
 

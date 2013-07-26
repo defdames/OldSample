@@ -17,13 +17,6 @@ namespace DBI.Data.DataFactory.Security
             return GenericData.EnumerableFilter<SYS_USER_INFORMATION>(start, limit, sort, filter, out count);
         }
 
-        public List<SYS_USER_INFORMATION> userList(string status)
-        {
-            Entities _context = new Entities();
-            return _context.SYS_USER_INFORMATION.Where(a => a.ORACLE_ACCOUNT_STATUS == status).ToList();
-        }
-
-
 
         //public static IEnumerable<SYS_USERS> OracleUserList()
         //{

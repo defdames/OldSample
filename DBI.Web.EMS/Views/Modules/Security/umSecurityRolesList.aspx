@@ -7,7 +7,8 @@
     <title></title>
 </head>
 <body>
-    <ext:ResourceManager runat="server"  IsDynamic="False" />
+    <ext:ResourceManager runat="server"  IsDynamic="False" RethrowAjaxExceptions="true">
+    </ext:ResourceManager>
     <form id="test" runat="server">
         <ext:Viewport runat="server" ID="uxViewPort" Layout="BorderLayout" IDMode="Explicit" IsDynamic="False" Namespace="App" RenderXType="True">
             <Items>
@@ -28,16 +29,14 @@
                                         <Click Handler="#{uxSecurityAddRoleWindow}.show();#{uxName}.focus();"></Click>
                                     </Listeners>
                                 </ext:Button>
-                                <ext:ToolbarSeparator runat="server">
-                                </ext:ToolbarSeparator>
+                                <ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server"></ext:ToolbarSpacer>
                                 <ext:Button runat="server" Text="Edit Role" Icon="UserEdit" Disabled="true" ID="uxEditRole">
                                      <DirectEvents>
                                         <Click OnEvent="deEditRole">
                                         </Click>
                                     </DirectEvents>
                                 </ext:Button>
-                                <ext:ToolbarSeparator ID="ToolbarSeparator1" runat="server">
-                                </ext:ToolbarSeparator>
+                               <ext:ToolbarSpacer runat="server"></ext:ToolbarSpacer>
                                 <ext:Button runat="server" Text="Delete Role" Icon="UserDelete" Disabled="true" ID="uxDeleteRole">
                                     <DirectEvents>
                                         <Click OnEvent="deDeleteRole">
@@ -54,7 +53,7 @@
                             runat="server" 
                             RemoteSort="true" 
                             PageSize="25"
-                            OnReadData="RolesDatabind">
+                            OnReadData="deRolesDatabind">
                         <Proxy>
                         <ext:PageProxy />
                         </Proxy>
@@ -100,8 +99,6 @@
                 </ext:GridPanel>
             </Items>
         </ext:Viewport>
-
-
 
         <!-- Hidden Window for Adding Security Roles -->
         <ext:Window runat="server" Resizable="false" Icon="UserAdd" DefaultButton="uxSaveRole" Hidden="true" Width="350" Height="150" Layout="FitLayout" Header="true" Title="Security Role Maintenance" ID="uxSecurityAddRoleWindow" Closable="true" CloseAction="Hide" Modal="true">

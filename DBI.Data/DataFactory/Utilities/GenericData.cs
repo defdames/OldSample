@@ -53,7 +53,7 @@ namespace DBI.Data.DataFactory.Utilities
         {
             using (Entities _context = new Entities())
             {
-                //_context.Set<T>().Attach(entity);
+                _context.Set<T>().Attach(entity);
                 _context.Entry(entity).State = System.Data.EntityState.Modified;
                 _context.SaveChanges();
             }
@@ -61,7 +61,8 @@ namespace DBI.Data.DataFactory.Utilities
 
         public static IEnumerable<T> EnumerableFilter<T>(int start, int limit, DataSorter[] sort, string filter, out int count) where T : class
         {
-                Entities _context = new Entities();
+            using (Entities _context = new Entities())
+            {
                 //-- return the list but do not track the information ---------------------------
                 List<T> data = _context.Set<T>().ToList();
 
@@ -173,7 +174,7 @@ namespace DBI.Data.DataFactory.Utilities
 
             }
         }
-
+    }
 }
 
 

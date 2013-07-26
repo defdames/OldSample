@@ -55,19 +55,19 @@ namespace DBI.Web.EMS.Views.Modules.Security
         {
             string upUserID = e.ExtraParams["upUserID"];
             //Load up a list of the roles
-            uxSecurityRoleStore.DataSource = DBI.Data.DataFactory.Security.Roles.RoleList();
+            //uxSecurityRoleStore.DataSource = DBI.Data.DataFactory.Security.Roles.RoleList();
             uxSecurityRoleStore.DataBind();
 
             CheckboxSelectionModel sm = uxSecurityRoleCheckSelectionModel as CheckboxSelectionModel;
             sm.ClearSelection();
 
             //Get a list of user roles
-            IQueryable<SYS_USER_ROLES> roles = DBI.Data.DataFactory.Security.Roles.RolesByUserID(long.Parse(upUserID));
+            //IQueryable<SYS_USER_ROLES> roles = DBI.Data.DataFactory.Security.Roles.RolesByUserID(long.Parse(upUserID));
 
-            foreach(SYS_USER_ROLES role in roles)
-            {
-                sm.SelectedRows.Add(new SelectedRow(role.ROLE_ID.ToString()));     
-            }
+            //foreach(SYS_USER_ROLES role in roles)
+            //{
+            //    sm.SelectedRows.Add(new SelectedRow(role.ROLE_ID.ToString()));     
+            //}
 
             sm.UpdateSelection();
 
@@ -86,7 +86,7 @@ namespace DBI.Web.EMS.Views.Modules.Security
             SYS_USER_ROLES userRole = new SYS_USER_ROLES();
             userRole.ROLE_ID = long.Parse(epRecordID);
             userRole.USER_ID = long.Parse(rs.SelectedRecordID);
-            DBI.Data.DataFactory.Security.Roles.AddUserRole(userRole);
+            //DBI.Data.DataFactory.Security.Roles.AddUserRole(userRole);
 
 
         }
@@ -100,8 +100,8 @@ namespace DBI.Web.EMS.Views.Modules.Security
         {
             string epRecordID = e.ExtraParams["epRecordID"];
             RowSelectionModel rs = uxSecurityUserSelectionModel as RowSelectionModel;
-            SYS_USER_ROLES userRole = DBI.Data.DataFactory.Security.Roles.RoleByUserandRoleID(long.Parse(epRecordID),long.Parse(rs.SelectedRecordID));
-            DBI.Data.DataFactory.Security.Roles.DeleteUserRole(userRole);
+            //SYS_USER_ROLES userRole = DBI.Data.DataFactory.Security.Roles.RoleByUserandRoleID(long.Parse(epRecordID),long.Parse(rs.SelectedRecordID));
+            //DBI.Data.DataFactory.Security.Roles.DeleteUserRole(userRole);
 
         }
 

@@ -58,6 +58,15 @@ namespace DBI.Web.EMS.Views.Modules.Security {
         protected global::Ext.Net.Button uxAddRole;
         
         /// <summary>
+        /// ToolbarSpacer1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer1;
+        
+        /// <summary>
         /// uxEditRole control.
         /// </summary>
         /// <remarks>
@@ -65,15 +74,6 @@ namespace DBI.Web.EMS.Views.Modules.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxEditRole;
-        
-        /// <summary>
-        /// ToolbarSeparator1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ToolbarSeparator ToolbarSeparator1;
         
         /// <summary>
         /// uxDeleteRole control.

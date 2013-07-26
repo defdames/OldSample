@@ -16,7 +16,7 @@
     <Name>DocumentGenerator</Name>
     <!-- SHFB properties -->
     <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
-    <OutputPath>.\Help\</OutputPath>
+    <OutputPath>Help\</OutputPath>
     <HtmlHelpName>documentation</HtmlHelpName>
     <Language>en-US</Language>
     <DocumentationSources>
