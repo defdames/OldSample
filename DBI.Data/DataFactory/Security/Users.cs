@@ -11,37 +11,21 @@ namespace DBI.Data.DataFactory.Security
 {
     public class Users
     {
-
+        /// <summary>
+        /// Returns a list of user information from oracle that will be used to control system access
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="limit"></param>
+        /// <param name="sort"></param>
+        /// <param name="filter"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
         public static IEnumerable<SYS_USER_INFORMATION> UserList(int start, int limit, DataSorter[] sort, string filter, out int count)
         {
             return GenericData.EnumerableFilter<SYS_USER_INFORMATION>(start, limit, sort, filter, out count);
         }
 
 
-        //public static IEnumerable<SYS_USERS> OracleUserList()
-        //{
-        //    Entities db = new Entities();
-        //    return db.SYS_USERS.AsEnumerable();
-        //}
-
-        //public static SYS_USERS_V UserDetailsByID(decimal pUserID)
-        //{
-        //    Entities db = new Entities();
-        //    return db.SYS_USERS_V.Where(u => u.SYSTEM_USER_ID == pUserID).FirstOrDefault();
-        //}
-
-        //public static SYS_USERS_V UserDetailsByUsername(string userName)
-        //{
-        //    Entities db = new Entities();
-        //    return db.SYS_USERS_V.Where(u => u.USER_NAME == userName).FirstOrDefault();
-        //}
-
-        //public static decimal? UserSystemIDByOracleUserID(long oracleUserID)
-        //{
-        //    Entities db = new Entities();
-        //    return db.SYS_USERS_V.Where(u => u.USER_ID == oracleUserID).Max(m => m.SYSTEM_USER_ID);
-
-        //}
 
 
     }

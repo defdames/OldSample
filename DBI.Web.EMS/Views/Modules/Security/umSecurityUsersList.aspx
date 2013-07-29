@@ -21,6 +21,17 @@
                 Height="300"
                 Frame="true"
                 Margins="5 0 5 5" meta:resourcekey="uxSecurityUserGridPanelResource1" SelectionMemory="false">
+                <TopBar><ext:Toolbar runat="server" ID="uxSecurityUserGridPanelToolbar">
+                    <Items>
+                        <ext:Button runat="server" Text="Edit User" Icon="UserEdit">
+                            <DirectEvents>
+                                        <Click OnEvent="deEditUser">
+                                        </Click>
+                                    </DirectEvents>
+                        </ext:Button>
+                        <ext:ToolbarSpacer runat="server"></ext:ToolbarSpacer>
+                    </Items>
+                        </ext:Toolbar></TopBar>
                 <Store>
                     <ext:Store
                         ID="uxSecurityUserStore"
@@ -71,89 +82,43 @@
                 <BottomBar>
                     <ext:PagingToolbar ID="uxSecurityUserPaging" runat="server" meta:resourcekey="uxSecurityUserPagingResource1" />
                 </BottomBar>
-                <SelectionModel>
-                    <ext:RowSelectionModel ID="uxSecurityUserSelectionModel" runat="server" Mode="Single" meta:resourcekey="uxSecurityUserSelectionModelResource1">
-                        <DirectEvents>
-                            <Select OnEvent="deUserRoleSelect" Buffer="250">
-                                <EventMask ShowMask="true"></EventMask>
-                                <ExtraParams>
-                                    <ext:Parameter Name="upUserID" Value="record.getId()" Mode="Raw" />
-                                </ExtraParams>
-                            </Select>
-                        </DirectEvents>
-                    </ext:RowSelectionModel>
-                </SelectionModel>
+                <SelectionModel><ext:RowSelectionModel runat="server"></ext:RowSelectionModel></SelectionModel>          
             </ext:GridPanel>
-            <ext:GridPanel ID="uxSecurityRoleGridPanel"
-                runat="server"
-                Title="Security Roles"
-                Padding="5"
-                Icon="UserBrown"
-                Region="South"
-                Height="250"
-                Frame="true"
-                Margins="0 5 5 5">
-                <Store>
-                    <ext:Store
-                        ID="uxSecurityRoleStore"
-                        runat="server">
-                        <Model>
-                            <ext:Model ID="uxSecurityRoleModel" runat="server" IDProperty="ROLE_ID">
-                                <Fields>
-                                    <ext:ModelField Name="ROLE_ID" Type="Int" />
-                                    <ext:ModelField Name="NAME" Type="String" />
-                                    <ext:ModelField Name="DESCRIPTION" Type="String" />
-                                </Fields>
-                            </ext:Model>
-                        </Model>
-                        <Sorters><ext:DataSorter Property="NAME" Direction="ASC"></ext:DataSorter>
-                        </Sorters>
-                    </ext:Store>
-                </Store>
-                <ColumnModel ID="uxSecurityRoleColumns" runat="server">
-                    <Columns>
-                        <ext:Column ID="cName" runat="server" DataIndex="NAME" Text="Name" Width="200" />
-                        <ext:Column ID="cDescription" runat="server" DataIndex="DESCRIPTION" Text="Description" Flex="1" />
-                    </Columns>
-                </ColumnModel>
-                <Features>
-                    <ext:GridFilters runat="server" ID="uxSecurityRoleGridFilters">
-                        <Filters>
-                            <ext:StringFilter DataIndex="NAME" />
-                            <ext:StringFilter DataIndex="DESCRIPTION" />
-                        </Filters>
-                    </ext:GridFilters>
-                </Features>
-                <BottomBar>
-                    <ext:PagingToolbar ID="uxSecurityRolePaging" runat="server" />
-                </BottomBar>
-                <SelectionModel>
-                    <ext:CheckboxSelectionModel ID="uxSecurityRoleCheckSelectionModel" Mode="Multi" runat="server" ShowHeaderCheckbox="false">
-                        <DirectEvents>
-                             <Select OnEvent="deAddSecurityRole" Buffer="250">
-                                <EventMask ShowMask="true"></EventMask>
-                                <ExtraParams>
-                                    <ext:Parameter Name="epRecordID" Value="record.internalId" Mode="Raw" />
-                                </ExtraParams>
-                                 <Confirmation ConfirmRequest="true" Message="Are you sure you want to add this security role to the user?"></Confirmation>
-                         </Select>
-                            <Deselect
-                             OnEvent="deDeleteSecurityRole" Buffer="250">
-                                <EventMask ShowMask="true"></EventMask>
-                                <ExtraParams>
-                                    <ext:Parameter Name="epRecordID" Value="record.internalId" Mode="Raw" />
-                                </ExtraParams>
-                                <Confirmation ConfirmRequest="true" Message="Are you sure you want to remove this security role from this user?"></Confirmation>
-                            </Deselect>
-                        </DirectEvents>
-                    </ext:CheckboxSelectionModel>
-                </SelectionModel>
-            </ext:GridPanel>
-
         </Items>
     </ext:Viewport>
 
-        </form>
+        <ext:Window runat="server" Resizable="false" Icon="UserEdit" DefaultButton="uxSaveUser" Hidden="true" Width="500" Height="500" Layout="FitLayout" Header="true" Title="System User Maintenance" ID="uxSecurityUserDetailsWindow" Closable="true" CloseAction="Hide" Modal="true">
+            <Items>
+                <ext:FormPanel
+                    ID="uxSecurityUserDetails"
+                    runat="server"
+                    Margins="5 5 5 5"
+                    BodyPadding="2"
+                    Frame="true"
+                    DefaultAnchor="100%"
+                    AutoScroll="True">
+                    <Items>
+                        <ext:TextField Name="ROLE_ID" id="uxRoleID" Hidden="true" runat="server"></ext:TextField>
+                        <ext:TextField Name="NAME" ID="uxName" runat="server" FieldLabel="Name" />
+                        <ext:TextField Name="DESCRIPTION" ID="uxDescription" runat="server" FieldLabel="Description" />
+                    </Items>
+                </ext:FormPanel>
+            </Items>
+            <Buttons>
+                <ext:Button runat="server" ID="uxSaveUser" Text="Save" Icon="Disk">
+                   
+                </ext:Button>
+                <ext:Button runat="server" ID="uxCancelUser" Text="Cancel">
+                    <Listeners>
+                        <Click Handler="#{uxSecurityUserDetails}.getForm().reset();#{uxSecurityUserDetailsWindow}.close();"></Click>
+                    </Listeners>
+                </ext:Button>
+            </Buttons>
+            <Listeners>
+                <Close Handler="#{uxSecurityUserDetails}.getForm().reset();"></Close>
+            </Listeners>
+        </ext:Window>
 
+        </form>
 </body>
 </html>

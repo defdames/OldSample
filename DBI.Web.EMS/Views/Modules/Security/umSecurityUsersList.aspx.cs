@@ -47,105 +47,19 @@ namespace DBI.Web.EMS.Views.Modules.Security
 
 
         /// <summary>
-        /// This method call is run when the user selected a user in the listbox, it will show what roles the user has in the system.
+        /// Edits a system user
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void deUserRoleSelect(object sender, DirectEventArgs e)
+        public void deEditUser(object sender, DirectEventArgs e)
         {
-            string upUserID = e.ExtraParams["upUserID"];
-            //Load up a list of the roles
-            //uxSecurityRoleStore.DataSource = DBI.Data.DataFactory.Security.Roles.RoleList();
-            uxSecurityRoleStore.DataBind();
+            RowSelectionModel sm = uxSecurityUserGridPanel.GetSelectionModel() as RowSelectionModel;
+            long UserID = long.Parse(sm.SelectedRow.RecordID);
 
-            CheckboxSelectionModel sm = uxSecurityRoleCheckSelectionModel as CheckboxSelectionModel;
-            sm.ClearSelection();
-
-            //Get a list of user roles
-            //IQueryable<SYS_USER_ROLES> roles = DBI.Data.DataFactory.Security.Roles.RolesByUserID(long.Parse(upUserID));
-
-            //foreach(SYS_USER_ROLES role in roles)
-            //{
-            //    sm.SelectedRows.Add(new SelectedRow(role.ROLE_ID.ToString()));     
-            //}
-
-            sm.UpdateSelection();
+            //Show the Window
+            uxSecurityUserDetailsWindow.Show();
 
         }
-
-
-        /// <summary>
-        /// This allows you to add a security role to a user
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deAddSecurityRole(object sender, DirectEventArgs e)
-        {
-            string epRecordID = e.ExtraParams["epRecordID"];
-            RowSelectionModel rs = uxSecurityUserSelectionModel as RowSelectionModel;
-            SYS_USER_ROLES userRole = new SYS_USER_ROLES();
-            userRole.ROLE_ID = long.Parse(epRecordID);
-            userRole.USER_ID = long.Parse(rs.SelectedRecordID);
-            //DBI.Data.DataFactory.Security.Roles.AddUserRole(userRole);
-
-
-        }
-
-        /// <summary>
-        /// This removes a security role from a user
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deDeleteSecurityRole(object sender, DirectEventArgs e)
-        {
-            string epRecordID = e.ExtraParams["epRecordID"];
-            RowSelectionModel rs = uxSecurityUserSelectionModel as RowSelectionModel;
-            //SYS_USER_ROLES userRole = DBI.Data.DataFactory.Security.Roles.RoleByUserandRoleID(long.Parse(epRecordID),long.Parse(rs.SelectedRecordID));
-            //DBI.Data.DataFactory.Security.Roles.DeleteUserRole(userRole);
-
-        }
-
-        //protected void deMaintUserRoles(object sender, DirectEventArgs e)
-        //{
-        //    // Get the record ID of the selected/unselected role
-        //    string pRoleID = e.ExtraParams["pRoleID"];
-
-        //    // Get the record System user id of the selected user
-        //    RowSelectionModel rm = uxSecurityUserSelectionModel as RowSelectionModel;
-
-        //    // Does the user role exist
-        //    SYS_USER_ROLES userRole = DBI.Data.DataFactory.Security.Roles.DoesUserRoleExist(decimal.Parse(rm.SelectedRow.RecordID), decimal.Parse(pRoleID));
-
-        //    if (userRole == null)
-        //    {
-        //        //First get the user information for the user from Oracle
-        //        SYS_USERS_V userInformation = DBI.Data.DataFactory.Security.Users.UserDetailsByID(decimal.Parse(rm.SelectedRow.RecordID));
-
-        //        // we need to set this if we need to insert the role later
-        //        SYS_USERS user = new SYS_USERS();
-
-        //        //Do we need to save the user table for the first time? Check the Fnd_user_id if it's null we need to add it first
-        //        if (userInformation.FND_USER_ID == null)
-        //        {
-        //            //user doesn't exist setup user for first time use.
-        //            user.FND_USER_ID = userInformation.USER_ID;
-        //            GenericData.Insert<SYS_USERS>(user);
-        //        }
-
-        //        //Add the user role information
-        //        SYS_USER_ROLES role = new SYS_USER_ROLES();
-        //        role.ROLE_ID = long.Parse(pRoleID);
-        //        role.SYSTEM_USER_ID = user.SYSTEM_USER_ID;
-        //        GenericData.Insert<SYS_USER_ROLES>(role);
-        //        uxSecurityUserGridPanel.GetStore().Reload();
-        //    }
-        //    else
-        //    {
-        //        // Role already exists so remove it
-        //        DBI.Data.DataFactory.Security.Roles.DeleteUserRoleByUserID(decimal.Parse(rm.SelectedRow.RecordID), decimal.Parse(pRoleID));
-        //        uxSecurityUserGridPanel.GetStore().Reload();
-        //    }
-        //}
 
     }
 }
