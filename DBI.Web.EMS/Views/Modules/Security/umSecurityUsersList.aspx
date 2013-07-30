@@ -23,7 +23,7 @@
                 Margins="5 0 5 5" meta:resourcekey="uxSecurityUserGridPanelResource1" SelectionMemory="false">
                 <TopBar><ext:Toolbar runat="server" ID="uxSecurityUserGridPanelToolbar">
                     <Items>
-                        <ext:Button runat="server" Text="Edit User" Icon="UserEdit">
+                        <ext:Button runat="server" Text="Edit User" Icon="UserEdit" Disabled="true" ID="uxEditUser">
                             <DirectEvents>
                                         <Click OnEvent="deEditUser">
                                         </Click>
@@ -82,7 +82,12 @@
                 <BottomBar>
                     <ext:PagingToolbar ID="uxSecurityUserPaging" runat="server" meta:resourcekey="uxSecurityUserPagingResource1" />
                 </BottomBar>
-                <SelectionModel><ext:RowSelectionModel runat="server"></ext:RowSelectionModel></SelectionModel>          
+                <SelectionModel><ext:RowSelectionModel runat="server">
+                     <Listeners>
+                                <Select Handler="#{uxEditUser}.enable();"></Select>
+                                <Deselect Handler="#{uxEditUser}.disable();"></Deselect>
+                            </Listeners>
+                                </ext:RowSelectionModel></SelectionModel>          
             </ext:GridPanel>
         </Items>
     </ext:Viewport>

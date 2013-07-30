@@ -40,6 +40,15 @@ namespace DBI.Web.EMS.Views.Modules.Security {
         protected global::Ext.Net.Toolbar uxSecurityUserGridPanelToolbar;
         
         /// <summary>
+        /// uxEditUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxEditUser;
+        
+        /// <summary>
         /// uxSecurityUserStore control.
         /// </summary>
         /// <remarks>
