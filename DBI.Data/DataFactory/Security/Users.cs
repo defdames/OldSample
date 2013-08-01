@@ -25,6 +25,16 @@ namespace DBI.Data.DataFactory.Security
             return GenericData.EnumerableFilter<SYS_USER_INFORMATION>(start, limit, sort, filter, out count);
         }
 
+        /// <summary>
+        /// Return user information by user id
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public static SYS_USER_INFORMATION UserByID(long userID)
+        {
+            Entities _context = new Entities();
+            return _context.Set<SYS_USER_INFORMATION>().Where(u => u.USER_ID == userID).SingleOrDefault();
+        }
 
 
 

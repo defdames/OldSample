@@ -95,10 +95,6 @@
             <End Role="SYS_USERS" EntitySet="SYS_USERS" />
             <End Role="SYS_USER_INFORMATION" EntitySet="SYS_USER_INFORMATION" />
           </AssociationSet>
-          <AssociationSet Name="SYS_USERSSYS_USER_ROLES" Association="OracleModel.SYS_USERSSYS_USER_ROLES">
-            <End Role="SYS_USERS" EntitySet="SYS_USERS" />
-            <End Role="SYS_USER_ROLES" EntitySet="SYS_USER_ROLES" />
-          </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_PERMISSIONS">
           <Key>
@@ -123,7 +119,6 @@
           </Key>
           <Property Type="Int64" Name="USER_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="SYS_USER_INFORMATION" Relationship="OracleModel.SYS_USERSSYS_USER_INFORMATION" FromRole="SYS_USERS" ToRole="SYS_USER_INFORMATION" />
-          <NavigationProperty Name="SYS_USER_ROLES" Relationship="OracleModel.SYS_USERSSYS_USER_ROLES" FromRole="SYS_USERS" ToRole="SYS_USER_ROLES" />
         </EntityType>
         <EntityType Name="SYS_USER_ROLES">
           <Key>
@@ -133,7 +128,6 @@
           <Property Type="Int64" Name="USER_ID" Nullable="false" />
           <Property Type="Int64" Name="ROLE_ID" Nullable="false" />
           <NavigationProperty Name="SYS_ROLES" Relationship="OracleModel.SYS_ROLESSYS_USER_ROLES" FromRole="SYS_USER_ROLES" ToRole="SYS_ROLES" />
-          <NavigationProperty Name="SYS_USERS" Relationship="OracleModel.SYS_USERSSYS_USER_ROLES" FromRole="SYS_USER_ROLES" ToRole="SYS_USERS" />
         </EntityType>
         <EntityType Name="SYS_USER_INFORMATION">
           <Key>
@@ -177,18 +171,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_USERSSYS_USER_ROLES">
-          <End Type="OracleModel.SYS_USERS" Role="SYS_USERS" Multiplicity="1" />
-          <End Type="OracleModel.SYS_USER_ROLES" Role="SYS_USER_ROLES" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SYS_USERS">
-              <PropertyRef Name="USER_ID" />
-            </Principal>
-            <Dependent Role="SYS_USER_ROLES">
-              <PropertyRef Name="USER_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+        <ComplexType Name="SYS_USER_ROLES_CT" >
+          <Property Type="Int64" Name="USER_ROLE_ID" Nullable="false" />
+          <Property Type="String" Name="NAME" Nullable="false" />
+          <Property Type="String" Name="DESCRIPTION" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->

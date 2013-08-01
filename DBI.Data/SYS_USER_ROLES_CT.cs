@@ -10,12 +10,11 @@
 namespace DBI.Data
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class SYS_USERS
+    public partial class SYS_USER_ROLES_CT
     {
-        public long USER_ID { get; set; }
-    
-        public virtual SYS_USER_INFORMATION SYS_USER_INFORMATION { get; set; }
+        public long USER_ROLE_ID { get; set; }
+        public string NAME { get; set; }
+        public string DESCRIPTION { get; set; }
     }
 }

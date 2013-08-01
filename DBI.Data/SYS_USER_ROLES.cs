@@ -19,6 +19,5 @@ namespace DBI.Data
         public long ROLE_ID { get; set; }
     
         public virtual SYS_ROLES SYS_ROLES { get; set; }
-        public virtual SYS_USERS SYS_USERS { get; set; }
     }
 }

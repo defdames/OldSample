@@ -6,13 +6,12 @@
     <edmx:Diagrams>
       <Diagram DiagramId="8b6e550daa334a819f81705cc030411f" Name="Diagram1" ZoomLevel="92">
         <EntityTypeShape EntityType="OracleModel.SYS_PERMISSIONS" Width="2.375" PointX="6" PointY="0.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="OracleModel.SYS_ROLES" Width="1.5" PointX="5.5" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="OracleModel.SYS_ROLES" Width="1.5" PointX="7.875" PointY="4.625" IsExpanded="true" />
         <EntityTypeShape EntityType="OracleModel.SYS_USERS" Width="1.5" PointX="0.5" PointY="0.625" />
         <EntityTypeShape EntityType="OracleModel.SYS_USER_ROLES" Width="1.5" PointX="3.625" PointY="4.625" />
         <EntityTypeShape EntityType="OracleModel.SYS_USER_INFORMATION" Width="2.625" PointX="2.375" PointY="0.625" />
         <AssociationConnector Association="OracleModel.SYS_ROLESSYS_USER_ROLES" />
         <AssociationConnector Association="OracleModel.SYS_USERSSYS_USER_INFORMATION" />
-        <AssociationConnector Association="OracleModel.SYS_USERSSYS_USER_ROLES" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

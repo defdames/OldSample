@@ -44,6 +44,7 @@
     <FeedbackEMailAddress>ljankowski%40dbiservices.com</FeedbackEMailAddress>
     <CopyrightText>DBI Services Inc.</CopyrightText>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
+    <WorkingPath>C:\TEMP\Help\</WorkingPath>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional
