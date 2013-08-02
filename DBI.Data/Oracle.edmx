@@ -110,7 +110,7 @@
           </Key>
           <Property Name="ROLE_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NAME" Type="String" Nullable="false" MaxLength="500" Unicode="false" FixedLength="false" />
-          <Property Name="DESCRIPTION" Type="String" Nullable="false" MaxLength="500" Unicode="false" FixedLength="false" />
+          <Property Name="DESCRIPTION" Type="String" Nullable="false" />
           <NavigationProperty Name="SYS_USER_ROLES" Relationship="OracleModel.SYS_ROLESSYS_USER_ROLES" FromRole="SYS_ROLES" ToRole="SYS_USER_ROLES" />
         </EntityType>
         <EntityType Name="SYS_USERS">

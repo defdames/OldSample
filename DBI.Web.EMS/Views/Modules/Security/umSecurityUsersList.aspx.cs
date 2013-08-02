@@ -74,6 +74,9 @@ namespace DBI.Web.EMS.Views.Modules.Security
         /// </summary>
         public void DataBindSecurityGrid()
         {
+            try
+            {
+   
             RowSelectionModel sm = uxSecurityUserGridPanel.GetSelectionModel() as RowSelectionModel;
             long UserID = long.Parse(sm.SelectedRow.RecordID);
 
@@ -106,6 +109,11 @@ namespace DBI.Web.EMS.Views.Modules.Security
 
             uxSecurityRoleGridPanel.GetStore().DataSource = data;
             uxSecurityRoleGridPanel.GetStore().DataBind();
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
         }
 
         /// <summary>

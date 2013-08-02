@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DBI.Data.DataFactory.Utilities;
 using Ext.Net;
 using System.Data.Entity;
+using DBI.Core.Web;
 
 namespace DBI.Data.DataFactory.Security
 {
@@ -25,7 +26,6 @@ namespace DBI.Data.DataFactory.Security
         {
             return GenericData.EnumerableFilter<SYS_ROLES>(start, limit, sort, filter, out count);
         }
-
 
        /// <summary>
        /// returns a system role by role id
@@ -78,13 +78,43 @@ namespace DBI.Data.DataFactory.Security
                 using (Entities _context = new Entities())
                 {
                     SYS_ROLES role = RoleByID(roleID);
+                    if (!DoesRoleExistByUser(role.ROLE_ID))
+                    {
                     GenericData.Delete<SYS_ROLES>(role);
+                    }
+                    else
+                    {
+                        throw new Exception("Role is currently is use");
+                    }
+                        
+
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception(string.Format("Can not delete system role: {0}", ex.InnerException.Message));
+                throw new Exception(string.Format("Can not delete system role: {0}", ex.Message));
             }
+        }
+
+       /// <summary>
+       /// Checks to see if the system role is assigned to any user
+       /// </summary>
+       /// <param name="roleID"></param>
+       /// <returns></returns>
+        public static bool DoesRoleExistByUser(long roleID)
+        {
+            try
+            {
+                using (Entities _context = new Entities())
+                {
+                    return _context.Set<SYS_USER_ROLES>().Any(r => r.ROLE_ID.Equals(roleID));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(string.Format("Can not find a user role: {0}", ex.InnerException.Message));
+            }
+
         }
 
         /// <summary>

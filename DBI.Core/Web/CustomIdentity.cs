@@ -16,6 +16,7 @@ namespace DBI.Core.Web
         private Boolean authenticatedValue;
         private BuiltInRole roleValue;
 
+
         public string AuthenticationType
         {
             get { return "Custom Authentication"; }
