@@ -7,6 +7,7 @@ using DBI.Data.DataFactory.Utilities;
 using Ext.Net;
 using System.Data.Entity;
 using DBI.Core.Web;
+using System.Security.Claims;
 
 namespace DBI.Data.DataFactory.Security
 {
@@ -173,6 +174,29 @@ namespace DBI.Data.DataFactory.Security
             List<SYS_USER_ROLES> roles = _context.SYS_USER_ROLES.Include(r => r.SYS_ROLES).Where(a => a.USER_ID == userID).ToList();
             return roles;
         }
+
+       
+        public static List<Claim> LoadRoleClaimsForUser(string username)
+        {
+            Entities _context = new Entities();
+
+            List<SYS_USER_ROLES> roles = new List<SYS_USER_ROLES>();
+
+            SYS_USER_INFORMATION userInfo = _context.Set<SYS_USER_INFORMATION>().Where(u => u.USER_NAME.Equals(username.ToUpper())).SingleOrDefault();
+
+            if (userInfo != null)
+            {
+             roles = _context.SYS_USER_ROLES.Include(r => r.SYS_ROLES).Where(a => a.USER_ID.Equals(userInfo.USER_ID)).ToList();
+            }
+
+            List<Claim> claims = new List<Claim>();
+
+            foreach(SYS_USER_ROLES srole in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, srole.ROLE_ID.ToString()));
+            }
+            return claims;
+        } 
 
         /// <summary>
         /// return a list of roles not assigned to the user

@@ -12,6 +12,10 @@ using System.Globalization;
 using System.Threading;
 using System.Diagnostics;
 using System.Web.Security;
+using DBI.Core.Security;
+using System.Security.Claims;
+using System.IdentityModel.Services;
+using System.IdentityModel.Tokens;
 
 namespace DBI.Web.EMS
 {
@@ -119,31 +123,40 @@ namespace DBI.Web.EMS
                 X.Msg.Alert((string)GetLocalResourceObject("loginErrorTitle"), (string)GetLocalResourceObject("loginErrorMessage")).Show();
                 return;
             }
-
-            /*
-             * Check authenticated (updates last logon).
-             */
-            CustomPrincipal principal = new CustomPrincipal(this.uxUsername.Text, this.uxPassword.Text);
-            if (principal.Identity.IsAuthenticated)
+            
+            if (Authentication.WindowsAuthenticate(this.uxUsername.Text, this.uxPassword.Text))
             {
-                // Issue Cookie:
-                FormsAuthenticationTicket ticket = ticket = new FormsAuthenticationTicket(2,
-                    this.uxUsername.Text.ToUpper(),
-                    DateTime.Now,
-                    DateTime.Now.Add(FormsAuthentication.Timeout),
-                    true,
-                    FormsAuthentication.FormsCookiePath);
-                string encryptedTicket = FormsAuthentication.Encrypt(ticket);
-                HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
-                HttpContext.Current.Response.Cookies.Add(authCookie);
+                List<Claim> claims = DBI.Data.DataFactory.Security.Roles.LoadRoleClaimsForUser(this.uxUsername.Text.ToUpper());
 
-                //Disable login button
-                uxLoginButton.Disabled = true;
+                int cnt = claims.Count;
 
-                // Redirect:
-                Ext.Net.ExtNet.Redirect("Views/uxDefault.aspx");
+                //Check if user has any roles, if not then exit now
+                if (cnt == 0)
+                {
+                    X.Msg.Alert((string)GetLocalResourceObject("loginErrorTitle"), (string)GetLocalResourceObject("loginErrorNoRoles")).Show();
+                    uxPassword.Reset();
+                }
+                else
+                {
+                    
+                    // Always add the username, this is always required
+                    claims.Add(new Claim(ClaimTypes.Name, this.uxUsername.Text.ToUpper()));
 
+                    var id = new ClaimsIdentity(claims, "Forms");
+                    var cp = new ClaimsPrincipal(id);
+
+                    var token = new SessionSecurityToken(cp);
+                    var sam = FederatedAuthentication.SessionAuthenticationModule;
+                    sam.WriteSessionTokenToCookie(token);
+
+                    //Disable login button
+                    uxLoginButton.Disabled = true;
+
+                    // Redirect:
+                    Ext.Net.ExtNet.Redirect("Views/uxDefault.aspx");
+                }
             }
+
             else
             {
                 X.Msg.Alert((string)GetLocalResourceObject("loginErrorTitle"), (string)GetLocalResourceObject("loginInvalid")).Show();
