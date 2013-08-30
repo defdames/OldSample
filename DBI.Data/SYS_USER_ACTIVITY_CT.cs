@@ -11,9 +11,9 @@ namespace DBI.Data
 {
     using System;
     
-    public partial class SYS_USER_ROLES_CT
+    public partial class SYS_USER_ACTIVITY_CT
     {
-        public long USER_ROLE_ID { get; set; }
+        public long USER_ACTIVITY_ID { get; set; }
         public string NAME { get; set; }
         public string DESCRIPTION { get; set; }
     }

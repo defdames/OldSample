@@ -12,17 +12,21 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class SYS_ROLES
+    public partial class SYS_ACTIVITY
     {
-        public SYS_ROLES()
+        public SYS_ACTIVITY()
         {
-            this.SYS_USER_ROLES = new HashSet<SYS_USER_ROLES>();
+            this.SYS_USER_ACTIVITY = new HashSet<SYS_USER_ACTIVITY>();
         }
     
-        public long ROLE_ID { get; set; }
+        public long ACTIVITY_ID { get; set; }
         public string NAME { get; set; }
         public string DESCRIPTION { get; set; }
+        public Nullable<System.DateTime> CREATED_DATE { get; set; }
+        public string CREATED_BY { get; set; }
+        public Nullable<System.DateTime> LAST_UPDATED { get; set; }
+        public string LAST_UPDATED_BY { get; set; }
     
-        public virtual ICollection<SYS_USER_ROLES> SYS_USER_ROLES { get; set; }
+        public virtual ICollection<SYS_USER_ACTIVITY> SYS_USER_ACTIVITY { get; set; }
     }
 }

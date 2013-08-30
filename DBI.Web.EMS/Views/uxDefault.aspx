@@ -23,24 +23,65 @@
             <Items>
                 <ext:Image ID="uxLogo" runat="server" ImageUrl="~/Resources/Images/dbis_logo.png" Align="Left" Width="108.54" Height="67"></ext:Image>
                 <ext:Panel ID="uxToolBarPanel" runat="server" BaseCls="x-plain" Flex="1"/>
-                <ext:Container runat="server" cls="my-container" BaseCls="x-plain">
+
+                <ext:Container runat="server" Cls="my-container" BaseCls="x-plain" Layout="VBoxLayout">
+                    <LayoutConfig>
+                        <ext:VBoxLayoutConfig Align="Stretch" />
+                    </LayoutConfig>
                     <Items>
-                        <ext:Toolbar ID="uxToolBar" runat="server" Border="false" cls="my-toolbar">
+                       <ext:Toolbar ID="Toolbar1" runat="server" Border="false" Cls="my-toolbar">
                             <Items>
+                                <ext:ToolbarFill ID="ToolbarFill1" runat="server"></ext:ToolbarFill>
+                                <ext:Linkbutton ID="uxWelcomeName" runat="server">
+                                    <DirectEvents>
+                                        <Click OnEvent="deRemoveImpersonate"><Confirmation ConfirmRequest="true" Message="Are you sure you want to stop impersonating this user?"></Confirmation></Click>
+                                    </DirectEvents>
+                                </ext:Linkbutton>
+                            </Items>
+                        </ext:Toolbar>
+                        <ext:Toolbar ID="Toolbar2" runat="server" Border="false" Cls="my-toolbar">
+                            <Items>
+                                <ext:ToolbarFill ID="ToolbarFill2" runat="server"></ext:ToolbarFill>
+                                <ext:Label ID="uxWelcomeTime" runat="server" CtCls="welcome-orange"></ext:Label>
+                            </Items>
+                        </ext:Toolbar>
+                          <ext:Toolbar ID="uxToolBar" runat="server" Border="false" Cls="my-toolbar">
+                            <Items>
+                                <ext:ToolbarFill ID="ToolbarFill3" runat="server"></ext:ToolbarFill>
                                 <ext:LinkButton ID="uxHelp" runat="server" Text="Help" CtCls="header-actions-button"></ext:LinkButton>
-                                 <ext:ToolbarSpacer runat="server"></ext:ToolbarSpacer>
+                                <ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server"></ext:ToolbarSpacer>
                                 <ext:LinkButton ID="uxLogout" runat="server" Text="Logout" CtCls="header-actions-button">
-                                    <DirectEvents><Click OnEvent="deLogout"><Confirmation ConfirmRequest="true" Message="Are you sure you want to logoff?"></Confirmation></Click></DirectEvents>
+                                    <DirectEvents>
+                                        <Click OnEvent="deLogout">
+                                            <Confirmation ConfirmRequest="true" Message="Are you sure you want to logoff?"></Confirmation>
+                                        </Click>
+                                    </DirectEvents>
                                 </ext:LinkButton>
                             </Items>
                         </ext:Toolbar>
                     </Items>
                 </ext:Container>
+
             </Items>
                 </ext:Panel>
                 <ext:Panel ID="uxWest" runat="server" Layout="accordion" Region="West" Collapsible="true" Split="true" Width="230" Margins="0px 0px 5px 5px">
                     <Items>
                         <ext:Panel ID="uxApplications" runat="server" Border="false"  Title="Applications" AutoScroll="true" Icon="ApplicationForm">
+                             <Items>
+                                <ext:Menu ID="uxApplicationMenu"
+                                    runat="server"
+                                    Floating="false"
+                                    Layout="VBoxLayout"
+                                    ShowSeparator="false" Border="false">
+                                    <Defaults>
+                                        <ext:Parameter Name="MenuAlign" Value="tl-bl?" Mode="Value" />
+                                    </Defaults>
+                                    <Items>
+                                         <ext:MenuItem ID="uxYIK" runat="server" Text="Yesterday's Internal Knowledge (YIK)" Icon="ApplicationOsx">  
+                                        </ext:MenuItem>  
+                                    </Items>
+                                </ext:Menu>
+                            </Items>
                         </ext:Panel>
                         <ext:Panel ID="uxSystem" runat="server" Border="false" Title="System Administration" AutoScroll="true" Icon="Server">
                             <Items>
@@ -58,9 +99,14 @@
                                                <Click OnEvent="deLoadSecurityUsers" ></Click>
                                            </DirectEvents>
                                         </ext:MenuItem>
-                                         <ext:MenuItem ID="uxSecurityRoles" runat="server" Text="Security Roles" Icon="UserBrown">
+                                         <ext:MenuItem ID="uxSecurityActivities" runat="server" Text="Security Activities" Icon="UserBrown">
                                            <DirectEvents>
-                                               <Click OnEvent="deLoadSecurityRoles" ></Click>
+                                               <Click OnEvent="deLoadSecurityActivities" ></Click>
+                                           </DirectEvents>
+                                        </ext:MenuItem>
+                                        <ext:MenuItem ID="uxSecurityLogs" runat="server" Text="Security Logs" Icon="Report">
+                                           <DirectEvents>
+                                               <Click OnEvent="deLoadSecurityLogs" ></Click>
                                            </DirectEvents>
                                         </ext:MenuItem>
                                     </Items>
@@ -75,6 +121,9 @@
                 </ext:Panel>
             </Items>
         </ext:Viewport>
+
+      
+
 
     </form>
     

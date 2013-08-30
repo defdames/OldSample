@@ -14,8 +14,18 @@ namespace DBI.Data
     
     public partial class SYS_USERS
     {
-        public long USER_ID { get; set; }
+        public SYS_USERS()
+        {
+            this.SYS_USER_INFORMATION = new HashSet<SYS_USER_INFORMATION>();
+            this.SYS_USER_ACTIVITY = new HashSet<SYS_USER_ACTIVITY>();
+            this.SYS_LOG = new HashSet<SYS_LOG>();
+        }
     
-        public virtual SYS_USER_INFORMATION SYS_USER_INFORMATION { get; set; }
+        public long USER_ID { get; set; }
+        public Nullable<System.DateTime> LAST_ACTIVITY_DATE { get; set; }
+    
+        public virtual ICollection<SYS_USER_INFORMATION> SYS_USER_INFORMATION { get; set; }
+        public virtual ICollection<SYS_USER_ACTIVITY> SYS_USER_ACTIVITY { get; set; }
+        public virtual ICollection<SYS_LOG> SYS_LOG { get; set; }
     }
 }

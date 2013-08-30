@@ -59,9 +59,16 @@
     <Compile Include="..\DBI.AssemblyVersion\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="DataFactory\Security\Roles.cs" />
+    <Compile Include="DataFactory\Messages\Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="DataFactory\Security\Activity.cs" />
+    <Compile Include="DataFactory\Security\Logger.cs" />
+    <Compile Include="DataFactory\Security\UserActivity.cs" />
     <Compile Include="DataFactory\StaticLists.cs" />
-    <Compile Include="DataFactory\Security\Users.cs" />
+    <Compile Include="DataFactory\Security\UserInformation.cs" />
     <Compile Include="DataFactory\Utilities\GenericData.cs" />
     <Compile Include="Oracle.Context.cs">
       <AutoGen>True</AutoGen>
@@ -79,22 +86,25 @@
       <DependentUpon>Oracle.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SYS_PERMISSIONS.cs">
+    <Compile Include="SYS_ACTIVITY.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
-    <Compile Include="SYS_ROLES.cs">
+    <Compile Include="SYS_LOG.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SYS_LOG_CT.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="SYS_USERS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="SYS_USER_ACTIVITY.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SYS_USER_ACTIVITY_CT.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="SYS_USER_INFORMATION.cs">
-      <DependentUpon>Oracle.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SYS_USER_ROLES.cs">
-      <DependentUpon>Oracle.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SYS_USER_ROLES_CT.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -129,6 +139,12 @@
       <Project>{e472c66e-6529-481a-bf8b-801311480aa4}</Project>
       <Name>DBI.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DataFactory\Messages\Resource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

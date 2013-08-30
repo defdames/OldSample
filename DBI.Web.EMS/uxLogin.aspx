@@ -36,6 +36,7 @@
             }, 1000)
         });
     </script>
+
 </head>
 <body>
     <ext:ResourceManager ID="uxResourceManager" runat="server" IsDynamic="False">

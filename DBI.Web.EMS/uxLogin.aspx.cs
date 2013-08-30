@@ -123,46 +123,51 @@ namespace DBI.Web.EMS
                 X.Msg.Alert((string)GetLocalResourceObject("loginErrorTitle"), (string)GetLocalResourceObject("loginErrorMessage")).Show();
                 return;
             }
-            
-            if (Authentication.WindowsAuthenticate(this.uxUsername.Text, this.uxPassword.Text))
-            {
-                List<Claim> claims = DBI.Data.DataFactory.Security.Roles.LoadRoleClaimsForUser(this.uxUsername.Text.ToUpper());
 
-                int cnt = claims.Count;
-
-                //Check if user has any roles, if not then exit now
-                if (cnt == 0)
+                if (Authentication.WindowsAuthenticate(this.uxUsername.Text, this.uxPassword.Text))
                 {
-                    X.Msg.Alert((string)GetLocalResourceObject("loginErrorTitle"), (string)GetLocalResourceObject("loginErrorNoRoles")).Show();
-                    uxPassword.Reset();
+                    List<Claim> claims = DBI.Data.SYS_ACTIVITY.Claims(this.uxUsername.Text.ToUpper());
+
+                    int cnt = claims.Count;
+
+                    //Check if user has any roles, if not then exit now
+                    if (cnt == 0)
+                    {
+                        X.Msg.Alert((string)GetLocalResourceObject("loginErrorTitle"), (string)GetLocalResourceObject("loginErrorNoRoles")).Show();
+                        uxPassword.Reset();
+                    }
+                    else
+                    {
+                        // Always add the username, this is always required
+                        claims.Add(new Claim(ClaimTypes.Name, this.uxUsername.Text.ToUpper()));
+
+                        DBI.Data.SYS_USER_INFORMATION userDetails = DBI.Data.SYS_USER_INFORMATION.UserByUserName(this.uxUsername.Text.ToUpper());
+
+                        // Add full name of user to the claims 
+                        claims.Add(new Claim("EmployeeName", userDetails.EMPLOYEE_NAME));
+
+                        var id = new ClaimsIdentity(claims, "Forms");
+                        var cp = new ClaimsPrincipal(id);
+
+                        var token = new SessionSecurityToken(cp);
+                        var sam = FederatedAuthentication.SessionAuthenticationModule;
+                        sam.WriteSessionTokenToCookie(token);
+
+                        //Disable login button
+                        uxLoginButton.Disabled = true;
+
+                        // Redirect:
+                        Ext.Net.ExtNet.Redirect("Views/uxDefault.aspx");
+                    }
                 }
+
                 else
                 {
-                    
-                    // Always add the username, this is always required
-                    claims.Add(new Claim(ClaimTypes.Name, this.uxUsername.Text.ToUpper()));
-
-                    var id = new ClaimsIdentity(claims, "Forms");
-                    var cp = new ClaimsPrincipal(id);
-
-                    var token = new SessionSecurityToken(cp);
-                    var sam = FederatedAuthentication.SessionAuthenticationModule;
-                    sam.WriteSessionTokenToCookie(token);
-
-                    //Disable login button
-                    uxLoginButton.Disabled = true;
-
-                    // Redirect:
-                    Ext.Net.ExtNet.Redirect("Views/uxDefault.aspx");
+                    X.Msg.Alert((string)GetLocalResourceObject("loginErrorTitle"), (string)GetLocalResourceObject("loginInvalid")).Show();
+                    uxPassword.Reset();
                 }
-            }
 
-            else
-            {
-                X.Msg.Alert((string)GetLocalResourceObject("loginErrorTitle"), (string)GetLocalResourceObject("loginInvalid")).Show();
-                uxPassword.Reset();
             }
-        }
 
         /// <summary>
         /// Switches the language on the page depending on the value selected.

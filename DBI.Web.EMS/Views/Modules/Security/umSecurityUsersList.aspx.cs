@@ -6,8 +6,11 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using DBI.Core.Web;
 using DBI.Data;
-using DBI.Data.DataFactory.Utilities;
 using Ext.Net;
+using DBI.Core;
+using System.Security.Claims;
+using System.IdentityModel.Tokens;
+using System.IdentityModel.Services;
 
 namespace DBI.Web.EMS.Views.Modules.Security
 {
@@ -30,6 +33,7 @@ namespace DBI.Web.EMS.Views.Modules.Security
                     }
                 }
             }
+
         }
 
         /// <summary>
@@ -40,11 +44,10 @@ namespace DBI.Web.EMS.Views.Modules.Security
         public void deUsersDataBind(object sender, StoreReadDataEventArgs e)
         {
             int total;
-            IEnumerable<SYS_USER_INFORMATION> data = DBI.Data.DataFactory.Security.Users.UserList(e.Start, e.Limit, e.Sort, e.Parameters["filter"], out total);
+            IEnumerable<SYS_USER_INFORMATION> data = SYS_USER_INFORMATION.Users(e.Start, e.Limit, e.Sort, e.Parameters["filter"], out total);
             e.Total = total;
             uxSecurityUserGridPanel.GetStore().DataSource = data;
         }
-
 
         /// <summary>
         /// Edits a system user
@@ -59,7 +62,7 @@ namespace DBI.Web.EMS.Views.Modules.Security
         }
 
         /// <summary>
-        /// This is to reload the security roles view for the user when the user clicks refresh on the paging toolbar.
+        /// This is to reload the users for the user when the user clicks refresh on the paging toolbar.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -76,11 +79,11 @@ namespace DBI.Web.EMS.Views.Modules.Security
         {
             try
             {
-   
-            RowSelectionModel sm = uxSecurityUserGridPanel.GetSelectionModel() as RowSelectionModel;
+
+            CheckboxSelectionModel sm = uxSecurityUserGridPanel.GetSelectionModel() as CheckboxSelectionModel;
             long UserID = long.Parse(sm.SelectedRow.RecordID);
 
-            SYS_USER_INFORMATION user = DBI.Data.DataFactory.Security.Users.UserByID(UserID);
+            SYS_USER_INFORMATION user = SYS_USER_INFORMATION.UserByID(UserID);
 
             this.uxSecurityUserDetails.SetValues(new
             {
@@ -92,23 +95,23 @@ namespace DBI.Web.EMS.Views.Modules.Security
                 user.JOB_NAME
             });
 
-            //Load data needed for Gridview and security user roles
-            List<SYS_USER_ROLES> userRoles = Data.DataFactory.Security.Roles.RolesByUserID(user.USER_ID);
+            //Load data needed for Gridview and security activities
+            List<SYS_USER_ACTIVITY> userActivity = SYS_USER_ACTIVITY.ActivityByUserID(user.USER_ID);
 
             //Create a list of user roles with descriptions we will databind to the view
-            List<SYS_USER_ROLES_CT> data = new List<SYS_USER_ROLES_CT>();
+            List<SYS_USER_ACTIVITY_CT> data = new List<SYS_USER_ACTIVITY_CT>();
 
-            foreach (SYS_USER_ROLES role in userRoles)
+            foreach (SYS_USER_ACTIVITY activity in userActivity)
             {
-                SYS_USER_ROLES_CT roleDetails = new SYS_USER_ROLES_CT();
-                roleDetails.USER_ROLE_ID = role.USER_ROLE_ID;
-                roleDetails.NAME = role.SYS_ROLES.NAME;
-                roleDetails.DESCRIPTION = role.SYS_ROLES.DESCRIPTION;
-                data.Add(roleDetails);
+                SYS_USER_ACTIVITY_CT activityDetails = new SYS_USER_ACTIVITY_CT();
+                activityDetails.USER_ACTIVITY_ID = activity.USER_ACTIVITY_ID;
+                activityDetails.NAME = activity.SYS_ACTIVITY.NAME;
+                activityDetails.DESCRIPTION = activity.SYS_ACTIVITY.DESCRIPTION;
+                data.Add(activityDetails);
             }
 
-            uxSecurityRoleGridPanel.GetStore().DataSource = data;
-            uxSecurityRoleGridPanel.GetStore().DataBind();
+            uxSecurityActivityGridPanel.GetStore().DataSource = data;
+            uxSecurityActivityGridPanel.GetStore().DataBind();
             }
             catch (Exception ex)
             {
@@ -117,44 +120,44 @@ namespace DBI.Web.EMS.Views.Modules.Security
         }
 
         /// <summary>
-        /// Deletes a user role by user role id
+        /// Deletes a user activity by user activity id
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void deDeleteUserRole(object sender, DirectEventArgs e)
+        public void deDeleteUserActivity(object sender, DirectEventArgs e)
         {
-            CheckboxSelectionModel sm = uxSecurityRoleGridPanel.GetSelectionModel() as CheckboxSelectionModel;
-            long UserRoleID = long.Parse(sm.SelectedRow.RecordID);
+            CheckboxSelectionModel sm = uxSecurityActivityGridPanel.GetSelectionModel() as CheckboxSelectionModel;
+            long UserActivityID = long.Parse(sm.SelectedRow.RecordID);
 
-            DBI.Data.DataFactory.Security.Roles.DeleteUserRoleByID(UserRoleID);
+            SYS_USER_ACTIVITY.Delete(UserActivityID);
 
             //Clear the selection
             sm.ClearSelection();
 
             //Refresh the gridpanel data showing the loading screen
-            uxSecurityRolePaging.DoRefresh();
+            uxSecurityActivityPaging.DoRefresh();
         }
 
-        public void deShowAddUserRole(object sender, DirectEventArgs e)
+        public void deShowAddUserActivity(object sender, DirectEventArgs e)
         {
             //clear the selection we will need it later.
-            CheckboxSelectionModel csm = uxSecurityRoleList.GetSelectionModel() as CheckboxSelectionModel;
+            CheckboxSelectionModel csm = uxSecurityActivityList.GetSelectionModel() as CheckboxSelectionModel;
             csm.ClearSelection();
 
             // Show the window that give a list of user roles to choose from that the user has not already selected.
-            uxMaintainSecurityRoles.Show();
+            uxMaintainSecurityActivities.Show();
 
-            RowSelectionModel sm = uxSecurityUserGridPanel.GetSelectionModel() as RowSelectionModel;
+            CheckboxSelectionModel sm = uxSecurityUserGridPanel.GetSelectionModel() as CheckboxSelectionModel;
             long UserID = long.Parse(sm.SelectedRow.RecordID);
 
-            //Return a list of current user roles
-            IEnumerable<SYS_ROLES> data = Data.DataFactory.Security.Roles.FreeRolesByUserID(UserID);
+            //Return a list of current user roles not assigned to the user
+            IEnumerable<SYS_ACTIVITY> data = SYS_ACTIVITY.UnassignedActivities(UserID);
 
-            uxSecurityRoleList.GetStore().DataSource = data;
-            uxSecurityRoleList.GetStore().DataBind();
+            uxSecurityActivityList.GetStore().DataSource = data;
+            uxSecurityActivityList.GetStore().DataBind();
 
             //Refresh the gridpanel data showing the loading screen
-            uxSecurityRolePaging.DoRefresh();
+            uxSecurityActivityPaging.DoRefresh();
         }
 
 
@@ -163,42 +166,110 @@ namespace DBI.Web.EMS.Views.Modules.Security
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void deReloadUserRoleSecurity(object sender, StoreReadDataEventArgs e)
+        public void deReloadUserActivitySecurity(object sender, StoreReadDataEventArgs e)
         {
-            uxSecurityRoleListSelection.ClearSelection();
+            uxSecurityActivityListSelection.ClearSelection();
 
-            RowSelectionModel sm = uxSecurityUserGridPanel.GetSelectionModel() as RowSelectionModel;
+            CheckboxSelectionModel sm = uxSecurityUserGridPanel.GetSelectionModel() as CheckboxSelectionModel;
             long UserID = long.Parse(sm.SelectedRow.RecordID);
 
-            //Return a list of current user roles
-            IEnumerable<SYS_ROLES> data = Data.DataFactory.Security.Roles.FreeRolesByUserID(UserID);
+            //Return a list of current user roles not assigned to the user
+            IEnumerable<SYS_ACTIVITY> data = SYS_ACTIVITY.UnassignedActivities(UserID);
 
-            uxSecurityRoleList.GetStore().DataSource = data;
-            uxSecurityRoleList.GetStore().DataBind();
+            uxSecurityActivityList.GetStore().DataSource = data;
+            uxSecurityActivityList.GetStore().DataBind();
 
             //Refresh the gridpanel data showing the loading screen
-            uxSecurityRolePaging.DoRefresh();
+            uxSecurityActivityPaging.DoRefresh();
         }
 
 
-        public void deAddUserRole(object sender, DirectEventArgs e)
+        public void deAddUserActivity(object sender, DirectEventArgs e)
         {
             //Get the selected user id
-            RowSelectionModel sm = uxSecurityUserGridPanel.GetSelectionModel() as RowSelectionModel;
+            CheckboxSelectionModel sm = uxSecurityUserGridPanel.GetSelectionModel() as CheckboxSelectionModel;
             long userID = long.Parse(sm.SelectedRow.RecordID);
 
             //Get the selected role id
-            CheckboxSelectionModel csm = uxSecurityRoleList.GetSelectionModel() as CheckboxSelectionModel;
-            long roleID = long.Parse(csm.SelectedRow.RecordID);
+            CheckboxSelectionModel csm = uxSecurityActivityList.GetSelectionModel() as CheckboxSelectionModel;
+            long activityID = long.Parse(csm.SelectedRow.RecordID);
 
             //Add role to user and refresh gridpanel after closing window
-            DBI.Data.DataFactory.Security.Roles.AddRoleToUserID(roleID, userID);
+
+            SYS_USER_ACTIVITY activity = new SYS_USER_ACTIVITY();
+            activity.ACTIVITY_ID = activityID;
+            activity.USER_ID = userID;
+            activity.CREATED_BY = User.Identity.Name;
+            activity.CREATED_DATE = DateTime.Now.InvariantCulture();
+            activity.LAST_UPDATED_BY = User.Identity.Name;
+            activity.LAST_UPDATED = DateTime.Now.InvariantCulture();
+
+            SYS_USER_ACTIVITY.Add(activity);
 
             //Close the window
-            uxMaintainSecurityRoles.Close();
+            uxMaintainSecurityActivities.Close();
 
             //Refresh the user Data for roles.
-            uxSecurityRolePaging.DoRefresh();
+            uxSecurityActivityPaging.DoRefresh();
+
+        }
+
+        public void deImpersonate(object sender, DirectEventArgs e)
+        {
+            //Get the user information
+            //Get the selected user id
+            CheckboxSelectionModel sm = uxSecurityUserGridPanel.GetSelectionModel() as CheckboxSelectionModel;
+            long userID = long.Parse(sm.SelectedRow.RecordID);
+
+            SYS_USER_INFORMATION userDetails = SYS_USER_INFORMATION.UserByID(userID);
+
+            if (userDetails != null)
+            {
+
+             List<Claim> claims = DBI.Data.SYS_ACTIVITY.Claims(userDetails.USER_NAME);
+
+                int cnt = claims.Count;
+                // Always add the username, this is always required
+                claims.Add(new Claim(ClaimTypes.Name, userDetails.USER_NAME));
+
+                // Add a claim to say they were impersonated and by who impersonated them
+                claims.Add(new Claim("ImpersonatedUser", userDetails.EMPLOYEE_NAME));
+
+                if (GetClaimValue("ImpersonatorUsername") == string.Empty)
+                {
+                    claims.Add(new Claim("ImpersonatorUsername", HttpContext.Current.User.Identity.Name));
+                }
+
+                // Add full name of user to the claims 
+                claims.Add(new Claim("EmployeeName", GetClaimValue("EmployeeName")));
+
+                var id = new ClaimsIdentity(claims, "Forms");
+                var cp = new ClaimsPrincipal(id);
+
+                var token = new SessionSecurityToken(cp);
+                var sam = FederatedAuthentication.SessionAuthenticationModule;
+                sam.WriteSessionTokenToCookie(token);
+
+           // Break out of frames and redirect user.
+           ResourceManager.GetInstance().AddScript("parent.window.location = '{0}';", "../../uxDefault.aspx");
+         }
+        }
+
+        public void deUserSelected(object sender, DirectEventArgs e)
+        {
+                     
+             // Setup Security
+            uxImpersonate.Disabled = DisableActivity("SYS.Users.Impersonate");
+            uxEditUser.Disabled = DisableActivity("SYS.Users.Edit");
+            
+        }
+
+        public void deUserDeselected(object sender, DirectEventArgs e)
+        {
+
+            // Setup Security
+            uxImpersonate.Disabled = true;
+            uxEditUser.Disabled = true;
 
         }
 

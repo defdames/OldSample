@@ -45,6 +45,9 @@
                                     </DirectEvents>
                                 </ext:Button>
                                 <ext:ToolbarSpacer runat="server"></ext:ToolbarSpacer>
+                                <ext:Button runat="server" Text="Impersonate User" Icon="UserHome" Disabled="true" ID="uxImpersonate" CtCls="header-actions-button">
+                                         <DirectEvents><Click OnEvent="deImpersonate"><Confirmation ConfirmRequest="true" Message="Are you sure you want to Impersonate this user?"></Confirmation></Click></DirectEvents>
+                                </ext:Button>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
@@ -96,15 +99,15 @@
                         </ext:GridFilters>
                     </Features>
                     <BottomBar>
-                        <ext:PagingToolbar ID="uxSecurityUserPaging" runat="server" meta:resourcekey="uxSecurityUserPagingResource1" />
+                        <ext:PagingToolbar ID="uxSecurityUserPaging" runat="server"  />
                     </BottomBar>
                     <SelectionModel>
-                        <ext:RowSelectionModel runat="server">
-                            <Listeners>
-                                <Select Handler="#{uxEditUser}.enable();"></Select>
-                                <Deselect Handler="#{uxEditUser}.disable();"></Deselect>
-                            </Listeners>
-                        </ext:RowSelectionModel>
+                        <ext:CheckboxSelectionModel Mode="Single" runat="server" ShowHeaderCheckbox="false" AllowDeselect="true">
+                            <DirectEvents>
+                                <Select OnEvent="deUserSelected"></Select>
+                                <Deselect OnEvent="deUserDeselected"></Deselect>
+                            </DirectEvents>
+                        </ext:CheckboxSelectionModel>
                     </SelectionModel>
                 </ext:GridPanel>
             </Items>
@@ -133,7 +136,7 @@
                         <ext:TextField Name="JOB_NAME" ID="uxJobName" runat="server" FieldLabel="Job Name" ReadOnly="true" LabelWidth="130" />
                     </Items>
                 </ext:FormPanel>
-                <ext:GridPanel ID="uxSecurityRoleGridPanel"
+                <ext:GridPanel ID="uxSecurityActivityGridPanel"
                     runat="server"
                     BodyPadding="2"
                     Frame="true"
@@ -145,15 +148,15 @@
                     <TopBar>
                         <ext:Toolbar runat="server">
                             <Items>
-                                <ext:Button Icon="UserAdd" ID="uxAddRole" runat="server" Text="Add Role">
+                                <ext:Button Icon="UserAdd" ID="uxAddActivity" runat="server" Text="Add Activity">
                                     <DirectEvents>
-                                        <Click OnEvent="deShowAddUserRole"></Click>
+                                        <Click OnEvent="deShowAddUserActivity"></Click>
                                     </DirectEvents>
                                 </ext:Button>
                                 <ext:ToolbarSpacer runat="server"></ext:ToolbarSpacer>
-                                <ext:Button ID="uxDeleteRole" Icon="UserDelete" runat="server" Text="Delete Role" Disabled="true">
+                                <ext:Button ID="uxDeleteActivity" Icon="UserDelete" runat="server" Text="Delete Activity" Disabled="true">
                                     <DirectEvents>
-                                        <Click OnEvent="deDeleteUserRole"><Confirmation ConfirmRequest="true" Message="Are you sure you want to delete this user role?"></Confirmation></Click>
+                                        <Click OnEvent="deDeleteUserActivity"><Confirmation ConfirmRequest="true" Message="Are you sure you want to delete this user activity?"></Confirmation></Click>
                                     </DirectEvents>
                                 </ext:Button>
                             </Items>
@@ -161,13 +164,13 @@
                     </TopBar>
                     <Store>
                         <ext:Store
-                            ID="uxSecurityRoleStore"
+                            ID="uxSecurityActivityStore"
                             runat="server"
                             OnReadData="deReloadUserSecurity">
                             <Model>
-                                <ext:Model ID="uxSecurityRoleModel" runat="server" IDProperty="USER_ROLE_ID">
+                                <ext:Model ID="uxSecurityActivityModel" runat="server" IDProperty="USER_ACTIVITY_ID">
                                     <Fields>
-                                        <ext:ModelField Name="USER_ROLE_ID" Type="Int" />
+                                        <ext:ModelField Name="USER_ACTIVITY_ID" Type="Int" />
                                         <ext:ModelField Name="NAME" Type="String" />
                                         <ext:ModelField Name="DESCRIPTION" Type="String" />
                                     </Fields>
@@ -178,14 +181,14 @@
                             </Sorters>
                         </ext:Store>
                     </Store>
-                    <ColumnModel ID="uxSecurityRoleColumns" runat="server">
+                    <ColumnModel ID="uxSecurityActivityColumns" runat="server">
                         <Columns>
                             <ext:Column ID="cName" runat="server" DataIndex="NAME" Text="Name" Width="130" />
                             <ext:Column ID="cDescription" runat="server" DataIndex="DESCRIPTION" Text="Description" Flex="1" />
                         </Columns>
                     </ColumnModel>
                     <Features>
-                        <ext:GridFilters runat="server" ID="uxSecurityRoleGridFilters" Local="true">
+                        <ext:GridFilters runat="server" ID="uxSecurityActivityGridFilters" Local="true">
                             <Filters>
                                 <ext:StringFilter DataIndex="NAME" />
                                 <ext:StringFilter DataIndex="DESCRIPTION" />
@@ -193,13 +196,13 @@
                         </ext:GridFilters>
                     </Features>
                     <BottomBar>
-                        <ext:PagingToolbar ID="uxSecurityRolePaging" runat="server" RefreshHandler="refreshHandler" />
+                        <ext:PagingToolbar ID="uxSecurityActivityPaging" runat="server" RefreshHandler="refreshHandler" />
                     </BottomBar>
                     <SelectionModel>
                         <ext:CheckboxSelectionModel runat="server" Mode="Single" ShowHeaderCheckbox="false" AllowDeselect="true">
                             <Listeners>
-                                <Select Handler="#{uxDeleteRole}.enable();"></Select>
-                                <Deselect Handler="#{uxDeleteRole}.disable();"></Deselect>
+                                <Select Handler="#{uxDeleteActivity}.enable();"></Select>
+                                <Deselect Handler="#{uxDeleteActivity}.disable();"></Deselect>
                             </Listeners>
                         </ext:CheckboxSelectionModel>
                     </SelectionModel>
@@ -217,10 +220,10 @@
             </Listeners>
         </ext:Window>
 
-        <!-- Hidden Windows (Edit User Roles) -->
-        <ext:Window runat="server" Resizable="false" Icon="UserEdit" Hidden="true" Width="500" Height="375" Layout="FitLayout" Header="true" Title="System User Maintenance - Security Roles" ID="uxMaintainSecurityRoles" Closable="true" CloseAction="Hide" Modal="true">
+        <!-- Hidden Windows (Edit User Activitys) -->
+        <ext:Window runat="server" Resizable="false" Icon="UserEdit" Hidden="true" Width="500" Height="375" Layout="FitLayout" Header="true" Title="System User Maintenance - Security Activities" ID="uxMaintainSecurityActivities" Closable="true" CloseAction="Hide" Modal="true">
             <Items>
-                <ext:GridPanel ID="uxSecurityRoleList"
+                <ext:GridPanel ID="uxSecurityActivityList"
                     runat="server"
                     BodyPadding="2"
                     Frame="true"
@@ -230,13 +233,13 @@
                     SelectionMemory="true">
                     <Store>
                         <ext:Store
-                            ID="uxSecurityRoleListStore"
+                            ID="uxSecurityActivityListStore"
                             runat="server"
-                            OnReadData="deReloadUserRoleSecurity">
+                            OnReadData="deReloadUserActivitySecurity">
                             <Model>
-                                <ext:Model ID="Model1" runat="server" IDProperty="ROLE_ID">
+                                <ext:Model ID="Model1" runat="server" IDProperty="ACTIVITY_ID">
                                     <Fields>
-                                        <ext:ModelField Name="ROLE_ID" Type="Int" />
+                                        <ext:ModelField Name="ACTIVITY_ID" Type="Int" />
                                         <ext:ModelField Name="NAME" Type="String" />
                                         <ext:ModelField Name="DESCRIPTION" Type="String" />
                                     </Fields>
@@ -247,14 +250,14 @@
                             </Sorters>
                         </ext:Store>
                     </Store>
-                    <ColumnModel ID="uxSecurityRoleListColumns" runat="server">
+                    <ColumnModel ID="uxSecurityActivityListColumns" runat="server">
                         <Columns>
                             <ext:Column ID="Column1" runat="server" DataIndex="NAME" Text="Name" Width="130" />
                             <ext:Column ID="Column2" runat="server" DataIndex="DESCRIPTION" Text="Description" Flex="1" />
                         </Columns>
                     </ColumnModel>
                     <Features>
-                        <ext:GridFilters runat="server" ID="uxSecurityRoleListFilter" Local="true">
+                        <ext:GridFilters runat="server" ID="uxSecurityActivityListFilter" Local="true">
                             <Filters>
                                 <ext:StringFilter DataIndex="NAME" />
                                 <ext:StringFilter DataIndex="DESCRIPTION" />
@@ -262,23 +265,23 @@
                         </ext:GridFilters>
                     </Features>
                     <BottomBar>
-                        <ext:PagingToolbar ID="uxSecurityRoleListPaging" runat="server" RefreshHandler="refreshHandler" />
+                        <ext:PagingToolbar ID="uxSecurityActivityListPaging" runat="server" RefreshHandler="refreshHandler" />
                     </BottomBar>
                     <SelectionModel>
-                        <ext:CheckboxSelectionModel ID="uxSecurityRoleListSelection" runat="server" Mode="Single" ShowHeaderCheckbox="false" AllowDeselect="true">
+                        <ext:CheckboxSelectionModel ID="uxSecurityActivityListSelection" runat="server" Mode="Single" ShowHeaderCheckbox="false" AllowDeselect="true">
                         </ext:CheckboxSelectionModel>
                     </SelectionModel>    
                 </ext:GridPanel>
             </Items> 
               <Buttons>
-                <ext:Button runat="server" ID="uxAddUserRoleAdd" Text="Add Role" Icon="Disk">
+                <ext:Button runat="server" ID="uxAddUserActivityAdd" Text="Add Activity" Icon="Disk">
                     <DirectEvents>
-                        <Click OnEvent="deAddUserRole"></Click>
+                        <Click OnEvent="deAddUserActivity"></Click>
                     </DirectEvents>
                 </ext:Button>
-                <ext:Button runat="server" ID="uxCancelUserRoleAdd" Text="Cancel">
+                <ext:Button runat="server" ID="uxCancelUserActivityAdd" Text="Cancel">
                     <Listeners>
-                        <Click Handler="#{uxMaintainSecurityRoles}.close();"></Click>
+                        <Click Handler="#{uxMaintainSecurityActivities}.close();"></Click>
                     </Listeners>
                 </ext:Button>
             </Buttons>

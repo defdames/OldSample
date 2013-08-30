@@ -1,16 +1,41 @@
 ﻿
-      .header-actions-button a{
-          color:#fff;
-          cursor:pointer;
-          text-decoration:underline;
-      }
-      .x-toolbar.my-toolbar {
-            background-image: none !important;
-            background-repeat: no-repeat !important;
-            background-color:black !important;
-        }
-        .x-toolbar.my-toolbar-blue {
-            background-image: none !important;
-            background-repeat: no-repeat !important;
-            background-color:steelblue !important;
-        }
+.header-actions-button a
+{
+    color: #fff;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.header-actions-button-red a
+{
+    color: red;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.header-actions-button-orange a
+{
+    color: #CC9900;
+    text-decoration: none;
+}
+
+.welcome-orange
+{
+    color: #CC9900;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.x-toolbar.my-toolbar
+{
+    background-image: none !important;
+    background-repeat: no-repeat !important;
+    background-color: black !important;
+}
+
+.x-toolbar.my-toolbar-blue
+{
+    background-image: none !important;
+    background-repeat: no-repeat !important;
+    background-color: steelblue !important;
+}

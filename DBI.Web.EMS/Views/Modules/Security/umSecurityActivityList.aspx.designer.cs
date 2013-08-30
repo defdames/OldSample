@@ -7,28 +7,28 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DBI.Web.EMS.Views {
+namespace DBI.Web.EMS.Views.Modules.Security {
     
     
-    public partial class uxDefault {
+    public partial class umSecurityActivityList {
         
         /// <summary>
-        /// uxResourceManager control.
+        /// Head1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ResourceManager uxResourceManager;
+        protected global::System.Web.UI.HtmlControls.HtmlHead Head1;
         
         /// <summary>
-        /// form1 control.
+        /// test control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.HtmlControls.HtmlForm test;
         
         /// <summary>
         /// uxViewPort control.
@@ -40,112 +40,22 @@ namespace DBI.Web.EMS.Views {
         protected global::Ext.Net.Viewport uxViewPort;
         
         /// <summary>
-        /// uxNorth control.
+        /// uxSecurityActivityGridPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxNorth;
+        protected global::Ext.Net.GridPanel uxSecurityActivityGridPanel;
         
         /// <summary>
-        /// uxLogo control.
+        /// uxAddActivity control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Image uxLogo;
-        
-        /// <summary>
-        /// uxToolBarPanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxToolBarPanel;
-        
-        /// <summary>
-        /// Toolbar1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Toolbar Toolbar1;
-        
-        /// <summary>
-        /// ToolbarFill1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ToolbarFill ToolbarFill1;
-        
-        /// <summary>
-        /// uxWelcomeName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.LinkButton uxWelcomeName;
-        
-        /// <summary>
-        /// Toolbar2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Toolbar Toolbar2;
-        
-        /// <summary>
-        /// ToolbarFill2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ToolbarFill ToolbarFill2;
-        
-        /// <summary>
-        /// uxWelcomeTime control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label uxWelcomeTime;
-        
-        /// <summary>
-        /// uxToolBar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Toolbar uxToolBar;
-        
-        /// <summary>
-        /// ToolbarFill3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ToolbarFill ToolbarFill3;
-        
-        /// <summary>
-        /// uxHelp control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.LinkButton uxHelp;
+        protected global::Ext.Net.Button uxAddActivity;
         
         /// <summary>
         /// ToolbarSpacer1 control.
@@ -157,102 +67,147 @@ namespace DBI.Web.EMS.Views {
         protected global::Ext.Net.ToolbarSpacer ToolbarSpacer1;
         
         /// <summary>
-        /// uxLogout control.
+        /// uxEditActivity control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.LinkButton uxLogout;
+        protected global::Ext.Net.Button uxEditActivity;
         
         /// <summary>
-        /// uxWest control.
+        /// uxDeleteActivity control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxWest;
+        protected global::Ext.Net.Button uxDeleteActivity;
         
         /// <summary>
-        /// uxApplications control.
+        /// uxSecurityActivityStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxApplications;
+        protected global::Ext.Net.Store uxSecurityActivityStore;
         
         /// <summary>
-        /// uxApplicationMenu control.
+        /// uxSecurityActivityModel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Menu uxApplicationMenu;
+        protected global::Ext.Net.Model uxSecurityActivityModel;
         
         /// <summary>
-        /// uxYIK control.
+        /// cName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.MenuItem uxYIK;
+        protected global::Ext.Net.Column cName;
         
         /// <summary>
-        /// uxSystem control.
+        /// cDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxSystem;
+        protected global::Ext.Net.Column cDescription;
         
         /// <summary>
-        /// uxMenu control.
+        /// uxSecurityActivityGridFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Menu uxMenu;
+        protected global::Ext.Net.GridFilters uxSecurityActivityGridFilters;
         
         /// <summary>
-        /// uxSecurityUsers control.
+        /// uxSecurityActivityPaging control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.MenuItem uxSecurityUsers;
+        protected global::Ext.Net.PagingToolbar uxSecurityActivityPaging;
         
         /// <summary>
-        /// uxSecurityActivities control.
+        /// uxSecurityActivitySelectionModel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.MenuItem uxSecurityActivities;
+        protected global::Ext.Net.CheckboxSelectionModel uxSecurityActivitySelectionModel;
         
         /// <summary>
-        /// uxSecurityLogs control.
+        /// uxSecurityAddActivityWindow control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.MenuItem uxSecurityLogs;
+        protected global::Ext.Net.Window uxSecurityAddActivityWindow;
         
         /// <summary>
-        /// uxCenter control.
+        /// uxSecurityActivityDetails control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxCenter;
+        protected global::Ext.Net.FormPanel uxSecurityActivityDetails;
+        
+        /// <summary>
+        /// uxActivityID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxActivityID;
+        
+        /// <summary>
+        /// uxName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxName;
+        
+        /// <summary>
+        /// uxDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxDescription;
+        
+        /// <summary>
+        /// uxSaveActivity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxSaveActivity;
+        
+        /// <summary>
+        /// uxCancelUserActivity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxCancelUserActivity;
     }
 }

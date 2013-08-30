@@ -9,11 +9,40 @@ using System.Web;
 using System.Web.Security;
 using System.Web.UI.HtmlControls;
 using Ext.Net;
+using DBI.Core;
+using System.Web.Script.Serialization;
+using System.Security.Claims;
 
 namespace DBI.Core.Web
 {
     public class BasePage : System.Web.UI.Page
     {
+        /// <summary>
+        /// Code the checks for Activity, returns false if user is in role to disable the button (setDisabled)
+        /// </summary>
+        /// <param name="activity"></param>
+        /// <returns></returns>
+        public static bool DisableActivity(string activity)
+        {
+            bool result = false;
+            //Check for Administrator override, give access to everything
+            if (!HttpContext.Current.User.IsInRole("SYS.Administrator"))
+            {
+                result = (HttpContext.Current.User.IsInRole(activity)) ? false : true;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Returns the system time as Invariant, needed to store all data in tables that require datetimes.
+        /// </summary>
+        /// <param name="Invariant"></param>
+        /// <returns></returns>
+        public static DateTime SystemTime()
+        {
+            DateTime dt = DateTime.Now;
+            return dt.InvariantCulture();
+        }
 
         /// <summary>
         /// Override the onload to register the exception override script.
@@ -26,7 +55,6 @@ namespace DBI.Core.Web
 
             base.OnLoad(e);
         }
-
 
         /// <summary>
         /// Allows user to override the culture for the page, needs to have httpcookie set.
@@ -98,7 +126,7 @@ namespace DBI.Core.Web
         /// <param name="panel">Panel name you want to load into</param>
         /// <param name="paramCollection">Collection of parameters if you need any</param>
         [DirectMethod]
-        public void dmLoadModuleIntoWindow(string url, string windowTitle, string iconName = null, int pWidth = 500, int pHeight = 500,  Ext.Net.ParameterCollection paramCollection = null)
+        public void dmLoadModuleIntoWindow(string url, string windowTitle, string iconName = null, int pWidth = 500, int pHeight = 500, Ext.Net.ParameterCollection paramCollection = null)
         {
             //Find the panel that's been rendered
             Ext.Net.Window clWindow = new Ext.Net.Window();
@@ -164,7 +192,7 @@ namespace DBI.Core.Web
 #if (DEBUG)
             script.Append("multiline: true,");
 #else
-            script.Append("multiline: false,"); // ==> "value" textfield gets hidden
+                script.Append("multiline: false,"); // ==> "value" textfield gets hidden
 #endif
 
             script.Append("width: 400,");
@@ -181,5 +209,26 @@ namespace DBI.Core.Web
 
             return script.ToString();
         }
+
+
+        public string GetClaimValue(string key)
+        {
+            // Cast the Thread.CurrentPrincipal
+            ClaimsPrincipal icp = User as ClaimsPrincipal;
+
+            // Access IClaimsIdentity which contains claims
+            ClaimsIdentity claimsIdentity = (ClaimsIdentity)icp.Identity;
+
+            // Access claims
+            foreach (Claim claim in claimsIdentity.Claims)
+            {
+                if (claim.Type == key)
+                {
+                    return claim.Value;
+                }
+            }
+            return string.Empty;
+        }
+
     }
 }

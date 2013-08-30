@@ -20,7 +20,7 @@ namespace DBI.Core.Security
         /// <summary>
         /// DBI Domain address used for authentication procedures
         /// </summary>
-        public const string DomainAddress = "dbiservices.com";
+        public const string DomainAddress = "S0026.dbiservices.com";
 
 
         /// <summary>
@@ -29,14 +29,67 @@ namespace DBI.Core.Security
         /// <param name="username">Windows active directory username</param>
         /// <param name="password">Windows active directory password</param>
         /// <returns>Boolean</returns>
-        public static bool WindowsAuthenticate(string username, String password)
+        public static bool WindowsAuthenticate(string username, string password)
         {
-            using (PrincipalContext pc = new PrincipalContext(ContextType.Domain, DomainAddress))
+            //First, create a new return variable
+            bool returnValue = true;
+
+            //Next, create a new context for the domain
+            using (PrincipalContext ctx = new PrincipalContext(ContextType.Domain))
             {
-                return (pc.ValidateCredentials(username, password));
+                //Next, attempt to validate the credentials
+                returnValue = ctx.ValidateCredentials(username, password);
             }
 
+            //Finally, return the return variable
+            return returnValue;
+
         }
+
+        public static bool IsUserAccountLockedOut(string username, ref bool bUserLocked)
+        {
+            //First, create a new return variable
+            bool bReturn = true;
+
+            //Default the user locked out flag
+            bUserLocked = true;
+
+            try
+            {
+                //Next, create the domain principal context object
+                using (PrincipalContext ctx = new PrincipalContext(ContextType.Domain))
+                {
+                    //Next, create the user, attempt to find the user by the user name
+                    UserPrincipal usr = UserPrincipal.FindByIdentity(ctx, username);
+
+                    //Next, check if the user was found
+                    if ((usr != null))
+                    {
+
+                        //User found, check if the account is locked out or not
+                        bUserLocked = usr.BadLogonCount < 12;
+
+                        //Success, return true
+                        bReturn = true;
+                    }
+                    else
+                    {
+                        //User not found, so return false
+                        bReturn = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //Error, just return false and log 
+                bReturn = false;
+            }
+
+            //Finally, return the return variable
+            return bReturn;
+        }
+
+       
 
     }
 }

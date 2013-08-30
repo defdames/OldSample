@@ -25,10 +25,10 @@ namespace DBI.Data
             throw new UnintentionalCodeFirstException();
         }
     
-        public DbSet<SYS_PERMISSIONS> SYS_PERMISSIONS { get; set; }
-        public DbSet<SYS_ROLES> SYS_ROLES { get; set; }
         public DbSet<SYS_USERS> SYS_USERS { get; set; }
-        public DbSet<SYS_USER_ROLES> SYS_USER_ROLES { get; set; }
         public DbSet<SYS_USER_INFORMATION> SYS_USER_INFORMATION { get; set; }
+        public DbSet<SYS_ACTIVITY> SYS_ACTIVITY { get; set; }
+        public DbSet<SYS_USER_ACTIVITY> SYS_USER_ACTIVITY { get; set; }
+        public DbSet<SYS_LOG> SYS_LOG { get; set; }
     }
 }
