@@ -73,7 +73,7 @@ namespace DBI.Web.EMS {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Container uxBannerContainer;
+        protected global::Ext.Net.Panel uxBannerContainer;
         
         /// <summary>
         /// uxUsername control.
@@ -103,13 +103,13 @@ namespace DBI.Web.EMS {
         protected global::Ext.Net.ComboBox uxRegion;
         
         /// <summary>
-        /// regionModel control.
+        /// umRegionModel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Model regionModel;
+        protected global::Ext.Net.Model umRegionModel;
         
         /// <summary>
         /// uxLoginButton control.
@@ -119,14 +119,5 @@ namespace DBI.Web.EMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxLoginButton;
-        
-        /// <summary>
-        /// uxStatus control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.StatusBar uxStatus;
     }
 }

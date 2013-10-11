@@ -22,13 +22,13 @@ namespace DBI.Web.EMS.Views {
         protected global::Ext.Net.ResourceManager uxResourceManager;
         
         /// <summary>
-        /// form1 control.
+        /// uxForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.HtmlControls.HtmlForm uxForm;
         
         /// <summary>
         /// uxViewPort control.
@@ -67,22 +67,13 @@ namespace DBI.Web.EMS.Views {
         protected global::Ext.Net.Panel uxToolBarPanel;
         
         /// <summary>
-        /// Toolbar1 control.
+        /// uxToolbarWelcome control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Toolbar Toolbar1;
-        
-        /// <summary>
-        /// ToolbarFill1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ToolbarFill ToolbarFill1;
+        protected global::Ext.Net.Toolbar uxToolbarWelcome;
         
         /// <summary>
         /// uxWelcomeName control.
@@ -94,22 +85,13 @@ namespace DBI.Web.EMS.Views {
         protected global::Ext.Net.LinkButton uxWelcomeName;
         
         /// <summary>
-        /// Toolbar2 control.
+        /// uxToolbarTime control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Toolbar Toolbar2;
-        
-        /// <summary>
-        /// ToolbarFill2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ToolbarFill ToolbarFill2;
+        protected global::Ext.Net.Toolbar uxToolbarTime;
         
         /// <summary>
         /// uxWelcomeTime control.
@@ -121,22 +103,13 @@ namespace DBI.Web.EMS.Views {
         protected global::Ext.Net.Label uxWelcomeTime;
         
         /// <summary>
-        /// uxToolBar control.
+        /// uxToolBarLinks control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Toolbar uxToolBar;
-        
-        /// <summary>
-        /// ToolbarFill3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ToolbarFill ToolbarFill3;
+        protected global::Ext.Net.Toolbar uxToolBarLinks;
         
         /// <summary>
         /// uxHelp control.
@@ -146,15 +119,6 @@ namespace DBI.Web.EMS.Views {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.LinkButton uxHelp;
-        
-        /// <summary>
-        /// ToolbarSpacer1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer1;
         
         /// <summary>
         /// uxLogout control.

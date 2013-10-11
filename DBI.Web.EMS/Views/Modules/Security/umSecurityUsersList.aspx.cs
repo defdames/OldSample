@@ -259,8 +259,8 @@ namespace DBI.Web.EMS.Views.Modules.Security
         {
                      
              // Setup Security
-            uxImpersonate.Disabled = DisableActivity("SYS.Users.Impersonate");
-            uxEditUser.Disabled = DisableActivity("SYS.Users.Edit");
+            //uxImpersonate.Disabled = DisableActivity("SYS.Users.Impersonate");
+            //uxEditUser.Disabled = DisableActivity("SYS.Users.Edit");
             
         }
 

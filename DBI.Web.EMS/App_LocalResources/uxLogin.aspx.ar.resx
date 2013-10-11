@@ -186,7 +186,7 @@
   <data name="loginButtonResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
-
+  <assembly alias="Ext.Net" name="Ext.Net, Version=2.2.0.26560, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87" />
   <data name="loginButtonResource1.ToolTipType" type="Ext.Net.ToolTipType, Ext.Net">
     <value>Qtip</value>
   </data>
@@ -321,5 +321,8 @@
   </data>
   <data name="loginVersion" xml:space="preserve">
     <value>الإصدار</value>
+  </data>
+  <data name="maintenance" xml:space="preserve">
+    <value>هذا النظام هو حاليا تحت الصيانة، يرجى المحاولة مرة أخرى في وقت لاحق!</value>
   </data>
 </root>

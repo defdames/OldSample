@@ -16,6 +16,7 @@ using DBI.Core.Security;
 using System.Security.Claims;
 using System.IdentityModel.Services;
 using System.IdentityModel.Tokens;
+using DBI.Data;
 
 namespace DBI.Web.EMS
 {
@@ -24,6 +25,7 @@ namespace DBI.Web.EMS
     /// </summary>
     public partial class uxLogin : BasePage
     {
+
         /// <summary>
         /// Loads the login page
         /// </summary>
@@ -32,11 +34,10 @@ namespace DBI.Web.EMS
         /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
-         
-          if (!X.IsAjaxRequest)
+            if (!X.IsAjaxRequest)
             {
 
-               if (Request.Cookies["UserSettings"] != null)
+                if (Request.Cookies["UserSettings"] != null)
                 {
                     string RTL;
                     HttpCookie myCookie = new HttpCookie("UserSettings");
@@ -71,29 +72,28 @@ namespace DBI.Web.EMS
                     myCookie = Request.Cookies["UserSettings"];
                     browserLanguage = myCookie["Culture"];
                 }
-                if (browserLanguage == "en-GB")
+
+
+                switch (browserLanguage)
                 {
-                    uxRegion.SelectedItem.Index = 2;
-                }
-                else if (browserLanguage == "en-US")
-                {
-                    uxRegion.SelectedItem.Index = 3;
-                }
-                else if (browserLanguage == "fr-CA")
-                {
-                    uxRegion.SelectedItem.Index = 1;
-                }
-                else if (browserLanguage == "ar-AE")
-                {
-                    uxRegion.SelectedItem.Index = 4;
-                }
-                else if (browserLanguage == "en-CA")
-                {
-                    uxRegion.SelectedItem.Index = 0;
-                }
-                else
-                {
-                    uxRegion.SelectedItem.Index = 3;
+                    case "en-GB":
+                        uxRegion.SelectedItem.Index = 2;
+                        break;
+                    case "en-US":
+                        uxRegion.SelectedItem.Index = 3;
+                        break;
+                    case "fr-CA":
+                        uxRegion.SelectedItem.Index = 1;
+                        break;
+                    case "ar-AE":
+                        uxRegion.SelectedItem.Index = 4;
+                        break;
+                    case "en-CA":
+                        uxRegion.SelectedItem.Index = 0;
+                        break;
+                    default:
+                        uxRegion.SelectedItem.Index = 3;
+                        break;
                 }
 
                 CultureInfo region = CultureInfo.CreateSpecificCulture(browserLanguage);
@@ -104,11 +104,16 @@ namespace DBI.Web.EMS
                 Thread.CurrentThread.CurrentUICulture = region;
 
                 FileVersionInfo buildInfo = FileVersionInfo.GetVersionInfo(Server.MapPath("~/bin/DBI.Web.EMS.dll"));
-                uxStatus.Text = string.Format("{0}: {1} - {2}: {3}", (string)GetLocalResourceObject("loginDatabase"), Global.serverInstance, (string)GetLocalResourceObject("loginVersion"), buildInfo.FileVersion);
-                uxDatabaseVer.Text = uxStatus.Text;
+                uxDatabaseVer.Text = string.Format("{0}: {1} - {2}: {3}", (string)GetLocalResourceObject("loginDatabase"), Global.serverInstance, (string)GetLocalResourceObject("loginVersion"), buildInfo.FileVersion);
             }
 
+            // Check for valid oracle connection
+            if (!GenericData.IsContextValid())
+            {
+                X.Msg.Alert((string)GetLocalResourceObject("loginErrorTitle"), (string)GetLocalResourceObject("maintenance")).Show();
+                uxLoginButton.Disabled = true;
 
+            }
         }
 
         /// <summary>
@@ -118,13 +123,17 @@ namespace DBI.Web.EMS
         /// <param name="e"></param>
         protected void deLogin(object sender, DirectEventArgs e)
         {
-            if (String.IsNullOrWhiteSpace(this.uxUsername.Text) || String.IsNullOrWhiteSpace(this.uxPassword.Text))
+            try
             {
-                X.Msg.Alert((string)GetLocalResourceObject("loginErrorTitle"), (string)GetLocalResourceObject("loginErrorMessage")).Show();
-                return;
-            }
+                if (String.IsNullOrWhiteSpace(this.uxUsername.Text) || String.IsNullOrWhiteSpace(this.uxPassword.Text))
+                {
+                    var focusBtn = new JFunction { Handler = "#{uxUsername}.focus(false,250);"};
+                    X.Msg.Alert((string)GetLocalResourceObject("loginErrorTitle"), (string)GetLocalResourceObject("loginErrorMessage"), focusBtn).Show();
+                    uxUsername.Reset();
+                    return;
+                }
 
-                if (Authentication.WindowsAuthenticate(this.uxUsername.Text, this.uxPassword.Text))
+                if (Authentication.Authenticate(this.uxUsername.Text, this.uxPassword.Text))
                 {
                     List<Claim> claims = DBI.Data.SYS_ACTIVITY.Claims(this.uxUsername.Text.ToUpper());
 
@@ -133,23 +142,14 @@ namespace DBI.Web.EMS
                     //Check if user has any roles, if not then exit now
                     if (cnt == 0)
                     {
-                        X.Msg.Alert((string)GetLocalResourceObject("loginErrorTitle"), (string)GetLocalResourceObject("loginErrorNoRoles")).Show();
+                        var focusBtn = new JFunction { Handler = "#{uxPassword}.focus(false,250);"};
+                        X.Msg.Alert((string)GetLocalResourceObject("loginErrorTitle"), (string)GetLocalResourceObject("loginErrorNoRoles"), focusBtn).Show();
                         uxPassword.Reset();
+                        return;
                     }
                     else
                     {
-                        // Always add the username, this is always required
-                        claims.Add(new Claim(ClaimTypes.Name, this.uxUsername.Text.ToUpper()));
-
-                        DBI.Data.SYS_USER_INFORMATION userDetails = DBI.Data.SYS_USER_INFORMATION.UserByUserName(this.uxUsername.Text.ToUpper());
-
-                        // Add full name of user to the claims 
-                        claims.Add(new Claim("EmployeeName", userDetails.EMPLOYEE_NAME));
-
-                        var id = new ClaimsIdentity(claims, "Forms");
-                        var cp = new ClaimsPrincipal(id);
-
-                        var token = new SessionSecurityToken(cp);
+                        var token = Authentication.GenerateSessionSecurityToken(claims);
                         var sam = FederatedAuthentication.SessionAuthenticationModule;
                         sam.WriteSessionTokenToCookie(token);
 
@@ -163,37 +163,44 @@ namespace DBI.Web.EMS
 
                 else
                 {
-                    X.Msg.Alert((string)GetLocalResourceObject("loginErrorTitle"), (string)GetLocalResourceObject("loginInvalid")).Show();
+                    var focusBtn = new JFunction { Handler = "#{uxPassword}.focus(false,250);" };
+                    X.Msg.Alert((string)GetLocalResourceObject("loginErrorTitle"), (string)GetLocalResourceObject("loginInvalid"), focusBtn).Show();
                     uxPassword.Reset();
+                    return;
                 }
-
             }
+            catch (Exception ex)
+            {
+                string eCode = String.Empty;
+                DBI.Data.SYS_LOG.LogToDatabase(ex, out eCode);
+            }
+        }
 
         /// <summary>
         /// Switches the language on the page depending on the value selected.
         /// </summary>
         /// <param name="selectedLanguage"></param>
         [DirectMethod(ShowMask = true, Msg = "Translating...")]
-        public void dmChangeRegion(string selectedLanguage)
+        public void dmChangeRegion(string selectedLanguage, string iconValue)
         {
             string culture;
-            if (selectedLanguage == "United States")
+            if (iconValue == "icon-flagus")
             {
                 culture = "en-US";
             }
-            else if (selectedLanguage == "Great Britain")
+            else if (iconValue == "icon-flaggb")
             {
                 culture = "en-GB";
             }
-            else if (selectedLanguage == "Canada")
+            else if (iconValue == "icon-flagca")
             {
                 culture = "en-CA";
             }
-            else if (selectedLanguage == "French Canadian")
+            else if (iconValue == "icon-flagfr")
             {
                 culture = "fr-CA";
             }
-            else if (selectedLanguage == "United Arab Emirates")
+            else if (iconValue == "icon-flagar")
             {
                 culture = "ar-AE";
             }

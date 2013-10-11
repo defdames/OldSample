@@ -17,21 +17,25 @@ namespace DBI.Core.Web
 {
     public class BasePage : System.Web.UI.Page
     {
+
         /// <summary>
         /// Code the checks for Activity, returns false if user is in role to disable the button (setDisabled)
         /// </summary>
         /// <param name="activity"></param>
         /// <returns></returns>
-        public static bool DisableActivity(string activity)
+        public static void validateComponentSecurity<T>(string activity, string componentName) where T: Ext.Net.ComponentBase, new()
         {
             bool result = false;
             //Check for Administrator override, give access to everything
             if (!HttpContext.Current.User.IsInRole("SYS.Administrator"))
             {
                 result = (HttpContext.Current.User.IsInRole(activity)) ? false : true;
+                //Find the obect and validate it
+                Ext.Net.X.GetCmp<T>(componentName).Disabled = result;
             }
-            return result;
         }
+
+
 
         /// <summary>
         /// Returns the system time as Invariant, needed to store all data in tables that require datetimes.
@@ -211,6 +215,11 @@ namespace DBI.Core.Web
         }
 
 
+        /// <summary>
+        /// Gets the value of a claim item by it's key
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public string GetClaimValue(string key)
         {
             // Cast the Thread.CurrentPrincipal

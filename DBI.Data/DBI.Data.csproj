@@ -64,12 +64,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
+    <Compile Include="DataFactory\Projects\Projects.cs" />
     <Compile Include="DataFactory\Security\Activity.cs" />
     <Compile Include="DataFactory\Security\Logger.cs" />
     <Compile Include="DataFactory\Security\UserActivity.cs" />
     <Compile Include="DataFactory\StaticLists.cs" />
     <Compile Include="DataFactory\Security\UserInformation.cs" />
     <Compile Include="DataFactory\Utilities\GenericData.cs" />
+    <Compile Include="IOS_PROJECT_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="Oracle.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -105,6 +109,9 @@
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="SYS_USER_INFORMATION.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="XX_PROJECTS_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
   </ItemGroup>

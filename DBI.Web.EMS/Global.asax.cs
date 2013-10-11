@@ -31,7 +31,11 @@ namespace DBI.Web.EMS
         {
         }
 
-
+        /// <summary>
+        /// Traps any applications errors and changes them to json for nice output for the user
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void Application_Error(object sender, EventArgs e)
         {
             string exceptionText = string.Empty;

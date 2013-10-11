@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBI.Web.EMS", "DBI.Web.EMS\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBI.AssemblyVersion", "DBI.AssemblyVersion\DBI.AssemblyVersion.csproj", "{5E38C9F8-E137-4EE0-9E9B-4B6FB0D22992}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBI.Mobile.EMS", "DBI.Mobile.EMS\DBI.Mobile.EMS.csproj", "{EE80E524-B5FB-49A7-A367-D7AB809C6F52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,10 @@ Global
 		{5E38C9F8-E137-4EE0-9E9B-4B6FB0D22992}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E38C9F8-E137-4EE0-9E9B-4B6FB0D22992}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5E38C9F8-E137-4EE0-9E9B-4B6FB0D22992}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{EE80E524-B5FB-49A7-A367-D7AB809C6F52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE80E524-B5FB-49A7-A367-D7AB809C6F52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE80E524-B5FB-49A7-A367-D7AB809C6F52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE80E524-B5FB-49A7-A367-D7AB809C6F52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

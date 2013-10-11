@@ -10,7 +10,7 @@
 <body>
     <ext:ResourceManager ID="uxResourceManager" runat="server" >
     </ext:ResourceManager>
-    <form id="form1" runat="server">
+    <form id="uxForm" runat="server">
         <ext:Viewport ID="uxViewPort" runat="server" Layout="border">
             <Items>
                 <ext:Panel ID="uxNorth" runat="server" Collapsible="false" Height="77" Region="North" BodyPadding="5" Split="true" Margins="5px 5px 0px 5px" BodyStyle="background-color: black;" Layout="HBoxLayout">
@@ -29,9 +29,9 @@
                         <ext:VBoxLayoutConfig Align="Stretch" />
                     </LayoutConfig>
                     <Items>
-                       <ext:Toolbar ID="Toolbar1" runat="server" Border="false" Cls="my-toolbar">
+                       <ext:Toolbar ID="uxToolbarWelcome" runat="server" Border="false" Cls="my-toolbar">
                             <Items>
-                                <ext:ToolbarFill ID="ToolbarFill1" runat="server"></ext:ToolbarFill>
+                                <ext:ToolbarFill ></ext:ToolbarFill>
                                 <ext:Linkbutton ID="uxWelcomeName" runat="server">
                                     <DirectEvents>
                                         <Click OnEvent="deRemoveImpersonate"><Confirmation ConfirmRequest="true" Message="Are you sure you want to stop impersonating this user?"></Confirmation></Click>
@@ -39,17 +39,17 @@
                                 </ext:Linkbutton>
                             </Items>
                         </ext:Toolbar>
-                        <ext:Toolbar ID="Toolbar2" runat="server" Border="false" Cls="my-toolbar">
+                        <ext:Toolbar ID="uxToolbarTime" runat="server" Border="false" Cls="my-toolbar">
                             <Items>
-                                <ext:ToolbarFill ID="ToolbarFill2" runat="server"></ext:ToolbarFill>
+                                <ext:ToolbarFill ></ext:ToolbarFill>
                                 <ext:Label ID="uxWelcomeTime" runat="server" CtCls="welcome-orange"></ext:Label>
                             </Items>
                         </ext:Toolbar>
-                          <ext:Toolbar ID="uxToolBar" runat="server" Border="false" Cls="my-toolbar">
+                          <ext:Toolbar ID="uxToolBarLinks" runat="server" Border="false" Cls="my-toolbar">
                             <Items>
-                                <ext:ToolbarFill ID="ToolbarFill3" runat="server"></ext:ToolbarFill>
+                                <ext:ToolbarFill ></ext:ToolbarFill>
                                 <ext:LinkButton ID="uxHelp" runat="server" Text="Help" CtCls="header-actions-button"></ext:LinkButton>
-                                <ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server"></ext:ToolbarSpacer>
+                                <ext:ToolbarSpacer ></ext:ToolbarSpacer>
                                 <ext:LinkButton ID="uxLogout" runat="server" Text="Logout" CtCls="header-actions-button">
                                     <DirectEvents>
                                         <Click OnEvent="deLogout">

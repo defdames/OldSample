@@ -34,9 +34,10 @@ namespace DBI.Data
             }
             catch (Exception e)
             {
-                string ErrorID;
-                DBI.Data.SYS_LOG.LogToDatabase(e, "GetOpenActivities", out ErrorID);
-                throw new Exception(string.Format(Resource.GetOpenActivities + " " + e.Message + "  {0}", ErrorID));
+                throw (e);
+                //string ErrorID;
+                //DBI.Data.SYS_LOG.LogToDatabase(e, "GetOpenActivities", out ErrorID);
+                //throw new Exception(string.Format(Resource.GetOpenActivities + " " + e.Message + "  {0}", ErrorID));
             }
           
         }
@@ -58,9 +59,10 @@ namespace DBI.Data
             }
             catch (Exception e)
             {
-                string ErrorID;
-                DBI.Data.SYS_LOG.LogToDatabase(e, "GetActivities", out ErrorID);
-                throw new Exception(string.Format(Resource.GetActivities + " " + e.Message + " {0}", ErrorID));
+                throw (e);
+                //string ErrorID;
+                //DBI.Data.SYS_LOG.LogToDatabase(e, "GetActivities", out ErrorID);
+                //throw new Exception(string.Format(Resource.GetActivities + " " + e.Message + " {0}", ErrorID));
             }
           
         }
@@ -88,9 +90,10 @@ namespace DBI.Data
             }
             catch (Exception e)
             {
-                string ErrorID;
-                DBI.Data.SYS_LOG.LogToDatabase(e, "GetActivity", out ErrorID);
-                throw new Exception(string.Format(Resource.GetActivity + " " + e.Message + "  {0}", ErrorID));
+                throw (e);
+                //string ErrorID;
+                //DBI.Data.SYS_LOG.LogToDatabase(e, "GetActivity", out ErrorID);
+                //throw new Exception(string.Format(Resource.GetActivity + " " + e.Message + "  {0}", ErrorID));
             }
         }
 
@@ -101,8 +104,6 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<Claim> Claims(string username)
         {
-            try
-            {
                 using (Entities _context = new Entities())
                 {
 
@@ -121,15 +122,15 @@ namespace DBI.Data
                     {
                         claims.Add(new Claim(ClaimTypes.Role, srole.SYS_ACTIVITY.NAME));
                     }
+
+                    // Add a claim for the username
+                    claims.Add(new Claim(ClaimTypes.Name, username.ToUpper()));
+
+                    // Add full name of user to the claims 
+                    claims.Add(new Claim("EmployeeName", userInfo.EMPLOYEE_NAME));
+
                     return claims;
-                }
-            }
-            catch (Exception e)
-            {
-                string ErrorID;
-                DBI.Data.SYS_LOG.LogToDatabase(e, "GetClaims", out ErrorID, username);
-                throw new Exception(string.Format(Resource.GetClaims + " " + e.Message + "  {0}", ErrorID));
-            }
+                }   
             
         } 
 
@@ -163,9 +164,9 @@ namespace DBI.Data
             }
             catch (Exception e)
             {
-                string ErrorID;
-                DBI.Data.SYS_LOG.LogToDatabase(e, "DeleteActivity", out ErrorID);
-                throw new Exception(string.Format(Resource.DeleteActivity + " " + e.Message + " {0}", ErrorID));
+                //string ErrorID;
+                //DBI.Data.SYS_LOG.LogToDatabase(e, "DeleteActivity", out ErrorID);
+                //throw new Exception(string.Format(Resource.DeleteActivity + " " + e.Message + " {0}", ErrorID));
             }
            
         }
@@ -189,9 +190,9 @@ namespace DBI.Data
             }
             catch (Exception e)
             {
-                string ErrorID;
-                DBI.Data.SYS_LOG.LogToDatabase(e, "SaveActivity", out ErrorID);
-                throw new Exception(string.Format(Resource.SaveActivity + " " + e.Message + " {0}", ErrorID));
+                //string ErrorID;
+                //DBI.Data.SYS_LOG.LogToDatabase(e, "SaveActivity", out ErrorID);
+                //throw new Exception(string.Format(Resource.SaveActivity + " " + e.Message + " {0}", ErrorID));
             }
             
 

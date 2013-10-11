@@ -325,4 +325,7 @@
   <data name="loginErrorNoRoles" xml:space="preserve">
     <value>Your account does not have any security roles, you may not login at this time.</value>
   </data>
+  <data name="maintenance" xml:space="preserve">
+    <value>The system is currently down for maintenance, please try again later!</value>
+  </data>
 </root>

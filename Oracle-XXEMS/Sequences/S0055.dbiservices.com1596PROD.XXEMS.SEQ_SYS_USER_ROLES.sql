@@ -1,6 +1,0 @@
--- ****** Object: Sequence XXEMS.SEQ_SYS_USER_ROLES Script Date: 7/2/2013 10:36:11 AM ******
-CREATE SEQUENCE "SEQ_SYS_USER_ROLES" 
-  START WITH 26 
-  NOCACHE 
-  MINVALUE 0
-/

@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DBI.Core.Security;
 using DBI.Core.Web;
 using DBI.Data;
 using Ext.Net;
@@ -34,10 +35,11 @@ namespace DBI.Web.EMS.Views
                     }
                 }
 
-                // Get security for menu activities
-                uxSecurityUsers.Disabled = DisableActivity("SYS.Users.View");
-                uxSecurityActivities.Disabled = DisableActivity("SYS.Activities.View");
-                uxSecurityLogs.Disabled = DisableActivity("SYS.Logs.View");
+                /// Validate Security Objects ---------------------------------------------------
+                validateComponentSecurity<Ext.Net.MenuItem>("SYS.Users.View", "uxSecurityUsers");
+                validateComponentSecurity<Ext.Net.MenuItem>("SYS.Activities.View", "uxSecurityActivities");
+                validateComponentSecurity<Ext.Net.MenuItem>("SYS.Logs.View", "uxSecurityLogs");
+                //-------------------------------------------------------------------------------
 
                 // Get Impersonating Info/Details
                 string user = GetClaimValue("ImpersonatedUser");
@@ -64,21 +66,42 @@ namespace DBI.Web.EMS.Views
 
         }
 
+        /// <summary>
+        /// Loads the panel that displays system security users
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deLoadSecurityUsers(object sender, DirectEventArgs e)
         {
             LoadModule("~/Views/Modules/Security/umSecurityUsersList.aspx", "uxCenter");
         }
 
+        /// <summary>
+        /// Loads the panel that displays system activies or securit ylevels
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deLoadSecurityActivities(object sender, DirectEventArgs e)
         {
             LoadModule("~/Views/Modules/Security/umSecurityActivityList.aspx", "uxCenter");
         }
 
+
+        /// <summary>
+        /// Loads the panel that displays the system log files
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deLoadSecurityLogs(object sender, DirectEventArgs e)
         {
             LoadModule("~/Views/Modules/Security/umSecurityLogList.aspx", "uxCenter");
         }
 
+        /// <summary>
+        /// Removes the impersonate ability from the user, and resets their security back to their user account.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deRemoveImpersonate(object sender, DirectEventArgs e)
         {
             if (GetClaimValue("ImpersonatorUsername") != null)
@@ -88,19 +111,13 @@ namespace DBI.Web.EMS.Views
 
                 List<Claim> claims = DBI.Data.SYS_ACTIVITY.Claims(userDetails.USER_NAME);
 
-                int cnt = claims.Count;
-                // Always add the username, this is always required
-                claims.Add(new Claim(ClaimTypes.Name, userDetails.USER_NAME));
-
                 // Add full name of user to the claims 
                 claims.Add(new Claim("EmployeeName", GetClaimValue("EmployeeName")));
 
-                var id = new ClaimsIdentity(claims, "Forms");
-                var cp = new ClaimsPrincipal(id);
-
-                var token = new SessionSecurityToken(cp);
+                var token = Authentication.GenerateSessionSecurityToken(claims);
                 var sam = FederatedAuthentication.SessionAuthenticationModule;
                 sam.WriteSessionTokenToCookie(token);
+
 
                 // Break out of frames and redirect user.
                 ResourceManager.GetInstance().AddScript("parent.window.location = '{0}';", "uxDefault.aspx");

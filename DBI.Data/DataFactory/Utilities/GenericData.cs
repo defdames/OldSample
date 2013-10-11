@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Data.Entity;
 using System.Data.Objects.DataClasses;
 using System.Linq;
 using System.Linq.Expressions;
@@ -14,6 +15,30 @@ namespace DBI.Data
 {
     public static class GenericData
     {
+        /// <summary>
+        /// Checks to see if we can make a connection to Oracle
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsContextValid()
+        {
+            bool isValid = false;
+
+            try
+            {
+                Entities _context = new Entities();
+                _context.SYS_ACTIVITY.Count();
+                isValid = true;
+            }
+            catch
+            {
+                isValid = false;
+            }
+
+            return isValid;
+
+        }
+
+
 
         /// <summary>
         /// This inserts data into any entity object
@@ -354,8 +379,25 @@ namespace DBI.Data
             }
         }
 
+        /// <summary>
+        /// Allows you to test the connection to oracle and if it fails return a message saying it's down.
+        /// </summary>
+        /// <returns></returns>
+        public static bool oracleConnectionTest()
+        {
+            var db = new Entities();
 
-       
+            try
+            {
+                db.Database.Connection.Open();   // check the database connection
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
     }
 }
 

@@ -20,7 +20,7 @@ namespace DBI.Data
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="message"></param>
-        public static void LogToDatabase(Exception ex, string errorCode, out string ErrorID,string username = null)
+        public static void LogToDatabase(Exception ex, out string ErrorID,string username = null)
         {
             using (Entities _context = new Entities())
             {
@@ -33,8 +33,8 @@ namespace DBI.Data
                 _log.GUID = ErrorID;
 
                 _log.USER_ID = (username != null) ? SYS_USER_INFORMATION.UserID(username) : SYS_USER_INFORMATION.UserID(_httpcontext.User.Identity.Name);
-                _log.MESSAGE = (DBI.Data.DataFactory.Messages.Resource.ResourceManager.GetString(errorCode,InvC) == null) ? errorCode : DBI.Data.DataFactory.Messages.Resource.ResourceManager.GetString(errorCode,InvC);
-                _log.INNER_EXCEPTION = (ex.InnerException == null) ? ex.Message : ex.InnerException.ToString();
+                _log.MESSAGE = ex.Message;
+                _log.INNER_EXCEPTION = ex.InnerException.Message;
                 _log.SOURCE = ex.Source;
                 _log.STACKTRACE = ex.StackTrace;
                 _log.USER_CULTURE = CultureInfo.CurrentCulture.Name;
