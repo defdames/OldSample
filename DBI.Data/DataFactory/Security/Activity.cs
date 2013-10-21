@@ -121,6 +121,7 @@ namespace DBI.Data
                     foreach (SYS_USER_ACTIVITY srole in roles)
                     {
                         claims.Add(new Claim(ClaimTypes.Role, srole.SYS_ACTIVITY.NAME));
+
                     }
 
                     // Add a claim for the username

@@ -17,10 +17,11 @@ namespace DBI.Mobile.EMS
                 defaults: new { id = RouteParameter.Optional }
             );
 
+
             var authConfig = new AuthenticationConfiguration
             {
                 SendWwwAuthenticateResponseHeaders = false,
-                RequireSsl = false,
+                RequireSsl = true,
                 EnableSessionToken = true
             };
 
