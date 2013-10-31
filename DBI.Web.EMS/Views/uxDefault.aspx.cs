@@ -69,36 +69,14 @@ namespace DBI.Web.EMS.Views
 
         }
 
-        //todo combine deLoadWhatever into one handler that can load based on which button was clicked, rather than a separate direct event for each
         /// <summary>
-        /// Loads the panel that displays system security users
+        /// Direct Event that loads a panel given 2 ext.net extra parameters
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deLoadSecurityUsers(object sender, DirectEventArgs e)
+        /// <param name="e">Extra Parameters Page(which panel to load), and Location(where on the page to load it)</param>
+        protected void deLoadPage(object sender, DirectEventArgs e)
         {
-            LoadModule("~/Views/Modules/Security/umSecurityUsersList.aspx", "uxCenter");
-        }
-
-        /// <summary>
-        /// Loads the panel that displays system activies or securit ylevels
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deLoadSecurityActivities(object sender, DirectEventArgs e)
-        {
-            LoadModule("~/Views/Modules/Security/umSecurityActivityList.aspx", "uxCenter");
-        }
-
-
-        /// <summary>
-        /// Loads the panel that displays the system log files
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deLoadSecurityLogs(object sender, DirectEventArgs e)
-        {
-            LoadModule("~/Views/Modules/Security/umSecurityLogList.aspx", "uxCenter");
+            LoadModule(e.ExtraParams["Page"], e.ExtraParams["Location"]);
         }
 
         /// <summary>
