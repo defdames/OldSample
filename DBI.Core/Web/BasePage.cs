@@ -84,6 +84,7 @@ namespace DBI.Core.Web
             base.InitializeCulture();
         }
 
+        //todo Possibly move deLogout into Authenticate
         /// <summary>
         /// System logout function
         /// </summary>
@@ -214,7 +215,7 @@ namespace DBI.Core.Web
             return script.ToString();
         }
 
-
+        //todo Possibly move GetClaimValue into Authenticate
         /// <summary>
         /// Gets the value of a claim item by it's key
         /// </summary>

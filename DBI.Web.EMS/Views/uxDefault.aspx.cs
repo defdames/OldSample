@@ -35,6 +35,8 @@ namespace DBI.Web.EMS.Views
                     }
                 }
 
+                //todo Switch to generating buttons based off of permissions vs disabling based off of permissions.
+                //todo Add authentication to the page itself instead of simply disabling the button
                 /// Validate Security Objects ---------------------------------------------------
                 validateComponentSecurity<Ext.Net.MenuItem>("SYS.Users.View", "uxSecurityUsers");
                 validateComponentSecurity<Ext.Net.MenuItem>("SYS.Activities.View", "uxSecurityActivities");
@@ -49,6 +51,7 @@ namespace DBI.Web.EMS.Views
 
                 if (user != string.Empty)
                 {
+                    //todo Internationalize(currently only in English) because of string.Format
                     uxWelcomeName.Text = string.Format("Impersonating User {0} by ({1})", user, byuser);
                     uxWelcomeName.CtCls = "header-actions-button-red";
                     uxWelcomeName.Disabled = false;
@@ -66,6 +69,7 @@ namespace DBI.Web.EMS.Views
 
         }
 
+        //todo combine deLoadWhatever into one handler that can load based on which button was clicked, rather than a separate direct event for each
         /// <summary>
         /// Loads the panel that displays system security users
         /// </summary>
