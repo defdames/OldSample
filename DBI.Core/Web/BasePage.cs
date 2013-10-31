@@ -12,6 +12,7 @@ using Ext.Net;
 using DBI.Core;
 using System.Web.Script.Serialization;
 using System.Security.Claims;
+using DBI.Core.Security;
 
 namespace DBI.Core.Web
 {
@@ -92,7 +93,8 @@ namespace DBI.Core.Web
         /// <param name="e"></param>
         protected void deLogout(object sender, DirectEventArgs e)
         {
-            FormsAuthentication.SignOut();
+            Authentication MyAuth = new Authentication();
+            MyAuth.Logout();
             X.Redirect("~/uxLogin.aspx");
         }
 
