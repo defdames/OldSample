@@ -20,9 +20,7 @@ namespace DBI.Web.EMS.Views
     public partial class uxDefault : DBI.Core.Web.BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
-        {
-
-   
+        {   
             if (!X.IsAjaxRequest)
             {
                 // Look for cookie information for language support
@@ -39,7 +37,6 @@ namespace DBI.Web.EMS.Views
                     }
                 }
 
-                //todo Switch to generating buttons based off of permissions vs disabling based off of permissions.(Needs DB)
                 //todo Add authentication to the page itself instead of simply disabling the button(Needs DB)
                 /// Validate Security Objects ---------------------------------------------------
                 validateComponentSecurity<Ext.Net.MenuItem>("SYS.Users.View", "uxSecurityUsers");
@@ -47,9 +44,10 @@ namespace DBI.Web.EMS.Views
                 validateComponentSecurity<Ext.Net.MenuItem>("SYS.Logs.View", "uxSecurityLogs");
                 //-------------------------------------------------------------------------------
 
+                var MyAuth = new Authentication();
                 // Get Impersonating Info/Details
-                string user = GetClaimValue("ImpersonatedUser");
-                string byuser = GetClaimValue("EmployeeName");
+                string user = MyAuth.GetClaimValue("ImpersonatedUser", User as ClaimsPrincipal);
+                string byuser = MyAuth.GetClaimValue("EmployeeName", User as ClaimsPrincipal);
 
                 uxWelcomeTime.Text = string.Format("Today is {0}", DateTime.Now.ToString("D"));
 
@@ -67,9 +65,8 @@ namespace DBI.Web.EMS.Views
                     uxWelcomeName.CtCls = "header-actions-button-orange";
                     uxWelcomeName.Disabled = true;
                 }
-
-
             }
+            GenerateMenuItems(User as ClaimsPrincipal);
 
         }
 
@@ -90,15 +87,16 @@ namespace DBI.Web.EMS.Views
         /// <param name="e"></param>
         protected void deRemoveImpersonate(object sender, DirectEventArgs e)
         {
-            if (GetClaimValue("ImpersonatorUsername") != null)
+            var MyAuth = new Authentication();
+            if (MyAuth.GetClaimValue("ImpersonatorUsername", User as ClaimsPrincipal) != null)
             {
 
-                SYS_USER_INFORMATION userDetails = SYS_USER_INFORMATION.UserByUserName(GetClaimValue("ImpersonatorUsername"));
+                SYS_USER_INFORMATION userDetails = SYS_USER_INFORMATION.UserByUserName(MyAuth.GetClaimValue("ImpersonatorUsername", User as ClaimsPrincipal));
 
                 List<Claim> claims = DBI.Data.SYS_ACTIVITY.Claims(userDetails.USER_NAME);
 
                 // Add full name of user to the claims 
-                claims.Add(new Claim("EmployeeName", GetClaimValue("EmployeeName")));
+                claims.Add(new Claim("EmployeeName", MyAuth.GetClaimValue("EmployeeName", User as ClaimsPrincipal)));
 
                 var token = Authentication.GenerateSessionSecurityToken(claims);
                 var sam = FederatedAuthentication.SessionAuthenticationModule;
@@ -109,6 +107,67 @@ namespace DBI.Web.EMS.Views
                 ResourceManager.GetInstance().AddScript("parent.window.location = '{0}';", "uxDefault.aspx");
             }
 
+        }
+
+        //todo Eventually move to Role contains default(but overrideable) Activities
+        //todo Update to Add Icon and Menu Item Text
+        /// <summary>
+        /// Generates the Menu Items for a logged in user based on all roles assigned to user in claims
+        /// </summary>
+        public void GenerateMenuItems(ClaimsPrincipal icp)
+        {
+            List<SYS_ACTIVITY> userActivities;
+
+            if(!User.IsInRole("SYS.Administrator"))
+            {
+                //Get all roles from claims
+                ClaimsIdentity claimsIdentity = (ClaimsIdentity)icp.Identity;
+
+                List<string> AssignedRoles = (from c in claimsIdentity.Claims
+                                              where c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+                                              select c.Value).ToList();
+                //Get Button config from server
+                Entities context = new Entities();
+                userActivities = (from s in context.SYS_ACTIVITY
+                                    where AssignedRoles.Contains(s.NAME) && s.PATH != null
+                                    select s).ToList();
+            }
+            else
+            {
+                Entities context = new Entities();
+                userActivities = (from s in context.SYS_ACTIVITY
+                                    where !(string.IsNullOrEmpty(s.PATH))
+                                    select s).ToList();
+            }
+            //Iterate through allowed activities
+            foreach (SYS_ACTIVITY userActivity in userActivities)
+            {
+                //Create new Menu Item
+                Ext.Net.MenuItem NewItem = new Ext.Net.MenuItem()
+                {
+                    ID = "menu" + userActivity.ACTIVITY_ID.ToString(),
+                    Text = "My Button", //userActivity.TITLE,
+                    Icon = Icon.Add //(Icon)Enum.Parse(typeof(Icon), userActivity.ICON)
+                };
+
+                //Add click DirectEvent
+                NewItem.DirectEvents.Click.Event += deLoadPage;
+                
+                //Add DirectEvent Parameters
+                NewItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+                {
+                    Name = "Location",
+                    Value = userActivity.CONTAINER
+                });
+                NewItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+                {
+                    Name = "Page",
+                    Value = userActivity.PATH
+                });
+
+                //Add to Menu
+                uxMenu.Items.Add(NewItem);                
+            }
         }
     }
 }

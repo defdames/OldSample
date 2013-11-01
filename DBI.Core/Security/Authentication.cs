@@ -66,5 +66,25 @@ namespace DBI.Core.Security
             sam.CookieHandler.Delete(HttpContext.Current);
         }
 
+        /// <summary>
+        /// Gets the value of a claim item by it's key
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns>Claim Value</returns>
+        public string GetClaimValue(string key, ClaimsPrincipal icp)
+        {
+            // Access IClaimsIdentity which contains claims
+            ClaimsIdentity claimsIdentity = (ClaimsIdentity)icp.Identity;
+
+            // Access claims
+            foreach (Claim claim in claimsIdentity.Claims)
+            {
+                if (claim.Type == key)
+                {
+                    return claim.Value;
+                }
+            }
+            return string.Empty;
+        }
     }
 }

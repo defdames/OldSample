@@ -215,31 +215,5 @@ namespace DBI.Core.Web
 
             return script.ToString();
         }
-
-        //todo Possibly move GetClaimValue into Authenticate
-        /// <summary>
-        /// Gets the value of a claim item by it's key
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns>Claim Value</returns>
-        public string GetClaimValue(string key)
-        {
-            // Cast the Thread.CurrentPrincipal
-            ClaimsPrincipal icp = User as ClaimsPrincipal;
-
-            // Access IClaimsIdentity which contains claims
-            ClaimsIdentity claimsIdentity = (ClaimsIdentity)icp.Identity;
-
-            // Access claims
-            foreach (Claim claim in claimsIdentity.Claims)
-            {
-                if (claim.Type == key)
-                {
-                    return claim.Value;
-                }
-            }
-            return string.Empty;
-        }
-
     }
 }
