@@ -42,7 +42,7 @@ namespace DBI.Core.Web
         /// Returns the system time as Invariant, needed to store all data in tables that require datetimes.
         /// </summary>
         /// <param name="Invariant"></param>
-        /// <returns></returns>
+        /// <returns>DateTime</returns>
         public static DateTime SystemTime()
         {
             DateTime dt = DateTime.Now;
@@ -85,7 +85,6 @@ namespace DBI.Core.Web
             base.InitializeCulture();
         }
 
-        //todo Possibly move deLogout into Authenticate
         /// <summary>
         /// System logout function
         /// </summary>
@@ -175,7 +174,7 @@ namespace DBI.Core.Web
         /// This displays a nice error message for all exceptions, handled and unhandled
         /// </summary>
         /// <param name="onRequestFailureScript"></param>
-        /// <returns></returns>
+        /// <returns>string</returns>
         protected string GetExceptionHandlerScript(string onRequestFailureScript)
         {
             StringBuilder script = new StringBuilder();
@@ -222,7 +221,7 @@ namespace DBI.Core.Web
         /// Gets the value of a claim item by it's key
         /// </summary>
         /// <param name="key"></param>
-        /// <returns></returns>
+        /// <returns>Claim Value</returns>
         public string GetClaimValue(string key)
         {
             // Cast the Thread.CurrentPrincipal

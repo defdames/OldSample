@@ -14,6 +14,9 @@ using Ext.Net;
 
 namespace DBI.Web.EMS.Views
 {
+    /// <summary>
+    /// Default View with buttons and where modules are loaded
+    /// </summary>
     public partial class uxDefault : DBI.Core.Web.BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
@@ -35,8 +38,8 @@ namespace DBI.Web.EMS.Views
                     }
                 }
 
-                //todo Switch to generating buttons based off of permissions vs disabling based off of permissions.
-                //todo Add authentication to the page itself instead of simply disabling the button
+                //todo Switch to generating buttons based off of permissions vs disabling based off of permissions.(Needs DB)
+                //todo Add authentication to the page itself instead of simply disabling the button(Needs DB)
                 /// Validate Security Objects ---------------------------------------------------
                 validateComponentSecurity<Ext.Net.MenuItem>("SYS.Users.View", "uxSecurityUsers");
                 validateComponentSecurity<Ext.Net.MenuItem>("SYS.Activities.View", "uxSecurityActivities");
