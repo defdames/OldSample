@@ -6,13 +6,12 @@ using System.Net.Http;
 using System.Web.Http;
 using DBI.Data;
 
-
 namespace DBI.Mobile.EMS.Controllers
 {
-    public class TasksController : ApiController
+    public class VehicleController : ApiController
     {
         /// <summary>
-        /// This returns a list of customer billing projects
+        /// This returns a list of vehicles
         /// </summary>
         /// <returns></returns>
         [Authorize]

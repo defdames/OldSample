@@ -256,6 +256,8 @@
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="500" />
           <Property Name="LAST_UPDATED" Type="date" />
           <Property Name="LAST_UPDATED_BY" Type="varchar2" MaxLength="500" />
+          <Property Name="PATH" Type="varchar2" MaxLength="2000" />
+          <Property Name="CONTAINER" Type="varchar2" MaxLength="2000" />
         </EntityType>
         <EntityType Name="SYS_LOG">
           <Key>
@@ -660,6 +662,8 @@
           <Property Type="DateTime" Name="LAST_UPDATED" />
           <Property Type="String" Name="LAST_UPDATED_BY" MaxLength="500" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="SYS_USER_ACTIVITY" Relationship="OracleModel.SYS_USER_ACTIVITYSYS_ACTIVITY" FromRole="SYS_ACTIVITY" ToRole="SYS_USER_ACTIVITY" />
+          <Property Type="String" Name="PATH" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CONTAINER" MaxLength="2000" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="SYS_USER_ACTIVITY">
           <Key>
@@ -1041,6 +1045,8 @@
           <EntitySetMapping Name="SYS_ACTIVITY">
             <EntityTypeMapping TypeName="OracleModel.SYS_ACTIVITY">
               <MappingFragment StoreEntitySet="SYS_ACTIVITY">
+                <ScalarProperty Name="CONTAINER" ColumnName="CONTAINER" />
+                <ScalarProperty Name="PATH" ColumnName="PATH" />
                 <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
                 <ScalarProperty Name="LAST_UPDATED" ColumnName="LAST_UPDATED" />
                 <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
