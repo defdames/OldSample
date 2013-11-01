@@ -12,6 +12,7 @@ using Ext.Net;
 using DBI.Core;
 using System.Web.Script.Serialization;
 using System.Security.Claims;
+using DBI.Core.Security;
 
 namespace DBI.Core.Web
 {
@@ -41,7 +42,7 @@ namespace DBI.Core.Web
         /// Returns the system time as Invariant, needed to store all data in tables that require datetimes.
         /// </summary>
         /// <param name="Invariant"></param>
-        /// <returns></returns>
+        /// <returns>DateTime</returns>
         public static DateTime SystemTime()
         {
             DateTime dt = DateTime.Now;
@@ -91,7 +92,8 @@ namespace DBI.Core.Web
         /// <param name="e"></param>
         protected void deLogout(object sender, DirectEventArgs e)
         {
-            FormsAuthentication.SignOut();
+            Authentication MyAuth = new Authentication();
+            MyAuth.Logout();
             X.Redirect("~/uxLogin.aspx");
         }
 
@@ -172,7 +174,7 @@ namespace DBI.Core.Web
         /// This displays a nice error message for all exceptions, handled and unhandled
         /// </summary>
         /// <param name="onRequestFailureScript"></param>
-        /// <returns></returns>
+        /// <returns>string</returns>
         protected string GetExceptionHandlerScript(string onRequestFailureScript)
         {
             StringBuilder script = new StringBuilder();
@@ -214,12 +216,12 @@ namespace DBI.Core.Web
             return script.ToString();
         }
 
-
+        //todo Possibly move GetClaimValue into Authenticate
         /// <summary>
         /// Gets the value of a claim item by it's key
         /// </summary>
         /// <param name="key"></param>
-        /// <returns></returns>
+        /// <returns>Claim Value</returns>
         public string GetClaimValue(string key)
         {
             // Cast the Thread.CurrentPrincipal

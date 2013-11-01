@@ -135,6 +135,7 @@ namespace DBI.Web.EMS
 
                 if (Authentication.Authenticate(this.uxUsername.Text, this.uxPassword.Text))
                 {
+                    //todo Move Claims building into Authenticate method?
                     List<Claim> claims = DBI.Data.SYS_ACTIVITY.Claims(this.uxUsername.Text.ToUpper());
 
                     int cnt = claims.Count;

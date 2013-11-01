@@ -34,6 +34,7 @@
     <Reference Include="Ext.Net, Version=2.2.0.26560, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\EXT\Ext.Net.dll</HintPath>
+      <HintPath>..\..\..\..\Ext 2.3\Ext.Net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />

@@ -96,17 +96,32 @@
                                     <Items>
                                          <ext:MenuItem ID="uxSecurityUsers" runat="server" Text="Security Users" Icon="User">
                                            <DirectEvents>
-                                               <Click OnEvent="deLoadSecurityUsers" ></Click>
+                                               <Click OnEvent="deLoadPage" >
+                                                   <ExtraParams>
+                                                       <ext:Parameter Name="Page" Value="~/Views/Modules/Security/umSecurityUsersList.aspx" />
+                                                       <ext:Parameter Name="Location" Value="uxCenter" />
+                                                   </ExtraParams>
+                                               </Click>
                                            </DirectEvents>
                                         </ext:MenuItem>
                                          <ext:MenuItem ID="uxSecurityActivities" runat="server" Text="Security Activities" Icon="UserBrown">
                                            <DirectEvents>
-                                               <Click OnEvent="deLoadSecurityActivities" ></Click>
+                                               <Click OnEvent="deLoadPage" >
+                                                   <ExtraParams>
+                                                       <ext:Parameter Name="Page" Value="~/Views/Modules/Security/umSecurityActivityList.aspx" />
+                                                       <ext:Parameter Name="Location" Value="uxCenter" />
+                                                   </ExtraParams>
+                                               </Click>
                                            </DirectEvents>
                                         </ext:MenuItem>
                                         <ext:MenuItem ID="uxSecurityLogs" runat="server" Text="Security Logs" Icon="Report">
                                            <DirectEvents>
-                                               <Click OnEvent="deLoadSecurityLogs" ></Click>
+                                               <Click OnEvent="deLoadPage" >
+                                                   <ExtraParams>
+                                                       <ext:Parameter Name="Page" Value="~/Views/Modules/Security/umSecurityLogList.aspx" />
+                                                       <ext:Parameter Name="Location" Value="uxCenter" />
+                                                   </ExtraParams>
+                                               </Click>
                                            </DirectEvents>
                                         </ext:MenuItem>
                                     </Items>
