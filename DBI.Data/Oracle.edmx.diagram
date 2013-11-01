@@ -15,6 +15,8 @@
         <EntityTypeShape EntityType="OracleModel.SYS_LOG" Width="1.5" PointX="7.625" PointY="0.75" />
         <AssociationConnector Association="OracleModel.SYS_USERSSYS_LOG" />
         <EntityTypeShape EntityType="OracleModel.PROJECTS_V" Width="1.5" PointX="9.75" PointY="0.75" />
+        <EntityTypeShape EntityType="OracleModel.EMPLOYEES_V" Width="1.5" PointX="7.2218522518974968" PointY="21.614209110668959" />
+        <EntityTypeShape EntityType="OracleModel.PA_TASKS_V" Width="1.5" PointX="6.8716379640957523" PointY="26.749953401624204" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

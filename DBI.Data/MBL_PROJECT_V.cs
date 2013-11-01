@@ -20,5 +20,8 @@ namespace DBI.Data
         public long CARRYING_OUT_ORGANIZATION_ID { get; set; }
         public System.DateTime LAST_UPDATED_DATE { get; set; }
         public string CARRYING_OUT_ORGANIZATION_NAME { get; set; }
+        public string PROJECT_STATUS_CODE { get; set; }
+        public Nullable<System.DateTime> START_DATE { get; set; }
+        public Nullable<System.DateTime> COMPLETION_DATE { get; set; }
     }
 }

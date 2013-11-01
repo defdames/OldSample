@@ -10,6 +10,27 @@
           <EntitySet Name="SYS_LOG" EntityType="OracleModel.Store.SYS_LOG" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USER_ACTIVITY" EntityType="OracleModel.Store.SYS_USER_ACTIVITY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USERS" EntityType="OracleModel.Store.SYS_USERS" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="EMPLOYEES_V" EntityType="OracleModel.Store.EMPLOYEES_V" store:Type="Views" store:Schema="XXEMS" store:Name="EMPLOYEES_V">
+            <DefiningQuery>SELECT 
+      "EMPLOYEES_V"."PERSON_ID" AS "PERSON_ID", 
+      "EMPLOYEES_V"."EMPLOYEE_NAME" AS "EMPLOYEE_NAME", 
+      "EMPLOYEES_V"."CURRENT_EMPLOYEE_FLAG" AS "CURRENT_EMPLOYEE_FLAG", 
+      "EMPLOYEES_V"."EMPLOYEE_NUMBER" AS "EMPLOYEE_NUMBER", 
+      "EMPLOYEES_V"."JOB_NAME" AS "JOB_NAME", 
+      "EMPLOYEES_V"."ORGANIZATION_ID" AS "ORGANIZATION_ID", 
+      "EMPLOYEES_V"."ORGANIZATION_NAME" AS "ORGANIZATION_NAME", 
+      "EMPLOYEES_V"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE"
+      FROM "XXEMS"."EMPLOYEES_V" "EMPLOYEES_V"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.Store.PA_TASKS_V" store:Type="Views" store:Schema="XXEMS" store:Name="PA_TASKS_V">
+            <DefiningQuery>SELECT 
+      "PA_TASKS_V"."TASK_ID" AS "TASK_ID", 
+      "PA_TASKS_V"."PROJECT_ID" AS "PROJECT_ID", 
+      "PA_TASKS_V"."TASK_NUMBER" AS "TASK_NUMBER", 
+      "PA_TASKS_V"."DESCRIPTION" AS "DESCRIPTION", 
+      "PA_TASKS_V"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE"
+      FROM "XXEMS"."PA_TASKS_V" "PA_TASKS_V"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="PROJECTS_V" EntityType="OracleModel.Store.PROJECTS_V" store:Type="Views" store:Schema="XXEMS" store:Name="PROJECTS_V">
             <DefiningQuery>SELECT 
       "PROJECTS_V"."ORGANIZATION_NAME" AS "ORGANIZATION_NAME", 
@@ -269,6 +290,39 @@
           </Key>
           <Property Name="USER_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="LAST_ACTIVITY_DATE" Type="date" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXEMS.EMPLOYEES_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="EMPLOYEES_V">
+          <Key>
+            <PropertyRef Name="PERSON_ID" />
+            <PropertyRef Name="ORGANIZATION_NAME" />
+          </Key>
+          <Property Name="PERSON_ID" Type="number" Nullable="false" Precision="10" />
+          <Property Name="EMPLOYEE_NAME" Type="varchar2" MaxLength="362" />
+          <Property Name="CURRENT_EMPLOYEE_FLAG" Type="varchar2" MaxLength="30" />
+          <Property Name="EMPLOYEE_NUMBER" Type="varchar2" MaxLength="30" />
+          <Property Name="JOB_NAME" Type="varchar2" MaxLength="700" />
+          <Property Name="ORGANIZATION_ID" Type="number" Precision="15" />
+          <Property Name="ORGANIZATION_NAME" Type="varchar2" Nullable="false" MaxLength="240" />
+          <Property Name="LAST_UPDATE_DATE" Type="date" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXEMS.PA_TASKS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="PA_TASKS_V">
+          <Key>
+            <PropertyRef Name="TASK_ID" />
+            <PropertyRef Name="PROJECT_ID" />
+            <PropertyRef Name="TASK_NUMBER" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+          </Key>
+          <Property Name="TASK_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="PROJECT_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="TASK_NUMBER" Type="varchar2" Nullable="false" MaxLength="25" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="250" />
+          <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'XXEMS.PROJECTS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -540,6 +594,8 @@
             <End Role="SYS_LOG" EntitySet="SYS_LOG" />
           </AssociationSet>
           <EntitySet Name="PROJECTS_V" EntityType="OracleModel.PROJECTS_V" />
+          <EntitySet Name="EMPLOYEES_V" EntityType="OracleModel.EMPLOYEES_V" />
+          <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.PA_TASKS_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -692,6 +748,9 @@
           <Property Type="Int64" Name="CARRYING_OUT_ORGANIZATION_ID" Nullable="false" />
           <Property Type="DateTime" Name="LAST_UPDATED_DATE" Nullable="false" />
           <Property Type="String" Name="CARRYING_OUT_ORGANIZATION_NAME" Nullable="false" />
+          <Property Type="String" Name="PROJECT_STATUS_CODE" Nullable="false" />
+          <Property Type="DateTime" Name="START_DATE" Nullable="true" />
+          <Property Type="DateTime" Name="COMPLETION_DATE" Nullable="true" />
         </ComplexType>
         <EntityType Name="PROJECTS_V">
           <Key>
@@ -910,6 +969,41 @@
         <ComplexType Name="MBL_STRING" >
           <Property Type="String" Name="TokenValidation" Nullable="false" />
         </ComplexType>
+        <ComplexType Name="MBL_EMPLOYEE_V" >
+          <Property Type="Int64" Name="PERSON_ID" Nullable="false" />
+          <Property Type="String" Name="EMPLOYEE_NAME" Nullable="false" />
+          <Property Type="String" Name="JOB_NAME" Nullable="false" />
+          <Property Type="String" Name="CURRENT_ORGANIZATION" Nullable="false" />
+          <Property Type="Int64" Name="CURRENT_ORG_ID" Nullable="true" />
+          <Property Type="String" Name="CURRENT_EMPLOYEE_FLAG" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="EMPLOYEES_V">
+          <Key>
+            <PropertyRef Name="PERSON_ID" />
+            <PropertyRef Name="ORGANIZATION_NAME" />
+          </Key>
+          <Property Type="Int32" Name="PERSON_ID" Nullable="false" />
+          <Property Type="String" Name="EMPLOYEE_NAME" MaxLength="362" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CURRENT_EMPLOYEE_FLAG" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EMPLOYEE_NUMBER" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="JOB_NAME" MaxLength="700" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="ORGANIZATION_ID" />
+          <Property Type="String" Name="ORGANIZATION_NAME" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" />
+        </EntityType>
+        <EntityType Name="PA_TASKS_V">
+          <Key>
+            <PropertyRef Name="TASK_ID" />
+            <PropertyRef Name="PROJECT_ID" />
+            <PropertyRef Name="TASK_NUMBER" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+          </Key>
+          <Property Type="Int64" Name="TASK_ID" Nullable="false" />
+          <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
+          <Property Type="String" Name="TASK_NUMBER" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DESCRIPTION" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1180,6 +1274,31 @@
                 <ScalarProperty Name="NAME" ColumnName="NAME" />
                 <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
                 <ScalarProperty Name="ORGANIZATION_NAME" ColumnName="ORGANIZATION_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EMPLOYEES_V">
+            <EntityTypeMapping TypeName="OracleModel.EMPLOYEES_V">
+              <MappingFragment StoreEntitySet="EMPLOYEES_V">
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="ORGANIZATION_NAME" ColumnName="ORGANIZATION_NAME" />
+                <ScalarProperty Name="ORGANIZATION_ID" ColumnName="ORGANIZATION_ID" />
+                <ScalarProperty Name="JOB_NAME" ColumnName="JOB_NAME" />
+                <ScalarProperty Name="EMPLOYEE_NUMBER" ColumnName="EMPLOYEE_NUMBER" />
+                <ScalarProperty Name="CURRENT_EMPLOYEE_FLAG" ColumnName="CURRENT_EMPLOYEE_FLAG" />
+                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
+                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PA_TASKS_V">
+            <EntityTypeMapping TypeName="OracleModel.PA_TASKS_V">
+              <MappingFragment StoreEntitySet="PA_TASKS_V">
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="TASK_NUMBER" ColumnName="TASK_NUMBER" />
+                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
+                <ScalarProperty Name="TASK_ID" ColumnName="TASK_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

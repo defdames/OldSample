@@ -31,5 +31,7 @@ namespace DBI.Data
         public DbSet<SYS_USER_ACTIVITY> SYS_USER_ACTIVITY { get; set; }
         public DbSet<SYS_LOG> SYS_LOG { get; set; }
         public DbSet<PROJECTS_V> PROJECTS_V { get; set; }
+        public DbSet<EMPLOYEES_V> EMPLOYEES_V { get; set; }
+        public DbSet<PA_TASKS_V> PA_TASKS_V { get; set; }
     }
 }

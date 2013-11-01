@@ -20,6 +20,13 @@ namespace DBI.Web.EMS.Views.Modules.Security
         {
             if (!X.IsAjaxRequest)
             {
+
+
+                /// Validate Security Objects ---------------------------------------------------
+                validateComponentSecurity<Ext.Net.Button>("SYS.Users.Edit", "uxEditUser");
+                validateComponentSecurity<Ext.Net.Button>("SYS.Users.Impersonate", "uxImpersonate");
+                //-------------------------------------------------------------------------------
+
                 if (Request.Cookies["UserSettings"] != null)
                 {
                     string RTL;

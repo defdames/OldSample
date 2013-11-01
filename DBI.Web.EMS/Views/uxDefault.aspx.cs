@@ -19,6 +19,7 @@ namespace DBI.Web.EMS.Views
         protected void Page_Load(object sender, EventArgs e)
         {
 
+   
             if (!X.IsAjaxRequest)
             {
                 // Look for cookie information for language support
