@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 ///
 /// <summary>
@@ -54,6 +55,15 @@ namespace DBI.Core.Security
             var token = new SessionSecurityToken(_cp);
             SessionSecurityToken _token = new SessionSecurityToken(_cp);
             return _token;
+        }
+
+        /// <summary>
+        /// Logout and destroy Cookie
+        /// </summary>
+        public void Logout()
+        {
+            SessionAuthenticationModule sam = new SessionAuthenticationModule();
+            sam.CookieHandler.Delete(HttpContext.Current);
         }
 
     }

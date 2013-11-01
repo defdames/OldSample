@@ -11,6 +11,9 @@ using DBI.Core;
 
 namespace DBI.Web.EMS.Views.Modules.Security
 {
+    /// <summary>
+    /// Security Activity List Page
+    /// </summary>
     public partial class umSecurityActivityList : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)

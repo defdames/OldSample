@@ -14,6 +14,9 @@ using Ext.Net;
 
 namespace DBI.Web.EMS.Views
 {
+    /// <summary>
+    /// Default View with buttons and where modules are loaded
+    /// </summary>
     public partial class uxDefault : DBI.Core.Web.BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
@@ -36,6 +39,8 @@ namespace DBI.Web.EMS.Views
                     }
                 }
 
+                //todo Switch to generating buttons based off of permissions vs disabling based off of permissions.(Needs DB)
+                //todo Add authentication to the page itself instead of simply disabling the button(Needs DB)
                 /// Validate Security Objects ---------------------------------------------------
                 validateComponentSecurity<Ext.Net.MenuItem>("SYS.Users.View", "uxSecurityUsers");
                 validateComponentSecurity<Ext.Net.MenuItem>("SYS.Activities.View", "uxSecurityActivities");
@@ -50,6 +55,7 @@ namespace DBI.Web.EMS.Views
 
                 if (user != string.Empty)
                 {
+                    //todo Internationalize(currently only in English) because of string.Format
                     uxWelcomeName.Text = string.Format("Impersonating User {0} by ({1})", user, byuser);
                     uxWelcomeName.CtCls = "header-actions-button-red";
                     uxWelcomeName.Disabled = false;
@@ -68,34 +74,13 @@ namespace DBI.Web.EMS.Views
         }
 
         /// <summary>
-        /// Loads the panel that displays system security users
+        /// Direct Event that loads a panel given 2 ext.net extra parameters
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deLoadSecurityUsers(object sender, DirectEventArgs e)
+        /// <param name="e">Extra Parameters Page(which panel to load), and Location(where on the page to load it)</param>
+        protected void deLoadPage(object sender, DirectEventArgs e)
         {
-            LoadModule("~/Views/Modules/Security/umSecurityUsersList.aspx", "uxCenter");
-        }
-
-        /// <summary>
-        /// Loads the panel that displays system activies or securit ylevels
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deLoadSecurityActivities(object sender, DirectEventArgs e)
-        {
-            LoadModule("~/Views/Modules/Security/umSecurityActivityList.aspx", "uxCenter");
-        }
-
-
-        /// <summary>
-        /// Loads the panel that displays the system log files
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deLoadSecurityLogs(object sender, DirectEventArgs e)
-        {
-            LoadModule("~/Views/Modules/Security/umSecurityLogList.aspx", "uxCenter");
+            LoadModule(e.ExtraParams["Page"], e.ExtraParams["Location"]);
         }
 
         /// <summary>
