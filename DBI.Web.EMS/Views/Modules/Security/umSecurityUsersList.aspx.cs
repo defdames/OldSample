@@ -11,6 +11,7 @@ using DBI.Core;
 using System.Security.Claims;
 using System.IdentityModel.Tokens;
 using System.IdentityModel.Services;
+using DBI.Core.Security;
 
 namespace DBI.Web.EMS.Views.Modules.Security
 {
@@ -242,13 +243,14 @@ namespace DBI.Web.EMS.Views.Modules.Security
                 // Add a claim to say they were impersonated and by who impersonated them
                 claims.Add(new Claim("ImpersonatedUser", userDetails.EMPLOYEE_NAME));
 
-                if (GetClaimValue("ImpersonatorUsername") == string.Empty)
+                var MyAuth = new Authentication();
+                if (MyAuth.GetClaimValue("ImpersonatorUsername", User as ClaimsPrincipal) == string.Empty)
                 {
                     claims.Add(new Claim("ImpersonatorUsername", HttpContext.Current.User.Identity.Name));
                 }
 
                 // Add full name of user to the claims 
-                claims.Add(new Claim("EmployeeName", GetClaimValue("EmployeeName")));
+                claims.Add(new Claim("EmployeeName", MyAuth.GetClaimValue("EmployeeName", User as ClaimsPrincipal)));
 
                 var id = new ClaimsIdentity(claims, "Forms");
                 var cp = new ClaimsPrincipal(id);
