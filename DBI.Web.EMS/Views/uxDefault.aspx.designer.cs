@@ -184,33 +184,6 @@ namespace DBI.Web.EMS.Views {
         protected global::Ext.Net.Menu uxMenu;
         
         /// <summary>
-        /// uxSecurityUsers control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.MenuItem uxSecurityUsers;
-        
-        /// <summary>
-        /// uxSecurityActivities control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.MenuItem uxSecurityActivities;
-        
-        /// <summary>
-        /// uxSecurityLogs control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.MenuItem uxSecurityLogs;
-        
-        /// <summary>
         /// uxCenter control.
         /// </summary>
         /// <remarks>
