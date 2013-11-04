@@ -19,14 +19,13 @@ namespace DBI.Web.EMS.Views.Modules.Security
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!validateComponentSecurity("SYS.Users.View"))
+            {
+                X.Redirect("~/Views/uxDefault.aspx");
+            }
+
             if (!X.IsAjaxRequest)
             {
-
-
-                /// Validate Security Objects ---------------------------------------------------
-                validateComponentSecurity<Ext.Net.Button>("SYS.Users.Edit", "uxEditUser");
-                validateComponentSecurity<Ext.Net.Button>("SYS.Users.Impersonate", "uxImpersonate");
-                //-------------------------------------------------------------------------------
 
                 if (Request.Cookies["UserSettings"] != null)
                 {
