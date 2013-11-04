@@ -28,6 +28,8 @@ namespace DBI.Data
         public string LAST_UPDATED_BY { get; set; }
         public string PATH { get; set; }
         public string CONTAINER { get; set; }
+        public string ICON { get; set; }
+        public string CONTROL_TEXT { get; set; }
     
         public virtual ICollection<SYS_USER_ACTIVITY> SYS_USER_ACTIVITY { get; set; }
     }
