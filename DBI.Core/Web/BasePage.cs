@@ -20,19 +20,27 @@ namespace DBI.Core.Web
     {
 
         /// <summary>
-        /// Code the checks for Activity, returns false if user is in role to disable the button (setDisabled)
+        /// Code the checks for Activity, returns false if user is 
         /// </summary>
         /// <param name="activity"></param>
         /// <returns></returns>
-        public static void validateComponentSecurity<T>(string activity, string componentName) where T: Ext.Net.ComponentBase, new()
+        public static bool validateComponentSecurity(string activity)
         {
-            bool result = false;
             //Check for Administrator override, give access to everything
             if (!HttpContext.Current.User.IsInRole("SYS.Administrator"))
             {
-                result = (HttpContext.Current.User.IsInRole(activity)) ? false : true;
-                //Find the obect and validate it
-                Ext.Net.X.GetCmp<T>(componentName).Disabled = result;
+                if (HttpContext.Current.User.IsInRole(activity))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return true;
             }
         }
 
