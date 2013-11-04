@@ -223,7 +223,8 @@
       "PROJECTS_V"."ALLOW_MULTI_PROGRAM_ROLLUP" AS "ALLOW_MULTI_PROGRAM_ROLLUP", 
       "PROJECTS_V"."PROJ_REQ_RES_FORMAT_ID" AS "PROJ_REQ_RES_FORMAT_ID", 
       "PROJECTS_V"."PROJ_ASGMT_RES_FORMAT_ID" AS "PROJ_ASGMT_RES_FORMAT_ID", 
-      "PROJECTS_V"."FUNDING_APPROVAL_STATUS_CODE" AS "FUNDING_APPROVAL_STATUS_CODE"
+      "PROJECTS_V"."FUNDING_APPROVAL_STATUS_CODE" AS "FUNDING_APPROVAL_STATUS_CODE", 
+      "PROJECTS_V"."CLASS_CODE" AS "CLASS_CODE"
       FROM "XXEMS"."PROJECTS_V" "PROJECTS_V"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="SYS_USER_INFORMATION" EntityType="OracleModel.Store.SYS_USER_INFORMATION" store:Type="Views" store:Schema="XXEMS" store:Name="SYS_USER_INFORMATION">
@@ -350,6 +351,7 @@
             <PropertyRef Name="ALLOW_CROSS_CHARGE_FLAG" />
             <PropertyRef Name="CC_PROCESS_LABOR_FLAG" />
             <PropertyRef Name="CC_PROCESS_NL_FLAG" />
+            <PropertyRef Name="CLASS_CODE" />
           </Key>
           <Property Name="ORGANIZATION_NAME" Type="varchar2" Nullable="false" MaxLength="240" />
           <Property Name="PROJECT_ID" Type="number" Nullable="false" Precision="15" />
@@ -542,6 +544,7 @@
           <Property Name="PROJ_REQ_RES_FORMAT_ID" Type="number" />
           <Property Name="PROJ_ASGMT_RES_FORMAT_ID" Type="number" />
           <Property Name="FUNDING_APPROVAL_STATUS_CODE" Type="varchar2" MaxLength="30" />
+          <Property Name="CLASS_CODE" Type="varchar2" Nullable="false" MaxLength="30" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'XXEMS.SYS_USER_INFORMATION' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -777,6 +780,7 @@
             <PropertyRef Name="ALLOW_CROSS_CHARGE_FLAG" />
             <PropertyRef Name="CC_PROCESS_LABOR_FLAG" />
             <PropertyRef Name="CC_PROCESS_NL_FLAG" />
+            <PropertyRef Name="CLASS_CODE" />
           </Key>
           <Property Type="String" Name="ORGANIZATION_NAME" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
           <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
@@ -969,6 +973,7 @@
           <Property Type="Decimal" Name="PROJ_REQ_RES_FORMAT_ID" Precision="38" Scale="0" />
           <Property Type="Decimal" Name="PROJ_ASGMT_RES_FORMAT_ID" Precision="38" Scale="0" />
           <Property Type="String" Name="FUNDING_APPROVAL_STATUS_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CLASS_CODE" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
         </EntityType>
         <ComplexType Name="MBL_STRING" >
           <Property Type="String" Name="TokenValidation" Nullable="false" />
@@ -1008,6 +1013,16 @@
           <Property Type="String" Name="DESCRIPTION" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
         </EntityType>
+        <ComplexType Name="MBL_EQUIPMENT_V" >
+          <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
+          <Property Type="String" Name="NAME" Nullable="false" />
+          <Property Type="String" Name="SEGMENT1" Nullable="false" />
+          <Property Type="String" Name="ORGANIZATION_NAME" Nullable="false" />
+          <Property Type="Int64" Name="ORGANIZATION_ID" Nullable="false" />
+          <Property Type="Double" Name="ORG_ID" Nullable="false" />
+          <Property Type="String" Name="CLASS_CODE" Nullable="false" />
+          <Property Type="String" Name="PROJECT_STATUS_CODE" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1089,6 +1104,7 @@
           <EntitySetMapping Name="PROJECTS_V">
             <EntityTypeMapping TypeName="OracleModel.PROJECTS_V">
               <MappingFragment StoreEntitySet="PROJECTS_V">
+                <ScalarProperty Name="CLASS_CODE" ColumnName="CLASS_CODE" />
                 <ScalarProperty Name="FUNDING_APPROVAL_STATUS_CODE" ColumnName="FUNDING_APPROVAL_STATUS_CODE" />
                 <ScalarProperty Name="PROJ_ASGMT_RES_FORMAT_ID" ColumnName="PROJ_ASGMT_RES_FORMAT_ID" />
                 <ScalarProperty Name="PROJ_REQ_RES_FORMAT_ID" ColumnName="PROJ_REQ_RES_FORMAT_ID" />
