@@ -79,6 +79,16 @@
                                     <Items>
                                          <ext:MenuItem ID="uxYIK" runat="server" Text="Yesterday's Internal Knowledge (YIK)" Icon="ApplicationOsx">  
                                         </ext:MenuItem>  
+                                        <ext:MenuItem ID="uxDailyActivity" runat="server" Text="Daily Activity" Icon="ApplicationOsx">  
+                                            <DirectEvents>
+                                                <Click OnEvent="deLoadPage">
+                                                    <ExtraParams>
+                                                        <ext:Parameter Name="Page" Value="Modules/DailyActivity/umDailyActivity.aspx" />
+                                                        <ext:Parameter Name="Location" Value="uxCenter" />
+                                                    </ExtraParams>
+                                                </Click>
+                                            </DirectEvents>
+                                        </ext:MenuItem>  
                                     </Items>
                                 </ext:Menu>
                             </Items>
@@ -104,11 +114,6 @@
                 </ext:Panel>
             </Items>
         </ext:Viewport>
-
-      
-
-
     </form>
-    
 </body>
 </html>
