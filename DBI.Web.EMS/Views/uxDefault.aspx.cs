@@ -37,13 +37,6 @@ namespace DBI.Web.EMS.Views
                     }
                 }
 
-                //todo Add authentication to the page itself instead of simply disabling the button(Needs DB)
-                /// Validate Security Objects ---------------------------------------------------
-                validateComponentSecurity<Ext.Net.MenuItem>("SYS.Users.View", "uxSecurityUsers");
-                validateComponentSecurity<Ext.Net.MenuItem>("SYS.Activities.View", "uxSecurityActivities");
-                validateComponentSecurity<Ext.Net.MenuItem>("SYS.Logs.View", "uxSecurityLogs");
-                //-------------------------------------------------------------------------------
-
                 var MyAuth = new Authentication();
                 // Get Impersonating Info/Details
                 string user = MyAuth.GetClaimValue("ImpersonatedUser", User as ClaimsPrincipal);
@@ -110,7 +103,6 @@ namespace DBI.Web.EMS.Views
         }
 
         //todo Eventually move to Role contains default(but overrideable) Activities
-        //todo Update to Add Icon and Menu Item Text
         /// <summary>
         /// Generates the Menu Items for a logged in user based on all roles assigned to user in claims
         /// </summary>
@@ -146,8 +138,8 @@ namespace DBI.Web.EMS.Views
                 Ext.Net.MenuItem NewItem = new Ext.Net.MenuItem()
                 {
                     ID = "menu" + userActivity.ACTIVITY_ID.ToString(),
-                    Text = "My Button", //userActivity.TITLE,
-                    Icon = Icon.Add //(Icon)Enum.Parse(typeof(Icon), userActivity.ICON)
+                    Text = userActivity.CONTROL_TEXT,
+                    Icon = (Icon)Enum.Parse(typeof(Icon), userActivity.ICON)
                 };
 
                 //Add click DirectEvent
