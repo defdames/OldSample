@@ -71,6 +71,7 @@ namespace DBI.Web.EMS.Views
         protected void deLoadPage(object sender, DirectEventArgs e)
         {
             LoadModule(e.ExtraParams["Page"], e.ExtraParams["Location"]);
+            uxWest.Collapse();
         }
 
         /// <summary>
