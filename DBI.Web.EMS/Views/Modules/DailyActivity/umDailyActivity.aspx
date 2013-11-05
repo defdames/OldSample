@@ -22,7 +22,7 @@
                 </ext:MenuPanel>
                 <ext:Panel runat="server" Region="Center" ID="uxCenterPanel" Layout="FitLayout">
                     <Items>
-                        <ext:FormPanel ID="uxFormPanel" runat="server" Layout="AnchorLayout" BodyPadding="5" DefaultAnchor="50%" Title="Add Activity">
+                        <ext:FormPanel ID="uxFormPanel" runat="server" Layout="AnchorLayout" BodyPadding="5" DefaultAnchor="50%" Title="Add Activity" ButtonAlign="Left">
                             <Items>
                                 <%--<ext:ComboBox runat="server" ID="uxFormProject" FieldLabel="Select a Project">
                                     <Store>
@@ -58,11 +58,10 @@
                                     <Store>
                                         <ext:Store runat="server" Data="<%# StateList %>" AutoDataBind="true">
                                             <Model>
-                                                <ext:Model>
+                                                <ext:Model runat="server">
                                                     <Fields>
                                                         <ext:ModelField Name="abbr" />
                                                         <ext:ModelField Name="name" />
-                                                        <ext:ModelField Name="slogan" />
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>
@@ -81,6 +80,18 @@
                                     </Items>
                                 </ext:ComboBox>
                             </Items>
+                            <Buttons>
+                                <ext:Button runat="server" ID="uxFormSubmit" Text="Submit">
+                                    <DirectEvents>
+                                        <Click OnEvent="deStoreActivity" />
+                                    </DirectEvents>    
+                                </ext:Button>
+                                <ext:Button runat="server" ID="uxFormClear" Text="Clear">
+                                    <Listeners>
+                                        <Click Handler="#{uxFormPanel}.reset()" />
+                                    </Listeners>
+                                </ext:Button>
+                            </Buttons>
                         </ext:FormPanel>
                     </Items>
                 </ext:Panel>
