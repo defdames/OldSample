@@ -24,9 +24,9 @@
                     <Items>
                         <ext:FormPanel ID="uxFormPanel" runat="server" Layout="AnchorLayout" BodyPadding="5" DefaultAnchor="50%" Title="Add Activity" ButtonAlign="Left">
                             <Items>
-                                <%--<ext:ComboBox runat="server" ID="uxFormProject" FieldLabel="Select a Project">
+                                <ext:ComboBox runat="server" ID="uxFormProject" FieldLabel="Select a Project">
                                     <Store>
-                                        <ext:Store runat="server" DataSource="uxFormProjectDataSource" AutoDataBind="true">
+                                        <ext:Store runat="server" OnReadData="deReadData">
                                             <Model>
                                                 <ext:Model runat="server">
                                                     <Fields>
@@ -34,9 +34,12 @@
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>
-                                        </ext:Store>
+                                            <Sorters>
+                                                <ext:DataSorter Property="NAME" Direction="ASC" />
+                                            </Sorters>
+                                        </ext:Store>                                        
                                     </Store>
-                                </ext:ComboBox>--%>
+                                </ext:ComboBox>
                                 <ext:DateField runat="server" ID="uxFormDate" FieldLabel="Date" />
                                 <ext:TextField runat="server" ID="uxFormSubDivision" FieldLabel="Subdivision"  />
                                 <ext:TextField runat="server" ID="uxFormContractor" FieldLabel="Contractor"  />

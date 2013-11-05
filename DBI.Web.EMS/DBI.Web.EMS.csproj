@@ -105,6 +105,7 @@
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
     <Content Include="Views\Modules\DailyActivity\umDailyActivity.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umManageExisting.aspx" />
     <Content Include="Views\Modules\Security\umSecurityLogList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityActivityList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityUsersList.aspx" />
@@ -144,6 +145,13 @@
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umDailyActivity.aspx.designer.cs">
       <DependentUpon>umDailyActivity.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umManageExisting.aspx.cs">
+      <DependentUpon>umManageExisting.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umManageExisting.aspx.designer.cs">
+      <DependentUpon>umManageExisting.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\Security\umSecurityLogList.aspx.cs">
       <DependentUpon>umSecurityLogList.aspx</DependentUpon>

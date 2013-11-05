@@ -31,6 +31,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
+        /// uxViewPort control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Viewport uxViewPort;
+        
+        /// <summary>
         /// uxMenuPanel control.
         /// </summary>
         /// <remarks>
@@ -74,6 +83,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.FormPanel uxFormPanel;
+        
+        /// <summary>
+        /// uxFormProject control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ComboBox uxFormProject;
         
         /// <summary>
         /// uxFormDate control.

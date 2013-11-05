@@ -4,16 +4,28 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DBI.Core.Web;
+using DBI.Data.DataFactory;
+using DBI.Data;
 
 namespace DBI.Web.EMS.Views.Modules.DailyActivity
 {
-    public partial class umDailyActivity : uxDefault
+    public partial class umDailyActivity : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            
         }
 
+        protected void deReadData(object sender, Ext.Net.StoreReadDataEventArgs e)
+        {
+            Entities _context = new Entities();
+            var data = (from p in _context.PROJECTS_V
+                       where p.PROJECT_TYPE == "CUSTOMER BILLING" && p.TEMPLATE_FLAG == "N" && p.PROJECT_STATUS_CODE == "APPROVED"
+                       select new(p.NAME).ToList();
+            uxFormProject.GetStore().DataSource = data;
+        }
+        //todo Finish DirectEvent and uncomment Comboboxes
         /// <summary>
         /// Direct Event that stores the Daily Activity form data
         /// </summary>
@@ -23,6 +35,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
 
         }
+
 
         protected object StateList
         {
@@ -84,5 +97,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             };
             }
         }
+
     }
 }
