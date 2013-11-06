@@ -17,12 +17,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             
         }
 
-        protected void deReadData(object sender, Ext.Net.StoreReadDataEventArgs e)
-        {
-            Entities _context = new Entities();
-            var data = WEB_PROJECTS_V.ListWebProjects();
-            uxFormProject.GetStore().DataSource = data;
-        }
+        //protected void deReadData(object sender, Ext.Net.StoreReadDataEventArgs e)
+        //{
+        //    Entities _context = new Entities();
+        //    var data = WEB_PROJECTS_V.ProjectLookup(e.Start, e.Limit, e.Sort, "DESC", e.Parameters["filter"], "ORGANIZATION_NAME");
+        //    uxFormProject.GetStore().DataSource = data;
+        //    uxFormProject.GetStore().DataBind();
+        //}
+
         //todo Finish DirectEvent and uncomment Comboboxes
         /// <summary>
         /// Direct Event that stores the Daily Activity form data

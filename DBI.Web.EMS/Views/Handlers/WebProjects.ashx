@@ -1,1 +1,1 @@
-﻿<%@ WebHandler Language="C#" CodeBehind="WebProjects.ashx.cs" Class="DBI.Web.EMS.Views.Handlers.Handler1" %>
+﻿<%@ WebHandler Language="C#" CodeBehind="WebProjects.ashx.cs" Class="DBI.Web.EMS.Views.Handlers.WebProjects" %>

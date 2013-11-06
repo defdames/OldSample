@@ -24,12 +24,32 @@
                     <Items>
                         <ext:FormPanel ID="uxFormPanel" runat="server" Layout="AnchorLayout" BodyPadding="5" DefaultAnchor="50%" Title="Add Activity" ButtonAlign="Left">
                             <Items>
-                                <ext:ComboBox runat="server" ID="uxFormProject" FieldLabel="Select a Project" DisplayField="ORGANIZATION_NAME">
-                                    <ext:PageProxy>
-                                        <RequestConfig Type="Load" />
-                                    </ext:PageProxy>
+                                <ext:ComboBox runat="server" 
+                                    ID="uxFormProject" 
+                                    FieldLabel="Select a Project" 
+                                    PageSize="25"
+                                    TriggerAction="Query">
+                                    <ListConfig  LoadingText="Searching...">
+                                        <ItemTpl ID="ItemTpl1" runat="server">
+                                            <Html>
+                                                <div class="search-item">
+							                        <h3><span>{SEGMENT1}</span> {ORGANIZATION_NAME}</h3>
+                                                    {LONG_NAME}
+						                        </div>
+                                            </Html>
+                                        </ItemTpl>
+                                    </ListConfig>
                                     <Store>
-                                        <ext:Store runat="server" OnReadData="deReadData">
+                                        <ext:Store runat="server"
+                                            AutoDataBind="true">
+                                            <Proxy>
+                                                <ext:AjaxProxy Url="~/Views/Handlers/WebProjects.ashx">
+                                                    <ActionMethods Read="POST" />
+                                                    <Reader>
+                                                        <ext:JsonReader Root="Projects" TotalProperty="TOTAL" />
+                                                    </Reader>
+                                                </ext:AjaxProxy>
+                                            </Proxy>
                                             <Model>
                                                 <ext:Model runat="server">
                                                     <Fields>
@@ -40,7 +60,7 @@
                                                 </ext:Model>
                                             </Model>
                                             <Sorters>
-                                                <ext:DataSorter Property="NAME" Direction="ASC" />
+                                                <ext:DataSorter Property="ORGANIZATION_NAME" Direction="DESC" />
                                             </Sorters>
                                         </ext:Store>                                        
                                     </Store>

@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ext.Net;
 
 namespace DBI.Data
 {
     public partial class WEB_PROJECTS_V
     {
-        public static WEB_PROJECTS_V()
+        public static List<WEB_PROJECTS_V> ProjectList()
         {
             using (Entities _context = new Entities())
             {
                 var data = (from p in _context.PROJECTS_V
-                            where p.PROJECT_TYPE == "CUSTOMER BILLING" && p.TEMPLATE_FLAG == "N" && p.PROJECT_STATUS_CODE == "APPROVED"
+                            where p.PROJECT_TYPE == "CUSTOMER BILLING" && p.TEMPLATE_FLAG == "N" && p.PROJECT_STATUS_CODE == "APPROVED" && p.CARRYING_OUT_ORGANIZATION_ID == 257
                             select p).ToList();
                 List<WEB_PROJECTS_V> returnList = new List<WEB_PROJECTS_V>();
                 foreach (PROJECTS_V item in data)
@@ -25,6 +26,7 @@ namespace DBI.Data
 
                     returnList.Add(rItem);
                 }
+                return returnList;
             }
         }
 
@@ -39,7 +41,8 @@ namespace DBI.Data
         /// <returns></returns>
         public static Ext.Net.Paging<WEB_PROJECTS_V> ProjectLookup(int start, int limit, string sort, string dir, string filter, string field)
         {
-            return GenericData.PagingFilter<WEB_PROJECTS_V>(start, limit, sort, dir, filter, field);
+            var dataIn = ProjectList();
+            return GenericData.PagingFilter<WEB_PROJECTS_V>(start, limit, sort, dir, filter, dataIn, field);
         }
     }
 }

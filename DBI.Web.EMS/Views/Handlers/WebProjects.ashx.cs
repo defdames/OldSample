@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Ext.Net;
+using DBI.Data;
 
 namespace DBI.Web.EMS.Views.Handlers
 {
@@ -47,7 +48,7 @@ namespace DBI.Web.EMS.Views.Handlers
             }
 
             Paging<DBI.Data.WEB_PROJECTS_V> Projects = DBI.Data.WEB_PROJECTS_V.ProjectLookup(start, limit, sort, dir, query, "ORGANIZATION_NAME");
-            context.Response.Write(string.Format("{{TOTAL:{1},'USERS':{0}}}", JSON.Serialize(Projects.Data), Projects.TotalRecords));
+            context.Response.Write(string.Format("{{TOTAL:{1},'Projects':{0}}}", JSON.Serialize(Projects.Data), Projects.TotalRecords));
         }
 
         public bool IsReusable
