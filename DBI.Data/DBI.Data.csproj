@@ -66,6 +66,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
+    <Compile Include="DataFactory\Projects\WebProjects.cs" />
     <Compile Include="DataFactory\Projects\Projects.cs" />
     <Compile Include="DataFactory\Security\Activity.cs" />
     <Compile Include="DataFactory\Security\Logger.cs" />

@@ -24,13 +24,18 @@
                     <Items>
                         <ext:FormPanel ID="uxFormPanel" runat="server" Layout="AnchorLayout" BodyPadding="5" DefaultAnchor="50%" Title="Add Activity" ButtonAlign="Left">
                             <Items>
-                                <ext:ComboBox runat="server" ID="uxFormProject" FieldLabel="Select a Project">
+                                <ext:ComboBox runat="server" ID="uxFormProject" FieldLabel="Select a Project" DisplayField="ORGANIZATION_NAME">
+                                    <ext:PageProxy>
+                                        <RequestConfig Type="Load" />
+                                    </ext:PageProxy>
                                     <Store>
                                         <ext:Store runat="server" OnReadData="deReadData">
                                             <Model>
                                                 <ext:Model runat="server">
                                                     <Fields>
-                                                        <ext:ModelField Name="name" />
+                                                        <ext:ModelField Name="SEGMENT1" />
+                                                        <ext:ModelField Name="LONG_NAME" />
+                                                        <ext:ModelField Name="ORGANIZATION_NAME" />
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>

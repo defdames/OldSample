@@ -20,9 +20,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void deReadData(object sender, Ext.Net.StoreReadDataEventArgs e)
         {
             Entities _context = new Entities();
-            var data = (from p in _context.PROJECTS_V
-                       where p.PROJECT_TYPE == "CUSTOMER BILLING" && p.TEMPLATE_FLAG == "N" && p.PROJECT_STATUS_CODE == "APPROVED"
-                       select p).ToList();
+            var data = WEB_PROJECTS_V.ListWebProjects();
             uxFormProject.GetStore().DataSource = data;
         }
         //todo Finish DirectEvent and uncomment Comboboxes
