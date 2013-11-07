@@ -22,7 +22,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxStateList.Data = StaticLists.StateList;
             }
         }
-
+        /// <summary>
+        /// Reads/Filters Project Data
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deReadData(object sender, StoreReadDataEventArgs e)
         {
             List<WEB_PROJECTS_V> data = WEB_PROJECTS_V.ProjectList();
@@ -104,23 +108,23 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         itemValue = oValue as string;
                     }
 
-                    switch (op)
-                    {
-                        case "=":
-                            return oValue == null || !oValue.Equals(value);
-                        case "compare":
-                            return !((IEquatable<IComparable>)value).Equals((IComparable)oValue);
-                        case "+":
-                            return itemValue == null || !itemValue.StartsWith(matchValue);
-                        case "-":
-                            return itemValue == null || !itemValue.EndsWith(matchValue);
-                        case "!":
-                            return itemValue == null || itemValue.IndexOf(matchValue) >= 0;
-                        case "*":
+                    //switch (op)
+                    //{
+                    //    case "=":
+                    //        return oValue == null || !oValue.Equals(value);
+                    //    case "compare":
+                    //        return !((IEquatable<IComparable>)value).Equals((IComparable)oValue);
+                    //    case "+":
+                    //        return itemValue == null || !itemValue.StartsWith(matchValue);
+                    //    case "-":
+                    //        return itemValue == null || !itemValue.EndsWith(matchValue);
+                    //    case "!":
+                    //        return itemValue == null || itemValue.IndexOf(matchValue) >= 0;
+                    //    case "*":
                             return itemValue == null || itemValue.IndexOf(matchValue) < 0;
-                        default:
-                            throw new Exception("Not supported operator");
-                    }
+                    //    default:
+                    //        throw new Exception("Not supported operator");
+                    //}
                 });
             }
             //-- end filtering ------------------------------------------------------------
@@ -160,12 +164,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxFormProjectStore.DataBind();
         }
 
+        /// <summary>
+        /// Puts value into DropDownField and clears filters
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deStoreValue(object sender, DirectEventArgs e)
         {
             uxFormProject.SetValue(e.ExtraParams["Segment"]);
             uxFormProjectFilter.ClearFilter();
         }
 
+        /// <summary>
+        /// Reads/Filters Employee Data
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deLoadEmployees(object sender, Ext.Net.StoreReadDataEventArgs e)
         {
             List<EMPLOYEES_V> data = EMPLOYEES_V.EmployeeDropDown();
@@ -304,12 +318,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxFormEmployeeStore.DataBind();
         }
 
+        /// <summary>
+        /// Puts value into Employee DropDownField and clears filters
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deStoreEmployee(object sender, DirectEventArgs e)
         {
             uxFormEmployee.SetValue(e.ExtraParams["EmployeeName"]);
             uxFormEmployeeFilter.ClearFilter();
         }
-        //todo Finish DirectEvent and uncomment Comboboxes
+        
+        //todo Finish DirectEvent
         /// <summary>
         /// Direct Event that stores the Daily Activity form data
         /// </summary>
@@ -318,16 +338,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void deStoreActivity(object sender, Ext.Net.DirectEventArgs e)
         {
 
-        }
-
-        protected Field OnCreateFilterableField(object sender, ColumnBase column, Field defaultField)
-        {
-            if (column.DataIndex == "SEGMENT1")
-            {
-                ((TextField)defaultField).Icon = Icon.Magnifier;
-            }
-
-            return defaultField;
         }
     }
 }
