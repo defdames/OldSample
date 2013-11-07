@@ -30,7 +30,8 @@
 									FieldLabel="Select a Project">
 									<Component>
 										<ext:GridPanel runat="server" 
-											ID="uxFormProjectGrid">
+											ID="uxFormProjectGrid"
+											Layout="HBoxLayout">
 											<Store>
 												<ext:Store runat="server" 
 													ID="uxFormProjectStore"
@@ -57,86 +58,93 @@
 													<ext:Column runat="server"
 														ID="uxFormSegment"
 														DataIndex="SEGMENT1"
-														Text="Project Number" />
+														Text="Project Number" Flex="15" />
 													<ext:Column runat="server"
 														ID="uxFormLong"
 														DataIndex="LONG_NAME"
-														Text="Project Name" />
+														Text="Project Name" Flex="45" />
 													<ext:Column runat="server"
 														ID="uxFormOrg"
 														DataIndex="ORGANIZATION_NAME"
-														Text="Organization Name" />
+														Text="Organization Name" Flex="30" />
 												</Columns>
 											</ColumnModel>
 											<SelectionModel>
-												<ext:RowSelectionModel ID="RowSelectionModel1" runat="server" Mode="Single" />
+												<ext:RowSelectionModel ID="uxFormProjectSelection" runat="server" Mode="Single" />
 											</SelectionModel>
-                                            <DirectEvents>
-                                                <SelectionChange OnEvent="deStoreValue">
-                                                    <ExtraParams>
-                                                        <ext:Parameter Name="Segment" Value="#{uxFormProjectGrid}.getSelectionModel().getSelection()[0].data.SEGMENT1" Mode="Raw" />
-                                                    </ExtraParams>
-                                                </SelectionChange>
-                                            </DirectEvents>
+											<DirectEvents>
+												<SelectionChange OnEvent="deStoreValue">
+													<ExtraParams>
+														<ext:Parameter Name="Segment" Value="#{uxFormProjectGrid}.getSelectionModel().getSelection()[0].data.SEGMENT1" Mode="Raw" />
+													</ExtraParams>
+												</SelectionChange>
+											</DirectEvents>
 											<Plugins>
 												<ext:FilterHeader ID="uxFormProjectFilter" runat="server" Remote="true"  />
 											</Plugins>
 											<BottomBar>
-												<ext:PagingToolbar ID="uxFormPaging" runat="server" />
+												<ext:PagingToolbar ID="uxFormProjectPaging" runat="server" />
 											</BottomBar>
 										</ext:GridPanel>
-
 									</Component>
 								</ext:DropDownField>
-								<%--<ext:ComboBox runat="server" 
-									ID="uxFormProject" 
-									FieldLabel="Select a Project" 
-									PageSize="25"
-									TypeAhead="false"
-									Width="570"
-									MinChars="0"
-									TriggerAction="Query"
-									DisplayField="LONG_NAME"
-									ValueField="SEGMENT1">
-									<ListConfig  LoadingText="Searching...">
-										<ItemTpl ID="ItemTpl1" runat="server">
-											<Html>
-												<div class="search-item">
-													<h3><span>{SEGMENT1}</span> {LONG_NAME}</h3>
-													{ORGANIZATION_NAME}
-												</div>
-											</Html>
-										</ItemTpl>
-									</ListConfig>
-									<Store>
-										<ext:Store runat="server"
-											AutoDataBind="true">
-											<Proxy>
-												<ext:AjaxProxy Url="~/Views/Handlers/WebProjects.ashx">
-													<ActionMethods Read="POST" />
-													<Reader>
-														<ext:JsonReader Root="Projects" TotalProperty="TOTAL" />
-													</Reader>
-												</ext:AjaxProxy>
-											</Proxy>
-											<Model>
-												<ext:Model runat="server">
-													<Fields>
-														<ext:ModelField Name="SEGMENT1" />
-														<ext:ModelField Name="LONG_NAME" />
-														<ext:ModelField Name="ORGANIZATION_NAME" />
-													</Fields>
-												</ext:Model>
-											</Model>
-											<Sorters>
-												<ext:DataSorter Property="ORGANIZATION_NAME" Direction="DESC" />
-											</Sorters>
-										</ext:Store>                                        
-									</Store>
-								</ext:ComboBox>--%>
 								<ext:DateField runat="server" ID="uxFormDate" FieldLabel="Date" />
 								<ext:TextField runat="server" ID="uxFormSubDivision" FieldLabel="Subdivision"  />
 								<ext:TextField runat="server" ID="uxFormContractor" FieldLabel="Contractor"  />
+								<ext:DropDownField runat="server" 
+									ID="uxFormEmployee" 
+									FieldLabel="Supervisor/Area Manager">
+									<Component>
+										<ext:GridPanel runat="server" 
+											ID="uxFormEmployeeGrid">
+											<Store>
+												<ext:Store runat="server"
+													ID="uxFormEmployeeStore"
+													OnReadData="deLoadEmployees"
+													PageSize="10"
+													RemoteSort="true">
+													<Model>
+														<ext:Model ID="uxFormEmployeeModel" runat="server">
+															<Fields>
+																<ext:ModelField Name="PERSON_ID" Type="Int" />
+																<ext:ModelField Name="EMPLOYEE_NAME" Type="String" />
+																<ext:ModelField Name="JOB_NAME" Type="String" />
+															</Fields>
+														</ext:Model>
+													</Model>
+													<Proxy>
+														<ext:PageProxy />
+													</Proxy>   
+												</ext:Store>
+											</Store>
+											<ColumnModel>
+												<Columns>
+													<ext:Column runat="server" Text="Person ID" ID="uxFormPersonId" DataIndex="PERSON_ID" />
+													<ext:Column runat="server" Text="Employee Name" ID="uxFormEmployeeName" DataIndex="EMPLOYEE_NAME" />
+													<ext:Column runat="server" Text="Job Name" ID="uxFormJobName" DataIndex="JOB_NAME" />
+												</Columns>
+											</ColumnModel>
+											<Plugins>
+												<ext:FilterHeader runat="server"
+													ID="uxFormEmployeeFilter"
+													Remote="true" />
+											</Plugins>
+											<DirectEvents>
+												<SelectionChange OnEvent="deStoreEmployee">
+													<ExtraParams>
+														<ext:Parameter Name="EmployeeName" Value="#{uxFormEmployeeGrid}.getSelectionModel().getSelection()[0].data.EMPLOYEE_NAME" Mode="Raw" />
+													</ExtraParams>
+												</SelectionChange>
+											</DirectEvents>
+											<SelectionModel>
+												<ext:RowSelectionModel ID="uxFormEmployeeSelection" runat="server" Mode="Single" />
+											</SelectionModel>
+											<BottomBar>
+												<ext:PagingToolbar ID="uxFormEmployeePaging" runat="server" />
+											</BottomBar>
+										</ext:GridPanel>
+									</Component>
+								</ext:DropDownField>
 								<%--<ext:ComboBox runat="server" ID="uxFormEmployee" FieldLabel="Supervisor/Area Manager">
 									<Store>
 										<ext:Store runat="server" DataSource="uxFormEmployeeDataSource" AutoDataBind="true">
@@ -153,7 +161,7 @@
 								<ext:TextField runat="server" ID="uxFormLicense" FieldLabel="License #" />
 								<ext:ComboBox runat="server" ID="uxFormState" FieldLabel="State" DisplayField="name" ValueField="abbr">
 									<Store>
-										<ext:Store runat="server" Data="<%# StateList %>" AutoDataBind="true">
+										<ext:Store ID="uxStateList" runat="server" AutoDataBind="true">
 											<Model>
 												<ext:Model runat="server">
 													<Fields>

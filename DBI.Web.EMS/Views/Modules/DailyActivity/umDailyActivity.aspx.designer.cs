@@ -148,13 +148,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Column uxFormOrg;
         
         /// <summary>
-        /// RowSelectionModel1 control.
+        /// uxFormProjectSelection control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.RowSelectionModel RowSelectionModel1;
+        protected global::Ext.Net.RowSelectionModel uxFormProjectSelection;
         
         /// <summary>
         /// uxFormProjectFilter control.
@@ -166,13 +166,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.FilterHeader uxFormProjectFilter;
         
         /// <summary>
-        /// uxFormPaging control.
+        /// uxFormProjectPaging control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.PagingToolbar uxFormPaging;
+        protected global::Ext.Net.PagingToolbar uxFormProjectPaging;
         
         /// <summary>
         /// uxFormDate control.
@@ -202,6 +202,96 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.TextField uxFormContractor;
         
         /// <summary>
+        /// uxFormEmployee control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DropDownField uxFormEmployee;
+        
+        /// <summary>
+        /// uxFormEmployeeGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridPanel uxFormEmployeeGrid;
+        
+        /// <summary>
+        /// uxFormEmployeeStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxFormEmployeeStore;
+        
+        /// <summary>
+        /// uxFormEmployeeModel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model uxFormEmployeeModel;
+        
+        /// <summary>
+        /// uxFormPersonId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column uxFormPersonId;
+        
+        /// <summary>
+        /// uxFormEmployeeName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column uxFormEmployeeName;
+        
+        /// <summary>
+        /// uxFormJobName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column uxFormJobName;
+        
+        /// <summary>
+        /// uxFormEmployeeFilter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FilterHeader uxFormEmployeeFilter;
+        
+        /// <summary>
+        /// uxFormEmployeeSelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxFormEmployeeSelection;
+        
+        /// <summary>
+        /// uxFormEmployeePaging control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.PagingToolbar uxFormEmployeePaging;
+        
+        /// <summary>
         /// uxFormLicense control.
         /// </summary>
         /// <remarks>
@@ -218,6 +308,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.ComboBox uxFormState;
+        
+        /// <summary>
+        /// uxStateList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxStateList;
         
         /// <summary>
         /// uxFormType control.
