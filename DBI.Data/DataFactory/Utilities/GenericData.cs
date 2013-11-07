@@ -379,6 +379,62 @@ namespace DBI.Data
             }
         }
 
+        public static Ext.Net.Paging<T> PagingFilter<T>(int start, int limit, string sort, string dir, string filter, List<T> dataIn, string field) where T : class
+        {
+            using (Entities _context = new Entities())
+            {
+                //-- data is copied from entry, so ignore pull from database.
+                List<T> data = dataIn;
+
+                //-- start filtering ------------------------------------------------------------
+                if (!string.IsNullOrEmpty(filter) && filter != "*")
+                {
+                        data.RemoveAll(
+                            item =>
+                            {
+                                object oValue = item.GetType().GetProperty(field).GetValue(item, null);
+                                IComparable cItem = oValue as IComparable;
+                                return (oValue != null) ? !oValue.ToString().ToLower().Contains(filter.ToLower()) : true;
+                            }
+                        );
+                    }
+
+                //-- end filtering ------------------------------------------------------------
+
+                //-- start sorting ------------------------------------------------------------
+                if (sort.Length > 0)
+                {
+                    data.Sort(delegate(T x, T y)
+                    {
+                        object a;
+                        object b;
+
+                        int direction = dir == "DESC" ? -1 : 1;
+
+                        a = x.GetType().GetProperty("ORGANIZATION_NAME").GetValue(x, null);
+                        b = y.GetType().GetProperty("ORGANIZATION_NAME").GetValue(y, null);
+                        return CaseInsensitiveComparer.Default.Compare(a, b) * direction;
+                    });
+                }
+                //-- end sorting ------------------------------------------------------------
+
+
+                //-- start paging -----------------------------------------------------------
+
+                if ((start + limit) > data.Count)
+                {
+                    limit = data.Count - start;
+                }
+
+                List<T> rangeData = (start < 0 || limit < 0) ? data : data.GetRange(start, limit);
+                //-- end paging ------------------------------------------------------------
+
+                int count = data.Count;
+                return new Ext.Net.Paging<T>(rangeData,count);
+
+            }
+        }
+        
         /// <summary>
         /// Allows you to test the connection to oracle and if it fails return a message saying it's down.
         /// </summary>

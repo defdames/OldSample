@@ -61,11 +61,13 @@
     <Compile Include="..\DBI.AssemblyVersion\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="DataFactory\Employees\Employees.cs" />
     <Compile Include="DataFactory\Messages\Resource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
+    <Compile Include="DataFactory\Projects\WebProjects.cs" />
     <Compile Include="DataFactory\Projects\Projects.cs" />
     <Compile Include="DataFactory\Security\Activity.cs" />
     <Compile Include="DataFactory\Security\Logger.cs" />
