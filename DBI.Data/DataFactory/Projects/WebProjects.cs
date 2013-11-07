@@ -39,10 +39,11 @@ namespace DBI.Data
         /// <param name="filter"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public static Ext.Net.Paging<WEB_PROJECTS_V> ProjectLookup(int start, int limit, string sort, string dir, string filter, string field)
+        public static Ext.Net.Paging<WEB_PROJECTS_V> ProjectLookup(int start, int limit, string sort, string dir, string filter)
         {
             var dataIn = ProjectList();
-            return GenericData.PagingFilter<WEB_PROJECTS_V>(start, limit, sort, dir, filter, dataIn, field);
+
+            return GenericData.PagingFilter<WEB_PROJECTS_V>(start, limit, sort, dir, filter, dataIn, "ORGANIZATION_NAME");
         }
     }
 }

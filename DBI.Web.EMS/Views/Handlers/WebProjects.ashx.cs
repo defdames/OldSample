@@ -47,7 +47,7 @@ namespace DBI.Web.EMS.Views.Handlers
                 query = context.Request["query"];
             }
 
-            Paging<DBI.Data.WEB_PROJECTS_V> Projects = DBI.Data.WEB_PROJECTS_V.ProjectLookup(start, limit, sort, dir, query, "ORGANIZATION_NAME");
+            Paging<DBI.Data.WEB_PROJECTS_V> Projects = DBI.Data.WEB_PROJECTS_V.ProjectLookup(start, limit, sort, dir, query);
             context.Response.Write(string.Format("{{TOTAL:{1},'Projects':{0}}}", JSON.Serialize(Projects.Data), Projects.TotalRecords));
         }
 
