@@ -247,23 +247,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         itemValue = oValue as string;
                     }
 
-                    switch (op)
-                    {
-                        case "=":
-                            return oValue == null || !oValue.Equals(value);
-                        case "compare":
-                            return !((IEquatable<IComparable>)value).Equals((IComparable)oValue);
-                        case "+":
-                            return itemValue == null || !itemValue.StartsWith(matchValue);
-                        case "-":
-                            return itemValue == null || !itemValue.EndsWith(matchValue);
-                        case "!":
-                            return itemValue == null || itemValue.IndexOf(matchValue) >= 0;
-                        case "*":
-                            return itemValue == null || itemValue.IndexOf(matchValue) < 0;
-                        default:
-                            throw new Exception("Not supported operator");
-                    }
+                    return itemValue == null || itemValue.IndexOf(matchValue) < 0;
+                    //switch (op)
+                    //{
+                    //    case "=":
+                    //        return oValue == null || !oValue.Equals(value);
+                    //    case "compare":
+                    //        return !((IEquatable<IComparable>)value).Equals((IComparable)oValue);
+                    //    case "+":
+                    //        return itemValue == null || !itemValue.StartsWith(matchValue);
+                    //    case "-":
+                    //        return itemValue == null || !itemValue.EndsWith(matchValue);
+                    //    case "!":
+                    //        return itemValue == null || itemValue.IndexOf(matchValue) >= 0;
+                    //    case "*":
+                    //        return itemValue == null || itemValue.IndexOf(matchValue) < 0;
+                    //    default:
+                    //        throw new Exception("Not supported operator");
+                    //}
                 });
             }
             //-- end filtering ------------------------------------------------------------

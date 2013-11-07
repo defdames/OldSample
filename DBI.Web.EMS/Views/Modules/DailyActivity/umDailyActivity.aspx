@@ -145,19 +145,6 @@
 										</ext:GridPanel>
 									</Component>
 								</ext:DropDownField>
-								<%--<ext:ComboBox runat="server" ID="uxFormEmployee" FieldLabel="Supervisor/Area Manager">
-									<Store>
-										<ext:Store runat="server" DataSource="uxFormEmployeeDataSource" AutoDataBind="true">
-											<Model>
-												<ext:Model runat="server">
-													<Fields>
-														<ext:ModelField Name="name" />
-													</Fields>
-												</ext:Model>
-											</Model>
-										</ext:Store>
-									</Store>
-								</ext:ComboBox>--%>
 								<ext:TextField runat="server" ID="uxFormLicense" FieldLabel="License #" />
 								<ext:ComboBox runat="server" ID="uxFormState" FieldLabel="State" DisplayField="name" ValueField="abbr">
 									<Store>
