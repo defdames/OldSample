@@ -26,7 +26,6 @@
 							<Items>
 								<ext:DropDownField runat="server"
 									ID="uxFormProject"
-									PageSize="25"
 									FieldLabel="Select a Project">
 									<Component>
 										<ext:GridPanel runat="server" 
@@ -87,7 +86,11 @@
 												<ext:Toolbar runat="server"
 													ID="uxFormProjectTop">
 													<Items>
-														<ext:Button runat="server" ID="uxFormProjectToggleOrg" EnableToggle="true" Text="All Regions">
+														<ext:Button runat="server" 
+															ID="uxFormProjectToggleOrg" 
+															EnableToggle="true" 
+															Text="All Regions"
+															Icon="Group">
 															<DirectEvents>
 																<Toggle OnEvent="deReloadStore">
 																	<ExtraParams>
@@ -118,7 +121,7 @@
 												<ext:Store runat="server"
 													ID="uxFormEmployeeStore"
 													OnReadData="deLoadEmployees"
-													PageSize="10"
+													PageSize="20"
 													RemoteSort="true">
 													<Model>
 														<ext:Model ID="uxFormEmployeeModel" runat="server">
@@ -136,9 +139,9 @@
 											</Store>
 											<ColumnModel>
 												<Columns>
-													<ext:Column runat="server" Text="Person ID" ID="uxFormPersonId" DataIndex="PERSON_ID" />
-													<ext:Column runat="server" Text="Employee Name" ID="uxFormEmployeeName" DataIndex="EMPLOYEE_NAME" />
-													<ext:Column runat="server" Text="Job Name" ID="uxFormJobName" DataIndex="JOB_NAME" />
+													<ext:Column runat="server" Text="Person ID" ID="uxFormPersonId" DataIndex="PERSON_ID" Flex="20" />
+													<ext:Column runat="server" Text="Employee Name" ID="uxFormEmployeeName" DataIndex="EMPLOYEE_NAME" Flex="35" />
+													<ext:Column runat="server" Text="Job Name" ID="uxFormJobName" DataIndex="JOB_NAME" Flex="35" />
 												</Columns>
 											</ColumnModel>
 											<Plugins>
@@ -162,7 +165,8 @@
 														<ext:Button runat="server"
 															ID="uxFormEmployeeToggleOrg"
 															EnableToggle="true"
-															Text="All Regions">
+															Text="All Regions"
+															Icon="Group">
 															<DirectEvents>
 																<Toggle OnEvent="deReloadStore">
 																	<ExtraParams>
