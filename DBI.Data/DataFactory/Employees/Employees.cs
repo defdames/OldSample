@@ -16,15 +16,21 @@ namespace DBI.Data
             }
         }
 
-        public static List<EMPLOYEES_V> EmployeeDropDown(int OrganizationId = 124)
+        public static List<EMPLOYEES_V> EmployeeDropDown(int OrganizationId = 0)
         {
             using (Entities _context = new Entities())
             {
+                var data = _context.EMPLOYEES_V.Where(e => e.CURRENT_EMPLOYEE_FLAG == "Y");
+                if (OrganizationId != 0)
+                {
+                    data = data.Where(e => e.ORGANIZATION_ID == OrganizationId);
+                }
+
                 //todo update Organization ID from claim
-                var data = (from e in _context.EMPLOYEES_V
-                            where e.CURRENT_EMPLOYEE_FLAG == "Y" && e.ORGANIZATION_ID == OrganizationId
-                            select e).ToList();
-                return data;
+                //var data = (from e in _context.EMPLOYEES_V
+                //            where e.CURRENT_EMPLOYEE_FLAG == "Y" && e.ORGANIZATION_ID == OrganizationId
+                //            select e).ToList();
+                return data.ToList();
             }
         }
     }

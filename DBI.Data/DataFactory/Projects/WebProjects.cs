@@ -9,16 +9,19 @@ namespace DBI.Data
 {
     public partial class WEB_PROJECTS_V
     {
-        public static List<WEB_PROJECTS_V> ProjectList()
+        public static List<WEB_PROJECTS_V> ProjectList(int OrganizationId = 0)
         {
             using (Entities _context = new Entities())
             {
                 //todo Update Organization ID to claim
-                var data = (from p in _context.PROJECTS_V
-                            where p.PROJECT_TYPE == "CUSTOMER BILLING" && p.TEMPLATE_FLAG == "N" && p.PROJECT_STATUS_CODE == "APPROVED" && p.CARRYING_OUT_ORGANIZATION_ID == 257
-                            select p).ToList();
+                var data = from p in _context.PROJECTS_V
+                            where p.PROJECT_TYPE == "CUSTOMER BILLING" && p.TEMPLATE_FLAG == "N" && p.PROJECT_STATUS_CODE == "APPROVED"
+                            select p;
+                data = data.Where(p => p.CARRYING_OUT_ORGANIZATION_ID == OrganizationId);
+                var dataList = data.ToList();
+                
                 List<WEB_PROJECTS_V> returnList = new List<WEB_PROJECTS_V>();
-                foreach (PROJECTS_V item in data)
+                foreach (PROJECTS_V item in dataList)
                 {
                     WEB_PROJECTS_V rItem = new WEB_PROJECTS_V();
                     rItem.LONG_NAME = item.LONG_NAME;
