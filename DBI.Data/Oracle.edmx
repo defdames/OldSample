@@ -1031,6 +1031,7 @@
           <Property Type="String" Name="SEGMENT1" Nullable="false" />
           <Property Type="String" Name="LONG_NAME" Nullable="false" />
           <Property Type="String" Name="ORGANIZATION_NAME" Nullable="false" />
+          <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>

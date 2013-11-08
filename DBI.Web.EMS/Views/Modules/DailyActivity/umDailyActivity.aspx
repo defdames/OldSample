@@ -42,6 +42,7 @@
 														<ext:Model runat="server"
 															ID="uxFormProjectModel">
 															<Fields>
+																<ext:ModelField Name="PROJECT_ID" Type="Int" />
 																<ext:ModelField Name="ORGANIZATION_NAME" Type="String" />
 																<ext:ModelField Name="SEGMENT1" Type="String"/>
 																<ext:ModelField Name="LONG_NAME" Type="String"/>

@@ -31,7 +31,7 @@ namespace DBI.Data
                     rItem.LONG_NAME = item.LONG_NAME;
                     rItem.ORGANIZATION_NAME = item.ORGANIZATION_NAME;
                     rItem.SEGMENT1 = item.SEGMENT1;
-
+                    rItem.PROJECT_ID = item.PROJECT_ID;
                     returnList.Add(rItem);
                 }
                 return returnList;
