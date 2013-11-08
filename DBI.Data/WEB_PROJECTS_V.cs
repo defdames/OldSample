@@ -16,5 +16,6 @@ namespace DBI.Data
         public string SEGMENT1 { get; set; }
         public string LONG_NAME { get; set; }
         public string ORGANIZATION_NAME { get; set; }
+        public long PROJECT_ID { get; set; }
     }
 }
