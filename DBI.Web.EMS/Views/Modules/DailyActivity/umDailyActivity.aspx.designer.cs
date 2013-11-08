@@ -166,6 +166,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.FilterHeader uxFormProjectFilter;
         
         /// <summary>
+        /// uxFormProjectTop control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Toolbar uxFormProjectTop;
+        
+        /// <summary>
+        /// uxFormProjectToggleOrg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxFormProjectToggleOrg;
+        
+        /// <summary>
         /// uxFormProjectPaging control.
         /// </summary>
         /// <remarks>
@@ -281,6 +299,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.RowSelectionModel uxFormEmployeeSelection;
+        
+        /// <summary>
+        /// uxFormEmployeeToggleOrg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxFormEmployeeToggleOrg;
         
         /// <summary>
         /// uxFormEmployeePaging control.

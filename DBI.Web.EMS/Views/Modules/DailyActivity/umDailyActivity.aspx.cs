@@ -4,12 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Security.Claims;
 using DBI.Core.Web;
 using DBI.Data.DataFactory;
 using DBI.Data;
 using Ext.Net;
 using System.Text;
 using System.Collections;
+using DBI.Core.Security;
 
 namespace DBI.Web.EMS.Views.Modules.DailyActivity
 {
@@ -29,7 +31,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deReadData(object sender, StoreReadDataEventArgs e)
         {
-            List<WEB_PROJECTS_V> data = WEB_PROJECTS_V.ProjectList();
+            List<WEB_PROJECTS_V> data = new List<WEB_PROJECTS_V>();
+            if (uxFormProjectToggleOrg.Pressed)
+            {
+                data = WEB_PROJECTS_V.ProjectList();
+            }
+            else
+            {
+                var MyAuth = new Authentication();
+                int CurrentOrg = Convert.ToInt32(MyAuth.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                data = WEB_PROJECTS_V.ProjectList(CurrentOrg);
+            }
+            
 
             //-- start filtering -----------------------------------------------------------
             FilterHeaderConditions fhc = new FilterHeaderConditions(e.Parameters["filterheader"]);
@@ -182,7 +195,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deLoadEmployees(object sender, Ext.Net.StoreReadDataEventArgs e)
         {
-            List<EMPLOYEES_V> data = EMPLOYEES_V.EmployeeDropDown();
+            List<EMPLOYEES_V> data = new List<EMPLOYEES_V>();
+            if (uxFormEmployeeToggleOrg.Pressed)
+            {
+                data = EMPLOYEES_V.EmployeeDropDown();
+            }
+            else
+            {
+                var MyAuth = new Authentication();
+                int CurrentOrg = Convert.ToInt32(MyAuth.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                data = EMPLOYEES_V.EmployeeDropDown(CurrentOrg);
+            }
 
             //-- start filtering -----------------------------------------------------------
             FilterHeaderConditions fhc = new FilterHeaderConditions(e.Parameters["filterheader"]);
@@ -318,6 +341,36 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxFormEmployeeStore.DataBind();
         }
 
+        protected void deReloadStore(object sender, DirectEventArgs e)
+        {
+            string type = e.ExtraParams["Type"];
+            if (type == "Employee")
+            {
+                uxFormEmployeeStore.Reload();
+                if (uxFormEmployeeToggleOrg.Pressed)
+                {
+                    uxFormEmployeeToggleOrg.Text = "My Region";
+                }
+                else
+                {
+                    uxFormEmployeeToggleOrg.Text = "All Regions";
+                }
+            }
+            else
+            {
+                uxFormProjectStore.Reload();
+                if (uxFormProjectToggleOrg.Pressed)
+                {
+                    uxFormProjectToggleOrg.Text = "My Region";
+                }
+                else
+                {
+                    uxFormProjectToggleOrg.Text = "All Regions";
+                }
+            }
+
+            
+        }
         /// <summary>
         /// Puts value into Employee DropDownField and clears filters
         /// </summary>

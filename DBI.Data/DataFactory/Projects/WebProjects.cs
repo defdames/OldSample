@@ -17,7 +17,11 @@ namespace DBI.Data
                 var data = from p in _context.PROJECTS_V
                             where p.PROJECT_TYPE == "CUSTOMER BILLING" && p.TEMPLATE_FLAG == "N" && p.PROJECT_STATUS_CODE == "APPROVED"
                             select p;
-                data = data.Where(p => p.CARRYING_OUT_ORGANIZATION_ID == OrganizationId);
+                if (OrganizationId != 0)
+                {
+                    data = data.Where(p => p.CARRYING_OUT_ORGANIZATION_ID == OrganizationId);
+                }
+                
                 var dataList = data.ToList();
                 
                 List<WEB_PROJECTS_V> returnList = new List<WEB_PROJECTS_V>();
