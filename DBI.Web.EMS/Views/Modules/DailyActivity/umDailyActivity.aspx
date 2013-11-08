@@ -82,6 +82,22 @@
 											<Plugins>
 												<ext:FilterHeader ID="uxFormProjectFilter" runat="server" Remote="true"  />
 											</Plugins>
+											<TopBar>
+												<ext:Toolbar runat="server"
+													ID="uxFormProjectTop">
+													<Items>
+														<ext:Button runat="server" ID="uxFormProjectToggleOrg" EnableToggle="true" Text="All Regions">
+															<DirectEvents>
+																<Toggle OnEvent="deReloadStore">
+																	<ExtraParams>
+																		<ext:Parameter Name="Type" Value="Project" />
+																	</ExtraParams>
+																</Toggle>
+															</DirectEvents>															
+														</ext:Button>
+													</Items>
+												</ext:Toolbar>
+											</TopBar>
 											<BottomBar>
 												<ext:PagingToolbar ID="uxFormProjectPaging" runat="server" />
 											</BottomBar>
@@ -139,6 +155,24 @@
 											<SelectionModel>
 												<ext:RowSelectionModel ID="uxFormEmployeeSelection" runat="server" Mode="Single" />
 											</SelectionModel>
+											<TopBar>
+												<ext:Toolbar runat="server">
+													<Items>
+														<ext:Button runat="server"
+															ID="uxFormEmployeeToggleOrg"
+															EnableToggle="true"
+															Text="All Regions">
+															<DirectEvents>
+																<Toggle OnEvent="deReloadStore">
+																	<ExtraParams>
+																		<ext:Parameter Name="Type" Value="Employee" />
+																	</ExtraParams>
+																</Toggle>
+															</DirectEvents>
+														</ext:Button>
+													</Items>
+												</ext:Toolbar>
+											</TopBar>
 											<BottomBar>
 												<ext:PagingToolbar ID="uxFormEmployeePaging" runat="server" />
 											</BottomBar>
