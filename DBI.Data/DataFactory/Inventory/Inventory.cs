@@ -19,6 +19,15 @@ namespace DBI.Data
          
          }
 
+         public static List<INVENTORY_V> GetActiveInventory()
+            {
+                using (Entities _context = new Entities())
+                {
+                    return _context.Set<INVENTORY_V>().Where(i => i.ACTIVE == "Y").ToList();
+                }
+            }
+     
+
     }
 
 
