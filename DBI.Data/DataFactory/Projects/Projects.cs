@@ -15,7 +15,6 @@ namespace DBI.Data
             {
                 return _context.Set<PROJECTS_V>().ToList();
             }
-
         }
 
         

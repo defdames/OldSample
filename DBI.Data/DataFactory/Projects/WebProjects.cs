@@ -13,7 +13,6 @@ namespace DBI.Data
         {
             using (Entities _context = new Entities())
             {
-                //todo Update Organization ID to claim
                 var data = from p in _context.PROJECTS_V
                             where p.PROJECT_TYPE == "CUSTOMER BILLING" && p.TEMPLATE_FLAG == "N" && p.PROJECT_STATUS_CODE == "APPROVED"
                             select p;
