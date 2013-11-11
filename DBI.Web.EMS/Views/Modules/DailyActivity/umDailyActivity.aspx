@@ -116,7 +116,8 @@
 									FieldLabel="Supervisor/Area Manager">
 									<Component>
 										<ext:GridPanel runat="server" 
-											ID="uxFormEmployeeGrid">
+											ID="uxFormEmployeeGrid"
+											Layout="HBoxLayout">
 											<Store>
 												<ext:Store runat="server"
 													ID="uxFormEmployeeStore"
