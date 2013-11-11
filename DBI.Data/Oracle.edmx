@@ -665,6 +665,10 @@
           <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.PA_TASKS_V" />
           <EntitySet Name="DAILY_ACTIVITY_HEADER" EntityType="OracleModel.DAILY_ACTIVITY_HEADER" />
           <EntitySet Name="INVENTORY_V" EntityType="OracleModel.INVENTORY_V" />
+          <AssociationSet Name="DAILY_ACTIVITY_HEADEREMPLOYEES_V" Association="OracleModel.DAILY_ACTIVITY_HEADEREMPLOYEES_V">
+            <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
+            <End Role="EMPLOYEES_V" EntitySet="EMPLOYEES_V" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -1065,6 +1069,7 @@
           <Property Type="Int64" Name="ORGANIZATION_ID" />
           <Property Type="String" Name="ORGANIZATION_NAME" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="LAST_UPDATE_DATE" />
+          <NavigationProperty Name="DAILY_ACTIVITY_HEADER" Relationship="OracleModel.DAILY_ACTIVITY_HEADEREMPLOYEES_V" FromRole="EMPLOYEES_V" ToRole="DAILY_ACTIVITY_HEADER" />
         </EntityType>
         <EntityType Name="PA_TASKS_V">
           <Key>
@@ -1114,6 +1119,7 @@
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="Int32" Name="STATUS" />
+          <NavigationProperty Name="EMPLOYEES_V" Relationship="OracleModel.DAILY_ACTIVITY_HEADEREMPLOYEES_V" FromRole="DAILY_ACTIVITY_HEADER" ToRole="EMPLOYEES_V" />
         </EntityType>
         <EntityType Name="INVENTORY_V">
           <Key>
@@ -1135,6 +1141,10 @@
           <Property Type="String" Name="INV_NAME" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
           <Property Type="Int64" Name="INV_LOCATION" />
         </EntityType>
+        <Association Name="DAILY_ACTIVITY_HEADEREMPLOYEES_V">
+          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
+          <End Type="OracleModel.EMPLOYEES_V" Role="EMPLOYEES_V" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1477,6 +1487,12 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="DAILY_ACTIVITY_HEADEREMPLOYEES_V" TypeName="OracleModel.DAILY_ACTIVITY_HEADEREMPLOYEES_V" StoreEntitySet="EMPLOYEES_V">
+            <EndProperty Name="EMPLOYEES_V">
+              <ScalarProperty Name="ORGANIZATION_NAME" ColumnName="ORGANIZATION_NAME" />
+              <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
+            </EndProperty>
+          </AssociationSetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
