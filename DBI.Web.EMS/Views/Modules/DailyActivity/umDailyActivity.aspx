@@ -210,9 +210,9 @@
 								<ext:TextField runat="server" ID="uxFormType" FieldLabel="Type" />
 								<ext:ComboBox runat="server" ID="uxFormDensity" FieldLabel="Density">
 									<Items>
-										<ext:ListItem Text="Low" Value="low" />
-										<ext:ListItem Text="Medium" Value="medium" />
-										<ext:ListItem Text="High" Value="high" />
+										<ext:ListItem Text="Low" Value="LOW" />
+										<ext:ListItem Text="Medium" Value="MEDIUM" />
+										<ext:ListItem Text="High" Value="HIGH" />
 									</Items>
 								</ext:ComboBox>
 							</Items>

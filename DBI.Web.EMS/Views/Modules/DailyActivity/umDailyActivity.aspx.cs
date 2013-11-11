@@ -30,16 +30,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void deReadData(object sender, StoreReadDataEventArgs e)
-        {
+        {            
             List<WEB_PROJECTS_V> data = new List<WEB_PROJECTS_V>();
             if (uxFormProjectToggleOrg.Pressed)
             {
+                //Get All Projects
                 data = WEB_PROJECTS_V.ProjectList();
             }
             else
             {
                 var MyAuth = new Authentication();
                 int CurrentOrg = Convert.ToInt32(MyAuth.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                //Get projects for my org only
                 data = WEB_PROJECTS_V.ProjectList(CurrentOrg);
             }
             
@@ -184,7 +186,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deStoreValue(object sender, DirectEventArgs e)
         {
+            //Set value and text
             uxFormProject.SetValue(e.ExtraParams["Segment"], e.ExtraParams["LongName"]);
+            //Clear existing filters
             uxFormProjectFilter.ClearFilter();
         }
 
@@ -198,12 +202,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             List<EMPLOYEES_V> data = new List<EMPLOYEES_V>();
             if (uxFormEmployeeToggleOrg.Pressed)
             {
+                //Get Employees for all regions
                 data = EMPLOYEES_V.EmployeeDropDown();
             }
             else
             {
                 var MyAuth = new Authentication();
                 int CurrentOrg = Convert.ToInt32(MyAuth.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                //Get Employees for my region only
                 data = EMPLOYEES_V.EmployeeDropDown(CurrentOrg);
             }
 
@@ -341,6 +347,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxFormEmployeeStore.DataBind();
         }
 
+        /// <summary>
+        /// Toggles the text for the dropdowns based on what the current text is and reloads the store.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deReloadStore(object sender, DirectEventArgs e)
         {
             string type = e.ExtraParams["Type"];
@@ -378,19 +389,49 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deStoreEmployee(object sender, DirectEventArgs e)
         {
+            //Set value and text for employee
             uxFormEmployee.SetValue(e.ExtraParams["PersonID"], e.ExtraParams["EmployeeName"]);
+            //Clear existing filters
             uxFormEmployeeFilter.ClearFilter();
         }
         
-        //todo Finish DirectEvent
         /// <summary>
         /// Direct Event that stores the Daily Activity form data
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="e"></param> 
+
         protected void deStoreHeader(object sender, Ext.Net.DirectEventArgs e)
         {
+            //Get values in correct formats
+            long ProjectId = Convert.ToInt64(uxFormProject.Value);
+            DateTime DaDate = (DateTime)uxFormDate.Value;
+            int PersonId = Convert.ToInt32(uxFormEmployee.Value);
+            var MyAuth = new Authentication();
+            var icp = User as ClaimsPrincipal;
+            var AddingUser = MyAuth.GetClaimValue(ClaimTypes.Name, icp);
+            
+            //Create new Daily Activity Header
+            DAILY_ACTIVITY_HEADER ToStore = new DAILY_ACTIVITY_HEADER()
+            {
+                PROJECT_ID = ProjectId,
+                DA_DATE = DaDate,
+                SUBDIVISION = uxFormSubDivision.Value.ToString(),
+                CONTRACTOR = uxFormContractor.Value.ToString(),
+                PERSON_ID = PersonId,
+                LICENSE = uxFormLicense.Value.ToString(),
+                STATE = uxFormState.Value.ToString(),
+                APPLICATION_TYPE = uxFormType.Value.ToString(),
+                DENSITY = uxFormDensity.Value.ToString(),
+                CREATE_DATE = DateTime.Now,
+                MODIFY_DATE = DateTime.Now,
+                CREATED_BY = AddingUser,
+                MODIFIED_BY = AddingUser,
+                STATUS = 1
+            };
 
+            //Write to the DB
+            GenericData.Insert<DAILY_ACTIVITY_HEADER>(ToStore);
         }
     }
 }
