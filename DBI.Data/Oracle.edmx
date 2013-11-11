@@ -22,6 +22,20 @@
       "EMPLOYEES_V"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE"
       FROM "XXEMS"."EMPLOYEES_V" "EMPLOYEES_V"</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="INVENTORY_V" EntityType="OracleModel.Store.INVENTORY_V" store:Type="Views" store:Schema="XXEMS" store:Name="INVENTORY_V">
+            <DefiningQuery>SELECT 
+      "INVENTORY_V"."ITEM_ID" AS "ITEM_ID", 
+      "INVENTORY_V"."SEGMENT1" AS "SEGMENT1", 
+      "INVENTORY_V"."DESCRIPTION" AS "DESCRIPTION", 
+      "INVENTORY_V"."UOM_CODE" AS "UOM_CODE", 
+      "INVENTORY_V"."ENABLED_FLAG" AS "ENABLED_FLAG", 
+      "INVENTORY_V"."ACTIVE" AS "ACTIVE", 
+      "INVENTORY_V"."ITEM_COST" AS "ITEM_COST", 
+      "INVENTORY_V"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE", 
+      "INVENTORY_V"."LE" AS "LE", 
+      "INVENTORY_V"."ATTRIBUTE2" AS "ATTRIBUTE2"
+      FROM "XXEMS"."INVENTORY_V" "INVENTORY_V"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.Store.PA_TASKS_V" store:Type="Views" store:Schema="XXEMS" store:Name="PA_TASKS_V">
             <DefiningQuery>SELECT 
       "PA_TASKS_V"."TASK_ID" AS "TASK_ID", 
@@ -314,6 +328,26 @@
           <Property Name="LAST_UPDATE_DATE" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXEMS.INVENTORY_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="INVENTORY_V">
+          <Key>
+            <PropertyRef Name="ITEM_ID" />
+            <PropertyRef Name="ENABLED_FLAG" />
+            <PropertyRef Name="ACTIVE" />
+          </Key>
+          <Property Name="ITEM_ID" Type="number" Nullable="false" />
+          <Property Name="SEGMENT1" Type="varchar2" MaxLength="40" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="240" />
+          <Property Name="UOM_CODE" Type="varchar2" MaxLength="3" />
+          <Property Name="ENABLED_FLAG" Type="varchar2" Nullable="false" MaxLength="1" />
+          <Property Name="ACTIVE" Type="varchar2" Nullable="false" MaxLength="1" />
+          <Property Name="ITEM_COST" Type="number" />
+          <Property Name="LAST_UPDATE_DATE" Type="date" />
+          <Property Name="LE" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE2" Type="varchar2" MaxLength="240" />
+        </EntityType>
+        <!--Errors Found During Generation:
       warning 6002: The table/view 'XXEMS.PA_TASKS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="PA_TASKS_V">
@@ -603,6 +637,7 @@
           <EntitySet Name="PROJECTS_V" EntityType="OracleModel.PROJECTS_V" />
           <EntitySet Name="EMPLOYEES_V" EntityType="OracleModel.EMPLOYEES_V" />
           <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.PA_TASKS_V" />
+          <EntitySet Name="INVENTORY_V" EntityType="OracleModel.INVENTORY_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -1033,6 +1068,23 @@
           <Property Type="String" Name="ORGANIZATION_NAME" Nullable="false" />
           <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
         </ComplexType>
+        <EntityType Name="INVENTORY_V">
+          <Key>
+            <PropertyRef Name="ITEM_ID" />
+            <PropertyRef Name="ENABLED_FLAG" />
+            <PropertyRef Name="ACTIVE" />
+          </Key>
+          <Property Type="Decimal" Name="ITEM_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="SEGMENT1" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DESCRIPTION" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="UOM_CODE" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ENABLED_FLAG" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ACTIVE" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="ITEM_COST" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" />
+          <Property Type="String" Name="LE" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE2" MaxLength="240" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1333,6 +1385,22 @@
                 <ScalarProperty Name="TASK_NUMBER" ColumnName="TASK_NUMBER" />
                 <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
                 <ScalarProperty Name="TASK_ID" ColumnName="TASK_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="INVENTORY_V">
+            <EntityTypeMapping TypeName="OracleModel.INVENTORY_V">
+              <MappingFragment StoreEntitySet="INVENTORY_V">
+                <ScalarProperty Name="ATTRIBUTE2" ColumnName="ATTRIBUTE2" />
+                <ScalarProperty Name="LE" ColumnName="LE" />
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="ITEM_COST" ColumnName="ITEM_COST" />
+                <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
+                <ScalarProperty Name="ENABLED_FLAG" ColumnName="ENABLED_FLAG" />
+                <ScalarProperty Name="UOM_CODE" ColumnName="UOM_CODE" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="SEGMENT1" ColumnName="SEGMENT1" />
+                <ScalarProperty Name="ITEM_ID" ColumnName="ITEM_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

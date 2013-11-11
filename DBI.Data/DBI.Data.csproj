@@ -36,7 +36,13 @@
     </Reference>
     <Reference Include="Ext.Net">
       <HintPath>..\lib\EXT\Ext.Net.dll</HintPath>
-      <HintPath>..\..\..\..\Ext 2.3\Ext.Net.dll</HintPath>
+      <HintPath>..\..\Ext 2.3\Ext.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Ext.Net.Utilities">
+      <HintPath>..\..\Ext 2.3\Ext.Net.Utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\Ext 2.3\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -56,12 +62,16 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Transformer.NET">
+      <HintPath>..\..\Ext 2.3\Transformer.NET.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\DBI.AssemblyVersion\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="DataFactory\Employees\Employees.cs" />
+    <Compile Include="DataFactory\Inventory\Inventory.cs" />
     <Compile Include="DataFactory\Messages\Resource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -76,6 +86,9 @@
     <Compile Include="DataFactory\Security\UserInformation.cs" />
     <Compile Include="DataFactory\Utilities\GenericData.cs" />
     <Compile Include="EMPLOYEES_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INVENTORY_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="MBL_EMPLOYEE_V.cs">

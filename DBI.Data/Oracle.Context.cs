@@ -33,5 +33,6 @@ namespace DBI.Data
         public DbSet<PROJECTS_V> PROJECTS_V { get; set; }
         public DbSet<EMPLOYEES_V> EMPLOYEES_V { get; set; }
         public DbSet<PA_TASKS_V> PA_TASKS_V { get; set; }
+        public DbSet<INVENTORY_V> INVENTORY_V { get; set; }
     }
 }
