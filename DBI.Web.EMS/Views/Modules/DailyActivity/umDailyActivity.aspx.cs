@@ -184,7 +184,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deStoreValue(object sender, DirectEventArgs e)
         {
-            uxFormProject.SetValue(e.ExtraParams["Segment"]);
+            uxFormProject.SetValue(e.ExtraParams["Segment"], e.ExtraParams["LongName"]);
             uxFormProjectFilter.ClearFilter();
         }
 
@@ -378,7 +378,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deStoreEmployee(object sender, DirectEventArgs e)
         {
-            uxFormEmployee.SetValue(e.ExtraParams["EmployeeName"]);
+            uxFormEmployee.SetValue(e.ExtraParams["PersonID"], e.ExtraParams["EmployeeName"]);
             uxFormEmployeeFilter.ClearFilter();
         }
         
@@ -388,7 +388,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void deStoreActivity(object sender, Ext.Net.DirectEventArgs e)
+        protected void deStoreHeader(object sender, Ext.Net.DirectEventArgs e)
         {
 
         }
