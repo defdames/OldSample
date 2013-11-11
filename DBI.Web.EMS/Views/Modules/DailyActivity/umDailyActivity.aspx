@@ -26,8 +26,8 @@
 							<Items>
 								<ext:DropDownField runat="server"
 									ID="uxFormProject"
-									PageSize="25"
-									FieldLabel="Select a Project">
+									FieldLabel="Select a Project"
+									Mode="ValueText">
 									<Component>
 										<ext:GridPanel runat="server" 
 											ID="uxFormProjectGrid"
@@ -77,6 +77,7 @@
 												<SelectionChange OnEvent="deStoreValue">
 													<ExtraParams>
 														<ext:Parameter Name="Segment" Value="#{uxFormProjectGrid}.getSelectionModel().getSelection()[0].data.SEGMENT1" Mode="Raw" />
+														<ext:Parameter Name="LongName" Value="#{uxFormProjectGrid}.getSelectionModel().getSelection()[0].data.LONG_NAME" Mode="Raw" />
 													</ExtraParams>
 												</SelectionChange>
 											</DirectEvents>
@@ -87,7 +88,11 @@
 												<ext:Toolbar runat="server"
 													ID="uxFormProjectTop">
 													<Items>
-														<ext:Button runat="server" ID="uxFormProjectToggleOrg" EnableToggle="true" Text="All Regions">
+														<ext:Button runat="server" 
+															ID="uxFormProjectToggleOrg" 
+															EnableToggle="true" 
+															Text="All Regions"
+															Icon="Group">
 															<DirectEvents>
 																<Toggle OnEvent="deReloadStore">
 																	<ExtraParams>
@@ -110,15 +115,17 @@
 								<ext:TextField runat="server" ID="uxFormContractor" FieldLabel="Contractor"  />
 								<ext:DropDownField runat="server" 
 									ID="uxFormEmployee" 
-									FieldLabel="Supervisor/Area Manager">
+									FieldLabel="Supervisor/Area Manager"
+									Mode="ValueText" >
 									<Component>
 										<ext:GridPanel runat="server" 
-											ID="uxFormEmployeeGrid">
+											ID="uxFormEmployeeGrid"
+											Layout="HBoxLayout">
 											<Store>
 												<ext:Store runat="server"
 													ID="uxFormEmployeeStore"
 													OnReadData="deLoadEmployees"
-													PageSize="10"
+													PageSize="20"
 													RemoteSort="true">
 													<Model>
 														<ext:Model ID="uxFormEmployeeModel" runat="server">
@@ -136,9 +143,9 @@
 											</Store>
 											<ColumnModel>
 												<Columns>
-													<ext:Column runat="server" Text="Person ID" ID="uxFormPersonId" DataIndex="PERSON_ID" />
-													<ext:Column runat="server" Text="Employee Name" ID="uxFormEmployeeName" DataIndex="EMPLOYEE_NAME" />
-													<ext:Column runat="server" Text="Job Name" ID="uxFormJobName" DataIndex="JOB_NAME" />
+													<ext:Column runat="server" Text="Person ID" ID="uxFormPersonId" DataIndex="PERSON_ID" Flex="20" />
+													<ext:Column runat="server" Text="Employee Name" ID="uxFormEmployeeName" DataIndex="EMPLOYEE_NAME" Flex="35" />
+													<ext:Column runat="server" Text="Job Name" ID="uxFormJobName" DataIndex="JOB_NAME" Flex="35" />
 												</Columns>
 											</ColumnModel>
 											<Plugins>
@@ -150,6 +157,7 @@
 												<SelectionChange OnEvent="deStoreEmployee">
 													<ExtraParams>
 														<ext:Parameter Name="EmployeeName" Value="#{uxFormEmployeeGrid}.getSelectionModel().getSelection()[0].data.EMPLOYEE_NAME" Mode="Raw" />
+														<ext:Parameter Name="PersonID" Value="#{uxFormEmployeeGrid}.getSelectionModel().getSelection()[0].data.PERSON_ID" Mode="Raw" />
 													</ExtraParams>
 												</SelectionChange>
 											</DirectEvents>
@@ -162,7 +170,8 @@
 														<ext:Button runat="server"
 															ID="uxFormEmployeeToggleOrg"
 															EnableToggle="true"
-															Text="All Regions">
+															Text="All Regions"
+															Icon="Group">
 															<DirectEvents>
 																<Toggle OnEvent="deReloadStore">
 																	<ExtraParams>
@@ -210,7 +219,7 @@
 							<Buttons>
 								<ext:Button runat="server" ID="uxFormSubmit" Text="Submit">
 									<DirectEvents>
-										<Click OnEvent="deStoreActivity" />
+										<Click OnEvent="deStoreHeader" />
 									</DirectEvents>    
 								</ext:Button>
 								<ext:Button runat="server" ID="uxFormClear" Text="Clear">
