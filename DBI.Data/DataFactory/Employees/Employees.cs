@@ -25,11 +25,6 @@ namespace DBI.Data
                 {
                     data = data.Where(e => e.ORGANIZATION_ID == OrganizationId);
                 }
-
-                //todo update Organization ID from claim
-                //var data = (from e in _context.EMPLOYEES_V
-                //            where e.CURRENT_EMPLOYEE_FLAG == "Y" && e.ORGANIZATION_ID == OrganizationId
-                //            select e).ToList();
                 return data.ToList();
             }
         }

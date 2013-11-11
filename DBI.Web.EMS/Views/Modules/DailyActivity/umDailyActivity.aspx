@@ -16,7 +16,7 @@
 					<Menu runat="server">
 						<Items>
 							<ext:MenuItem ID="uxCreate" Icon="ApplicationAdd" Text="Create Activity" />
-							<ext:MenuItem ID="uxManage" Icon="ApplicationEdit" Text="Manage Existing" />
+							<ext:MenuItem ID="uxManage" Icon="ApplicationEdit" Text="Manage Existing" Href="umManageExisting.aspx" />
 						</Items>
 					</Menu>
 				</ext:MenuPanel>

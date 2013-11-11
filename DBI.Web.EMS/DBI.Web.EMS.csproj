@@ -104,8 +104,13 @@
     <Content Include="Resources\Images\wwbnight.png" />
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
+    <Content Include="Views\Modules\DailyActivity\umChemicalTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umDailyActivity.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umEmployeesTab.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umEquipmentTab.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umHeaderTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umManageExisting.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umProductionTab.aspx" />
     <Content Include="Views\Modules\Security\umSecurityLogList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityActivityList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityUsersList.aspx" />
@@ -142,6 +147,13 @@
     <Compile Include="Views\Handlers\SystemUsers.ashx.cs">
       <DependentUpon>SystemUsers.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umChemicalTab.aspx.cs">
+      <DependentUpon>umChemicalTab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umChemicalTab.aspx.designer.cs">
+      <DependentUpon>umChemicalTab.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\DailyActivity\umDailyActivity.aspx.cs">
       <DependentUpon>umDailyActivity.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -149,12 +161,40 @@
     <Compile Include="Views\Modules\DailyActivity\umDailyActivity.aspx.designer.cs">
       <DependentUpon>umDailyActivity.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umEmployeesTab.aspx.cs">
+      <DependentUpon>umEmployeesTab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umEmployeesTab.aspx.designer.cs">
+      <DependentUpon>umEmployeesTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umEquipmentTab.aspx.cs">
+      <DependentUpon>umEquipmentTab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umEquipmentTab.aspx.designer.cs">
+      <DependentUpon>umEquipmentTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umHeaderTab.aspx.cs">
+      <DependentUpon>umHeaderTab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umHeaderTab.aspx.designer.cs">
+      <DependentUpon>umHeaderTab.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\DailyActivity\umManageExisting.aspx.cs">
       <DependentUpon>umManageExisting.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umManageExisting.aspx.designer.cs">
       <DependentUpon>umManageExisting.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umProductionTab.aspx.cs">
+      <DependentUpon>umProductionTab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umProductionTab.aspx.designer.cs">
+      <DependentUpon>umProductionTab.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\Security\umSecurityLogList.aspx.cs">
       <DependentUpon>umSecurityLogList.aspx</DependentUpon>
