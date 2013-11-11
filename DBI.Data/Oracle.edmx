@@ -6,6 +6,7 @@
     <edmx:StorageModels>
     <Schema Namespace="OracleModel.Store" Alias="Self" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="OracleModelStoreContainer">
+          <EntitySet Name="DAILY_ACTIVITY_HEADER" EntityType="OracleModel.Store.DAILY_ACTIVITY_HEADER" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_ACTIVITY" EntityType="OracleModel.Store.SYS_ACTIVITY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_LOG" EntityType="OracleModel.Store.SYS_LOG" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USER_ACTIVITY" EntityType="OracleModel.Store.SYS_USER_ACTIVITY" store:Type="Tables" Schema="XXEMS" />
@@ -33,7 +34,9 @@
       "INVENTORY_V"."ITEM_COST" AS "ITEM_COST", 
       "INVENTORY_V"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE", 
       "INVENTORY_V"."LE" AS "LE", 
-      "INVENTORY_V"."ATTRIBUTE2" AS "ATTRIBUTE2"
+      "INVENTORY_V"."ATTRIBUTE2" AS "ATTRIBUTE2", 
+      "INVENTORY_V"."INV_NAME" AS "INV_NAME", 
+      "INVENTORY_V"."INV_LOCATION" AS "INV_LOCATION"
       FROM "XXEMS"."INVENTORY_V" "INVENTORY_V"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.Store.PA_TASKS_V" store:Type="Views" store:Schema="XXEMS" store:Name="PA_TASKS_V">
@@ -260,6 +263,26 @@
       FROM "XXEMS"."SYS_USER_INFORMATION" "SYS_USER_INFORMATION"</DefiningQuery>
           </EntitySet>
         </EntityContainer>
+        <EntityType Name="DAILY_ACTIVITY_HEADER">
+          <Key>
+            <PropertyRef Name="HEADER_ID" />
+          </Key>
+          <Property Name="HEADER_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="PROJECT_ID" Type="number" Precision="15" />
+          <Property Name="DA_DATE" Type="date" />
+          <Property Name="SUBDIVISION" Type="varchar2" MaxLength="100" />
+          <Property Name="CONTRACTOR" Type="varchar2" MaxLength="200" />
+          <Property Name="PERSON_ID" Type="number" Precision="10" />
+          <Property Name="LICENSE" Type="varchar2" MaxLength="200" />
+          <Property Name="STATE" Type="varchar2" MaxLength="50" />
+          <Property Name="APPLICATION_TYPE" Type="varchar2" MaxLength="200" />
+          <Property Name="DENSITY" Type="varchar2" MaxLength="100" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="STATUS" Type="number" Precision="10" />
+        </EntityType>
         <EntityType Name="SYS_ACTIVITY">
           <Key>
             <PropertyRef Name="ACTIVITY_ID" />
@@ -335,6 +358,7 @@
             <PropertyRef Name="ITEM_ID" />
             <PropertyRef Name="ENABLED_FLAG" />
             <PropertyRef Name="ACTIVE" />
+            <PropertyRef Name="INV_NAME" />
           </Key>
           <Property Name="ITEM_ID" Type="number" Nullable="false" />
           <Property Name="SEGMENT1" Type="varchar2" MaxLength="40" />
@@ -346,6 +370,8 @@
           <Property Name="LAST_UPDATE_DATE" Type="date" />
           <Property Name="LE" Type="varchar2" MaxLength="150" />
           <Property Name="ATTRIBUTE2" Type="varchar2" MaxLength="240" />
+          <Property Name="INV_NAME" Type="varchar2" Nullable="false" MaxLength="240" />
+          <Property Name="INV_LOCATION" Type="number" Precision="15" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'XXEMS.PA_TASKS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -637,6 +663,7 @@
           <EntitySet Name="PROJECTS_V" EntityType="OracleModel.PROJECTS_V" />
           <EntitySet Name="EMPLOYEES_V" EntityType="OracleModel.EMPLOYEES_V" />
           <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.PA_TASKS_V" />
+          <EntitySet Name="DAILY_ACTIVITY_HEADER" EntityType="OracleModel.DAILY_ACTIVITY_HEADER" />
           <EntitySet Name="INVENTORY_V" EntityType="OracleModel.INVENTORY_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
@@ -1068,11 +1095,32 @@
           <Property Type="String" Name="ORGANIZATION_NAME" Nullable="false" />
           <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
         </ComplexType>
+        <EntityType Name="DAILY_ACTIVITY_HEADER">
+          <Key>
+            <PropertyRef Name="HEADER_ID" />
+          </Key>
+          <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
+          <Property Type="Int64" Name="PROJECT_ID" />
+          <Property Type="DateTime" Name="DA_DATE" />
+          <Property Type="String" Name="SUBDIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CONTRACTOR" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="PERSON_ID" />
+          <Property Type="String" Name="LICENSE" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STATE" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="APPLICATION_TYPE" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DENSITY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="STATUS" />
+        </EntityType>
         <EntityType Name="INVENTORY_V">
           <Key>
             <PropertyRef Name="ITEM_ID" />
             <PropertyRef Name="ENABLED_FLAG" />
             <PropertyRef Name="ACTIVE" />
+            <PropertyRef Name="INV_NAME" />
           </Key>
           <Property Type="Decimal" Name="ITEM_ID" Nullable="false" Precision="38" Scale="0" />
           <Property Type="String" Name="SEGMENT1" MaxLength="40" FixedLength="false" Unicode="false" />
@@ -1084,6 +1132,8 @@
           <Property Type="DateTime" Name="LAST_UPDATE_DATE" />
           <Property Type="String" Name="LE" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="ATTRIBUTE2" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="INV_NAME" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="INV_LOCATION" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1388,9 +1438,32 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="DAILY_ACTIVITY_HEADER">
+            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_HEADER">
+              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_HEADER">
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="DENSITY" ColumnName="DENSITY" />
+                <ScalarProperty Name="APPLICATION_TYPE" ColumnName="APPLICATION_TYPE" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+                <ScalarProperty Name="LICENSE" ColumnName="LICENSE" />
+                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
+                <ScalarProperty Name="CONTRACTOR" ColumnName="CONTRACTOR" />
+                <ScalarProperty Name="SUBDIVISION" ColumnName="SUBDIVISION" />
+                <ScalarProperty Name="DA_DATE" ColumnName="DA_DATE" />
+                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
+                <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="INVENTORY_V">
             <EntityTypeMapping TypeName="OracleModel.INVENTORY_V">
               <MappingFragment StoreEntitySet="INVENTORY_V">
+                <ScalarProperty Name="INV_LOCATION" ColumnName="INV_LOCATION" />
+                <ScalarProperty Name="INV_NAME" ColumnName="INV_NAME" />
                 <ScalarProperty Name="ATTRIBUTE2" ColumnName="ATTRIBUTE2" />
                 <ScalarProperty Name="LE" ColumnName="LE" />
                 <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />

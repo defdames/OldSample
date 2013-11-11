@@ -70,6 +70,9 @@
     <Compile Include="..\DBI.AssemblyVersion\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="DAILY_ACTIVITY_HEADER.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataFactory\Employees\Employees.cs" />
     <Compile Include="DataFactory\Inventory\Inventory.cs" />
     <Compile Include="DataFactory\Messages\Resource.Designer.cs">

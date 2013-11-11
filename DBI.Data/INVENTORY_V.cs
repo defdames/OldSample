@@ -24,5 +24,7 @@ namespace DBI.Data
         public Nullable<System.DateTime> LAST_UPDATE_DATE { get; set; }
         public string LE { get; set; }
         public string ATTRIBUTE2 { get; set; }
+        public string INV_NAME { get; set; }
+        public Nullable<long> INV_LOCATION { get; set; }
     }
 }

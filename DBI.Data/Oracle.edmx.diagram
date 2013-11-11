@@ -17,7 +17,8 @@
         <EntityTypeShape EntityType="OracleModel.PROJECTS_V" Width="3.375" PointX="9.75" PointY="0.75" />
         <EntityTypeShape EntityType="OracleModel.EMPLOYEES_V" Width="1.5" PointX="6.75" PointY="8.625" />
         <EntityTypeShape EntityType="OracleModel.PA_TASKS_V" Width="1.5" PointX="4.125" PointY="8.75" />
-        <EntityTypeShape EntityType="OracleModel.INVENTORY_V" Width="1.5" PointX="2.5" PointY="8.875" />
+        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_HEADER" Width="1.5" PointX="9.7789266900061289" PointY="26.489065152820697" />
+        <EntityTypeShape EntityType="OracleModel.INVENTORY_V" Width="1.5" PointX="1.125" PointY="8.625" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
