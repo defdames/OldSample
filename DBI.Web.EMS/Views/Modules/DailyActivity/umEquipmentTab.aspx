@@ -7,6 +7,7 @@
     <title></title>
 </head>
 <body>
+    <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
     <form id="form1" runat="server">
     <div>
     

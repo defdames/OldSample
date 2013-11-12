@@ -19,7 +19,7 @@
                         </Items>
                     </Menu>
                 </ext:MenuPanel>
-                <ext:GridPanel runat="server" ID="uxManageGrid" Region="North">
+                <ext:GridPanel runat="server" ID="uxManageGrid" Region="North" Layout="HBoxLayout">
                     <SelectionModel>
                         <ext:RowSelectionModel runat="server" />
                     </SelectionModel>
@@ -29,63 +29,62 @@
                                 <ext:ModelField Name="HEADER_ID" />
                                 <ext:ModelField Name="PROJECT_ID" />
                                 <ext:ModelField Name="DA_DATE" />
-                                <ext:ModelField Name="SUBDIVISION" />
-                                <ext:ModelField Name="CONTRACTOR" />
-                                <ext:ModelField Name="PERSON_ID" />
-                                <ext:ModelField Name="LICENSE" />
-                                <ext:ModelField Name="STATE" />
-                                <ext:ModelField Name="APPLICATION_TYPE" />
-                                <ext:ModelField Name="DENSITY" />
-                                <ext:ModelField Name="CREATE_DATE" />
-                                <ext:ModelField Name="MODIFY_DATE" />
-                                <ext:ModelField Name="CREATED_BY" />
-                                <ext:ModelField Name="MODIFIED_BY" />
-                                <ext:ModelField Name="STATUS" />
+                                <ext:ModelField Name="SEGMENT1" />
+                                <ext:ModelField Name="LONG_NAME" />
                             </Fields>
                         </ext:Store>
                     </Store>
                     <ColumnModel>
-                        <Columns>
-                            <ext:Column runat="server" Text="License" DataIndex="LICENSE" />
+                        <Columns>                            
+                            <ext:DateColumn runat="server" Text="Activity Date" DataIndex="DA_DATE" Flex="10"/>
+                            <ext:Column ID="Column1" runat="server" Text="Project" DataIndex="SEGMENT1" Flex="20"/>
+                            <ext:Column runat="server" Text="Project Name" DataIndex="LONG_NAME" Flex="50" />
                         </Columns>
                     </ColumnModel>
+                    <DirectEvents>
+                        <Select OnEvent="deSelectHeader">
+                            <ExtraParams>
+                                <ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
+                            </ExtraParams>
+                        </Select>
+                    </DirectEvents>
                 </ext:GridPanel>
                 <ext:TabPanel runat="server" ID="uxTabPanel" Region="Center">
                     <Items>
                         <ext:Panel runat="server" 
                             Title="Header"
                             ID="uxHeaderTab">
-                            <Loader runat="server" Url="umHeaderTab.aspx">
+                            <Loader runat="server" AutoLoad="false">
                                 <LoadMask ShowMask="true" />
-                            </Loader>                                                        
+                            </Loader>                                                    
                         </ext:Panel>
                         <ext:Panel runat="server"
                             Title="Equipment"
                             ID="uxEquipmentTab">
-                            <Loader runat="server" Url="umEquipmentTab.aspx">
+                            <Loader runat="server" AutoLoad="false">
                                 <LoadMask ShowMask="true" />
                             </Loader>
                         </ext:Panel>
                         <ext:Panel runat="server"
                             Title="Production"
                             ID="uxProductionTab">
-                            <Loader runat="server" Url="umProductionTab.aspx">
+                            <Loader runat="server" AutoLoad="false">
                                 <LoadMask ShowMask="true" />
-                            </Loader>
+                            </Loader>   
                         </ext:Panel>
                         <ext:Panel runat="server"
                             Title="Employees"
                             ID="uxEmployeeTab">
-                            <Loader runat="server" Url="umEmployeesTab.aspx">
+                            <Loader runat="server" AutoLoad="false">
                                 <LoadMask ShowMask="true" />
-                            </Loader>
+                            </Loader>   
                         </ext:Panel>
                         <ext:Panel runat="server"
                             Title="Chemical Mix"
                             ID="uxChemicalTab">
-                            <Loader runat="server" Url="umChemicalTab.aspx">
+                            <Loader runat="server" AutoLoad="false">
                                 <LoadMask ShowMask="true" />
-                            </Loader>
+                            </Loader>   
                         </ext:Panel>
                     </Items>
                 </ext:TabPanel>

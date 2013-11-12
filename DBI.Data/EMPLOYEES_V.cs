@@ -22,7 +22,5 @@ namespace DBI.Data
         public Nullable<long> ORGANIZATION_ID { get; set; }
         public string ORGANIZATION_NAME { get; set; }
         public Nullable<System.DateTime> LAST_UPDATE_DATE { get; set; }
-    
-        public virtual DAILY_ACTIVITY_HEADER DAILY_ACTIVITY_HEADER { get; set; }
     }
 }
