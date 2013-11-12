@@ -27,5 +27,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxManageGridStore.DataSource = data;
             }
         }
+
+        protected void deSelectHeader(object sender, DirectEventArgs e)
+        {
+            string headerUrl = string.Format("umHeaderTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+            string equipUrl = string.Format("umEquipmentTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+            string prodUrl = string.Format("umProductionTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+            string emplUrl = string.Format("umEmployeesTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+            string chemUrl = string.Format("umChemicalTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+
+            uxHeaderTab.LoadContent(headerUrl);
+            uxEquipmentTab.LoadContent(equipUrl);
+            uxProductionTab.LoadContent(prodUrl);
+            uxEmployeeTab.LoadContent(emplUrl);
+            uxChemicalTab.LoadContent(chemUrl);
+
+
+        }
     }
 }
