@@ -187,7 +187,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void deStoreValue(object sender, DirectEventArgs e)
         {
             //Set value and text
-            uxFormProject.SetValue(e.ExtraParams["Segment"], e.ExtraParams["LongName"]);
+            uxFormProject.SetValue(e.ExtraParams["ProjectId"], e.ExtraParams["LongName"]);
             //Clear existing filters
             uxFormProjectFilter.ClearFilter();
         }

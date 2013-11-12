@@ -22,7 +22,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 var data = (from d in _context.DAILY_ACTIVITY_HEADER
-                            select d).ToList();
+                            join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                            select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME }).ToList();
                 uxManageGridStore.DataSource = data;
             }
         }

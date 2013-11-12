@@ -76,7 +76,7 @@
 											<DirectEvents>
 												<SelectionChange OnEvent="deStoreValue">
 													<ExtraParams>
-														<ext:Parameter Name="Segment" Value="#{uxFormProjectGrid}.getSelectionModel().getSelection()[0].data.SEGMENT1" Mode="Raw" />
+														<ext:Parameter Name="ProjectId" Value="#{uxFormProjectGrid}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
 														<ext:Parameter Name="LongName" Value="#{uxFormProjectGrid}.getSelectionModel().getSelection()[0].data.LONG_NAME" Mode="Raw" />
 													</ExtraParams>
 												</SelectionChange>
