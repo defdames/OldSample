@@ -54,35 +54,39 @@
                         <ext:Panel runat="server" 
                             Title="Header"
                             ID="uxHeaderTab">
-                            <Loader runat="server" AutoLoad="false">
+                            <Loader runat="server" AutoLoad="false" Mode="Frame"> 
                                 <LoadMask ShowMask="true" />
                             </Loader>                                                    
                         </ext:Panel>
                         <ext:Panel runat="server"
                             Title="Equipment"
                             ID="uxEquipmentTab">
-                            <Loader runat="server" AutoLoad="false">
-                                <LoadMask ShowMask="true" />
+                            <Loader runat="server" AutoLoad="false"
+                                ID="uxEquipmentLoader" Url="umEquipmentTab.aspx" Mode="Frame">
+                                <LoadMask ShowMask="true"  />
+                                <Params>
+                                    <ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
+                                </Params>
                             </Loader>
                         </ext:Panel>
                         <ext:Panel runat="server"
                             Title="Production"
                             ID="uxProductionTab">
-                            <Loader runat="server" AutoLoad="false">
+                            <Loader runat="server" AutoLoad="false" Mode="Frame">
                                 <LoadMask ShowMask="true" />
                             </Loader>   
                         </ext:Panel>
                         <ext:Panel runat="server"
                             Title="Employees"
                             ID="uxEmployeeTab">
-                            <Loader runat="server" AutoLoad="false">
+                            <Loader runat="server" AutoLoad="false" Mode="Frame">
                                 <LoadMask ShowMask="true" />
                             </Loader>   
                         </ext:Panel>
                         <ext:Panel runat="server"
                             Title="Chemical Mix"
                             ID="uxChemicalTab">
-                            <Loader runat="server" AutoLoad="false">
+                            <Loader runat="server" AutoLoad="false" Mode="Frame">
                                 <LoadMask ShowMask="true" />
                             </Loader>   
                         </ext:Panel>

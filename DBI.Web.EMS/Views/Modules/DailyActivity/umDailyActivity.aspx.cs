@@ -287,7 +287,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     if (type == FilterType.String)
                     {
                         matchValue = (string)value;
+                        matchValue = matchValue.ToLower();
                         itemValue = oValue as string;
+                        itemValue = itemValue.ToLower();
                     }
 
                     return itemValue == null || itemValue.IndexOf(matchValue) < 0;
@@ -378,9 +380,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 {
                     uxFormProjectToggleOrg.Text = "All Regions";
                 }
-            }
-
-            
+            }            
         }
         /// <summary>
         /// Puts value into Employee DropDownField and clears filters
