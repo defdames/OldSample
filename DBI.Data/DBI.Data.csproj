@@ -152,6 +152,9 @@
     <Compile Include="SYS_USER_INFORMATION.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="WEB_EQUIPMENT_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="WEB_PROJECTS_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
