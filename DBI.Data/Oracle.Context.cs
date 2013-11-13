@@ -35,5 +35,6 @@ namespace DBI.Data
         public DbSet<PA_TASKS_V> PA_TASKS_V { get; set; }
         public DbSet<DAILY_ACTIVITY_HEADER> DAILY_ACTIVITY_HEADER { get; set; }
         public DbSet<INVENTORY_V> INVENTORY_V { get; set; }
+        public DbSet<DAILY_ACTIVITY_EQUIPMENT> DAILY_ACTIVITY_EQUIPMENT { get; set; }
     }
 }

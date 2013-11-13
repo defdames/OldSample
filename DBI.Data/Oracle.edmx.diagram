@@ -19,6 +19,8 @@
         <EntityTypeShape EntityType="OracleModel.PA_TASKS_V" Width="1.5" PointX="4.125" PointY="8.75" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_HEADER" Width="1.5" PointX="4.875" PointY="11.375" />
         <EntityTypeShape EntityType="OracleModel.INVENTORY_V" Width="1.5" PointX="1.125" PointY="8.625" />
+        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EQUIPMENT" Width="1.5" PointX="7.625" PointY="15.625" />
+        <AssociationConnector Association="OracleModel.FK_HEADER_ID" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
