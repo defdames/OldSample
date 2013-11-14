@@ -20,7 +20,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             GetCurrentEquipment();
         }
-
+        
+        /// <summary>
+        /// Gets Header's current equipment for gridpanel
+        /// </summary>
         protected void GetCurrentEquipment()
         {
             using (Entities _context = new Entities())
@@ -34,6 +37,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Filter Equipment list for add/edit drop-down grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deReadGrid(object sender, StoreReadDataEventArgs e)
         {
             List<WEB_EQUIPMENT_V> data = new List<WEB_EQUIPMENT_V>();
@@ -195,6 +203,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Add equipment to db
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deAddEquipment(object sender, DirectEventArgs e)
         {
             long headerId = long.Parse(Request.QueryString["headerId"]);
@@ -221,8 +234,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GenericData.Insert<DAILY_ACTIVITY_EQUIPMENT>(added);
             uxAddEquipmentWindow.Hide();
             uxCurrentEquipmentStore.Reload();
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Equipment Added Successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
         }
 
+        /// <summary>
+        /// Load edit equipment form and populate fields
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deEditEquipmentForm(object sender, DirectEventArgs e)
         {
             //JSON Decode Row and assign to variables
@@ -238,6 +267,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Store edits to database
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deEditEquipment(object sender, DirectEventArgs e)
         {
             DAILY_ACTIVITY_EQUIPMENT data;
@@ -260,16 +294,60 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 data.MODIFIED_BY = User.Identity.Name;
                 data.MODIFY_DATE = DateTime.Now;
             }
-                //Save to DB
-                GenericData.Update<DAILY_ACTIVITY_EQUIPMENT>(data);
+            //Save to DB
+            GenericData.Update<DAILY_ACTIVITY_EQUIPMENT>(data);
+            uxCurrentEquipmentStore.Reload();
+            uxEditEquipmentWindow.Hide();
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Equipment Edited Successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
             
         }
 
+        /// <summary>
+        /// Remove equipment from db
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deRemoveEquipment(object sender, DirectEventArgs e)
         {
-
+            //Convert EquipmentId to long
+            long EquipmentId = long.Parse(e.ExtraParams["EquipmentId"]);
+            DAILY_ACTIVITY_EQUIPMENT data;
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
+                        where d.EQUIPMENT_ID == EquipmentId
+                        select d).Single();
+            }
+            GenericData.Delete<DAILY_ACTIVITY_EQUIPMENT>(data);
+            uxCurrentEquipmentStore.Reload();
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Equipment Removed Successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
         }
 
+        /// <summary>
+        /// Update toggle button and reload store
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deReloadStore(object sender, DirectEventArgs e)
         {
             string type = e.ExtraParams["Type"];
@@ -299,6 +377,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Put selected grid value into drop-down field and clear filters
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deStoreGridValue(object sender, DirectEventArgs e)
         {
             if (e.ExtraParams["Form"] == "Add")

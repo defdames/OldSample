@@ -44,8 +44,11 @@
 							Text="Remove Equipment">
 							<DirectEvents>
 								<Click OnEvent="deRemoveEquipment">
-									<Confirmation Title="Remove?" Message="Do you really want to remove?" />
-								</Click>
+									<Confirmation ConfirmRequest="true" Title="Remove?" Message="Do you really want to remove?" />
+									<ExtraParams>
+										<ext:Parameter Name="EquipmentId" Value="#{uxCurrentEquipment}.getSelectionModel().getSelection()[0].data.EQUIPMENT_ID" Mode="Raw" />
+									</ExtraParams>
+								</Click>                                
 							</DirectEvents>
 						</ext:Button>
 					</Items>
