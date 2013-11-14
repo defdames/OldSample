@@ -18,25 +18,56 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            GetCurrentEquipment();
+        }
 
+        protected void GetCurrentEquipment()
+        {
+            using (Entities _context = new Entities())
+            {
+                long HeaderId = long.Parse(Request.QueryString["headerId"]);
+                var data = (from e in _context.DAILY_ACTIVITY_EQUIPMENT
+                            join p in _context.PROJECTS_V on e.PROJECT_ID equals p.PROJECT_ID
+                            where e.HEADER_ID == HeaderId
+                            select new { p.CLASS_CODE, p.ORGANIZATION_NAME, e.ODOMETER_START, e.ODOMETER_END, e.PROJECT_ID, e.EQUIPMENT_ID, p.NAME, e.HEADER_ID }).ToList();
+                uxCurrentEquipmentStore.DataSource = data;
+            }
         }
 
         protected void deReadGrid(object sender, StoreReadDataEventArgs e)
         {
             List<WEB_EQUIPMENT_V> data = new List<WEB_EQUIPMENT_V>();
-            if (uxAddEquipmentToggleOrg.Pressed)
+
+            if (e.Parameters["Form"] == "Add")
             {
-                //Get All Projects
-                data = WEB_EQUIPMENT_V.ListEquipment();
+                if (uxAddEquipmentToggleOrg.Pressed)
+                {
+                    //Get All Projects
+                    data = WEB_EQUIPMENT_V.ListEquipment();
+                }
+                else
+                {
+                    var MyAuth = new Authentication();
+                    int CurrentOrg = Convert.ToInt32(MyAuth.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                    //Get projects for my org only
+                    data = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
+                }
             }
             else
             {
-                var MyAuth = new Authentication();
-                int CurrentOrg = Convert.ToInt32(MyAuth.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
-                //Get projects for my org only
-                data = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
+                if (uxEditRegion.Pressed)
+                {
+                    //Get All Projects
+                    data = WEB_EQUIPMENT_V.ListEquipment();
+                }
+                else
+                {
+                    var MyAuth = new Authentication();
+                    int CurrentOrg = Convert.ToInt32(MyAuth.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                    //Get projects for my org only
+                    data = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
+                }
             }
-            
 
             //-- start filtering -----------------------------------------------------------
             FilterHeaderConditions fhc = new FilterHeaderConditions(e.Parameters["filterheader"]);
@@ -152,18 +183,86 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //-- end paging ------------------------------------------------------------
 
             e.Total = data.Count;
-            uxEquipmentStore.DataSource = rangeData;
-            uxEquipmentStore.DataBind();
+            if (e.Parameters["Form"] == "Add")
+            {
+                uxEquipmentStore.DataSource = rangeData;
+                uxEquipmentStore.DataBind();
+            }
+            else
+            {
+                uxEditEquipmentProjectStore.DataSource = rangeData;
+                uxEditEquipmentProjectStore.DataBind();
+            }
         }
 
         protected void deAddEquipment(object sender, DirectEventArgs e)
         {
+            long headerId = long.Parse(Request.QueryString["headerId"]);
+            long projectId = long.Parse(uxAddEquipmentDropDown.Value.ToString());
+            long odStart = long.Parse(uxAddEquipmentStart.Value.ToString());
+            long odEnd = long.Parse(uxAddEquipmentEnd.Value.ToString());
+            var MyAuth = new Authentication();
+            var icp = User as ClaimsPrincipal;
+            var AddingUser = MyAuth.GetClaimValue(ClaimTypes.Name, icp);
+
+            DAILY_ACTIVITY_EQUIPMENT added = new DAILY_ACTIVITY_EQUIPMENT()
+            {
+                HEADER_ID = headerId,
+                PROJECT_ID = projectId,
+                ODOMETER_START = odStart,
+                ODOMETER_END = odEnd,
+                CREATE_DATE = DateTime.Now,
+                MODIFY_DATE = DateTime.Now,
+                CREATED_BY = AddingUser,
+                MODIFIED_BY = AddingUser
+            };
+
+            //Write Data to DB
+            GenericData.Insert<DAILY_ACTIVITY_EQUIPMENT>(added);
+            uxAddEquipmentWindow.Hide();
+            uxCurrentEquipmentStore.Reload();
+        }
+
+        protected void deEditEquipmentForm(object sender, DirectEventArgs e)
+        {
+            //JSON Decode Row and assign to variables
+            string JsonValues = e.ExtraParams["EquipmentDetails"];
+            Dictionary<string, string>[] EquipmentDetails = JSON.Deserialize<Dictionary<string, string>[]>(JsonValues);
             
+            //Populate form with existing data
+            foreach (Dictionary<string, string> Detail in EquipmentDetails)
+            {
+                uxEditEquipmentProject.SetValue(Detail["PROJECT_ID"], Detail["NAME"]);
+                uxEditEquipmentStart.SetValue(Detail["ODOMETER_START"]);
+                uxEditEquipmentEnd.SetValue(Detail["ODOMETER_END"]);                              
+            }
         }
 
         protected void deEditEquipment(object sender, DirectEventArgs e)
         {
+            DAILY_ACTIVITY_EQUIPMENT data;
+            using (Entities _context = new Entities())
+            {
+                long EquipmentId = long.Parse(e.ExtraParams["EquipmentId"]);
+                //Get Current Record
+                data = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
+                        where d.EQUIPMENT_ID == EquipmentId
+                        select d).Single();
 
+                long ProjectId = long.Parse(uxEditEquipmentProject.Value.ToString());
+                long OdStart = long.Parse(uxEditEquipmentStart.Value.ToString());
+                long OdEnd = long.Parse(uxEditEquipmentEnd.Value.ToString());
+
+                //Update Entity
+                data.PROJECT_ID = ProjectId;
+                data.ODOMETER_START = OdStart;
+                data.ODOMETER_END = OdEnd;
+                data.MODIFIED_BY = User.Identity.Name;
+                data.MODIFY_DATE = DateTime.Now;
+            }
+                //Save to DB
+                GenericData.Update<DAILY_ACTIVITY_EQUIPMENT>(data);
+            
         }
 
         protected void deRemoveEquipment(object sender, DirectEventArgs e)
@@ -186,15 +285,38 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     uxAddEquipmentToggleOrg.Text = "All Regions";
                 }
             }
+            if (type == "Edit")
+            {
+                uxEditEquipmentProjectStore.Reload();
+                if (uxEditRegion.Pressed)
+                {
+                    uxEditRegion.Text = "My Region";
+                }
+                else
+                {
+                    uxEditRegion.Text = "All Regions";
+                }
+            }
         }
 
         protected void deStoreGridValue(object sender, DirectEventArgs e)
         {
-            //Set value and text for equipment
-            uxAddEquipmentDropDown.SetValue(e.ExtraParams["ProjectId"], e.ExtraParams["EquipmentName"]);
+            if (e.ExtraParams["Form"] == "Add")
+            {
+                //Set value and text for equipment
+                uxAddEquipmentDropDown.SetValue(e.ExtraParams["ProjectId"], e.ExtraParams["EquipmentName"]);
 
-            //Clear existing filters
-            uxAddEquipmentFilter.ClearFilter();
+                //Clear existing filters
+                uxAddEquipmentFilter.ClearFilter();
+            }
+            else
+            {
+                //Set value and text for equipment
+                uxEditEquipmentProject.SetValue(e.ExtraParams["ProjectId"], e.ExtraParams["EquipmentName"]);
+
+                //Clear existing filters
+                uxEditEquipmentFilter.ClearFilter();
+            }
         }
     }
 }
