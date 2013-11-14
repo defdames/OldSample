@@ -80,6 +80,7 @@
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="DataFactory\Employees\Employees.cs" />
+    <Compile Include="DataFactory\Equipment\Equipment.cs" />
     <Compile Include="DataFactory\Inventory\Inventory.cs" />
     <Compile Include="DataFactory\Messages\Resource.Designer.cs">
       <AutoGen>True</AutoGen>

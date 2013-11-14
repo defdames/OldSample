@@ -14,8 +14,8 @@
                 <ext:MenuPanel runat="server" ID="uxMenuPanel" Region="West" Weight="60">
                     <Menu runat="server">
                         <Items>
-                            <ext:MenuItem Text="Create Activity" runat="server" ID="uxCreate" Href="umDailyActivity.aspx"/>
-                            <ext:MenuItem Text="Manage Existing" runat="server" ID="uxManage" />
+                            <ext:MenuItem Text="Create Activity" Icon="ApplicationAdd" runat="server" ID="uxCreate" Href="umDailyActivity.aspx"/>
+                            <ext:MenuItem Text="Manage Existing" Icon="ApplicationEdit" runat="server" ID="uxManage" />
                         </Items>
                     </Menu>
                 </ext:MenuPanel>
