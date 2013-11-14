@@ -17,6 +17,7 @@ namespace DBI.Data
         public DAILY_ACTIVITY_HEADER()
         {
             this.DAILY_ACTIVITY_EQUIPMENT = new HashSet<DAILY_ACTIVITY_EQUIPMENT>();
+            this.DAILY_ACTIVITY_WEATHER = new HashSet<DAILY_ACTIVITY_WEATHER>();
         }
     
         public long HEADER_ID { get; set; }
@@ -36,5 +37,6 @@ namespace DBI.Data
         public Nullable<int> STATUS { get; set; }
     
         public virtual ICollection<DAILY_ACTIVITY_EQUIPMENT> DAILY_ACTIVITY_EQUIPMENT { get; set; }
+        public virtual ICollection<DAILY_ACTIVITY_WEATHER> DAILY_ACTIVITY_WEATHER { get; set; }
     }
 }

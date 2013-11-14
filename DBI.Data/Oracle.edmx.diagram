@@ -21,6 +21,8 @@
         <EntityTypeShape EntityType="OracleModel.INVENTORY_V" Width="1.5" PointX="1.125" PointY="8.625" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EQUIPMENT" Width="1.5" PointX="7.625" PointY="15.625" />
         <AssociationConnector Association="OracleModel.FK_HEADER_ID" />
+        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_WEATHER" Width="1.5" PointX="4.625" PointY="16.375" />
+        <AssociationConnector Association="OracleModel.FK_WEATHER_HEADER_ID" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

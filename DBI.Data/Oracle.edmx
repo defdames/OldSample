@@ -8,6 +8,7 @@
         <EntityContainer Name="OracleModelStoreContainer">
           <EntitySet Name="DAILY_ACTIVITY_EQUIPMENT" EntityType="OracleModel.Store.DAILY_ACTIVITY_EQUIPMENT" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_HEADER" EntityType="OracleModel.Store.DAILY_ACTIVITY_HEADER" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="DAILY_ACTIVITY_WEATHER" EntityType="OracleModel.Store.DAILY_ACTIVITY_WEATHER" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_ACTIVITY" EntityType="OracleModel.Store.SYS_ACTIVITY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_LOG" EntityType="OracleModel.Store.SYS_LOG" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USER_ACTIVITY" EntityType="OracleModel.Store.SYS_USER_ACTIVITY" store:Type="Tables" Schema="XXEMS" />
@@ -267,6 +268,10 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_EQUIPMENT" EntitySet="DAILY_ACTIVITY_EQUIPMENT" />
           </AssociationSet>
+          <AssociationSet Name="FK_WEATHER_HEADER_ID" Association="OracleModel.Store.FK_WEATHER_HEADER_ID">
+            <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
+            <End Role="DAILY_ACTIVITY_WEATHER" EntitySet="DAILY_ACTIVITY_WEATHER" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="DAILY_ACTIVITY_EQUIPMENT">
           <Key>
@@ -301,6 +306,23 @@
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="STATUS" Type="number" Precision="10" />
+        </EntityType>
+        <EntityType Name="DAILY_ACTIVITY_WEATHER">
+          <Key>
+            <PropertyRef Name="WEATHER_ID" />
+          </Key>
+          <Property Name="WEATHER_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
+          <Property Name="HEADER_ID" Type="number" Precision="15" />
+          <Property Name="WEATHER_DATE_TIME" Type="timestamp" />
+          <Property Name="TEMP" Type="varchar2" MaxLength="10" />
+          <Property Name="WIND_DIRECTION" Type="varchar2" MaxLength="50" />
+          <Property Name="WIND_VELOCITY" Type="varchar2" MaxLength="10" />
+          <Property Name="HUMIDITY" Type="varchar2" MaxLength="10" />
+          <Property Name="COMMENTS" Type="varchar2" MaxLength="500" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="SYS_ACTIVITY">
           <Key>
@@ -665,6 +687,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_WEATHER_HEADER_ID">
+          <End Role="DAILY_ACTIVITY_HEADER" Type="OracleModel.Store.DAILY_ACTIVITY_HEADER" Multiplicity="0..1" />
+          <End Role="DAILY_ACTIVITY_WEATHER" Type="OracleModel.Store.DAILY_ACTIVITY_WEATHER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_HEADER">
+              <PropertyRef Name="HEADER_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_WEATHER">
+              <PropertyRef Name="HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -700,6 +734,11 @@
           <AssociationSet Name="FK_HEADER_ID" Association="OracleModel.FK_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_EQUIPMENT" EntitySet="DAILY_ACTIVITY_EQUIPMENT" />
+          </AssociationSet>
+          <EntitySet Name="DAILY_ACTIVITY_WEATHER" EntityType="OracleModel.DAILY_ACTIVITY_WEATHER" />
+          <AssociationSet Name="FK_WEATHER_HEADER_ID" Association="OracleModel.FK_WEATHER_HEADER_ID">
+            <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
+            <End Role="DAILY_ACTIVITY_WEATHER" EntitySet="DAILY_ACTIVITY_WEATHER" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
@@ -1151,6 +1190,7 @@
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="Int32" Name="STATUS" />
           <NavigationProperty Name="DAILY_ACTIVITY_EQUIPMENT" Relationship="OracleModel.FK_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_EQUIPMENT" />
+          <NavigationProperty Name="DAILY_ACTIVITY_WEATHER" Relationship="OracleModel.FK_WEATHER_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_WEATHER" />
         </EntityType>
         <EntityType Name="INVENTORY_V">
           <Key>
@@ -1209,6 +1249,36 @@
           <Property Type="String" Name="CLASS_CODE" Nullable="false" />
           <Property Type="String" Name="PROJECT_STATUS_CODE" Nullable="false" />
         </ComplexType>
+        <EntityType Name="DAILY_ACTIVITY_WEATHER">
+          <Key>
+            <PropertyRef Name="WEATHER_ID" />
+          </Key>
+          <Property Type="Int64" Name="WEATHER_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="HEADER_ID" />
+          <Property Type="DateTime" Name="WEATHER_DATE_TIME" Precision="6" />
+          <Property Type="String" Name="TEMP" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="WIND_DIRECTION" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="WIND_VELOCITY" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="HUMIDITY" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="COMMENTS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DAILY_ACTIVITY_HEADER" Relationship="OracleModel.FK_WEATHER_HEADER_ID" FromRole="DAILY_ACTIVITY_WEATHER" ToRole="DAILY_ACTIVITY_HEADER" />
+        </EntityType>
+        <Association Name="FK_WEATHER_HEADER_ID">
+          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="0..1" />
+          <End Type="OracleModel.DAILY_ACTIVITY_WEATHER" Role="DAILY_ACTIVITY_WEATHER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_HEADER">
+              <PropertyRef Name="HEADER_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_WEATHER">
+              <PropertyRef Name="HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1563,6 +1633,24 @@
                 <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
                 <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
                 <ScalarProperty Name="EQUIPMENT_ID" ColumnName="EQUIPMENT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DAILY_ACTIVITY_WEATHER">
+            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_WEATHER">
+              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_WEATHER">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
+                <ScalarProperty Name="HUMIDITY" ColumnName="HUMIDITY" />
+                <ScalarProperty Name="WIND_VELOCITY" ColumnName="WIND_VELOCITY" />
+                <ScalarProperty Name="WIND_DIRECTION" ColumnName="WIND_DIRECTION" />
+                <ScalarProperty Name="TEMP" ColumnName="TEMP" />
+                <ScalarProperty Name="WEATHER_DATE_TIME" ColumnName="WEATHER_DATE_TIME" />
+                <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
+                <ScalarProperty Name="WEATHER_ID" ColumnName="WEATHER_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
