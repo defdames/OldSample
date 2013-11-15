@@ -15,7 +15,7 @@ namespace DBI.Mobile.EMS.Controllers
         /// This returns a list of customer billing projects
         /// </summary>
         /// <returns></returns>
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         public IEnumerable<MBL_EMPLOYEE_V> Get()
         {
