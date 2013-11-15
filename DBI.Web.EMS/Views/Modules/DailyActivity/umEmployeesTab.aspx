@@ -19,11 +19,12 @@
 					<Model>
 						<ext:Model runat="server">
 							<Fields>
-								<ext:ModelField Name="EMPLOYEE_ID" Type="Int" />
+								<ext:ModelField Name="EMPLOYEE_ID" />
+								<ext:ModelField Name="PERSON_ID" />
 								<ext:ModelField Name="EMPLOYEE_NAME" Type="String" />
 								<ext:ModelField Name="HEADER_ID" Type="Int" />
 								<ext:ModelField Name="EQUIPMENT_ID" Type="Int" />
-								<ext:ModelField Name="EQUIPMENT_NAME" Type="String" />
+								<ext:ModelField Name="NAME" Type="String" />
 								<ext:ModelField Name="TIME_IN" Type="Date"/>
 								<ext:ModelField Name="TIME_OUT" Type="Date" />
 								<ext:ModelField Name="TRAVEL_TIME" Type="Float" />
@@ -36,12 +37,36 @@
 				</ext:Store>                
 			</Store>
 			<ColumnModel>
-				<Columns>                                       
+				<Columns>
+					<ext:Column runat="server"
+						Text="Employee ID"
+						DataIndex="EMPLOYEE_ID" />
+					<ext:Column runat="server"
+						Text="Name"
+						DataIndex="EMPLOYEE_NAME" />
+					<ext:Column runat="server"
+						Text="Equipment Name"
+						DataIndex="NAME" />
+					<ext:Column runat="server"
+						Text="Time In"
+						DataIndex="TIME_IN" />
+					<ext:Column runat="server"
+						Text="Time Out"
+						DataIndex="TIME_OUT" />
+					<ext:Column runat="server"
+						Text="Travel Time"
+						Dataindex="TRAVEL_TIME" />
+					<ext:Column runat="server"
+						Text="Drive Time"
+						DataIndex="DRIVE_TIME" />
+					<ext:Column runat="server"
+						Text="Per Diem"
+						DataIndex="PER_DIEM" />
+					<ext:Column runat="server"
+						Text="Comments"
+						DataIndex="COMMENTS" />
 				</Columns>
 			</ColumnModel>
-			<SelectionModel>
-				<ext:RowSelectionModel runat="server" Mode="Single" />
-			</SelectionModel>
 			<TopBar>
 				<ext:Toolbar runat="server">
 					<Items>
@@ -62,8 +87,11 @@
 									<ExtraParams>
 										<ext:Parameter Name="EmployeeInfo" Value="Ext.encode(#{uxCurrentEmployeeGrid}.getRowsValues({selectedOnly : true}))" Mode="Raw" />
 									</ExtraParams>
-								</Click>
+								</Click>                                
 							</DirectEvents>
+							<Listeners>
+								<Click Handler="#{uxEditEmployeeWindow}.show()" />
+							</Listeners>
 						</ext:Button>
 						<ext:Button runat="server"
 							ID="uxRemoveEmployee"
@@ -81,6 +109,9 @@
 					</Items>
 				</ext:Toolbar>
 			</TopBar>
+			<SelectionModel>
+				<ext:RowSelectionModel runat="server" Mode="Single"/>
+			</SelectionModel>
 		</ext:GridPanel>
 		<ext:Window runat="server"
 			ID="uxAddEmployeeWindow"
@@ -256,6 +287,12 @@
 									Format="H:mm"  />
 							</Items>
 						</ext:FieldContainer>
+						<ext:TextField runat="server"
+							ID="uxAddEmployeeTravelTime"
+							FieldLabel="Travel Time" />
+						<ext:TextField runat="server"
+							ID="uxAddEmployeeDriveTime"
+							FieldLabel="Drive Time" />
 						<ext:Checkbox runat="server"
 							ID="uxAddEmployeePerDiem"
 							FieldLabel="Per Diem" />
@@ -288,7 +325,8 @@
 			ID="uxEditEmployeeWindow"
 			Layout="FormLayout"
 			Hidden="true"
-			Width="650">
+			Width="650"
+			Title="Edit Employee">
 			<Items>
 				<ext:FormPanel runat="server"
 					ID="uxEditEmployeeForm"
@@ -454,6 +492,12 @@
 									Format="H:mm"  />
 							</Items>
 						</ext:FieldContainer>
+						<ext:TextField runat="server"
+							ID="uxEditEmployeeDriveTime"
+							FieldLabel="Drive Time" />
+						<ext:TextField runat="server"
+							ID="uxEditEmployeeTravelTime"
+							FieldLabel="Travel Time" />
 						<ext:Checkbox runat="server"
 							ID="uxEditEmployeePerDiem"
 							FieldLabel="Per Diem" />
@@ -467,7 +511,11 @@
 							Icon="ApplicationGo"
 							Text="Submit">
 							<DirectEvents>
-								<Click OnEvent="deEditEmployee" />
+								<Click OnEvent="deEditEmployee">
+									<ExtraParams>
+										<ext:Parameter Name="EmployeeID" Value="#{uxCurrentEmployeeGrid}.getSelectionModel().getSelection()[0].data.EMPLOYEE_ID" Mode="Raw" />
+									</ExtraParams>
+								</Click>
 							</DirectEvents>
 						</ext:Button>
 						<ext:Button runat="server"

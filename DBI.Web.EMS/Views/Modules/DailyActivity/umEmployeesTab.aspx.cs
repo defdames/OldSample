@@ -19,13 +19,26 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            GetGridData();
+            if (!X.IsAjaxRequest)
+            {
+                GetGridData();
+            }
         }
 
         protected void GetGridData()
         {
-            using(Entities _context = new Entities()){
-            
+            using (Entities _context = new Entities())
+            {
+                long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+                var data = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                            join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
+                            join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.EQUIPMENT_ID equals eq.EQUIPMENT_ID
+                            join p in _context.PROJECTS_V on eq.PROJECT_ID equals p.PROJECT_ID
+                            where d.HEADER_ID == HeaderId
+                            select new { d.EMPLOYEE_ID, d.HEADER_ID, d.PERSON_ID, e.EMPLOYEE_NAME, d.EQUIPMENT_ID, p.NAME, d.TIME_IN, d.TIME_OUT, d.TRAVEL_TIME, d.DRIVE_TIME, d.PER_DIEM, d.COMMENTS }).ToList();
+                          
+                uxCurrentEmployeeStore.DataSource = data;
+                uxCurrentEmployeeStore.DataBind();
             }
         }
 
@@ -38,14 +51,38 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Populate form with existing data
             foreach (Dictionary<string, string> Employee in EmployeeInfo)
             {
+                DateTime TimeIn = DateTime.Parse(Employee["TIME_IN"]);
+                DateTime TimeOut = DateTime.Parse(Employee["TIME_OUT"]);
                 
+                uxEditEmployeeEmpDropDown.SetValue(Employee["PERSON_ID"], Employee["EMPLOYEE_NAME"]);
+                uxEditEmployeeEqDropDown.SetValue(Employee["EQUIPMENT_ID"], Employee["NAME"]);
+                uxEditEmployeeTimeInDate.SetValue(TimeIn.Date);
+                uxEditEmployeeTimeInTime.SetValue(TimeIn.TimeOfDay);
+                uxEditEmployeeTimeOutDate.SetValue(TimeOut.Date);
+                uxEditEmployeeTimeOutTime.SetValue(TimeOut.TimeOfDay);
+                uxEditEmployeeComments.SetValue(Employee["COMMENTS"]);
+                uxEditEmployeeDriveTime.SetValue(Employee["DRIVE_TIME"]);
+                uxEditEmployeeTravelTime.SetValue(Employee["TRAVEL_TIME"]);
+                if (Employee["PER_DIEM"] == "true")
+                {
+                    uxEditEmployeePerDiem.Checked = true;
+                }
             }
-            uxEditEmployeeWindow.Show();
         }
 
         protected void deRemoveEmployee(object sender, DirectEventArgs e)
         {
-
+            long EmployeeId = long.Parse(e.ExtraParams["EmployeeID"]);
+            //Get Record to Remove
+            DAILY_ACTIVITY_EMPLOYEE data;
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                        where d.EMPLOYEE_ID == EmployeeId
+                        select d).Single();
+            }
+            GenericData.Delete<DAILY_ACTIVITY_EMPLOYEE>(data);
+            uxCurrentEmployeeStore.Reload();
         }
 
         protected void deReadEmployeeData(object sender, StoreReadDataEventArgs e)
@@ -278,14 +315,130 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     break;
             }
         }
+        
         protected void deAddEmployee(object sender, DirectEventArgs e)
         {
+            //Convert to correct types
+            int PersonId = int.Parse(uxAddEmployeeEmpDropDown.Value.ToString());
+            long EquipmentId = long.Parse(uxAddEmployeeEqDropDown.Value.ToString());
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            decimal TravelTime = decimal.Parse(uxAddEmployeeTravelTime.Value.ToString());
+            decimal DriveTime = decimal.Parse(uxAddEmployeeDriveTime.Value.ToString());
+            
+            //Combine Date/Time for TimeIn/Out
+            DateTime TimeIn = DateTime.Parse(uxAddEmployeeTimeInDate.Value.ToString());
+            DateTime TimeInTime = DateTime.Parse(uxAddEmployeeTimeInTime.Value.ToString());
+            DateTime TimeOut = DateTime.Parse(uxAddEmployeeTimeOutDate.Value.ToString());
+            DateTime TimeOutTime = DateTime.Parse(uxAddEmployeeTimeOutTime.Value.ToString());
 
+            TimeIn = TimeIn + TimeInTime.TimeOfDay;
+            TimeOut = TimeOut + TimeOutTime.TimeOfDay;
+
+            //Convert PerDiem to string
+            string PerDiem;
+            if (uxAddEmployeePerDiem.Checked)
+            {
+                PerDiem = "Y";
+            }
+            else
+            {
+                PerDiem = "N";
+            }
+
+            DAILY_ACTIVITY_EMPLOYEE data = new DAILY_ACTIVITY_EMPLOYEE()
+            {
+                HEADER_ID = HeaderId,
+                PERSON_ID = PersonId,
+                EQUIPMENT_ID = EquipmentId,
+                TIME_IN = TimeIn,
+                TIME_OUT = TimeOut,
+                TRAVEL_TIME = TravelTime,
+                DRIVE_TIME = DriveTime,
+                COMMENTS = uxAddEmployeeComments.Value.ToString(),
+                CREATE_DATE = DateTime.Now,
+                MODIFY_DATE = DateTime.Now,
+                CREATED_BY = User.Identity.Name,
+                MODIFIED_BY = User.Identity.Name
+            };
+            GenericData.Insert<DAILY_ACTIVITY_EMPLOYEE>(data);
+
+            uxAddEmployeeWindow.Hide();
+            uxCurrentEmployeeStore.Reload();
+
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Employee Added Successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
         }
 
         protected void deEditEmployee(object sender, DirectEventArgs e)
         {
+            //Convert to correct types
+            int PersonId = int.Parse(uxEditEmployeeEmpDropDown.Value.ToString());
+            long EquipmentId = long.Parse(uxEditEmployeeEqDropDown.Value.ToString());
+            decimal TravelTime = decimal.Parse(uxEditEmployeeTravelTime.Value.ToString());
+            decimal DriveTime = decimal.Parse(uxEditEmployeeDriveTime.Value.ToString());
 
+            //Combine Date/Time for TimeIn/Out
+            DateTime TimeIn = DateTime.Parse(uxEditEmployeeTimeInDate.Value.ToString());
+            DateTime TimeInTime = DateTime.Parse(uxEditEmployeeTimeInTime.Value.ToString());
+            DateTime TimeOut = DateTime.Parse(uxEditEmployeeTimeOutDate.Value.ToString());
+            DateTime TimeOutTime = DateTime.Parse(uxEditEmployeeTimeOutTime.Value.ToString());
+
+            TimeIn = TimeIn + TimeInTime.TimeOfDay;
+            TimeOut = TimeOut + TimeOutTime.TimeOfDay;
+
+            //Convert PerDiem to string
+            string PerDiem;
+            if (uxEditEmployeePerDiem.Checked)
+            {
+                PerDiem = "Y";
+            }
+            else
+            {
+                PerDiem = "N";
+            }
+            DAILY_ACTIVITY_EMPLOYEE data;
+            long EmployeeId = long.Parse(e.ExtraParams["EmployeeID"]);
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                        where d.EMPLOYEE_ID == EmployeeId
+                        select d).Single();
+            }
+            data.PERSON_ID = PersonId;
+            data.EQUIPMENT_ID = EquipmentId;
+            data.TRAVEL_TIME = TravelTime;
+            data.DRIVE_TIME = DriveTime;
+            data.TIME_IN = TimeIn;
+            data.TIME_OUT = TimeOut;
+            data.PER_DIEM = PerDiem;
+            data.COMMENTS = uxEditEmployeeComments.Value.ToString();
+            data.MODIFIED_BY = User.Identity.Name;
+            data.MODIFY_DATE = DateTime.Now;
+
+            GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(data);
+
+            uxCurrentEmployeeStore.Reload();
+            uxEditEmployeeWindow.Hide();
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Employee Edited Successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
         }
     }
 }

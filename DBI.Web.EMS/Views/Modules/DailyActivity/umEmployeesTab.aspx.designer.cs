@@ -211,6 +211,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.TimeField uxAddEmployeeTimeOutTime;
         
         /// <summary>
+        /// uxAddEmployeeTravelTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxAddEmployeeTravelTime;
+        
+        /// <summary>
+        /// uxAddEmployeeDriveTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxAddEmployeeDriveTime;
+        
+        /// <summary>
         /// uxAddEmployeePerDiem control.
         /// </summary>
         /// <remarks>
@@ -371,6 +389,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.TimeField uxEditEmployeeTimeOutTime;
+        
+        /// <summary>
+        /// uxEditEmployeeDriveTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxEditEmployeeDriveTime;
+        
+        /// <summary>
+        /// uxEditEmployeeTravelTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxEditEmployeeTravelTime;
         
         /// <summary>
         /// uxEditEmployeePerDiem control.
