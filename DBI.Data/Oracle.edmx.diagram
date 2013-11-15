@@ -28,6 +28,7 @@
         <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_CHEMICAL_MIX" Width="1.5" PointX="5.375" PointY="16.375" />
         <AssociationConnector Association="OracleModel.FK_CHEMICAL_HEADER_ID" />
+        <EntityTypeShape EntityType="OracleModel.UNIT_OF_MEASURE_V" Width="1.5" PointX="6.75" PointY="6.5" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

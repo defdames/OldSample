@@ -266,6 +266,14 @@
       "SYS_USER_INFORMATION"."LOCATION_NAME" AS "LOCATION_NAME"
       FROM "XXEMS"."SYS_USER_INFORMATION" "SYS_USER_INFORMATION"</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="UNIT_OF_MEASURE_V" EntityType="OracleModel.Store.UNIT_OF_MEASURE_V" store:Type="Views" store:Schema="XXEMS" store:Name="UNIT_OF_MEASURE_V">
+            <DefiningQuery>SELECT 
+      "UNIT_OF_MEASURE_V"."UOM_CODE" AS "UOM_CODE", 
+      "UNIT_OF_MEASURE_V"."UNIT_OF_MEASURE" AS "UNIT_OF_MEASURE", 
+      "UNIT_OF_MEASURE_V"."UOM_CLASS" AS "UOM_CLASS", 
+      "UNIT_OF_MEASURE_V"."BASE_UOM_FLAG" AS "BASE_UOM_FLAG"
+      FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_CHEMICAL_HEADER_ID" Association="OracleModel.Store.FK_CHEMICAL_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_CHEMICAL_MIX" EntitySet="DAILY_ACTIVITY_CHEMICAL_MIX" />
@@ -726,6 +734,21 @@
           <Property Name="SUPERVISOR_USER_NAME" Type="varchar2" MaxLength="100" />
           <Property Name="LOCATION_NAME" Type="varchar2" Nullable="false" MaxLength="60" />
         </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXEMS.UNIT_OF_MEASURE_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="UNIT_OF_MEASURE_V">
+          <Key>
+            <PropertyRef Name="UOM_CODE" />
+            <PropertyRef Name="UNIT_OF_MEASURE" />
+            <PropertyRef Name="UOM_CLASS" />
+            <PropertyRef Name="BASE_UOM_FLAG" />
+          </Key>
+          <Property Name="UOM_CODE" Type="varchar2" Nullable="false" MaxLength="3" />
+          <Property Name="UNIT_OF_MEASURE" Type="varchar2" Nullable="false" MaxLength="25" />
+          <Property Name="UOM_CLASS" Type="varchar2" Nullable="false" MaxLength="10" />
+          <Property Name="BASE_UOM_FLAG" Type="varchar2" Nullable="false" MaxLength="1" />
+        </EntityType>
         <Association Name="FK_CHEMICAL_HEADER_ID">
           <End Role="DAILY_ACTIVITY_HEADER" Type="OracleModel.Store.DAILY_ACTIVITY_HEADER" Multiplicity="1" />
           <End Role="DAILY_ACTIVITY_CHEMICAL_MIX" Type="OracleModel.Store.DAILY_ACTIVITY_CHEMICAL_MIX" Multiplicity="*" />
@@ -841,6 +864,7 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_CHEMICAL_MIX" EntitySet="DAILY_ACTIVITY_CHEMICAL_MIX" />
           </AssociationSet>
+          <EntitySet Name="UNIT_OF_MEASURE_V" EntityType="OracleModel.UNIT_OF_MEASURE_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -1459,6 +1483,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="UNIT_OF_MEASURE_V">
+          <Key>
+            <PropertyRef Name="UOM_CODE" />
+            <PropertyRef Name="UNIT_OF_MEASURE" />
+            <PropertyRef Name="UOM_CLASS" />
+            <PropertyRef Name="BASE_UOM_FLAG" />
+          </Key>
+          <Property Type="String" Name="UOM_CODE" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="UNIT_OF_MEASURE" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="UOM_CLASS" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="BASE_UOM_FLAG" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1870,6 +1906,16 @@
                 <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
                 <ScalarProperty Name="CHEMICAL_MIX_NUMBER" ColumnName="CHEMICAL_MIX_NUMBER" />
                 <ScalarProperty Name="CHEMICAL_MIX_ID" ColumnName="CHEMICAL_MIX_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UNIT_OF_MEASURE_V">
+            <EntityTypeMapping TypeName="OracleModel.UNIT_OF_MEASURE_V">
+              <MappingFragment StoreEntitySet="UNIT_OF_MEASURE_V">
+                <ScalarProperty Name="BASE_UOM_FLAG" ColumnName="BASE_UOM_FLAG" />
+                <ScalarProperty Name="UOM_CLASS" ColumnName="UOM_CLASS" />
+                <ScalarProperty Name="UNIT_OF_MEASURE" ColumnName="UNIT_OF_MEASURE" />
+                <ScalarProperty Name="UOM_CODE" ColumnName="UOM_CODE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
