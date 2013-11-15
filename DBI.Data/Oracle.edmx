@@ -6,6 +6,7 @@
     <edmx:StorageModels>
     <Schema Namespace="OracleModel.Store" Alias="Self" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="OracleModelStoreContainer">
+          <EntitySet Name="DAILY_ACTIVITY_CHEMICAL_MIX" EntityType="OracleModel.Store.DAILY_ACTIVITY_CHEMICAL_MIX" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_EMPLOYEE" EntityType="OracleModel.Store.DAILY_ACTIVITY_EMPLOYEE" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_EQUIPMENT" EntityType="OracleModel.Store.DAILY_ACTIVITY_EQUIPMENT" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_HEADER" EntityType="OracleModel.Store.DAILY_ACTIVITY_HEADER" store:Type="Tables" Schema="XXEMS" />
@@ -265,6 +266,10 @@
       "SYS_USER_INFORMATION"."LOCATION_NAME" AS "LOCATION_NAME"
       FROM "XXEMS"."SYS_USER_INFORMATION" "SYS_USER_INFORMATION"</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK_CHEMICAL_HEADER_ID" Association="OracleModel.Store.FK_CHEMICAL_HEADER_ID">
+            <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
+            <End Role="DAILY_ACTIVITY_CHEMICAL_MIX" EntitySet="DAILY_ACTIVITY_CHEMICAL_MIX" />
+          </AssociationSet>
           <AssociationSet Name="FK_EMPLOYEE_EQUIPMENT_ID" Association="OracleModel.Store.FK_EMPLOYEE_EQUIPMENT_ID">
             <End Role="DAILY_ACTIVITY_EQUIPMENT" EntitySet="DAILY_ACTIVITY_EQUIPMENT" />
             <End Role="DAILY_ACTIVITY_EMPLOYEE" EntitySet="DAILY_ACTIVITY_EMPLOYEE" />
@@ -282,6 +287,24 @@
             <End Role="DAILY_ACTIVITY_WEATHER" EntitySet="DAILY_ACTIVITY_WEATHER" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="DAILY_ACTIVITY_CHEMICAL_MIX">
+          <Key>
+            <PropertyRef Name="CHEMICAL_MIX_ID" />
+          </Key>
+          <Property Name="CHEMICAL_MIX_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="CHEMICAL_MIX_NUMBER" Type="number" Nullable="false" Precision="15" />
+          <Property Name="HEADER_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="TARGET_ARE" Type="varchar2" MaxLength="300" />
+          <Property Name="GALLON_ACRE" Type="number" Precision="15" Scale="4" />
+          <Property Name="GALLON_STARTING" Type="number" Precision="15" Scale="4" />
+          <Property Name="GALLON_MIXED" Type="number" Precision="15" Scale="4" />
+          <Property Name="GALLON_TOTAL" Type="number" Precision="15" Scale="4" />
+          <Property Name="GALLON_REMAINING" Type="number" Precision="15" Scale="4" />
+          <Property Name="GALLON_USED" Type="number" Precision="15" Scale="4" />
+          <Property Name="ACRES_SPRAYED" Type="number" Precision="15" Scale="4" />
+          <Property Name="STATE" Type="varchar2" MaxLength="75" />
+          <Property Name="COUNTY" Type="varchar2" MaxLength="75" />
+        </EntityType>
         <EntityType Name="DAILY_ACTIVITY_EMPLOYEE">
           <Key>
             <PropertyRef Name="EMPLOYEE_ID" />
@@ -703,6 +726,18 @@
           <Property Name="SUPERVISOR_USER_NAME" Type="varchar2" MaxLength="100" />
           <Property Name="LOCATION_NAME" Type="varchar2" Nullable="false" MaxLength="60" />
         </EntityType>
+        <Association Name="FK_CHEMICAL_HEADER_ID">
+          <End Role="DAILY_ACTIVITY_HEADER" Type="OracleModel.Store.DAILY_ACTIVITY_HEADER" Multiplicity="1" />
+          <End Role="DAILY_ACTIVITY_CHEMICAL_MIX" Type="OracleModel.Store.DAILY_ACTIVITY_CHEMICAL_MIX" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_HEADER">
+              <PropertyRef Name="HEADER_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_CHEMICAL_MIX">
+              <PropertyRef Name="HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EMPLOYEE_EQUIPMENT_ID">
           <End Role="DAILY_ACTIVITY_EQUIPMENT" Type="OracleModel.Store.DAILY_ACTIVITY_EQUIPMENT" Multiplicity="0..1" />
           <End Role="DAILY_ACTIVITY_EMPLOYEE" Type="OracleModel.Store.DAILY_ACTIVITY_EMPLOYEE" Multiplicity="*" />
@@ -800,6 +835,11 @@
           <AssociationSet Name="FK_EMPLOYEE_HEADER_ID" Association="OracleModel.FK_EMPLOYEE_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_EMPLOYEE" EntitySet="DAILY_ACTIVITY_EMPLOYEE" />
+          </AssociationSet>
+          <EntitySet Name="DAILY_ACTIVITY_CHEMICAL_MIX" EntityType="OracleModel.DAILY_ACTIVITY_CHEMICAL_MIX" />
+          <AssociationSet Name="FK_CHEMICAL_HEADER_ID" Association="OracleModel.FK_CHEMICAL_HEADER_ID">
+            <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
+            <End Role="DAILY_ACTIVITY_CHEMICAL_MIX" EntitySet="DAILY_ACTIVITY_CHEMICAL_MIX" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
@@ -1253,6 +1293,7 @@
           <NavigationProperty Name="DAILY_ACTIVITY_WEATHER" Relationship="OracleModel.FK_WEATHER_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_WEATHER" />
           <NavigationProperty Name="DAILY_ACTIVITY_EQUIPMENT" Relationship="OracleModel.FK_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_EQUIPMENT" />
           <NavigationProperty Name="DAILY_ACTIVITY_EMPLOYEE" Relationship="OracleModel.FK_EMPLOYEE_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_EMPLOYEE" />
+          <NavigationProperty Name="DAILY_ACTIVITY_CHEMICAL_MIX" Relationship="OracleModel.FK_CHEMICAL_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_CHEMICAL_MIX" />
         </EntityType>
         <EntityType Name="INVENTORY_V">
           <Key>
@@ -1383,6 +1424,37 @@
               <PropertyRef Name="HEADER_ID" />
             </Principal>
             <Dependent Role="DAILY_ACTIVITY_EMPLOYEE">
+              <PropertyRef Name="HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DAILY_ACTIVITY_CHEMICAL_MIX">
+          <Key>
+            <PropertyRef Name="CHEMICAL_MIX_ID" />
+          </Key>
+          <Property Type="Int64" Name="CHEMICAL_MIX_ID" Nullable="false" />
+          <Property Type="Int64" Name="CHEMICAL_MIX_NUMBER" Nullable="false" />
+          <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
+          <Property Type="String" Name="TARGET_ARE" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="GALLON_ACRE" Precision="15" Scale="4" />
+          <Property Type="Decimal" Name="GALLON_STARTING" Precision="15" Scale="4" />
+          <Property Type="Decimal" Name="GALLON_MIXED" Precision="15" Scale="4" />
+          <Property Type="Decimal" Name="GALLON_TOTAL" Precision="15" Scale="4" />
+          <Property Type="Decimal" Name="GALLON_REMAINING" Precision="15" Scale="4" />
+          <Property Type="Decimal" Name="GALLON_USED" Precision="15" Scale="4" />
+          <Property Type="Decimal" Name="ACRES_SPRAYED" Precision="15" Scale="4" />
+          <Property Type="String" Name="STATE" MaxLength="75" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="COUNTY" MaxLength="75" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DAILY_ACTIVITY_HEADER" Relationship="OracleModel.FK_CHEMICAL_HEADER_ID" FromRole="DAILY_ACTIVITY_CHEMICAL_MIX" ToRole="DAILY_ACTIVITY_HEADER" />
+        </EntityType>
+        <Association Name="FK_CHEMICAL_HEADER_ID">
+          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
+          <End Type="OracleModel.DAILY_ACTIVITY_CHEMICAL_MIX" Role="DAILY_ACTIVITY_CHEMICAL_MIX" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_HEADER">
+              <PropertyRef Name="HEADER_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_CHEMICAL_MIX">
               <PropertyRef Name="HEADER_ID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1779,6 +1851,25 @@
                 <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
                 <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
                 <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DAILY_ACTIVITY_CHEMICAL_MIX">
+            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_CHEMICAL_MIX">
+              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_CHEMICAL_MIX">
+                <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+                <ScalarProperty Name="ACRES_SPRAYED" ColumnName="ACRES_SPRAYED" />
+                <ScalarProperty Name="GALLON_USED" ColumnName="GALLON_USED" />
+                <ScalarProperty Name="GALLON_REMAINING" ColumnName="GALLON_REMAINING" />
+                <ScalarProperty Name="GALLON_TOTAL" ColumnName="GALLON_TOTAL" />
+                <ScalarProperty Name="GALLON_MIXED" ColumnName="GALLON_MIXED" />
+                <ScalarProperty Name="GALLON_STARTING" ColumnName="GALLON_STARTING" />
+                <ScalarProperty Name="GALLON_ACRE" ColumnName="GALLON_ACRE" />
+                <ScalarProperty Name="TARGET_ARE" ColumnName="TARGET_ARE" />
+                <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
+                <ScalarProperty Name="CHEMICAL_MIX_NUMBER" ColumnName="CHEMICAL_MIX_NUMBER" />
+                <ScalarProperty Name="CHEMICAL_MIX_ID" ColumnName="CHEMICAL_MIX_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
