@@ -286,7 +286,7 @@
           <Key>
             <PropertyRef Name="EMPLOYEE_ID" />
           </Key>
-          <Property Name="EMPLOYEE_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="EMPLOYEE_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="HEADER_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="PERSON_ID" Type="number" Nullable="false" Precision="10" />
           <Property Name="EQUIPMENT_ID" Type="number" Precision="15" />
@@ -305,7 +305,7 @@
           <Key>
             <PropertyRef Name="EQUIPMENT_ID" />
           </Key>
-          <Property Name="EQUIPMENT_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="EQUIPMENT_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="HEADER_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="PROJECT_ID" Type="number" Precision="15" />
           <Property Name="ODOMETER_START" Type="number" Precision="15" />
@@ -339,7 +339,7 @@
           <Key>
             <PropertyRef Name="WEATHER_ID" />
           </Key>
-          <Property Name="WEATHER_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="WEATHER_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="HEADER_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="WEATHER_DATE_TIME" Type="timestamp" />
           <Property Name="TEMP" Type="varchar2" MaxLength="10" />
@@ -1288,7 +1288,7 @@
           <Key>
             <PropertyRef Name="WEATHER_ID" />
           </Key>
-          <Property Type="Int64" Name="WEATHER_ID" Nullable="false" />
+          <Property Type="Int64" Name="WEATHER_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
           <Property Type="DateTime" Name="WEATHER_DATE_TIME" Precision="6" />
           <Property Type="String" Name="TEMP" MaxLength="10" FixedLength="false" Unicode="false" />
@@ -1318,7 +1318,7 @@
           <Key>
             <PropertyRef Name="EQUIPMENT_ID" />
           </Key>
-          <Property Type="Int64" Name="EQUIPMENT_ID" Nullable="false" />
+          <Property Type="Int64" Name="EQUIPMENT_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
           <Property Type="Int64" Name="PROJECT_ID" />
           <Property Type="Int64" Name="ODOMETER_START" />
@@ -1346,7 +1346,7 @@
           <Key>
             <PropertyRef Name="EMPLOYEE_ID" />
           </Key>
-          <Property Type="Int64" Name="EMPLOYEE_ID" Nullable="false" />
+          <Property Type="Int64" Name="EMPLOYEE_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
           <Property Type="Int32" Name="PERSON_ID" Nullable="false" />
           <Property Type="Int64" Name="EQUIPMENT_ID" />
