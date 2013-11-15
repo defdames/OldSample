@@ -40,7 +40,8 @@
       "INVENTORY_V"."LE" AS "LE", 
       "INVENTORY_V"."ATTRIBUTE2" AS "ATTRIBUTE2", 
       "INVENTORY_V"."INV_NAME" AS "INV_NAME", 
-      "INVENTORY_V"."INV_LOCATION" AS "INV_LOCATION"
+      "INVENTORY_V"."INV_LOCATION" AS "INV_LOCATION", 
+      "INVENTORY_V"."ORGANIZATION_ID" AS "ORGANIZATION_ID"
       FROM "XXEMS"."INVENTORY_V" "INVENTORY_V"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.Store.PA_TASKS_V" store:Type="Views" store:Schema="XXEMS" store:Name="PA_TASKS_V">
@@ -459,6 +460,7 @@
             <PropertyRef Name="ENABLED_FLAG" />
             <PropertyRef Name="ACTIVE" />
             <PropertyRef Name="INV_NAME" />
+            <PropertyRef Name="ORGANIZATION_ID" />
           </Key>
           <Property Name="ITEM_ID" Type="number" Nullable="false" />
           <Property Name="SEGMENT1" Type="varchar2" MaxLength="40" />
@@ -472,6 +474,7 @@
           <Property Name="ATTRIBUTE2" Type="varchar2" MaxLength="240" />
           <Property Name="INV_NAME" Type="varchar2" Nullable="false" MaxLength="240" />
           <Property Name="INV_LOCATION" Type="number" Precision="15" />
+          <Property Name="ORGANIZATION_ID" Type="number" Nullable="false" Precision="15" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'XXEMS.PA_TASKS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -839,7 +842,6 @@
           <EntitySet Name="EMPLOYEES_V" EntityType="OracleModel.EMPLOYEES_V" />
           <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.PA_TASKS_V" />
           <EntitySet Name="DAILY_ACTIVITY_HEADER" EntityType="OracleModel.DAILY_ACTIVITY_HEADER" />
-          <EntitySet Name="INVENTORY_V" EntityType="OracleModel.INVENTORY_V" />
           <EntitySet Name="DAILY_ACTIVITY_WEATHER" EntityType="OracleModel.DAILY_ACTIVITY_WEATHER" />
           <AssociationSet Name="FK_WEATHER_HEADER_ID" Association="OracleModel.FK_WEATHER_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
@@ -865,6 +867,7 @@
             <End Role="DAILY_ACTIVITY_CHEMICAL_MIX" EntitySet="DAILY_ACTIVITY_CHEMICAL_MIX" />
           </AssociationSet>
           <EntitySet Name="UNIT_OF_MEASURE_V" EntityType="OracleModel.UNIT_OF_MEASURE_V" />
+          <EntitySet Name="INVENTORY_V" EntityType="OracleModel.INVENTORY_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -1319,26 +1322,6 @@
           <NavigationProperty Name="DAILY_ACTIVITY_EMPLOYEE" Relationship="OracleModel.FK_EMPLOYEE_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_EMPLOYEE" />
           <NavigationProperty Name="DAILY_ACTIVITY_CHEMICAL_MIX" Relationship="OracleModel.FK_CHEMICAL_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_CHEMICAL_MIX" />
         </EntityType>
-        <EntityType Name="INVENTORY_V">
-          <Key>
-            <PropertyRef Name="ITEM_ID" />
-            <PropertyRef Name="ENABLED_FLAG" />
-            <PropertyRef Name="ACTIVE" />
-            <PropertyRef Name="INV_NAME" />
-          </Key>
-          <Property Type="Decimal" Name="ITEM_ID" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="String" Name="SEGMENT1" MaxLength="40" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="DESCRIPTION" MaxLength="240" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="UOM_CODE" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ENABLED_FLAG" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ACTIVE" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="ITEM_COST" Precision="38" Scale="0" />
-          <Property Type="DateTime" Name="LAST_UPDATE_DATE" />
-          <Property Type="String" Name="LE" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ATTRIBUTE2" MaxLength="240" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="INV_NAME" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="INV_LOCATION" />
-        </EntityType>
         <ComplexType Name="WEB_EQUIPMENT_V">
           <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
           <Property Type="String" Name="NAME" Nullable="false" />
@@ -1494,6 +1477,28 @@
           <Property Type="String" Name="UNIT_OF_MEASURE" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="UOM_CLASS" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="BASE_UOM_FLAG" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="INVENTORY_V">
+          <Key>
+            <PropertyRef Name="ITEM_ID" />
+            <PropertyRef Name="ENABLED_FLAG" />
+            <PropertyRef Name="ACTIVE" />
+            <PropertyRef Name="INV_NAME" />
+            <PropertyRef Name="ORGANIZATION_ID" />
+          </Key>
+          <Property Type="Decimal" Name="ITEM_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="SEGMENT1" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DESCRIPTION" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="UOM_CODE" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ENABLED_FLAG" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ACTIVE" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="ITEM_COST" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" />
+          <Property Type="String" Name="LE" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE2" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="INV_NAME" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="INV_LOCATION" />
+          <Property Type="Int64" Name="ORGANIZATION_ID" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1819,24 +1824,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="INVENTORY_V">
-            <EntityTypeMapping TypeName="OracleModel.INVENTORY_V">
-              <MappingFragment StoreEntitySet="INVENTORY_V">
-                <ScalarProperty Name="INV_LOCATION" ColumnName="INV_LOCATION" />
-                <ScalarProperty Name="INV_NAME" ColumnName="INV_NAME" />
-                <ScalarProperty Name="ATTRIBUTE2" ColumnName="ATTRIBUTE2" />
-                <ScalarProperty Name="LE" ColumnName="LE" />
-                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
-                <ScalarProperty Name="ITEM_COST" ColumnName="ITEM_COST" />
-                <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
-                <ScalarProperty Name="ENABLED_FLAG" ColumnName="ENABLED_FLAG" />
-                <ScalarProperty Name="UOM_CODE" ColumnName="UOM_CODE" />
-                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
-                <ScalarProperty Name="SEGMENT1" ColumnName="SEGMENT1" />
-                <ScalarProperty Name="ITEM_ID" ColumnName="ITEM_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="DAILY_ACTIVITY_WEATHER">
             <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_WEATHER">
               <MappingFragment StoreEntitySet="DAILY_ACTIVITY_WEATHER">
@@ -1916,6 +1903,25 @@
                 <ScalarProperty Name="UOM_CLASS" ColumnName="UOM_CLASS" />
                 <ScalarProperty Name="UNIT_OF_MEASURE" ColumnName="UNIT_OF_MEASURE" />
                 <ScalarProperty Name="UOM_CODE" ColumnName="UOM_CODE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="INVENTORY_V">
+            <EntityTypeMapping TypeName="OracleModel.INVENTORY_V">
+              <MappingFragment StoreEntitySet="INVENTORY_V">
+                <ScalarProperty Name="ORGANIZATION_ID" ColumnName="ORGANIZATION_ID" />
+                <ScalarProperty Name="INV_LOCATION" ColumnName="INV_LOCATION" />
+                <ScalarProperty Name="INV_NAME" ColumnName="INV_NAME" />
+                <ScalarProperty Name="ATTRIBUTE2" ColumnName="ATTRIBUTE2" />
+                <ScalarProperty Name="LE" ColumnName="LE" />
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="ITEM_COST" ColumnName="ITEM_COST" />
+                <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
+                <ScalarProperty Name="ENABLED_FLAG" ColumnName="ENABLED_FLAG" />
+                <ScalarProperty Name="UOM_CODE" ColumnName="UOM_CODE" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="SEGMENT1" ColumnName="SEGMENT1" />
+                <ScalarProperty Name="ITEM_ID" ColumnName="ITEM_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
