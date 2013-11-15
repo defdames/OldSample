@@ -105,7 +105,7 @@
 											ID="uxAddEmployeeEmpStore"
 											PageSize="25"
 											RemoteSort="true"
-											OnReadData="deReadData">
+											OnReadData="deReadEmployeeData">
 											<Model>
 												<ext:Model runat="server">
 													<Fields>
@@ -119,13 +119,13 @@
 												<ext:PageProxy />
 											</Proxy>
 											<Parameters>
-												<ext:StoreParameter Name="Form" Value="AddEmployee" />
+												<ext:StoreParameter Name="Form" Value="EmployeeAdd" />
 											</Parameters>
 										</ext:Store>
 									</Store>
 									<ColumnModel>
 										<Columns>
-											<ext:NumberColumn runat="server" Text="Person ID" DataIndex="PERSON_ID" />
+											<ext:Column runat="server" Text="Person ID" DataIndex="PERSON_ID" />
 											<ext:Column runat="server" Text="Name" DataIndex="EMPLOYEE_NAME" />
 											<ext:Column runat="server" Text="Job Name" DataIndex="JOB_NAME" />
 										</Columns>
@@ -136,11 +136,12 @@
 												<ext:Button runat="server"
 													ID="uxAddEmployeeRegion"
 													Icon="Group"
-													Text="All Regions">
+													Text="All Regions"
+													EnableToggle="true">
 													<DirectEvents>
 														<Click OnEvent="deRegionToggle">
 															<ExtraParams>
-																<ext:Parameter Name="Type" Value="Employee" />
+																<ext:Parameter Name="Type" Value="EmployeeAdd" />
 															</ExtraParams>
 														</Click>
 													</DirectEvents>
@@ -154,6 +155,15 @@
 									<SelectionModel>
 										<ext:RowSelectionModel runat="server" Mode="Single" />
 									</SelectionModel>
+									<DirectEvents>
+										<SelectionChange OnEvent="deStoreGridValue">
+											<ExtraParams>
+												<ext:Parameter Name="PersonId" Value="#{uxAddEmployeeEmpGrid}.getSelectionModel().getSelection()[0].data.PERSON_ID" Mode="Raw" />
+												<ext:Parameter Name="Name" Value="#{uxAddEmployeeEmpGrid}.getSelectionModel().getSelection()[0].data.EMPLOYEE_NAME" Mode="Raw" />
+												<ext:Parameter Name="Type" Value="EmployeeAdd" />
+											</ExtraParams>
+										</SelectionChange>
+									</DirectEvents>         
 									<Plugins>
 										<ext:FilterHeader runat="server" ID="uxAddEmployeeEmpFilter" />
 									</Plugins>                                    
@@ -171,8 +181,8 @@
 									<Store>
 										<ext:Store runat="server"
 											ID="uxAddEmployeeEqStore"
-											PageSize="25"
-											OnReadData="deReadData">
+											OnReadData="deReadEquipmentData"
+											AutoDataBind="true">
 											<Model>
 												<ext:Model runat="server">
 													<Fields>
@@ -182,46 +192,33 @@
 													</Fields>
 												</ext:Model>
 											</Model>
+											<Parameters>
+												<ext:StoreParameter Name="Form" Value="EquipmentAdd" />
+											</Parameters>
 											<Proxy>
 												<ext:PageProxy />
 											</Proxy>
-											<Parameters>
-												<ext:StoreParameter Name="Form" Value="AddEquipment" />
-											</Parameters>
 										</ext:Store>
 									</Store>
 									<ColumnModel>
 										<Columns>
-											<ext:NumberColumn runat="server" DataIndex="EQUIPMENT_ID" />
-											<ext:Column runat="server" DataIndex="NAME" />
-											<ext:NumberColumn runat="server" DataIndex="PROJECT_ID" />
+											<ext:Column runat="server" Text="Equipment Id" DataIndex="EQUIPMENT_ID" />
+											<ext:Column runat="server" Text="Name" DataIndex="NAME" />
+											<ext:Column runat="server" Text="Project Id" DataIndex="PROJECT_ID" />
 										</Columns>
 									</ColumnModel>
-									<TopBar>
-										<ext:Toolbar runat="server">
-											<Items>
-												<ext:Button runat="server"
-													ID="uxAddEmployeeEqRegion"
-													Icon="Group"
-													Text="All Regions">
-													<DirectEvents>
-														<Click OnEvent="deRegionToggle">
-															<ExtraParams>
-																<ext:Parameter Name="Type" Value="Equipment" />
-															</ExtraParams>
-														</Click>
-													</DirectEvents>
-												</ext:Button>
-											</Items>
-										</ext:Toolbar>
-									</TopBar>
-									<BottomBar>
-										<ext:PagingToolbar runat="server" />
-									</BottomBar>
-									<Plugins>
-										<ext:FilterHeader runat="server" 
-											ID="uxAddEmployeeEqFilter" />
-									</Plugins>
+									<SelectionModel>
+										<ext:RowSelectionModel Mode="Single" />
+									</SelectionModel>
+									<DirectEvents>
+										<SelectionChange OnEvent="deStoreGridValue">
+											<ExtraParams>
+												<ext:Parameter Name="EquipmentId" Value="#{uxAddEmployeeEqGrid}.getSelectionModel().getSelection()[0].data.EQUIPMENT_ID" Mode="Raw" />
+												<ext:Parameter Name="Name" Value="#{uxAddEmployeeEqGrid}.getSelectionModel().getSelection()[0].data.NAME" Mode="Raw" />
+												<ext:Parameter Name="Type" Value="EquipmentAdd" />
+											</ExtraParams>
+										</SelectionChange>
+									</DirectEvents>
 								</ext:GridPanel>
 							</Component>
 						</ext:DropDownField>
@@ -310,7 +307,7 @@
 											ID="uxEditEmployeeEmpStore"
 											PageSize="25"
 											RemoteSort="true"
-											OnReadData="deReadData">
+											OnReadData="deReadEmployeeData">
 											<Model>
 												<ext:Model runat="server">
 													<Fields>
@@ -324,13 +321,13 @@
 												<ext:PageProxy />
 											</Proxy>
 											<Parameters>
-												<ext:StoreParameter Name="Form" Value="EditEmployee" />
+												<ext:StoreParameter Name="Form" Value="EmployeeEdit" />
 											</Parameters>
 										</ext:Store>
 									</Store>
 									<ColumnModel>
 										<Columns>
-											<ext:NumberColumn runat="server" Text="Person ID" DataIndex="PERSON_ID" />
+											<ext:Column runat="server" Text="Person ID" DataIndex="PERSON_ID" />
 											<ext:Column runat="server" Text="Name" DataIndex="EMPLOYEE_NAME" />
 											<ext:Column runat="server" Text="Job Name" DataIndex="JOB_NAME" />
 										</Columns>
@@ -341,11 +338,12 @@
 												<ext:Button runat="server"
 													ID="uxEditEmployeeEmpRegion"
 													Icon="Group"
-													Text="All Regions">
+													Text="All Regions"
+													EnableToggle="true">
 													<DirectEvents>
 														<Click OnEvent="deRegionToggle">
 															<ExtraParams>
-																<ext:Parameter Name="Type" Value="EditEmployee"/>
+																<ext:Parameter Name="Type" Value="EmployeeEdit"/>
 															</ExtraParams>
 														</Click>
 													</DirectEvents>
@@ -359,6 +357,15 @@
 									<SelectionModel>
 										<ext:RowSelectionModel runat="server" Mode="Single" />
 									</SelectionModel>
+									<DirectEvents>
+										<SelectionChange OnEvent="deStoreGridValue">
+											<ExtraParams>
+												<ext:Parameter Name="PersonId" Value="#{uxEditEmployeeEmpGrid}.getSelectionModel().getSelection()[0].data.PERSON_ID" Mode="Raw" />
+												<ext:Parameter Name="Name" Value="#{uxEditEmployeeEmpGrid}.getSelectionModel().getSelection()[0].data.EMPLOYEE_NAME" Mode="Raw" />
+												<ext:Parameter Name="Type" Value="EmployeeEdit" />
+											</ExtraParams>
+										</SelectionChange>
+									</DirectEvents>         
 									<Plugins>
 										<ext:FilterHeader runat="server" ID="uxEditEmployeeEmpFilter" />
 									</Plugins>                                    
@@ -376,8 +383,7 @@
 									<Store>
 										<ext:Store runat="server"
 											ID="uxEditEmployeeEqStore"
-											PageSize="25"
-											OnReadData="deReadData">
+											OnReadData="deReadEquipmentData">
 											<Model>
 												<ext:Model runat="server">
 													<Fields>
@@ -387,46 +393,30 @@
 													</Fields>
 												</ext:Model>
 											</Model>
-											<Proxy>
-												<ext:PageProxy />
-											</Proxy>
 											<Parameters>
-												<ext:StoreParameter Name="Form" Value="EditEquipment" />
-											</Parameters>
+												<ext:StoreParameter Name="Form" Value="EquipmentEdit" />
+											</Parameters>											
 										</ext:Store>
 									</Store>
 									<ColumnModel>
 										<Columns>
-											<ext:NumberColumn runat="server" DataIndex="EQUIPMENT_ID" />
+											<ext:Column runat="server" DataIndex="EQUIPMENT_ID" />
 											<ext:Column runat="server" DataIndex="NAME" />
-											<ext:NumberColumn runat="server" DataIndex="PROJECT_ID" />
+											<ext:Column runat="server" DataIndex="PROJECT_ID" />
 										</Columns>
 									</ColumnModel>
-									<TopBar>
-										<ext:Toolbar runat="server">
-											<Items>
-												<ext:Button runat="server"
-													ID="uxEditEmployeeEqRegion"
-													Icon="Group"
-													Text="All Regions">
-													<DirectEvents>
-														<Click OnEvent="deRegionToggle">
-															<ExtraParams>
-																<ext:Parameter Name="Type" Value="EditEquipment" />
-															</ExtraParams>
-														</Click>
-													</DirectEvents>
-												</ext:Button>
-											</Items>
-										</ext:Toolbar>
-									</TopBar>
-									<BottomBar>
-										<ext:PagingToolbar runat="server" />
-									</BottomBar>
-									<Plugins>
-										<ext:FilterHeader runat="server" 
-											ID="uxEditEmployeeEqFilter" />
-									</Plugins>
+									<SelectionModel>
+										<ext:RowSelectionModel Mode="Single" />
+									</SelectionModel>
+									<DirectEvents>
+										<SelectionChange OnEvent="deStoreGridValue">
+											<ExtraParams>
+												<ext:Parameter Name="EquipmentId" Value="#{uxEditEmployeeEqGrid}.getSelectionModel().getSelection()[0].data.EQUIPMENT_ID" Mode="Raw" />
+												<ext:Parameter Name="Name" Value="#{uxEditEmployeeEqGrid}.getSelectionModel().getSelection()[0].data.NAME" Mode="Raw" />
+												<ext:Parameter Name="Type" Value="EquipmentEdit" />
+											</ExtraParams>
+										</SelectionChange>
+									</DirectEvents>                                        
 								</ext:GridPanel>
 							</Component>
 						</ext:DropDownField>

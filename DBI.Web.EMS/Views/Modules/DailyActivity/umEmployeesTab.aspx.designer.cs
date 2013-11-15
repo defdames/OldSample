@@ -166,24 +166,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Store uxAddEmployeeEqStore;
         
         /// <summary>
-        /// uxAddEmployeeEqRegion control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxAddEmployeeEqRegion;
-        
-        /// <summary>
-        /// uxAddEmployeeEqFilter control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FilterHeader uxAddEmployeeEqFilter;
-        
-        /// <summary>
         /// uxAddEmployeeTimeInDate control.
         /// </summary>
         /// <remarks>
@@ -353,24 +335,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Store uxEditEmployeeEqStore;
-        
-        /// <summary>
-        /// uxEditEmployeeEqRegion control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxEditEmployeeEqRegion;
-        
-        /// <summary>
-        /// uxEditEmployeeEqFilter control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FilterHeader uxEditEmployeeEqFilter;
         
         /// <summary>
         /// uxEditEmployeeTimeInDate control.
