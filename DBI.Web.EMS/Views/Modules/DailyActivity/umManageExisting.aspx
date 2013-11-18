@@ -84,6 +84,13 @@
                             </Loader>   
                         </ext:Panel>
                         <ext:Panel runat="server"
+                            Title="Weather"
+                            ID="uxWeatherTab">
+                            <Loader runat="server" AutoLoad="false" Mode="Frame">
+                                <LoadMask ShowMask="true" />
+                            </Loader>
+                        </ext:Panel>
+                        <ext:Panel runat="server"
                             Title="Chemical Mix"
                             ID="uxChemicalTab">
                             <Loader runat="server" AutoLoad="false" Mode="Frame">

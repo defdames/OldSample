@@ -30,6 +30,20 @@ namespace DBI.Data.DataFactory
             return languages;
         }
 
+        public static object WindDirection
+        {
+            get
+            {
+                return new object[]
+                {
+                    new object[]{"N", "North"},
+                    new object[]{"S", "South"},
+                    new object[]{"E", "East"},
+                    new object[]{"W", "West"},
+                };
+            }
+        }
+
         public static object StateList
         {
             get

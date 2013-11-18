@@ -111,6 +111,7 @@
     <Content Include="Views\Modules\DailyActivity\umHeaderTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umManageExisting.aspx" />
     <Content Include="Views\Modules\DailyActivity\umProductionTab.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
     <Content Include="Views\Modules\Security\umSecurityLogList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityActivityList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityUsersList.aspx" />
@@ -195,6 +196,13 @@
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umProductionTab.aspx.designer.cs">
       <DependentUpon>umProductionTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umWeatherTab.aspx.cs">
+      <DependentUpon>umWeatherTab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umWeatherTab.aspx.designer.cs">
+      <DependentUpon>umWeatherTab.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\Security\umSecurityLogList.aspx.cs">
       <DependentUpon>umSecurityLogList.aspx</DependentUpon>
