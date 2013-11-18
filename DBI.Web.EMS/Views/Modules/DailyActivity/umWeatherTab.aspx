@@ -21,7 +21,7 @@
                             <Fields>
                                 <ext:ModelField Name="WEATHER_ID" />
                                 <ext:ModelField Name="HEADER_ID" />
-                                <ext:ModelField Name="WEATHER_DATE_TIME" />
+                                <ext:ModelField Name="WEATHER_DATE_TIME" Type="Date" />
                                 <ext:ModelField Name="TEMP" />
                                 <ext:ModelField Name="WIND_DIRECTION" />
                                 <ext:ModelField Name="WIND_VELOCITY" />
@@ -81,6 +81,9 @@
                             <DirectEvents>
                                 <Click OnEvent="deRemoveWeather">
                                     <Confirmation ConfirmRequest="true" Title="Remove?" Message="Do you really want to remove the weather?" />
+                                    <ExtraParams>
+                                        <ext:Parameter Name="WeatherId" Value="#{uxCurrentWeatherGrid}.getSelectionModel().getSelection()[0].data.WEATHER_ID" Mode="Raw" />
+                                    </ExtraParams>
                                 </Click>
                             </DirectEvents>
                         </ext:Button>
@@ -227,7 +230,11 @@
                              Text="Submit"
                              Icon="ApplicationGo">
                              <DirectEvents>
-                                 <Click OnEvent="deEditWeather" />
+                                 <Click OnEvent="deEditWeather">
+                                     <ExtraParams>
+                                         <ext:Parameter Name="WeatherId" Value="#{uxCurrentWeatherGrid}.getSelectionModel().getSelection()[0].data.WEATHER_ID" Mode="Raw" />
+                                     </ExtraParams>
+                                 </Click>
                              </DirectEvents>
                          </ext:Button>
                          <ext:Button runat="server"
