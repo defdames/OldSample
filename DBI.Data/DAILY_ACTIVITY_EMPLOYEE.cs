@@ -28,6 +28,7 @@ namespace DBI.Data
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
+        public string FOREMAN_LICENSE { get; set; }
     
         public virtual DAILY_ACTIVITY_EQUIPMENT DAILY_ACTIVITY_EQUIPMENT { get; set; }
         public virtual DAILY_ACTIVITY_HEADER DAILY_ACTIVITY_HEADER { get; set; }
