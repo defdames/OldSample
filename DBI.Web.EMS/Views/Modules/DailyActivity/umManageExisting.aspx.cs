@@ -36,6 +36,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             string prodUrl = string.Format("umProductionTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
             string emplUrl = string.Format("umEmployeesTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
             string chemUrl = string.Format("umChemicalTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+            string weatherUrl = string.Format("umWeatherTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
             uxEquipmentTab.Reload();
            
             uxHeaderTab.LoadContent(headerUrl);
@@ -43,8 +44,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxProductionTab.LoadContent(prodUrl);
             uxEmployeeTab.LoadContent(emplUrl);
             uxChemicalTab.LoadContent(chemUrl);
-
-
+            uxWeatherTab.LoadContent(weatherUrl);
         }
     }
 }
