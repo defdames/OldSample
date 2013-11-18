@@ -19,10 +19,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!X.IsAjaxRequest)
-            {
-                GetGridData();
-            }
+            GetGridData();
         }
 
         protected void GetGridData()
@@ -38,7 +35,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             select new { d.EMPLOYEE_ID, d.HEADER_ID, d.PERSON_ID, e.EMPLOYEE_NAME, d.EQUIPMENT_ID, p.NAME, d.TIME_IN, d.TIME_OUT, d.TRAVEL_TIME, d.DRIVE_TIME, d.PER_DIEM, d.COMMENTS }).ToList();
                           
                 uxCurrentEmployeeStore.DataSource = data;
-                uxCurrentEmployeeStore.DataBind();
             }
         }
 
@@ -63,7 +59,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEditEmployeeComments.SetValue(Employee["COMMENTS"]);
                 uxEditEmployeeDriveTime.SetValue(Employee["DRIVE_TIME"]);
                 uxEditEmployeeTravelTime.SetValue(Employee["TRAVEL_TIME"]);
-                if (Employee["PER_DIEM"] == "true")
+                if (Employee["PER_DIEM"] == "Y")
                 {
                     uxEditEmployeePerDiem.Checked = true;
                 }
@@ -355,6 +351,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 TRAVEL_TIME = TravelTime,
                 DRIVE_TIME = DriveTime,
                 COMMENTS = uxAddEmployeeComments.Value.ToString(),
+                PER_DIEM = PerDiem,
                 CREATE_DATE = DateTime.Now,
                 MODIFY_DATE = DateTime.Now,
                 CREATED_BY = User.Identity.Name,

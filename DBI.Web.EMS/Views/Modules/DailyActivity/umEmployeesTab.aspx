@@ -21,16 +21,16 @@
 							<Fields>
 								<ext:ModelField Name="EMPLOYEE_ID" />
 								<ext:ModelField Name="PERSON_ID" />
-								<ext:ModelField Name="EMPLOYEE_NAME" Type="String" />
+								<ext:ModelField Name="EMPLOYEE_NAME" Type="String"/>
 								<ext:ModelField Name="HEADER_ID" Type="Int" />
 								<ext:ModelField Name="EQUIPMENT_ID" Type="Int" />
-								<ext:ModelField Name="NAME" Type="String" />
-								<ext:ModelField Name="TIME_IN" Type="Date"/>
+								<ext:ModelField Name="NAME" Type="String"  />
+								<ext:ModelField Name="TIME_IN" Type="Date" />
 								<ext:ModelField Name="TIME_OUT" Type="Date" />
-								<ext:ModelField Name="TRAVEL_TIME" Type="Float" />
-								<ext:ModelField Name="DRIVE_TIME" Type="Float"/>
-								<ext:ModelField Name="PER_DIEM" Type="Boolean" />
-								<ext:ModelField Name="COMMENTS" Type="String" />
+								<ext:ModelField Name="TRAVEL_TIME" Type="Float"  />
+								<ext:ModelField Name="DRIVE_TIME" Type="Float" />
+								<ext:ModelField Name="PER_DIEM" Type="String"  />
+								<ext:ModelField Name="COMMENTS" Type="String"  />
 							</Fields>
 						</ext:Model>
 					</Model>
@@ -109,9 +109,6 @@
 					</Items>
 				</ext:Toolbar>
 			</TopBar>
-			<SelectionModel>
-				<ext:RowSelectionModel runat="server" Mode="Single"/>
-			</SelectionModel>
 		</ext:GridPanel>
 		<ext:Window runat="server"
 			ID="uxAddEmployeeWindow"
