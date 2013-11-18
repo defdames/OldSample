@@ -4,13 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DBI.Core.Web;
 using DBI.Data;
 using DBI.Data.DataFactory;
 using Ext.Net;
 
 namespace DBI.Web.EMS.Views.Modules.DailyActivity
 {
-    public partial class umWeatherTab : System.Web.UI.Page
+    public partial class umWeatherTab : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
