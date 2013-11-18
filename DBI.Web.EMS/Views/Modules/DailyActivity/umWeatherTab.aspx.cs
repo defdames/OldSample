@@ -20,6 +20,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxEditWeatherWindStore.Data = StaticLists.WindDirection;
         }
 
+        /// <summary>
+        /// Sets grid store with date from this header's existing weather
+        /// </summary>
         protected void GetGridData()
         {
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
@@ -32,6 +35,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Add Weather to db from form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deAddWeather(object sender, DirectEventArgs e)
         {
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
@@ -71,6 +79,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             });
         }
 
+        /// <summary>
+        /// Edit selected weather and store to db
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deEditWeather(object sender, DirectEventArgs e)
         {           
             long WeatherId = long.Parse(e.ExtraParams["WeatherId"]);
@@ -115,6 +128,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             });
         }
 
+        /// <summary>
+        /// Remove weather from db
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deRemoveWeather(object sender, DirectEventArgs e)
         {
             long WeatherId = long.Parse(e.ExtraParams["WeatherId"]);
@@ -142,6 +160,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             });
         }
 
+        /// <summary>
+        /// Fill fields of edit form based on existing data.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deEditWeatherForm(object sender, DirectEventArgs e)
         {
             string JsonValues = e.ExtraParams["WeatherInfo"];
