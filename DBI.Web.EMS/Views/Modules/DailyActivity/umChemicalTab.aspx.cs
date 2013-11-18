@@ -17,6 +17,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GetGridData();
         }
 
+        /// <summary>
+        /// Sets grid store based on existing header's chemical mix
+        /// </summary>
         protected void GetGridData()
         {
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
@@ -29,6 +32,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxCurrentChemicalStore.DataSource = data;
             }
         }
+
+        /// <summary>
+        /// Add chemical to db
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deAddChemical(object sender, DirectEventArgs e)
         {
             //Convert to correct types
@@ -88,6 +97,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             });
         }
 
+        /// <summary>
+        /// Populate edit form based on existing entry
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deEditChemicalForm(object sender, DirectEventArgs e)
         {
             string JsonValues = e.ExtraParams["ChemicalInfo"];
@@ -108,25 +122,37 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Remove chemical entry from database
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deRemoveChemical(object sender, DirectEventArgs e)
         {
             long ChemicalId = long.Parse(e.ExtraParams["ChemicalId"]);
             DAILY_ACTIVITY_CHEMICAL_MIX data;
+
+            //Get record to be deleted.
             using (Entities _context = new Entities())
             {
                 data = (from d in _context.DAILY_ACTIVITY_CHEMICAL_MIX
                         where d.CHEMICAL_MIX_ID == ChemicalId
                         select d).Single();
             }
+            //Log Mix #
             long DeletedMix = data.CHEMICAL_MIX_NUMBER;
 
+            //Delete from db
             GenericData.Delete<DAILY_ACTIVITY_CHEMICAL_MIX>(data);
             
+            //Get all records from this header where mix# is greater than the one that was deleted
             using (Entities _context = new Entities())
             {
                 var Updates = (from d in _context.DAILY_ACTIVITY_CHEMICAL_MIX
-                               where d.CHEMICAL_MIX_NUMBER > DeletedMix
+                               where d.CHEMICAL_MIX_NUMBER > DeletedMix && d.HEADER_ID == long.Parse(Request.QueryString["HeaderId"])
                                select d).ToList();
+                
+                //Loop through and update db
                 foreach (var ToUpdate in Updates)
                 {
                     ToUpdate.CHEMICAL_MIX_NUMBER = ToUpdate.CHEMICAL_MIX_NUMBER - 1;
@@ -149,6 +175,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             });
         }
 
+        /// <summary>
+        /// Edit Chemical entry
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deEditChemical(object sender, DirectEventArgs e)
         {
             long ChemicalId = long.Parse(e.ExtraParams["ChemicalId"]);
