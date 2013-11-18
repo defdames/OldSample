@@ -94,7 +94,8 @@
         <ext:Window runat="server"
             ID="uxAddWeatherWindow"
             Layout="FormLayout"
-            Hidden="true">
+            Hidden="true"
+            Width="650">
             <Items>
                 <ext:FormPanel runat="server"
                     ID="uxAddWeatherForm"
@@ -171,7 +172,8 @@
         <ext:Window runat="server"
             ID="uxEditWeatherWindow"
             Layout="FormLayout"
-            Hidden="true">
+            Hidden="true"
+            Width="650">
              <Items>
                  <ext:FormPanel runat="server"
                      ID="uxEditWeatherForm"
