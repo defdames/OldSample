@@ -16,10 +16,10 @@ namespace DBI.Data
     {
         public DAILY_ACTIVITY_HEADER()
         {
-            this.DAILY_ACTIVITY_CHEMICAL_MIX = new HashSet<DAILY_ACTIVITY_CHEMICAL_MIX>();
             this.DAILY_ACTIVITY_EQUIPMENT = new HashSet<DAILY_ACTIVITY_EQUIPMENT>();
             this.DAILY_ACTIVITY_WEATHER = new HashSet<DAILY_ACTIVITY_WEATHER>();
             this.DAILY_ACTIVITY_EMPLOYEE = new HashSet<DAILY_ACTIVITY_EMPLOYEE>();
+            this.DAILY_ACTIVITY_CHEMICAL_MIX = new HashSet<DAILY_ACTIVITY_CHEMICAL_MIX>();
         }
     
         public long HEADER_ID { get; set; }
@@ -38,9 +38,9 @@ namespace DBI.Data
         public string MODIFIED_BY { get; set; }
         public Nullable<int> STATUS { get; set; }
     
-        public virtual ICollection<DAILY_ACTIVITY_CHEMICAL_MIX> DAILY_ACTIVITY_CHEMICAL_MIX { get; set; }
         public virtual ICollection<DAILY_ACTIVITY_EQUIPMENT> DAILY_ACTIVITY_EQUIPMENT { get; set; }
         public virtual ICollection<DAILY_ACTIVITY_WEATHER> DAILY_ACTIVITY_WEATHER { get; set; }
         public virtual ICollection<DAILY_ACTIVITY_EMPLOYEE> DAILY_ACTIVITY_EMPLOYEE { get; set; }
+        public virtual ICollection<DAILY_ACTIVITY_CHEMICAL_MIX> DAILY_ACTIVITY_CHEMICAL_MIX { get; set; }
     }
 }

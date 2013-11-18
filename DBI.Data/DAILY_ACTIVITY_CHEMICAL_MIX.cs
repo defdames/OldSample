@@ -27,6 +27,10 @@ namespace DBI.Data
         public Nullable<decimal> ACRES_SPRAYED { get; set; }
         public string STATE { get; set; }
         public string COUNTY { get; set; }
+        public Nullable<System.DateTime> CREATE_DATE { get; set; }
+        public Nullable<System.DateTime> MODIFY_DATE { get; set; }
+        public string CREATED_BY { get; set; }
+        public string MODIFIED_BY { get; set; }
     
         public virtual DAILY_ACTIVITY_HEADER DAILY_ACTIVITY_HEADER { get; set; }
     }
