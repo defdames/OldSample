@@ -143,6 +143,9 @@
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SUBINVENTORY_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="SYS_ACTIVITY.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>

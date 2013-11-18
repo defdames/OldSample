@@ -249,6 +249,13 @@
       "PROJECTS_V"."CLASS_CODE" AS "CLASS_CODE"
       FROM "XXEMS"."PROJECTS_V" "PROJECTS_V"</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="SUBINVENTORY_V" EntityType="OracleModel.Store.SUBINVENTORY_V" store:Type="Views" store:Schema="XXEMS" store:Name="SUBINVENTORY_V">
+            <DefiningQuery>SELECT 
+      "SUBINVENTORY_V"."ORGANIZATION_ID" AS "ORGANIZATION_ID", 
+      "SUBINVENTORY_V"."SECONDARY_INVENTORY_NAME" AS "SECONDARY_INVENTORY_NAME", 
+      "SUBINVENTORY_V"."DESCRIPTION" AS "DESCRIPTION"
+      FROM "XXEMS"."SUBINVENTORY_V" "SUBINVENTORY_V"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="SYS_USER_INFORMATION" EntityType="OracleModel.Store.SYS_USER_INFORMATION" store:Type="Views" store:Schema="XXEMS" store:Name="SYS_USER_INFORMATION">
             <DefiningQuery>SELECT 
       "SYS_USER_INFORMATION"."USER_ID" AS "USER_ID", 
@@ -717,6 +724,18 @@
           <Property Name="CLASS_CODE" Type="varchar2" Nullable="false" MaxLength="30" />
         </EntityType>
         <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXEMS.SUBINVENTORY_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="SUBINVENTORY_V">
+          <Key>
+            <PropertyRef Name="ORGANIZATION_ID" />
+            <PropertyRef Name="SECONDARY_INVENTORY_NAME" />
+          </Key>
+          <Property Name="ORGANIZATION_ID" Type="number" Nullable="false" />
+          <Property Name="SECONDARY_INVENTORY_NAME" Type="varchar2" Nullable="false" MaxLength="10" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
       warning 6002: The table/view 'XXEMS.SYS_USER_INFORMATION' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="SYS_USER_INFORMATION">
@@ -873,6 +892,7 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_CHEMICAL_MIX" EntitySet="DAILY_ACTIVITY_CHEMICAL_MIX" />
           </AssociationSet>
+          <EntitySet Name="SUBINVENTORY_V" EntityType="OracleModel.SUBINVENTORY_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -1510,6 +1530,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="SUBINVENTORY_V">
+          <Key>
+            <PropertyRef Name="ORGANIZATION_ID" />
+            <PropertyRef Name="SECONDARY_INVENTORY_NAME" />
+          </Key>
+          <Property Type="Decimal" Name="ORGANIZATION_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="SECONDARY_INVENTORY_NAME" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DESCRIPTION" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1937,6 +1966,15 @@
                 <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
                 <ScalarProperty Name="CHEMICAL_MIX_NUMBER" ColumnName="CHEMICAL_MIX_NUMBER" />
                 <ScalarProperty Name="CHEMICAL_MIX_ID" ColumnName="CHEMICAL_MIX_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SUBINVENTORY_V">
+            <EntityTypeMapping TypeName="OracleModel.SUBINVENTORY_V">
+              <MappingFragment StoreEntitySet="SUBINVENTORY_V">
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="SECONDARY_INVENTORY_NAME" ColumnName="SECONDARY_INVENTORY_NAME" />
+                <ScalarProperty Name="ORGANIZATION_ID" ColumnName="ORGANIZATION_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
