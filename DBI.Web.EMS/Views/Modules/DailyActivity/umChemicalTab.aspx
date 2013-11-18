@@ -39,86 +39,102 @@
             </Store>
             <ColumnModel>
                 <Columns>
-                    <ext:Column runat="server" DataIndex="CHEMICAL_MIX_NUMBER" />
-                    <ext:Column runat="server" DataIndex="TARGET_ARE" />
-                    <ext:Column runat="server" DataIndex="GALLON_ACRE" />
-                    <ext:Column runat="server" DataIndex="GALLON_STARTING" />
-                    <ext:Column runat="server" DataIndex="GALLON_MIXED" />
-                    <ext:Column runat="server" DataIndex="GALLON_TOTAL" />
-                    <ext:Column runat="server" DataIndex="GALLON_REMAINING" />
-                    <ext:Column runat="server" DataIndex="GALLON_USED" />
-                    <ext:Column runat="server" DataIndex="ACRES_SPRAYED" />
-                    <ext:Column runat="server" DataIndex="STATE" />
-                    <ext:Column runat="server" DataIndex="COUNTY" />
+                    <ext:Column runat="server" DataIndex="CHEMICAL_MIX_NUMBER" Text="Mix Number" />
+                    <ext:Column runat="server" DataIndex="TARGET_ARE" Text="Target" />
+                    <ext:Column runat="server" DataIndex="GALLON_ACRE" Text="Gallon Acre" />
+                    <ext:Column runat="server" DataIndex="GALLON_STARTING" Text="Gallon Starting"/>
+                    <ext:Column runat="server" DataIndex="GALLON_MIXED" Text="Gallon Mixed" />
+                    <ext:Column runat="server" DataIndex="GALLON_TOTAL" Text="Gallon Total" />
+                    <ext:Column runat="server" DataIndex="GALLON_REMAINING" Text="Gallon Remaining" />
+                    <ext:Column runat="server" DataIndex="GALLON_USED" Text="Gallon Used" />
+                    <ext:Column runat="server" DataIndex="ACRES_SPRAYED" Text="Acres Sprayed" />
+                    <ext:Column runat="server" DataIndex="STATE" Text="State" />
+                    <ext:Column runat="server" DataIndex="COUNTY" Text="County" />
                 </Columns>
             </ColumnModel>
-            <Buttons>
-                <ext:Button runat="server"
-                    ID="uxAddChemicalButton"
-                    Icon="ApplicationAdd"
-                    Text="Add Chemical Mix">
-                    <Listeners>
-                        <Click Handler="#{uxAddChemicalWindow}.show()" />
-                    </Listeners>
-                </ext:Button>
-                <ext:Button runat="server"
-                    ID="uxEditChemicalButton"
-                    Icon="ApplicationEdit"
-                    Text="Edit Chemical Mix">
-                    <DirectEvents>
-                        <Click OnEvent="deEditChemicalForm">
-                            <ExtraParams>
-                                <ext:Parameter Name="ChemicalInfo" Value="Ext.encode(#{uxCurrentChemicalGrid}.getRowsValues({selectedOnly : true}))" Mode="Raw" />
-                            </ExtraParams>
-                        </Click>
-                    </DirectEvents>
-                    <Listeners>
-                        <Click Handler="#{uxEditChemicalWindow}.show()" />
-                    </Listeners>
-                </ext:Button>
-                <ext:Button runat="server"
-                    ID="uxRemoveChemicalButton"
-                    Icon="ApplicationDelete"
-                    Text="Remove Chemical Mix">
-                    <DirectEvents>
-                        <Click OnEvent="deRemoveChemical">
-                            <Confirmation ConfirmRequest="true" Title="Remove?" Message="Do you really want to remove?" />
-                            <ExtraParams>
-                                <ext:Parameter Name="ChemicalId" Value="#{uxCurrentChemical}.getSelectionModel().getSelection()[0].data.CHEMICAL_MIX_ID" Mode="Raw" />
-                            </ExtraParams>
-                        </Click>
-                    </DirectEvents>
-                </ext:Button>
-            </Buttons>
+            <TopBar>
+                <ext:Toolbar runat="server">
+                    <Items>
+                        <ext:Button runat="server"
+                            ID="uxAddChemicalButton"
+                            Icon="ApplicationAdd"
+                            Text="Add Chemical Mix">
+                            <Listeners>
+                                <Click Handler="#{uxAddChemicalWindow}.show()" />
+                            </Listeners>
+                        </ext:Button>
+                        <ext:Button runat="server"
+                            ID="uxEditChemicalButton"
+                            Icon="ApplicationEdit"
+                            Text="Edit Chemical Mix">
+                            <DirectEvents>
+                                <Click OnEvent="deEditChemicalForm">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="ChemicalInfo" Value="Ext.encode(#{uxCurrentChemicalGrid}.getRowsValues({selectedOnly : true}))" Mode="Raw" />
+                                    </ExtraParams>
+                                </Click>
+                            </DirectEvents>
+                            <Listeners>
+                                <Click Handler="#{uxEditChemicalWindow}.show()" />
+                            </Listeners>
+                        </ext:Button>
+                        <ext:Button runat="server"
+                            ID="uxRemoveChemicalButton"
+                            Icon="ApplicationDelete"
+                            Text="Remove Chemical Mix">
+                            <DirectEvents>
+                                <Click OnEvent="deRemoveChemical">
+                                    <Confirmation ConfirmRequest="true" Title="Remove?" Message="Do you really want to remove?" />
+                                    <ExtraParams>
+                                        <ext:Parameter Name="ChemicalId" Value="#{uxCurrentChemicalGrid}.getSelectionModel().getSelection()[0].data.CHEMICAL_MIX_ID" Mode="Raw" />
+                                    </ExtraParams>
+                                </Click>
+                            </DirectEvents>
+                        </ext:Button>
+                    </Items>
+                </ext:Toolbar>
+            </TopBar>
         </ext:GridPanel>
         <ext:Window runat="server"
             ID="uxAddChemicalWindow"
-            Layout="FormLayout">
+            Layout="FormLayout"
+            Hidden="true"
+            Width="650">
             <Items>
                 <ext:FormPanel runat="server"
                     ID="uxAddChemicalForm"
                     Layout="FormLayout">
                     <Items>
                         <ext:TextField runat="server"
-                            ID="uxAddChemicalTargetAre" />
-                        <ext:NumberField runat="server"
-                            ID="uxAddChemicalGallonAcre" />
-                        <ext:NumberField runat="server"
-                            ID="uxAddChemicalGallonStart" />
-                        <ext:NumberField runat="server"
-                            ID="uxAddChemicalGallonMixed" />
-                        <ext:NumberField runat="server"
-                            ID="uxAddChemicalGallonTotal" />
-                        <ext:NumberField runat="server"
-                            ID="uxAddChemicalGallonRemain" />
-                        <ext:NumberField runat="server"
-                            ID="uxAddChemicalGallonUsed" />
-                        <ext:NumberField runat="server"
-                            ID="uxAddChemicalAcresSprayed" />
+                            ID="uxAddChemicalTargetAre"
+                            FieldLabel="Target" />
                         <ext:TextField runat="server"
-                            ID="uxAddChemicalState" />
+                            ID="uxAddChemicalGallonAcre"
+                            FieldLabel="Gallon Acre" />
                         <ext:TextField runat="server"
-                            ID="uxAddChemicalCounty" />
+                            ID="uxAddChemicalGallonStart"
+                            FieldLabel="Gallon Start" />
+                        <ext:TextField runat="server"
+                            ID="uxAddChemicalGallonMixed"
+                            FieldLabel="Gallon Mixed" />
+                        <ext:TextField runat="server"
+                            ID="uxAddChemicalGallonTotal" 
+                            FieldLabel="Gallon Total" />
+                        <ext:TextField runat="server"
+                            ID="uxAddChemicalGallonRemain"
+                            FieldLabel="Gallon Remaining" />
+                        <ext:TextField runat="server"
+                            ID="uxAddChemicalGallonUsed"
+                            FieldLabel="Gallons Used" />
+                        <ext:TextField runat="server"
+                            ID="uxAddChemicalAcresSprayed"
+                            FieldLabel="Acres Sprayed" />
+                        <ext:TextField runat="server"
+                            ID="uxAddChemicalState"
+                            FieldLabel="State" />
+                        <ext:TextField runat="server"
+                            ID="uxAddChemicalCounty"
+                            FieldLabel="County" />
                     </Items>
                     <Buttons>
                         <ext:Button runat="server"
@@ -143,32 +159,44 @@
         </ext:Window>
         <ext:Window runat="server"
             ID="uxEditChemicalWindow"
-            Layout="FormLayout">
+            Layout="FormLayout"
+            Hidden="true"
+            Width="650">
             <Items>
                 <ext:FormPanel runat="server"
                     ID="uxEditChemicalForm"
                     Layout="FormLayout">
                     <Items>
                         <ext:TextField runat="server"
-                            ID="uxEditChemicalTargetAre" />
-                        <ext:NumberField runat="server"
-                            ID="uxEditChemicalGallonAcre" />
-                        <ext:NumberField runat="server"
-                            ID="uxEditChemicalGallonStart" />
-                        <ext:NumberField runat="server"
-                            ID="uxEditChemicalGallonMixed" />
-                        <ext:NumberField runat="server"
-                            ID="uxEditChemicalGallonTotal" />
-                        <ext:NumberField runat="server"
-                            ID="uxEditChemicalGallonRemain" />
-                        <ext:NumberField runat="server"
-                            ID="uxEditChemicalGallonUsed" />
-                        <ext:NumberField runat="server"
-                            ID="uxEditChemicalAcresSprayed" />
+                            ID="uxEditChemicalTargetAre"
+                            FieldLabel="Target" />
                         <ext:TextField runat="server"
-                            ID="uxEditChemicalState" />
+                            ID="uxEditChemicalGallonAcre"
+                            FieldLabel="Gallon Acre" />
                         <ext:TextField runat="server"
-                            ID="uxEditChemicalCounty" />
+                            ID="uxEditChemicalGallonStart"
+                            FieldLabel="Gallon Start" />
+                        <ext:TextField runat="server"
+                            ID="uxEditChemicalGallonMixed"
+                            FieldLabel="Gallon Mixed" />
+                        <ext:TextField runat="server"
+                            ID="uxEditChemicalGallonTotal"
+                            FieldLabel="Gallon Total" />
+                        <ext:TextField runat="server"
+                            ID="uxEditChemicalGallonRemain"
+                            FieldLabel="Gallons Remaining" />
+                        <ext:TextField runat="server"
+                            ID="uxEditChemicalGallonUsed" 
+                            FieldLabel="Gallons Used" />
+                        <ext:TextField runat="server"
+                            ID="uxEditChemicalAcresSprayed"
+                            FieldLabel="Acres Sprayed" />
+                        <ext:TextField runat="server"
+                            ID="uxEditChemicalState"
+                            FieldLabel="State" />
+                        <ext:TextField runat="server"
+                            ID="uxEditChemicalCounty"
+                            FieldLabel="County" />
                     </Items>
                     <Buttons>
                         <ext:Button runat="server"
@@ -176,10 +204,11 @@
                             Icon="ApplicationGo"
                             Text="Submit">
                             <DirectEvents>
-                                <Click OnEvent="uxEditChemical">
+                                <Click OnEvent="deEditChemical">
                                     <ExtraParams>
-                                        <ext:Parameter Name="ChemicalID" Value="#{uxCurrentChemicalGrid}.getSelectionModel().getSelection()[0].data.CHEMICAL_MIX_ID" Mode="Raw" />
-                                    </ExtraParams>                                    
+                                        <ext:Parameter Name="ChemicalId" Value="#{uxCurrentChemicalGrid}.getSelectionModel().getSelection()[0].data.CHEMICAL_MIX_ID" Mode="Raw" />
+                                    </ExtraParams>
+                                 </Click>                                    
                             </DirectEvents>
                         </ext:Button>
                         <ext:Button runat="server"

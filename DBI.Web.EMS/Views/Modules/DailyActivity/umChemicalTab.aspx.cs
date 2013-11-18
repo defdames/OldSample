@@ -63,11 +63,29 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 GALLON_USED = GallonUsed,
                 ACRES_SPRAYED = AcresSprayed,
                 STATE = uxAddChemicalState.Value.ToString(),
-                COUNTY = uxAddChemicalCounty.Value.ToString()
+                COUNTY = uxAddChemicalCounty.Value.ToString(),
+                CREATE_DATE = DateTime.Now,
+                MODIFY_DATE = DateTime.Now,
+                CREATED_BY = User.Identity.Name,
+                MODIFIED_BY = User.Identity.Name,
+                HEADER_ID = HeaderId
             };
             GenericData.Insert<DAILY_ACTIVITY_CHEMICAL_MIX>(data);
             uxAddChemicalWindow.Hide();
+            uxAddChemicalForm.Reset();
             uxCurrentChemicalStore.Reload();
+
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Chemical Mix Added Successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
         }
 
         protected void deEditChemicalForm(object sender, DirectEventArgs e)
@@ -92,12 +110,93 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void deRemoveChemical(object sender, DirectEventArgs e)
         {
+            long ChemicalId = long.Parse(e.ExtraParams["ChemicalId"]);
+            DAILY_ACTIVITY_CHEMICAL_MIX data;
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.DAILY_ACTIVITY_CHEMICAL_MIX
+                        where d.CHEMICAL_MIX_ID == ChemicalId
+                        select d).Single();
+            }
+            long DeletedMix = data.CHEMICAL_MIX_NUMBER;
 
+            GenericData.Delete<DAILY_ACTIVITY_CHEMICAL_MIX>(data);
+            
+            using (Entities _context = new Entities())
+            {
+                var Updates = (from d in _context.DAILY_ACTIVITY_CHEMICAL_MIX
+                               where d.CHEMICAL_MIX_NUMBER > DeletedMix
+                               select d).ToList();
+                foreach (var ToUpdate in Updates)
+                {
+                    ToUpdate.CHEMICAL_MIX_NUMBER = ToUpdate.CHEMICAL_MIX_NUMBER - 1;
+                    _context.SaveChanges();
+                }
+                
+            }
+            uxCurrentChemicalStore.Reload();
+
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Chemical Mix Removed Successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
         }
 
         protected void deEditChemical(object sender, DirectEventArgs e)
         {
+            long ChemicalId = long.Parse(e.ExtraParams["ChemicalId"]);
+            decimal GallonAcre = decimal.Parse(uxEditChemicalGallonAcre.Value.ToString());
+            decimal GallonStart = decimal.Parse(uxEditChemicalGallonStart.Value.ToString());
+            decimal GallonMixed = decimal.Parse(uxEditChemicalGallonMixed.Value.ToString());
+            decimal GallonTotal = decimal.Parse(uxEditChemicalGallonTotal.Value.ToString());
+            decimal GallonRemain = decimal.Parse(uxEditChemicalGallonRemain.Value.ToString());
+            decimal AcresSprayed = decimal.Parse(uxEditChemicalAcresSprayed.Value.ToString());
+            decimal GallonUsed = decimal.Parse(uxEditChemicalGallonUsed.Value.ToString());
+            DAILY_ACTIVITY_CHEMICAL_MIX data;
 
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.DAILY_ACTIVITY_CHEMICAL_MIX
+                        where d.CHEMICAL_MIX_ID == ChemicalId
+                        select d).Single();
+            }
+
+            data.TARGET_ARE = uxEditChemicalTargetAre.Value.ToString();
+            data.GALLON_ACRE = GallonAcre;
+            data.GALLON_STARTING = GallonStart;
+            data.GALLON_MIXED = GallonMixed;
+            data.GALLON_TOTAL = GallonTotal;
+            data.GALLON_REMAINING = GallonRemain;
+            data.GALLON_USED = GallonUsed;
+            data.ACRES_SPRAYED = AcresSprayed;
+            data.STATE = uxEditChemicalState.Value.ToString();
+            data.COUNTY = uxEditChemicalCounty.Value.ToString();
+            data.MODIFIED_BY = User.Identity.Name;
+            data.MODIFY_DATE = DateTime.Now;
+
+            GenericData.Update<DAILY_ACTIVITY_CHEMICAL_MIX>(data);
+
+            uxEditChemicalWindow.Hide();
+            uxCurrentChemicalStore.Reload();
+
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Chemical Mix Edited Successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
         }
     }
 }

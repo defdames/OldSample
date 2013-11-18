@@ -109,7 +109,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField uxAddChemicalGallonAcre;
+        protected global::Ext.Net.TextField uxAddChemicalGallonAcre;
         
         /// <summary>
         /// uxAddChemicalGallonStart control.
@@ -118,7 +118,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField uxAddChemicalGallonStart;
+        protected global::Ext.Net.TextField uxAddChemicalGallonStart;
         
         /// <summary>
         /// uxAddChemicalGallonMixed control.
@@ -127,7 +127,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField uxAddChemicalGallonMixed;
+        protected global::Ext.Net.TextField uxAddChemicalGallonMixed;
         
         /// <summary>
         /// uxAddChemicalGallonTotal control.
@@ -136,7 +136,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField uxAddChemicalGallonTotal;
+        protected global::Ext.Net.TextField uxAddChemicalGallonTotal;
         
         /// <summary>
         /// uxAddChemicalGallonRemain control.
@@ -145,7 +145,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField uxAddChemicalGallonRemain;
+        protected global::Ext.Net.TextField uxAddChemicalGallonRemain;
         
         /// <summary>
         /// uxAddChemicalGallonUsed control.
@@ -154,7 +154,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField uxAddChemicalGallonUsed;
+        protected global::Ext.Net.TextField uxAddChemicalGallonUsed;
         
         /// <summary>
         /// uxAddChemicalAcresSprayed control.
@@ -163,7 +163,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField uxAddChemicalAcresSprayed;
+        protected global::Ext.Net.TextField uxAddChemicalAcresSprayed;
         
         /// <summary>
         /// uxAddChemicalState control.
@@ -235,7 +235,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField uxEditChemicalGallonAcre;
+        protected global::Ext.Net.TextField uxEditChemicalGallonAcre;
         
         /// <summary>
         /// uxEditChemicalGallonStart control.
@@ -244,7 +244,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField uxEditChemicalGallonStart;
+        protected global::Ext.Net.TextField uxEditChemicalGallonStart;
         
         /// <summary>
         /// uxEditChemicalGallonMixed control.
@@ -253,7 +253,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField uxEditChemicalGallonMixed;
+        protected global::Ext.Net.TextField uxEditChemicalGallonMixed;
         
         /// <summary>
         /// uxEditChemicalGallonTotal control.
@@ -262,7 +262,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField uxEditChemicalGallonTotal;
+        protected global::Ext.Net.TextField uxEditChemicalGallonTotal;
         
         /// <summary>
         /// uxEditChemicalGallonRemain control.
@@ -271,7 +271,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField uxEditChemicalGallonRemain;
+        protected global::Ext.Net.TextField uxEditChemicalGallonRemain;
         
         /// <summary>
         /// uxEditChemicalGallonUsed control.
@@ -280,7 +280,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField uxEditChemicalGallonUsed;
+        protected global::Ext.Net.TextField uxEditChemicalGallonUsed;
         
         /// <summary>
         /// uxEditChemicalAcresSprayed control.
@@ -289,7 +289,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField uxEditChemicalAcresSprayed;
+        protected global::Ext.Net.TextField uxEditChemicalAcresSprayed;
         
         /// <summary>
         /// uxEditChemicalState control.
