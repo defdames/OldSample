@@ -31,8 +31,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void deSelectHeader(object sender, DirectEventArgs e)
         {
-            string headerUrl = "umHeaderTab.aspx";
-            string equipUrl = "umEquipmentTab.aspx";
+            string headerUrl = string.Format("umHeaderTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+            string equipUrl = string.Format("umEquipmentTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
             string prodUrl = string.Format("umProductionTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
             string emplUrl = string.Format("umEmployeesTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
             string chemUrl = string.Format("umChemicalTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
