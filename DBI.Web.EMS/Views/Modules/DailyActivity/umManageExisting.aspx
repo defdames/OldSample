@@ -64,9 +64,6 @@
                             <Loader runat="server" AutoLoad="false"
                                 ID="uxEquipmentLoader" Url="umEquipmentTab.aspx" Mode="Frame">
                                 <LoadMask ShowMask="true"  />
-                                <Params>
-                                    <ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
-                                </Params>
                             </Loader>
                         </ext:Panel>
                         <ext:Panel runat="server"
