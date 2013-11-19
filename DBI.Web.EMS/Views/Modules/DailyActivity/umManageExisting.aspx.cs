@@ -38,13 +38,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             string chemUrl = string.Format("umChemicalTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
             string weatherUrl = string.Format("umWeatherTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
             string invUrl = string.Format("umInventoryTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-           
+
+            //uxHeaderTab.Loader.Url = headerUrl;
+            //uxEquipmentTab.Loader.Url = equipUrl;
+            //uxProductionTab.Loader.Url = prodUrl;
+            //uxEmployeeTab.Loader.Url = emplUrl;
+            //uxChemicalTab.Loader.Url = chemUrl;
+            //uxWeatherTab.Loader.Url = weatherUrl;
+            //uxInventoryTab.Loader.Url = invUrl;
+
             uxHeaderTab.LoadContent(headerUrl);
             uxEquipmentTab.LoadContent(equipUrl);
             uxProductionTab.LoadContent(prodUrl);
             uxEmployeeTab.LoadContent(emplUrl);
             uxChemicalTab.LoadContent(chemUrl);
             uxWeatherTab.LoadContent(weatherUrl);
+            uxInventoryTab.LoadContent(invUrl);
         }
     }
 }
