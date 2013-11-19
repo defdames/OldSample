@@ -21,9 +21,7 @@ namespace DBI.Data
         public Nullable<decimal> GALLON_ACRE { get; set; }
         public Nullable<decimal> GALLON_STARTING { get; set; }
         public Nullable<decimal> GALLON_MIXED { get; set; }
-        public Nullable<decimal> GALLON_TOTAL { get; set; }
         public Nullable<decimal> GALLON_REMAINING { get; set; }
-        public Nullable<decimal> GALLON_USED { get; set; }
         public Nullable<decimal> ACRES_SPRAYED { get; set; }
         public string STATE { get; set; }
         public string COUNTY { get; set; }

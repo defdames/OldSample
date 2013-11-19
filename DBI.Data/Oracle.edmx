@@ -314,9 +314,7 @@
           <Property Name="GALLON_ACRE" Type="number" Precision="15" Scale="4" />
           <Property Name="GALLON_STARTING" Type="number" Precision="15" Scale="4" />
           <Property Name="GALLON_MIXED" Type="number" Precision="15" Scale="4" />
-          <Property Name="GALLON_TOTAL" Type="number" Precision="15" Scale="4" />
           <Property Name="GALLON_REMAINING" Type="number" Precision="15" Scale="4" />
-          <Property Name="GALLON_USED" Type="number" Precision="15" Scale="4" />
           <Property Name="ACRES_SPRAYED" Type="number" Precision="15" Scale="4" />
           <Property Name="STATE" Type="varchar2" MaxLength="75" />
           <Property Name="COUNTY" Type="varchar2" MaxLength="75" />
@@ -887,12 +885,12 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_EMPLOYEE" EntitySet="DAILY_ACTIVITY_EMPLOYEE" />
           </AssociationSet>
+          <EntitySet Name="SUBINVENTORY_V" EntityType="OracleModel.SUBINVENTORY_V" />
           <EntitySet Name="DAILY_ACTIVITY_CHEMICAL_MIX" EntityType="OracleModel.DAILY_ACTIVITY_CHEMICAL_MIX" />
           <AssociationSet Name="FK_CHEMICAL_HEADER_ID" Association="OracleModel.FK_CHEMICAL_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_CHEMICAL_MIX" EntitySet="DAILY_ACTIVITY_CHEMICAL_MIX" />
           </AssociationSet>
-          <EntitySet Name="SUBINVENTORY_V" EntityType="OracleModel.SUBINVENTORY_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -1495,6 +1493,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="SUBINVENTORY_V">
+          <Key>
+            <PropertyRef Name="ORGANIZATION_ID" />
+            <PropertyRef Name="SECONDARY_INVENTORY_NAME" />
+          </Key>
+          <Property Type="Decimal" Name="ORGANIZATION_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="SECONDARY_INVENTORY_NAME" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DESCRIPTION" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="DAILY_ACTIVITY_CHEMICAL_MIX">
           <Key>
             <PropertyRef Name="CHEMICAL_MIX_ID" />
@@ -1506,9 +1513,7 @@
           <Property Type="Decimal" Name="GALLON_ACRE" Precision="15" Scale="4" />
           <Property Type="Decimal" Name="GALLON_STARTING" Precision="15" Scale="4" />
           <Property Type="Decimal" Name="GALLON_MIXED" Precision="15" Scale="4" />
-          <Property Type="Decimal" Name="GALLON_TOTAL" Precision="15" Scale="4" />
           <Property Type="Decimal" Name="GALLON_REMAINING" Precision="15" Scale="4" />
-          <Property Type="Decimal" Name="GALLON_USED" Precision="15" Scale="4" />
           <Property Type="Decimal" Name="ACRES_SPRAYED" Precision="15" Scale="4" />
           <Property Type="String" Name="STATE" MaxLength="75" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="COUNTY" MaxLength="75" FixedLength="false" Unicode="false" />
@@ -1530,15 +1535,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="SUBINVENTORY_V">
-          <Key>
-            <PropertyRef Name="ORGANIZATION_ID" />
-            <PropertyRef Name="SECONDARY_INVENTORY_NAME" />
-          </Key>
-          <Property Type="Decimal" Name="ORGANIZATION_ID" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="String" Name="SECONDARY_INVENTORY_NAME" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="DESCRIPTION" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1946,6 +1942,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="SUBINVENTORY_V">
+            <EntityTypeMapping TypeName="OracleModel.SUBINVENTORY_V">
+              <MappingFragment StoreEntitySet="SUBINVENTORY_V">
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="SECONDARY_INVENTORY_NAME" ColumnName="SECONDARY_INVENTORY_NAME" />
+                <ScalarProperty Name="ORGANIZATION_ID" ColumnName="ORGANIZATION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="DAILY_ACTIVITY_CHEMICAL_MIX">
             <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_CHEMICAL_MIX">
               <MappingFragment StoreEntitySet="DAILY_ACTIVITY_CHEMICAL_MIX">
@@ -1956,9 +1961,7 @@
                 <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
                 <ScalarProperty Name="STATE" ColumnName="STATE" />
                 <ScalarProperty Name="ACRES_SPRAYED" ColumnName="ACRES_SPRAYED" />
-                <ScalarProperty Name="GALLON_USED" ColumnName="GALLON_USED" />
                 <ScalarProperty Name="GALLON_REMAINING" ColumnName="GALLON_REMAINING" />
-                <ScalarProperty Name="GALLON_TOTAL" ColumnName="GALLON_TOTAL" />
                 <ScalarProperty Name="GALLON_MIXED" ColumnName="GALLON_MIXED" />
                 <ScalarProperty Name="GALLON_STARTING" ColumnName="GALLON_STARTING" />
                 <ScalarProperty Name="GALLON_ACRE" ColumnName="GALLON_ACRE" />
@@ -1966,15 +1969,6 @@
                 <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
                 <ScalarProperty Name="CHEMICAL_MIX_NUMBER" ColumnName="CHEMICAL_MIX_NUMBER" />
                 <ScalarProperty Name="CHEMICAL_MIX_ID" ColumnName="CHEMICAL_MIX_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SUBINVENTORY_V">
-            <EntityTypeMapping TypeName="OracleModel.SUBINVENTORY_V">
-              <MappingFragment StoreEntitySet="SUBINVENTORY_V">
-                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
-                <ScalarProperty Name="SECONDARY_INVENTORY_NAME" ColumnName="SECONDARY_INVENTORY_NAME" />
-                <ScalarProperty Name="ORGANIZATION_ID" ColumnName="ORGANIZATION_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
