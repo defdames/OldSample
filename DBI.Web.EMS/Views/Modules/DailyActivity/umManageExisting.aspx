@@ -67,33 +67,40 @@
                             </Loader>
                         </ext:Panel>
                         <ext:Panel runat="server"
-                            Title="Production"
-                            ID="uxProductionTab">
-                            <Loader runat="server" AutoLoad="false" Mode="Frame">
-                                <LoadMask ShowMask="true" />
-                            </Loader>   
-                        </ext:Panel>
-                        <ext:Panel runat="server"
                             Title="Employees"
                             ID="uxEmployeeTab">
-                            <Loader runat="server" AutoLoad="false" Mode="Frame">
+                            <Loader ID="Loader1" runat="server" AutoLoad="false" Mode="Frame">
                                 <LoadMask ShowMask="true" />
                             </Loader>   
                         </ext:Panel>
                         <ext:Panel runat="server"
                             Title="Weather"
                             ID="uxWeatherTab">
-                            <Loader runat="server" AutoLoad="false" Mode="Frame">
+                            <Loader ID="Loader2" runat="server" AutoLoad="false" Mode="Frame">
                                 <LoadMask ShowMask="true" />
                             </Loader>
                         </ext:Panel>
                         <ext:Panel runat="server"
                             Title="Chemical Mix"
                             ID="uxChemicalTab">
-                            <Loader runat="server" AutoLoad="false" Mode="Frame">
+                            <Loader ID="Loader3" runat="server" AutoLoad="false" Mode="Frame">
                                 <LoadMask ShowMask="true" />
                             </Loader>   
                         </ext:Panel>
+                        <ext:Panel runat="server"
+                            Title="Inventory"
+                            ID="uxInventoryTab">
+                            <Loader ID="Loader4" runat="server" AutoLoad="false" Mode="Frame">
+                                <LoadMask ShowMask="true" />
+                            </Loader>   
+                        </ext:Panel>
+                        <ext:Panel runat="server"
+                            Title="Production"
+                            ID="uxProductionTab">
+                            <Loader runat="server" AutoLoad="false" Mode="Frame">
+                                <LoadMask ShowMask="true" />
+                            </Loader>   
+                        </ext:Panel>                        
                     </Items>
                 </ext:TabPanel>
             </Items>
