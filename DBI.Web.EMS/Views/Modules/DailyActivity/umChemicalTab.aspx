@@ -5,6 +5,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    <script type="text/javascript">
+        var updateAddTotalAndUsed = function () {
+            App.uxAddChemicalGallonTotal.setValue(parseInt(App.uxAddChemicalGallonStart.value) + parseInt(App.uxAddChemicalGallonMixed.value));
+            App.uxAddChemicalGallonUsed.setValue(parseInt(App.uxAddChemicalGallonTotal.value) - parseInt(App.uxAddChemicalGallonRemain.value));
+        };
+
+        var updateEditTotalAndUsed = function () {
+            App.uxEditChemicalGallonTotal.setValue(parseInt(App.uxEditChemicalGallonStart.value) + parseInt(App.uxEditChemicalGallonMixed.value));
+            App.uxEditChemicalGallonUsed.setValue(parseInt(App.uxEditChemicalGallonTotal.value) - parseInt(App.uxEditChemicalGallonRemain.value));
+        };
+    </script>
 </head>
 <body>
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
@@ -74,7 +85,7 @@
                                     </ExtraParams>
                                 </Click>
                             </DirectEvents>
-                            <Listeners>
+                            <Listeners>                                
                                 <Click Handler="#{uxEditChemicalWindow}.show()" />
                             </Listeners>
                         </ext:Button>
@@ -113,19 +124,31 @@
                             FieldLabel="Gallon Acre" />
                         <ext:TextField runat="server"
                             ID="uxAddChemicalGallonStart"
-                            FieldLabel="Gallon Start" />
+                            FieldLabel="Gallon Start">
+                            <Listeners>
+                                <Change Fn="updateAddTotalAndUsed" />
+                            </Listeners>
+                        </ext:TextField>
                         <ext:TextField runat="server"
                             ID="uxAddChemicalGallonMixed"
-                            FieldLabel="Gallon Mixed" />
+                            FieldLabel="Gallon Mixed">
+                            <Listeners>
+                                <Change Fn="updateAddTotalAndUsed" />
+                            </Listeners>
+                        </ext:TextField>
                         <ext:TextField runat="server"
                             ID="uxAddChemicalGallonTotal" 
-                            FieldLabel="Gallon Total" />
+                            FieldLabel="Gallon Total" Disabled="true" />
                         <ext:TextField runat="server"
                             ID="uxAddChemicalGallonRemain"
-                            FieldLabel="Gallon Remaining" />
+                            FieldLabel="Gallon Remaining">
+                            <Listeners>
+                                <Change Fn="updateAddTotalAndUsed" />
+                            </Listeners>
+                        </ext:TextField>
                         <ext:TextField runat="server"
                             ID="uxAddChemicalGallonUsed"
-                            FieldLabel="Gallons Used" />
+                            FieldLabel="Gallons Used" Disabled="true"/>
                         <ext:TextField runat="server"
                             ID="uxAddChemicalAcresSprayed"
                             FieldLabel="Acres Sprayed" />
@@ -175,19 +198,31 @@
                             FieldLabel="Gallon Acre" />
                         <ext:TextField runat="server"
                             ID="uxEditChemicalGallonStart"
-                            FieldLabel="Gallon Start" />
+                            FieldLabel="Gallon Start">
+                            <Listeners>
+                                <Change Fn="updateEditTotalAndUsed" />
+                            </Listeners>
+                        </ext:TextField>
                         <ext:TextField runat="server"
                             ID="uxEditChemicalGallonMixed"
-                            FieldLabel="Gallon Mixed" />
+                            FieldLabel="Gallon Mixed">
+                            <Listeners>
+                                <Change Fn="updateEditTotalAndUsed" />
+                            </Listeners>
+                        </ext:TextField>
                         <ext:TextField runat="server"
                             ID="uxEditChemicalGallonTotal"
-                            FieldLabel="Gallon Total" />
+                            FieldLabel="Gallon Total" Disabled="true" />
                         <ext:TextField runat="server"
                             ID="uxEditChemicalGallonRemain"
-                            FieldLabel="Gallons Remaining" />
+                            FieldLabel="Gallons Remaining">
+                            <Listeners>
+                                <Change Fn="updateEditTotalAndUsed" />
+                            </Listeners>
+                        </ext:TextField>
                         <ext:TextField runat="server"
                             ID="uxEditChemicalGallonUsed" 
-                            FieldLabel="Gallons Used" />
+                            FieldLabel="Gallons Used" Disabled="true" />
                         <ext:TextField runat="server"
                             ID="uxEditChemicalAcresSprayed"
                             FieldLabel="Acres Sprayed" />

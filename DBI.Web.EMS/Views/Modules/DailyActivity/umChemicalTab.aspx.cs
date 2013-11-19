@@ -113,9 +113,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEditChemicalGallonAcre.SetValue(Chemical["GALLON_ACRE"]);
                 uxEditChemicalGallonStart.SetValue(Chemical["GALLON_STARTING"]);
                 uxEditChemicalGallonMixed.SetValue(Chemical["GALLON_MIXED"]);
-                uxEditChemicalGallonTotal.SetValue(Chemical["GALLON_TOTAL"]);
                 uxEditChemicalGallonRemain.SetValue(Chemical["GALLON_REMAINING"]);
-                uxEditChemicalGallonUsed.SetValue(Chemical["GALLON_USED"]);
                 uxEditChemicalAcresSprayed.SetValue(Chemical["ACRES_SPRAYED"]);
                 uxEditChemicalState.SetValue(Chemical["STATE"]);
                 uxEditChemicalCounty.SetValue(Chemical["STATE"]);
