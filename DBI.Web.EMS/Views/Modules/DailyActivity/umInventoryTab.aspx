@@ -15,15 +15,20 @@
             <Store>
                 <ext:Store runat="server"
                     ID="uxCurrentInventoryStore">
-                    <Fields>
-                        <ext:ModelField Name="name" />
-                    </Fields>
+                    <Model>
+                        <ext:Model runat="server">
+                            <Fields>
+                                <ext:ModelField Name="INVENTORY_ID" />
+                            </Fields>
+                        </ext:Model>
+                    </Model>
                 </ext:Store>
             </Store>
             <ColumnModel>
                 <Columns>
                     <ext:Column runat="server"
-                        DataIndex="name" />
+                        DataIndex="INVENTORY_ID"
+                        Text="Inventory ID" />
                 </Columns>
             </ColumnModel>
             <TopBar>
@@ -44,7 +49,7 @@
                             <DirectEvents>
                                 <Click OnEvent="deEditInventoryForm">
                                     <ExtraParams>
-                                        <ext:Parameter Name="InventoryInfo" Value="Ext.encode(#{uxCurrentInventoryGrid}.getRowsValues({selectedOnly : true})" Mode="Raw" />
+                                        <ext:Parameter Name="InventoryInfo" Value="Ext.encode(#{uxCurrentInventoryGrid}.getRowsValues({selectedOnly : true}))" Mode="Raw" />
                                     </ExtraParams>
                                 </Click>
                             </DirectEvents>
@@ -83,10 +88,12 @@
                     <Items>
                         <ext:DropDownField runat="server"
                             ID="uxAddInventoryMix"
-                            Mode="ValueText">
+                            Mode="ValueText"
+                            FieldLabel="Select Mix">
                             <Component>
                                 <ext:GridPanel runat="server"
-                                    ID="uxAddInventoryMixGrid">
+                                    ID="uxAddInventoryMixGrid"  
+                                    Layout="HBoxLayout">
                                     <Store>
                                         <ext:Store runat="server"
                                             ID="uxAddInventoryMixStore">
@@ -115,37 +122,13 @@
                                         <Columns>
                                             <ext:Column runat="server"
                                                 DataIndex="CHEMICAL_MIX_NUMBER"
-                                                Text="Mix #" />
-                                            <ext:Column runat="server"
-                                                DataIndex="TARGET_ARE"
-                                                Text="Target Area" />
+                                                Text="Mix #" Flex="20" />                                            
                                             <ext:Column runat="server"
                                                 DataIndex="GALLON_ACRE"
-                                                Text="Gallons / Acre" />
-                                            <ext:Column runat="server"
-                                                DataIndex="GALLON_STARTING"
-                                                Text="Gallons Starting" />
-                                            <ext:Column runat="server"
-                                                DataIndex="GALLON_MIXED"
-                                                Text="Gallons Mixed" />
-                                            <ext:Column runat="server"
-                                                DataIndex="GALLON_TOTAL"
-                                                Text="Gallons Total" />
-                                            <ext:Column runat="server"
-                                                DataIndex="GALLON_REMAINING"
-                                                Text="Gallons Remaining" />
+                                                Text="Gallons / Acre" Flex="40"  />                                            
                                             <ext:Column runat="server"
                                                 DataIndex="GALLON_USED"
-                                                Text="Gallons Used" />
-                                            <ext:Column runat="server"
-                                                DataIndex="ACRES_SPRAYED"
-                                                Text="Acres Sprayed" />
-                                            <ext:Column runat="server"
-                                                DataIndex="STATE"
-                                                Text="State" />
-                                            <ext:Column runat="server"
-                                                DataIndex="COUNTY"
-                                                Text="County" />
+                                                Text="Gallons Used" Flex="40" />                                            
                                         </Columns>
                                     </ColumnModel>
                                     <SelectionModel>
@@ -155,7 +138,8 @@
                             </Component>
                         </ext:DropDownField>
                         <ext:ComboBox runat="server"
-                            ID="uxAddInventoryRegion">
+                            ID="uxAddInventoryRegion"
+                            FieldLabel="Select Region">
                             <Store>
                                 <ext:Store runat="server" 
                                     ID="uxAddInventoryRegionStore">
@@ -171,7 +155,8 @@
                             </Store>
                         </ext:ComboBox>
                         <ext:ComboBox runat="server"
-                            ID="uxAddInventorySub">
+                            ID="uxAddInventorySub"
+                            FieldLabel="Select Subinventory">
                             <Store>
                                 <ext:Store runat="server"
                                     ID="uxAddInventorySubStore">
@@ -187,7 +172,8 @@
                             </Store>
                         </ext:ComboBox>
                         <ext:DropDownField runat="server"
-                            ID="uxAddInventoryItem">
+                            ID="uxAddInventoryItem"
+                            FieldLabel="Select Item">
                             <Component>
                                 <ext:GridPanel runat="server"
                                     ID="uxAddInventoryGrid">
@@ -213,9 +199,11 @@
                             </Component>
                         </ext:DropDownField>
                         <ext:TextField runat="server"
-                            ID="uxAddInventoryRate" />
+                            ID="uxAddInventoryRate"
+                            FieldLabel="Rate" />
                         <ext:ComboBox runat="server"
-                            ID="uxAddInventoryMeasure">
+                            ID="uxAddInventoryMeasure"
+                            FieldLabel="Unit of Measure">
                             <Store>
                                 <ext:Store runat="server"
                                     ID="uxAddInventoryMeasureStore">
@@ -231,21 +219,27 @@
                         </ext:ComboBox>
                         <ext:TextField runat="server"
                             ID="uxAddInventoryTotal"
-                            Disabled="true" />
+                            Disabled="true"
+                            FieldLabel="Total" />
                         <ext:TextField runat="server"
-                            ID="uxAddInventoryEPA" />
+                            ID="uxAddInventoryEPA"
+                            FieldLabel="EPA Number" />
                     </Items>
                     <Buttons>
                         <ext:Button runat="server"
-                            ID="uxAddInventorySubmit">
+                            ID="uxAddInventorySubmit"
+                            Icon="ApplicationGo"
+                            Text="Submit">
                             <DirectEvents>
                                 <Click OnEvent="deAddInventory" />
                             </DirectEvents>
                         </ext:Button>
                         <ext:Button runat="server"
-                            ID="uxAddInventoryCancel">
+                            ID="uxAddInventoryCancel"
+                            Icon="ApplicationStop"
+                            Text="Cancel">
                             <Listeners>
-                                <Click Handler="" />
+                                <Click Handler="#{uxAddInventoryWindow}.hide()" />
                             </Listeners>
                         </ext:Button>
                     </Buttons>
@@ -256,7 +250,8 @@
             ID="uxEditInventoryWindow"
             Layout="FormLayout"
             Width="650"
-            Hidden="true">
+            Hidden="true"
+            StyleSpec="z-index:10000">
             <Items>
                 <ext:FormPanel runat="server"
                     ID="uxEditInventoryForm"
@@ -264,10 +259,12 @@
                     <Items>
                         <ext:DropDownField runat="server"
                             ID="uxEditInventoryMix"
-                            Mode="ValueText">
+                            Mode="ValueText"
+                            FieldLabel="Select Mix">
                             <Component>
                                 <ext:GridPanel runat="server"
-                                    ID="uxEditInventoryMixGrid">
+                                    ID="uxEditInventoryMixGrid"
+                                    StyleSpec="z-index: 100000">
                                     <Store>
                                         <ext:Store runat="server"
                                             ID="uxEditInventoryMixStore">
@@ -298,36 +295,12 @@
                                                 DataIndex="CHEMICAL_MIX_NUMBER"
                                                 Text="Mix #" />
                                             <ext:Column runat="server"
-                                                DataIndex="TARGET_ARE"
-                                                Text="Target Area" />
-                                            <ext:Column runat="server"
                                                 DataIndex="GALLON_ACRE"
                                                 Text="Gallons / Acre" />
                                             <ext:Column runat="server"
-                                                DataIndex="GALLON_STARTING"
-                                                Text="Gallons Starting" />
-                                            <ext:Column runat="server"
-                                                DataIndex="GALLON_MIXED"
-                                                Text="Gallons Mixed" />
-                                            <ext:Column runat="server"
-                                                DataIndex="GALLON_TOTAL"
-                                                Text="Gallons Total" />
-                                            <ext:Column runat="server"
-                                                DataIndex="GALLON_REMAINING"
-                                                Text="Gallons Remaining" />
-                                            <ext:Column runat="server"
                                                 DataIndex="GALLON_USED"
                                                 Text="Gallons Used" />
-                                            <ext:Column runat="server"
-                                                DataIndex="ACRES_SPRAYED"
-                                                Text="Acres Sprayed" />
-                                            <ext:Column runat="server"
-                                                DataIndex="STATE"
-                                                Text="State" />
-                                            <ext:Column runat="server"
-                                                DataIndex="COUNTY"
-                                                Text="County" />
-                                        </Columns>
+                                            </Columns>
                                     </ColumnModel>
                                     <SelectionModel>
                                         <ext:RowSelectionModel runat="server" Mode="Single" />
@@ -336,7 +309,8 @@
                             </Component>
                         </ext:DropDownField>
                         <ext:ComboBox runat="server"
-                            ID="uxEditInventoryRegion">
+                            ID="uxEditInventoryRegion"
+                            FieldLabel="Select Region">
                             <Store>
                                 <ext:Store runat="server" 
                                     ID="uxEditInventoryRegionStore">
@@ -352,7 +326,8 @@
                             </Store>
                         </ext:ComboBox>
                         <ext:ComboBox runat="server"
-                            ID="uxEditInventorySub">
+                            ID="uxEditInventorySub"
+                            FieldLabel="Select Subinventory">
                             <Store>
                                 <ext:Store runat="server"
                                     ID="uxEditInventorySubStore">
@@ -368,7 +343,8 @@
                             </Store>
                         </ext:ComboBox>
                         <ext:DropDownField runat="server"
-                            ID="uxEditInventoryItem">
+                            ID="uxEditInventoryItem"
+                            FieldLabel="Select Item">
                             <Component>
                                 <ext:GridPanel runat="server"
                                     ID="uxEditInventoryItemGrid">
@@ -394,9 +370,11 @@
                             </Component>
                         </ext:DropDownField>
                         <ext:TextField runat="server"
-                            ID="uxEditInventoryRate" />
+                            ID="uxEditInventoryRate"
+                            FieldLabel="Rate" />
                         <ext:ComboBox runat="server"
-                            ID="uxEditInventoryMeasure">
+                            ID="uxEditInventoryMeasure"
+                            FieldLabel="Unit of Measure">
                             <Store>
                                 <ext:Store runat="server"
                                     ID="uxEditInventoryMeasureStore">
@@ -412,21 +390,27 @@
                         </ext:ComboBox>
                         <ext:TextField runat="server"
                             ID="uxEditInventoryTotal"
-                            Disabled="true" />
+                            Disabled="true"
+                            FieldLabel="Total" />
                         <ext:TextField runat="server"
-                            ID="uxEditInventoryEPA" />
+                            ID="uxEditInventoryEPA"
+                            FieldLabel="EPA Number" />
                     </Items>
                     <Buttons>
                         <ext:Button runat="server"
-                            ID="uxEditInventorySubmit">
+                            ID="uxEditInventorySubmit"
+                            Icon="ApplicationGo"
+                            Text="Submit">
                             <DirectEvents>
                                 <Click OnEvent="deEditInventory" />
                             </DirectEvents>
                         </ext:Button>
                         <ext:Button runat="server"
-                            ID="uxEditInventoryCancel">
+                            ID="uxEditInventoryCancel"
+                            Icon="ApplicationStop"
+                            Text="Cancel">
                             <Listeners>
-                                <Click Handler="" />
+                                <Click Handler="#{uxEditInventoryWindow}.hide()" />
                             </Listeners>
                         </ext:Button>
                     </Buttons>
