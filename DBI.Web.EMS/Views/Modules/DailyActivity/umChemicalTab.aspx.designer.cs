@@ -49,6 +49,33 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Store uxCurrentChemicalStore;
         
         /// <summary>
+        /// uxGallonTotalGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column uxGallonTotalGrid;
+        
+        /// <summary>
+        /// uxGallonUsedGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column uxGallonUsedGrid;
+        
+        /// <summary>
+        /// uxAcresSprayedGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column uxAcresSprayedGrid;
+        
+        /// <summary>
         /// uxAddChemicalButton control.
         /// </summary>
         /// <remarks>
