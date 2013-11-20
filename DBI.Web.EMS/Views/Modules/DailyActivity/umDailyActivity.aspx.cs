@@ -432,6 +432,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             //Write to the DB
             GenericData.Insert<DAILY_ACTIVITY_HEADER>(ToStore);
+            Response.Redirect("umManageExisting.aspx");
         }
     }
 }

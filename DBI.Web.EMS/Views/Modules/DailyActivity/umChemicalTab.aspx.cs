@@ -45,10 +45,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             decimal GallonAcre = decimal.Parse(uxAddChemicalGallonAcre.Value.ToString());
             decimal GallonStart = decimal.Parse(uxAddChemicalGallonStart.Value.ToString());
             decimal GallonMixed = decimal.Parse(uxAddChemicalGallonMixed.Value.ToString());
-            decimal GallonTotal = decimal.Parse(uxAddChemicalGallonTotal.Value.ToString());
             decimal GallonRemain = decimal.Parse(uxAddChemicalGallonRemain.Value.ToString());
-            decimal AcresSprayed = decimal.Parse(uxAddChemicalAcresSprayed.Value.ToString());
-            decimal GallonUsed = decimal.Parse(uxAddChemicalGallonUsed.Value.ToString());
 
             //Get Count of current records for this Header
             int count;
@@ -67,10 +64,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 GALLON_ACRE = GallonAcre,
                 GALLON_STARTING = GallonStart,
                 GALLON_MIXED = GallonMixed,
-                GALLON_TOTAL = GallonTotal,
                 GALLON_REMAINING = GallonRemain,
-                GALLON_USED = GallonUsed,
-                ACRES_SPRAYED = AcresSprayed,
                 STATE = uxAddChemicalState.Value.ToString(),
                 COUNTY = uxAddChemicalCounty.Value.ToString(),
                 CREATE_DATE = DateTime.Now,
@@ -113,10 +107,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEditChemicalGallonAcre.SetValue(Chemical["GALLON_ACRE"]);
                 uxEditChemicalGallonStart.SetValue(Chemical["GALLON_STARTING"]);
                 uxEditChemicalGallonMixed.SetValue(Chemical["GALLON_MIXED"]);
-                uxEditChemicalGallonTotal.SetValue(Chemical["GALLON_TOTAL"]);
                 uxEditChemicalGallonRemain.SetValue(Chemical["GALLON_REMAINING"]);
-                uxEditChemicalGallonUsed.SetValue(Chemical["GALLON_USED"]);
-                uxEditChemicalAcresSprayed.SetValue(Chemical["ACRES_SPRAYED"]);
                 uxEditChemicalState.SetValue(Chemical["STATE"]);
                 uxEditChemicalCounty.SetValue(Chemical["STATE"]);
             }
@@ -186,10 +177,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             decimal GallonAcre = decimal.Parse(uxEditChemicalGallonAcre.Value.ToString());
             decimal GallonStart = decimal.Parse(uxEditChemicalGallonStart.Value.ToString());
             decimal GallonMixed = decimal.Parse(uxEditChemicalGallonMixed.Value.ToString());
-            decimal GallonTotal = decimal.Parse(uxEditChemicalGallonTotal.Value.ToString());
             decimal GallonRemain = decimal.Parse(uxEditChemicalGallonRemain.Value.ToString());
-            decimal AcresSprayed = decimal.Parse(uxEditChemicalAcresSprayed.Value.ToString());
-            decimal GallonUsed = decimal.Parse(uxEditChemicalGallonUsed.Value.ToString());
             DAILY_ACTIVITY_CHEMICAL_MIX data;
 
             using (Entities _context = new Entities())
@@ -203,10 +191,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.GALLON_ACRE = GallonAcre;
             data.GALLON_STARTING = GallonStart;
             data.GALLON_MIXED = GallonMixed;
-            data.GALLON_TOTAL = GallonTotal;
             data.GALLON_REMAINING = GallonRemain;
-            data.GALLON_USED = GallonUsed;
-            data.ACRES_SPRAYED = AcresSprayed;
             data.STATE = uxEditChemicalState.Value.ToString();
             data.COUNTY = uxEditChemicalCounty.Value.ToString();
             data.MODIFIED_BY = User.Identity.Name;

@@ -85,7 +85,7 @@
                                             <DirectEvents>
                                                 <Click OnEvent="deLoadPage">
                                                     <ExtraParams>
-                                                        <ext:Parameter Name="Page" Value="~/Views/Modules/DailyActivity/umDailyActivity.aspx" />
+                                                        <ext:Parameter Name="Page" Value="~/Views/Modules/DailyActivity/umManageExisting.aspx" />
                                                         <ext:Parameter Name="Location" Value="uxCenter" />
                                                     </ExtraParams>
                                                 </Click>
