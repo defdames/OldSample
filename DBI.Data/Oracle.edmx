@@ -251,9 +251,10 @@
           </EntitySet>
           <EntitySet Name="SUBINVENTORY_V" EntityType="OracleModel.Store.SUBINVENTORY_V" store:Type="Views" store:Schema="XXEMS" store:Name="SUBINVENTORY_V">
             <DefiningQuery>SELECT 
-      "SUBINVENTORY_V"."ORGANIZATION_ID" AS "ORGANIZATION_ID", 
-      "SUBINVENTORY_V"."SECONDARY_INVENTORY_NAME" AS "SECONDARY_INVENTORY_NAME", 
-      "SUBINVENTORY_V"."DESCRIPTION" AS "DESCRIPTION"
+      "SUBINVENTORY_V"."ORG_ID" AS "ORG_ID", 
+      "SUBINVENTORY_V"."SECONDARY_INV_NAME" AS "SECONDARY_INV_NAME", 
+      "SUBINVENTORY_V"."DESCRIPTION" AS "DESCRIPTION", 
+      "SUBINVENTORY_V"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE"
       FROM "XXEMS"."SUBINVENTORY_V" "SUBINVENTORY_V"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="SYS_USER_INFORMATION" EntityType="OracleModel.Store.SYS_USER_INFORMATION" store:Type="Views" store:Schema="XXEMS" store:Name="SYS_USER_INFORMATION">
@@ -726,12 +727,14 @@
       -->
         <EntityType Name="SUBINVENTORY_V">
           <Key>
-            <PropertyRef Name="ORGANIZATION_ID" />
-            <PropertyRef Name="SECONDARY_INVENTORY_NAME" />
+            <PropertyRef Name="ORG_ID" />
+            <PropertyRef Name="SECONDARY_INV_NAME" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
           </Key>
-          <Property Name="ORGANIZATION_ID" Type="number" Nullable="false" />
-          <Property Name="SECONDARY_INVENTORY_NAME" Type="varchar2" Nullable="false" MaxLength="10" />
+          <Property Name="ORG_ID" Type="number" Nullable="false" />
+          <Property Name="SECONDARY_INV_NAME" Type="varchar2" Nullable="false" MaxLength="10" />
           <Property Name="DESCRIPTION" Type="varchar2" MaxLength="50" />
+          <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'XXEMS.SYS_USER_INFORMATION' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -885,12 +888,12 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_EMPLOYEE" EntitySet="DAILY_ACTIVITY_EMPLOYEE" />
           </AssociationSet>
-          <EntitySet Name="SUBINVENTORY_V" EntityType="OracleModel.SUBINVENTORY_V" />
           <EntitySet Name="DAILY_ACTIVITY_CHEMICAL_MIX" EntityType="OracleModel.DAILY_ACTIVITY_CHEMICAL_MIX" />
           <AssociationSet Name="FK_CHEMICAL_HEADER_ID" Association="OracleModel.FK_CHEMICAL_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_CHEMICAL_MIX" EntitySet="DAILY_ACTIVITY_CHEMICAL_MIX" />
           </AssociationSet>
+          <EntitySet Name="SUBINVENTORY_V" EntityType="OracleModel.SUBINVENTORY_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -1493,15 +1496,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="SUBINVENTORY_V">
-          <Key>
-            <PropertyRef Name="ORGANIZATION_ID" />
-            <PropertyRef Name="SECONDARY_INVENTORY_NAME" />
-          </Key>
-          <Property Type="Decimal" Name="ORGANIZATION_ID" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="String" Name="SECONDARY_INVENTORY_NAME" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="DESCRIPTION" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="DAILY_ACTIVITY_CHEMICAL_MIX">
           <Key>
             <PropertyRef Name="CHEMICAL_MIX_ID" />
@@ -1535,6 +1529,17 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="SUBINVENTORY_V">
+          <Key>
+            <PropertyRef Name="ORG_ID" />
+            <PropertyRef Name="SECONDARY_INV_NAME" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+          </Key>
+          <Property Type="Decimal" Name="ORG_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="SECONDARY_INV_NAME" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DESCRIPTION" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1942,15 +1947,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SUBINVENTORY_V">
-            <EntityTypeMapping TypeName="OracleModel.SUBINVENTORY_V">
-              <MappingFragment StoreEntitySet="SUBINVENTORY_V">
-                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
-                <ScalarProperty Name="SECONDARY_INVENTORY_NAME" ColumnName="SECONDARY_INVENTORY_NAME" />
-                <ScalarProperty Name="ORGANIZATION_ID" ColumnName="ORGANIZATION_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="DAILY_ACTIVITY_CHEMICAL_MIX">
             <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_CHEMICAL_MIX">
               <MappingFragment StoreEntitySet="DAILY_ACTIVITY_CHEMICAL_MIX">
@@ -1969,6 +1965,16 @@
                 <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
                 <ScalarProperty Name="CHEMICAL_MIX_NUMBER" ColumnName="CHEMICAL_MIX_NUMBER" />
                 <ScalarProperty Name="CHEMICAL_MIX_ID" ColumnName="CHEMICAL_MIX_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SUBINVENTORY_V">
+            <EntityTypeMapping TypeName="OracleModel.SUBINVENTORY_V">
+              <MappingFragment StoreEntitySet="SUBINVENTORY_V">
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="SECONDARY_INV_NAME" ColumnName="SECONDARY_INV_NAME" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
