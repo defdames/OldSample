@@ -19,14 +19,15 @@
         };
 
         var doMath = function () {
+            var models = App.uxCurrentChemicalStore.getRange();
             var count = App.uxCurrentChemicalGrid.getStore().getCount();
-            for (var i = 0; i < count, i++){
-                var total = App.uxCurrentChemicalStore.getSelectionModel().getSelection()[i].data.GALLON_STARTING + App.uxCurrentChemicalStore.getSelectionModel().getSelection()[i].data.GALLON_MIXED;
-                App.uxCurrentChemicalStore.getAt(i).set("GALLON_TOTAL", total);
-                var used = total - App.uxCurrentChemicalStore.getSelectionModel().getSelection()[i].data.GALLON_REMAINING;
-                App.uxCurrentChemicalStore.getAt(i).set("GALLON_USED", used);
-                var sprayed = used / App.uxCurrentChemicalStore.getSelectionModel().getSelection()[i].data.GALLON_ACRE;
-                App.uxCurrentChemicalStore.getAt(i).set("ACRES_SPRAYED", sprayed);
+            for (var i = 0; i < count; i++){
+                var total = App.uxCurrentChemicalStore.getAt(i).data.GALLON_STARTING + App.uxCurrentChemicalStore.getAt(i).data.GALLON_MIXED;
+                models[i].set("GALLON_TOTAL", total);
+                var used = total - App.uxCurrentChemicalStore.getAt(i).data.GALLON_REMAINING;
+                models[i].set("GALLON_USED", used);
+                var sprayed = used / App.uxCurrentChemicalStore.getAt(i).data.GALLON_ACRE;
+                models[i].set("ACRES_SPRAYED", sprayed);
 
             }
         };
@@ -41,7 +42,7 @@
             <Store>
                 <ext:Store runat="server"
                     ID="uxCurrentChemicalStore"
-                    AutoDataBind="true">
+                    AutoDataBind="true" WarningOnDirty="false">
                     <Model>
                         <ext:Model runat="server">
                             <Fields>
@@ -70,13 +71,13 @@
                 <Columns>
                     <ext:Column runat="server" DataIndex="CHEMICAL_MIX_NUMBER" Text="Mix Number" />
                     <ext:Column runat="server" DataIndex="TARGET_ARE" Text="Target" />
-                    <ext:Column runat="server" DataIndex="GALLON_ACRE" Text="Gallon Acre" />
-                    <ext:Column runat="server" DataIndex="GALLON_STARTING" Text="Gallon Starting"/>
-                    <ext:Column runat="server" DataIndex="GALLON_MIXED" Text="Gallon Mixed" />
-                    <ext:Column runat="server" ID="uxGallonTotalGrid" Text="Gallon Total" />
-                    <ext:Column runat="server" DataIndex="GALLON_REMAINING" Text="Gallon Remaining" />
-                    <ext:Column runat="server" ID="uxGallonUsedGrid" Text="Gallon Used" />
-                    <ext:Column runat="server" ID="uxAcresSprayedGrid" Text="Acres Sprayed" />
+                    <ext:Column runat="server" DataIndex="GALLON_ACRE" Text="Gallons / Acre" />
+                    <ext:Column runat="server" DataIndex="GALLON_STARTING" Text="Gallons Starting"/>
+                    <ext:Column runat="server" DataIndex="GALLON_MIXED" Text="Gallons Mixed" />
+                    <ext:Column runat="server" ID="uxGallonTotalGrid" Text="Gallons Total" DataIndex="GALLON_TOTAL"/>
+                    <ext:Column runat="server" DataIndex="GALLON_REMAINING" Text="Gallons Remaining" />
+                    <ext:Column runat="server" ID="uxGallonUsedGrid" Text="Gallons Used" DataIndex="GALLON_USED" />
+                    <ext:Column runat="server" ID="uxAcresSprayedGrid" Text="Acres Sprayed" DataIndex="ACRES_SPRAYED" />
                     <ext:Column runat="server" DataIndex="STATE" Text="State" />
                     <ext:Column runat="server" DataIndex="COUNTY" Text="County" />
                 </Columns>
@@ -123,6 +124,9 @@
                     </Items>
                 </ext:Toolbar>
             </TopBar>
+            <SelectionModel>
+                <ext:RowSelectionModel runat="server" />
+            </SelectionModel>
         </ext:GridPanel>
         <ext:Window runat="server"
             ID="uxAddChemicalWindow"
