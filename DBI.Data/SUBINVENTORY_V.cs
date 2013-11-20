@@ -14,8 +14,9 @@ namespace DBI.Data
     
     public partial class SUBINVENTORY_V
     {
-        public decimal ORGANIZATION_ID { get; set; }
-        public string SECONDARY_INVENTORY_NAME { get; set; }
+        public decimal ORG_ID { get; set; }
+        public string SECONDARY_INV_NAME { get; set; }
         public string DESCRIPTION { get; set; }
+        public System.DateTime LAST_UPDATE_DATE { get; set; }
     }
 }
