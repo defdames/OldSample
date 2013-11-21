@@ -8,15 +8,15 @@ using DBI.Data;
 
 namespace DBI.Mobile.EMS.Controllers
 {
-    public class InventoryController : ApiController
+    public class SubInventoryController : ApiController
     {
         [Authorize]
         [HttpGet]
-        public IEnumerable<INVENTORY_V> Get()
+        public IEnumerable<SUBINVENTORY_V> Get()
         {
             Entities _context = new Entities();
-            List<INVENTORY_V> invl = _context.INVENTORY_V.ToList();
-            return _context.INVENTORY_V.ToList();
+            List<SUBINVENTORY_V> sinvl = _context.SUBINVENTORY_V.ToList();
+            return _context.SUBINVENTORY_V.ToList();
         }
 
     }
