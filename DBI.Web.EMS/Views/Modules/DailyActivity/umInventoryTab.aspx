@@ -9,6 +9,68 @@
 <body>
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
     <form id="form1" runat="server">
+        <ext:Store runat="server"
+            ID="uxAddInventoryItemStore"
+            RemoteSort="true"
+            OnReadData="deReadItems"
+            PageSize="15">
+            <Model>
+                <ext:Model ID="Model1" runat="server">
+                    <Fields>
+                        <ext:ModelField Name="ITEM_ID" Type="String" />
+                        <ext:ModelField Name="SEGMENT1" Type="String" />
+                        <ext:ModelField Name="DESCRIPTION" Type="String" />
+                        <ext:ModelField Name="UOM_CODE" Type="String" />
+                        <ext:ModelField Name="ENABLED_FLAG" />
+                        <ext:ModelField Name="ACTIVE" />
+                        <ext:ModelField Name="ITEM_COST" Type="String" />
+                        <ext:ModelField Name="LAST_UPDATE_DATE" />
+                        <ext:ModelField Name="LE" />
+                        <ext:ModelField Name="ATTRIBUTE2" />
+                        <ext:ModelField Name="INV_NAME" />
+                        <ext:ModelField Name="INV_LOCATION" />
+                        <ext:ModelField Name="ORGANIZATION_ID" />
+                    </Fields>
+                </ext:Model>
+            </Model>
+            <Proxy>
+                <ext:PageProxy />
+            </Proxy>
+            <Parameters>
+                <ext:StoreParameter Name="Type" Value="Add" />
+            </Parameters>
+        </ext:Store>
+        <ext:Store runat="server"
+            ID="uxEditInventoryItemStore"
+            RemoteSort="true"
+            OnReadData="deReadItems"
+            PageSize="15">
+            <Model>
+                <ext:Model ID="Model2" runat="server">
+                    <Fields>
+                        <ext:ModelField Name="ITEM_ID" Type="String" />
+                        <ext:ModelField Name="SEGMENT1" Type="String" />
+                        <ext:ModelField Name="DESCRIPTION" Type="String" />
+                        <ext:ModelField Name="UOM_CODE" Type="String" />
+                        <ext:ModelField Name="ENABLED_FLAG" />
+                        <ext:ModelField Name="ACTIVE" />
+                        <ext:ModelField Name="ITEM_COST" Type="String" />
+                        <ext:ModelField Name="LAST_UPDATE_DATE" />
+                        <ext:ModelField Name="LE" />
+                        <ext:ModelField Name="ATTRIBUTE2" />
+                        <ext:ModelField Name="INV_NAME" />
+                        <ext:ModelField Name="INV_LOCATION" />
+                        <ext:ModelField Name="ORGANIZATION_ID" />
+                    </Fields>
+                </ext:Model>
+            </Model>
+            <Proxy>
+                <ext:PageProxy />
+            </Proxy>
+            <Parameters>
+                <ext:StoreParameter Name="Type" Value="Edit" />
+            </Parameters>
+        </ext:Store>
         <ext:GridPanel runat="server"
             ID="uxCurrentInventoryGrid"
             Layout="HBoxLayout">
@@ -38,6 +100,13 @@
                             ID="uxAddInventoryButton"
                             Text="Add Inventory"
                             Icon="ApplicationAdd">
+                            <DirectEvents>
+                                <Click OnEvent="dePopulateInventory">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="Type" Value="Add" />
+                                    </ExtraParams>
+                                </Click>
+                            </DirectEvents>
                             <Listeners>
                                 <Click Handler="#{uxAddInventoryWindow}.show()" />
                             </Listeners>
@@ -50,6 +119,7 @@
                                 <Click OnEvent="deEditInventoryForm">
                                     <ExtraParams>
                                         <ext:Parameter Name="InventoryInfo" Value="Ext.encode(#{uxCurrentInventoryGrid}.getRowsValues({selectedOnly : true}))" Mode="Raw" />
+                                        <ext:Parameter Name="Type" Value="Edit" />
                                     </ExtraParams>
                                 </Click>
                             </DirectEvents>
@@ -139,32 +209,46 @@
                         </ext:DropDownField>
                         <ext:ComboBox runat="server"
                             ID="uxAddInventoryRegion"
-                            FieldLabel="Select Region">
+                            FieldLabel="Select Region"
+                            DisplayField="INV_NAME"
+                            ValueField="ORGANIZATION_ID">
                             <Store>
                                 <ext:Store runat="server" 
                                     ID="uxAddInventoryRegionStore">
                                     <Model>
                                         <ext:Model runat="server">
                                             <Fields>
-                                                <ext:ModelField Name="REGION_ID" />
-                                                <ext:ModelField Name="NAME" />
+                                                <ext:ModelField Name="INV_NAME" />
+                                                <ext:ModelField Name="ORGANIZATION_ID" />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
                                 </ext:Store>
                             </Store>
+                            <DirectEvents>
+                                <Select OnEvent="deLoadSubinventory">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="Type" Value="Add" />
+                                    </ExtraParams>
+                                </Select>
+                            </DirectEvents>
+                            <Listeners>
+                                <Select Handler="#{uxAddInventoryItemStore}.load()" />
+                            </Listeners>
                         </ext:ComboBox>
                         <ext:ComboBox runat="server"
                             ID="uxAddInventorySub"
-                            FieldLabel="Select Subinventory">
+                            FieldLabel="Select Subinventory"
+                            DisplayField="DESCRIPTION"
+                            ValueField="SECONDARY_INV_NAME">
                             <Store>
                                 <ext:Store runat="server"
                                     ID="uxAddInventorySubStore">
                                     <Model>
                                         <ext:Model runat="server">
                                             <Fields>
-                                                <ext:ModelField Name="SUBINVENTORY_ID" />
-                                                <ext:ModelField Name="NAME" />
+                                                <ext:ModelField Name="SECONDARY_INV_NAME" />
+                                                <ext:ModelField Name="DESCRIPTION" />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
@@ -176,27 +260,31 @@
                             FieldLabel="Select Item">
                             <Component>
                                 <ext:GridPanel runat="server"
-                                    ID="uxAddInventoryGrid">
-                                    <Store>
-                                        <ext:Store runat="server"
-                                            ID="uxAddInventoryStore">
-                                            <Model>
-                                                <ext:Model runat="server">
-                                                    <Fields>
-                                                        <ext:ModelField Name="name" />
-                                                    </Fields>
-                                                </ext:Model>
-                                            </Model>
-                                        </ext:Store>
-                                    </Store>
+                                    ID="uxAddInventoryItemGrid" StoreID="uxAddInventoryItemStore">
                                     <ColumnModel>
                                         <Columns>
                                             <ext:Column runat="server"
-                                                DataIndex="name" />
+                                                DataIndex="SEGMENT1"
+                                                Text="Item Id" />
+                                            <ext:Column runat="server"
+                                                DataIndex="DESCRIPTION"
+                                                Text="Name" />
+                                            <ext:Column runat="server"
+                                                DataIndex="UOM_CODE"
+                                                Text="Measure" />
+                                            <ext:Column runat="server"
+                                                DataIndex="ITEM_COST"
+                                                Text="Cost" />
                                         </Columns>
                                     </ColumnModel>
+                                    <Plugins>
+                                        <ext:FilterHeader runat="server" ID="uxAddInventoryItemHeadFilter" Remote="true" />
+                                    </Plugins>
+                                    <BottomBar>
+                                        <ext:PagingToolbar runat="server" ID="uxAddInventoryItemPaging" />
+                                    </BottomBar>
                                 </ext:GridPanel>
-                            </Component>
+                            </Component>                            
                         </ext:DropDownField>
                         <ext:TextField runat="server"
                             ID="uxAddInventoryRate"
@@ -250,8 +338,7 @@
             ID="uxEditInventoryWindow"
             Layout="FormLayout"
             Width="650"
-            Hidden="true"
-            StyleSpec="z-index:10000">
+            Hidden="true">
             <Items>
                 <ext:FormPanel runat="server"
                     ID="uxEditInventoryForm"
@@ -263,8 +350,7 @@
                             FieldLabel="Select Mix">
                             <Component>
                                 <ext:GridPanel runat="server"
-                                    ID="uxEditInventoryMixGrid"
-                                    StyleSpec="z-index: 100000">
+                                    ID="uxEditInventoryMixGrid">
                                     <Store>
                                         <ext:Store runat="server"
                                             ID="uxEditInventoryMixStore">
@@ -310,20 +396,32 @@
                         </ext:DropDownField>
                         <ext:ComboBox runat="server"
                             ID="uxEditInventoryRegion"
-                            FieldLabel="Select Region">
+                            FieldLabel="Select Region"
+                            DisplayField="INV_NAME"
+                            ValueField="ORGANIZATION_ID" >
                             <Store>
                                 <ext:Store runat="server" 
                                     ID="uxEditInventoryRegionStore">
                                     <Model>
                                         <ext:Model runat="server">
                                             <Fields>
-                                                <ext:ModelField Name="REGION_ID" />
-                                                <ext:ModelField Name="NAME" />
+                                                <ext:ModelField Name="ORGANIZATION_ID" />
+                                                <ext:ModelField Name="INV_NAME" />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
                                 </ext:Store>
                             </Store>
+                            <DirectEvents>
+                                <Select OnEvent="deLoadSubinventory">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="Type" Value="Edit" />
+                                    </ExtraParams>
+                                </Select>
+                            </DirectEvents>
+                            <Listeners>
+                                <Select Handler="#{uxEditInventoryItemStore}.load()" />
+                            </Listeners>
                         </ext:ComboBox>
                         <ext:ComboBox runat="server"
                             ID="uxEditInventorySub"
@@ -341,6 +439,13 @@
                                     </Model>
                                 </ext:Store>
                             </Store>
+                            <%--<DirectEvents>
+                                <Select OnEvent="deLoadItems">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="Type" Value="Edit" />
+                                    </ExtraParams>
+                                </Select>
+                            </DirectEvents>--%>
                         </ext:ComboBox>
                         <ext:DropDownField runat="server"
                             ID="uxEditInventoryItem"
@@ -348,24 +453,28 @@
                             <Component>
                                 <ext:GridPanel runat="server"
                                     ID="uxEditInventoryItemGrid">
-                                    <Store>
-                                        <ext:Store runat="server"
-                                            ID="uxEditInventoryItemStore">
-                                            <Model>
-                                                <ext:Model runat="server">
-                                                    <Fields>
-                                                        <ext:ModelField Name="name" />
-                                                    </Fields>
-                                                </ext:Model>
-                                            </Model>
-                                        </ext:Store>
-                                    </Store>
                                     <ColumnModel>
                                         <Columns>
                                             <ext:Column runat="server"
-                                                DataIndex="name" />
+                                                DataIndex="SEGMENT1"
+                                                Text="Item Id" />
+                                            <ext:Column runat="server"
+                                                DataIndex="DESCRIPTION"
+                                                Text="Name" />
+                                            <ext:Column runat="server"
+                                                DataIndex="UOM_CODE"
+                                                Text="Measure" />
+                                            <ext:Column runat="server"
+                                                DataIndex="ITEM_COST"
+                                                Text="Cost" />
                                         </Columns>
                                     </ColumnModel>
+                                    <Plugins>
+                                        <ext:FilterHeader runat="server" ID="uxEditInventoryItemFilter" />
+                                    </Plugins>
+                                    <BottomBar>
+                                        <ext:PagingToolbar runat="server" ID="uxEditInventoryItemPaging" />
+                                    </BottomBar>
                                 </ext:GridPanel>
                             </Component>
                         </ext:DropDownField>

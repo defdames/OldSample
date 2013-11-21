@@ -37,6 +37,26 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        protected void dePopulateInventory(object sender, DirectEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                var data = (from d in _context.INVENTORY_V
+                            select new { d.ORGANIZATION_ID, d.INV_NAME }).Distinct().ToList();
+                if (e.ExtraParams["Type"] == "Add")
+                {
+                    uxAddInventoryRegionStore.DataSource = data;
+                    uxAddInventoryRegionStore.DataBind();
+                }
+                else
+                {
+                    uxEditInventoryRegionStore.DataSource = data;
+                    uxEditInventoryRegionStore.DataBind();
+                    uxEditInventoryItemStore.Reload();
+                }
+            }
+        }
+
         protected void deAddInventory(object sender, DirectEventArgs e)
         {
 
@@ -44,7 +64,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void deEditInventoryForm(object sender, DirectEventArgs e)
         {
-
+            dePopulateInventory(sender, e);
         }
 
         protected void deReadChemicalData(object sender, StoreReadDataEventArgs e)
@@ -60,6 +80,70 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void deRemoveInventory(object sender, DirectEventArgs e)
         {
 
+        }
+
+        protected void deLoadSubinventory(object sender, DirectEventArgs e)
+        {
+            decimal OrgId;
+            if (e.ExtraParams["Type"] == "Add")
+            {
+                OrgId = decimal.Parse(uxAddInventoryRegion.Value.ToString());
+            }
+            else
+            {
+                OrgId = decimal.Parse(uxEditInventoryRegion.Value.ToString());
+            }
+            using (Entities _context = new Entities())
+            {
+                var data = (from s in _context.SUBINVENTORY_V
+                            where s.ORG_ID == OrgId
+                            select s).ToList();
+                if (e.ExtraParams["Type"] == "Add")
+                {
+                    uxAddInventorySub.Clear();
+                    uxAddInventorySubStore.DataSource = data;
+                    uxAddInventorySubStore.DataBind();
+                }
+                else
+                {
+                    uxAddInventorySub.Clear();
+                    uxEditInventoryRegion.Clear();
+                    uxEditInventorySubStore.DataSource = data;
+                    uxEditInventorySubStore.DataBind();
+                    
+                }
+            }
+        }
+
+        protected void deReadItems(object sender, StoreReadDataEventArgs e)
+        {
+            long OrgId;
+            List<INVENTORY_V> dataIn;
+            if (e.Parameters["Type"] == "Add")
+            {
+                OrgId = long.Parse(uxAddInventoryRegion.Value.ToString());
+            }
+            else
+            {
+                OrgId = long.Parse(uxEditInventoryRegion.Value.ToString());
+            }
+            dataIn = INVENTORY_V.GetActiveInventory(OrgId);    
+
+            int count;
+            
+            List<INVENTORY_V> data = GenericData.EnumerableFilterHeader<INVENTORY_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
+            if (e.Parameters["Type"] == "Add")
+            {
+                uxAddInventoryItemStore.DataSource = data;
+                uxAddInventoryItemStore.DataBind();
+                e.Total = count;
+            }
+            else
+            {
+                uxEditInventoryItemStore.DataSource = data;
+                uxEditInventoryItemStore.DataBind();
+                e.Total = count;
+            }
         }
     }
 }
