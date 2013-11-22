@@ -19,15 +19,20 @@ namespace DBI.Data
          
          }
 
-         public static List<INVENTORY_V> GetActiveInventory()
+         public static List<INVENTORY_V> GetActiveInventory(long OrgId=0)
             {
                 using (Entities _context = new Entities())
                 {
-                    return _context.Set<INVENTORY_V>().Where(i => i.ACTIVE == "Y").ToList();
+                    if (OrgId == 0)
+                    {
+                        return _context.Set<INVENTORY_V>().Where(i => i.ACTIVE == "Y").ToList();
+                    }
+                    else
+                    {
+                        return _context.Set<INVENTORY_V>().Where(i => i.ACTIVE == "Y").Where(i=> i.ORGANIZATION_ID == OrgId).ToList();
+                    }
                 }
             }
-     
-
     }
 
 

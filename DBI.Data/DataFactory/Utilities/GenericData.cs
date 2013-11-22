@@ -323,6 +323,138 @@ namespace DBI.Data
                 return rangeData;
         }
 
+        /// <summary>
+        /// This returns a list of data used mostly for complex types
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="start"></param>
+        /// <param name="limit"></param>
+        /// <param name="sort"></param>
+        /// <param name="filter"></param>
+        /// <param name="dataIn"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> EnumerableFilterHeader<T>(int start, int limit, DataSorter[] sort, string filter, List<T> dataIn, out int count) where T : class
+        {
+            //-- data is copied from entry, so ignore pull from database.
+            List<T> data = dataIn;
+
+            //-- start filtering ------------------------------------------------------------
+            FilterHeaderConditions fhc = new FilterHeaderConditions(filter);
+
+            foreach (FilterHeaderCondition condition in fhc.Conditions)
+            {
+                string dataIndex = condition.DataIndex;
+                FilterType type = condition.Type;
+                string op = condition.Operator;
+                object value = null;
+
+                switch (condition.Type)
+                {
+                    case FilterType.Boolean:
+                        value = condition.Value<bool>();
+                        break;
+
+                    case FilterType.Date:
+                        switch (condition.Operator)
+                        {
+                            case "=":
+                                value = condition.Value<DateTime>();
+                                break;
+
+                            case "compare":
+                                value = FilterHeaderComparator<DateTime>.Parse(condition.JsonValue);
+                                break;
+                        }
+                        break;
+
+                    case FilterType.Numeric:
+                        bool isInt = data.Count > 0 && data[0].GetType().GetProperty(dataIndex).PropertyType == typeof(int);
+                        switch (condition.Operator)
+                        {
+                            case "=":
+                                if (isInt)
+                                {
+                                    value = condition.Value<int>();
+                                }
+                                else
+                                {
+                                    value = condition.Value<double>();
+                                }
+                                break;
+
+                            case "compare":
+                                if (isInt)
+                                {
+                                    value = FilterHeaderComparator<int>.Parse(condition.JsonValue);
+                                }
+                                else
+                                {
+                                    value = FilterHeaderComparator<double>.Parse(condition.JsonValue);
+                                }
+
+                                break;
+                        }
+
+                        break;
+                    case FilterType.String:
+                        value = condition.Value<string>();
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                data.RemoveAll(item =>
+                {
+                    object oValue = item.GetType().GetProperty(dataIndex).GetValue(item, null);
+                    string matchValue = null;
+                    string itemValue = null;
+
+                    if (type == FilterType.String)
+                    {
+                        matchValue = (string)value;
+                        matchValue = matchValue.ToLower();
+                        itemValue = oValue as string;
+                        itemValue = itemValue.ToLower();
+                    }
+                    return itemValue == null || itemValue.IndexOf(matchValue) < 0;
+                });
+            }
+
+            //-- end filtering ------------------------------------------------------------
+
+            //-- start sorting ------------------------------------------------------------
+            if (sort.Length > 0)
+            {
+                data.Sort(delegate(T x, T y)
+                {
+                    object a;
+                    object b;
+
+                    int direction = sort[0].Direction == Ext.Net.SortDirection.DESC ? -1 : 1;
+
+                    a = x.GetType().GetProperty(sort[0].Property).GetValue(x, null);
+                    b = y.GetType().GetProperty(sort[0].Property).GetValue(y, null);
+                    return CaseInsensitiveComparer.Default.Compare(a, b) * direction;
+                });
+            }
+            //-- end sorting ------------------------------------------------------------
+
+
+            //-- start paging -----------------------------------------------------------
+
+            if ((start + limit) > data.Count)
+            {
+                limit = data.Count - start;
+            }
+
+            List<T> rangeData = (start < 0 || limit < 0) ? data : data.GetRange(start, limit);
+            //-- end paging ------------------------------------------------------------
+
+            count = data.Count;
+            return rangeData;
+        }
+
         public static Ext.Net.Paging<T> PagingFilter<T>(int start, int limit, string sort, string dir, string filter, string field) where T : class
         {
             using (Entities _context = new Entities())
