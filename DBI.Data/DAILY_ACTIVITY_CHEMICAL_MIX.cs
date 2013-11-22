@@ -14,10 +14,15 @@ namespace DBI.Data
     
     public partial class DAILY_ACTIVITY_CHEMICAL_MIX
     {
+        public DAILY_ACTIVITY_CHEMICAL_MIX()
+        {
+            this.DAILY_ACTIVITY_INVENTORY = new HashSet<DAILY_ACTIVITY_INVENTORY>();
+        }
+    
         public long CHEMICAL_MIX_ID { get; set; }
         public long CHEMICAL_MIX_NUMBER { get; set; }
         public long HEADER_ID { get; set; }
-        public string TARGET_ARE { get; set; }
+        public string TARGET_AREA { get; set; }
         public Nullable<decimal> GALLON_ACRE { get; set; }
         public Nullable<decimal> GALLON_STARTING { get; set; }
         public Nullable<decimal> GALLON_MIXED { get; set; }
@@ -31,5 +36,6 @@ namespace DBI.Data
         public string MODIFIED_BY { get; set; }
     
         public virtual DAILY_ACTIVITY_HEADER DAILY_ACTIVITY_HEADER { get; set; }
+        public virtual ICollection<DAILY_ACTIVITY_INVENTORY> DAILY_ACTIVITY_INVENTORY { get; set; }
     }
 }

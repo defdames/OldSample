@@ -82,6 +82,9 @@
     <Compile Include="DAILY_ACTIVITY_HEADER.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="DAILY_ACTIVITY_INVENTORY.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="DAILY_ACTIVITY_WEATHER.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
