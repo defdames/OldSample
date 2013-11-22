@@ -52,7 +52,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 {
                     uxEditInventoryRegionStore.DataSource = data;
                     uxEditInventoryRegionStore.DataBind();
-                    uxEditInventoryItemStore.Reload();
                 }
             }
         }
@@ -106,8 +105,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 else
                 {
-                    uxAddInventorySub.Clear();
-                    uxEditInventoryRegion.Clear();
+                    uxEditInventorySub.Clear();
                     uxEditInventorySubStore.DataSource = data;
                     uxEditInventorySubStore.DataBind();
                     

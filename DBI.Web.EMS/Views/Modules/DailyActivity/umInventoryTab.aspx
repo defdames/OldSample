@@ -272,9 +272,6 @@
                                             <ext:Column runat="server"
                                                 DataIndex="UOM_CODE"
                                                 Text="Measure" />
-                                            <ext:Column runat="server"
-                                                DataIndex="ITEM_COST"
-                                                Text="Cost" />
                                         </Columns>
                                     </ColumnModel>
                                     <Plugins>
@@ -425,15 +422,17 @@
                         </ext:ComboBox>
                         <ext:ComboBox runat="server"
                             ID="uxEditInventorySub"
-                            FieldLabel="Select Subinventory">
+                            FieldLabel="Select Subinventory"
+                            ValueField="DESCRIPTION"
+                            DisplayField="SECONDARY_INV_NAME">
                             <Store>
                                 <ext:Store runat="server"
                                     ID="uxEditInventorySubStore">
                                     <Model>
                                         <ext:Model runat="server">
                                             <Fields>
-                                                <ext:ModelField Name="SUBINVENTORY_ID" />
-                                                <ext:ModelField Name="NAME" />
+                                                <ext:ModelField Name="DESCRIPTION" />
+                                                <ext:ModelField Name="SECONDARY_INV_NAME" />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
@@ -452,7 +451,8 @@
                             FieldLabel="Select Item">
                             <Component>
                                 <ext:GridPanel runat="server"
-                                    ID="uxEditInventoryItemGrid">
+                                    ID="uxEditInventoryItemGrid"
+                                    StoreId="uxEditInventoryItemStore">
                                     <ColumnModel>
                                         <Columns>
                                             <ext:Column runat="server"
@@ -464,13 +464,10 @@
                                             <ext:Column runat="server"
                                                 DataIndex="UOM_CODE"
                                                 Text="Measure" />
-                                            <ext:Column runat="server"
-                                                DataIndex="ITEM_COST"
-                                                Text="Cost" />
                                         </Columns>
                                     </ColumnModel>
                                     <Plugins>
-                                        <ext:FilterHeader runat="server" ID="uxEditInventoryItemFilter" />
+                                        <ext:FilterHeader runat="server" ID="uxEditInventoryItemFilter" Remote="true" />
                                     </Plugins>
                                     <BottomBar>
                                         <ext:PagingToolbar runat="server" ID="uxEditInventoryItemPaging" />
