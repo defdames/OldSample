@@ -167,5 +167,20 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        protected void deStoreGridValue(object sender, DirectEventArgs e)
+        {
+            if (e.ExtraParams["Type"] == "Add")
+            {
+                uxAddInventoryItem.SetValue(e.ExtraParams["ITEM_ID"], e.ExtraParams["DESCRIPTION"]);
+                uxAddInventoryItemStore.ClearFilter();
+                
+            }
+            else
+            {
+                uxEditInventoryItem.SetValue(e.ExtraParams["ITEM_ID"], e.ExtraParams["DESCRIPTION"]);
+                uxEditInventoryItemStore.ClearFilter();
+            }
+        }
+
     }
 }
