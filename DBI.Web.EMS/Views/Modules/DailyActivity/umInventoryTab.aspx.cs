@@ -143,5 +143,29 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 e.Total = count;
             }
         }
+
+        protected void deGetUnitOfMeasure(object sender, DirectEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                string uomClass = (from u in _context.UNIT_OF_MEASURE_V
+                            where u.UOM_CODE == e.ExtraParams["uomCode"]
+                            select u.UOM_CLASS).Single();
+                var data = (from u in _context.UNIT_OF_MEASURE_V
+                            where u.UOM_CLASS == uomClass
+                            select u).ToList();
+                if (e.ExtraParams["Type"] == "Add")
+                {
+                    uxAddInventoryMeasureStore.DataSource = data;
+                    uxAddInventoryMeasureStore.DataBind();
+                }
+                else
+                {
+                    uxEditInventoryMeasureStore.DataSource = data;
+                    uxEditInventoryMeasureStore.DataBind();
+                }
+            }
+        }
+
     }
 }

@@ -280,22 +280,38 @@
                                     <BottomBar>
                                         <ext:PagingToolbar runat="server" ID="uxAddInventoryItemPaging" />
                                     </BottomBar>
+                                    <SelectionModel>
+                                        <ext:RowSelectionModel runat="server" Mode="Single" />
+                                    </SelectionModel>
                                 </ext:GridPanel>
                             </Component>                            
+                            <DirectEvents>
+                                <Change OnEvent="deGetUnitOfMeasure">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="uomCode" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.UOM_CODE" />
+                                        <ext:Parameter Name="Type" Value="Add" />
+                                    </ExtraParams>
+                                </Change>
+                            </DirectEvents>
                         </ext:DropDownField>
                         <ext:TextField runat="server"
                             ID="uxAddInventoryRate"
                             FieldLabel="Rate" />
                         <ext:ComboBox runat="server"
                             ID="uxAddInventoryMeasure"
-                            FieldLabel="Unit of Measure">
+                            FieldLabel="Unit of Measure"
+                            ValueField="UOM_CODE"
+                            DisplayField="UNIT_OF_MEASURE">
                             <Store>
                                 <ext:Store runat="server"
                                     ID="uxAddInventoryMeasureStore">
                                     <Model>
                                         <ext:Model runat="server">
                                             <Fields>
-                                                <ext:ModelField Name="name" />
+                                                <ext:ModelField Name="UOM_CODE" />
+                                                <ext:ModelField Name="UNIT_OF_MEASURE" />
+                                                <ext:ModelField Name="UOM_CLASS" />
+                                                <ext:ModelField Name="BASE_UOM_FLAG" />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
@@ -474,6 +490,14 @@
                                     </BottomBar>
                                 </ext:GridPanel>
                             </Component>
+                            <DirectEvents>
+                                <Change OnEvent="deGetUnitOfMeasure">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="uomCode" Value="#{uxEditInventoryItemGrid}.getSelectionModel().getSelection()[0].data.UOM_CODE" />
+                                        <ext:Parameter Name="Type" Value="Edit" />
+                                    </ExtraParams>
+                                </Change>
+                            </DirectEvents>
                         </ext:DropDownField>
                         <ext:TextField runat="server"
                             ID="uxEditInventoryRate"
