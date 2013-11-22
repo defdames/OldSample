@@ -10,6 +10,7 @@
           <EntitySet Name="DAILY_ACTIVITY_EMPLOYEE" EntityType="OracleModel.Store.DAILY_ACTIVITY_EMPLOYEE" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_EQUIPMENT" EntityType="OracleModel.Store.DAILY_ACTIVITY_EQUIPMENT" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_HEADER" EntityType="OracleModel.Store.DAILY_ACTIVITY_HEADER" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="DAILY_ACTIVITY_INVENTORY" EntityType="OracleModel.Store.DAILY_ACTIVITY_INVENTORY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_WEATHER" EntityType="OracleModel.Store.DAILY_ACTIVITY_WEATHER" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_ACTIVITY" EntityType="OracleModel.Store.SYS_ACTIVITY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_LOG" EntityType="OracleModel.Store.SYS_LOG" store:Type="Tables" Schema="XXEMS" />
@@ -299,6 +300,10 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_EQUIPMENT" EntitySet="DAILY_ACTIVITY_EQUIPMENT" />
           </AssociationSet>
+          <AssociationSet Name="FK_INVENTORY_CHEMICAL_MIX_ID" Association="OracleModel.Store.FK_INVENTORY_CHEMICAL_MIX_ID">
+            <End Role="DAILY_ACTIVITY_CHEMICAL_MIX" EntitySet="DAILY_ACTIVITY_CHEMICAL_MIX" />
+            <End Role="DAILY_ACTIVITY_INVENTORY" EntitySet="DAILY_ACTIVITY_INVENTORY" />
+          </AssociationSet>
           <AssociationSet Name="FK_WEATHER_HEADER_ID" Association="OracleModel.Store.FK_WEATHER_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_WEATHER" EntitySet="DAILY_ACTIVITY_WEATHER" />
@@ -311,7 +316,7 @@
           <Property Name="CHEMICAL_MIX_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="CHEMICAL_MIX_NUMBER" Type="number" Nullable="false" Precision="15" />
           <Property Name="HEADER_ID" Type="number" Nullable="false" Precision="15" />
-          <Property Name="TARGET_ARE" Type="varchar2" MaxLength="300" />
+          <Property Name="TARGET_AREA" Type="varchar2" MaxLength="300" />
           <Property Name="GALLON_ACRE" Type="number" Precision="15" Scale="4" />
           <Property Name="GALLON_STARTING" Type="number" Precision="15" Scale="4" />
           <Property Name="GALLON_MIXED" Type="number" Precision="15" Scale="4" />
@@ -377,6 +382,23 @@
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="STATUS" Type="number" Precision="10" />
+        </EntityType>
+        <EntityType Name="DAILY_ACTIVITY_INVENTORY">
+          <Key>
+            <PropertyRef Name="INVENTORY_ID" />
+          </Key>
+          <Property Name="INVENTORY_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="CHEMICAL_MIX_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="SUB_INVENTORY_SECONDARY_NAME" Type="varchar2" MaxLength="10" />
+          <Property Name="SUB_INVENTORY_ORG_ID" Type="number" />
+          <Property Name="ITEM_ID" Type="number" />
+          <Property Name="RATE" Type="number" Precision="15" Scale="4" />
+          <Property Name="UNIT_OF_MEASURE" Type="varchar2" MaxLength="25" />
+          <Property Name="EPA_NUMBER" Type="varchar2" MaxLength="50" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="DAILY_ACTIVITY_WEATHER">
           <Key>
@@ -825,6 +847,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_INVENTORY_CHEMICAL_MIX_ID">
+          <End Role="DAILY_ACTIVITY_CHEMICAL_MIX" Type="OracleModel.Store.DAILY_ACTIVITY_CHEMICAL_MIX" Multiplicity="1" />
+          <End Role="DAILY_ACTIVITY_INVENTORY" Type="OracleModel.Store.DAILY_ACTIVITY_INVENTORY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_CHEMICAL_MIX">
+              <PropertyRef Name="CHEMICAL_MIX_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_INVENTORY">
+              <PropertyRef Name="CHEMICAL_MIX_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_WEATHER_HEADER_ID">
           <End Role="DAILY_ACTIVITY_HEADER" Type="OracleModel.Store.DAILY_ACTIVITY_HEADER" Multiplicity="1" />
           <End Role="DAILY_ACTIVITY_WEATHER" Type="OracleModel.Store.DAILY_ACTIVITY_WEATHER" Multiplicity="*" />
@@ -888,12 +922,17 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_EMPLOYEE" EntitySet="DAILY_ACTIVITY_EMPLOYEE" />
           </AssociationSet>
+          <EntitySet Name="SUBINVENTORY_V" EntityType="OracleModel.SUBINVENTORY_V" />
           <EntitySet Name="DAILY_ACTIVITY_CHEMICAL_MIX" EntityType="OracleModel.DAILY_ACTIVITY_CHEMICAL_MIX" />
           <AssociationSet Name="FK_CHEMICAL_HEADER_ID" Association="OracleModel.FK_CHEMICAL_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_CHEMICAL_MIX" EntitySet="DAILY_ACTIVITY_CHEMICAL_MIX" />
           </AssociationSet>
-          <EntitySet Name="SUBINVENTORY_V" EntityType="OracleModel.SUBINVENTORY_V" />
+          <EntitySet Name="DAILY_ACTIVITY_INVENTORY" EntityType="OracleModel.DAILY_ACTIVITY_INVENTORY" />
+          <AssociationSet Name="FK_INVENTORY_CHEMICAL_MIX_ID" Association="OracleModel.FK_INVENTORY_CHEMICAL_MIX_ID">
+            <End Role="DAILY_ACTIVITY_CHEMICAL_MIX" EntitySet="DAILY_ACTIVITY_CHEMICAL_MIX" />
+            <End Role="DAILY_ACTIVITY_INVENTORY" EntitySet="DAILY_ACTIVITY_INVENTORY" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -1496,6 +1535,17 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="SUBINVENTORY_V">
+          <Key>
+            <PropertyRef Name="ORG_ID" />
+            <PropertyRef Name="SECONDARY_INV_NAME" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+          </Key>
+          <Property Type="Decimal" Name="ORG_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="SECONDARY_INV_NAME" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DESCRIPTION" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
+        </EntityType>
         <EntityType Name="DAILY_ACTIVITY_CHEMICAL_MIX">
           <Key>
             <PropertyRef Name="CHEMICAL_MIX_ID" />
@@ -1503,7 +1553,7 @@
           <Property Type="Int64" Name="CHEMICAL_MIX_ID" Nullable="false" />
           <Property Type="Int64" Name="CHEMICAL_MIX_NUMBER" Nullable="false" />
           <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
-          <Property Type="String" Name="TARGET_ARE" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="TARGET_AREA" MaxLength="300" FixedLength="false" Unicode="false" />
           <Property Type="Decimal" Name="GALLON_ACRE" Precision="15" Scale="4" />
           <Property Type="Decimal" Name="GALLON_STARTING" Precision="15" Scale="4" />
           <Property Type="Decimal" Name="GALLON_MIXED" Precision="15" Scale="4" />
@@ -1516,6 +1566,7 @@
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="DAILY_ACTIVITY_HEADER" Relationship="OracleModel.FK_CHEMICAL_HEADER_ID" FromRole="DAILY_ACTIVITY_CHEMICAL_MIX" ToRole="DAILY_ACTIVITY_HEADER" />
+          <NavigationProperty Name="DAILY_ACTIVITY_INVENTORY" Relationship="OracleModel.FK_INVENTORY_CHEMICAL_MIX_ID" FromRole="DAILY_ACTIVITY_CHEMICAL_MIX" ToRole="DAILY_ACTIVITY_INVENTORY" />
         </EntityType>
         <Association Name="FK_CHEMICAL_HEADER_ID">
           <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
@@ -1529,17 +1580,36 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="SUBINVENTORY_V">
+        <EntityType Name="DAILY_ACTIVITY_INVENTORY">
           <Key>
-            <PropertyRef Name="ORG_ID" />
-            <PropertyRef Name="SECONDARY_INV_NAME" />
-            <PropertyRef Name="LAST_UPDATE_DATE" />
+            <PropertyRef Name="INVENTORY_ID" />
           </Key>
-          <Property Type="Decimal" Name="ORG_ID" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="String" Name="SECONDARY_INV_NAME" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="DESCRIPTION" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
+          <Property Type="Int64" Name="INVENTORY_ID" Nullable="false" />
+          <Property Type="Int64" Name="CHEMICAL_MIX_ID" Nullable="false" />
+          <Property Type="String" Name="SUB_INVENTORY_SECONDARY_NAME" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="SUB_INVENTORY_ORG_ID" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="ITEM_ID" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="RATE" Precision="15" Scale="4" />
+          <Property Type="String" Name="UNIT_OF_MEASURE" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EPA_NUMBER" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DAILY_ACTIVITY_CHEMICAL_MIX" Relationship="OracleModel.FK_INVENTORY_CHEMICAL_MIX_ID" FromRole="DAILY_ACTIVITY_INVENTORY" ToRole="DAILY_ACTIVITY_CHEMICAL_MIX" />
         </EntityType>
+        <Association Name="FK_INVENTORY_CHEMICAL_MIX_ID">
+          <End Type="OracleModel.DAILY_ACTIVITY_CHEMICAL_MIX" Role="DAILY_ACTIVITY_CHEMICAL_MIX" Multiplicity="1" />
+          <End Type="OracleModel.DAILY_ACTIVITY_INVENTORY" Role="DAILY_ACTIVITY_INVENTORY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_CHEMICAL_MIX">
+              <PropertyRef Name="CHEMICAL_MIX_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_INVENTORY">
+              <PropertyRef Name="CHEMICAL_MIX_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1947,6 +2017,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="SUBINVENTORY_V">
+            <EntityTypeMapping TypeName="OracleModel.SUBINVENTORY_V">
+              <MappingFragment StoreEntitySet="SUBINVENTORY_V">
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="SECONDARY_INV_NAME" ColumnName="SECONDARY_INV_NAME" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="DAILY_ACTIVITY_CHEMICAL_MIX">
             <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_CHEMICAL_MIX">
               <MappingFragment StoreEntitySet="DAILY_ACTIVITY_CHEMICAL_MIX">
@@ -1961,20 +2041,28 @@
                 <ScalarProperty Name="GALLON_MIXED" ColumnName="GALLON_MIXED" />
                 <ScalarProperty Name="GALLON_STARTING" ColumnName="GALLON_STARTING" />
                 <ScalarProperty Name="GALLON_ACRE" ColumnName="GALLON_ACRE" />
-                <ScalarProperty Name="TARGET_ARE" ColumnName="TARGET_ARE" />
+                <ScalarProperty Name="TARGET_AREA" ColumnName="TARGET_AREA" />
                 <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
                 <ScalarProperty Name="CHEMICAL_MIX_NUMBER" ColumnName="CHEMICAL_MIX_NUMBER" />
                 <ScalarProperty Name="CHEMICAL_MIX_ID" ColumnName="CHEMICAL_MIX_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SUBINVENTORY_V">
-            <EntityTypeMapping TypeName="OracleModel.SUBINVENTORY_V">
-              <MappingFragment StoreEntitySet="SUBINVENTORY_V">
-                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
-                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
-                <ScalarProperty Name="SECONDARY_INV_NAME" ColumnName="SECONDARY_INV_NAME" />
-                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+          <EntitySetMapping Name="DAILY_ACTIVITY_INVENTORY">
+            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_INVENTORY">
+              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_INVENTORY">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="EPA_NUMBER" ColumnName="EPA_NUMBER" />
+                <ScalarProperty Name="UNIT_OF_MEASURE" ColumnName="UNIT_OF_MEASURE" />
+                <ScalarProperty Name="RATE" ColumnName="RATE" />
+                <ScalarProperty Name="ITEM_ID" ColumnName="ITEM_ID" />
+                <ScalarProperty Name="SUB_INVENTORY_ORG_ID" ColumnName="SUB_INVENTORY_ORG_ID" />
+                <ScalarProperty Name="SUB_INVENTORY_SECONDARY_NAME" ColumnName="SUB_INVENTORY_SECONDARY_NAME" />
+                <ScalarProperty Name="CHEMICAL_MIX_ID" ColumnName="CHEMICAL_MIX_ID" />
+                <ScalarProperty Name="INVENTORY_ID" ColumnName="INVENTORY_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
