@@ -257,7 +257,8 @@
                         </ext:ComboBox>
                         <ext:DropDownField runat="server"
                             ID="uxAddInventoryItem"
-                            FieldLabel="Select Item">
+                            FieldLabel="Select Item"
+                            Mode="ValueText">
                             <Component>
                                 <ext:GridPanel runat="server"
                                     ID="uxAddInventoryItemGrid" StoreID="uxAddInventoryItemStore">
@@ -283,6 +284,15 @@
                                     <SelectionModel>
                                         <ext:RowSelectionModel runat="server" Mode="Single" />
                                     </SelectionModel>
+                                    <DirectEvents>
+                                        <Select OnEvent="deStoreGridValue">
+                                            <ExtraParams>
+                                                <ext:Parameter Name="ItemId" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.ITEM_ID" />
+                                                <ext:Parameter Name="Description" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.DESCRIPTION" />
+                                                <ext:Parameter Name="Type" Value="Add" />
+                                            </ExtraParams>
+                                        </Select>
+                                    </DirectEvents>
                                 </ext:GridPanel>
                             </Component>                            
                             <DirectEvents>
@@ -454,17 +464,11 @@
                                     </Model>
                                 </ext:Store>
                             </Store>
-                            <%--<DirectEvents>
-                                <Select OnEvent="deLoadItems">
-                                    <ExtraParams>
-                                        <ext:Parameter Name="Type" Value="Edit" />
-                                    </ExtraParams>
-                                </Select>
-                            </DirectEvents>--%>
                         </ext:ComboBox>
                         <ext:DropDownField runat="server"
                             ID="uxEditInventoryItem"
-                            FieldLabel="Select Item">
+                            FieldLabel="Select Item"
+                            Mode="ValueText">
                             <Component>
                                 <ext:GridPanel runat="server"
                                     ID="uxEditInventoryItemGrid"
@@ -488,6 +492,15 @@
                                     <BottomBar>
                                         <ext:PagingToolbar runat="server" ID="uxEditInventoryItemPaging" />
                                     </BottomBar>
+                                    <DirectEvents>
+                                        <Select OnEvent="deStoreGridValue">
+                                            <ExtraParams>
+                                                <ext:Parameter Name="ItemId" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.ITEM_ID" />
+                                                <ext:Parameter Name="Description" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.DESCRIPTION" />
+                                                <ext:Parameter Name="Type" Value="Edit" />
+                                            </ExtraParams>
+                                        </Select>
+                                    </DirectEvents>
                                 </ext:GridPanel>
                             </Component>
                             <DirectEvents>
