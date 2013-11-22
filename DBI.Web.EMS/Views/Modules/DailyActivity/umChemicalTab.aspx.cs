@@ -60,7 +60,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             DAILY_ACTIVITY_CHEMICAL_MIX data = new DAILY_ACTIVITY_CHEMICAL_MIX()
             {
                 CHEMICAL_MIX_NUMBER = count + 1,
-                TARGET_ARE = uxAddChemicalTargetAre.Value.ToString(),
+                TARGET_AREA = uxAddChemicalTargetAre.Value.ToString(),
                 GALLON_ACRE = GallonAcre,
                 GALLON_STARTING = GallonStart,
                 GALLON_MIXED = GallonMixed,
@@ -187,7 +187,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         select d).Single();
             }
 
-            data.TARGET_ARE = uxEditChemicalTargetAre.Value.ToString();
+            data.TARGET_AREA = uxEditChemicalTargetAre.Value.ToString();
             data.GALLON_ACRE = GallonAcre;
             data.GALLON_STARTING = GallonStart;
             data.GALLON_MIXED = GallonMixed;
