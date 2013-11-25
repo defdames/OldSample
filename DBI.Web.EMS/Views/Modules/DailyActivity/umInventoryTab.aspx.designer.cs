@@ -85,6 +85,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Store uxCurrentInventoryStore;
         
         /// <summary>
+        /// Column2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column2;
+        
+        /// <summary>
         /// uxAddInventoryButton control.
         /// </summary>
         /// <remarks>
@@ -325,25 +334,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DropDownField uxEditInventoryMix;
-        
-        /// <summary>
-        /// uxEditInventoryMixGrid control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.GridPanel uxEditInventoryMixGrid;
-        
-        /// <summary>
-        /// uxEditInventoryMixStore control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Store uxEditInventoryMixStore;
+        protected global::Ext.Net.TextField uxEditInventoryMix;
         
         /// <summary>
         /// uxEditInventoryRegion control.

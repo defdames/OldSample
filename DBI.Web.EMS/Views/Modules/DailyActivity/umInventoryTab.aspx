@@ -6,7 +6,7 @@
 <head runat="server">
     <title></title>
     <script type="text/javascript">
-        var doMath = function () {
+        var doAddMath = function () {
             var gallonStart = parseInt(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_STARTING);
             var gallonMixed = parseInt(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_MIXED);
             var gallonRemain = parseInt(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_REMAINING);
@@ -67,7 +67,6 @@
                         <ext:ModelField Name="UOM_CODE" Type="String" />
                         <ext:ModelField Name="ENABLED_FLAG" />
                         <ext:ModelField Name="ACTIVE" />
-                        <ext:ModelField Name="ITEM_COST" Type="String" />
                         <ext:ModelField Name="LAST_UPDATE_DATE" />
                         <ext:ModelField Name="LE" />
                         <ext:ModelField Name="ATTRIBUTE2" />
@@ -94,6 +93,17 @@
                         <ext:Model runat="server">
                             <Fields>
                                 <ext:ModelField Name="INVENTORY_ID" />
+                                <ext:ModelField Name="CHEMICAL_MIX_ID" />
+                                <ext:ModelField Name="CHEMICAL_MIX_NUMBER" />
+                                <ext:ModelField Name="SUB_INVENTORY_SECONDARY_NAME" />
+                                <ext:ModelField Name ="SUB_INVENTORY_ORG_ID" />
+                                <ext:ModelField Name="SEGMENT1" />
+                                <ext:ModelField Name="DESCRIPTION" />
+                                <ext:ModelField Name="RATE" />
+                                <ext:ModelField Name="UOM_CODE" />
+                                <ext:ModelField Name="UNIT_OF_MEASURE" />
+                                <ext:ModelField Name="EPA_NUMBER" />
+                                <ext:ModelField Name="INV_NAME" />
                             </Fields>
                         </ext:Model>
                     </Model>
@@ -104,6 +114,24 @@
                     <ext:Column runat="server"
                         DataIndex="INVENTORY_ID"
                         Text="Inventory ID" />
+                    <ext:Column ID="Column2" runat="server"
+                        DataIndex="CHEMICAL_MIX_NUMBER"
+                        Text="Mix #" />
+                    <ext:Column runat="server"
+                        DataIndex="SUB_INVENTORY_SECONDARY_NAME"
+                        Text="Subinventory Name" />
+                    <ext:Column runat="server"
+                        DataIndex="DESCRIPTION"
+                        Text="Item" />
+                    <ext:Column runat="server"
+                        DataIndex="RATE"
+                        Text="Rate" />
+                    <ext:Column runat="server"
+                        DataIndex="UNIT_OF_MEASURE"
+                        Text="Unit" />
+                    <ext:Column runat="server"
+                        DataIndex="EPA_NUMBER"
+                        Text="EPA #" />
                 </Columns>
             </ColumnModel>
             <TopBar>
@@ -222,11 +250,12 @@
                                             <ExtraParams>
                                                 <ext:Parameter Name="MixId" Value="#{uxAddInventoryMixGrid}.getSelectionModel().getSelection()[0].data.CHEMICAL_MIX_ID" Mode="Raw" />
                                                 <ext:Parameter Name="MixNumber" Value="#{uxAddInventoryMixGrid}.getSelectionModel().getSelection()[0].data.CHEMICAL_MIX_NUMBER" Mode="Raw" />
+                                                <ext:Parameter Name="Type" Value="Add" />
                                             </ExtraParams>
                                         </Select>
                                     </DirectEvents>
                                     <Listeners>
-                                        <Select Fn="doMath" />
+                                        <Select Fn="doAddMath" />
                                     </Listeners>  
                                 </ext:GridPanel>                                
                             </Component>
@@ -273,7 +302,6 @@
                                             <Fields>
                                                 <ext:ModelField Name="ORG_ID" />
                                                 <ext:ModelField Name="SECONDARY_INV_NAME" />
-
                                             </Fields>
                                         </ext:Model>
                                     </Model>
@@ -333,7 +361,7 @@
                             ID="uxAddInventoryRate"
                             FieldLabel="Rate">
                             <Listeners>
-                                <Change Fn="doMath" />
+                                <Change Fn="doAddMath" />
                             </Listeners>
                         </ext:TextField>
                         <ext:ComboBox runat="server"
@@ -400,56 +428,10 @@
                     ID="uxEditInventoryForm"
                     Layout="FormLayout">
                     <Items>
-                        <ext:DropDownField runat="server"
+                        <ext:TextField runat="server"
                             ID="uxEditInventoryMix"
-                            Mode="ValueText"
-                            FieldLabel="Select Mix">
-                            <Component>
-                                <ext:GridPanel runat="server"
-                                    ID="uxEditInventoryMixGrid">
-                                    <Store>
-                                        <ext:Store runat="server"
-                                            ID="uxEditInventoryMixStore">
-                                            <Model>
-                                                <ext:Model runat="server">
-                                                    <Fields>
-                                                        <ext:ModelField Name="CHEMICAL_MIX_ID" />
-                                                        <ext:ModelField Name="CHEMICAL_MIX_NUMBER" />
-                                                        <ext:ModelField Name="HEADER_ID" />
-                                                        <ext:ModelField Name="TARGET_ARE" />
-                                                        <ext:ModelField Name="GALLON_ACRE" />
-                                                        <ext:ModelField Name="GALLON_STARTING" />
-                                                        <ext:ModelField Name="GALLON_MIXED" />
-                                                        <ext:ModelField Name="GALLON_TOTAL" />
-                                                        <ext:ModelField Name="GALLON_REMAINING" />
-                                                        <ext:ModelField Name="GALLON_USED" />
-                                                        <ext:ModelField Name="ACRES_SPRAYED" />
-                                                        <ext:ModelField Name="STATE" />
-                                                        <ext:ModelField Name="COUNTY" />
-                                                    </Fields>
-                                                </ext:Model>
-                                            </Model>                                            
-                                        </ext:Store>
-                                    </Store>
-                                    <ColumnModel>
-                                        <Columns>
-                                            <ext:Column runat="server"
-                                                DataIndex="CHEMICAL_MIX_NUMBER"
-                                                Text="Mix #" />
-                                            <ext:Column runat="server"
-                                                DataIndex="GALLON_ACRE"
-                                                Text="Gallons / Acre" />
-                                            <ext:Column runat="server"
-                                                DataIndex="GALLON_USED"
-                                                Text="Gallons Used" />
-                                            </Columns>
-                                    </ColumnModel>
-                                    <SelectionModel>
-                                        <ext:RowSelectionModel runat="server" Mode="Single" />
-                                    </SelectionModel>
-                                </ext:GridPanel>
-                            </Component>
-                        </ext:DropDownField>
+                            Disabled="true" 
+                            FieldLabel="Mix Number"/>
                         <ext:ComboBox runat="server"
                             ID="uxEditInventoryRegion"
                             FieldLabel="Select Region"
@@ -547,17 +529,26 @@
                         </ext:DropDownField>
                         <ext:TextField runat="server"
                             ID="uxEditInventoryRate"
-                            FieldLabel="Rate" />
+                            FieldLabel="Rate">
+                            <DirectEvents>
+                                <Change OnEvent="deEditMath" />
+                            </DirectEvents>
+                        </ext:TextField>
                         <ext:ComboBox runat="server"
                             ID="uxEditInventoryMeasure"
-                            FieldLabel="Unit of Measure">
+                            FieldLabel="Unit of Measure"
+                            DisplayField="UNIT_OF_MEASURE"
+                            ValueField="UOM_CODE">
                             <Store>
                                 <ext:Store runat="server"
                                     ID="uxEditInventoryMeasureStore">
                                     <Model>
                                         <ext:Model runat="server">
                                             <Fields>
-                                                <ext:ModelField Name="name" />
+                                                <ext:ModelField Name="UOM_CODE" />
+                                                <ext:ModelField Name="UNIT_OF_MEASURE" />
+                                                <ext:ModelField Name="UOM_CLASS" />
+                                                <ext:ModelField Name="BASE_UOM_FLAG" />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
