@@ -21,89 +21,91 @@
 </head>
 <body>
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
+    <ext:Store runat="server"
+        ID="uxAddInventoryItemStore"
+        RemoteSort="true"
+        OnReadData="deReadItems"
+        PageSize="15">
+        <Model>
+            <ext:Model ID="uxAddInventoryItemModel" runat="server">
+                <Fields>
+                    <ext:ModelField Name="ITEM_ID" Type="String" />
+                    <ext:ModelField Name="SEGMENT1" Type="String" />
+                    <ext:ModelField Name="DESCRIPTION" Type="String" />
+                    <ext:ModelField Name="UOM_CODE" Type="String" />
+                    <ext:ModelField Name="ENABLED_FLAG" />
+                    <ext:ModelField Name="ACTIVE" />
+                    <ext:ModelField Name="ITEM_COST" Type="String" />
+                    <ext:ModelField Name="LAST_UPDATE_DATE" />
+                    <ext:ModelField Name="LE" />
+                    <ext:ModelField Name="ATTRIBUTE2" />
+                    <ext:ModelField Name="INV_NAME" />
+                    <ext:ModelField Name="INV_LOCATION" />
+                    <ext:ModelField Name="ORGANIZATION_ID" />
+                </Fields>
+            </ext:Model>
+        </Model>
+        <Proxy>
+            <ext:PageProxy />
+        </Proxy>
+        <Parameters>
+            <ext:StoreParameter Name="Type" Value="Add" />
+        </Parameters>
+    </ext:Store>
+    <ext:Store runat="server"
+        ID="uxEditInventoryItemStore"
+        RemoteSort="true"
+        OnReadData="deReadItems"
+        PageSize="15">
+        <Model>
+            <ext:Model ID="uxEditInventoryItemModel" runat="server">
+                <Fields>
+                    <ext:ModelField Name="ITEM_ID" Type="String" />
+                    <ext:ModelField Name="SEGMENT1" Type="String" />
+                    <ext:ModelField Name="DESCRIPTION" Type="String" />
+                    <ext:ModelField Name="UOM_CODE" Type="String" />
+                    <ext:ModelField Name="ENABLED_FLAG" />
+                    <ext:ModelField Name="ACTIVE" />
+                    <ext:ModelField Name="LAST_UPDATE_DATE" />
+                    <ext:ModelField Name="LE" />
+                    <ext:ModelField Name="ATTRIBUTE2" />
+                    <ext:ModelField Name="INV_NAME" />
+                    <ext:ModelField Name="INV_LOCATION" />
+                    <ext:ModelField Name="ORGANIZATION_ID" />
+                </Fields>
+            </ext:Model>
+        </Model>
+        <Proxy>
+            <ext:PageProxy />
+        </Proxy>
+        <Parameters>
+            <ext:StoreParameter Name="Type" Value="Edit" />
+        </Parameters>
+    </ext:Store>
     <form id="form1" runat="server">
-        <ext:Store runat="server"
-            ID="uxAddInventoryItemStore"
-            RemoteSort="true"
-            OnReadData="deReadItems"
-            PageSize="15">
-            <Model>
-                <ext:Model ID="Model1" runat="server">
-                    <Fields>
-                        <ext:ModelField Name="ITEM_ID" Type="String" />
-                        <ext:ModelField Name="SEGMENT1" Type="String" />
-                        <ext:ModelField Name="DESCRIPTION" Type="String" />
-                        <ext:ModelField Name="UOM_CODE" Type="String" />
-                        <ext:ModelField Name="ENABLED_FLAG" />
-                        <ext:ModelField Name="ACTIVE" />
-                        <ext:ModelField Name="ITEM_COST" Type="String" />
-                        <ext:ModelField Name="LAST_UPDATE_DATE" />
-                        <ext:ModelField Name="LE" />
-                        <ext:ModelField Name="ATTRIBUTE2" />
-                        <ext:ModelField Name="INV_NAME" />
-                        <ext:ModelField Name="INV_LOCATION" />
-                        <ext:ModelField Name="ORGANIZATION_ID" />
-                    </Fields>
-                </ext:Model>
-            </Model>
-            <Proxy>
-                <ext:PageProxy />
-            </Proxy>
-            <Parameters>
-                <ext:StoreParameter Name="Type" Value="Add" />
-            </Parameters>
-        </ext:Store>
-        <ext:Store runat="server"
-            ID="uxEditInventoryItemStore"
-            RemoteSort="true"
-            OnReadData="deReadItems"
-            PageSize="15">
-            <Model>
-                <ext:Model ID="Model2" runat="server">
-                    <Fields>
-                        <ext:ModelField Name="ITEM_ID" Type="String" />
-                        <ext:ModelField Name="SEGMENT1" Type="String" />
-                        <ext:ModelField Name="DESCRIPTION" Type="String" />
-                        <ext:ModelField Name="UOM_CODE" Type="String" />
-                        <ext:ModelField Name="ENABLED_FLAG" />
-                        <ext:ModelField Name="ACTIVE" />
-                        <ext:ModelField Name="LAST_UPDATE_DATE" />
-                        <ext:ModelField Name="LE" />
-                        <ext:ModelField Name="ATTRIBUTE2" />
-                        <ext:ModelField Name="INV_NAME" />
-                        <ext:ModelField Name="INV_LOCATION" />
-                        <ext:ModelField Name="ORGANIZATION_ID" />
-                    </Fields>
-                </ext:Model>
-            </Model>
-            <Proxy>
-                <ext:PageProxy />
-            </Proxy>
-            <Parameters>
-                <ext:StoreParameter Name="Type" Value="Edit" />
-            </Parameters>
-        </ext:Store>
         <ext:GridPanel runat="server"
             ID="uxCurrentInventoryGrid"
             Layout="HBoxLayout">
             <Store>
                 <ext:Store runat="server"
-                    ID="uxCurrentInventoryStore">
+                    ID="uxCurrentInventoryStore"
+                    AutoDataBind="true">
                     <Model>
-                        <ext:Model runat="server">
+                        <ext:Model runat="server" ID="uxCurrentInventoryModel">
                             <Fields>
-                                <ext:ModelField Name="INVENTORY_ID" />
-                                <ext:ModelField Name="CHEMICAL_MIX_ID" />
-                                <ext:ModelField Name="CHEMICAL_MIX_NUMBER" />
-                                <ext:ModelField Name="SUB_INVENTORY_SECONDARY_NAME" />
-                                <ext:ModelField Name ="SUB_INVENTORY_ORG_ID" />
-                                <ext:ModelField Name="SEGMENT1" />
-                                <ext:ModelField Name="DESCRIPTION" />
-                                <ext:ModelField Name="RATE" />
-                                <ext:ModelField Name="UOM_CODE" />
-                                <ext:ModelField Name="UNIT_OF_MEASURE" />
-                                <ext:ModelField Name="EPA_NUMBER" />
-                                <ext:ModelField Name="INV_NAME" />
+                                <ext:ModelField Name="INVENTORY_ID" Type="Int" />
+                                <ext:ModelField Name="CHEMICAL_MIX_ID" Type="Int" />
+                                <ext:ModelField Name="CHEMICAL_MIX_NUMBER" Type="String" />
+                                <ext:ModelField Name="SUB_INVENTORY_SECONDARY_NAME" Type="String" />
+                                <ext:ModelField Name="SUB_INVENTORY_ORG_ID" Type="Float" />
+                                <ext:ModelField Name="SEGMENT1" Type="String" />
+                                <ext:ModelField Name="ITEM_ID" Type="Float" />
+                                <ext:ModelField Name="DESCRIPTION" Type="String" />
+                                <ext:ModelField Name="RATE" Type="Float" />
+                                <ext:ModelField Name="UOM_CODE" Type="String" />
+                                <ext:ModelField Name="UNIT_OF_MEASURE" Type="String" />
+                                <ext:ModelField Name="EPA_NUMBER" Type="String" />
+                                <ext:ModelField Name="INV_NAME" Type="String" />
                             </Fields>
                         </ext:Model>
                     </Model>
@@ -114,12 +116,24 @@
                     <ext:Column runat="server"
                         DataIndex="INVENTORY_ID"
                         Text="Inventory ID" />
-                    <ext:Column ID="Column2" runat="server"
+                    <ext:Column runat="server"
+                        DataIndex="CHEMICAL_MIX_ID"
+                        Text="Mix Id" Hidden="true" />
+                    <ext:Column runat="server"
                         DataIndex="CHEMICAL_MIX_NUMBER"
-                        Text="Mix #" />
+                        Text="Mix Number" />
                     <ext:Column runat="server"
                         DataIndex="SUB_INVENTORY_SECONDARY_NAME"
                         Text="Subinventory Name" />
+                    <ext:Column runat="server"
+                        DataIndex="SUB_INVENTORY_ORG_ID"
+                        Text="Org Id" Hidden="true" />
+                    <ext:Column runat="server"
+                        DataIndex="SEGMENT1"
+                        Text="Inventory Number" Hidden="true" />
+                    <ext:Column runat="server"
+                        DataIndex="ITEM_ID"
+                        Text="Item Id" Hidden="true" />
                     <ext:Column runat="server"
                         DataIndex="DESCRIPTION"
                         Text="Item" />
@@ -127,11 +141,17 @@
                         DataIndex="RATE"
                         Text="Rate" />
                     <ext:Column runat="server"
+                        DataIndex="UOM_CODE"
+                        Text="Unit of Measure Code" Hidden="true" />
+                    <ext:Column runat="server"
                         DataIndex="UNIT_OF_MEASURE"
                         Text="Unit" />
                     <ext:Column runat="server"
                         DataIndex="EPA_NUMBER"
-                        Text="EPA #" />
+                        Text="EPA Number" />
+                    <ext:Column runat="server"
+                        DataIndex="INV_NAME"
+                        Text="Inventory Name" Hidden="true" />
                 </Columns>
             </ColumnModel>
             <TopBar>
@@ -361,7 +381,7 @@
                             ID="uxAddInventoryRate"
                             FieldLabel="Rate">
                             <Listeners>
-                                <Change Fn="doAddMath" />
+                                <Change Handler="doAddMath" />
                             </Listeners>
                         </ext:TextField>
                         <ext:ComboBox runat="server"
@@ -510,8 +530,8 @@
                                     <DirectEvents>
                                         <Select OnEvent="deStoreGridValue">
                                             <ExtraParams>
-                                                <ext:Parameter Name="ItemId" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.ITEM_ID" Mode="Raw" />
-                                                <ext:Parameter Name="Description" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.DESCRIPTION" Mode="Raw" />
+                                                <ext:Parameter Name="ItemId" Value="#{uxEditInventoryItemGrid}.getSelectionModel().getSelection()[0].data.ITEM_ID" Mode="Raw" />
+                                                <ext:Parameter Name="Description" Value="#{uxEditInventoryItemGrid}.getSelectionModel().getSelection()[0].data.DESCRIPTION" Mode="Raw" />
                                                 <ext:Parameter Name="Type" Value="Edit" />
                                             </ExtraParams>
                                         </Select>
@@ -569,7 +589,13 @@
                             Icon="ApplicationGo"
                             Text="Submit">
                             <DirectEvents>
-                                <Click OnEvent="deEditInventory" />
+                                <Click OnEvent="deEditInventory">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="InventoryId" Value="#{uxCurrentInventoryGrid}.getSelectionModel().getSelection()[0].data.INVENTORY_ID" Mode="Raw" />
+                                        <ext:Parameter Name="ChemicalId" Value="#{uxCurrentInventoryGrid}.getSelectionModel().getSelection()[0].data.CHEMICAL_MIX_ID" Mode="Raw" />
+                                        <ext:Parameter Name="SecondaryInvName" Value="#{uxEditInventorySub}.getRawValue()" Mode="Raw" />
+                                    </ExtraParams>
+                                </Click>
                             </DirectEvents>
                         </ext:Button>
                         <ext:Button runat="server"
