@@ -16,7 +16,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            GetChemicalMix();
+            GetInventoryData();
+            if (!X.IsAjaxRequest)
+            {
+                GetChemicalMix();
+            }
         }
 
         protected void GetInventoryData()
@@ -26,11 +30,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 var data = (from d in _context.DAILY_ACTIVITY_INVENTORY
-                            join i in _context.INVENTORY_V on d.ITEM_ID equals i.ITEM_ID
-                            join s in _context.SUBINVENTORY_V on d.SUB_INVENTORY_ORG_ID equals s.ORG_ID
+                            join i in _context.INVENTORY_V on d.ITEM_ID equals i.ITEM_ID into joined
                             join c in _context.DAILY_ACTIVITY_CHEMICAL_MIX on d.CHEMICAL_MIX_ID equals c.CHEMICAL_MIX_ID
+                            join u in _context.UNIT_OF_MEASURE_V on d.UNIT_OF_MEASURE equals u.UOM_CODE
                             where d.HEADER_ID == HeaderId
-                            select d).ToList();
+                            from j in joined
+                            where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
+                            select new {j.ENABLED_FLAG, j.ITEM_ID, j.ACTIVE, j.LE, j.LAST_UPDATE_DATE, j.ATTRIBUTE2, j.INV_LOCATION, j.INV_NAME, d.INVENTORY_ID, d.CHEMICAL_MIX_ID, c.CHEMICAL_MIX_NUMBER, d.SUB_INVENTORY_SECONDARY_NAME, d.SUB_INVENTORY_ORG_ID, j.SEGMENT1, j.DESCRIPTION, d.RATE, u.UOM_CODE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).ToList();
 
                 uxCurrentInventoryStore.DataSource = data;
             }
@@ -45,7 +51,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                                     where d.HEADER_ID == HeaderId
                                                     select d).ToList();
                 uxAddInventoryMixStore.DataSource = data;
-                uxEditInventoryMixStore.DataSource = data;
             }
         }
 
@@ -75,7 +80,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long SubInventoryOrg = long.Parse(uxAddInventorySub.Value.ToString());
             long ItemId = long.Parse(uxAddInventoryItem.Value.ToString());
             long Rate = long.Parse(uxAddInventoryRate.Value.ToString());
-            
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             using (Entities _context = new Entities())
             {
                 data = new DAILY_ACTIVITY_INVENTORY()
@@ -90,7 +95,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     CREATE_DATE = DateTime.Now,
                     MODIFY_DATE = DateTime.Now,
                     CREATED_BY = User.Identity.Name,
-                    MODIFIED_BY = User.Identity.Name
+                    MODIFIED_BY = User.Identity.Name,
+                    HEADER_ID = HeaderId
                 };
             }
             GenericData.Insert<DAILY_ACTIVITY_INVENTORY>(data);
@@ -112,46 +118,118 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void deEditInventoryForm(object sender, DirectEventArgs e)
         {
+            uxEditInventoryForm.Reset();
             //JSON Decode Row and assign to variables
             string JsonValues = e.ExtraParams["InventoryInfo"];
             Dictionary<string, string>[] InventoryInfo = JSON.Deserialize<Dictionary<string, string>[]>(JsonValues);
 
+
             foreach (Dictionary<string, string> Inventory in InventoryInfo)
             {
-                uxEditInventoryMix.SetValue(Inventory["CHEMICAL_MIX_ID"], Inventory["CHEMICAL_MIX_NUMBER"]);
-                uxEditInventorySub.SetValue(Inventory["SUB_INVENTORY_SECONDARY_NAME"]);
-                uxEditInventorySub.SetRawValue(Inventory["SUB_INVENTORY_ORG_ID"]);
-                uxEditInventoryItem.SetValue(Inventory["SEGMENT1"], Inventory["DESCRIPTION"] );
-                uxEditInventoryRate.SetValue(Inventory["RATE"]);
-                uxEditInventoryMeasure.SetValue(Inventory["UNIT_OF_MEASURE"]);
-                uxEditInventoryMeasure.SetRawValue(Inventory["UOM_CODE"]);
+                SUBINVENTORY_V SubData;
+                var OrgId = decimal.Parse(Inventory["SUB_INVENTORY_ORG_ID"]);
+                var InvName = Inventory["SUB_INVENTORY_SECONDARY_NAME"];
+                using (Entities _context = new Entities())
+                {
+                    SubData = (from s in _context.SUBINVENTORY_V
+                               where s.ORG_ID == OrgId && s.SECONDARY_INV_NAME == InvName
+                               select s).SingleOrDefault();
+                }
+                uxEditInventoryMix.SetValue(Inventory["CHEMICAL_MIX_NUMBER"]);
+
+                dePopulateInventory(sender, e);
+                uxEditInventoryRegion.SelectedItems.Clear();
+                uxEditInventoryRegion.SetValueAndFireSelect(Inventory["SUB_INVENTORY_ORG_ID"]);
+                uxEditInventoryRegion.SelectedItems.Add(new Ext.Net.ListItem(Inventory["INV_NAME"], Inventory["SUB_INVENTORY_ORG_ID"]));
+                uxEditInventoryRegion.UpdateSelectedItems();
+                //deLoadSubinventory(sender, e);
+                uxEditInventorySub.SetValueAndFireSelect(SubData.DESCRIPTION);                
+                uxEditInventoryItem.SetValue(Inventory["ITEM_ID"], Inventory["DESCRIPTION"]);
+                e.ExtraParams.Add(new Ext.Net.Parameter("uomCode", Inventory["UOM_CODE"]));
+                deGetUnitOfMeasure(sender, e);
+                uxEditInventoryMeasure.SelectedItems.Clear();
+                uxEditInventoryMeasure.SelectedItems.Add(new Ext.Net.ListItem(Inventory["UNIT_OF_MEASURE"], Inventory["UOM_CODE"]));
+                uxEditInventoryMeasure.UpdateSelectedItems();
                 uxEditInventoryEPA.SetValue(Inventory["EPA_NUMBER"]);
+                uxEditInventoryRate.SetValue(Inventory["RATE"]);
             }
             
-            dePopulateInventory(sender, e);
+            
+            
         }
 
         protected void deStoreChemicalData(object sender, DirectEventArgs e)
         {
-            if (e.ExtraParams["Type"] == "Add")
-            {
-                uxAddInventoryMix.SetValue(e.ExtraParams["MixId"], e.ExtraParams["MixNumber"]);
-                uxAddInventoryMixStore.ClearFilter();
-            }
-            else
-            {
-                uxAddInventoryMix.SetValue(e.ExtraParams["MixId"], e.ExtraParams["MixNumber"]);
-                uxEditInventoryMixStore.ClearFilter();
-            }
-        }
+            uxAddInventoryMix.SetValue(e.ExtraParams["MixId"], e.ExtraParams["MixNumber"]);
+            uxAddInventoryMixStore.ClearFilter();
+        }            
+
         protected void deEditInventory(object sender, DirectEventArgs e)
         {
+            DAILY_ACTIVITY_INVENTORY data;
+            long InventoryId = long.Parse(e.ExtraParams["InventoryId"]);
+            long MixId = long.Parse(e.ExtraParams["ChemicalId"]);
+            long OrgId = long.Parse(uxEditInventoryRegion.Value.ToString());
+            decimal ItemId = decimal.Parse(uxEditInventoryItem.Value.ToString());
+            decimal Rate = decimal.Parse(uxEditInventoryRate.Value.ToString());
 
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.DAILY_ACTIVITY_INVENTORY
+                        where d.INVENTORY_ID == InventoryId
+                        select d).Single();
+            }
+            data.CHEMICAL_MIX_ID = MixId;
+            data.SUB_INVENTORY_SECONDARY_NAME = e.ExtraParams["SecondaryInvName"];
+            data.SUB_INVENTORY_ORG_ID = OrgId;
+            data.ITEM_ID = ItemId;
+            data.RATE = Rate;
+            data.UNIT_OF_MEASURE = uxEditInventoryMeasure.Value.ToString();
+            data.EPA_NUMBER = uxEditInventoryEPA.Value.ToString();
+            data.MODIFIED_BY = User.Identity.Name;
+            data.MODIFY_DATE = DateTime.Now;
+
+            GenericData.Update<DAILY_ACTIVITY_INVENTORY>(data);
+
+            uxEditInventoryWindow.Hide();
+            uxCurrentInventoryStore.Reload();
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Inventory Edited Successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
         }
 
         protected void deRemoveInventory(object sender, DirectEventArgs e)
         {
+            long InventoryId = long.Parse(e.ExtraParams["InventoryId"]);
+            DAILY_ACTIVITY_INVENTORY data;
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.DAILY_ACTIVITY_INVENTORY
+                            where d.INVENTORY_ID == InventoryId
+                            select d).Single();
+            }
+            GenericData.Delete<DAILY_ACTIVITY_INVENTORY>(data);
 
+            uxCurrentInventoryStore.Reload();
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Inventory Entry Deleted Successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
         }
 
         protected void deLoadSubinventory(object sender, DirectEventArgs e)
@@ -179,8 +257,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 else
                 {
-                    uxEditInventorySub.Clear();
-                    uxEditInventoryItem.Clear();
                     uxEditInventorySubStore.DataSource = data;
                     uxEditInventorySubStore.DataBind();
                     
@@ -261,5 +337,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        protected void deEditMath(object sender, DirectEventArgs e)
+        {
+            long MixId= long.Parse(uxEditInventoryMix.Value.ToString());
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            DAILY_ACTIVITY_CHEMICAL_MIX ChemData;
+
+            using (Entities _context = new Entities())
+            {
+                ChemData = (from d in _context.DAILY_ACTIVITY_CHEMICAL_MIX
+                            where d.CHEMICAL_MIX_NUMBER == MixId && d.HEADER_ID == HeaderId
+                            select d).Single();
+            }
+            var GallonsUsed = ChemData.GALLON_STARTING + ChemData.GALLON_MIXED - ChemData.GALLON_REMAINING;
+            var GallonAcre = ChemData.GALLON_ACRE;
+
+            var AcresSprayed = GallonsUsed / GallonAcre;
+            var Total = AcresSprayed * decimal.Parse(uxEditInventoryRate.Value.ToString());
+            uxEditInventoryTotal.SetValue(Total);
+        }
     }
 }
