@@ -42,5 +42,6 @@ namespace DBI.Data
         public DbSet<SUBINVENTORY_V> SUBINVENTORY_V { get; set; }
         public DbSet<DAILY_ACTIVITY_CHEMICAL_MIX> DAILY_ACTIVITY_CHEMICAL_MIX { get; set; }
         public DbSet<DAILY_ACTIVITY_INVENTORY> DAILY_ACTIVITY_INVENTORY { get; set; }
+        public DbSet<DAILY_ACTIVITY_PRODUCTION> DAILY_ACTIVITY_PRODUCTION { get; set; }
     }
 }

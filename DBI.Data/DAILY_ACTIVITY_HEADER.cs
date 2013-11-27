@@ -21,6 +21,7 @@ namespace DBI.Data
             this.DAILY_ACTIVITY_EMPLOYEE = new HashSet<DAILY_ACTIVITY_EMPLOYEE>();
             this.DAILY_ACTIVITY_CHEMICAL_MIX = new HashSet<DAILY_ACTIVITY_CHEMICAL_MIX>();
             this.DAILY_ACTIVITY_INVENTORY = new HashSet<DAILY_ACTIVITY_INVENTORY>();
+            this.DAILY_ACTIVITY_PRODUCTION = new HashSet<DAILY_ACTIVITY_PRODUCTION>();
         }
     
         public long HEADER_ID { get; set; }
@@ -44,5 +45,6 @@ namespace DBI.Data
         public virtual ICollection<DAILY_ACTIVITY_EMPLOYEE> DAILY_ACTIVITY_EMPLOYEE { get; set; }
         public virtual ICollection<DAILY_ACTIVITY_CHEMICAL_MIX> DAILY_ACTIVITY_CHEMICAL_MIX { get; set; }
         public virtual ICollection<DAILY_ACTIVITY_INVENTORY> DAILY_ACTIVITY_INVENTORY { get; set; }
+        public virtual ICollection<DAILY_ACTIVITY_PRODUCTION> DAILY_ACTIVITY_PRODUCTION { get; set; }
     }
 }
