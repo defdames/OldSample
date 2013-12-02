@@ -31,6 +31,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void deSelectHeader(object sender, DirectEventArgs e)
         {
+            string homeUrl = string.Format("umCombinedTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
             string headerUrl = string.Format("umHeaderTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
             string equipUrl = string.Format("umEquipmentTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
             string prodUrl = string.Format("umProductionTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
@@ -47,6 +48,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //uxWeatherTab.Loader.Url = weatherUrl;
             //uxInventoryTab.Loader.Url = invUrl;
 
+            uxCombinedTab.LoadContent(homeUrl);
             uxHeaderTab.LoadContent(headerUrl);
             uxEquipmentTab.LoadContent(equipUrl);
             uxProductionTab.LoadContent(prodUrl);

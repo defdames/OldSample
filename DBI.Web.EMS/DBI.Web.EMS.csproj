@@ -112,6 +112,7 @@
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
     <Content Include="Views\Modules\DailyActivity\umChemicalTab.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umCombinedTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umDailyActivity.aspx" />
     <Content Include="Views\Modules\DailyActivity\umEmployeesTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umEquipmentTab.aspx" />
@@ -162,6 +163,13 @@
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umChemicalTab.aspx.designer.cs">
       <DependentUpon>umChemicalTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umCombinedTab.aspx.cs">
+      <DependentUpon>umCombinedTab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umCombinedTab.aspx.designer.cs">
+      <DependentUpon>umCombinedTab.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umDailyActivity.aspx.cs">
       <DependentUpon>umDailyActivity.aspx</DependentUpon>

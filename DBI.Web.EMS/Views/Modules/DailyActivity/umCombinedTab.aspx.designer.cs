@@ -10,7 +10,7 @@
 namespace DBI.Web.EMS.Views.Modules.DailyActivity {
     
     
-    public partial class umManageExisting {
+    public partial class umCombinedTab {
         
         /// <summary>
         /// ResourceManager1 control.
@@ -31,147 +31,129 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// uxViewPort control.
+        /// uxHeaderGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Viewport uxViewPort;
+        protected global::Ext.Net.GridPanel uxHeaderGrid;
         
         /// <summary>
-        /// uxMenuPanel control.
+        /// uxHeaderStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.MenuPanel uxMenuPanel;
+        protected global::Ext.Net.Store uxHeaderStore;
         
         /// <summary>
-        /// uxCreate control.
+        /// uxEquipmentGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.MenuItem uxCreate;
+        protected global::Ext.Net.GridPanel uxEquipmentGrid;
         
         /// <summary>
-        /// uxManage control.
+        /// uxEquipmentStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.MenuItem uxManage;
+        protected global::Ext.Net.Store uxEquipmentStore;
         
         /// <summary>
-        /// uxManageGrid control.
+        /// uxProductionGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxManageGrid;
+        protected global::Ext.Net.GridPanel uxProductionGrid;
         
         /// <summary>
-        /// uxManageGridStore control.
+        /// uxProductionStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxManageGridStore;
+        protected global::Ext.Net.Store uxProductionStore;
         
         /// <summary>
-        /// Column1 control.
+        /// uxWeatherGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column1;
+        protected global::Ext.Net.GridPanel uxWeatherGrid;
         
         /// <summary>
-        /// uxTabPanel control.
+        /// uxWeatherStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TabPanel uxTabPanel;
+        protected global::Ext.Net.Store uxWeatherStore;
         
         /// <summary>
-        /// uxCombinedTab control.
+        /// uxChemicalGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxCombinedTab;
+        protected global::Ext.Net.GridPanel uxChemicalGrid;
         
         /// <summary>
-        /// uxHeaderTab control.
+        /// uxChemicalStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxHeaderTab;
+        protected global::Ext.Net.Store uxChemicalStore;
         
         /// <summary>
-        /// uxEquipmentTab control.
+        /// uxInventoryGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxEquipmentTab;
+        protected global::Ext.Net.GridPanel uxInventoryGrid;
         
         /// <summary>
-        /// uxEmployeeTab control.
+        /// uxInventoryStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxEmployeeTab;
+        protected global::Ext.Net.Store uxInventoryStore;
         
         /// <summary>
-        /// uxWeatherTab control.
+        /// uxFooterGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxWeatherTab;
+        protected global::Ext.Net.GridPanel uxFooterGrid;
         
         /// <summary>
-        /// uxChemicalTab control.
+        /// uxFooterStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxChemicalTab;
-        
-        /// <summary>
-        /// uxInventoryTab control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxInventoryTab;
-        
-        /// <summary>
-        /// uxProductionTab control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxProductionTab;
+        protected global::Ext.Net.Store uxFooterStore;
     }
 }
