@@ -22,6 +22,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GetGridData();
         }
 
+        /// <summary>
+        /// Get Current Employee Data
+        /// </summary>
         protected void GetGridData()
         {
             using (Entities _context = new Entities())
@@ -38,6 +41,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Preload Employee form for editing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deEditEmployeeForm(object sender, DirectEventArgs e)
         {            
             //JSON Decode Row and assign to variables
@@ -66,6 +74,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Remove Employee entry from db
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deRemoveEmployee(object sender, DirectEventArgs e)
         {
             long EmployeeId = long.Parse(e.ExtraParams["EmployeeID"]);
@@ -81,163 +94,65 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxCurrentEmployeeStore.Reload();
         }
 
+        /// <summary>
+        /// Get List of employees from DB
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deReadEmployeeData(object sender, StoreReadDataEventArgs e)
         {
-            List<EMPLOYEES_V> data;
+            List<EMPLOYEES_V> dataIn;
             if(e.Parameters["Form"] == "EmployeeAdd"){
                 if (uxAddEmployeeRegion.Pressed)
                 {
                     //Get All Projects
-                    data = EMPLOYEES_V.EmployeeDropDown();
+                    dataIn = EMPLOYEES_V.EmployeeDropDown();
                 }
                 else
                 {
                     var MyAuth = new Authentication();
                     int CurrentOrg = Convert.ToInt32(MyAuth.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
                     //Get projects for my org only
-                    data = EMPLOYEES_V.EmployeeDropDown(CurrentOrg);
+                    dataIn = EMPLOYEES_V.EmployeeDropDown(CurrentOrg);
                 }
             }
             else{
                 if (uxEditEmployeeEmpRegion.Pressed)
                 {
                     //Get All Projects
-                    data = EMPLOYEES_V.EmployeeDropDown();
+                    dataIn = EMPLOYEES_V.EmployeeDropDown();
                 }
                 else
                 {
                     var MyAuth = new Authentication();
                     int CurrentOrg = Convert.ToInt32(MyAuth.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
                     //Get projects for my org only
-                    data = EMPLOYEES_V.EmployeeDropDown(CurrentOrg);
+                    dataIn = EMPLOYEES_V.EmployeeDropDown(CurrentOrg);
                 }
             }
-            //-- start filtering -----------------------------------------------------------
-            FilterHeaderConditions fhc = new FilterHeaderConditions(e.Parameters["filterheader"]);
 
-            foreach (FilterHeaderCondition condition in fhc.Conditions)
-            {
-                string dataIndex = condition.DataIndex;
-                FilterType type = condition.Type;
-                string op = condition.Operator;
-                object value = null;
+            int count;
 
-                switch (condition.Type)
-                {
-                    case FilterType.Boolean:
-                        value = condition.Value<bool>();
-                        break;
+            List<EMPLOYEES_V> data = GenericData.EnumerableFilterHeader<EMPLOYEES_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
 
-                    case FilterType.Date:
-                        switch (condition.Operator)
-                        {
-                            case "=":
-                                value = condition.Value<DateTime>();
-                                break;
-
-                            case "compare":
-                                value = FilterHeaderComparator<DateTime>.Parse(condition.JsonValue);
-                                break;
-                        }
-                        break;
-
-                    case FilterType.Numeric:
-                        bool isInt = data.Count > 0 && data[0].GetType().GetProperty(dataIndex).PropertyType == typeof(int);
-                        switch (condition.Operator)
-                        {
-                            case "=":
-                                if (isInt)
-                                {
-                                    value = condition.Value<int>();
-                                }
-                                else
-                                {
-                                    value = condition.Value<double>();
-                                }
-                                break;
-
-                            case "compare":
-                                if (isInt)
-                                {
-                                    value = FilterHeaderComparator<int>.Parse(condition.JsonValue);
-                                }
-                                else
-                                {
-                                    value = FilterHeaderComparator<double>.Parse(condition.JsonValue);
-                                }
-
-                                break;
-                        }
-
-                        break;
-                    case FilterType.String:
-                        value = condition.Value<string>();
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-
-                data.RemoveAll(item =>
-                {
-                    object oValue = item.GetType().GetProperty(dataIndex).GetValue(item, null);
-                    string matchValue = null;
-                    string itemValue = null;
-
-                    if (type == FilterType.String)
-                    {
-                        matchValue = (string)value;
-                        matchValue = matchValue.ToLower();
-                        itemValue = oValue as string;
-                        itemValue = itemValue.ToLower();
-                    }
-                    return itemValue == null || itemValue.IndexOf(matchValue) < 0;
-                });
-            }
-            //-- end filtering ------------------------------------------------------------
-
-
-            //-- start sorting ------------------------------------------------------------
-            if (e.Sort.Length > 0)
-            {
-                data.Sort(delegate(EMPLOYEES_V x, EMPLOYEES_V y)
-                {
-                    object a;
-                    object b;
-
-                    int direction = e.Sort[0].Direction == Ext.Net.SortDirection.DESC ? -1 : 1;
-
-                    a = x.GetType().GetProperty(e.Sort[0].Property).GetValue(x, null);
-                    b = y.GetType().GetProperty(e.Sort[0].Property).GetValue(y, null);
-                    return CaseInsensitiveComparer.Default.Compare(a, b) * direction;
-                });
-            }
-            //-- end sorting ------------------------------------------------------------
-
-
-            //-- start paging ------------------------------------------------------------
-            int limit = e.Limit;
-
-            if ((e.Start + e.Limit) > data.Count)
-            {
-                limit = data.Count - e.Start;
-            }
-
-            List<EMPLOYEES_V> rangeData = (e.Start < 0 || limit < 0) ? data : data.GetRange(e.Start, limit);
-            //-- end paging ------------------------------------------------------------
-
-            e.Total = data.Count;
+            e.Total = count;
             if (e.Parameters["Form"] == "EmployeeAdd")
             {
-                uxAddEmployeeEmpStore.DataSource = rangeData;
+                uxAddEmployeeEmpStore.DataSource = data;
                 uxAddEmployeeEmpStore.DataBind();
             }
             else
             {
-                uxEditEmployeeEmpStore.DataSource = rangeData;
+                uxEditEmployeeEmpStore.DataSource = data;
                 uxEditEmployeeEmpStore.DataBind();
             }
         }
 
+        /// <summary>
+        /// Get Equipment entered on equipment page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deReadEquipmentData(object sender, StoreReadDataEventArgs e)
         {
             using (Entities _context = new Entities())
@@ -261,6 +176,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             
         }
            
+        /// <summary>
+        /// Toggle Region text
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deRegionToggle(object sender, DirectEventArgs e)
         {
             switch (e.ExtraParams["Type"]){
@@ -291,6 +211,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Update selected item of what's chosen from Gridpanel 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deStoreGridValue(object sender, DirectEventArgs e)
         {
             switch (e.ExtraParams["Type"])
@@ -312,6 +237,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
         
+        /// <summary>
+        /// Add Employee to Db
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deAddEmployee(object sender, DirectEventArgs e)
         {
             //Convert to correct types
@@ -375,6 +305,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             });
         }
 
+        /// <summary>
+        /// Store Edit Employee to DB
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deEditEmployee(object sender, DirectEventArgs e)
         {
             //Convert to correct types

@@ -23,6 +23,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Get current inventory info
+        /// </summary>
         protected void GetInventoryData()
         {
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
@@ -42,6 +45,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Get Chemical Mixes entered on Chemical Mix page
+        /// </summary>
         protected void GetChemicalMix()
         {
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
@@ -54,6 +60,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Get List of Inventory Regions
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void dePopulateInventory(object sender, DirectEventArgs e)
         {
             using (Entities _context = new Entities())
@@ -73,6 +84,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Store Inventory entry to DB
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deAddInventory(object sender, DirectEventArgs e)
         {
             DAILY_ACTIVITY_INVENTORY data;
@@ -116,6 +132,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             });
         }
 
+        /// <summary>
+        /// Populate Edit Inventory Form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deEditInventoryForm(object sender, DirectEventArgs e)
         {
             uxEditInventoryForm.Reset();
@@ -158,12 +179,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             
         }
 
+        /// <summary>
+        /// Set value of chemical drop down
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deStoreChemicalData(object sender, DirectEventArgs e)
         {
             uxAddInventoryMix.SetValue(e.ExtraParams["MixId"], e.ExtraParams["MixNumber"]);
             uxAddInventoryMixStore.ClearFilter();
         }            
 
+        /// <summary>
+        /// Store edit inventory to db
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deEditInventory(object sender, DirectEventArgs e)
         {
             DAILY_ACTIVITY_INVENTORY data;
@@ -206,6 +237,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             });
         }
 
+        /// <summary>
+        /// Remove inventory entry from DB
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deRemoveInventory(object sender, DirectEventArgs e)
         {
             long InventoryId = long.Parse(e.ExtraParams["InventoryId"]);
@@ -232,6 +268,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             });
         }
 
+        /// <summary>
+        /// Load SubInventories for selected region
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deLoadSubinventory(object sender, DirectEventArgs e)
         {
             decimal OrgId;
@@ -264,6 +305,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Get List of Inventory Items for OrgId
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deReadItems(object sender, StoreReadDataEventArgs e)
         {
             long OrgId;
@@ -295,6 +341,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Gets Units of Measure from DB
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deGetUnitOfMeasure(object sender, DirectEventArgs e)
         {
             using (Entities _context = new Entities())
@@ -322,6 +373,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Updates selection of Items from Add/Edit Forms
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deStoreGridValue(object sender, DirectEventArgs e)
         {
             if (e.ExtraParams["Type"] == "Add")
@@ -337,6 +393,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Do math on the Edit page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deEditMath(object sender, DirectEventArgs e)
         {
             long MixId= long.Parse(uxEditInventoryMix.Value.ToString());

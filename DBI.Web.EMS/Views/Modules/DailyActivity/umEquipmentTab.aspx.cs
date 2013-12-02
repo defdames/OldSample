@@ -44,21 +44,21 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deReadGrid(object sender, StoreReadDataEventArgs e)
         {
-            List<WEB_EQUIPMENT_V> data = new List<WEB_EQUIPMENT_V>();
+            List<WEB_EQUIPMENT_V> dataIn;
 
             if (e.Parameters["Form"] == "Add")
             {
                 if (uxAddEquipmentToggleOrg.Pressed)
                 {
                     //Get All Projects
-                    data = WEB_EQUIPMENT_V.ListEquipment();
+                    dataIn = WEB_EQUIPMENT_V.ListEquipment();
                 }
                 else
                 {
                     var MyAuth = new Authentication();
                     int CurrentOrg = Convert.ToInt32(MyAuth.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
                     //Get projects for my org only
-                    data = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
+                    dataIn = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
                 }
             }
             else
@@ -66,139 +66,30 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 if (uxEditRegion.Pressed)
                 {
                     //Get All Projects
-                    data = WEB_EQUIPMENT_V.ListEquipment();
+                    dataIn = WEB_EQUIPMENT_V.ListEquipment();
                 }
                 else
                 {
                     var MyAuth = new Authentication();
                     int CurrentOrg = Convert.ToInt32(MyAuth.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
                     //Get projects for my org only
-                    data = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
+                    dataIn = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
                 }
             }
 
-            //-- start filtering -----------------------------------------------------------
-            FilterHeaderConditions fhc = new FilterHeaderConditions(e.Parameters["filterheader"]);
+            int count;
 
-            foreach (FilterHeaderCondition condition in fhc.Conditions)
-            {
-                string dataIndex = condition.DataIndex;
-                FilterType type = condition.Type;
-                string op = condition.Operator;
-                object value = null;
+            List<WEB_EQUIPMENT_V> data = GenericData.EnumerableFilterHeader<WEB_EQUIPMENT_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
 
-                switch (condition.Type)
-                {
-                    case FilterType.Boolean:
-                        value = condition.Value<bool>();
-                        break;
-
-                    case FilterType.Date:
-                        switch (condition.Operator)
-                        {
-                            case "=":
-                                value = condition.Value<DateTime>();
-                                break;
-
-                            case "compare":
-                                value = FilterHeaderComparator<DateTime>.Parse(condition.JsonValue);
-                                break;
-                        }
-                        break;
-
-                    case FilterType.Numeric:
-                        bool isInt = data.Count > 0 && data[0].GetType().GetProperty(dataIndex).PropertyType == typeof(int);
-                        switch (condition.Operator)
-                        {
-                            case "=":
-                                if (isInt)
-                                {
-                                    value = condition.Value<int>();
-                                }
-                                else
-                                {
-                                    value = condition.Value<double>();
-                                }
-                                break;
-
-                            case "compare":
-                                if (isInt)
-                                {
-                                    value = FilterHeaderComparator<int>.Parse(condition.JsonValue);
-                                }
-                                else
-                                {
-                                    value = FilterHeaderComparator<double>.Parse(condition.JsonValue);
-                                }
-
-                                break;
-                        }
-
-                        break;
-                    case FilterType.String:
-                        value = condition.Value<string>();
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-
-                data.RemoveAll(item =>
-                {
-                    object oValue = item.GetType().GetProperty(dataIndex).GetValue(item, null);
-                    string matchValue = null;
-                    string itemValue = null;
-
-                    if (type == FilterType.String)
-                    {
-                        matchValue = (string)value;
-                        matchValue = matchValue.ToLower();
-                        itemValue = oValue as string;
-                        itemValue = itemValue.ToLower();
-                    }
-                       return itemValue == null || itemValue.IndexOf(matchValue) < 0;
-                });
-            }
-            //-- end filtering ------------------------------------------------------------
-
-
-            //-- start sorting ------------------------------------------------------------
-            if (e.Sort.Length > 0)
-            {
-                data.Sort(delegate(WEB_EQUIPMENT_V x, WEB_EQUIPMENT_V y)
-                {
-                    object a;
-                    object b;
-
-                    int direction = e.Sort[0].Direction == Ext.Net.SortDirection.DESC ? -1 : 1;
-
-                    a = x.GetType().GetProperty(e.Sort[0].Property).GetValue(x, null);
-                    b = y.GetType().GetProperty(e.Sort[0].Property).GetValue(y, null);
-                    return CaseInsensitiveComparer.Default.Compare(a, b) * direction;
-                });
-            }
-            //-- end sorting ------------------------------------------------------------
-
-
-            //-- start paging ------------------------------------------------------------
-            int limit = e.Limit;
-
-            if ((e.Start + e.Limit) > data.Count)
-            {
-                limit = data.Count - e.Start;
-            }
-
-            List<WEB_EQUIPMENT_V> rangeData = (e.Start < 0 || limit < 0) ? data : data.GetRange(e.Start, limit);
-            //-- end paging ------------------------------------------------------------
-
-            e.Total = data.Count;
+            e.Total = count;
             if (e.Parameters["Form"] == "Add")
             {
-                uxEquipmentStore.DataSource = rangeData;
+                uxEquipmentStore.DataSource = data;
                 uxEquipmentStore.DataBind();
             }
             else
             {
-                uxEditEquipmentProjectStore.DataSource = rangeData;
+                uxEditEquipmentProjectStore.DataSource = data;
                 uxEditEquipmentProjectStore.DataBind();
             }
         }
