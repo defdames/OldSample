@@ -103,6 +103,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.TabPanel uxTabPanel;
         
         /// <summary>
+        /// uxCombinedTab control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Panel uxCombinedTab;
+        
+        /// <summary>
         /// uxHeaderTab control.
         /// </summary>
         /// <remarks>

@@ -52,7 +52,13 @@
                 <ext:TabPanel runat="server" ID="uxTabPanel" Region="Center">
                     <Items>
                         <ext:Panel runat="server"
-                            Title="Home" />
+                            Title="Home"
+                            ID="uxCombinedTab">
+                            <Loader runat="server"
+                                ID="uxCombinedTabLoader" Mode="Frame" AutoLoad="false" ReloadOnEvent="true">
+                                <LoadMask ShowMask="true" />
+                            </Loader>
+                        </ext:Panel>
                         <ext:Panel runat="server" 
                             Title="Header"
                             ID="uxHeaderTab">
