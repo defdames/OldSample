@@ -21,7 +21,7 @@
                             <Fields>
                                 <ext:ModelField Name="PRODUCTION_ID" />
                                 <ext:ModelField Name="PROJECT_ID" />
-                                <ext:ModelField Name="SEGMENT1" />
+                                <ext:ModelField Name="LONG_NAME" />
                                 <ext:ModelField Name="TASK_ID" />
                                 <ext:ModelField Name="DESCRIPTION" />
                                 <ext:ModelField Name="TIME_IN" />
@@ -42,10 +42,10 @@
                         DataIndex="PROJECT_ID"
                         Text="Project Id" />
                     <ext:Column runat="server"
-                        DataIndex="SEGMENT1"
+                        DataIndex="LONG_NAME"
                         Text="Project Name" />
                     <ext:Column runat="server"
-                        DataIndex="TASK_NAME"
+                        DataIndex="DESCRIPTION"
                         Text="Task Name" />
                     <ext:Column runat="server"
                         DataIndex="TIME_IN"
@@ -150,12 +150,26 @@
                                 </ext:Store>
                             </Store>
                         </ext:ComboBox>
-                        <ext:DateField runat="server"
-                            ID="uxAddProductionTimeIn"
-                            FieldLabel="Time In" />
-                        <ext:DateField runat="server"
-                            ID="uxAddProductionTimeOut"
-                            FieldLabel="Time Out" />
+                        <ext:FieldContainer runat="server"
+                            ID="uxAddProductionTimeInContainer"
+                            FieldLabel="Time In">
+                            <Items>
+                                <ext:DateField runat="server"
+                                    ID="uxAddProductionDateIn" />
+                                <ext:TimeField runat="server"
+                                    ID="uxAddProductionTimeIn" />
+                            </Items>
+                        </ext:FieldContainer>
+                        <ext:FieldContainer runat="server"
+                            ID="uxAddProductionTimeOutContainer"
+                            FieldLabel="Time Out">
+                            <Items>
+                                <ext:DateField runat="server"
+                                    ID="uxAddProductionDateOut" />
+                                <ext:TimeField runat="server"
+                                    ID="uxAddProductionTimeOut" />
+                            </Items>
+                        </ext:FieldContainer>
                         <ext:TextField runat="server"
                             ID="uxAddProductionWorkArea"
                             FieldLabel="Spray/Work Area" />
@@ -223,12 +237,26 @@
                                 </ext:Store>
                             </Store>
                         </ext:ComboBox>
-                        <ext:DateField runat="server"
-                            ID="uxEditProductionTimeIn"
-                            FieldLabel="Time In" />
-                        <ext:DateField runat="server"
-                            ID="uxEditProductionTimeOut"
-                            FieldLabel="Time Out" />
+                        <ext:FieldContainer runat="server"
+                            ID="uxEditProductionTimeInContainer"
+                            FieldLabel="Time In">
+                            <Items>
+                                <ext:DateField runat="server"
+                                    ID="uxEditProductionDateIn" />
+                                <ext:TimeField runat="server"
+                                    ID="uxEditProductionTimeIn" />
+                            </Items>
+                        </ext:FieldContainer>
+                        <ext:FieldContainer runat="server"
+                            ID="uxEditProductionTimeOutContainer"
+                            FieldLabel="Time Out">
+                            <Items>
+                                <ext:DateField runat="server"
+                                    ID="uxEditProductionDateOut" />
+                                <ext:TimeField runat="server"
+                                    ID="uxEditProductionTimeOut" />
+                            </Items>
+                        </ext:FieldContainer>
                         <ext:TextField runat="server"
                             ID="uxEditProductionWorkArea"
                             FieldLabel="Spray/Work Area" />
@@ -251,7 +279,11 @@
                             Text="Submit"
                             Icon="ApplicationGo">
                             <DirectEvents>
-                                <Click OnEvent="deEditProduction" />
+                                <Click OnEvent="deEditProduction">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="ProductionId" Value="#{uxCurrentProductionGrid}.getSelectionModel().getSelection()[0].data.PRODUCTION_ID" Mode="Raw" />
+                                    </ExtraParams>
+                                </Click>
                             </DirectEvents>
                         </ext:Button>
                         <ext:Button runat="server"

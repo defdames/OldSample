@@ -112,13 +112,49 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Store uxAddProductionTaskStore;
         
         /// <summary>
+        /// uxAddProductionTimeInContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer uxAddProductionTimeInContainer;
+        
+        /// <summary>
+        /// uxAddProductionDateIn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DateField uxAddProductionDateIn;
+        
+        /// <summary>
         /// uxAddProductionTimeIn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateField uxAddProductionTimeIn;
+        protected global::Ext.Net.TimeField uxAddProductionTimeIn;
+        
+        /// <summary>
+        /// uxAddProductionTimeOutContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer uxAddProductionTimeOutContainer;
+        
+        /// <summary>
+        /// uxAddProductionDateOut control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DateField uxAddProductionDateOut;
         
         /// <summary>
         /// uxAddProductionTimeOut control.
@@ -127,7 +163,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateField uxAddProductionTimeOut;
+        protected global::Ext.Net.TimeField uxAddProductionTimeOut;
         
         /// <summary>
         /// uxAddProductionWorkArea control.
@@ -229,13 +265,49 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Store uxEditProductionTaskStore;
         
         /// <summary>
+        /// uxEditProductionTimeInContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer uxEditProductionTimeInContainer;
+        
+        /// <summary>
+        /// uxEditProductionDateIn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DateField uxEditProductionDateIn;
+        
+        /// <summary>
         /// uxEditProductionTimeIn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateField uxEditProductionTimeIn;
+        protected global::Ext.Net.TimeField uxEditProductionTimeIn;
+        
+        /// <summary>
+        /// uxEditProductionTimeOutContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer uxEditProductionTimeOutContainer;
+        
+        /// <summary>
+        /// uxEditProductionDateOut control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DateField uxEditProductionDateOut;
         
         /// <summary>
         /// uxEditProductionTimeOut control.
@@ -244,7 +316,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateField uxEditProductionTimeOut;
+        protected global::Ext.Net.TimeField uxEditProductionTimeOut;
         
         /// <summary>
         /// uxEditProductionWorkArea control.
