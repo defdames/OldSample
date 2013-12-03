@@ -24,9 +24,6 @@
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_HEADER" Width="1.5" PointX="4.625" PointY="11" />
         <AssociationConnector Association="OracleModel.FK_HEADER_ID" />
         <AssociationConnector Association="OracleModel.FK_WEATHER_HEADER_ID" />
-        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="1.5" PointY="16.5" />
-        <AssociationConnector Association="OracleModel.FK_EMPLOYEE_EQUIPMENT_ID" />
-        <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.SUBINVENTORY_V" Width="1.5" PointX="1.25" PointY="8.625" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_CHEMICAL_MIX" Width="1.5" PointX="5.5" PointY="16.625" />
         <AssociationConnector Association="OracleModel.FK_CHEMICAL_HEADER_ID" />
@@ -35,6 +32,8 @@
         <AssociationConnector Association="OracleModel.FK_INVENTORY_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" Width="1.5" PointX="1.5" PointY="21.125" />
         <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" />
+        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="1.5" PointY="16.625" />
+        <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -14,11 +14,6 @@ namespace DBI.Data
     
     public partial class DAILY_ACTIVITY_EQUIPMENT
     {
-        public DAILY_ACTIVITY_EQUIPMENT()
-        {
-            this.DAILY_ACTIVITY_EMPLOYEE = new HashSet<DAILY_ACTIVITY_EMPLOYEE>();
-        }
-    
         public long EQUIPMENT_ID { get; set; }
         public long HEADER_ID { get; set; }
         public Nullable<long> PROJECT_ID { get; set; }
@@ -30,6 +25,5 @@ namespace DBI.Data
         public string MODIFIED_BY { get; set; }
     
         public virtual DAILY_ACTIVITY_HEADER DAILY_ACTIVITY_HEADER { get; set; }
-        public virtual ICollection<DAILY_ACTIVITY_EMPLOYEE> DAILY_ACTIVITY_EMPLOYEE { get; set; }
     }
 }
