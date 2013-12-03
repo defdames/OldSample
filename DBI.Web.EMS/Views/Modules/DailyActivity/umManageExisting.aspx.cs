@@ -21,7 +21,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             using (Entities _context = new Entities())
             {
-                
+                //Get List of all headers
                 var data = (from d in _context.DAILY_ACTIVITY_HEADER
                             join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                             select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME }).ToList();
@@ -39,14 +39,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             string chemUrl = string.Format("umChemicalTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
             string weatherUrl = string.Format("umWeatherTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
             string invUrl = string.Format("umInventoryTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-
-            //uxHeaderTab.Loader.Url = headerUrl;
-            //uxEquipmentTab.Loader.Url = equipUrl;
-            //uxProductionTab.Loader.Url = prodUrl;
-            //uxEmployeeTab.Loader.Url = emplUrl;
-            //uxChemicalTab.Loader.Url = chemUrl;
-            //uxWeatherTab.Loader.Url = weatherUrl;
-            //uxInventoryTab.Loader.Url = invUrl;
 
             uxCombinedTab.LoadContent(homeUrl);
             uxHeaderTab.LoadContent(headerUrl);

@@ -27,7 +27,8 @@
 								<ext:DropDownField runat="server"
 									ID="uxFormProject"
 									FieldLabel="Select a Project"
-									Mode="ValueText">
+									Mode="ValueText"
+									AllowBlank="false">
 									<Component>
 										<ext:GridPanel runat="server" 
 											ID="uxFormProjectGrid"
@@ -110,13 +111,14 @@
 										</ext:GridPanel>
 									</Component>
 								</ext:DropDownField>
-								<ext:DateField runat="server" ID="uxFormDate" FieldLabel="Date" />
-								<ext:TextField runat="server" ID="uxFormSubDivision" FieldLabel="Subdivision"  />
-								<ext:TextField runat="server" ID="uxFormContractor" FieldLabel="Contractor"  />
+								<ext:DateField runat="server" ID="uxFormDate" FieldLabel="Date" AllowBlank="false" />
+								<ext:TextField runat="server" ID="uxFormSubDivision" FieldLabel="Subdivision" AllowBlank="true" />
+								<ext:TextField runat="server" ID="uxFormContractor" FieldLabel="Contractor" AllowBlank="true" />
 								<ext:DropDownField runat="server" 
 									ID="uxFormEmployee" 
 									FieldLabel="Supervisor/Area Manager"
-									Mode="ValueText" >
+									Mode="ValueText"
+									AllowBlank="false" >
 									<Component>
 										<ext:GridPanel runat="server" 
 											ID="uxFormEmployeeGrid"
@@ -189,8 +191,8 @@
 										</ext:GridPanel>
 									</Component>
 								</ext:DropDownField>
-								<ext:TextField runat="server" ID="uxFormLicense" FieldLabel="License #" />
-								<ext:ComboBox runat="server" ID="uxFormState" FieldLabel="State" DisplayField="name" ValueField="abbr">
+								<ext:TextField runat="server" ID="uxFormLicense" FieldLabel="License #" AllowBlank="false" />
+								<ext:ComboBox runat="server" ID="uxFormState" FieldLabel="State" DisplayField="name" ValueField="abbr" AllowBlank="false">
 									<Store>
 										<ext:Store ID="uxStateList" runat="server" AutoDataBind="true">
 											<Model>
@@ -207,8 +209,8 @@
 										</ext:Store>
 									</Store>
 								</ext:ComboBox>
-								<ext:TextField runat="server" ID="uxFormType" FieldLabel="Type" />
-								<ext:ComboBox runat="server" ID="uxFormDensity" FieldLabel="Density">
+								<ext:TextField runat="server" ID="uxFormType" FieldLabel="Type" AllowBlank="true" />
+								<ext:ComboBox runat="server" ID="uxFormDensity" FieldLabel="Density" AllowBlank="true">
 									<Items>
 										<ext:ListItem Text="Low" Value="LOW" />
 										<ext:ListItem Text="Medium" Value="MEDIUM" />
@@ -217,7 +219,7 @@
 								</ext:ComboBox>
 							</Items>
 							<Buttons>
-								<ext:Button runat="server" ID="uxFormSubmit" Text="Submit">
+								<ext:Button runat="server" ID="uxFormSubmit" Text="Submit" Disabled="true">
 									<DirectEvents>
 										<Click OnEvent="deStoreHeader" />
 									</DirectEvents>    
@@ -228,6 +230,9 @@
 									</Listeners>
 								</ext:Button>
 							</Buttons>
+							<Listeners>
+								<ValidityChange Handler="#{uxFormSubmit}.setDisabled(!valid);" />
+							</Listeners>
 						</ext:FormPanel>
 					</Items>
 				</ext:Panel>

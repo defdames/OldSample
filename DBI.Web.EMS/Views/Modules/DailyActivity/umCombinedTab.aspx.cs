@@ -23,6 +23,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void GetHeaderData()
         {
+            //Query and set datasource for header
             using (Entities _context = new Entities()){
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
                 var data = (from d in _context.DAILY_ACTIVITY_HEADER
@@ -36,6 +37,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void GetEmployeeData()
         {
+            //Query and set datasource for employees
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
@@ -52,6 +54,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void GetProductionData()
         {
+            //Query and set datasource for Production
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
@@ -67,6 +70,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void GetWeatherData()
         {
+            //Query and set datasource for Weather
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
@@ -79,6 +83,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void GetChemicalMixData()
         {
+            //Query and set datasource for Chemical Mix
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
@@ -91,6 +96,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void GetInventory()
         {
+            //Query and set datasource for Inventory
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);

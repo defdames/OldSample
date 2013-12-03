@@ -23,10 +23,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Get current inventory info
+        /// </summary>
         protected void GetInventoryData()
         {
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
 
+            //Get Inventory for current project
             using (Entities _context = new Entities())
             {
                 var data = (from d in _context.DAILY_ACTIVITY_INVENTORY
@@ -42,9 +46,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Get Chemical Mixes entered on Chemical Mix page
+        /// </summary>
         protected void GetChemicalMix()
         {
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            
+            //Get Chemical mixes for current project
             using (Entities _context = new Entities())
             {
                 List<DAILY_ACTIVITY_CHEMICAL_MIX> data = (from d in _context.DAILY_ACTIVITY_CHEMICAL_MIX
@@ -54,8 +63,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Get List of Inventory Regions
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void dePopulateInventory(object sender, DirectEventArgs e)
         {
+            //Get inventory regions from db and set datasource for either add or edit
             using (Entities _context = new Entities())
             {
                 var data = (from d in _context.INVENTORY_V
@@ -73,14 +88,23 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Store Inventory entry to DB
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deAddInventory(object sender, DirectEventArgs e)
         {
             DAILY_ACTIVITY_INVENTORY data;
+
+            //do type conversions
             long ChemicalMix = long.Parse(uxAddInventoryMix.Value.ToString());
             long SubInventoryOrg = long.Parse(uxAddInventorySub.Value.ToString());
             long ItemId = long.Parse(uxAddInventoryItem.Value.ToString());
             long Rate = long.Parse(uxAddInventoryRate.Value.ToString());
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            
+            //Add to Db
             using (Entities _context = new Entities())
             {
                 data = new DAILY_ACTIVITY_INVENTORY()
@@ -99,10 +123,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     HEADER_ID = HeaderId
                 };
             }
+
+            //Process addition
             GenericData.Insert<DAILY_ACTIVITY_INVENTORY>(data);
 
             uxAddInventoryWindow.Hide();
             uxCurrentInventoryStore.Reload();
+            
             Notification.Show(new NotificationConfig()
             {
                 Title = "Success",
@@ -116,6 +143,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             });
         }
 
+        /// <summary>
+        /// Populate Edit Inventory Form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deEditInventoryForm(object sender, DirectEventArgs e)
         {
             uxEditInventoryForm.Reset();
@@ -123,7 +155,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             string JsonValues = e.ExtraParams["InventoryInfo"];
             Dictionary<string, string>[] InventoryInfo = JSON.Deserialize<Dictionary<string, string>[]>(JsonValues);
 
-
+            //Set default values in form.
             foreach (Dictionary<string, string> Inventory in InventoryInfo)
             {
                 SUBINVENTORY_V SubData;
@@ -158,21 +190,34 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             
         }
 
+        /// <summary>
+        /// Set value of chemical drop down
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deStoreChemicalData(object sender, DirectEventArgs e)
         {
             uxAddInventoryMix.SetValue(e.ExtraParams["MixId"], e.ExtraParams["MixNumber"]);
             uxAddInventoryMixStore.ClearFilter();
         }            
 
+        /// <summary>
+        /// Store edit inventory to db
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deEditInventory(object sender, DirectEventArgs e)
         {
             DAILY_ACTIVITY_INVENTORY data;
+
+            //Do type conversions
             long InventoryId = long.Parse(e.ExtraParams["InventoryId"]);
             long MixId = long.Parse(e.ExtraParams["ChemicalId"]);
             long OrgId = long.Parse(uxEditInventoryRegion.Value.ToString());
             decimal ItemId = decimal.Parse(uxEditInventoryItem.Value.ToString());
             decimal Rate = decimal.Parse(uxEditInventoryRate.Value.ToString());
 
+            //Get record to be updated
             using (Entities _context = new Entities())
             {
                 data = (from d in _context.DAILY_ACTIVITY_INVENTORY
@@ -189,10 +234,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.MODIFIED_BY = User.Identity.Name;
             data.MODIFY_DATE = DateTime.Now;
 
+            //Write to DB
             GenericData.Update<DAILY_ACTIVITY_INVENTORY>(data);
 
             uxEditInventoryWindow.Hide();
             uxCurrentInventoryStore.Reload();
+           
             Notification.Show(new NotificationConfig()
             {
                 Title = "Success",
@@ -206,19 +253,29 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             });
         }
 
+        /// <summary>
+        /// Remove inventory entry from DB
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deRemoveInventory(object sender, DirectEventArgs e)
         {
             long InventoryId = long.Parse(e.ExtraParams["InventoryId"]);
             DAILY_ACTIVITY_INVENTORY data;
+
+            //Get record to be deleted
             using (Entities _context = new Entities())
             {
                 data = (from d in _context.DAILY_ACTIVITY_INVENTORY
                             where d.INVENTORY_ID == InventoryId
                             select d).Single();
             }
+
+            //Delete from DB
             GenericData.Delete<DAILY_ACTIVITY_INVENTORY>(data);
 
             uxCurrentInventoryStore.Reload();
+
             Notification.Show(new NotificationConfig()
             {
                 Title = "Success",
@@ -232,6 +289,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             });
         }
 
+        /// <summary>
+        /// Load SubInventories for selected region
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deLoadSubinventory(object sender, DirectEventArgs e)
         {
             decimal OrgId;
@@ -243,11 +305,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 OrgId = decimal.Parse(uxEditInventoryRegion.Value.ToString());
             }
+
+            //Get list of subinventories
             using (Entities _context = new Entities())
             {
                 var data = (from s in _context.SUBINVENTORY_V
                             where s.ORG_ID == OrgId
                             select s).ToList();
+
+                //Set datasource for add/edit
                 if (e.ExtraParams["Type"] == "Add")
                 {
                     uxAddInventorySub.Clear();
@@ -264,6 +330,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Get List of Inventory Items for OrgId
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deReadItems(object sender, StoreReadDataEventArgs e)
         {
             long OrgId;
@@ -280,6 +351,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             int count;
             
+            //Get paged, filterable list of inventory
             List<INVENTORY_V> data = GenericData.EnumerableFilterHeader<INVENTORY_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
             if (e.Parameters["Type"] == "Add")
             {
@@ -295,8 +367,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Gets Units of Measure from DB
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deGetUnitOfMeasure(object sender, DirectEventArgs e)
         {
+            //Query Db for units of measure based on uom_code
             using (Entities _context = new Entities())
             {
                 string uomCode = e.ExtraParams["uomCode"];
@@ -308,6 +386,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 data = (from u in _context.UNIT_OF_MEASURE_V
                         where u.UOM_CLASS == uomClass
                         select u).ToList();
+
+                //Set datasource for store add/edit
                 if (e.ExtraParams["Type"] == "Add")
                 {
                     uxAddInventoryMeasureStore.DataSource = data;
@@ -322,6 +402,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Updates selection of Items from Add/Edit Forms
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deStoreGridValue(object sender, DirectEventArgs e)
         {
             if (e.ExtraParams["Type"] == "Add")
@@ -337,6 +422,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Do math on the Edit page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deEditMath(object sender, DirectEventArgs e)
         {
             long MixId= long.Parse(uxEditInventoryMix.Value.ToString());

@@ -26,6 +26,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         protected void GetCurrentEquipment()
         {
+            //Query and set datasource for Equipment
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["headerId"]);
@@ -44,21 +45,21 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deReadGrid(object sender, StoreReadDataEventArgs e)
         {
-            List<WEB_EQUIPMENT_V> data = new List<WEB_EQUIPMENT_V>();
+            List<WEB_EQUIPMENT_V> dataIn;
 
             if (e.Parameters["Form"] == "Add")
             {
                 if (uxAddEquipmentToggleOrg.Pressed)
                 {
                     //Get All Projects
-                    data = WEB_EQUIPMENT_V.ListEquipment();
+                    dataIn = WEB_EQUIPMENT_V.ListEquipment();
                 }
                 else
                 {
                     var MyAuth = new Authentication();
                     int CurrentOrg = Convert.ToInt32(MyAuth.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
                     //Get projects for my org only
-                    data = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
+                    dataIn = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
                 }
             }
             else
@@ -66,139 +67,31 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 if (uxEditRegion.Pressed)
                 {
                     //Get All Projects
-                    data = WEB_EQUIPMENT_V.ListEquipment();
+                    dataIn = WEB_EQUIPMENT_V.ListEquipment();
                 }
                 else
                 {
                     var MyAuth = new Authentication();
                     int CurrentOrg = Convert.ToInt32(MyAuth.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
                     //Get projects for my org only
-                    data = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
+                    dataIn = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
                 }
             }
 
-            //-- start filtering -----------------------------------------------------------
-            FilterHeaderConditions fhc = new FilterHeaderConditions(e.Parameters["filterheader"]);
+            int count;
 
-            foreach (FilterHeaderCondition condition in fhc.Conditions)
-            {
-                string dataIndex = condition.DataIndex;
-                FilterType type = condition.Type;
-                string op = condition.Operator;
-                object value = null;
+            //Get paged, filterable list of Equipment
+            List<WEB_EQUIPMENT_V> data = GenericData.EnumerableFilterHeader<WEB_EQUIPMENT_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
 
-                switch (condition.Type)
-                {
-                    case FilterType.Boolean:
-                        value = condition.Value<bool>();
-                        break;
-
-                    case FilterType.Date:
-                        switch (condition.Operator)
-                        {
-                            case "=":
-                                value = condition.Value<DateTime>();
-                                break;
-
-                            case "compare":
-                                value = FilterHeaderComparator<DateTime>.Parse(condition.JsonValue);
-                                break;
-                        }
-                        break;
-
-                    case FilterType.Numeric:
-                        bool isInt = data.Count > 0 && data[0].GetType().GetProperty(dataIndex).PropertyType == typeof(int);
-                        switch (condition.Operator)
-                        {
-                            case "=":
-                                if (isInt)
-                                {
-                                    value = condition.Value<int>();
-                                }
-                                else
-                                {
-                                    value = condition.Value<double>();
-                                }
-                                break;
-
-                            case "compare":
-                                if (isInt)
-                                {
-                                    value = FilterHeaderComparator<int>.Parse(condition.JsonValue);
-                                }
-                                else
-                                {
-                                    value = FilterHeaderComparator<double>.Parse(condition.JsonValue);
-                                }
-
-                                break;
-                        }
-
-                        break;
-                    case FilterType.String:
-                        value = condition.Value<string>();
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-
-                data.RemoveAll(item =>
-                {
-                    object oValue = item.GetType().GetProperty(dataIndex).GetValue(item, null);
-                    string matchValue = null;
-                    string itemValue = null;
-
-                    if (type == FilterType.String)
-                    {
-                        matchValue = (string)value;
-                        matchValue = matchValue.ToLower();
-                        itemValue = oValue as string;
-                        itemValue = itemValue.ToLower();
-                    }
-                       return itemValue == null || itemValue.IndexOf(matchValue) < 0;
-                });
-            }
-            //-- end filtering ------------------------------------------------------------
-
-
-            //-- start sorting ------------------------------------------------------------
-            if (e.Sort.Length > 0)
-            {
-                data.Sort(delegate(WEB_EQUIPMENT_V x, WEB_EQUIPMENT_V y)
-                {
-                    object a;
-                    object b;
-
-                    int direction = e.Sort[0].Direction == Ext.Net.SortDirection.DESC ? -1 : 1;
-
-                    a = x.GetType().GetProperty(e.Sort[0].Property).GetValue(x, null);
-                    b = y.GetType().GetProperty(e.Sort[0].Property).GetValue(y, null);
-                    return CaseInsensitiveComparer.Default.Compare(a, b) * direction;
-                });
-            }
-            //-- end sorting ------------------------------------------------------------
-
-
-            //-- start paging ------------------------------------------------------------
-            int limit = e.Limit;
-
-            if ((e.Start + e.Limit) > data.Count)
-            {
-                limit = data.Count - e.Start;
-            }
-
-            List<WEB_EQUIPMENT_V> rangeData = (e.Start < 0 || limit < 0) ? data : data.GetRange(e.Start, limit);
-            //-- end paging ------------------------------------------------------------
-
-            e.Total = data.Count;
+            e.Total = count;
             if (e.Parameters["Form"] == "Add")
             {
-                uxEquipmentStore.DataSource = rangeData;
+                uxEquipmentStore.DataSource = data;
                 uxEquipmentStore.DataBind();
             }
             else
             {
-                uxEditEquipmentProjectStore.DataSource = rangeData;
+                uxEditEquipmentProjectStore.DataSource = data;
                 uxEditEquipmentProjectStore.DataBind();
             }
         }
@@ -212,8 +105,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             long headerId = long.Parse(Request.QueryString["headerId"]);
             long projectId = long.Parse(uxAddEquipmentDropDown.Value.ToString());
-            long odStart = long.Parse(uxAddEquipmentStart.Value.ToString());
-            long odEnd = long.Parse(uxAddEquipmentEnd.Value.ToString());
+            long odStart;
+            long odEnd;
+            
             var MyAuth = new Authentication();
             var icp = User as ClaimsPrincipal;
             var AddingUser = MyAuth.GetClaimValue(ClaimTypes.Name, icp);
@@ -222,18 +116,40 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 HEADER_ID = headerId,
                 PROJECT_ID = projectId,
-                ODOMETER_START = odStart,
-                ODOMETER_END = odEnd,
                 CREATE_DATE = DateTime.Now,
                 MODIFY_DATE = DateTime.Now,
                 CREATED_BY = AddingUser,
                 MODIFIED_BY = AddingUser
             };
 
+            //Check for Odometer Start
+            try
+            {
+                odStart = long.Parse(uxAddEquipmentStart.Value.ToString());
+                added.ODOMETER_START = odStart;
+            }
+            catch (NullReferenceException)
+            {
+                added.ODOMETER_START = null;
+            }
+
+            //Check for Odometer End
+            try
+            {
+                odEnd = long.Parse(uxAddEquipmentEnd.Value.ToString());
+                added.ODOMETER_END = odEnd;
+            }
+            catch (NullReferenceException)
+            {
+                added.ODOMETER_END = null;
+            }
+
             //Write Data to DB
             GenericData.Insert<DAILY_ACTIVITY_EQUIPMENT>(added);
+            
             uxAddEquipmentWindow.Hide();
             uxCurrentEquipmentStore.Reload();
+            
             Notification.Show(new NotificationConfig()
             {
                 Title = "Success",
@@ -275,29 +191,54 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void deEditEquipment(object sender, DirectEventArgs e)
         {
             DAILY_ACTIVITY_EQUIPMENT data;
+
+            //Get record to be edited
             using (Entities _context = new Entities())
             {
                 long EquipmentId = long.Parse(e.ExtraParams["EquipmentId"]);
-                //Get Current Record
+                
                 data = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
                         where d.EQUIPMENT_ID == EquipmentId
                         select d).Single();
 
                 long ProjectId = long.Parse(uxEditEquipmentProject.Value.ToString());
-                long OdStart = long.Parse(uxEditEquipmentStart.Value.ToString());
-                long OdEnd = long.Parse(uxEditEquipmentEnd.Value.ToString());
+                long OdStart;
+                long OdEnd;
+
+                //Check for odometer start
+                try
+                {
+                    OdStart = long.Parse(uxEditEquipmentStart.Value.ToString());
+                    data.ODOMETER_START = OdStart;
+                }
+                catch (NullReferenceException)
+                {
+                    data.ODOMETER_START = null;
+                }
+
+                //Check for odometer end
+                try
+                {
+                    OdEnd = long.Parse(uxEditEquipmentEnd.Value.ToString());
+                    data.ODOMETER_END = OdEnd;
+                }
+                catch (NullReferenceException)
+                {
+                    data.ODOMETER_END = null;
+                }
 
                 //Update Entity
                 data.PROJECT_ID = ProjectId;
-                data.ODOMETER_START = OdStart;
-                data.ODOMETER_END = OdEnd;
                 data.MODIFIED_BY = User.Identity.Name;
                 data.MODIFY_DATE = DateTime.Now;
             }
+
             //Save to DB
             GenericData.Update<DAILY_ACTIVITY_EQUIPMENT>(data);
+            
             uxCurrentEquipmentStore.Reload();
             uxEditEquipmentWindow.Hide();
+            
             Notification.Show(new NotificationConfig()
             {
                 Title = "Success",
@@ -322,14 +263,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Convert EquipmentId to long
             long EquipmentId = long.Parse(e.ExtraParams["EquipmentId"]);
             DAILY_ACTIVITY_EQUIPMENT data;
+
+            //Get record to be deleted
             using (Entities _context = new Entities())
             {
                 data = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
                         where d.EQUIPMENT_ID == EquipmentId
                         select d).Single();
             }
+
             GenericData.Delete<DAILY_ACTIVITY_EQUIPMENT>(data);
+            
             uxCurrentEquipmentStore.Reload();
+            
             Notification.Show(new NotificationConfig()
             {
                 Title = "Success",
@@ -399,6 +345,92 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 //Clear existing filters
                 uxEditEquipmentFilter.ClearFilter();
+            }
+        }
+
+        /// <summary>
+        /// Validate Odometer Readings
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void valOdometer(object sender, RemoteValidationEventArgs e)
+        {
+            NumberField Field = (NumberField)sender;
+
+            long Start;
+            long End;
+
+            if (e.ExtraParams["Type"] == "Add")
+            {
+                if (e.ExtraParams["Start"] == "Start")
+                {
+                    Start = long.Parse(Field.Value.ToString());
+
+                    //check for Odometer End
+                    try
+                    {
+                        End = long.Parse(uxAddEquipmentEnd.Value.ToString());
+                    }
+                    catch(NullReferenceException)
+                    {
+                        End = 0;
+                    }
+                }
+                else
+                {
+                    //Check for odometer start
+                    try
+                    {
+                        Start = long.Parse(uxAddEquipmentStart.Value.ToString());
+                    }
+                    catch (NullReferenceException)
+                    {
+                        Start = 0;
+                    }
+                    End = long.Parse(Field.Value.ToString());
+                }
+            }
+            else
+            {
+                //Set values for edit
+                if (e.ExtraParams["Start"] == "Start")
+                {
+                    Start = long.Parse(Field.Value.ToString());
+                    
+                    //Check for odometer end
+                    try
+                    {
+                        End = long.Parse(uxEditEquipmentEnd.Value.ToString());
+                    }
+                    catch(NullReferenceException)
+                    {
+                        End = 0;
+                    }
+                }
+                else
+                {
+                    //Check for odometer start
+                    try
+                    {
+                        Start = long.Parse(uxEditEquipmentStart.Value.ToString());
+                    }
+                    catch (NullReferenceException)
+                    {
+                        Start = 0;
+                    }
+                    End = long.Parse(Field.Value.ToString());
+                }
+            }
+
+            //Do comparison and set validation flag, error message if necessary
+            if (Start <= End)
+            {
+                e.Success = true;
+            }
+            else
+            {
+                e.Success = false;
+                e.ErrorMessage = "Ending Odometer must equal or exceed Starting Odometer";
             }
         }
     }
