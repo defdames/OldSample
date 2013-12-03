@@ -23,6 +23,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void GetCurrentProduction()
         {
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+
+            //Get list of current production entries and set to store
             using (Entities _context = new Entities())
             {
                 var data = (from d in _context.DAILY_ACTIVITY_PRODUCTION
@@ -42,6 +44,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deGetTaskList(object sender, DirectEventArgs e)
         {
+
+            //Query for project ID, and get tasks for that project
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
@@ -51,6 +55,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 var data = (from t in _context.PA_TASKS_V
                             where t.PROJECT_ID == ProjectId
                             select t).ToList();
+
+                //Set datasource for Add/Edit store
                 if (e.ExtraParams["Type"] == "Add")
                 {
                     uxAddProductionTaskStore.DataSource = data;
@@ -107,12 +113,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             long ProductionId = long.Parse(e.ExtraParams["ProductionId"]);
             DAILY_ACTIVITY_PRODUCTION data;
+
+            //Get record to be deleted
             using (Entities _context = new Entities())
             {
                 data = (from d in _context.DAILY_ACTIVITY_PRODUCTION
                        where d.PRODUCTION_ID == ProductionId
                        select d).Single();
             }
+
+            //Process deletion
             GenericData.Delete<DAILY_ACTIVITY_PRODUCTION>(data);
 
             uxCurrentProductionStore.Reload();
@@ -139,6 +149,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             DAILY_ACTIVITY_PRODUCTION data;
             
+            //Do type conversions
             long TaskId = long.Parse(uxAddProductionTask.Value.ToString());
             long AcresPerMile = long.Parse(uxAddProductionAcresPerMile.Value.ToString());
             long Gallons = long.Parse(uxAddProductionGallons.Value.ToString());
@@ -172,6 +183,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     MODIFIED_BY = User.Identity.Name
                 };
             }
+
+            //Write to DB
             GenericData.Insert<DAILY_ACTIVITY_PRODUCTION>(data);
 
             uxAddProductionWindow.Hide();
@@ -199,6 +212,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             DAILY_ACTIVITY_PRODUCTION data;
 
+            //Do type conversions
             long TaskId = long.Parse(uxEditProductionTask.Value.ToString());
             long AcresPerMile = long.Parse(uxEditProductionAcresPerMile.Value.ToString());
             long Gallons = long.Parse(uxEditProductionGallons.Value.ToString());
@@ -214,6 +228,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             TimeIn = TimeIn + TimeInTime.TimeOfDay;
             TimeOut = TimeOut + TimeOutTime.TimeOfDay;
 
+            //Get record to be edited
             using (Entities _context = new Entities())
             {
                 data = (from d in _context.DAILY_ACTIVITY_PRODUCTION
@@ -231,6 +246,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.MODIFY_DATE = DateTime.Now;
             data.MODIFIED_BY = User.Identity.Name;
 
+            //Write to DB
             GenericData.Update<DAILY_ACTIVITY_PRODUCTION>(data);
 
             uxEditProductionWindow.Hide();
@@ -247,6 +263,91 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     TargetAnchor = AnchorPoint.Center
                 }
             });
+        }
+
+        /// <summary>
+        /// Validate DateIn and DateOut
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void valDate(object sender, RemoteValidationEventArgs e)
+        {
+            DateField Field = (DateField)sender;
+            DateTime DateIn;
+            DateTime DateOut; 
+
+            //Get values based on Add/Edite
+            if (e.ExtraParams["Type"] == "Add")
+            {
+                DateIn = DateTime.Parse(uxAddProductionDateIn.Value.ToString());
+                DateOut = DateTime.Parse(Field.Value.ToString());
+            }
+            else
+            {
+                DateIn = DateTime.Parse(uxEditProductionDateIn.Value.ToString());
+                DateOut = DateTime.Parse(Field.Value.ToString());
+            }
+
+            //Do comparision and set validation flag, error message if necessary
+            if (DateOut >= DateIn)
+            {
+                e.Success = true;
+            }
+            else
+            {
+                e.Success = false;
+                e.ErrorMessage = "Date Out must be greater than or equal to Date In";
+            }
+        }
+
+        /// <summary>
+        /// Validate TimeIn and TimeOut
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void valTime(object sender, RemoteValidationEventArgs e)
+        {
+            TimeField Field = (TimeField)sender;
+            DateTime TimeIn;
+            DateTime TimeOut;
+
+            DateTime DateIn;
+            DateTime DateOut;
+
+            //Set values based on Add/Edit
+            if (e.ExtraParams["Type"] == "Add")
+            {
+                DateIn = DateTime.Parse(uxAddProductionDateIn.Value.ToString());
+                DateOut = DateTime.Parse(uxAddProductionDateOut.Value.ToString());
+
+                TimeIn = DateTime.Parse(uxAddProductionTimeIn.Value.ToString());
+                TimeOut = DateTime.Parse(Field.Value.ToString());
+ 
+                TimeIn = DateIn.Date + TimeIn.TimeOfDay;
+                TimeOut = DateOut.Date + TimeOut.TimeOfDay;
+            }
+            else
+            {
+                DateIn = DateTime.Parse(uxEditProductionDateIn.Value.ToString());
+                DateOut = DateTime.Parse(uxEditProductionDateOut.Value.ToString());
+
+                TimeIn = DateTime.Parse(uxEditProductionTimeIn.Value.ToString());
+                TimeOut = DateTime.Parse(Field.Value.ToString());
+
+                TimeIn = DateIn.Date + TimeIn.TimeOfDay;
+                TimeOut = DateOut.Date + TimeOut.TimeOfDay;
+            }
+
+            //Do comparison and set validation flag, error message if necessary
+            if (TimeOut >= TimeIn )
+            {
+                e.Success = true;
+            }
+            else
+            {
+                e.Success = false;
+                e.ErrorMessage = "Time Out must be greater than or equal to Time In";
+            }
         }
     }
 }

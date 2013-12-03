@@ -24,158 +24,34 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxStateList.Data = StaticLists.StateList;
             }
         }
+
         /// <summary>
         /// Reads/Filters Project Data
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void deReadData(object sender, StoreReadDataEventArgs e)
-        {            
-            List<WEB_PROJECTS_V> data = new List<WEB_PROJECTS_V>();
+        {
+            List<WEB_PROJECTS_V> dataIn;
             if (uxFormProjectToggleOrg.Pressed)
             {
                 //Get All Projects
-                data = WEB_PROJECTS_V.ProjectList();
+                dataIn = WEB_PROJECTS_V.ProjectList();
             }
             else
             {
                 var MyAuth = new Authentication();
                 int CurrentOrg = Convert.ToInt32(MyAuth.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
                 //Get projects for my org only
-                data = WEB_PROJECTS_V.ProjectList(CurrentOrg);
-            }
-            
-
-            //-- start filtering -----------------------------------------------------------
-            FilterHeaderConditions fhc = new FilterHeaderConditions(e.Parameters["filterheader"]);
-
-            foreach (FilterHeaderCondition condition in fhc.Conditions)
-            {
-                string dataIndex = condition.DataIndex;
-                FilterType type = condition.Type;
-                string op = condition.Operator;
-                object value = null;
-
-                switch (condition.Type)
-                {
-                    case FilterType.Boolean:
-                        value = condition.Value<bool>();
-                        break;
-
-                    case FilterType.Date:
-                        switch (condition.Operator)
-                        {
-                            case "=":
-                                value = condition.Value<DateTime>();
-                                break;
-
-                            case "compare":
-                                value = FilterHeaderComparator<DateTime>.Parse(condition.JsonValue);
-                                break;
-                        }
-                        break;
-
-                    case FilterType.Numeric:
-                        bool isInt = data.Count > 0 && data[0].GetType().GetProperty(dataIndex).PropertyType == typeof(int);
-                        switch (condition.Operator)
-                        {
-                            case "=":
-                                if (isInt)
-                                {
-                                    value = condition.Value<int>();
-                                }
-                                else
-                                {
-                                    value = condition.Value<double>();
-                                }
-                                break;
-
-                            case "compare":
-                                if (isInt)
-                                {
-                                    value = FilterHeaderComparator<int>.Parse(condition.JsonValue);
-                                }
-                                else
-                                {
-                                    value = FilterHeaderComparator<double>.Parse(condition.JsonValue);
-                                }
-
-                                break;
-                        }
-
-                        break;
-                    case FilterType.String:
-                        value = condition.Value<string>();
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-
-                data.RemoveAll(item =>
-                {
-                    object oValue = item.GetType().GetProperty(dataIndex).GetValue(item, null);
-                    string matchValue = null;
-                    string itemValue = null;
-
-                    if (type == FilterType.String)
-                    {
-                        matchValue = (string)value;
-                        itemValue = oValue as string;
-                    }
-
-                    //switch (op)
-                    //{
-                    //    case "=":
-                    //        return oValue == null || !oValue.Equals(value);
-                    //    case "compare":
-                    //        return !((IEquatable<IComparable>)value).Equals((IComparable)oValue);
-                    //    case "+":
-                    //        return itemValue == null || !itemValue.StartsWith(matchValue);
-                    //    case "-":
-                    //        return itemValue == null || !itemValue.EndsWith(matchValue);
-                    //    case "!":
-                    //        return itemValue == null || itemValue.IndexOf(matchValue) >= 0;
-                    //    case "*":
-                            return itemValue == null || itemValue.IndexOf(matchValue) < 0;
-                    //    default:
-                    //        throw new Exception("Not supported operator");
-                    //}
-                });
-            }
-            //-- end filtering ------------------------------------------------------------
-
-
-            //-- start sorting ------------------------------------------------------------
-            if (e.Sort.Length > 0)
-            {
-                data.Sort(delegate(WEB_PROJECTS_V x, WEB_PROJECTS_V y)
-                {
-                    object a;
-                    object b;
-
-                    int direction = e.Sort[0].Direction == Ext.Net.SortDirection.DESC ? -1 : 1;
-
-                    a = x.GetType().GetProperty(e.Sort[0].Property).GetValue(x, null);
-                    b = y.GetType().GetProperty(e.Sort[0].Property).GetValue(y, null);
-                    return CaseInsensitiveComparer.Default.Compare(a, b) * direction;
-                });
-            }
-            //-- end sorting ------------------------------------------------------------
-
-
-            //-- start paging ------------------------------------------------------------
-            int limit = e.Limit;
-
-            if ((e.Start + e.Limit) > data.Count)
-            {
-                limit = data.Count - e.Start;
+                dataIn = WEB_PROJECTS_V.ProjectList(CurrentOrg);
             }
 
-            List<WEB_PROJECTS_V> rangeData = (e.Start < 0 || limit < 0) ? data : data.GetRange(e.Start, limit);
-            //-- end paging ------------------------------------------------------------
+            int count;
+            //Get paged, filterable list of data
+            List<WEB_PROJECTS_V> data = GenericData.EnumerableFilterHeader<WEB_PROJECTS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
 
-            e.Total = data.Count;
-            uxFormProjectStore.DataSource = rangeData;
+            e.Total = count;
+            uxFormProjectStore.DataSource = data;
             uxFormProjectStore.DataBind();
         }
 
@@ -199,153 +75,25 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deLoadEmployees(object sender, Ext.Net.StoreReadDataEventArgs e)
         {
-            List<EMPLOYEES_V> data = new List<EMPLOYEES_V>();
+            List<EMPLOYEES_V> dataIn;
             if (uxFormEmployeeToggleOrg.Pressed)
             {
                 //Get Employees for all regions
-                data = EMPLOYEES_V.EmployeeDropDown();
+                dataIn = EMPLOYEES_V.EmployeeDropDown();
             }
             else
             {
                 var MyAuth = new Authentication();
                 int CurrentOrg = Convert.ToInt32(MyAuth.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
                 //Get Employees for my region only
-                data = EMPLOYEES_V.EmployeeDropDown(CurrentOrg);
+                dataIn = EMPLOYEES_V.EmployeeDropDown(CurrentOrg);
             }
+            int count;
+            //Get paged, filterable list of Employees
+            List<EMPLOYEES_V> data = GenericData.EnumerableFilterHeader<EMPLOYEES_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
 
-            //-- start filtering -----------------------------------------------------------
-            FilterHeaderConditions fhc = new FilterHeaderConditions(e.Parameters["filterheader"]);
-
-            foreach (FilterHeaderCondition condition in fhc.Conditions)
-            {
-                string dataIndex = condition.DataIndex;
-                FilterType type = condition.Type;
-                string op = condition.Operator;
-                object value = null;
-
-                switch (condition.Type)
-                {
-                    case FilterType.Boolean:
-                        value = condition.Value<bool>();
-                        break;
-
-                    case FilterType.Date:
-                        switch (condition.Operator)
-                        {
-                            case "=":
-                                value = condition.Value<DateTime>();
-                                break;
-
-                            case "compare":
-                                value = FilterHeaderComparator<DateTime>.Parse(condition.JsonValue);
-                                break;
-                        }
-                        break;
-
-                    case FilterType.Numeric:
-                        bool isInt = data.Count > 0 && data[0].GetType().GetProperty(dataIndex).PropertyType == typeof(int);
-                        switch (condition.Operator)
-                        {
-                            case "=":
-                                if (isInt)
-                                {
-                                    value = condition.Value<int>();
-                                }
-                                else
-                                {
-                                    value = condition.Value<double>();
-                                }
-                                break;
-
-                            case "compare":
-                                if (isInt)
-                                {
-                                    value = FilterHeaderComparator<int>.Parse(condition.JsonValue);
-                                }
-                                else
-                                {
-                                    value = FilterHeaderComparator<double>.Parse(condition.JsonValue);
-                                }
-
-                                break;
-                        }
-
-                        break;
-                    case FilterType.String:
-                        value = condition.Value<string>();
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-
-                data.RemoveAll(item =>
-                {
-                    object oValue = item.GetType().GetProperty(dataIndex).GetValue(item, null);
-                    string matchValue = null;
-                    string itemValue = null;
-
-                    if (type == FilterType.String)
-                    {
-                        matchValue = (string)value;
-                        matchValue = matchValue.ToLower();
-                        itemValue = oValue as string;
-                        itemValue = itemValue.ToLower();
-                    }
-
-                    return itemValue == null || itemValue.IndexOf(matchValue) < 0;
-                    //switch (op)
-                    //{
-                    //    case "=":
-                    //        return oValue == null || !oValue.Equals(value);
-                    //    case "compare":
-                    //        return !((IEquatable<IComparable>)value).Equals((IComparable)oValue);
-                    //    case "+":
-                    //        return itemValue == null || !itemValue.StartsWith(matchValue);
-                    //    case "-":
-                    //        return itemValue == null || !itemValue.EndsWith(matchValue);
-                    //    case "!":
-                    //        return itemValue == null || itemValue.IndexOf(matchValue) >= 0;
-                    //    case "*":
-                    //        return itemValue == null || itemValue.IndexOf(matchValue) < 0;
-                    //    default:
-                    //        throw new Exception("Not supported operator");
-                    //}
-                });
-            }
-            //-- end filtering ------------------------------------------------------------
-
-
-            //-- start sorting ------------------------------------------------------------
-            if (e.Sort.Length > 0)
-            {
-                data.Sort(delegate(EMPLOYEES_V x, EMPLOYEES_V y)
-                {
-                    object a;
-                    object b;
-
-                    int direction = e.Sort[0].Direction == Ext.Net.SortDirection.DESC ? -1 : 1;
-
-                    a = x.GetType().GetProperty(e.Sort[0].Property).GetValue(x, null);
-                    b = y.GetType().GetProperty(e.Sort[0].Property).GetValue(y, null);
-                    return CaseInsensitiveComparer.Default.Compare(a, b) * direction;
-                });
-            }
-            //-- end sorting ------------------------------------------------------------
-
-
-            //-- start paging ------------------------------------------------------------
-            int limit = e.Limit;
-
-            if ((e.Start + e.Limit) > data.Count)
-            {
-                limit = data.Count - e.Start;
-            }
-
-            List<EMPLOYEES_V> rangeData = (e.Start < 0 || limit < 0) ? data : data.GetRange(e.Start, limit);
-            //-- end paging ------------------------------------------------------------
-
-            e.Total = data.Count;
-            uxFormEmployeeStore.DataSource = rangeData;
+            e.Total = count;
+            uxFormEmployeeStore.DataSource = data;
             uxFormEmployeeStore.DataBind();
         }
 
@@ -382,6 +130,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
             }            
         }
+
         /// <summary>
         /// Puts value into Employee DropDownField and clears filters
         /// </summary>
@@ -400,7 +149,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param> 
-
         protected void deStoreHeader(object sender, Ext.Net.DirectEventArgs e)
         {
             //Get values in correct formats
@@ -411,18 +159,20 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             var icp = User as ClaimsPrincipal;
             var AddingUser = MyAuth.GetClaimValue(ClaimTypes.Name, icp);
             
+            string SubDivision;
+            string HeaderType;
+            string Contractor;
+            string Density;
+
+            
             //Create new Daily Activity Header
             DAILY_ACTIVITY_HEADER ToStore = new DAILY_ACTIVITY_HEADER()
             {
                 PROJECT_ID = ProjectId,
                 DA_DATE = DaDate,
-                SUBDIVISION = uxFormSubDivision.Value.ToString(),
-                CONTRACTOR = uxFormContractor.Value.ToString(),
                 PERSON_ID = PersonId,
                 LICENSE = uxFormLicense.Value.ToString(),
                 STATE = uxFormState.Value.ToString(),
-                APPLICATION_TYPE = uxFormType.Value.ToString(),
-                DENSITY = uxFormDensity.Value.ToString(),
                 CREATE_DATE = DateTime.Now,
                 MODIFY_DATE = DateTime.Now,
                 CREATED_BY = AddingUser,
@@ -430,6 +180,49 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 STATUS = 1
             };
 
+            //check for SubDivision value
+            try
+            {
+                SubDivision = uxFormSubDivision.Value.ToString();
+                ToStore.SUBDIVISION = SubDivision;
+            }
+            catch (NullReferenceException)
+            {
+                ToStore.SUBDIVISION = null;
+            }
+
+            //check for Type value
+            try
+            {
+                HeaderType = uxFormType.Value.ToString();
+                ToStore.APPLICATION_TYPE = HeaderType;
+            }
+            catch (NullReferenceException)
+            {
+                ToStore.APPLICATION_TYPE = null;
+            }
+
+            //check for Contractor
+            try
+            {
+                Contractor = uxFormContractor.Value.ToString();
+                ToStore.CONTRACTOR = Contractor;
+            }
+            catch (NullReferenceException)
+            {
+                ToStore.CONTRACTOR = null;
+            }
+
+            //check for Density
+            try
+            {
+                Density = uxFormDensity.Value.ToString();
+                ToStore.DENSITY = Density;
+            }
+            catch (NullReferenceException)
+            {
+                ToStore.DENSITY = null;
+            }
             //Write to the DB
             GenericData.Insert<DAILY_ACTIVITY_HEADER>(ToStore);
             Response.Redirect("umManageExisting.aspx");

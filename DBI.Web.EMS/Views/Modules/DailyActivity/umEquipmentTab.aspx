@@ -108,7 +108,8 @@
 						<ext:DropDownField runat="server"
 							ID="uxAddEquipmentDropDown"
 							FieldLabel="Choose Equipment"
-							Mode="ValueText">
+							Mode="ValueText"
+							AllowBlank="false">
 							<Component>
 								<ext:GridPanel runat="server"
 									ID="uxEquipmentGrid" 
@@ -208,16 +209,35 @@
 						</ext:DropDownField>
 						<ext:NumberField runat="server"
 							ID="uxAddEquipmentStart"
-							FieldLabel="Starting Odometer" />
+							FieldLabel="Starting Odometer"
+							AllowBlank="true"
+							IsRemoteValidation="true">
+							<RemoteValidation OnValidation="valOdometer">
+								<ExtraParams>
+									<ext:Parameter Name="Type" Value="Add" />
+									<ext:Parameter Name="Start" Value="Start" />
+								</ExtraParams>
+							</RemoteValidation>
+						</ext:NumberField>
 						<ext:NumberField runat="server"
 							ID="uxAddEquipmentEnd"
-							FieldLabel="Ending Odometer" />
+							FieldLabel="Ending Odometer"
+							AllowBlank="true"
+							IsRemoteValidation="true">
+							<RemoteValidation OnValidation="valOdometer">
+								<ExtraParams>
+									<ext:Parameter Name="Type" Value="Add" />
+									<ext:Parameter Name="Start" Value="End" />
+								</ExtraParams>
+							</RemoteValidation>
+						</ext:NumberField>
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxAddEquipmentSubmit"
 							Text="Submit"
-							Icon="ApplicationGo">
+							Icon="ApplicationGo"
+							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deAddEquipment" />                                    
 							</DirectEvents>
@@ -231,6 +251,9 @@
 							</Listeners>
 						</ext:Button>
 					</Buttons>
+					<Listeners>
+						<ValidityChange Handler="#{uxAddEquipmentSubmit}.setDisabled(!valid);" />
+					</Listeners>
 				</ext:FormPanel>
 			</Items>			
 		</ext:Window>
@@ -248,7 +271,8 @@
 						<ext:DropDownField runat="server"
 							ID="uxEditEquipmentProject"
 							FieldLabel="Choose Equipment"
-							Mode="ValueText">
+							Mode="ValueText"
+							AllowBlank="false">
 							<Component>
 								<ext:GridPanel runat="server"
 									ID="uxEditEquipmentProjectGrid">
@@ -342,16 +366,35 @@
 						</ext:DropDownField>
 						<ext:NumberField runat="server"
 							ID="uxEditEquipmentStart"
-							FieldLabel="Starting Odometer" />
+							FieldLabel="Starting Odometer"
+							AllowBlank="true"
+							IsRemoteValidation="true">
+							<RemoteValidation OnValidation="valOdometer">
+								<ExtraParams>
+									<ext:Parameter Name="Type" Value="Edit" />
+									<ext:Parameter Name="Start" Value="Start" />
+								</ExtraParams>
+							</RemoteValidation>
+						</ext:NumberField>
 						<ext:NumberField runat="server"
 							ID="uxEditEquipmentEnd"
-							FieldLabel="Ending Odometer" />
+							FieldLabel="Ending Odometer"
+							AllowBlank="true"
+							IsRemoteValidation="true">
+							<RemoteValidation OnValidation="valOdometer">
+								<ExtraParams>
+									<ext:Parameter Name="Type" Value="Edit" />
+									<ext:Parameter Name="Start" Value="End" />
+								</ExtraParams>
+							</RemoteValidation>
+						</ext:NumberField>
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxEditEquipmentSubmit"
 							Icon="ApplicationGo"
-							Text="Submit">
+							Text="Submit"
+							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deEditEquipment">
 									<ExtraParams>
@@ -369,6 +412,9 @@
 							</Listeners>
 						</ext:Button>
 					</Buttons>
+					<Listeners>
+						<ValidityChange Handler="#{uxEditEquipmentSubmit}.setDisabled(!valid);" />
+					</Listeners>
 				</ext:FormPanel>
 			</Items>
 		</ext:Window>			 

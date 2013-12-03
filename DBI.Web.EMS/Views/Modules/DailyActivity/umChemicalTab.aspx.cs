@@ -22,7 +22,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         protected void GetGridData()
         {
+            //Set header
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            
+            //Get Chemical Mix data
             using (Entities _context = new Entities())
             {
                 var data = (from d in _context.DAILY_ACTIVITY_CHEMICAL_MIX
@@ -57,6 +60,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                          select d).Count();
             }
 
+            //Fill DB fields
             DAILY_ACTIVITY_CHEMICAL_MIX data = new DAILY_ACTIVITY_CHEMICAL_MIX()
             {
                 CHEMICAL_MIX_NUMBER = count + 1,
@@ -73,11 +77,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 MODIFIED_BY = User.Identity.Name,
                 HEADER_ID = HeaderId
             };
+
+            //Write to db
             GenericData.Insert<DAILY_ACTIVITY_CHEMICAL_MIX>(data);
             uxAddChemicalWindow.Hide();
             uxAddChemicalForm.Reset();
             uxCurrentChemicalStore.Reload();
 
+            //Show notification
             Notification.Show(new NotificationConfig()
             {
                 Title = "Success",
@@ -101,6 +108,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             string JsonValues = e.ExtraParams["ChemicalInfo"];
             Dictionary<string, string>[] ChemicalInfo = JSON.Deserialize<Dictionary<string, string>[]>(JsonValues);
 
+            //loop through result
             foreach (Dictionary<string, string> Chemical in ChemicalInfo)
             {
                 uxEditChemicalTargetAre.SetValue(Chemical["TARGET_ARE"]);
@@ -180,6 +188,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             decimal GallonRemain = decimal.Parse(uxEditChemicalGallonRemain.Value.ToString());
             DAILY_ACTIVITY_CHEMICAL_MIX data;
 
+            //Get record to update
             using (Entities _context = new Entities())
             {
                 data = (from d in _context.DAILY_ACTIVITY_CHEMICAL_MIX
@@ -197,6 +206,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.MODIFIED_BY = User.Identity.Name;
             data.MODIFY_DATE = DateTime.Now;
 
+            //Set update to database
             GenericData.Update<DAILY_ACTIVITY_CHEMICAL_MIX>(data);
 
             uxEditChemicalWindow.Hide();
