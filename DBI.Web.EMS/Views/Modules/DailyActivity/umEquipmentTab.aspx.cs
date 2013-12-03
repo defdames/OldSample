@@ -103,8 +103,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             long headerId = long.Parse(Request.QueryString["headerId"]);
             long projectId = long.Parse(uxAddEquipmentDropDown.Value.ToString());
-            long odStart = long.Parse(uxAddEquipmentStart.Value.ToString());
-            long odEnd = long.Parse(uxAddEquipmentEnd.Value.ToString());
+            long odStart;
+            long odEnd;
+            try
+            {
+                odStart = long.Parse(uxAddEquipmentStart.Value.ToString());
+            }
+            catch (NullReferenceException)
+            {
+                odStart = 0;
+            }
+            try
+            {
+                odEnd = long.Parse(uxAddEquipmentEnd.Value.ToString());
+            }
+            catch (NullReferenceException)
+            {
+                odEnd = 0;
+            }
             var MyAuth = new Authentication();
             var icp = User as ClaimsPrincipal;
             var AddingUser = MyAuth.GetClaimValue(ClaimTypes.Name, icp);
@@ -175,9 +191,26 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         select d).Single();
 
                 long ProjectId = long.Parse(uxEditEquipmentProject.Value.ToString());
-                long OdStart = long.Parse(uxEditEquipmentStart.Value.ToString());
-                long OdEnd = long.Parse(uxEditEquipmentEnd.Value.ToString());
+                long OdStart;
+                long OdEnd;
 
+                try
+                {
+                    OdStart = long.Parse(uxEditEquipmentStart.Value.ToString());
+                }
+                catch (NullReferenceException)
+                {
+                    OdStart = 0;
+                }
+
+                try
+                {
+                    OdEnd = long.Parse(uxEditEquipmentEnd.Value.ToString());
+                }
+                catch (NullReferenceException)
+                {
+                    OdEnd = 0;
+                }
                 //Update Entity
                 data.PROJECT_ID = ProjectId;
                 data.ODOMETER_START = OdStart;

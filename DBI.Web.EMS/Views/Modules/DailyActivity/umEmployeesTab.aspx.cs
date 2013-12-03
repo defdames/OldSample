@@ -246,11 +246,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             //Convert to correct types
             int PersonId = int.Parse(uxAddEmployeeEmpDropDown.Value.ToString());
-            long EquipmentId = long.Parse(uxAddEmployeeEqDropDown.Value.ToString());
+            long EquipmentId;
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-            decimal TravelTime = decimal.Parse(uxAddEmployeeTravelTime.Value.ToString());
-            decimal DriveTime = decimal.Parse(uxAddEmployeeDriveTime.Value.ToString());
-            
+            decimal TravelTime;
+            decimal DriveTime;
+            string Comments;
+
             //Combine Date/Time for TimeIn/Out
             DateTime TimeIn = DateTime.Parse(uxAddEmployeeTimeInDate.Value.ToString());
             DateTime TimeInTime = DateTime.Parse(uxAddEmployeeTimeInTime.Value.ToString());
@@ -271,6 +272,41 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 PerDiem = "N";
             }
 
+            try
+            {
+                TravelTime = decimal.Parse(uxAddEmployeeTravelTime.Value.ToString());
+            }
+            catch (NullReferenceException)
+            {
+                TravelTime = 0;
+            }
+
+            try
+            {
+                DriveTime = decimal.Parse(uxAddEmployeeDriveTime.Value.ToString());
+            }
+            catch (NullReferenceException)
+            {
+                DriveTime = 0;
+            }
+
+            try
+            {
+                Comments = uxAddEmployeeComments.Value.ToString();
+            }
+            catch (NullReferenceException)
+            {
+                Comments = "";
+            }
+
+            try
+            {
+                EquipmentId = long.Parse(uxAddEmployeeEqDropDown.Value.ToString());
+            }
+            catch(FormatException)
+            {
+                EquipmentId = 0;
+            }
             DAILY_ACTIVITY_EMPLOYEE data = new DAILY_ACTIVITY_EMPLOYEE()
             {
                 HEADER_ID = HeaderId,
@@ -280,7 +316,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 TIME_OUT = TimeOut,
                 TRAVEL_TIME = TravelTime,
                 DRIVE_TIME = DriveTime,
-                COMMENTS = uxAddEmployeeComments.Value.ToString(),
+                COMMENTS = Comments,
                 PER_DIEM = PerDiem,
                 CREATE_DATE = DateTime.Now,
                 MODIFY_DATE = DateTime.Now,
