@@ -372,5 +372,119 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
             });
         }
+
+        /// <summary>
+        /// Validate DateIn and DateOut
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void valDate(object sender, RemoteValidationEventArgs e)
+        {
+            DateField Field = (DateField)sender;
+            DateTime DateIn;
+            DateTime DateOut;
+
+            if (e.ExtraParams["Type"] == "Add")
+            {
+                if (e.ExtraParams["InOut"] == "Out")
+                {
+                    DateIn = DateTime.Parse(uxAddEmployeeTimeInDate.Value.ToString());
+                    DateOut = DateTime.Parse(Field.Value.ToString());
+                }
+                else
+                {
+                    DateIn = DateTime.Parse(Field.Value.ToString());
+                    DateOut = DateTime.Parse(uxAddEmployeeTimeOutTime.Value.ToString());
+                }
+
+            }
+            else
+            {
+                if (e.ExtraParams["InOut"] == "Out")
+                {
+                    DateIn = DateTime.Parse(uxEditEmployeeTimeInDate.Value.ToString());
+                    DateOut = DateTime.Parse(Field.Value.ToString());
+                }
+                else
+                {
+                    DateIn = DateTime.Parse(Field.Value.ToString());
+                    DateOut = DateTime.Parse(uxEditEmployeeTimeOutDate.Value.ToString());
+                }
+            }
+
+            if (DateOut >= DateIn)
+            {
+                e.Success = true;
+            }
+            else
+            {
+                e.Success = false;
+                e.ErrorMessage = "Date Out must be greater than or equal to Date In";
+            }
+        }
+
+        /// <summary>
+        /// Validate TimeIn and TimeOut
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void valTime(object sender, RemoteValidationEventArgs e)
+        {
+            TimeField Field = (TimeField)sender;
+            DateTime TimeIn;
+            DateTime TimeOut;
+
+            DateTime DateIn;
+            DateTime DateOut;
+            if (e.ExtraParams["Type"] == "Add")
+            {
+                DateIn = DateTime.Parse(uxAddEmployeeTimeInDate.Value.ToString());
+                DateOut = DateTime.Parse(uxAddEmployeeTimeOutDate.Value.ToString());
+
+                if (e.ExtraParams["InOut"] == "Out")
+                {
+                    TimeIn = DateTime.Parse(uxAddEmployeeTimeInTime.Value.ToString());
+                    TimeOut = DateTime.Parse(Field.Value.ToString());
+                }
+                else
+                {
+                    TimeIn = DateTime.Parse(Field.Value.ToString());
+                    TimeOut = DateTime.Parse(uxAddEmployeeTimeOutTime.Value.ToString());
+                }
+
+                TimeIn = DateIn.Date + TimeIn.TimeOfDay;
+                TimeOut = DateOut.Date + TimeOut.TimeOfDay;
+
+            }
+            else
+            {
+                DateIn = DateTime.Parse(uxEditEmployeeTimeInDate.Value.ToString());
+                DateOut = DateTime.Parse(uxEditEmployeeTimeOutDate.Value.ToString());
+
+                if (e.ExtraParams["InOut"] == "Out")
+                {
+                    TimeIn = DateTime.Parse(uxEditEmployeeTimeInTime.Value.ToString());
+                    TimeOut = DateTime.Parse(Field.Value.ToString());
+                }
+                else
+                {
+                    TimeIn = DateTime.Parse(Field.Value.ToString());
+                    TimeOut = DateTime.Parse(uxEditEmployeeTimeOutTime.Value.ToString());
+                }
+
+                TimeIn = DateIn.Date + TimeIn.TimeOfDay;
+                TimeOut = DateOut.Date + TimeOut.TimeOfDay;
+            }
+
+            if (TimeOut >= TimeIn)
+            {
+                e.Success = true;
+            }
+            else
+            {
+                e.Success = false;
+                e.ErrorMessage = "Time Out must be greater than or equal to Time In";
+            }
+        }
     }
 }
