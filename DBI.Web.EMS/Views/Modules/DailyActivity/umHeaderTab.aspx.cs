@@ -198,7 +198,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             catch (NullReferenceException)
             {
-                data.SUBDIVISION = "";
+                data.SUBDIVISION = null;
             }
             try
             {
@@ -206,7 +206,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             catch (NullReferenceException)
             {
-                data.CONTRACTOR = "";
+                data.CONTRACTOR = null;
             }
             data.PERSON_ID = PersonId;
             data.LICENSE = uxFormLicense.Value.ToString();
@@ -217,7 +217,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             catch (NullReferenceException)
             {
-                data.APPLICATION_TYPE = "";
+                data.APPLICATION_TYPE = null;
             }
             try
             {
@@ -225,7 +225,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             catch (NullReferenceException)
             {
-                data.DENSITY = "";
+                data.DENSITY = null;
             }
             data.MODIFIED_BY = User.Identity.Name;
             data.MODIFY_DATE = DateTime.Now;

@@ -105,22 +105,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long projectId = long.Parse(uxAddEquipmentDropDown.Value.ToString());
             long odStart;
             long odEnd;
-            try
-            {
-                odStart = long.Parse(uxAddEquipmentStart.Value.ToString());
-            }
-            catch (NullReferenceException)
-            {
-                odStart = 0;
-            }
-            try
-            {
-                odEnd = long.Parse(uxAddEquipmentEnd.Value.ToString());
-            }
-            catch (NullReferenceException)
-            {
-                odEnd = 0;
-            }
+            
             var MyAuth = new Authentication();
             var icp = User as ClaimsPrincipal;
             var AddingUser = MyAuth.GetClaimValue(ClaimTypes.Name, icp);
@@ -129,14 +114,30 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 HEADER_ID = headerId,
                 PROJECT_ID = projectId,
-                ODOMETER_START = odStart,
-                ODOMETER_END = odEnd,
                 CREATE_DATE = DateTime.Now,
                 MODIFY_DATE = DateTime.Now,
                 CREATED_BY = AddingUser,
                 MODIFIED_BY = AddingUser
             };
 
+            try
+            {
+                odStart = long.Parse(uxAddEquipmentStart.Value.ToString());
+                added.ODOMETER_START = odStart;
+            }
+            catch (NullReferenceException)
+            {
+                added.ODOMETER_START = null;
+            }
+            try
+            {
+                odEnd = long.Parse(uxAddEquipmentEnd.Value.ToString());
+                added.ODOMETER_END = odEnd;
+            }
+            catch (NullReferenceException)
+            {
+                added.ODOMETER_END = null;
+            }
             //Write Data to DB
             GenericData.Insert<DAILY_ACTIVITY_EQUIPMENT>(added);
             uxAddEquipmentWindow.Hide();
@@ -197,24 +198,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 try
                 {
                     OdStart = long.Parse(uxEditEquipmentStart.Value.ToString());
+                    data.ODOMETER_START = OdStart;
                 }
                 catch (NullReferenceException)
                 {
-                    OdStart = 0;
+                    data.ODOMETER_START = null;
                 }
 
                 try
                 {
                     OdEnd = long.Parse(uxEditEquipmentEnd.Value.ToString());
+                    data.ODOMETER_END = OdEnd;
                 }
                 catch (NullReferenceException)
                 {
-                    OdEnd = 0;
+                    data.ODOMETER_END = null;
                 }
                 //Update Entity
                 data.PROJECT_ID = ProjectId;
-                data.ODOMETER_START = OdStart;
-                data.ODOMETER_END = OdEnd;
                 data.MODIFIED_BY = User.Identity.Name;
                 data.MODIFY_DATE = DateTime.Now;
             }

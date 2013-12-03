@@ -163,57 +163,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             string Contractor;
             string Density;
 
-            //check for SubDivision value
-            try
-            {
-                SubDivision = uxFormSubDivision.Value.ToString();
-            }
-            catch (NullReferenceException)
-            {
-                SubDivision = "";
-            }
-
-            //check for Type value
-            try
-            {
-                HeaderType = uxFormType.Value.ToString();
-            }
-            catch (NullReferenceException)
-            {
-                HeaderType = "";
-            }
-
-            //check for Contractor
-            try
-            {
-                Contractor = uxFormContractor.Value.ToString();
-            }
-            catch (NullReferenceException)
-            {
-                Contractor = "";
-            }
-
-            //check for Density
-            try
-            {
-                Density = uxFormDensity.Value.ToString();
-            }
-            catch (NullReferenceException)
-            {
-                Density = "";
-            }
+            
             //Create new Daily Activity Header
             DAILY_ACTIVITY_HEADER ToStore = new DAILY_ACTIVITY_HEADER()
             {
                 PROJECT_ID = ProjectId,
                 DA_DATE = DaDate,
-                SUBDIVISION = SubDivision,
-                CONTRACTOR = Contractor,
                 PERSON_ID = PersonId,
                 LICENSE = uxFormLicense.Value.ToString(),
                 STATE = uxFormState.Value.ToString(),
-                APPLICATION_TYPE = HeaderType,
-                DENSITY = Density,
                 CREATE_DATE = DateTime.Now,
                 MODIFY_DATE = DateTime.Now,
                 CREATED_BY = AddingUser,
@@ -221,6 +179,49 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 STATUS = 1
             };
 
+            //check for SubDivision value
+            try
+            {
+                SubDivision = uxFormSubDivision.Value.ToString();
+                ToStore.SUBDIVISION = SubDivision;
+            }
+            catch (NullReferenceException)
+            {
+                ToStore.SUBDIVISION = null;
+            }
+
+            //check for Type value
+            try
+            {
+                HeaderType = uxFormType.Value.ToString();
+                ToStore.APPLICATION_TYPE = HeaderType;
+            }
+            catch (NullReferenceException)
+            {
+                ToStore.APPLICATION_TYPE = null;
+            }
+
+            //check for Contractor
+            try
+            {
+                Contractor = uxFormContractor.Value.ToString();
+                ToStore.CONTRACTOR = Contractor;
+            }
+            catch (NullReferenceException)
+            {
+                ToStore.CONTRACTOR = null;
+            }
+
+            //check for Density
+            try
+            {
+                Density = uxFormDensity.Value.ToString();
+                ToStore.DENSITY = Density;
+            }
+            catch (NullReferenceException)
+            {
+                ToStore.DENSITY = null;
+            }
             //Write to the DB
             GenericData.Insert<DAILY_ACTIVITY_HEADER>(ToStore);
             Response.Redirect("umManageExisting.aspx");

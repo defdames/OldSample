@@ -258,27 +258,13 @@
 							<Items>
 								<ext:DateField runat="server"
 									ID="uxAddEmployeeTimeInDate"
-									AllowBlank="false" IsRemoteValidation="true">
-									<RemoteValidation OnValidation="valDate">
-										<ExtraParams>
-											<ext:Parameter Name="Type" Value="Add" />
-											<ext:Parameter Name="InOut" Value="In" />
-										</ExtraParams>
-									</RemoteValidation>
-								</ext:DateField>
+									AllowBlank="false" />
 								<ext:TimeField runat="server"
 									ID="uxAddEmployeeTimeInTime"
 									Increment="30" 
 									SelectedTime="09:00" 
 									Format="H:mm"
-									AllowBlank="false" IsRemoteValidation="true">
-									<RemoteValidation OnValidation="valTime">
-										<ExtraParams>
-											<ext:Parameter Name="Type" Value="Add" />
-											<ext:Parameter Name="InOut" Value="In" />
-										</ExtraParams>
-									</RemoteValidation>
-								</ext:TimeField>
+									AllowBlank="false" />
 							</Items>
 							<Defaults>
 								<ext:Parameter Name="Flex" Value="1" Mode="Raw" />
@@ -299,7 +285,6 @@
 									<RemoteValidation OnValidation="valDate">
 										<ExtraParams>
 											<ext:Parameter Name="Type" Value="Add" />
-											<ext:Parameter Name="InOut" Value="Out" />
 										</ExtraParams>
 									</RemoteValidation>
 								</ext:DateField>
@@ -312,7 +297,6 @@
 									<RemoteValidation OnValidation="valTime">
 										<ExtraParams>
 											<ext:Parameter Name="Type" Value="Add" />
-											<ext:Parameter Name="InOut" Value="Out" />
 										</ExtraParams>
 									</RemoteValidation>
 								</ext:TimeField>
@@ -505,27 +489,13 @@
 							<Items>
 								<ext:DateField runat="server"
 									ID="uxEditEmployeeTimeInDate"
-									AllowBlank="false" IsRemoteValidation="true">
-									<RemoteValidation OnValidation="valDate">
-										<ExtraParams>
-											<ext:Parameter Name="Type" Value="Edit" />
-											<ext:Parameter Name="InOut" Value="In" />
-										</ExtraParams>
-									</RemoteValidation>
-								</ext:DateField>
+									AllowBlank="false" />
 								<ext:TimeField runat="server"
 									ID="uxEditEmployeeTimeInTime"
 									Increment="30" 
 									SelectedTime="09:00" 
 									Format="H:mm"
-									AllowBlank="false" IsRemoteValidation="true">
-									<RemoteValidation OnValidation="valTime">
-										<ExtraParams>
-											<ext:Parameter Name="Type" Value="Edit" />
-											<ext:Parameter Name="InOut" Value="In" />
-										</ExtraParams>
-									</RemoteValidation>
-								</ext:TimeField>
+									AllowBlank="false" />
 							</Items>
 							<Defaults>
 								<ext:Parameter Name="Flex" Value="1" Mode="Raw" />
@@ -546,7 +516,6 @@
 									<RemoteValidation OnValidation="valDate">
 										<ExtraParams>
 											<ext:Parameter Name="Type" Value="Edit" />
-											<ext:Parameter Name="InOut" Value="Out" />
 										</ExtraParams>
 									</RemoteValidation>
 								</ext:DateField>
@@ -559,7 +528,6 @@
 									<RemoteValidation OnValidation="valTime">
 										<ExtraParams>
 											<ext:Parameter Name="Type" Value="Edit" />
-											<ext:Parameter Name="InOut" Value="Out" />
 										</ExtraParams>
 									</RemoteValidation>
 								</ext:TimeField>

@@ -262,30 +262,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             if (e.ExtraParams["Type"] == "Add")
             {
-                if (e.ExtraParams["InOut"] == "Out")
-                {
-                    DateIn = DateTime.Parse(uxAddProductionDateIn.Value.ToString());
-                    DateOut = DateTime.Parse(Field.Value.ToString());
-                }
-                else
-                {
-                    DateIn = DateTime.Parse(Field.Value.ToString());
-                    DateOut = DateTime.Parse(uxAddProductionDateOut.Value.ToString());
-                }
-                
+                DateIn = DateTime.Parse(uxAddProductionDateIn.Value.ToString());
+                DateOut = DateTime.Parse(Field.Value.ToString());
             }
             else
             {
-                if (e.ExtraParams["InOut"] == "Out")
-                {
-                    DateIn = DateTime.Parse(uxEditProductionDateIn.Value.ToString());
-                    DateOut = DateTime.Parse(Field.Value.ToString());
-                }
-                else
-                {
-                    DateIn = DateTime.Parse(Field.Value.ToString());
-                    DateOut = DateTime.Parse(uxEditProductionDateOut.Value.ToString());
-                }
+                DateIn = DateTime.Parse(uxEditProductionDateIn.Value.ToString());
+                DateOut = DateTime.Parse(Field.Value.ToString());
             }
 
             if (DateOut >= DateIn)
@@ -317,36 +300,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 DateIn = DateTime.Parse(uxAddProductionDateIn.Value.ToString());
                 DateOut = DateTime.Parse(uxAddProductionDateOut.Value.ToString());
 
-                if (e.ExtraParams["InOut"] == "Out")
-                {
-                    TimeIn = DateTime.Parse(uxAddProductionTimeIn.Value.ToString());
-                    TimeOut = DateTime.Parse(Field.Value.ToString());
-                }
-                else
-                {
-                    TimeIn = DateTime.Parse(Field.Value.ToString());
-                    TimeOut = DateTime.Parse(uxAddProductionTimeOut.Value.ToString());
-                }
-
+                TimeIn = DateTime.Parse(uxAddProductionTimeIn.Value.ToString());
+                TimeOut = DateTime.Parse(Field.Value.ToString());
+ 
                 TimeIn = DateIn.Date + TimeIn.TimeOfDay;
                 TimeOut = DateOut.Date + TimeOut.TimeOfDay;
-
             }
             else
             {
                 DateIn = DateTime.Parse(uxEditProductionDateIn.Value.ToString());
                 DateOut = DateTime.Parse(uxEditProductionDateOut.Value.ToString());
 
-                if (e.ExtraParams["InOut"] == "Out")
-                {
-                    TimeIn = DateTime.Parse(uxEditProductionTimeIn.Value.ToString());
-                    TimeOut = DateTime.Parse(Field.Value.ToString());
-                }
-                else
-                {
-                    TimeIn = DateTime.Parse(Field.Value.ToString());
-                    TimeOut = DateTime.Parse(uxEditProductionTimeOut.Value.ToString());
-                }
+                TimeIn = DateTime.Parse(uxEditProductionTimeIn.Value.ToString());
+                TimeOut = DateTime.Parse(Field.Value.ToString());
 
                 TimeIn = DateIn.Date + TimeIn.TimeOfDay;
                 TimeOut = DateOut.Date + TimeOut.TimeOfDay;

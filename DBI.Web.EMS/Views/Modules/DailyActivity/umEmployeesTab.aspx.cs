@@ -246,11 +246,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             //Convert to correct types
             int PersonId = int.Parse(uxAddEmployeeEmpDropDown.Value.ToString());
-            long EquipmentId;
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-            decimal TravelTime;
-            decimal DriveTime;
-            string Comments;
+
 
             //Combine Date/Time for TimeIn/Out
             DateTime TimeIn = DateTime.Parse(uxAddEmployeeTimeInDate.Value.ToString());
@@ -272,57 +269,58 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 PerDiem = "N";
             }
 
-            try
-            {
-                TravelTime = decimal.Parse(uxAddEmployeeTravelTime.Value.ToString());
-            }
-            catch (NullReferenceException)
-            {
-                TravelTime = 0;
-            }
-
-            try
-            {
-                DriveTime = decimal.Parse(uxAddEmployeeDriveTime.Value.ToString());
-            }
-            catch (NullReferenceException)
-            {
-                DriveTime = 0;
-            }
-
-            try
-            {
-                Comments = uxAddEmployeeComments.Value.ToString();
-            }
-            catch (NullReferenceException)
-            {
-                Comments = "";
-            }
-
-            try
-            {
-                EquipmentId = long.Parse(uxAddEmployeeEqDropDown.Value.ToString());
-            }
-            catch(FormatException)
-            {
-                EquipmentId = 0;
-            }
+            
             DAILY_ACTIVITY_EMPLOYEE data = new DAILY_ACTIVITY_EMPLOYEE()
             {
                 HEADER_ID = HeaderId,
                 PERSON_ID = PersonId,
-                EQUIPMENT_ID = EquipmentId,
                 TIME_IN = TimeIn,
                 TIME_OUT = TimeOut,
-                TRAVEL_TIME = TravelTime,
-                DRIVE_TIME = DriveTime,
-                COMMENTS = Comments,
                 PER_DIEM = PerDiem,
                 CREATE_DATE = DateTime.Now,
                 MODIFY_DATE = DateTime.Now,
                 CREATED_BY = User.Identity.Name,
                 MODIFIED_BY = User.Identity.Name
             };
+            try
+            {
+                decimal TravelTime = decimal.Parse(uxAddEmployeeTravelTime.Value.ToString());
+                data.TRAVEL_TIME = TravelTime;
+            }
+            catch (NullReferenceException)
+            {
+                data.TRAVEL_TIME = null;
+            }
+
+            try
+            {
+                decimal DriveTime= decimal.Parse(uxAddEmployeeDriveTime.Value.ToString());
+                data.DRIVE_TIME = DriveTime;
+            }
+            catch (NullReferenceException)
+            {
+                data.DRIVE_TIME = null;
+            }
+
+            try
+            {
+                string Comments = uxAddEmployeeComments.Value.ToString();;
+                data.COMMENTS = Comments;
+            }
+            catch (NullReferenceException)
+            {
+                data.COMMENTS = null;
+            }
+
+            try
+            {
+                long EquipmentId = long.Parse(uxAddEmployeeEqDropDown.Value.ToString());
+                data.EQUIPMENT_ID = EquipmentId;
+            }
+            catch (FormatException)
+            {
+                data.EQUIPMENT_ID = null;
+            }
             GenericData.Insert<DAILY_ACTIVITY_EMPLOYEE>(data);
 
             uxAddEmployeeWindow.Hide();
@@ -349,10 +347,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void deEditEmployee(object sender, DirectEventArgs e)
         {
             //Convert to correct types
-            int PersonId = int.Parse(uxEditEmployeeEmpDropDown.Value.ToString());
-            long EquipmentId = long.Parse(uxEditEmployeeEqDropDown.Value.ToString());
-            decimal TravelTime = decimal.Parse(uxEditEmployeeTravelTime.Value.ToString());
-            decimal DriveTime = decimal.Parse(uxEditEmployeeDriveTime.Value.ToString());
+            int PersonId = int.Parse(uxEditEmployeeEmpDropDown.Value.ToString());            
 
             //Combine Date/Time for TimeIn/Out
             DateTime TimeIn = DateTime.Parse(uxEditEmployeeTimeInDate.Value.ToString());
@@ -382,9 +377,37 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         select d).Single();
             }
             data.PERSON_ID = PersonId;
-            data.EQUIPMENT_ID = EquipmentId;
-            data.TRAVEL_TIME = TravelTime;
-            data.DRIVE_TIME = DriveTime;
+
+            try
+            {
+                long EquipmentId = long.Parse(uxEditEmployeeEqDropDown.Value.ToString());
+                data.EQUIPMENT_ID = EquipmentId;
+            }
+            catch (NullReferenceException)
+            {
+                data.EQUIPMENT_ID = null;
+            }
+
+            try
+            {
+                decimal TravelTime = decimal.Parse(uxEditEmployeeTravelTime.Value.ToString());
+                data.TRAVEL_TIME = TravelTime;
+            }
+            catch (NullReferenceException)
+            {
+                data.TRAVEL_TIME = null;
+            }
+
+            try
+            {
+                decimal DriveTime = decimal.Parse(uxEditEmployeeDriveTime.Value.ToString());
+                data.DRIVE_TIME = DriveTime;
+            }
+            catch (NullReferenceException)
+            {
+                data.DRIVE_TIME = null;
+            }
+            
             data.TIME_IN = TimeIn;
             data.TIME_OUT = TimeOut;
             data.PER_DIEM = PerDiem;
@@ -422,30 +445,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             if (e.ExtraParams["Type"] == "Add")
             {
-                if (e.ExtraParams["InOut"] == "Out")
-                {
-                    DateIn = DateTime.Parse(uxAddEmployeeTimeInDate.Value.ToString());
-                    DateOut = DateTime.Parse(Field.Value.ToString());
-                }
-                else
-                {
-                    DateIn = DateTime.Parse(Field.Value.ToString());
-                    DateOut = DateTime.Parse(uxAddEmployeeTimeOutTime.Value.ToString());
-                }
-
+                DateIn = DateTime.Parse(uxAddEmployeeTimeInDate.Value.ToString());
+                DateOut = DateTime.Parse(Field.Value.ToString());
             }
             else
             {
-                if (e.ExtraParams["InOut"] == "Out")
-                {
-                    DateIn = DateTime.Parse(uxEditEmployeeTimeInDate.Value.ToString());
-                    DateOut = DateTime.Parse(Field.Value.ToString());
-                }
-                else
-                {
-                    DateIn = DateTime.Parse(Field.Value.ToString());
-                    DateOut = DateTime.Parse(uxEditEmployeeTimeOutDate.Value.ToString());
-                }
+                DateIn = DateTime.Parse(uxEditEmployeeTimeInDate.Value.ToString());
+                DateOut = DateTime.Parse(Field.Value.ToString());
             }
 
             if (DateOut >= DateIn)
@@ -476,17 +482,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 DateIn = DateTime.Parse(uxAddEmployeeTimeInDate.Value.ToString());
                 DateOut = DateTime.Parse(uxAddEmployeeTimeOutDate.Value.ToString());
-
-                if (e.ExtraParams["InOut"] == "Out")
-                {
-                    TimeIn = DateTime.Parse(uxAddEmployeeTimeInTime.Value.ToString());
-                    TimeOut = DateTime.Parse(Field.Value.ToString());
-                }
-                else
-                {
-                    TimeIn = DateTime.Parse(Field.Value.ToString());
-                    TimeOut = DateTime.Parse(uxAddEmployeeTimeOutTime.Value.ToString());
-                }
+                
+                TimeIn = DateTime.Parse(uxAddEmployeeTimeInTime.Value.ToString());
+                TimeOut = DateTime.Parse(Field.Value.ToString());
+                
 
                 TimeIn = DateIn.Date + TimeIn.TimeOfDay;
                 TimeOut = DateOut.Date + TimeOut.TimeOfDay;
@@ -497,16 +496,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 DateIn = DateTime.Parse(uxEditEmployeeTimeInDate.Value.ToString());
                 DateOut = DateTime.Parse(uxEditEmployeeTimeOutDate.Value.ToString());
 
-                if (e.ExtraParams["InOut"] == "Out")
-                {
-                    TimeIn = DateTime.Parse(uxEditEmployeeTimeInTime.Value.ToString());
-                    TimeOut = DateTime.Parse(Field.Value.ToString());
-                }
-                else
-                {
-                    TimeIn = DateTime.Parse(Field.Value.ToString());
-                    TimeOut = DateTime.Parse(uxEditEmployeeTimeOutTime.Value.ToString());
-                }
+                TimeIn = DateTime.Parse(uxEditEmployeeTimeInTime.Value.ToString());
+                TimeOut = DateTime.Parse(Field.Value.ToString());
 
                 TimeIn = DateIn.Date + TimeIn.TimeOfDay;
                 TimeOut = DateOut.Date + TimeOut.TimeOfDay;
