@@ -310,8 +310,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             DateTime TimeIn;
             DateTime TimeOut;
 
+            DateTime DateIn;
+            DateTime DateOut;
             if (e.ExtraParams["Type"] == "Add")
             {
+                DateIn = DateTime.Parse(uxAddProductionDateIn.Value.ToString());
+                DateOut = DateTime.Parse(uxAddProductionDateOut.Value.ToString());
+
                 if (e.ExtraParams["InOut"] == "Out")
                 {
                     TimeIn = DateTime.Parse(uxAddProductionTimeIn.Value.ToString());
@@ -323,9 +328,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     TimeOut = DateTime.Parse(uxAddProductionTimeOut.Value.ToString());
                 }
 
+                TimeIn = DateIn.Date + TimeIn.TimeOfDay;
+                TimeOut = DateOut.Date + TimeOut.TimeOfDay;
+
             }
             else
             {
+                DateIn = DateTime.Parse(uxEditProductionDateIn.Value.ToString());
+                DateOut = DateTime.Parse(uxEditProductionDateOut.Value.ToString());
+
                 if (e.ExtraParams["InOut"] == "Out")
                 {
                     TimeIn = DateTime.Parse(uxEditProductionTimeIn.Value.ToString());
@@ -336,9 +347,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     TimeIn = DateTime.Parse(Field.Value.ToString());
                     TimeOut = DateTime.Parse(uxEditProductionTimeOut.Value.ToString());
                 }
+
+                TimeIn = DateIn.Date + TimeIn.TimeOfDay;
+                TimeOut = DateOut.Date + TimeOut.TimeOfDay;
             }
 
-            if (TimeOut >= TimeIn)
+            if (TimeOut >= TimeIn )
             {
                 e.Success = true;
             }
