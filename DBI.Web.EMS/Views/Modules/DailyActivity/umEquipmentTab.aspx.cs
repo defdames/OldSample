@@ -26,6 +26,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         protected void GetCurrentEquipment()
         {
+            //Query and set datasource for Equipment
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["headerId"]);
@@ -79,6 +80,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             int count;
 
+            //Get paged, filterable list of Equipment
             List<WEB_EQUIPMENT_V> data = GenericData.EnumerableFilterHeader<WEB_EQUIPMENT_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
 
             e.Total = count;
@@ -120,6 +122,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 MODIFIED_BY = AddingUser
             };
 
+            //Check for Odometer Start
             try
             {
                 odStart = long.Parse(uxAddEquipmentStart.Value.ToString());
@@ -129,6 +132,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 added.ODOMETER_START = null;
             }
+
+            //Check for Odometer End
             try
             {
                 odEnd = long.Parse(uxAddEquipmentEnd.Value.ToString());
@@ -138,10 +143,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 added.ODOMETER_END = null;
             }
+
             //Write Data to DB
             GenericData.Insert<DAILY_ACTIVITY_EQUIPMENT>(added);
+            
             uxAddEquipmentWindow.Hide();
             uxCurrentEquipmentStore.Reload();
+            
             Notification.Show(new NotificationConfig()
             {
                 Title = "Success",
@@ -183,10 +191,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void deEditEquipment(object sender, DirectEventArgs e)
         {
             DAILY_ACTIVITY_EQUIPMENT data;
+
+            //Get record to be edited
             using (Entities _context = new Entities())
             {
                 long EquipmentId = long.Parse(e.ExtraParams["EquipmentId"]);
-                //Get Current Record
+                
                 data = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
                         where d.EQUIPMENT_ID == EquipmentId
                         select d).Single();
@@ -195,6 +205,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 long OdStart;
                 long OdEnd;
 
+                //Check for odometer start
                 try
                 {
                     OdStart = long.Parse(uxEditEquipmentStart.Value.ToString());
@@ -205,6 +216,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     data.ODOMETER_START = null;
                 }
 
+                //Check for odometer end
                 try
                 {
                     OdEnd = long.Parse(uxEditEquipmentEnd.Value.ToString());
@@ -214,15 +226,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 {
                     data.ODOMETER_END = null;
                 }
+
                 //Update Entity
                 data.PROJECT_ID = ProjectId;
                 data.MODIFIED_BY = User.Identity.Name;
                 data.MODIFY_DATE = DateTime.Now;
             }
+
             //Save to DB
             GenericData.Update<DAILY_ACTIVITY_EQUIPMENT>(data);
+            
             uxCurrentEquipmentStore.Reload();
             uxEditEquipmentWindow.Hide();
+            
             Notification.Show(new NotificationConfig()
             {
                 Title = "Success",
@@ -247,14 +263,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Convert EquipmentId to long
             long EquipmentId = long.Parse(e.ExtraParams["EquipmentId"]);
             DAILY_ACTIVITY_EQUIPMENT data;
+
+            //Get record to be deleted
             using (Entities _context = new Entities())
             {
                 data = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
                         where d.EQUIPMENT_ID == EquipmentId
                         select d).Single();
             }
+
             GenericData.Delete<DAILY_ACTIVITY_EQUIPMENT>(data);
+            
             uxCurrentEquipmentStore.Reload();
+            
             Notification.Show(new NotificationConfig()
             {
                 Title = "Success",
@@ -344,6 +365,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 if (e.ExtraParams["Start"] == "Start")
                 {
                     Start = long.Parse(Field.Value.ToString());
+
+                    //check for Odometer End
                     try
                     {
                         End = long.Parse(uxAddEquipmentEnd.Value.ToString());
@@ -355,6 +378,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 else
                 {
+                    //Check for odometer start
                     try
                     {
                         Start = long.Parse(uxAddEquipmentStart.Value.ToString());
@@ -368,9 +392,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             else
             {
+                //Set values for edit
                 if (e.ExtraParams["Start"] == "Start")
                 {
                     Start = long.Parse(Field.Value.ToString());
+                    
+                    //Check for odometer end
                     try
                     {
                         End = long.Parse(uxEditEquipmentEnd.Value.ToString());
@@ -382,6 +409,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 else
                 {
+                    //Check for odometer start
                     try
                     {
                         Start = long.Parse(uxEditEquipmentStart.Value.ToString());
@@ -394,6 +422,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
             }
 
+            //Do comparison and set validation flag, error message if necessary
             if (Start <= End)
             {
                 e.Success = true;

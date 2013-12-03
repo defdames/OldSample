@@ -27,6 +27,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         protected void GetGridData()
         {
+            //Get Employee data and set datasource
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
@@ -81,6 +82,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deRemoveEmployee(object sender, DirectEventArgs e)
         {
+
             long EmployeeId = long.Parse(e.ExtraParams["EmployeeID"]);
             //Get Record to Remove
             DAILY_ACTIVITY_EMPLOYEE data;
@@ -133,6 +135,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             int count;
 
+            //Get paged,filterable list of Employees
             List<EMPLOYEES_V> data = GenericData.EnumerableFilterHeader<EMPLOYEES_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
 
             e.Total = count;
@@ -155,6 +158,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deReadEquipmentData(object sender, StoreReadDataEventArgs e)
         {
+            //Query for list of equipment
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
@@ -164,11 +168,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             select new {d.EQUIPMENT_ID, p.NAME, d.PROJECT_ID }).ToList();
                 if (e.Parameters["Form"] == "EquipmentAdd")
                 {
+                    //Set add store
                     uxAddEmployeeEqStore.DataSource = data;
                     uxAddEmployeeEqStore.DataBind();
                 }
                 else
                 {
+                    //Set edit store
                     uxEditEmployeeEqStore.DataSource = data;
                     uxEditEmployeeEqStore.DataBind();
                 }
@@ -282,6 +288,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 CREATED_BY = User.Identity.Name,
                 MODIFIED_BY = User.Identity.Name
             };
+            
+            //Check for travel time
             try
             {
                 decimal TravelTime = decimal.Parse(uxAddEmployeeTravelTime.Value.ToString());
@@ -292,6 +300,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 data.TRAVEL_TIME = null;
             }
 
+            //Check for drive time
             try
             {
                 decimal DriveTime= decimal.Parse(uxAddEmployeeDriveTime.Value.ToString());
@@ -302,6 +311,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 data.DRIVE_TIME = null;
             }
 
+            //Check for comments
             try
             {
                 string Comments = uxAddEmployeeComments.Value.ToString();;
@@ -312,6 +322,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 data.COMMENTS = null;
             }
 
+            //Check for Equipment
             try
             {
                 long EquipmentId = long.Parse(uxAddEmployeeEqDropDown.Value.ToString());
@@ -321,6 +332,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 data.EQUIPMENT_ID = null;
             }
+
+            //Write to DB
             GenericData.Insert<DAILY_ACTIVITY_EMPLOYEE>(data);
 
             uxAddEmployeeWindow.Hide();
@@ -370,6 +383,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             DAILY_ACTIVITY_EMPLOYEE data;
             long EmployeeId = long.Parse(e.ExtraParams["EmployeeID"]);
+            
+            //Get record to be updated
             using (Entities _context = new Entities())
             {
                 data = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
@@ -378,6 +393,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             data.PERSON_ID = PersonId;
 
+            //Check for Equipment
             try
             {
                 long EquipmentId = long.Parse(uxEditEmployeeEqDropDown.Value.ToString());
@@ -388,6 +404,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 data.EQUIPMENT_ID = null;
             }
 
+            //Check for Travel Time
             try
             {
                 decimal TravelTime = decimal.Parse(uxEditEmployeeTravelTime.Value.ToString());
@@ -398,6 +415,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 data.TRAVEL_TIME = null;
             }
 
+            //Check for Drive Time
             try
             {
                 decimal DriveTime = decimal.Parse(uxEditEmployeeDriveTime.Value.ToString());
@@ -415,6 +433,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.MODIFIED_BY = User.Identity.Name;
             data.MODIFY_DATE = DateTime.Now;
 
+            //Write to db
             GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(data);
 
             uxCurrentEmployeeStore.Reload();
@@ -443,6 +462,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             DateTime DateIn;
             DateTime DateOut;
 
+            //Set values based on if from add or edit form
             if (e.ExtraParams["Type"] == "Add")
             {
                 DateIn = DateTime.Parse(uxAddEmployeeTimeInDate.Value.ToString());
@@ -454,6 +474,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 DateOut = DateTime.Parse(Field.Value.ToString());
             }
 
+            //Do comparison and set validation flag
             if (DateOut >= DateIn)
             {
                 e.Success = true;
@@ -478,6 +499,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             DateTime DateIn;
             DateTime DateOut;
+
+            //Set values based on Add or Edit form
             if (e.ExtraParams["Type"] == "Add")
             {
                 DateIn = DateTime.Parse(uxAddEmployeeTimeInDate.Value.ToString());
@@ -486,7 +509,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 TimeIn = DateTime.Parse(uxAddEmployeeTimeInTime.Value.ToString());
                 TimeOut = DateTime.Parse(Field.Value.ToString());
                 
-
                 TimeIn = DateIn.Date + TimeIn.TimeOfDay;
                 TimeOut = DateOut.Date + TimeOut.TimeOfDay;
 
@@ -503,6 +525,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 TimeOut = DateOut.Date + TimeOut.TimeOfDay;
             }
 
+            //Compare and set validation flag, error message if necessary
             if (TimeOut >= TimeIn)
             {
                 e.Success = true;

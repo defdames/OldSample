@@ -47,6 +47,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
 
             int count;
+            //Get paged, filterable list of data
             List<WEB_PROJECTS_V> data = GenericData.EnumerableFilterHeader<WEB_PROJECTS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
 
             e.Total = count;
@@ -88,7 +89,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 dataIn = EMPLOYEES_V.EmployeeDropDown(CurrentOrg);
             }
             int count;
-
+            //Get paged, filterable list of Employees
             List<EMPLOYEES_V> data = GenericData.EnumerableFilterHeader<EMPLOYEES_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
 
             e.Total = count;
