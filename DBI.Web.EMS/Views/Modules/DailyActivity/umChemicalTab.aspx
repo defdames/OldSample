@@ -140,20 +140,24 @@
                     <Items>
                         <ext:TextField runat="server"
                             ID="uxAddChemicalTargetAre"
-                            FieldLabel="Target" />
+                            FieldLabel="Target"
+                            AllowBlank="false" />
                         <ext:TextField runat="server"
                             ID="uxAddChemicalGallonAcre"
-                            FieldLabel="Gallons / Acre" />
+                            FieldLabel="Gallons / Acre"
+                            AllowBlank="false" />
                         <ext:TextField runat="server"
                             ID="uxAddChemicalGallonStart"
-                            FieldLabel="Gallons Start">
+                            FieldLabel="Gallons Start"
+                            AllowBlank="false">
                             <Listeners>
                                 <Change Fn="updateAddTotalAndUsed" />
                             </Listeners>
                         </ext:TextField>
                         <ext:TextField runat="server"
                             ID="uxAddChemicalGallonMixed"
-                            FieldLabel="Gallons Mixed">
+                            FieldLabel="Gallons Mixed"
+                            AllowBlank="false">
                             <Listeners>
                                 <Change Fn="updateAddTotalAndUsed" />
                             </Listeners>
@@ -163,7 +167,8 @@
                             FieldLabel="Gallons Total" Disabled="true" />
                         <ext:TextField runat="server"
                             ID="uxAddChemicalGallonRemain"
-                            FieldLabel="Gallons Remaining">
+                            FieldLabel="Gallons Remaining"
+                            AllowBlank="false">
                             <Listeners>
                                 <Change Fn="updateAddTotalAndUsed" />
                             </Listeners>
@@ -176,16 +181,19 @@
                             FieldLabel="Acres Sprayed" Disabled="true" />
                         <ext:TextField runat="server"
                             ID="uxAddChemicalState"
-                            FieldLabel="State" />
+                            FieldLabel="State"
+                            AllowBlank="false" />
                         <ext:TextField runat="server"
                             ID="uxAddChemicalCounty"
-                            FieldLabel="County" />
+                            FieldLabel="County"
+                            AllowBlank="false" />
                     </Items>
                     <Buttons>
                         <ext:Button runat="server"
                             ID="uxAddChemicalSubmit"
                             Icon="ApplicationGo"
-                            Text="Submit">
+                            Text="Submit"
+                            Disabled="true">
                             <DirectEvents>
                                 <Click OnEvent="deAddChemical" />
                             </DirectEvents>
@@ -199,6 +207,9 @@
                             </Listeners>
                         </ext:Button>
                     </Buttons>
+                    <Listeners>
+                        <ValidityChange Handler="#{uxAddChemicalSubmit}.setDisabled(!valid);" />
+                    </Listeners>
                 </ext:FormPanel>
             </Items>
         </ext:Window>
@@ -214,20 +225,24 @@
                     <Items>
                         <ext:TextField runat="server"
                             ID="uxEditChemicalTargetAre"
-                            FieldLabel="Target" />
+                            FieldLabel="Target"
+                            AllowBlank="false" />
                         <ext:TextField runat="server"
                             ID="uxEditChemicalGallonAcre"
-                            FieldLabel="Gallons / Acre" />
+                            FieldLabel="Gallons / Acre"
+                            AllowBlank="false" />
                         <ext:TextField runat="server"
                             ID="uxEditChemicalGallonStart"
-                            FieldLabel="Gallons Start">
+                            FieldLabel="Gallons Start"
+                            AllowBlank="false">
                             <Listeners>
                                 <Change Fn="updateEditTotalAndUsed" />
                             </Listeners>
                         </ext:TextField>
                         <ext:TextField runat="server"
                             ID="uxEditChemicalGallonMixed"
-                            FieldLabel="Gallons Mixed">
+                            FieldLabel="Gallons Mixed"
+                            AllowBlank="false">
                             <Listeners>
                                 <Change Fn="updateEditTotalAndUsed" />
                             </Listeners>
@@ -237,7 +252,8 @@
                             FieldLabel="Gallons Total" Disabled="true" />
                         <ext:TextField runat="server"
                             ID="uxEditChemicalGallonRemain"
-                            FieldLabel="Gallons Remaining">
+                            FieldLabel="Gallons Remaining"
+                            AllowBlank="false">
                             <Listeners>
                                 <Change Fn="updateEditTotalAndUsed" />
                             </Listeners>
@@ -250,16 +266,19 @@
                             FieldLabel="Acres Sprayed" Disabled="true" />
                         <ext:TextField runat="server"
                             ID="uxEditChemicalState"
-                            FieldLabel="State" />
+                            FieldLabel="State"
+                            AllowBlank="false" />
                         <ext:TextField runat="server"
                             ID="uxEditChemicalCounty"
-                            FieldLabel="County" />
+                            FieldLabel="County"
+                            AllowBlank="false" />
                     </Items>
                     <Buttons>
                         <ext:Button runat="server"
                             ID="uxEditChemicalSubmit"
                             Icon="ApplicationGo"
-                            Text="Submit">
+                            Text="Submit"
+                            Disabled="true">
                             <DirectEvents>
                                 <Click OnEvent="deEditChemical">
                                     <ExtraParams>
@@ -277,6 +296,9 @@
                             </Listeners>
                         </ext:Button>
                     </Buttons>
+                    <Listeners>
+                        <ValidityChange Handler="#{uxEditChemicalSubmit}.setDisabled(!valid);" />
+                    </Listeners>
                 </ext:FormPanel>
             </Items>
         </ext:Window>

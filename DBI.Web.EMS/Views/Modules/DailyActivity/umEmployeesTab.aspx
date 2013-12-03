@@ -123,7 +123,8 @@
 						<ext:DropDownField runat="server"
 							ID="uxAddEmployeeEmpDropDown"
 							Mode="ValueText"
-							FieldLabel="Employee">
+							FieldLabel="Employee"
+							AllowBlank="false">
 							<Component>
 								<ext:GridPanel runat="server"
 									ID="uxAddEmployeeEmpGrid"
@@ -201,7 +202,8 @@
 						<ext:DropDownField runat="server"
 							ID="uxAddEmployeeEqDropDown"
 							Mode="ValueText"
-							FieldLabel="Equipment">
+							FieldLabel="Equipment"
+							AllowBlank="true">
 							<Component>
 								<ext:GridPanel runat="server"
 									ID="uxAddEmployeeEqGrid"
@@ -255,12 +257,14 @@
 							MsgTarget="Side">
 							<Items>
 								<ext:DateField runat="server"
-									ID="uxAddEmployeeTimeInDate" />
+									ID="uxAddEmployeeTimeInDate"
+									AllowBlank="false" />
 								<ext:TimeField runat="server"
 									ID="uxAddEmployeeTimeInTime"
 									Increment="30" 
 									SelectedTime="09:00" 
-									Format="H:mm"  />
+									Format="H:mm"
+									AllowBlank="false" />
 							</Items>
 							<Defaults>
 								<ext:Parameter Name="Flex" Value="1" Mode="Raw" />
@@ -276,32 +280,39 @@
 							</Defaults>
 							<Items>
 								<ext:DateField runat="server"
-									ID="uxAddEmployeeTimeOutDate" />
+									ID="uxAddEmployeeTimeOutDate"
+									AllowBlank="false" />
 								<ext:TimeField runat="server"
 									ID="uxAddEmployeeTimeOutTime"
 									Increment="30" 
 									SelectedTime="09:00" 
-									Format="H:mm"  />
+									Format="H:mm"
+									AllowBlank="false" />
 							</Items>
 						</ext:FieldContainer>
 						<ext:TextField runat="server"
 							ID="uxAddEmployeeTravelTime"
-							FieldLabel="Travel Time" />
+							FieldLabel="Travel Time"
+							AllowBlank="true" />
 						<ext:TextField runat="server"
 							ID="uxAddEmployeeDriveTime"
-							FieldLabel="Drive Time" />
+							FieldLabel="Drive Time"
+							AllowBlank="true" />
 						<ext:Checkbox runat="server"
 							ID="uxAddEmployeePerDiem"
-							FieldLabel="Per Diem" />
+							FieldLabel="Per Diem"
+							AllowBlank="true" />
 					   <ext:TextArea runat="server"
 						   FieldLabel="Comments"
-						   ID="uxAddEmployeeComments" />
+						   ID="uxAddEmployeeComments"
+						   AllowBlank="true" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxAddEmployeeSubmit"
 							Icon="ApplicationGo"
-							Text="Submit">
+							Text="Submit"
+							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deAddEmployee" />
 							</DirectEvents>
@@ -315,6 +326,9 @@
 							</Listeners>
 						</ext:Button>
 					</Buttons>
+					<Listeners>
+						<ValidityChange Handler="#{uxAddEmployeeSubmit}.setDisabled(!valid);" />
+					</Listeners>
 				</ext:FormPanel>
 			</Items>
 		</ext:Window>
@@ -332,7 +346,8 @@
 						<ext:DropDownField runat="server"
 							ID="uxEditEmployeeEmpDropDown"
 							Mode="ValueText"
-							FieldLabel="Employee">
+							FieldLabel="Employee"
+							AllowBlank="false">
 							<Component>
 								<ext:GridPanel runat="server"
 									ID="uxEditEmployeeEmpGrid"
@@ -410,7 +425,8 @@
 						<ext:DropDownField runat="server"
 							ID="uxEditEmployeeEqDropDown"
 							Mode="ValueText"
-							FieldLabel="Equipment">
+							FieldLabel="Equipment"
+							AllowBlank="true">
 							<Component>
 								<ext:GridPanel runat="server"
 									ID="uxEditEmployeeEqGrid"
@@ -460,12 +476,14 @@
 							MsgTarget="Side">
 							<Items>
 								<ext:DateField runat="server"
-									ID="uxEditEmployeeTimeInDate" />
+									ID="uxEditEmployeeTimeInDate"
+									AllowBlank="false" />
 								<ext:TimeField runat="server"
 									ID="uxEditEmployeeTimeInTime"
 									Increment="30" 
 									SelectedTime="09:00" 
-									Format="H:mm"  />
+									Format="H:mm"
+									AllowBlank="false" />
 							</Items>
 							<Defaults>
 								<ext:Parameter Name="Flex" Value="1" Mode="Raw" />
@@ -481,32 +499,39 @@
 							</Defaults>
 							<Items>
 								<ext:DateField runat="server"
-									ID="uxEditEmployeeTimeOutDate" />
+									ID="uxEditEmployeeTimeOutDate"
+									AllowBlank="false" />
 								<ext:TimeField runat="server"
 									ID="uxEditEmployeeTimeOutTime"
 									Increment="30" 
 									SelectedTime="09:00" 
-									Format="H:mm"  />
+									Format="H:mm"
+									AllowBlank="false" />
 							</Items>
 						</ext:FieldContainer>
 						<ext:TextField runat="server"
 							ID="uxEditEmployeeDriveTime"
-							FieldLabel="Drive Time" />
+							FieldLabel="Drive Time"
+							AllowBlank="true" />
 						<ext:TextField runat="server"
 							ID="uxEditEmployeeTravelTime"
-							FieldLabel="Travel Time" />
+							FieldLabel="Travel Time"
+							AllowBlank="true" />
 						<ext:Checkbox runat="server"
 							ID="uxEditEmployeePerDiem"
-							FieldLabel="Per Diem" />
+							FieldLabel="Per Diem"
+							AllowBlank="true" />
 					   <ext:TextArea runat="server"
 						   FieldLabel="Comments"
-						   ID="uxEditEmployeeComments" />
+						   ID="uxEditEmployeeComments"
+						   AllowBlank="true" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxEditEmployeeSubmit"
 							Icon="ApplicationGo"
-							Text="Submit">
+							Text="Submit"
+							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deEditEmployee">
 									<ExtraParams>
@@ -524,6 +549,9 @@
 							</Listeners>
 						</ext:Button>
 					</Buttons>
+					<Listeners>
+						<ValidityChange Handler="#{uxEditEmployeeSubmit}.setDisabled(!valid);" />
+					</Listeners>
 				</ext:FormPanel>                    
 			</Items>
 		</ext:Window>

@@ -248,5 +248,105 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
             });
         }
+
+        /// <summary>
+        /// Validate DateIn and DateOut
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void valDate(object sender, RemoteValidationEventArgs e)
+        {
+            DateField Field = (DateField)sender;
+            DateTime DateIn;
+            DateTime DateOut; 
+
+            if (e.ExtraParams["Type"] == "Add")
+            {
+                if (e.ExtraParams["InOut"] == "Out")
+                {
+                    DateIn = DateTime.Parse(uxAddProductionDateIn.Value.ToString());
+                    DateOut = DateTime.Parse(Field.Value.ToString());
+                }
+                else
+                {
+                    DateIn = DateTime.Parse(Field.Value.ToString());
+                    DateOut = DateTime.Parse(uxAddProductionDateOut.Value.ToString());
+                }
+                
+            }
+            else
+            {
+                if (e.ExtraParams["InOut"] == "Out")
+                {
+                    DateIn = DateTime.Parse(uxEditProductionDateIn.Value.ToString());
+                    DateOut = DateTime.Parse(Field.Value.ToString());
+                }
+                else
+                {
+                    DateIn = DateTime.Parse(Field.Value.ToString());
+                    DateOut = DateTime.Parse(uxEditProductionDateOut.Value.ToString());
+                }
+            }
+
+            if (DateOut >= DateIn)
+            {
+                e.Success = true;
+            }
+            else
+            {
+                e.Success = false;
+                e.ErrorMessage = "Date Out must be greater than or equal to Date In";
+            }
+        }
+
+        /// <summary>
+        /// Validate TimeIn and TimeOut
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void valTime(object sender, RemoteValidationEventArgs e)
+        {
+            TimeField Field = (TimeField)sender;
+            DateTime TimeIn;
+            DateTime TimeOut;
+
+            if (e.ExtraParams["Type"] == "Add")
+            {
+                if (e.ExtraParams["InOut"] == "Out")
+                {
+                    TimeIn = DateTime.Parse(uxAddProductionTimeIn.Value.ToString());
+                    TimeOut = DateTime.Parse(Field.Value.ToString());
+                }
+                else
+                {
+                    TimeIn = DateTime.Parse(Field.Value.ToString());
+                    TimeOut = DateTime.Parse(uxAddProductionTimeOut.Value.ToString());
+                }
+
+            }
+            else
+            {
+                if (e.ExtraParams["InOut"] == "Out")
+                {
+                    TimeIn = DateTime.Parse(uxEditProductionTimeIn.Value.ToString());
+                    TimeOut = DateTime.Parse(Field.Value.ToString());
+                }
+                else
+                {
+                    TimeIn = DateTime.Parse(Field.Value.ToString());
+                    TimeOut = DateTime.Parse(uxEditProductionTimeOut.Value.ToString());
+                }
+            }
+
+            if (TimeOut >= TimeIn)
+            {
+                e.Success = true;
+            }
+            else
+            {
+                e.Success = false;
+                e.ErrorMessage = "Time Out must be greater than or equal to Time In";
+            }
+        }
     }
 }

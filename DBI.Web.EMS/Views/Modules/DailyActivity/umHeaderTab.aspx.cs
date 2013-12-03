@@ -192,13 +192,41 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             data.PROJECT_ID = ProjectId;
             data.DA_DATE = DaDate;
-            data.SUBDIVISION = uxFormSubDivision.Value.ToString();
-            data.CONTRACTOR = uxFormContractor.Value.ToString();
+            try
+            {
+                data.SUBDIVISION = uxFormSubDivision.Value.ToString();
+            }
+            catch (NullReferenceException)
+            {
+                data.SUBDIVISION = "";
+            }
+            try
+            {
+                data.CONTRACTOR = uxFormContractor.Value.ToString();
+            }
+            catch (NullReferenceException)
+            {
+                data.CONTRACTOR = "";
+            }
             data.PERSON_ID = PersonId;
             data.LICENSE = uxFormLicense.Value.ToString();
             data.STATE = uxFormState.Value.ToString();
-            data.APPLICATION_TYPE = uxFormType.Value.ToString();
-            data.DENSITY = uxFormDensity.Value.ToString();
+            try
+            {
+                data.APPLICATION_TYPE = uxFormType.Value.ToString();
+            }
+            catch (NullReferenceException)
+            {
+                data.APPLICATION_TYPE = "";
+            }
+            try
+            {
+                data.DENSITY = uxFormDensity.Value.ToString();
+            }
+            catch (NullReferenceException)
+            {
+                data.DENSITY = "";
+            }
             data.MODIFIED_BY = User.Identity.Name;
             data.MODIFY_DATE = DateTime.Now;
 

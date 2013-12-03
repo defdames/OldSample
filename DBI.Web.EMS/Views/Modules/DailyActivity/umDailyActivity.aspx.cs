@@ -158,18 +158,62 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             var icp = User as ClaimsPrincipal;
             var AddingUser = MyAuth.GetClaimValue(ClaimTypes.Name, icp);
             
+            string SubDivision;
+            string HeaderType;
+            string Contractor;
+            string Density;
+
+            //check for SubDivision value
+            try
+            {
+                SubDivision = uxFormSubDivision.Value.ToString();
+            }
+            catch (NullReferenceException)
+            {
+                SubDivision = "";
+            }
+
+            //check for Type value
+            try
+            {
+                HeaderType = uxFormType.Value.ToString();
+            }
+            catch (NullReferenceException)
+            {
+                HeaderType = "";
+            }
+
+            //check for Contractor
+            try
+            {
+                Contractor = uxFormContractor.Value.ToString();
+            }
+            catch (NullReferenceException)
+            {
+                Contractor = "";
+            }
+
+            //check for Density
+            try
+            {
+                Density = uxFormDensity.Value.ToString();
+            }
+            catch (NullReferenceException)
+            {
+                Density = "";
+            }
             //Create new Daily Activity Header
             DAILY_ACTIVITY_HEADER ToStore = new DAILY_ACTIVITY_HEADER()
             {
                 PROJECT_ID = ProjectId,
                 DA_DATE = DaDate,
-                SUBDIVISION = uxFormSubDivision.Value.ToString(),
-                CONTRACTOR = uxFormContractor.Value.ToString(),
+                SUBDIVISION = SubDivision,
+                CONTRACTOR = Contractor,
                 PERSON_ID = PersonId,
                 LICENSE = uxFormLicense.Value.ToString(),
                 STATE = uxFormState.Value.ToString(),
-                APPLICATION_TYPE = uxFormType.Value.ToString(),
-                DENSITY = uxFormDensity.Value.ToString(),
+                APPLICATION_TYPE = HeaderType,
+                DENSITY = Density,
                 CREATE_DATE = DateTime.Now,
                 MODIFY_DATE = DateTime.Now,
                 CREATED_BY = AddingUser,
