@@ -169,7 +169,11 @@
 							<Items>
 								<ext:DateField runat="server"
 									ID="uxAddProductionDateIn"
-									AllowBlank="false" />
+									AllowBlank="false">
+									<Listeners>
+										<Select Handler="#{uxAddProductionDateOut}.setValue(#{uxAddProductionDateIn}.value)" />
+									</Listeners>
+								</ext:DateField>
 								<ext:TimeField runat="server"
 									ID="uxAddProductionTimeIn"
 									AllowBlank="false" />

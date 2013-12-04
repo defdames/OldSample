@@ -339,6 +339,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GenericData.Insert<DAILY_ACTIVITY_EMPLOYEE>(data);
 
             uxAddEmployeeWindow.Hide();
+            uxAddEmployeeForm.Reset();
             uxCurrentEmployeeStore.Reload();
 
             Notification.Show(new NotificationConfig()

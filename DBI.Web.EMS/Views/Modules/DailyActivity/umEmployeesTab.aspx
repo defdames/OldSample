@@ -269,7 +269,11 @@
 							<Items>
 								<ext:DateField runat="server"
 									ID="uxAddEmployeeTimeInDate"
-									AllowBlank="false" />
+									AllowBlank="false">
+									<Listeners>
+										<Select Handler="#{uxAddEmployeeTimeOutDate}.setValue(#{uxAddEmployeeTimeInDate}.value)" />
+									</Listeners>
+								</ext:DateField>
 								<ext:TimeField runat="server"
 									ID="uxAddEmployeeTimeInTime"
 									Increment="30" 
@@ -323,8 +327,7 @@
 							AllowBlank="true" />
 						<ext:Checkbox runat="server"
 							ID="uxAddEmployeePerDiem"
-							FieldLabel="Per Diem"
-							AllowBlank="true" />
+							FieldLabel="Per Diem" />
 						<ext:TextArea runat="server"
 						   FieldLabel="Comments"
 						   ID="uxAddEmployeeComments"
@@ -457,26 +460,30 @@
 									<Store>
 										<ext:Store runat="server"
 											ID="uxEditEmployeeEqStore"
-											OnReadData="deReadEquipmentData">
+											OnReadData="deReadEquipmentData"
+											AutoDataBind="true">
 											<Model>
 												<ext:Model runat="server">
 													<Fields>
-														<ext:ModelField Name="EQUIPMENT_ID" Type="Int" />
-														<ext:ModelField Name="NAME" Type="String" />
-														<ext:ModelField Name="PROJECT_ID" Type="Int" />
+														<ext:ModelField Name="EQUIPMENT_ID" />
+														<ext:ModelField Name="NAME" />
+														<ext:ModelField Name="PROJECT_ID" />
 													</Fields>
 												</ext:Model>
 											</Model>
 											<Parameters>
 												<ext:StoreParameter Name="Form" Value="EquipmentEdit" />
-											</Parameters>											
+											</Parameters>	
+											<Proxy>
+												<ext:PageProxy />
+											</Proxy>										
 										</ext:Store>
 									</Store>
 									<ColumnModel>
 										<Columns>
-											<ext:Column runat="server" DataIndex="EQUIPMENT_ID" />
-											<ext:Column runat="server" DataIndex="NAME" />
-											<ext:Column runat="server" DataIndex="PROJECT_ID" />
+											<ext:Column runat="server" Text="Equipment Id" DataIndex="EQUIPMENT_ID"  />
+											<ext:Column runat="server" Text="Name" DataIndex="NAME" />
+											<ext:Column runat="server" Text="Project Id" DataIndex="PROJECT_ID" />
 										</Columns>
 									</ColumnModel>
 									<SelectionModel>

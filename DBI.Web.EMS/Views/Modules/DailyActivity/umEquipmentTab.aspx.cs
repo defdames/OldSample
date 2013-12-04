@@ -148,6 +148,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GenericData.Insert<DAILY_ACTIVITY_EQUIPMENT>(added);
             
             uxAddEquipmentWindow.Hide();
+            uxAddEquipmentForm.Reset();
             uxCurrentEquipmentStore.Reload();
             
             Notification.Show(new NotificationConfig()

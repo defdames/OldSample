@@ -64,6 +64,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GenericData.Insert<DAILY_ACTIVITY_WEATHER>(data);
             
             uxAddWeatherWindow.Hide();
+            uxAddWeatherForm.Reset();
             uxCurrentWeatherStore.Reload();
 
             Notification.Show(new NotificationConfig()

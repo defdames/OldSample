@@ -188,6 +188,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GenericData.Insert<DAILY_ACTIVITY_PRODUCTION>(data);
 
             uxAddProductionWindow.Hide();
+            uxAddProductionForm.Reset();
             uxCurrentProductionStore.Reload();
 
             Notification.Show(new NotificationConfig()
