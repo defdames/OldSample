@@ -40,31 +40,42 @@
 				<Columns>
 					<ext:Column runat="server"
 						Text="Employee ID"
-						DataIndex="EMPLOYEE_ID" />
+						DataIndex="EMPLOYEE_ID"
+						Flex="1" />
 					<ext:Column runat="server"
 						Text="Name"
-						DataIndex="EMPLOYEE_NAME" />
+						DataIndex="EMPLOYEE_NAME"
+						Flex="2" />
 					<ext:Column runat="server"
 						Text="Equipment Name"
-						DataIndex="NAME" />
-					<ext:Column runat="server"
+						DataIndex="NAME"
+						Flex="1" />
+					<ext:DateColumn runat="server"
 						Text="Time In"
-						DataIndex="TIME_IN" />
-					<ext:Column runat="server"
+						Format="M/d/yyyy h:mm tt"
+						DataIndex="TIME_IN"
+						Flex="1" />
+					<ext:DateColumn runat="server"
 						Text="Time Out"
-						DataIndex="TIME_OUT" />
+						Format="M/d/yyyy h:mm tt"
+						DataIndex="TIME_OUT"
+						Flex="1" />
 					<ext:Column runat="server"
 						Text="Travel Time"
-						Dataindex="TRAVEL_TIME" />
+						Dataindex="TRAVEL_TIME"
+						Flex="1" />
 					<ext:Column runat="server"
 						Text="Drive Time"
-						DataIndex="DRIVE_TIME" />
+						DataIndex="DRIVE_TIME"
+						Flex="1" />
 					<ext:Column runat="server"
 						Text="Per Diem"
-						DataIndex="PER_DIEM" />
+						DataIndex="PER_DIEM"
+						Flex="1" />
 					<ext:Column runat="server"
 						Text="Comments"
-						DataIndex="COMMENTS" />
+						DataIndex="COMMENTS"
+						Flex="1" />
 				</Columns>
 			</ColumnModel>
 			<TopBar>
@@ -132,7 +143,7 @@
 									<Store>
 										<ext:Store runat="server"
 											ID="uxAddEmployeeEmpStore"
-											PageSize="25"
+											PageSize="15"
 											RemoteSort="true"
 											OnReadData="deReadEmployeeData">
 											<Model>
@@ -194,7 +205,7 @@
 										</SelectionChange>
 									</DirectEvents>         
 									<Plugins>
-										<ext:FilterHeader runat="server" ID="uxAddEmployeeEmpFilter" />
+										<ext:FilterHeader runat="server" ID="uxAddEmployeeEmpFilter" Remote="true" />
 									</Plugins>                                    
 								</ext:GridPanel>
 							</Component>
@@ -314,7 +325,7 @@
 							ID="uxAddEmployeePerDiem"
 							FieldLabel="Per Diem"
 							AllowBlank="true" />
-					    <ext:TextArea runat="server"
+						<ext:TextArea runat="server"
 						   FieldLabel="Comments"
 						   ID="uxAddEmployeeComments"
 						   AllowBlank="true" />
@@ -367,7 +378,7 @@
 									<Store>
 										<ext:Store runat="server"
 											ID="uxEditEmployeeEmpStore"
-											PageSize="25"
+											PageSize="15"
 											RemoteSort="true"
 											OnReadData="deReadEmployeeData">
 											<Model>
@@ -429,7 +440,7 @@
 										</SelectionChange>
 									</DirectEvents>         
 									<Plugins>
-										<ext:FilterHeader runat="server" ID="uxEditEmployeeEmpFilter" />
+										<ext:FilterHeader runat="server" ID="uxEditEmployeeEmpFilter" Remote="true" />
 									</Plugins>                                    
 								</ext:GridPanel>
 							</Component>

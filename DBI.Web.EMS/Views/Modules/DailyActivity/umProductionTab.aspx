@@ -24,8 +24,8 @@
 								<ext:ModelField Name="LONG_NAME" />
 								<ext:ModelField Name="TASK_ID" />
 								<ext:ModelField Name="DESCRIPTION" />
-								<ext:ModelField Name="TIME_IN" />
-								<ext:ModelField Name="TIME_OUT" />
+								<ext:ModelField Name="TIME_IN" Type="Date" />
+								<ext:ModelField Name="TIME_OUT" Type="Date" />
 								<ext:ModelField Name="WORK_AREA" />
 								<ext:ModelField Name="POLE_FROM" />
 								<ext:ModelField Name="POLE_TO" />
@@ -40,34 +40,46 @@
 				<Columns>
 					<ext:Column runat="server"
 						DataIndex="PROJECT_ID"
-						Text="Project Id" />
+						Text="Project Id"
+						Flex="1" />
 					<ext:Column runat="server"
 						DataIndex="LONG_NAME"
-						Text="Project Name" />
+						Text="Project Name"
+						Flex="2" />
 					<ext:Column runat="server"
 						DataIndex="DESCRIPTION"
-						Text="Task Name" />
-					<ext:Column runat="server"
+						Text="Task Name"
+						Flex="1" />
+					<ext:DateColumn runat="server"
 						DataIndex="TIME_IN"
-						Text="Time In" />
-					<ext:Column runat="server"
+						Format="M/d/yyyy h:mm tt"
+						Text="Time In"
+						Flex="1" />
+					<ext:DateColumn runat="server"
 						DataIndex="TIME_OUT"
-						Text="Time Out" />
+						Format="M/d/yyyy h:mm tt"
+						Text="Time Out"
+						Flex="1" />
 					<ext:Column runat="server"
 						DataIndex="WORK_AREA"
-						Text="Spray/Work Area" />
+						Text="Spray/Work Area"
+						Flex="1" />
 					<ext:Column runat="server"
 						DataIndex="POLE_FROM"
-						Text="Pole/MP From" />
+						Text="Pole/MP From"
+						Flex="1" />
 					<ext:Column runat="server"
 						DataIndex="POLE_TO"
-						Text="Pole/MP To" />
+						Text="Pole/MP To"
+						Flex="1" />
 					<ext:Column runat="server"
 						DataIndex="ACRES_MILE"
-						Text="Acres/Mile" />
+						Text="Acres/Mile"
+						Flex="1" />
 					<ext:Column runat="server"
 						DataIndex="GALLONS"
-						Text="Gallons" />
+						Text="Gallons"
+						Flex="1" />
 				</Columns>
 			</ColumnModel>
 			<TopBar>
@@ -173,7 +185,7 @@
 									<RemoteValidation OnValidation="valDate">
 										<ExtraParams>
 											<ext:Parameter Name="Type" Value="Add" />
-							            </ExtraParams>
+										</ExtraParams>
 									</RemoteValidation>
 								</ext:DateField>
 								<ext:TimeField runat="server"
