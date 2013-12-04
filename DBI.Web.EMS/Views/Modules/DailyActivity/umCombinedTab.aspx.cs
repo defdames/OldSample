@@ -43,10 +43,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
                 var data = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                             join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
-                            join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.EQUIPMENT_ID equals eq.EQUIPMENT_ID
-                            join p in _context.PROJECTS_V on eq.PROJECT_ID equals p.PROJECT_ID
+                            join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.EQUIPMENT_ID equals eq.EQUIPMENT_ID into equ
+                            from equip in equ.DefaultIfEmpty()
+                            join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
+                            from projects in proj.DefaultIfEmpty()
                             where d.HEADER_ID == HeaderId
-                            select new { e.EMPLOYEE_NAME, p.NAME, d.TIME_IN, d.TIME_OUT, d.TRAVEL_TIME, d.DRIVE_TIME, d.PER_DIEM, d.COMMENTS }).ToList();
+                            select new { e.EMPLOYEE_NAME, projects.NAME, d.TIME_IN, d.TIME_OUT, d.TRAVEL_TIME, d.DRIVE_TIME, d.PER_DIEM, d.COMMENTS }).ToList();
 
                 uxEquipmentStore.DataSource = data;
             }
