@@ -381,7 +381,8 @@
 							Icon="ApplicationStop"
 							Text="Cancel">
 							<Listeners>
-								<Click Handler="#{uxAddEmployeeWindow}.hide()" />
+								<Click Handler="#{uxAddEmployeeForm}.reset();
+									#{uxAddEmployeeWindow}.hide()" />
 							</Listeners>
 						</ext:Button>
 					</Buttons>
@@ -636,7 +637,8 @@
 							Icon="ApplicationStop"
 							Text="Cancel">
 							<Listeners>
-								<Click Handler="#{uxEditEmployeeWindow}.hide()" />
+								<Click Handler="#{uxEditEmployeeForm}.reset();
+									#{uxEditEmployeeWindow}.hide()" />
 							</Listeners>
 						</ext:Button>
 					</Buttons>

@@ -203,7 +203,8 @@
                             Icon="ApplicationStop"
                             Text="Cancel">
                             <Listeners>
-                                <Click Handler="#{uxAddChemicalWindow}.hide()" />
+                                <Click Handler="#{uxAddChemicalForm}.reset();
+                                    #{uxAddChemicalWindow}.hide()" />
                             </Listeners>
                         </ext:Button>
                     </Buttons>
@@ -292,7 +293,8 @@
                             Icon="ApplicationStop"
                             Text="Cancel">
                             <Listeners>
-                                <Click Handler="#{uxEditChemicalWindow}.hide()" />
+                                <Click Handler="#{uxEditChemicalForm}.reset();
+                                    #{uxEditChemicalWindow}.hide()" />
                             </Listeners>
                         </ext:Button>
                     </Buttons>

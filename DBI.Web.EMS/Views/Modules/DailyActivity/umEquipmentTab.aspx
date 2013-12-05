@@ -148,7 +148,7 @@
 										<ext:Store runat="server"
 											ID="uxEquipmentStore"
 											OnReadData="deReadGrid"
-											PageSize="25"
+											PageSize="10"
 											RemoteSort="true">
 											<Model>
 												<ext:Model runat="server">
@@ -263,7 +263,8 @@
 							Text="Cancel"
 							Icon="ApplicationStop">
 							<Listeners>
-								<Click Handler ="#{uxAddEquipmentWindow}.hide()" />
+								<Click Handler ="#{uxAddEquipmentForm}.reset();
+									#{uxAddEquipmentWindow}.hide()" />
 							</Listeners>
 						</ext:Button>
 					</Buttons>
@@ -296,7 +297,7 @@
 										<ext:Store runat="server"
 											ID="uxEditEquipmentProjectStore"
 											OnReadData="deReadGrid"
-											PageSize="25"
+											PageSize="10"
 											RemoteSort="true">
 											<Model>
 												<ext:Model runat="server">
@@ -412,7 +413,8 @@
 							Icon="ApplicationStop"
 							Text="Cancel">
 							<Listeners>
-								<Click Handler="#{uxEditEquipmentWindow}.hide()" />
+								<Click Handler="#{uxEditEquipmentForm}.reset();
+									#{uxEditEquipmentWindow}.hide()" />
 							</Listeners>
 						</ext:Button>
 					</Buttons>

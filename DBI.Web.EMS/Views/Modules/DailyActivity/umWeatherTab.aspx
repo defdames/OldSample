@@ -170,7 +170,8 @@
 							Text="Cancel"
 							Icon="ApplicationStop">
 							<Listeners>
-								<Click Handler="#{uxAddWeatherForm}.reset()" />
+								<Click Handler="#{uxAddWeatherForm}.reset();
+									#{uxAddWeatherWindow}.hide()" />
 							</Listeners>
 						</ext:Button>
 					</Buttons>
@@ -263,7 +264,8 @@
 							 Text="Cancel"
 							 Icon="ApplicationStop">
 							 <Listeners>
-								 <Click Handler="#{uxEditWeatherWindow}.hide()" />
+								 <Click Handler="#{uxEditWeatherForm}.reset();
+									 #{uxEditWeatherWindow}.hide()" />
 							 </Listeners>
 						 </ext:Button>
 					 </Buttons>

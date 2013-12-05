@@ -439,7 +439,8 @@
 							Icon="ApplicationStop"
 							Text="Cancel">
 							<Listeners>
-								<Click Handler="#{uxAddInventoryWindow}.hide()" />
+								<Click Handler="#{uxAddInventoryForm}.reset();
+									#{uxAddInventoryWindow}.hide()" />
 							</Listeners>
 						</ext:Button>
 					</Buttons>
@@ -621,7 +622,8 @@
 							Icon="ApplicationStop"
 							Text="Cancel">
 							<Listeners>
-								<Click Handler="#{uxEditInventoryWindow}.hide()" />
+								<Click Handler="#{uxEditInventoryForm}.reset();
+									#{uxEditInventoryWindow}.hide()" />
 							</Listeners>
 						</ext:Button>
 					</Buttons>
