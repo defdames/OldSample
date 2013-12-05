@@ -6,7 +6,6 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using Newtonsoft.Json.Serialization;
 
 namespace DBI.Mobile.EMS
 {
@@ -19,6 +18,9 @@ namespace DBI.Mobile.EMS
         {
 
             AreaRegistration.RegisterAllAreas();
+
+            HttpConfiguration config = GlobalConfiguration.Configuration;
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new DBI.Mobile.EMS.LowercaseContractResolver();
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
