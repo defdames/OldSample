@@ -5,6 +5,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 	<title></title>
+	<script>
+		var valDateTime = function () {
+			var me = this,
+				v = me.getValue(),
+				field;
+
+			if (me.startDateField) {
+				field = Ext.getCmp(me.startDateField);
+				field.setMaxValue(v);
+				me.timeRangeMax = v;
+			} else if (me.endDateField) {
+				field = Ext.getCmp(me.endDateField);
+				field.setMinValue(v);
+				me.timeRangeMin = v;
+			}
+
+			field.validate();
+		};
+	</script>
 </head>
 <body>
 	<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
@@ -24,8 +43,8 @@
 								<ext:ModelField Name="LONG_NAME" />
 								<ext:ModelField Name="TASK_ID" />
 								<ext:ModelField Name="DESCRIPTION" />
-								<ext:ModelField Name="TIME_IN" />
-								<ext:ModelField Name="TIME_OUT" />
+								<ext:ModelField Name="TIME_IN" Type="Date" />
+								<ext:ModelField Name="TIME_OUT" Type="Date" />
 								<ext:ModelField Name="WORK_AREA" />
 								<ext:ModelField Name="POLE_FROM" />
 								<ext:ModelField Name="POLE_TO" />
@@ -40,34 +59,46 @@
 				<Columns>
 					<ext:Column runat="server"
 						DataIndex="PROJECT_ID"
-						Text="Project Id" />
+						Text="Project Id"
+						Flex="1" />
 					<ext:Column runat="server"
 						DataIndex="LONG_NAME"
-						Text="Project Name" />
+						Text="Project Name"
+						Flex="2" />
 					<ext:Column runat="server"
 						DataIndex="DESCRIPTION"
-						Text="Task Name" />
-					<ext:Column runat="server"
+						Text="Task Name"
+						Flex="1" />
+					<ext:DateColumn runat="server"
 						DataIndex="TIME_IN"
-						Text="Time In" />
-					<ext:Column runat="server"
+						Format="M/d/yyyy h:mm tt"
+						Text="Time In"
+						Flex="1" />
+					<ext:DateColumn runat="server"
 						DataIndex="TIME_OUT"
-						Text="Time Out" />
+						Format="M/d/yyyy h:mm tt"
+						Text="Time Out"
+						Flex="1" />
 					<ext:Column runat="server"
 						DataIndex="WORK_AREA"
-						Text="Spray/Work Area" />
+						Text="Spray/Work Area"
+						Flex="1" />
 					<ext:Column runat="server"
 						DataIndex="POLE_FROM"
-						Text="Pole/MP From" />
+						Text="Pole/MP From"
+						Flex="1" />
 					<ext:Column runat="server"
 						DataIndex="POLE_TO"
-						Text="Pole/MP To" />
+						Text="Pole/MP To"
+						Flex="1" />
 					<ext:Column runat="server"
 						DataIndex="ACRES_MILE"
-						Text="Acres/Mile" />
+						Text="Acres/Mile"
+						Flex="1" />
 					<ext:Column runat="server"
 						DataIndex="GALLONS"
-						Text="Gallons" />
+						Text="Gallons"
+						Flex="1" />
 				</Columns>
 			</ColumnModel>
 			<TopBar>
@@ -157,10 +188,25 @@
 							<Items>
 								<ext:DateField runat="server"
 									ID="uxAddProductionDateIn"
-									AllowBlank="false" />
+									Vtype="daterange"
+									EndDateField="uxAddProductionDateOut"
+									EnableKeyEvents="true"
+									AllowBlank="false">
+									<Listeners>
+										<KeyUp Fn="valDateTime" />
+										<Change Handler="#{uxAddProductionDateOut}.setValue(#{uxAddProductionDateIn}.value)" />
+									</Listeners>
+								</ext:DateField>
 								<ext:TimeField runat="server"
 									ID="uxAddProductionTimeIn"
-									AllowBlank="false" />
+									Vtype="daterange"
+									EndDateField="uxAddProductionTimeOut"
+									EnableKeyEvents="true"
+									AllowBlank="false">
+									<Listeners>
+										<KeyUp Fn="valDateTime" />
+									</Listeners>
+								</ext:TimeField>
 							</Items>
 						</ext:FieldContainer>
 						<ext:FieldContainer runat="server"
@@ -169,21 +215,23 @@
 							<Items>
 								<ext:DateField runat="server"
 									ID="uxAddProductionDateOut"
-									AllowBlank="false" IsRemoteValidation="true">
-									<RemoteValidation OnValidation="valDate">
-										<ExtraParams>
-											<ext:Parameter Name="Type" Value="Add" />
-							            </ExtraParams>
-									</RemoteValidation>
+									Vtype="daterange"
+									StartDateField="uxAddProductionDateIn"
+									EnableKeyEvents="true"
+									AllowBlank="false">
+									<Listeners>
+										<KeyUp Fn="valDateTime" />
+									</Listeners>
 								</ext:DateField>
 								<ext:TimeField runat="server"
 									ID="uxAddProductionTimeOut"
-									AllowBlank="false" IsRemoteValidation="true">
-									<RemoteValidation OnValidation="valTime">
-										<ExtraParams>
-											<ext:Parameter Name="Type" Value="Add" />
-										</ExtraParams>
-									</RemoteValidation>
+									AllowBlank="false"
+									Vtype="daterange"
+									EnableKeyEvents="true"
+									StartDateField="uxAddProductionTimeIn">
+									<Listeners>
+										<KeyUp Fn="valDateTime" />
+									</Listeners>
 								</ext:TimeField>
 							</Items>
 						</ext:FieldContainer>
@@ -270,10 +318,25 @@
 							<Items>
 								<ext:DateField runat="server"
 									ID="uxEditProductionDateIn"
-									AllowBlank="false" />
+									Vtype="daterange"
+									EndDateField="uxEditProductionDateOut"
+									EnableKeyEvents="true"
+									AllowBlank="false">
+									<Listeners>
+										<KeyUp Fn="valDateTime" />
+										<Change Handler="#{uxEditProductionDateOut}.setValue(uxEditProductionDateIn.value)" />
+									</Listeners>
+								</ext:DateField>
 								<ext:TimeField runat="server"
 									ID="uxEditProductionTimeIn"
-									AllowBlank="false" />
+									Vtype="daterange"
+									EndDateField="uxEditProductionTimeOut"
+									EnableKeyEvents="true"
+									AllowBlank="false">
+									<Listeners>
+										<KeyUp Fn="valDateTime" />
+									</Listeners>
+								</ext:TimeField>
 							</Items>
 						</ext:FieldContainer>
 						<ext:FieldContainer runat="server"
@@ -282,21 +345,23 @@
 							<Items>
 								<ext:DateField runat="server"
 									ID="uxEditProductionDateOut"
+									Vtype="daterange"
+									StartDateField="uxEditProductionDateIn"
+									EnableKeyEvents="true"
 									AllowBlank="false" >
-									<RemoteValidation OnValidation="valDate">
-										<ExtraParams>
-											<ext:Parameter Name="Type" Value="Edit" />
-										</ExtraParams>
-									</RemoteValidation>
+									<Listeners>
+										<KeyUp Fn="valDateTime" />
+									</Listeners>
 								</ext:DateField>
 								<ext:TimeField runat="server"
 									ID="uxEditProductionTimeOut"
+									Vtype="daterange"
+									StartDateField="uxEditProductionTimeIn"
+									EnableKeyEvents="true"
 									AllowBlank="false" >
-									<RemoteValidation OnValidation="valTime">
-										<ExtraParams>
-											<ext:Parameter Name="Type" Value="Edit" />
-										</ExtraParams>
-									</RemoteValidation>
+									<Listeners>
+										<KeyUp Fn="valDateTime" />
+									</Listeners>
 								</ext:TimeField>
 							</Items>
 						</ext:FieldContainer>

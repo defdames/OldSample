@@ -5,7 +5,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 	<title></title>
+		<script>
+			var valDateTime = function () {
+				var me = this,
+					v = me.getValue(),
+					field;
+
+				if (me.startDateField) {
+					field = Ext.getCmp(me.startDateField);
+					field.setMaxValue(v);
+					me.timeRangeMax = v;
+				} else if (me.endDateField) {
+					field = Ext.getCmp(me.endDateField);
+					field.setMinValue(v);
+					me.timeRangeMin = v;
+				}
+
+				field.validate();
+			};
+	</script>
 </head>
+
 <body>
 	<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
 	<form id="form1" runat="server">
@@ -40,31 +60,42 @@
 				<Columns>
 					<ext:Column runat="server"
 						Text="Employee ID"
-						DataIndex="EMPLOYEE_ID" />
+						DataIndex="EMPLOYEE_ID"
+						Flex="1" />
 					<ext:Column runat="server"
 						Text="Name"
-						DataIndex="EMPLOYEE_NAME" />
+						DataIndex="EMPLOYEE_NAME"
+						Flex="2" />
 					<ext:Column runat="server"
 						Text="Equipment Name"
-						DataIndex="NAME" />
-					<ext:Column runat="server"
+						DataIndex="NAME"
+						Flex="1" />
+					<ext:DateColumn runat="server"
 						Text="Time In"
-						DataIndex="TIME_IN" />
-					<ext:Column runat="server"
+						Format="M/d/yyyy h:mm tt"
+						DataIndex="TIME_IN"
+						Flex="1" />
+					<ext:DateColumn runat="server"
 						Text="Time Out"
-						DataIndex="TIME_OUT" />
+						Format="M/d/yyyy h:mm tt"
+						DataIndex="TIME_OUT"
+						Flex="1" />
 					<ext:Column runat="server"
 						Text="Travel Time"
-						Dataindex="TRAVEL_TIME" />
+						Dataindex="TRAVEL_TIME"
+						Flex="1" />
 					<ext:Column runat="server"
 						Text="Drive Time"
-						DataIndex="DRIVE_TIME" />
+						DataIndex="DRIVE_TIME"
+						Flex="1" />
 					<ext:Column runat="server"
 						Text="Per Diem"
-						DataIndex="PER_DIEM" />
+						DataIndex="PER_DIEM"
+						Flex="1" />
 					<ext:Column runat="server"
 						Text="Comments"
-						DataIndex="COMMENTS" />
+						DataIndex="COMMENTS"
+						Flex="1" />
 				</Columns>
 			</ColumnModel>
 			<TopBar>
@@ -132,7 +163,7 @@
 									<Store>
 										<ext:Store runat="server"
 											ID="uxAddEmployeeEmpStore"
-											PageSize="25"
+											PageSize="15"
 											RemoteSort="true"
 											OnReadData="deReadEmployeeData">
 											<Model>
@@ -194,7 +225,7 @@
 										</SelectionChange>
 									</DirectEvents>         
 									<Plugins>
-										<ext:FilterHeader runat="server" ID="uxAddEmployeeEmpFilter" />
+										<ext:FilterHeader runat="server" ID="uxAddEmployeeEmpFilter" Remote="true" />
 									</Plugins>                                    
 								</ext:GridPanel>
 							</Component>
@@ -258,13 +289,28 @@
 							<Items>
 								<ext:DateField runat="server"
 									ID="uxAddEmployeeTimeInDate"
-									AllowBlank="false" />
+									Vtype="daterange"
+									EndDateField="uxAddEmployeeTimeOutDate"
+									EnableKeyEvents="true"
+									AllowBlank="false">
+									<Listeners>
+										<KeyUp Fn="valDateTime" />
+										<Change Handler="#{uxAddEmployeeTimeOutDate}.setValue(#{uxAddEmployeeTimeInDate}.value)" />
+									</Listeners>
+								</ext:DateField>
 								<ext:TimeField runat="server"
 									ID="uxAddEmployeeTimeInTime"
+									Vtype="daterange"
+									EndDateField="uxAddEmployeeTimeOutTime"
+									EnableKeyEvents="true"
 									Increment="30" 
 									SelectedTime="09:00" 
 									Format="H:mm"
-									AllowBlank="false" />
+									AllowBlank="false">
+									<Listeners>
+										<KeyUp Fn="valDateTime" />
+									</Listeners>
+								</ext:TimeField>
 							</Items>
 							<Defaults>
 								<ext:Parameter Name="Flex" Value="1" Mode="Raw" />
@@ -281,24 +327,26 @@
 							<Items>
 								<ext:DateField runat="server"
 									ID="uxAddEmployeeTimeOutDate"
-									AllowBlank="false" IsRemoteValidation="true">
-									<RemoteValidation OnValidation="valDate">
-										<ExtraParams>
-											<ext:Parameter Name="Type" Value="Add" />
-										</ExtraParams>
-									</RemoteValidation>
+									Vtype="daterange"
+									StartDateField="uxAddEmployeeTimeInDate"
+									EnableKeyEvents="true"
+									AllowBlank="false" >
+									<Listeners>
+										<KeyUp Fn="valDateTime" />
+									</Listeners>
 								</ext:DateField>
 								<ext:TimeField runat="server"
 									ID="uxAddEmployeeTimeOutTime"
 									Increment="30" 
 									SelectedTime="09:00" 
 									Format="H:mm"
-									AllowBlank="false" IsRemoteValidation="true" >
-									<RemoteValidation OnValidation="valTime">
-										<ExtraParams>
-											<ext:Parameter Name="Type" Value="Add" />
-										</ExtraParams>
-									</RemoteValidation>
+									Vtype="daterange"
+									StartDateField="uxAddEmployeeTimeInTime"
+									EnableKeyEvents="true"
+									AllowBlank="false">
+									<Listeners>
+										<KeyUp Fn="valDateTime" />
+									</Listeners>
 								</ext:TimeField>
 							</Items>
 						</ext:FieldContainer>
@@ -312,9 +360,8 @@
 							AllowBlank="true" />
 						<ext:Checkbox runat="server"
 							ID="uxAddEmployeePerDiem"
-							FieldLabel="Per Diem"
-							AllowBlank="true" />
-					    <ext:TextArea runat="server"
+							FieldLabel="Per Diem" />
+						<ext:TextArea runat="server"
 						   FieldLabel="Comments"
 						   ID="uxAddEmployeeComments"
 						   AllowBlank="true" />
@@ -334,7 +381,8 @@
 							Icon="ApplicationStop"
 							Text="Cancel">
 							<Listeners>
-								<Click Handler="#{uxAddEmployeeWindow}.hide()" />
+								<Click Handler="#{uxAddEmployeeForm}.reset();
+									#{uxAddEmployeeWindow}.hide()" />
 							</Listeners>
 						</ext:Button>
 					</Buttons>
@@ -367,7 +415,7 @@
 									<Store>
 										<ext:Store runat="server"
 											ID="uxEditEmployeeEmpStore"
-											PageSize="25"
+											PageSize="15"
 											RemoteSort="true"
 											OnReadData="deReadEmployeeData">
 											<Model>
@@ -429,7 +477,7 @@
 										</SelectionChange>
 									</DirectEvents>         
 									<Plugins>
-										<ext:FilterHeader runat="server" ID="uxEditEmployeeEmpFilter" />
+										<ext:FilterHeader runat="server" ID="uxEditEmployeeEmpFilter" Remote="true" />
 									</Plugins>                                    
 								</ext:GridPanel>
 							</Component>
@@ -446,26 +494,30 @@
 									<Store>
 										<ext:Store runat="server"
 											ID="uxEditEmployeeEqStore"
-											OnReadData="deReadEquipmentData">
+											OnReadData="deReadEquipmentData"
+											AutoDataBind="true">
 											<Model>
 												<ext:Model runat="server">
 													<Fields>
-														<ext:ModelField Name="EQUIPMENT_ID" Type="Int" />
-														<ext:ModelField Name="NAME" Type="String" />
-														<ext:ModelField Name="PROJECT_ID" Type="Int" />
+														<ext:ModelField Name="EQUIPMENT_ID" />
+														<ext:ModelField Name="NAME" />
+														<ext:ModelField Name="PROJECT_ID" />
 													</Fields>
 												</ext:Model>
 											</Model>
 											<Parameters>
 												<ext:StoreParameter Name="Form" Value="EquipmentEdit" />
-											</Parameters>											
+											</Parameters>	
+											<Proxy>
+												<ext:PageProxy />
+											</Proxy>										
 										</ext:Store>
 									</Store>
 									<ColumnModel>
 										<Columns>
-											<ext:Column runat="server" DataIndex="EQUIPMENT_ID" />
-											<ext:Column runat="server" DataIndex="NAME" />
-											<ext:Column runat="server" DataIndex="PROJECT_ID" />
+											<ext:Column runat="server" Text="Equipment Id" DataIndex="EQUIPMENT_ID"  />
+											<ext:Column runat="server" Text="Name" DataIndex="NAME" />
+											<ext:Column runat="server" Text="Project Id" DataIndex="PROJECT_ID" />
 										</Columns>
 									</ColumnModel>
 									<SelectionModel>
@@ -489,13 +541,27 @@
 							<Items>
 								<ext:DateField runat="server"
 									ID="uxEditEmployeeTimeInDate"
-									AllowBlank="false" />
+									Vtype="daterange"
+									EndDateField="uxEditEmployeeTimeOutDate"
+									EnableKeyEvents="true"
+									AllowBlank="false">
+									<Listeners>
+										<KeyUp Fn="valDateTime" />
+									</Listeners>
+								</ext:DateField>
 								<ext:TimeField runat="server"
 									ID="uxEditEmployeeTimeInTime"
+									Vtype="daterange"
+									EndDateField="uxEditEmployeeTimeOutTime"
+									EnableKeyEvents="true"
 									Increment="30" 
 									SelectedTime="09:00" 
 									Format="H:mm"
-									AllowBlank="false" />
+									AllowBlank="false">
+									<Listeners>
+										<KeyUp Fn="valDateTime" />
+									</Listeners>
+								</ext:TimeField>
 							</Items>
 							<Defaults>
 								<ext:Parameter Name="Flex" Value="1" Mode="Raw" />
@@ -512,24 +578,26 @@
 							<Items>
 								<ext:DateField runat="server"
 									ID="uxEditEmployeeTimeOutDate"
-									AllowBlank="false" IsRemoteValidation="true">
-									<RemoteValidation OnValidation="valDate">
-										<ExtraParams>
-											<ext:Parameter Name="Type" Value="Edit" />
-										</ExtraParams>
-									</RemoteValidation>
+									Vtype="daterange"
+									StartDateField="uxEditEmployeeTimeInDate"
+									EnableKeyEvents="true"
+									AllowBlank="false">
+									<Listeners>
+										<KeyUp Fn="valDateTime" />
+									</Listeners>
 								</ext:DateField>
 								<ext:TimeField runat="server"
 									ID="uxEditEmployeeTimeOutTime"
 									Increment="30" 
 									SelectedTime="09:00" 
 									Format="H:mm"
-									AllowBlank="false" IsRemoteValidation="true">
-									<RemoteValidation OnValidation="valTime">
-										<ExtraParams>
-											<ext:Parameter Name="Type" Value="Edit" />
-										</ExtraParams>
-									</RemoteValidation>
+									Vtype="daterange"
+									StartDateField="uxEditmployeeTimeInTime"
+									EnableKeyEvents="true"
+									AllowBlank="false">
+									<Listeners>
+										<KeyUp Fn="valDateTime" />
+									</Listeners>
 								</ext:TimeField>
 							</Items>
 						</ext:FieldContainer>
@@ -569,7 +637,8 @@
 							Icon="ApplicationStop"
 							Text="Cancel">
 							<Listeners>
-								<Click Handler="#{uxEditEmployeeWindow}.hide()" />
+								<Click Handler="#{uxEditEmployeeForm}.reset();
+									#{uxEditEmployeeWindow}.hide()" />
 							</Listeners>
 						</ext:Button>
 					</Buttons>

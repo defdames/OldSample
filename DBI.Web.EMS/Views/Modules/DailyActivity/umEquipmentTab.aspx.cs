@@ -148,6 +148,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GenericData.Insert<DAILY_ACTIVITY_EQUIPMENT>(added);
             
             uxAddEquipmentWindow.Hide();
+            uxAddEquipmentForm.Reset();
             uxCurrentEquipmentStore.Reload();
             
             Notification.Show(new NotificationConfig()
@@ -348,90 +349,5 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
-        /// <summary>
-        /// Validate Odometer Readings
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void valOdometer(object sender, RemoteValidationEventArgs e)
-        {
-            NumberField Field = (NumberField)sender;
-
-            long Start;
-            long End;
-
-            if (e.ExtraParams["Type"] == "Add")
-            {
-                if (e.ExtraParams["Start"] == "Start")
-                {
-                    Start = long.Parse(Field.Value.ToString());
-
-                    //check for Odometer End
-                    try
-                    {
-                        End = long.Parse(uxAddEquipmentEnd.Value.ToString());
-                    }
-                    catch(NullReferenceException)
-                    {
-                        End = 0;
-                    }
-                }
-                else
-                {
-                    //Check for odometer start
-                    try
-                    {
-                        Start = long.Parse(uxAddEquipmentStart.Value.ToString());
-                    }
-                    catch (NullReferenceException)
-                    {
-                        Start = 0;
-                    }
-                    End = long.Parse(Field.Value.ToString());
-                }
-            }
-            else
-            {
-                //Set values for edit
-                if (e.ExtraParams["Start"] == "Start")
-                {
-                    Start = long.Parse(Field.Value.ToString());
-                    
-                    //Check for odometer end
-                    try
-                    {
-                        End = long.Parse(uxEditEquipmentEnd.Value.ToString());
-                    }
-                    catch(NullReferenceException)
-                    {
-                        End = 0;
-                    }
-                }
-                else
-                {
-                    //Check for odometer start
-                    try
-                    {
-                        Start = long.Parse(uxEditEquipmentStart.Value.ToString());
-                    }
-                    catch (NullReferenceException)
-                    {
-                        Start = 0;
-                    }
-                    End = long.Parse(Field.Value.ToString());
-                }
-            }
-
-            //Do comparison and set validation flag, error message if necessary
-            if (Start <= End)
-            {
-                e.Success = true;
-            }
-            else
-            {
-                e.Success = false;
-                e.ErrorMessage = "Ending Odometer must equal or exceed Starting Odometer";
-            }
-        }
     }
 }

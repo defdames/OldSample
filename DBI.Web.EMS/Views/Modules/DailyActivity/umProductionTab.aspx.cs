@@ -188,6 +188,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GenericData.Insert<DAILY_ACTIVITY_PRODUCTION>(data);
 
             uxAddProductionWindow.Hide();
+            uxAddProductionForm.Reset();
             uxCurrentProductionStore.Reload();
 
             Notification.Show(new NotificationConfig()
@@ -263,91 +264,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     TargetAnchor = AnchorPoint.Center
                 }
             });
-        }
-
-        /// <summary>
-        /// Validate DateIn and DateOut
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void valDate(object sender, RemoteValidationEventArgs e)
-        {
-            DateField Field = (DateField)sender;
-            DateTime DateIn;
-            DateTime DateOut; 
-
-            //Get values based on Add/Edite
-            if (e.ExtraParams["Type"] == "Add")
-            {
-                DateIn = DateTime.Parse(uxAddProductionDateIn.Value.ToString());
-                DateOut = DateTime.Parse(Field.Value.ToString());
-            }
-            else
-            {
-                DateIn = DateTime.Parse(uxEditProductionDateIn.Value.ToString());
-                DateOut = DateTime.Parse(Field.Value.ToString());
-            }
-
-            //Do comparision and set validation flag, error message if necessary
-            if (DateOut >= DateIn)
-            {
-                e.Success = true;
-            }
-            else
-            {
-                e.Success = false;
-                e.ErrorMessage = "Date Out must be greater than or equal to Date In";
-            }
-        }
-
-        /// <summary>
-        /// Validate TimeIn and TimeOut
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void valTime(object sender, RemoteValidationEventArgs e)
-        {
-            TimeField Field = (TimeField)sender;
-            DateTime TimeIn;
-            DateTime TimeOut;
-
-            DateTime DateIn;
-            DateTime DateOut;
-
-            //Set values based on Add/Edit
-            if (e.ExtraParams["Type"] == "Add")
-            {
-                DateIn = DateTime.Parse(uxAddProductionDateIn.Value.ToString());
-                DateOut = DateTime.Parse(uxAddProductionDateOut.Value.ToString());
-
-                TimeIn = DateTime.Parse(uxAddProductionTimeIn.Value.ToString());
-                TimeOut = DateTime.Parse(Field.Value.ToString());
- 
-                TimeIn = DateIn.Date + TimeIn.TimeOfDay;
-                TimeOut = DateOut.Date + TimeOut.TimeOfDay;
-            }
-            else
-            {
-                DateIn = DateTime.Parse(uxEditProductionDateIn.Value.ToString());
-                DateOut = DateTime.Parse(uxEditProductionDateOut.Value.ToString());
-
-                TimeIn = DateTime.Parse(uxEditProductionTimeIn.Value.ToString());
-                TimeOut = DateTime.Parse(Field.Value.ToString());
-
-                TimeIn = DateIn.Date + TimeIn.TimeOfDay;
-                TimeOut = DateOut.Date + TimeOut.TimeOfDay;
-            }
-
-            //Do comparison and set validation flag, error message if necessary
-            if (TimeOut >= TimeIn )
-            {
-                e.Success = true;
-            }
-            else
-            {
-                e.Success = false;
-                e.ErrorMessage = "Time Out must be greater than or equal to Time In";
-            }
         }
     }
 }

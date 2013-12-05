@@ -55,15 +55,26 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 WIND_DIRECTION = uxAddWeatherWindDirection.Value.ToString(),
                 WIND_VELOCITY = uxAddWeatherWindVelocity.Value.ToString(),
                 HUMIDITY = uxAddWeatherHumidity.Value.ToString(),
-                COMMENTS = uxAddWeatherComments.Value.ToString(),
                 CREATE_DATE = DateTime.Now,
                 MODIFY_DATE = DateTime.Now,
                 CREATED_BY = User.Identity.Name,
                 MODIFIED_BY = User.Identity.Name
             };
+
+            try
+            {
+                string Comments = uxAddWeatherComments.Value.ToString();
+                data.COMMENTS = Comments;
+            }
+            catch (NullReferenceException)
+            {
+                data.COMMENTS = null;
+            }
+
             GenericData.Insert<DAILY_ACTIVITY_WEATHER>(data);
             
             uxAddWeatherWindow.Hide();
+            uxAddWeatherForm.Reset();
             uxCurrentWeatherStore.Reload();
 
             Notification.Show(new NotificationConfig()
@@ -106,10 +117,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.WIND_DIRECTION = uxEditWeatherWindDirection.Value.ToString();
             data.WIND_VELOCITY = uxEditWeatherWindVelocity.Value.ToString();
             data.HUMIDITY = uxEditWeatherHumidity.Value.ToString();
-            data.COMMENTS = uxEditWeatherComments.Value.ToString();
             data.MODIFIED_BY = User.Identity.Name;
             data.MODIFY_DATE = DateTime.Now;
 
+            try
+            {
+                string Comments = uxEditWeatherComments.Value.ToString();
+                data.COMMENTS = Comments;
+            }
+            catch(NullReferenceException)
+            {
+                data.COMMENTS = null;
+            }
             GenericData.Update<DAILY_ACTIVITY_WEATHER>(data);
 
             uxEditWeatherWindow.Hide();

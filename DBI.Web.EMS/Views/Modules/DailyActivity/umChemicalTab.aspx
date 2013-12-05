@@ -49,7 +49,7 @@
                                 <ext:ModelField Name="CHEMICAL_MIX_ID" />
                                 <ext:ModelField Name="CHEMICAL_MIX_NUMBER" />
                                 <ext:ModelField Name="HEADER_ID" />
-                                <ext:ModelField Name="TARGET_ARE" />
+                                <ext:ModelField Name="TARGET_AREA" />
                                 <ext:ModelField Name="GALLON_ACRE" />
                                 <ext:ModelField Name="GALLON_STARTING" />
                                 <ext:ModelField Name="GALLON_MIXED" />
@@ -69,17 +69,17 @@
             </Store>
             <ColumnModel>
                 <Columns>
-                    <ext:Column runat="server" DataIndex="CHEMICAL_MIX_NUMBER" Text="Mix Number" />
-                    <ext:Column runat="server" DataIndex="TARGET_ARE" Text="Target" />
-                    <ext:Column runat="server" DataIndex="GALLON_ACRE" Text="Gallons / Acre" />
-                    <ext:Column runat="server" DataIndex="GALLON_STARTING" Text="Gallons Starting"/>
-                    <ext:Column runat="server" DataIndex="GALLON_MIXED" Text="Gallons Mixed" />
-                    <ext:Column runat="server" ID="uxGallonTotalGrid" Text="Gallons Total" DataIndex="GALLON_TOTAL"/>
-                    <ext:Column runat="server" DataIndex="GALLON_REMAINING" Text="Gallons Remaining" />
-                    <ext:Column runat="server" ID="uxGallonUsedGrid" Text="Gallons Used" DataIndex="GALLON_USED" />
-                    <ext:Column runat="server" ID="uxAcresSprayedGrid" Text="Acres Sprayed" DataIndex="ACRES_SPRAYED" />
-                    <ext:Column runat="server" DataIndex="STATE" Text="State" />
-                    <ext:Column runat="server" DataIndex="COUNTY" Text="County" />
+                    <ext:Column runat="server" DataIndex="CHEMICAL_MIX_NUMBER" Text="Mix Number" Flex="1"/>
+                    <ext:Column runat="server" DataIndex="TARGET_AREA" Text="Target" Flex="1" />
+                    <ext:Column runat="server" DataIndex="GALLON_ACRE" Text="Gallons / Acre" Flex="1" />
+                    <ext:Column runat="server" DataIndex="GALLON_STARTING" Text="Gallons Starting" Flex="1" />
+                    <ext:Column runat="server" DataIndex="GALLON_MIXED" Text="Gallons Mixed" Flex="1" />
+                    <ext:Column runat="server" ID="uxGallonTotalGrid" Text="Gallons Total" DataIndex="GALLON_TOTAL" Flex="1" />
+                    <ext:Column runat="server" DataIndex="GALLON_REMAINING" Text="Gallons Remaining" Flex="1" />
+                    <ext:Column runat="server" ID="uxGallonUsedGrid" Text="Gallons Used" DataIndex="GALLON_USED" Flex="1" />
+                    <ext:Column runat="server" ID="uxAcresSprayedGrid" Text="Acres Sprayed" DataIndex="ACRES_SPRAYED" Flex="1" />
+                    <ext:Column runat="server" DataIndex="STATE" Text="State" Flex="1" />
+                    <ext:Column runat="server" DataIndex="COUNTY" Text="County" Flex="1" />
                 </Columns>
             </ColumnModel>
             <TopBar>
@@ -203,7 +203,8 @@
                             Icon="ApplicationStop"
                             Text="Cancel">
                             <Listeners>
-                                <Click Handler="#{uxAddChemicalWindow}.hide()" />
+                                <Click Handler="#{uxAddChemicalForm}.reset();
+                                    #{uxAddChemicalWindow}.hide()" />
                             </Listeners>
                         </ext:Button>
                     </Buttons>
@@ -292,7 +293,8 @@
                             Icon="ApplicationStop"
                             Text="Cancel">
                             <Listeners>
-                                <Click Handler="#{uxEditChemicalWindow}.hide()" />
+                                <Click Handler="#{uxEditChemicalForm}.reset();
+                                    #{uxEditChemicalWindow}.hide()" />
                             </Listeners>
                         </ext:Button>
                     </Buttons>

@@ -28,7 +28,7 @@
                             <Fields>
                                 <ext:ModelField Name="HEADER_ID" />
                                 <ext:ModelField Name="PROJECT_ID" />
-                                <ext:ModelField Name="DA_DATE" />
+                                <ext:ModelField Name="DA_DATE" Type="Date" />
                                 <ext:ModelField Name="SEGMENT1" />
                                 <ext:ModelField Name="LONG_NAME" />
                             </Fields>
@@ -36,7 +36,7 @@
                     </Store>
                     <ColumnModel>
                         <Columns>                            
-                            <ext:DateColumn runat="server" Text="Activity Date" DataIndex="DA_DATE" Flex="10"/>
+                            <ext:DateColumn runat="server" Text="Activity Date" DataIndex="DA_DATE" Flex="10" Format="MM-dd-yyyy"/>
                             <ext:Column ID="Column1" runat="server" Text="Project" DataIndex="SEGMENT1" Flex="20"/>
                             <ext:Column runat="server" Text="Project Name" DataIndex="LONG_NAME" Flex="50" />
                         </Columns>
@@ -58,6 +58,9 @@
                                 ID="uxCombinedTabLoader" Mode="Frame" AutoLoad="false" ReloadOnEvent="true">
                                 <LoadMask ShowMask="true" />
                             </Loader>
+                            <Listeners>
+                                <Activate Handler="#{uxCombinedTab}.reload()" />
+                            </Listeners>
                         </ext:Panel>
                         <ext:Panel runat="server" 
                             Title="Header"
@@ -65,7 +68,10 @@
                             <Loader runat="server"
                                 ID="uxHeaderLoader" Mode="Frame" AutoLoad="false" ReloadOnEvent="true"> 
                                 <LoadMask ShowMask="true" />
-                            </Loader>                                                    
+                            </Loader>
+                            <Listeners>
+                                <Activate Handler="#{uxHeaderTab}.reload()" />
+                            </Listeners>                                                    
                         </ext:Panel>
                         <ext:Panel runat="server"
                             Title="Equipment"
@@ -74,6 +80,9 @@
                                 ID="uxEquipmentLoader" Mode="Frame" AutoLoad="false" ReloadOnEvent="true">
                                 <LoadMask ShowMask="true"  />
                             </Loader>
+                            <Listeners>
+                                <Activate Handler="#{uxEquipmentTab}.reload()" />
+                            </Listeners>
                         </ext:Panel>
                         <ext:Panel runat="server"
                             Title="Employees"
@@ -81,6 +90,9 @@
                             <Loader ID="uxEmployeeLoader" runat="server" Mode="Frame" AutoLoad="false" ReloadOnEvent="true">
                                 <LoadMask ShowMask="true" />
                             </Loader>   
+                            <Listeners>
+                                <Activate Handler="#{uxEmployeeTab}.reload()" />
+                            </Listeners>
                         </ext:Panel>
                         <ext:Panel runat="server"
                             Title="Weather"
@@ -88,6 +100,9 @@
                             <Loader ID="uxWeatherLoader" runat="server" Mode="Frame" AutoLoad="false" ReloadOnEvent="true">
                                 <LoadMask ShowMask="true" />
                             </Loader>
+                            <Listeners>
+                                <Activate Handler="#{uxWeatherTab}.reload()" />
+                            </Listeners>
                         </ext:Panel>
                         <ext:Panel runat="server"
                             Title="Chemical Mix"
@@ -95,6 +110,9 @@
                             <Loader ID="uxChemicalLoader" runat="server" Mode="Frame" AutoLoad="false" ReloadOnEvent="true">
                                 <LoadMask ShowMask="true" />
                             </Loader>   
+                            <Listeners>
+                                <Activate Handler="#{uxChemicalTab}.reload()" />
+                            </Listeners>
                         </ext:Panel>
                         <ext:Panel runat="server"
                             Title="Inventory"
@@ -102,6 +120,9 @@
                             <Loader ID="uxInventoryLoader" runat="server" Mode="Frame" AutoLoad="false" ReloadOnEvent="true">
                                 <LoadMask ShowMask="true" />
                             </Loader>   
+                            <Listeners>
+                                <Activate Handler="#{uxInventoryTab}.reload()" />
+                            </Listeners>
                         </ext:Panel>
                         <ext:Panel runat="server"
                             Title="Production"
@@ -109,6 +130,9 @@
                             <Loader ID="uxProductionLoader" runat="server" Mode="Frame" AutoLoad="false" ReloadOnEvent="true">
                                 <LoadMask ShowMask="true" />
                             </Loader>   
+                            <Listeners>
+                                <Activate Handler="#{uxProductionTab}.reload()" />
+                            </Listeners>
                         </ext:Panel>                        
                     </Items>
                 </ext:TabPanel>

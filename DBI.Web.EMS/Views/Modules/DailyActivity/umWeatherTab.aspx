@@ -34,8 +34,8 @@
 			</Store>
 			<ColumnModel>
 				<Columns>
-					<ext:Column runat="server"
-						Text="Date" DataIndex="WEATHER_DATE_TIME" />
+					<ext:DateColumn runat="server"
+						Text="Date" Format="M/d/yyyy h:mm tt" DataIndex="WEATHER_DATE_TIME" />
 					<ext:Column runat="server"
 						Text="Temperature" DataIndex="TEMP" />
 					<ext:Column runat="server"
@@ -153,7 +153,7 @@
 						<ext:TextArea runat="server"
 							ID="uxAddWeatherComments"
 							FieldLabel="Comments"
-							AllowBlank="false" />
+							AllowBlank="true" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
@@ -170,7 +170,8 @@
 							Text="Cancel"
 							Icon="ApplicationStop">
 							<Listeners>
-								<Click Handler="#{uxAddWeatherForm}.reset()" />
+								<Click Handler="#{uxAddWeatherForm}.reset();
+									#{uxAddWeatherWindow}.hide()" />
 							</Listeners>
 						</ext:Button>
 					</Buttons>
@@ -242,7 +243,7 @@
 						<ext:TextArea runat="server"
 							ID="uxEditWeatherComments"
 							FieldLabel="Comments"
-							AllowBlank="false" />
+							AllowBlank="true" />
 					</Items>
 					 <Buttons>
 						 <ext:Button runat="server"
@@ -263,7 +264,8 @@
 							 Text="Cancel"
 							 Icon="ApplicationStop">
 							 <Listeners>
-								 <Click Handler="#{uxEditWeatherWindow}.hide()" />
+								 <Click Handler="#{uxEditWeatherForm}.reset();
+									 #{uxEditWeatherWindow}.hide()" />
 							 </Listeners>
 						 </ext:Button>
 					 </Buttons>

@@ -62,10 +62,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
                 var data = (from d in _context.DAILY_ACTIVITY_PRODUCTION
                             join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                            join t in _context.PA_TASKS_V on d.TASK_ID equals t.TASK_ID
                             join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
-                            join t in _context.PA_TASKS_V on p.PROJECT_ID equals t.PROJECT_ID
                             where d.HEADER_ID == HeaderId
-                            select new {t.DESCRIPTION, d.TIME_IN, d.TIME_OUT, d.WORK_AREA, d.POLE_FROM, d.POLE_TO, d.ACRES_MILE, d.GALLONS }).ToList();
+                            select new { d.PRODUCTION_ID, h.PROJECT_ID, p.LONG_NAME, t.TASK_ID, t.DESCRIPTION, d.TIME_IN, d.TIME_OUT, d.WORK_AREA, d.POLE_FROM, d.POLE_TO, d.ACRES_MILE, d.GALLONS }).ToList();
                 uxProductionStore.DataSource = data;
             }
         }

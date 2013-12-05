@@ -128,6 +128,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GenericData.Insert<DAILY_ACTIVITY_INVENTORY>(data);
 
             uxAddInventoryWindow.Hide();
+            uxAddInventoryForm.Reset();
             uxCurrentInventoryStore.Reload();
             
             Notification.Show(new NotificationConfig()

@@ -5,6 +5,36 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 	<title></title>
+	<ext:ResourcePlaceHolder ID="ResourcePlaceHolder1" runat="server" />
+	<script>
+		Ext.apply(Ext.form.VTypes, {
+			numberrange: function (val, field) {
+				if (!val) {
+					return;
+				}
+
+				if (field.startNumberField && (!field.numberRangeMax || (val != field.numberRangeMax))) {
+					var start = Ext.getCmp(field.startNumberField);
+
+					if (start) {
+						start.setMaxValue(val);
+						field.numberRangeMax = val;
+						start.validate();
+					}
+				} else if (field.endNumberField && (!field.numberRangeMin || (val != field.numberRangeMin))) {
+					var end = Ext.getCmp(field.endNumberField);
+
+					if (end) {
+						end.setMinValue(val);
+						field.numberRangeMin = val;
+						end.validate();
+					}
+				}
+
+				return true;
+			}
+		});
+	</script>
 </head>
 <body>
 	<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
@@ -118,7 +148,7 @@
 										<ext:Store runat="server"
 											ID="uxEquipmentStore"
 											OnReadData="deReadGrid"
-											PageSize="25"
+											PageSize="10"
 											RemoteSort="true">
 											<Model>
 												<ext:Model runat="server">
@@ -210,27 +240,13 @@
 						<ext:NumberField runat="server"
 							ID="uxAddEquipmentStart"
 							FieldLabel="Starting Odometer"
-							AllowBlank="true"
-							IsRemoteValidation="true">
-							<RemoteValidation OnValidation="valOdometer">
-								<ExtraParams>
-									<ext:Parameter Name="Type" Value="Add" />
-									<ext:Parameter Name="Start" Value="Start" />
-								</ExtraParams>
-							</RemoteValidation>
-						</ext:NumberField>
+							Vtype="numberrange" 
+							EndNumberField="uxAddEquipmentEnd" />
 						<ext:NumberField runat="server"
 							ID="uxAddEquipmentEnd"
 							FieldLabel="Ending Odometer"
-							AllowBlank="true"
-							IsRemoteValidation="true">
-							<RemoteValidation OnValidation="valOdometer">
-								<ExtraParams>
-									<ext:Parameter Name="Type" Value="Add" />
-									<ext:Parameter Name="Start" Value="End" />
-								</ExtraParams>
-							</RemoteValidation>
-						</ext:NumberField>
+							Vtype="numberrange"
+							StartNumberField="uxAddEquipmentStart" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
@@ -247,7 +263,8 @@
 							Text="Cancel"
 							Icon="ApplicationStop">
 							<Listeners>
-								<Click Handler ="#{uxAddEquipmentWindow}.hide()" />
+								<Click Handler ="#{uxAddEquipmentForm}.reset();
+									#{uxAddEquipmentWindow}.hide()" />
 							</Listeners>
 						</ext:Button>
 					</Buttons>
@@ -280,7 +297,7 @@
 										<ext:Store runat="server"
 											ID="uxEditEquipmentProjectStore"
 											OnReadData="deReadGrid"
-											PageSize="25"
+											PageSize="10"
 											RemoteSort="true">
 											<Model>
 												<ext:Model runat="server">
@@ -368,26 +385,14 @@
 							ID="uxEditEquipmentStart"
 							FieldLabel="Starting Odometer"
 							AllowBlank="true"
-							IsRemoteValidation="true">
-							<RemoteValidation OnValidation="valOdometer">
-								<ExtraParams>
-									<ext:Parameter Name="Type" Value="Edit" />
-									<ext:Parameter Name="Start" Value="Start" />
-								</ExtraParams>
-							</RemoteValidation>
-						</ext:NumberField>
+							Vtype="numberrange"
+							EndNumberField="uxEditEquipmentEnd" />
 						<ext:NumberField runat="server"
 							ID="uxEditEquipmentEnd"
 							FieldLabel="Ending Odometer"
 							AllowBlank="true"
-							IsRemoteValidation="true">
-							<RemoteValidation OnValidation="valOdometer">
-								<ExtraParams>
-									<ext:Parameter Name="Type" Value="Edit" />
-									<ext:Parameter Name="Start" Value="End" />
-								</ExtraParams>
-							</RemoteValidation>
-						</ext:NumberField>
+							Vtype="numberrange"
+							StartNumberField="uxEditEquipmentStart" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
@@ -408,7 +413,8 @@
 							Icon="ApplicationStop"
 							Text="Cancel">
 							<Listeners>
-								<Click Handler="#{uxEditEquipmentWindow}.hide()" />
+								<Click Handler="#{uxEditEquipmentForm}.reset();
+									#{uxEditEquipmentWindow}.hide()" />
 							</Listeners>
 						</ext:Button>
 					</Buttons>
