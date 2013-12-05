@@ -241,14 +241,12 @@
 							ID="uxAddEquipmentStart"
 							FieldLabel="Starting Odometer"
 							Vtype="numberrange" 
-							EndNumberField="uxAddEquipmentEnd">
-						</ext:NumberField>
+							EndNumberField="uxAddEquipmentEnd" />
 						<ext:NumberField runat="server"
 							ID="uxAddEquipmentEnd"
 							FieldLabel="Ending Odometer"
 							Vtype="numberrange"
-							StartNumberField="uxAddEquipmentStart">
-						</ext:NumberField>
+							StartNumberField="uxAddEquipmentStart" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
@@ -386,26 +384,14 @@
 							ID="uxEditEquipmentStart"
 							FieldLabel="Starting Odometer"
 							AllowBlank="true"
-							IsRemoteValidation="true">
-							<RemoteValidation OnValidation="valOdometer">
-								<ExtraParams>
-									<ext:Parameter Name="Type" Value="Edit" />
-									<ext:Parameter Name="Start" Value="Start" />
-								</ExtraParams>
-							</RemoteValidation>
-						</ext:NumberField>
+							Vtype="numberrange"
+							EndNumberField="uxEditEquipmentEnd" />
 						<ext:NumberField runat="server"
 							ID="uxEditEquipmentEnd"
 							FieldLabel="Ending Odometer"
 							AllowBlank="true"
-							IsRemoteValidation="true">
-							<RemoteValidation OnValidation="valOdometer">
-								<ExtraParams>
-									<ext:Parameter Name="Type" Value="Edit" />
-									<ext:Parameter Name="Start" Value="End" />
-								</ExtraParams>
-							</RemoteValidation>
-						</ext:NumberField>
+							Vtype="numberrange"
+							StartNumberField="uxEditEquipmentStart" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
