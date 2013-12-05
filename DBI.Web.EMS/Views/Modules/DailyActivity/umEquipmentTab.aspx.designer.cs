@@ -13,6 +13,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
     public partial class umEquipmentTab {
         
         /// <summary>
+        /// ResourcePlaceHolder1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ResourcePlaceHolder ResourcePlaceHolder1;
+        
+        /// <summary>
         /// ResourceManager1 control.
         /// </summary>
         /// <remarks>

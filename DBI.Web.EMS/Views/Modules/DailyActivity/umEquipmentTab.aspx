@@ -5,6 +5,36 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 	<title></title>
+	<ext:ResourcePlaceHolder ID="ResourcePlaceHolder1" runat="server" />
+	<script>
+		Ext.apply(Ext.form.VTypes, {
+			numberrange: function (val, field) {
+				if (!val) {
+					return;
+				}
+
+				if (field.startNumberField && (!field.numberRangeMax || (val != field.numberRangeMax))) {
+					var start = Ext.getCmp(field.startNumberField);
+
+					if (start) {
+						start.setMaxValue(val);
+						field.numberRangeMax = val;
+						start.validate();
+					}
+				} else if (field.endNumberField && (!field.numberRangeMin || (val != field.numberRangeMin))) {
+					var end = Ext.getCmp(field.endNumberField);
+
+					if (end) {
+						end.setMinValue(val);
+						field.numberRangeMin = val;
+						end.validate();
+					}
+				}
+
+				return true;
+			}
+		});
+	</script>
 </head>
 <body>
 	<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
@@ -210,26 +240,14 @@
 						<ext:NumberField runat="server"
 							ID="uxAddEquipmentStart"
 							FieldLabel="Starting Odometer"
-							AllowBlank="true"
-							IsRemoteValidation="true">
-							<RemoteValidation OnValidation="valOdometer">
-								<ExtraParams>
-									<ext:Parameter Name="Type" Value="Add" />
-									<ext:Parameter Name="Start" Value="Start" />
-								</ExtraParams>
-							</RemoteValidation>
+							Vtype="numberrange" 
+							EndNumberField="uxAddEquipmentEnd">
 						</ext:NumberField>
 						<ext:NumberField runat="server"
 							ID="uxAddEquipmentEnd"
 							FieldLabel="Ending Odometer"
-							AllowBlank="true"
-							IsRemoteValidation="true">
-							<RemoteValidation OnValidation="valOdometer">
-								<ExtraParams>
-									<ext:Parameter Name="Type" Value="Add" />
-									<ext:Parameter Name="Start" Value="End" />
-								</ExtraParams>
-							</RemoteValidation>
+							Vtype="numberrange"
+							StartNumberField="uxAddEquipmentStart">
 						</ext:NumberField>
 					</Items>
 					<Buttons>

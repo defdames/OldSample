@@ -111,7 +111,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //loop through result
             foreach (Dictionary<string, string> Chemical in ChemicalInfo)
             {
-                uxEditChemicalTargetAre.SetValue(Chemical["TARGET_ARE"]);
+                uxEditChemicalTargetAre.SetValue(Chemical["TARGET_AREA"]);
                 uxEditChemicalGallonAcre.SetValue(Chemical["GALLON_ACRE"]);
                 uxEditChemicalGallonStart.SetValue(Chemical["GALLON_STARTING"]);
                 uxEditChemicalGallonMixed.SetValue(Chemical["GALLON_MIXED"]);

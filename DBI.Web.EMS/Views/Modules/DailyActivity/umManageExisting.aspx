@@ -28,7 +28,7 @@
                             <Fields>
                                 <ext:ModelField Name="HEADER_ID" />
                                 <ext:ModelField Name="PROJECT_ID" />
-                                <ext:ModelField Name="DA_DATE" />
+                                <ext:ModelField Name="DA_DATE" Type="Date" />
                                 <ext:ModelField Name="SEGMENT1" />
                                 <ext:ModelField Name="LONG_NAME" />
                             </Fields>
@@ -36,7 +36,7 @@
                     </Store>
                     <ColumnModel>
                         <Columns>                            
-                            <ext:DateColumn runat="server" Text="Activity Date" DataIndex="DA_DATE" Flex="10"/>
+                            <ext:DateColumn runat="server" Text="Activity Date" DataIndex="DA_DATE" Flex="10" Format="MM-dd-yyyy"/>
                             <ext:Column ID="Column1" runat="server" Text="Project" DataIndex="SEGMENT1" Flex="20"/>
                             <ext:Column runat="server" Text="Project Name" DataIndex="LONG_NAME" Flex="50" />
                         </Columns>

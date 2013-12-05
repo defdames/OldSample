@@ -153,7 +153,7 @@
 						<ext:TextArea runat="server"
 							ID="uxAddWeatherComments"
 							FieldLabel="Comments"
-							AllowBlank="false" />
+							AllowBlank="true" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
@@ -242,7 +242,7 @@
 						<ext:TextArea runat="server"
 							ID="uxEditWeatherComments"
 							FieldLabel="Comments"
-							AllowBlank="false" />
+							AllowBlank="true" />
 					</Items>
 					 <Buttons>
 						 <ext:Button runat="server"
