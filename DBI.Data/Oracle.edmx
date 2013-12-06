@@ -384,8 +384,8 @@
           <Property Name="HOTEL_CITY" Type="varchar2" MaxLength="100" />
           <Property Name="HOTEL_STATE" Type="varchar2" MaxLength="100" />
           <Property Name="HOTEL_PHONE" Type="varchar2" MaxLength="30" />
-          <Property Name="FOREMAN_SIGNATURE" Type="clob" />
-          <Property Name="CONTRACT_REP" Type="clob" />
+          <Property Name="FOREMAN_SIGNATURE" Type="blob" />
+          <Property Name="CONTRACT_REP" Type="blob" />
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
@@ -1738,8 +1738,8 @@
           <Property Type="String" Name="HOTEL_CITY" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="HOTEL_STATE" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="HOTEL_PHONE" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="FOREMAN_SIGNATURE" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CONTRACT_REP" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="Binary" Name="FOREMAN_SIGNATURE" MaxLength="Max" FixedLength="false" />
+          <Property Type="Binary" Name="CONTRACT_REP" MaxLength="Max" FixedLength="false" />
           <Property Type="DateTime" Name="CREATE_DATE" />
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
