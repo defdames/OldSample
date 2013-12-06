@@ -111,6 +111,7 @@
     <Content Include="Resources\Images\wwbnight.png" />
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
+    <Content Include="Views\Modules\DailyActivity\ImageLoader\ImageLoader.aspx" />
     <Content Include="Views\Modules\DailyActivity\umChemicalTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umCombinedTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umDailyActivity.aspx" />
@@ -120,6 +121,7 @@
     <Content Include="Views\Modules\DailyActivity\umInventoryTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umManageExisting.aspx" />
     <Content Include="Views\Modules\DailyActivity\umProductionTab.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umSubmitActivity.aspx" />
     <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
     <Content Include="Views\Modules\Security\umSecurityLogList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityActivityList.aspx" />
@@ -156,6 +158,13 @@
     </Compile>
     <Compile Include="Views\Handlers\SystemUsers.ashx.cs">
       <DependentUpon>SystemUsers.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\ImageLoader\ImageLoader.aspx.cs">
+      <DependentUpon>ImageLoader.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\ImageLoader\ImageLoader.aspx.designer.cs">
+      <DependentUpon>ImageLoader.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umChemicalTab.aspx.cs">
       <DependentUpon>umChemicalTab.aspx</DependentUpon>
@@ -219,6 +228,13 @@
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umProductionTab.aspx.designer.cs">
       <DependentUpon>umProductionTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umSubmitActivity.aspx.cs">
+      <DependentUpon>umSubmitActivity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umSubmitActivity.aspx.designer.cs">
+      <DependentUpon>umSubmitActivity.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umWeatherTab.aspx.cs">
       <DependentUpon>umWeatherTab.aspx</DependentUpon>

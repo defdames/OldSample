@@ -49,5 +49,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxWeatherTab.LoadContent(weatherUrl);
             uxInventoryTab.LoadContent(invUrl);
         }
+
+        protected void deSubmitActivity(object sender, DirectEventArgs e)
+        {
+            string WindowUrl = string.Format("umSubmitActivity.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+
+            uxSubmitActivityWindow.LoadContent(WindowUrl);
+            uxSubmitActivityWindow.Show();
+        }
     }
 }
