@@ -10,16 +10,7 @@
 namespace DBI.Web.EMS.Views.Modules.DailyActivity {
     
     
-    public partial class umManageExisting {
-        
-        /// <summary>
-        /// ResourceManager1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ResourceManager ResourceManager1;
+    public partial class umSubmitActivity {
         
         /// <summary>
         /// form1 control.
@@ -31,165 +22,138 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// uxViewPort control.
+        /// ResourceManager1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Viewport uxViewPort;
+        protected global::Ext.Net.ResourceManager ResourceManager1;
         
         /// <summary>
-        /// uxMenuPanel control.
+        /// uxSubmitActivityPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.MenuPanel uxMenuPanel;
+        protected global::Ext.Net.Panel uxSubmitActivityPanel;
         
         /// <summary>
-        /// uxCreate control.
+        /// uxSubmitActivityForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.MenuItem uxCreate;
+        protected global::Ext.Net.FormPanel uxSubmitActivityForm;
         
         /// <summary>
-        /// uxManage control.
+        /// uxSubmitReasonForNoWork control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.MenuItem uxManage;
+        protected global::Ext.Net.TextField uxSubmitReasonForNoWork;
         
         /// <summary>
-        /// uxManageGrid control.
+        /// uxSubmitHotel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxManageGrid;
+        protected global::Ext.Net.TextField uxSubmitHotel;
         
         /// <summary>
-        /// uxManageGridStore control.
+        /// uxSubmitCity control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxManageGridStore;
+        protected global::Ext.Net.TextField uxSubmitCity;
         
         /// <summary>
-        /// Column1 control.
+        /// uxSubmitState control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column1;
+        protected global::Ext.Net.TextField uxSubmitState;
         
         /// <summary>
-        /// uxSubmitActivityButton control.
+        /// uxSubmitPhone control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxSubmitActivityButton;
+        protected global::Ext.Net.TextField uxSubmitPhone;
         
         /// <summary>
-        /// uxTabPanel control.
+        /// uxSubmitSignature control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TabPanel uxTabPanel;
+        protected global::Ext.Net.FileUploadField uxSubmitSignature;
         
         /// <summary>
-        /// uxCombinedTab control.
+        /// uxForemanSignatureImage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxCombinedTab;
+        protected global::Ext.Net.Image uxForemanSignatureImage;
         
         /// <summary>
-        /// uxHeaderTab control.
+        /// uxSubmitContract control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxHeaderTab;
+        protected global::Ext.Net.FileUploadField uxSubmitContract;
         
         /// <summary>
-        /// uxEquipmentTab control.
+        /// uxContractRepresentativeImage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxEquipmentTab;
+        protected global::Ext.Net.Image uxContractRepresentativeImage;
         
         /// <summary>
-        /// uxEmployeeTab control.
+        /// uxSaveAndSubmitButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxEmployeeTab;
+        protected global::Ext.Net.Button uxSaveAndSubmitButton;
         
         /// <summary>
-        /// uxWeatherTab control.
+        /// uxSaveOnlyButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxWeatherTab;
+        protected global::Ext.Net.Button uxSaveOnlyButton;
         
         /// <summary>
-        /// uxChemicalTab control.
+        /// uxCancelButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxChemicalTab;
-        
-        /// <summary>
-        /// uxInventoryTab control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxInventoryTab;
-        
-        /// <summary>
-        /// uxProductionTab control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxProductionTab;
-        
-        /// <summary>
-        /// uxSubmitActivityWindow control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Window uxSubmitActivityWindow;
+        protected global::Ext.Net.Button uxCancelButton;
     }
 }

@@ -48,6 +48,24 @@
                             </ExtraParams>
                         </SelectionChange>
                     </DirectEvents>
+                    <TopBar>
+                        <ext:Toolbar runat="server">
+                            <Items>
+                                <ext:Button runat="server"
+                                    ID="uxSubmitActivityButton"
+                                    Text="Submit for Approval"
+                                    Icon="ApplicationGo">
+                                    <DirectEvents>
+                                        <Click OnEvent="deSubmitActivity">
+                                            <ExtraParams>
+                                                <ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
+                                            </ExtraParams>
+                                        </Click>
+                                    </DirectEvents>    
+                                </ext:Button>
+                            </Items>
+                        </ext:Toolbar>
+                    </TopBar>
                 </ext:GridPanel>
                 <ext:TabPanel runat="server" ID="uxTabPanel" Region="Center">
                     <Items>
@@ -136,6 +154,17 @@
                         </ext:Panel>                        
                     </Items>
                 </ext:TabPanel>
+                <ext:Window runat="server"
+                    ID="uxSubmitActivityWindow"
+                    Title="Submit Activity"
+                    Hidden="true"
+                    Width="650"
+                    Shadow="true" >
+                    <Loader runat="server"
+                        ID="uxSubmitActivityLoader"
+                        Mode="Frame"
+                        AutoLoad="false" />
+                </ext:Window>
             </Items>
         </ext:Viewport>
     </form>
