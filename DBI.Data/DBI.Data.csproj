@@ -79,6 +79,9 @@
     <Compile Include="DAILY_ACTIVITY_EQUIPMENT.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="DAILY_ACTIVITY_FOOTER.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="DAILY_ACTIVITY_HEADER.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>

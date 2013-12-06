@@ -34,6 +34,8 @@
         <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="1.5" PointY="16.625" />
         <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
+        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_FOOTER" Width="1.5" PointX="3.75" PointY="21" />
+        <AssociationConnector Association="OracleModel.FK_FOOTER_HEADER_ID" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

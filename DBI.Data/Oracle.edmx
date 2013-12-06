@@ -9,6 +9,7 @@
           <EntitySet Name="DAILY_ACTIVITY_CHEMICAL_MIX" EntityType="OracleModel.Store.DAILY_ACTIVITY_CHEMICAL_MIX" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_EMPLOYEE" EntityType="OracleModel.Store.DAILY_ACTIVITY_EMPLOYEE" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_EQUIPMENT" EntityType="OracleModel.Store.DAILY_ACTIVITY_EQUIPMENT" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="DAILY_ACTIVITY_FOOTER" EntityType="OracleModel.Store.DAILY_ACTIVITY_FOOTER" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_HEADER" EntityType="OracleModel.Store.DAILY_ACTIVITY_HEADER" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_INVENTORY" EntityType="OracleModel.Store.DAILY_ACTIVITY_INVENTORY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_PRODUCTION" EntityType="OracleModel.Store.DAILY_ACTIVITY_PRODUCTION" store:Type="Tables" Schema="XXEMS" />
@@ -293,6 +294,10 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_EMPLOYEE" EntitySet="DAILY_ACTIVITY_EMPLOYEE" />
           </AssociationSet>
+          <AssociationSet Name="FK_FOOTER_HEADER_ID" Association="OracleModel.Store.FK_FOOTER_HEADER_ID">
+            <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
+            <End Role="DAILY_ACTIVITY_FOOTER" EntitySet="DAILY_ACTIVITY_FOOTER" />
+          </AssociationSet>
           <AssociationSet Name="FK_HEADER_ID" Association="OracleModel.Store.FK_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_EQUIPMENT" EntitySet="DAILY_ACTIVITY_EQUIPMENT" />
@@ -363,6 +368,24 @@
           <Property Name="PROJECT_ID" Type="number" Precision="15" />
           <Property Name="ODOMETER_START" Type="number" Precision="15" />
           <Property Name="ODOMETER_END" Type="number" Precision="15" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="DAILY_ACTIVITY_FOOTER">
+          <Key>
+            <PropertyRef Name="FOOTER_ID" />
+          </Key>
+          <Property Name="FOOTER_ID" Type="number" Nullable="false" />
+          <Property Name="HEADER_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="REASON_FOR_NO_WORK" Type="varchar2" MaxLength="500" />
+          <Property Name="HOTEL_NAME" Type="varchar2" MaxLength="100" />
+          <Property Name="HOTEL_CITY" Type="varchar2" MaxLength="100" />
+          <Property Name="HOTEL_STATE" Type="varchar2" MaxLength="100" />
+          <Property Name="HOTEL_PHONE" Type="varchar2" MaxLength="30" />
+          <Property Name="FOREMAN_SIGNATURE" Type="clob" />
+          <Property Name="CONTRACT_REP" Type="clob" />
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
@@ -848,6 +871,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_FOOTER_HEADER_ID">
+          <End Role="DAILY_ACTIVITY_HEADER" Type="OracleModel.Store.DAILY_ACTIVITY_HEADER" Multiplicity="1" />
+          <End Role="DAILY_ACTIVITY_FOOTER" Type="OracleModel.Store.DAILY_ACTIVITY_FOOTER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_HEADER">
+              <PropertyRef Name="HEADER_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_FOOTER">
+              <PropertyRef Name="HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_HEADER_ID">
           <End Role="DAILY_ACTIVITY_HEADER" Type="OracleModel.Store.DAILY_ACTIVITY_HEADER" Multiplicity="1" />
           <End Role="DAILY_ACTIVITY_EQUIPMENT" Type="OracleModel.Store.DAILY_ACTIVITY_EQUIPMENT" Multiplicity="*" />
@@ -974,6 +1009,11 @@
           <AssociationSet Name="FK_EMPLOYEE_HEADER_ID" Association="OracleModel.FK_EMPLOYEE_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_EMPLOYEE" EntitySet="DAILY_ACTIVITY_EMPLOYEE" />
+          </AssociationSet>
+          <EntitySet Name="DAILY_ACTIVITY_FOOTER" EntityType="OracleModel.DAILY_ACTIVITY_FOOTER" />
+          <AssociationSet Name="FK_FOOTER_HEADER_ID" Association="OracleModel.FK_FOOTER_HEADER_ID">
+            <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
+            <End Role="DAILY_ACTIVITY_FOOTER" EntitySet="DAILY_ACTIVITY_FOOTER" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
@@ -1507,6 +1547,7 @@
           <NavigationProperty Name="DAILY_ACTIVITY_INVENTORY" Relationship="OracleModel.FK_INVENTORY_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_INVENTORY" />
           <NavigationProperty Name="DAILY_ACTIVITY_PRODUCTION" Relationship="OracleModel.FK_PRODUCTION_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_PRODUCTION" />
           <NavigationProperty Name="DAILY_ACTIVITY_EMPLOYEE" Relationship="OracleModel.FK_EMPLOYEE_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_EMPLOYEE" />
+          <NavigationProperty Name="DAILY_ACTIVITY_FOOTER" Relationship="OracleModel.FK_FOOTER_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_FOOTER" />
         </EntityType>
         <Association Name="FK_HEADER_ID">
           <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
@@ -1682,6 +1723,37 @@
               <PropertyRef Name="HEADER_ID" />
             </Principal>
             <Dependent Role="DAILY_ACTIVITY_EMPLOYEE">
+              <PropertyRef Name="HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DAILY_ACTIVITY_FOOTER">
+          <Key>
+            <PropertyRef Name="FOOTER_ID" />
+          </Key>
+          <Property Type="Decimal" Name="FOOTER_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
+          <Property Type="String" Name="REASON_FOR_NO_WORK" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="HOTEL_NAME" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="HOTEL_CITY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="HOTEL_STATE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="HOTEL_PHONE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="FOREMAN_SIGNATURE" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CONTRACT_REP" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DAILY_ACTIVITY_HEADER" Relationship="OracleModel.FK_FOOTER_HEADER_ID" FromRole="DAILY_ACTIVITY_FOOTER" ToRole="DAILY_ACTIVITY_HEADER" />
+        </EntityType>
+        <Association Name="FK_FOOTER_HEADER_ID">
+          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
+          <End Type="OracleModel.DAILY_ACTIVITY_FOOTER" Role="DAILY_ACTIVITY_FOOTER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_HEADER">
+              <PropertyRef Name="HEADER_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_FOOTER">
               <PropertyRef Name="HEADER_ID" />
             </Dependent>
           </ReferentialConstraint>
@@ -2160,6 +2232,25 @@
                 <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
                 <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
                 <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DAILY_ACTIVITY_FOOTER">
+            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_FOOTER">
+              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_FOOTER">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="CONTRACT_REP" ColumnName="CONTRACT_REP" />
+                <ScalarProperty Name="FOREMAN_SIGNATURE" ColumnName="FOREMAN_SIGNATURE" />
+                <ScalarProperty Name="HOTEL_PHONE" ColumnName="HOTEL_PHONE" />
+                <ScalarProperty Name="HOTEL_STATE" ColumnName="HOTEL_STATE" />
+                <ScalarProperty Name="HOTEL_CITY" ColumnName="HOTEL_CITY" />
+                <ScalarProperty Name="HOTEL_NAME" ColumnName="HOTEL_NAME" />
+                <ScalarProperty Name="REASON_FOR_NO_WORK" ColumnName="REASON_FOR_NO_WORK" />
+                <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
+                <ScalarProperty Name="FOOTER_ID" ColumnName="FOOTER_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
