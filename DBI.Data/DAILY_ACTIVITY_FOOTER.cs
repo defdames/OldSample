@@ -21,8 +21,8 @@ namespace DBI.Data
         public string HOTEL_CITY { get; set; }
         public string HOTEL_STATE { get; set; }
         public string HOTEL_PHONE { get; set; }
-        public string FOREMAN_SIGNATURE { get; set; }
-        public string CONTRACT_REP { get; set; }
+        public byte[] FOREMAN_SIGNATURE { get; set; }
+        public byte[] CONTRACT_REP { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
