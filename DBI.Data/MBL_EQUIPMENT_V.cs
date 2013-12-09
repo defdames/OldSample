@@ -14,7 +14,7 @@ namespace DBI.Data
     public partial class MBL_EQUIPMENT_V
     {
         public long PROJECT_ID { get; set; }
-        public string NAME { get; set; }
+        public string EQUIPMENT_NAME { get; set; }
         public string SEGMENT1 { get; set; }
         public string ORGANIZATION_NAME { get; set; }
         public long ORGANIZATION_ID { get; set; }
