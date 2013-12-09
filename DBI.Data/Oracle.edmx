@@ -248,8 +248,7 @@
       "PROJECTS_V"."ALLOW_MULTI_PROGRAM_ROLLUP" AS "ALLOW_MULTI_PROGRAM_ROLLUP", 
       "PROJECTS_V"."PROJ_REQ_RES_FORMAT_ID" AS "PROJ_REQ_RES_FORMAT_ID", 
       "PROJECTS_V"."PROJ_ASGMT_RES_FORMAT_ID" AS "PROJ_ASGMT_RES_FORMAT_ID", 
-      "PROJECTS_V"."FUNDING_APPROVAL_STATUS_CODE" AS "FUNDING_APPROVAL_STATUS_CODE", 
-      "PROJECTS_V"."CLASS_CODE" AS "CLASS_CODE"
+      "PROJECTS_V"."FUNDING_APPROVAL_STATUS_CODE" AS "FUNDING_APPROVAL_STATUS_CODE"
       FROM "XXEMS"."PROJECTS_V" "PROJECTS_V"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="SUBINVENTORY_V" EntityType="OracleModel.Store.SUBINVENTORY_V" store:Type="Views" store:Schema="XXEMS" store:Name="SUBINVENTORY_V">
@@ -597,7 +596,6 @@
             <PropertyRef Name="ALLOW_CROSS_CHARGE_FLAG" />
             <PropertyRef Name="CC_PROCESS_LABOR_FLAG" />
             <PropertyRef Name="CC_PROCESS_NL_FLAG" />
-            <PropertyRef Name="CLASS_CODE" />
           </Key>
           <Property Name="ORGANIZATION_NAME" Type="varchar2" Nullable="false" MaxLength="240" />
           <Property Name="PROJECT_ID" Type="number" Nullable="false" Precision="15" />
@@ -790,7 +788,6 @@
           <Property Name="PROJ_REQ_RES_FORMAT_ID" Type="number" />
           <Property Name="PROJ_ASGMT_RES_FORMAT_ID" Type="number" />
           <Property Name="FUNDING_APPROVAL_STATUS_CODE" Type="varchar2" MaxLength="30" />
-          <Property Name="CLASS_CODE" Type="varchar2" Nullable="false" MaxLength="30" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'XXEMS.SUBINVENTORY_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -969,7 +966,6 @@
             <End Role="SYS_USERS" EntitySet="SYS_USERS" />
             <End Role="SYS_LOG" EntitySet="SYS_LOG" />
           </AssociationSet>
-          <EntitySet Name="PROJECTS_V" EntityType="OracleModel.PROJECTS_V" />
           <EntitySet Name="EMPLOYEES_V" EntityType="OracleModel.EMPLOYEES_V" />
           <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.PA_TASKS_V" />
           <EntitySet Name="DAILY_ACTIVITY_WEATHER" EntityType="OracleModel.DAILY_ACTIVITY_WEATHER" />
@@ -1015,6 +1011,7 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_FOOTER" EntitySet="DAILY_ACTIVITY_FOOTER" />
           </AssociationSet>
+          <EntitySet Name="PROJECTS_V" EntityType="OracleModel.PROJECTS_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -1175,222 +1172,6 @@
           <Property Type="DateTime" Name="START_DATE" Nullable="true" />
           <Property Type="DateTime" Name="COMPLETION_DATE" Nullable="true" />
         </ComplexType>
-        <EntityType Name="PROJECTS_V">
-          <Key>
-            <PropertyRef Name="ORGANIZATION_NAME" />
-            <PropertyRef Name="PROJECT_ID" />
-            <PropertyRef Name="NAME" />
-            <PropertyRef Name="SEGMENT1" />
-            <PropertyRef Name="LAST_UPDATE_DATE" />
-            <PropertyRef Name="LAST_UPDATED_BY" />
-            <PropertyRef Name="CREATION_DATE" />
-            <PropertyRef Name="CREATED_BY" />
-            <PropertyRef Name="LAST_UPDATE_LOGIN" />
-            <PropertyRef Name="PROJECT_TYPE" />
-            <PropertyRef Name="CARRYING_OUT_ORGANIZATION_ID" />
-            <PropertyRef Name="PUBLIC_SECTOR_FLAG" />
-            <PropertyRef Name="PROJECT_STATUS_CODE" />
-            <PropertyRef Name="SUMMARY_FLAG" />
-            <PropertyRef Name="ENABLED_FLAG" />
-            <PropertyRef Name="PROJECT_CURRENCY_CODE" />
-            <PropertyRef Name="ALLOW_CROSS_CHARGE_FLAG" />
-            <PropertyRef Name="CC_PROCESS_LABOR_FLAG" />
-            <PropertyRef Name="CC_PROCESS_NL_FLAG" />
-            <PropertyRef Name="CLASS_CODE" />
-          </Key>
-          <Property Type="String" Name="ORGANIZATION_NAME" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
-          <Property Type="String" Name="NAME" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT1" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
-          <Property Type="Int64" Name="LAST_UPDATED_BY" Nullable="false" />
-          <Property Type="DateTime" Name="CREATION_DATE" Nullable="false" />
-          <Property Type="Int64" Name="CREATED_BY" Nullable="false" />
-          <Property Type="Int64" Name="LAST_UPDATE_LOGIN" Nullable="false" />
-          <Property Type="String" Name="PROJECT_TYPE" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="CARRYING_OUT_ORGANIZATION_ID" Nullable="false" />
-          <Property Type="String" Name="PUBLIC_SECTOR_FLAG" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="PROJECT_STATUS_CODE" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="DESCRIPTION" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="START_DATE" />
-          <Property Type="DateTime" Name="COMPLETION_DATE" />
-          <Property Type="DateTime" Name="CLOSED_DATE" />
-          <Property Type="String" Name="DISTRIBUTION_RULE" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="LABOR_INVOICE_FORMAT_ID" />
-          <Property Type="Int64" Name="NON_LABOR_INVOICE_FORMAT_ID" />
-          <Property Type="Int64" Name="RETENTION_INVOICE_FORMAT_ID" />
-          <Property Type="Decimal" Name="RETENTION_PERCENTAGE" Precision="17" Scale="2" />
-          <Property Type="Int64" Name="BILLING_OFFSET" />
-          <Property Type="Int64" Name="BILLING_CYCLE" />
-          <Property Type="String" Name="LABOR_STD_BILL_RATE_SCHDL" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="LABOR_BILL_RATE_ORG_ID" />
-          <Property Type="DateTime" Name="LABOR_SCHEDULE_FIXED_DATE" />
-          <Property Type="Decimal" Name="LABOR_SCHEDULE_DISCOUNT" Precision="7" Scale="4" />
-          <Property Type="String" Name="NON_LABOR_STD_BILL_RATE_SCHDL" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="NON_LABOR_BILL_RATE_ORG_ID" />
-          <Property Type="DateTime" Name="NON_LABOR_SCHEDULE_FIXED_DATE" />
-          <Property Type="Decimal" Name="NON_LABOR_SCHEDULE_DISCOUNT" Precision="7" Scale="4" />
-          <Property Type="String" Name="LIMIT_TO_TXN_CONTROLS_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="PROJECT_LEVEL_FUNDING_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="INVOICE_COMMENT" MaxLength="240" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="UNBILLED_RECEIVABLE_DR" Precision="22" Scale="5" />
-          <Property Type="Decimal" Name="UNEARNED_REVENUE_CR" Precision="22" Scale="5" />
-          <Property Type="Int64" Name="REQUEST_ID" />
-          <Property Type="Int64" Name="PROGRAM_ID" />
-          <Property Type="Int64" Name="PROGRAM_APPLICATION_ID" />
-          <Property Type="DateTime" Name="PROGRAM_UPDATE_DATE" />
-          <Property Type="String" Name="SUMMARY_FLAG" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ENABLED_FLAG" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT2" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT3" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT4" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT5" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT6" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT7" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT8" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT9" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT10" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ATTRIBUTE_CATEGORY" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ATTRIBUTE1" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ATTRIBUTE2" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ATTRIBUTE3" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ATTRIBUTE4" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ATTRIBUTE5" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ATTRIBUTE6" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ATTRIBUTE7" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ATTRIBUTE8" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ATTRIBUTE9" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ATTRIBUTE10" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="COST_IND_RATE_SCH_ID" />
-          <Property Type="Int64" Name="REV_IND_RATE_SCH_ID" />
-          <Property Type="Int64" Name="INV_IND_RATE_SCH_ID" />
-          <Property Type="DateTime" Name="COST_IND_SCH_FIXED_DATE" />
-          <Property Type="DateTime" Name="REV_IND_SCH_FIXED_DATE" />
-          <Property Type="DateTime" Name="INV_IND_SCH_FIXED_DATE" />
-          <Property Type="String" Name="LABOR_SCH_TYPE" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="NON_LABOR_SCH_TYPE" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="OVR_COST_IND_RATE_SCH_ID" />
-          <Property Type="Int64" Name="OVR_REV_IND_RATE_SCH_ID" />
-          <Property Type="Int64" Name="OVR_INV_IND_RATE_SCH_ID" />
-          <Property Type="String" Name="TEMPLATE_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="VERIFICATION_DATE" />
-          <Property Type="Int64" Name="CREATED_FROM_PROJECT_ID" />
-          <Property Type="DateTime" Name="TEMPLATE_START_DATE_ACTIVE" />
-          <Property Type="DateTime" Name="TEMPLATE_END_DATE_ACTIVE" />
-          <Property Type="Int64" Name="ORG_ID" />
-          <Property Type="String" Name="PM_PRODUCT_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="PM_PROJECT_REFERENCE" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="ACTUAL_START_DATE" />
-          <Property Type="DateTime" Name="ACTUAL_FINISH_DATE" />
-          <Property Type="DateTime" Name="EARLY_START_DATE" />
-          <Property Type="DateTime" Name="EARLY_FINISH_DATE" />
-          <Property Type="DateTime" Name="LATE_START_DATE" />
-          <Property Type="DateTime" Name="LATE_FINISH_DATE" />
-          <Property Type="DateTime" Name="SCHEDULED_START_DATE" />
-          <Property Type="DateTime" Name="SCHEDULED_FINISH_DATE" />
-          <Property Type="Int64" Name="BILLING_CYCLE_ID" />
-          <Property Type="String" Name="ADW_NOTIFY_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="WF_STATUS_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="OUTPUT_TAX_CODE" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="RETENTION_TAX_CODE" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="PROJECT_CURRENCY_CODE" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ALLOW_CROSS_CHARGE_FLAG" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="PROJECT_RATE_DATE" />
-          <Property Type="String" Name="PROJECT_RATE_TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CC_PROCESS_LABOR_FLAG" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="LABOR_TP_SCHEDULE_ID" Precision="38" Scale="0" />
-          <Property Type="DateTime" Name="LABOR_TP_FIXED_DATE" />
-          <Property Type="String" Name="CC_PROCESS_NL_FLAG" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="NL_TP_SCHEDULE_ID" Precision="38" Scale="0" />
-          <Property Type="DateTime" Name="NL_TP_FIXED_DATE" />
-          <Property Type="Decimal" Name="CC_TAX_TASK_ID" Precision="38" Scale="0" />
-          <Property Type="Int64" Name="BILL_JOB_GROUP_ID" />
-          <Property Type="Int64" Name="COST_JOB_GROUP_ID" />
-          <Property Type="Int64" Name="ROLE_LIST_ID" />
-          <Property Type="Int64" Name="WORK_TYPE_ID" />
-          <Property Type="Int64" Name="CALENDAR_ID" />
-          <Property Type="Int64" Name="LOCATION_ID" />
-          <Property Type="Int64" Name="PROBABILITY_MEMBER_ID" />
-          <Property Type="Decimal" Name="PROJECT_VALUE" Precision="38" Scale="0" />
-          <Property Type="DateTime" Name="EXPECTED_APPROVAL_DATE" />
-          <Property Type="Int64" Name="RECORD_VERSION_NUMBER" />
-          <Property Type="Int64" Name="INITIAL_TEAM_TEMPLATE_ID" />
-          <Property Type="Decimal" Name="JOB_BILL_RATE_SCHEDULE_ID" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="EMP_BILL_RATE_SCHEDULE_ID" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="COMPETENCE_MATCH_WT" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="AVAILABILITY_MATCH_WT" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="JOB_LEVEL_MATCH_WT" Precision="38" Scale="0" />
-          <Property Type="String" Name="ENABLE_AUTOMATED_SEARCH" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="SEARCH_MIN_AVAILABILITY" Precision="38" Scale="0" />
-          <Property Type="Int64" Name="SEARCH_ORG_HIER_ID" />
-          <Property Type="Int64" Name="SEARCH_STARTING_ORG_ID" />
-          <Property Type="String" Name="SEARCH_COUNTRY_CODE" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="MIN_CAND_SCORE_REQD_FOR_NOM" Precision="38" Scale="0" />
-          <Property Type="Int64" Name="NON_LAB_STD_BILL_RT_SCH_ID" />
-          <Property Type="String" Name="INVPROC_CURRENCY_TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="REVPROC_CURRENCY_CODE" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="PROJECT_BIL_RATE_DATE_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="PROJECT_BIL_RATE_TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="PROJECT_BIL_RATE_DATE" />
-          <Property Type="Decimal" Name="PROJECT_BIL_EXCHANGE_RATE" Precision="38" Scale="0" />
-          <Property Type="String" Name="PROJFUNC_CURRENCY_CODE" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="PROJFUNC_BIL_RATE_DATE_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="PROJFUNC_BIL_RATE_TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="PROJFUNC_BIL_RATE_DATE" />
-          <Property Type="Decimal" Name="PROJFUNC_BIL_EXCHANGE_RATE" Precision="38" Scale="0" />
-          <Property Type="String" Name="FUNDING_RATE_DATE_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="FUNDING_RATE_TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="FUNDING_RATE_DATE" />
-          <Property Type="Decimal" Name="FUNDING_EXCHANGE_RATE" Precision="38" Scale="0" />
-          <Property Type="String" Name="BASELINE_FUNDING_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="PROJFUNC_COST_RATE_TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="PROJFUNC_COST_RATE_DATE" />
-          <Property Type="String" Name="INV_BY_BILL_TRANS_CURR_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MULTI_CURRENCY_BILLING_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SPLIT_COST_FROM_WORKPLAN_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SPLIT_COST_FROM_BILL_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ASSIGN_PRECEDES_TASK" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="PRIORITY_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="RETN_BILLING_INV_FORMAT_ID" />
-          <Property Type="String" Name="RETN_ACCOUNTING_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="ADV_ACTION_SET_ID" />
-          <Property Type="String" Name="START_ADV_ACTION_SET_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="REVALUATE_FUNDING_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="INCLUDE_GAINS_LOSSES_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="TARGET_START_DATE" />
-          <Property Type="DateTime" Name="TARGET_FINISH_DATE" />
-          <Property Type="DateTime" Name="BASELINE_START_DATE" />
-          <Property Type="DateTime" Name="BASELINE_FINISH_DATE" />
-          <Property Type="DateTime" Name="SCHEDULED_AS_OF_DATE" />
-          <Property Type="DateTime" Name="BASELINE_AS_OF_DATE" />
-          <Property Type="String" Name="LABOR_DISC_REASON_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="NON_LABOR_DISC_REASON_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="SECURITY_LEVEL" Precision="38" Scale="0" />
-          <Property Type="DateTime" Name="ACTUAL_AS_OF_DATE" />
-          <Property Type="Decimal" Name="SCHEDULED_DURATION" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="BASELINE_DURATION" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="ACTUAL_DURATION" Precision="38" Scale="0" />
-          <Property Type="String" Name="LONG_NAME" MaxLength="240" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="BTC_COST_BASE_REV_CODE" MaxLength="90" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ASSET_ALLOCATION_METHOD" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CAPITAL_EVENT_PROCESSING" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="CINT_RATE_SCH_ID" />
-          <Property Type="String" Name="CINT_ELIGIBLE_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CINT_STOP_DATE" />
-          <Property Type="String" Name="SYS_PROGRAM_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STRUCTURE_SHARING_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ENABLE_TOP_TASK_CUSTOMER_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ENABLE_TOP_TASK_INV_MTH_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="REVENUE_ACCRUAL_METHOD" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="INVOICE_METHOD" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="PROJFUNC_ATTR_FOR_AR_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="PJI_SOURCE_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ALLOW_MULTI_PROGRAM_ROLLUP" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="PROJ_REQ_RES_FORMAT_ID" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="PROJ_ASGMT_RES_FORMAT_ID" Precision="38" Scale="0" />
-          <Property Type="String" Name="FUNDING_APPROVAL_STATUS_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CLASS_CODE" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-        </EntityType>
         <ComplexType Name="MBL_STRING" >
           <Property Type="String" Name="TokenValidation" Nullable="false" />
         </ComplexType>
@@ -1758,6 +1539,220 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="PROJECTS_V">
+          <Key>
+            <PropertyRef Name="ORGANIZATION_NAME" />
+            <PropertyRef Name="PROJECT_ID" />
+            <PropertyRef Name="NAME" />
+            <PropertyRef Name="SEGMENT1" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+            <PropertyRef Name="LAST_UPDATED_BY" />
+            <PropertyRef Name="CREATION_DATE" />
+            <PropertyRef Name="CREATED_BY" />
+            <PropertyRef Name="LAST_UPDATE_LOGIN" />
+            <PropertyRef Name="PROJECT_TYPE" />
+            <PropertyRef Name="CARRYING_OUT_ORGANIZATION_ID" />
+            <PropertyRef Name="PUBLIC_SECTOR_FLAG" />
+            <PropertyRef Name="PROJECT_STATUS_CODE" />
+            <PropertyRef Name="SUMMARY_FLAG" />
+            <PropertyRef Name="ENABLED_FLAG" />
+            <PropertyRef Name="PROJECT_CURRENCY_CODE" />
+            <PropertyRef Name="ALLOW_CROSS_CHARGE_FLAG" />
+            <PropertyRef Name="CC_PROCESS_LABOR_FLAG" />
+            <PropertyRef Name="CC_PROCESS_NL_FLAG" />
+          </Key>
+          <Property Type="String" Name="ORGANIZATION_NAME" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
+          <Property Type="String" Name="NAME" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT1" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
+          <Property Type="Int64" Name="LAST_UPDATED_BY" Nullable="false" />
+          <Property Type="DateTime" Name="CREATION_DATE" Nullable="false" />
+          <Property Type="Int64" Name="CREATED_BY" Nullable="false" />
+          <Property Type="Int64" Name="LAST_UPDATE_LOGIN" Nullable="false" />
+          <Property Type="String" Name="PROJECT_TYPE" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="CARRYING_OUT_ORGANIZATION_ID" Nullable="false" />
+          <Property Type="String" Name="PUBLIC_SECTOR_FLAG" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROJECT_STATUS_CODE" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DESCRIPTION" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="START_DATE" />
+          <Property Type="DateTime" Name="COMPLETION_DATE" />
+          <Property Type="DateTime" Name="CLOSED_DATE" />
+          <Property Type="String" Name="DISTRIBUTION_RULE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="LABOR_INVOICE_FORMAT_ID" />
+          <Property Type="Int64" Name="NON_LABOR_INVOICE_FORMAT_ID" />
+          <Property Type="Int64" Name="RETENTION_INVOICE_FORMAT_ID" />
+          <Property Type="Decimal" Name="RETENTION_PERCENTAGE" Precision="17" Scale="2" />
+          <Property Type="Int64" Name="BILLING_OFFSET" />
+          <Property Type="Int64" Name="BILLING_CYCLE" />
+          <Property Type="String" Name="LABOR_STD_BILL_RATE_SCHDL" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="LABOR_BILL_RATE_ORG_ID" />
+          <Property Type="DateTime" Name="LABOR_SCHEDULE_FIXED_DATE" />
+          <Property Type="Decimal" Name="LABOR_SCHEDULE_DISCOUNT" Precision="7" Scale="4" />
+          <Property Type="String" Name="NON_LABOR_STD_BILL_RATE_SCHDL" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="NON_LABOR_BILL_RATE_ORG_ID" />
+          <Property Type="DateTime" Name="NON_LABOR_SCHEDULE_FIXED_DATE" />
+          <Property Type="Decimal" Name="NON_LABOR_SCHEDULE_DISCOUNT" Precision="7" Scale="4" />
+          <Property Type="String" Name="LIMIT_TO_TXN_CONTROLS_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROJECT_LEVEL_FUNDING_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="INVOICE_COMMENT" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="UNBILLED_RECEIVABLE_DR" Precision="22" Scale="5" />
+          <Property Type="Decimal" Name="UNEARNED_REVENUE_CR" Precision="22" Scale="5" />
+          <Property Type="Int64" Name="REQUEST_ID" />
+          <Property Type="Int64" Name="PROGRAM_ID" />
+          <Property Type="Int64" Name="PROGRAM_APPLICATION_ID" />
+          <Property Type="DateTime" Name="PROGRAM_UPDATE_DATE" />
+          <Property Type="String" Name="SUMMARY_FLAG" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ENABLED_FLAG" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT2" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT3" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT4" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT5" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT6" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT7" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT8" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT9" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT10" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE_CATEGORY" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE1" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE2" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE3" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE4" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE5" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE6" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE7" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE8" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE9" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE10" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="COST_IND_RATE_SCH_ID" />
+          <Property Type="Int64" Name="REV_IND_RATE_SCH_ID" />
+          <Property Type="Int64" Name="INV_IND_RATE_SCH_ID" />
+          <Property Type="DateTime" Name="COST_IND_SCH_FIXED_DATE" />
+          <Property Type="DateTime" Name="REV_IND_SCH_FIXED_DATE" />
+          <Property Type="DateTime" Name="INV_IND_SCH_FIXED_DATE" />
+          <Property Type="String" Name="LABOR_SCH_TYPE" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="NON_LABOR_SCH_TYPE" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="OVR_COST_IND_RATE_SCH_ID" />
+          <Property Type="Int64" Name="OVR_REV_IND_RATE_SCH_ID" />
+          <Property Type="Int64" Name="OVR_INV_IND_RATE_SCH_ID" />
+          <Property Type="String" Name="TEMPLATE_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="VERIFICATION_DATE" />
+          <Property Type="Int64" Name="CREATED_FROM_PROJECT_ID" />
+          <Property Type="DateTime" Name="TEMPLATE_START_DATE_ACTIVE" />
+          <Property Type="DateTime" Name="TEMPLATE_END_DATE_ACTIVE" />
+          <Property Type="Int64" Name="ORG_ID" />
+          <Property Type="String" Name="PM_PRODUCT_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PM_PROJECT_REFERENCE" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="ACTUAL_START_DATE" />
+          <Property Type="DateTime" Name="ACTUAL_FINISH_DATE" />
+          <Property Type="DateTime" Name="EARLY_START_DATE" />
+          <Property Type="DateTime" Name="EARLY_FINISH_DATE" />
+          <Property Type="DateTime" Name="LATE_START_DATE" />
+          <Property Type="DateTime" Name="LATE_FINISH_DATE" />
+          <Property Type="DateTime" Name="SCHEDULED_START_DATE" />
+          <Property Type="DateTime" Name="SCHEDULED_FINISH_DATE" />
+          <Property Type="Int64" Name="BILLING_CYCLE_ID" />
+          <Property Type="String" Name="ADW_NOTIFY_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="WF_STATUS_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="OUTPUT_TAX_CODE" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="RETENTION_TAX_CODE" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROJECT_CURRENCY_CODE" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ALLOW_CROSS_CHARGE_FLAG" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="PROJECT_RATE_DATE" />
+          <Property Type="String" Name="PROJECT_RATE_TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CC_PROCESS_LABOR_FLAG" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="LABOR_TP_SCHEDULE_ID" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="LABOR_TP_FIXED_DATE" />
+          <Property Type="String" Name="CC_PROCESS_NL_FLAG" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="NL_TP_SCHEDULE_ID" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="NL_TP_FIXED_DATE" />
+          <Property Type="Decimal" Name="CC_TAX_TASK_ID" Precision="38" Scale="0" />
+          <Property Type="Int64" Name="BILL_JOB_GROUP_ID" />
+          <Property Type="Int64" Name="COST_JOB_GROUP_ID" />
+          <Property Type="Int64" Name="ROLE_LIST_ID" />
+          <Property Type="Int64" Name="WORK_TYPE_ID" />
+          <Property Type="Int64" Name="CALENDAR_ID" />
+          <Property Type="Int64" Name="LOCATION_ID" />
+          <Property Type="Int64" Name="PROBABILITY_MEMBER_ID" />
+          <Property Type="Decimal" Name="PROJECT_VALUE" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="EXPECTED_APPROVAL_DATE" />
+          <Property Type="Int64" Name="RECORD_VERSION_NUMBER" />
+          <Property Type="Int64" Name="INITIAL_TEAM_TEMPLATE_ID" />
+          <Property Type="Decimal" Name="JOB_BILL_RATE_SCHEDULE_ID" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="EMP_BILL_RATE_SCHEDULE_ID" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="COMPETENCE_MATCH_WT" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="AVAILABILITY_MATCH_WT" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="JOB_LEVEL_MATCH_WT" Precision="38" Scale="0" />
+          <Property Type="String" Name="ENABLE_AUTOMATED_SEARCH" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="SEARCH_MIN_AVAILABILITY" Precision="38" Scale="0" />
+          <Property Type="Int64" Name="SEARCH_ORG_HIER_ID" />
+          <Property Type="Int64" Name="SEARCH_STARTING_ORG_ID" />
+          <Property Type="String" Name="SEARCH_COUNTRY_CODE" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="MIN_CAND_SCORE_REQD_FOR_NOM" Precision="38" Scale="0" />
+          <Property Type="Int64" Name="NON_LAB_STD_BILL_RT_SCH_ID" />
+          <Property Type="String" Name="INVPROC_CURRENCY_TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="REVPROC_CURRENCY_CODE" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROJECT_BIL_RATE_DATE_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROJECT_BIL_RATE_TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="PROJECT_BIL_RATE_DATE" />
+          <Property Type="Decimal" Name="PROJECT_BIL_EXCHANGE_RATE" Precision="38" Scale="0" />
+          <Property Type="String" Name="PROJFUNC_CURRENCY_CODE" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROJFUNC_BIL_RATE_DATE_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROJFUNC_BIL_RATE_TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="PROJFUNC_BIL_RATE_DATE" />
+          <Property Type="Decimal" Name="PROJFUNC_BIL_EXCHANGE_RATE" Precision="38" Scale="0" />
+          <Property Type="String" Name="FUNDING_RATE_DATE_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="FUNDING_RATE_TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="FUNDING_RATE_DATE" />
+          <Property Type="Decimal" Name="FUNDING_EXCHANGE_RATE" Precision="38" Scale="0" />
+          <Property Type="String" Name="BASELINE_FUNDING_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROJFUNC_COST_RATE_TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="PROJFUNC_COST_RATE_DATE" />
+          <Property Type="String" Name="INV_BY_BILL_TRANS_CURR_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MULTI_CURRENCY_BILLING_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SPLIT_COST_FROM_WORKPLAN_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SPLIT_COST_FROM_BILL_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ASSIGN_PRECEDES_TASK" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PRIORITY_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="RETN_BILLING_INV_FORMAT_ID" />
+          <Property Type="String" Name="RETN_ACCOUNTING_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="ADV_ACTION_SET_ID" />
+          <Property Type="String" Name="START_ADV_ACTION_SET_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="REVALUATE_FUNDING_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="INCLUDE_GAINS_LOSSES_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="TARGET_START_DATE" />
+          <Property Type="DateTime" Name="TARGET_FINISH_DATE" />
+          <Property Type="DateTime" Name="BASELINE_START_DATE" />
+          <Property Type="DateTime" Name="BASELINE_FINISH_DATE" />
+          <Property Type="DateTime" Name="SCHEDULED_AS_OF_DATE" />
+          <Property Type="DateTime" Name="BASELINE_AS_OF_DATE" />
+          <Property Type="String" Name="LABOR_DISC_REASON_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="NON_LABOR_DISC_REASON_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="SECURITY_LEVEL" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="ACTUAL_AS_OF_DATE" />
+          <Property Type="Decimal" Name="SCHEDULED_DURATION" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="BASELINE_DURATION" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="ACTUAL_DURATION" Precision="38" Scale="0" />
+          <Property Type="String" Name="LONG_NAME" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="BTC_COST_BASE_REV_CODE" MaxLength="90" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ASSET_ALLOCATION_METHOD" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CAPITAL_EVENT_PROCESSING" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="CINT_RATE_SCH_ID" />
+          <Property Type="String" Name="CINT_ELIGIBLE_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CINT_STOP_DATE" />
+          <Property Type="String" Name="SYS_PROGRAM_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STRUCTURE_SHARING_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ENABLE_TOP_TASK_CUSTOMER_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ENABLE_TOP_TASK_INV_MTH_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="REVENUE_ACCRUAL_METHOD" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="INVOICE_METHOD" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROJFUNC_ATTR_FOR_AR_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PJI_SOURCE_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ALLOW_MULTI_PROGRAM_ROLLUP" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="PROJ_REQ_RES_FORMAT_ID" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="PROJ_ASGMT_RES_FORMAT_ID" Precision="38" Scale="0" />
+          <Property Type="String" Name="FUNDING_APPROVAL_STATUS_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1835,204 +1830,6 @@
                 <ScalarProperty Name="USER_CULTURE" ColumnName="USER_CULTURE" />
                 <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PROJECTS_V">
-            <EntityTypeMapping TypeName="OracleModel.PROJECTS_V">
-              <MappingFragment StoreEntitySet="PROJECTS_V">
-                <ScalarProperty Name="CLASS_CODE" ColumnName="CLASS_CODE" />
-                <ScalarProperty Name="FUNDING_APPROVAL_STATUS_CODE" ColumnName="FUNDING_APPROVAL_STATUS_CODE" />
-                <ScalarProperty Name="PROJ_ASGMT_RES_FORMAT_ID" ColumnName="PROJ_ASGMT_RES_FORMAT_ID" />
-                <ScalarProperty Name="PROJ_REQ_RES_FORMAT_ID" ColumnName="PROJ_REQ_RES_FORMAT_ID" />
-                <ScalarProperty Name="ALLOW_MULTI_PROGRAM_ROLLUP" ColumnName="ALLOW_MULTI_PROGRAM_ROLLUP" />
-                <ScalarProperty Name="PJI_SOURCE_FLAG" ColumnName="PJI_SOURCE_FLAG" />
-                <ScalarProperty Name="PROJFUNC_ATTR_FOR_AR_FLAG" ColumnName="PROJFUNC_ATTR_FOR_AR_FLAG" />
-                <ScalarProperty Name="INVOICE_METHOD" ColumnName="INVOICE_METHOD" />
-                <ScalarProperty Name="REVENUE_ACCRUAL_METHOD" ColumnName="REVENUE_ACCRUAL_METHOD" />
-                <ScalarProperty Name="ENABLE_TOP_TASK_INV_MTH_FLAG" ColumnName="ENABLE_TOP_TASK_INV_MTH_FLAG" />
-                <ScalarProperty Name="ENABLE_TOP_TASK_CUSTOMER_FLAG" ColumnName="ENABLE_TOP_TASK_CUSTOMER_FLAG" />
-                <ScalarProperty Name="STRUCTURE_SHARING_CODE" ColumnName="STRUCTURE_SHARING_CODE" />
-                <ScalarProperty Name="SYS_PROGRAM_FLAG" ColumnName="SYS_PROGRAM_FLAG" />
-                <ScalarProperty Name="CINT_STOP_DATE" ColumnName="CINT_STOP_DATE" />
-                <ScalarProperty Name="CINT_ELIGIBLE_FLAG" ColumnName="CINT_ELIGIBLE_FLAG" />
-                <ScalarProperty Name="CINT_RATE_SCH_ID" ColumnName="CINT_RATE_SCH_ID" />
-                <ScalarProperty Name="CAPITAL_EVENT_PROCESSING" ColumnName="CAPITAL_EVENT_PROCESSING" />
-                <ScalarProperty Name="ASSET_ALLOCATION_METHOD" ColumnName="ASSET_ALLOCATION_METHOD" />
-                <ScalarProperty Name="BTC_COST_BASE_REV_CODE" ColumnName="BTC_COST_BASE_REV_CODE" />
-                <ScalarProperty Name="LONG_NAME" ColumnName="LONG_NAME" />
-                <ScalarProperty Name="ACTUAL_DURATION" ColumnName="ACTUAL_DURATION" />
-                <ScalarProperty Name="BASELINE_DURATION" ColumnName="BASELINE_DURATION" />
-                <ScalarProperty Name="SCHEDULED_DURATION" ColumnName="SCHEDULED_DURATION" />
-                <ScalarProperty Name="ACTUAL_AS_OF_DATE" ColumnName="ACTUAL_AS_OF_DATE" />
-                <ScalarProperty Name="SECURITY_LEVEL" ColumnName="SECURITY_LEVEL" />
-                <ScalarProperty Name="NON_LABOR_DISC_REASON_CODE" ColumnName="NON_LABOR_DISC_REASON_CODE" />
-                <ScalarProperty Name="LABOR_DISC_REASON_CODE" ColumnName="LABOR_DISC_REASON_CODE" />
-                <ScalarProperty Name="BASELINE_AS_OF_DATE" ColumnName="BASELINE_AS_OF_DATE" />
-                <ScalarProperty Name="SCHEDULED_AS_OF_DATE" ColumnName="SCHEDULED_AS_OF_DATE" />
-                <ScalarProperty Name="BASELINE_FINISH_DATE" ColumnName="BASELINE_FINISH_DATE" />
-                <ScalarProperty Name="BASELINE_START_DATE" ColumnName="BASELINE_START_DATE" />
-                <ScalarProperty Name="TARGET_FINISH_DATE" ColumnName="TARGET_FINISH_DATE" />
-                <ScalarProperty Name="TARGET_START_DATE" ColumnName="TARGET_START_DATE" />
-                <ScalarProperty Name="INCLUDE_GAINS_LOSSES_FLAG" ColumnName="INCLUDE_GAINS_LOSSES_FLAG" />
-                <ScalarProperty Name="REVALUATE_FUNDING_FLAG" ColumnName="REVALUATE_FUNDING_FLAG" />
-                <ScalarProperty Name="START_ADV_ACTION_SET_FLAG" ColumnName="START_ADV_ACTION_SET_FLAG" />
-                <ScalarProperty Name="ADV_ACTION_SET_ID" ColumnName="ADV_ACTION_SET_ID" />
-                <ScalarProperty Name="RETN_ACCOUNTING_FLAG" ColumnName="RETN_ACCOUNTING_FLAG" />
-                <ScalarProperty Name="RETN_BILLING_INV_FORMAT_ID" ColumnName="RETN_BILLING_INV_FORMAT_ID" />
-                <ScalarProperty Name="PRIORITY_CODE" ColumnName="PRIORITY_CODE" />
-                <ScalarProperty Name="ASSIGN_PRECEDES_TASK" ColumnName="ASSIGN_PRECEDES_TASK" />
-                <ScalarProperty Name="SPLIT_COST_FROM_BILL_FLAG" ColumnName="SPLIT_COST_FROM_BILL_FLAG" />
-                <ScalarProperty Name="SPLIT_COST_FROM_WORKPLAN_FLAG" ColumnName="SPLIT_COST_FROM_WORKPLAN_FLAG" />
-                <ScalarProperty Name="MULTI_CURRENCY_BILLING_FLAG" ColumnName="MULTI_CURRENCY_BILLING_FLAG" />
-                <ScalarProperty Name="INV_BY_BILL_TRANS_CURR_FLAG" ColumnName="INV_BY_BILL_TRANS_CURR_FLAG" />
-                <ScalarProperty Name="PROJFUNC_COST_RATE_DATE" ColumnName="PROJFUNC_COST_RATE_DATE" />
-                <ScalarProperty Name="PROJFUNC_COST_RATE_TYPE" ColumnName="PROJFUNC_COST_RATE_TYPE" />
-                <ScalarProperty Name="BASELINE_FUNDING_FLAG" ColumnName="BASELINE_FUNDING_FLAG" />
-                <ScalarProperty Name="FUNDING_EXCHANGE_RATE" ColumnName="FUNDING_EXCHANGE_RATE" />
-                <ScalarProperty Name="FUNDING_RATE_DATE" ColumnName="FUNDING_RATE_DATE" />
-                <ScalarProperty Name="FUNDING_RATE_TYPE" ColumnName="FUNDING_RATE_TYPE" />
-                <ScalarProperty Name="FUNDING_RATE_DATE_CODE" ColumnName="FUNDING_RATE_DATE_CODE" />
-                <ScalarProperty Name="PROJFUNC_BIL_EXCHANGE_RATE" ColumnName="PROJFUNC_BIL_EXCHANGE_RATE" />
-                <ScalarProperty Name="PROJFUNC_BIL_RATE_DATE" ColumnName="PROJFUNC_BIL_RATE_DATE" />
-                <ScalarProperty Name="PROJFUNC_BIL_RATE_TYPE" ColumnName="PROJFUNC_BIL_RATE_TYPE" />
-                <ScalarProperty Name="PROJFUNC_BIL_RATE_DATE_CODE" ColumnName="PROJFUNC_BIL_RATE_DATE_CODE" />
-                <ScalarProperty Name="PROJFUNC_CURRENCY_CODE" ColumnName="PROJFUNC_CURRENCY_CODE" />
-                <ScalarProperty Name="PROJECT_BIL_EXCHANGE_RATE" ColumnName="PROJECT_BIL_EXCHANGE_RATE" />
-                <ScalarProperty Name="PROJECT_BIL_RATE_DATE" ColumnName="PROJECT_BIL_RATE_DATE" />
-                <ScalarProperty Name="PROJECT_BIL_RATE_TYPE" ColumnName="PROJECT_BIL_RATE_TYPE" />
-                <ScalarProperty Name="PROJECT_BIL_RATE_DATE_CODE" ColumnName="PROJECT_BIL_RATE_DATE_CODE" />
-                <ScalarProperty Name="REVPROC_CURRENCY_CODE" ColumnName="REVPROC_CURRENCY_CODE" />
-                <ScalarProperty Name="INVPROC_CURRENCY_TYPE" ColumnName="INVPROC_CURRENCY_TYPE" />
-                <ScalarProperty Name="NON_LAB_STD_BILL_RT_SCH_ID" ColumnName="NON_LAB_STD_BILL_RT_SCH_ID" />
-                <ScalarProperty Name="MIN_CAND_SCORE_REQD_FOR_NOM" ColumnName="MIN_CAND_SCORE_REQD_FOR_NOM" />
-                <ScalarProperty Name="SEARCH_COUNTRY_CODE" ColumnName="SEARCH_COUNTRY_CODE" />
-                <ScalarProperty Name="SEARCH_STARTING_ORG_ID" ColumnName="SEARCH_STARTING_ORG_ID" />
-                <ScalarProperty Name="SEARCH_ORG_HIER_ID" ColumnName="SEARCH_ORG_HIER_ID" />
-                <ScalarProperty Name="SEARCH_MIN_AVAILABILITY" ColumnName="SEARCH_MIN_AVAILABILITY" />
-                <ScalarProperty Name="ENABLE_AUTOMATED_SEARCH" ColumnName="ENABLE_AUTOMATED_SEARCH" />
-                <ScalarProperty Name="JOB_LEVEL_MATCH_WT" ColumnName="JOB_LEVEL_MATCH_WT" />
-                <ScalarProperty Name="AVAILABILITY_MATCH_WT" ColumnName="AVAILABILITY_MATCH_WT" />
-                <ScalarProperty Name="COMPETENCE_MATCH_WT" ColumnName="COMPETENCE_MATCH_WT" />
-                <ScalarProperty Name="EMP_BILL_RATE_SCHEDULE_ID" ColumnName="EMP_BILL_RATE_SCHEDULE_ID" />
-                <ScalarProperty Name="JOB_BILL_RATE_SCHEDULE_ID" ColumnName="JOB_BILL_RATE_SCHEDULE_ID" />
-                <ScalarProperty Name="INITIAL_TEAM_TEMPLATE_ID" ColumnName="INITIAL_TEAM_TEMPLATE_ID" />
-                <ScalarProperty Name="RECORD_VERSION_NUMBER" ColumnName="RECORD_VERSION_NUMBER" />
-                <ScalarProperty Name="EXPECTED_APPROVAL_DATE" ColumnName="EXPECTED_APPROVAL_DATE" />
-                <ScalarProperty Name="PROJECT_VALUE" ColumnName="PROJECT_VALUE" />
-                <ScalarProperty Name="PROBABILITY_MEMBER_ID" ColumnName="PROBABILITY_MEMBER_ID" />
-                <ScalarProperty Name="LOCATION_ID" ColumnName="LOCATION_ID" />
-                <ScalarProperty Name="CALENDAR_ID" ColumnName="CALENDAR_ID" />
-                <ScalarProperty Name="WORK_TYPE_ID" ColumnName="WORK_TYPE_ID" />
-                <ScalarProperty Name="ROLE_LIST_ID" ColumnName="ROLE_LIST_ID" />
-                <ScalarProperty Name="COST_JOB_GROUP_ID" ColumnName="COST_JOB_GROUP_ID" />
-                <ScalarProperty Name="BILL_JOB_GROUP_ID" ColumnName="BILL_JOB_GROUP_ID" />
-                <ScalarProperty Name="CC_TAX_TASK_ID" ColumnName="CC_TAX_TASK_ID" />
-                <ScalarProperty Name="NL_TP_FIXED_DATE" ColumnName="NL_TP_FIXED_DATE" />
-                <ScalarProperty Name="NL_TP_SCHEDULE_ID" ColumnName="NL_TP_SCHEDULE_ID" />
-                <ScalarProperty Name="CC_PROCESS_NL_FLAG" ColumnName="CC_PROCESS_NL_FLAG" />
-                <ScalarProperty Name="LABOR_TP_FIXED_DATE" ColumnName="LABOR_TP_FIXED_DATE" />
-                <ScalarProperty Name="LABOR_TP_SCHEDULE_ID" ColumnName="LABOR_TP_SCHEDULE_ID" />
-                <ScalarProperty Name="CC_PROCESS_LABOR_FLAG" ColumnName="CC_PROCESS_LABOR_FLAG" />
-                <ScalarProperty Name="PROJECT_RATE_TYPE" ColumnName="PROJECT_RATE_TYPE" />
-                <ScalarProperty Name="PROJECT_RATE_DATE" ColumnName="PROJECT_RATE_DATE" />
-                <ScalarProperty Name="ALLOW_CROSS_CHARGE_FLAG" ColumnName="ALLOW_CROSS_CHARGE_FLAG" />
-                <ScalarProperty Name="PROJECT_CURRENCY_CODE" ColumnName="PROJECT_CURRENCY_CODE" />
-                <ScalarProperty Name="RETENTION_TAX_CODE" ColumnName="RETENTION_TAX_CODE" />
-                <ScalarProperty Name="OUTPUT_TAX_CODE" ColumnName="OUTPUT_TAX_CODE" />
-                <ScalarProperty Name="WF_STATUS_CODE" ColumnName="WF_STATUS_CODE" />
-                <ScalarProperty Name="ADW_NOTIFY_FLAG" ColumnName="ADW_NOTIFY_FLAG" />
-                <ScalarProperty Name="BILLING_CYCLE_ID" ColumnName="BILLING_CYCLE_ID" />
-                <ScalarProperty Name="SCHEDULED_FINISH_DATE" ColumnName="SCHEDULED_FINISH_DATE" />
-                <ScalarProperty Name="SCHEDULED_START_DATE" ColumnName="SCHEDULED_START_DATE" />
-                <ScalarProperty Name="LATE_FINISH_DATE" ColumnName="LATE_FINISH_DATE" />
-                <ScalarProperty Name="LATE_START_DATE" ColumnName="LATE_START_DATE" />
-                <ScalarProperty Name="EARLY_FINISH_DATE" ColumnName="EARLY_FINISH_DATE" />
-                <ScalarProperty Name="EARLY_START_DATE" ColumnName="EARLY_START_DATE" />
-                <ScalarProperty Name="ACTUAL_FINISH_DATE" ColumnName="ACTUAL_FINISH_DATE" />
-                <ScalarProperty Name="ACTUAL_START_DATE" ColumnName="ACTUAL_START_DATE" />
-                <ScalarProperty Name="PM_PROJECT_REFERENCE" ColumnName="PM_PROJECT_REFERENCE" />
-                <ScalarProperty Name="PM_PRODUCT_CODE" ColumnName="PM_PRODUCT_CODE" />
-                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
-                <ScalarProperty Name="TEMPLATE_END_DATE_ACTIVE" ColumnName="TEMPLATE_END_DATE_ACTIVE" />
-                <ScalarProperty Name="TEMPLATE_START_DATE_ACTIVE" ColumnName="TEMPLATE_START_DATE_ACTIVE" />
-                <ScalarProperty Name="CREATED_FROM_PROJECT_ID" ColumnName="CREATED_FROM_PROJECT_ID" />
-                <ScalarProperty Name="VERIFICATION_DATE" ColumnName="VERIFICATION_DATE" />
-                <ScalarProperty Name="TEMPLATE_FLAG" ColumnName="TEMPLATE_FLAG" />
-                <ScalarProperty Name="OVR_INV_IND_RATE_SCH_ID" ColumnName="OVR_INV_IND_RATE_SCH_ID" />
-                <ScalarProperty Name="OVR_REV_IND_RATE_SCH_ID" ColumnName="OVR_REV_IND_RATE_SCH_ID" />
-                <ScalarProperty Name="OVR_COST_IND_RATE_SCH_ID" ColumnName="OVR_COST_IND_RATE_SCH_ID" />
-                <ScalarProperty Name="NON_LABOR_SCH_TYPE" ColumnName="NON_LABOR_SCH_TYPE" />
-                <ScalarProperty Name="LABOR_SCH_TYPE" ColumnName="LABOR_SCH_TYPE" />
-                <ScalarProperty Name="INV_IND_SCH_FIXED_DATE" ColumnName="INV_IND_SCH_FIXED_DATE" />
-                <ScalarProperty Name="REV_IND_SCH_FIXED_DATE" ColumnName="REV_IND_SCH_FIXED_DATE" />
-                <ScalarProperty Name="COST_IND_SCH_FIXED_DATE" ColumnName="COST_IND_SCH_FIXED_DATE" />
-                <ScalarProperty Name="INV_IND_RATE_SCH_ID" ColumnName="INV_IND_RATE_SCH_ID" />
-                <ScalarProperty Name="REV_IND_RATE_SCH_ID" ColumnName="REV_IND_RATE_SCH_ID" />
-                <ScalarProperty Name="COST_IND_RATE_SCH_ID" ColumnName="COST_IND_RATE_SCH_ID" />
-                <ScalarProperty Name="ATTRIBUTE10" ColumnName="ATTRIBUTE10" />
-                <ScalarProperty Name="ATTRIBUTE9" ColumnName="ATTRIBUTE9" />
-                <ScalarProperty Name="ATTRIBUTE8" ColumnName="ATTRIBUTE8" />
-                <ScalarProperty Name="ATTRIBUTE7" ColumnName="ATTRIBUTE7" />
-                <ScalarProperty Name="ATTRIBUTE6" ColumnName="ATTRIBUTE6" />
-                <ScalarProperty Name="ATTRIBUTE5" ColumnName="ATTRIBUTE5" />
-                <ScalarProperty Name="ATTRIBUTE4" ColumnName="ATTRIBUTE4" />
-                <ScalarProperty Name="ATTRIBUTE3" ColumnName="ATTRIBUTE3" />
-                <ScalarProperty Name="ATTRIBUTE2" ColumnName="ATTRIBUTE2" />
-                <ScalarProperty Name="ATTRIBUTE1" ColumnName="ATTRIBUTE1" />
-                <ScalarProperty Name="ATTRIBUTE_CATEGORY" ColumnName="ATTRIBUTE_CATEGORY" />
-                <ScalarProperty Name="SEGMENT10" ColumnName="SEGMENT10" />
-                <ScalarProperty Name="SEGMENT9" ColumnName="SEGMENT9" />
-                <ScalarProperty Name="SEGMENT8" ColumnName="SEGMENT8" />
-                <ScalarProperty Name="SEGMENT7" ColumnName="SEGMENT7" />
-                <ScalarProperty Name="SEGMENT6" ColumnName="SEGMENT6" />
-                <ScalarProperty Name="SEGMENT5" ColumnName="SEGMENT5" />
-                <ScalarProperty Name="SEGMENT4" ColumnName="SEGMENT4" />
-                <ScalarProperty Name="SEGMENT3" ColumnName="SEGMENT3" />
-                <ScalarProperty Name="SEGMENT2" ColumnName="SEGMENT2" />
-                <ScalarProperty Name="ENABLED_FLAG" ColumnName="ENABLED_FLAG" />
-                <ScalarProperty Name="SUMMARY_FLAG" ColumnName="SUMMARY_FLAG" />
-                <ScalarProperty Name="PROGRAM_UPDATE_DATE" ColumnName="PROGRAM_UPDATE_DATE" />
-                <ScalarProperty Name="PROGRAM_APPLICATION_ID" ColumnName="PROGRAM_APPLICATION_ID" />
-                <ScalarProperty Name="PROGRAM_ID" ColumnName="PROGRAM_ID" />
-                <ScalarProperty Name="REQUEST_ID" ColumnName="REQUEST_ID" />
-                <ScalarProperty Name="UNEARNED_REVENUE_CR" ColumnName="UNEARNED_REVENUE_CR" />
-                <ScalarProperty Name="UNBILLED_RECEIVABLE_DR" ColumnName="UNBILLED_RECEIVABLE_DR" />
-                <ScalarProperty Name="INVOICE_COMMENT" ColumnName="INVOICE_COMMENT" />
-                <ScalarProperty Name="PROJECT_LEVEL_FUNDING_FLAG" ColumnName="PROJECT_LEVEL_FUNDING_FLAG" />
-                <ScalarProperty Name="LIMIT_TO_TXN_CONTROLS_FLAG" ColumnName="LIMIT_TO_TXN_CONTROLS_FLAG" />
-                <ScalarProperty Name="NON_LABOR_SCHEDULE_DISCOUNT" ColumnName="NON_LABOR_SCHEDULE_DISCOUNT" />
-                <ScalarProperty Name="NON_LABOR_SCHEDULE_FIXED_DATE" ColumnName="NON_LABOR_SCHEDULE_FIXED_DATE" />
-                <ScalarProperty Name="NON_LABOR_BILL_RATE_ORG_ID" ColumnName="NON_LABOR_BILL_RATE_ORG_ID" />
-                <ScalarProperty Name="NON_LABOR_STD_BILL_RATE_SCHDL" ColumnName="NON_LABOR_STD_BILL_RATE_SCHDL" />
-                <ScalarProperty Name="LABOR_SCHEDULE_DISCOUNT" ColumnName="LABOR_SCHEDULE_DISCOUNT" />
-                <ScalarProperty Name="LABOR_SCHEDULE_FIXED_DATE" ColumnName="LABOR_SCHEDULE_FIXED_DATE" />
-                <ScalarProperty Name="LABOR_BILL_RATE_ORG_ID" ColumnName="LABOR_BILL_RATE_ORG_ID" />
-                <ScalarProperty Name="LABOR_STD_BILL_RATE_SCHDL" ColumnName="LABOR_STD_BILL_RATE_SCHDL" />
-                <ScalarProperty Name="BILLING_CYCLE" ColumnName="BILLING_CYCLE" />
-                <ScalarProperty Name="BILLING_OFFSET" ColumnName="BILLING_OFFSET" />
-                <ScalarProperty Name="RETENTION_PERCENTAGE" ColumnName="RETENTION_PERCENTAGE" />
-                <ScalarProperty Name="RETENTION_INVOICE_FORMAT_ID" ColumnName="RETENTION_INVOICE_FORMAT_ID" />
-                <ScalarProperty Name="NON_LABOR_INVOICE_FORMAT_ID" ColumnName="NON_LABOR_INVOICE_FORMAT_ID" />
-                <ScalarProperty Name="LABOR_INVOICE_FORMAT_ID" ColumnName="LABOR_INVOICE_FORMAT_ID" />
-                <ScalarProperty Name="DISTRIBUTION_RULE" ColumnName="DISTRIBUTION_RULE" />
-                <ScalarProperty Name="CLOSED_DATE" ColumnName="CLOSED_DATE" />
-                <ScalarProperty Name="COMPLETION_DATE" ColumnName="COMPLETION_DATE" />
-                <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
-                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
-                <ScalarProperty Name="PROJECT_STATUS_CODE" ColumnName="PROJECT_STATUS_CODE" />
-                <ScalarProperty Name="PUBLIC_SECTOR_FLAG" ColumnName="PUBLIC_SECTOR_FLAG" />
-                <ScalarProperty Name="CARRYING_OUT_ORGANIZATION_ID" ColumnName="CARRYING_OUT_ORGANIZATION_ID" />
-                <ScalarProperty Name="PROJECT_TYPE" ColumnName="PROJECT_TYPE" />
-                <ScalarProperty Name="LAST_UPDATE_LOGIN" ColumnName="LAST_UPDATE_LOGIN" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="CREATION_DATE" ColumnName="CREATION_DATE" />
-                <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
-                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
-                <ScalarProperty Name="SEGMENT1" ColumnName="SEGMENT1" />
-                <ScalarProperty Name="NAME" ColumnName="NAME" />
-                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
-                <ScalarProperty Name="ORGANIZATION_NAME" ColumnName="ORGANIZATION_NAME" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2251,6 +2048,203 @@
                 <ScalarProperty Name="REASON_FOR_NO_WORK" ColumnName="REASON_FOR_NO_WORK" />
                 <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
                 <ScalarProperty Name="FOOTER_ID" ColumnName="FOOTER_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PROJECTS_V">
+            <EntityTypeMapping TypeName="OracleModel.PROJECTS_V">
+              <MappingFragment StoreEntitySet="PROJECTS_V">
+                <ScalarProperty Name="FUNDING_APPROVAL_STATUS_CODE" ColumnName="FUNDING_APPROVAL_STATUS_CODE" />
+                <ScalarProperty Name="PROJ_ASGMT_RES_FORMAT_ID" ColumnName="PROJ_ASGMT_RES_FORMAT_ID" />
+                <ScalarProperty Name="PROJ_REQ_RES_FORMAT_ID" ColumnName="PROJ_REQ_RES_FORMAT_ID" />
+                <ScalarProperty Name="ALLOW_MULTI_PROGRAM_ROLLUP" ColumnName="ALLOW_MULTI_PROGRAM_ROLLUP" />
+                <ScalarProperty Name="PJI_SOURCE_FLAG" ColumnName="PJI_SOURCE_FLAG" />
+                <ScalarProperty Name="PROJFUNC_ATTR_FOR_AR_FLAG" ColumnName="PROJFUNC_ATTR_FOR_AR_FLAG" />
+                <ScalarProperty Name="INVOICE_METHOD" ColumnName="INVOICE_METHOD" />
+                <ScalarProperty Name="REVENUE_ACCRUAL_METHOD" ColumnName="REVENUE_ACCRUAL_METHOD" />
+                <ScalarProperty Name="ENABLE_TOP_TASK_INV_MTH_FLAG" ColumnName="ENABLE_TOP_TASK_INV_MTH_FLAG" />
+                <ScalarProperty Name="ENABLE_TOP_TASK_CUSTOMER_FLAG" ColumnName="ENABLE_TOP_TASK_CUSTOMER_FLAG" />
+                <ScalarProperty Name="STRUCTURE_SHARING_CODE" ColumnName="STRUCTURE_SHARING_CODE" />
+                <ScalarProperty Name="SYS_PROGRAM_FLAG" ColumnName="SYS_PROGRAM_FLAG" />
+                <ScalarProperty Name="CINT_STOP_DATE" ColumnName="CINT_STOP_DATE" />
+                <ScalarProperty Name="CINT_ELIGIBLE_FLAG" ColumnName="CINT_ELIGIBLE_FLAG" />
+                <ScalarProperty Name="CINT_RATE_SCH_ID" ColumnName="CINT_RATE_SCH_ID" />
+                <ScalarProperty Name="CAPITAL_EVENT_PROCESSING" ColumnName="CAPITAL_EVENT_PROCESSING" />
+                <ScalarProperty Name="ASSET_ALLOCATION_METHOD" ColumnName="ASSET_ALLOCATION_METHOD" />
+                <ScalarProperty Name="BTC_COST_BASE_REV_CODE" ColumnName="BTC_COST_BASE_REV_CODE" />
+                <ScalarProperty Name="LONG_NAME" ColumnName="LONG_NAME" />
+                <ScalarProperty Name="ACTUAL_DURATION" ColumnName="ACTUAL_DURATION" />
+                <ScalarProperty Name="BASELINE_DURATION" ColumnName="BASELINE_DURATION" />
+                <ScalarProperty Name="SCHEDULED_DURATION" ColumnName="SCHEDULED_DURATION" />
+                <ScalarProperty Name="ACTUAL_AS_OF_DATE" ColumnName="ACTUAL_AS_OF_DATE" />
+                <ScalarProperty Name="SECURITY_LEVEL" ColumnName="SECURITY_LEVEL" />
+                <ScalarProperty Name="NON_LABOR_DISC_REASON_CODE" ColumnName="NON_LABOR_DISC_REASON_CODE" />
+                <ScalarProperty Name="LABOR_DISC_REASON_CODE" ColumnName="LABOR_DISC_REASON_CODE" />
+                <ScalarProperty Name="BASELINE_AS_OF_DATE" ColumnName="BASELINE_AS_OF_DATE" />
+                <ScalarProperty Name="SCHEDULED_AS_OF_DATE" ColumnName="SCHEDULED_AS_OF_DATE" />
+                <ScalarProperty Name="BASELINE_FINISH_DATE" ColumnName="BASELINE_FINISH_DATE" />
+                <ScalarProperty Name="BASELINE_START_DATE" ColumnName="BASELINE_START_DATE" />
+                <ScalarProperty Name="TARGET_FINISH_DATE" ColumnName="TARGET_FINISH_DATE" />
+                <ScalarProperty Name="TARGET_START_DATE" ColumnName="TARGET_START_DATE" />
+                <ScalarProperty Name="INCLUDE_GAINS_LOSSES_FLAG" ColumnName="INCLUDE_GAINS_LOSSES_FLAG" />
+                <ScalarProperty Name="REVALUATE_FUNDING_FLAG" ColumnName="REVALUATE_FUNDING_FLAG" />
+                <ScalarProperty Name="START_ADV_ACTION_SET_FLAG" ColumnName="START_ADV_ACTION_SET_FLAG" />
+                <ScalarProperty Name="ADV_ACTION_SET_ID" ColumnName="ADV_ACTION_SET_ID" />
+                <ScalarProperty Name="RETN_ACCOUNTING_FLAG" ColumnName="RETN_ACCOUNTING_FLAG" />
+                <ScalarProperty Name="RETN_BILLING_INV_FORMAT_ID" ColumnName="RETN_BILLING_INV_FORMAT_ID" />
+                <ScalarProperty Name="PRIORITY_CODE" ColumnName="PRIORITY_CODE" />
+                <ScalarProperty Name="ASSIGN_PRECEDES_TASK" ColumnName="ASSIGN_PRECEDES_TASK" />
+                <ScalarProperty Name="SPLIT_COST_FROM_BILL_FLAG" ColumnName="SPLIT_COST_FROM_BILL_FLAG" />
+                <ScalarProperty Name="SPLIT_COST_FROM_WORKPLAN_FLAG" ColumnName="SPLIT_COST_FROM_WORKPLAN_FLAG" />
+                <ScalarProperty Name="MULTI_CURRENCY_BILLING_FLAG" ColumnName="MULTI_CURRENCY_BILLING_FLAG" />
+                <ScalarProperty Name="INV_BY_BILL_TRANS_CURR_FLAG" ColumnName="INV_BY_BILL_TRANS_CURR_FLAG" />
+                <ScalarProperty Name="PROJFUNC_COST_RATE_DATE" ColumnName="PROJFUNC_COST_RATE_DATE" />
+                <ScalarProperty Name="PROJFUNC_COST_RATE_TYPE" ColumnName="PROJFUNC_COST_RATE_TYPE" />
+                <ScalarProperty Name="BASELINE_FUNDING_FLAG" ColumnName="BASELINE_FUNDING_FLAG" />
+                <ScalarProperty Name="FUNDING_EXCHANGE_RATE" ColumnName="FUNDING_EXCHANGE_RATE" />
+                <ScalarProperty Name="FUNDING_RATE_DATE" ColumnName="FUNDING_RATE_DATE" />
+                <ScalarProperty Name="FUNDING_RATE_TYPE" ColumnName="FUNDING_RATE_TYPE" />
+                <ScalarProperty Name="FUNDING_RATE_DATE_CODE" ColumnName="FUNDING_RATE_DATE_CODE" />
+                <ScalarProperty Name="PROJFUNC_BIL_EXCHANGE_RATE" ColumnName="PROJFUNC_BIL_EXCHANGE_RATE" />
+                <ScalarProperty Name="PROJFUNC_BIL_RATE_DATE" ColumnName="PROJFUNC_BIL_RATE_DATE" />
+                <ScalarProperty Name="PROJFUNC_BIL_RATE_TYPE" ColumnName="PROJFUNC_BIL_RATE_TYPE" />
+                <ScalarProperty Name="PROJFUNC_BIL_RATE_DATE_CODE" ColumnName="PROJFUNC_BIL_RATE_DATE_CODE" />
+                <ScalarProperty Name="PROJFUNC_CURRENCY_CODE" ColumnName="PROJFUNC_CURRENCY_CODE" />
+                <ScalarProperty Name="PROJECT_BIL_EXCHANGE_RATE" ColumnName="PROJECT_BIL_EXCHANGE_RATE" />
+                <ScalarProperty Name="PROJECT_BIL_RATE_DATE" ColumnName="PROJECT_BIL_RATE_DATE" />
+                <ScalarProperty Name="PROJECT_BIL_RATE_TYPE" ColumnName="PROJECT_BIL_RATE_TYPE" />
+                <ScalarProperty Name="PROJECT_BIL_RATE_DATE_CODE" ColumnName="PROJECT_BIL_RATE_DATE_CODE" />
+                <ScalarProperty Name="REVPROC_CURRENCY_CODE" ColumnName="REVPROC_CURRENCY_CODE" />
+                <ScalarProperty Name="INVPROC_CURRENCY_TYPE" ColumnName="INVPROC_CURRENCY_TYPE" />
+                <ScalarProperty Name="NON_LAB_STD_BILL_RT_SCH_ID" ColumnName="NON_LAB_STD_BILL_RT_SCH_ID" />
+                <ScalarProperty Name="MIN_CAND_SCORE_REQD_FOR_NOM" ColumnName="MIN_CAND_SCORE_REQD_FOR_NOM" />
+                <ScalarProperty Name="SEARCH_COUNTRY_CODE" ColumnName="SEARCH_COUNTRY_CODE" />
+                <ScalarProperty Name="SEARCH_STARTING_ORG_ID" ColumnName="SEARCH_STARTING_ORG_ID" />
+                <ScalarProperty Name="SEARCH_ORG_HIER_ID" ColumnName="SEARCH_ORG_HIER_ID" />
+                <ScalarProperty Name="SEARCH_MIN_AVAILABILITY" ColumnName="SEARCH_MIN_AVAILABILITY" />
+                <ScalarProperty Name="ENABLE_AUTOMATED_SEARCH" ColumnName="ENABLE_AUTOMATED_SEARCH" />
+                <ScalarProperty Name="JOB_LEVEL_MATCH_WT" ColumnName="JOB_LEVEL_MATCH_WT" />
+                <ScalarProperty Name="AVAILABILITY_MATCH_WT" ColumnName="AVAILABILITY_MATCH_WT" />
+                <ScalarProperty Name="COMPETENCE_MATCH_WT" ColumnName="COMPETENCE_MATCH_WT" />
+                <ScalarProperty Name="EMP_BILL_RATE_SCHEDULE_ID" ColumnName="EMP_BILL_RATE_SCHEDULE_ID" />
+                <ScalarProperty Name="JOB_BILL_RATE_SCHEDULE_ID" ColumnName="JOB_BILL_RATE_SCHEDULE_ID" />
+                <ScalarProperty Name="INITIAL_TEAM_TEMPLATE_ID" ColumnName="INITIAL_TEAM_TEMPLATE_ID" />
+                <ScalarProperty Name="RECORD_VERSION_NUMBER" ColumnName="RECORD_VERSION_NUMBER" />
+                <ScalarProperty Name="EXPECTED_APPROVAL_DATE" ColumnName="EXPECTED_APPROVAL_DATE" />
+                <ScalarProperty Name="PROJECT_VALUE" ColumnName="PROJECT_VALUE" />
+                <ScalarProperty Name="PROBABILITY_MEMBER_ID" ColumnName="PROBABILITY_MEMBER_ID" />
+                <ScalarProperty Name="LOCATION_ID" ColumnName="LOCATION_ID" />
+                <ScalarProperty Name="CALENDAR_ID" ColumnName="CALENDAR_ID" />
+                <ScalarProperty Name="WORK_TYPE_ID" ColumnName="WORK_TYPE_ID" />
+                <ScalarProperty Name="ROLE_LIST_ID" ColumnName="ROLE_LIST_ID" />
+                <ScalarProperty Name="COST_JOB_GROUP_ID" ColumnName="COST_JOB_GROUP_ID" />
+                <ScalarProperty Name="BILL_JOB_GROUP_ID" ColumnName="BILL_JOB_GROUP_ID" />
+                <ScalarProperty Name="CC_TAX_TASK_ID" ColumnName="CC_TAX_TASK_ID" />
+                <ScalarProperty Name="NL_TP_FIXED_DATE" ColumnName="NL_TP_FIXED_DATE" />
+                <ScalarProperty Name="NL_TP_SCHEDULE_ID" ColumnName="NL_TP_SCHEDULE_ID" />
+                <ScalarProperty Name="CC_PROCESS_NL_FLAG" ColumnName="CC_PROCESS_NL_FLAG" />
+                <ScalarProperty Name="LABOR_TP_FIXED_DATE" ColumnName="LABOR_TP_FIXED_DATE" />
+                <ScalarProperty Name="LABOR_TP_SCHEDULE_ID" ColumnName="LABOR_TP_SCHEDULE_ID" />
+                <ScalarProperty Name="CC_PROCESS_LABOR_FLAG" ColumnName="CC_PROCESS_LABOR_FLAG" />
+                <ScalarProperty Name="PROJECT_RATE_TYPE" ColumnName="PROJECT_RATE_TYPE" />
+                <ScalarProperty Name="PROJECT_RATE_DATE" ColumnName="PROJECT_RATE_DATE" />
+                <ScalarProperty Name="ALLOW_CROSS_CHARGE_FLAG" ColumnName="ALLOW_CROSS_CHARGE_FLAG" />
+                <ScalarProperty Name="PROJECT_CURRENCY_CODE" ColumnName="PROJECT_CURRENCY_CODE" />
+                <ScalarProperty Name="RETENTION_TAX_CODE" ColumnName="RETENTION_TAX_CODE" />
+                <ScalarProperty Name="OUTPUT_TAX_CODE" ColumnName="OUTPUT_TAX_CODE" />
+                <ScalarProperty Name="WF_STATUS_CODE" ColumnName="WF_STATUS_CODE" />
+                <ScalarProperty Name="ADW_NOTIFY_FLAG" ColumnName="ADW_NOTIFY_FLAG" />
+                <ScalarProperty Name="BILLING_CYCLE_ID" ColumnName="BILLING_CYCLE_ID" />
+                <ScalarProperty Name="SCHEDULED_FINISH_DATE" ColumnName="SCHEDULED_FINISH_DATE" />
+                <ScalarProperty Name="SCHEDULED_START_DATE" ColumnName="SCHEDULED_START_DATE" />
+                <ScalarProperty Name="LATE_FINISH_DATE" ColumnName="LATE_FINISH_DATE" />
+                <ScalarProperty Name="LATE_START_DATE" ColumnName="LATE_START_DATE" />
+                <ScalarProperty Name="EARLY_FINISH_DATE" ColumnName="EARLY_FINISH_DATE" />
+                <ScalarProperty Name="EARLY_START_DATE" ColumnName="EARLY_START_DATE" />
+                <ScalarProperty Name="ACTUAL_FINISH_DATE" ColumnName="ACTUAL_FINISH_DATE" />
+                <ScalarProperty Name="ACTUAL_START_DATE" ColumnName="ACTUAL_START_DATE" />
+                <ScalarProperty Name="PM_PROJECT_REFERENCE" ColumnName="PM_PROJECT_REFERENCE" />
+                <ScalarProperty Name="PM_PRODUCT_CODE" ColumnName="PM_PRODUCT_CODE" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="TEMPLATE_END_DATE_ACTIVE" ColumnName="TEMPLATE_END_DATE_ACTIVE" />
+                <ScalarProperty Name="TEMPLATE_START_DATE_ACTIVE" ColumnName="TEMPLATE_START_DATE_ACTIVE" />
+                <ScalarProperty Name="CREATED_FROM_PROJECT_ID" ColumnName="CREATED_FROM_PROJECT_ID" />
+                <ScalarProperty Name="VERIFICATION_DATE" ColumnName="VERIFICATION_DATE" />
+                <ScalarProperty Name="TEMPLATE_FLAG" ColumnName="TEMPLATE_FLAG" />
+                <ScalarProperty Name="OVR_INV_IND_RATE_SCH_ID" ColumnName="OVR_INV_IND_RATE_SCH_ID" />
+                <ScalarProperty Name="OVR_REV_IND_RATE_SCH_ID" ColumnName="OVR_REV_IND_RATE_SCH_ID" />
+                <ScalarProperty Name="OVR_COST_IND_RATE_SCH_ID" ColumnName="OVR_COST_IND_RATE_SCH_ID" />
+                <ScalarProperty Name="NON_LABOR_SCH_TYPE" ColumnName="NON_LABOR_SCH_TYPE" />
+                <ScalarProperty Name="LABOR_SCH_TYPE" ColumnName="LABOR_SCH_TYPE" />
+                <ScalarProperty Name="INV_IND_SCH_FIXED_DATE" ColumnName="INV_IND_SCH_FIXED_DATE" />
+                <ScalarProperty Name="REV_IND_SCH_FIXED_DATE" ColumnName="REV_IND_SCH_FIXED_DATE" />
+                <ScalarProperty Name="COST_IND_SCH_FIXED_DATE" ColumnName="COST_IND_SCH_FIXED_DATE" />
+                <ScalarProperty Name="INV_IND_RATE_SCH_ID" ColumnName="INV_IND_RATE_SCH_ID" />
+                <ScalarProperty Name="REV_IND_RATE_SCH_ID" ColumnName="REV_IND_RATE_SCH_ID" />
+                <ScalarProperty Name="COST_IND_RATE_SCH_ID" ColumnName="COST_IND_RATE_SCH_ID" />
+                <ScalarProperty Name="ATTRIBUTE10" ColumnName="ATTRIBUTE10" />
+                <ScalarProperty Name="ATTRIBUTE9" ColumnName="ATTRIBUTE9" />
+                <ScalarProperty Name="ATTRIBUTE8" ColumnName="ATTRIBUTE8" />
+                <ScalarProperty Name="ATTRIBUTE7" ColumnName="ATTRIBUTE7" />
+                <ScalarProperty Name="ATTRIBUTE6" ColumnName="ATTRIBUTE6" />
+                <ScalarProperty Name="ATTRIBUTE5" ColumnName="ATTRIBUTE5" />
+                <ScalarProperty Name="ATTRIBUTE4" ColumnName="ATTRIBUTE4" />
+                <ScalarProperty Name="ATTRIBUTE3" ColumnName="ATTRIBUTE3" />
+                <ScalarProperty Name="ATTRIBUTE2" ColumnName="ATTRIBUTE2" />
+                <ScalarProperty Name="ATTRIBUTE1" ColumnName="ATTRIBUTE1" />
+                <ScalarProperty Name="ATTRIBUTE_CATEGORY" ColumnName="ATTRIBUTE_CATEGORY" />
+                <ScalarProperty Name="SEGMENT10" ColumnName="SEGMENT10" />
+                <ScalarProperty Name="SEGMENT9" ColumnName="SEGMENT9" />
+                <ScalarProperty Name="SEGMENT8" ColumnName="SEGMENT8" />
+                <ScalarProperty Name="SEGMENT7" ColumnName="SEGMENT7" />
+                <ScalarProperty Name="SEGMENT6" ColumnName="SEGMENT6" />
+                <ScalarProperty Name="SEGMENT5" ColumnName="SEGMENT5" />
+                <ScalarProperty Name="SEGMENT4" ColumnName="SEGMENT4" />
+                <ScalarProperty Name="SEGMENT3" ColumnName="SEGMENT3" />
+                <ScalarProperty Name="SEGMENT2" ColumnName="SEGMENT2" />
+                <ScalarProperty Name="ENABLED_FLAG" ColumnName="ENABLED_FLAG" />
+                <ScalarProperty Name="SUMMARY_FLAG" ColumnName="SUMMARY_FLAG" />
+                <ScalarProperty Name="PROGRAM_UPDATE_DATE" ColumnName="PROGRAM_UPDATE_DATE" />
+                <ScalarProperty Name="PROGRAM_APPLICATION_ID" ColumnName="PROGRAM_APPLICATION_ID" />
+                <ScalarProperty Name="PROGRAM_ID" ColumnName="PROGRAM_ID" />
+                <ScalarProperty Name="REQUEST_ID" ColumnName="REQUEST_ID" />
+                <ScalarProperty Name="UNEARNED_REVENUE_CR" ColumnName="UNEARNED_REVENUE_CR" />
+                <ScalarProperty Name="UNBILLED_RECEIVABLE_DR" ColumnName="UNBILLED_RECEIVABLE_DR" />
+                <ScalarProperty Name="INVOICE_COMMENT" ColumnName="INVOICE_COMMENT" />
+                <ScalarProperty Name="PROJECT_LEVEL_FUNDING_FLAG" ColumnName="PROJECT_LEVEL_FUNDING_FLAG" />
+                <ScalarProperty Name="LIMIT_TO_TXN_CONTROLS_FLAG" ColumnName="LIMIT_TO_TXN_CONTROLS_FLAG" />
+                <ScalarProperty Name="NON_LABOR_SCHEDULE_DISCOUNT" ColumnName="NON_LABOR_SCHEDULE_DISCOUNT" />
+                <ScalarProperty Name="NON_LABOR_SCHEDULE_FIXED_DATE" ColumnName="NON_LABOR_SCHEDULE_FIXED_DATE" />
+                <ScalarProperty Name="NON_LABOR_BILL_RATE_ORG_ID" ColumnName="NON_LABOR_BILL_RATE_ORG_ID" />
+                <ScalarProperty Name="NON_LABOR_STD_BILL_RATE_SCHDL" ColumnName="NON_LABOR_STD_BILL_RATE_SCHDL" />
+                <ScalarProperty Name="LABOR_SCHEDULE_DISCOUNT" ColumnName="LABOR_SCHEDULE_DISCOUNT" />
+                <ScalarProperty Name="LABOR_SCHEDULE_FIXED_DATE" ColumnName="LABOR_SCHEDULE_FIXED_DATE" />
+                <ScalarProperty Name="LABOR_BILL_RATE_ORG_ID" ColumnName="LABOR_BILL_RATE_ORG_ID" />
+                <ScalarProperty Name="LABOR_STD_BILL_RATE_SCHDL" ColumnName="LABOR_STD_BILL_RATE_SCHDL" />
+                <ScalarProperty Name="BILLING_CYCLE" ColumnName="BILLING_CYCLE" />
+                <ScalarProperty Name="BILLING_OFFSET" ColumnName="BILLING_OFFSET" />
+                <ScalarProperty Name="RETENTION_PERCENTAGE" ColumnName="RETENTION_PERCENTAGE" />
+                <ScalarProperty Name="RETENTION_INVOICE_FORMAT_ID" ColumnName="RETENTION_INVOICE_FORMAT_ID" />
+                <ScalarProperty Name="NON_LABOR_INVOICE_FORMAT_ID" ColumnName="NON_LABOR_INVOICE_FORMAT_ID" />
+                <ScalarProperty Name="LABOR_INVOICE_FORMAT_ID" ColumnName="LABOR_INVOICE_FORMAT_ID" />
+                <ScalarProperty Name="DISTRIBUTION_RULE" ColumnName="DISTRIBUTION_RULE" />
+                <ScalarProperty Name="CLOSED_DATE" ColumnName="CLOSED_DATE" />
+                <ScalarProperty Name="COMPLETION_DATE" ColumnName="COMPLETION_DATE" />
+                <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="PROJECT_STATUS_CODE" ColumnName="PROJECT_STATUS_CODE" />
+                <ScalarProperty Name="PUBLIC_SECTOR_FLAG" ColumnName="PUBLIC_SECTOR_FLAG" />
+                <ScalarProperty Name="CARRYING_OUT_ORGANIZATION_ID" ColumnName="CARRYING_OUT_ORGANIZATION_ID" />
+                <ScalarProperty Name="PROJECT_TYPE" ColumnName="PROJECT_TYPE" />
+                <ScalarProperty Name="LAST_UPDATE_LOGIN" ColumnName="LAST_UPDATE_LOGIN" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATION_DATE" ColumnName="CREATION_DATE" />
+                <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="SEGMENT1" ColumnName="SEGMENT1" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
+                <ScalarProperty Name="ORGANIZATION_NAME" ColumnName="ORGANIZATION_NAME" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

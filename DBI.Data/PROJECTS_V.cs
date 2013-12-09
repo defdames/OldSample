@@ -205,6 +205,5 @@ namespace DBI.Data
         public Nullable<decimal> PROJ_REQ_RES_FORMAT_ID { get; set; }
         public Nullable<decimal> PROJ_ASGMT_RES_FORMAT_ID { get; set; }
         public string FUNDING_APPROVAL_STATUS_CODE { get; set; }
-        public string CLASS_CODE { get; set; }
     }
 }

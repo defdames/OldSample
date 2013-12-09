@@ -26,7 +26,7 @@ namespace DBI.Data
                 foreach (PROJECTS_V project in projectList)
                 {
                     WEB_EQUIPMENT_V rItem = new WEB_EQUIPMENT_V();
-                    rItem.CLASS_CODE = project.CLASS_CODE;
+                    //rItem.CLASS_CODE = project.CLASS_CODE;
                     rItem.NAME = project.NAME;
                     rItem.ORGANIZATION_NAME = project.ORGANIZATION_NAME;
                     rItem.ORG_ID = Double.Parse(project.ORG_ID.ToString());

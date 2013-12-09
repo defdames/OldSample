@@ -14,7 +14,6 @@
         <AssociationConnector Association="OracleModel.SYS_USER_ACTIVITYSYS_ACTIVITY" />
         <EntityTypeShape EntityType="OracleModel.SYS_LOG" Width="1.5" PointX="7.625" PointY="0.75" />
         <AssociationConnector Association="OracleModel.SYS_USERSSYS_LOG" />
-        <EntityTypeShape EntityType="OracleModel.PROJECTS_V" Width="3.375" PointX="9.75" PointY="0.75" />
         <EntityTypeShape EntityType="OracleModel.EMPLOYEES_V" Width="1.5" PointX="6.75" PointY="8.625" />
         <EntityTypeShape EntityType="OracleModel.PA_TASKS_V" Width="1.5" PointX="4.125" PointY="8.75" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_WEATHER" Width="1.5" PointX="3.5" PointY="16.5" />
@@ -36,6 +35,7 @@
         <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_FOOTER" Width="1.5" PointX="4.75" PointY="24.125" />
         <AssociationConnector Association="OracleModel.FK_FOOTER_HEADER_ID" />
+        <EntityTypeShape EntityType="OracleModel.PROJECTS_V" Width="1.5" PointX="9.625" PointY="0.625" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
