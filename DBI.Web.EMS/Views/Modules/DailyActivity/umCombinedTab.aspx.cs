@@ -19,6 +19,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GetWeatherData();
             GetChemicalMixData();
             GetInventory();
+            GetFooterData();
         }
 
         protected void GetHeaderData()
@@ -111,6 +112,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
                             select new {c.CHEMICAL_MIX_NUMBER, d.SUB_INVENTORY_SECONDARY_NAME, j.DESCRIPTION, d.RATE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).ToList();
                 uxInventoryStore.DataSource = data;
+            }
+        }
+
+        protected void GetFooterData()
+        {
+            using (Entities _context = new Entities())
+            {
+                long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+                var data = (from d in _context.DAILY_ACTIVITY_FOOTER
+                            where d.HEADER_ID == HeaderId
+                            select d).ToList();
+
+                uxFooterStore.DataSource = data;
             }
         }
     }

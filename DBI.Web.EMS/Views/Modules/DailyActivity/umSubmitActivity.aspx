@@ -40,13 +40,15 @@
                             FieldLabel="Foreman Signature" />
                         <ext:Image runat="server"
                             ID="uxForemanSignatureImage"
-                            Height="150" />
+                            Height="150"
+                            Hidden="true" />
                         <ext:FileUploadField runat="server"
                             ID="uxSubmitContract"
                             FieldLabel="Contract Representative" />
                         <ext:Image runat="server"
                             ID="uxContractRepresentativeImage"
-                            Height="150" />
+                            Height="150"
+                            Hidden="true" />
                     </Items>
                     <Buttons>
                         <ext:Button runat="server"

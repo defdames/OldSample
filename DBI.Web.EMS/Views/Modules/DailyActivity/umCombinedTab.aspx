@@ -257,12 +257,25 @@
                             <Model>
                                 <ext:Model ID="Model7" runat="server">
                                     <Fields>
-
+                                        <ext:ModelField Name="REASON_FOR_NO_WORK" />
+                                        <ext:ModelField Name="HOTEL_NAME" />
+                                        <ext:ModelField Name="HOTEL_CITY" />
+                                        <ext:ModelField Name="HOTEL_STATE" />
+                                        <ext:ModelField Name="HOTEL_PHONE" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
                         </ext:Store>
                     </Store>
+                    <ColumnModel>
+                        <Columns>
+                            <ext:Column runat="server" DataIndex="REASON_FOR_NO_WORK" Text="Reason for no Work" />
+                            <ext:Column runat="server" DataIndex="HOTEL_NAME" Text="Hotel Name" />
+                            <ext:Column runat="server" DataIndex="HOTEL_CITY" Text="Hotel City" />
+                            <ext:Column runat="server" DataIndex="HOTEL_STATE" Text="Hotel State" />
+                            <ext:Column runat="server" DataIndex="HOTEL_PHONE" Text="Hotel Phone" />
+                        </Columns>
+                    </ColumnModel>
                 </ext:GridPanel>
             </Items>
         </ext:Panel>
