@@ -159,7 +159,8 @@
                     Title="Submit Activity"
                     Hidden="true"
                     Width="650"
-                    Shadow="true">
+                    Shadow="true"
+                    Y="50">
                     <Loader runat="server"
                         ID="uxSubmitActivityLoader"
                         Mode="Frame"

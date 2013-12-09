@@ -56,6 +56,9 @@
                             <DirectEvents>
                                 <Click OnEvent="deStoreFooterAndSubmit" />
                             </DirectEvents>
+                            <Listeners>
+                                <Click Handler="parentAutoLoadControl.hide();" />
+                            </Listeners>
                         </ext:Button>
                         <ext:Button runat="server"
                             ID="uxSaveOnlyButton"
@@ -64,6 +67,9 @@
                             <DirectEvents>
                                 <Click OnEvent="deStoreFooter" />
                             </DirectEvents>
+                            <Listeners>
+                                <Click Handler="parentAutoLoadControl.hide();" />
+                            </Listeners>
                         </ext:Button>
                         <ext:Button runat="server"
                             ID="uxCancelButton"
@@ -85,7 +91,7 @@
                                 size.height += 34;
                                 size.width += 12;
                                 win.setSize(size);" 
-                    Delay="500" />
+                    Delay="100" />
             </Listeners>
         </ext:Panel>
     </form>
