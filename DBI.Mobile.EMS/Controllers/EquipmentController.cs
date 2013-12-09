@@ -27,7 +27,7 @@ namespace DBI.Mobile.EMS.Controllers
             {
                 MBL_EQUIPMENT_V rItem = new MBL_EQUIPMENT_V();
                 rItem.PROJECT_ID = item.PROJECT_ID;
-                rItem.NAME = item.LONG_NAME;
+                rItem.EQUIPMENT_NAME = item.LONG_NAME;
                 rItem.SEGMENT1 = item.SEGMENT1;
                 rItem.ORGANIZATION_NAME = item.ORGANIZATION_NAME;
                 rItem.ORGANIZATION_ID = item.CARRYING_OUT_ORGANIZATION_ID;
