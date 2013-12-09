@@ -39,12 +39,14 @@
                             ID="uxSubmitSignature"
                             FieldLabel="Foreman Signature" />
                         <ext:Image runat="server"
-                            ID="uxForemanSignatureImage" />
+                            ID="uxForemanSignatureImage"
+                            Height="150" />
                         <ext:FileUploadField runat="server"
                             ID="uxSubmitContract"
                             FieldLabel="Contract Representative" />
                         <ext:Image runat="server"
-                            ID="uxContractRepresentativeImage" />
+                            ID="uxContractRepresentativeImage"
+                            Height="150" />
                     </Items>
                     <Buttons>
                         <ext:Button runat="server"
@@ -83,7 +85,7 @@
                                 size.height += 34;
                                 size.width += 12;
                                 win.setSize(size);" 
-                    Delay="100" />
+                    Delay="500" />
             </Listeners>
         </ext:Panel>
     </form>
