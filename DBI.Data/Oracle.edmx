@@ -13,12 +13,7 @@
           <EntitySet Name="DAILY_ACTIVITY_HEADER" EntityType="OracleModel.Store.DAILY_ACTIVITY_HEADER" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_INVENTORY" EntityType="OracleModel.Store.DAILY_ACTIVITY_INVENTORY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_PRODUCTION" EntityType="OracleModel.Store.DAILY_ACTIVITY_PRODUCTION" store:Type="Tables" Schema="XXEMS" />
-          <EntitySet Name="DAILY_ACTIVITY_STATUS" EntityType="OracleModel.Store.DAILY_ACTIVITY_STATUS" store:Type="Tables" store:Schema="XXEMS" store:Name="DAILY_ACTIVITY_STATUS">
-            <DefiningQuery>SELECT 
-      "DAILY_ACTIVITY_STATUS"."STATUS_ID" AS "STATUS_ID", 
-      "DAILY_ACTIVITY_STATUS"."STATUS_VALUE" AS "STATUS_VALUE"
-      FROM "XXEMS"."DAILY_ACTIVITY_STATUS" "DAILY_ACTIVITY_STATUS"</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="DAILY_ACTIVITY_STATUS" EntityType="OracleModel.Store.DAILY_ACTIVITY_STATUS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_WEATHER" EntityType="OracleModel.Store.DAILY_ACTIVITY_WEATHER" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_ACTIVITY" EntityType="OracleModel.Store.SYS_ACTIVITY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_LOG" EntityType="OracleModel.Store.SYS_LOG" store:Type="Tables" Schema="XXEMS" />
@@ -649,15 +644,12 @@
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'XXEMS.DAILY_ACTIVITY_STATUS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
         <EntityType Name="DAILY_ACTIVITY_STATUS">
           <Key>
             <PropertyRef Name="STATUS_ID" />
           </Key>
-          <Property Name="STATUS_ID" Type="number" Nullable="false" />
-          <Property Name="STATUS_VALUE" Type="varchar2" MaxLength="50" />
+          <Property Name="STATUS_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="STATUS_VALUE" Type="varchar2" Nullable="false" MaxLength="50" />
         </EntityType>
         <EntityType Name="DAILY_ACTIVITY_WEATHER">
           <Key>
@@ -2426,8 +2418,8 @@
           <Key>
             <PropertyRef Name="STATUS_ID" />
           </Key>
-          <Property Type="Decimal" Name="STATUS_ID" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="String" Name="STATUS_VALUE" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="STATUS_ID" Nullable="false" />
+          <Property Type="String" Name="STATUS_VALUE" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
