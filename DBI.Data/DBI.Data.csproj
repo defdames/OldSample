@@ -70,6 +70,9 @@
     <Compile Include="..\DBI.AssemblyVersion\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="CLASS_CODES_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="DAILY_ACTIVITY_CHEMICAL_MIX.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
