@@ -39,12 +39,14 @@
                             ID="uxSubmitSignature"
                             FieldLabel="Foreman Signature" />
                         <ext:Image runat="server"
-                            ID="uxForemanSignatureImage" />
+                            ID="uxForemanSignatureImage"
+                            Height="150" />
                         <ext:FileUploadField runat="server"
                             ID="uxSubmitContract"
                             FieldLabel="Contract Representative" />
                         <ext:Image runat="server"
-                            ID="uxContractRepresentativeImage" />
+                            ID="uxContractRepresentativeImage"
+                            Height="150" />
                     </Items>
                     <Buttons>
                         <ext:Button runat="server"
@@ -54,6 +56,9 @@
                             <DirectEvents>
                                 <Click OnEvent="deStoreFooterAndSubmit" />
                             </DirectEvents>
+                            <Listeners>
+                                <Click Handler="parentAutoLoadControl.hide();" />
+                            </Listeners>
                         </ext:Button>
                         <ext:Button runat="server"
                             ID="uxSaveOnlyButton"
@@ -62,6 +67,9 @@
                             <DirectEvents>
                                 <Click OnEvent="deStoreFooter" />
                             </DirectEvents>
+                            <Listeners>
+                                <Click Handler="parentAutoLoadControl.hide();" />
+                            </Listeners>
                         </ext:Button>
                         <ext:Button runat="server"
                             ID="uxCancelButton"
