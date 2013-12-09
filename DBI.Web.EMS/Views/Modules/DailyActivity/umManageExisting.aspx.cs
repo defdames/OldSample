@@ -21,9 +21,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             using (Entities _context = new Entities())
             {
-                //Get List of all headers
+                //Get List of all new headers
                 var data = (from d in _context.DAILY_ACTIVITY_HEADER
                             join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                            where d.STATUS == 1
                             select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME }).ToList();
                 uxManageGridStore.DataSource = data;
             }
@@ -56,6 +57,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             uxSubmitActivityWindow.LoadContent(WindowUrl);
             uxSubmitActivityWindow.Show();
+        }
+
+        [DirectMethod]
+        public void dmSubmitNotification()
+        {
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Signature Missing",
+                Html = "Unable to submit, signature missing.  Please provide the foreman signature.",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
         }
     }
 }

@@ -27,16 +27,63 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     data = (from d in _context.DAILY_ACTIVITY_FOOTER
                             where d.HEADER_ID == HeaderId
                             select d).Single();
-                    uxSubmitReasonForNoWork.SetValue(data.REASON_FOR_NO_WORK.ToString());
-                    uxSubmitHotel.SetValue(data.HOTEL_NAME.ToString());
-                    uxSubmitCity.SetValue(data.HOTEL_CITY.ToString());
-                    uxSubmitState.SetValue(data.HOTEL_STATE.ToString());
-                    uxSubmitPhone.SetValue(data.HOTEL_PHONE.ToString());
-                    string ForemanUrl = string.Format("ImageLoader/ImageLoader.aspx?headerId={0}&type=foreman", HeaderId);
-                    uxForemanSignatureImage.ImageUrl = ForemanUrl;
+                    try
+                    {
+                        uxSubmitReasonForNoWork.SetValue(data.REASON_FOR_NO_WORK.ToString());
+                    }
+                    catch (NullReferenceException)
+                    {
+                        uxSubmitReasonForNoWork.SetValue("");
+                    }
 
-                    string ContractRepresentativeUrl = string.Format("ImageLoader/ImageLoader.aspx?headerId={0}&type=contract", HeaderId);
-                    uxContractRepresentativeImage.ImageUrl = ContractRepresentativeUrl;
+                    try
+                    {
+                        uxSubmitHotel.SetValue(data.HOTEL_NAME.ToString());
+                    }
+                    catch (NullReferenceException)
+                    {
+                        uxSubmitHotel.SetValue("");
+                    }
+
+                    try
+                    {
+                        uxSubmitCity.SetValue(data.HOTEL_CITY.ToString());
+                    }
+                    catch (NullReferenceException)
+                    {
+                        uxSubmitCity.SetValue("");
+                    }
+
+                    try
+                    {
+                        uxSubmitState.SetValue(data.HOTEL_STATE.ToString());
+                    }
+                    catch (NullReferenceException)
+                    {
+                        uxSubmitState.SetValue("");
+                    }
+                    try
+                    {
+                        uxSubmitPhone.SetValue(data.HOTEL_PHONE.ToString());
+                    }
+                    catch (NullReferenceException)
+                    {
+                        uxSubmitPhone.SetValue("");
+                    }
+
+                    if (data.FOREMAN_SIGNATURE.Length > 0)
+                    {
+                        string ForemanUrl = string.Format("ImageLoader/ImageLoader.aspx?headerId={0}&type=foreman", HeaderId);
+                        uxForemanSignatureImage.ImageUrl = ForemanUrl;
+                        uxForemanSignatureImage.Show();
+                    }
+
+                    if (data.CONTRACT_REP.Length > 0)
+                    {
+                        string ContractRepresentativeUrl = string.Format("ImageLoader/ImageLoader.aspx?headerId={0}&type=contract", HeaderId);
+                        uxContractRepresentativeImage.ImageUrl = ContractRepresentativeUrl;
+                        uxContractRepresentativeImage.Show();
+                    }
                 }
                 catch (InvalidOperationException)
                 {
@@ -52,14 +99,21 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             //Set HeaderId
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-
-            using (Entities _context = new Entities())
+            try
             {
-                //Check if footer record exists
-                data = (from d in _context.DAILY_ACTIVITY_FOOTER
-                                    where d.HEADER_ID == HeaderId
-                                    select d).Single();
+                using (Entities _context = new Entities())
+                {
+                    //Check if footer record exists
+                    data = (from d in _context.DAILY_ACTIVITY_FOOTER
+                            where d.HEADER_ID == HeaderId
+                            select d).Single();
+                }
             }
+            catch (InvalidOperationException)
+            {
+                data = null;
+            }
+
             if (data != null)
             {
                 //Check for empty values
@@ -242,18 +296,30 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             deStoreFooter(sender, e);
 
             //Get header
-            DAILY_ACTIVITY_HEADER data;
+            DAILY_ACTIVITY_HEADER HeaderData;
+            DAILY_ACTIVITY_FOOTER FooterData;
             using (Entities _context = new Entities())
             {
-                data = (from d in _context.DAILY_ACTIVITY_HEADER
+                HeaderData = (from d in _context.DAILY_ACTIVITY_HEADER
                         where d.HEADER_ID == HeaderId
                         select d).Single();
+
+                FooterData = (from d in _context.DAILY_ACTIVITY_FOOTER
+                              where d.HEADER_ID == HeaderId
+                              select d).Single();
+            }
+
+            if (FooterData.FOREMAN_SIGNATURE.Length > 0)
+            {
+                //Update status to Requires approval
+                HeaderData.STATUS = 2;
+                GenericData.Update<DAILY_ACTIVITY_HEADER>(HeaderData);
+            }
+            else
+            {
+                X.Js.Call("parent.App.direct.dmSubmitNotification()");
             }
             
-            //Update status to Requires approval
-            data.STATUS = 2;
-
-            GenericData.Update<DAILY_ACTIVITY_HEADER>(data);
         }
     }
 }
