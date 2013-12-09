@@ -2385,6 +2385,26 @@
           <Property Type="String" Name="FUNDING_APPROVAL_STATUS_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="CLASS_CODE" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
         </EntityType>
+        <ComplexType Name="MOBILE_INVENTORY_V" >
+          <Property Type="Decimal" Name="ITEM_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="SEGMENT1" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ITEM_DESCRIPTION" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="UOM_CODE" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ENABLED_FLAG" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ACTIVE" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="ITEM_COST" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" />
+          <Property Type="String" Name="LE" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE2" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="INV_NAME" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="INV_LOCATION" />
+          <Property Type="Int64" Name="ORGANIZATION_ID" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="MOBILE_SUBINVENTORY_V" >
+          <Property Type="Decimal" Name="ORG_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="SECONDARY_INV_NAME" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SUBINVENTORY_DESCRIPTION" MaxLength="50" FixedLength="false" Unicode="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->

@@ -12,12 +12,12 @@ namespace DBI.Mobile.EMS.Controllers
     {
         [Authorize]
         [HttpGet]
-        public IEnumerable<SUBINVENTORY_V> Get()
+        public IEnumerable<MOBILE_SUBINVENTORY_V> Get()
         {
-            Entities _context = new Entities();
-            List<SUBINVENTORY_V> sinvl = _context.SUBINVENTORY_V.ToList();
-            return _context.SUBINVENTORY_V.ToList();
+            List<MOBILE_SUBINVENTORY_V> data = INVENTORY_V.MobileSubInventoryList();
+            return data;
         }
 
     }
 }
+

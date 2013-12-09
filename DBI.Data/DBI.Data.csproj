@@ -133,6 +133,12 @@
     <Compile Include="MBL_STRING.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="MOBILE_INVENTORY_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MOBILE_SUBINVENTORY_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="Oracle.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

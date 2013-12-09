@@ -12,11 +12,10 @@ namespace DBI.Mobile.EMS.Controllers
     {
         [Authorize]
         [HttpGet]
-        public IEnumerable<INVENTORY_V> Get()
+        public IEnumerable<MOBILE_INVENTORY_V> Get()
         {
-            Entities _context = new Entities();
-            List<INVENTORY_V> invl = _context.INVENTORY_V.ToList();
-            return _context.INVENTORY_V.ToList();
+            List<MOBILE_INVENTORY_V> data = INVENTORY_V.MobileInventoryList();
+            return data;
         }
 
     }
