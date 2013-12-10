@@ -648,7 +648,8 @@
           <Key>
             <PropertyRef Name="STATUS_ID" />
           </Key>
-          <Property Name="STATUS_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="STATUS_ID" Type="number" Nullable="false" />
+          <Property Name="STATUS" Type="number" Nullable="false" Precision="10" />
           <Property Name="STATUS_VALUE" Type="varchar2" Nullable="false" MaxLength="50" />
         </EntityType>
         <EntityType Name="DAILY_ACTIVITY_WEATHER">
@@ -2418,7 +2419,8 @@
           <Key>
             <PropertyRef Name="STATUS_ID" />
           </Key>
-          <Property Type="Int64" Name="STATUS_ID" Nullable="false" />
+          <Property Type="Decimal" Name="STATUS_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Int32" Name="STATUS" Nullable="false" />
           <Property Type="String" Name="STATUS_VALUE" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
@@ -3118,6 +3120,7 @@
             <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_STATUS">
               <MappingFragment StoreEntitySet="DAILY_ACTIVITY_STATUS">
                 <ScalarProperty Name="STATUS_VALUE" ColumnName="STATUS_VALUE" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
                 <ScalarProperty Name="STATUS_ID" ColumnName="STATUS_ID" />
               </MappingFragment>
             </EntityTypeMapping>
