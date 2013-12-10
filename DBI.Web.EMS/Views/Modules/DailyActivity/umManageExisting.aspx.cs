@@ -147,5 +147,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
             });
         }
+
+        /// <summary>
+        /// Direct Method accessed from umSubmitActivity.aspx after it's submitted
+        /// </summary>
+        [DirectMethod]
+        public void dmHideWindowUpdateGrid()
+        {
+            uxSubmitActivityWindow.Hide();
+            uxManageGridStore.Reload();
+        }
     }
 }

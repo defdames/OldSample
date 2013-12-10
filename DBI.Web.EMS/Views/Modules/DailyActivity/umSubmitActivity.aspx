@@ -58,9 +58,6 @@
                             <DirectEvents>
                                 <Click OnEvent="deStoreFooterAndSubmit" />
                             </DirectEvents>
-                            <Listeners>
-                                <Click Handler="parentAutoLoadControl.hide();" />
-                            </Listeners>
                         </ext:Button>
                         <ext:Button runat="server"
                             ID="uxSaveOnlyButton"

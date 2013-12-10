@@ -314,10 +314,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 //Update status to Requires approval
                 HeaderData.STATUS = 2;
                 GenericData.Update<DAILY_ACTIVITY_HEADER>(HeaderData);
+                X.Js.Call("parent.App.direct.dmHideWindowUpdateGrid()");
             }
             else
             {
                 X.Js.Call("parent.App.direct.dmSubmitNotification()");
+
             }
             
         }
