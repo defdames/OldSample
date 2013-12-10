@@ -24,14 +24,18 @@
                         <ext:RowSelectionModel runat="server" />
                     </SelectionModel>
                     <Store>
-                        <ext:Store runat="server" AutoDataBind="true" ID="uxManageGridStore">
+                        <ext:Store runat="server" AutoDataBind="true" ID="uxManageGridStore" OnReadData="deReadHeaderData" PageSize="15" RemoteFilter="true">
                             <Fields>
-                                <ext:ModelField Name="HEADER_ID" />
-                                <ext:ModelField Name="PROJECT_ID" />
+                                <ext:ModelField Name="HEADER_ID" Type="String" />
+                                <ext:ModelField Name="PROJECT_ID" Type="String" />
                                 <ext:ModelField Name="DA_DATE" Type="Date" />
-                                <ext:ModelField Name="SEGMENT1" />
-                                <ext:ModelField Name="LONG_NAME" />
+                                <ext:ModelField Name="SEGMENT1" Type="String" />
+                                <ext:ModelField Name="LONG_NAME" Type="String" />
+                                <ext:ModelField Name="STATUS_VALUE" Type="String" />
                             </Fields>
+                            <Proxy>
+                                <ext:PageProxy />
+                            </Proxy>
                         </ext:Store>
                     </Store>
                     <ColumnModel>
@@ -39,8 +43,12 @@
                             <ext:DateColumn runat="server" Text="Activity Date" DataIndex="DA_DATE" Flex="10" Format="MM-dd-yyyy"/>
                             <ext:Column ID="Column1" runat="server" Text="Project" DataIndex="SEGMENT1" Flex="20"/>
                             <ext:Column runat="server" Text="Project Name" DataIndex="LONG_NAME" Flex="50" />
+                            <ext:Column runat="server" Text="Status" DataIndex="STATUS_VALUE" Flex="30" />
                         </Columns>
                     </ColumnModel>
+                    <BottomBar>
+                        <ext:PagingToolbar runat="server" />
+                    </BottomBar>
                     <DirectEvents>
                         <SelectionChange OnEvent="deSelectHeader">
                             <ExtraParams>
@@ -48,6 +56,18 @@
                             </ExtraParams>
                         </SelectionChange>
                     </DirectEvents>
+                    <Features>
+                        <ext:GridFilters runat="server">
+                            <Filters>
+                                <ext:StringFilter DataIndex="HEADER_ID" />
+                                <ext:StringFilter DataIndex="PROJECT_ID" />
+                                <ext:DateFilter DataIndex="DA_DATE" />
+                                <ext:StringFilter DataIndex="SEGMENT1" />
+                                <ext:StringFilter DataIndex="LONG_NAME" />
+                                <ext:StringFilter DataIndex="STATUS_VALUE" />
+                            </Filters>
+                        </ext:GridFilters>
+                    </Features>
                     <TopBar>
                         <ext:Toolbar runat="server">
                             <Items>
@@ -62,6 +82,36 @@
                                             </ExtraParams>
                                         </Click>
                                     </DirectEvents>    
+                                </ext:Button>
+                                <ext:Button runat="server"
+                                    ID="uxApproveActivityButton"
+                                    Text="Approve"
+                                    Icon="ApplicationPut">
+                                    <DirectEvents>
+                                        <Click OnEvent="deApproveActivity">
+                                            <ExtraParams>
+                                                <ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
+                                            </ExtraParams>
+                                        </Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:Button runat="server"
+                                    ID="uxPostActivityButton"
+                                    Text="Post to Oracle"
+                                    Icon="DatabaseAdd">
+
+                                </ext:Button>
+                                <ext:Button runat="server"
+                                    ID="uxInactiveActivityButton"
+                                    Text="Set Inactive"
+                                    Icon="ApplicationStop">
+                                    <DirectEvents>
+                                        <Click OnEvent="deSetHeaderInactive">
+                                            <ExtraParams>
+                                                <ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
+                                            </ExtraParams>
+                                        </Click>
+                                    </DirectEvents>
                                 </ext:Button>
                             </Items>
                         </ext:Toolbar>
