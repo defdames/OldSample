@@ -17,11 +17,25 @@ namespace DBI.Mobile.EMS.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpGet]
-        public IEnumerable<PA_TASKS_V> Get()
+        public IEnumerable<MOBILE_TASK_V> Get()
         {
             Entities _context = new Entities();
             List<PA_TASKS_V> pl = _context.PA_TASKS_V.ToList();
-            return pl;
+            List<MOBILE_TASK_V> returnList = new List<MOBILE_TASK_V>();
+
+            foreach(PA_TASKS_V task in pl)
+            {
+                MOBILE_TASK_V nTask = new MOBILE_TASK_V();
+                nTask.TASK_ID = task.TASK_ID;
+                nTask.TASK_NUMBER = task.TASK_NUMBER;
+                nTask.TASK_DESCRIPTION = task.DESCRIPTION;
+                nTask.PROJECT_ID = task.PROJECT_ID;
+                nTask.LAST_UPDATE_DATE = task.LAST_UPDATE_DATE;
+                returnList.Add(nTask);
+            }
+
+            return returnList;
+
         }
     }
 }
