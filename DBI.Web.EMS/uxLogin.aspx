@@ -122,7 +122,7 @@
                     </ext:ComboBox>
                 </Items>
                 <Buttons>
-                    <ext:Button ID="uxLoginButton" runat="server" Text="Login" meta:resourcekey="loginButtonResource1">
+                    <ext:Button ID="uxLoginButton" runat="server" Text="Login" meta:resourcekey="loginButtonResource1" Icon="Add">
                         <DirectEvents>
                             <Click OnEvent="deLogin">
                                 <EventMask ShowMask="true" Msg=""></EventMask>

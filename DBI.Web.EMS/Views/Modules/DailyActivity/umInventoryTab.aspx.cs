@@ -435,22 +435,27 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deEditMath(object sender, DirectEventArgs e)
         {
-            long MixId= long.Parse(uxEditInventoryMix.Value.ToString());
-            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-            DAILY_ACTIVITY_CHEMICAL_MIX ChemData;
-
-            using (Entities _context = new Entities())
+            try
             {
-                ChemData = (from d in _context.DAILY_ACTIVITY_CHEMICAL_MIX
-                            where d.CHEMICAL_MIX_NUMBER == MixId && d.HEADER_ID == HeaderId
-                            select d).Single();
-            }
-            var GallonsUsed = ChemData.GALLON_STARTING + ChemData.GALLON_MIXED - ChemData.GALLON_REMAINING;
-            var GallonAcre = ChemData.GALLON_ACRE;
+                long MixId = long.Parse(uxEditInventoryMix.Value.ToString());
+                long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+                DAILY_ACTIVITY_CHEMICAL_MIX ChemData;
 
-            var AcresSprayed = GallonsUsed / GallonAcre;
-            var Total = AcresSprayed * decimal.Parse(uxEditInventoryRate.Value.ToString());
-            uxEditInventoryTotal.SetValue(Total);
+                using (Entities _context = new Entities())
+                {
+                    ChemData = (from d in _context.DAILY_ACTIVITY_CHEMICAL_MIX
+                                where d.CHEMICAL_MIX_NUMBER == MixId && d.HEADER_ID == HeaderId
+                                select d).Single();
+                }
+                var GallonsUsed = ChemData.GALLON_STARTING + ChemData.GALLON_MIXED - ChemData.GALLON_REMAINING;
+                var GallonAcre = ChemData.GALLON_ACRE;
+
+                var AcresSprayed = GallonsUsed / GallonAcre;
+                var Total = AcresSprayed * decimal.Parse(uxEditInventoryRate.Value.ToString());
+                uxEditInventoryTotal.SetValue(Total);
+            }
+            catch (NullReferenceException)
+            { }
         }
 
     }

@@ -270,7 +270,7 @@
 						<ext:Button runat="server"
 							ID="uxAddProductionSubmit"
 							Text="Submit"
-							Icon="ApplicationGo"
+							Icon="Add"
 							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deAddProduction" />
@@ -279,7 +279,7 @@
 						<ext:Button runat="server"
 							ID="uxAddProductionCancel"
 							Text="Cancel"
-							Icon="ApplicationStop">
+							Icon="Delete">
 							<Listeners>
 								<Click Handler="#{uxAddProductionForm}.reset();
 									#{uxAddProductionWindow}.hide();" />
@@ -400,7 +400,7 @@
 						<ext:Button runat="server"
 							ID="uxEditProductionSubmit"
 							Text="Submit"
-							Icon="ApplicationGo"
+							Icon="Add"
 							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deEditProduction">
@@ -413,7 +413,7 @@
 						<ext:Button runat="server"
 							ID="uxEditProductionCancel"
 							Text="Cancel"
-							Icon="ApplicationStop">
+							Icon="Delete">
 							<Listeners>
 								<Click Handler="#{uxEditProductionForm}.reset();
 									#{uxEditProductionWindow}.hide();" />

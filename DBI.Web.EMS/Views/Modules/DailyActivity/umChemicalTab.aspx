@@ -200,7 +200,7 @@
                     <Buttons>
                         <ext:Button runat="server"
                             ID="uxAddChemicalSubmit"
-                            Icon="ApplicationGo"
+                            Icon="Add"
                             Text="Submit"
                             Disabled="true">
                             <DirectEvents>
@@ -209,7 +209,7 @@
                         </ext:Button>
                         <ext:Button runat="server"
                             ID="uxAddChemicalCancel"
-                            Icon="ApplicationStop"
+                            Icon="Delete"
                             Text="Cancel">
                             <Listeners>
                                 <Click Handler="#{uxAddChemicalForm}.reset();
@@ -286,7 +286,7 @@
                     <Buttons>
                         <ext:Button runat="server"
                             ID="uxEditChemicalSubmit"
-                            Icon="ApplicationGo"
+                            Icon="Add"
                             Text="Submit"
                             Disabled="true">
                             <DirectEvents>
@@ -299,7 +299,7 @@
                         </ext:Button>
                         <ext:Button runat="server"
                             ID="uxEditChemicalCancel"
-                            Icon="ApplicationStop"
+                            Icon="Delete"
                             Text="Cancel">
                             <Listeners>
                                 <Click Handler="#{uxEditChemicalForm}.reset();

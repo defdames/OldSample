@@ -379,7 +379,7 @@
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxAddEmployeeSubmit"
-							Icon="ApplicationGo"
+							Icon="Add"
 							Text="Submit"
 							Disabled="true">
 							<DirectEvents>
@@ -388,7 +388,7 @@
 						</ext:Button>
 						<ext:Button runat="server"
 							ID="uxAddEmployeeCancel"
-							Icon="ApplicationStop"
+							Icon="Delete"
 							Text="Cancel">
 							<Listeners>
 								<Click Handler="#{uxAddEmployeeForm}.reset();
@@ -631,7 +631,7 @@
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxEditEmployeeSubmit"
-							Icon="ApplicationGo"
+							Icon="Add"
 							Text="Submit"
 							Disabled="true">
 							<DirectEvents>
@@ -644,7 +644,7 @@
 						</ext:Button>
 						<ext:Button runat="server"
 							ID="uxEditEmployeeCancel"
-							Icon="ApplicationStop"
+							Icon="Delete"
 							Text="Cancel">
 							<Listeners>
 								<Click Handler="#{uxEditEmployeeForm}.reset();

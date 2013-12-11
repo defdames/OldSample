@@ -169,7 +169,7 @@
 						<ext:Button runat="server"
 							ID="uxAddWeatherSubmit"
 							Text="Submit"
-							Icon="ApplicationGo"
+							Icon="Add"
 							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deAddWeather" />
@@ -178,7 +178,7 @@
 						<ext:Button runat="server"
 							ID="uxAddWeatherCancel"
 							Text="Cancel"
-							Icon="ApplicationStop">
+							Icon="Delete">
 							<Listeners>
 								<Click Handler="#{uxAddWeatherForm}.reset();
 									#{uxAddWeatherWindow}.hide()" />
@@ -259,7 +259,7 @@
 						 <ext:Button runat="server"
 							 ID="uxEditWeatherSubmit"
 							 Text="Submit"
-							 Icon="ApplicationGo"
+							 Icon="Add"
 							 Disabled="true">
 							 <DirectEvents>
 								 <Click OnEvent="deEditWeather">
@@ -272,7 +272,7 @@
 						 <ext:Button runat="server"
 							 ID="uxEditWeatherCancel"
 							 Text="Cancel"
-							 Icon="ApplicationStop">
+							 Icon="Delete">
 							 <Listeners>
 								 <Click Handler="#{uxEditWeatherForm}.reset();
 									 #{uxEditWeatherWindow}.hide()" />

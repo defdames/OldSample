@@ -407,7 +407,7 @@
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxEditEquipmentSubmit"
-							Icon="ApplicationGo"
+							Icon="Add"
 							Text="Submit"
 							Disabled="true">
 							<DirectEvents>
@@ -420,7 +420,7 @@
 						</ext:Button>
 						<ext:Button runat="server"
 							ID="uxEditEquipmentCancel"
-							Icon="ApplicationStop"
+							Icon="Delete"
 							Text="Cancel">
 							<Listeners>
 								<Click Handler="#{uxEditEquipmentForm}.reset();

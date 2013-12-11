@@ -430,7 +430,7 @@
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxAddInventorySubmit"
-							Icon="ApplicationGo"
+							Icon="Add"
 							Text="Submit"
 							Disabled="true">
 							<DirectEvents>
@@ -443,7 +443,7 @@
 						</ext:Button>
 						<ext:Button runat="server"
 							ID="uxAddInventoryCancel"
-							Icon="ApplicationStop"
+							Icon="Delete"
 							Text="Cancel">
 							<Listeners>
 								<Click Handler="#{uxAddInventoryForm}.reset();
@@ -612,7 +612,7 @@
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxEditInventorySubmit"
-							Icon="ApplicationGo"
+							Icon="Add"
 							Text="Submit">
 							<DirectEvents>
 								<Click OnEvent="deEditInventory">
@@ -626,7 +626,7 @@
 						</ext:Button>
 						<ext:Button runat="server"
 							ID="uxEditInventoryCancel"
-							Icon="ApplicationStop"
+							Icon="Delete"
 							Text="Cancel">
 							<Listeners>
 								<Click Handler="#{uxEditInventoryForm}.reset();
