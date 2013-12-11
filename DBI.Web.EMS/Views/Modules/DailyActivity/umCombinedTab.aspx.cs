@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using DBI.Core.Web;
 using DBI.Data;
+using Ext.Net;
 
 namespace DBI.Web.EMS.Views.Modules.DailyActivity
 {
@@ -13,6 +14,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!validateComponentSecurity("SYS.DailyActivity.View"))
+            {
+                X.Redirect("~/Views/uxDefault.aspx");
+            }
             GetHeaderData();
             GetEmployeeData();
             GetProductionData();

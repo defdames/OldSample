@@ -12,9 +12,20 @@ using Ext.Net;
 
 namespace DBI.Web.EMS.Views.Modules.DailyActivity
 {
-    public partial class umSubmitActivity : System.Web.UI.Page
+    public partial class umSubmitActivity : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!validateComponentSecurity("SYS.DailyActivity.View"))
+            {
+                X.Redirect("~/Views/uxDefault.aspx");
+            }
+
+            GetFooterData();
+
+        }
+
+        protected void GetFooterData()
         {
             DAILY_ACTIVITY_FOOTER data;
             var HeaderId = long.Parse(Request.QueryString["HeaderId"]);
@@ -90,7 +101,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 }
             }
-
         }
 
         protected void deStoreFooter(object sender, DirectEventArgs e)
