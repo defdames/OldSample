@@ -262,7 +262,7 @@
 						<ext:Button runat="server"
 							ID="uxAddEquipmentSubmit"
 							Text="Submit"
-							Icon="ApplicationGo"
+							Icon="Add"
 							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deAddEquipment" />                                    
@@ -271,7 +271,7 @@
 						<ext:Button runat="server"
 							ID="uxAddEquipmentCancel"
 							Text="Cancel"
-							Icon="ApplicationStop">
+							Icon="Delete">
 							<Listeners>
 								<Click Handler ="#{uxAddEquipmentForm}.reset();
 									#{uxAddEquipmentWindow}.hide()" />

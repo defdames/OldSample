@@ -5,6 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    <link href="../../../Resources/StyleSheets/main.css" rel="stylesheet" />
 </head>
 <body>
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
@@ -117,7 +118,7 @@
                                 <ext:Button runat="server"
                                     ID="uxPostActivityButton"
                                     Text="Post to Oracle"
-                                    Icon="DatabaseAdd"
+                                    Icon="ApplicationGet"
                                     Disabled="true">
 
                                 </ext:Button>
