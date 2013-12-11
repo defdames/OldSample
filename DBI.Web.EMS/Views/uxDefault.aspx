@@ -78,20 +78,6 @@
                                     <Defaults>
                                         <ext:Parameter Name="MenuAlign" Value="tl-bl?" Mode="Value" />
                                     </Defaults>
-                                    <Items>
-                                        <ext:MenuItem ID="uxYIK" runat="server" Text="Yesterday's Internal Knowledge (YIK)" Icon="ApplicationOsx">
-                                        </ext:MenuItem>
-                                        <ext:MenuItem ID="uxDailyActivity" runat="server" Text="Daily Activity" Icon="ApplicationOsx">
-                                            <DirectEvents>
-                                                <Click OnEvent="deLoadPage">
-                                                    <ExtraParams>
-                                                        <ext:Parameter Name="Page" Value="~/Views/Modules/DailyActivity/umManageExisting.aspx" />
-                                                        <ext:Parameter Name="Location" Value="uxCenter" />
-                                                    </ExtraParams>
-                                                </Click>
-                                            </DirectEvents>
-                                        </ext:MenuItem>
-                                    </Items>
                                 </ext:Menu>
                             </Items>
                         </ext:Panel>

@@ -93,10 +93,12 @@
                                 <Click Handler="#{uxAddChemicalWindow}.show()" />
                             </Listeners>
                         </ext:Button>
+                        <ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server" />
                         <ext:Button runat="server"
                             ID="uxEditChemicalButton"
                             Icon="ApplicationEdit"
-                            Text="Edit Chemical Mix">
+                            Text="Edit Chemical Mix"
+                            Disabled="true">
                             <DirectEvents>
                                 <Click OnEvent="deEditChemicalForm">
                                     <ExtraParams>
@@ -108,6 +110,7 @@
                                 <Click Handler="#{uxEditChemicalWindow}.show()" />
                             </Listeners>
                         </ext:Button>
+                        <ext:ToolbarSpacer ID="ToolbarSpacer2" runat="server" />
                         <ext:Button runat="server"
                             ID="uxRemoveChemicalButton"
                             Icon="ApplicationDelete"
@@ -125,9 +128,15 @@
                 </ext:Toolbar>
             </TopBar>
             <SelectionModel>
-                <ext:RowSelectionModel runat="server" />
+                <ext:RowSelectionModel runat="server" AllowDeselect="true" Mode="Single" />
             </SelectionModel>
+            <Listeners>
+                <Select Handler="#{uxEditChemicalButton}.enable()" />
+                <Deselect Handler="#{uxEditChemicalButton}.disable()" />
+            </Listeners>
         </ext:GridPanel>
+
+        <%-- Hidden Windows --%>
         <ext:Window runat="server"
             ID="uxAddChemicalWindow"
             Layout="FormLayout"
@@ -191,7 +200,7 @@
                     <Buttons>
                         <ext:Button runat="server"
                             ID="uxAddChemicalSubmit"
-                            Icon="ApplicationGo"
+                            Icon="Add"
                             Text="Submit"
                             Disabled="true">
                             <DirectEvents>
@@ -200,7 +209,7 @@
                         </ext:Button>
                         <ext:Button runat="server"
                             ID="uxAddChemicalCancel"
-                            Icon="ApplicationStop"
+                            Icon="Delete"
                             Text="Cancel">
                             <Listeners>
                                 <Click Handler="#{uxAddChemicalForm}.reset();
@@ -277,7 +286,7 @@
                     <Buttons>
                         <ext:Button runat="server"
                             ID="uxEditChemicalSubmit"
-                            Icon="ApplicationGo"
+                            Icon="Add"
                             Text="Submit"
                             Disabled="true">
                             <DirectEvents>
@@ -290,7 +299,7 @@
                         </ext:Button>
                         <ext:Button runat="server"
                             ID="uxEditChemicalCancel"
-                            Icon="ApplicationStop"
+                            Icon="Delete"
                             Text="Cancel">
                             <Listeners>
                                 <Click Handler="#{uxEditChemicalForm}.reset();

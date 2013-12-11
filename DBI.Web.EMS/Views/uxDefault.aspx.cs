@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IdentityModel.Services;
 using System.IdentityModel.Tokens;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Web;
@@ -158,8 +159,16 @@ namespace DBI.Web.EMS.Views
                     Value = userActivity.PATH
                 });
 
-                //Add to Menu
-                uxMenu.Items.Add(NewItem);                
+                string DirectoryName = new FileInfo(userActivity.PATH).Directory.Name;
+                if (DirectoryName == "Security")
+                {
+                    //Add to Menu
+                    uxMenu.Items.Add(NewItem);
+                }
+                else
+                {
+                    uxApplicationMenu.Items.Add(NewItem);
+                }
             }
         }
     }

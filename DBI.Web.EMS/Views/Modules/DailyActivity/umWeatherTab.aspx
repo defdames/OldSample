@@ -59,10 +59,12 @@
 								<Click Handler="#{uxAddWeatherWindow}.show()" />
 							</Listeners>
 						</ext:Button>
+						<ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server" />
 						<ext:Button runat="server"
 							ID="uxEditWeatherButton"
 							Icon="ApplicationEdit"
-							Text="Edit Weather">
+							Text="Edit Weather"
+							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deEditWeatherForm">
 									<ExtraParams>
@@ -74,6 +76,7 @@
 								<Click Handler="#{uxEditWeatherWindow}.show()" />
 							</Listeners>
 						</ext:Button>
+						<ext:ToolbarSpacer ID="ToolbarSpacer2" runat="server" />
 						<ext:Button runat="server"
 							ID="uxRemoveWeatherButton"
 							Icon="ApplicationDelete"
@@ -90,6 +93,13 @@
 					</Items>
 				</ext:Toolbar>
 			</TopBar>
+			<SelectionModel>
+				<ext:RowSelectionModel runat="server" AllowDeselect="true" Mode="Single" />
+			</SelectionModel>
+			<Listeners>
+				<Select Handler="#{uxEditWeatherButton}.enable()" />
+				<Deselect Handler="#{uxEditWeatherButton}.disable()" />
+			</Listeners>
 		</ext:GridPanel>
 		<ext:Window runat="server"
 			ID="uxAddWeatherWindow"
@@ -159,7 +169,7 @@
 						<ext:Button runat="server"
 							ID="uxAddWeatherSubmit"
 							Text="Submit"
-							Icon="ApplicationGo"
+							Icon="Add"
 							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deAddWeather" />
@@ -168,7 +178,7 @@
 						<ext:Button runat="server"
 							ID="uxAddWeatherCancel"
 							Text="Cancel"
-							Icon="ApplicationStop">
+							Icon="Delete">
 							<Listeners>
 								<Click Handler="#{uxAddWeatherForm}.reset();
 									#{uxAddWeatherWindow}.hide()" />
@@ -249,7 +259,7 @@
 						 <ext:Button runat="server"
 							 ID="uxEditWeatherSubmit"
 							 Text="Submit"
-							 Icon="ApplicationGo"
+							 Icon="Add"
 							 Disabled="true">
 							 <DirectEvents>
 								 <Click OnEvent="deEditWeather">
@@ -262,7 +272,7 @@
 						 <ext:Button runat="server"
 							 ID="uxEditWeatherCancel"
 							 Text="Cancel"
-							 Icon="ApplicationStop">
+							 Icon="Delete">
 							 <Listeners>
 								 <Click Handler="#{uxEditWeatherForm}.reset();
 									 #{uxEditWeatherWindow}.hide()" />

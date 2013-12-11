@@ -39,3 +39,12 @@
     background-repeat: no-repeat !important;
     background-color: steelblue !important;
 }
+
+.x-tab-default .x-tab-inner {
+    font-weight: normal;
+    color: #000000;
+}
+
+.x-tab-default-active .x-tab-inner {
+    font-weight: bold;
+}

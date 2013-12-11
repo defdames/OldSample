@@ -219,12 +219,12 @@
 								</ext:ComboBox>
 							</Items>
 							<Buttons>
-								<ext:Button runat="server" ID="uxFormSubmit" Text="Submit" Disabled="true">
+								<ext:Button runat="server" ID="uxFormSubmit" Text="Submit" Disabled="true" Icon="Add">
 									<DirectEvents>
 										<Click OnEvent="deStoreHeader" />
 									</DirectEvents>    
 								</ext:Button>
-								<ext:Button runat="server" ID="uxFormClear" Text="Clear">
+								<ext:Button runat="server" ID="uxFormClear" Text="Clear" Icon="Delete">
 									<Listeners>
 										<Click Handler="#{uxFormPanel}.reset()" />
 									</Listeners>

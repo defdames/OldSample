@@ -172,10 +172,12 @@
 								<Click Handler="#{uxAddInventoryWindow}.show()" />
 							</Listeners>
 						</ext:Button>
+						<ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server" />
 						<ext:Button runat="server"
 							ID="uxEditInventoryButton"
 							Text="Edit Inventory"
-							Icon="ApplicationEdit">
+							Icon="ApplicationEdit"
+							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deEditInventoryForm">
 									<ExtraParams>
@@ -188,6 +190,7 @@
 								<Click Handler="#{uxEditInventoryWindow}.show()" />
 							</Listeners>
 						</ext:Button>
+						<ext:ToolbarSpacer ID="ToolbarSpacer2" runat="server" />
 						<ext:Button runat="server"
 							ID="uxRemoveInventoryButton"
 							Text="Remove Inventory"
@@ -204,8 +207,12 @@
 				</ext:Toolbar>
 			</TopBar>
 			<SelectionModel>
-				<ext:RowSelectionModel runat="server" Mode="Single" />
+				<ext:RowSelectionModel runat="server" Mode="Single" AllowDeselect="true" />
 			</SelectionModel>
+			<Listeners>
+				<Select Handler="#{uxEditInventoryButton}.enable()" />
+				<Deselect Handler="#{uxEditInventoryButton}.disable()" />
+			</Listeners>
 		</ext:GridPanel>   
 		<ext:Window runat="server"
 			ID="uxAddInventoryWindow"
@@ -423,7 +430,7 @@
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxAddInventorySubmit"
-							Icon="ApplicationGo"
+							Icon="Add"
 							Text="Submit"
 							Disabled="true">
 							<DirectEvents>
@@ -436,7 +443,7 @@
 						</ext:Button>
 						<ext:Button runat="server"
 							ID="uxAddInventoryCancel"
-							Icon="ApplicationStop"
+							Icon="Delete"
 							Text="Cancel">
 							<Listeners>
 								<Click Handler="#{uxAddInventoryForm}.reset();
@@ -605,7 +612,7 @@
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxEditInventorySubmit"
-							Icon="ApplicationGo"
+							Icon="Add"
 							Text="Submit">
 							<DirectEvents>
 								<Click OnEvent="deEditInventory">
@@ -619,7 +626,7 @@
 						</ext:Button>
 						<ext:Button runat="server"
 							ID="uxEditInventoryCancel"
-							Icon="ApplicationStop"
+							Icon="Delete"
 							Text="Cancel">
 							<Listeners>
 								<Click Handler="#{uxEditInventoryForm}.reset();

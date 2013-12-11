@@ -119,10 +119,12 @@
 								</Click>
 							</DirectEvents>
 						</ext:Button>
+						<ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server" />
 						<ext:Button runat="server"
 							ID="uxEditProductionButton"
 							Text="Edit Production"
-							Icon="ApplicationEdit">
+							Icon="ApplicationEdit"
+							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deEditProductionForm">
 									<ExtraParams>
@@ -135,6 +137,7 @@
 								<Click Handler="#{uxEditProductionWindow}.show()" />
 							</Listeners>
 						</ext:Button>
+						<ext:ToolbarSpacer ID="ToolbarSpacer2" runat="server" />
 						<ext:Button runat="server"
 							ID="uxRemoveProductionButton"
 							Text="Remove Production"
@@ -151,6 +154,13 @@
 					</Items>
 				</ext:Toolbar>
 			</TopBar>
+			<SelectionModel>
+				<ext:RowSelectionModel runat="server" AllowDeselect="true" Mode="Single" />
+			</SelectionModel>
+			<Listeners>
+				<Select Handler="#{uxEditProductionButton}.enable()" />
+				<Deselect Handler="#{uxEditProductionButton}.disable()" />
+			</Listeners>
 		</ext:GridPanel>
 		<ext:Window runat="server"
 			ID="uxAddProductionWindow"
@@ -260,7 +270,7 @@
 						<ext:Button runat="server"
 							ID="uxAddProductionSubmit"
 							Text="Submit"
-							Icon="ApplicationGo"
+							Icon="Add"
 							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deAddProduction" />
@@ -269,7 +279,7 @@
 						<ext:Button runat="server"
 							ID="uxAddProductionCancel"
 							Text="Cancel"
-							Icon="ApplicationStop">
+							Icon="Delete">
 							<Listeners>
 								<Click Handler="#{uxAddProductionForm}.reset();
 									#{uxAddProductionWindow}.hide();" />
@@ -390,7 +400,7 @@
 						<ext:Button runat="server"
 							ID="uxEditProductionSubmit"
 							Text="Submit"
-							Icon="ApplicationGo"
+							Icon="Add"
 							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deEditProduction">
@@ -403,7 +413,7 @@
 						<ext:Button runat="server"
 							ID="uxEditProductionCancel"
 							Text="Cancel"
-							Icon="ApplicationStop">
+							Icon="Delete">
 							<Listeners>
 								<Click Handler="#{uxEditProductionForm}.reset();
 									#{uxEditProductionWindow}.hide();" />

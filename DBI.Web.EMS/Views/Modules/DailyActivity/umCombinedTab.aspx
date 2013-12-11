@@ -262,6 +262,8 @@
                                         <ext:ModelField Name="HOTEL_CITY" />
                                         <ext:ModelField Name="HOTEL_STATE" />
                                         <ext:ModelField Name="HOTEL_PHONE" />
+                                        <ext:ModelField Name="FOREMAN_SIGNATURE" Type="Boolean" />
+                                        <ext:ModelField Name="CONTRACT_REP" Type="Boolean" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -269,11 +271,13 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column runat="server" DataIndex="REASON_FOR_NO_WORK" Text="Reason for no Work" />
-                            <ext:Column runat="server" DataIndex="HOTEL_NAME" Text="Hotel Name" />
-                            <ext:Column runat="server" DataIndex="HOTEL_CITY" Text="Hotel City" />
-                            <ext:Column runat="server" DataIndex="HOTEL_STATE" Text="Hotel State" />
-                            <ext:Column runat="server" DataIndex="HOTEL_PHONE" Text="Hotel Phone" />
+                            <ext:Column runat="server" DataIndex="REASON_FOR_NO_WORK" Text="Reason for no Work" Flex="1" />
+                            <ext:Column runat="server" DataIndex="HOTEL_NAME" Text="Hotel Name" Flex="1" />
+                            <ext:Column runat="server" DataIndex="HOTEL_CITY" Text="Hotel City" Flex="1" />
+                            <ext:Column runat="server" DataIndex="HOTEL_STATE" Text="Hotel State" Flex="1" />
+                            <ext:Column runat="server" DataIndex="HOTEL_PHONE" Text="Hotel Phone" Flex="1" />
+                            <ext:BooleanColumn runat="server" DataIndex="FOREMAN_SIGNATURE" Text="Foreman Signature Submitted" Flex="1" />
+                            <ext:BooleanColumn runat="server" DataIndex="CONTRACT_REP" Text="Contract Rep Signature Submitted" Flex="1" />
                         </Columns>
                     </ColumnModel>
                 </ext:GridPanel>

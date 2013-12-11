@@ -109,10 +109,12 @@
 								<Click Handler="#{uxAddEmployeeWindow}.show()" />
 							</Listeners>
 						</ext:Button>
+						<ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server" />
 						<ext:Button runat="server"
 							ID="uxEditEmployee"
 							Icon="ApplicationEdit"
-							Text="Edit Employee">
+							Text="Edit Employee"
+							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deEditEmployeeForm">
 									<ExtraParams>
@@ -124,6 +126,7 @@
 								<Click Handler="#{uxEditEmployeeWindow}.show()" />
 							</Listeners>
 						</ext:Button>
+						<ext:ToolbarSpacer ID="ToolbarSpacer2" runat="server" />
 						<ext:Button runat="server"
 							ID="uxRemoveEmployee"
 							Icon="ApplicationDelete"
@@ -140,6 +143,13 @@
 					</Items>
 				</ext:Toolbar>
 			</TopBar>
+			<SelectionModel>
+				<ext:RowSelectionModel runat="server" AllowDeselect="true" Mode="Single" />
+			</SelectionModel>
+			<Listeners>
+				<Select Handler="#{uxEditEmployee}.enable()" />
+				<Deselect Handler="#{uxEditEmployee}.disable()" />
+			</Listeners>
 		</ext:GridPanel>
 		<ext:Window runat="server"
 			ID="uxAddEmployeeWindow"
@@ -369,7 +379,7 @@
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxAddEmployeeSubmit"
-							Icon="ApplicationGo"
+							Icon="Add"
 							Text="Submit"
 							Disabled="true">
 							<DirectEvents>
@@ -378,7 +388,7 @@
 						</ext:Button>
 						<ext:Button runat="server"
 							ID="uxAddEmployeeCancel"
-							Icon="ApplicationStop"
+							Icon="Delete"
 							Text="Cancel">
 							<Listeners>
 								<Click Handler="#{uxAddEmployeeForm}.reset();
@@ -621,7 +631,7 @@
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxEditEmployeeSubmit"
-							Icon="ApplicationGo"
+							Icon="Add"
 							Text="Submit"
 							Disabled="true">
 							<DirectEvents>
@@ -634,7 +644,7 @@
 						</ext:Button>
 						<ext:Button runat="server"
 							ID="uxEditEmployeeCancel"
-							Icon="ApplicationStop"
+							Icon="Delete"
 							Text="Cancel">
 							<Listeners>
 								<Click Handler="#{uxEditEmployeeForm}.reset();

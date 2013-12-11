@@ -53,10 +53,12 @@
 								<Click Handler="#{uxAddEquipmentWindow}.show()" />
 							</Listeners>
 						</ext:Button>
+						<ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server" />
 						<ext:Button runat="server"
 							ID="uxEditEquipmentButton"
 							Icon="ApplicationEdit"
-							Text="Edit Equipment">
+							Text="Edit Equipment"
+							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deEditEquipmentForm">
 									<ExtraParams>
@@ -68,6 +70,7 @@
 								<Click Handler="#{uxEditEquipmentWindow}.show()" />
 							</Listeners>
 						</ext:Button>
+						<ext:ToolbarSpacer ID="ToolbarSpacer2" runat="server" />
 						<ext:Button runat="server"
 							ID="uxRemoveEquipmentButton"
 							Icon="ApplicationDelete"
@@ -123,6 +126,13 @@
 						Text="Odometer End" />
 				</Columns>
 			</ColumnModel>
+			<SelectionModel>
+				<ext:RowSelectionModel runat="server" AllowDeselect="true" Mode="Single" />
+			</SelectionModel>
+			<Listeners>
+				<Select Handler="#{uxEditEquipmentButton}.enable()" />
+				<Deselect Handler="#{uxEditEquipmentButton}.disable()" />
+			</Listeners>
 		</ext:GridPanel>
 		<ext:Window runat="server"
 			ID="uxAddEquipmentWindow"
@@ -252,7 +262,7 @@
 						<ext:Button runat="server"
 							ID="uxAddEquipmentSubmit"
 							Text="Submit"
-							Icon="ApplicationGo"
+							Icon="Add"
 							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deAddEquipment" />                                    
@@ -261,7 +271,7 @@
 						<ext:Button runat="server"
 							ID="uxAddEquipmentCancel"
 							Text="Cancel"
-							Icon="ApplicationStop">
+							Icon="Delete">
 							<Listeners>
 								<Click Handler ="#{uxAddEquipmentForm}.reset();
 									#{uxAddEquipmentWindow}.hide()" />
@@ -397,7 +407,7 @@
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxEditEquipmentSubmit"
-							Icon="ApplicationGo"
+							Icon="Add"
 							Text="Submit"
 							Disabled="true">
 							<DirectEvents>
@@ -410,7 +420,7 @@
 						</ext:Button>
 						<ext:Button runat="server"
 							ID="uxEditEquipmentCancel"
-							Icon="ApplicationStop"
+							Icon="Delete"
 							Text="Cancel">
 							<Listeners>
 								<Click Handler="#{uxEditEquipmentForm}.reset();

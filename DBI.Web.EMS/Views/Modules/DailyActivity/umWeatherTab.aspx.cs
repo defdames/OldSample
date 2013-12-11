@@ -15,6 +15,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!validateComponentSecurity("SYS.DailyActivity.View"))
+            {
+                X.Redirect("~/Views/uxDefault.aspx");
+            }
+
             GetGridData();
             uxAddWeatherWindStore.Data = StaticLists.WindDirection;
             uxEditWeatherWindStore.Data = StaticLists.WindDirection;
@@ -201,5 +206,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEditWeatherComments.SetValue(Weather["COMMENTS"]);
             }
         }
+
     }
 }
