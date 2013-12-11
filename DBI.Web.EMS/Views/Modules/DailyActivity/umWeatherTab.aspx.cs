@@ -206,5 +206,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEditWeatherComments.SetValue(Weather["COMMENTS"]);
             }
         }
+
     }
 }

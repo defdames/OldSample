@@ -457,5 +457,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
             });
         }
+
     }
 }

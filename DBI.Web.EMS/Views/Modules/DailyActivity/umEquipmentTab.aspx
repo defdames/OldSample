@@ -53,10 +53,12 @@
 								<Click Handler="#{uxAddEquipmentWindow}.show()" />
 							</Listeners>
 						</ext:Button>
+						<ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server" />
 						<ext:Button runat="server"
 							ID="uxEditEquipmentButton"
 							Icon="ApplicationEdit"
-							Text="Edit Equipment">
+							Text="Edit Equipment"
+							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deEditEquipmentForm">
 									<ExtraParams>
@@ -68,6 +70,7 @@
 								<Click Handler="#{uxEditEquipmentWindow}.show()" />
 							</Listeners>
 						</ext:Button>
+						<ext:ToolbarSpacer ID="ToolbarSpacer2" runat="server" />
 						<ext:Button runat="server"
 							ID="uxRemoveEquipmentButton"
 							Icon="ApplicationDelete"
@@ -123,6 +126,13 @@
 						Text="Odometer End" />
 				</Columns>
 			</ColumnModel>
+			<SelectionModel>
+				<ext:RowSelectionModel runat="server" AllowDeselect="true" Mode="Single" />
+			</SelectionModel>
+			<Listeners>
+				<Select Handler="#{uxEditEquipmentButton}.enable()" />
+				<Deselect Handler="#{uxEditEquipmentButton}.disable()" />
+			</Listeners>
 		</ext:GridPanel>
 		<ext:Window runat="server"
 			ID="uxAddEquipmentWindow"

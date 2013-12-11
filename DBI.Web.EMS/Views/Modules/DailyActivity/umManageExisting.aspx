@@ -21,10 +21,10 @@
                 </ext:MenuPanel>
                 <ext:GridPanel runat="server" ID="uxManageGrid" Region="North" Layout="HBoxLayout">
                     <SelectionModel>
-                        <ext:RowSelectionModel runat="server" />
+                        <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
                     </SelectionModel>
                     <Store>
-                        <ext:Store runat="server" AutoDataBind="true" ID="uxManageGridStore" OnReadData="deReadHeaderData" PageSize="15" RemoteFilter="true">
+                        <ext:Store runat="server" AutoDataBind="true" ID="uxManageGridStore" OnReadData="deReadHeaderData" PageSize="10" RemoteFilter="true">
                             <Fields>
                                 <ext:ModelField Name="HEADER_ID" Type="String" />
                                 <ext:ModelField Name="PROJECT_ID" Type="String" />
@@ -50,11 +50,12 @@
                         <ext:PagingToolbar runat="server" />
                     </BottomBar>
                     <DirectEvents>
-                        <SelectionChange OnEvent="deSelectHeader">
+                        <SelectionChange OnEvent="deUpdateUrlAndButtons">
                             <ExtraParams>
                                 <ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
                             </ExtraParams>
                         </SelectionChange>
+                        <Deselect OnEvent="deDeselectHeader" />
                     </DirectEvents>
                     <Features>
                         <ext:GridFilters runat="server">
@@ -74,7 +75,8 @@
                                 <ext:Button runat="server"
                                     ID="uxSubmitActivityButton"
                                     Text="Submit for Approval"
-                                    Icon="ApplicationGo">
+                                    Icon="ApplicationGo"
+                                    Disabled="true">
                                     <DirectEvents>
                                         <Click OnEvent="deSubmitActivity">
                                             <ExtraParams>
@@ -83,10 +85,26 @@
                                         </Click>
                                     </DirectEvents>    
                                 </ext:Button>
+                                <ext:ToolbarSpacer ID="ToolbarSpacer2" runat="server" />
+                                <ext:Button runat="server"
+                                    ID="uxInactiveActivityButton"
+                                    Text="Set Inactive"
+                                    Icon="ApplicationStop"
+                                    Disabled="true">
+                                    <DirectEvents>
+                                        <Click OnEvent="deSetHeaderInactive">
+                                            <ExtraParams>
+                                                <ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
+                                            </ExtraParams>
+                                        </Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:ToolbarSpacer runat="server" />
                                 <ext:Button runat="server"
                                     ID="uxApproveActivityButton"
                                     Text="Approve"
-                                    Icon="ApplicationPut">
+                                    Icon="ApplicationPut"
+                                    Disabled="true">
                                     <DirectEvents>
                                         <Click OnEvent="deApproveActivity">
                                             <ExtraParams>
@@ -95,23 +113,13 @@
                                         </Click>
                                     </DirectEvents>
                                 </ext:Button>
+                                <ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server" />
                                 <ext:Button runat="server"
                                     ID="uxPostActivityButton"
                                     Text="Post to Oracle"
-                                    Icon="DatabaseAdd">
+                                    Icon="DatabaseAdd"
+                                    Disabled="true">
 
-                                </ext:Button>
-                                <ext:Button runat="server"
-                                    ID="uxInactiveActivityButton"
-                                    Text="Set Inactive"
-                                    Icon="ApplicationStop">
-                                    <DirectEvents>
-                                        <Click OnEvent="deSetHeaderInactive">
-                                            <ExtraParams>
-                                                <ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
-                                            </ExtraParams>
-                                        </Click>
-                                    </DirectEvents>
                                 </ext:Button>
                             </Items>
                         </ext:Toolbar>

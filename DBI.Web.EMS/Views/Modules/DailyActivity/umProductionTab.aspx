@@ -119,10 +119,12 @@
 								</Click>
 							</DirectEvents>
 						</ext:Button>
+						<ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server" />
 						<ext:Button runat="server"
 							ID="uxEditProductionButton"
 							Text="Edit Production"
-							Icon="ApplicationEdit">
+							Icon="ApplicationEdit"
+							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deEditProductionForm">
 									<ExtraParams>
@@ -135,6 +137,7 @@
 								<Click Handler="#{uxEditProductionWindow}.show()" />
 							</Listeners>
 						</ext:Button>
+						<ext:ToolbarSpacer ID="ToolbarSpacer2" runat="server" />
 						<ext:Button runat="server"
 							ID="uxRemoveProductionButton"
 							Text="Remove Production"
@@ -151,6 +154,13 @@
 					</Items>
 				</ext:Toolbar>
 			</TopBar>
+			<SelectionModel>
+				<ext:RowSelectionModel runat="server" AllowDeselect="true" Mode="Single" />
+			</SelectionModel>
+			<Listeners>
+				<Select Handler="#{uxEditProductionButton}.enable()" />
+				<Deselect Handler="#{uxEditProductionButton}.disable()" />
+			</Listeners>
 		</ext:GridPanel>
 		<ext:Window runat="server"
 			ID="uxAddProductionWindow"

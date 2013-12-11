@@ -172,10 +172,12 @@
 								<Click Handler="#{uxAddInventoryWindow}.show()" />
 							</Listeners>
 						</ext:Button>
+						<ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server" />
 						<ext:Button runat="server"
 							ID="uxEditInventoryButton"
 							Text="Edit Inventory"
-							Icon="ApplicationEdit">
+							Icon="ApplicationEdit"
+							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deEditInventoryForm">
 									<ExtraParams>
@@ -188,6 +190,7 @@
 								<Click Handler="#{uxEditInventoryWindow}.show()" />
 							</Listeners>
 						</ext:Button>
+						<ext:ToolbarSpacer ID="ToolbarSpacer2" runat="server" />
 						<ext:Button runat="server"
 							ID="uxRemoveInventoryButton"
 							Text="Remove Inventory"
@@ -204,8 +207,12 @@
 				</ext:Toolbar>
 			</TopBar>
 			<SelectionModel>
-				<ext:RowSelectionModel runat="server" Mode="Single" />
+				<ext:RowSelectionModel runat="server" Mode="Single" AllowDeselect="true" />
 			</SelectionModel>
+			<Listeners>
+				<Select Handler="#{uxEditInventoryButton}.enable()" />
+				<Deselect Handler="#{uxEditInventoryButton}.disable()" />
+			</Listeners>
 		</ext:GridPanel>   
 		<ext:Window runat="server"
 			ID="uxAddInventoryWindow"

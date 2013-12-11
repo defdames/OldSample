@@ -44,11 +44,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         }
 
         /// <summary>
-        /// Update Tab URLs based on selected header
+        /// Update Tab URLs based on selected header and activate buttons
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void deSelectHeader(object sender, DirectEventArgs e)
+        protected void deUpdateUrlAndButtons(object sender, DirectEventArgs e)
         {
             string homeUrl = string.Format("umCombinedTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
             string headerUrl = string.Format("umHeaderTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
@@ -67,8 +67,20 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxChemicalTab.LoadContent(chemUrl);
             uxWeatherTab.LoadContent(weatherUrl);
             uxInventoryTab.LoadContent(invUrl);
+
+            uxApproveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
+            uxPostActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
+            uxInactiveActivityButton.Disabled = false;
+            uxSubmitActivityButton.Disabled = false;
         }
 
+        protected void deDeselectHeader(object sender, DirectEventArgs e)
+        {
+            uxApproveActivityButton.Disabled = true;
+            uxSubmitActivityButton.Disabled = true;
+            uxPostActivityButton.Disabled = true;
+            uxInactiveActivityButton.Disabled = true;
+        }
         /// <summary>
         /// Shows Submit activity Window/Form
         /// </summary>

@@ -452,5 +452,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             var Total = AcresSprayed * decimal.Parse(uxEditInventoryRate.Value.ToString());
             uxEditInventoryTotal.SetValue(Total);
         }
+
     }
 }

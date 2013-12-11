@@ -93,10 +93,12 @@
                                 <Click Handler="#{uxAddChemicalWindow}.show()" />
                             </Listeners>
                         </ext:Button>
+                        <ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server" />
                         <ext:Button runat="server"
                             ID="uxEditChemicalButton"
                             Icon="ApplicationEdit"
-                            Text="Edit Chemical Mix">
+                            Text="Edit Chemical Mix"
+                            Disabled="true">
                             <DirectEvents>
                                 <Click OnEvent="deEditChemicalForm">
                                     <ExtraParams>
@@ -108,6 +110,7 @@
                                 <Click Handler="#{uxEditChemicalWindow}.show()" />
                             </Listeners>
                         </ext:Button>
+                        <ext:ToolbarSpacer ID="ToolbarSpacer2" runat="server" />
                         <ext:Button runat="server"
                             ID="uxRemoveChemicalButton"
                             Icon="ApplicationDelete"
@@ -125,9 +128,15 @@
                 </ext:Toolbar>
             </TopBar>
             <SelectionModel>
-                <ext:RowSelectionModel runat="server" />
+                <ext:RowSelectionModel runat="server" AllowDeselect="true" Mode="Single" />
             </SelectionModel>
+            <Listeners>
+                <Select Handler="#{uxEditChemicalButton}.enable()" />
+                <Deselect Handler="#{uxEditChemicalButton}.disable()" />
+            </Listeners>
         </ext:GridPanel>
+
+        <%-- Hidden Windows --%>
         <ext:Window runat="server"
             ID="uxAddChemicalWindow"
             Layout="FormLayout"
