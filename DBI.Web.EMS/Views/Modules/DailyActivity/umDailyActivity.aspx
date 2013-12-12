@@ -37,7 +37,7 @@
 												<ext:Store runat="server" 
 													ID="uxFormProjectStore"
 													OnReadData="deReadData"
-													PageSize="25"
+													PageSize="10"
 													RemoteSort="true">													
 													<Model>
 														<ext:Model runat="server"
@@ -127,7 +127,7 @@
 												<ext:Store runat="server"
 													ID="uxFormEmployeeStore"
 													OnReadData="deLoadEmployees"
-													PageSize="20"
+													PageSize="10"
 													RemoteSort="true">
 													<Model>
 														<ext:Model ID="uxFormEmployeeModel" runat="server">

@@ -25,7 +25,7 @@
 		ID="uxAddInventoryItemStore"
 		RemoteSort="true"
 		OnReadData="deReadItems"
-		PageSize="15">
+		PageSize="10">
 		<Model>
 			<ext:Model ID="uxAddInventoryItemModel" runat="server">
 				<Fields>
@@ -56,7 +56,7 @@
 		ID="uxEditInventoryItemStore"
 		RemoteSort="true"
 		OnReadData="deReadItems"
-		PageSize="15">
+		PageSize="10">
 		<Model>
 			<ext:Model ID="uxEditInventoryItemModel" runat="server">
 				<Fields>

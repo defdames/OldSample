@@ -173,7 +173,7 @@
 									<Store>
 										<ext:Store runat="server"
 											ID="uxAddEmployeeEmpStore"
-											PageSize="15"
+											PageSize="10"
 											RemoteSort="true"
 											OnReadData="deReadEmployeeData">
 											<Model>
@@ -425,7 +425,7 @@
 									<Store>
 										<ext:Store runat="server"
 											ID="uxEditEmployeeEmpStore"
-											PageSize="15"
+											PageSize="10"
 											RemoteSort="true"
 											OnReadData="deReadEmployeeData">
 											<Model>
