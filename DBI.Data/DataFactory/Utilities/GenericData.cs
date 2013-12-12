@@ -339,7 +339,7 @@ namespace DBI.Data
             //-- data is copied from entry, so ignore pull from database.
             List<T> data = dataIn;
 
-            //-- start filtering ------------------------------------------------------------
+            //-- start filtering -----------------------------------------------------------
             FilterHeaderConditions fhc = new FilterHeaderConditions(filter);
 
             foreach (FilterHeaderCondition condition in fhc.Conditions)
@@ -413,15 +413,30 @@ namespace DBI.Data
                     if (type == FilterType.String)
                     {
                         matchValue = (string)value;
-                        matchValue = matchValue.ToLower();
                         itemValue = oValue as string;
-                        itemValue = itemValue.ToLower();
                     }
-                    return itemValue == null || itemValue.IndexOf(matchValue) < 0;
+
+                    switch (op)
+                    {
+                        case "=":
+                            return oValue == null || !oValue.Equals(value);
+                        case "compare":
+                            return !((IEquatable<IComparable>)value).Equals((IComparable)oValue);
+                        case "+":
+                            return itemValue == null || !itemValue.StartsWith(matchValue);
+                        case "-":
+                            return itemValue == null || !itemValue.EndsWith(matchValue);
+                        case "!":
+                            return itemValue == null || itemValue.IndexOf(matchValue) >= 0;
+                        case "*":
+                            return itemValue == null || itemValue.IndexOf(matchValue) < 0;
+                        default:
+                            throw new Exception("Not supported operator");
+                    }
                 });
             }
-
             //-- end filtering ------------------------------------------------------------
+
 
             //-- start sorting ------------------------------------------------------------
             if (sort.Length > 0)
@@ -441,8 +456,8 @@ namespace DBI.Data
             //-- end sorting ------------------------------------------------------------
 
 
-            //-- start paging -----------------------------------------------------------
-
+            //-- start paging ------------------------------------------------------------
+            
             if ((start + limit) > data.Count)
             {
                 limit = data.Count - start;
@@ -450,6 +465,8 @@ namespace DBI.Data
 
             List<T> rangeData = (start < 0 || limit < 0) ? data : data.GetRange(start, limit);
             //-- end paging ------------------------------------------------------------
+
+        
 
             count = data.Count;
             return rangeData;
