@@ -37,7 +37,11 @@ namespace DBI.Data.DataFactory
                 return new object[]
                 {
                     new object[]{"N", "North"},
+                    new object[]{"NE", "North East"},
+                    new object[]{"NW", "North West"},
                     new object[]{"S", "South"},
+                    new object[]{"SE", "South East"},
+                    new object[]{"SW", "South West"},
                     new object[]{"E", "East"},
                     new object[]{"W", "West"},
                 };
