@@ -120,10 +120,10 @@
 						Text="Organization Name"/>
 					<ext:Column runat="server"
 						DataIndex="ODOMETER_START" 
-						Text="Odometer Start"/>
+						Text="Meter Start"/>
 					<ext:Column runat="server"
 						DataIndex="ODOMETER_END"
-						Text="Odometer End" />
+						Text="Meter End" />
 				</Columns>
 			</ColumnModel>
 			<SelectionModel>
@@ -134,6 +134,7 @@
 				<Deselect Handler="#{uxEditEquipmentButton}.disable()" />
 			</Listeners>
 		</ext:GridPanel>
+		<%-- Hidden Windows --%>
 		<ext:Window runat="server"
 			ID="uxAddEquipmentWindow"
 			Layout="FormLayout"
@@ -249,12 +250,12 @@
 						</ext:DropDownField>
 						<ext:NumberField runat="server"
 							ID="uxAddEquipmentStart"
-							FieldLabel="Starting Odometer"
+							FieldLabel="Starting Meter"
 							Vtype="numberrange" 
 							EndNumberField="uxAddEquipmentEnd" />
 						<ext:NumberField runat="server"
 							ID="uxAddEquipmentEnd"
-							FieldLabel="Ending Odometer"
+							FieldLabel="Ending Meter"
 							Vtype="numberrange"
 							StartNumberField="uxAddEquipmentStart" />
 					</Items>
@@ -283,6 +284,9 @@
 					</Listeners>
 				</ext:FormPanel>
 			</Items>			
+			<Listeners>
+				<Show Handler="#{uxAddEquipmentDropDown}.focus()" />
+			</Listeners>
 		</ext:Window>
 		<ext:Window runat="server"
 			ID="uxEditEquipmentWindow"
@@ -393,17 +397,20 @@
 						</ext:DropDownField>
 						<ext:NumberField runat="server"
 							ID="uxEditEquipmentStart"
-							FieldLabel="Starting Odometer"
+							FieldLabel="Starting Meter"
 							AllowBlank="true"
 							Vtype="numberrange"
 							EndNumberField="uxEditEquipmentEnd" />
 						<ext:NumberField runat="server"
 							ID="uxEditEquipmentEnd"
-							FieldLabel="Ending Odometer"
+							FieldLabel="Ending Meter"
 							AllowBlank="true"
 							Vtype="numberrange"
 							StartNumberField="uxEditEquipmentStart" />
 					</Items>
+					<Listeners>
+				<Show Handler="#{uxEditEquipmentProject}.focus()" />
+			</Listeners>
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxEditEquipmentSubmit"

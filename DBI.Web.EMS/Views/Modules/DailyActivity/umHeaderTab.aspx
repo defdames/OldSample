@@ -183,7 +183,12 @@
 				<ext:TextField runat="server" ID="uxFormLicense" FieldLabel="License #" AllowBlank="false" />
 				<ext:TextField runat="server" ID="uxFormState" FieldLabel="State" AllowBlank="false" />
 				<ext:TextField runat="server" ID="uxFormType" FieldLabel="Type" AllowBlank="true" />
-				<ext:ComboBox runat="server" ID="uxFormDensity" FieldLabel="Density" AllowBlank="true">
+				<ext:ComboBox runat="server" 
+					ID="uxFormDensity" 
+					FieldLabel="Density"
+					QueryMode="Local"
+					TypeAhead="true"
+					AllowBlank="true">
 					<Items>
 						<ext:ListItem Text="Low" Value="LOW" />
 						<ext:ListItem Text="Medium" Value="MEDIUM" />

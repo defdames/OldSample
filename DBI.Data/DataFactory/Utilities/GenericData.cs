@@ -416,23 +416,8 @@ namespace DBI.Data
                         itemValue = oValue as string;
                     }
 
-                    switch (op)
-                    {
-                        case "=":
-                            return oValue == null || !oValue.Equals(value);
-                        case "compare":
-                            return !((IEquatable<IComparable>)value).Equals((IComparable)oValue);
-                        case "+":
-                            return itemValue == null || !itemValue.StartsWith(matchValue);
-                        case "-":
-                            return itemValue == null || !itemValue.EndsWith(matchValue);
-                        case "!":
-                            return itemValue == null || itemValue.IndexOf(matchValue) >= 0;
-                        case "*":
-                            return itemValue == null || itemValue.IndexOf(matchValue) < 0;
-                        default:
-                            throw new Exception("Not supported operator");
-                    }
+                    return (oValue != null) ? !oValue.ToString().ToLower().Contains(value.ToString().ToLower()) : true;
+                   
                 });
             }
             //-- end filtering ------------------------------------------------------------

@@ -27,6 +27,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             if (!X.IsAjaxRequest)
             {
                 uxStateList.Data = StaticLists.StateList;
+                uxFormDate.SelectedDate = DateTime.Now.Date;
             }
         }
 

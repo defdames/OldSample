@@ -134,6 +134,8 @@
 							FieldLabel="Wind Direction"
 							DisplayField="name"
 							ValueField="abbr"
+							QueryMode="Local"
+							TypeAhead="true"
 							AllowBlank="false">
 							<Store>
 								<ext:Store runat="server"
@@ -190,6 +192,9 @@
 					</Listeners>
 				</ext:FormPanel>
 			</Items>
+			<Listeners>
+				<Show Handler="#{uxAddWeatherDate}.focus()" />
+			</Listeners>
 		</ext:Window>
 		<ext:Window runat="server"
 			ID="uxEditWeatherWindow"
@@ -224,6 +229,8 @@
 							FieldLabel="Wind Direction"
 							DisplayField="name"
 							ValueField="abbr"
+							QueryMode="Local"
+							TypeAhead="true"
 							AllowBlank="false">
 							<Store>
 								<ext:Store runat="server"
@@ -284,6 +291,9 @@
 					</Listeners>
 				 </ext:FormPanel>            
 			</Items>
+			<Listeners>
+				<Show Handler="#{uxEditWeatherDate}.focus()" />
+			</Listeners>
 		</ext:Window>
 	</form>
 </body>

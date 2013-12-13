@@ -79,7 +79,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 var data = (from d in _context.INVENTORY_V
-                            select new { d.ORGANIZATION_ID, d.INV_NAME }).Distinct().ToList();
+                            select new { d.ORGANIZATION_ID, d.INV_NAME }).Distinct().OrderBy(x => x.INV_NAME).ToList();
                 if (e.ExtraParams["Type"] == "Add")
                 {
                     uxAddInventoryRegionStore.DataSource = data;
@@ -316,6 +316,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 var data = (from s in _context.SUBINVENTORY_V
+                            orderby s.SECONDARY_INV_NAME ascending
                             where s.ORG_ID == OrgId
                             select s).ToList();
 

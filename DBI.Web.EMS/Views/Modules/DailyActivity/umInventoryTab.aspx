@@ -214,6 +214,7 @@
 				<Deselect Handler="#{uxEditInventoryButton}.disable()" />
 			</Listeners>
 		</ext:GridPanel>   
+		<%-- Hidden Windows --%>
 		<ext:Window runat="server"
 			ID="uxAddInventoryWindow"
 			Layout="FormLayout"
@@ -293,6 +294,8 @@
 							FieldLabel="Select Region"
 							DisplayField="INV_NAME"
 							ValueField="ORGANIZATION_ID"
+							QueryMode="Local"
+							TypeAhead="true"
 							AllowBlank="false">
 							<Store>
 								<ext:Store runat="server" 
@@ -323,6 +326,8 @@
 							FieldLabel="Select Subinventory"
 							ValueField="ORG_ID"
 							DisplayField="SECONDARY_INV_NAME"
+							QueryMode="Local"
+							TypeAhead="true"
 							AllowBlank="false">
 							<Store>
 								<ext:Store runat="server"
@@ -401,6 +406,8 @@
 							FieldLabel="Unit of Measure"
 							ValueField="UOM_CODE"
 							DisplayField="UNIT_OF_MEASURE"
+							QueryMode="Local"
+							TypeAhead="true"
 							AllowBlank="false">
 							<Store>
 								<ext:Store runat="server"
@@ -456,6 +463,9 @@
 					</Listeners>
 				</ext:FormPanel>
 			</Items>
+			<Listeners>
+				<Show Handler="#{uxAddInventoryMix}.focus()" />
+			</Listeners>
 		</ext:Window>
 		<ext:Window runat="server"
 			ID="uxEditInventoryWindow"
@@ -477,6 +487,8 @@
 							FieldLabel="Select Region"
 							DisplayField="INV_NAME"
 							ValueField="ORGANIZATION_ID"
+							QueryMode="Local"
+							TypeAhead="true"
 							AllowBlank="false" >
 							<Store>
 								<ext:Store runat="server" 
@@ -507,6 +519,8 @@
 							FieldLabel="Select Subinventory"
 							ValueField="DESCRIPTION"
 							DisplayField="SECONDARY_INV_NAME"
+							QueryMode="Local"
+							TypeAhead="true"
 							AllowBlank="false">
 							<Store>
 								<ext:Store runat="server"
@@ -583,6 +597,8 @@
 							FieldLabel="Unit of Measure"
 							DisplayField="UNIT_OF_MEASURE"
 							ValueField="UOM_CODE"
+							QueryMode="Local"
+							TypeAhead="true"
 							AllowBlank="false">
 							<Store>
 								<ext:Store runat="server"
@@ -639,6 +655,9 @@
 					</Listeners>
 				</ext:FormPanel>
 			</Items>
+			<Listeners>
+				<Show Handler="#{uxEditInventoryMix}.focus()" />
+			</Listeners>
 		</ext:Window>
 	</form>
 </body>

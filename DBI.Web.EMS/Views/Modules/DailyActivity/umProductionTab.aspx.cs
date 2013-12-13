@@ -18,6 +18,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 X.Redirect("~/Views/uxDefault.aspx");
             }
+            uxAddProductionDateIn.SelectedDate = DateTime.Now.Date;
+            uxAddProductionDateOut.SelectedDate = DateTime.Now.Date;
 
             GetCurrentProduction();
         }

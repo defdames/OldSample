@@ -23,6 +23,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GetGridData();
             uxAddWeatherWindStore.Data = StaticLists.WindDirection;
             uxEditWeatherWindStore.Data = StaticLists.WindDirection;
+
+            uxAddWeatherDate.SelectedDate = DateTime.Now.Date;
         }
 
         /// <summary>

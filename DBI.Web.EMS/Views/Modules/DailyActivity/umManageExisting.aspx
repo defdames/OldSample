@@ -12,20 +12,12 @@
     <form id="form1" runat="server">
         <ext:Viewport runat="server" ID="uxViewPort" Layout="BorderLayout" IDMode="Explicit" IsDynamic="False" Namespace="App" RenderXType="True">
             <Items>
-                <ext:MenuPanel runat="server" ID="uxMenuPanel" Region="West" Weight="60">
-                    <Menu runat="server">
-                        <Items>
-                            <ext:MenuItem Text="Create Activity" Icon="ApplicationAdd" runat="server" ID="uxCreate" Href="umDailyActivity.aspx"/>
-                            <ext:MenuItem Text="Manage Existing" Icon="ApplicationEdit" runat="server" ID="uxManage" />
-                        </Items>
-                    </Menu>
-                </ext:MenuPanel>
                 <ext:GridPanel runat="server" ID="uxManageGrid" Region="North" Layout="HBoxLayout">
                     <SelectionModel>
                         <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
                     </SelectionModel>
                     <Store>
-                        <ext:Store runat="server" AutoDataBind="true" ID="uxManageGridStore" OnReadData="deReadHeaderData" PageSize="10" RemoteFilter="true">
+                        <ext:Store runat="server" AutoDataBind="true" ID="uxManageGridStore" OnReadData="deReadHeaderData" PageSize="10">
                             <Fields>
                                 <ext:ModelField Name="HEADER_ID" Type="String" />
                                 <ext:ModelField Name="PROJECT_ID" Type="String" />
@@ -41,7 +33,11 @@
                     </Store>
                     <ColumnModel>
                         <Columns>                            
-                            <ext:DateColumn runat="server" Text="Activity Date" DataIndex="DA_DATE" Flex="10" Format="MM-dd-yyyy"/>
+                            <ext:DateColumn runat="server" Text="Activity Date" DataIndex="DA_DATE" Flex="10" Format="MM-dd-yyyy">
+                                <%--<HeaderItems>
+                                    <ext:DateField runat="server" Format="MM-dd-yyyy" />
+                                </HeaderItems>--%>
+                            </ext:DateColumn>
                             <ext:Column ID="Column1" runat="server" Text="Project" DataIndex="SEGMENT1" Flex="20"/>
                             <ext:Column runat="server" Text="Project Name" DataIndex="LONG_NAME" Flex="50" />
                             <ext:Column runat="server" Text="Status" DataIndex="STATUS_VALUE" Flex="30" />
@@ -50,6 +46,9 @@
                     <BottomBar>
                         <ext:PagingToolbar runat="server" />
                     </BottomBar>
+                    <Plugins>
+                        <ext:FilterHeader runat="server" Remote="true" DateFormat="MM-dd-yyyy" />
+                    </Plugins>
                     <DirectEvents>
                         <SelectionChange OnEvent="deUpdateUrlAndButtons">
                             <ExtraParams>
@@ -58,21 +57,18 @@
                         </SelectionChange>
                         <Deselect OnEvent="deDeselectHeader" />
                     </DirectEvents>
-                    <Features>
-                        <ext:GridFilters runat="server">
-                            <Filters>
-                                <ext:StringFilter DataIndex="HEADER_ID" />
-                                <ext:StringFilter DataIndex="PROJECT_ID" />
-                                <ext:DateFilter DataIndex="DA_DATE" />
-                                <ext:StringFilter DataIndex="SEGMENT1" />
-                                <ext:StringFilter DataIndex="LONG_NAME" />
-                                <ext:StringFilter DataIndex="STATUS_VALUE" />
-                            </Filters>
-                        </ext:GridFilters>
-                    </Features>
                     <TopBar>
                         <ext:Toolbar runat="server">
                             <Items>
+                                <ext:Button runat="server"
+                                    ID="uxCreateActivityButton"
+                                    Text="Create Activity"
+                                    Icon="ApplicationAdd">
+                                    <DirectEvents>
+                                        <Click OnEvent="deLoadCreateActivity" />
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:ToolbarSpacer runat="server" />
                                 <ext:Button runat="server"
                                     ID="uxSubmitActivityButton"
                                     Text="Submit for Approval"
@@ -213,6 +209,7 @@
                         </ext:Panel>                        
                     </Items>
                 </ext:TabPanel>
+                <%-- Hidden Windows --%>
                 <ext:Window runat="server"
                     ID="uxSubmitActivityWindow"
                     Title="Submit Activity"
@@ -222,6 +219,19 @@
                     Y="50">
                     <Loader runat="server"
                         ID="uxSubmitActivityLoader"
+                        Mode="Frame"
+                        AutoLoad="false" />
+                </ext:Window>
+                <ext:Window runat="server"
+                    ID="uxCreateActivityWindow"
+                    Title="Create Activity"
+                    Hidden="true"
+                    Width="650"
+                    Shadow="true"
+                    Y="50">
+                    <Loader runat="server"
+                        ID="uxCreateActivityLoader"
+                        Url="umDailyActivity.aspx"
                         Mode="Frame"
                         AutoLoad="false" />
                 </ext:Window>

@@ -162,6 +162,7 @@
 				<Deselect Handler="#{uxEditProductionButton}.disable()" />
 			</Listeners>
 		</ext:GridPanel>
+		<%-- Hidden Windows --%>
 		<ext:Window runat="server"
 			ID="uxAddProductionWindow"
 			Layout="FormLayout"
@@ -177,6 +178,8 @@
 							ValueField="TASK_ID"
 							DisplayField="DESCRIPTION"
 							FieldLabel="Select Task"
+							QueryMode="Local"
+							TypeAhead="true"
 							AllowBlank="false">
 							<Store>
 								<ext:Store runat="server"
@@ -291,6 +294,9 @@
 					</Listeners>
 				</ext:FormPanel>
 			</Items>
+			<Listeners>
+				<Show Handler="#{uxAddProductionTask}.focus()" />
+			</Listeners>
 		</ext:Window>
 		<ext:Window runat="server"
 			ID="uxEditProductionWindow"
@@ -307,6 +313,8 @@
 							ValueField="TASK_ID"
 							DisplayField="DESCRIPTION"
 							FieldLabel="Select Task"
+							QueryMode="Local"
+							TypeAhead="true"
 							AllowBlank="false">
 							<Store>
 								<ext:Store runat="server"
@@ -425,6 +433,9 @@
 					</Listeners>
 				</ext:FormPanel>
 			</Items>
+			<Listeners>
+				<Show Handler="#{uxEditProductionTask}.focus()" />
+			</Listeners>
 		</ext:Window>
 	</form>
 </body>

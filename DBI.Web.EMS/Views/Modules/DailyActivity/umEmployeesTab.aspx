@@ -151,6 +151,8 @@
 				<Deselect Handler="#{uxEditEmployee}.disable()" />
 			</Listeners>
 		</ext:GridPanel>
+		
+		<%-- Hidden Windows --%>
 		<ext:Window runat="server"
 			ID="uxAddEmployeeWindow"
 			Layout="FormLayout"
@@ -165,7 +167,8 @@
 							ID="uxAddEmployeeEmpDropDown"
 							Mode="ValueText"
 							FieldLabel="Employee"
-							AllowBlank="false">
+							AllowBlank="false"
+							TabIndex="1">
 							<Component>
 								<ext:GridPanel runat="server"
 									ID="uxAddEmployeeEmpGrid"
@@ -244,7 +247,8 @@
 							ID="uxAddEmployeeEqDropDown"
 							Mode="ValueText"
 							FieldLabel="Equipment"
-							AllowBlank="true">
+							AllowBlank="true"
+							TabIndex="2">
 							<Component>
 								<ext:GridPanel runat="server"
 									ID="uxAddEmployeeEqGrid"
@@ -302,7 +306,8 @@
 									Vtype="daterange"
 									EndDateField="uxAddEmployeeTimeOutDate"
 									EnableKeyEvents="true"
-									AllowBlank="false">
+									AllowBlank="false"
+									TabIndex="3">
 									<Listeners>
 										<KeyUp Fn="valDateTime" />
 										<Change Handler="#{uxAddEmployeeTimeOutDate}.setValue(#{uxAddEmployeeTimeInDate}.value)" />
@@ -316,7 +321,8 @@
 									Increment="30" 
 									SelectedTime="09:00" 
 									Format="H:mm"
-									AllowBlank="false">
+									AllowBlank="false"
+									TabIndex="4">
 									<Listeners>
 										<KeyUp Fn="valDateTime" />
 									</Listeners>
@@ -340,7 +346,8 @@
 									Vtype="daterange"
 									StartDateField="uxAddEmployeeTimeInDate"
 									EnableKeyEvents="true"
-									AllowBlank="false" >
+									AllowBlank="false"
+									TabIndex="5" >
 									<Listeners>
 										<KeyUp Fn="valDateTime" />
 									</Listeners>
@@ -353,7 +360,8 @@
 									Vtype="daterange"
 									StartDateField="uxAddEmployeeTimeInTime"
 									EnableKeyEvents="true"
-									AllowBlank="false">
+									AllowBlank="false"
+									TabIndex="6">
 									<Listeners>
 										<KeyUp Fn="valDateTime" />
 									</Listeners>
@@ -363,25 +371,30 @@
 						<ext:TextField runat="server"
 							ID="uxAddEmployeeTravelTime"
 							FieldLabel="Travel Time"
-							AllowBlank="true" />
+							AllowBlank="true"
+							TabIndex="7" />
 						<ext:TextField runat="server"
 							ID="uxAddEmployeeDriveTime"
 							FieldLabel="Drive Time"
-							AllowBlank="true" />
+							AllowBlank="true"
+							TabIndex="8" />
 						<ext:Checkbox runat="server"
 							ID="uxAddEmployeePerDiem"
-							FieldLabel="Per Diem" />
+							FieldLabel="Per Diem"
+							TabIndex="9" />
 						<ext:TextArea runat="server"
 						   FieldLabel="Comments"
 						   ID="uxAddEmployeeComments"
-						   AllowBlank="true" />
+						   AllowBlank="true"
+							TabIndex="10" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxAddEmployeeSubmit"
 							Icon="Add"
 							Text="Submit"
-							Disabled="true">
+							Disabled="true"
+							TabIndex="11">
 							<DirectEvents>
 								<Click OnEvent="deAddEmployee" />
 							</DirectEvents>
@@ -389,7 +402,8 @@
 						<ext:Button runat="server"
 							ID="uxAddEmployeeCancel"
 							Icon="Delete"
-							Text="Cancel">
+							Text="Cancel"
+							TabIndex="12">
 							<Listeners>
 								<Click Handler="#{uxAddEmployeeForm}.reset();
 									#{uxAddEmployeeWindow}.hide()" />
@@ -401,6 +415,9 @@
 					</Listeners>
 				</ext:FormPanel>
 			</Items>
+			<Listeners>
+				<Show Handler="#{uxAddEmployeeEmpDropDown}.focus()" />
+			</Listeners>
 		</ext:Window>
 		<ext:Window runat="server"
 			ID="uxEditEmployeeWindow"
@@ -417,7 +434,8 @@
 							ID="uxEditEmployeeEmpDropDown"
 							Mode="ValueText"
 							FieldLabel="Employee"
-							AllowBlank="false">
+							AllowBlank="false"
+							TabIndex="1">
 							<Component>
 								<ext:GridPanel runat="server"
 									ID="uxEditEmployeeEmpGrid"
@@ -491,12 +509,16 @@
 									</Plugins>                                    
 								</ext:GridPanel>
 							</Component>
+							<Listeners>
+								<Show Handler="#{uxEditEmployeeEmpDropDown}.focus()" />
+							</Listeners>
 						</ext:DropDownField>
 						<ext:DropDownField runat="server"
 							ID="uxEditEmployeeEqDropDown"
 							Mode="ValueText"
 							FieldLabel="Equipment"
-							AllowBlank="true">
+							AllowBlank="true"
+							TabIndex="2">
 							<Component>
 								<ext:GridPanel runat="server"
 									ID="uxEditEmployeeEqGrid"
@@ -554,7 +576,8 @@
 									Vtype="daterange"
 									EndDateField="uxEditEmployeeTimeOutDate"
 									EnableKeyEvents="true"
-									AllowBlank="false">
+									AllowBlank="false"
+									TabIndex="3">
 									<Listeners>
 										<KeyUp Fn="valDateTime" />
 									</Listeners>
@@ -567,7 +590,8 @@
 									Increment="30" 
 									SelectedTime="09:00" 
 									Format="H:mm"
-									AllowBlank="false">
+									AllowBlank="false"
+									TabIndex="4">
 									<Listeners>
 										<KeyUp Fn="valDateTime" />
 									</Listeners>
@@ -591,7 +615,8 @@
 									Vtype="daterange"
 									StartDateField="uxEditEmployeeTimeInDate"
 									EnableKeyEvents="true"
-									AllowBlank="false">
+									AllowBlank="false"
+									TabIndex="5">
 									<Listeners>
 										<KeyUp Fn="valDateTime" />
 									</Listeners>
@@ -604,7 +629,8 @@
 									Vtype="daterange"
 									StartDateField="uxEditmployeeTimeInTime"
 									EnableKeyEvents="true"
-									AllowBlank="false">
+									AllowBlank="false"
+									TabIndex="6">
 									<Listeners>
 										<KeyUp Fn="valDateTime" />
 									</Listeners>
@@ -614,26 +640,31 @@
 						<ext:TextField runat="server"
 							ID="uxEditEmployeeDriveTime"
 							FieldLabel="Drive Time"
-							AllowBlank="true" />
+							AllowBlank="true"
+							TabIndex="7" />
 						<ext:TextField runat="server"
 							ID="uxEditEmployeeTravelTime"
 							FieldLabel="Travel Time"
-							AllowBlank="true" />
+							AllowBlank="true"
+							TabIndex="8" />
 						<ext:Checkbox runat="server"
 							ID="uxEditEmployeePerDiem"
 							FieldLabel="Per Diem"
-							AllowBlank="true" />
+							AllowBlank="true"
+							TabIndex="9" />
 					   <ext:TextArea runat="server"
 						   FieldLabel="Comments"
 						   ID="uxEditEmployeeComments"
-						   AllowBlank="true" />
+						   AllowBlank="true"
+						   TabIndex="10" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxEditEmployeeSubmit"
 							Icon="Add"
 							Text="Submit"
-							Disabled="true">
+							Disabled="true"
+							TabIndex="11">
 							<DirectEvents>
 								<Click OnEvent="deEditEmployee">
 									<ExtraParams>
@@ -645,7 +676,8 @@
 						<ext:Button runat="server"
 							ID="uxEditEmployeeCancel"
 							Icon="Delete"
-							Text="Cancel">
+							Text="Cancel"
+							TabIndex="12">
 							<Listeners>
 								<Click Handler="#{uxEditEmployeeForm}.reset();
 									#{uxEditEmployeeWindow}.hide()" />
@@ -657,6 +689,9 @@
 					</Listeners>
 				</ext:FormPanel>                    
 			</Items>
+			<Listeners>
+				<Show Handler="#{uxEditEmployeeEmpDropDown}.focus()" />
+			</Listeners>
 		</ext:Window>
 	</form>
 </body>

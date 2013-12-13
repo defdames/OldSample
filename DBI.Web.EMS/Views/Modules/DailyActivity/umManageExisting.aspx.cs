@@ -39,7 +39,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE }).ToList<object>();
                 
                 int count;
-                uxManageGridStore.DataSource = GenericData.EnumerableFilter<object>(e.Start, e.Limit, e.Sort, e.Parameters["filter"], data, out count);
+                uxManageGridStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
             }
         }
 
@@ -172,5 +172,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxSubmitActivityWindow.Hide();
             uxManageGridStore.Reload();
         }
+
+        protected void deLoadCreateActivity(object sender, DirectEventArgs e)
+        {
+            uxCreateActivityWindow.LoadContent();
+            uxCreateActivityWindow.Show();
+        }
+        
+
+        
     }
 }
