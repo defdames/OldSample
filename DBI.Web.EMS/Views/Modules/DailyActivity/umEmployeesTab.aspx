@@ -24,6 +24,7 @@
 				field.validate();
 			};
 	</script>
+	<link href="../../../Resources/StyleSheets/main.css" rel="stylesheet" />
 </head>
 
 <body>

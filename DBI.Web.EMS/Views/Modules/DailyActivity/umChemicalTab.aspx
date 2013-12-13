@@ -32,6 +32,7 @@
 			}
 		};
 	</script>
+	<link href="../../../Resources/StyleSheets/main.css" rel="stylesheet" />
 </head>
 <body>
 	<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />

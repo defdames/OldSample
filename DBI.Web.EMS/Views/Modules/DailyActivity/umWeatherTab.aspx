@@ -101,6 +101,8 @@
 				<Deselect Handler="#{uxEditWeatherButton}.disable()" />
 			</Listeners>
 		</ext:GridPanel>
+
+		<%-- Hidden Windows --%>
 		<ext:Window runat="server"
 			ID="uxAddWeatherWindow"
 			Layout="FormLayout"

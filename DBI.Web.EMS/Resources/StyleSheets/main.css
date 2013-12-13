@@ -48,3 +48,7 @@
 .x-tab-default-active .x-tab-inner {
     font-weight: bold;
 }
+
+.x-grid-dirty-cell {
+    background: none;
+}
