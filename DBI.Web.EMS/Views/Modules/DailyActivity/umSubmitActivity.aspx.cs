@@ -305,14 +305,41 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Store Footer to DB
             deStoreFooter(sender, e);
 
+            if (AreMetersMissing(HeaderId))
+            {
+                X.MessageBox.Confirm("Meters Missing", "There are equipment entries without meter entries.  Continue?", new MessageBoxButtonsConfig()
+                {
+                    Yes = new MessageBoxButtonConfig
+                    {
+                        Text = "Yes",
+                        Handler = "App.direct.dmSubmitForApproval()"
+                    },
+                    No = new MessageBoxButtonConfig
+                    {
+                        Text = "No"
+                    }
+                }).Show();
+            }
+            else
+            {
+                dmSubmitForApproval();
+            }
+            
+        }
+
+        [DirectMethod]
+        public void dmSubmitForApproval()
+        {
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"].ToString());
+
             //Get header
             DAILY_ACTIVITY_HEADER HeaderData;
             DAILY_ACTIVITY_FOOTER FooterData;
             using (Entities _context = new Entities())
             {
                 HeaderData = (from d in _context.DAILY_ACTIVITY_HEADER
-                        where d.HEADER_ID == HeaderId
-                        select d).Single();
+                              where d.HEADER_ID == HeaderId
+                              select d).Single();
 
                 FooterData = (from d in _context.DAILY_ACTIVITY_FOOTER
                               where d.HEADER_ID == HeaderId
@@ -331,7 +358,33 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 X.Js.Call("parent.App.direct.dmSubmitNotification()");
 
             }
-            
+        }
+
+        protected bool AreMetersMissing(long HeaderId)
+        {
+            //Get List of equipment
+            List<DAILY_ACTIVITY_EQUIPMENT> EquipmentList;
+
+            using (Entities _context = new Entities())
+            {
+                EquipmentList = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
+                                 where d.HEADER_ID == HeaderId
+                                 select d).ToList();
+            }
+            int NumberOfMissingMeters = 0;
+            foreach (DAILY_ACTIVITY_EQUIPMENT Equipment in EquipmentList)
+            {
+                if (Equipment.ODOMETER_START == null || Equipment.ODOMETER_END == null)
+                {
+                    NumberOfMissingMeters++;
+                }
+            }
+
+            if (NumberOfMissingMeters > 0)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
