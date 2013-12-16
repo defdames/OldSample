@@ -34,6 +34,9 @@
     <Reference Include="Ext.Net">
       <HintPath>..\..\Ext 2.3\Ext.Net.dll</HintPath>
     </Reference>
+    <Reference Include="iTextSharp">
+      <HintPath>..\packages\iTextSharp-LGPL.4.1.6\lib\iTextSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />

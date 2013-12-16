@@ -118,6 +118,19 @@
                                     Disabled="true">
 
                                 </ext:Button>
+                                <ext:Button runat="server"
+                                    ID="uxExportToPDF"
+                                    Text="Export to PDF"
+                                    Icon="PageWhiteAcrobat"
+                                    Disabled="true">
+                                    <DirectEvents>
+                                        <Click OnEvent="deExportToPDF">
+                                            <ExtraParams>
+                                                <ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
+                                            </ExtraParams>
+                                        </Click>
+                                    </DirectEvents>
+                                </ext:Button>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
