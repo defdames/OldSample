@@ -49,22 +49,14 @@
     <Reference Include="Ext.Net, Version=2.3.1.16379, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\EXT\Ext.Net.dll</HintPath>
-      <HintPath>..\..\..\..\Ext 2.3\Ext.Net.dll</HintPath>
     </Reference>
     <Reference Include="Ext.Net.Utilities, Version=2.3.0.0, Culture=neutral, PublicKeyToken=2c34ac34702a3c23, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\EXT\Ext.Net.Utilities.dll</HintPath>
-      <HintPath>..\..\..\..\Ext 2.3\Ext.Net.Utilities.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Newtonsoft.Json">
       <HintPath>..\lib\EXT\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Oracle.ManagedDataAccess, Version=4.112.3.60, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\app\ljankowski\product\11.2.0\client_2\odp.net\managed\common\Oracle.ManagedDataAccess.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.IdentityModel" />
@@ -89,7 +81,6 @@
     <Reference Include="Transformer.NET, Version=2.1.1.22883, Culture=neutral, PublicKeyToken=e274d618e7c603a7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\EXT\Transformer.NET.dll</HintPath>
-      <HintPath>..\..\..\..\Ext 2.3\Transformer.NET.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <HintPath>..\packages\WebGrease.1.3.0\lib\WebGrease.dll</HintPath>
