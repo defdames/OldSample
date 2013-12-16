@@ -18,8 +18,5 @@ namespace DBI.Mobile.EMS.Controllers
             List<UNIT_OF_MEASURE_V> uomnvl = _context.UNIT_OF_MEASURE_V.ToList();
             return _context.UNIT_OF_MEASURE_V.ToList();   
         }
-
-
-
     }
 }

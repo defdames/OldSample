@@ -18,6 +18,29 @@ namespace DBI.Mobile.EMS.Controllers
             return data;
         }
 
+        [Authorize]
+        [HttpGet]
+        public IEnumerable<MOBILE_SUBINVENTORY_V> GetByDate(string fromDate)
+        {
+            Entities _context = new Entities();
+            List<MOBILE_SUBINVENTORY_V> returnList = new List<MOBILE_SUBINVENTORY_V>();
+
+            DateTime checkDate;
+            if (DateTime.TryParse(fromDate, out checkDate))
+            {
+                List<SUBINVENTORY_V> sl = _context.SUBINVENTORY_V.Where(p => p.LAST_UPDATE_DATE >= checkDate).ToList();
+                foreach (SUBINVENTORY_V item in sl)
+                {
+                    MOBILE_SUBINVENTORY_V rItem = new MOBILE_SUBINVENTORY_V();
+                    rItem.ORG_ID = item.ORG_ID;
+                    rItem.SECONDARY_INV_NAME = item.SECONDARY_INV_NAME;
+                    rItem.SUBINVENTORY_DESCRIPTION = item.DESCRIPTION;
+                    returnList.Add(rItem);
+                }
+            }
+            return returnList;
+            
+        }
     }
 }
 
