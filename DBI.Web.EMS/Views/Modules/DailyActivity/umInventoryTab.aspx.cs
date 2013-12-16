@@ -69,6 +69,20 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         }
 
         /// <summary>
+        /// Gets the project org ID of the Header's Project
+        /// </summary>
+        /// <param name="HeaderId"></param>
+        protected long? GetProjectOrg(long HeaderId)
+        {
+            using(Entities _context = new Entities()){
+                long? OrgId = (from d in _context.DAILY_ACTIVITY_HEADER
+                             where d.HEADER_ID == HeaderId
+                             select d.PROJECT_ID).Single();
+                return OrgId;
+            }
+        }
+
+        /// <summary>
         /// Get List of Inventory Regions
         /// </summary>
         /// <param name="sender"></param>
@@ -78,7 +92,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Get inventory regions from db and set datasource for either add or edit
             using (Entities _context = new Entities())
             {
+                string ProjectOrg = GetProjectOrg(long.Parse(Request.QueryString["HeaderId"])).ToString();
                 var data = (from d in _context.INVENTORY_V
+                            where d.LE == ProjectOrg
                             select new { d.ORGANIZATION_ID, d.INV_NAME }).Distinct().OrderBy(x => x.INV_NAME).ToList();
                 if (e.ExtraParams["Type"] == "Add")
                 {
