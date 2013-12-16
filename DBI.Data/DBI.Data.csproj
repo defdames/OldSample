@@ -34,15 +34,17 @@
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Ext.Net">
+    <Reference Include="Ext.Net, Version=2.3.1.16379, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\EXT\Ext.Net.dll</HintPath>
-      <HintPath>..\..\Ext 2.3\Ext.Net.dll</HintPath>
     </Reference>
-    <Reference Include="Ext.Net.Utilities">
-      <HintPath>..\..\Ext 2.3\Ext.Net.Utilities.dll</HintPath>
+    <Reference Include="Ext.Net.Utilities, Version=2.3.0.0, Culture=neutral, PublicKeyToken=2c34ac34702a3c23, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\EXT\Ext.Net.Utilities.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\Ext 2.3\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\EXT\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -62,8 +64,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Transformer.NET">
-      <HintPath>..\..\Ext 2.3\Transformer.NET.dll</HintPath>
+    <Reference Include="Transformer.NET, Version=2.1.1.22883, Culture=neutral, PublicKeyToken=e274d618e7c603a7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\EXT\Transformer.NET.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
