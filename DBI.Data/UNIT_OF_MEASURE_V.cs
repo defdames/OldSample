@@ -18,5 +18,8 @@ namespace DBI.Data
         public string UNIT_OF_MEASURE { get; set; }
         public string UOM_CLASS { get; set; }
         public string BASE_UOM_FLAG { get; set; }
+        public Nullable<System.DateTime> DISABLE_DATE { get; set; }
+        public System.DateTime LAST_UPDATE_DATE { get; set; }
+        public string ACTIVE { get; set; }
     }
 }

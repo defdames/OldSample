@@ -479,7 +479,10 @@
       "UNIT_OF_MEASURE_V"."UOM_CODE" AS "UOM_CODE", 
       "UNIT_OF_MEASURE_V"."UNIT_OF_MEASURE" AS "UNIT_OF_MEASURE", 
       "UNIT_OF_MEASURE_V"."UOM_CLASS" AS "UOM_CLASS", 
-      "UNIT_OF_MEASURE_V"."BASE_UOM_FLAG" AS "BASE_UOM_FLAG"
+      "UNIT_OF_MEASURE_V"."BASE_UOM_FLAG" AS "BASE_UOM_FLAG", 
+      "UNIT_OF_MEASURE_V"."DISABLE_DATE" AS "DISABLE_DATE", 
+      "UNIT_OF_MEASURE_V"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE", 
+      "UNIT_OF_MEASURE_V"."ACTIVE" AS "ACTIVE"
       FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_CHEMICAL_HEADER_ID" Association="OracleModel.Store.FK_CHEMICAL_HEADER_ID">
@@ -648,7 +651,7 @@
           <Key>
             <PropertyRef Name="STATUS_ID" />
           </Key>
-          <Property Name="STATUS_ID" Type="number" Nullable="false" />
+          <Property Name="STATUS_ID" Type="number" Nullable="false" Precision="19" />
           <Property Name="STATUS" Type="number" Nullable="false" Precision="10" />
           <Property Name="STATUS_VALUE" Type="varchar2" Nullable="false" MaxLength="50" />
         </EntityType>
@@ -1262,11 +1265,15 @@
             <PropertyRef Name="UNIT_OF_MEASURE" />
             <PropertyRef Name="UOM_CLASS" />
             <PropertyRef Name="BASE_UOM_FLAG" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
           </Key>
           <Property Name="UOM_CODE" Type="varchar2" Nullable="false" MaxLength="3" />
           <Property Name="UNIT_OF_MEASURE" Type="varchar2" Nullable="false" MaxLength="25" />
           <Property Name="UOM_CLASS" Type="varchar2" Nullable="false" MaxLength="10" />
           <Property Name="BASE_UOM_FLAG" Type="varchar2" Nullable="false" MaxLength="1" />
+          <Property Name="DISABLE_DATE" Type="date" />
+          <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" />
+          <Property Name="ACTIVE" Type="char" MaxLength="1" />
         </EntityType>
         <Association Name="FK_CHEMICAL_HEADER_ID">
           <End Role="DAILY_ACTIVITY_HEADER" Type="OracleModel.Store.DAILY_ACTIVITY_HEADER" Multiplicity="1" />
@@ -1394,7 +1401,6 @@
           <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.PA_TASKS_V" />
           <EntitySet Name="DAILY_ACTIVITY_WEATHER" EntityType="OracleModel.DAILY_ACTIVITY_WEATHER" />
           <EntitySet Name="DAILY_ACTIVITY_EQUIPMENT" EntityType="OracleModel.DAILY_ACTIVITY_EQUIPMENT" />
-          <EntitySet Name="UNIT_OF_MEASURE_V" EntityType="OracleModel.UNIT_OF_MEASURE_V" />
           <EntitySet Name="INVENTORY_V" EntityType="OracleModel.INVENTORY_V" />
           <EntitySet Name="DAILY_ACTIVITY_HEADER" EntityType="OracleModel.DAILY_ACTIVITY_HEADER" />
           <AssociationSet Name="FK_HEADER_ID" Association="OracleModel.FK_HEADER_ID">
@@ -1437,6 +1443,7 @@
           </AssociationSet>
           <EntitySet Name="PROJECTS_V" EntityType="OracleModel.PROJECTS_V" />
           <EntitySet Name="CLASS_CODES_V" EntityType="OracleModel.CLASS_CODES_V" />
+          <EntitySet Name="UNIT_OF_MEASURE_V" EntityType="OracleModel.UNIT_OF_MEASURE_V" />
           <EntitySet Name="DAILY_ACTIVITY_STATUS" EntityType="OracleModel.DAILY_ACTIVITY_STATUS" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
@@ -1694,18 +1701,6 @@
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="DAILY_ACTIVITY_HEADER" Relationship="OracleModel.FK_HEADER_ID" FromRole="DAILY_ACTIVITY_EQUIPMENT" ToRole="DAILY_ACTIVITY_HEADER" />
-        </EntityType>
-        <EntityType Name="UNIT_OF_MEASURE_V">
-          <Key>
-            <PropertyRef Name="UOM_CODE" />
-            <PropertyRef Name="UNIT_OF_MEASURE" />
-            <PropertyRef Name="UOM_CLASS" />
-            <PropertyRef Name="BASE_UOM_FLAG" />
-          </Key>
-          <Property Type="String" Name="UOM_CODE" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="UNIT_OF_MEASURE" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="UOM_CLASS" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="BASE_UOM_FLAG" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="INVENTORY_V">
           <Key>
@@ -2415,14 +2410,6 @@
           <Property Type="String" Name="SECONDARY_INV_NAME" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="SUBINVENTORY_DESCRIPTION" MaxLength="50" FixedLength="false" Unicode="false" />
         </ComplexType>
-        <EntityType Name="DAILY_ACTIVITY_STATUS">
-          <Key>
-            <PropertyRef Name="STATUS_ID" />
-          </Key>
-          <Property Type="Decimal" Name="STATUS_ID" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="Int32" Name="STATUS" Nullable="false" />
-          <Property Type="String" Name="STATUS_VALUE" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <ComplexType Name="MOBILE_TASK_V" >
           <Property Type="Int64" Name="TASK_ID" Nullable="false" />
           <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
@@ -2430,6 +2417,30 @@
           <Property Type="String" Name="TASK_DESCRIPTION" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
         </ComplexType>
+        <EntityType Name="UNIT_OF_MEASURE_V">
+          <Key>
+            <PropertyRef Name="UOM_CODE" />
+            <PropertyRef Name="UNIT_OF_MEASURE" />
+            <PropertyRef Name="UOM_CLASS" />
+            <PropertyRef Name="BASE_UOM_FLAG" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+          </Key>
+          <Property Type="String" Name="UOM_CODE" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="UNIT_OF_MEASURE" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="UOM_CLASS" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="BASE_UOM_FLAG" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="DISABLE_DATE" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
+          <Property Type="String" Name="ACTIVE" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="DAILY_ACTIVITY_STATUS">
+          <Key>
+            <PropertyRef Name="STATUS_ID" />
+          </Key>
+          <Property Type="Int64" Name="STATUS_ID" Nullable="false" />
+          <Property Type="Int32" Name="STATUS" Nullable="false" />
+          <Property Type="String" Name="STATUS_VALUE" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2565,16 +2576,6 @@
                 <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
                 <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
                 <ScalarProperty Name="EQUIPMENT_ID" ColumnName="EQUIPMENT_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UNIT_OF_MEASURE_V">
-            <EntityTypeMapping TypeName="OracleModel.UNIT_OF_MEASURE_V">
-              <MappingFragment StoreEntitySet="UNIT_OF_MEASURE_V">
-                <ScalarProperty Name="BASE_UOM_FLAG" ColumnName="BASE_UOM_FLAG" />
-                <ScalarProperty Name="UOM_CLASS" ColumnName="UOM_CLASS" />
-                <ScalarProperty Name="UNIT_OF_MEASURE" ColumnName="UNIT_OF_MEASURE" />
-                <ScalarProperty Name="UOM_CODE" ColumnName="UOM_CODE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3120,6 +3121,19 @@
                 <ScalarProperty Name="NAME" ColumnName="NAME" />
                 <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
                 <ScalarProperty Name="ORGANIZATION_NAME" ColumnName="ORGANIZATION_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UNIT_OF_MEASURE_V">
+            <EntityTypeMapping TypeName="OracleModel.UNIT_OF_MEASURE_V">
+              <MappingFragment StoreEntitySet="UNIT_OF_MEASURE_V">
+                <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="DISABLE_DATE" ColumnName="DISABLE_DATE" />
+                <ScalarProperty Name="BASE_UOM_FLAG" ColumnName="BASE_UOM_FLAG" />
+                <ScalarProperty Name="UOM_CLASS" ColumnName="UOM_CLASS" />
+                <ScalarProperty Name="UNIT_OF_MEASURE" ColumnName="UNIT_OF_MEASURE" />
+                <ScalarProperty Name="UOM_CODE" ColumnName="UOM_CODE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

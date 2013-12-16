@@ -34,7 +34,6 @@ namespace DBI.Data
         public DbSet<PA_TASKS_V> PA_TASKS_V { get; set; }
         public DbSet<DAILY_ACTIVITY_WEATHER> DAILY_ACTIVITY_WEATHER { get; set; }
         public DbSet<DAILY_ACTIVITY_EQUIPMENT> DAILY_ACTIVITY_EQUIPMENT { get; set; }
-        public DbSet<UNIT_OF_MEASURE_V> UNIT_OF_MEASURE_V { get; set; }
         public DbSet<INVENTORY_V> INVENTORY_V { get; set; }
         public DbSet<DAILY_ACTIVITY_HEADER> DAILY_ACTIVITY_HEADER { get; set; }
         public DbSet<SUBINVENTORY_V> SUBINVENTORY_V { get; set; }
@@ -45,6 +44,7 @@ namespace DBI.Data
         public DbSet<DAILY_ACTIVITY_FOOTER> DAILY_ACTIVITY_FOOTER { get; set; }
         public DbSet<PROJECTS_V> PROJECTS_V { get; set; }
         public DbSet<CLASS_CODES_V> CLASS_CODES_V { get; set; }
+        public DbSet<UNIT_OF_MEASURE_V> UNIT_OF_MEASURE_V { get; set; }
         public DbSet<DAILY_ACTIVITY_STATUS> DAILY_ACTIVITY_STATUS { get; set; }
     }
 }
