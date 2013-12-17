@@ -75,9 +75,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected long? GetProjectOrg(long HeaderId)
         {
             using(Entities _context = new Entities()){
-                long? OrgId = (from d in _context.DAILY_ACTIVITY_HEADER
+                long? ProjectId = (from d in _context.DAILY_ACTIVITY_HEADER
                              where d.HEADER_ID == HeaderId
                              select d.PROJECT_ID).Single();
+                long? OrgId = (from d in _context.PROJECTS_V
+                              where d.PROJECT_ID == ProjectId
+                              select d.ORG_ID).Single();
                 return OrgId;
             }
         }

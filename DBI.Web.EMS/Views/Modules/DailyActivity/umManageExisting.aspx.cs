@@ -153,11 +153,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         /// <param name="HeaderId"></param>
         /// <returns></returns>
-        protected DAILY_ACTIVITY_HEADER GetHeader(long HeaderId){
+        protected List<object> GetHeader(long HeaderId){
             using(Entities _context = new Entities()){
-                DAILY_ACTIVITY_HEADER returnData = (from d in _context.DAILY_ACTIVITY_HEADER
-                                                    where d.HEADER_ID == HeaderId
-                                                    select d).Single();
+                var returnData = (from d in _context.DAILY_ACTIVITY_HEADER
+                                  join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                                  where d.HEADER_ID == HeaderId
+                                  select new { d.APPLICATION_TYPE, d.CONTRACTOR, d.DA_DATE, d.DENSITY, d.LICENSE, d.STATE, d.STATUS, d.SUBDIVISION, p.SEGMENT1 }).ToList<object>();
                 return returnData;
             }
         }
@@ -273,7 +274,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
 
                 //Create the document
-                Document ExportedPDF = new Document(iTextSharp.text.PageSize.LETTER);
+                Document ExportedPDF = new Document(iTextSharp.text.PageSize.LETTER, 0f, 0f, 42f, 42f);
                 PdfWriter ExportWriter = PdfWriter.GetInstance(ExportedPDF, PdfStream);
                 Paragraph NewLine = new Paragraph("\n");
                 Font HeaderFont = FontFactory.GetFont("Verdana", 6, Font.BOLD);
@@ -284,56 +285,61 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 //Get Header Data
                 var HeaderData = GetHeader(HeaderId);
 
-                Paragraph Title = new Paragraph(string.Format("DAILY ACTIVITY REPORT FOR {0}", HeaderData.DA_DATE.Value.Date.ToString("MM/dd/yyyy")), FontFactory.GetFont("Verdana", 12, Font.BOLD));
-                Title.Alignment = 1;
-
-                ExportedPDF.Add(Title);
-                ExportedPDF.Add(NewLine);
                 //Create Header Table
                 PdfPTable HeaderTable = new PdfPTable(4);
                 HeaderTable.DefaultCell.Border = PdfPCell.NO_BORDER;
-                //First row
-                PdfPCell[] Cells =  new PdfPCell[]{
+                PdfPCell[] Cells;
+                PdfPRow Row;
+                foreach (dynamic Data in HeaderData)
+                {
+                    Paragraph Title = new Paragraph(string.Format("DAILY ACTIVITY REPORT FOR {0}", Data.DA_DATE.Date.ToString("MM/dd/yyyy")), FontFactory.GetFont("Verdana", 12, Font.BOLD));
+                    Title.Alignment = 1;
+
+                    ExportedPDF.Add(Title);
+                    ExportedPDF.Add(NewLine);
+                    
+                    //First row
+                    Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Contract", HeaderFont)),
-                    new PdfPCell(new Phrase(HeaderData.PROJECT_ID.ToString(), CellFont)),
+                    new PdfPCell(new Phrase(Data.SEGMENT1.ToString(), CellFont)),
                     new PdfPCell(new Phrase("Sub-Division", HeaderFont)),
-                    new PdfPCell(new Phrase(HeaderData.SUBDIVISION, CellFont))};
+                    new PdfPCell(new Phrase(Data.SUBDIVISION, CellFont))};
 
-                foreach (PdfPCell Cell in Cells)
-                {
-                    Cell.Border = PdfPCell.NO_BORDER;
-                }
-                PdfPRow Row = new PdfPRow(Cells);
-                HeaderTable.Rows.Add(Row);
+                    foreach (PdfPCell Cell in Cells)
+                    {
+                        Cell.Border = PdfPCell.NO_BORDER;
+                    }
+                    Row = new PdfPRow(Cells);
+                    HeaderTable.Rows.Add(Row);
 
-                //Second row
-                Cells = new PdfPCell[]{
+                    //Second row
+                    Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("License Number", HeaderFont)),
-                    new PdfPCell(new Phrase(HeaderData.LICENSE, CellFont)),
+                    new PdfPCell(new Phrase(Data.LICENSE, CellFont)),
                     new PdfPCell(new Phrase("State", HeaderFont)),
-                    new PdfPCell(new Phrase(HeaderData.STATE, CellFont))};
-                
-                foreach (PdfPCell Cell in Cells)
-                {
-                    Cell.Border = PdfPCell.NO_BORDER;
-                }
-                Row = new PdfPRow(Cells);
-                HeaderTable.Rows.Add(Row);
+                    new PdfPCell(new Phrase(Data.STATE, CellFont))};
 
-                //Third row
-                Cells = new PdfPCell[]{
+                    foreach (PdfPCell Cell in Cells)
+                    {
+                        Cell.Border = PdfPCell.NO_BORDER;
+                    }
+                    Row = new PdfPRow(Cells);
+                    HeaderTable.Rows.Add(Row);
+
+                    //Third row
+                    Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Type of Application/Work", HeaderFont)),
-                    new PdfPCell(new Phrase(HeaderData.APPLICATION_TYPE, CellFont)),
+                    new PdfPCell(new Phrase(Data.APPLICATION_TYPE, CellFont)),
                     new PdfPCell(new Phrase("Density", HeaderFont)),
-                    new PdfPCell(new Phrase(HeaderData.DENSITY, CellFont))};
+                    new PdfPCell(new Phrase(Data.DENSITY, CellFont))};
 
-                foreach (PdfPCell Cell in Cells)
-                {
-                    Cell.Border = PdfPCell.NO_BORDER;
+                    foreach (PdfPCell Cell in Cells)
+                    {
+                        Cell.Border = PdfPCell.NO_BORDER;
+                    }
+                    Row = new PdfPRow(Cells);
+                    HeaderTable.Rows.Add(Row);
                 }
-                Row = new PdfPRow(Cells);
-                HeaderTable.Rows.Add(Row);
-
                 ExportedPDF.Add(HeaderTable);
 
                 ExportedPDF.Add(NewLine);
@@ -693,6 +699,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxManageGridStore.Reload();
         }
 
+        /// <summary>
+        /// Load create activity form and display the window.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deLoadCreateActivity(object sender, DirectEventArgs e)
         {
             uxCreateActivityWindow.LoadContent();
