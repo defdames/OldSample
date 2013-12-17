@@ -37,5 +37,31 @@ namespace DBI.Mobile.EMS.Controllers
             return returnList;
 
         }
+
+        [Authorize]
+        [HttpGet]
+        public IEnumerable<MOBILE_TASK_V> GetByDate(string fromDate)
+        {
+            Entities _context = new Entities();
+            List<MOBILE_TASK_V> returnList = new List<MOBILE_TASK_V>();
+
+            DateTime checkDate;
+            if (DateTime.TryParse(fromDate, out checkDate))
+            {
+                List<PA_TASKS_V> pt = _context.PA_TASKS_V.Where(p => p.LAST_UPDATE_DATE >= checkDate).ToList();
+                foreach (PA_TASKS_V task in pt)
+                {
+                    MOBILE_TASK_V nTask = new MOBILE_TASK_V();
+                    nTask.TASK_ID = task.TASK_ID;
+                    nTask.TASK_NUMBER = task.TASK_NUMBER;
+                    nTask.TASK_DESCRIPTION = task.DESCRIPTION;
+                    nTask.PROJECT_ID = task.PROJECT_ID;
+                    nTask.LAST_UPDATE_DATE = task.LAST_UPDATE_DATE;
+                    returnList.Add(nTask);
+                }
+            }
+            return returnList;
+        }
+
     }
 }

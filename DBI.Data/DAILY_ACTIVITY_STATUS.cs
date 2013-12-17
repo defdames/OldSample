@@ -14,7 +14,7 @@ namespace DBI.Data
     
     public partial class DAILY_ACTIVITY_STATUS
     {
-        public decimal STATUS_ID { get; set; }
+        public long STATUS_ID { get; set; }
         public int STATUS { get; set; }
         public string STATUS_VALUE { get; set; }
     }
