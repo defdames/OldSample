@@ -19,12 +19,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 X.Redirect("~/Views/uxDefault.aspx");
             }
+            if (!X.IsAjaxRequest)
+            {
+                uxAddWeatherDate.SelectedDate = DateTime.Now.Date;
+            }
 
             GetGridData();
             uxAddWeatherWindStore.Data = StaticLists.WindDirection;
             uxEditWeatherWindStore.Data = StaticLists.WindDirection;
 
-            uxAddWeatherDate.SelectedDate = DateTime.Now.Date;
+            
         }
 
         /// <summary>

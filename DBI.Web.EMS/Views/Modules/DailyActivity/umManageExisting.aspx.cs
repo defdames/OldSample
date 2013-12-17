@@ -253,9 +253,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <returns></returns>
         protected DAILY_ACTIVITY_FOOTER GetFooter(long HeaderId){
             using(Entities _context = new Entities()){
-                var returnData = (from d in _context.DAILY_ACTIVITY_FOOTER
+                DAILY_ACTIVITY_FOOTER returnData = (from d in _context.DAILY_ACTIVITY_FOOTER
                                       where d.HEADER_ID == HeaderId
-                                      select d).Single();
+                                      select d).SingleOrDefault();
                 return returnData;
             }
         }
@@ -358,14 +358,33 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 foreach (dynamic Data in EmployeeData)
                 {
+                    string TravelTime;
+                    try
+                    {
+                        TravelTime = Data.TRAVEL_TIME.ToString();
+                    }
+                    catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                    {
+                        TravelTime = string.Empty;
+                    }                   
+                    string EquipmentName;
+                    try
+                    {
+                        EquipmentName = Data.NAME.ToString();
+                    }
+                    catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                    {
+                        EquipmentName = String.Empty;
+                    }
+
                     TimeSpan TotalHours = DateTime.Parse(Data.TIME_OUT.ToString()).TimeOfDay - DateTime.Parse(Data.TIME_IN.ToString()).TimeOfDay; 
                     Cells = new PdfPCell[]{
-                        new PdfPCell(new Phrase(Data.NAME.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(EquipmentName , CellFont)),
                         new PdfPCell(new Phrase(Data.EMPLOYEE_NAME.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Data.TIME_IN.TimeOfDay.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Data.TIME_OUT.TimeOfDay.ToString(), CellFont)),
                         new PdfPCell(new Phrase(TotalHours.ToString(), CellFont)),
-                        new PdfPCell(new Phrase(Data.TRAVEL_TIME.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(TravelTime, CellFont)),
                         new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Data.COMMENTS.ToString(), CellFont))
                     };
@@ -525,11 +544,63 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 var FooterData = GetFooter(HeaderId);
 
                 PdfPTable FooterTable = new PdfPTable(4);
+
+                string ReasonForNoWork;
+                string Hotel;
+                string City;
+                string State;
+                string Phone;
+
+                try
+                {
+                    ReasonForNoWork = FooterData.REASON_FOR_NO_WORK;
+                }
+                catch (NullReferenceException)
+                {
+                    ReasonForNoWork = string.Empty;
+                }
+
+                try
+                {
+                    Hotel = FooterData.HOTEL_NAME;
+                }
+                catch (NullReferenceException)
+                {
+                    Hotel = string.Empty;
+                }
+
+                try
+                {
+                    City = FooterData.HOTEL_CITY;
+                }
+                catch (NullReferenceException)
+                {
+                    City = string.Empty;
+                }
+
+                try
+                {
+                    State = FooterData.HOTEL_STATE;
+                }
+                catch (NullReferenceException)
+                {
+                    State = string.Empty;
+                }
+
+                try
+                {
+                    Phone = FooterData.HOTEL_PHONE;
+                }
+                catch (NullReferenceException)
+                {
+                    Phone = string.Empty;
+                }
+
                 Cells = new PdfPCell[] {
                     new PdfPCell(new Phrase("Reason for no work", HeaderFont)),
-                    new PdfPCell(new Phrase(FooterData.REASON_FOR_NO_WORK, CellFont)),
+                    new PdfPCell(new Phrase(ReasonForNoWork, CellFont)),
                     new PdfPCell(new Phrase("Hotel, City, State, & Phone", HeaderFont)),
-                    new PdfPCell(new Phrase(string.Format("{0}, {1}, {2}, {3}",FooterData.HOTEL_NAME, FooterData.HOTEL_CITY, FooterData.HOTEL_STATE, FooterData.HOTEL_PHONE ), CellFont))
+                    new PdfPCell(new Phrase(string.Format("{0}, {1}, {2}, {3}",Hotel, City, State, Phone ), CellFont))
                 };
                 Row = new PdfPRow(Cells);
                 FooterTable.Rows.Add(Row);
@@ -541,7 +612,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     ForemanImage = iTextSharp.text.Image.GetInstance(FooterData.FOREMAN_SIGNATURE.ToArray());
                     ForemanImage.ScaleAbsolute(75f, 25f);
                 }
-                catch (IndexOutOfRangeException)
+                catch (Exception)
                 {
                     ForemanImage = iTextSharp.text.Image.GetInstance(Server.MapPath("/Resources/Images") + "/1pixel.jpg");
                 }
@@ -551,7 +622,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     ContractImage = iTextSharp.text.Image.GetInstance(FooterData.CONTRACT_REP.ToArray());
                     ContractImage.ScaleAbsolute(75f, 25f);
                 }
-                catch (IndexOutOfRangeException)
+                catch (Exception)
                 {
                     ContractImage = iTextSharp.text.Image.GetInstance(Server.MapPath("/Resources/Images") + "/1pixel.jpg");
                 }
@@ -603,6 +674,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             });
         }
 
+        /// <summary>
+        /// DirectMethod accessed from umDailyActivity.aspx after it's been submitted
+        /// </summary>
+        [DirectMethod]
+        public void dmHideAddWindow()
+        {
+            uxCreateActivityWindow.Hide();
+            uxManageGridStore.Reload();
+        }
         /// <summary>
         /// Direct Method accessed from umSubmitActivity.aspx after it's submitted
         /// </summary>
