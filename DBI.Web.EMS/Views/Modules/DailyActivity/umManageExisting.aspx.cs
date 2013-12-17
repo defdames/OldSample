@@ -75,6 +75,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxPostActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
             uxInactiveActivityButton.Disabled = false;
             uxSubmitActivityButton.Disabled = false;
+            uxExportToPDF.Disabled = false;
         }
 
         protected void deDeselectHeader(object sender, DirectEventArgs e)
@@ -175,7 +176,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
                             from projects in proj.DefaultIfEmpty()
                             where d.HEADER_ID == HeaderId
-                            select new { e.EMPLOYEE_NAME, projects.NAME, d.TIME_IN, d.TIME_OUT, d.TRAVEL_TIME, d.DRIVE_TIME, d.PER_DIEM, d.COMMENTS }).ToList();
+                            select new { e.EMPLOYEE_NAME, projects.NAME, d.TIME_IN, d.TIME_OUT, d.TRAVEL_TIME, d.DRIVE_TIME, d.PER_DIEM, d.COMMENTS }).ToList<object>();
                 return returnData;
             }
         }
@@ -192,7 +193,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join t in _context.PA_TASKS_V on d.TASK_ID equals t.TASK_ID
                             join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                             where d.HEADER_ID == HeaderId
-                            select new { d.PRODUCTION_ID, h.PROJECT_ID, p.LONG_NAME, t.TASK_ID, t.DESCRIPTION, d.TIME_IN, d.TIME_OUT, d.WORK_AREA, d.POLE_FROM, d.POLE_TO, d.ACRES_MILE, d.GALLONS }).ToList();
+                            select new { t.DESCRIPTION, d.TIME_IN, d.TIME_OUT, d.WORK_AREA, d.POLE_FROM, d.POLE_TO, d.ACRES_MILE, d.GALLONS }).ToList<object>();
                 return returnData;
             }
         }
@@ -230,9 +231,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         /// <param name="HeaderId"></param>
         /// <returns></returns>
-        protected DAILY_ACTIVITY_INVENTORY GetInventory(long HeaderId){
+        protected List<object>GetInventory(long HeaderId){
             using(Entities _context = new Entities()){
-            
+                List<object> returnData = (from d in _context.DAILY_ACTIVITY_INVENTORY
+                            join i in _context.INVENTORY_V on d.ITEM_ID equals i.ITEM_ID into joined
+                            join c in _context.DAILY_ACTIVITY_CHEMICAL_MIX on d.CHEMICAL_MIX_ID equals c.CHEMICAL_MIX_ID
+                            join u in _context.UNIT_OF_MEASURE_V on d.UNIT_OF_MEASURE equals u.UOM_CODE
+                            where d.HEADER_ID == HeaderId
+                            from j in joined
+                            where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
+                            select new {c.CHEMICAL_MIX_NUMBER, d.SUB_INVENTORY_SECONDARY_NAME, j.DESCRIPTION, d.RATE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).ToList<object>();
+
+                return returnData;
             }
         }
 
@@ -259,67 +269,318 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             using (MemoryStream PdfStream = new MemoryStream())
             {
+                //Set header Id
+                long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
+
                 //Create the document
                 Document ExportedPDF = new Document(iTextSharp.text.PageSize.LETTER);
                 PdfWriter ExportWriter = PdfWriter.GetInstance(ExportedPDF, PdfStream);
+                Paragraph NewLine = new Paragraph("\n");
+                Font HeaderFont = FontFactory.GetFont("Verdana", 6, Font.BOLD);
+                Font CellFont = FontFactory.GetFont("Verdana", 6);
+                //Open Document
+                ExportedPDF.Open();
 
                 //Get Header Data
+                var HeaderData = GetHeader(HeaderId);
 
+                Paragraph Title = new Paragraph(string.Format("DAILY ACTIVITY REPORT FOR {0}", HeaderData.DA_DATE.Value.Date.ToString("MM/dd/yyyy")), FontFactory.GetFont("Verdana", 12, Font.BOLD));
+                Title.Alignment = 1;
+
+                ExportedPDF.Add(Title);
+                ExportedPDF.Add(NewLine);
                 //Create Header Table
-                PdfPTable HeaderTabel = new PdfPTable(10);
+                PdfPTable HeaderTable = new PdfPTable(4);
+                HeaderTable.DefaultCell.Border = PdfPCell.NO_BORDER;
+                //First row
+                PdfPCell[] Cells =  new PdfPCell[]{
+                    new PdfPCell(new Phrase("Contract", HeaderFont)),
+                    new PdfPCell(new Phrase(HeaderData.PROJECT_ID.ToString(), CellFont)),
+                    new PdfPCell(new Phrase("Sub-Division", HeaderFont)),
+                    new PdfPCell(new Phrase(HeaderData.SUBDIVISION, CellFont))};
 
-
-            }
-                
-                //Create the table
-                PdfPTable AnswerTable = new PdfPTable(2);
-                foreach (Dictionary<string, string> Answer in AnswerInfo)
+                foreach (PdfPCell Cell in Cells)
                 {
-                    if (Answer["QuestionText"] == "Show Name")
-                    {
-                        int MyFormId = Convert.ToInt32(Answer["FormInfoId"]);
-                        PostForm MyConn = new PostForm();
-                        List<FormInfo> FormsInfo = (from f in MyConn.FormInfo
-                                                   where f.FormInfoId == MyFormId
-                                                   select f).ToList();
-                        DateTime StartDate = DateTime.Now ;
-                        DateTime EndDate = DateTime.Now;
-                        foreach (FormInfo MyFormInfo in FormsInfo)
-                        {
-                            StartDate = MyFormInfo.DateFrom;
-                            EndDate = MyFormInfo.DateTo;
-                        }
-                        Paragraph MyHeader = new Paragraph(Answer["Answer"], FontFactory.GetFont("Verdana", 20, Font.BOLD)); 
-                        MyHeader.Alignment = 1;
-                        Paragraph SubHeader = new Paragraph(StartDate.ToShortDateString() + " to " + EndDate.ToShortDateString(), FontFactory.GetFont("Verdana", 18, Font.BOLD));
-                        SubHeader.Alignment = 1;
-                        SubHeader.SpacingAfter = 10;
-                        GeneratedPDF.Open();
-                        GeneratedPDF.Add(MyHeader);
-                        GeneratedPDF.Add(SubHeader);
-                    }
-                    else
-                    {
-                        AnswerTable.AddCell(new PdfPCell(new Phrase(Answer["QuestionText"])));
-                        AnswerTable.AddCell(new PdfPCell(new Phrase(Answer["Answer"])));
-                    }
+                    Cell.Border = PdfPCell.NO_BORDER;
                 }
-                Font verdana = FontFactory.GetFont("Verdana", 16, Font.BOLD);
-                GeneratedPDF.Add(AnswerTable);
-                PdfWriter.CloseStream = false;
-                GeneratedPDF.Close();
-                myMemoryStream.Position = 0;
+                PdfPRow Row = new PdfPRow(Cells);
+                HeaderTable.Rows.Add(Row);
+
+                //Second row
+                Cells = new PdfPCell[]{
+                    new PdfPCell(new Phrase("License Number", HeaderFont)),
+                    new PdfPCell(new Phrase(HeaderData.LICENSE, CellFont)),
+                    new PdfPCell(new Phrase("State", HeaderFont)),
+                    new PdfPCell(new Phrase(HeaderData.STATE, CellFont))};
+                
+                foreach (PdfPCell Cell in Cells)
+                {
+                    Cell.Border = PdfPCell.NO_BORDER;
+                }
+                Row = new PdfPRow(Cells);
+                HeaderTable.Rows.Add(Row);
+
+                //Third row
+                Cells = new PdfPCell[]{
+                    new PdfPCell(new Phrase("Type of Application/Work", HeaderFont)),
+                    new PdfPCell(new Phrase(HeaderData.APPLICATION_TYPE, CellFont)),
+                    new PdfPCell(new Phrase("Density", HeaderFont)),
+                    new PdfPCell(new Phrase(HeaderData.DENSITY, CellFont))};
+
+                foreach (PdfPCell Cell in Cells)
+                {
+                    Cell.Border = PdfPCell.NO_BORDER;
+                }
+                Row = new PdfPRow(Cells);
+                HeaderTable.Rows.Add(Row);
+
+                ExportedPDF.Add(HeaderTable);
+
+                ExportedPDF.Add(NewLine);
+
+                //Get Equipment/Employee Data
+                var EmployeeData = GetEmployee(HeaderId);
+
+                PdfPTable EmployeeTable = new PdfPTable(8);
+
+                Cells = new PdfPCell[]{
+                    new PdfPCell(new Phrase("Truck/Equipment \n Name", HeaderFont)),
+                    new PdfPCell(new Phrase("Operator(s)", HeaderFont)),
+                    new PdfPCell(new Phrase("Time\nIn", HeaderFont)),
+                    new PdfPCell(new Phrase("Time\nOut", HeaderFont)),
+                    new PdfPCell(new Phrase("Total\nHours", HeaderFont)),
+                    new PdfPCell(new Phrase("Travel\nTime", HeaderFont)),
+                    new PdfPCell(new Phrase("Per\nDiem", HeaderFont)),
+                    new PdfPCell(new Phrase("Comments", HeaderFont))};
+
+                Row = new PdfPRow(Cells);
+                EmployeeTable.Rows.Add(Row);
+
+                foreach (dynamic Data in EmployeeData)
+                {
+                    TimeSpan TotalHours = DateTime.Parse(Data.TIME_OUT.ToString()).TimeOfDay - DateTime.Parse(Data.TIME_IN.ToString()).TimeOfDay; 
+                    Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase(Data.NAME.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.EMPLOYEE_NAME.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.TIME_IN.TimeOfDay.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.TIME_OUT.TimeOfDay.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(TotalHours.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.TRAVEL_TIME.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.COMMENTS.ToString(), CellFont))
+                    };
+                    Row = new PdfPRow(Cells);
+                    EmployeeTable.Rows.Add(Row);
+                }
+                ExportedPDF.Add(EmployeeTable);
+                ExportedPDF.Add(NewLine);
+
+                //Get Production Data
+                var ProductionData = GetProduction(HeaderId);
+
+                PdfPTable ProductionTable = new PdfPTable(7);
+
+                Cells = new PdfPCell[]{
+                    new PdfPCell(new Phrase("Time\nIn", HeaderFont)),
+                    new PdfPCell(new Phrase("Time\nOut", HeaderFont)),
+                    new PdfPCell(new Phrase("Spray/Work Area", HeaderFont)),
+                    new PdfPCell(new Phrase("Pole/MP\nFrom", HeaderFont)),
+                    new PdfPCell(new Phrase("Pole/MP\nTo", HeaderFont)),
+                    new PdfPCell(new Phrase("Acres/Mile", HeaderFont)),
+                    new PdfPCell(new Phrase("Gallons", HeaderFont))};
+
+                Row = new PdfPRow(Cells);
+                ProductionTable.Rows.Add(Row);
+
+                foreach (dynamic Data in ProductionData)
+                {
+                    Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase(Data.TIME_IN.TimeOfDay.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.TIME_OUT.TimeOfDay.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.WORK_AREA, CellFont)),
+                        new PdfPCell(new Phrase(Data.POLE_FROM, CellFont)),
+                        new PdfPCell(new Phrase(Data.POLE_TO, CellFont)),
+                        new PdfPCell(new Phrase(Data.ACRES_MILE.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.GALLONS.ToString(), CellFont))
+                    };
+
+                    Row = new PdfPRow(Cells);
+                    ProductionTable.Rows.Add(Row);
+                }
+                ExportedPDF.Add(ProductionTable);
+                ExportedPDF.Add(NewLine);
+
+                //Get Weather
+                var WeatherData = GetWeather(HeaderId);
+
+                PdfPTable WeatherTable = new PdfPTable(6);
+
+                Cells = new PdfPCell[]{
+                    new PdfPCell(new Phrase("Time", HeaderFont)),
+                    new PdfPCell(new Phrase("Wind\nDirection", HeaderFont)),
+                    new PdfPCell(new Phrase("Wind\nVelocity", HeaderFont)),
+                    new PdfPCell(new Phrase("Temperature", HeaderFont)),
+                    new PdfPCell(new Phrase("Humidity", HeaderFont)),
+                    new PdfPCell(new Phrase("Comments", HeaderFont))
+                };
+
+                Row = new PdfPRow(Cells);
+                WeatherTable.Rows.Add(Row);
+
+                foreach (dynamic Weather in WeatherData)
+                {
+                    Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase(Weather.WEATHER_DATE_TIME.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Weather.WIND_DIRECTION, CellFont)),
+                        new PdfPCell(new Phrase(Weather.WIND_VELOCITY, CellFont)),
+                        new PdfPCell(new Phrase(Weather.TEMP, CellFont)),
+                        new PdfPCell(new Phrase(Weather.HUMIDITY, CellFont)),
+                        new PdfPCell(new Phrase(Weather.COMMENTS, CellFont))
+                    };
+
+                    Row = new PdfPRow(Cells);
+                    WeatherTable.Rows.Add(Row);
+                }
+                ExportedPDF.Add(WeatherTable);
+                ExportedPDF.Add(NewLine);
+
+                //Get Chemical Mix Data
+                var ChemicalData = GetChemicalMix(HeaderId);
+
+                PdfPTable ChemicalTable = new PdfPTable(11);
+
+                Cells = new PdfPCell[]{
+                    new PdfPCell(new Phrase("Mix #", HeaderFont)),
+                    new PdfPCell(new Phrase("Target\nArea", HeaderFont)),
+                    new PdfPCell(new Phrase("Gals/Acre", HeaderFont)),
+                    new PdfPCell(new Phrase("Gals\nStarting", HeaderFont)),
+                    new PdfPCell(new Phrase("Gals\nMixed", HeaderFont)),
+                    new PdfPCell(new Phrase("Total\nGallons", HeaderFont)),
+                    new PdfPCell(new Phrase("Gals\nRemaining", HeaderFont)),
+                    new PdfPCell(new Phrase("Gals\nUsed", HeaderFont)),
+                    new PdfPCell(new Phrase("Acres\nSprayed", HeaderFont)),
+                    new PdfPCell(new Phrase("State", HeaderFont)),
+                    new PdfPCell(new Phrase("County", HeaderFont))
+                };
+                Row = new PdfPRow(Cells);
+                ChemicalTable.Rows.Add(Row);
+
+                foreach (dynamic Data in ChemicalData)
+                {
+                    decimal TotalGallons = Data.GALLON_STARTING + Data.GALLON_MIXED;
+                    decimal GallonsUsed = TotalGallons - Data.GALLON_REMAINING;
+
+                    Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase(Data.CHEMICAL_MIX_NUMBER != null ? Data.CHEMICAL_MIX_NUMBER.ToString() : string.Empty, CellFont)),
+                        new PdfPCell(new Phrase(Data.TARGET_AREA != null ? Data.TARGET_AREA : string.Empty, CellFont)),
+                        new PdfPCell(new Phrase(Data.GALLON_ACRE != null ? Data.GALLON_ACRE.ToString() : string.Empty, CellFont)),
+                        new PdfPCell(new Phrase(Data.GALLON_STARTING != null ? Data.GALLON_STARTING.ToString() : string.Empty, CellFont)),
+                        new PdfPCell(new Phrase(Data.GALLON_MIXED != null ? Data.GALLON_MIXED.ToString() : string.Empty, CellFont)),
+                        new PdfPCell(new Phrase(TotalGallons.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.GALLON_REMAINING != null ? Data.GALLON_REMAINING.ToString() : string.Empty, CellFont)),
+                        new PdfPCell(new Phrase(GallonsUsed.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.ACRES_SPRAYED != null ? Data.ACRES_SPRAYED.ToString() : string.Empty, CellFont)),
+                        new PdfPCell(new Phrase(Data.STATE != null ? Data.STATE : string.Empty, CellFont)),
+                        new PdfPCell(new Phrase(Data.COUNTY != null ? Data.COUNTY : string.Empty, CellFont))
+                    };
+                    Row = new PdfPRow(Cells);
+                    ChemicalTable.Rows.Add(Row);
+                }
+
+                ExportedPDF.Add(ChemicalTable);
+                ExportedPDF.Add(NewLine);
+
+                //Get Inventory Data
+                var InventoryData = GetInventory(HeaderId);
+                PdfPTable InventoryTable = new PdfPTable(5);
+
+                Cells = new PdfPCell[]{
+                    new PdfPCell(new Phrase("Mix #", HeaderFont)),
+                    new PdfPCell(new Phrase("Sub-Inventory", HeaderFont)),
+                    new PdfPCell(new Phrase("Item Name", HeaderFont)),
+                    new PdfPCell(new Phrase("Rate", HeaderFont)),
+                    new PdfPCell(new Phrase("EPA \n Number", HeaderFont))
+                };
+                Row = new PdfPRow(Cells);
+                InventoryTable.Rows.Add(Row);
+
+                foreach (dynamic Data in InventoryData)
+                {
+                    Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase(Data.CHEMICAL_MIX_NUMBER.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.SUB_INVENTORY_SECONDARY_NAME, CellFont)),
+                        new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
+                        new PdfPCell(new Phrase(string.Format("{0} {1}", Data.RATE.ToString(), Data.UNIT_OF_MEASURE), CellFont)),
+                        new PdfPCell(new Phrase(Data.EPA_NUMBER, CellFont))
+                    };
+
+                    Row = new PdfPRow(Cells);
+                    InventoryTable.Rows.Add(Row);
+                }
+
+                ExportedPDF.Add(InventoryTable);
+                ExportedPDF.Add(NewLine);
+
+                //Get Footer Data
+                var FooterData = GetFooter(HeaderId);
+
+                PdfPTable FooterTable = new PdfPTable(4);
+                Cells = new PdfPCell[] {
+                    new PdfPCell(new Phrase("Reason for no work", HeaderFont)),
+                    new PdfPCell(new Phrase(FooterData.REASON_FOR_NO_WORK, CellFont)),
+                    new PdfPCell(new Phrase("Hotel, City, State, & Phone", HeaderFont)),
+                    new PdfPCell(new Phrase(string.Format("{0}, {1}, {2}, {3}",FooterData.HOTEL_NAME, FooterData.HOTEL_CITY, FooterData.HOTEL_STATE, FooterData.HOTEL_PHONE ), CellFont))
+                };
+                Row = new PdfPRow(Cells);
+                FooterTable.Rows.Add(Row);
+
+                iTextSharp.text.Image ForemanImage;
+                iTextSharp.text.Image ContractImage;
+                try
+                {
+                    ForemanImage = iTextSharp.text.Image.GetInstance(FooterData.FOREMAN_SIGNATURE.ToArray());
+                    ForemanImage.ScaleAbsolute(75f, 25f);
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    ForemanImage = iTextSharp.text.Image.GetInstance(Server.MapPath("/Resources/Images") + "/1pixel.jpg");
+                }
+
+                try
+                {
+                    ContractImage = iTextSharp.text.Image.GetInstance(FooterData.CONTRACT_REP.ToArray());
+                    ContractImage.ScaleAbsolute(75f, 25f);
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    ContractImage = iTextSharp.text.Image.GetInstance(Server.MapPath("/Resources/Images") + "/1pixel.jpg");
+                }
+
+                
+                Cells = new PdfPCell[]{
+                    new PdfPCell(new Phrase("Foreman Signature", HeaderFont)),
+                    new PdfPCell(ForemanImage),
+                    new PdfPCell(new Phrase("Contract Representative", HeaderFont)),
+                    new PdfPCell(ContractImage),
+                };
+                Row = new PdfPRow(Cells);
+                FooterTable.Rows.Add(Row);
+
+                ExportedPDF.Add(FooterTable);
+                //Close Stream and start Download
+                ExportWriter.CloseStream = false;
+                ExportedPDF.Close();
+                PdfStream.Position = 0;
 
                 Response.Clear();
                 Response.ClearContent();
                 Response.ClearHeaders();
                 Response.ContentType = "application/pdf";
                 Response.AppendHeader("Content-Disposition", "attachment;filename=export.pdf");
-                Response.BinaryWrite(myMemoryStream.ToArray());
+                Response.BinaryWrite(PdfStream.ToArray());
                 Response.End();
 
-                myMemoryStream.Close();
-
+                PdfStream.Close();
             }
         }
 

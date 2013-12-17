@@ -34,9 +34,9 @@
                     <ColumnModel>
                         <Columns>                            
                             <ext:DateColumn runat="server" Text="Activity Date" DataIndex="DA_DATE" Flex="10" Format="MM-dd-yyyy">
-                                <%--<HeaderItems>
+                                <HeaderItems>
                                     <ext:DateField runat="server" Format="MM-dd-yyyy" />
-                                </HeaderItems>--%>
+                                </HeaderItems>
                             </ext:DateColumn>
                             <ext:Column ID="Column1" runat="server" Text="Project" DataIndex="SEGMENT1" Flex="20"/>
                             <ext:Column runat="server" Text="Project Name" DataIndex="LONG_NAME" Flex="50" />
@@ -124,7 +124,7 @@
                                     Icon="PageWhiteAcrobat"
                                     Disabled="true">
                                     <DirectEvents>
-                                        <Click OnEvent="deExportToPDF">
+                                        <Click OnEvent="deExportToPDF" IsUpload="true">
                                             <ExtraParams>
                                                 <ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
                                             </ExtraParams>
