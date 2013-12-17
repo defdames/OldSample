@@ -321,7 +321,6 @@
 									EnableKeyEvents="true"
 									Increment="30" 
 									SelectedTime="09:00" 
-									Format="H:mm"
 									AllowBlank="false"
 									TabIndex="4">
 									<Listeners>
@@ -357,7 +356,6 @@
 									ID="uxAddEmployeeTimeOutTime"
 									Increment="30" 
 									SelectedTime="09:00" 
-									Format="H:mm"
 									Vtype="daterange"
 									StartDateField="uxAddEmployeeTimeInTime"
 									EnableKeyEvents="true"
@@ -589,8 +587,6 @@
 									EndDateField="uxEditEmployeeTimeOutTime"
 									EnableKeyEvents="true"
 									Increment="30" 
-									SelectedTime="09:00" 
-									Format="H:mm"
 									AllowBlank="false"
 									TabIndex="4">
 									<Listeners>
@@ -625,8 +621,6 @@
 								<ext:TimeField runat="server"
 									ID="uxEditEmployeeTimeOutTime"
 									Increment="30" 
-									SelectedTime="09:00" 
-									Format="H:mm"
 									Vtype="daterange"
 									StartDateField="uxEditmployeeTimeInTime"
 									EnableKeyEvents="true"

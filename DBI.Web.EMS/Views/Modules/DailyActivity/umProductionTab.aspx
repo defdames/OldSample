@@ -216,6 +216,7 @@
 									Vtype="daterange"
 									EndDateField="uxAddProductionTimeOut"
 									EnableKeyEvents="true"
+									SelectedTime="09:00"
 									AllowBlank="false">
 									<Listeners>
 										<KeyUp Fn="valDateTime" />
@@ -242,6 +243,7 @@
 									AllowBlank="false"
 									Vtype="daterange"
 									EnableKeyEvents="true"
+									SelectedTime="09:00"
 									StartDateField="uxAddProductionTimeIn">
 									<Listeners>
 										<KeyUp Fn="valDateTime" />

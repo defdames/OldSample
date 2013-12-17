@@ -121,7 +121,6 @@
 									AllowBlank="false" />
 								<ext:TimeField runat="server"
 									ID="uxAddWeatherTime"
-									Format="H:mm"
 									Increment="30"
 									SelectedTime="09:00"
 									AllowBlank="false" />
