@@ -195,7 +195,8 @@
 						<ext:Button runat="server"
 							ID="uxRemoveInventoryButton"
 							Text="Remove Inventory"
-							Icon="ApplicationDelete">
+							Icon="ApplicationDelete"
+							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deRemoveInventory">
 									<ExtraParams>
@@ -211,8 +212,10 @@
 				<ext:RowSelectionModel runat="server" Mode="Single" AllowDeselect="true" />
 			</SelectionModel>
 			<Listeners>
-				<Select Handler="#{uxEditInventoryButton}.enable()" />
-				<Deselect Handler="#{uxEditInventoryButton}.disable()" />
+				<Select Handler="#{uxEditInventoryButton}.enable();
+					#{uxRemoveInventoryButton}.enable()" />
+				<Deselect Handler="#{uxEditInventoryButton}.disable();
+					#{uxRemoveInventoryButton}.disable()" />
 			</Listeners>
 		</ext:GridPanel>   
 		<%-- Hidden Windows --%>

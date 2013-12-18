@@ -115,7 +115,8 @@
 						<ext:Button runat="server"
 							ID="uxRemoveChemicalButton"
 							Icon="ApplicationDelete"
-							Text="Remove Chemical Mix">
+							Text="Remove Chemical Mix"
+							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deRemoveChemical">
 									<Confirmation ConfirmRequest="true" Title="Remove?" Message="Do you really want to remove?" />
@@ -132,8 +133,10 @@
 				<ext:RowSelectionModel runat="server" AllowDeselect="true" Mode="Single" />
 			</SelectionModel>
 			<Listeners>
-				<Select Handler="#{uxEditChemicalButton}.enable()" />
-				<Deselect Handler="#{uxEditChemicalButton}.disable()" />
+				<Select Handler="#{uxEditChemicalButton}.enable();
+					#{uxRemoveChemicalButton}.enable()" />
+				<Deselect Handler="#{uxEditChemicalButton}.disable();
+					#{uxRemoveChemicalButton}.disable()" />
 			</Listeners>
 		</ext:GridPanel>
 

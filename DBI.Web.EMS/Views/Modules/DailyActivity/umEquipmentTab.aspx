@@ -75,7 +75,8 @@
 						<ext:Button runat="server"
 							ID="uxRemoveEquipmentButton"
 							Icon="ApplicationDelete"
-							Text="Remove Equipment">
+							Text="Remove Equipment"
+							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deRemoveEquipment">
 									<Confirmation ConfirmRequest="true" Title="Remove?" Message="Do you really want to remove?" />
@@ -131,8 +132,10 @@
 				<ext:RowSelectionModel runat="server" AllowDeselect="true" Mode="Single" />
 			</SelectionModel>
 			<Listeners>
-				<Select Handler="#{uxEditEquipmentButton}.enable()" />
-				<Deselect Handler="#{uxEditEquipmentButton}.disable()" />
+				<Select Handler="#{uxEditEquipmentButton}.enable();
+					#{uxRemoveEquipmentButton}.enable()" />
+				<Deselect Handler="#{uxEditEquipmentButton}.disable();
+					#{uxRemoveEquipmentButton}.disable()" />
 			</Listeners>
 		</ext:GridPanel>
 		<%-- Hidden Windows --%>

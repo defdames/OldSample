@@ -142,7 +142,8 @@
 						<ext:Button runat="server"
 							ID="uxRemoveProductionButton"
 							Text="Remove Production"
-							Icon="ApplicationDelete">
+							Icon="ApplicationDelete"
+							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deRemoveProduction">
 									<Confirmation ConfirmRequest="true" Title="Really?" Message="Do you really want to remove?" />
@@ -159,8 +160,10 @@
 				<ext:RowSelectionModel runat="server" AllowDeselect="true" Mode="Single" />
 			</SelectionModel>
 			<Listeners>
-				<Select Handler="#{uxEditProductionButton}.enable()" />
-				<Deselect Handler="#{uxEditProductionButton}.disable()" />
+				<Select Handler="#{uxEditProductionButton}.enable();
+					#{uxRemoveProductionButton}.enable()" />
+				<Deselect Handler="#{uxEditProductionButton}.disable();
+					#{uxRemoveProductionButton}.disable()" />
 			</Listeners>
 		</ext:GridPanel>
 		<%-- Hidden Windows --%>

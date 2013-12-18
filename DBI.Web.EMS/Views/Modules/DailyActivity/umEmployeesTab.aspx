@@ -131,7 +131,8 @@
 						<ext:Button runat="server"
 							ID="uxRemoveEmployee"
 							Icon="ApplicationDelete"
-							Text="Remove Employee">
+							Text="Remove Employee"
+							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deRemoveEmployee">
 									<Confirmation Title="Remove?" ConfirmRequest="true" Message="Do you really want to remove the Employee?" />
@@ -148,8 +149,10 @@
 				<ext:RowSelectionModel runat="server" AllowDeselect="true" Mode="Single" />
 			</SelectionModel>
 			<Listeners>
-				<Select Handler="#{uxEditEmployee}.enable()" />
-				<Deselect Handler="#{uxEditEmployee}.disable()" />
+				<Select Handler="#{uxEditEmployee}.enable();
+					#{uxRemoveEmployee}.enable()" />
+				<Deselect Handler="#{uxEditEmployee}.disable();
+					#{uxRemoveEmployee}.disable()" />
 			</Listeners>
 		</ext:GridPanel>
 		

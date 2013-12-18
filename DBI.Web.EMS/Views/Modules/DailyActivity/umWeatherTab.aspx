@@ -80,7 +80,8 @@
 						<ext:Button runat="server"
 							ID="uxRemoveWeatherButton"
 							Icon="ApplicationDelete"
-							Text="Remove Weather">
+							Text="Remove Weather"
+							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deRemoveWeather">
 									<Confirmation ConfirmRequest="true" Title="Remove?" Message="Do you really want to remove the weather?" />
@@ -97,8 +98,10 @@
 				<ext:RowSelectionModel runat="server" AllowDeselect="true" Mode="Single" />
 			</SelectionModel>
 			<Listeners>
-				<Select Handler="#{uxEditWeatherButton}.enable()" />
-				<Deselect Handler="#{uxEditWeatherButton}.disable()" />
+				<Select Handler="#{uxEditWeatherButton}.enable();
+					#{uxRemoveWeatherButton}.enable()" />
+				<Deselect Handler="#{uxEditWeatherButton}.disable();
+					#{uxRemoveWeatherButton}.disable()" />
 			</Listeners>
 		</ext:GridPanel>
 
