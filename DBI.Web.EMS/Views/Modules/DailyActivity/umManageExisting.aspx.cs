@@ -278,6 +278,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 PdfWriter ExportWriter = PdfWriter.GetInstance(ExportedPDF, PdfStream);
                 Paragraph NewLine = new Paragraph("\n");
                 Font HeaderFont = FontFactory.GetFont("Verdana", 6, Font.BOLD);
+                Font HeadFootTitleFont = FontFactory.GetFont("Verdana", 8, Font.BOLD);
+                Font HeadFootCellFont = FontFactory.GetFont("Verdana", 8);
                 Font CellFont = FontFactory.GetFont("Verdana", 6);
                 //Open Document
                 ExportedPDF.Open();
@@ -300,10 +302,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     
                     //First row
                     Cells = new PdfPCell[]{
-                    new PdfPCell(new Phrase("Contract", HeaderFont)),
-                    new PdfPCell(new Phrase(Data.SEGMENT1.ToString(), CellFont)),
-                    new PdfPCell(new Phrase("Sub-Division", HeaderFont)),
-                    new PdfPCell(new Phrase(Data.SUBDIVISION, CellFont))};
+                    new PdfPCell(new Phrase("Contract", HeadFootTitleFont)),
+                    new PdfPCell(new Phrase(Data.SEGMENT1.ToString(), HeadFootCellFont)),
+                    new PdfPCell(new Phrase("Sub-Division", HeadFootTitleFont)),
+                    new PdfPCell(new Phrase(Data.SUBDIVISION, HeadFootCellFont))};
 
                     foreach (PdfPCell Cell in Cells)
                     {
@@ -314,10 +316,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                     //Second row
                     Cells = new PdfPCell[]{
-                    new PdfPCell(new Phrase("License Number", HeaderFont)),
-                    new PdfPCell(new Phrase(Data.LICENSE, CellFont)),
-                    new PdfPCell(new Phrase("State", HeaderFont)),
-                    new PdfPCell(new Phrase(Data.STATE, CellFont))};
+                    new PdfPCell(new Phrase("License Number", HeadFootTitleFont)),
+                    new PdfPCell(new Phrase(Data.LICENSE, HeadFootCellFont)),
+                    new PdfPCell(new Phrase("State", HeadFootTitleFont)),
+                    new PdfPCell(new Phrase(Data.STATE, HeadFootCellFont))};
 
                     foreach (PdfPCell Cell in Cells)
                     {
@@ -328,10 +330,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                     //Third row
                     Cells = new PdfPCell[]{
-                    new PdfPCell(new Phrase("Type of Application/Work", HeaderFont)),
-                    new PdfPCell(new Phrase(Data.APPLICATION_TYPE, CellFont)),
-                    new PdfPCell(new Phrase("Density", HeaderFont)),
-                    new PdfPCell(new Phrase(Data.DENSITY, CellFont))};
+                    new PdfPCell(new Phrase("Type of Application/Work", HeadFootTitleFont)),
+                    new PdfPCell(new Phrase(Data.APPLICATION_TYPE, HeadFootCellFont)),
+                    new PdfPCell(new Phrase("Density", HeadFootTitleFont)),
+                    new PdfPCell(new Phrase(Data.DENSITY, HeadFootCellFont))};
 
                     foreach (PdfPCell Cell in Cells)
                     {
@@ -550,6 +552,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 var FooterData = GetFooter(HeaderId);
 
                 PdfPTable FooterTable = new PdfPTable(4);
+                FooterTable.DefaultCell.Border = PdfPCell.NO_BORDER;
 
                 string ReasonForNoWork;
                 string Hotel;
@@ -603,11 +606,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
 
                 Cells = new PdfPCell[] {
-                    new PdfPCell(new Phrase("Reason for no work", HeaderFont)),
-                    new PdfPCell(new Phrase(ReasonForNoWork, CellFont)),
-                    new PdfPCell(new Phrase("Hotel, City, State, & Phone", HeaderFont)),
-                    new PdfPCell(new Phrase(string.Format("{0}, {1}, {2}, {3}",Hotel, City, State, Phone ), CellFont))
+                    new PdfPCell(new Phrase("Reason for no work", HeadFootTitleFont)),
+                    new PdfPCell(new Phrase(ReasonForNoWork, HeadFootCellFont)),
+                    new PdfPCell(new Phrase("Hotel, City, State, & Phone", HeadFootTitleFont)),
+                    new PdfPCell(new Phrase(string.Format("{0} {1} {2} {3}",Hotel, City, State, Phone ), HeadFootCellFont))
                 };
+
+                foreach (PdfPCell Cell in Cells)
+                {
+                    Cell.Border = PdfPCell.NO_BORDER;
+                }
                 Row = new PdfPRow(Cells);
                 FooterTable.Rows.Add(Row);
 
@@ -635,11 +643,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 
                 Cells = new PdfPCell[]{
-                    new PdfPCell(new Phrase("Foreman Signature", HeaderFont)),
+                    new PdfPCell(new Phrase("Foreman Signature", HeadFootTitleFont)),
                     new PdfPCell(ForemanImage),
-                    new PdfPCell(new Phrase("Contract Representative", HeaderFont)),
+                    new PdfPCell(new Phrase("Contract Representative", HeadFootTitleFont)),
                     new PdfPCell(ContractImage),
                 };
+                foreach (PdfPCell Cell in Cells)
+                {
+                    Cell.Border = PdfPCell.NO_BORDER;
+                }
                 Row = new PdfPRow(Cells);
                 FooterTable.Rows.Add(Row);
 
