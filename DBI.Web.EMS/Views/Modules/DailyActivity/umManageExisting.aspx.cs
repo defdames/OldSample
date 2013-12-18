@@ -278,8 +278,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 PdfWriter ExportWriter = PdfWriter.GetInstance(ExportedPDF, PdfStream);
                 Paragraph NewLine = new Paragraph("\n");
                 Font HeaderFont = FontFactory.GetFont("Verdana", 6, Font.BOLD);
-                Font HeadFootTitleFont = FontFactory.GetFont("Verdana", 8, Font.BOLD);
-                Font HeadFootCellFont = FontFactory.GetFont("Verdana", 8);
+                Font HeadFootTitleFont = FontFactory.GetFont("Verdana", 7, Font.BOLD);
+                Font HeadFootCellFont = FontFactory.GetFont("Verdana", 7);
                 Font CellFont = FontFactory.GetFont("Verdana", 6);
                 //Open Document
                 ExportedPDF.Open();
