@@ -18,7 +18,7 @@
 			App.uxAddInventoryTotal.setValue(rate * acresSprayed);
 		};
 	</script>
-    <link href="../../../Resources/StyleSheets/main.css" rel="stylesheet" />
+	<link href="../../../Resources/StyleSheets/main.css" rel="stylesheet" />
 </head>
 <body>
 	<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
@@ -399,7 +399,7 @@
 							FieldLabel="Rate"
 							AllowBlank="false">
 							<Listeners>
-								<Change Handler="doAddMath" />
+								<Change Fn="doAddMath" />
 							</Listeners>
 						</ext:TextField>
 						<ext:ComboBox runat="server"
