@@ -24,9 +24,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 X.Redirect("~/Views/uxDefault.aspx");
             }
             GetGridData();
-
-            uxAddEmployeeTimeInDate.SelectedDate = DateTime.Now.Date;
-            uxAddEmployeeTimeOutDate.SelectedDate = DateTime.Now.Date;
+            if (!X.IsAjaxRequest)
+            {
+                uxAddEmployeeTimeInDate.SelectedDate = DateTime.Now.Date;
+                uxAddEmployeeTimeOutDate.SelectedDate = DateTime.Now.Date;
+            }
         }
 
         /// <summary>

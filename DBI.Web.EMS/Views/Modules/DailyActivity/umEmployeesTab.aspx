@@ -622,7 +622,7 @@
 									ID="uxEditEmployeeTimeOutTime"
 									Increment="30" 
 									Vtype="daterange"
-									StartDateField="uxEditmployeeTimeInTime"
+									StartDateField="uxEditEmployeeTimeInTime"
 									EnableKeyEvents="true"
 									AllowBlank="false"
 									TabIndex="6">
