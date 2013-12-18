@@ -261,6 +261,7 @@
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <Content Include="iems\iEMS.plist" />
     <None Include="Properties\PublishProfiles\EMSMobile.pubxml" />
+    <None Include="Properties\PublishProfiles\Local.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="iems\download-button.png" />
     <Content Include="iems\Index.html" />
