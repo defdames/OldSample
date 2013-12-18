@@ -54,6 +54,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             decimal GallonStart = decimal.Parse(uxAddChemicalGallonStart.Value.ToString());
             decimal GallonMixed = decimal.Parse(uxAddChemicalGallonMixed.Value.ToString());
             decimal GallonRemain = decimal.Parse(uxAddChemicalGallonRemain.Value.ToString());
+            decimal GallonUsed = GallonStart + GallonMixed - GallonRemain;
+            decimal AcresSprayed = GallonUsed / GallonAcre;
 
             //Get Count of current records for this Header
             int count;
@@ -74,6 +76,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 GALLON_STARTING = GallonStart,
                 GALLON_MIXED = GallonMixed,
                 GALLON_REMAINING = GallonRemain,
+                ACRES_SPRAYED = AcresSprayed,
                 STATE = uxAddChemicalState.Value.ToString(),
                 COUNTY = uxAddChemicalCounty.Value.ToString(),
                 CREATE_DATE = DateTime.Now,
@@ -121,6 +124,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEditChemicalGallonStart.SetValue(Chemical["GALLON_STARTING"]);
                 uxEditChemicalGallonMixed.SetValue(Chemical["GALLON_MIXED"]);
                 uxEditChemicalGallonRemain.SetValue(Chemical["GALLON_REMAINING"]);
+                uxEditChemicalAcresSprayed.SetValue(Chemical["ACRES_SPRAYED"]);
                 uxEditChemicalState.SetValue(Chemical["STATE"]);
                 uxEditChemicalCounty.SetValue(Chemical["STATE"]);
             }
@@ -149,11 +153,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Delete from db
             GenericData.Delete<DAILY_ACTIVITY_CHEMICAL_MIX>(data);
             
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             //Get all records from this header where mix# is greater than the one that was deleted
             using (Entities _context = new Entities())
             {
                 var Updates = (from d in _context.DAILY_ACTIVITY_CHEMICAL_MIX
-                               where d.CHEMICAL_MIX_NUMBER > DeletedMix && d.HEADER_ID == long.Parse(Request.QueryString["HeaderId"])
+                               where d.CHEMICAL_MIX_NUMBER > DeletedMix && d.HEADER_ID == HeaderId
                                select d).ToList();
                 
                 //Loop through and update db
@@ -191,6 +196,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             decimal GallonStart = decimal.Parse(uxEditChemicalGallonStart.Value.ToString());
             decimal GallonMixed = decimal.Parse(uxEditChemicalGallonMixed.Value.ToString());
             decimal GallonRemain = decimal.Parse(uxEditChemicalGallonRemain.Value.ToString());
+            decimal AcresSprayed = decimal.Parse(uxEditChemicalAcresSprayed.Value.ToString());
             DAILY_ACTIVITY_CHEMICAL_MIX data;
 
             //Get record to update
@@ -206,6 +212,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.GALLON_STARTING = GallonStart;
             data.GALLON_MIXED = GallonMixed;
             data.GALLON_REMAINING = GallonRemain;
+            data.ACRES_SPRAYED = AcresSprayed;
             data.STATE = uxEditChemicalState.Value.ToString();
             data.COUNTY = uxEditChemicalCounty.Value.ToString();
             data.MODIFIED_BY = User.Identity.Name;
