@@ -62,6 +62,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             string weatherUrl = string.Format("umWeatherTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
             string invUrl = string.Format("umInventoryTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
 
+            uxCombinedTab.Disabled = false;
+            uxHeaderTab.Disabled = false;
+            uxEquipmentTab.Disabled = false;
+            uxProductionTab.Disabled = false;
+            uxEmployeeTab.Disabled = false;
+            uxChemicalTab.Disabled = false;
+            uxWeatherTab.Disabled = false;
+            uxInventoryTab.Disabled = false;
+
             uxCombinedTab.LoadContent(homeUrl);
             uxHeaderTab.LoadContent(headerUrl);
             uxEquipmentTab.LoadContent(equipUrl);
@@ -71,6 +80,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxWeatherTab.LoadContent(weatherUrl);
             uxInventoryTab.LoadContent(invUrl);
 
+            
             uxApproveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
             uxPostActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
             uxInactiveActivityButton.Disabled = false;
@@ -84,6 +94,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxSubmitActivityButton.Disabled = true;
             uxPostActivityButton.Disabled = true;
             uxInactiveActivityButton.Disabled = true;
+
+            uxHeaderTab.Disabled = true;
+            uxCombinedTab.Disabled = true;
+            uxEquipmentTab.Disabled = true;
+            uxEmployeeTab.Disabled = true;
+            uxChemicalTab.Disabled = true;
+            uxInventoryTab.Disabled = true;
+            uxWeatherTab.Disabled = true;
+            uxProductionTab.Disabled = true;
         }
         /// <summary>
         /// Shows Submit activity Window/Form

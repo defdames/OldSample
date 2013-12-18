@@ -139,7 +139,8 @@
                     <Items>
                         <ext:Panel runat="server"
                             Title="Home"
-                            ID="uxCombinedTab">
+                            ID="uxCombinedTab"
+                            Disabled="true">
                             <Loader runat="server"
                                 ID="uxCombinedTabLoader" Mode="Frame" AutoLoad="false" ReloadOnEvent="true">
                                 <LoadMask ShowMask="true" />
@@ -150,7 +151,8 @@
                         </ext:Panel>
                         <ext:Panel runat="server" 
                             Title="Header"
-                            ID="uxHeaderTab">
+                            ID="uxHeaderTab"
+                            Disabled="true">
                             <Loader runat="server"
                                 ID="uxHeaderLoader" Mode="Frame" AutoLoad="false" ReloadOnEvent="true"> 
                                 <LoadMask ShowMask="true" />
@@ -161,7 +163,8 @@
                         </ext:Panel>
                         <ext:Panel runat="server"
                             Title="Equipment"
-                            ID="uxEquipmentTab">
+                            ID="uxEquipmentTab"
+                            Disabled="true">
                             <Loader runat="server"
                                 ID="uxEquipmentLoader" Mode="Frame" AutoLoad="false" ReloadOnEvent="true">
                                 <LoadMask ShowMask="true"  />
@@ -172,7 +175,8 @@
                         </ext:Panel>
                         <ext:Panel runat="server"
                             Title="Employees"
-                            ID="uxEmployeeTab">
+                            ID="uxEmployeeTab"
+                            Disabled="true">
                             <Loader ID="uxEmployeeLoader" runat="server" Mode="Frame" AutoLoad="false" ReloadOnEvent="true">
                                 <LoadMask ShowMask="true" />
                             </Loader>   
@@ -182,7 +186,8 @@
                         </ext:Panel>
                         <ext:Panel runat="server"
                             Title="Weather"
-                            ID="uxWeatherTab">
+                            ID="uxWeatherTab"
+                            Disabled="true">
                             <Loader ID="uxWeatherLoader" runat="server" Mode="Frame" AutoLoad="false" ReloadOnEvent="true">
                                 <LoadMask ShowMask="true" />
                             </Loader>
@@ -192,7 +197,8 @@
                         </ext:Panel>
                         <ext:Panel runat="server"
                             Title="Chemical Mix"
-                            ID="uxChemicalTab">
+                            ID="uxChemicalTab"
+                            Disabled="true">
                             <Loader ID="uxChemicalLoader" runat="server" Mode="Frame" AutoLoad="false" ReloadOnEvent="true">
                                 <LoadMask ShowMask="true" />
                             </Loader>   
@@ -202,7 +208,8 @@
                         </ext:Panel>
                         <ext:Panel runat="server"
                             Title="Inventory"
-                            ID="uxInventoryTab">
+                            ID="uxInventoryTab"
+                            Disabled="true">
                             <Loader ID="uxInventoryLoader" runat="server" Mode="Frame" AutoLoad="false" ReloadOnEvent="true">
                                 <LoadMask ShowMask="true" />
                             </Loader>   
@@ -212,7 +219,8 @@
                         </ext:Panel>
                         <ext:Panel runat="server"
                             Title="Production"
-                            ID="uxProductionTab">
+                            ID="uxProductionTab"
+                            Disabled="true">
                             <Loader ID="uxProductionLoader" runat="server" Mode="Frame" AutoLoad="false" ReloadOnEvent="true">
                                 <LoadMask ShowMask="true" />
                             </Loader>   
