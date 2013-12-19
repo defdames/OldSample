@@ -10,18 +10,17 @@
 <body>
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
     <form id="form1" runat="server">
-        <ext:Panel runat="server" ID="uxGridContainer">
+        <ext:Viewport runat="server" ID="uxGridViewPort" Layout="AutoLayout">
             <Items>
+
                 <ext:GridPanel runat="server"
                     ID="uxHeaderGrid"
                     Title="Details"
                     TitleAlign="Center"
-                    Layout="HBoxLayout"
-                    Padding="5" >
+                    Border="false" Collapsible="true">
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxHeaderStore"
-                            AutoDataBind="true">
+                            ID="uxHeaderStore">
                             <Model>
                                 <ext:Model ID="Model1" runat="server">
                                     <Fields>
@@ -41,7 +40,7 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column1" runat="server" DataIndex="LONG_NAME" Text="Project Name" Flex="8"/>
+                            <ext:Column ID="Column1" runat="server" DataIndex="LONG_NAME" Text="Project Name" Flex="8" />
                             <ext:DateColumn ID="DateColumn1" runat="server" DataIndex="DA_DATE" Text="Date" Flex="3" />
                             <ext:Column ID="Column2" runat="server" DataIndex="SUBDIVISION" Text="Sub-Division" Flex="6" />
                             <ext:Column ID="Column3" runat="server" DataIndex="CONTRACTOR" Text="Contractor" Flex="6" />
@@ -57,12 +56,10 @@
                     ID="uxEquipmentGrid"
                     Title="Equipment and Employees"
                     TitleAlign="Center"
-                    Layout="HBoxLayout"
-                    Padding="5">
+                    Border="false" Collapsible="true">
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxEquipmentStore"
-                            AutoDataBind="true">
+                            ID="uxEquipmentStore">
                             <Model>
                                 <ext:Model ID="Model2" runat="server">
                                     <Fields>
@@ -96,12 +93,10 @@
                     ID="uxProductionGrid"
                     Title="Production"
                     TitleAlign="Center"
-                    Layout="HBoxLayout"
-                    Padding="5">
+                    Border="false" Collapsible="true">
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxProductionStore"
-                            AutoDataBind="true">
+                            ID="uxProductionStore">
                             <Model>
                                 <ext:Model ID="Model3" runat="server">
                                     <Fields>
@@ -135,12 +130,10 @@
                     ID="uxWeatherGrid"
                     Title="Weather"
                     TitleAlign="Center"
-                    Layout="HBoxLayout"
-                    Padding="5">
+                    Border="false" Collapsible="true">
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxWeatherStore"
-                            AutoDataBind="true">
+                            ID="uxWeatherStore">
                             <Model>
                                 <ext:Model ID="Model4" runat="server">
                                     <Fields>
@@ -170,12 +163,10 @@
                     ID="uxChemicalGrid"
                     Title="Chemical Mix"
                     TitleAlign="Center"
-                    Layout="HBoxLayout"
-                    Padding="5">
+                    Border="false" Collapsible="true">
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxChemicalStore"
-                            AutoDataBind="true">
+                            ID="uxChemicalStore">
                             <Model>
                                 <ext:Model ID="Model5" runat="server">
                                     <Fields>
@@ -214,12 +205,10 @@
                     ID="uxInventoryGrid"
                     Title="Inventory"
                     TitleAlign="Center"
-                    Layout="HBoxLayout"
-                    Padding="5">
+                    Border="false" Collapsible="true">
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxInventoryStore"
-                            AutoDataBind="true">
+                            ID="uxInventoryStore">
                             <Model>
                                 <ext:Model ID="Model6" runat="server">
                                     <Fields>
@@ -241,7 +230,7 @@
                             <ext:Column ID="Column38" runat="server" DataIndex="DESCRIPTION" Text="Item" Flex="2" />
                             <ext:Column ID="Column39" runat="server" DataIndex="RATE" Text="Rate" Flex="3" />
                             <ext:Column ID="Column40" runat="server" DataIndex="UNIT_OF_MEASURE" Text="Unit" Flex="3" />
-                            <ext:Column ID="Column41" runat="server" DataIndex="EPA_NUMBER" Text="EPA Number" Flex="6" /> 
+                            <ext:Column ID="Column41" runat="server" DataIndex="EPA_NUMBER" Text="EPA Number" Flex="6" />
                         </Columns>
                     </ColumnModel>
                 </ext:GridPanel>
@@ -249,12 +238,10 @@
                     ID="uxFooterGrid"
                     Title="Footer"
                     TitleAlign="Center"
-                    Layout="HBoxLayout"
-                    Padding="5">
+                    Border="false" Collapsible="true">
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxFooterStore"
-                            AutoDataBind="true">
+                            ID="uxFooterStore">
                             <Model>
                                 <ext:Model ID="Model7" runat="server">
                                     <Fields>
@@ -272,18 +259,18 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column runat="server" DataIndex="REASON_FOR_NO_WORK" Text="Reason for no Work" Flex="1" />
-                            <ext:Column runat="server" DataIndex="HOTEL_NAME" Text="Hotel Name" Flex="1" />
-                            <ext:Column runat="server" DataIndex="HOTEL_CITY" Text="Hotel City" Flex="1" />
-                            <ext:Column runat="server" DataIndex="HOTEL_STATE" Text="Hotel State" Flex="1" />
-                            <ext:Column runat="server" DataIndex="HOTEL_PHONE" Text="Hotel Phone" Flex="1" />
-                            <ext:BooleanColumn runat="server" DataIndex="FOREMAN_SIGNATURE" Text="Foreman Signature Submitted" Flex="1" />
-                            <ext:BooleanColumn runat="server" DataIndex="CONTRACT_REP" Text="Contract Rep Signature Submitted" Flex="1" />
+                            <ext:Column ID="Column42" runat="server" DataIndex="REASON_FOR_NO_WORK" Text="Reason for no Work" Flex="1" />
+                            <ext:Column ID="Column43" runat="server" DataIndex="HOTEL_NAME" Text="Hotel Name" Flex="1" />
+                            <ext:Column ID="Column44" runat="server" DataIndex="HOTEL_CITY" Text="Hotel City" Flex="1" />
+                            <ext:Column ID="Column45" runat="server" DataIndex="HOTEL_STATE" Text="Hotel State" Flex="1" />
+                            <ext:Column ID="Column46" runat="server" DataIndex="HOTEL_PHONE" Text="Hotel Phone" Flex="1" />
+                            <ext:BooleanColumn ID="BooleanColumn1" runat="server" DataIndex="FOREMAN_SIGNATURE" Text="Foreman Signature Submitted" Flex="1" />
+                            <ext:BooleanColumn ID="BooleanColumn2" runat="server" DataIndex="CONTRACT_REP" Text="Contract Rep Signature Submitted" Flex="1" />
                         </Columns>
                     </ColumnModel>
                 </ext:GridPanel>
             </Items>
-        </ext:Panel>
+        </ext:Viewport>
     </form>
 </body>
 </html>

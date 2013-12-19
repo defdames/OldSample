@@ -18,13 +18,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 X.Redirect("~/Views/uxDefault.aspx");
             }
-            GetHeaderData();
-            GetEmployeeData();
-            GetProductionData();
-            GetWeatherData();
-            GetChemicalMixData();
-            GetInventory();
-            GetFooterData();
+            if (!X.IsAjaxRequest)
+            {
+                GetHeaderData();
+                GetEmployeeData();
+                GetProductionData();
+                GetWeatherData();
+                GetChemicalMixData();
+                GetInventory();
+                GetFooterData();
+            }
         }
 
         protected void GetHeaderData()
@@ -38,6 +41,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             where d.HEADER_ID == HeaderId
                             select new {d.PROJECT_ID, p.LONG_NAME, d.DA_DATE, d.SUBDIVISION, d.CONTRACTOR, d.PERSON_ID, e.EMPLOYEE_NAME, d.LICENSE, d.STATE, d.APPLICATION_TYPE, d.DENSITY }).ToList();
                 uxHeaderStore.DataSource = data;
+                uxHeaderStore.DataBind();
             }
         }
 
@@ -57,6 +61,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             select new { e.EMPLOYEE_NAME, projects.NAME, d.TIME_IN, d.TIME_OUT, d.TRAVEL_TIME, d.DRIVE_TIME, d.PER_DIEM, d.COMMENTS }).ToList();
 
                 uxEquipmentStore.DataSource = data;
+                uxEquipmentStore.DataBind();
             }
         }
 
@@ -73,6 +78,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             where d.HEADER_ID == HeaderId
                             select new { d.PRODUCTION_ID, h.PROJECT_ID, p.LONG_NAME, t.TASK_ID, t.DESCRIPTION, d.TIME_IN, d.TIME_OUT, d.WORK_AREA, d.POLE_FROM, d.POLE_TO, d.ACRES_MILE, d.GALLONS }).ToList();
                 uxProductionStore.DataSource = data;
+                uxProductionStore.DataBind();
             }
         }
 
@@ -86,6 +92,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             where w.HEADER_ID == HeaderId
                             select w).ToList();
                 uxWeatherStore.DataSource = data;
+                uxWeatherStore.DataBind();
             }
         }
 
@@ -99,6 +106,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             where c.HEADER_ID == HeaderId
                             select new {c.CHEMICAL_MIX_NUMBER, c.TARGET_AREA, c.GALLON_ACRE, c.GALLON_STARTING, c.GALLON_MIXED, c.GALLON_REMAINING, c.STATE, c.COUNTY, TOTAL = c.GALLON_STARTING + c.GALLON_MIXED, USED = c.GALLON_STARTING + c.GALLON_MIXED - c.GALLON_REMAINING, SPRAYED = (c.GALLON_STARTING + c.GALLON_MIXED - c.GALLON_REMAINING) / c.GALLON_ACRE }).ToList();
                 uxChemicalStore.DataSource = data;
+                uxChemicalStore.DataBind();
             }
         }
 
@@ -117,6 +125,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
                             select new {c.CHEMICAL_MIX_NUMBER, d.SUB_INVENTORY_SECONDARY_NAME, j.DESCRIPTION, d.RATE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).ToList();
                 uxInventoryStore.DataSource = data;
+                uxInventoryStore.DataBind();
             }
         }
 
@@ -131,6 +140,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 var processedData = (from d in data
                                     select new {d.HOTEL_CITY, d.HOTEL_NAME, d.HOTEL_PHONE, d.HOTEL_STATE, d.REASON_FOR_NO_WORK, FOREMAN_SIGNATURE = d.FOREMAN_SIGNATURE.Length > 0 ? true : false, CONTRACT_REP = d.CONTRACT_REP.Length > 0 ? true : false}).ToList();
                 uxFooterStore.DataSource = processedData;
+                uxFooterStore.DataBind();
             }
         }
     }
