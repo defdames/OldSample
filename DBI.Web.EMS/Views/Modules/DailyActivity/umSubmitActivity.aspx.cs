@@ -25,6 +25,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         }
 
+        /// <summary>
+        /// Gets existing footer data for display in form
+        /// </summary>
         protected void GetFooterData()
         {
             DAILY_ACTIVITY_FOOTER data;
@@ -103,6 +106,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Direct event to store footer to db
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deStoreFooter(object sender, DirectEventArgs e)
         {
             DAILY_ACTIVITY_FOOTER data;
@@ -289,6 +297,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Converts uploaded image file to byte array for DB storage
+        /// </summary>
+        /// <param name="ImageFile"></param>
+        /// <returns></returns>
         protected byte[] ImageToByteArray(HttpPostedFile ImageFile)
         {
             byte[] ImageArray = null;
@@ -297,6 +310,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             return ImageArray;
         }
 
+        /// <summary>
+        /// Updates Status
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deStoreFooterAndSubmit(object sender, DirectEventArgs e)
         {
             //Set HeaderId
@@ -327,6 +345,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             
         }
 
+        /// <summary>
+        /// Submits header for approval
+        /// </summary>
         [DirectMethod]
         public void dmSubmitForApproval()
         {
@@ -360,6 +381,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Validation check to see if equipment meter readings are missing
+        /// </summary>
+        /// <param name="HeaderId"></param>
+        /// <returns></returns>
         protected bool AreMetersMissing(long HeaderId)
         {
             //Get List of equipment

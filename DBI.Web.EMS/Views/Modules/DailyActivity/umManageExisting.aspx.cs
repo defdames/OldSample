@@ -88,6 +88,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxExportToPDF.Disabled = false;
         }
 
+        /// <summary>
+        /// Disables tabs and buttons when row is deselected
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void deDeselectHeader(object sender, DirectEventArgs e)
         {
             uxApproveActivityButton.Disabled = true;
@@ -104,6 +109,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxWeatherTab.Disabled = true;
             uxProductionTab.Disabled = true;
         }
+
         /// <summary>
         /// Shows Submit activity Window/Form
         /// </summary>
