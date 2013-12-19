@@ -10,14 +10,13 @@
 <body>
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
     <form id="form1" runat="server">
-        <ext:Viewport runat="server" ID="uxGridViewPort" Layout="AutoLayout">
+        <ext:Panel runat="server" ID="uxMainContainer" Layout="AutoLayout">
             <Items>
-
                 <ext:GridPanel runat="server"
                     ID="uxHeaderGrid"
                     Title="Details"
                     TitleAlign="Center"
-                    Border="false" Collapsible="true">
+                    Border="false">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxHeaderStore">
@@ -56,7 +55,10 @@
                     ID="uxEquipmentGrid"
                     Title="Equipment and Employees"
                     TitleAlign="Center"
-                    Border="false" Collapsible="true">
+                    Border="false"
+                    Collapsed="true"
+                    Collapsible="true"
+                    TitleCollapse="true">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxEquipmentStore">
@@ -93,7 +95,10 @@
                     ID="uxProductionGrid"
                     Title="Production"
                     TitleAlign="Center"
-                    Border="false" Collapsible="true">
+                    Border="false"
+                    Collapsed="true"
+                    Collapsible="true"
+                    TitleCollapse="true">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxProductionStore">
@@ -130,7 +135,10 @@
                     ID="uxWeatherGrid"
                     Title="Weather"
                     TitleAlign="Center"
-                    Border="false" Collapsible="true">
+                    Border="false"
+                    Collapsed="true"
+                    Collapsible="true"
+                    TitleCollapse="true">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxWeatherStore">
@@ -163,7 +171,10 @@
                     ID="uxChemicalGrid"
                     Title="Chemical Mix"
                     TitleAlign="Center"
-                    Border="false" Collapsible="true">
+                    Border="false"
+                    Collapsed="true"
+                    Collapsible="true"
+                    TitleCollapse="true">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxChemicalStore">
@@ -205,7 +216,10 @@
                     ID="uxInventoryGrid"
                     Title="Inventory"
                     TitleAlign="Center"
-                    Border="false" Collapsible="true">
+                    Border="false"
+                    Collapsed="true"
+                    Collapsible="true"
+                    TitleCollapse="true">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxInventoryStore">
@@ -238,7 +252,10 @@
                     ID="uxFooterGrid"
                     Title="Footer"
                     TitleAlign="Center"
-                    Border="false" Collapsible="true">
+                    Border="false"
+                    Collapsed="true"
+                    Collapsible="true"
+                    TitleCollapse="true">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxFooterStore">
@@ -270,7 +287,7 @@
                     </ColumnModel>
                 </ext:GridPanel>
             </Items>
-        </ext:Viewport>
+        </ext:Panel>
     </form>
 </body>
 </html>

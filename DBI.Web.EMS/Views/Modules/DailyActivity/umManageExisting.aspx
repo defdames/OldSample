@@ -50,11 +50,11 @@
                         <ext:FilterHeader runat="server" Remote="true" DateFormat="MM-dd-yyyy" />
                     </Plugins>
                     <DirectEvents>
-                        <SelectionChange OnEvent="deUpdateUrlAndButtons">
+                        <Select OnEvent="deUpdateUrlAndButtons">
                             <ExtraParams>
                                 <ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
                             </ExtraParams>
-                        </SelectionChange>
+                        </Select>
                         <Deselect OnEvent="deDeselectHeader" />
                     </DirectEvents>
                     <TopBar>
