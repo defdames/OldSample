@@ -676,7 +676,7 @@
           <Key>
             <PropertyRef Name="ACTIVITY_ID" />
           </Key>
-          <Property Name="ACTIVITY_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
+          <Property Name="ACTIVITY_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="NAME" Type="varchar2" Nullable="false" MaxLength="500" />
           <Property Name="DESCRIPTION" Type="varchar2" Nullable="false" MaxLength="500" />
           <Property Name="CREATED_DATE" Type="date" />
@@ -687,6 +687,8 @@
           <Property Name="CONTAINER" Type="varchar2" MaxLength="2000" />
           <Property Name="ICON" Type="varchar2" MaxLength="250" />
           <Property Name="CONTROL_TEXT" Type="varchar2" MaxLength="250" />
+          <Property Name="PARENT_ITEM_ID" Type="number" Precision="15" />
+          <Property Name="SORT_NUMBER" Type="number" Nullable="false" Precision="15" />
         </EntityType>
         <EntityType Name="SYS_LOG">
           <Key>
@@ -1382,15 +1384,10 @@
             <End Role="SYS_USERS" EntitySet="SYS_USERS" />
             <End Role="SYS_USER_INFORMATION" EntitySet="SYS_USER_INFORMATION" />
           </AssociationSet>
-          <EntitySet Name="SYS_ACTIVITY" EntityType="OracleModel.SYS_ACTIVITY" />
           <EntitySet Name="SYS_USER_ACTIVITY" EntityType="OracleModel.SYS_USER_ACTIVITY" />
           <AssociationSet Name="SYS_USERSSYS_USER_ACTIVITY" Association="OracleModel.SYS_USERSSYS_USER_ACTIVITY">
             <End Role="SYS_USERS" EntitySet="SYS_USERS" />
             <End Role="SYS_USER_ACTIVITY" EntitySet="SYS_USER_ACTIVITY" />
-          </AssociationSet>
-          <AssociationSet Name="SYS_USER_ACTIVITYSYS_ACTIVITY" Association="OracleModel.SYS_USER_ACTIVITYSYS_ACTIVITY">
-            <End Role="SYS_USER_ACTIVITY" EntitySet="SYS_USER_ACTIVITY" />
-            <End Role="SYS_ACTIVITY" EntitySet="SYS_ACTIVITY" />
           </AssociationSet>
           <EntitySet Name="SYS_LOG" EntityType="OracleModel.SYS_LOG" />
           <AssociationSet Name="SYS_USERSSYS_LOG" Association="OracleModel.SYS_USERSSYS_LOG">
@@ -1445,6 +1442,11 @@
           <EntitySet Name="CLASS_CODES_V" EntityType="OracleModel.CLASS_CODES_V" />
           <EntitySet Name="UNIT_OF_MEASURE_V" EntityType="OracleModel.UNIT_OF_MEASURE_V" />
           <EntitySet Name="DAILY_ACTIVITY_STATUS" EntityType="OracleModel.DAILY_ACTIVITY_STATUS" />
+          <EntitySet Name="SYS_ACTIVITY" EntityType="OracleModel.SYS_ACTIVITY" />
+          <AssociationSet Name="SYS_ACTIVITYSYS_USER_ACTIVITY" Association="OracleModel.SYS_ACTIVITYSYS_USER_ACTIVITY">
+            <End Role="SYS_USER_ACTIVITY" EntitySet="SYS_USER_ACTIVITY" />
+            <End Role="SYS_ACTIVITY" EntitySet="SYS_ACTIVITY" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -1497,23 +1499,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="SYS_ACTIVITY">
-          <Key>
-            <PropertyRef Name="ACTIVITY_ID" />
-          </Key>
-          <Property Type="Int64" Name="ACTIVITY_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="NAME" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="DESCRIPTION" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATED_DATE" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="LAST_UPDATED" />
-          <Property Type="String" Name="LAST_UPDATED_BY" MaxLength="500" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="SYS_USER_ACTIVITY" Relationship="OracleModel.SYS_USER_ACTIVITYSYS_ACTIVITY" FromRole="SYS_ACTIVITY" ToRole="SYS_USER_ACTIVITY" />
-          <Property Type="String" Name="PATH" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CONTAINER" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ICON" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CONTROL_TEXT" MaxLength="250" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="SYS_USER_ACTIVITY">
           <Key>
             <PropertyRef Name="USER_ACTIVITY_ID" />
@@ -1526,7 +1511,7 @@
           <Property Type="DateTime" Name="LAST_UPDATED" />
           <Property Type="String" Name="LAST_UPDATED_BY" MaxLength="500" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="SYS_USERS" Relationship="OracleModel.SYS_USERSSYS_USER_ACTIVITY" FromRole="SYS_USER_ACTIVITY" ToRole="SYS_USERS" />
-          <NavigationProperty Name="SYS_ACTIVITY" Relationship="OracleModel.SYS_USER_ACTIVITYSYS_ACTIVITY" FromRole="SYS_USER_ACTIVITY" ToRole="SYS_ACTIVITY" />
+          <NavigationProperty Name="SYS_ACTIVITY" Relationship="OracleModel.SYS_ACTIVITYSYS_USER_ACTIVITY" FromRole="SYS_USER_ACTIVITY" ToRole="SYS_ACTIVITY" />
         </EntityType>
         <Association Name="SYS_USERSSYS_USER_ACTIVITY">
           <End Type="OracleModel.SYS_USERS" Role="SYS_USERS" Multiplicity="1" />
@@ -1537,18 +1522,6 @@
             </Principal>
             <Dependent Role="SYS_USER_ACTIVITY">
               <PropertyRef Name="USER_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="SYS_USER_ACTIVITYSYS_ACTIVITY">
-          <End Type="OracleModel.SYS_USER_ACTIVITY" Role="SYS_USER_ACTIVITY" Multiplicity="*" />
-          <End Type="OracleModel.SYS_ACTIVITY" Role="SYS_ACTIVITY" Multiplicity="1" />
-          <ReferentialConstraint>
-            <Principal Role="SYS_ACTIVITY">
-              <PropertyRef Name="ACTIVITY_ID" />
-            </Principal>
-            <Dependent Role="SYS_USER_ACTIVITY">
-              <PropertyRef Name="ACTIVITY_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2441,6 +2414,37 @@
           <Property Type="Int32" Name="STATUS" Nullable="false" />
           <Property Type="String" Name="STATUS_VALUE" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="SYS_ACTIVITY">
+          <Key>
+            <PropertyRef Name="ACTIVITY_ID" />
+          </Key>
+          <Property Type="Int64" Name="ACTIVITY_ID" Nullable="false" />
+          <Property Type="String" Name="NAME" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DESCRIPTION" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATED_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_UPDATED" />
+          <Property Type="String" Name="LAST_UPDATED_BY" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PATH" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CONTAINER" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ICON" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CONTROL_TEXT" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="PARENT_ITEM_ID" />
+          <Property Type="Int64" Name="SORT_NUMBER" Nullable="false" />
+          <NavigationProperty Name="SYS_USER_ACTIVITY" Relationship="OracleModel.SYS_ACTIVITYSYS_USER_ACTIVITY" FromRole="SYS_ACTIVITY" ToRole="SYS_USER_ACTIVITY" />
+        </EntityType>
+        <Association Name="SYS_ACTIVITYSYS_USER_ACTIVITY">
+          <End Type="OracleModel.SYS_USER_ACTIVITY" Role="SYS_USER_ACTIVITY" Multiplicity="*" />
+          <End Type="OracleModel.SYS_ACTIVITY" Role="SYS_ACTIVITY" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="SYS_ACTIVITY">
+              <PropertyRef Name="ACTIVITY_ID" />
+            </Principal>
+            <Dependent Role="SYS_USER_ACTIVITY">
+              <PropertyRef Name="ACTIVITY_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2472,23 +2476,6 @@
                 <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
                 <ScalarProperty Name="USER_NAME" ColumnName="USER_NAME" />
                 <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SYS_ACTIVITY">
-            <EntityTypeMapping TypeName="OracleModel.SYS_ACTIVITY">
-              <MappingFragment StoreEntitySet="SYS_ACTIVITY">
-                <ScalarProperty Name="CONTROL_TEXT" ColumnName="CONTROL_TEXT" />
-                <ScalarProperty Name="ICON" ColumnName="ICON" />
-                <ScalarProperty Name="CONTAINER" ColumnName="CONTAINER" />
-                <ScalarProperty Name="PATH" ColumnName="PATH" />
-                <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
-                <ScalarProperty Name="LAST_UPDATED" ColumnName="LAST_UPDATED" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
-                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
-                <ScalarProperty Name="NAME" ColumnName="NAME" />
-                <ScalarProperty Name="ACTIVITY_ID" ColumnName="ACTIVITY_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3143,6 +3130,25 @@
                 <ScalarProperty Name="STATUS_VALUE" ColumnName="STATUS_VALUE" />
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
                 <ScalarProperty Name="STATUS_ID" ColumnName="STATUS_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_ACTIVITY">
+            <EntityTypeMapping TypeName="OracleModel.SYS_ACTIVITY">
+              <MappingFragment StoreEntitySet="SYS_ACTIVITY">
+                <ScalarProperty Name="SORT_NUMBER" ColumnName="SORT_NUMBER" />
+                <ScalarProperty Name="PARENT_ITEM_ID" ColumnName="PARENT_ITEM_ID" />
+                <ScalarProperty Name="CONTROL_TEXT" ColumnName="CONTROL_TEXT" />
+                <ScalarProperty Name="ICON" ColumnName="ICON" />
+                <ScalarProperty Name="CONTAINER" ColumnName="CONTAINER" />
+                <ScalarProperty Name="PATH" ColumnName="PATH" />
+                <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+                <ScalarProperty Name="LAST_UPDATED" ColumnName="LAST_UPDATED" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="ACTIVITY_ID" ColumnName="ACTIVITY_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
