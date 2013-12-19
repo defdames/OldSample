@@ -199,6 +199,7 @@
 							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deRemoveInventory">
+									<Confirmation ConfirmRequest="true" Title="Really Delete?" Message="Do you really want to delete?" />
 									<ExtraParams>
 										<ext:Parameter Name="InventoryId" Value="#{uxCurrentInventoryGrid}.getSelectionModel().getSelection()[0].data.INVENTORY_ID" Mode="Raw" />
 									</ExtraParams>
