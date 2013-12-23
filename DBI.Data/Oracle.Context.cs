@@ -27,7 +27,6 @@ namespace DBI.Data
     
         public DbSet<SYS_USERS> SYS_USERS { get; set; }
         public DbSet<SYS_USER_INFORMATION> SYS_USER_INFORMATION { get; set; }
-        public DbSet<SYS_ACTIVITY> SYS_ACTIVITY { get; set; }
         public DbSet<SYS_USER_ACTIVITY> SYS_USER_ACTIVITY { get; set; }
         public DbSet<SYS_LOG> SYS_LOG { get; set; }
         public DbSet<EMPLOYEES_V> EMPLOYEES_V { get; set; }
@@ -46,5 +45,6 @@ namespace DBI.Data
         public DbSet<CLASS_CODES_V> CLASS_CODES_V { get; set; }
         public DbSet<UNIT_OF_MEASURE_V> UNIT_OF_MEASURE_V { get; set; }
         public DbSet<DAILY_ACTIVITY_STATUS> DAILY_ACTIVITY_STATUS { get; set; }
+        public DbSet<SYS_ACTIVITY> SYS_ACTIVITY { get; set; }
     }
 }

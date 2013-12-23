@@ -30,6 +30,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Get data for header grid
+        /// </summary>
         protected void GetHeaderData()
         {
             //Query and set datasource for header
@@ -45,6 +48,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Get data for Employee/Equipment grid
+        /// </summary>
         protected void GetEmployeeData()
         {
             //Query and set datasource for employees
@@ -65,6 +71,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Get data for Production grid
+        /// </summary>
         protected void GetProductionData()
         {
             //Query and set datasource for Production
@@ -82,6 +91,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Get data for Weather grid
+        /// </summary>
         protected void GetWeatherData()
         {
             //Query and set datasource for Weather
@@ -96,6 +108,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Get data for Chemical Mix grid
+        /// </summary>
         protected void GetChemicalMixData()
         {
             //Query and set datasource for Chemical Mix
@@ -110,6 +125,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Get data for Inventory grid
+        /// </summary>
         protected void GetInventory()
         {
             //Query and set datasource for Inventory
@@ -129,6 +147,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        /// <summary>
+        /// Get data for Footer grid
+        /// </summary>
         protected void GetFooterData()
         {
             using (Entities _context = new Entities())
