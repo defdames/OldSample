@@ -17,6 +17,8 @@
                 <ext:TabPanel ID="TabPanel1" runat="server" >
                     <Items>
 
+
+                       <%-- <CrossingInfo Tab>--%>
                <ext:FormPanel runat="server" Title="Crossing Information" Layout="FormLayout">
                    <Items>
                        <ext:Toolbar ID="Toolbar1" runat="server">
@@ -39,9 +41,9 @@
 
                              <ext:DropDownField ID="uxState" runat="server" TriggerIcon="SimpleArrowDown" FieldLabel="State" LabelAlign="Right" >
                             
-                             </ext:DropDownField>
-                            </Items>
-                           </ext:FieldContainer>
+                                 </ext:DropDownField>
+                                </Items>
+                                </ext:FieldContainer>
 
                                 <ext:FieldContainer runat="server" Layout="HBoxLayout">
                                     <Items>
@@ -141,13 +143,68 @@
                                      <ext:TextArea ID="TextArea2" runat="server" FieldLabel="Special Instructions" AnchorHorizontal="92%" LabelAlign="Right" />
                 </Items>
                </ext:FormPanel>
-               
-               <ext:FormPanel runat="server" Title="Contacts" Layout="FormLayout">
-                   <Items>
+<%-- -------------------------------------------------------------------------------------------------------------------------------------------------------   --%>           
 
-                   </Items>
-               </ext:FormPanel>
-
+                        <%--<ContactsTab>--%>
+               <ext:GridPanel runat="server" Title="Contacts" Layout="HBoxLayout">
+                   <Store>
+				<ext:Store runat="server"
+					ID="uxCurrentContactStore"
+					AutoDataBind="true" WarningOnDirty="false">
+					<Model>
+						<ext:Model ID="Model1" runat="server">
+							<Fields>
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+							</Fields>
+						</ext:Model>
+					</Model>
+					<%--<Listeners>
+						<Load Fn="doMath" />
+					</Listeners>--%>
+				</ext:Store>
+			</Store>
+			<ColumnModel>
+				<Columns>
+					<ext:Column ID="Column1" runat="server" DataIndex="" Text="Name" Flex="1"/>
+					<ext:Column ID="Column2" runat="server" DataIndex="" Text="Address 1" Flex="1" />
+					<ext:Column ID="Column3" runat="server" DataIndex="" Text="Address 2" Flex="1" />
+					<ext:Column ID="Column4" runat="server" DataIndex="" Text="City" Flex="1" />
+					<ext:Column ID="Column5" runat="server" DataIndex="" Text="State" Flex="1" />
+					<ext:Column runat="server" ID="uxGallonTotalGrid" Text="Zip" DataIndex="" Flex="1" />
+					<ext:Column ID="Column6" runat="server" DataIndex="" Text="Email" Flex="1" />
+					<ext:Column runat="server" ID="uxGallonUsedGrid" Text="Work #" DataIndex="" Flex="1" />
+					<ext:Column runat="server" ID="uxAcresSprayedGrid" Text="Cell #" DataIndex="" Flex="1" />
+					<ext:Column ID="Column7" runat="server" DataIndex="" Text="RR" Flex="1" />
+					
+				</Columns>
+			</ColumnModel>
+                   <TopBar>
+                   
+                        <ext:Toolbar ID="Toolbar2" runat="server">
+                        <Items>
+                        <ext:Button ID="uxAddContactButton" runat="server" Text="Add New Contact" Icon="ApplicationAdd" />
+                        <ext:Button ID="uxEditContactButton" runat="server" Text="Edit Contact" Icon="ApplicationEdit" />
+                        <ext:Button ID="uxAssignContactButton" runat="server" Text="Assign Crossing to Contact" Icon="ApplicationGo" />
+                        <ext:Button ID="uxDeleteContact" runat="server" Text="Delete Contact" Icon="ApplicationDelete" />
+                        </Items>
+                            
+                         </ext:Toolbar>
+                </TopBar>
+                   
+               </ext:GridPanel>
+<%-----------------------------------------------------------------------------------------------------------------------------------------------------%>
                <ext:FormPanel runat="server" Title="Sub-Divisons" Layout="FormLayout">
                    <Items>
 
@@ -167,6 +224,7 @@
                         
                </Items>
                 </ext:TabPanel>
+                
             </Items>
                
         </ext:Viewport>
