@@ -177,16 +177,16 @@
 			</Store>
 			<ColumnModel>
 				<Columns>
-					<ext:Column ID="Column1" runat="server" DataIndex="" Text="Name" Flex="1"/>
-					<ext:Column ID="Column2" runat="server" DataIndex="" Text="Address 1" Flex="1" />
-					<ext:Column ID="Column3" runat="server" DataIndex="" Text="Address 2" Flex="1" />
-					<ext:Column ID="Column4" runat="server" DataIndex="" Text="City" Flex="1" />
-					<ext:Column ID="Column5" runat="server" DataIndex="" Text="State" Flex="1" />
-					<ext:Column runat="server" ID="uxGallonTotalGrid" Text="Zip" DataIndex="" Flex="1" />
-					<ext:Column ID="Column6" runat="server" DataIndex="" Text="Email" Flex="1" />
-					<ext:Column runat="server" ID="uxGallonUsedGrid" Text="Work #" DataIndex="" Flex="1" />
-					<ext:Column runat="server" ID="uxAcresSprayedGrid" Text="Cell #" DataIndex="" Flex="1" />
-					<ext:Column ID="Column7" runat="server" DataIndex="" Text="RR" Flex="1" />
+					<ext:Column ID="uxNameCON" runat="server" DataIndex="" Text="Manager Name" Flex="1"/>
+					<ext:Column ID="uxAddress1CON" runat="server" DataIndex="" Text="Address 1" Flex="1" />
+					<ext:Column ID="uxAddress2CON" runat="server" DataIndex="" Text="Address 2" Flex="1" />
+					<ext:Column ID="uxCityCON" runat="server" DataIndex="" Text="City" Flex="1" />
+					<ext:Column ID="uxStateCON" runat="server" DataIndex="" Text="State" Flex="1" />
+					<ext:Column ID="uxZipCON" runat="server"  Text="Zip" DataIndex="" Flex="1" />
+					<ext:Column ID="uxEmailCON" runat="server" DataIndex="" Text="Email" Flex="1" />
+					<ext:Column runat="server" ID="uxWorkNumCON" Text="Work #" DataIndex="" Flex="1" />
+					<ext:Column runat="server" ID="uxCellNumCON" Text="Cell #" DataIndex="" Flex="1" />
+					<ext:Column ID="uxRRCON" runat="server" DataIndex="" Text="RR" Flex="1" />
 					
 				</Columns>
 			</ColumnModel>
@@ -205,21 +205,139 @@
                    
                </ext:GridPanel>
 <%-----------------------------------------------------------------------------------------------------------------------------------------------------%>
-               <ext:FormPanel runat="server" Title="Sub-Divisons" Layout="FormLayout">
+                                        <%--  <Sub-Divsons Tab>--%>
+                    <ext:FormPanel runat="server" Title="Sub-Divisons" Layout="FormLayout">
                    <Items>
 
                    </Items>
                </ext:FormPanel>
+
+
+                                        <%-- <Service Units Tab>--%>
                  <ext:FormPanel ID="FormPanel1" runat="server" Title="Service Units" Layout="FormLayout">
                    <Items>
+                        <ext:Toolbar ID="Toolbar4" runat="server">
+                        <Items>
+                   
+                        <ext:Button ID="Button6" runat="server" Text="Add Service Unit" Icon="ApplicationAdd" />
+                        <ext:Button ID="Button7" runat="server" Text="Edit Service Unit" Icon="ApplicationGo" />
+                        <ext:Button ID="Button8" runat="server" Text="Delete Service Unit" Icon="ApplicationDelete" />
+                      
+                       
+                        </Items>
+                         </ext:Toolbar>
 
+                       <ext:FieldContainer ID="FieldContainer9" runat="server" Layout="HBoxLayout">
+                           <Items>
+                             <ext:DropDownField ID="uxCrossingNumSU" runat="server" TriggerIcon="SimpleArrowDown" FieldLabel="Crossing #" LabelAlign="Right">
+                                        
+                             </ext:DropDownField>
+
+                             <ext:DropDownField ID="uxServiceTypeSU" runat="server" TriggerIcon="SimpleArrowDown" FieldLabel="Service Type" LabelAlign="Right" >
+                            
+                                 </ext:DropDownField>
+                                </Items>
+                                </ext:FieldContainer>
+
+                                <ext:FieldContainer ID="FieldContainer10" runat="server" Layout="HBoxLayout">
+                                    <Items>
+                                    <ext:TextField ID="uxSubDivisionSU" runat="server" FieldLabel="Subdivision" LabelAlign="Right" AnchorHorizontal="100%" />
+                                   
+                                    <ext:TextField ID="uxProjectNumSU" runat="server" FieldLabel="Project #" AnchorHorizontal="100%" LabelAlign="Right"/>
+                                    </Items>
+
+                                </ext:FieldContainer>
+                            
+                                <ext:FieldContainer ID="FieldContainer11" runat="server" Layout="HBoxLayout">
+                                    <Items>
+                                     <ext:TextField ID="uxApprovedDateSU" runat="server" FieldLabel="Approved Date" AnchorHorizontal="100%" LabelAlign="Right" />
+                                     <ext:TextField ID="uxCompletedDateSU" runat="server" FieldLabel="Completed Date" AnchorHorizontal="100%" LabelAlign="Right" />
+                                     <ext:Checkbox ID="Checkbox1" runat="server" FieldLabel="Spray" LabelAlign="Right" Width="250" />
+                                     <ext:Checkbox ID="Checkbox3" runat="server" FieldLabel="Maintain" LabelAlign="Right" Width="250" />
+                                    </Items>
+                                    
+                                </ext:FieldContainer>
+
+                                 <ext:FieldContainer ID="FieldContainer14" runat="server" Layout="HBoxLayout">
+                                    <Items>
+                                    <ext:TextField ID="uxTruckField" runat="server" FieldLabel="Truck" AnchorHorizontal="100%" LabelAlign="Right"/>
+                                    <ext:TextField ID="uxSquareFeet" runat="server" FieldLabel="Square Feet" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    <ext:Checkbox ID="Checkbox2" runat="server" FieldLabel="Cut" LabelAlign="Right" Width="250" />
+                                    <ext:Checkbox ID="Checkbox4" runat="server" FieldLabel="Inspect" LabelAlign="Right" Width="250" />
+                                    </Items>
+                                 </ext:FieldContainer>
+
+                                 <ext:FieldContainer ID="FieldContainer15" runat="server" Layout="HBoxLayout">
+                                    <Items>
+                                    <ext:TextField ID="uxInspectStartSU" runat="server" FieldLabel="Inspection Start" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    <ext:TextField ID="uxInspectEndSU" runat="server" FieldLabel="Inspection End" AnchorHorizontal="100%" LabelAlign="Right" />
+                                   <ext:Checkbox ID="Checkbox5" runat="server" FieldLabel="Recurring" LabelAlign="Right" Width="250" />
+                                    </Items>
+                                 </ext:FieldContainer>
+                                   
+                                 <ext:TextArea ID="TextArea3" runat="server" FieldLabel="Remarks" AnchorHorizontal="92%" LabelAlign="Right" />
+                                     
                    </Items>
                </ext:FormPanel>
-                    <ext:FormPanel ID="FormPanel2" runat="server" Title="Data Entry" Layout="FormLayout">
-                   <Items>
-
-                   </Items>
-               </ext:FormPanel>
+<%---------------------------------------------------------------------------------------------------------------------------------------------------------%>
+                                     <%--<Applications data entry tab>--%>
+                  <ext:GridPanel ID="GridPanel1" runat="server" Title="Data Entry" Layout="HBoxLayout">
+                   <Store>
+				<ext:Store runat="server"
+					ID="Store1"
+					AutoDataBind="true" WarningOnDirty="false">
+					<Model>
+						<ext:Model ID="Model2" runat="server">
+							<Fields>
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+								<ext:ModelField Name="" />
+							</Fields>
+						</ext:Model>
+					</Model>
+					<%--<Listeners>
+						<Load Fn="doMath" />
+					</Listeners>--%>
+				</ext:Store>
+			</Store>
+			<ColumnModel>
+				<Columns>
+					<ext:Column ID="uxAppDateDE" runat="server" DataIndex="" Text="Application Date" Flex="1"/>
+					<ext:Column ID="uxTruckNumDE" runat="server" DataIndex="" Text="Truck #" Flex="1" />
+					<ext:Column ID="uxSprayDE" runat="server" DataIndex="" Text="Spray" Flex="1" />
+					<ext:Column ID="uxCutDE" runat="server" DataIndex="" Text="Cut" Flex="1" />
+					<ext:Column ID="uxInspectDE" runat="server" DataIndex="" Text="Inspect" Flex="1" />
+					<ext:Column runat="server" ID="uxStateDE" Text="State" DataIndex="" Flex="1" />
+					<ext:Column ID="uxSubDivisonDE" runat="server" DataIndex="" Text="SubDivision" Flex="1" />
+					<ext:Column runat="server" ID="uxCrossingNumDE" Text="Crossing #" DataIndex="" Flex="1" />
+					
+					
+				</Columns>
+			</ColumnModel>
+                   <TopBar>
+                   
+                        <ext:Toolbar ID="Toolbar3" runat="server">
+                        <Items>
+                        <ext:Button ID="uxAddAppButton" runat="server" Text="Add Application Entry" Icon="ApplicationAdd" />
+                        <ext:Button ID="uxEditAppButton" runat="server" Text="Edit Application Entry" Icon="ApplicationEdit" />
+                        <ext:Button ID="uxDeleteAppButton" runat="server" Text="Delete Application Entry" Icon="ApplicationDelete" />
+                       
+                        </Items>
+                            
+                         </ext:Toolbar>
+                </TopBar>
+                   
+               </ext:GridPanel>
                       
                         
                </Items>
