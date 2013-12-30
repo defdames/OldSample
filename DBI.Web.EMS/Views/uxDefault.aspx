@@ -66,36 +66,7 @@
 
                     </Items>
                 </ext:Panel>
-                <ext:Panel ID="uxWest" runat="server" Layout="accordion" Region="West" Collapsible="true" Split="true" Width="230" Margins="0px 0px 5px 5px">
-                    <Items>
-                        <ext:Panel ID="uxApplications" runat="server" Border="false" Title="Applications" AutoScroll="true" Icon="ApplicationForm">
-                            <Items>
-                                <ext:Menu ID="uxApplicationMenu"
-                                    runat="server"
-                                    Floating="false"
-                                    Layout="VBoxLayout"
-                                    ShowSeparator="false" Border="false">
-                                    <Defaults>
-                                        <ext:Parameter Name="MenuAlign" Value="tl-bl?" Mode="Value" />
-                                    </Defaults>
-                                </ext:Menu>
-                            </Items>
-                        </ext:Panel>
-                        <ext:Panel ID="uxSystem" runat="server" Border="false" Title="System Administration" AutoScroll="true" Icon="Server">
-                            <Items>
-                                <ext:Menu ID="uxMenu"
-                                    runat="server"
-                                    Floating="false"
-                                    Layout="VBoxLayout"
-                                    ShowSeparator="false" Border="false">
-                                    <Defaults>
-                                        <ext:Parameter Name="MenuAlign" Value="tl-bl?" Mode="Value" />
-                                    </Defaults>
-                                </ext:Menu>
-                            </Items>
-                        </ext:Panel>
-                    </Items>
-                </ext:Panel>
+                <ext:Panel ID="uxWest" runat="server" Layout="accordion" Region="West" Collapsible="true" Split="true" Width="230" Margins="0px 0px 5px 5px" />
                 <ext:Panel ID="uxCenter" runat="server" Region="Center" Header="true" Margins="0px 5px 5px 0px">
                     <Items>
                     </Items>
