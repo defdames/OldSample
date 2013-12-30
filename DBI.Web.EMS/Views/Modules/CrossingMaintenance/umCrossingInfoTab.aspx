@@ -21,18 +21,24 @@
                        <ext:Toolbar ID="Toolbar1" runat="server">
                         <Items>
                    
-                        <ext:Button ID="Button1" runat="server" Text="Add New Crossing" Icon="ApplicationAdd" >
+                        <ext:Button ID="uxAddCrossingButton" runat="server" Text="Add New Crossing" Icon="ApplicationAdd" >
                             <Listeners>
-								<Click Handler="#{uxAddCrossingWindow}.show()" />
+								<Click Handler="#{uxAddCrossingWindow}.show()" />     
 							</Listeners>
                         </ext:Button>
-                        <ext:Button ID="Button2" runat="server" Text="Activate Crossing" Icon="ApplicationGo" />
-                        <ext:Button ID="Button3" runat="server" Text="Delete Crossing" Icon="ApplicationDelete" />
-                        <ext:Button ID="Button4" runat="server" Text="Supplemental" Icon="BulletLightning" />
-                        <ext:Button ID="Button5" runat="server" Text="Incidents"  />
+                            
+                        <ext:Button ID="uxEditCrossingsButton" runat="server" Text="Edit Crossing" Icon="ApplicationEdit" >
+                            <Listeners>
+								<Click Handler="#{uxEditCrossingWindow}.show()" />
+							</Listeners>
+                        </ext:Button>
+                        <ext:Button ID="uxActivateCrossingButton" runat="server" Text="Activate Crossing" Icon="ApplicationGo" />
+                        <ext:Button ID="uxDeleteCrossingButton" runat="server" Text="Delete Crossing" Icon="ApplicationDelete" />
+                        
                        
                         </Items>
-                         </ext:Toolbar>
+                
+                       </ext:Toolbar>
 
                        <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                            <Items>
@@ -140,8 +146,8 @@
                                     </Items>
                                 </ext:FieldContainer>
 
-                                 <ext:TextArea ID="TextArea1" runat="server" FieldLabel="Remarks" AnchorHorizontal="92%" LabelAlign="Right" />
-                                     <ext:TextArea ID="TextArea2" runat="server" FieldLabel="Special Instructions" AnchorHorizontal="92%" LabelAlign="Right" />
+                                 <ext:TextArea ID="uxRemarks" runat="server" FieldLabel="Remarks" AnchorHorizontal="92%" LabelAlign="Right" />
+                                     <ext:TextArea ID="uxSpecInstruct" runat="server" FieldLabel="Special Instructions" AnchorHorizontal="92%" LabelAlign="Right" />
                 </Items>
                </ext:FormPanel>
 <%-- -------------------------------------------------------------------------------------------------------------------------------------------------------   --%>           
@@ -203,7 +209,7 @@
                                  <ext:FieldContainer ID="FieldContainer14" runat="server" Layout="HBoxLayout">
                                     <Items>
                                     <ext:TextField ID="uxAddNewCrossingNE" runat="server" FieldLabel="NE" AnchorHorizontal="100%" LabelAlign="Right"/>
-                                    <ext:TextField ID="TextField10" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    <ext:TextField ID="uxAddNewCrossingExtNE" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" />
                                      <ext:Checkbox ID="Checkbox1" runat="server" FieldLabel="SubContracted" LabelAlign="Right" Width="250" />
                                     </Items>
                                  </ext:FieldContainer>
@@ -211,7 +217,7 @@
                                  <ext:FieldContainer ID="FieldContainer15" runat="server" Layout="HBoxLayout">
                                     <Items>
                                     <ext:TextField ID="uxAddNewCrossingNW" runat="server" FieldLabel="NW" AnchorHorizontal="100%" LabelAlign="Right" />
-                                    <ext:TextField ID="TextField12" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    <ext:TextField ID="uxAddNewCrossingExtNW" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" />
                                     <ext:Checkbox ID="uxAddNewCrossingThirdAppReq" runat="server" FieldLabel="Third App Required" LabelAlign="Right" Width="250" />
                                     </Items>
                                  </ext:FieldContainer>
@@ -219,7 +225,7 @@
                                 <ext:FieldContainer ID="FieldContainer16" runat="server" Layout="HBoxLayout">
                                     <Items>
                                     <ext:TextField ID="uxAddNewCrossingSE" runat="server" FieldLabel="SE" AnchorHorizontal="100%" LabelAlign="Right" />
-                                    <ext:TextField ID="TextField14" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    <ext:TextField ID="uxAddNewCrossingExtSE" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" />
                                      <ext:Checkbox ID="uxAddNewCrossingFence" runat="server" FieldLabel="Fence Enchroachment" LabelAlign="Right" Width="250" />
                                     </Items>
                                  </ext:FieldContainer>
@@ -227,7 +233,7 @@
                                  <ext:FieldContainer ID="FieldContainer17" runat="server" Layout="HBoxLayout">
                                     <Items>
                                     <ext:TextField ID="uxAddNewCrossingSW" runat="server" FieldLabel="SW" AnchorHorizontal="100%" LabelAlign="Right" />
-                                    <ext:TextField ID="TextField16" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    <ext:TextField ID="uxAddNewCrossingExtSW" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" />
                                     <ext:Checkbox ID="uxAddNewCrossingOnSpur" runat="server" FieldLabel="On Spur" LabelAlign="Right" Width="110" />    
                                     <ext:TextField ID="uxAddNewCrossingWarningDevice" runat="server" FieldLabel="Warning Device" AnchorHorizontal="100%" LabelAlign="Right" />                            
                                     </Items>
@@ -271,7 +277,127 @@
              </ext:Window>
 <%-----------------------------------------------------------------------------------------------------------------------------------------------------%>
                                     
-                        
+            <ext:Window runat="server"
+			ID="uxEditCrossingWindow"
+			Layout="FormLayout"
+			Hidden="true"
+            Title="Edit Crossing"
+			Width="850">
+            <Items>
+                <ext:FormPanel runat="server" ID="FormPanel1" Layout="FormLayout" AutoScroll="false">
+                    <Items>
+                  <ext:FieldContainer ID="FieldContainer21" runat="server" Layout="HBoxLayout">
+                           <Items>
+                            <ext:TextField ID="uxEditCrossingCrossingNum" runat="server" FieldLabel="Crossing #" LabelAlign="Right" AnchorHorizontal="100%" />
+                            <ext:TextField ID="uxEditCrossingState" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right"/>
+                           </Items>
+                         </ext:FieldContainer>
+
+                                <ext:FieldContainer ID="FieldContainer22" runat="server" Layout="HBoxLayout">
+                                    <Items>
+                                     <ext:TextField ID="uxEditCrossingSubdivison" runat="server" FieldLabel="Subdivision" LabelAlign="Right" AnchorHorizontal="100%" />
+                                     <ext:TextField ID="uxEditCrossingCity" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right"/>
+                                    </Items>
+
+                                </ext:FieldContainer>
+                            
+                                <ext:FieldContainer ID="FieldContainer23" runat="server" Layout="HBoxLayout">
+                                    <Items>
+                                    <ext:TextField ID="uxEditCrossingCounty" runat="server" FieldLabel="County" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    <ext:TextField ID="uxEditCrossingStreet" runat="server" FieldLabel="Street" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    <ext:TextField ID="uxEditCrossingRoute" runat="server" FieldLabel="Route" AnchorHorizontal="100%" LabelAlign="Right"/>
+                                    </Items>
+                                    
+                                </ext:FieldContainer>
+                           
+                                  <ext:FieldContainer ID="FieldContainer24" runat="server" Layout="HBoxLayout">
+                                    <Items>
+                                    <ext:TextField ID="uxEditCrossingMP" runat="server" FieldLabel="MP" LabelAlign="Right" />
+                                    <ext:TextField ID="uxEditCrossingLong" runat="server" FieldLabel="Longitude" AnchorHorizontal="92%" LabelAlign="Right" />
+                                    <ext:TextField ID="uxEditCrossingLat" runat="server" FieldLabel="Latitude"  AnchorHorizontal="92%" LabelAlign="Right" />
+                                    </Items>
+
+                                    </ext:FieldContainer>
+
+                                
+                                 <ext:FieldContainer ID="FieldContainer25"  runat="server" Layout="HBoxLayout">
+                                    <Items>
+                                        <ext:Label ID="Label5" runat="server" Text="" Width="140"  />
+                                        <ext:Label ID="Label6" runat="server" Text="Row Widths" Width="130"  />
+                                        <ext:Label ID="Label7" runat="server" Text="Extensions" Width="170"  />
+                                        </Items>
+                                 </ext:FieldContainer>
+
+
+                                 <ext:FieldContainer ID="FieldContainer26" runat="server" Layout="HBoxLayout">
+                                    <Items>
+                                    <ext:TextField ID="uxEditCrossingNE" runat="server" FieldLabel="NE" AnchorHorizontal="100%" LabelAlign="Right"/>
+                                    <ext:TextField ID="uxEditCrossingExtNE" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" />
+                                     <ext:Checkbox ID="uxEditCrossingSubConBox" runat="server" FieldLabel="SubContracted" LabelAlign="Right" Width="250" />
+                                    </Items>
+                                 </ext:FieldContainer>
+
+                                 <ext:FieldContainer ID="FieldContainer27" runat="server" Layout="HBoxLayout">
+                                    <Items>
+                                    <ext:TextField ID="uxEditCrossingNW" runat="server" FieldLabel="NW" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    <ext:TextField ID="uxEditCrossingExtNW" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    <ext:Checkbox ID="uxEditCrossingThirdAppReq" runat="server" FieldLabel="Third App Required" LabelAlign="Right" Width="250" />
+                                    </Items>
+                                 </ext:FieldContainer>
+
+                                <ext:FieldContainer ID="FieldContainer28" runat="server" Layout="HBoxLayout">
+                                    <Items>
+                                    <ext:TextField ID="uxEditCrossingSE" runat="server" FieldLabel="SE" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    <ext:TextField ID="uxEditCrossingExtSE" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" />
+                                     <ext:Checkbox ID="uxEditCrossingFence" runat="server" FieldLabel="Fence Enchroachment" LabelAlign="Right" Width="250" />
+                                    </Items>
+                                 </ext:FieldContainer>
+
+                                 <ext:FieldContainer ID="FieldContainer29" runat="server" Layout="HBoxLayout">
+                                    <Items>
+                                    <ext:TextField ID="uxEditCrossingSW" runat="server" FieldLabel="SW" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    <ext:TextField ID="uxEditCrossingExtSW" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    <ext:Checkbox ID="uxEditCrossingOnSpur" runat="server" FieldLabel="On Spur" LabelAlign="Right" Width="110" />    
+                                    <ext:TextField ID="uxEditCrossingWarningDevice" runat="server" FieldLabel="Warning Device" AnchorHorizontal="100%" LabelAlign="Right" />                            
+                                    </Items>
+                                 </ext:FieldContainer>
+                                   
+                                <ext:FieldContainer ID="FieldContainer30" runat="server" Layout="HBoxLayout">
+                                    <Items>
+                                    <ext:TextField ID="uxEditCrossingRowWidth" runat="server" FieldLabel="ROW Width" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    <ext:TextField ID="uxEditCrossingPropertyType" runat="server" FieldLabel="Property Type" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    <ext:TextField ID="uxEditCrossingSurface" runat="server" FieldLabel="Surface" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    
+                                    </Items>
+                                </ext:FieldContainer>
+                   
+                                 <ext:FieldContainer ID="FieldContainer31" runat="server" Layout="HBoxLayout">
+                                    <Items>
+                                    <ext:TextField ID="uxEditCrossingMainTrack" runat="server" FieldLabel="Main Tracks" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    <ext:TextField ID="uxEditCrossingOtherTrack" runat="server" FieldLabel="Other Tracks" AnchorHorizontal="100%" LabelAlign="Right"/>
+                                    <ext:TextField ID="uxEditCrossingMaxSpeed" runat="server" FieldLabel="Max Speed" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    </Items>
+                                </ext:FieldContainer>
+                    
+                                <ext:FieldContainer ID="FieldContainer32" runat="server" Layout="HBoxLayout">
+                                    <Items>
+                                    <ext:TextField ID="uxEditCrossingMTM" runat="server" FieldLabel="MTM" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    <ext:TextField ID="uxEditCrossingMTMCell" runat="server" FieldLabel="MTM Cell #" AnchorHorizontal="100%" LabelAlign="Right"/>
+                                    <ext:TextField ID="uxEditCrossingMTMOffice" runat="server" FieldLabel="MTM Office #" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    </Items>
+                                </ext:FieldContainer>
+
+                                 <ext:TextArea ID="uxEditCrossingRemarks" runat="server" FieldLabel="Remarks" AnchorHorizontal="92%" LabelAlign="Right" />
+                                     <ext:TextArea ID="uxEditCrossingSpecInstruct" runat="server" FieldLabel="Special Instructions" AnchorHorizontal="92%" LabelAlign="Right" />
+                     
+                                </Items>
+                            <Buttons>
+                                <ext:Button runat="server" ID="uxEditCrossingButton" Text="Update" Icon="Add"  />
+                                <ext:Button runat="server" ID="uxCancelEditCrossingButton" Text="Cancel" Icon="Delete"  />
+                            </Buttons>
+               </ext:FormPanel>
+            </Items>
+             </ext:Window>    
              
     </div>
     </form>

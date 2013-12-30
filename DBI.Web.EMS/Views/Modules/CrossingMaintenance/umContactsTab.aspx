@@ -59,16 +59,119 @@
                    
                         <ext:Toolbar ID="Toolbar2" runat="server">
                         <Items>
-                        <ext:Button ID="uxAddContactButton" runat="server" Text="Add New Contact" Icon="ApplicationAdd" />
-                        <ext:Button ID="uxEditContactButton" runat="server" Text="Edit Contact" Icon="ApplicationEdit" />
-                        <ext:Button ID="uxAssignContactButton" runat="server" Text="Assign Crossing to Contact" Icon="ApplicationGo" />
+                        <ext:Button ID="uxAddContactButton" runat="server" Text="Add New Contact" Icon="ApplicationAdd" >
+                             <Listeners>
+								<Click Handler="#{uxAddContactWindow}.show()" />
+							</Listeners>
+                        </ext:Button>
+                        <ext:Button ID="uxEditContactButton" runat="server" Text="Edit Contact" Icon="ApplicationEdit" >
+                             <Listeners>
+								<Click Handler="#{uxEditContactWindow}.show()" />
+							</Listeners>
+                        </ext:Button>
+                        <ext:Button ID="uxAssignContactButton" runat="server" Text="Assign Crossing to Contact" Icon="ApplicationGo" >
+                            <Listeners>
+								<Click Handler="#{uxAssignCrossingWindow}.show()" />
+							</Listeners>
+                        </ext:Button>
                         <ext:Button ID="uxDeleteContact" runat="server" Text="Delete Contact" Icon="ApplicationDelete" />
-                        </Items>
                             
+
+                        </Items>
+                           
                          </ext:Toolbar>
                 </TopBar>
                    
                </ext:GridPanel>
+        <%-------------------------------------Hidden Windows-------------------------------------------------%>
+         <ext:Window runat="server"
+			ID="uxAddContactWindow"
+			Layout="FormLayout"
+			Hidden="true"
+            Title="Add New Contact"
+			Width="250">
+        <Items>
+        <ext:FormPanel runat="server" Layout="FormLayout">
+            <Items>
+                
+                 <ext:TextField ID="uxAddNewManagerName" runat="server" FieldLabel="Manager Name" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:TextField ID="uxAddNewEmail" runat="server" FieldLabel="Email" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:DropDownField ID="uxAddNewRR" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right"/>
+                 <ext:TextField ID="uxAddNewAddress1" runat="server" FieldLabel="Address 1" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:TextField ID="uxAddNewAddress2" runat="server" FieldLabel="Address 2" AnchorHorizontal="100%" LabelAlign="Right"/>
+                 <ext:DropDownField ID="uxAddNewContactState" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:DropDownField  ID="uxAddNewContactCity" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:TextField ID="uxAddNewContactZip" runat="server" FieldLabel="Zip" AnchorHorizontal="100%" LabelAlign="Right"/>
+                 <ext:TextField ID="uxAddNewContactCell" runat="server" FieldLabel="Cell #" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:TextField ID="uxAddNewContactOffice" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right"/>
+                  
+            </Items>
+            <Buttons>
+                <ext:Button runat="server" ID="uxAddNewContactButton" Text="Add" Icon="Add" />
+                <ext:Button runat="server" ID="uxAddNewContactCancelButton" Text="Cancel" Icon="Delete" />
+
+            </Buttons>
+        </ext:FormPanel>
+             </Items>
+        </ext:Window>
+
+          <ext:Window runat="server"
+			ID="uxEditContactWindow"
+			Layout="FormLayout"
+			Hidden="true"
+            Title="Edit Existing Contact"
+			Width="250">
+        <Items>
+        <ext:FormPanel ID="FormPanel1" runat="server" Layout="FormLayout">
+            <Items>
+                
+                 <ext:TextField ID="TextField1" runat="server" FieldLabel="Manager Name" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:TextField ID="TextField2" runat="server" FieldLabel="Email" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:DropDownField ID="TextField3" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right"/>
+                 <ext:TextField ID="TextField4" runat="server" FieldLabel="Address 1" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:TextField ID="TextField5" runat="server" FieldLabel="Address 2" AnchorHorizontal="100%" LabelAlign="Right"/>
+                 <ext:DropDownField ID="TextField7" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:DropDownField ID="TextField6" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:TextField ID="TextField8" runat="server" FieldLabel="Zip" AnchorHorizontal="100%" LabelAlign="Right"/>
+                 <ext:TextField ID="TextField9" runat="server" FieldLabel="Cell #" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:TextField ID="TextField10" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right"/>
+                  
+            </Items>
+            <Buttons>
+                <ext:Button runat="server" ID="Button1" Text="Update" Icon="Add" />
+                <ext:Button runat="server" ID="Button2" Text="Cancel" Icon="Delete" />
+
+            </Buttons>
+        </ext:FormPanel>
+             </Items>
+        </ext:Window>
+
+        <ext:Window runat="server"
+			ID="uxAssignCrossingWindow"
+			Layout="FormLayout"
+			Hidden="true"
+            Title="Assign Crossing to Manager"
+			Width="250">
+        <Items>
+        <ext:FormPanel ID="FormPanel2" runat="server" Layout="FormLayout">
+            <Items>
+                
+                 <ext:TextField ID="TextField11" runat="server" FieldLabel="Manager Name" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:TextField ID="TextField12" runat="server" FieldLabel="Email" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:DropDownField ID="DropDownField1" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right"/>
+                 <ext:DropDownField ID="DropDownField2" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:DropDownField ID="DropDownField3" runat="server" FieldLabel="Sub-Division" AnchorHorizontal="100%" LabelAlign="Right" />
+                    
+            </Items>
+            <Buttons>
+                <ext:Button runat="server" ID="Button3" Text="Assign" Icon="Add" />
+                <ext:Button runat="server" ID="Button4" Text="Cancel" Icon="Delete" />
+
+            </Buttons>
+        </ext:FormPanel>
+             </Items>
+        </ext:Window>
+
     </div>
     </form>
 </body>
