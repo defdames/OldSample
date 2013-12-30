@@ -46,5 +46,6 @@ namespace DBI.Data
         public DbSet<UNIT_OF_MEASURE_V> UNIT_OF_MEASURE_V { get; set; }
         public DbSet<DAILY_ACTIVITY_STATUS> DAILY_ACTIVITY_STATUS { get; set; }
         public DbSet<SYS_ACTIVITY> SYS_ACTIVITY { get; set; }
+        public DbSet<CROSSING> CROSSINGS { get; set; }
     }
 }

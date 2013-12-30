@@ -6,6 +6,7 @@
     <edmx:StorageModels>
     <Schema Namespace="OracleModel.Store" Alias="Self" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="OracleModelStoreContainer">
+          <EntitySet Name="CROSSINGS" EntityType="OracleModel.Store.CROSSINGS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_CHEMICAL_MIX" EntityType="OracleModel.Store.DAILY_ACTIVITY_CHEMICAL_MIX" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_EMPLOYEE" EntityType="OracleModel.Store.DAILY_ACTIVITY_EMPLOYEE" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_EQUIPMENT" EntityType="OracleModel.Store.DAILY_ACTIVITY_EQUIPMENT" store:Type="Tables" Schema="XXEMS" />
@@ -518,6 +519,56 @@
             <End Role="DAILY_ACTIVITY_WEATHER" EntitySet="DAILY_ACTIVITY_WEATHER" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="CROSSINGS">
+          <Key>
+            <PropertyRef Name="CROSSING_ID" />
+          </Key>
+          <Property Name="CROSSING_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="DOT" Type="varchar2" MaxLength="30" />
+          <Property Name="PREF" Type="varchar2" MaxLength="5" />
+          <Property Name="MILE_POST" Type="number" Precision="15" Scale="2" />
+          <Property Name="DIVISION" Type="varchar2" MaxLength="100" />
+          <Property Name="SUB_DIVISION" Type="varchar2" MaxLength="100" />
+          <Property Name="CITY" Type="varchar2" MaxLength="100" />
+          <Property Name="STREET" Type="varchar2" MaxLength="100" />
+          <Property Name="STATE" Type="varchar2" MaxLength="100" />
+          <Property Name="COUNTY" Type="varchar2" MaxLength="100" />
+          <Property Name="RESTRICTED_COUNTY" Type="char" MaxLength="1" />
+          <Property Name="REMARKS" Type="varchar2" MaxLength="500" />
+          <Property Name="SPECIAL_INSTRUCTIONS" Type="varchar2" MaxLength="500" />
+          <Property Name="ROUTE" Type="varchar2" MaxLength="100" />
+          <Property Name="THIRD_APP_REQUIRED" Type="char" MaxLength="1" />
+          <Property Name="PRICE_CATEGORY" Type="char" MaxLength="1" />
+          <Property Name="MAIN_TRACKS" Type="number" Precision="15" />
+          <Property Name="OTHER_TRACKS" Type="number" Precision="15" />
+          <Property Name="ON_SPUR" Type="number" Precision="15" />
+          <Property Name="MAX_SPEED" Type="number" Precision="15" />
+          <Property Name="SUB_CONTRACTED" Type="char" MaxLength="1" />
+          <Property Name="FENCE_ENCROACHMENT" Type="char" MaxLength="1" />
+          <Property Name="LATITUDE" Type="number" Precision="9" Scale="6" />
+          <Property Name="LONGITUDE" Type="number" Precision="9" Scale="6" />
+          <Property Name="PROPERTY_TYPE" Type="varchar2" MaxLength="15" />
+          <Property Name="WARNING_DEVICE" Type="varchar2" MaxLength="50" />
+          <Property Name="SURFACE" Type="varchar2" MaxLength="50" />
+          <Property Name="ROWNE" Type="number" Precision="15" Scale="2" />
+          <Property Name="ROWNW" Type="number" Precision="15" Scale="2" />
+          <Property Name="ROWSE" Type="number" Precision="15" Scale="2" />
+          <Property Name="ROWSW" Type="number" Precision="15" Scale="2" />
+          <Property Name="ROW_WIDTH" Type="varchar2" MaxLength="50" />
+          <Property Name="EXTENSION_REQUIRED" Type="char" MaxLength="1" />
+          <Property Name="EXTNE" Type="number" Precision="15" Scale="2" />
+          <Property Name="EXTNW" Type="number" Precision="15" Scale="2" />
+          <Property Name="EXTSE" Type="number" Precision="15" Scale="2" />
+          <Property Name="EXTSW" Type="number" Precision="15" Scale="2" />
+          <Property Name="TEMP_ACTIVTY" Type="char" MaxLength="1" />
+          <Property Name="DELETED_CROSSING" Type="char" MaxLength="1" />
+          <Property Name="DELETED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="DELETED_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="date" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+        </EntityType>
         <EntityType Name="DAILY_ACTIVITY_CHEMICAL_MIX">
           <Key>
             <PropertyRef Name="CHEMICAL_MIX_ID" />
@@ -1447,6 +1498,7 @@
             <End Role="SYS_USER_ACTIVITY" EntitySet="SYS_USER_ACTIVITY" />
             <End Role="SYS_ACTIVITY" EntitySet="SYS_ACTIVITY" />
           </AssociationSet>
+          <EntitySet Name="CROSSINGS" EntityType="OracleModel.CROSSING" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -2445,6 +2497,56 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="CROSSING">
+          <Key>
+            <PropertyRef Name="CROSSING_ID" />
+          </Key>
+          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
+          <Property Type="String" Name="DOT" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PREF" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="MILE_POST" Precision="15" Scale="2" />
+          <Property Type="String" Name="DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SUB_DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CITY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STREET" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STATE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="COUNTY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="RESTRICTED_COUNTY" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SPECIAL_INSTRUCTIONS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ROUTE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="THIRD_APP_REQUIRED" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="PRICE_CATEGORY" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="Int64" Name="MAIN_TRACKS" />
+          <Property Type="Int64" Name="OTHER_TRACKS" />
+          <Property Type="Int64" Name="ON_SPUR" />
+          <Property Type="Int64" Name="MAX_SPEED" />
+          <Property Type="String" Name="SUB_CONTRACTED" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="FENCE_ENCROACHMENT" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="Decimal" Name="LATITUDE" Precision="9" Scale="6" />
+          <Property Type="Decimal" Name="LONGITUDE" Precision="9" Scale="6" />
+          <Property Type="String" Name="PROPERTY_TYPE" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="WARNING_DEVICE" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SURFACE" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="ROWNE" Precision="15" Scale="2" />
+          <Property Type="Decimal" Name="ROWNW" Precision="15" Scale="2" />
+          <Property Type="Decimal" Name="ROWSE" Precision="15" Scale="2" />
+          <Property Type="Decimal" Name="ROWSW" Precision="15" Scale="2" />
+          <Property Type="String" Name="ROW_WIDTH" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EXTENSION_REQUIRED" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="Decimal" Name="EXTNE" Precision="15" Scale="2" />
+          <Property Type="Decimal" Name="EXTNW" Precision="15" Scale="2" />
+          <Property Type="Decimal" Name="EXTSE" Precision="15" Scale="2" />
+          <Property Type="Decimal" Name="EXTSW" Precision="15" Scale="2" />
+          <Property Type="String" Name="TEMP_ACTIVTY" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="DELETED_CROSSING" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="DELETED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="DELETED_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATED_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFIED_DATE" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3149,6 +3251,57 @@
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
                 <ScalarProperty Name="NAME" ColumnName="NAME" />
                 <ScalarProperty Name="ACTIVITY_ID" ColumnName="ACTIVITY_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CROSSINGS">
+            <EntityTypeMapping TypeName="OracleModel.CROSSING">
+              <MappingFragment StoreEntitySet="CROSSINGS">
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="DELETED_DATE" ColumnName="DELETED_DATE" />
+                <ScalarProperty Name="DELETED_BY" ColumnName="DELETED_BY" />
+                <ScalarProperty Name="DELETED_CROSSING" ColumnName="DELETED_CROSSING" />
+                <ScalarProperty Name="TEMP_ACTIVTY" ColumnName="TEMP_ACTIVTY" />
+                <ScalarProperty Name="EXTSW" ColumnName="EXTSW" />
+                <ScalarProperty Name="EXTSE" ColumnName="EXTSE" />
+                <ScalarProperty Name="EXTNW" ColumnName="EXTNW" />
+                <ScalarProperty Name="EXTNE" ColumnName="EXTNE" />
+                <ScalarProperty Name="EXTENSION_REQUIRED" ColumnName="EXTENSION_REQUIRED" />
+                <ScalarProperty Name="ROW_WIDTH" ColumnName="ROW_WIDTH" />
+                <ScalarProperty Name="ROWSW" ColumnName="ROWSW" />
+                <ScalarProperty Name="ROWSE" ColumnName="ROWSE" />
+                <ScalarProperty Name="ROWNW" ColumnName="ROWNW" />
+                <ScalarProperty Name="ROWNE" ColumnName="ROWNE" />
+                <ScalarProperty Name="SURFACE" ColumnName="SURFACE" />
+                <ScalarProperty Name="WARNING_DEVICE" ColumnName="WARNING_DEVICE" />
+                <ScalarProperty Name="PROPERTY_TYPE" ColumnName="PROPERTY_TYPE" />
+                <ScalarProperty Name="LONGITUDE" ColumnName="LONGITUDE" />
+                <ScalarProperty Name="LATITUDE" ColumnName="LATITUDE" />
+                <ScalarProperty Name="FENCE_ENCROACHMENT" ColumnName="FENCE_ENCROACHMENT" />
+                <ScalarProperty Name="SUB_CONTRACTED" ColumnName="SUB_CONTRACTED" />
+                <ScalarProperty Name="MAX_SPEED" ColumnName="MAX_SPEED" />
+                <ScalarProperty Name="ON_SPUR" ColumnName="ON_SPUR" />
+                <ScalarProperty Name="OTHER_TRACKS" ColumnName="OTHER_TRACKS" />
+                <ScalarProperty Name="MAIN_TRACKS" ColumnName="MAIN_TRACKS" />
+                <ScalarProperty Name="PRICE_CATEGORY" ColumnName="PRICE_CATEGORY" />
+                <ScalarProperty Name="THIRD_APP_REQUIRED" ColumnName="THIRD_APP_REQUIRED" />
+                <ScalarProperty Name="ROUTE" ColumnName="ROUTE" />
+                <ScalarProperty Name="SPECIAL_INSTRUCTIONS" ColumnName="SPECIAL_INSTRUCTIONS" />
+                <ScalarProperty Name="REMARKS" ColumnName="REMARKS" />
+                <ScalarProperty Name="RESTRICTED_COUNTY" ColumnName="RESTRICTED_COUNTY" />
+                <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+                <ScalarProperty Name="STREET" ColumnName="STREET" />
+                <ScalarProperty Name="CITY" ColumnName="CITY" />
+                <ScalarProperty Name="SUB_DIVISION" ColumnName="SUB_DIVISION" />
+                <ScalarProperty Name="DIVISION" ColumnName="DIVISION" />
+                <ScalarProperty Name="MILE_POST" ColumnName="MILE_POST" />
+                <ScalarProperty Name="PREF" ColumnName="PREF" />
+                <ScalarProperty Name="DOT" ColumnName="DOT" />
+                <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
