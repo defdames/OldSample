@@ -693,8 +693,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 Response.AppendHeader("Content-Disposition", "attachment;filename=export.pdf");
                 Response.BinaryWrite(PdfStream.ToArray());
                 Response.End();
-
-                PdfStream.Close();
             }
         }
 

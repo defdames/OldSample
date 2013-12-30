@@ -124,50 +124,74 @@ namespace DBI.Web.EMS.Views
                 Entities context = new Entities();
                 userActivities = (from s in context.SYS_ACTIVITY
                                     where AssignedRoles.Contains(s.NAME) && s.PATH != null
-                                    select s).ToList();
+                                    select s).OrderBy(x => x.SORT_NUMBER).ToList();
             }
             else
             {
                 Entities context = new Entities();
                 userActivities = (from s in context.SYS_ACTIVITY
                                     where !(string.IsNullOrEmpty(s.PATH))
-                                    select s).ToList();
+                                    select s).OrderBy(x => x.PARENT_ITEM_ID).OrderBy(x => x.SORT_NUMBER).ToList();
             }
             //Iterate through allowed activities
             foreach (SYS_ACTIVITY userActivity in userActivities)
             {
-                //Create new Menu Item
-                Ext.Net.MenuItem NewItem = new Ext.Net.MenuItem()
+                if (userActivity.PARENT_ITEM_ID != null)
                 {
-                    ID = "menu" + userActivity.ACTIVITY_ID.ToString(),
-                    Text = userActivity.CONTROL_TEXT,
-                    Icon = (Icon)Enum.Parse(typeof(Icon), userActivity.ICON)
-                };
+                    Ext.Net.MenuItem AppMenuItem = new Ext.Net.MenuItem()
+                    {
+                        ID = "uxMenuItem" + userActivity.ACTIVITY_ID.ToString(),
+                        Text = userActivity.CONTROL_TEXT,
+                        Icon = (Icon)Enum.Parse(typeof(Icon), userActivity.ICON)
+                    };
 
-                //Add click DirectEvent
-                NewItem.DirectEvents.Click.Event += deLoadPage;
-                
-                //Add DirectEvent Parameters
-                NewItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
-                {
-                    Name = "Location",
-                    Value = userActivity.CONTAINER
-                });
-                NewItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
-                {
-                    Name = "Page",
-                    Value = userActivity.PATH
-                });
+                    //Add click DirectEvent
+                    AppMenuItem.DirectEvents.Click.Event += deLoadPage;
 
-                string DirectoryName = new FileInfo(userActivity.PATH).Directory.Name;
-                if (DirectoryName == "Security")
-                {
-                    //Add to Menu
-                    uxMenu.Items.Add(NewItem);
+                    //Add DirectEvent Parameters
+                    AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+                    {
+                        Name = "Location",
+                        Value = userActivity.CONTAINER
+                    });
+                    AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+                    {
+                        Name = "Page",
+                        Value = userActivity.PATH
+                    });
+                    Ext.Net.MenuPanel AppPanel = X.GetCmp("uxMenu" + userActivity.PARENT_ITEM_ID.ToString()) as Ext.Net.MenuPanel;
+                    AppPanel.Menu.Items.Add(AppMenuItem);
                 }
                 else
                 {
-                    uxApplicationMenu.Items.Add(NewItem);
+                    Ext.Net.MenuPanel AppPanel = new MenuPanel()
+                    {
+                        ID= "uxMenu" + userActivity.ACTIVITY_ID.ToString(),
+                        Title= userActivity.CONTROL_TEXT,
+                        Icon = (Icon)Enum.Parse(typeof(Icon), userActivity.ICON),
+                    };
+                    Ext.Net.MenuItem AppMenuItem = new Ext.Net.MenuItem()
+                    {
+                        ID = "uxMenuItem" + userActivity.ACTIVITY_ID.ToString(),
+                        Text = "Home",
+                        Icon = (Icon)Enum.Parse(typeof(Icon), userActivity.ICON),
+                        
+                    };
+                    AppMenuItem.DirectEvents.Click.Event += deLoadPage;
+
+                    //Add DirectEvent Parameters
+                    AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+                    {
+                        Name = "Location",
+                        Value = userActivity.CONTAINER
+                    });
+                    AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+                    {
+                        Name = "Page",
+                        Value = userActivity.PATH
+                    });
+                    uxWest.Items.Add(AppPanel);
+                    AppPanel.Menu.Items.Add(AppMenuItem);
                 }
             }
         }

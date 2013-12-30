@@ -122,7 +122,7 @@ namespace DBI.Web.EMS.Views.Modules.Security
             }
             catch (Exception ex)
             {
-                throw (ex);
+                throw;
             }
         }
 
