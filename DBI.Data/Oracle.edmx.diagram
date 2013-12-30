@@ -38,7 +38,7 @@
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_STATUS" Width="1.5" PointX="2.875" PointY="26" />
         <EntityTypeShape EntityType="OracleModel.SYS_ACTIVITY" Width="1.5" PointX="3.75" PointY="4.75" />
         <AssociationConnector Association="OracleModel.SYS_ACTIVITYSYS_USER_ACTIVITY" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING" Width="1.5" PointX="4.3210544271026992" PointY="3.5662417875445644" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING" Width="1.5" PointX="0.034830551610715015" PointY="31.862814560468689" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

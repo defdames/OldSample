@@ -59,5 +59,8 @@ namespace DBI.Data
         public Nullable<System.DateTime> CREATED_DATE { get; set; }
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
+        public string MTM { get; set; }
+        public string MTM_PHONE_NUMBER { get; set; }
+        public string MTM_OFFICE_NUMBER { get; set; }
     }
 }
