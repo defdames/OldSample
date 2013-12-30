@@ -31,24 +31,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.ResourceManager ResourceManager1;
         
         /// <summary>
-        /// Viewport1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Viewport Viewport1;
-        
-        /// <summary>
-        /// TabPanel1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TabPanel TabPanel1;
-        
-        /// <summary>
         /// Toolbar1 control.
         /// </summary>
         /// <remarks>
@@ -490,202 +472,22 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextArea TextArea2;
         
         /// <summary>
-        /// uxCurrentContactStore control.
+        /// uxAddCrossingWindow control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxCurrentContactStore;
+        protected global::Ext.Net.Window uxAddCrossingWindow;
         
         /// <summary>
-        /// Model1 control.
+        /// HiddenAddForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Model Model1;
-        
-        /// <summary>
-        /// uxNameCON control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column uxNameCON;
-        
-        /// <summary>
-        /// uxAddress1CON control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column uxAddress1CON;
-        
-        /// <summary>
-        /// uxAddress2CON control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column uxAddress2CON;
-        
-        /// <summary>
-        /// uxCityCON control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column uxCityCON;
-        
-        /// <summary>
-        /// uxStateCON control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column uxStateCON;
-        
-        /// <summary>
-        /// uxZipCON control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column uxZipCON;
-        
-        /// <summary>
-        /// uxEmailCON control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column uxEmailCON;
-        
-        /// <summary>
-        /// uxWorkNumCON control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column uxWorkNumCON;
-        
-        /// <summary>
-        /// uxCellNumCON control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column uxCellNumCON;
-        
-        /// <summary>
-        /// uxRRCON control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column uxRRCON;
-        
-        /// <summary>
-        /// Toolbar2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Toolbar Toolbar2;
-        
-        /// <summary>
-        /// uxAddContactButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxAddContactButton;
-        
-        /// <summary>
-        /// uxEditContactButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxEditContactButton;
-        
-        /// <summary>
-        /// uxAssignContactButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxAssignContactButton;
-        
-        /// <summary>
-        /// uxDeleteContact control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxDeleteContact;
-        
-        /// <summary>
-        /// FormPanel1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FormPanel FormPanel1;
-        
-        /// <summary>
-        /// Toolbar4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Toolbar Toolbar4;
-        
-        /// <summary>
-        /// Button6 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button Button6;
-        
-        /// <summary>
-        /// Button7 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button Button7;
-        
-        /// <summary>
-        /// Button8 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button Button8;
+        protected global::Ext.Net.FormPanel HiddenAddForm;
         
         /// <summary>
         /// FieldContainer9 control.
@@ -697,22 +499,22 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FieldContainer FieldContainer9;
         
         /// <summary>
-        /// uxCrossingNumSU control.
+        /// uxAddNewCrossingNum control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DropDownField uxCrossingNumSU;
+        protected global::Ext.Net.TextField uxAddNewCrossingNum;
         
         /// <summary>
-        /// uxServiceTypeSU control.
+        /// uxAddNewCrossingState control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DropDownField uxServiceTypeSU;
+        protected global::Ext.Net.TextField uxAddNewCrossingState;
         
         /// <summary>
         /// FieldContainer10 control.
@@ -724,22 +526,22 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FieldContainer FieldContainer10;
         
         /// <summary>
-        /// uxSubDivisionSU control.
+        /// uxAddNewSubdivision control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxSubDivisionSU;
+        protected global::Ext.Net.TextField uxAddNewSubdivision;
         
         /// <summary>
-        /// uxProjectNumSU control.
+        /// uxAddNewCity control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxProjectNumSU;
+        protected global::Ext.Net.TextField uxAddNewCity;
         
         /// <summary>
         /// FieldContainer11 control.
@@ -751,40 +553,103 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FieldContainer FieldContainer11;
         
         /// <summary>
-        /// uxApprovedDateSU control.
+        /// uxAddNewCounty control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxApprovedDateSU;
+        protected global::Ext.Net.TextField uxAddNewCounty;
         
         /// <summary>
-        /// uxCompletedDateSU control.
+        /// uxAddNewStreet control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxCompletedDateSU;
+        protected global::Ext.Net.TextField uxAddNewStreet;
         
         /// <summary>
-        /// Checkbox1 control.
+        /// uxAddNewCrossingRoute control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Checkbox Checkbox1;
+        protected global::Ext.Net.TextField uxAddNewCrossingRoute;
         
         /// <summary>
-        /// Checkbox3 control.
+        /// FieldContainer12 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Checkbox Checkbox3;
+        protected global::Ext.Net.FieldContainer FieldContainer12;
+        
+        /// <summary>
+        /// uxAddNewCrossingMP control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxAddNewCrossingMP;
+        
+        /// <summary>
+        /// uxAddNewCrossingLong control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxAddNewCrossingLong;
+        
+        /// <summary>
+        /// uxAddNewCrossingLat control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxAddNewCrossingLat;
+        
+        /// <summary>
+        /// FieldContainer13 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer FieldContainer13;
+        
+        /// <summary>
+        /// Label1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Label Label1;
+        
+        /// <summary>
+        /// Label3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Label Label3;
+        
+        /// <summary>
+        /// Label4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Label Label4;
         
         /// <summary>
         /// FieldContainer14 control.
@@ -796,40 +661,31 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FieldContainer FieldContainer14;
         
         /// <summary>
-        /// uxTruckField control.
+        /// uxAddNewCrossingNE control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxTruckField;
+        protected global::Ext.Net.TextField uxAddNewCrossingNE;
         
         /// <summary>
-        /// uxSquareFeet control.
+        /// TextField10 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxSquareFeet;
+        protected global::Ext.Net.TextField TextField10;
         
         /// <summary>
-        /// Checkbox2 control.
+        /// Checkbox1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Checkbox Checkbox2;
-        
-        /// <summary>
-        /// Checkbox4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Checkbox Checkbox4;
+        protected global::Ext.Net.Checkbox Checkbox1;
         
         /// <summary>
         /// FieldContainer15 control.
@@ -841,174 +697,255 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FieldContainer FieldContainer15;
         
         /// <summary>
-        /// uxInspectStartSU control.
+        /// uxAddNewCrossingNW control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxInspectStartSU;
+        protected global::Ext.Net.TextField uxAddNewCrossingNW;
         
         /// <summary>
-        /// uxInspectEndSU control.
+        /// TextField12 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxInspectEndSU;
+        protected global::Ext.Net.TextField TextField12;
         
         /// <summary>
-        /// Checkbox5 control.
+        /// uxAddNewCrossingThirdAppReq control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Checkbox Checkbox5;
+        protected global::Ext.Net.Checkbox uxAddNewCrossingThirdAppReq;
         
         /// <summary>
-        /// TextArea3 control.
+        /// FieldContainer16 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextArea TextArea3;
+        protected global::Ext.Net.FieldContainer FieldContainer16;
         
         /// <summary>
-        /// GridPanel1 control.
+        /// uxAddNewCrossingSE control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel GridPanel1;
+        protected global::Ext.Net.TextField uxAddNewCrossingSE;
         
         /// <summary>
-        /// Store1 control.
+        /// TextField14 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store Store1;
+        protected global::Ext.Net.TextField TextField14;
         
         /// <summary>
-        /// Model2 control.
+        /// uxAddNewCrossingFence control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Model Model2;
+        protected global::Ext.Net.Checkbox uxAddNewCrossingFence;
         
         /// <summary>
-        /// uxAppDateDE control.
+        /// FieldContainer17 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column uxAppDateDE;
+        protected global::Ext.Net.FieldContainer FieldContainer17;
         
         /// <summary>
-        /// uxTruckNumDE control.
+        /// uxAddNewCrossingSW control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column uxTruckNumDE;
+        protected global::Ext.Net.TextField uxAddNewCrossingSW;
         
         /// <summary>
-        /// uxSprayDE control.
+        /// TextField16 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column uxSprayDE;
+        protected global::Ext.Net.TextField TextField16;
         
         /// <summary>
-        /// uxCutDE control.
+        /// uxAddNewCrossingOnSpur control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column uxCutDE;
+        protected global::Ext.Net.Checkbox uxAddNewCrossingOnSpur;
         
         /// <summary>
-        /// uxInspectDE control.
+        /// uxAddNewCrossingWarningDevice control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column uxInspectDE;
+        protected global::Ext.Net.TextField uxAddNewCrossingWarningDevice;
         
         /// <summary>
-        /// uxStateDE control.
+        /// FieldContainer18 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column uxStateDE;
+        protected global::Ext.Net.FieldContainer FieldContainer18;
         
         /// <summary>
-        /// uxSubDivisonDE control.
+        /// uxAddNewCrossingRowWidth control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column uxSubDivisonDE;
+        protected global::Ext.Net.TextField uxAddNewCrossingRowWidth;
         
         /// <summary>
-        /// uxCrossingNumDE control.
+        /// uxAddNewCrossingPropertyType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column uxCrossingNumDE;
+        protected global::Ext.Net.TextField uxAddNewCrossingPropertyType;
         
         /// <summary>
-        /// Toolbar3 control.
+        /// uxAddNewCrossingSurface control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Toolbar Toolbar3;
+        protected global::Ext.Net.TextField uxAddNewCrossingSurface;
         
         /// <summary>
-        /// uxAddAppButton control.
+        /// FieldContainer19 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxAddAppButton;
+        protected global::Ext.Net.FieldContainer FieldContainer19;
         
         /// <summary>
-        /// uxEditAppButton control.
+        /// uxAddNewCrossingMainTracks control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxEditAppButton;
+        protected global::Ext.Net.TextField uxAddNewCrossingMainTracks;
         
         /// <summary>
-        /// uxDeleteAppButton control.
+        /// uxAddNewCrossingOtherTracks control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxDeleteAppButton;
+        protected global::Ext.Net.TextField uxAddNewCrossingOtherTracks;
+        
+        /// <summary>
+        /// uxAddNewCrossingMaxSpeed control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxAddNewCrossingMaxSpeed;
+        
+        /// <summary>
+        /// FieldContainer20 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer FieldContainer20;
+        
+        /// <summary>
+        /// uxAddNewCrossingMTM control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxAddNewCrossingMTM;
+        
+        /// <summary>
+        /// uxAddNewCrossingMTMCell control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxAddNewCrossingMTMCell;
+        
+        /// <summary>
+        /// uxAddNewCrossingMTMOffice control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxAddNewCrossingMTMOffice;
+        
+        /// <summary>
+        /// uxAddNewCrossingRemarks control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextArea uxAddNewCrossingRemarks;
+        
+        /// <summary>
+        /// uxAddNewCrossingSpecInstruct control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextArea uxAddNewCrossingSpecInstruct;
+        
+        /// <summary>
+        /// AddCrossingWindowButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button AddCrossingWindowButton;
+        
+        /// <summary>
+        /// CancelCrossingWindowButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button CancelCrossingWindowButton;
     }
 }
