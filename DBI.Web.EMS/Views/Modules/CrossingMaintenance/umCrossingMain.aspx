@@ -27,42 +27,35 @@
 								<ext:ModelField Name="" />
 								<ext:ModelField Name="" />
 								<ext:ModelField Name="" />
-								
-								
 							</Fields>
 						</ext:Model>
 					</Model>
-					<%--<Listeners>
-						<Load Fn="doMath" />
-					</Listeners>--%>
+					
 				</ext:Store>
-			</Store>
-			<ColumnModel>
-				<Columns>
-					<ext:Column ID="uxProjectName" runat="server" DataIndex="" Text="Project Name" Flex="1"/>
-					<ext:Column ID="uxMainCrossingNum" runat="server" DataIndex="" Text="Crossing #" Flex="1" />
-					<ext:Column ID="uxMainState" runat="server" DataIndex="" Text="State" Flex="1" />
+			        </Store>
+			    <ColumnModel>
+				    <Columns>
+					    <ext:Column ID="uxProjectName" runat="server" DataIndex="" Text="Project Name" Flex="1"/>
+					    <ext:Column ID="uxMainCrossingNum" runat="server" DataIndex="" Text="Crossing #" Flex="1" />
+					    <ext:Column ID="uxMainState" runat="server" DataIndex="" Text="State" Flex="1" />
 					
-					
-					
-				</Columns>
-			</ColumnModel>
-                   <TopBar>
+					</Columns>
+			    </ColumnModel>
+                    <TopBar>
                    
                         <ext:Toolbar ID="Toolbar3" runat="server">
                         <Items>
                         <ext:Button ID="uxAddProjectButton" runat="server" Text="Add Project" Icon="ApplicationAdd" />
                         <ext:Button ID="uxEditProjectButton" runat="server" Text="Edit Project" Icon="ApplicationEdit" />
                        
-                       
-                        </Items>
+                       </Items>
                             
                          </ext:Toolbar>
-                </TopBar>
-                 <Plugins>
+                    </TopBar>
+                    <Plugins>
                         <ext:FilterHeader ID="FilterHeader1" runat="server"  />
                     </Plugins>
-                <BottomBar>
+                    <BottomBar>
                         <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True">
                         </ext:PagingToolbar>
                     </BottomBar>
@@ -121,6 +114,7 @@
                             </Loader>
                                                                      
                         </ext:Panel>
+                    
                 </Items>
             </ext:TabPanel>
 

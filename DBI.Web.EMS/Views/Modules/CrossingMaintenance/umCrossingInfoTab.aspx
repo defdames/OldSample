@@ -33,8 +33,14 @@
 							</Listeners>
                         </ext:Button>
                         <ext:Button ID="uxActivateCrossingButton" runat="server" Text="Activate Crossing" Icon="ApplicationGo" />
-                        <ext:Button ID="uxDeleteCrossingButton" runat="server" Text="Delete Crossing" Icon="ApplicationDelete" />
-                        
+                        <ext:Button ID="uxDeleteCrossingButton" runat="server" Text="Delete Crossing" Icon="ApplicationDelete" >
+                            <DirectEvents>
+								<Click OnEvent="deRemoveCrossing">
+									<Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete crossing?" />
+									
+								</Click>
+							</DirectEvents>
+                        </ext:Button>
                        
                         </Items>
                 

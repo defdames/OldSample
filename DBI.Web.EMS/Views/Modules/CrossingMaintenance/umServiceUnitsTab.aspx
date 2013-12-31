@@ -26,7 +26,14 @@
 								<Click Handler="#{uxEditServiceUnitWindow}.show()" />     
 							</Listeners>
                         </ext:Button>
-                        <ext:Button ID="Button8" runat="server" Text="Delete Service Unit" Icon="ApplicationDelete" />
+                        <ext:Button ID="Button8" runat="server" Text="Delete Service Unit" Icon="ApplicationDelete" >
+                            <DirectEvents>
+								<Click OnEvent="deRemoveServiceUnit">
+									<Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete this service unit?" />
+									
+								</Click>
+							</DirectEvents>
+                        </ext:Button>
                       
                        
                             </Items>

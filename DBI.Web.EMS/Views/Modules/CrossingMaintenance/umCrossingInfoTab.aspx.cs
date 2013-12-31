@@ -13,5 +13,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         {
 
         }
+        protected void deRemoveCrossing(object sender, EventArgs e)
+        {
+
+        }
     }
 }

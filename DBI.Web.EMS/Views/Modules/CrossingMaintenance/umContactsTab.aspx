@@ -74,7 +74,14 @@
 								<Click Handler="#{uxAssignCrossingWindow}.show()" />
 							</Listeners>
                         </ext:Button>
-                        <ext:Button ID="uxDeleteContact" runat="server" Text="Delete Contact" Icon="ApplicationDelete" />
+                        <ext:Button ID="uxDeleteContact" runat="server" Text="Delete Contact" Icon="ApplicationDelete" >
+                            <DirectEvents>
+								<Click OnEvent="deRemoveContact">
+									<Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete this contact?" />
+									
+								</Click>
+							</DirectEvents>
+                        </ext:Button>
                             
 
                         </Items>
