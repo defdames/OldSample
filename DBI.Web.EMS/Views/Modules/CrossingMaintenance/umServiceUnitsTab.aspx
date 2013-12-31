@@ -41,13 +41,13 @@
 
                                  <ext:FieldContainer ID="FieldContainer9" runat="server" Layout="HBoxLayout">
                                   <Items>
-                                <ext:DropDownField ID="uxCrossingNumSU" runat="server" TriggerIcon="SimpleArrowDown" FieldLabel="Crossing #" LabelAlign="Right">
+                                <ext:TextField ID="uxCrossingNumSUTextField" runat="server" FieldLabel="Crossing #" LabelAlign="Right">
                                         
-                                 </ext:DropDownField>
+                                 </ext:TextField>
 
-                                 <ext:DropDownField ID="uxServiceTypeSU" runat="server" TriggerIcon="SimpleArrowDown" FieldLabel="Service Type" LabelAlign="Right" >
+                                 <ext:TextField ID="uxServiceTypeSUTextField" runat="server" FieldLabel="Service Type" LabelAlign="Right" >
                             
-                                 </ext:DropDownField>
+                                 </ext:TextField>
                                <ext:TextField ID="uxProjectNumSU" runat="server" FieldLabel="Project #" AnchorHorizontal="100%" LabelAlign="Right"/>
                                <ext:TextField ID="uxSubDivisionSU" runat="server" FieldLabel="Subdivision" LabelAlign="Right" AnchorHorizontal="100%" />
                                

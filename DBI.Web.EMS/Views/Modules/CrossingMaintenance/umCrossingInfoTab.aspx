@@ -46,16 +46,11 @@
                 
                        </ext:Toolbar>
 
-                       <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
-                           <Items>
-                             <ext:DropDownField ID="uxCrossingNum" runat="server" TriggerIcon="SimpleArrowDown" FieldLabel="Crossing #" LabelAlign="Right">
-                                        
-                             </ext:DropDownField>
-
-                             <ext:DropDownField ID="uxState" runat="server" TriggerIcon="SimpleArrowDown" FieldLabel="State" LabelAlign="Right" >
-                            
-                                 </ext:DropDownField>
-                                </Items>
+                                 <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
+                                    <Items>
+                                     <ext:TextField ID="uxCrossingNumTextField" runat="server" FieldLabel="Crossing #" LabelAlign="Right" />
+                                     <ext:TextField ID="uxStateTextField" runat="server" FieldLabel="State" LabelAlign="Right" />
+                                    </Items>
                                 </ext:FieldContainer>
 
                                 <ext:FieldContainer runat="server" Layout="HBoxLayout">

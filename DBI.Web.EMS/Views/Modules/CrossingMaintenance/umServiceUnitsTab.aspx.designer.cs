@@ -76,22 +76,22 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FieldContainer FieldContainer9;
         
         /// <summary>
-        /// uxCrossingNumSU control.
+        /// uxCrossingNumSUTextField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DropDownField uxCrossingNumSU;
+        protected global::Ext.Net.TextField uxCrossingNumSUTextField;
         
         /// <summary>
-        /// uxServiceTypeSU control.
+        /// uxServiceTypeSUTextField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DropDownField uxServiceTypeSU;
+        protected global::Ext.Net.TextField uxServiceTypeSUTextField;
         
         /// <summary>
         /// uxProjectNumSU control.
