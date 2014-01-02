@@ -14,7 +14,6 @@
                    <Items>
                         <ext:Toolbar ID="Toolbar4" runat="server">
                         <Items>
-                   
                         <ext:Button ID="uxAddSubDiv" runat="server" Text="Add Subdivsion" Icon="ApplicationAdd" >
                              <Listeners>
 								<Click Handler="#{uxAddNewSubdivisionWindow}.show()" />     
@@ -31,17 +30,14 @@
 									<Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete this sub-division?" />
 							    </Click>
 							</DirectEvents>
-                        </ext:Button>
-                      
-                       
+                        </ext:Button>                      
                             </Items>
                              </ext:Toolbar>
-
                                  <ext:FieldContainer ID="FieldContainer9" runat="server" Layout="HBoxLayout">
                                   <Items>
-                                       <ext:DropDownField ID="uxSubDivisionSD" runat="server" FieldLabel="Subdivision" LabelAlign="Right" AnchorHorizontal="100%" />
-                                       <ext:TextField ID="uxStateSD" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />
-                                       <ext:TextField ID="uxCountySD" runat="server" FieldLabel="County" AnchorHorizontal="100%" LabelAlign="Right" />                        
+                                   <ext:DropDownField ID="uxSubDivisionSD" runat="server" FieldLabel="Subdivision" LabelAlign="Right" AnchorHorizontal="100%" />
+                                   <ext:TextField ID="uxStateSD" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />
+                                   <ext:TextField ID="uxCountySD" runat="server" FieldLabel="County" AnchorHorizontal="100%" LabelAlign="Right" />                        
                                   </Items>
                                 </ext:FieldContainer>
                        
@@ -61,8 +57,7 @@
                                     </Items>
                                  </ext:FieldContainer>  
 
-                                 <ext:TextArea ID="uxSubDivRemarks" runat="server" FieldLabel="Remarks" AnchorHorizontal="92%" LabelAlign="Right" />
-                                     
+                                 <ext:TextArea ID="uxSubDivRemarks" runat="server" FieldLabel="Remarks" AnchorHorizontal="92%" LabelAlign="Right" />                                    
                    </Items>
      </ext:FormPanel>
     <%------------------------------------Hidden Windows--------------------------------------%>

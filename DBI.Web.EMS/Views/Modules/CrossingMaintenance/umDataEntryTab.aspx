@@ -29,10 +29,8 @@
 									<Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete this application entry?" />
 						       </Click>
 							</DirectEvents>
-                        </ext:Button>
-                       
-                </Items>
-                            
+                        </ext:Button>                     
+                </Items>                       
         </ext:Toolbar>
              
                 <ext:FormPanel ID="FormPanel3" runat="server" Layout="FormLayout">
@@ -54,19 +52,17 @@
                                     <ext:Checkbox ID="uxEntryCutBox" runat="server" FieldLabel="Cut" LabelAlign="Right" Width="250" />
                                     </Items>
                                 </ext:FieldContainer>
-
-                            
+                       
                                 <ext:FieldContainer ID="FieldContainer8" runat="server" Layout="HBoxLayout">
                                     <Items>
                                      <ext:TextField ID="uxEntryCrossingNum" runat="server" FieldLabel="Crossing #" AnchorHorizontal="100%" LabelAlign="Right" />
                                      <ext:TextField ID="uxEntryTruckNum" runat="server" FieldLabel="Truck #" AnchorHorizontal="100%" LabelAlign="Right" />
                                      <ext:Checkbox ID="uxEntryInspectBox" runat="server" FieldLabel="Inspect" LabelAlign="Right" Width="250" />
-                                    </Items>
-                                    
+                                    </Items>                                 
                                 </ext:FieldContainer>
 
-                                 <ext:TextArea ID="uxEntryRemarks" FieldLabel="Remarks" runat="server" LabelAlign="Right" />
-                       </Items>
+                               <ext:TextArea ID="uxEntryRemarks" FieldLabel="Remarks" runat="server" LabelAlign="Right" />
+                        </Items>
                     </ext:FormPanel>       
                         
   <%---------------------------------------Hidden Windows-----------------------------------%>      
@@ -82,17 +78,17 @@
                    <Items>
                         <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                                   <Items>
-                                <ext:DateField ID="uxAddEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" />
-                                <ext:TextField ID="uxAddEntryNumber" runat="server"  FieldLabel="Number" LabelAlign="Right" />
-                                <ext:Checkbox ID="uxAddEntrySprayBox" runat="server" FieldLabel="Spray" LabelAlign="Right" Width="250" />
+                                  <ext:DateField ID="uxAddEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" />
+                                  <ext:TextField ID="uxAddEntryNumber" runat="server"  FieldLabel="Number" LabelAlign="Right" />
+                                  <ext:Checkbox ID="uxAddEntrySprayBox" runat="server" FieldLabel="Spray" LabelAlign="Right" Width="250" />
                                   </Items>
                             </ext:FieldContainer>
 
                                 <ext:FieldContainer ID="FieldContainer0" runat="server" Layout="HBoxLayout">
                                     <Items>
-                               <ext:DropDownField ID="uxAddEntryState" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right"/>
-                               <ext:DropDownField ID="uxAddEntrySubDiv" runat="server" FieldLabel="Subdivision" LabelAlign="Right" AnchorHorizontal="100%" />
-                               <ext:Checkbox ID="uxAddEntryCutBox" runat="server" FieldLabel="Cut" LabelAlign="Right" Width="250" />
+                                    <ext:DropDownField ID="uxAddEntryState" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right"/>
+                                    <ext:DropDownField ID="uxAddEntrySubDiv" runat="server" FieldLabel="Subdivision" LabelAlign="Right" AnchorHorizontal="100%" />
+                                    <ext:Checkbox ID="uxAddEntryCutBox" runat="server" FieldLabel="Cut" LabelAlign="Right" Width="250" />
                                     </Items>
                                 </ext:FieldContainer>
 
@@ -102,20 +98,17 @@
                                      <ext:TextField ID="uxAddEntryCrossingNum" runat="server" FieldLabel="Crossing #" AnchorHorizontal="100%" LabelAlign="Right" />
                                      <ext:TextField ID="uxAddEntryTruckNum" runat="server" FieldLabel="Truck #" AnchorHorizontal="100%" LabelAlign="Right" />
                                      <ext:Checkbox ID="uxAddEntryInspectBox" runat="server" FieldLabel="Inspect" LabelAlign="Right" Width="250" />
-                                    </Items>
-                                    
+                                    </Items>                                  
                                 </ext:FieldContainer>
 
                                  <ext:TextArea ID="uxAddEntryRemarks" FieldLabel="Remarks" runat="server" LabelAlign="Right" />
-                       </Items>
-                    </ext:FormPanel>
-                 </Items>
-
+                              </Items>
+                        </ext:FormPanel>
+                    </Items>
                         <Buttons>
                             <ext:Button ID="uxAddApplicationEntryButton" runat="server" Text="Add" Icon="Add" />
                             <ext:Button ID="uxCancelNewApplicationEntryButton" runat="server" Text="Cancel" Icon="Delete" />
-                        </Buttons>
-                  
+                        </Buttons>               
                 </ext:Window>
     <%-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------%>
 
@@ -134,7 +127,7 @@
                                 <ext:TextField ID="uxEditEntryNumber" runat="server"  FieldLabel="Number" LabelAlign="Right" />
                                 <ext:Checkbox ID="uxEditEntrySprayBox" runat="server" FieldLabel="Spray" LabelAlign="Right" Width="250" />
                                   </Items>
-                            </ext:FieldContainer>
+                        </ext:FieldContainer>
 
                                 <ext:FieldContainer ID="FieldContainer4" runat="server" Layout="HBoxLayout">
                                     <Items>
@@ -150,21 +143,17 @@
                                      <ext:TextField ID="uxEditEntryCrossingNum" runat="server" FieldLabel="Crossing #" AnchorHorizontal="100%" LabelAlign="Right" />
                                      <ext:DropDownFIeld ID="uxEditEntryTruckNum" runat="server" FieldLabel="Truck #" AnchorHorizontal="100%" LabelAlign="Right" />
                                      <ext:Checkbox ID="uxEditEntryInspectNum" runat="server" FieldLabel="Inspect" LabelAlign="Right" Width="250" />
-                                    </Items>
-                                    
+                                    </Items>                                 
                                 </ext:FieldContainer>
 
                                 <ext:TextArea ID="uxEditEntryRemarks" FieldLabel="Remarks" runat="server" LabelAlign="Right" />
                        </Items>
                     </ext:FormPanel>
                  </Items>
-
-
                         <Buttons>
                             <ext:Button ID="uxUpdateAppEntryButton" runat="server" Text="Update" Icon="Add" />
                             <ext:Button ID="uxCancelUpdateAppEntryButton" runat="server" Text="Cancel" Icon="Delete" />
-                        </Buttons>
-                  
+                        </Buttons>              
                 </ext:Window>
     </form>
 </body>

@@ -35,9 +35,6 @@
 							</Fields>
 						</ext:Model>
 					</Model>
-					<%--<Listeners>
-						<Load Fn="doMath" />
-					</Listeners>--%>
 				</ext:Store>
 			</Store>
 			<ColumnModel>
@@ -77,19 +74,14 @@
                         <ext:Button ID="uxDeleteContact" runat="server" Text="Delete Contact" Icon="ApplicationDelete" >
                             <DirectEvents>
 								<Click OnEvent="deRemoveContact">
-									<Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete this contact?" />
-									
+									<Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete this contact?" />									
 								</Click>
 							</DirectEvents>
-                        </ext:Button>
-                            
-
-                        </Items>
-                           
-                         </ext:Toolbar>
-                </TopBar>
-                   
-               </ext:GridPanel>
+                            </ext:Button>
+                        </Items>             
+                   </ext:Toolbar>
+                </TopBar>          
+             </ext:GridPanel>
         <%-------------------------------------Hidden Windows-------------------------------------------------%>
          <ext:Window runat="server"
 			ID="uxAddContactWindow"
@@ -99,8 +91,7 @@
 			Width="250">
         <Items>
         <ext:FormPanel runat="server" Layout="FormLayout">
-            <Items>
-                
+            <Items>          
                  <ext:TextField ID="uxAddNewManagerName" runat="server" FieldLabel="Manager Name" AnchorHorizontal="100%" LabelAlign="Right" />
                  <ext:TextField ID="uxAddNewEmail" runat="server" FieldLabel="Email" AnchorHorizontal="100%" LabelAlign="Right" />
                  <ext:DropDownField ID="uxAddNewRR" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right"/>
@@ -110,18 +101,16 @@
                  <ext:DropDownField  ID="uxAddNewContactCity" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />
                  <ext:TextField ID="uxAddNewContactZip" runat="server" FieldLabel="Zip" AnchorHorizontal="100%" LabelAlign="Right"/>
                  <ext:TextField ID="uxAddNewContactCell" runat="server" FieldLabel="Cell #" AnchorHorizontal="100%" LabelAlign="Right" />
-                 <ext:TextField ID="uxAddNewContactOffice" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right"/>
-                  
+                 <ext:TextField ID="uxAddNewContactOffice" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right"/>           
             </Items>
             <Buttons>
                 <ext:Button runat="server" ID="uxAddNewContactButton" Text="Add" Icon="Add" />
                 <ext:Button runat="server" ID="uxAddNewContactCancelButton" Text="Cancel" Icon="Delete" />
-
             </Buttons>
-        </ext:FormPanel>
-             </Items>
+            </ext:FormPanel>
+          </Items>
         </ext:Window>
-
+<%----------------------------------------------------------------------------------------------------------------------------------------%>
           <ext:Window runat="server"
 			ID="uxEditContactWindow"
 			Layout="FormLayout"
@@ -129,9 +118,8 @@
             Title="Edit Existing Contact"
 			Width="250">
         <Items>
-        <ext:FormPanel ID="FormPanel1" runat="server" Layout="FormLayout">
-            <Items>
-                
+         <ext:FormPanel ID="FormPanel1" runat="server" Layout="FormLayout">
+            <Items>        
                  <ext:TextField ID="TextField1" runat="server" FieldLabel="Manager Name" AnchorHorizontal="100%" LabelAlign="Right" />
                  <ext:TextField ID="TextField2" runat="server" FieldLabel="Email" AnchorHorizontal="100%" LabelAlign="Right" />
                  <ext:DropDownField ID="TextField3" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right"/>
@@ -141,18 +129,16 @@
                  <ext:DropDownField ID="TextField6" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />
                  <ext:TextField ID="TextField8" runat="server" FieldLabel="Zip" AnchorHorizontal="100%" LabelAlign="Right"/>
                  <ext:TextField ID="TextField9" runat="server" FieldLabel="Cell #" AnchorHorizontal="100%" LabelAlign="Right" />
-                 <ext:TextField ID="TextField10" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right"/>
-                  
+                 <ext:TextField ID="TextField10" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right"/>               
             </Items>
             <Buttons>
                 <ext:Button runat="server" ID="Button1" Text="Update" Icon="Add" />
                 <ext:Button runat="server" ID="Button2" Text="Cancel" Icon="Delete" />
-
             </Buttons>
-        </ext:FormPanel>
-             </Items>
+           </ext:FormPanel>
+        </Items>
         </ext:Window>
-
+<%--------------------------------------------------------------------------------------------------------------------------------------%>
         <ext:Window runat="server"
 			ID="uxAssignCrossingWindow"
 			Layout="FormLayout"
@@ -161,22 +147,19 @@
 			Width="250">
         <Items>
         <ext:FormPanel ID="FormPanel2" runat="server" Layout="FormLayout">
-            <Items>
-                
+            <Items>             
                  <ext:TextField ID="TextField11" runat="server" FieldLabel="Manager Name" AnchorHorizontal="100%" LabelAlign="Right" />
                  <ext:TextField ID="TextField12" runat="server" FieldLabel="Email" AnchorHorizontal="100%" LabelAlign="Right" />
                  <ext:DropDownField ID="DropDownField1" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right"/>
                  <ext:DropDownField ID="DropDownField2" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />
-                 <ext:DropDownField ID="DropDownField3" runat="server" FieldLabel="Sub-Division" AnchorHorizontal="100%" LabelAlign="Right" />
-                    
+                 <ext:DropDownField ID="DropDownField3" runat="server" FieldLabel="Sub-Division" AnchorHorizontal="100%" LabelAlign="Right" />                 
             </Items>
             <Buttons>
                 <ext:Button runat="server" ID="Button3" Text="Assign" Icon="Add" />
                 <ext:Button runat="server" ID="Button4" Text="Cancel" Icon="Delete" />
-
             </Buttons>
         </ext:FormPanel>
-             </Items>
+        </Items>
         </ext:Window>
 
     </div>
