@@ -76,67 +76,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Button uxDeleteSubDiv;
         
         /// <summary>
-        /// FieldContainer9 control.
+        /// uxSubDivisionSDTextField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer9;
-        
-        /// <summary>
-        /// uxSubDivisionSD control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.DropDownField uxSubDivisionSD;
-        
-        /// <summary>
-        /// uxStateSD control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxStateSD;
-        
-        /// <summary>
-        /// uxCountySD control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxCountySD;
-        
-        /// <summary>
-        /// FieldContainer11 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer11;
-        
-        /// <summary>
-        /// uxCitySD control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxCitySD;
-        
-        /// <summary>
-        /// uxStreetSD control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxStreetSD;
+        protected global::Ext.Net.TextField uxSubDivisionSDTextField;
         
         /// <summary>
         /// uxRouteSD control.
@@ -148,15 +94,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField uxRouteSD;
         
         /// <summary>
-        /// FieldContainer14 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer14;
-        
-        /// <summary>
         /// uxDotNumSD control.
         /// </summary>
         /// <remarks>
@@ -164,6 +101,24 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.TextField uxDotNumSD;
+        
+        /// <summary>
+        /// FieldContainer1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer FieldContainer1;
+        
+        /// <summary>
+        /// uxStreetSD control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxStreetSD;
         
         /// <summary>
         /// uxMPSD control.
@@ -175,6 +130,24 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField uxMPSD;
         
         /// <summary>
+        /// FieldContainer2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer FieldContainer2;
+        
+        /// <summary>
+        /// uxCitySD control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxCitySD;
+        
+        /// <summary>
         /// uxServiceTypeSD control.
         /// </summary>
         /// <remarks>
@@ -182,6 +155,24 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.TextField uxServiceTypeSD;
+        
+        /// <summary>
+        /// uxCountySD control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxCountySD;
+        
+        /// <summary>
+        /// uxStateSD control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxStateSD;
         
         /// <summary>
         /// uxSubDivRemarks control.

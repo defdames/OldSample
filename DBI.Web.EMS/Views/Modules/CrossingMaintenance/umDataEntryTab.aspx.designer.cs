@@ -211,6 +211,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FormPanel FormPanel2;
         
         /// <summary>
+        /// uxAddEntryField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxAddEntryField;
+        
+        /// <summary>
         /// FieldContainer1 control.
         /// </summary>
         /// <remarks>
@@ -362,6 +371,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.FormPanel FormPanel1;
+        
+        /// <summary>
+        /// uxEditEntryType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxEditEntryType;
         
         /// <summary>
         /// FieldContainer3 control.

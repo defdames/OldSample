@@ -76,6 +76,8 @@
             <Items>
                  <ext:FormPanel ID="FormPanel2" runat="server" Layout="FormLayout">
                    <Items>
+
+                        <ext:TextField runat="server" ID="uxAddEntryField" FieldLabel="Entry Type" LabelAlign="Right" Width="300" />
                         <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                                   <Items>
                                   <ext:DateField ID="uxAddEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" />
@@ -121,6 +123,7 @@
             <Items>
                  <ext:FormPanel ID="FormPanel1" runat="server" Layout="FormLayout">
                    <Items>
+                        <ext:TextField runat="server" ID="uxEditEntryType" FieldLabel="Entry Type" LabelAlign="Right" Width="300" />
                         <ext:FieldContainer ID="FieldContainer3" runat="server" Layout="HBoxLayout">
                                   <Items>
                                 <ext:DateField ID="uxEditEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" />

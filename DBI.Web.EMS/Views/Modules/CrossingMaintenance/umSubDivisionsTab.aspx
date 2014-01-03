@@ -33,29 +33,33 @@
                         </ext:Button>                      
                             </Items>
                              </ext:Toolbar>
-                                 <ext:FieldContainer ID="FieldContainer9" runat="server" Layout="HBoxLayout">
-                                  <Items>
-                                   <ext:DropDownField ID="uxSubDivisionSD" runat="server" FieldLabel="Subdivision" LabelAlign="Right" AnchorHorizontal="100%" />
-                                   <ext:TextField ID="uxStateSD" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />
-                                   <ext:TextField ID="uxCountySD" runat="server" FieldLabel="County" AnchorHorizontal="100%" LabelAlign="Right" />                        
-                                  </Items>
-                                </ext:FieldContainer>
+                                 
+                                   <ext:TextField ID="uxSubDivisionSDTextField" runat="server" FieldLabel="Subdivision" LabelAlign="Right" AnchorHorizontal="100%" Width="235" />
+                                   <ext:FieldContainer runat="server" Layout="HBoxLayout">
+                                       <Items>
+                                           <ext:TextField ID="uxRouteSD" runat="server" FieldLabel="Route" LabelAlign="Right" />
+                                           <ext:TextField ID="uxDotNumSD" runat="server" FieldLabel="DOT #" LabelAlign="Right" />
+                                       </Items>
+                                   </ext:FieldContainer>
+                                    <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
+                                       <Items>
+                                            <ext:TextField ID="uxStreetSD" runat="server" FieldLabel="Street" AnchorHorizontal="100%" LabelAlign="Right" />
+                                            <ext:TextField ID="uxMPSD" runat="server" FieldLabel="MP" AnchorHorizontal="100%" LabelAlign="Right"/>
+                                            </Items>
+                                   </ext:FieldContainer>
+                                        <ext:FieldContainer ID="FieldContainer2" runat="server" Layout="HBoxLayout">
+                                       <Items>
+                                            <ext:TextField ID="uxCitySD" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right"/>
+                                            <ext:TextField ID="uxServiceTypeSD" runat="server" FieldLabel="Service Type" LabelAlign="Right" />
+                                            </Items>
+                                   </ext:FieldContainer>
+                                         
+                                   <ext:TextField ID="uxCountySD" runat="server" FieldLabel="County" AnchorHorizontal="100%" LabelAlign="Right" Width="235" /> 
+                                   <ext:TextField ID="uxStateSD" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" Width="235" />
+                                                         
+                                  
                        
-                                <ext:FieldContainer ID="FieldContainer11" runat="server" Layout="HBoxLayout">
-                                    <Items>
-                                    <ext:TextField ID="uxCitySD" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right"/>
-                                    <ext:TextField ID="uxStreetSD" runat="server" FieldLabel="Street" AnchorHorizontal="100%" LabelAlign="Right" />
-                                    <ext:TextField ID="uxRouteSD" runat="server" FieldLabel="Route" LabelAlign="Right" />
-                                    </Items>   
-                                </ext:FieldContainer>
-
-                                 <ext:FieldContainer ID="FieldContainer14" runat="server" Layout="HBoxLayout">
-                                    <Items>
-                                    <ext:TextField ID="uxDotNumSD" runat="server" FieldLabel="DOT #" LabelAlign="Right" />
-                                    <ext:TextField ID="uxMPSD" runat="server" FieldLabel="MP" AnchorHorizontal="100%" LabelAlign="Right"/>
-                                    <ext:TextField ID="uxServiceTypeSD" runat="server" FieldLabel="Service Type" LabelAlign="Right" />
-                                    </Items>
-                                 </ext:FieldContainer>  
+                               
 
                                  <ext:TextArea ID="uxSubDivRemarks" runat="server" FieldLabel="Remarks" AnchorHorizontal="92%" LabelAlign="Right" />                                    
                    </Items>

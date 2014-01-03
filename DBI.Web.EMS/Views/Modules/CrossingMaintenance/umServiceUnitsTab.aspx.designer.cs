@@ -76,13 +76,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FieldContainer FieldContainer9;
         
         /// <summary>
-        /// uxCrossingNumSUTextField control.
+        /// uxSubDivisionSU control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxCrossingNumSUTextField;
+        protected global::Ext.Net.TextField uxSubDivisionSU;
         
         /// <summary>
         /// uxServiceTypeSUTextField control.
@@ -92,24 +92,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.TextField uxServiceTypeSUTextField;
-        
-        /// <summary>
-        /// uxProjectNumSU control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxProjectNumSU;
-        
-        /// <summary>
-        /// uxSubDivisionSU control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxSubDivisionSU;
         
         /// <summary>
         /// FieldContainer11 control.
@@ -274,13 +256,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FieldContainer FieldContainer1;
         
         /// <summary>
-        /// uxAddNewSUCrossingNum control.
+        /// uxAddNewSUSubdivision control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxAddNewSUCrossingNum;
+        protected global::Ext.Net.TextField uxAddNewSUSubdivision;
         
         /// <summary>
         /// uxAddNewSUServiceType control.
@@ -292,51 +274,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField uxAddNewSUServiceType;
         
         /// <summary>
-        /// uxAddNewSUSpray control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Checkbox uxAddNewSUSpray;
-        
-        /// <summary>
-        /// FieldContainer0 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer0;
-        
-        /// <summary>
-        /// uxAddNewSUProjectNum control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxAddNewSUProjectNum;
-        
-        /// <summary>
-        /// uxAddNewSUSubdivision control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxAddNewSUSubdivision;
-        
-        /// <summary>
-        /// uxAddNewSUCut control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Checkbox uxAddNewSUCut;
-        
-        /// <summary>
         /// FieldContainer2 control.
         /// </summary>
         /// <remarks>
@@ -346,22 +283,31 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FieldContainer FieldContainer2;
         
         /// <summary>
-        /// uxAddNewSUApprovedDate control.
+        /// uxAddNewSUApprovedDateField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxAddNewSUApprovedDate;
+        protected global::Ext.Net.DateField uxAddNewSUApprovedDateField;
         
         /// <summary>
-        /// uxAddNewSUCompleteDate control.
+        /// uxAddNewSUCompleteDateField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxAddNewSUCompleteDate;
+        protected global::Ext.Net.DateField uxAddNewSUCompleteDateField;
+        
+        /// <summary>
+        /// uxAddNewSUSpray control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Checkbox uxAddNewSUSpray;
         
         /// <summary>
         /// uxAddNewSUMaintainBox control.
@@ -400,6 +346,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField uxAddNewSUSquareFeet;
         
         /// <summary>
+        /// uxAddNewSUCut control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Checkbox uxAddNewSUCut;
+        
+        /// <summary>
         /// uxAddNewSUInspect control.
         /// </summary>
         /// <remarks>
@@ -418,22 +373,22 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FieldContainer FieldContainer4;
         
         /// <summary>
-        /// uxAddNewSUInspectStart control.
+        /// uxAddNewSUInspectStartDateField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxAddNewSUInspectStart;
+        protected global::Ext.Net.DateField uxAddNewSUInspectStartDateField;
         
         /// <summary>
-        /// uxAddNewSUInspectEnd control.
+        /// uxAddNewSUInspectEndDateField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxAddNewSUInspectEnd;
+        protected global::Ext.Net.DateField uxAddNewSUInspectEndDateField;
         
         /// <summary>
         /// uxAddNewSURecurringBox control.
@@ -499,13 +454,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FieldContainer FieldContainer5;
         
         /// <summary>
-        /// uxEditSUCrossingNum control.
+        /// uxEditSUSubdivision control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxEditSUCrossingNum;
+        protected global::Ext.Net.TextField uxEditSUSubdivision;
         
         /// <summary>
         /// uxEditSUServiceType control.
@@ -517,51 +472,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField uxEditSUServiceType;
         
         /// <summary>
-        /// UxEditSUSprayBox control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Checkbox UxEditSUSprayBox;
-        
-        /// <summary>
-        /// FieldContainer6 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer6;
-        
-        /// <summary>
-        /// uxEditSUProjectNum control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxEditSUProjectNum;
-        
-        /// <summary>
-        /// uxEditSUSubdivision control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxEditSUSubdivision;
-        
-        /// <summary>
-        /// uxEditSUCut control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Checkbox uxEditSUCut;
-        
-        /// <summary>
         /// FieldContainer7 control.
         /// </summary>
         /// <remarks>
@@ -571,22 +481,31 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FieldContainer FieldContainer7;
         
         /// <summary>
-        /// uxEditSUApprovedDate control.
+        /// uxEditSUApprovedDateField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxEditSUApprovedDate;
+        protected global::Ext.Net.DateField uxEditSUApprovedDateField;
         
         /// <summary>
-        /// uxEditSUCompleteDate control.
+        /// uxEditSUCompleteDateField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxEditSUCompleteDate;
+        protected global::Ext.Net.DateField uxEditSUCompleteDateField;
+        
+        /// <summary>
+        /// UxEditSUSprayBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Checkbox UxEditSUSprayBox;
         
         /// <summary>
         /// uxEditSUMaintain control.
@@ -625,6 +544,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField uxEditSUSquareFeet;
         
         /// <summary>
+        /// uxEditSUCut control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Checkbox uxEditSUCut;
+        
+        /// <summary>
         /// uxEditSUInspectBox control.
         /// </summary>
         /// <remarks>
@@ -643,22 +571,22 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FieldContainer FieldContainer10;
         
         /// <summary>
-        /// uxEditSUInspectStart control.
+        /// uxEditSUInspectStartDateField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxEditSUInspectStart;
+        protected global::Ext.Net.DateField uxEditSUInspectStartDateField;
         
         /// <summary>
-        /// uxEditSUInspectEnd control.
+        /// uxEditSUInspectEndDateField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxEditSUInspectEnd;
+        protected global::Ext.Net.DateField uxEditSUInspectEndDateField;
         
         /// <summary>
         /// uxEditSURecurringBox control.
