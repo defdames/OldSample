@@ -94,13 +94,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField uxRouteSD;
         
         /// <summary>
-        /// uxDotNumSD control.
+        /// uxStateSD control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxDotNumSD;
+        protected global::Ext.Net.TextField uxStateSD;
         
         /// <summary>
         /// FieldContainer1 control.
@@ -121,13 +121,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField uxStreetSD;
         
         /// <summary>
-        /// uxMPSD control.
+        /// uxDotNumSD control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxMPSD;
+        protected global::Ext.Net.TextField uxDotNumSD;
         
         /// <summary>
         /// FieldContainer2 control.
@@ -148,13 +148,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField uxCitySD;
         
         /// <summary>
-        /// uxServiceTypeSD control.
+        /// uxMPSD control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxServiceTypeSD;
+        protected global::Ext.Net.TextField uxMPSD;
         
         /// <summary>
         /// uxCountySD control.
@@ -166,13 +166,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField uxCountySD;
         
         /// <summary>
-        /// uxStateSD control.
+        /// uxServiceTypeSD control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxStateSD;
+        protected global::Ext.Net.TextField uxServiceTypeSD;
         
         /// <summary>
         /// uxSubDivRemarks control.

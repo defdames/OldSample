@@ -247,6 +247,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField uxAddNewAddress2;
         
         /// <summary>
+        /// uxAddNewContactCityTextField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxAddNewContactCityTextField;
+        
+        /// <summary>
         /// uxAddNewContactState control.
         /// </summary>
         /// <remarks>
@@ -254,15 +263,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.DropDownField uxAddNewContactState;
-        
-        /// <summary>
-        /// uxAddNewContactCity control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.DropDownField uxAddNewContactCity;
         
         /// <summary>
         /// uxAddNewContactZip control.
@@ -373,6 +373,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField TextField5;
         
         /// <summary>
+        /// TextField13 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField TextField13;
+        
+        /// <summary>
         /// TextField7 control.
         /// </summary>
         /// <remarks>
@@ -380,15 +389,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.DropDownField TextField7;
-        
-        /// <summary>
-        /// TextField6 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.DropDownField TextField6;
         
         /// <summary>
         /// TextField8 control.
@@ -481,15 +481,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.DropDownField DropDownField1;
         
         /// <summary>
-        /// DropDownField2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.DropDownField DropDownField2;
-        
-        /// <summary>
         /// DropDownField3 control.
         /// </summary>
         /// <remarks>
@@ -497,6 +488,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.DropDownField DropDownField3;
+        
+        /// <summary>
+        /// DropDownField2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DropDownField DropDownField2;
         
         /// <summary>
         /// Button3 control.

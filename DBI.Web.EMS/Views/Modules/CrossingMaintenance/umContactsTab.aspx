@@ -97,8 +97,8 @@
                  <ext:DropDownField ID="uxAddNewRR" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right"/>
                  <ext:TextField ID="uxAddNewAddress1" runat="server" FieldLabel="Address 1" AnchorHorizontal="100%" LabelAlign="Right" />
                  <ext:TextField ID="uxAddNewAddress2" runat="server" FieldLabel="Address 2" AnchorHorizontal="100%" LabelAlign="Right"/>
-                 <ext:DropDownField ID="uxAddNewContactState" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />
-                 <ext:DropDownField  ID="uxAddNewContactCity" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:TextField  ID="uxAddNewContactCityTextField" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:DropDownField ID="uxAddNewContactState" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />              
                  <ext:TextField ID="uxAddNewContactZip" runat="server" FieldLabel="Zip" AnchorHorizontal="100%" LabelAlign="Right"/>
                  <ext:TextField ID="uxAddNewContactCell" runat="server" FieldLabel="Cell #" AnchorHorizontal="100%" LabelAlign="Right" />
                  <ext:TextField ID="uxAddNewContactOffice" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right"/>           
@@ -125,8 +125,8 @@
                  <ext:DropDownField ID="TextField3" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right"/>
                  <ext:TextField ID="TextField4" runat="server" FieldLabel="Address 1" AnchorHorizontal="100%" LabelAlign="Right" />
                  <ext:TextField ID="TextField5" runat="server" FieldLabel="Address 2" AnchorHorizontal="100%" LabelAlign="Right"/>
-                 <ext:DropDownField ID="TextField7" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />
-                 <ext:DropDownField ID="TextField6" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:TextField ID="TextField13" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:DropDownField ID="TextField7" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />            
                  <ext:TextField ID="TextField8" runat="server" FieldLabel="Zip" AnchorHorizontal="100%" LabelAlign="Right"/>
                  <ext:TextField ID="TextField9" runat="server" FieldLabel="Cell #" AnchorHorizontal="100%" LabelAlign="Right" />
                  <ext:TextField ID="TextField10" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right"/>               
@@ -151,8 +151,9 @@
                  <ext:TextField ID="TextField11" runat="server" FieldLabel="Manager Name" AnchorHorizontal="100%" LabelAlign="Right" />
                  <ext:TextField ID="TextField12" runat="server" FieldLabel="Email" AnchorHorizontal="100%" LabelAlign="Right" />
                  <ext:DropDownField ID="DropDownField1" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right"/>
+                 <ext:DropDownField ID="DropDownField3" runat="server" FieldLabel="Sub-Division" AnchorHorizontal="100%" LabelAlign="Right" />  
                  <ext:DropDownField ID="DropDownField2" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />
-                 <ext:DropDownField ID="DropDownField3" runat="server" FieldLabel="Sub-Division" AnchorHorizontal="100%" LabelAlign="Right" />                 
+                               
             </Items>
             <Buttons>
                 <ext:Button runat="server" ID="Button3" Text="Assign" Icon="Add" />
