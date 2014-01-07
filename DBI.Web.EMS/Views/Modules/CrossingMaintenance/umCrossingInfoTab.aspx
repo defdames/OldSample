@@ -85,7 +85,7 @@
                                  <ext:FieldContainer ID="FieldContainer5"  runat="server" Layout="HBoxLayout">
                                     <Items>
                                         <ext:Label ID="Label2" runat="server" Text="" Width="140"  />
-                                        <ext:Label ID="Label8" runat="server" Text="Row Widths" Width="130"  />
+                                        <ext:Label ID="Label8" runat="server" Text="ROW Widths" Width="130"  />
                                         <ext:Label ID="Label9" runat="server" Text="Extensions" Width="170"  />
                                         </Items>
                                  </ext:FieldContainer>
@@ -212,7 +212,7 @@
                                  <ext:FieldContainer ID="FieldContainer13"  runat="server" Layout="HBoxLayout">
                                     <Items>
                                         <ext:Label ID="Label1" runat="server" Text="" Width="140"  />
-                                        <ext:Label ID="Label3" runat="server" Text="Row Widths" Width="130"  />
+                                        <ext:Label ID="Label3" runat="server" Text="ROW Widths" Width="130"  />
                                         <ext:Label ID="Label4" runat="server" Text="Extensions" Width="170"  />
                                         </Items>
                                  </ext:FieldContainer>
@@ -342,7 +342,7 @@
                                  <ext:FieldContainer ID="FieldContainer25"  runat="server" Layout="HBoxLayout">
                                     <Items>
                                         <ext:Label ID="Label5" runat="server" Text="" Width="140"  />
-                                        <ext:Label ID="Label6" runat="server" Text="Row Widths" Width="130"  />
+                                        <ext:Label ID="Label6" runat="server" Text="ROW Widths" Width="130"  />
                                         <ext:Label ID="Label7" runat="server" Text="Extensions" Width="170"  />
                                         </Items>
                                  </ext:FieldContainer>
