@@ -62,5 +62,6 @@ namespace DBI.Data
         public string MTM { get; set; }
         public string MTM_PHONE_NUMBER { get; set; }
         public string MTM_OFFICE_NUMBER { get; set; }
+        public string CROSSING_NUMBER { get; set; }
     }
 }

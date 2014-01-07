@@ -571,6 +571,7 @@
           <Property Name="MTM" Type="varchar2" MaxLength="50" />
           <Property Name="MTM_PHONE_NUMBER" Type="varchar2" MaxLength="20" />
           <Property Name="MTM_OFFICE_NUMBER" Type="varchar2" MaxLength="20" />
+          <Property Name="CROSSING_NUMBER" Type="varchar2" Nullable="false" MaxLength="20" />
         </EntityType>
         <EntityType Name="DAILY_ACTIVITY_CHEMICAL_MIX">
           <Key>
@@ -2552,6 +2553,7 @@
           <Property Type="String" Name="MTM" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MTM_PHONE_NUMBER" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MTM_OFFICE_NUMBER" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CROSSING_NUMBER" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3263,6 +3265,7 @@
           <EntitySetMapping Name="CROSSINGS">
             <EntityTypeMapping TypeName="OracleModel.CROSSING">
               <MappingFragment StoreEntitySet="CROSSINGS">
+                <ScalarProperty Name="CROSSING_NUMBER" ColumnName="CROSSING_NUMBER" />
                 <ScalarProperty Name="MTM_OFFICE_NUMBER" ColumnName="MTM_OFFICE_NUMBER" />
                 <ScalarProperty Name="MTM_PHONE_NUMBER" ColumnName="MTM_PHONE_NUMBER" />
                 <ScalarProperty Name="MTM" ColumnName="MTM" />
