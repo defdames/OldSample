@@ -125,20 +125,20 @@
         <Items>
          <ext:FormPanel ID="FormPanel1" runat="server" Layout="FormLayout">
             <Items>        
-                 <ext:TextField ID="TextField1" runat="server" FieldLabel="Manager Name" AnchorHorizontal="100%" LabelAlign="Right" />
-                 <ext:DropDownField ID="TextField3" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right"/>
-                 <ext:TextField ID="TextField2" runat="server" FieldLabel="Email" AnchorHorizontal="100%" LabelAlign="Right" />
-                 <ext:TextField ID="TextField4" runat="server" FieldLabel="Address 1" AnchorHorizontal="100%" LabelAlign="Right" />
-                 <ext:TextField ID="TextField5" runat="server" FieldLabel="Address 2" AnchorHorizontal="100%" LabelAlign="Right"/>
-                 <ext:TextField ID="TextField13" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />
-                 <ext:DropDownField ID="TextField7" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />            
-                 <ext:TextField ID="TextField8" runat="server" FieldLabel="Zip" AnchorHorizontal="100%" LabelAlign="Right"/>
-                 <ext:TextField ID="TextField9" runat="server" FieldLabel="Cell #" AnchorHorizontal="100%" LabelAlign="Right" />
-                 <ext:TextField ID="TextField10" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right"/>               
+                 <ext:TextField ID="uxEditManagerName" runat="server" FieldLabel="Manager Name" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:DropDownField ID="uxEditRR" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right"/>
+                 <ext:TextField ID="uxEditContanct" runat="server" FieldLabel="Email" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:TextField ID="uxEditContactAdd1" runat="server" FieldLabel="Address 1" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:TextField ID="uxEditContactAdd2" runat="server" FieldLabel="Address 2" AnchorHorizontal="100%" LabelAlign="Right"/>
+                 <ext:TextField ID="uxEditContactCity" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:DropDownField ID="uxEditContactState" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />            
+                 <ext:TextField ID="uxEditContactZip" runat="server" FieldLabel="Zip" AnchorHorizontal="100%" LabelAlign="Right"/>
+                 <ext:TextField ID="uxEditContactCellNum" runat="server" FieldLabel="Cell #" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:TextField ID="uxEditContactPhoneNum" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right"/>               
             </Items>
             <Buttons>
-                <ext:Button runat="server" ID="Button1" Text="Update" Icon="Add" />
-                <ext:Button runat="server" ID="Button2" Text="Cancel" Icon="Delete" />
+                <ext:Button runat="server" ID="uxEditUpdateButton" Text="Update" Icon="Add" />
+                <ext:Button runat="server" ID="uxEditContactCancelButton" Text="Cancel" Icon="Delete" />
             </Buttons>
            </ext:FormPanel>
         </Items>
@@ -153,18 +153,14 @@
         <Items>
         <ext:FormPanel ID="FormPanel2" runat="server" Layout="FormLayout">
             <Items>             
-                 <ext:TextField ID="TextField11" runat="server" FieldLabel="Manager Name" AnchorHorizontal="100%" LabelAlign="Right" />
-                 <ext:DropDownField ID="DropDownField1" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right"/>
-                 <ext:DropDownField ID="TextField15" runat="server" FieldLabel="Crossing #" AnchorHorizontal="100%" LabelAlign="Right" />
-                 <ext:DropDownField ID="DropDownField2" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />
-                 <ext:DropDownField ID="DropDownField3" runat="server" FieldLabel="Sub-Division" AnchorHorizontal="100%" LabelAlign="Right" />  
-                 <ext:TextField ID="TextField16" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right"/> 
-                 <ext:TextField ID="TextField17" runat="server" FieldLabel="Cell #" AnchorHorizontal="100%" LabelAlign="Right" />
-                 <ext:TextField ID="TextField18" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right"/>         
-                 <ext:TextField ID="TextField12" runat="server" FieldLabel="Email" AnchorHorizontal="100%" LabelAlign="Right" />
-                
-                 
-                               
+                 <ext:TextField ID="uxAssignContactManagerName" runat="server" FieldLabel="Manager Name" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:DropDownField ID="uxAssignContactRR" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right"/>
+                 <ext:DropDownField ID="uxAssignContactCrossingNum" runat="server" FieldLabel="Crossing #" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:DropDownField ID="uxAssignContactState" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:DropDownField ID="uxAssignContactSubDiv" runat="server" FieldLabel="Sub-Division" AnchorHorizontal="100%" LabelAlign="Right" />  
+                 <ext:TextField ID="uxAssignContactCellNum" runat="server" FieldLabel="Cell #" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:TextField ID="uxAssignContactOfficeNum" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right"/>       
+                 <ext:TextField ID="uxAssignContactEmail" runat="server" FieldLabel="Email" AnchorHorizontal="100%" LabelAlign="Right" />
             </Items>
             <Buttons>
                 <ext:Button runat="server" ID="Button3" Text="Assign" Icon="Add" />
@@ -184,18 +180,17 @@
         <Items>
         <ext:FormPanel ID="FormPanel3" runat="server" Layout="FormLayout">
             <Items> 
-                 <ext:DropDownField ID="DropDownField4" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right"/>            
-                 <ext:DropDownField ID="TextField6" runat="server" FieldLabel="Current Manager" AnchorHorizontal="100%" LabelAlign="Right" />
-                 <ext:DropDownField ID="TextField14" runat="server" FieldLabel="New Manager" AnchorHorizontal="100%" LabelAlign="Right" />
-                                            
+                 <ext:DropDownField ID="uxUpdateContactRR" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right"/>            
+                 <ext:DropDownField ID="uxUpdateContactCurrentManager" runat="server" FieldLabel="Current Manager" AnchorHorizontal="100%" LabelAlign="Right" />
+                 <ext:DropDownField ID="uxUpdateContactNewManager" runat="server" FieldLabel="New Manager" AnchorHorizontal="100%" LabelAlign="Right" />
             </Items>
             <Buttons>
-                <ext:Button runat="server" ID="Button5" Text="Select Crossings to Update" Icon="Add" >
+                <ext:Button runat="server" ID="uxSelectCrossingToUpdate" Text="Select Crossings to Update" Icon="Add" >
                     <Listeners>
                         <Click Handler="#{uxTransferCrossingWindow}.show()" />
                    </Listeners>
                     </ext:Button>
-                <ext:Button runat="server" ID="Button6" Text="Cancel Selection" Icon="Delete" />
+                <ext:Button runat="server" ID="uxCancelCrossingToUpdate" Text="Cancel Selection" Icon="Delete" />
             </Buttons>
         </ext:FormPanel>
         </Items>
