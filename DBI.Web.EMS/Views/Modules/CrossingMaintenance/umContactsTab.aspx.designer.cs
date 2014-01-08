@@ -229,15 +229,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.DropDownField uxAddNewRR;
         
         /// <summary>
-        /// uxAddNewEmail control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxAddNewEmail;
-        
-        /// <summary>
         /// uxAddNewAddress1 control.
         /// </summary>
         /// <remarks>
@@ -301,6 +292,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField uxAddNewContactOffice;
         
         /// <summary>
+        /// uxAddNewEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxAddNewEmail;
+        
+        /// <summary>
         /// uxAddNewContactButton control.
         /// </summary>
         /// <remarks>
@@ -353,15 +353,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.DropDownField uxEditRR;
-        
-        /// <summary>
-        /// uxEditContanct control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxEditContanct;
         
         /// <summary>
         /// uxEditContactAdd1 control.
@@ -425,6 +416,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.TextField uxEditContactPhoneNum;
+        
+        /// <summary>
+        /// uxEditContanct control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxEditContanct;
         
         /// <summary>
         /// uxEditUpdateButton control.
