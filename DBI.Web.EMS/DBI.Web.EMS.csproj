@@ -124,7 +124,6 @@
     <Content Include="Views\Modules\DailyActivity\umProductionTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity.aspx" />
     <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
-    <Content Include="Views\Modules\DailyActivity\WebForm1.aspx" />
     <Content Include="Views\Modules\Security\umSecurityLogList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityActivityList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityUsersList.aspx" />
@@ -279,13 +278,6 @@
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umWeatherTab.aspx.designer.cs">
       <DependentUpon>umWeatherTab.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\WebForm1.aspx.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\WebForm1.aspx.designer.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\Security\umSecurityLogList.aspx.cs">
       <DependentUpon>umSecurityLogList.aspx</DependentUpon>

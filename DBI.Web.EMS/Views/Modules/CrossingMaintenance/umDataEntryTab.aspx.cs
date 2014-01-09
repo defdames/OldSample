@@ -13,5 +13,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         {
 
         }
+        protected void deRemoveApplicationEntry(object sender, EventArgs e)
+        {
+
+        }
+     
     }
 }
