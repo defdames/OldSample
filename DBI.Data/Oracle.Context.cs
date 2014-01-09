@@ -48,5 +48,6 @@ namespace DBI.Data
         public DbSet<SYS_ACTIVITY> SYS_ACTIVITY { get; set; }
         public DbSet<CROSSING> CROSSINGS { get; set; }
         public DbSet<CROSSING_CONTACTS> CROSSING_CONTACTS { get; set; }
+        public DbSet<CROSSING_DATA_ENTRY> CROSSING_DATA_ENTRY { get; set; }
     }
 }

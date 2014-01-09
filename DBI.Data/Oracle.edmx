@@ -7,6 +7,7 @@
     <Schema Namespace="OracleModel.Store" Alias="Self" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="OracleModelStoreContainer">
           <EntitySet Name="CROSSING_CONTACTS" EntityType="OracleModel.Store.CROSSING_CONTACTS" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="CROSSING_DATA_ENTRY" EntityType="OracleModel.Store.CROSSING_DATA_ENTRY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSINGS" EntityType="OracleModel.Store.CROSSINGS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_CHEMICAL_MIX" EntityType="OracleModel.Store.DAILY_ACTIVITY_CHEMICAL_MIX" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_EMPLOYEE" EntityType="OracleModel.Store.DAILY_ACTIVITY_EMPLOYEE" store:Type="Tables" Schema="XXEMS" />
@@ -495,6 +496,10 @@
             <End Role="CROSSINGS" EntitySet="CROSSINGS" />
             <End Role="CROSSING_CONTACTS" EntitySet="CROSSING_CONTACTS" />
           </AssociationSet>
+          <AssociationSet Name="FK_DATA_ENTRY_CROSSING_ID" Association="OracleModel.Store.FK_DATA_ENTRY_CROSSING_ID">
+            <End Role="CROSSINGS" EntitySet="CROSSINGS" />
+            <End Role="CROSSING_DATA_ENTRY" EntitySet="CROSSING_DATA_ENTRY" />
+          </AssociationSet>
           <AssociationSet Name="FK_EMPLOYEE_HEADER_ID" Association="OracleModel.Store.FK_EMPLOYEE_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_EMPLOYEE" EntitySet="DAILY_ACTIVITY_EMPLOYEE" />
@@ -543,6 +548,24 @@
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CROSSING_DATA_ENTRY">
+          <Key>
+            <PropertyRef Name="DATA_ENTRY_ID" />
+          </Key>
+          <Property Name="DATA_ENTRY_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="CROSSING_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="ENTRY_TYPE" Type="varchar2" Nullable="false" MaxLength="50" />
+          <Property Name="CROSSING_NUMBER" Type="varchar2" Nullable="false" MaxLength="20" />
+          <Property Name="TRUCK_NUMBER" Type="varchar2" MaxLength="20" />
+          <Property Name="DATA_ENTRY_DATE" Type="date" Nullable="false" />
+          <Property Name="DATA_ENTRY_NUMBER" Type="number" />
+          <Property Name="SPRAY" Type="char" MaxLength="1" />
+          <Property Name="CUT" Type="char" MaxLength="1" />
+          <Property Name="INSPECT" Type="char" MaxLength="1" />
+          <Property Name="STATE" Type="varchar2" MaxLength="100" />
+          <Property Name="SUB_DIVISION" Type="varchar2" MaxLength="100" />
+          <Property Name="REMARKS" Type="varchar2" MaxLength="500" />
         </EntityType>
         <EntityType Name="CROSSINGS">
           <Key>
@@ -1382,6 +1405,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DATA_ENTRY_CROSSING_ID">
+          <End Role="CROSSINGS" Type="OracleModel.Store.CROSSINGS" Multiplicity="1" />
+          <End Role="CROSSING_DATA_ENTRY" Type="OracleModel.Store.CROSSING_DATA_ENTRY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSINGS">
+              <PropertyRef Name="CROSSING_ID" />
+            </Principal>
+            <Dependent Role="CROSSING_DATA_ENTRY">
+              <PropertyRef Name="CROSSING_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EMPLOYEE_HEADER_ID">
           <End Role="DAILY_ACTIVITY_HEADER" Type="OracleModel.Store.DAILY_ACTIVITY_HEADER" Multiplicity="1" />
           <End Role="DAILY_ACTIVITY_EMPLOYEE" Type="OracleModel.Store.DAILY_ACTIVITY_EMPLOYEE" Multiplicity="*" />
@@ -1545,6 +1580,11 @@
           <AssociationSet Name="FK_CONTACTS_CROSSING_ID" Association="OracleModel.FK_CONTACTS_CROSSING_ID">
             <End Role="CROSSING" EntitySet="CROSSINGS" />
             <End Role="CROSSING_CONTACTS" EntitySet="CROSSING_CONTACTS" />
+          </AssociationSet>
+          <EntitySet Name="CROSSING_DATA_ENTRY" EntityType="OracleModel.CROSSING_DATA_ENTRY" />
+          <AssociationSet Name="FK_DATA_ENTRY_CROSSING_ID" Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID">
+            <End Role="CROSSING" EntitySet="CROSSINGS" />
+            <End Role="CROSSING_DATA_ENTRY" EntitySet="CROSSING_DATA_ENTRY" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
@@ -2599,6 +2639,7 @@
           <Property Type="String" Name="MTM_OFFICE_NUMBER" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="CROSSING_NUMBER" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CROSSING_CONTACTS" Relationship="OracleModel.FK_CONTACTS_CROSSING_ID" FromRole="CROSSING" ToRole="CROSSING_CONTACTS" />
+          <NavigationProperty Name="CROSSING_DATA_ENTRY" Relationship="OracleModel.FK_DATA_ENTRY_CROSSING_ID" FromRole="CROSSING" ToRole="CROSSING_DATA_ENTRY" />
         </EntityType>
         <EntityType Name="CROSSING_CONTACTS">
           <Key>
@@ -2629,6 +2670,37 @@
               <PropertyRef Name="CROSSING_ID" />
             </Principal>
             <Dependent Role="CROSSING_CONTACTS">
+              <PropertyRef Name="CROSSING_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CROSSING_DATA_ENTRY">
+          <Key>
+            <PropertyRef Name="DATA_ENTRY_ID" />
+          </Key>
+          <Property Type="Int64" Name="DATA_ENTRY_ID" Nullable="false" />
+          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
+          <Property Type="String" Name="ENTRY_TYPE" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CROSSING_NUMBER" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="TRUCK_NUMBER" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="DATA_ENTRY_DATE" Nullable="false" />
+          <Property Type="Decimal" Name="DATA_ENTRY_NUMBER" Precision="38" Scale="0" />
+          <Property Type="String" Name="SPRAY" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="CUT" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="INSPECT" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="STATE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SUB_DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CROSSING" Relationship="OracleModel.FK_DATA_ENTRY_CROSSING_ID" FromRole="CROSSING_DATA_ENTRY" ToRole="CROSSING" />
+        </EntityType>
+        <Association Name="FK_DATA_ENTRY_CROSSING_ID">
+          <End Type="OracleModel.CROSSING" Role="CROSSING" Multiplicity="1" />
+          <End Type="OracleModel.CROSSING_DATA_ENTRY" Role="CROSSING_DATA_ENTRY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSING">
+              <PropertyRef Name="CROSSING_ID" />
+            </Principal>
+            <Dependent Role="CROSSING_DATA_ENTRY">
               <PropertyRef Name="CROSSING_ID" />
             </Dependent>
           </ReferentialConstraint>
@@ -3414,6 +3486,25 @@
                 <ScalarProperty Name="CONTACT_NAME" ColumnName="CONTACT_NAME" />
                 <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
                 <ScalarProperty Name="CONTACT_ID" ColumnName="CONTACT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CROSSING_DATA_ENTRY">
+            <EntityTypeMapping TypeName="OracleModel.CROSSING_DATA_ENTRY">
+              <MappingFragment StoreEntitySet="CROSSING_DATA_ENTRY">
+                <ScalarProperty Name="REMARKS" ColumnName="REMARKS" />
+                <ScalarProperty Name="SUB_DIVISION" ColumnName="SUB_DIVISION" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+                <ScalarProperty Name="INSPECT" ColumnName="INSPECT" />
+                <ScalarProperty Name="CUT" ColumnName="CUT" />
+                <ScalarProperty Name="SPRAY" ColumnName="SPRAY" />
+                <ScalarProperty Name="DATA_ENTRY_NUMBER" ColumnName="DATA_ENTRY_NUMBER" />
+                <ScalarProperty Name="DATA_ENTRY_DATE" ColumnName="DATA_ENTRY_DATE" />
+                <ScalarProperty Name="TRUCK_NUMBER" ColumnName="TRUCK_NUMBER" />
+                <ScalarProperty Name="CROSSING_NUMBER" ColumnName="CROSSING_NUMBER" />
+                <ScalarProperty Name="ENTRY_TYPE" ColumnName="ENTRY_TYPE" />
+                <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
+                <ScalarProperty Name="DATA_ENTRY_ID" ColumnName="DATA_ENTRY_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
