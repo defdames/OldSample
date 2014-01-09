@@ -12,23 +12,24 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class DAILY_ACTIVITY_FOOTER
+    public partial class CROSSING_CONTACTS
     {
-        public decimal FOOTER_ID { get; set; }
-        public long HEADER_ID { get; set; }
-        public string REASON_FOR_NO_WORK { get; set; }
-        public string HOTEL_NAME { get; set; }
-        public string HOTEL_CITY { get; set; }
-        public string HOTEL_STATE { get; set; }
-        public string HOTEL_PHONE { get; set; }
-        public byte[] FOREMAN_SIGNATURE { get; set; }
-        public byte[] CONTRACT_REP { get; set; }
+        public long CONTACT_ID { get; set; }
+        public long CROSSING_ID { get; set; }
+        public string CONTACT_NAME { get; set; }
+        public string ADDRESS_1 { get; set; }
+        public string ADDRESS_2 { get; set; }
+        public string CITY { get; set; }
+        public string STATE { get; set; }
+        public string ZIP_CODE { get; set; }
+        public string WORK_NUMBER { get; set; }
+        public string CELL_NUMBER { get; set; }
+        public string RAIL_ROAD { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
-        public string CONTRACT_REP_NAME { get; set; }
     
-        public virtual DAILY_ACTIVITY_HEADER DAILY_ACTIVITY_HEADER { get; set; }
+        public virtual CROSSING CROSSING { get; set; }
     }
 }
