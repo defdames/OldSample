@@ -47,5 +47,6 @@ namespace DBI.Data
         public DbSet<DAILY_ACTIVITY_STATUS> DAILY_ACTIVITY_STATUS { get; set; }
         public DbSet<SYS_ACTIVITY> SYS_ACTIVITY { get; set; }
         public DbSet<CROSSING> CROSSINGS { get; set; }
+        public DbSet<CROSSING_CONTACTS> CROSSING_CONTACTS { get; set; }
     }
 }

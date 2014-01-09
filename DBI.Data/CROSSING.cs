@@ -14,6 +14,11 @@ namespace DBI.Data
     
     public partial class CROSSING
     {
+        public CROSSING()
+        {
+            this.CROSSING_CONTACTS = new HashSet<CROSSING_CONTACTS>();
+        }
+    
         public long CROSSING_ID { get; set; }
         public string DOT { get; set; }
         public string PREF { get; set; }
@@ -63,5 +68,7 @@ namespace DBI.Data
         public string MTM_PHONE_NUMBER { get; set; }
         public string MTM_OFFICE_NUMBER { get; set; }
         public string CROSSING_NUMBER { get; set; }
+    
+        public virtual ICollection<CROSSING_CONTACTS> CROSSING_CONTACTS { get; set; }
     }
 }

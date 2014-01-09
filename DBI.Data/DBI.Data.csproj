@@ -80,6 +80,9 @@
     <Compile Include="CROSSING.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="CROSSING_CONTACTS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="DAILY_ACTIVITY_CHEMICAL_MIX.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
