@@ -778,12 +778,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Button CancelTransfer;
         
         /// <summary>
-        /// Button7 control.
+        /// ResetTransfer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button7;
+        protected global::Ext.Net.Button ResetTransfer;
     }
 }

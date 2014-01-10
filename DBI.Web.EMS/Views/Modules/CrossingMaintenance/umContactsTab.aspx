@@ -288,7 +288,7 @@
                                     <ext:ToolbarFill ID="ToolbarFill1" runat="server" />
                                     <ext:Button ID="TransferCrossingtoContact" runat="server" Text="Update" Icon="TransmitGo" />
                                     <ext:Button ID="CancelTransfer" runat="server" Text="Cancel" Icon="Delete" />
-                                    <ext:Button ID="Button7" runat="server" Text="Reset" Icon="RewindBlue">
+                                    <ext:Button ID="ResetTransfer" runat="server" Text="Reset" Icon="RewindBlue">
                                         <Listeners>
                                             <Click Handler="#{Store1}.loadData(#{Store1}.proxy.data); #{Store2}.removeAll();" />
                                         </Listeners>

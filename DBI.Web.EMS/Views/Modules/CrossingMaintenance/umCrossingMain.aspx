@@ -34,23 +34,22 @@
                         </Store>
                         <ColumnModel>
                             <Columns>
-                                <ext:Column ID="uxProjectName" runat="server" DataIndex="" Text="Project Name" Flex="1" />
+                                
                                 <ext:Column ID="uxMainCrossingNum" runat="server" DataIndex="" Text="Crossing #" Flex="1" />
-                                <ext:Column ID="uxMainState" runat="server" DataIndex="" Text="State" Flex="1" />
+                                <ext:Column ID="uxProjectName" runat="server" DataIndex="" Text="Project Name" Flex="1" />
+                                <ext:Column ID="uxProjectNum" runat="server" DataIndex="" Text="Project #" Flex="1" />
+                                 <ext:Column ID="uxCrossingManager" runat="server" DataIndex="" Text="Manager" Flex="1" />
 
                             </Columns>
                         </ColumnModel>
-                        <TopBar>
-
-                            <ext:Toolbar ID="Toolbar3" runat="server">
+                     <%--   <TopBar>
+                                <ext:Toolbar ID="Toolbar3" runat="server">
                                 <Items>
                                     <ext:Button ID="uxAddProjectButton" runat="server" Text="Add Project" Icon="ApplicationAdd" />
                                     <ext:Button ID="uxEditProjectButton" runat="server" Text="Edit Project" Icon="ApplicationEdit" />
-
                                 </Items>
-
                             </ext:Toolbar>
-                        </TopBar>
+                        </TopBar>--%>
                         <Plugins>
                             <ext:FilterHeader ID="FilterHeader1" runat="server" />
                         </Plugins>
@@ -63,6 +62,17 @@
 
                     <ext:TabPanel ID="uxCrossingTab" runat="server" Region="Center">
                         <Items>
+                             <ext:Panel runat="server"
+                                Title="Crossing Security"
+                                ID="uxCrossingSecurityTab"
+                                Disabled="false">
+                                <Loader runat="server"
+                                    ID="Loader5" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umCrossingSecurityTab.aspx">
+                                    <LoadMask ShowMask="true" />
+                                </Loader>
+
+                            </ext:Panel>
+
                             <ext:Panel runat="server"
                                 Title="Crossing Information"
                                 ID="uxCrossingInfoTab"
