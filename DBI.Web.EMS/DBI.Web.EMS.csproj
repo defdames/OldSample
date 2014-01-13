@@ -106,8 +106,12 @@
     <Content Include="Resources\Images\wwbnight.png" />
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
+    <Content Include="Views\Modules\CrossingMaintenance\umContactsTab.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingMain.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingInfoTab.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umServiceUnitsTab.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umSubDivisionsTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\ImageLoader\ImageLoader.aspx" />
     <Content Include="Views\Modules\DailyActivity\umChemicalTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umCombinedTab.aspx" />
@@ -149,6 +153,13 @@
     <Compile Include="Views\Handlers\SystemUsers.ashx.cs">
       <DependentUpon>SystemUsers.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umContactsTab.aspx.cs">
+      <DependentUpon>umContactsTab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umContactsTab.aspx.designer.cs">
+      <DependentUpon>umContactsTab.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umCrossingMain.aspx.cs">
       <DependentUpon>umCrossingMain.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -162,6 +173,27 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umCrossingInfoTab.aspx.designer.cs">
       <DependentUpon>umCrossingInfoTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx.cs">
+      <DependentUpon>umDataEntryTab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx.designer.cs">
+      <DependentUpon>umDataEntryTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umServiceUnitsTab.aspx.cs">
+      <DependentUpon>umServiceUnitsTab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umServiceUnitsTab.aspx.designer.cs">
+      <DependentUpon>umServiceUnitsTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umSubDivisionsTab.aspx.cs">
+      <DependentUpon>umSubDivisionsTab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umSubDivisionsTab.aspx.designer.cs">
+      <DependentUpon>umSubDivisionsTab.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\ImageLoader\ImageLoader.aspx.cs">
       <DependentUpon>ImageLoader.aspx</DependentUpon>

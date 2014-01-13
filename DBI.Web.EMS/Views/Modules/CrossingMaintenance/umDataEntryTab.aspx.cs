@@ -7,12 +7,16 @@ using System.Web.UI.WebControls;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
-    public partial class umCrossingMain : System.Web.UI.Page
+    public partial class umDataEntryTab : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
 
         }
-      
+        protected void deRemoveApplicationEntry(object sender, EventArgs e)
+        {
+
+        }
+     
     }
 }
