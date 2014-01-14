@@ -698,7 +698,7 @@
           <Key>
             <PropertyRef Name="HEADER_ID" />
           </Key>
-          <Property Name="HEADER_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="HEADER_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="PROJECT_ID" Type="number" Precision="15" />
           <Property Name="DA_DATE" Type="date" />
           <Property Name="SUBDIVISION" Type="varchar2" MaxLength="100" />
@@ -1840,7 +1840,7 @@
           <Key>
             <PropertyRef Name="HEADER_ID" />
           </Key>
-          <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
+          <Property Type="Int64" Name="HEADER_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int64" Name="PROJECT_ID" />
           <Property Type="DateTime" Name="DA_DATE" />
           <Property Type="String" Name="SUBDIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
