@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Data.Entity;
+using System.Data.Objects;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -22,7 +24,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 X.Redirect("~/Views/uxDefault.aspx");
                
             }
-            employeeHoursCheck();
+            if (!X.IsAjaxRequest)
+            {
+                //employeeHoursCheck();
+            }
         }
 
         /// <summary>
@@ -35,16 +40,47 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             
             using (Entities _context = new Entities())
             {
-                List<object> data;
+                List<object> rawData;
             
                 //Get List of all new headers
-                data = (from d in _context.DAILY_ACTIVITY_HEADER
+                rawData = (from d in _context.DAILY_ACTIVITY_HEADER
                             join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                             join s in _context.DAILY_ACTIVITY_STATUS on d.STATUS equals s.STATUS
-                            select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE }).ToList<object>();
+                        select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE }).ToList<object>();
+                List<HeaderData> data = new List<HeaderData>();
+
+                List<long> HoursOver24 = checkEmployeeTime("Hours per day");
+                List<long> HoursOver14 = checkEmployeeTime("Hours over 14");
+                foreach (dynamic record in rawData)
+                {
+                    string Warning = "Green";
+
+                    foreach(long OffendingProject in HoursOver24){
+                        if (OffendingProject == record.HEADER_ID)
+                        {
+                            Warning = "Red";
+                        }
+                    }
+                    foreach(long OffendingProject in HoursOver14){
+                        if(OffendingProject == record.HEADER_ID){
+                            Warning = "Yellow";
+                        }
+                    }
+
+                    data.Add(new HeaderData
+                    {
+                        HEADER_ID = record.HEADER_ID,
+                        PROJECT_ID = record.PROJECT_ID,
+                        DA_DATE = record.DA_DATE,
+                        SEGMENT1 = record.SEGMENT1,
+                        LONG_NAME = record.LONG_NAME,
+                        STATUS_VALUE = record.STATUS_VALUE,
+                        WARNING = Warning
+                    });
+                }
                 
                 int count;
-                uxManageGridStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                uxManageGridStore.DataSource = GenericData.EnumerableFilterHeader<HeaderData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
             }
         }
 
@@ -760,22 +796,61 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         /// <param name="HeaderId"></param>
         /// <returns></returns>
-        protected void employeeHoursCheck()
+        protected List<long> checkEmployeeTime(string CheckType)
         {
+
             using (Entities _context = new Entities())
             {
                 var TotalHoursList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                                     group d by new { d.PERSON_ID, d.DAILY_ACTIVITY_HEADER.DA_DATE, TotalHours = d.TIME_OUT.Value - d.TIME_IN.Value } into g
-                                     select new { g.Key.PERSON_ID, g.Key.DA_DATE }).ToList();
+                                      where d.DAILY_ACTIVITY_HEADER.STATUS != 4 || d.DAILY_ACTIVITY_HEADER.STATUS != 5
+                                     group d by new { d.PERSON_ID, d.DAILY_ACTIVITY_HEADER.DA_DATE } into g
+                                     select new { g.Key.PERSON_ID, g.Key.DA_DATE, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value))}).ToList();
 
                 int i = 0;
+                List<long> OffendingProjects = new List<long>();
                 foreach (var TotalHour in TotalHoursList)
                 {
-                    i++;
+                    if (CheckType == "Hours per day")
+                    {
+                        if (TotalHour.TotalMinutes / 60 >= 24)
+                        {
+                            var ProjectsWithEmployeeHoursOver24 = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                                                   where d.PERSON_ID == TotalHour.PERSON_ID && d.DAILY_ACTIVITY_HEADER.DA_DATE == TotalHour.DA_DATE
+                                                                   select d).ToList();
+                            foreach (var Project in ProjectsWithEmployeeHoursOver24)
+                            {
+                                OffendingProjects.Add(Project.HEADER_ID);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (TotalHour.TotalMinutes / 60 >= 14  && TotalHour.TotalMinutes / 60 < 24)
+                        {
+                            var ProjectsWithEmployeeHoursOver14 = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                                                   where d.PERSON_ID == TotalHour.PERSON_ID && d.DAILY_ACTIVITY_HEADER.DA_DATE == TotalHour.DA_DATE
+                                                                   select d).ToList();
+                            foreach (var Project in ProjectsWithEmployeeHoursOver14)
+                            {
+                                OffendingProjects.Add(Project.HEADER_ID);
+                            }
+                        }
+                    }
                 }
+                return OffendingProjects;
+
             }
         }
 
+        protected void setProjectError()
+        {
+
+        }
+
+        protected void setProjectWarning()
+        {
+           
+        }
         //protected bool employeeTimeOverlapCheck(long HeaderId)
         //{
 
@@ -790,5 +865,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         //{
 
         //}
+    }
+
+    public class HeaderData
+    {
+        public long HEADER_ID { get; set; }
+        public long PROJECT_ID { get; set; }
+        public DateTime DA_DATE { get; set; }
+        public string SEGMENT1 { get; set; }
+        public string LONG_NAME { get; set; }
+        public string STATUS_VALUE { get; set; }
+        public string WARNING { get; set; }
     }
 }
