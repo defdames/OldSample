@@ -625,7 +625,7 @@
           <Key>
             <PropertyRef Name="CHEMICAL_MIX_ID" />
           </Key>
-          <Property Name="CHEMICAL_MIX_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="CHEMICAL_MIX_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="CHEMICAL_MIX_NUMBER" Type="number" Nullable="false" Precision="15" />
           <Property Name="HEADER_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="TARGET_AREA" Type="varchar2" MaxLength="300" />
@@ -645,7 +645,7 @@
           <Key>
             <PropertyRef Name="EMPLOYEE_ID" />
           </Key>
-          <Property Name="EMPLOYEE_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="EMPLOYEE_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="HEADER_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="PERSON_ID" Type="number" Nullable="false" Precision="10" />
           <Property Name="EQUIPMENT_ID" Type="number" Precision="15" />
@@ -679,7 +679,7 @@
           <Key>
             <PropertyRef Name="FOOTER_ID" />
           </Key>
-          <Property Name="FOOTER_ID" Type="number" Nullable="false" />
+          <Property Name="FOOTER_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="HEADER_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="REASON_FOR_NO_WORK" Type="varchar2" MaxLength="500" />
           <Property Name="HOTEL_NAME" Type="varchar2" MaxLength="100" />
@@ -718,7 +718,7 @@
           <Key>
             <PropertyRef Name="INVENTORY_ID" />
           </Key>
-          <Property Name="INVENTORY_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="INVENTORY_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="CHEMICAL_MIX_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="SUB_INVENTORY_SECONDARY_NAME" Type="varchar2" MaxLength="10" />
           <Property Name="SUB_INVENTORY_ORG_ID" Type="number" />
@@ -736,7 +736,7 @@
           <Key>
             <PropertyRef Name="PRODUCTION_ID" />
           </Key>
-          <Property Name="PRODUCTION_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="PRODUCTION_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="HEADER_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="TIME_IN" Type="date" />
           <Property Name="TIME_OUT" Type="date" />
@@ -755,7 +755,7 @@
           <Key>
             <PropertyRef Name="STATUS_ID" />
           </Key>
-          <Property Name="STATUS_ID" Type="number" Nullable="false" Precision="19" />
+          <Property Name="STATUS_ID" Type="number" Nullable="false" Precision="19" StoreGeneratedPattern="Identity" />
           <Property Name="STATUS" Type="number" Nullable="false" Precision="10" />
           <Property Name="STATUS_VALUE" Type="varchar2" Nullable="false" MaxLength="50" />
         </EntityType>
@@ -780,7 +780,7 @@
           <Key>
             <PropertyRef Name="ACTIVITY_ID" />
           </Key>
-          <Property Name="ACTIVITY_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="ACTIVITY_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="NAME" Type="varchar2" Nullable="false" MaxLength="500" />
           <Property Name="DESCRIPTION" Type="varchar2" Nullable="false" MaxLength="500" />
           <Property Name="CREATED_DATE" Type="date" />
@@ -1902,7 +1902,7 @@
           <Key>
             <PropertyRef Name="CHEMICAL_MIX_ID" />
           </Key>
-          <Property Type="Int64" Name="CHEMICAL_MIX_ID" Nullable="false" />
+          <Property Type="Int64" Name="CHEMICAL_MIX_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int64" Name="CHEMICAL_MIX_NUMBER" Nullable="false" />
           <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
           <Property Type="String" Name="TARGET_AREA" MaxLength="300" FixedLength="false" Unicode="false" />
@@ -1936,7 +1936,7 @@
           <Key>
             <PropertyRef Name="INVENTORY_ID" />
           </Key>
-          <Property Type="Int64" Name="INVENTORY_ID" Nullable="false" />
+          <Property Type="Int64" Name="INVENTORY_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int64" Name="CHEMICAL_MIX_ID" Nullable="false" />
           <Property Type="String" Name="SUB_INVENTORY_SECONDARY_NAME" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Type="Decimal" Name="SUB_INVENTORY_ORG_ID" Precision="38" Scale="0" />
@@ -1980,7 +1980,7 @@
           <Key>
             <PropertyRef Name="PRODUCTION_ID" />
           </Key>
-          <Property Type="Int64" Name="PRODUCTION_ID" Nullable="false" />
+          <Property Type="Int64" Name="PRODUCTION_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
           <Property Type="DateTime" Name="TIME_IN" />
           <Property Type="DateTime" Name="TIME_OUT" />
@@ -2012,7 +2012,7 @@
           <Key>
             <PropertyRef Name="EMPLOYEE_ID" />
           </Key>
-          <Property Type="Int64" Name="EMPLOYEE_ID" Nullable="false" />
+          <Property Type="Int64" Name="EMPLOYEE_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
           <Property Type="Int32" Name="PERSON_ID" Nullable="false" />
           <Property Type="Int64" Name="EQUIPMENT_ID" />
@@ -2045,7 +2045,7 @@
           <Key>
             <PropertyRef Name="FOOTER_ID" />
           </Key>
-          <Property Type="Decimal" Name="FOOTER_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="FOOTER_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
           <Property Type="String" Name="REASON_FOR_NO_WORK" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="HOTEL_NAME" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -2550,7 +2550,7 @@
           <Key>
             <PropertyRef Name="STATUS_ID" />
           </Key>
-          <Property Type="Int64" Name="STATUS_ID" Nullable="false" />
+          <Property Type="Int64" Name="STATUS_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int32" Name="STATUS" Nullable="false" />
           <Property Type="String" Name="STATUS_VALUE" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
@@ -2558,7 +2558,7 @@
           <Key>
             <PropertyRef Name="ACTIVITY_ID" />
           </Key>
-          <Property Type="Int64" Name="ACTIVITY_ID" Nullable="false" />
+          <Property Type="Int64" Name="ACTIVITY_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="NAME" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="DESCRIPTION" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="CREATED_DATE" />
