@@ -533,7 +533,7 @@
           <Key>
             <PropertyRef Name="CONTACT_ID" />
           </Key>
-          <Property Name="CONTACT_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="CONTACT_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="CROSSING_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="CONTACT_NAME" Type="varchar2" Nullable="false" MaxLength="100" />
           <Property Name="ADDRESS_1" Type="varchar2" MaxLength="200" />
@@ -553,7 +553,7 @@
           <Key>
             <PropertyRef Name="DATA_ENTRY_ID" />
           </Key>
-          <Property Name="DATA_ENTRY_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="DATA_ENTRY_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="CROSSING_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="ENTRY_TYPE" Type="varchar2" Nullable="false" MaxLength="50" />
           <Property Name="CROSSING_NUMBER" Type="varchar2" Nullable="false" MaxLength="20" />
@@ -571,7 +571,7 @@
           <Key>
             <PropertyRef Name="CROSSING_ID" />
           </Key>
-          <Property Name="CROSSING_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="CROSSING_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="DOT" Type="varchar2" MaxLength="30" />
           <Property Name="PREF" Type="varchar2" MaxLength="5" />
           <Property Name="MILE_POST" Type="number" Precision="15" Scale="2" />
@@ -2589,7 +2589,7 @@
           <Key>
             <PropertyRef Name="CROSSING_ID" />
           </Key>
-          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
+          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="DOT" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="PREF" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Type="Decimal" Name="MILE_POST" Precision="15" Scale="2" />
@@ -2645,7 +2645,7 @@
           <Key>
             <PropertyRef Name="CONTACT_ID" />
           </Key>
-          <Property Type="Int64" Name="CONTACT_ID" Nullable="false" />
+          <Property Type="Int64" Name="CONTACT_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
           <Property Type="String" Name="CONTACT_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="ADDRESS_1" MaxLength="200" FixedLength="false" Unicode="false" />
@@ -2678,7 +2678,7 @@
           <Key>
             <PropertyRef Name="DATA_ENTRY_ID" />
           </Key>
-          <Property Type="Int64" Name="DATA_ENTRY_ID" Nullable="false" />
+          <Property Type="Int64" Name="DATA_ENTRY_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
           <Property Type="String" Name="ENTRY_TYPE" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="CROSSING_NUMBER" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
