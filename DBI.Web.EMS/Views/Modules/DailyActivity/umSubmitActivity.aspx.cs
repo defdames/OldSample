@@ -323,6 +323,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Store Footer to DB
             deStoreFooter(sender, e);
 
+            checkPerDiem(HeaderId);
+
             if (AreMetersMissing(HeaderId))
             {
                 X.MessageBox.Confirm("Meters Missing", "There are equipment entries without meter entries.  Continue?", new MessageBoxButtonsConfig()
@@ -411,6 +413,33 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 return true;
             }
             return false;
+        }
+
+        protected void checkPerDiem(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
+                //Get List of Employees for this header with Per-Diem active
+                var EmployeeList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                    where d.HEADER_ID == HeaderId && d.PER_DIEM == "Y"
+                                    select new { d.PERSON_ID, d.DAILY_ACTIVITY_HEADER.DA_DATE }).ToList();
+                
+                //Check for Additional active PerDiems on that day
+                foreach (var Employee in EmployeeList)
+                {
+                    var HeaderList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                      join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                      join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
+                                      where h.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID
+                                      select new HeaderDetails { HEADER_ID = h.HEADER_ID, LONG_NAME = p.LONG_NAME, PERSON_ID = d.PERSON_ID }).ToList();
+
+                    if (HeaderList.Count > 1)
+                    {
+                        X.Js.Call("parent.App.direct.dmLoadPerDiemPicker(" + Ext.Net.JSON.Serialize(HeaderList) + ")");
+                    }
+
+                }
+            }
         }
     }
 }

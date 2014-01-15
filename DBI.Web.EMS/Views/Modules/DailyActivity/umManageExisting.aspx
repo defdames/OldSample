@@ -281,6 +281,18 @@
 						Mode="Frame"
 						AutoLoad="false" />
 				</ext:Window>
+				<ext:Window runat="server"
+					ID="uxChoosePerDiemWindow"
+					Title="Choose Per Diem"
+					Hidden="true"
+					Width="650"
+					Shadow="true"
+					Y="50">
+					<Loader runat="server"
+						ID="uxChoosePerDiemLoader"
+						Mode="Frame"
+						AutoLoad="false" />
+				</ext:Window>
 			</Items>
 		</ext:Viewport>
 	</form>

@@ -51,6 +51,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 List<long> HoursOver24 = checkEmployeeTime("Hours per day");
                 List<long> HoursOver14 = checkEmployeeTime("Hours over 14");
+                List<long> OverlapProjects = employeeTimeOverlapCheck();
                 foreach (dynamic record in rawData)
                 {
                     string Warning = "Green";
@@ -64,6 +65,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     foreach(long OffendingProject in HoursOver14){
                         if(OffendingProject == record.HEADER_ID){
                             Warning = "Yellow";
+                        }
+                    }
+
+                    foreach (long OffendingProject in OverlapProjects)
+                    {
+                        if (OffendingProject == record.HEADER_ID)
+                        {
+                            Warning = "Red";
                         }
                     }
 
@@ -772,6 +781,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxManageGridStore.Reload();
         }
 
+        [DirectMethod]
+        public void dmLoadPerDiemPicker(string HeaderList)
+        {
+            uxChoosePerDiemWindow.Loader.Url = string.Format("umChoosePerDiem.aspx?HeaderList={0}", HeaderList);
+            uxChoosePerDiemWindow.LoadContent();
+            uxChoosePerDiemWindow.Show();
+            uxSubmitActivityWindow.Hide();
+        }
         /// <summary>
         /// Load create activity form and display the window.
         /// </summary>
@@ -851,10 +868,50 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
            
         }
-        //protected bool employeeTimeOverlapCheck(long HeaderId)
-        //{
+        
+        protected List<long> employeeTimeOverlapCheck()
+        {
+            using (Entities _context = new Entities())
+            {
+                //Get List of Employees
+                var PersonIdList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                            select d.PERSON_ID).Distinct().ToList();
 
-        //}
+                List<long> HeaderIdList = new List<long>();
+
+                foreach (var PersonId in PersonIdList)
+                {
+                    //Get Headers for that employee
+                    List<DAILY_ACTIVITY_EMPLOYEE> EmployeeHeaderList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                                                 orderby d.TIME_IN ascending
+                                                                 where d.PERSON_ID == PersonId
+                                                                 select d).ToList<DAILY_ACTIVITY_EMPLOYEE>();
+                    int count = 0;
+                    DateTime PreviousTimeIn = DateTime.Parse("1/11/1955");
+                    DateTime PreviousTimeOut = DateTime.Parse("1/11/1955");
+                    long PreviousHeaderId = 0;
+                    foreach (DAILY_ACTIVITY_EMPLOYEE Header in EmployeeHeaderList)
+                    {
+                        DateTime CurrentTimeIn = (DateTime) Header.TIME_IN;
+                        DateTime CurrentTimeOut = (DateTime) Header.TIME_OUT;
+
+                        if (count > 0)
+                        {
+                            if (CurrentTimeIn < PreviousTimeOut)
+                            {
+                                HeaderIdList.Add(PreviousHeaderId);
+                                HeaderIdList.Add(Header.DAILY_ACTIVITY_HEADER.HEADER_ID);
+                            }
+                        }
+                        PreviousHeaderId = Header.HEADER_ID;
+                        PreviousTimeIn = CurrentTimeIn;
+                        PreviousTimeOut = CurrentTimeOut;
+                        count++;
+                    }
+                }
+                return HeaderIdList;
+            }
+        }
 
         //protected bool employeeBusinessUnitCheck(long HeaderId)
         //{
