@@ -325,25 +325,25 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             checkPerDiem(HeaderId);
 
-            if (AreMetersMissing(HeaderId))
-            {
-                X.MessageBox.Confirm("Meters Missing", "There are equipment entries without meter entries.  Continue?", new MessageBoxButtonsConfig()
-                {
-                    Yes = new MessageBoxButtonConfig
-                    {
-                        Text = "Yes",
-                        Handler = "App.direct.dmSubmitForApproval()"
-                    },
-                    No = new MessageBoxButtonConfig
-                    {
-                        Text = "No"
-                    }
-                }).Show();
-            }
-            else
-            {
-                dmSubmitForApproval();
-            }
+            //if (AreMetersMissing(HeaderId))
+            //{
+            //    X.MessageBox.Confirm("Meters Missing", "There are equipment entries without meter entries.  Continue?", new MessageBoxButtonsConfig()
+            //    {
+            //        Yes = new MessageBoxButtonConfig
+            //        {
+            //            Text = "Yes",
+            //            Handler = "App.direct.dmSubmitForApproval()"
+            //        },
+            //        No = new MessageBoxButtonConfig
+            //        {
+            //            Text = "No"
+            //        }
+            //    }).Show();
+            //}
+            //else
+            //{
+            //    dmSubmitForApproval();
+            //}
             
         }
 
@@ -436,6 +436,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     if (HeaderList.Count > 1)
                     {
                         X.Js.Call("parent.App.direct.dmLoadPerDiemPicker(" + Ext.Net.JSON.Serialize(HeaderList) + ")");
+                        break;
                     }
 
                 }

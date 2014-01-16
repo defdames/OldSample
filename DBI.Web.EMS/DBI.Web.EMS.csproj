@@ -288,6 +288,7 @@
     <Compile Include="Views\Modules\DailyActivity\umWeatherTab.aspx.designer.cs">
       <DependentUpon>umWeatherTab.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\DailyActivity\ValidationChecks.cs" />
     <Compile Include="Views\Modules\Security\umSecurityLogList.aspx.cs">
       <DependentUpon>umSecurityLogList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
