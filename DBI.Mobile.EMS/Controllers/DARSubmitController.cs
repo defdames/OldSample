@@ -27,15 +27,14 @@ namespace DBI.Mobile.EMS.Controllers
             try
             {
                 var jsonObj = JsonConvert.DeserializeObject<DailyActivityResponse.RootObject>(jsonString);
+                
 
 
                 DAILY_ACTIVITY_HEADER h = new DAILY_ACTIVITY_HEADER();
                 foreach (DailyActivityResponse.DailyActivityHeader j in jsonObj.daily_activity_header)
                 {
                         h.PROJECT_ID = j.project_id;
-                        //DateTime da_date;
-                        //Boolean valid = DateTime.TryParseExact(j.da_date, "dd/mm/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out da_date);
-                        //h.DA_DATE = da_date;
+                        h.DA_DATE = DateTime.ParseExact(j.da_date, "dd-MMM-yyyy", null);
                         h.SUBDIVISION = j.subdivision;
                         h.CONTRACTOR = j.contractor;
                         h.PERSON_ID = j.person_id;
@@ -56,6 +55,8 @@ namespace DBI.Mobile.EMS.Controllers
                     DAILY_ACTIVITY_EQUIPMENT e = new DAILY_ACTIVITY_EQUIPMENT();
                     e.HEADER_ID = h.HEADER_ID;
                     e.PROJECT_ID = j.project_id;
+                    e.ODOMETER_START = j.odometer_start;
+                    e.ODOMETER_END = j.odometer_end;
                     e.CREATE_DATE = DateTime.Now;
                     e.MODIFY_DATE = DateTime.Now;
                     e.CREATED_BY = "EMSMOBILE";
@@ -68,9 +69,8 @@ namespace DBI.Mobile.EMS.Controllers
                     DAILY_ACTIVITY_EMPLOYEE e = new DAILY_ACTIVITY_EMPLOYEE();
                     e.HEADER_ID = h.HEADER_ID;
                     e.PERSON_ID = j.person_id;
-                    e.EQUIPMENT_ID = j.equipment_id;
-                    //e.TIME_IN = DateTime.ParseExact(j.time_in, "mm/dd/yy hh:mm:ss tt Z", null);
-                    //e.TIME_OUT = DateTime.ParseExact(j.time_out, "mm/dd/yy hh:mm:ss tt Z", null);
+                    e.TIME_IN = DateTime.ParseExact(j.time_in, "dd-MMM-yyyy HH:mm", null);
+                    e.TIME_OUT = DateTime.ParseExact(j.time_out, "dd-MMM-yyyy HH:mm", null);
                     e.TRAVEL_TIME = j.travel_time;
                     e.DRIVE_TIME = j.drive_time;
                     e.PER_DIEM = j.per_diem;
@@ -80,6 +80,14 @@ namespace DBI.Mobile.EMS.Controllers
                     e.MODIFY_DATE = DateTime.Now;
                     e.CREATED_BY = "EMSMOBILE";
                     e.MODIFIED_BY = "EMSMOBILE";
+
+                    if (j.equipment_id > 0)
+                    {
+                        Entities _context = new Entities();
+                        DAILY_ACTIVITY_EQUIPMENT m = _context.DAILY_ACTIVITY_EQUIPMENT.Where(s => s.PROJECT_ID == j.equipment_id & s.HEADER_ID == h.HEADER_ID).SingleOrDefault();
+                        e.EQUIPMENT_ID = m.EQUIPMENT_ID;
+                    }
+ 
                     GenericData.Insert<DAILY_ACTIVITY_EMPLOYEE>(e);
                 }
 
@@ -87,8 +95,8 @@ namespace DBI.Mobile.EMS.Controllers
                 {
                     DAILY_ACTIVITY_PRODUCTION e = new DAILY_ACTIVITY_PRODUCTION();
                     e.HEADER_ID = h.HEADER_ID;
-                    //e.TIME_IN = DateTime.ParseExact(j.time_in, "mm/dd/yy hh:mm:ss tt Z", null);
-                    //e.TIME_OUT = DateTime.ParseExact(j.time_out, "mm/dd/yy hh:mm:ss tt Z", null);
+                    e.TIME_IN = DateTime.ParseExact(j.time_in, "dd-MMM-yyyy HH:mm", null);
+                    e.TIME_OUT = DateTime.ParseExact(j.time_out, "dd-MMM-yyyy HH:mm", null);
                     e.TASK_ID = j.task_id;
                     e.WORK_AREA = j.work_area;
                     e.POLE_FROM = j.pole_from;
@@ -106,7 +114,7 @@ namespace DBI.Mobile.EMS.Controllers
                 {
                     DAILY_ACTIVITY_WEATHER e = new DAILY_ACTIVITY_WEATHER();
                     e.HEADER_ID = h.HEADER_ID;
-                    //e.WEATHER_DATE_TIME = DateTime.ParseExact(j.weather_date_time, "mm/dd/yy hh:mm:ss tt Z", null);
+                    e.WEATHER_DATE_TIME = DateTime.ParseExact(j.weather_date_time, "dd-MMM-yyyy HH:mm", null);
                     e.TEMP = j.temp.ToString();
                     e.WIND_DIRECTION = j.wind_direction;
                     e.WIND_VELOCITY = j.wind_velocity;
@@ -119,43 +127,51 @@ namespace DBI.Mobile.EMS.Controllers
                     GenericData.Insert<DAILY_ACTIVITY_WEATHER>(e);
                 }
 
-                //foreach (DailyActivityResponse.DailyActivityChemicalMix j in jsonObj.daily_activity_chemical_mix)
-                //{
-                //    DAILY_ACTIVITY_CHEMICAL_MIX e = new DAILY_ACTIVITY_CHEMICAL_MIX();
-                //    e.HEADER_ID = h.HEADER_ID;
-                //    e.CHEMICAL_MIX_NUMBER = j.chemical_mix_number;
-                //    e.TARGET_AREA = j.target_area;
-                //    e.GALLON_ACRE = j.gallon_acre;
-                //    e.GALLON_STARTING = j.gallon_starting;
-                //    e.GALLON_MIXED = j.gallon_mixed;
-                //    e.GALLON_REMAINING = j.gallon_remaining;
-                //    e.ACRES_SPRAYED = decimal.Parse(j.acres_sprayed.ToString());
-                //    e.STATE = j.state;
-                //    e.COUNTY = j.county;
-                //    e.CREATE_DATE = DateTime.Now;
-                //    e.MODIFY_DATE = DateTime.Now;
-                //    e.CREATED_BY = "EMSMOBILE";
-                //    e.MODIFIED_BY = "EMSMOBILE";
-                //    GenericData.Insert<DAILY_ACTIVITY_CHEMICAL_MIX>(e);
-                //}
+                foreach (DailyActivityResponse.DailyActivityChemicalMix j in jsonObj.daily_activity_chemical_mix)
+                {
+                    DAILY_ACTIVITY_CHEMICAL_MIX e = new DAILY_ACTIVITY_CHEMICAL_MIX();
+                    e.HEADER_ID = h.HEADER_ID;
+                    e.CHEMICAL_MIX_NUMBER = j.chemical_mix_number;
+                    e.TARGET_AREA = j.target_area;
+                    e.GALLON_ACRE = j.gallon_acre;
+                    e.GALLON_STARTING = j.gallon_starting;
+                    e.GALLON_MIXED = j.gallon_mixed;
+                    e.GALLON_REMAINING = j.gallon_remaining;
+                    e.ACRES_SPRAYED = decimal.Parse(j.acres_sprayed.ToString());
+                    e.STATE = j.state;
+                    e.COUNTY = j.county;
+                    e.CREATE_DATE = DateTime.Now;
+                    e.MODIFY_DATE = DateTime.Now;
+                    e.CREATED_BY = "EMSMOBILE";
+                    e.MODIFIED_BY = "EMSMOBILE";
+                    GenericData.Insert<DAILY_ACTIVITY_CHEMICAL_MIX>(e);
+                }
 
-                //foreach (DailyActivityResponse.DailyActivityInventory j in jsonObj.daily_activity_inventory)
-                //{
-                //    DAILY_ACTIVITY_INVENTORY e = new DAILY_ACTIVITY_INVENTORY();
-                //    e.HEADER_ID = h.HEADER_ID;
-                //    e.CHEMICAL_MIX_ID = j.chemical_mix_id;
-                //    e.SUB_INVENTORY_SECONDARY_NAME = j.sub_inventory_secondary_name;
-                //    e.SUB_INVENTORY_ORG_ID = j.sub_inventory_org_id;
-                //    e.ITEM_ID = j.item_id;
-                //    e.RATE = j.rate;
-                //    e.UNIT_OF_MEASURE = j.unit_of_measure;
-                //    e.EPA_NUMBER = j.epa_number;
-                //    e.CREATE_DATE = DateTime.Now;
-                //    e.MODIFY_DATE = DateTime.Now;
-                //    e.CREATED_BY = "EMSMOBILE";
-                //    e.MODIFIED_BY = "EMSMOBILE";
-                //    GenericData.Insert<DAILY_ACTIVITY_INVENTORY>(e);
-                //}
+                foreach (DailyActivityResponse.DailyActivityInventory j in jsonObj.daily_activity_inventory)
+                {
+                    DAILY_ACTIVITY_INVENTORY e = new DAILY_ACTIVITY_INVENTORY();
+                    e.HEADER_ID = h.HEADER_ID;
+                    e.SUB_INVENTORY_SECONDARY_NAME = j.sub_inventory_secondary_name;
+                    e.SUB_INVENTORY_ORG_ID = j.sub_inventory_org_id;
+                    e.ITEM_ID = j.item_id;
+                    e.RATE = j.rate;
+                    e.UNIT_OF_MEASURE = j.unit_of_measure;
+                    e.EPA_NUMBER = j.epa_number;
+                    e.CREATE_DATE = DateTime.Now;
+                    e.MODIFY_DATE = DateTime.Now;
+                    e.CREATED_BY = "EMSMOBILE";
+                    e.MODIFIED_BY = "EMSMOBILE";
+
+                    if (j.chemical_mix_id > 0)
+                    {
+                        Entities _context = new Entities();
+                        DAILY_ACTIVITY_CHEMICAL_MIX m = _context.DAILY_ACTIVITY_CHEMICAL_MIX.Where(s => s.CHEMICAL_MIX_NUMBER == j.chemical_mix_id & s.HEADER_ID == h.HEADER_ID).SingleOrDefault();
+                        e.CHEMICAL_MIX_ID = m.CHEMICAL_MIX_ID;
+                    }
+
+
+                    GenericData.Insert<DAILY_ACTIVITY_INVENTORY>(e);
+                }
 
                 foreach (DailyActivityResponse.DailyActivityFooter j in jsonObj.daily_activity_footer)
                 {
