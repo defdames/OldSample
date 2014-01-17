@@ -52,31 +52,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime("Hours per day");
                 List<EmployeeData> HoursOver14 = ValidationChecks.checkEmployeeTime("Hours over 14");
                 List<long> OverlapProjects = ValidationChecks.employeeTimeOverlapCheck();
-                List<long> BusinessUnitProjects = ValidationChecks.headerBusinessUnitCheck();
+                List<long> BusinessUnitProjects = ValidationChecks.EquipmentBusinessUnitCheck();
+                List<long> BusinessUnitEmployees = ValidationChecks.EmployeeBusinessUnitCheck();
+
                 foreach (dynamic record in rawData)
                 {
                     string Warning = "Green";
 
-                    foreach (EmployeeData OffendingProject in HoursOver24)
-                    {
-                        if (OffendingProject.HEADER_ID == record.HEADER_ID)
-                        {
-                            Warning = "Red";
-                        }
-                    }
                     foreach (EmployeeData OffendingProject in HoursOver14)
                     {
                         if (OffendingProject.HEADER_ID == record.HEADER_ID)
                         {
                             Warning = "Yellow";
-                        }
-                    }
-
-                    foreach (long OffendingProject in OverlapProjects)
-                    {
-                        if (OffendingProject == record.HEADER_ID)
-                        {
-                            Warning = "Red";
                         }
                     }
                     foreach (long OffendingProject in BusinessUnitProjects)
@@ -86,6 +73,31 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             Warning = "Yellow";
                         }
                     }
+
+                    foreach (long OffendingProject in BusinessUnitEmployees)
+                    {
+                        if (OffendingProject == record.HEADER_ID)
+                        {
+                            Warning = "Yellow";
+                        }
+                    }
+                    foreach (EmployeeData OffendingProject in HoursOver24)
+                    {
+                        if (OffendingProject.HEADER_ID == record.HEADER_ID)
+                        {
+                            Warning = "Red";
+                        }
+                    }
+                    
+
+                    foreach (long OffendingProject in OverlapProjects)
+                    {
+                        if (OffendingProject == record.HEADER_ID)
+                        {
+                            Warning = "Red";
+                        }
+                    }
+                    
 
                     data.Add(new HeaderData
                     {
@@ -147,28 +159,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         }
 
         /// <summary>
-        /// Disables tabs and buttons when row is deselected
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deDeselectHeader(object sender, DirectEventArgs e)
-        {
-            uxApproveActivityButton.Disabled = true;
-            uxSubmitActivityButton.Disabled = true;
-            uxPostActivityButton.Disabled = true;
-            uxInactiveActivityButton.Disabled = true;
-
-            uxHeaderTab.Disabled = true;
-            uxCombinedTab.Disabled = true;
-            uxEquipmentTab.Disabled = true;
-            uxEmployeeTab.Disabled = true;
-            uxChemicalTab.Disabled = true;
-            uxInventoryTab.Disabled = true;
-            uxWeatherTab.Disabled = true;
-            uxProductionTab.Disabled = true;
-        }
-
-        /// <summary>
         /// Shows Submit activity Window/Form
         /// </summary>
         /// <param name="sender"></param>
@@ -178,22 +168,29 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxSubmitActivityWindow.ClearContent();
             long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
             List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime("Hours per day");
-            List<EmployeeData> HoursOver14 = ValidationChecks.checkEmployeeTime("Hours over 14");
+            List<EmployeeData> DuplicatePerDiems = ValidationChecks.checkPerDiem(HeaderId);
             List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
-            List<long> BusinessUnitCheck = ValidationChecks.headerBusinessUnitCheck();
 
             bool BadHeader = false;
             if (HoursOver24.Count > 0)
             {
                 if (HoursOver24.Exists(emp => emp.HEADER_ID == HeaderId)){
                     EmployeeData HeaderData = HoursOver24.Find(emp => emp.HEADER_ID == HeaderId);
-                    uxSubmitActivityWindow.Html += string.Format("<span color='#ff0000'>{0} has over 24 hours logged on {1}.  Please fix.</span><br />", HeaderData.EMPLOYEE_NAME.ToString(), HeaderData.DA_DATE.ToString());
+                    uxSubmitActivityWindow.Html += string.Format("<span color='#ff0000'>{0} has over 24 hours logged on {1:MM-dd-yy}.  Please fix.</span><br />", HeaderData.EMPLOYEE_NAME.ToString(), HeaderData.DA_DATE.ToString());
                     BadHeader = true;
                 }
                 
                 
             }
 
+            if (DuplicatePerDiems.Count > 0)
+            {
+                foreach (EmployeeData DuplicatePerDiem in DuplicatePerDiems)
+                {
+                    uxSubmitActivityWindow.Html += string.Format("<span>{0} has duplicate per diem entries on {1:MM-dd-yy}.  Please fix.</span><br />", DuplicatePerDiem.EMPLOYEE_NAME, DuplicatePerDiem.DA_DATE);
+                    BadHeader = true;
+                }
+            }
             if (EmployeeOverLap.Count > 0)
             {
                 using (Entities _context = new Entities())

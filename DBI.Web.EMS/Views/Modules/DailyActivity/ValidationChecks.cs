@@ -23,7 +23,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 var TotalHoursList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                       where d.DAILY_ACTIVITY_HEADER.STATUS != 4 || d.DAILY_ACTIVITY_HEADER.STATUS != 5
-                                     group d by new { d.PERSON_ID, d.DAILY_ACTIVITY_HEADER.DA_DATE } into g
+                                     group d by new {d.DAILY_ACTIVITY_HEADER.DA_DATE, d.PERSON_ID } into g
                                      select new { g.Key.PERSON_ID, g.Key.DA_DATE, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value))}).ToList();
 
                 int i = 0;
@@ -73,7 +73,39 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             }
         }
-        
+
+        /// <summary>
+        /// Validation check to see if equipment meter readings are missing
+        /// </summary>
+        /// <param name="HeaderId"></param>
+        /// <returns></returns>
+        public static bool AreMetersMissing(long HeaderId)
+        {
+            //Get List of equipment
+            List<DAILY_ACTIVITY_EQUIPMENT> EquipmentList;
+
+            using (Entities _context = new Entities())
+            {
+                EquipmentList = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
+                                 where d.HEADER_ID == HeaderId
+                                 select d).ToList();
+            }
+            int NumberOfMissingMeters = 0;
+            foreach (DAILY_ACTIVITY_EQUIPMENT Equipment in EquipmentList)
+            {
+                if (Equipment.ODOMETER_START == null || Equipment.ODOMETER_END == null)
+                {
+                    NumberOfMissingMeters++;
+                }
+            }
+
+            if (NumberOfMissingMeters > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public static List<long> employeeTimeOverlapCheck()
         {
             using (Entities _context = new Entities())
@@ -118,7 +150,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
-        public static List<long> headerBusinessUnitCheck()
+        public static List<long> EquipmentBusinessUnitCheck()
         {
             using (Entities _context = new Entities())
             {
@@ -133,41 +165,86 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     long? ProjectOrgId = (from d in _context.PROJECTS_V
                                           where d.PROJECT_ID == ProjectId
                                           select d.ORG_ID).Single<long?>();
-                    bool BreakLoop = false;
 
-                    //foreach (DAILY_ACTIVITY_EMPLOYEE Employee in Header.DAILY_ACTIVITY_EMPLOYEE)
-                    //{
-                    //    long? EmployeeBusinessUnit = (from e in _context.EMPLOYEES_V
-                    //                                  where e.PERSON_ID == Employee.PERSON_ID
-                    //                                  select e.ORGANIZATION_ID).Single();
-                    //    if (EmployeeBusinessUnit != ProjectOrgId)
-                    //    {
-                    //        OffendingHeaders.Add(Header.HEADER_ID);
-                    //        BreakLoop = true;
-                    //        break;
-                    //    }
-
-                    //}
                     foreach (DAILY_ACTIVITY_EQUIPMENT Equipment in Header.DAILY_ACTIVITY_EQUIPMENT)
                     {
-                        if (!BreakLoop)
+                        long? EquipmentBusinessUnit = (from p in _context.PROJECTS_V
+                                                        where p.PROJECT_ID == Equipment.PROJECT_ID
+                                                        select p.ORG_ID).Single();
+                        if (EquipmentBusinessUnit != ProjectOrgId)
                         {
-                            long? EquipmentBusinessUnit = (from p in _context.PROJECTS_V
-                                                           where p.PROJECT_ID == Equipment.PROJECT_ID
-                                                           select p.ORG_ID).Single();
-                            if (EquipmentBusinessUnit != ProjectOrgId)
-                            {
-                                OffendingHeaders.Add(Header.HEADER_ID);
-                                break;
-                            }
-                        }
-                        else
-                        {
+                            OffendingHeaders.Add(Header.HEADER_ID);
                             break;
                         }
                     }
                 }
                 return OffendingHeaders;
+            }
+        }
+
+        public static List<long> EmployeeBusinessUnitCheck(){
+            using (Entities _context = new Entities()){
+                List<long>OffendingHeaders = new List<long>();
+
+                List<DAILY_ACTIVITY_HEADER> HeaderList = (from d in _context.DAILY_ACTIVITY_HEADER
+                                                              where d.STATUS != 5
+                                                              select d).ToList<DAILY_ACTIVITY_HEADER>();
+                foreach (DAILY_ACTIVITY_HEADER Header in HeaderList)
+                {
+                    long ProjectId = (long)Header.PROJECT_ID;
+                    long? ProjectOrgId = (from d in _context.PROJECTS_V
+                                          where d.PROJECT_ID == ProjectId
+                                          select d.ORG_ID).Single<long?>();
+                    foreach (DAILY_ACTIVITY_EMPLOYEE Employee in Header.DAILY_ACTIVITY_EMPLOYEE)
+                    {
+                        long? EmployeeOrgId = (from e in _context.EMPLOYEES_V
+                                                where e.PERSON_ID == Employee.PERSON_ID
+                                                select e.ORGANIZATION_ID).Single();
+                        long EmployeeBusinessUnit = EMPLOYEES_V.GetEmployeeBusinessUnit((long)EmployeeOrgId);
+                        if (EmployeeBusinessUnit != ProjectOrgId)
+                        {
+                            OffendingHeaders.Add(Header.HEADER_ID);
+                            break;
+                        }
+                    }
+                }
+                return OffendingHeaders;
+            }
+        }
+        public static List<EmployeeData> checkPerDiem(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
+                //Get List of Employees for this header with Per-Diem active
+                var EmployeeList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                    join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
+                                    where d.HEADER_ID == HeaderId && d.PER_DIEM == "Y"
+                                    select new { d.PERSON_ID, d.DAILY_ACTIVITY_HEADER.DA_DATE, e.EMPLOYEE_NAME }).ToList();
+
+                List<EmployeeData> BadHeaders = new List<EmployeeData>();
+                //Check for Additional active PerDiems on that day
+                foreach (var Employee in EmployeeList)
+                {
+                    var HeaderList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                      join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                      join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
+                                      join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
+                                      where h.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID
+                                      select d.HEADER_ID).ToList();
+
+                    if (HeaderList.Count > 1)
+                    {
+                        BadHeaders.Add(new EmployeeData
+                        {
+                            HEADER_ID = HeaderId,
+                            EMPLOYEE_NAME = Employee.EMPLOYEE_NAME,
+                            DA_DATE = Employee.DA_DATE
+                        });
+                        
+                    }
+
+                }
+                return BadHeaders;
             }
         }
     }

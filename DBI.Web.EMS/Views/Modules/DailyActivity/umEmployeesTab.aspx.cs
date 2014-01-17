@@ -457,6 +457,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             uxCurrentEmployeeStore.Reload();
             uxEditEmployeeWindow.Hide();
+            X.Js.Call("parent.App.uxManageGridStore.reload()");
             Notification.Show(new NotificationConfig()
             {
                 Title = "Success",

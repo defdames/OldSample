@@ -33,7 +33,7 @@
 			<Items>
 				<ext:GridPanel runat="server" ID="uxManageGrid" Region="North" Layout="HBoxLayout">
 					<SelectionModel>
-						<ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
+						<ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="false" Mode="Single" />
 					</SelectionModel>
 					<Store>
 						<ext:Store runat="server" AutoDataBind="true" ID="uxManageGridStore" OnReadData="deReadHeaderData" PageSize="10">
@@ -80,7 +80,6 @@
 								<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
 							</ExtraParams>
 						</Select>
-						<Deselect OnEvent="deDeselectHeader" />
 					</DirectEvents>
 					<TopBar>
 						<ext:Toolbar runat="server">
