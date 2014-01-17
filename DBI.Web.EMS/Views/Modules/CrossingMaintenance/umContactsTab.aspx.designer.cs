@@ -211,6 +211,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Window uxAddContactWindow;
         
         /// <summary>
+        /// uxAddContactForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FormPanel uxAddContactForm;
+        
+        /// <summary>
         /// uxAddNewManagerName control.
         /// </summary>
         /// <remarks>
@@ -220,13 +229,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField uxAddNewManagerName;
         
         /// <summary>
-        /// uxAddNewRR control.
+        /// uxAddNewRRTextField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DropDownField uxAddNewRR;
+        protected global::Ext.Net.TextField uxAddNewRRTextField;
         
         /// <summary>
         /// uxAddNewAddress1 control.
@@ -256,13 +265,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField uxAddNewContactCityTextField;
         
         /// <summary>
-        /// uxAddNewContactState control.
+        /// uxAddNewContactStateTextField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DropDownField uxAddNewContactState;
+        protected global::Ext.Net.TextField uxAddNewContactStateTextField;
         
         /// <summary>
         /// uxAddNewContactZip control.
@@ -301,13 +310,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField uxAddNewEmail;
         
         /// <summary>
-        /// uxAddNewContactButton control.
+        /// deAddContacts control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxAddNewContactButton;
+        protected global::Ext.Net.Button deAddContacts;
         
         /// <summary>
         /// uxAddNewContactCancelButton control.

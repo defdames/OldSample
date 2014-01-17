@@ -12,7 +12,67 @@
         <ext:ResourceManager ID="ResourceManager1" runat="server" />
         <div>
             <%----------------------------------------------------- <CrossingInfo Tab>----------------------------------------------------------------------%>
-            <ext:FormPanel runat="server" Layout="FormLayout">
+             <ext:GridPanel ID="uxCrossingMainGrid" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true">
+                         <SelectionModel>
+                        <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
+                          </SelectionModel>
+                        <Store>
+                            <ext:Store runat="server"
+                                ID="uxCurrentCrossingStore"
+                                OnReadData="deCrossingGridData"
+                                PageSize="10"
+                                AutoDataBind="true" WarningOnDirty="false">
+                                <Model>
+                                    <ext:Model ID="Model2" runat="server">
+                                        <Fields>
+                                            <ext:ModelField Name="CROSSING_ID" />
+                                            <ext:ModelField Name="CROSSING_NUMBER" Type="String" />
+                                        </Fields>
+                                    </ext:Model>
+                                </Model>
+                                <Proxy>
+                                <ext:PageProxy />
+                            </Proxy>
+                            </ext:Store>
+                        </Store>
+                        <ColumnModel>
+                            <Columns>
+
+                                <ext:Column ID="uxMainCrossingNum" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing #" Flex="1" />
+                                <ext:Column ID="uxProjectName" runat="server" DataIndex="" Text="Project Name" Flex="1" />
+                                <ext:Column ID="uxProjectNum" runat="server" DataIndex="" Text="Project #" Flex="1" />
+                                <ext:Column ID="uxCrossingManager" runat="server" DataIndex="" Text="Manager" Flex="1" />
+
+                            </Columns>
+                        </ColumnModel>
+                        <Plugins>
+                            <ext:FilterHeader ID="FilterHeader1" runat="server" />
+                        </Plugins>
+                    <DirectEvents>
+                        <Select OnEvent="GetFormData">
+                            <ExtraParams>
+                                <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                            </ExtraParams>
+                        </Select>                  
+                    </DirectEvents>
+                 <DirectEvents>
+                     <Select OnEvent="deEditCrossingForm" >
+                         <ExtraParams>
+					  <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                     </ExtraParams>
+                             </Select>
+                 </DirectEvents>
+                        <BottomBar>                        
+                            <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True">
+                            </ext:PagingToolbar>
+                        </BottomBar>
+
+                    </ext:GridPanel>
+            
+            
+            
+    <%-- -----------------------------------------------------------------------------------------------------------------------  --%>     
+             <ext:FormPanel runat="server" ID="uxCrossingForm" Layout="FormLayout">
                 <Items>
                     <ext:Toolbar ID="Toolbar1" runat="server">
                         <Items>
@@ -27,12 +87,23 @@
                                 <Listeners>
                                     <Click Handler="#{uxEditCrossingWindow}.show()" />
                                 </Listeners>
-                            </ext:Button>
+                                 <DirectEvents>
+								<Click OnEvent="deEditCrossingForm" >  
+                                    <ExtraParams>
+					                 <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                                    </ExtraParams>                               
+                                    </Click>
+							    </DirectEvents>
+                                </ext:Button>
+                            
                             <ext:Button ID="uxActivateCrossingButton" runat="server" Text="Activate Crossing" Icon="ApplicationGo" />
                             <ext:Button ID="uxDeleteCrossingButton" runat="server" Text="Delete Crossing" Icon="ApplicationDelete">
                                 <DirectEvents>
                                     <Click OnEvent="deRemoveCrossing">
                                         <Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete crossing?" />
+                                         <ExtraParams>
+										<ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+									    </ExtraParams>
                                     </Click>
                                 </DirectEvents>
                             </ext:Button>
@@ -45,7 +116,7 @@
 
                             <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                                 <Items>
-                                    <ext:TextField ID="uxCrossingNumCI" runat="server" FieldLabel="Crossing #" LabelAlign="Right" AnchorHorizontal="100%" />
+                                    <ext:TextField ID="uxCrossingNumCI" runat="server" FieldLabel="Crossing #" LabelAlign="Right" AnchorHorizontal="100%" DisableKeyFilter="False" />
                                     <ext:TextField ID="uxRouteCI" runat="server" FieldLabel="Route" AnchorHorizontal="100%" LabelAlign="Right" />
                                     <ext:TextField ID="uxDOTNumCI" runat="server" FieldLabel="DOT #" LabelAlign="Right" AnchorHorizontal="100%" />
                                 </Items>
@@ -167,7 +238,7 @@
                 Title="Add New Crossing"
                 Width="850">
                 <Items>
-                    <ext:FormPanel runat="server" Layout="FormLayout">
+                    <ext:FormPanel runat="server" ID="uxAddCrossingForm" Layout="FormLayout">
                         <Items>
                             <ext:FieldSet ID="FieldSet4" runat="server" Title="Crossing Details">
                                 <Items>
@@ -282,8 +353,12 @@
                         </Items>
 
                         <Buttons>
-                            <ext:Button runat="server" ID="AddCrossingWindowButton" Text="Add" Icon="Add" />
-                            <ext:Button runat="server" ID="CancelCrossingWindowButton" Text="Cancel" Icon="Delete" />
+                            <ext:Button runat="server" ID="deAddCrossing" Text="Add" Icon="Add" >
+                                <DirectEvents>
+								<Click OnEvent="deAddCrossings" />
+							</DirectEvents>
+                                </ext:Button>
+                            <ext:Button runat="server" ID="CancelCrossing" Text="Cancel" Icon="Delete" />
                         </Buttons>
                     </ext:FormPanel>
                 </Items>
@@ -412,8 +487,16 @@
                         </Items>
 
                         <Buttons>
-                            <ext:Button runat="server" ID="uxEditCrossingButton" Text="Update" Icon="Add" />
-                            <ext:Button runat="server" ID="uxCancelEditCrossingButton" Text="Cancel" Icon="Delete" />
+                            <ext:Button runat="server" ID="deEditCrossing" Text="Update" Icon="Add" >
+                                 <DirectEvents>
+								<Click OnEvent="deEditCrossings" >   
+                                     <ExtraParams>
+					                 <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                                    </ExtraParams>                       
+                                    </Click>
+							    </DirectEvents>
+                                </ext:Button>
+                            <ext:Button runat="server" ID="deCancelEditCrossing" Text="Cancel" Icon="Delete" />
                         </Buttons>
                     </ext:FormPanel>
                 </Items>

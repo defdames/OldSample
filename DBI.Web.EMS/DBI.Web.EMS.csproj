@@ -106,10 +106,10 @@
     <Content Include="Resources\Images\wwbnight.png" />
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
-    <Content Include="Views\Modules\CrossingMaintenance\CrossingSecurityTab.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umContactsTab.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingMain.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingInfoTab.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umCrossingSecurity.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umServiceUnitsTab.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umSubDivisionsTab.aspx" />
@@ -154,13 +154,6 @@
     <Compile Include="Views\Handlers\SystemUsers.ashx.cs">
       <DependentUpon>SystemUsers.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\CrossingMaintenance\CrossingSecurityTab.aspx.cs">
-      <DependentUpon>CrossingSecurityTab.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Modules\CrossingMaintenance\CrossingSecurityTab.aspx.designer.cs">
-      <DependentUpon>CrossingSecurityTab.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umContactsTab.aspx.cs">
       <DependentUpon>umContactsTab.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -181,6 +174,13 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umCrossingInfoTab.aspx.designer.cs">
       <DependentUpon>umCrossingInfoTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umCrossingSecurity.aspx.cs">
+      <DependentUpon>umCrossingSecurity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umCrossingSecurity.aspx.designer.cs">
+      <DependentUpon>umCrossingSecurity.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx.cs">
       <DependentUpon>umDataEntryTab.aspx</DependentUpon>
