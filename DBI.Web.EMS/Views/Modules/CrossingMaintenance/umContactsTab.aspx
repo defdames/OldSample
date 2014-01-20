@@ -11,10 +11,14 @@
         <ext:ResourceManager runat="server" ID="ResourceManager2" />
         <div>
             <%--<ContactsTab>--%>
-            <ext:GridPanel ID="GridPanel1" runat="server" Layout="HBoxLayout">
+            <ext:GridPanel ID="uxContactMain" runat="server" Layout="HBoxLayout" Collapsible="true" Title="Contacts">
+                 <SelectionModel>
+                    <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
+                </SelectionModel>
                 <Store>
                     <ext:Store runat="server"
                         ID="uxCurrentContactStore"
+                        OnReadData="deContactMainGrid"
                         AutoDataBind="true" WarningOnDirty="false">
                         <Model>
                             <ext:Model ID="Model1" runat="server">
@@ -22,11 +26,11 @@
                                     <ext:ModelField Name="CONTACT_ID" />
                                     <ext:ModelField Name="CROSSING_ID" />
                                     <ext:ModelField Name="CONTACT_NAME" />
-                                    <ext:ModelField Name="ADDRESS_1" />
+                                    <%--<ext:ModelField Name="ADDRESS_1" />
                                     <ext:ModelField Name="ADDRESS_2" />
                                     <ext:ModelField Name="CITY" />
                                     <ext:ModelField Name="STATE" />
-                                    <ext:ModelField Name="ZIP_CODE" />
+                                    <ext:ModelField Name="ZIP_CODE" />--%>
                                     <ext:ModelField Name="WORK_NUMBER" />
                                     <ext:ModelField Name="CELL_NUMBER" />
                                     <ext:ModelField Name="RAIL_ROAD" />
@@ -41,21 +45,31 @@
                 <ColumnModel>
                     <Columns>
                         <ext:Column ID="uxNameCON" runat="server" DataIndex="CONTACT_NAME" Text="Manager Name" Flex="1" />
-                        <ext:Column ID="uxAddress1CON" runat="server" DataIndex="ADDRESS_1" Text="Address 1" Flex="1" />
+                      <%--  <ext:Column ID="uxAddress1CON" runat="server" DataIndex="ADDRESS_1" Text="Address 1" Flex="1" />
                         <ext:Column ID="uxAddress2CON" runat="server" DataIndex="ADDRESS_2" Text="Address 2" Flex="1" />
                         <ext:Column ID="uxCityCON" runat="server" DataIndex="CITY" Text="City" Flex="1" />
                         <ext:Column ID="uxStateCON" runat="server" DataIndex="STATE" Text="State" Flex="1" />
                         <ext:Column ID="uxZipCON" runat="server" Text="Zip" DataIndex="ZIP_CODE" Flex="1" />
-                        <ext:Column ID="uxEmailCON" runat="server" DataIndex="" Text="Email" Flex="1" />
+                        <ext:Column ID="uxEmailCON" runat="server" DataIndex="" Text="Email" Flex="1" />--%>
                         <ext:Column runat="server" ID="uxWorkNumCON" Text="Work #" DataIndex="WORK_NUMBER" Flex="1" />
                         <ext:Column runat="server" ID="uxCellNumCON" Text="Cell #" DataIndex="CELL_NUMBER" Flex="1" />
                         <ext:Column ID="uxRRCON" runat="server" DataIndex="RAIL_ROAD" Text="RR" Flex="1" />
 
                     </Columns>
                 </ColumnModel>
-                <TopBar>
-
-                    <ext:Toolbar ID="Toolbar2" runat="server">
+                 <DirectEvents>
+                    <Select OnEvent="GetContactGridData">
+                        <ExtraParams>
+                            <ext:Parameter Name="ContactId" Value="#{uxContactMainGrid}.getSelectionModel().getSelection()[0].data.Contact_ID" Mode="Raw" />
+                        </ExtraParams>
+                    </Select>
+                </DirectEvents>            
+                <BottomBar>
+                    <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True">
+                    </ext:PagingToolbar>
+                </BottomBar>
+            </ext:GridPanel>
+              <ext:Toolbar ID="Toolbar2" runat="server">
                         <Items>
                             <ext:Button ID="uxAddContactButton" runat="server" Text="Add New Contact" Icon="ApplicationAdd">
                                 <Listeners>
@@ -86,8 +100,20 @@
                             </ext:Button>
                         </Items>
                     </ext:Toolbar>
-                </TopBar>
-            </ext:GridPanel>
+
+             <ext:FormPanel runat="server" ID="uxContactFormPanel" Layout="FormLayout">
+                        <Items>
+                            <ext:TextField ID="uxContactManagerName" runat="server" FieldLabel="Manager Name" AnchorHorizontal="100%" LabelAlign="Right" />
+                            <ext:TextField ID="uxContactRR" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right" />
+                            <ext:TextField ID="uxContactAddress1" runat="server" FieldLabel="Address 1" AnchorHorizontal="100%" LabelAlign="Right" />
+                            <ext:TextField ID="uxContactAddress2" runat="server" FieldLabel="Address 2" AnchorHorizontal="100%" LabelAlign="Right" />
+                            <ext:TextField ID="uxContactCity" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />
+                            <ext:TextField ID="uxContactState" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />
+                            <ext:TextField ID="uxContactZip" runat="server" FieldLabel="Zip" AnchorHorizontal="100%" LabelAlign="Right" />
+                            <ext:TextField ID="uxContactCell" runat="server" FieldLabel="Cell #" AnchorHorizontal="100%" LabelAlign="Right" />
+                            <ext:TextField ID="uxContactOffice" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right" />                          
+                        </Items>
+                    </ext:FormPanel>
             <%-------------------------------------Hidden Windows-------------------------------------------------%>
             <ext:Window runat="server"
                 ID="uxAddContactWindow"
@@ -107,7 +133,7 @@
                             <ext:TextField ID="uxAddNewContactZip" runat="server" FieldLabel="Zip" AnchorHorizontal="100%" LabelAlign="Right" />
                             <ext:TextField ID="uxAddNewContactCell" runat="server" FieldLabel="Cell #" AnchorHorizontal="100%" LabelAlign="Right" />
                             <ext:TextField ID="uxAddNewContactOffice" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right" />
-                            <ext:TextField ID="uxAddNewEmail" runat="server" FieldLabel="Email" AnchorHorizontal="100%" LabelAlign="Right" />
+                           
                         </Items>
                         <Buttons>
                             <ext:Button runat="server" ID="deAddContacts" Text="Add" Icon="Add" >
@@ -139,7 +165,7 @@
                             <ext:TextField ID="uxEditContactZip" runat="server" FieldLabel="Zip" AnchorHorizontal="100%" LabelAlign="Right" />
                             <ext:TextField ID="uxEditContactCellNum" runat="server" FieldLabel="Cell #" AnchorHorizontal="100%" LabelAlign="Right" />
                             <ext:TextField ID="uxEditContactPhoneNum" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right" />
-                            <ext:TextField ID="uxEditContanct" runat="server" FieldLabel="Email" AnchorHorizontal="100%" LabelAlign="Right" />
+                          
 
                         </Items>
                         <Buttons>

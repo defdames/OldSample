@@ -29,7 +29,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 //Get List of all new headers
 
                 data = (from d in _context.CROSSINGS
-                        select new { d.CROSSING_ID, d.CROSSING_NUMBER }).ToList<object>();
+                        select new { d.CROSSING_ID, d.CROSSING_NUMBER, d.SUB_CONTRACTED }).ToList<object>();
 
                 int count;
                 uxCurrentCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -84,6 +84,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxMaxSpeedCI.SetValue(data.MAX_SPEED);
                 uxSpecialInstructCI.SetValue(data.SPECIAL_INSTRUCTIONS);
                
+               
             }
         }
 
@@ -94,8 +95,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         /// <param name="e"></param>
         protected void deAddCrossings(object sender, DirectEventArgs e)
         {
-             CROSSING data;
-
+            
             //Do type conversions
             string CrossingNum = uxAddCrossingNumCI.Value.ToString();
             string Route= uxAddRouteCI.Value.ToString();
@@ -128,45 +128,82 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             long MaxSpeed = Convert.ToInt64(uxAddMaxSpeedCI.Value);
             string SpecialInstructions = uxAddSpecialInstructCI.Value.ToString();
             string Sub_contracted = uxAddSubConCI.Value.ToString();
-            //string Restricted = uxAddRestrictedCI.Value.ToString();
-            //string FenceEncroach = uxAddFenceEnchroachCI.Value.ToString();
-            //long OnSpur = Convert.ToInt64(uxAddOnSpurCI.Value);
+            
+                    if (uxAddSubConCI.Checked)
+                    {
+                        Sub_contracted = "Y";
+                    }
+                    else
+                    {
+                        Sub_contracted = "N";
+                    }
+                   
+                    //if (uxAddRestrictedCI.Checked)
+                    //{
+                    //    Restricted = "Y";
+                    //}
+                    //else
+                    //{
+                    //    Restricted = "N";
+                    //}  
+                    // if (uxAddFenceEnchroachCI.Checked)
+                    //{
+                    //    FenceEncroach= "Y";
+                    //}
+                    //else
+                    //{
+                    //    FenceEncroach = "N";
+                    //}
+                    // if (uxAddOnSpurCI.Checked)
+                    //{
+                    //    Sub_contracted = "Y";
+                    //}
+                    //else
+                    //{
+                    //    Sub_contracted = "N";
+                    //}
 
-            using (Entities _context = new Entities())
-            {
-               
-                data = new CROSSING()
-                {
-                    CROSSING_NUMBER = CrossingNum,
-                    DOT = DotNum,
-                    MILE_POST = MP,
-                    SUB_DIVISION = Sub_divisions,
-                    CITY = City,
-                    STREET = Street,
-                    STATE = State,
-                    COUNTY = County,              
-                    SPECIAL_INSTRUCTIONS = SpecialInstructions,
-                    ROUTE = Route,
-                    MAIN_TRACKS = MainTracks,
-                    OTHER_TRACKS = OtherTracks,           
-                    MAX_SPEED = MaxSpeed,
-                    LONGITUDE = Longitude,
-                    LATITUDE = Latitude,
-                    PROPERTY_TYPE = PropertyType,
-                    WARNING_DEVICE = WarningDevice,
-                    SURFACE = Surface,
-                    ROWNE = NE, EXTNE = NEext,
-                    ROWNW = NW, EXTNW = NWext,
-                    ROWSE = SE, EXTSE = SEext,
-                    ROWSW = SW, EXTSW = SWext,
-                    ROW_WIDTH = RowWidth,
-                    MTM = Mtm, MTM_PHONE_NUMBER = MtmCell, MTM_OFFICE_NUMBER = MtmOffice,
-                    //SUB_CONTRACTED = Sub_contracted,
-                    //FENCE_ENCROACHMENT = FenceEncroach,   
-                    //ON_SPUR = OnSpur,
-                    //RESTRICTED_COUNTY = Restricted,
-                };
-            }
+                    CROSSING data = new CROSSING()
+                    {
+                 //using (Entities _context = new Entities())
+                 //{
+
+                 //      data = new CROSSING()
+
+                 
+                     CROSSING_NUMBER = CrossingNum,
+                     DOT = DotNum,
+                     MILE_POST = MP,
+                     SUB_DIVISION = Sub_divisions,
+                     CITY = City,
+                     STREET = Street,
+                     STATE = State,
+                     COUNTY = County,
+                     SPECIAL_INSTRUCTIONS = SpecialInstructions,
+                     ROUTE = Route,
+                     MAIN_TRACKS = MainTracks,
+                     OTHER_TRACKS = OtherTracks,
+                     MAX_SPEED = MaxSpeed,
+                     LONGITUDE = Longitude,
+                     LATITUDE = Latitude,
+                     PROPERTY_TYPE = PropertyType,
+                     WARNING_DEVICE = WarningDevice,
+                     SURFACE = Surface,
+                     ROWNE = NE,
+                     EXTNE = NEext,
+                     ROWNW = NW,
+                     EXTNW = NWext,
+                     ROWSE = SE,
+                     EXTSE = SEext,
+                     ROWSW = SW,
+                     EXTSW = SWext,
+                     ROW_WIDTH = RowWidth,
+                     MTM = Mtm,
+                     MTM_PHONE_NUMBER = MtmCell,
+                     MTM_OFFICE_NUMBER = MtmOffice,
+
+
+                 };
 
             //Write to DB
             GenericData.Insert<CROSSING>(data);
@@ -315,39 +352,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string SpecialInstructions = uxEditSpecialInstructCI.Value.ToString();
 
            
-            //string Sub_contracted; string Restricted; string FenceEncroach; Int64 OnSpur;
-            //if (uxEditSubConCI.Checked)
-            //{
-            //    Sub_contracted = "Y";
-            //}
-            //else
-            //{
-            //    Sub_contracted = "N";
-            //}
-            //if (uxEditRestrictedCI.Checked)
-            //{
-            //    Restricted = "Y";
-            //}
-            //else
-            //{
-            //    Restricted = "N";
-            //}  
-            // if (uxEditFenceEnchroachCI.Checked)
-            //{
-            //    FenceEncroach= "Y";
-            //}
-            //else
-            //{
-            //    FenceEncroach = "N";
-            //}
-            // if (uxEditOnSpurCI.Checked)
-            //{
-            //    Sub_contracted = "Y";
-            //}
-            //else
-            //{
-            //    Sub_contracted = "N";
-            //}
+           
             //Get record to be edited
             using (Entities _context = new Entities())
             {

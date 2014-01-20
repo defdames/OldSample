@@ -19,25 +19,50 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         /// <summary>
         /// 
         /// </summary>
-        //protected void GetGridData()
-        //{
-        //    long ContactId = long.Parse(Request.QueryString["ContactId"]);
+        protected void deContactMainGrid(object sender, StoreReadDataEventArgs e)
+        {
+          
+            //Get Contacts
+            using (Entities _context = new Entities())
+            {
+                List<object> data;
+                 data = (from d in _context.CROSSING_CONTACTS
+                         join c in _context.CROSSINGS
+                         on d.CROSSING_ID equals c.CROSSING_ID
+                           
+                            select new
+                            { d.CROSSING_ID, d.CONTACT_ID, d.CONTACT_NAME  }).ToList<object>();
+                int count;
+             uxCurrentContactStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+            }
+        }
+        protected void GetContactGridData(object sender, DirectEventArgs e)
+        {
 
-        //    //Get Inventory for current project
-        //    using (Entities _context = new Entities())
-        //    {
-        //        var data = (from d in _context.CROSSING_CONTACTS                       
-        //                    where d.CONTACT_ID == ContactId
-        //                    select new {d.CONTACT_ID, d.CONTACT_NAME, d.RAIL_ROAD, d.ADDRESS_1, d.ADDRESS_2, d.CITY, d.ZIP_CODE, d.STATE,
-        //                    d.CELL_NUMBER, d.WORK_NUMBER }).ToList();
+            using (Entities _context = new Entities())
+            {
+                long ContactId = long.Parse(e.ExtraParams["ContactId"]);
+                var data = (from d in _context.CROSSING_CONTACTS
+                            where d.CONTACT_ID == ContactId
+                            select new
+                            { d.CONTACT_NAME, d.RAIL_ROAD, d.ADDRESS_1, d.ADDRESS_2, d.CITY, d.STATE, d.ZIP_CODE, d.CELL_NUMBER, d.WORK_NUMBER,
+                          }).SingleOrDefault();
+                uxContactManagerName.SetValue(data.CONTACT_NAME);
+                uxContactRR.SetValue(data.RAIL_ROAD);
+                uxContactAddress1.SetValue(data.ADDRESS_1);
+                uxContactAddress2.SetValue(data.ADDRESS_2);
+                uxContactCity.SetValue(data.CITY);
+                uxContactState.SetValue(data.STATE);
+                uxContactZip.SetValue(data.ZIP_CODE);
+                uxContactCell.SetValue(data.CELL_NUMBER);
+                uxContactOffice.SetValue(data.WORK_NUMBER);
 
-        //        uxCurrentContactStore.DataSource = data;
-        //    }
-        //}
+            }
+        }
         protected void deAddContact(object sender, DirectEventArgs e)
         {
             CROSSING_CONTACTS data;
-
+          
             //do type conversions
             string ContactName = uxAddNewManagerName.Value.ToString();
             string RailRoad = uxAddNewRRTextField.Value.ToString();
@@ -48,7 +73,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string State = uxAddNewContactStateTextField.Value.ToString();
             string Cell = uxAddNewContactCell.Value.ToString();
             string Office = uxAddNewContactOffice.Value.ToString();
-      
+          
 
             //Add to Db
             using (Entities _context = new Entities())
