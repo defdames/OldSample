@@ -240,6 +240,12 @@
 												<ext:Parameter Name="Type" Value="EmployeeAdd" />
 											</ExtraParams>
 										</SelectionChange>
+										<SelectionChange OnEvent="deCheckExistingPerDiem">
+											<ExtraParams>
+												<ext:Parameter Name="PersonId" Value="#{uxAddEmployeeEmpGrid}.getSelectionModel().getSelection()[0].data.PERSON_ID" Mode="Raw" />
+												<ext:Parameter Name="Form" Value="Add" />
+											</ExtraParams>
+										</SelectionChange>
 									</DirectEvents>         
 									<Plugins>
 										<ext:FilterHeader runat="server" ID="uxAddEmployeeEmpFilter" Remote="true" />
@@ -503,6 +509,12 @@
 												<ext:Parameter Name="PersonId" Value="#{uxEditEmployeeEmpGrid}.getSelectionModel().getSelection()[0].data.PERSON_ID" Mode="Raw" />
 												<ext:Parameter Name="Name" Value="#{uxEditEmployeeEmpGrid}.getSelectionModel().getSelection()[0].data.EMPLOYEE_NAME" Mode="Raw" />
 												<ext:Parameter Name="Type" Value="EmployeeEdit" />
+											</ExtraParams>
+										</SelectionChange>
+										<SelectionChange OnEvent="deCheckExistingPerDiem">
+											<ExtraParams>
+												<ext:Parameter Name="PersonId" Value="#{uxEditEmployeeEmpGrid}.getSelectionModel().getSelection()[0].data.PERSON_ID" Mode="Raw" />
+												<ext:Parameter Name="Form" Value="Edit" />
 											</ExtraParams>
 										</SelectionChange>
 									</DirectEvents>         

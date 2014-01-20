@@ -437,11 +437,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 data.DRIVE_TIME = null;
             }
-            
+
+            try
+            {
+                data.COMMENTS = uxEditEmployeeComments.Value.ToString();
+            }
+            catch (NullReferenceException)
+            {
+                data.COMMENTS = null;
+            }
             data.TIME_IN = TimeIn;
             data.TIME_OUT = TimeOut;
             data.PER_DIEM = PerDiem;
-            data.COMMENTS = uxEditEmployeeComments.Value.ToString();
             data.MODIFIED_BY = User.Identity.Name;
             data.MODIFY_DATE = DateTime.Now;
 
@@ -450,6 +457,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             uxCurrentEmployeeStore.Reload();
             uxEditEmployeeWindow.Hide();
+            X.Js.Call("parent.App.uxManageGridStore.reload()");
             Notification.Show(new NotificationConfig()
             {
                 Title = "Success",
@@ -463,5 +471,49 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             });
         }
 
+        /// <summary>
+        /// Checks for a project with an existing per diem on the current date
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void deCheckExistingPerDiem(object sender, DirectEventArgs e)
+        {
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            long PersonId = long.Parse(e.ExtraParams["PersonId"]);
+
+            //Get the date from this header record
+            using (Entities _context = new Entities())
+            {
+                var HeaderDate = (from d in _context.DAILY_ACTIVITY_HEADER
+                                       where d.HEADER_ID == HeaderId
+                                       select d.DA_DATE).Single();
+                
+                //Get all headerIds on this date for this person
+                var HeaderList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                  where d.PERSON_ID == PersonId && d.DAILY_ACTIVITY_HEADER.DA_DATE == HeaderDate
+                                  select d.PER_DIEM).ToList();
+                bool Disable = false;
+
+                foreach (var Header in HeaderList)
+                {
+                    if (Header == "Y")
+                    {
+                        Disable = true;
+                    }
+                }
+
+                if (Disable)
+                {
+                    if (e.ExtraParams["Form"] == "Add")
+                    {
+                        uxAddEmployeePerDiem.Disabled = true;
+                    }
+                    else
+                    {
+                        uxEditEmployeePerDiem.Disabled = true;
+                    }
+                }
+            }
+        }
     }
 }
