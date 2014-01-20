@@ -324,7 +324,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             deStoreFooter(sender, e);
 
             List<EmployeeData> HoursOver14 = ValidationChecks.checkEmployeeTime("Hours over 14");
-            List<long> OutsideOfBusinessUnit = ValidationChecks.EquipmentBusinessUnitCheck();
+            List<long> BusinessUnitEquipment = ValidationChecks.EquipmentBusinessUnitCheck();
+            List<long> BusinessUnitEmployees = ValidationChecks.EmployeeBusinessUnitCheck();
             bool HasWarnings = false;
             string MessageBoxMessage = string.Empty;
             if (HoursOver14.Count > 0)
@@ -340,11 +341,20 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
             }
 
-            if (OutsideOfBusinessUnit.Count > 0)
+            if (BusinessUnitEquipment.Count > 0)
             {
-                if (OutsideOfBusinessUnit.Exists(x => x == HeaderId))
+                if (BusinessUnitEquipment.Exists(x => x == HeaderId))
                 {
                     MessageBoxMessage += "This activity contains Equipment outside of the project's business unit. <br />";
+                    HasWarnings = true;
+                }
+            }
+
+            if (BusinessUnitEmployees.Count > 0)
+            {
+                if (BusinessUnitEmployees.Exists(x => x == HeaderId))
+                {
+                    MessageBoxMessage += "This activity contans Employees outside of the project's business unit. <br />";
                     HasWarnings = true;
                 }
             }

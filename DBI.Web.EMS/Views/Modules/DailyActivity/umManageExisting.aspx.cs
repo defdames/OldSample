@@ -113,6 +113,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 int count;
                 uxManageGridStore.DataSource = GenericData.EnumerableFilterHeader<HeaderData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                e.Total = count;
             }
         }
 
@@ -168,7 +169,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxSubmitActivityWindow.ClearContent();
             long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
             List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime("Hours per day");
-            List<EmployeeData> DuplicatePerDiems = ValidationChecks.checkPerDiem(HeaderId);
+            EmployeeData DuplicatePerDiems = ValidationChecks.checkPerDiem(HeaderId);
             List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
 
             bool BadHeader = false;
@@ -176,20 +177,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 if (HoursOver24.Exists(emp => emp.HEADER_ID == HeaderId)){
                     EmployeeData HeaderData = HoursOver24.Find(emp => emp.HEADER_ID == HeaderId);
-                    uxSubmitActivityWindow.Html += string.Format("<span color='#ff0000'>{0} has over 24 hours logged on {1:MM-dd-yy}.  Please fix.</span><br />", HeaderData.EMPLOYEE_NAME.ToString(), HeaderData.DA_DATE.ToString());
+                    //uxSubmitActivityWindow.Html += string.Format("<span color='#ff0000'>{0} has over 24 hours logged on {1:MM-dd-yy}.  Please fix.</span><br />", HeaderData.EMPLOYEE_NAME.ToString(), HeaderData.DA_DATE.ToString());
                     BadHeader = true;
                 }
                 
                 
             }
 
-            if (DuplicatePerDiems.Count > 0)
+            if (DuplicatePerDiems != null)
             {
-                foreach (EmployeeData DuplicatePerDiem in DuplicatePerDiems)
-                {
-                    uxSubmitActivityWindow.Html += string.Format("<span>{0} has duplicate per diem entries on {1:MM-dd-yy}.  Please fix.</span><br />", DuplicatePerDiem.EMPLOYEE_NAME, DuplicatePerDiem.DA_DATE);
+                    //uxSubmitActivityWindow.Html += string.Format("<span>{0} has duplicate per diem entries on {1:MM-dd-yy}.  Please fix.</span><br />", DuplicatePerDiem.EMPLOYEE_NAME, DuplicatePerDiem.DA_DATE);
+                    uxSubmitActivityWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&PersonId={1}", DuplicatePerDiems.HEADER_ID, DuplicatePerDiems.PERSON_ID));
                     BadHeader = true;
-                }
+                
             }
             if (EmployeeOverLap.Count > 0)
             {
@@ -843,14 +843,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         }
 
         [DirectMethod]
-        public void dmLoadPerDiemPicker(string HeaderList)
+        public void dmRefreshShowSubmit(string HeaderId)
         {
-            uxChoosePerDiemWindow.Loader.Url = string.Format("umChoosePerDiem.aspx?HeaderList={0}", HeaderList);
-            uxChoosePerDiemWindow.LoadContent();
-            uxChoosePerDiemWindow.Show();
-            uxSubmitActivityWindow.Hide();
+            uxSubmitActivityWindow.ClearContent();
+            uxSubmitActivityWindow.LoadContent(string.Format("umSubmitActivity.aspx?HeaderId={0}", HeaderId));
         }
-
         /// <summary>
         /// Load create activity form and display the window.
         /// </summary>

@@ -9,31 +9,35 @@
 <body>
     <form id="form1" runat="server">
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
-        <ext:FormPanel runat="server" ID="uxChoosePerDiemFormPanel" Layout="FormLayout">
+        <ext:Viewport runat="server" Layout="FitLayout">
             <Items>
-                <ext:ComboBox runat="server" ID="uxChoosePerDiemHeaderId" DisplayField="LONG_NAME" ValueField="HEADER_ID" FieldLabel="Choose Project for Per Diem">
-                    <Store>
-                        <ext:Store runat="server" ID="uxChoosePerDiemHeaderIdStore">
-                            <Model>
-                                <ext:Model runat="server">
-                                    <Fields>
-                                        <ext:ModelField Name="HEADER_ID" />
-                                        <ext:ModelField Name="LONG_NAME" />
-                                    </Fields>
-                                </ext:Model>
-                            </Model>
-                        </ext:Store>
-                    </Store>
-                </ext:ComboBox>
+                <ext:FormPanel runat="server" ID="uxChoosePerDiemFormPanel" Layout="FormLayout">
+                    <Items>
+                        <ext:ComboBox runat="server" ID="uxChoosePerDiemHeaderId" DisplayField="LONG_NAME" ValueField="HEADER_ID" FieldLabel="Choose Project for Per Diem">
+                            <Store>
+                                <ext:Store runat="server" ID="uxChoosePerDiemHeaderIdStore">
+                                    <Model>
+                                        <ext:Model runat="server">
+                                            <Fields>
+                                                <ext:ModelField Name="HEADER_ID" />
+                                                <ext:ModelField Name="LONG_NAME" />
+                                            </Fields>
+                                        </ext:Model>
+                                    </Model>
+                                </ext:Store>
+                            </Store>
+                        </ext:ComboBox>
+                    </Items>
+                    <Buttons>
+                        <ext:Button runat="server" Id="uxChoosePerDiemSubmitButton" Text="Submit">
+                            <DirectEvents>
+                                <Click OnEvent="deUpdatePerDiem" />
+                            </DirectEvents>
+                        </ext:Button>
+                    </Buttons>
+                </ext:FormPanel>
             </Items>
-            <Buttons>
-                <ext:Button runat="server" Id="uxChoosePerDiemSubmitButton" Text="Submit">
-                    <DirectEvents>
-                        <Click OnEvent="deUpdatePerDiem" />
-                    </DirectEvents>
-                </ext:Button>
-            </Buttons>
-        </ext:FormPanel>
+        </ext:Viewport>
     </form>
 </body>
 </html>

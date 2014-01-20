@@ -211,7 +211,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 return OffendingHeaders;
             }
         }
-        public static List<EmployeeData> checkPerDiem(long HeaderId)
+
+        public static EmployeeData checkPerDiem(long HeaderId)
         {
             using (Entities _context = new Entities())
             {
@@ -221,26 +222,28 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                     where d.HEADER_ID == HeaderId && d.PER_DIEM == "Y"
                                     select new { d.PERSON_ID, d.DAILY_ACTIVITY_HEADER.DA_DATE, e.EMPLOYEE_NAME }).ToList();
 
-                List<EmployeeData> BadHeaders = new List<EmployeeData>();
+                EmployeeData BadHeaders = null;
                 //Check for Additional active PerDiems on that day
                 foreach (var Employee in EmployeeList)
                 {
-                    var HeaderList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                    List<HeaderDetails> HeaderList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                       join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
                                       join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
-                                      join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
-                                      where h.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID
-                                      select d.HEADER_ID).ToList();
+                                      where h.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID && d.PER_DIEM == "Y"
+                                      select new HeaderDetails { HEADER_ID = d.HEADER_ID, LONG_NAME = p.LONG_NAME, PERSON_ID = d.PERSON_ID }).ToList();
 
                     if (HeaderList.Count > 1)
                     {
-                        BadHeaders.Add(new EmployeeData
+                        HeaderDetails ThisHeader = HeaderList.Find(h => h.HEADER_ID == HeaderId);
+                        BadHeaders = new EmployeeData
                         {
                             HEADER_ID = HeaderId,
                             EMPLOYEE_NAME = Employee.EMPLOYEE_NAME,
-                            DA_DATE = Employee.DA_DATE
-                        });
-                        
+                            LONG_NAME = ThisHeader.LONG_NAME,
+                            DA_DATE = Employee.DA_DATE,
+                            PERSON_ID = ThisHeader.PERSON_ID
+                        };
+
                     }
 
                 }
@@ -252,8 +255,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
     public class EmployeeData
     {
         public long HEADER_ID { get; set; }
+        public string LONG_NAME { get; set; }
         public string EMPLOYEE_NAME {get; set;}
         public DateTime? DA_DATE {get; set;}
+        public long PERSON_ID { get; set; }
     }
 
     public class HeaderData

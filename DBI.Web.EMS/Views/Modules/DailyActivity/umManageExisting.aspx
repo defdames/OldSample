@@ -69,7 +69,7 @@
 						</ext:GridView>
 					</View>
 					<BottomBar>
-						<ext:PagingToolbar runat="server" />
+						<ext:PagingToolbar ID="uxManageGridPaging" runat="server" />
 					</BottomBar>
 					<Plugins>
 						<ext:FilterHeader runat="server" Remote="true" DateFormat="MM-dd-yyyy" />
@@ -260,7 +260,6 @@
 					Title="Submit Activity"
 					Hidden="true"
 					Width="650"
-					Shadow="true"
 					Y="50">
 					<Loader runat="server"
 						ID="uxSubmitActivityLoader"
@@ -277,18 +276,6 @@
 					<Loader runat="server"
 						ID="uxCreateActivityLoader"
 						Url="umDailyActivity.aspx"
-						Mode="Frame"
-						AutoLoad="false" />
-				</ext:Window>
-				<ext:Window runat="server"
-					ID="uxChoosePerDiemWindow"
-					Title="Choose Per Diem"
-					Hidden="true"
-					Width="650"
-					Shadow="true"
-					Y="50">
-					<Loader runat="server"
-						ID="uxChoosePerDiemLoader"
 						Mode="Frame"
 						AutoLoad="false" />
 				</ext:Window>
