@@ -16,7 +16,6 @@ namespace DBI.Data
     {
         public CROSSING()
         {
-            this.CROSSING_CONTACTS = new HashSet<CROSSING_CONTACTS>();
             this.CROSSING_DATA_ENTRY = new HashSet<CROSSING_DATA_ENTRY>();
         }
     
@@ -70,7 +69,6 @@ namespace DBI.Data
         public string MTM_OFFICE_NUMBER { get; set; }
         public string CROSSING_NUMBER { get; set; }
     
-        public virtual ICollection<CROSSING_CONTACTS> CROSSING_CONTACTS { get; set; }
         public virtual ICollection<CROSSING_DATA_ENTRY> CROSSING_DATA_ENTRY { get; set; }
     }
 }
