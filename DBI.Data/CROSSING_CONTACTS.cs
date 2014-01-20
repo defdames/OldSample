@@ -15,7 +15,7 @@ namespace DBI.Data
     public partial class CROSSING_CONTACTS
     {
         public long CONTACT_ID { get; set; }
-        public long CROSSING_ID { get; set; }
+        public Nullable<long> CROSSING_ID { get; set; }
         public string CONTACT_NAME { get; set; }
         public string ADDRESS_1 { get; set; }
         public string ADDRESS_2 { get; set; }
@@ -29,7 +29,5 @@ namespace DBI.Data
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
-    
-        public virtual CROSSING CROSSING { get; set; }
     }
 }

@@ -20,7 +20,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             if (!validateComponentSecurity("SYS.DailyActivity.View"))
             {
                 X.Redirect("~/Views/uxDefault.aspx");
+               
             }
+            employeeHoursCheck();
         }
 
         /// <summary>
@@ -744,8 +746,49 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxCreateActivityWindow.LoadContent();
             uxCreateActivityWindow.Show();
         }
-        
 
-        
+        /// <summary>
+        /// Checks data and flags if needed based on below checks
+        /// </summary>
+        protected void checkData()
+        {
+
+        }
+
+        /// <summary>
+        /// Checks for more than 24 hours in a day by an employee
+        /// </summary>
+        /// <param name="HeaderId"></param>
+        /// <returns></returns>
+        protected void employeeHoursCheck()
+        {
+            using (Entities _context = new Entities())
+            {
+                var TotalHoursList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                     group d by new { d.PERSON_ID, d.DAILY_ACTIVITY_HEADER.DA_DATE, TotalHours = d.TIME_OUT.Value - d.TIME_IN.Value } into g
+                                     select new { g.Key.PERSON_ID, g.Key.DA_DATE }).ToList();
+
+                int i = 0;
+                foreach (var TotalHour in TotalHoursList)
+                {
+                    i++;
+                }
+            }
+        }
+
+        //protected bool employeeTimeOverlapCheck(long HeaderId)
+        //{
+
+        //}
+
+        //protected bool employeeBusinessUnitCheck(long HeaderId)
+        //{
+
+        //}
+
+        //protected bool equipmentBusinessUnitCheck(long HeaderId)
+        //{
+
+        //}
     }
 }
