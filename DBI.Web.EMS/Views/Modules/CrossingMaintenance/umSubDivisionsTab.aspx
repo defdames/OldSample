@@ -10,6 +10,64 @@
     <form id="form1" runat="server">
         <ext:ResourceManager ID="ResourceManager3" runat="server" />
         <div>
+
+             <ext:GridPanel ID="uxSubDivMainGrid" Title="Sub-Divisions" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true">
+                <SelectionModel>
+                    <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
+                </SelectionModel>
+                <Store>
+                    <ext:Store runat="server"
+                        ID="uxCurrentSubDivStore">
+                       <%-- OnReadData="deSubDivGridData"--%>
+                       <%-- PageSize="10"
+                        AutoDataBind="true" WarningOnDirty="false">--%>
+                        <Model>
+                            <ext:Model ID="Model2" runat="server">
+                                <Fields>
+                                    <ext:ModelField Name="" />
+                                    <ext:ModelField Name="" Type="String" />
+                                    <ext:ModelField Name="" />
+                                </Fields>
+                            </ext:Model>
+                        </Model>
+                        <Proxy>
+                            <ext:PageProxy />
+                        </Proxy>
+                    </ext:Store>
+                </Store>
+                <ColumnModel>
+                    <Columns>
+
+                        <ext:Column ID="uxMainCrossingNum" runat="server" DataIndex="" Text="Sub-Divisions" Flex="1" />
+                        <ext:Column ID="uxSubConGrid" runat="server" DataIndex="" Text="State" Flex="1" />
+
+                    </Columns>
+                </ColumnModel>
+                <Plugins>
+                    <ext:FilterHeader ID="FilterHeader1" runat="server" />
+                </Plugins>
+               <%-- <DirectEvents>
+                    <Select OnEvent="GetFormData">
+                        <ExtraParams>
+                            <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                        </ExtraParams>
+                    </Select>
+                </DirectEvents>
+                <DirectEvents>
+                    <Select OnEvent="deEditCrossingForm">
+                        <ExtraParams>
+                            <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                        </ExtraParams>
+                    </Select>
+                </DirectEvents>--%>
+                <BottomBar>
+                    <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True">
+                    </ext:PagingToolbar>
+                </BottomBar>
+
+            </ext:GridPanel>
+
+
             <ext:FormPanel ID="FormPanel1" runat="server" Layout="FormLayout">
                 <Items>
                     <ext:Toolbar ID="Toolbar4" runat="server">

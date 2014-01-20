@@ -15,59 +15,14 @@
             <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
                 <Items>
 
-                    <ext:GridPanel ID="uxCrossingMainGrid" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true">
-                        <Store>
-                            <ext:Store runat="server"
-                                ID="Store1"
-                                AutoDataBind="true" WarningOnDirty="false">
-                                <Model>
-                                    <ext:Model ID="Model2" runat="server">
-                                        <Fields>
-                                            <ext:ModelField Name="" />
-                                            <ext:ModelField Name="" />
-                                            <ext:ModelField Name="" />
-                                        </Fields>
-                                    </ext:Model>
-                                </Model>
-
-                            </ext:Store>
-                        </Store>
-                        <ColumnModel>
-                            <Columns>
-                                
-                                <ext:Column ID="uxMainCrossingNum" runat="server" DataIndex="" Text="Crossing #" Flex="1" />
-                                <ext:Column ID="uxProjectName" runat="server" DataIndex="" Text="Project Name" Flex="1" />
-                                <ext:Column ID="uxProjectNum" runat="server" DataIndex="" Text="Project #" Flex="1" />
-                                 <ext:Column ID="uxCrossingManager" runat="server" DataIndex="" Text="Manager" Flex="1" />
-
-                            </Columns>
-                        </ColumnModel>
-                     <%--   <TopBar>
-                                <ext:Toolbar ID="Toolbar3" runat="server">
-                                <Items>
-                                    <ext:Button ID="uxAddProjectButton" runat="server" Text="Add Project" Icon="ApplicationAdd" />
-                                    <ext:Button ID="uxEditProjectButton" runat="server" Text="Edit Project" Icon="ApplicationEdit" />
-                                </Items>
-                            </ext:Toolbar>
-                        </TopBar>--%>
-                        <Plugins>
-                            <ext:FilterHeader ID="FilterHeader1" runat="server" />
-                        </Plugins>
-                        <BottomBar>
-                            <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True">
-                            </ext:PagingToolbar>
-                        </BottomBar>
-
-                    </ext:GridPanel>
-
                     <ext:TabPanel ID="uxCrossingTab" runat="server" Region="Center">
                         <Items>
-                             <ext:Panel runat="server"
+                            <ext:Panel runat="server"
                                 Title="Crossing Security"
-                                ID="uxCrossingSecurityTab"
+                                ID="uxCrossingSecurity"
                                 Disabled="false">
                                 <Loader runat="server"
-                                    ID="Loader5" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umCrossingSecurityTab.aspx">
+                                    ID="Loader5" Mode="Frame" AutoLoad="false" ReloadOnEvent="false" Url="umCrossingSecurity.aspx">
                                     <LoadMask ShowMask="true" />
                                 </Loader>
 
@@ -78,7 +33,7 @@
                                 ID="uxCrossingInfoTab"
                                 Disabled="false">
                                 <Loader runat="server"
-                                    ID="uxHeaderLoader" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umCrossingInfoTab.aspx">
+                                    ID="uxHeaderLoader" Mode="Frame" AutoLoad="true" ReloadOnEvent="false" Url="umCrossingInfoTab.aspx">
                                     <LoadMask ShowMask="true" />
                                 </Loader>
 
@@ -105,10 +60,10 @@
                             </ext:Panel>
                             <ext:Panel runat="server"
                                 Title="Service Units"
-                                ID="uxSerivceUnitsTab"
+                                ID="uxServiceUnitsTab"
                                 Disabled="false">
                                 <Loader runat="server"
-                                    ID="Loader3" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umServiceUnitsTab.aspx">
+                                    ID="Loader3" Mode="Frame" AutoLoad="false" ReloadOnEvent="false" Url="umServiceUnitsTab.aspx">
                                     <LoadMask ShowMask="true" />
                                 </Loader>
 
@@ -118,7 +73,7 @@
                                 ID="uxDataEntryTab"
                                 Disabled="false">
                                 <Loader runat="server"
-                                    ID="Loader4" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umDataEntryTab.aspx">
+                                    ID="Loader4" Mode="Frame" AutoLoad="false" ReloadOnEvent="false" Url="umDataEntryTab.aspx">
                                     <LoadMask ShowMask="true" />
                                 </Loader>
 
