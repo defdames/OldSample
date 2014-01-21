@@ -23,11 +23,16 @@ namespace DBI.Data
         public string POLE_FROM { get; set; }
         public string POLE_TO { get; set; }
         public Nullable<long> ACRES_MILE { get; set; }
-        public Nullable<decimal> GALLONS { get; set; }
+        public Nullable<decimal> QUANTITY { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
+        public string STATION { get; set; }
+        public string COMMENTS { get; set; }
+        public string EXPENDITURE_TYPE { get; set; }
+        public Nullable<decimal> BILL_RATE { get; set; }
+        public string UNIT_OF_MEASURE { get; set; }
     
         public virtual DAILY_ACTIVITY_HEADER DAILY_ACTIVITY_HEADER { get; set; }
     }

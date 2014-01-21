@@ -236,6 +236,7 @@
       "EXPENDITURE_TYPE_V"."PROJECT_ID" AS "PROJECT_ID", 
       "EXPENDITURE_TYPE_V"."EXPENDITURE_TYPE" AS "EXPENDITURE_TYPE", 
       "EXPENDITURE_TYPE_V"."BILL_RATE" AS "BILL_RATE", 
+      "EXPENDITURE_TYPE_V"."UNIT_OF_MEASURE" AS "UNIT_OF_MEASURE", 
       "EXPENDITURE_TYPE_V"."RATE_CURRENCY_CODE" AS "RATE_CURRENCY_CODE", 
       "EXPENDITURE_TYPE_V"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE"
       FROM "XXEMS"."EXPENDITURE_TYPE_V" "EXPENDITURE_TYPE_V"</DefiningQuery>
@@ -771,11 +772,16 @@
           <Property Name="POLE_FROM" Type="varchar2" MaxLength="200" />
           <Property Name="POLE_TO" Type="varchar2" MaxLength="200" />
           <Property Name="ACRES_MILE" Type="number" Precision="15" />
-          <Property Name="GALLONS" Type="number" Precision="15" Scale="4" />
+          <Property Name="QUANTITY" Type="number" Precision="15" Scale="4" />
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="STATION" Type="varchar2" MaxLength="250" />
+          <Property Name="COMMENTS" Type="varchar2" MaxLength="500" />
+          <Property Name="EXPENDITURE_TYPE" Type="varchar2" MaxLength="30" />
+          <Property Name="BILL_RATE" Type="number" Precision="22" Scale="5" />
+          <Property Name="UNIT_OF_MEASURE" Type="varchar2" MaxLength="30" />
         </EntityType>
         <EntityType Name="DAILY_ACTIVITY_STATUS">
           <Key>
@@ -1096,11 +1102,13 @@
         <EntityType Name="EXPENDITURE_TYPE_V">
           <Key>
             <PropertyRef Name="EXPENDITURE_TYPE" />
+            <PropertyRef Name="UNIT_OF_MEASURE" />
             <PropertyRef Name="LAST_UPDATE_DATE" />
           </Key>
           <Property Name="PROJECT_ID" Type="number" Precision="15" />
           <Property Name="EXPENDITURE_TYPE" Type="varchar2" Nullable="false" MaxLength="30" />
           <Property Name="BILL_RATE" Type="number" Precision="22" Scale="5" />
+          <Property Name="UNIT_OF_MEASURE" Type="varchar2" Nullable="false" MaxLength="30" />
           <Property Name="RATE_CURRENCY_CODE" Type="varchar2" MaxLength="15" />
           <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" />
         </EntityType>
@@ -1579,11 +1587,6 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_INVENTORY" EntitySet="DAILY_ACTIVITY_INVENTORY" />
           </AssociationSet>
-          <EntitySet Name="DAILY_ACTIVITY_PRODUCTION" EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" />
-          <AssociationSet Name="FK_PRODUCTION_HEADER_ID" Association="OracleModel.FK_PRODUCTION_HEADER_ID">
-            <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
-            <End Role="DAILY_ACTIVITY_PRODUCTION" EntitySet="DAILY_ACTIVITY_PRODUCTION" />
-          </AssociationSet>
           <EntitySet Name="DAILY_ACTIVITY_EMPLOYEE" EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" />
           <AssociationSet Name="FK_EMPLOYEE_HEADER_ID" Association="OracleModel.FK_EMPLOYEE_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
@@ -1611,6 +1614,11 @@
           </AssociationSet>
           <EntitySet Name="CROSSING_CONTACTS" EntityType="OracleModel.CROSSING_CONTACTS" />
           <EntitySet Name="CROSSING_SUB_DIVISION" EntityType="OracleModel.CROSSING_SUB_DIVISION" />
+          <EntitySet Name="DAILY_ACTIVITY_PRODUCTION" EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" />
+          <AssociationSet Name="FK_PRODUCTION_HEADER_ID" Association="OracleModel.FK_PRODUCTION_HEADER_ID">
+            <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
+            <End Role="DAILY_ACTIVITY_PRODUCTION" EntitySet="DAILY_ACTIVITY_PRODUCTION" />
+          </AssociationSet>
           <EntitySet Name="EXPENDITURE_TYPE_V" EntityType="OracleModel.EXPENDITURE_TYPE_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
@@ -1885,9 +1893,9 @@
           <NavigationProperty Name="DAILY_ACTIVITY_WEATHER" Relationship="OracleModel.FK_WEATHER_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_WEATHER" />
           <NavigationProperty Name="DAILY_ACTIVITY_CHEMICAL_MIX" Relationship="OracleModel.FK_CHEMICAL_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_CHEMICAL_MIX" />
           <NavigationProperty Name="DAILY_ACTIVITY_INVENTORY" Relationship="OracleModel.FK_INVENTORY_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_INVENTORY" />
-          <NavigationProperty Name="DAILY_ACTIVITY_PRODUCTION" Relationship="OracleModel.FK_PRODUCTION_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_PRODUCTION" />
           <NavigationProperty Name="DAILY_ACTIVITY_EMPLOYEE" Relationship="OracleModel.FK_EMPLOYEE_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_EMPLOYEE" />
           <NavigationProperty Name="DAILY_ACTIVITY_FOOTER" Relationship="OracleModel.FK_FOOTER_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_FOOTER" />
+          <NavigationProperty Name="DAILY_ACTIVITY_PRODUCTION" Relationship="OracleModel.FK_PRODUCTION_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_PRODUCTION" />
         </EntityType>
         <Association Name="FK_HEADER_ID">
           <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
@@ -1998,38 +2006,6 @@
               <PropertyRef Name="HEADER_ID" />
             </Principal>
             <Dependent Role="DAILY_ACTIVITY_INVENTORY">
-              <PropertyRef Name="HEADER_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="DAILY_ACTIVITY_PRODUCTION">
-          <Key>
-            <PropertyRef Name="PRODUCTION_ID" />
-          </Key>
-          <Property Type="Int64" Name="PRODUCTION_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
-          <Property Type="DateTime" Name="TIME_IN" />
-          <Property Type="DateTime" Name="TIME_OUT" />
-          <Property Type="Int64" Name="TASK_ID" />
-          <Property Type="String" Name="WORK_AREA" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="POLE_FROM" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="POLE_TO" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="ACRES_MILE" />
-          <Property Type="Decimal" Name="GALLONS" Precision="15" Scale="4" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="DAILY_ACTIVITY_HEADER" Relationship="OracleModel.FK_PRODUCTION_HEADER_ID" FromRole="DAILY_ACTIVITY_PRODUCTION" ToRole="DAILY_ACTIVITY_HEADER" />
-        </EntityType>
-        <Association Name="FK_PRODUCTION_HEADER_ID">
-          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
-          <End Type="OracleModel.DAILY_ACTIVITY_PRODUCTION" Role="DAILY_ACTIVITY_PRODUCTION" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DAILY_ACTIVITY_HEADER">
-              <PropertyRef Name="HEADER_ID" />
-            </Principal>
-            <Dependent Role="DAILY_ACTIVITY_PRODUCTION">
               <PropertyRef Name="HEADER_ID" />
             </Dependent>
           </ReferentialConstraint>
@@ -2737,14 +2713,53 @@
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="SUB_DIVISION_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="DAILY_ACTIVITY_PRODUCTION">
+          <Key>
+            <PropertyRef Name="PRODUCTION_ID" />
+          </Key>
+          <Property Type="Int64" Name="PRODUCTION_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
+          <Property Type="DateTime" Name="TIME_IN" />
+          <Property Type="DateTime" Name="TIME_OUT" />
+          <Property Type="Int64" Name="TASK_ID" />
+          <Property Type="String" Name="WORK_AREA" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="POLE_FROM" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="POLE_TO" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="ACRES_MILE" />
+          <Property Type="Decimal" Name="QUANTITY" Precision="15" Scale="4" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STATION" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="COMMENTS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EXPENDITURE_TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="BILL_RATE" Precision="22" Scale="5" />
+          <Property Type="String" Name="UNIT_OF_MEASURE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DAILY_ACTIVITY_HEADER" Relationship="OracleModel.FK_PRODUCTION_HEADER_ID" FromRole="DAILY_ACTIVITY_PRODUCTION" ToRole="DAILY_ACTIVITY_HEADER" />
+        </EntityType>
+        <Association Name="FK_PRODUCTION_HEADER_ID">
+          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
+          <End Type="OracleModel.DAILY_ACTIVITY_PRODUCTION" Role="DAILY_ACTIVITY_PRODUCTION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_HEADER">
+              <PropertyRef Name="HEADER_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_PRODUCTION">
+              <PropertyRef Name="HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityType Name="EXPENDITURE_TYPE_V">
           <Key>
             <PropertyRef Name="EXPENDITURE_TYPE" />
+            <PropertyRef Name="UNIT_OF_MEASURE" />
             <PropertyRef Name="LAST_UPDATE_DATE" />
           </Key>
           <Property Type="Int64" Name="PROJECT_ID" />
           <Property Type="String" Name="EXPENDITURE_TYPE" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Type="Decimal" Name="BILL_RATE" Precision="22" Scale="5" />
+          <Property Type="String" Name="UNIT_OF_MEASURE" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="RATE_CURRENCY_CODE" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
         </EntityType>
@@ -2956,26 +2971,6 @@
                 <ScalarProperty Name="SUB_INVENTORY_SECONDARY_NAME" ColumnName="SUB_INVENTORY_SECONDARY_NAME" />
                 <ScalarProperty Name="CHEMICAL_MIX_ID" ColumnName="CHEMICAL_MIX_ID" />
                 <ScalarProperty Name="INVENTORY_ID" ColumnName="INVENTORY_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DAILY_ACTIVITY_PRODUCTION">
-            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_PRODUCTION">
-              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_PRODUCTION">
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="GALLONS" ColumnName="GALLONS" />
-                <ScalarProperty Name="ACRES_MILE" ColumnName="ACRES_MILE" />
-                <ScalarProperty Name="POLE_TO" ColumnName="POLE_TO" />
-                <ScalarProperty Name="POLE_FROM" ColumnName="POLE_FROM" />
-                <ScalarProperty Name="WORK_AREA" ColumnName="WORK_AREA" />
-                <ScalarProperty Name="TASK_ID" ColumnName="TASK_ID" />
-                <ScalarProperty Name="TIME_OUT" ColumnName="TIME_OUT" />
-                <ScalarProperty Name="TIME_IN" ColumnName="TIME_IN" />
-                <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
-                <ScalarProperty Name="PRODUCTION_ID" ColumnName="PRODUCTION_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3572,11 +3567,37 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="DAILY_ACTIVITY_PRODUCTION">
+            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_PRODUCTION">
+              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_PRODUCTION">
+                <ScalarProperty Name="UNIT_OF_MEASURE" ColumnName="UNIT_OF_MEASURE" />
+                <ScalarProperty Name="BILL_RATE" ColumnName="BILL_RATE" />
+                <ScalarProperty Name="EXPENDITURE_TYPE" ColumnName="EXPENDITURE_TYPE" />
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
+                <ScalarProperty Name="STATION" ColumnName="STATION" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="QUANTITY" ColumnName="QUANTITY" />
+                <ScalarProperty Name="ACRES_MILE" ColumnName="ACRES_MILE" />
+                <ScalarProperty Name="POLE_TO" ColumnName="POLE_TO" />
+                <ScalarProperty Name="POLE_FROM" ColumnName="POLE_FROM" />
+                <ScalarProperty Name="WORK_AREA" ColumnName="WORK_AREA" />
+                <ScalarProperty Name="TASK_ID" ColumnName="TASK_ID" />
+                <ScalarProperty Name="TIME_OUT" ColumnName="TIME_OUT" />
+                <ScalarProperty Name="TIME_IN" ColumnName="TIME_IN" />
+                <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
+                <ScalarProperty Name="PRODUCTION_ID" ColumnName="PRODUCTION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="EXPENDITURE_TYPE_V">
             <EntityTypeMapping TypeName="OracleModel.EXPENDITURE_TYPE_V">
               <MappingFragment StoreEntitySet="EXPENDITURE_TYPE_V">
                 <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
                 <ScalarProperty Name="RATE_CURRENCY_CODE" ColumnName="RATE_CURRENCY_CODE" />
+                <ScalarProperty Name="UNIT_OF_MEASURE" ColumnName="UNIT_OF_MEASURE" />
                 <ScalarProperty Name="BILL_RATE" ColumnName="BILL_RATE" />
                 <ScalarProperty Name="EXPENDITURE_TYPE" ColumnName="EXPENDITURE_TYPE" />
                 <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
