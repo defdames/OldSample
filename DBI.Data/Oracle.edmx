@@ -231,6 +231,15 @@
       "EMPLOYEES_V"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE"
       FROM "XXEMS"."EMPLOYEES_V" "EMPLOYEES_V"</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="EXPENDITURE_TYPE_V" EntityType="OracleModel.Store.EXPENDITURE_TYPE_V" store:Type="Views" store:Schema="XXEMS" store:Name="EXPENDITURE_TYPE_V">
+            <DefiningQuery>SELECT 
+      "EXPENDITURE_TYPE_V"."PROJECT_ID" AS "PROJECT_ID", 
+      "EXPENDITURE_TYPE_V"."EXPENDITURE_TYPE" AS "EXPENDITURE_TYPE", 
+      "EXPENDITURE_TYPE_V"."BILL_RATE" AS "BILL_RATE", 
+      "EXPENDITURE_TYPE_V"."RATE_CURRENCY_CODE" AS "RATE_CURRENCY_CODE", 
+      "EXPENDITURE_TYPE_V"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE"
+      FROM "XXEMS"."EXPENDITURE_TYPE_V" "EXPENDITURE_TYPE_V"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="INVENTORY_V" EntityType="OracleModel.Store.INVENTORY_V" store:Type="Views" store:Schema="XXEMS" store:Name="INVENTORY_V">
             <DefiningQuery>SELECT 
       "INVENTORY_V"."ITEM_ID" AS "ITEM_ID", 
@@ -1082,6 +1091,20 @@
           <Property Name="LAST_UPDATE_DATE" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXEMS.EXPENDITURE_TYPE_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="EXPENDITURE_TYPE_V">
+          <Key>
+            <PropertyRef Name="EXPENDITURE_TYPE" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+          </Key>
+          <Property Name="PROJECT_ID" Type="number" Precision="15" />
+          <Property Name="EXPENDITURE_TYPE" Type="varchar2" Nullable="false" MaxLength="30" />
+          <Property Name="BILL_RATE" Type="number" Precision="22" Scale="5" />
+          <Property Name="RATE_CURRENCY_CODE" Type="varchar2" MaxLength="15" />
+          <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
       warning 6002: The table/view 'XXEMS.INVENTORY_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="INVENTORY_V">
@@ -1588,6 +1611,7 @@
           </AssociationSet>
           <EntitySet Name="CROSSING_CONTACTS" EntityType="OracleModel.CROSSING_CONTACTS" />
           <EntitySet Name="CROSSING_SUB_DIVISION" EntityType="OracleModel.CROSSING_SUB_DIVISION" />
+          <EntitySet Name="EXPENDITURE_TYPE_V" EntityType="OracleModel.EXPENDITURE_TYPE_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -2713,6 +2737,17 @@
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="SUB_DIVISION_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="EXPENDITURE_TYPE_V">
+          <Key>
+            <PropertyRef Name="EXPENDITURE_TYPE" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+          </Key>
+          <Property Type="Int64" Name="PROJECT_ID" />
+          <Property Type="String" Name="EXPENDITURE_TYPE" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="BILL_RATE" Precision="22" Scale="5" />
+          <Property Type="String" Name="RATE_CURRENCY_CODE" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3534,6 +3569,17 @@
                 <ScalarProperty Name="CITY" ColumnName="CITY" />
                 <ScalarProperty Name="STATE" ColumnName="STATE" />
                 <ScalarProperty Name="SUB_DIVISION_ID" ColumnName="SUB_DIVISION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EXPENDITURE_TYPE_V">
+            <EntityTypeMapping TypeName="OracleModel.EXPENDITURE_TYPE_V">
+              <MappingFragment StoreEntitySet="EXPENDITURE_TYPE_V">
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="RATE_CURRENCY_CODE" ColumnName="RATE_CURRENCY_CODE" />
+                <ScalarProperty Name="BILL_RATE" ColumnName="BILL_RATE" />
+                <ScalarProperty Name="EXPENDITURE_TYPE" ColumnName="EXPENDITURE_TYPE" />
+                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -43,6 +43,7 @@
         <AssociationConnector Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_CONTACTS" Width="1.5" PointX="29" PointY="1.125" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_SUB_DIVISION" Width="1.5" PointX="29" PointY="5.625" />
+        <EntityTypeShape EntityType="OracleModel.EXPENDITURE_TYPE_V" Width="1.5" PointX="13.375" PointY="0.625" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
