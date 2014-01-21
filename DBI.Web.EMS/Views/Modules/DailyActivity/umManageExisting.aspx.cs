@@ -450,23 +450,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             using (MemoryStream PdfStream = new MemoryStream(generatePDF(HeaderId).ToArray()))
             {
-
-
-                MailMessage ToSend = new MailMessage("noreply@dbiservices.com", User.Identity.Name + "@dbiservices.com")
-                {
-                    Subject = "Copy of Daily Activity Report",
-                    IsBodyHtml = true,
-                    Body = "Please find attached the Daily Activity Report you requested."
-                };
+                string Subject = "Copy of Daily Activity Report";
+                bool IsHtml = true;
+                string Message = "Please find attached the Daily Activity Report you requested.";
+                
                 PdfStream.Position = 0;
 
-                ToSend.Attachments.Add(new Attachment(PdfStream, "dailyActivityExport.pdf"));
+                Attachment MailAttachment = new Attachment(PdfStream, "dailyActivityExport.pdf");
 
-                SmtpClient MailClient = new SmtpClient("owa.dbiservices.com");
-                #if DEBUG
-                MailClient.Credentials = new System.Net.NetworkCredential("gene.lapointe@dbiservices.com", "Password");
-                #endif
-                MailClient.Send(ToSend);
+                Mailer.SendMessage(User.Identity.Name + "@dbiservices.com", Subject, Message, IsHtml, MailAttachment);
             }
         }
 
