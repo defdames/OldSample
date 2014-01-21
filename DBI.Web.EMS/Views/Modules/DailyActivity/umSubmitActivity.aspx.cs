@@ -20,7 +20,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 X.Redirect("~/Views/uxDefault.aspx");
             }
-
+            
             GetFooterData();
 
         }
@@ -323,9 +323,50 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Store Footer to DB
             deStoreFooter(sender, e);
 
-            if (AreMetersMissing(HeaderId))
+            List<EmployeeData> HoursOver14 = ValidationChecks.checkEmployeeTime("Hours over 14");
+            List<long> BusinessUnitEquipment = ValidationChecks.EquipmentBusinessUnitCheck();
+            List<long> BusinessUnitEmployees = ValidationChecks.EmployeeBusinessUnitCheck();
+            bool HasWarnings = false;
+            string MessageBoxMessage = string.Empty;
+            if (HoursOver14.Count > 0)
             {
-                X.MessageBox.Confirm("Meters Missing", "There are equipment entries without meter entries.  Continue?", new MessageBoxButtonsConfig()
+                if (HoursOver14.Exists(x => x.HEADER_ID == HeaderId))
+                {
+                    List<EmployeeData> EmployeeList = HoursOver14.FindAll(x => x.HEADER_ID == HeaderId);
+                    foreach (EmployeeData Employee in EmployeeList)
+                    {
+                        MessageBoxMessage += string.Format("{0} has 14 or more hours logged on {1:MM-dd-yy}. <br />", Employee.EMPLOYEE_NAME, Employee.DA_DATE);
+                    }
+                    HasWarnings = true;
+                }
+            }
+
+            if (BusinessUnitEquipment.Count > 0)
+            {
+                if (BusinessUnitEquipment.Exists(x => x == HeaderId))
+                {
+                    MessageBoxMessage += "This activity contains Equipment outside of the project's business unit. <br />";
+                    HasWarnings = true;
+                }
+            }
+
+            if (BusinessUnitEmployees.Count > 0)
+            {
+                if (BusinessUnitEmployees.Exists(x => x == HeaderId))
+                {
+                    MessageBoxMessage += "This activity contans Employees outside of the project's business unit. <br />";
+                    HasWarnings = true;
+                }
+            }
+            if (ValidationChecks.AreMetersMissing(HeaderId))
+            {
+                MessageBoxMessage += "There are equipment entries without meter entries. ";
+                HasWarnings = true;
+            }
+
+            if (HasWarnings)
+            {
+                X.MessageBox.Confirm("Meters Missing", MessageBoxMessage + "Continue?", new MessageBoxButtonsConfig()
                 {
                     Yes = new MessageBoxButtonConfig
                     {
@@ -379,38 +420,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 X.Js.Call("parent.App.direct.dmSubmitNotification()");
 
             }
-        }
-
-        /// <summary>
-        /// Validation check to see if equipment meter readings are missing
-        /// </summary>
-        /// <param name="HeaderId"></param>
-        /// <returns></returns>
-        protected bool AreMetersMissing(long HeaderId)
-        {
-            //Get List of equipment
-            List<DAILY_ACTIVITY_EQUIPMENT> EquipmentList;
-
-            using (Entities _context = new Entities())
-            {
-                EquipmentList = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
-                                 where d.HEADER_ID == HeaderId
-                                 select d).ToList();
-            }
-            int NumberOfMissingMeters = 0;
-            foreach (DAILY_ACTIVITY_EQUIPMENT Equipment in EquipmentList)
-            {
-                if (Equipment.ODOMETER_START == null || Equipment.ODOMETER_END == null)
-                {
-                    NumberOfMissingMeters++;
-                }
-            }
-
-            if (NumberOfMissingMeters > 0)
-            {
-                return true;
-            }
-            return false;
-        }
+        }     
+        
     }
 }

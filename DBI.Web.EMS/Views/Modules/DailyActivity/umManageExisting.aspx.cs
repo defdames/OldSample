@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Data.Entity;
+using System.Data.Objects;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -20,9 +22,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             if (!validateComponentSecurity("SYS.DailyActivity.View"))
             {
                 X.Redirect("~/Views/uxDefault.aspx");
-               
+
             }
-            employeeHoursCheck();
+            if (!X.IsAjaxRequest)
+            {
+                //employeeHoursCheck();
+            }
         }
 
         /// <summary>
@@ -32,19 +37,83 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deReadHeaderData(object sender, StoreReadDataEventArgs e)
         {
-            
+
             using (Entities _context = new Entities())
             {
-                List<object> data;
-            
+                List<object> rawData;
+
                 //Get List of all new headers
-                data = (from d in _context.DAILY_ACTIVITY_HEADER
-                            join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
-                            join s in _context.DAILY_ACTIVITY_STATUS on d.STATUS equals s.STATUS
-                            select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE }).ToList<object>();
-                
+                rawData = (from d in _context.DAILY_ACTIVITY_HEADER
+                           join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                           join s in _context.DAILY_ACTIVITY_STATUS on d.STATUS equals s.STATUS
+                           select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE }).ToList<object>();
+                List<HeaderData> data = new List<HeaderData>();
+
+                List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime("Hours per day");
+                List<EmployeeData> HoursOver14 = ValidationChecks.checkEmployeeTime("Hours over 14");
+                List<long> OverlapProjects = ValidationChecks.employeeTimeOverlapCheck();
+                List<long> BusinessUnitProjects = ValidationChecks.EquipmentBusinessUnitCheck();
+                List<long> BusinessUnitEmployees = ValidationChecks.EmployeeBusinessUnitCheck();
+
+                foreach (dynamic record in rawData)
+                {
+                    string Warning = "Green";
+
+                    foreach (EmployeeData OffendingProject in HoursOver14)
+                    {
+                        if (OffendingProject.HEADER_ID == record.HEADER_ID)
+                        {
+                            Warning = "Yellow";
+                        }
+                    }
+                    foreach (long OffendingProject in BusinessUnitProjects)
+                    {
+                        if (OffendingProject == record.HEADER_ID)
+                        {
+                            Warning = "Yellow";
+                        }
+                    }
+
+                    foreach (long OffendingProject in BusinessUnitEmployees)
+                    {
+                        if (OffendingProject == record.HEADER_ID)
+                        {
+                            Warning = "Yellow";
+                        }
+                    }
+                    foreach (EmployeeData OffendingProject in HoursOver24)
+                    {
+                        if (OffendingProject.HEADER_ID == record.HEADER_ID)
+                        {
+                            Warning = "Red";
+                        }
+                    }
+                    
+
+                    foreach (long OffendingProject in OverlapProjects)
+                    {
+                        if (OffendingProject == record.HEADER_ID)
+                        {
+                            Warning = "Red";
+                        }
+                    }
+                    
+
+                    data.Add(new HeaderData
+                    {
+                        HEADER_ID = record.HEADER_ID,
+                        PROJECT_ID = record.PROJECT_ID,
+                        DA_DATE = record.DA_DATE,
+                        SEGMENT1 = record.SEGMENT1,
+                        LONG_NAME = record.LONG_NAME,
+                        STATUS_VALUE = record.STATUS_VALUE,
+                        WARNING = Warning
+                    });
+                }
+
                 int count;
-                uxManageGridStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                uxManageGridStore.DataSource = GenericData.EnumerableFilterHeader<HeaderData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                e.Total = count;
             }
         }
 
@@ -82,34 +151,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxWeatherTab.LoadContent(weatherUrl);
             uxInventoryTab.LoadContent(invUrl);
 
-            
+
             uxApproveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
             uxPostActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
             uxInactiveActivityButton.Disabled = false;
             uxSubmitActivityButton.Disabled = false;
             uxExportToPDF.Disabled = false;
-        }
-
-        /// <summary>
-        /// Disables tabs and buttons when row is deselected
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deDeselectHeader(object sender, DirectEventArgs e)
-        {
-            uxApproveActivityButton.Disabled = true;
-            uxSubmitActivityButton.Disabled = true;
-            uxPostActivityButton.Disabled = true;
-            uxInactiveActivityButton.Disabled = true;
-
-            uxHeaderTab.Disabled = true;
-            uxCombinedTab.Disabled = true;
-            uxEquipmentTab.Disabled = true;
-            uxEmployeeTab.Disabled = true;
-            uxChemicalTab.Disabled = true;
-            uxInventoryTab.Disabled = true;
-            uxWeatherTab.Disabled = true;
-            uxProductionTab.Disabled = true;
         }
 
         /// <summary>
@@ -119,9 +166,53 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deSubmitActivity(object sender, DirectEventArgs e)
         {
-            string WindowUrl = string.Format("umSubmitActivity.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+            uxSubmitActivityWindow.ClearContent();
+            long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
+            List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime("Hours per day");
+            EmployeeData DuplicatePerDiems = ValidationChecks.checkPerDiem(HeaderId);
+            List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
 
-            uxSubmitActivityWindow.LoadContent(WindowUrl);
+            bool BadHeader = false;
+            if (HoursOver24.Count > 0)
+            {
+                if (HoursOver24.Exists(emp => emp.HEADER_ID == HeaderId)){
+                    EmployeeData HeaderData = HoursOver24.Find(emp => emp.HEADER_ID == HeaderId);
+                    //uxSubmitActivityWindow.Html += string.Format("<span color='#ff0000'>{0} has over 24 hours logged on {1:MM-dd-yy}.  Please fix.</span><br />", HeaderData.EMPLOYEE_NAME.ToString(), HeaderData.DA_DATE.ToString());
+                    BadHeader = true;
+                }
+                
+                
+            }
+
+            if (DuplicatePerDiems != null)
+            {
+                    //uxSubmitActivityWindow.Html += string.Format("<span>{0} has duplicate per diem entries on {1:MM-dd-yy}.  Please fix.</span><br />", DuplicatePerDiem.EMPLOYEE_NAME, DuplicatePerDiem.DA_DATE);
+                    uxSubmitActivityWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&PersonId={1}", DuplicatePerDiems.HEADER_ID, DuplicatePerDiems.PERSON_ID));
+                    BadHeader = true;
+                
+            }
+            if (EmployeeOverLap.Count > 0)
+            {
+                using (Entities _context = new Entities())
+                {
+                    if(EmployeeOverLap.Exists(x=> x == HeaderId))
+                    {
+                        var HeaderData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                          join emp in _context.EMPLOYEES_V on d.PERSON_ID equals emp.PERSON_ID
+                                          where d.HEADER_ID == HeaderId
+                                          select new { d.DAILY_ACTIVITY_HEADER.DA_DATE, emp.EMPLOYEE_NAME }).Single();
+                        uxSubmitActivityWindow.Html += string.Format("<span color='#ff0000'>{0} has overlapping time on {1}.  Please fix.</span><br />", HeaderData.EMPLOYEE_NAME, HeaderData.DA_DATE.ToString());
+                        BadHeader = true;
+                    }
+                }
+            }
+
+            string WindowUrl = string.Format("umSubmitActivity.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+            if (!BadHeader)
+            {
+                uxSubmitActivityWindow.LoadContent(WindowUrl);
+            }
+            
             uxSubmitActivityWindow.Show();
         }
 
@@ -134,7 +225,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
             DAILY_ACTIVITY_HEADER data;
-            
+
             //Get Record to be updated
             using (Entities _context = new Entities())
             {
@@ -180,8 +271,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         /// <param name="HeaderId"></param>
         /// <returns></returns>
-        protected List<object> GetHeader(long HeaderId){
-            using(Entities _context = new Entities()){
+        protected List<object> GetHeader(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
                 var returnData = (from d in _context.DAILY_ACTIVITY_HEADER
                                   join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                                   where d.HEADER_ID == HeaderId
@@ -195,16 +288,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         /// <param name="HeaderId"></param>
         /// <returns></returns>
-        protected List<object> GetEmployee(long HeaderId){
-            using(Entities _context = new Entities()){
+        protected List<object> GetEmployee(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
                 var returnData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                            join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
-                            join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.EQUIPMENT_ID equals eq.EQUIPMENT_ID into equ
-                            from equip in equ.DefaultIfEmpty()
-                            join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
-                            from projects in proj.DefaultIfEmpty()
-                            where d.HEADER_ID == HeaderId
-                            select new { e.EMPLOYEE_NAME, projects.NAME, d.TIME_IN, d.TIME_OUT, d.TRAVEL_TIME, d.DRIVE_TIME, d.PER_DIEM, d.COMMENTS }).ToList<object>();
+                                  join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
+                                  join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.EQUIPMENT_ID equals eq.EQUIPMENT_ID into equ
+                                  from equip in equ.DefaultIfEmpty()
+                                  join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
+                                  from projects in proj.DefaultIfEmpty()
+                                  where d.HEADER_ID == HeaderId
+                                  select new { e.EMPLOYEE_NAME, projects.NAME, d.TIME_IN, d.TIME_OUT, d.TRAVEL_TIME, d.DRIVE_TIME, d.PER_DIEM, d.COMMENTS }).ToList<object>();
                 return returnData;
             }
         }
@@ -214,14 +309,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         /// <param name="HeaderId"></param>
         /// <returns></returns>
-        protected List<object> GetProduction(long HeaderId){
-            using(Entities _context = new Entities()){
+        protected List<object> GetProduction(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
                 var returnData = (from d in _context.DAILY_ACTIVITY_PRODUCTION
-                            join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                            join t in _context.PA_TASKS_V on d.TASK_ID equals t.TASK_ID
-                            join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
-                            where d.HEADER_ID == HeaderId
-                            select new { t.DESCRIPTION, d.TIME_IN, d.TIME_OUT, d.WORK_AREA, d.POLE_FROM, d.POLE_TO, d.ACRES_MILE, d.GALLONS }).ToList<object>();
+                                  join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                  join t in _context.PA_TASKS_V on d.TASK_ID equals t.TASK_ID
+                                  join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
+                                  where d.HEADER_ID == HeaderId
+                                  select new { t.DESCRIPTION, d.TIME_IN, d.TIME_OUT, d.WORK_AREA, d.POLE_FROM, d.POLE_TO, d.ACRES_MILE, d.GALLONS }).ToList<object>();
                 return returnData;
             }
         }
@@ -231,11 +328,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         /// <param name="HeaderId"></param>
         /// <returns></returns>
-        protected List<DAILY_ACTIVITY_WEATHER> GetWeather(long HeaderId){
-            using(Entities _context = new Entities()){
+        protected List<DAILY_ACTIVITY_WEATHER> GetWeather(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
                 var returnData = (from d in _context.DAILY_ACTIVITY_WEATHER
-                                      where d.HEADER_ID == HeaderId
-                                      select d).ToList();
+                                  where d.HEADER_ID == HeaderId
+                                  select d).ToList();
                 return returnData;
             }
         }
@@ -245,11 +344,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         /// <param name="HeaderId"></param>
         /// <returns></returns>
-        protected List<DAILY_ACTIVITY_CHEMICAL_MIX> GetChemicalMix(long HeaderId){
-            using(Entities _context = new Entities()){
+        protected List<DAILY_ACTIVITY_CHEMICAL_MIX> GetChemicalMix(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
                 var returnData = (from d in _context.DAILY_ACTIVITY_CHEMICAL_MIX
-                                      where d.HEADER_ID == HeaderId
-                                      select d).ToList();
+                                  where d.HEADER_ID == HeaderId
+                                  select d).ToList();
                 return returnData;
             }
         }
@@ -259,16 +360,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         /// <param name="HeaderId"></param>
         /// <returns></returns>
-        protected List<object>GetInventory(long HeaderId){
-            using(Entities _context = new Entities()){
+        protected List<object> GetInventory(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
                 List<object> returnData = (from d in _context.DAILY_ACTIVITY_INVENTORY
-                            join i in _context.INVENTORY_V on d.ITEM_ID equals i.ITEM_ID into joined
-                            join c in _context.DAILY_ACTIVITY_CHEMICAL_MIX on d.CHEMICAL_MIX_ID equals c.CHEMICAL_MIX_ID
-                            join u in _context.UNIT_OF_MEASURE_V on d.UNIT_OF_MEASURE equals u.UOM_CODE
-                            where d.HEADER_ID == HeaderId
-                            from j in joined
-                            where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
-                            select new {c.CHEMICAL_MIX_NUMBER, d.SUB_INVENTORY_SECONDARY_NAME, j.DESCRIPTION, d.RATE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).ToList<object>();
+                                           join i in _context.INVENTORY_V on d.ITEM_ID equals i.ITEM_ID into joined
+                                           join c in _context.DAILY_ACTIVITY_CHEMICAL_MIX on d.CHEMICAL_MIX_ID equals c.CHEMICAL_MIX_ID
+                                           join u in _context.UNIT_OF_MEASURE_V on d.UNIT_OF_MEASURE equals u.UOM_CODE
+                                           where d.HEADER_ID == HeaderId
+                                           from j in joined
+                                           where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
+                                           select new { c.CHEMICAL_MIX_NUMBER, d.SUB_INVENTORY_SECONDARY_NAME, j.DESCRIPTION, d.RATE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).ToList<object>();
 
                 return returnData;
             }
@@ -279,11 +382,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         /// <param name="HeaderId"></param>
         /// <returns></returns>
-        protected DAILY_ACTIVITY_FOOTER GetFooter(long HeaderId){
-            using(Entities _context = new Entities()){
+        protected DAILY_ACTIVITY_FOOTER GetFooter(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
                 DAILY_ACTIVITY_FOOTER returnData = (from d in _context.DAILY_ACTIVITY_FOOTER
-                                      where d.HEADER_ID == HeaderId
-                                      select d).SingleOrDefault();
+                                                    where d.HEADER_ID == HeaderId
+                                                    select d).SingleOrDefault();
                 return returnData;
             }
         }
@@ -326,7 +431,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                     ExportedPDF.Add(Title);
                     ExportedPDF.Add(NewLine);
-                    
+
                     //First row
                     Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Contract", HeadFootTitleFont)),
@@ -401,7 +506,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
                     {
                         TravelTime = string.Empty;
-                    }                   
+                    }
                     string EquipmentName;
                     try
                     {
@@ -412,7 +517,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         EquipmentName = String.Empty;
                     }
 
-                    TimeSpan TotalHours = DateTime.Parse(Data.TIME_OUT.ToString()).TimeOfDay - DateTime.Parse(Data.TIME_IN.ToString()).TimeOfDay; 
+                    TimeSpan TotalHours = DateTime.Parse(Data.TIME_OUT.ToString()).TimeOfDay - DateTime.Parse(Data.TIME_IN.ToString()).TimeOfDay;
                     Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(EquipmentName , CellFont)),
                         new PdfPCell(new Phrase(Data.EMPLOYEE_NAME.ToString(), CellFont)),
@@ -668,7 +773,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     ContractImage = iTextSharp.text.Image.GetInstance(Server.MapPath("/Resources/Images") + "/1pixel.jpg");
                 }
 
-                
+
                 Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Foreman Signature", HeadFootTitleFont)),
                     new PdfPCell(ForemanImage),
@@ -726,6 +831,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxCreateActivityWindow.Hide();
             uxManageGridStore.Reload();
         }
+
         /// <summary>
         /// Direct Method accessed from umSubmitActivity.aspx after it's submitted
         /// </summary>
@@ -736,6 +842,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxManageGridStore.Reload();
         }
 
+        [DirectMethod]
+        public void dmRefreshShowSubmit(string HeaderId)
+        {
+            uxSubmitActivityWindow.ClearContent();
+            uxSubmitActivityWindow.LoadContent(string.Format("umSubmitActivity.aspx?HeaderId={0}", HeaderId));
+        }
         /// <summary>
         /// Load create activity form and display the window.
         /// </summary>
@@ -746,49 +858,5 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxCreateActivityWindow.LoadContent();
             uxCreateActivityWindow.Show();
         }
-
-        /// <summary>
-        /// Checks data and flags if needed based on below checks
-        /// </summary>
-        protected void checkData()
-        {
-
-        }
-
-        /// <summary>
-        /// Checks for more than 24 hours in a day by an employee
-        /// </summary>
-        /// <param name="HeaderId"></param>
-        /// <returns></returns>
-        protected void employeeHoursCheck()
-        {
-            using (Entities _context = new Entities())
-            {
-                var TotalHoursList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                                     group d by new { d.PERSON_ID, d.DAILY_ACTIVITY_HEADER.DA_DATE, TotalHours = d.TIME_OUT.Value - d.TIME_IN.Value } into g
-                                     select new { g.Key.PERSON_ID, g.Key.DA_DATE }).ToList();
-
-                int i = 0;
-                foreach (var TotalHour in TotalHoursList)
-                {
-                    i++;
-                }
-            }
-        }
-
-        //protected bool employeeTimeOverlapCheck(long HeaderId)
-        //{
-
-        //}
-
-        //protected bool employeeBusinessUnitCheck(long HeaderId)
-        //{
-
-        //}
-
-        //protected bool equipmentBusinessUnitCheck(long HeaderId)
-        //{
-
-        //}
     }
 }

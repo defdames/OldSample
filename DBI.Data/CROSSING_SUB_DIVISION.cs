@@ -12,22 +12,22 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class CROSSING_CONTACTS
+    public partial class CROSSING_SUB_DIVISION
     {
-        public long CONTACT_ID { get; set; }
-        public Nullable<long> CROSSING_ID { get; set; }
-        public string CONTACT_NAME { get; set; }
-        public string ADDRESS_1 { get; set; }
-        public string ADDRESS_2 { get; set; }
-        public string CITY { get; set; }
+        public long SUB_DIVISION_ID { get; set; }
         public string STATE { get; set; }
-        public string ZIP_CODE { get; set; }
-        public string WORK_NUMBER { get; set; }
-        public string CELL_NUMBER { get; set; }
-        public string RAIL_ROAD { get; set; }
+        public string CITY { get; set; }
+        public string COUNTY { get; set; }
+        public string STREET { get; set; }
+        public string ROUTE { get; set; }
+        public string DOT { get; set; }
+        public Nullable<decimal> MILE_POST { get; set; }
+        public string SERVICE_TYPE { get; set; }
+        public string REMARKS { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
+        public string SUB_DIVISION_NAME { get; set; }
     }
 }

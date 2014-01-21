@@ -31,13 +31,22 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.ResourceManager ResourceManager2;
         
         /// <summary>
-        /// GridPanel1 control.
+        /// uxContactMainGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel GridPanel1;
+        protected global::Ext.Net.GridPanel uxContactMainGrid;
+        
+        /// <summary>
+        /// RowSelectionModel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel RowSelectionModel1;
         
         /// <summary>
         /// uxCurrentContactStore control.
@@ -67,60 +76,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Column uxNameCON;
         
         /// <summary>
-        /// uxAddress1CON control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column uxAddress1CON;
-        
-        /// <summary>
-        /// uxAddress2CON control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column uxAddress2CON;
-        
-        /// <summary>
-        /// uxCityCON control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column uxCityCON;
-        
-        /// <summary>
-        /// uxStateCON control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column uxStateCON;
-        
-        /// <summary>
-        /// uxZipCON control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column uxZipCON;
-        
-        /// <summary>
-        /// uxEmailCON control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column uxEmailCON;
-        
-        /// <summary>
         /// uxWorkNumCON control.
         /// </summary>
         /// <remarks>
@@ -146,6 +101,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Column uxRRCON;
+        
+        /// <summary>
+        /// PagingToolbar1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.PagingToolbar PagingToolbar1;
         
         /// <summary>
         /// Toolbar2 control.
@@ -202,6 +166,96 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Button uxDeleteContact;
         
         /// <summary>
+        /// uxContactFormPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FormPanel uxContactFormPanel;
+        
+        /// <summary>
+        /// uxContactManagerName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxContactManagerName;
+        
+        /// <summary>
+        /// uxContactRR control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxContactRR;
+        
+        /// <summary>
+        /// uxContactAddress1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxContactAddress1;
+        
+        /// <summary>
+        /// uxContactAddress2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxContactAddress2;
+        
+        /// <summary>
+        /// uxContactCity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxContactCity;
+        
+        /// <summary>
+        /// uxContactState control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxContactState;
+        
+        /// <summary>
+        /// uxContactZip control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxContactZip;
+        
+        /// <summary>
+        /// uxContactCell control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxContactCell;
+        
+        /// <summary>
+        /// uxContactOffice control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxContactOffice;
+        
+        /// <summary>
         /// uxAddContactWindow control.
         /// </summary>
         /// <remarks>
@@ -209,6 +263,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Window uxAddContactWindow;
+        
+        /// <summary>
+        /// uxAddContactForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FormPanel uxAddContactForm;
         
         /// <summary>
         /// uxAddNewManagerName control.
@@ -220,13 +283,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField uxAddNewManagerName;
         
         /// <summary>
-        /// uxAddNewRR control.
+        /// uxAddNewRRTextField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DropDownField uxAddNewRR;
+        protected global::Ext.Net.TextField uxAddNewRRTextField;
         
         /// <summary>
         /// uxAddNewAddress1 control.
@@ -256,13 +319,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField uxAddNewContactCityTextField;
         
         /// <summary>
-        /// uxAddNewContactState control.
+        /// uxAddNewContactStateTextField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DropDownField uxAddNewContactState;
+        protected global::Ext.Net.TextField uxAddNewContactStateTextField;
         
         /// <summary>
         /// uxAddNewContactZip control.
@@ -292,22 +355,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField uxAddNewContactOffice;
         
         /// <summary>
-        /// uxAddNewEmail control.
+        /// deAddContacts control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxAddNewEmail;
-        
-        /// <summary>
-        /// uxAddNewContactButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxAddNewContactButton;
+        protected global::Ext.Net.Button deAddContacts;
         
         /// <summary>
         /// uxAddNewContactCancelButton control.
@@ -346,13 +400,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField uxEditManagerName;
         
         /// <summary>
-        /// uxEditRR control.
+        /// uxEditRRTextField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DropDownField uxEditRR;
+        protected global::Ext.Net.TextField uxEditRRTextField;
         
         /// <summary>
         /// uxEditContactAdd1 control.
@@ -382,13 +436,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField uxEditContactCity;
         
         /// <summary>
-        /// uxEditContactState control.
+        /// uxEditContactStateTextField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DropDownField uxEditContactState;
+        protected global::Ext.Net.TextField uxEditContactStateTextField;
         
         /// <summary>
         /// uxEditContactZip control.
@@ -416,15 +470,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.TextField uxEditContactPhoneNum;
-        
-        /// <summary>
-        /// uxEditContanct control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxEditContanct;
         
         /// <summary>
         /// uxEditUpdateButton control.
@@ -778,12 +823,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Button CancelTransfer;
         
         /// <summary>
-        /// Button7 control.
+        /// ResetTransfer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button7;
+        protected global::Ext.Net.Button ResetTransfer;
     }
 }

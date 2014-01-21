@@ -61,6 +61,7 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\lib\EXT\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.identitymodel.services" />
@@ -109,11 +110,13 @@
     <Content Include="Views\Modules\CrossingMaintenance\umContactsTab.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingMain.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingInfoTab.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umCrossingSecurity.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umServiceUnitsTab.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umSubDivisionsTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\ImageLoader\ImageLoader.aspx" />
     <Content Include="Views\Modules\DailyActivity\umChemicalTab.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umChoosePerDiem.aspx" />
     <Content Include="Views\Modules\DailyActivity\umCombinedTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umDailyActivity.aspx" />
     <Content Include="Views\Modules\DailyActivity\umEmployeesTab.aspx" />
@@ -174,6 +177,13 @@
     <Compile Include="Views\Modules\CrossingMaintenance\umCrossingInfoTab.aspx.designer.cs">
       <DependentUpon>umCrossingInfoTab.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umCrossingSecurity.aspx.cs">
+      <DependentUpon>umCrossingSecurity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umCrossingSecurity.aspx.designer.cs">
+      <DependentUpon>umCrossingSecurity.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx.cs">
       <DependentUpon>umDataEntryTab.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -208,6 +218,13 @@
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umChemicalTab.aspx.designer.cs">
       <DependentUpon>umChemicalTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umChoosePerDiem.aspx.cs">
+      <DependentUpon>umChoosePerDiem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umChoosePerDiem.aspx.designer.cs">
+      <DependentUpon>umChoosePerDiem.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umCombinedTab.aspx.cs">
       <DependentUpon>umCombinedTab.aspx</DependentUpon>
@@ -279,6 +296,7 @@
     <Compile Include="Views\Modules\DailyActivity\umWeatherTab.aspx.designer.cs">
       <DependentUpon>umWeatherTab.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\DailyActivity\ValidationChecks.cs" />
     <Compile Include="Views\Modules\Security\umSecurityLogList.aspx.cs">
       <DependentUpon>umSecurityLogList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
