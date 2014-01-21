@@ -155,6 +155,19 @@
 										</Click>
 									</DirectEvents>
 								</ext:Button>
+								<ext:Button runat="server"
+									ID="uxEmailPdf"
+									Text="Email Copy"
+									Icon ="EmailAttach"
+									Disabled="true">
+									<DirectEvents>
+										<Click OnEvent="deSendPDF" IsUpload="true">
+											<ExtraParams>
+												<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
+											</ExtraParams>
+										</Click>
+									</DirectEvents>
+								</ext:Button>
 							</Items>
 						</ext:Toolbar>
 					</TopBar>

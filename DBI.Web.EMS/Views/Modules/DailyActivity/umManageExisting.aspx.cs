@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Data.Entity;
 using System.Data.Objects;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Web;
 using System.Web.UI;
@@ -185,6 +186,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.ViewAll");
             uxSubmitActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.ViewAll");
             uxExportToPDF.Disabled = false;
+            uxEmailPdf.Disabled = false;
         }
 
         /// <summary>
@@ -428,11 +430,50 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deExportToPDF(object sender, DirectEventArgs e)
         {
-            using (MemoryStream PdfStream = new MemoryStream())
-            {
                 //Set header Id
                 long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
 
+                MemoryStream PdfStream = generatePDF(HeaderId);
+
+                Response.Clear();
+                Response.ClearContent();
+                Response.ClearHeaders();
+                Response.ContentType = "application/pdf";
+                Response.AppendHeader("Content-Disposition", "attachment;filename=export.pdf");
+                Response.BinaryWrite(PdfStream.ToArray());
+                Response.End();
+        }
+
+        protected void deSendPDF(object sender, DirectEventArgs e)
+        {
+            long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
+
+            using (MemoryStream PdfStream = new MemoryStream(generatePDF(HeaderId).ToArray()))
+            {
+
+
+                MailMessage ToSend = new MailMessage("noreply@dbiservices.com", User.Identity.Name + "@dbiservices.com")
+                {
+                    Subject = "Copy of Daily Activity Report",
+                    IsBodyHtml = true,
+                    Body = "Please find attached the Daily Activity Report you requested."
+                };
+                PdfStream.Position = 0;
+
+                ToSend.Attachments.Add(new Attachment(PdfStream, "dailyActivityExport.pdf"));
+
+                SmtpClient MailClient = new SmtpClient("owa.dbiservices.com");
+                #if DEBUG
+                MailClient.Credentials = new System.Net.NetworkCredential("gene.lapointe@dbiservices.com", "Password");
+                #endif
+                MailClient.Send(ToSend);
+            }
+        }
+
+        protected MemoryStream generatePDF(long HeaderId)
+        {
+            using (MemoryStream PdfStream = new MemoryStream())
+            {
                 //Create the document
                 Document ExportedPDF = new Document(iTextSharp.text.PageSize.LETTER, 0f, 0f, 42f, 42f);
                 PdfWriter ExportWriter = PdfWriter.GetInstance(ExportedPDF, PdfStream);
@@ -819,15 +860,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 //Close Stream and start Download
                 ExportWriter.CloseStream = false;
                 ExportedPDF.Close();
-                PdfStream.Position = 0;
-
-                Response.Clear();
-                Response.ClearContent();
-                Response.ClearHeaders();
-                Response.ContentType = "application/pdf";
-                Response.AppendHeader("Content-Disposition", "attachment;filename=export.pdf");
-                Response.BinaryWrite(PdfStream.ToArray());
-                Response.End();
+                return PdfStream;
             }
         }
 
@@ -876,6 +909,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxSubmitActivityWindow.ClearContent();
             uxSubmitActivityWindow.LoadContent(string.Format("umSubmitActivity.aspx?HeaderId={0}", HeaderId));
         }
+
         /// <summary>
         /// Load create activity form and display the window.
         /// </summary>
