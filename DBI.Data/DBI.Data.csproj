@@ -137,6 +137,9 @@
     <Compile Include="EMPLOYEES_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="EXPENDITURE_TYPE_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="INVENTORY_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
