@@ -17,8 +17,8 @@ namespace DBI.Data
         public Nullable<long> PROJECT_ID { get; set; }
         public string EXPENDITURE_TYPE { get; set; }
         public Nullable<decimal> BILL_RATE { get; set; }
+        public string UNIT_OF_MEASURE { get; set; }
         public string RATE_CURRENCY_CODE { get; set; }
         public System.DateTime LAST_UPDATE_DATE { get; set; }
-        public string UNIT_OF_MEASURE { get; set; }
     }
 }

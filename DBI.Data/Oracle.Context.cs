@@ -49,7 +49,7 @@ namespace DBI.Data
         public DbSet<CROSSING_DATA_ENTRY> CROSSING_DATA_ENTRY { get; set; }
         public DbSet<CROSSING_CONTACTS> CROSSING_CONTACTS { get; set; }
         public DbSet<CROSSING_SUB_DIVISION> CROSSING_SUB_DIVISION { get; set; }
-        public DbSet<EXPENDITURE_TYPE_V> EXPENDITURE_TYPE_V { get; set; }
         public DbSet<DAILY_ACTIVITY_PRODUCTION> DAILY_ACTIVITY_PRODUCTION { get; set; }
+        public DbSet<EXPENDITURE_TYPE_V> EXPENDITURE_TYPE_V { get; set; }
     }
 }

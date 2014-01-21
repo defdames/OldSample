@@ -1614,12 +1614,12 @@
           </AssociationSet>
           <EntitySet Name="CROSSING_CONTACTS" EntityType="OracleModel.CROSSING_CONTACTS" />
           <EntitySet Name="CROSSING_SUB_DIVISION" EntityType="OracleModel.CROSSING_SUB_DIVISION" />
-          <EntitySet Name="EXPENDITURE_TYPE_V" EntityType="OracleModel.EXPENDITURE_TYPE_V" />
           <EntitySet Name="DAILY_ACTIVITY_PRODUCTION" EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" />
           <AssociationSet Name="FK_PRODUCTION_HEADER_ID" Association="OracleModel.FK_PRODUCTION_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_PRODUCTION" EntitySet="DAILY_ACTIVITY_PRODUCTION" />
           </AssociationSet>
+          <EntitySet Name="EXPENDITURE_TYPE_V" EntityType="OracleModel.EXPENDITURE_TYPE_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -2713,19 +2713,6 @@
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="SUB_DIVISION_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="EXPENDITURE_TYPE_V">
-          <Key>
-            <PropertyRef Name="EXPENDITURE_TYPE" />
-            <PropertyRef Name="LAST_UPDATE_DATE" />
-            <PropertyRef Name="UNIT_OF_MEASURE" />
-          </Key>
-          <Property Type="Int64" Name="PROJECT_ID" />
-          <Property Type="String" Name="EXPENDITURE_TYPE" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="BILL_RATE" Precision="22" Scale="5" />
-          <Property Type="String" Name="RATE_CURRENCY_CODE" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
-          <Property Type="String" Name="UNIT_OF_MEASURE" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="DAILY_ACTIVITY_PRODUCTION">
           <Key>
             <PropertyRef Name="PRODUCTION_ID" />
@@ -2763,6 +2750,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="EXPENDITURE_TYPE_V">
+          <Key>
+            <PropertyRef Name="EXPENDITURE_TYPE" />
+            <PropertyRef Name="UNIT_OF_MEASURE" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+          </Key>
+          <Property Type="Int64" Name="PROJECT_ID" />
+          <Property Type="String" Name="EXPENDITURE_TYPE" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="BILL_RATE" Precision="22" Scale="5" />
+          <Property Type="String" Name="UNIT_OF_MEASURE" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="RATE_CURRENCY_CODE" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3567,18 +3567,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="EXPENDITURE_TYPE_V">
-            <EntityTypeMapping TypeName="OracleModel.EXPENDITURE_TYPE_V">
-              <MappingFragment StoreEntitySet="EXPENDITURE_TYPE_V">
-                <ScalarProperty Name="UNIT_OF_MEASURE" ColumnName="UNIT_OF_MEASURE" />
-                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
-                <ScalarProperty Name="RATE_CURRENCY_CODE" ColumnName="RATE_CURRENCY_CODE" />
-                <ScalarProperty Name="BILL_RATE" ColumnName="BILL_RATE" />
-                <ScalarProperty Name="EXPENDITURE_TYPE" ColumnName="EXPENDITURE_TYPE" />
-                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="DAILY_ACTIVITY_PRODUCTION">
             <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_PRODUCTION">
               <MappingFragment StoreEntitySet="DAILY_ACTIVITY_PRODUCTION">
@@ -3601,6 +3589,18 @@
                 <ScalarProperty Name="TIME_IN" ColumnName="TIME_IN" />
                 <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
                 <ScalarProperty Name="PRODUCTION_ID" ColumnName="PRODUCTION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EXPENDITURE_TYPE_V">
+            <EntityTypeMapping TypeName="OracleModel.EXPENDITURE_TYPE_V">
+              <MappingFragment StoreEntitySet="EXPENDITURE_TYPE_V">
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="RATE_CURRENCY_CODE" ColumnName="RATE_CURRENCY_CODE" />
+                <ScalarProperty Name="UNIT_OF_MEASURE" ColumnName="UNIT_OF_MEASURE" />
+                <ScalarProperty Name="BILL_RATE" ColumnName="BILL_RATE" />
+                <ScalarProperty Name="EXPENDITURE_TYPE" ColumnName="EXPENDITURE_TYPE" />
+                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
