@@ -582,6 +582,7 @@
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="SUB_DIVISION_NAME" Type="varchar2" Nullable="false" MaxLength="100" />
         </EntityType>
         <EntityType Name="CROSSINGS">
           <Key>
@@ -2710,6 +2711,7 @@
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SUB_DIVISION_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3517,6 +3519,7 @@
           <EntitySetMapping Name="CROSSING_SUB_DIVISION">
             <EntityTypeMapping TypeName="OracleModel.CROSSING_SUB_DIVISION">
               <MappingFragment StoreEntitySet="CROSSING_SUB_DIVISION">
+                <ScalarProperty Name="SUB_DIVISION_NAME" ColumnName="SUB_DIVISION_NAME" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
                 <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
                 <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
