@@ -8,6 +8,7 @@
         <EntityContainer Name="OracleModelStoreContainer">
           <EntitySet Name="CROSSING_CONTACTS" EntityType="OracleModel.Store.CROSSING_CONTACTS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_DATA_ENTRY" EntityType="OracleModel.Store.CROSSING_DATA_ENTRY" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="CROSSING_SUB_DIVISION" EntityType="OracleModel.Store.CROSSING_SUB_DIVISION" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSINGS" EntityType="OracleModel.Store.CROSSINGS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_CHEMICAL_MIX" EntityType="OracleModel.Store.DAILY_ACTIVITY_CHEMICAL_MIX" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_EMPLOYEE" EntityType="OracleModel.Store.DAILY_ACTIVITY_EMPLOYEE" store:Type="Tables" Schema="XXEMS" />
@@ -562,6 +563,25 @@
           <Property Name="STATE" Type="varchar2" MaxLength="100" />
           <Property Name="SUB_DIVISION" Type="varchar2" MaxLength="100" />
           <Property Name="REMARKS" Type="varchar2" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="CROSSING_SUB_DIVISION">
+          <Key>
+            <PropertyRef Name="SUB_DIVISION_ID" />
+          </Key>
+          <Property Name="SUB_DIVISION_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
+          <Property Name="STATE" Type="varchar2" MaxLength="100" />
+          <Property Name="CITY" Type="varchar2" MaxLength="100" />
+          <Property Name="COUNTY" Type="varchar2" MaxLength="100" />
+          <Property Name="STREET" Type="varchar2" MaxLength="100" />
+          <Property Name="ROUTE" Type="varchar2" MaxLength="100" />
+          <Property Name="DOT" Type="varchar2" MaxLength="30" />
+          <Property Name="MILE_POST" Type="number" Precision="15" Scale="2" />
+          <Property Name="SERVICE_TYPE" Type="varchar2" MaxLength="100" />
+          <Property Name="REMARKS" Type="varchar2" MaxLength="500" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="CROSSINGS">
           <Key>
@@ -1566,6 +1586,7 @@
             <End Role="CROSSING_DATA_ENTRY" EntitySet="CROSSING_DATA_ENTRY" />
           </AssociationSet>
           <EntitySet Name="CROSSING_CONTACTS" EntityType="OracleModel.CROSSING_CONTACTS" />
+          <EntitySet Name="CROSSING_SUB_DIVISION" EntityType="OracleModel.CROSSING_SUB_DIVISION" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -2671,6 +2692,25 @@
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="CROSSING_SUB_DIVISION">
+          <Key>
+            <PropertyRef Name="SUB_DIVISION_ID" />
+          </Key>
+          <Property Type="Int64" Name="SUB_DIVISION_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="STATE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CITY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="COUNTY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STREET" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ROUTE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DOT" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="MILE_POST" Precision="15" Scale="2" />
+          <Property Type="String" Name="SERVICE_TYPE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3471,6 +3511,26 @@
                 <ScalarProperty Name="CONTACT_NAME" ColumnName="CONTACT_NAME" />
                 <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
                 <ScalarProperty Name="CONTACT_ID" ColumnName="CONTACT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CROSSING_SUB_DIVISION">
+            <EntityTypeMapping TypeName="OracleModel.CROSSING_SUB_DIVISION">
+              <MappingFragment StoreEntitySet="CROSSING_SUB_DIVISION">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="REMARKS" ColumnName="REMARKS" />
+                <ScalarProperty Name="SERVICE_TYPE" ColumnName="SERVICE_TYPE" />
+                <ScalarProperty Name="MILE_POST" ColumnName="MILE_POST" />
+                <ScalarProperty Name="DOT" ColumnName="DOT" />
+                <ScalarProperty Name="ROUTE" ColumnName="ROUTE" />
+                <ScalarProperty Name="STREET" ColumnName="STREET" />
+                <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
+                <ScalarProperty Name="CITY" ColumnName="CITY" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+                <ScalarProperty Name="SUB_DIVISION_ID" ColumnName="SUB_DIVISION_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
