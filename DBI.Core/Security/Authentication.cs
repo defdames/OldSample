@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.IdentityModel.Services;
 using System.IdentityModel.Tokens;
@@ -30,17 +31,20 @@ namespace DBI.Core.Security
         {
             //First, create a new return variable
             bool _authenticated = true;
+            UserPrincipal _usr;
 
             //Next, create a new context for the domain
             using (PrincipalContext ctx = new PrincipalContext(ContextType.Domain))
             {
                 //Next, attempt to validate the credentials
-                _authenticated = ctx.ValidateCredentials(username, password);
+                _authenticated = ctx.ValidateCredentials(username, password,ContextOptions.Negotiate);
+                _usr = UserPrincipal.FindByIdentity(ctx, username);
             }
 
             //Finally, return the return variable
             return _authenticated;
         }
+
 
         /// <summary>
         /// Generates a security token based on claims security
