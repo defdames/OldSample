@@ -210,6 +210,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             uxAddCrossingWindow.Hide();
             uxAddCrossingForm.Reset();
+            uxCurrentCrossingStore.Reload();
 
             Notification.Show(new NotificationConfig()
             {
@@ -394,6 +395,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             uxEditCrossingWindow.Hide();
             uxCrossingForm.Reset();
+            uxCurrentCrossingStore.Reload();
            
             Notification.Show(new NotificationConfig()
             {
@@ -419,7 +421,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
             GenericData.Delete<CROSSING>(data);
 
-            uxCrossingForm.Reload();
+            uxCurrentCrossingStore.Reload();
+            uxCrossingForm.Reset();
 
             Notification.Show(new NotificationConfig()
             {

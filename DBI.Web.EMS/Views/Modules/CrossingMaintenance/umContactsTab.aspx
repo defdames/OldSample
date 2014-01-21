@@ -11,7 +11,7 @@
         <ext:ResourceManager runat="server" ID="ResourceManager2" />
         <div>
             <%--<ContactsTab>--%>
-            <ext:GridPanel ID="uxContactMain" runat="server" Layout="HBoxLayout" Collapsible="true" Title="Contacts">
+            <ext:GridPanel ID="uxContactMainGrid" runat="server" Layout="HBoxLayout" Collapsible="true" Title="Contacts">
                  <SelectionModel>
                     <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
                 </SelectionModel>
@@ -19,18 +19,13 @@
                     <ext:Store runat="server"
                         ID="uxCurrentContactStore"
                         OnReadData="deContactMainGrid"
-                        AutoDataBind="true" WarningOnDirty="false">
+                        AutoDataBind="true" WarningOnDirty="false" PageSize="10">
                         <Model>
                             <ext:Model ID="Model1" runat="server">
                                 <Fields>
                                     <ext:ModelField Name="CONTACT_ID" />
                                     <ext:ModelField Name="CROSSING_ID" />
                                     <ext:ModelField Name="CONTACT_NAME" />
-                                    <%--<ext:ModelField Name="ADDRESS_1" />
-                                    <ext:ModelField Name="ADDRESS_2" />
-                                    <ext:ModelField Name="CITY" />
-                                    <ext:ModelField Name="STATE" />
-                                    <ext:ModelField Name="ZIP_CODE" />--%>
                                     <ext:ModelField Name="WORK_NUMBER" />
                                     <ext:ModelField Name="CELL_NUMBER" />
                                     <ext:ModelField Name="RAIL_ROAD" />
@@ -60,10 +55,17 @@
                  <DirectEvents>
                     <Select OnEvent="GetContactGridData">
                         <ExtraParams>
-                            <ext:Parameter Name="ContactId" Value="#{uxContactMainGrid}.getSelectionModel().getSelection()[0].data.Contact_ID" Mode="Raw" />
+                            <ext:Parameter Name="ContactId" Value="#{uxContactMainGrid}.getSelectionModel().getSelection()[0].data.CONTACT_ID" Mode="Raw" />
                         </ExtraParams>
                     </Select>
-                </DirectEvents>            
+                </DirectEvents>    
+                   <DirectEvents>
+                    <Select OnEvent="deEditContactsForm">
+                        <ExtraParams>
+                            <ext:Parameter Name="ContactId" Value="#{uxContactMainGrid}.getSelectionModel().getSelection()[0].data.CONTACT_ID" Mode="Raw" />
+                        </ExtraParams>
+                    </Select>
+                </DirectEvents>                    
                 <BottomBar>
                     <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True">
                     </ext:PagingToolbar>
@@ -80,6 +82,13 @@
                                 <Listeners>
                                     <Click Handler="#{uxEditContactWindow}.show()" />
                                 </Listeners>
+                                <DirectEvents>                             
+                                    <Click OnEvent ="deEditContactsForm">
+                                        <ExtraParams>
+                                     <ext:Parameter Name="ContactId" Value="#{uxContactMainGrid}.getSelectionModel().getSelection()[0].data.CONTACT_ID" Mode="Raw" />
+                                </ExtraParams>
+                                    </Click>
+                                    </DirectEvents>
                             </ext:Button>
                             <ext:Button ID="uxAssignContactButton" runat="server" Text="Assign Crossing to Contact" Icon="ApplicationGo">
                                 <Listeners>
@@ -95,6 +104,9 @@
                                 <DirectEvents>
                                     <Click OnEvent="deRemoveContact">
                                         <Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete this contact?" />
+                                         <ExtraParams>
+                                     <ext:Parameter Name="ContactId" Value="#{uxContactMainGrid}.getSelectionModel().getSelection()[0].data.CONTACT_ID" Mode="Raw" />
+                                </ExtraParams>
                                     </Click>
                                 </DirectEvents>
                             </ext:Button>
@@ -157,11 +169,11 @@
                     <ext:FormPanel ID="FormPanel1" runat="server" Layout="FormLayout">
                         <Items>
                             <ext:TextField ID="uxEditManagerName" runat="server" FieldLabel="Manager Name" AnchorHorizontal="100%" LabelAlign="Right" />
-                            <ext:DropDownField ID="uxEditRR" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right" />
+                            <ext:TextField ID="uxEditRRTextField" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right" />
                             <ext:TextField ID="uxEditContactAdd1" runat="server" FieldLabel="Address 1" AnchorHorizontal="100%" LabelAlign="Right" />
                             <ext:TextField ID="uxEditContactAdd2" runat="server" FieldLabel="Address 2" AnchorHorizontal="100%" LabelAlign="Right" />
                             <ext:TextField ID="uxEditContactCity" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />
-                            <ext:DropDownField ID="uxEditContactState" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />
+                            <ext:TextField ID="uxEditContactStateTextField" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />
                             <ext:TextField ID="uxEditContactZip" runat="server" FieldLabel="Zip" AnchorHorizontal="100%" LabelAlign="Right" />
                             <ext:TextField ID="uxEditContactCellNum" runat="server" FieldLabel="Cell #" AnchorHorizontal="100%" LabelAlign="Right" />
                             <ext:TextField ID="uxEditContactPhoneNum" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right" />
@@ -169,7 +181,15 @@
 
                         </Items>
                         <Buttons>
-                            <ext:Button runat="server" ID="uxEditUpdateButton" Text="Update" Icon="Add" />
+                            <ext:Button runat="server" ID="uxEditUpdateButton" Text="Update" Icon="Add" >
+                             <DirectEvents>                             
+                                    <Click OnEvent ="deEditContacts">
+                                        <ExtraParams>
+                                     <ext:Parameter Name="ContactId" Value="#{uxContactMainGrid}.getSelectionModel().getSelection()[0].data.CONTACT_ID" Mode="Raw" />
+                                </ExtraParams>
+                                    </Click>
+                                    </DirectEvents>
+                                </ext:Button>
                             <ext:Button runat="server" ID="uxEditContactCancelButton" Text="Cancel" Icon="Delete" />
                         </Buttons>
                     </ext:FormPanel>

@@ -31,13 +31,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.ResourceManager ResourceManager2;
         
         /// <summary>
-        /// uxContactMain control.
+        /// uxContactMainGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxContactMain;
+        protected global::Ext.Net.GridPanel uxContactMainGrid;
         
         /// <summary>
         /// RowSelectionModel1 control.
@@ -400,13 +400,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField uxEditManagerName;
         
         /// <summary>
-        /// uxEditRR control.
+        /// uxEditRRTextField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DropDownField uxEditRR;
+        protected global::Ext.Net.TextField uxEditRRTextField;
         
         /// <summary>
         /// uxEditContactAdd1 control.
@@ -436,13 +436,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField uxEditContactCity;
         
         /// <summary>
-        /// uxEditContactState control.
+        /// uxEditContactStateTextField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DropDownField uxEditContactState;
+        protected global::Ext.Net.TextField uxEditContactStateTextField;
         
         /// <summary>
         /// uxEditContactZip control.
