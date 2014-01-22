@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umProductionTab.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.DailyActivity.umProductionTab" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umProductionTab-DBI.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.DailyActivity.umProductionTab_DBI" %>
 
 <!DOCTYPE html>
 
@@ -44,13 +44,11 @@
 								<ext:ModelField Name="LONG_NAME" />
 								<ext:ModelField Name="TASK_ID" />
 								<ext:ModelField Name="DESCRIPTION" />
-								<ext:ModelField Name="TIME_IN" Type="Date" />
-								<ext:ModelField Name="TIME_OUT" Type="Date" />
 								<ext:ModelField Name="WORK_AREA" />
 								<ext:ModelField Name="POLE_FROM" />
 								<ext:ModelField Name="POLE_TO" />
 								<ext:ModelField Name="ACRES_MILE" />
-								<ext:ModelField Name="GALLONS" />
+								<ext:ModelField Name="QUANTITY" />
 							</Fields>
 						</ext:Model>
 					</Model>
@@ -97,7 +95,7 @@
 						Text="Acres/Mile"
 						Flex="1" />
 					<ext:Column runat="server"
-						DataIndex="GALLONS"
+						DataIndex="QUANTITY"
 						Text="Gallons"
 						Flex="1" />
 				</Columns>
@@ -199,61 +197,6 @@
 								</ext:Store>
 							</Store>
 						</ext:ComboBox>
-						<ext:FieldContainer runat="server"
-							ID="uxAddProductionTimeInContainer"
-							FieldLabel="Time In">
-							<Items>
-								<ext:DateField runat="server"
-									ID="uxAddProductionDateIn"
-									Vtype="daterange"
-									EndDateField="uxAddProductionDateOut"
-									EnableKeyEvents="true"
-									AllowBlank="false">
-									<Listeners>
-										<KeyUp Fn="valDateTime" />
-										<Change Handler="#{uxAddProductionDateOut}.setValue(#{uxAddProductionDateIn}.value)" />
-									</Listeners>
-								</ext:DateField>
-								<ext:TimeField runat="server"
-									ID="uxAddProductionTimeIn"
-									Vtype="daterange"
-									EndDateField="uxAddProductionTimeOut"
-									EnableKeyEvents="true"
-									SelectedTime="05:00"
-									AllowBlank="false">
-									<Listeners>
-										<KeyUp Fn="valDateTime" />
-									</Listeners>
-								</ext:TimeField>
-							</Items>
-						</ext:FieldContainer>
-						<ext:FieldContainer runat="server"
-							ID="uxAddProductionTimeOutContainer"
-							FieldLabel="Time Out">
-							<Items>
-								<ext:DateField runat="server"
-									ID="uxAddProductionDateOut"
-									Vtype="daterange"
-									StartDateField="uxAddProductionDateIn"
-									EnableKeyEvents="true"
-									AllowBlank="false">
-									<Listeners>
-										<KeyUp Fn="valDateTime" />
-									</Listeners>
-								</ext:DateField>
-								<ext:TimeField runat="server"
-									ID="uxAddProductionTimeOut"
-									AllowBlank="false"
-									Vtype="daterange"
-									EnableKeyEvents="true"
-									SelectedTime="21:00"
-									StartDateField="uxAddProductionTimeIn">
-									<Listeners>
-										<KeyUp Fn="valDateTime" />
-									</Listeners>
-								</ext:TimeField>
-							</Items>
-						</ext:FieldContainer>
 						<ext:TextField runat="server"
 							ID="uxAddProductionWorkArea"
 							FieldLabel="Spray/Work Area"
@@ -336,59 +279,6 @@
 								</ext:Store>
 							</Store>
 						</ext:ComboBox>
-						<ext:FieldContainer runat="server"
-							ID="uxEditProductionTimeInContainer"
-							FieldLabel="Time In">
-							<Items>
-								<ext:DateField runat="server"
-									ID="uxEditProductionDateIn"
-									Vtype="daterange"
-									EndDateField="uxEditProductionDateOut"
-									EnableKeyEvents="true"
-									AllowBlank="false">
-									<Listeners>
-										<KeyUp Fn="valDateTime" />
-										<Change Handler="#{uxEditProductionDateOut}.setValue(uxEditProductionDateIn.value)" />
-									</Listeners>
-								</ext:DateField>
-								<ext:TimeField runat="server"
-									ID="uxEditProductionTimeIn"
-									Vtype="daterange"
-									EndDateField="uxEditProductionTimeOut"
-									EnableKeyEvents="true"
-									AllowBlank="false">
-									<Listeners>
-										<KeyUp Fn="valDateTime" />
-									</Listeners>
-								</ext:TimeField>
-							</Items>
-						</ext:FieldContainer>
-						<ext:FieldContainer runat="server"
-							ID="uxEditProductionTimeOutContainer"
-							FieldLabel="Time Out">
-							<Items>
-								<ext:DateField runat="server"
-									ID="uxEditProductionDateOut"
-									Vtype="daterange"
-									StartDateField="uxEditProductionDateIn"
-									EnableKeyEvents="true"
-									AllowBlank="false" >
-									<Listeners>
-										<KeyUp Fn="valDateTime" />
-									</Listeners>
-								</ext:DateField>
-								<ext:TimeField runat="server"
-									ID="uxEditProductionTimeOut"
-									Vtype="daterange"
-									StartDateField="uxEditProductionTimeIn"
-									EnableKeyEvents="true"
-									AllowBlank="false" >
-									<Listeners>
-										<KeyUp Fn="valDateTime" />
-									</Listeners>
-								</ext:TimeField>
-							</Items>
-						</ext:FieldContainer>
 						<ext:TextField runat="server"
 							ID="uxEditProductionWorkArea"
 							FieldLabel="Spray/Work Area"

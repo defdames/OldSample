@@ -124,7 +124,8 @@
     <Content Include="Views\Modules\DailyActivity\umHeaderTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umInventoryTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umManageExisting.aspx" />
-    <Content Include="Views\Modules\DailyActivity\umProductionTab.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umProductionTab-DBI.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umProductionTab-IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity.aspx" />
     <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
     <Content Include="Views\Modules\Security\umSecurityLogList.aspx" />
@@ -275,12 +276,19 @@
     <Compile Include="Views\Modules\DailyActivity\umManageExisting.aspx.designer.cs">
       <DependentUpon>umManageExisting.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umProductionTab.aspx.cs">
-      <DependentUpon>umProductionTab.aspx</DependentUpon>
+    <Compile Include="Views\Modules\DailyActivity\umProductionTab-DBI.aspx.cs">
+      <DependentUpon>umProductionTab-DBI.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umProductionTab.aspx.designer.cs">
-      <DependentUpon>umProductionTab.aspx</DependentUpon>
+    <Compile Include="Views\Modules\DailyActivity\umProductionTab-DBI.aspx.designer.cs">
+      <DependentUpon>umProductionTab-DBI.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umProductionTab-IRM.aspx.cs">
+      <DependentUpon>umProductionTab-IRM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umProductionTab-IRM.aspx.designer.cs">
+      <DependentUpon>umProductionTab-IRM.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umSubmitActivity.aspx.cs">
       <DependentUpon>umSubmitActivity.aspx</DependentUpon>
