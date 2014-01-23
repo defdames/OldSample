@@ -310,6 +310,33 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Model Model3;
         
         /// <summary>
+        /// uxEditProductionExpenditureType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DropDownField uxEditProductionExpenditureType;
+        
+        /// <summary>
+        /// uxEditProductionExpenditureGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridPanel uxEditProductionExpenditureGrid;
+        
+        /// <summary>
+        /// uxEditProductionExpenditureStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxEditProductionExpenditureStore;
+        
+        /// <summary>
         /// uxEditProductionStation control.
         /// </summary>
         /// <remarks>
@@ -317,15 +344,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.TextField uxEditProductionStation;
-        
-        /// <summary>
-        /// uxEditProductionExpenditureType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxEditProductionExpenditureType;
         
         /// <summary>
         /// uxEditProductionQuantity control.
@@ -343,7 +361,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxEditProductionBillRate;
+        protected global::Ext.Net.Hidden uxEditProductionBillRate;
         
         /// <summary>
         /// uxEditProductionUOM control.
@@ -352,7 +370,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxEditProductionUOM;
+        protected global::Ext.Net.Hidden uxEditProductionUOM;
         
         /// <summary>
         /// uxEditProductionComments control.
