@@ -28,8 +28,6 @@
         <AssociationConnector Association="OracleModel.FK_INVENTORY_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="1.5" PointY="16.625" />
         <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
-        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_FOOTER" Width="1.5" PointX="4.75" PointY="24.125" />
-        <AssociationConnector Association="OracleModel.FK_FOOTER_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.PROJECTS_V" Width="1.5" PointX="9.625" PointY="0.625" />
         <EntityTypeShape EntityType="OracleModel.CLASS_CODES_V" Width="1.5" PointX="11.5" PointY="0.625" />
         <EntityTypeShape EntityType="OracleModel.UNIT_OF_MEASURE_V" Width="2.125" PointX="0.625" PointY="27.375" />
@@ -44,6 +42,8 @@
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" Width="1.5" PointX="1.5" PointY="21" />
         <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.EXPENDITURE_TYPE_V" Width="1.5" PointX="13.25" PointY="0.625" />
+        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_FOOTER" Width="1.5" PointX="4.125" PointY="23.25" />
+        <AssociationConnector Association="OracleModel.FK_FOOTER_HEADER_ID" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

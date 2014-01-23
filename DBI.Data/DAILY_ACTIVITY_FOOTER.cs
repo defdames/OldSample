@@ -28,6 +28,8 @@ namespace DBI.Data
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
         public string CONTRACT_REP_NAME { get; set; }
+        public byte[] DOT_REP { get; set; }
+        public string DOT_REP_NAME { get; set; }
     
         public virtual DAILY_ACTIVITY_HEADER DAILY_ACTIVITY_HEADER { get; set; }
     }
