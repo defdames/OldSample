@@ -10,7 +10,7 @@
 namespace DBI.Web.EMS.Views.Modules.DailyActivity {
     
     
-    public partial class umInventoryTab {
+    public partial class umInventoryTab_DBI {
         
         /// <summary>
         /// ResourceManager1 control.

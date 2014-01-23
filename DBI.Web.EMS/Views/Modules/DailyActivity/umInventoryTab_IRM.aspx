@@ -1,23 +1,10 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umInventoryTab.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.DailyActivity.umInventoryTab" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umInventoryTab_IRM.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.DailyActivity.umInventoryTab_IRM" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+<head id="Head1" runat="server">
 	<title></title>
-	<script type="text/javascript">
-		var doAddMath = function () {
-			var gallonStart = parseInt(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_STARTING);
-			var gallonMixed = parseInt(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_MIXED);
-			var gallonRemain = parseInt(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_REMAINING);
-			var gallonAcre = parseInt(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_ACRE);
-		   
-			var gallonsUsed = gallonStart + gallonMixed - gallonRemain;
-			var acresSprayed = gallonsUsed / gallonAcre;
-			var rate = parseInt(App.uxAddInventoryRate.value);
-			App.uxAddInventoryTotal.setValue(rate * acresSprayed);
-		};
-	</script>
 	<link href="../../../Resources/StyleSheets/main.css" rel="stylesheet" />
 </head>
 <body>
@@ -95,8 +82,6 @@
 						<ext:Model runat="server" ID="uxCurrentInventoryModel">
 							<Fields>
 								<ext:ModelField Name="INVENTORY_ID" Type="Int" />
-								<ext:ModelField Name="CHEMICAL_MIX_ID" Type="Int" />
-								<ext:ModelField Name="CHEMICAL_MIX_NUMBER" Type="String" />
 								<ext:ModelField Name="SUB_INVENTORY_SECONDARY_NAME" Type="String" />
 								<ext:ModelField Name="SUB_INVENTORY_ORG_ID" Type="Float" />
 								<ext:ModelField Name="SEGMENT1" Type="String" />
@@ -105,7 +90,6 @@
 								<ext:ModelField Name="RATE" Type="Float" />
 								<ext:ModelField Name="UOM_CODE" Type="String" />
 								<ext:ModelField Name="UNIT_OF_MEASURE" Type="String" />
-								<ext:ModelField Name="EPA_NUMBER" Type="String" />
 								<ext:ModelField Name="INV_NAME" Type="String" />
 							</Fields>
 						</ext:Model>
@@ -114,49 +98,40 @@
 			</Store>
 			<ColumnModel>
 				<Columns>
-					<ext:Column runat="server"
+					<ext:Column ID="Column1" runat="server"
 						DataIndex="INVENTORY_ID"
 						Text="Inventory ID" />
-					<ext:Column runat="server"
-						DataIndex="CHEMICAL_MIX_ID"
-						Text="Mix Id" Hidden="true" />
-					<ext:Column runat="server"
-						DataIndex="CHEMICAL_MIX_NUMBER"
-						Text="Mix Number" />
-					<ext:Column runat="server"
+					<ext:Column ID="Column4" runat="server"
 						DataIndex="SUB_INVENTORY_SECONDARY_NAME"
 						Text="Subinventory Name" />
-					<ext:Column runat="server"
+					<ext:Column ID="Column5" runat="server"
 						DataIndex="SUB_INVENTORY_ORG_ID"
 						Text="Org Id" Hidden="true" />
-					<ext:Column runat="server"
+					<ext:Column ID="Column6" runat="server"
 						DataIndex="SEGMENT1"
 						Text="Inventory Number" Hidden="true" />
-					<ext:Column runat="server"
+					<ext:Column ID="Column7" runat="server"
 						DataIndex="ITEM_ID"
 						Text="Item Id" Hidden="true" />
-					<ext:Column runat="server"
+					<ext:Column ID="Column8" runat="server"
 						DataIndex="DESCRIPTION"
 						Text="Item" />
-					<ext:Column runat="server"
+					<ext:Column ID="Column9" runat="server"
 						DataIndex="RATE"
 						Text="Rate" />
-					<ext:Column runat="server"
+					<ext:Column ID="Column10" runat="server"
 						DataIndex="UOM_CODE"
 						Text="Unit of Measure Code" Hidden="true" />
-					<ext:Column runat="server"
+					<ext:Column ID="Column11" runat="server"
 						DataIndex="UNIT_OF_MEASURE"
 						Text="Unit" />
-					<ext:Column runat="server"
-						DataIndex="EPA_NUMBER"
-						Text="EPA Number" />
-					<ext:Column runat="server"
+					<ext:Column ID="Column13" runat="server"
 						DataIndex="INV_NAME"
 						Text="Inventory Name" Hidden="true" />
 				</Columns>
 			</ColumnModel>
 			<TopBar>
-				<ext:Toolbar runat="server">
+				<ext:Toolbar ID="Toolbar1" runat="server">
 					<Items>
 						<ext:Button runat="server"
 							ID="uxAddInventoryButton"
@@ -210,7 +185,7 @@
 				</ext:Toolbar>
 			</TopBar>
 			<SelectionModel>
-				<ext:RowSelectionModel runat="server" Mode="Single" AllowDeselect="true" />
+				<ext:RowSelectionModel ID="RowSelectionModel1" runat="server" Mode="Single" AllowDeselect="true" />
 			</SelectionModel>
 			<Listeners>
 				<Select Handler="#{uxEditInventoryButton}.enable();
@@ -230,70 +205,6 @@
 					ID="uxAddInventoryForm"
 					Layout="FormLayout">
 					<Items>
-						<ext:DropDownField runat="server"
-							ID="uxAddInventoryMix"
-							Mode="ValueText"
-							FieldLabel="Select Mix"
-							AllowBlank="false">
-							<Component>
-								<ext:GridPanel runat="server"
-									ID="uxAddInventoryMixGrid"  
-									Layout="HBoxLayout">
-									<Store>
-										<ext:Store runat="server"
-											ID="uxAddInventoryMixStore">
-											<Model>
-												<ext:Model runat="server">
-													<Fields>
-														<ext:ModelField Name="CHEMICAL_MIX_ID" />
-														<ext:ModelField Name="CHEMICAL_MIX_NUMBER" />
-														<ext:ModelField Name="HEADER_ID" />
-														<ext:ModelField Name="TARGET_AREA" />
-														<ext:ModelField Name="GALLON_ACRE" />
-														<ext:ModelField Name="GALLON_STARTING" />
-														<ext:ModelField Name="GALLON_MIXED" />
-														<ext:ModelField Name="GALLON_TOTAL" />
-														<ext:ModelField Name="GALLON_REMAINING" />
-														<ext:ModelField Name="GALLON_USED" />
-														<ext:ModelField Name="ACRES_SPRAYED" />
-														<ext:ModelField Name="STATE" />
-														<ext:ModelField Name="COUNTY" />
-													</Fields>
-												</ext:Model>
-											</Model>                                
-										</ext:Store>
-									</Store>
-									<ColumnModel>
-										<Columns>
-											<ext:Column runat="server"
-												DataIndex="CHEMICAL_MIX_NUMBER"
-												Text="Mix #" Flex="20" />
-											<ext:Column ID="Column1" runat="server"
-												DataIndex="TARGET_AREA" 
-												Text="Target Area" Flex="40" />                 
-											<ext:Column runat="server"
-												DataIndex="GALLON_ACRE"
-												Text="Gallons / Acre" Flex="40"  />                                                             
-										</Columns>
-									</ColumnModel>
-									<SelectionModel>
-										<ext:RowSelectionModel runat="server" Mode="Single" />
-									</SelectionModel>
-									<DirectEvents>
-										<Select OnEvent="deStoreChemicalData">
-											<ExtraParams>
-												<ext:Parameter Name="MixId" Value="#{uxAddInventoryMixGrid}.getSelectionModel().getSelection()[0].data.CHEMICAL_MIX_ID" Mode="Raw" />
-												<ext:Parameter Name="MixNumber" Value="#{uxAddInventoryMixGrid}.getSelectionModel().getSelection()[0].data.CHEMICAL_MIX_NUMBER" Mode="Raw" />
-												<ext:Parameter Name="Type" Value="Add" />
-											</ExtraParams>
-										</Select>
-									</DirectEvents>
-									<Listeners>
-										<Select Fn="doAddMath" />
-									</Listeners>  
-								</ext:GridPanel>                                
-							</Component>
-						</ext:DropDownField>
 						<ext:ComboBox runat="server"
 							ID="uxAddInventoryRegion"
 							FieldLabel="Select Region"
@@ -306,7 +217,7 @@
 								<ext:Store runat="server" 
 									ID="uxAddInventoryRegionStore">
 									<Model>
-										<ext:Model runat="server">
+										<ext:Model ID="Model2" runat="server">
 											<Fields>
 												<ext:ModelField Name="INV_NAME" />
 												<ext:ModelField Name="ORGANIZATION_ID" />
@@ -338,7 +249,7 @@
 								<ext:Store runat="server"
 									ID="uxAddInventorySubStore">
 									<Model>
-										<ext:Model runat="server">
+										<ext:Model ID="Model3" runat="server">
 											<Fields>
 												<ext:ModelField Name="ORG_ID" />
 												<ext:ModelField Name="SECONDARY_INV_NAME" />
@@ -358,13 +269,13 @@
 									ID="uxAddInventoryItemGrid" StoreID="uxAddInventoryItemStore">
 									<ColumnModel>
 										<Columns>
-											<ext:Column runat="server"
+											<ext:Column ID="Column17" runat="server"
 												DataIndex="SEGMENT1"
 												Text="Item Id" />
-											<ext:Column runat="server"
+											<ext:Column ID="Column18" runat="server"
 												DataIndex="DESCRIPTION"
 												Text="Name" />
-											<ext:Column runat="server"
+											<ext:Column ID="Column19" runat="server"
 												DataIndex="UOM_CODE"
 												Text="Measure" />
 										</Columns>
@@ -376,7 +287,7 @@
 										<ext:PagingToolbar runat="server" ID="uxAddInventoryItemPaging" />
 									</BottomBar>
 									<SelectionModel>
-										<ext:RowSelectionModel runat="server" Mode="Single" />
+										<ext:RowSelectionModel ID="RowSelectionModel3" runat="server" Mode="Single" />
 									</SelectionModel>
 									<DirectEvents>
 										<Select OnEvent="deStoreGridValue">
@@ -400,11 +311,8 @@
 						</ext:DropDownField>
 						<ext:TextField runat="server"
 							ID="uxAddInventoryRate"
-							FieldLabel="Rate"
+							FieldLabel="Quantity"
 							AllowBlank="false">
-							<Listeners>
-								<Change Fn="doAddMath" />
-							</Listeners>
 						</ext:TextField>
 						<ext:ComboBox runat="server"
 							ID="uxAddInventoryMeasure"
@@ -418,7 +326,7 @@
 								<ext:Store runat="server"
 									ID="uxAddInventoryMeasureStore">
 									<Model>
-										<ext:Model runat="server">
+										<ext:Model ID="Model4" runat="server">
 											<Fields>
 												<ext:ModelField Name="UOM_CODE" />
 												<ext:ModelField Name="UNIT_OF_MEASURE" />
@@ -430,14 +338,6 @@
 								</ext:Store>
 							</Store>
 						</ext:ComboBox>
-						<ext:TextField runat="server"
-							ID="uxAddInventoryTotal"
-							Disabled="true"
-							FieldLabel="Total" />
-						<ext:TextField runat="server"
-							ID="uxAddInventoryEPA"
-							FieldLabel="EPA Number"
-							AllowBlank="false" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
@@ -468,9 +368,6 @@
 					</Listeners>
 				</ext:FormPanel>
 			</Items>
-			<Listeners>
-				<Show Handler="#{uxAddInventoryMix}.focus()" />
-			</Listeners>
 		</ext:Window>
 		<ext:Window runat="server"
 			ID="uxEditInventoryWindow"
@@ -482,11 +379,6 @@
 					ID="uxEditInventoryForm"
 					Layout="FormLayout">
 					<Items>
-						<ext:TextField runat="server"
-							ID="uxEditInventoryMix"
-							Disabled="true" 
-							FieldLabel="Mix Number"
-							AllowBlank="false" />
 						<ext:ComboBox runat="server"
 							ID="uxEditInventoryRegion"
 							FieldLabel="Select Region"
@@ -499,7 +391,7 @@
 								<ext:Store runat="server" 
 									ID="uxEditInventoryRegionStore">
 									<Model>
-										<ext:Model runat="server">
+										<ext:Model ID="Model5" runat="server">
 											<Fields>
 												<ext:ModelField Name="ORGANIZATION_ID" />
 												<ext:ModelField Name="INV_NAME" />
@@ -531,7 +423,7 @@
 								<ext:Store runat="server"
 									ID="uxEditInventorySubStore">
 									<Model>
-										<ext:Model runat="server">
+										<ext:Model ID="Model6" runat="server">
 											<Fields>
 												<ext:ModelField Name="DESCRIPTION" />
 												<ext:ModelField Name="SECONDARY_INV_NAME" />
@@ -552,13 +444,13 @@
 									StoreId="uxEditInventoryItemStore">
 									<ColumnModel>
 										<Columns>
-											<ext:Column runat="server"
+											<ext:Column ID="Column20" runat="server"
 												DataIndex="SEGMENT1"
 												Text="Item Id" />
-											<ext:Column runat="server"
+											<ext:Column ID="Column21" runat="server"
 												DataIndex="DESCRIPTION"
 												Text="Name" />
-											<ext:Column runat="server"
+											<ext:Column ID="Column22" runat="server"
 												DataIndex="UOM_CODE"
 												Text="Measure" />
 										</Columns>
@@ -591,12 +483,8 @@
 						</ext:DropDownField>
 						<ext:TextField runat="server"
 							ID="uxEditInventoryRate"
-							FieldLabel="Rate"
-							AllowBlank="false">
-							<DirectEvents>
-								<Change OnEvent="deEditMath" />
-							</DirectEvents>
-						</ext:TextField>
+							FieldLabel="Quantity"
+							AllowBlank="false" />
 						<ext:ComboBox runat="server"
 							ID="uxEditInventoryMeasure"
 							FieldLabel="Unit of Measure"
@@ -609,7 +497,7 @@
 								<ext:Store runat="server"
 									ID="uxEditInventoryMeasureStore">
 									<Model>
-										<ext:Model runat="server">
+										<ext:Model ID="Model7" runat="server">
 											<Fields>
 												<ext:ModelField Name="UOM_CODE" />
 												<ext:ModelField Name="UNIT_OF_MEASURE" />
@@ -621,14 +509,6 @@
 								</ext:Store>
 							</Store>
 						</ext:ComboBox>
-						<ext:TextField runat="server"
-							ID="uxEditInventoryTotal"
-							Disabled="true"
-							FieldLabel="Total" />
-						<ext:TextField runat="server"
-							ID="uxEditInventoryEPA"
-							FieldLabel="EPA Number"
-							AllowBlank="false" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
@@ -639,7 +519,6 @@
 								<Click OnEvent="deEditInventory">
 									<ExtraParams>
 										<ext:Parameter Name="InventoryId" Value="#{uxCurrentInventoryGrid}.getSelectionModel().getSelection()[0].data.INVENTORY_ID" Mode="Raw" />
-										<ext:Parameter Name="ChemicalId" Value="#{uxCurrentInventoryGrid}.getSelectionModel().getSelection()[0].data.CHEMICAL_MIX_ID" Mode="Raw" />
 										<ext:Parameter Name="SecondaryInvName" Value="#{uxEditInventorySub}.getRawValue()" Mode="Raw" />
 									</ExtraParams>
 								</Click>
@@ -660,9 +539,6 @@
 					</Listeners>
 				</ext:FormPanel>
 			</Items>
-			<Listeners>
-				<Show Handler="#{uxEditInventoryMix}.focus()" />
-			</Listeners>
 		</ext:Window>
 	</form>
 </body>

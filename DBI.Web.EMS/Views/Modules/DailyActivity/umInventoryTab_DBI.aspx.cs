@@ -12,7 +12,7 @@ using Ext.Net;
 
 namespace DBI.Web.EMS.Views.Modules.DailyActivity
 {
-    public partial class umInventoryTab : BasePage
+    public partial class umInventoryTab_DBI : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {

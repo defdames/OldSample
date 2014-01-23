@@ -173,7 +173,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 string emplUrl = string.Format("umEmployeesTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                 string chemUrl = string.Format("umChemicalTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                 string weatherUrl = string.Format("umWeatherTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-                string invUrl = string.Format("umInventoryTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                string invUrl = string.Empty;
 
                 uxHeaderTab.Disabled = false;
                 uxEquipmentTab.Disabled = false;
@@ -186,10 +186,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEquipmentTab.LoadContent(equipUrl);
                 uxEmployeeTab.LoadContent(emplUrl);
                 uxWeatherTab.LoadContent(weatherUrl);
-                uxInventoryTab.LoadContent(invUrl);
+                
                 if (OrgId == 121)
                 {
                     prodUrl = string.Format("umProductionTab_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                    invUrl = string.Format("umInventoryTab_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                     uxChemicalTab.Disabled = false;
                     uxTabPanel.ShowTab(uxChemicalTab);
                     uxChemicalTab.LoadContent(chemUrl);
@@ -198,10 +199,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 {
                     uxTabPanel.HideTab(uxChemicalTab);
                     prodUrl = string.Format("umProductionTab_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                    invUrl = string.Format("umInventoryTab_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                     //uxChemicalTab.Close();
                     
                 }
                 uxProductionTab.LoadContent(prodUrl);
+                uxInventoryTab.LoadContent(invUrl);
             }
 
             uxApproveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
