@@ -34,12 +34,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 var data = (from d in _context.DAILY_ACTIVITY_INVENTORY
                             join i in _context.INVENTORY_V on d.ITEM_ID equals i.ITEM_ID into joined
-                            join c in _context.DAILY_ACTIVITY_CHEMICAL_MIX on d.CHEMICAL_MIX_ID equals c.CHEMICAL_MIX_ID
-                            join u in _context.UNIT_OF_MEASURE_V on d.UNIT_OF_MEASURE equals u.UOM_CODE
                             where d.HEADER_ID == HeaderId
                             from j in joined
                             where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
-                            select new { j.ENABLED_FLAG, j.ITEM_ID, j.ACTIVE, j.LE, j.LAST_UPDATE_DATE, j.ATTRIBUTE2, j.INV_LOCATION, j.INV_NAME, d.INVENTORY_ID, d.SUB_INVENTORY_SECONDARY_NAME, d.SUB_INVENTORY_ORG_ID, j.SEGMENT1, j.DESCRIPTION, d.RATE, u.UOM_CODE, u.UNIT_OF_MEASURE }).ToList();
+                            select new { j.ENABLED_FLAG, j.ITEM_ID, j.ACTIVE, j.LE, j.LAST_UPDATE_DATE, j.ATTRIBUTE2, j.INV_LOCATION, j.INV_NAME, d.INVENTORY_ID, d.SUB_INVENTORY_SECONDARY_NAME, d.SUB_INVENTORY_ORG_ID, j.SEGMENT1, j.DESCRIPTION, d.RATE}).ToList();
 
                 uxCurrentInventoryStore.DataSource = data;
             }
@@ -114,8 +112,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     SUB_INVENTORY_ORG_ID = SubInventoryOrg,
                     ITEM_ID = ItemId,
                     RATE = Rate,
-                    CHEMICAL_MIX_ID = -1,
-                    UNIT_OF_MEASURE = uxAddInventoryMeasure.Value.ToString(),
                     CREATE_DATE = DateTime.Now,
                     MODIFY_DATE = DateTime.Now,
                     CREATED_BY = User.Identity.Name,
@@ -174,14 +170,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEditInventoryRegion.SetValueAndFireSelect(Inventory["SUB_INVENTORY_ORG_ID"]);
                 uxEditInventoryRegion.SelectedItems.Add(new Ext.Net.ListItem(Inventory["INV_NAME"], Inventory["SUB_INVENTORY_ORG_ID"]));
                 uxEditInventoryRegion.UpdateSelectedItems();
-                //deLoadSubinventory(sender, e);
                 uxEditInventorySub.SetValueAndFireSelect(SubData.DESCRIPTION);
                 uxEditInventoryItem.SetValue(Inventory["ITEM_ID"], Inventory["DESCRIPTION"]);
-                e.ExtraParams.Add(new Ext.Net.Parameter("uomCode", Inventory["UOM_CODE"]));
-                deGetUnitOfMeasure(sender, e);
-                uxEditInventoryMeasure.SelectedItems.Clear();
-                uxEditInventoryMeasure.SelectedItems.Add(new Ext.Net.ListItem(Inventory["UNIT_OF_MEASURE"], Inventory["UOM_CODE"]));
-                uxEditInventoryMeasure.UpdateSelectedItems();
                 uxEditInventoryRate.SetValue(Inventory["RATE"]);
             }
 
@@ -216,7 +206,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.SUB_INVENTORY_ORG_ID = OrgId;
             data.ITEM_ID = ItemId;
             data.RATE = Rate;
-            data.UNIT_OF_MEASURE = uxEditInventoryMeasure.Value.ToString();
             data.MODIFIED_BY = User.Identity.Name;
             data.MODIFY_DATE = DateTime.Now;
 
@@ -351,41 +340,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEditInventoryItemStore.DataSource = data;
                 uxEditInventoryItemStore.DataBind();
                 e.Total = count;
-            }
-        }
-
-        /// <summary>
-        /// Gets Units of Measure from DB
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deGetUnitOfMeasure(object sender, DirectEventArgs e)
-        {
-            //Query Db for units of measure based on uom_code
-            using (Entities _context = new Entities())
-            {
-                string uomCode = e.ExtraParams["uomCode"];
-                List<UNIT_OF_MEASURE_V> data;
-                var uomClass = (from u in _context.UNIT_OF_MEASURE_V
-                                where u.UOM_CODE == uomCode
-                                select u.UOM_CLASS).Single().ToString();
-
-                data = (from u in _context.UNIT_OF_MEASURE_V
-                        where u.UOM_CLASS == uomClass
-                        select u).ToList();
-
-                //Set datasource for store add/edit
-                if (e.ExtraParams["Type"] == "Add")
-                {
-                    uxAddInventoryMeasureStore.DataSource = data;
-                    uxAddInventoryMeasureStore.DataBind();
-                }
-                else
-                {
-                    uxEditInventoryMeasureStore.DataSource = data;
-                    uxEditInventoryMeasureStore.DataBind();
-                }
-
             }
         }
 
