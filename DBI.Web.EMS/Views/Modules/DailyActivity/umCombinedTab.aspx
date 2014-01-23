@@ -106,13 +106,11 @@
                                 <ext:Model ID="Model3" runat="server">
                                     <Fields>
                                         <ext:ModelField Name="DESCRIPTION" />
-                                        <ext:ModelField Name="TIME_IN" Type="Date" />
-                                        <ext:ModelField Name="TIME_OUT" Type="Date" />
                                         <ext:ModelField Name="WORK_AREA" />
                                         <ext:ModelField Name="POLE_FROM" />
                                         <ext:ModelField Name="POLE_TO" />
                                         <ext:ModelField Name="ACRES_MILE" />
-                                        <ext:ModelField Name="GALLONS" />
+                                        <ext:ModelField Name="QUANTITY" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -121,13 +119,11 @@
                     <ColumnModel>
                         <Columns>
                             <ext:Column ID="Column15" runat="server" DataIndex="DESCRIPTION" Text="Task Name" Flex="6" />
-                            <ext:DateColumn ID="DateColumn4" runat="server" DataIndex="TIME_IN" Text="Time In" Format="M/d/yyyy h:mm tt" Flex="6" />
-                            <ext:DateColumn ID="DateColumn5" runat="server" DataIndex="TIME_OUT" Text="Time Out" Format="M/d/yyyy h:mm tt" Flex="6" />
                             <ext:Column ID="Column16" runat="server" DataIndex="WORK_AREA" Text="Spray/Work Area" Flex="6" />
                             <ext:Column ID="Column17" runat="server" DataIndex="POLE_FROM" Text="Pole From" Flex="7" />
                             <ext:Column ID="Column18" runat="server" DataIndex="POLE_TO" Text="Pole To" Flex="7" />
                             <ext:Column ID="Column19" runat="server" DataIndex="ACRES_MILE" Text="Acres/Mile" Flex="4" />
-                            <ext:Column ID="Column20" runat="server" DataIndex="GALLONS" Text="Gallons" Flex="4" />
+                            <ext:Column ID="Column20" runat="server" DataIndex="QUANTITY" Text="Gallons" Flex="4" />
                         </Columns>
                     </ColumnModel>
                 </ext:GridPanel>

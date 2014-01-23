@@ -12,7 +12,7 @@
         <ext:ResourceManager ID="ResourceManager1" runat="server" />
         <div>
             <%----------------------------------------------------- <CrossingInfo Tab>----------------------------------------------------------------------%>
-            <ext:GridPanel ID="uxCrossingMainGrid" Title="Crossing Information" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true">
+            <ext:GridPanel ID="uxCrossingMainGrid" Title="CROSSING INFORMATION" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true">
                 <SelectionModel>
                     <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
                 </SelectionModel>
@@ -27,7 +27,9 @@
                                 <Fields>
                                     <ext:ModelField Name="CROSSING_ID" />
                                     <ext:ModelField Name="CROSSING_NUMBER" Type="String" />
-                                    <ext:ModelField Name="SUB_CONTRACTED" />
+                                    <ext:ModelField Name="SUB_DIVISION" />
+                                    <ext:ModelField Name="MTM" />
+                                    <ext:ModelField Name="ON_SPUR" />
                                 </Fields>
                             </ext:Model>
                         </Model>
@@ -40,9 +42,10 @@
                     <Columns>
 
                         <ext:Column ID="uxMainCrossingNum" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing #" Flex="1" />
-                        <ext:Column ID="uxSubConGrid" runat="server" DataIndex="SUB_CONTRACTED" Text="SubCon" Flex="1" />
-                        <ext:Column ID="uxProjectNum" runat="server" DataIndex="" Text="Project #" Flex="1" />
-                        <ext:Column ID="uxCrossingManager" runat="server" DataIndex="" Text="Manager" Flex="1" />
+                        <ext:Column ID="Column1" runat="server" DataIndex="" Text="Project Name" Flex="1" />
+                        <ext:Column ID="uxSubConGrid" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
+                        <ext:Column ID="uxRestricted" runat="server" DataIndex="MTM" Text="Manager" Flex="1" />
+                        <ext:Column ID="uxCrossingManager" runat="server" DataIndex="ON_SPUR" Text="OnSpur" Flex="1" />
 
                     </Columns>
                 </ColumnModel>
@@ -210,7 +213,7 @@
                                 <Items>
                                     <ext:TextField ID="uxMTMCellCI" runat="server" FieldLabel="MTM Cell #" AnchorHorizontal="100%" LabelAlign="Right" />
                                     <ext:TextField ID="uxOtherTracksCI" runat="server" FieldLabel="Other Tracks" AnchorHorizontal="100%" LabelAlign="Right" />
-                                    <ext:Checkbox ID="uxFenceEncroachCI" runat="server" FieldLabel="Enchroachment" LabelAlign="Right" Width="110" />
+                                    <ext:Checkbox ID="uxFenceEncroachCI" runat="server" FieldLabel="Encroachment" LabelAlign="Right" Width="110" />
                                     <ext:Checkbox ID="uxOnSpurCI" runat="server" FieldLabel="On Spur" LabelAlign="Right" Width="110" />
                                 </Items>
                             </ext:FieldContainer>
@@ -337,7 +340,7 @@
                                         <Items>
                                             <ext:TextField ID="uxAddMTMCellCI" runat="server" FieldLabel="MTM Cell #" AnchorHorizontal="100%" LabelAlign="Right" />
                                             <ext:TextField ID="uxAddOtherTracksCI" runat="server" FieldLabel="Other Tracks" AnchorHorizontal="100%" LabelAlign="Right" />
-                                            <ext:Checkbox ID="uxAddFenceEnchroachCI" runat="server" FieldLabel="Enchroachment" LabelAlign="Right" Width="110" />
+                                            <ext:Checkbox ID="uxAddFenceEnchroachCI" runat="server" FieldLabel="Encroachment" LabelAlign="Right" Width="110" />
                                             <ext:Checkbox ID="uxAddOnSpurCI" runat="server" FieldLabel="On Spur" LabelAlign="Right" Width="110" />
                                         </Items>
                                     </ext:FieldContainer>
@@ -471,7 +474,7 @@
                                         <Items>
                                             <ext:TextField ID="uxEditMTMCellCI" runat="server" FieldLabel="MTM Cell #" AnchorHorizontal="100%" LabelAlign="Right" />
                                             <ext:TextField ID="uxEditOtherTracksCI" runat="server" FieldLabel="Other Tracks" AnchorHorizontal="100%" LabelAlign="Right" />
-                                            <ext:Checkbox ID="uxEditFenceEnchroachCI" runat="server" FieldLabel="Enchroachment" LabelAlign="Right" Width="110" />
+                                            <ext:Checkbox ID="uxEditFenceEnchroachCI" runat="server" FieldLabel="Encroachment" LabelAlign="Right" Width="110" />
                                             <ext:Checkbox ID="uxEditOnSpurCI" runat="server" FieldLabel="On Spur" LabelAlign="Right" Width="110" />
                                         </Items>
                                     </ext:FieldContainer>

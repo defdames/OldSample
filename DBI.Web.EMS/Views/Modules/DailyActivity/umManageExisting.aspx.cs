@@ -150,15 +150,26 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deUpdateUrlAndButtons(object sender, DirectEventArgs e)
         {
+            long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
             string homeUrl = string.Format("umCombinedTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+
+            long OrgId;
+
+            using (Entities _context = new Entities())
+            {
+                OrgId = (from d in _context.DAILY_ACTIVITY_HEADER
+                         join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                         where d.HEADER_ID == HeaderId
+                         select (long) p.ORG_ID).Single();
+            }
             uxCombinedTab.Disabled = false;
             uxCombinedTab.LoadContent(homeUrl);
 
             if (validateComponentSecurity("SYS.DailyActivity.ViewAll"))
             {
+                string prodUrl = string.Empty;
                 string headerUrl = string.Format("umHeaderTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                 string equipUrl = string.Format("umEquipmentTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-                string prodUrl = string.Format("umProductionTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                 string emplUrl = string.Format("umEmployeesTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                 string chemUrl = string.Format("umChemicalTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                 string weatherUrl = string.Format("umWeatherTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
@@ -168,17 +179,29 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEquipmentTab.Disabled = false;
                 uxProductionTab.Disabled = false;
                 uxEmployeeTab.Disabled = false;
-                uxChemicalTab.Disabled = false;
                 uxWeatherTab.Disabled = false;
                 uxInventoryTab.Disabled = false;
 
                 uxHeaderTab.LoadContent(headerUrl);
                 uxEquipmentTab.LoadContent(equipUrl);
-                uxProductionTab.LoadContent(prodUrl);
                 uxEmployeeTab.LoadContent(emplUrl);
-                uxChemicalTab.LoadContent(chemUrl);
                 uxWeatherTab.LoadContent(weatherUrl);
                 uxInventoryTab.LoadContent(invUrl);
+                if (OrgId == 121)
+                {
+                    prodUrl = string.Format("umProductionTab_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                    uxChemicalTab.Disabled = false;
+                    uxTabPanel.ShowTab(uxChemicalTab);
+                    uxChemicalTab.LoadContent(chemUrl);
+                }
+                else if (OrgId == 123)
+                {
+                    uxTabPanel.HideTab(uxChemicalTab);
+                    prodUrl = string.Format("umProductionTab_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                    //uxChemicalTab.Close();
+                    
+                }
+                uxProductionTab.LoadContent(prodUrl);
             }
 
             uxApproveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
@@ -348,7 +371,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                   join t in _context.PA_TASKS_V on d.TASK_ID equals t.TASK_ID
                                   join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                   where d.HEADER_ID == HeaderId
-                                  select new { t.DESCRIPTION, d.TIME_IN, d.TIME_OUT, d.WORK_AREA, d.POLE_FROM, d.POLE_TO, d.ACRES_MILE, d.GALLONS }).ToList<object>();
+                                  select new { t.DESCRIPTION, d.TIME_IN, d.TIME_OUT, d.WORK_AREA, d.POLE_FROM, d.POLE_TO, d.ACRES_MILE, d.QUANTITY }).ToList<object>();
                 return returnData;
             }
         }
@@ -601,8 +624,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 PdfPTable ProductionTable = new PdfPTable(7);
 
                 Cells = new PdfPCell[]{
-                    new PdfPCell(new Phrase("Time\nIn", HeaderFont)),
-                    new PdfPCell(new Phrase("Time\nOut", HeaderFont)),
                     new PdfPCell(new Phrase("Spray/Work Area", HeaderFont)),
                     new PdfPCell(new Phrase("Pole/MP\nFrom", HeaderFont)),
                     new PdfPCell(new Phrase("Pole/MP\nTo", HeaderFont)),
@@ -615,13 +636,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 foreach (dynamic Data in ProductionData)
                 {
                     Cells = new PdfPCell[]{
-                        new PdfPCell(new Phrase(Data.TIME_IN.TimeOfDay.ToString(), CellFont)),
-                        new PdfPCell(new Phrase(Data.TIME_OUT.TimeOfDay.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Data.WORK_AREA, CellFont)),
                         new PdfPCell(new Phrase(Data.POLE_FROM, CellFont)),
                         new PdfPCell(new Phrase(Data.POLE_TO, CellFont)),
                         new PdfPCell(new Phrase(Data.ACRES_MILE.ToString(), CellFont)),
-                        new PdfPCell(new Phrase(Data.GALLONS.ToString(), CellFont))
+                        new PdfPCell(new Phrase(Data.QUANTITY.ToString(), CellFont))
                     };
 
                     Row = new PdfPRow(Cells);
