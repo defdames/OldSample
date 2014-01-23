@@ -16,7 +16,7 @@ namespace DBI.Data
     {
         public decimal FOOTER_ID { get; set; }
         public long HEADER_ID { get; set; }
-        public string REASON_FOR_NO_WORK { get; set; }
+        public string COMMENTS { get; set; }
         public string HOTEL_NAME { get; set; }
         public string HOTEL_CITY { get; set; }
         public string HOTEL_STATE { get; set; }

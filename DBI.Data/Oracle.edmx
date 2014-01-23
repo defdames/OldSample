@@ -708,7 +708,7 @@
           </Key>
           <Property Name="FOOTER_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="HEADER_ID" Type="number" Nullable="false" Precision="15" />
-          <Property Name="REASON_FOR_NO_WORK" Type="varchar2" MaxLength="500" />
+          <Property Name="COMMENTS" Type="varchar2" MaxLength="500" />
           <Property Name="HOTEL_NAME" Type="varchar2" MaxLength="100" />
           <Property Name="HOTEL_CITY" Type="varchar2" MaxLength="100" />
           <Property Name="HOTEL_STATE" Type="varchar2" MaxLength="100" />
@@ -1612,15 +1612,15 @@
             <End Role="DAILY_ACTIVITY_PRODUCTION" EntitySet="DAILY_ACTIVITY_PRODUCTION" />
           </AssociationSet>
           <EntitySet Name="EXPENDITURE_TYPE_V" EntityType="OracleModel.EXPENDITURE_TYPE_V" />
-          <EntitySet Name="DAILY_ACTIVITY_FOOTER" EntityType="OracleModel.DAILY_ACTIVITY_FOOTER" />
-          <AssociationSet Name="FK_FOOTER_HEADER_ID" Association="OracleModel.FK_FOOTER_HEADER_ID">
-            <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
-            <End Role="DAILY_ACTIVITY_FOOTER" EntitySet="DAILY_ACTIVITY_FOOTER" />
-          </AssociationSet>
           <EntitySet Name="CROSSINGS" EntityType="OracleModel.CROSSING" />
           <AssociationSet Name="FK_DATA_ENTRY_CROSSING_ID" Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID">
             <End Role="CROSSING" EntitySet="CROSSINGS" />
             <End Role="CROSSING_DATA_ENTRY" EntitySet="CROSSING_DATA_ENTRY" />
+          </AssociationSet>
+          <EntitySet Name="DAILY_ACTIVITY_FOOTER" EntityType="OracleModel.DAILY_ACTIVITY_FOOTER" />
+          <AssociationSet Name="FK_FOOTER_HEADER_ID" Association="OracleModel.FK_FOOTER_HEADER_ID">
+            <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
+            <End Role="DAILY_ACTIVITY_FOOTER" EntitySet="DAILY_ACTIVITY_FOOTER" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
@@ -2666,40 +2666,6 @@
           <Property Type="String" Name="RATE_CURRENCY_CODE" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
         </EntityType>
-        <EntityType Name="DAILY_ACTIVITY_FOOTER">
-          <Key>
-            <PropertyRef Name="FOOTER_ID" />
-          </Key>
-          <Property Type="Decimal" Name="FOOTER_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
-          <Property Type="String" Name="REASON_FOR_NO_WORK" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="HOTEL_NAME" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="HOTEL_CITY" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="HOTEL_STATE" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="HOTEL_PHONE" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="Binary" Name="FOREMAN_SIGNATURE" MaxLength="Max" FixedLength="false" />
-          <Property Type="Binary" Name="CONTRACT_REP" MaxLength="Max" FixedLength="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CONTRACT_REP_NAME" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="Binary" Name="DOT_REP" MaxLength="Max" FixedLength="false" />
-          <Property Type="String" Name="DOT_REP_NAME" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="DAILY_ACTIVITY_HEADER" Relationship="OracleModel.FK_FOOTER_HEADER_ID" FromRole="DAILY_ACTIVITY_FOOTER" ToRole="DAILY_ACTIVITY_HEADER" />
-        </EntityType>
-        <Association Name="FK_FOOTER_HEADER_ID">
-          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
-          <End Type="OracleModel.DAILY_ACTIVITY_FOOTER" Role="DAILY_ACTIVITY_FOOTER" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DAILY_ACTIVITY_HEADER">
-              <PropertyRef Name="HEADER_ID" />
-            </Principal>
-            <Dependent Role="DAILY_ACTIVITY_FOOTER">
-              <PropertyRef Name="HEADER_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="CROSSING">
           <Key>
             <PropertyRef Name="CROSSING_ID" />
@@ -2764,6 +2730,40 @@
             </Principal>
             <Dependent Role="CROSSING_DATA_ENTRY">
               <PropertyRef Name="CROSSING_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DAILY_ACTIVITY_FOOTER">
+          <Key>
+            <PropertyRef Name="FOOTER_ID" />
+          </Key>
+          <Property Type="Decimal" Name="FOOTER_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
+          <Property Type="String" Name="COMMENTS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="HOTEL_NAME" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="HOTEL_CITY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="HOTEL_STATE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="HOTEL_PHONE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Binary" Name="FOREMAN_SIGNATURE" MaxLength="Max" FixedLength="false" />
+          <Property Type="Binary" Name="CONTRACT_REP" MaxLength="Max" FixedLength="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CONTRACT_REP_NAME" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Binary" Name="DOT_REP" MaxLength="Max" FixedLength="false" />
+          <Property Type="String" Name="DOT_REP_NAME" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DAILY_ACTIVITY_HEADER" Relationship="OracleModel.FK_FOOTER_HEADER_ID" FromRole="DAILY_ACTIVITY_FOOTER" ToRole="DAILY_ACTIVITY_HEADER" />
+        </EntityType>
+        <Association Name="FK_FOOTER_HEADER_ID">
+          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
+          <End Type="OracleModel.DAILY_ACTIVITY_FOOTER" Role="DAILY_ACTIVITY_FOOTER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_HEADER">
+              <PropertyRef Name="HEADER_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_FOOTER">
+              <PropertyRef Name="HEADER_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3533,28 +3533,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DAILY_ACTIVITY_FOOTER">
-            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_FOOTER">
-              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_FOOTER">
-                <ScalarProperty Name="DOT_REP_NAME" ColumnName="DOT_REP_NAME" />
-                <ScalarProperty Name="DOT_REP" ColumnName="DOT_REP" />
-                <ScalarProperty Name="CONTRACT_REP_NAME" ColumnName="CONTRACT_REP_NAME" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="CONTRACT_REP" ColumnName="CONTRACT_REP" />
-                <ScalarProperty Name="FOREMAN_SIGNATURE" ColumnName="FOREMAN_SIGNATURE" />
-                <ScalarProperty Name="HOTEL_PHONE" ColumnName="HOTEL_PHONE" />
-                <ScalarProperty Name="HOTEL_STATE" ColumnName="HOTEL_STATE" />
-                <ScalarProperty Name="HOTEL_CITY" ColumnName="HOTEL_CITY" />
-                <ScalarProperty Name="HOTEL_NAME" ColumnName="HOTEL_NAME" />
-                <ScalarProperty Name="REASON_FOR_NO_WORK" ColumnName="REASON_FOR_NO_WORK" />
-                <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
-                <ScalarProperty Name="FOOTER_ID" ColumnName="FOOTER_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CROSSINGS">
             <EntityTypeMapping TypeName="OracleModel.CROSSING">
               <MappingFragment StoreEntitySet="CROSSINGS">
@@ -3607,6 +3585,28 @@
                 <ScalarProperty Name="PREF" ColumnName="PREF" />
                 <ScalarProperty Name="DOT" ColumnName="DOT" />
                 <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DAILY_ACTIVITY_FOOTER">
+            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_FOOTER">
+              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_FOOTER">
+                <ScalarProperty Name="DOT_REP_NAME" ColumnName="DOT_REP_NAME" />
+                <ScalarProperty Name="DOT_REP" ColumnName="DOT_REP" />
+                <ScalarProperty Name="CONTRACT_REP_NAME" ColumnName="CONTRACT_REP_NAME" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="CONTRACT_REP" ColumnName="CONTRACT_REP" />
+                <ScalarProperty Name="FOREMAN_SIGNATURE" ColumnName="FOREMAN_SIGNATURE" />
+                <ScalarProperty Name="HOTEL_PHONE" ColumnName="HOTEL_PHONE" />
+                <ScalarProperty Name="HOTEL_STATE" ColumnName="HOTEL_STATE" />
+                <ScalarProperty Name="HOTEL_CITY" ColumnName="HOTEL_CITY" />
+                <ScalarProperty Name="HOTEL_NAME" ColumnName="HOTEL_NAME" />
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
+                <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
+                <ScalarProperty Name="FOOTER_ID" ColumnName="FOOTER_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
