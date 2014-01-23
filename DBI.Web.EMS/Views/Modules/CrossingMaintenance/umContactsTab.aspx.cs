@@ -33,6 +33,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                             {  d.CONTACT_ID, d.CONTACT_NAME, d.WORK_NUMBER, d.CELL_NUMBER, d.RAIL_ROAD  }).ToList<object>();
                 int count;
              uxCurrentContactStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+             e.Total = count;
             }
         }
         protected void GetContactGridData(object sender, DirectEventArgs e)
@@ -233,6 +234,39 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             });
         }
-   
+        protected void deAssignContactManagerGrid(object sender, StoreReadDataEventArgs e)
+        {
+
+            using (Entities _context = new Entities())
+            {
+                List<object> data;
+
+                //Get List of all new headers
+
+                data = (from d in _context.CROSSING_CONTACTS
+                        select new { d.CONTACT_NAME, }).ToList<object>();
+
+                int count;
+                uxAssignContactManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                e.Total = count;
+            }
+        }
+              protected void deAssignContactCrossingGrid(object sender, StoreReadDataEventArgs e)
+        {
+
+            using (Entities _context = new Entities())
+            {
+                List<object> data;
+
+                //Get List of all new headers
+
+                data = (from d in _context.CROSSINGS
+                        select new { d.CROSSING_NUMBER,  }).ToList<object>();
+
+                int count;
+                uxAssignContactCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+            }
+
+        }
     }
 }
