@@ -35,11 +35,14 @@ namespace DBI.Mobile.EMS
         public class DailyActivityFooter
         {
             public string hotel_city { get; set; }
-            public string reason_for_no_work { get; set; }
-            public string hotel_name { get; set; }
+            public string dot_rep { get; set; }
             public string foreman_signature { get; set; }
-            public string hotel_phone { get; set; }
+            public string hotel_name { get; set; }
+            public string reason_for_no_work { get; set; }
+            public string comments { get; set; }
             public string contract_rep { get; set; }
+            public string hotel_phone { get; set; }
+            public string dot_rep_name { get; set; }
             public string hotel_state { get; set; }
             public string contract_rep_name { get; set; }
         }
@@ -56,20 +59,26 @@ namespace DBI.Mobile.EMS
 
         public class DailyActivityProduction
         {
+            public string uom { get; set; }
             public int acres_mile { get; set; }
-            public string time_out { get; set; }
-            public string work_area { get; set; }
             public string pole_from { get; set; }
-            public int task_id { get; set; }
-            public int gallons { get; set; }
-            public string time_in { get; set; }
             public string pole_to { get; set; }
+            public int quantity { get; set; }
+            public int task_id { get; set; }
+            public double bill_rate { get; set; }
+            public string station { get; set; }
+            public string expenditure_type { get; set; }
+            public string time_out { get; set; }
+            public string comments { get; set; }
+            public string work_area { get; set; }
+            public string time_in { get; set; }
         }
 
         public class DailyActivityHeader
         {
             public string license { get; set; }
             public int project_id { get; set; }
+            public string created_by { get; set; }
             public int person_id { get; set; }
             public string da_date { get; set; }
             public string application_type { get; set; }

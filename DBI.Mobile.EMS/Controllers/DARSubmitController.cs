@@ -44,8 +44,8 @@ namespace DBI.Mobile.EMS.Controllers
                         h.DENSITY = j.density;
                         h.CREATE_DATE = DateTime.Now;
                         h.MODIFY_DATE = DateTime.Now;
-                        h.CREATED_BY = "EMSMOBILE";
-                        h.MODIFIED_BY = "EMSMOBILE";
+                        h.CREATED_BY = j.created_by;
+                        h.MODIFIED_BY = j.created_by;
                         h.STATUS = 1;
                         GenericData.Insert<DAILY_ACTIVITY_HEADER>(h);
                 }
@@ -59,8 +59,8 @@ namespace DBI.Mobile.EMS.Controllers
                     e.ODOMETER_END = j.odometer_end;
                     e.CREATE_DATE = DateTime.Now;
                     e.MODIFY_DATE = DateTime.Now;
-                    e.CREATED_BY = "EMSMOBILE";
-                    e.MODIFIED_BY = "EMSMOBILE";
+                    e.CREATED_BY = h.CREATED_BY;
+                    e.MODIFIED_BY = h.CREATED_BY;
                     GenericData.Insert<DAILY_ACTIVITY_EQUIPMENT>(e);
                 }
 
@@ -78,8 +78,8 @@ namespace DBI.Mobile.EMS.Controllers
                     e.FOREMAN_LICENSE = j.foreman_license;
                     e.CREATE_DATE = DateTime.Now;
                     e.MODIFY_DATE = DateTime.Now;
-                    e.CREATED_BY = "EMSMOBILE";
-                    e.MODIFIED_BY = "EMSMOBILE";
+                    e.CREATED_BY = h.CREATED_BY;
+                    e.MODIFIED_BY = h.CREATED_BY;
 
                     if (j.equipment_id > 0)
                     {
@@ -94,7 +94,7 @@ namespace DBI.Mobile.EMS.Controllers
                 foreach (DailyActivityResponse.DailyActivityProduction j in jsonObj.daily_activity_production)
                 {
                     DAILY_ACTIVITY_PRODUCTION e = new DAILY_ACTIVITY_PRODUCTION();
-                    e.HEADER_ID = h.HEADER_ID;
+                    e.HEADER_ID = h.HEADER_ID; 
                     e.TIME_IN = DateTime.ParseExact(j.time_in, "dd-MMM-yyyy HH:mm", null);
                     e.TIME_OUT = DateTime.ParseExact(j.time_out, "dd-MMM-yyyy HH:mm", null);
                     e.TASK_ID = j.task_id;
@@ -102,11 +102,16 @@ namespace DBI.Mobile.EMS.Controllers
                     e.POLE_FROM = j.pole_from;
                     e.POLE_TO  = j.pole_to;
                     e.ACRES_MILE = j.acres_mile;
-                    e.GALLONS = j.gallons;
+                    e.QUANTITY = j.quantity;
+                    e.UNIT_OF_MEASURE = j.uom;
+                    e.BILL_RATE = (Decimal)j.bill_rate;
+                    e.STATION = j.station;
+                    e.EXPENDITURE_TYPE = j.expenditure_type;
+                    e.COMMENTS = j.comments;
                     e.CREATE_DATE = DateTime.Now;
                     e.MODIFY_DATE = DateTime.Now;
-                    e.CREATED_BY = "EMSMOBILE";
-                    e.MODIFIED_BY = "EMSMOBILE";
+                    e.CREATED_BY = h.CREATED_BY;
+                    e.MODIFIED_BY = h.CREATED_BY;
                     GenericData.Insert<DAILY_ACTIVITY_PRODUCTION>(e);
                 }
 
@@ -122,8 +127,8 @@ namespace DBI.Mobile.EMS.Controllers
                     e.COMMENTS = j.comments;
                     e.CREATE_DATE = DateTime.Now;
                     e.MODIFY_DATE = DateTime.Now;
-                    e.CREATED_BY = "EMSMOBILE";
-                    e.MODIFIED_BY = "EMSMOBILE";
+                    e.CREATED_BY = h.CREATED_BY;
+                    e.MODIFIED_BY = h.CREATED_BY;
                     GenericData.Insert<DAILY_ACTIVITY_WEATHER>(e);
                 }
 
@@ -142,8 +147,8 @@ namespace DBI.Mobile.EMS.Controllers
                     e.COUNTY = j.county;
                     e.CREATE_DATE = DateTime.Now;
                     e.MODIFY_DATE = DateTime.Now;
-                    e.CREATED_BY = "EMSMOBILE";
-                    e.MODIFIED_BY = "EMSMOBILE";
+                    e.CREATED_BY = h.CREATED_BY;
+                    e.MODIFIED_BY = h.CREATED_BY;
                     GenericData.Insert<DAILY_ACTIVITY_CHEMICAL_MIX>(e);
                 }
 
@@ -159,8 +164,8 @@ namespace DBI.Mobile.EMS.Controllers
                     e.EPA_NUMBER = j.epa_number;
                     e.CREATE_DATE = DateTime.Now;
                     e.MODIFY_DATE = DateTime.Now;
-                    e.CREATED_BY = "EMSMOBILE";
-                    e.MODIFIED_BY = "EMSMOBILE";
+                    e.CREATED_BY = h.CREATED_BY;
+                    e.MODIFIED_BY = h.CREATED_BY;
 
                     if (j.chemical_mix_id > 0)
                     {
@@ -187,8 +192,8 @@ namespace DBI.Mobile.EMS.Controllers
                     e.CONTRACT_REP_NAME = j.contract_rep_name;
                     e.CREATE_DATE = DateTime.Now;
                     e.MODIFY_DATE = DateTime.Now;
-                    e.CREATED_BY = "EMSMOBILE";
-                    e.MODIFIED_BY = "EMSMOBILE";
+                    e.CREATED_BY = h.CREATED_BY;
+                    e.MODIFIED_BY = h.CREATED_BY;
                     GenericData.Insert<DAILY_ACTIVITY_FOOTER>(e);
                 }
 
