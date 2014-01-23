@@ -37,7 +37,7 @@ namespace DBI.Data
         public string PRICE_CATEGORY { get; set; }
         public Nullable<long> MAIN_TRACKS { get; set; }
         public Nullable<long> OTHER_TRACKS { get; set; }
-        public Nullable<long> ON_SPUR { get; set; }
+        public string ON_SPUR { get; set; }
         public Nullable<long> MAX_SPEED { get; set; }
         public string SUB_CONTRACTED { get; set; }
         public string FENCE_ENCROACHMENT { get; set; }
