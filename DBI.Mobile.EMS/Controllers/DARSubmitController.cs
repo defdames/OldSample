@@ -182,11 +182,13 @@ namespace DBI.Mobile.EMS.Controllers
                 {
                     DAILY_ACTIVITY_FOOTER e = new DAILY_ACTIVITY_FOOTER();
                     e.HEADER_ID = h.HEADER_ID;
-                    e.REASON_FOR_NO_WORK = j.reason_for_no_work;
                     e.HOTEL_NAME = j.hotel_name;
                     e.HOTEL_CITY = j.hotel_city;
                     e.HOTEL_STATE = j.hotel_state;
                     e.HOTEL_PHONE = j.hotel_phone;
+                    e.DOT_REP = Convert.FromBase64String(j.dot_rep);
+                    e.DOT_REP_NAME = j.dot_rep_name;
+                    //e.COMMENTS = j.comments;
                     e.FOREMAN_SIGNATURE = Convert.FromBase64String(j.foreman_signature);
                     e.CONTRACT_REP = Convert.FromBase64String(j.contract_rep);
                     e.CONTRACT_REP_NAME = j.contract_rep_name;

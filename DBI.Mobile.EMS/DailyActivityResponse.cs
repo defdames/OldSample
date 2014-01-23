@@ -38,7 +38,6 @@ namespace DBI.Mobile.EMS
             public string dot_rep { get; set; }
             public string foreman_signature { get; set; }
             public string hotel_name { get; set; }
-            public string reason_for_no_work { get; set; }
             public string comments { get; set; }
             public string contract_rep { get; set; }
             public string hotel_phone { get; set; }
