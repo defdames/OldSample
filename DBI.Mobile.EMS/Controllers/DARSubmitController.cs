@@ -20,9 +20,11 @@ namespace DBI.Mobile.EMS.Controllers
         {
             string jsonString = req.Content.ReadAsStringAsync().Result;
 
-            System.IO.StreamWriter file2 = new System.IO.StreamWriter("c:\\temp\\json.txt");
-            file2.Write(jsonString);
-            file2.Close();
+            //System.IO.StreamWriter file2 = new System.IO.StreamWriter("c:\\temp\\json.txt");
+            //file2.Write(jsonString);
+            //file2.Close();
+
+            string 
 
             try
             {
@@ -186,11 +188,17 @@ namespace DBI.Mobile.EMS.Controllers
                     e.HOTEL_CITY = j.hotel_city;
                     e.HOTEL_STATE = j.hotel_state;
                     e.HOTEL_PHONE = j.hotel_phone;
-                    e.DOT_REP = Convert.FromBase64String(j.dot_rep);
+                    if (j.dot_rep.Length > 0)
+                    {
+                        e.DOT_REP = Convert.FromBase64String(j.dot_rep);
+                    }
                     e.DOT_REP_NAME = j.dot_rep_name;
-                    //e.COMMENTS = j.comments;
+                    e.COMMENTS = j.comments;
                     e.FOREMAN_SIGNATURE = Convert.FromBase64String(j.foreman_signature);
-                    e.CONTRACT_REP = Convert.FromBase64String(j.contract_rep);
+                    if (j.contract_rep.Length > 0)
+                    {
+                        e.CONTRACT_REP = Convert.FromBase64String(j.contract_rep);
+                    }
                     e.CONTRACT_REP_NAME = j.contract_rep_name;
                     e.CREATE_DATE = DateTime.Now;
                     e.MODIFY_DATE = DateTime.Now;
@@ -203,7 +211,7 @@ namespace DBI.Mobile.EMS.Controllers
             }
             catch (Exception ex)
             {
-                System.IO.StreamWriter file3 = new System.IO.StreamWriter("c:\\temp\\error.txt");
+                System.IO.StreamWriter file3 = new System.IO.StreamWriter("c:\\temp\\" + error.txt");
                 file3.Write(ex.ToString());
                 file3.Close();
             }
