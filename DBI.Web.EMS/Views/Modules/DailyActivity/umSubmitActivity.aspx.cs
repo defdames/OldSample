@@ -43,7 +43,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             select d).Single();
                     try
                     {
-                        uxSubmitReasonForNoWork.SetValue(data.REASON_FOR_NO_WORK.ToString());
+                        uxSubmitReasonForNoWork.SetValue(data.COMMENTS.ToString());
                     }
                     catch (NullReferenceException)
                     {
@@ -138,7 +138,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 try
                 {
                     string ReasonForNoWork = uxSubmitReasonForNoWork.Value.ToString();
-                    data.REASON_FOR_NO_WORK = ReasonForNoWork;
+                    data.COMMENTS = ReasonForNoWork;
                 }
                 catch (NullReferenceException)
                 {
@@ -212,11 +212,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 try
                 {
                     string ReasonForNoWork = uxSubmitReasonForNoWork.Value.ToString();
-                    data.REASON_FOR_NO_WORK = ReasonForNoWork;
+                    data.COMMENTS = ReasonForNoWork;
                 }
                 catch (NullReferenceException)
                 {
-                    data.REASON_FOR_NO_WORK = null;
+                    data.COMMENTS = null;
                 }
 
                 try

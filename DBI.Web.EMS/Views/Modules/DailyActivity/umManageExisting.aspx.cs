@@ -777,7 +777,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 try
                 {
-                    ReasonForNoWork = FooterData.REASON_FOR_NO_WORK;
+                    ReasonForNoWork = FooterData.COMMENTS;
                 }
                 catch (NullReferenceException)
                 {
