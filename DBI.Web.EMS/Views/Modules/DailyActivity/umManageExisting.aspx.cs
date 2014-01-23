@@ -53,6 +53,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     rawData = (from d in _context.DAILY_ACTIVITY_HEADER
                                join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                                join s in _context.DAILY_ACTIVITY_STATUS on d.STATUS equals s.STATUS
+                               orderby d.STATUS ascending, d.DA_DATE descending
                                select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE }).ToList<object>();
                 }
                 else
@@ -151,10 +152,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void deUpdateUrlAndButtons(object sender, DirectEventArgs e)
         {
             long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
-            string homeUrl = string.Format("umCombinedTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-
             long OrgId;
-
+            string homeUrl = string.Empty;
             using (Entities _context = new Entities())
             {
                 OrgId = (from d in _context.DAILY_ACTIVITY_HEADER
@@ -162,6 +161,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                          where d.HEADER_ID == HeaderId
                          select (long) p.ORG_ID).Single();
             }
+            if (OrgId == 121)
+            {
+                homeUrl = string.Format("umCombinedTab_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+            }
+            else if (OrgId == 123)
+            {
+                homeUrl = string.Format("umCombinedTab_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+            }
+
             uxCombinedTab.Disabled = false;
             uxCombinedTab.LoadContent(homeUrl);
 
