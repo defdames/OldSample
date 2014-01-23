@@ -15,7 +15,7 @@ namespace DBI.Data
     public partial class DAILY_ACTIVITY_INVENTORY
     {
         public long INVENTORY_ID { get; set; }
-        public long CHEMICAL_MIX_ID { get; set; }
+        public Nullable<long> CHEMICAL_MIX_ID { get; set; }
         public string SUB_INVENTORY_SECONDARY_NAME { get; set; }
         public Nullable<decimal> SUB_INVENTORY_ORG_ID { get; set; }
         public Nullable<decimal> ITEM_ID { get; set; }
