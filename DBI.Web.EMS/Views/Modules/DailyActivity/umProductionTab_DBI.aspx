@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umProductionTab-DBI.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.DailyActivity.umProductionTab_DBI" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umProductionTab_DBI.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.DailyActivity.umProductionTab_DBI" %>
 
 <!DOCTYPE html>
 

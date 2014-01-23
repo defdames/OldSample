@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umProductionTab-IRM.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.DailyActivity.umProductionTab-IRM" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umProductionTab_IRM.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.DailyActivity.umProductionTab_IRM" %>
 
 <!DOCTYPE html>
 
@@ -6,23 +6,23 @@
 <head id="Head1" runat="server">
 	<title></title>
 	<script>
-	    var valDateTime = function () {
-	        var me = this,
+		var valDateTime = function () {
+			var me = this,
 				v = me.getValue(),
 				field;
 
-	        if (me.startDateField) {
-	            field = Ext.getCmp(me.startDateField);
-	            field.setMaxValue(v);
-	            me.timeRangeMax = v;
-	        } else if (me.endDateField) {
-	            field = Ext.getCmp(me.endDateField);
-	            field.setMinValue(v);
-	            me.timeRangeMin = v;
-	        }
+			if (me.startDateField) {
+				field = Ext.getCmp(me.startDateField);
+				field.setMaxValue(v);
+				me.timeRangeMax = v;
+			} else if (me.endDateField) {
+				field = Ext.getCmp(me.endDateField);
+				field.setMinValue(v);
+				me.timeRangeMin = v;
+			}
 
-	        field.validate();
-	    };
+			field.validate();
+		};
 	</script>
 	<link href="../../../Resources/StyleSheets/main.css" rel="stylesheet" />
 </head>
@@ -44,13 +44,11 @@
 								<ext:ModelField Name="LONG_NAME" />
 								<ext:ModelField Name="TASK_ID" />
 								<ext:ModelField Name="DESCRIPTION" />
-								<ext:ModelField Name="TIME_IN" Type="Date" />
-								<ext:ModelField Name="TIME_OUT" Type="Date" />
-								<ext:ModelField Name="WORK_AREA" />
-								<ext:ModelField Name="POLE_FROM" />
-								<ext:ModelField Name="POLE_TO" />
-								<ext:ModelField Name="ACRES_MILE" />
-								<ext:ModelField Name="GALLONS" />
+								<ext:ModelField Name="STATION" />
+								<ext:ModelField Name="EXPENDITURE_TYPE" />
+								<ext:ModelField Name="BILL_RATE" />
+								<ext:ModelField Name="UNIT_OF_MEASURE" />
+								<ext:ModelField Name="COMMENTS" />
 							</Fields>
 						</ext:Model>
 					</Model>
@@ -58,47 +56,41 @@
 			</Store>
 			<ColumnModel>
 				<Columns>
-					<ext:Column ID="Column1" runat="server"
+					<ext:Column runat="server"
 						DataIndex="PROJECT_ID"
 						Text="Project Id"
 						Flex="1" />
-					<ext:Column ID="Column2" runat="server"
+					<ext:Column runat="server"
 						DataIndex="LONG_NAME"
 						Text="Project Name"
 						Flex="2" />
-					<ext:Column ID="Column3" runat="server"
+					<ext:Column runat="server"
 						DataIndex="DESCRIPTION"
 						Text="Task Name"
 						Flex="1" />
-					<ext:DateColumn ID="DateColumn1" runat="server"
-						DataIndex="TIME_IN"
-						Format="M/d/yyyy h:mm tt"
-						Text="Time In"
+					<ext:Column runat="server"
+						DataIndex="STATION"
+						Text="Station"
 						Flex="1" />
-					<ext:DateColumn ID="DateColumn2" runat="server"
-						DataIndex="TIME_OUT"
-						Format="M/d/yyyy h:mm tt"
-						Text="Time Out"
+					<ext:Column runat="server"
+						DataIndex="EXPENDITURE_TYPE"
+						Text="Expenditure Type"
 						Flex="1" />
-					<ext:Column ID="Column4" runat="server"
-						DataIndex="WORK_AREA"
-						Text="Spray/Work Area"
+					<ext:Column runat="server"
+						DataIndex="QUANTITY"
+						Text="Quantity"
 						Flex="1" />
-					<ext:Column ID="Column5" runat="server"
-						DataIndex="POLE_FROM"
-						Text="Pole/MP From"
+					<ext:Column runat="server"
+						DataIndex="BILL_RATE"
+						Text="Bill Rate"
 						Flex="1" />
-					<ext:Column ID="Column6" runat="server"
-						DataIndex="POLE_TO"
-						Text="Pole/MP To"
+					<ext:Column runat="server"
+						DataIndex="UNIT_OF_MEASURE"
+						Text="Unit Of Measure"
 						Flex="1" />
-					<ext:Column ID="Column7" runat="server"
-						DataIndex="ACRES_MILE"
-						Text="Acres/Mile"
-						Flex="1" />
-					<ext:Column ID="Column8" runat="server"
-						DataIndex="GALLONS"
-						Text="Gallons"
+					<ext:Column runat="server"
+						DataIndex="COMMENTS"
+						Text="Comments"
 						Flex="1" />
 				</Columns>
 			</ColumnModel>
@@ -199,81 +191,76 @@
 								</ext:Store>
 							</Store>
 						</ext:ComboBox>
-						<ext:FieldContainer runat="server"
-							ID="uxAddProductionTimeInContainer"
-							FieldLabel="Time In">
-							<Items>
-								<ext:DateField runat="server"
-									ID="uxAddProductionDateIn"
-									Vtype="daterange"
-									EndDateField="uxAddProductionDateOut"
-									EnableKeyEvents="true"
-									AllowBlank="false">
-									<Listeners>
-										<KeyUp Fn="valDateTime" />
-										<Change Handler="#{uxAddProductionDateOut}.setValue(#{uxAddProductionDateIn}.value)" />
-									</Listeners>
-								</ext:DateField>
-								<ext:TimeField runat="server"
-									ID="uxAddProductionTimeIn"
-									Vtype="daterange"
-									EndDateField="uxAddProductionTimeOut"
-									EnableKeyEvents="true"
-									SelectedTime="05:00"
-									AllowBlank="false">
-									<Listeners>
-										<KeyUp Fn="valDateTime" />
-									</Listeners>
-								</ext:TimeField>
-							</Items>
-						</ext:FieldContainer>
-						<ext:FieldContainer runat="server"
-							ID="uxAddProductionTimeOutContainer"
-							FieldLabel="Time Out">
-							<Items>
-								<ext:DateField runat="server"
-									ID="uxAddProductionDateOut"
-									Vtype="daterange"
-									StartDateField="uxAddProductionDateIn"
-									EnableKeyEvents="true"
-									AllowBlank="false">
-									<Listeners>
-										<KeyUp Fn="valDateTime" />
-									</Listeners>
-								</ext:DateField>
-								<ext:TimeField runat="server"
-									ID="uxAddProductionTimeOut"
-									AllowBlank="false"
-									Vtype="daterange"
-									EnableKeyEvents="true"
-									SelectedTime="21:00"
-									StartDateField="uxAddProductionTimeIn">
-									<Listeners>
-										<KeyUp Fn="valDateTime" />
-									</Listeners>
-								</ext:TimeField>
-							</Items>
-						</ext:FieldContainer>
+						<ext:DropDownField runat="server"
+							ID="uxAddProductionExpenditureType"
+							Mode="ValueText"
+							AllowBlank="false">
+							<Component>
+								<ext:GridPanel runat="server"
+									ID="uxAddProductionExpenditureGrid"
+									Layout="HBoxLayout">
+									<Store>
+										<ext:Store runat="server"
+											ID="uxAddProductionExpenditureStore"
+											onReadData="deReadExpenditures"
+											PageSize="10"
+											RemoteSort="true"
+											AutoDataBind="true">
+											<Model>
+												<ext:Model runat="server">
+													<Fields>
+														<ext:ModelField Name="EXPENDITURE_TYPE" />
+														<ext:ModelField Name="BILL_RATE" />
+														<ext:ModelField Name="UNIT_OF_MEASURE" />
+													</Fields>
+												</ext:Model>
+											</Model>
+											<Proxy>
+												<ext:PageProxy />
+											</Proxy>
+										</ext:Store>
+									</Store>
+									<ColumnModel>
+										<Columns>
+											<ext:Column runat="server" DataIndex="EXPENDITURE_TYPE" Text="Expenditure Type" />
+											<ext:Column runat="server" DataIndex="BILL_RATE" Text="Bill Rate" />
+											<ext:Column runat="server" DataIndex="UNIT_OF_MEASURE" Text="Unit Of Measure" />
+										</Columns>
+									</ColumnModel>
+									<DirectEvents>
+										<SelectionChange OnEvent="deStoreExpenditureType">
+											<ExtraParams>
+												<ext:Parameter Name="ExpenditureType" Value="#{uxAddProductionExpenditureGrid}.getSelectionModel().getSelection()[0].data.EXPENDITURE_TYPE" Mode="Raw" />
+												<ext:Parameter Name="BillRate" Value="#{uxAddProductionExpenditureGrid}.getSelectionModel().getSelection()[0].data.BILL_RATE" Mode="Raw" />
+												<ext:Parameter Name="UnitOfMeasure" Value="#{uxAddProductionExpenditureGrid}.getSelectionModel().getSelection()[0].data.UNIT_OF_MEASURE" Mode="Raw" />
+											</ExtraParams>
+										</SelectionChange>
+									</DirectEvents>
+									<SelectionModel>
+										<ext:RowSelectionModel runat="server" Mode="Single" />
+									</SelectionModel>
+									<Plugins>
+										<ext:FilterHeader runat="server" Remote="true" />
+									</Plugins>
+									<BottomBar>
+										<ext:PagingToolbar runat="server" />
+									</BottomBar>
+								</ext:GridPanel>
+							</Component>
+						</ext:DropDownField>
+						<ext:Hidden runat="server" ID="uxAddProductionBillRate" />
+						<ext:Hidden runat="server" ID="uxAddProductionUOM" />
 						<ext:TextField runat="server"
-							ID="uxAddProductionWorkArea"
-							FieldLabel="Spray/Work Area"
+							ID="uxAddProductionStation"
+							FieldLabel="Station"
 							AllowBlank="false" />
 						<ext:TextField runat="server"
-							ID="uxAddProductionPoleFrom"
-							FieldLabel="Pole/MP From"
+							ID="uxAddProductionQuantity"
+							FieldLabel="Quantity"
 							AllowBlank="false" />
-						<ext:TextField runat="server"
-							ID="uxAddProductionPoleTo"
-							FieldLabel="Pole/MP To"
-							AllowBlank="false" />
-						<ext:TextField runat="server"
-							ID="uxAddProductionAcresPerMile"
-							FieldLabel="Acres/Mile"
-							AllowBlank="false" />
-						<ext:TextField runat="server"
-							ID="uxAddProductionGallons"
-							FieldLabel="Gallons"
-							AllowBlank="false" />
+						<ext:TextArea runat="server"
+							ID="uxAddProductionComments"
+							FieldLabel="Comments" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
@@ -336,79 +323,29 @@
 								</ext:Store>
 							</Store>
 						</ext:ComboBox>
-						<ext:FieldContainer runat="server"
-							ID="uxEditProductionTimeInContainer"
-							FieldLabel="Time In">
-							<Items>
-								<ext:DateField runat="server"
-									ID="uxEditProductionDateIn"
-									Vtype="daterange"
-									EndDateField="uxEditProductionDateOut"
-									EnableKeyEvents="true"
-									AllowBlank="false">
-									<Listeners>
-										<KeyUp Fn="valDateTime" />
-										<Change Handler="#{uxEditProductionDateOut}.setValue(uxEditProductionDateIn.value)" />
-									</Listeners>
-								</ext:DateField>
-								<ext:TimeField runat="server"
-									ID="uxEditProductionTimeIn"
-									Vtype="daterange"
-									EndDateField="uxEditProductionTimeOut"
-									EnableKeyEvents="true"
-									AllowBlank="false">
-									<Listeners>
-										<KeyUp Fn="valDateTime" />
-									</Listeners>
-								</ext:TimeField>
-							</Items>
-						</ext:FieldContainer>
-						<ext:FieldContainer runat="server"
-							ID="uxEditProductionTimeOutContainer"
-							FieldLabel="Time Out">
-							<Items>
-								<ext:DateField runat="server"
-									ID="uxEditProductionDateOut"
-									Vtype="daterange"
-									StartDateField="uxEditProductionDateIn"
-									EnableKeyEvents="true"
-									AllowBlank="false" >
-									<Listeners>
-										<KeyUp Fn="valDateTime" />
-									</Listeners>
-								</ext:DateField>
-								<ext:TimeField runat="server"
-									ID="uxEditProductionTimeOut"
-									Vtype="daterange"
-									StartDateField="uxEditProductionTimeIn"
-									EnableKeyEvents="true"
-									AllowBlank="false" >
-									<Listeners>
-										<KeyUp Fn="valDateTime" />
-									</Listeners>
-								</ext:TimeField>
-							</Items>
-						</ext:FieldContainer>
 						<ext:TextField runat="server"
-							ID="uxEditProductionWorkArea"
-							FieldLabel="Spray/Work Area"
+							ID="uxEditProductionStation"
+							FieldLabel="Station"
 							AllowBlank="false" />
 						<ext:TextField runat="server"
-							ID="uxEditProductionPoleFrom"
-							FieldLabel="Pole/MP From"
+							ID="uxEditProductionExpenditureType"
+							FieldLabel="Expenditure Type"
 							AllowBlank="false" />
 						<ext:TextField runat="server"
-							ID="uxEditProductionPoleTo"
-							FieldLabel="Pole/MP To"
+							ID="uxEditProductionQuantity"
+							FieldLabel="Quantity"
 							AllowBlank="false" />
 						<ext:TextField runat="server"
-							ID="uxEditProductionAcresPerMile"
-							FieldLabel="Acres/Mile"
+							ID="uxEditProductionBillRate"
+							FieldLabel="Bill Rate"
 							AllowBlank="false" />
 						<ext:TextField runat="server"
-							ID="uxEditProductionGallons"
-							FieldLabel="Gallons"
+							ID="uxEditProductionUOM"
+							FieldLabel="Unit of Measure"
 							AllowBlank="false" />
+						<ext:TextArea runat="server"
+							ID="uxEditProductionComments"
+							FieldLabel="Comments" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"

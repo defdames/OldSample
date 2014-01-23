@@ -39,6 +39,7 @@
 						<ext:Store runat="server" AutoDataBind="true" ID="uxManageGridStore" OnReadData="deReadHeaderData" PageSize="10">
 							<Fields>
 								<ext:ModelField Name="HEADER_ID" Type="String" />
+								<ext:ModelField Name="ORG_ID" Type="String" />
 								<ext:ModelField Name="PROJECT_ID" Type="String" />
 								<ext:ModelField Name="DA_DATE" Type="Date" />
 								<ext:ModelField Name="SEGMENT1" Type="String" />
@@ -78,6 +79,7 @@
 						<Select OnEvent="deUpdateUrlAndButtons">
 							<ExtraParams>
 								<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
+								<ext:Parameter Name="OrgId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.ORG_ID" Mode="Raw" />
 							</ExtraParams>
 						</Select>
 					</DirectEvents>

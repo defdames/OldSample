@@ -22,7 +22,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 GetHeaderData();
                 GetEmployeeData();
-                GetProductionData();
+                GetDBIProductionData();
                 GetWeatherData();
                 GetChemicalMixData();
                 GetInventory();
@@ -74,7 +74,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <summary>
         /// Get data for Production grid
         /// </summary>
-        protected void GetProductionData()
+        protected void GetDBIProductionData()
         {
             //Query and set datasource for Production
             using (Entities _context = new Entities())

@@ -168,15 +168,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             if (validateComponentSecurity("SYS.DailyActivity.ViewAll"))
             {
                 string prodUrl = string.Empty;
-
-                if (OrgId == 121)
-                {
-                     prodUrl = string.Format("umProductionTab-DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-                }
-                else if(OrgId == 123){
-                    prodUrl = string.Format("umProductionTab-IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-                    uxChemicalTab.Hide();
-                }
                 string headerUrl = string.Format("umHeaderTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                 string equipUrl = string.Format("umEquipmentTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                 string emplUrl = string.Format("umEmployeesTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
@@ -188,17 +179,29 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEquipmentTab.Disabled = false;
                 uxProductionTab.Disabled = false;
                 uxEmployeeTab.Disabled = false;
-                uxChemicalTab.Disabled = false;
                 uxWeatherTab.Disabled = false;
                 uxInventoryTab.Disabled = false;
 
                 uxHeaderTab.LoadContent(headerUrl);
                 uxEquipmentTab.LoadContent(equipUrl);
-                uxProductionTab.LoadContent(prodUrl);
                 uxEmployeeTab.LoadContent(emplUrl);
-                uxChemicalTab.LoadContent(chemUrl);
                 uxWeatherTab.LoadContent(weatherUrl);
                 uxInventoryTab.LoadContent(invUrl);
+                if (OrgId == 121)
+                {
+                    prodUrl = string.Format("umProductionTab_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                    uxChemicalTab.Disabled = false;
+                    uxTabPanel.ShowTab(uxChemicalTab);
+                    uxChemicalTab.LoadContent(chemUrl);
+                }
+                else if (OrgId == 123)
+                {
+                    uxTabPanel.HideTab(uxChemicalTab);
+                    prodUrl = string.Format("umProductionTab_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                    //uxChemicalTab.Close();
+                    
+                }
+                uxProductionTab.LoadContent(prodUrl);
             }
 
             uxApproveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
