@@ -11,7 +11,7 @@
         <ext:ResourceManager runat="server" ID="ResourceManager2" />
         <div>
             <%--<ContactsTab>--%>
-            <ext:GridPanel ID="uxContactMainGrid" runat="server" Layout="HBoxLayout" Collapsible="true" Title="Contacts">
+            <ext:GridPanel ID="uxContactMainGrid" runat="server" Layout="HBoxLayout" Collapsible="true" Title="CONTACTS">
                  <SelectionModel>
                     <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
                 </SelectionModel>
@@ -40,12 +40,6 @@
                 <ColumnModel>
                     <Columns>
                         <ext:Column ID="uxNameCON" runat="server" DataIndex="CONTACT_NAME" Text="Manager Name" Flex="1" />
-                      <%--  <ext:Column ID="uxAddress1CON" runat="server" DataIndex="ADDRESS_1" Text="Address 1" Flex="1" />
-                        <ext:Column ID="uxAddress2CON" runat="server" DataIndex="ADDRESS_2" Text="Address 2" Flex="1" />
-                        <ext:Column ID="uxCityCON" runat="server" DataIndex="CITY" Text="City" Flex="1" />
-                        <ext:Column ID="uxStateCON" runat="server" DataIndex="STATE" Text="State" Flex="1" />
-                        <ext:Column ID="uxZipCON" runat="server" Text="Zip" DataIndex="ZIP_CODE" Flex="1" />
-                        <ext:Column ID="uxEmailCON" runat="server" DataIndex="" Text="Email" Flex="1" />--%>
                         <ext:Column runat="server" ID="uxWorkNumCON" Text="Work #" DataIndex="WORK_NUMBER" Flex="1" />
                         <ext:Column runat="server" ID="uxCellNumCON" Text="Cell #" DataIndex="CELL_NUMBER" Flex="1" />
                         <ext:Column ID="uxRRCON" runat="server" DataIndex="RAIL_ROAD" Text="RR" Flex="1" />
