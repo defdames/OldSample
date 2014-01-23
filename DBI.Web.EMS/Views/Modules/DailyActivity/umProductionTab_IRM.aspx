@@ -49,6 +49,7 @@
 								<ext:ModelField Name="BILL_RATE" />
 								<ext:ModelField Name="UNIT_OF_MEASURE" />
 								<ext:ModelField Name="COMMENTS" />
+								<ext:ModelField Name="QUANTITY" />
 							</Fields>
 						</ext:Model>
 					</Model>
@@ -194,7 +195,8 @@
 						<ext:DropDownField runat="server"
 							ID="uxAddProductionExpenditureType"
 							Mode="ValueText"
-							AllowBlank="false">
+							AllowBlank="false"
+							FieldLabel="Expenditure Type" >
 							<Component>
 								<ext:GridPanel runat="server"
 									ID="uxAddProductionExpenditureGrid"
@@ -323,23 +325,78 @@
 								</ext:Store>
 							</Store>
 						</ext:ComboBox>
+						<ext:DropDownField runat="server"
+							ID="uxEditProductionExpenditureType"
+							Mode="ValueText"
+							AllowBlank="false"
+							FieldLabel="Expenditure Type" >
+							<Component>
+								<ext:GridPanel runat="server"
+									ID="uxEditProductionExpenditureGrid"
+									Layout="HBoxLayout">
+									<Store>
+										<ext:Store runat="server"
+											ID="uxEditProductionExpenditureStore"
+											onReadData="deReadExpenditures"
+											PageSize="10"
+											RemoteSort="true"
+											AutoDataBind="true">
+											<Model>
+												<ext:Model runat="server">
+													<Fields>
+														<ext:ModelField Name="EXPENDITURE_TYPE" />
+														<ext:ModelField Name="BILL_RATE" />
+														<ext:ModelField Name="UNIT_OF_MEASURE" />
+													</Fields>
+												</ext:Model>
+											</Model>
+											<Proxy>
+												<ext:PageProxy />
+											</Proxy>
+										</ext:Store>
+									</Store>
+									<ColumnModel>
+										<Columns>
+											<ext:Column runat="server" DataIndex="EXPENDITURE_TYPE" Text="Expenditure Type" />
+											<ext:Column runat="server" DataIndex="BILL_RATE" Text="Bill Rate" />
+											<ext:Column runat="server" DataIndex="UNIT_OF_MEASURE" Text="Unit Of Measure" />
+										</Columns>
+									</ColumnModel>
+									<DirectEvents>
+										<SelectionChange OnEvent="deStoreExpenditureType">
+											<ExtraParams>
+												<ext:Parameter Name="ExpenditureType" Value="#{uxEditProductionExpenditureGrid}.getSelectionModel().getSelection()[0].data.EXPENDITURE_TYPE" Mode="Raw" />
+												<ext:Parameter Name="BillRate" Value="#{uxEditProductionExpenditureGrid}.getSelectionModel().getSelection()[0].data.BILL_RATE" Mode="Raw" />
+												<ext:Parameter Name="UnitOfMeasure" Value="#{uxEditProductionExpenditureGrid}.getSelectionModel().getSelection()[0].data.UNIT_OF_MEASURE" Mode="Raw" />
+												<ext:Parameter Name="Type" Value="Edit" />
+											</ExtraParams>
+										</SelectionChange>
+									</DirectEvents>
+									<SelectionModel>
+										<ext:RowSelectionModel runat="server" Mode="Single" />
+									</SelectionModel>
+									<Plugins>
+										<ext:FilterHeader runat="server" Remote="true" />
+									</Plugins>
+									<BottomBar>
+										<ext:PagingToolbar runat="server" />
+									</BottomBar>
+								</ext:GridPanel>
+							</Component>
+						</ext:DropDownField>
 						<ext:TextField runat="server"
 							ID="uxEditProductionStation"
 							FieldLabel="Station"
 							AllowBlank="false" />
 						<ext:TextField runat="server"
-							ID="uxEditProductionExpenditureType"
-							FieldLabel="Expenditure Type"
-							AllowBlank="false" />
-						<ext:TextField runat="server"
 							ID="uxEditProductionQuantity"
 							FieldLabel="Quantity"
 							AllowBlank="false" />
-						<ext:TextField runat="server"
+						<ext:Hidden runat="server"
 							ID="uxEditProductionBillRate"
 							FieldLabel="Bill Rate"
 							AllowBlank="false" />
-						<ext:TextField runat="server"
+						<ext:Hidden runat="server"
 							ID="uxEditProductionUOM"
 							FieldLabel="Unit of Measure"
 							AllowBlank="false" />

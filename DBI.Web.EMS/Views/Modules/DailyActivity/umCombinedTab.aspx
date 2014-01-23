@@ -258,7 +258,7 @@
                             <Model>
                                 <ext:Model ID="Model7" runat="server">
                                     <Fields>
-                                        <ext:ModelField Name="REASON_FOR_NO_WORK" />
+                                        <ext:ModelField Name="COMMENTS" />
                                         <ext:ModelField Name="HOTEL_NAME" />
                                         <ext:ModelField Name="HOTEL_CITY" />
                                         <ext:ModelField Name="HOTEL_STATE" />
@@ -272,7 +272,7 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column42" runat="server" DataIndex="REASON_FOR_NO_WORK" Text="Reason for no Work" Flex="1" />
+                            <ext:Column ID="Column42" runat="server" DataIndex="COMMENTS" Text="Reason for no Work" Flex="1" />
                             <ext:Column ID="Column43" runat="server" DataIndex="HOTEL_NAME" Text="Hotel Name" Flex="1" />
                             <ext:Column ID="Column44" runat="server" DataIndex="HOTEL_CITY" Text="Hotel City" Flex="1" />
                             <ext:Column ID="Column45" runat="server" DataIndex="HOTEL_STATE" Text="Hotel State" Flex="1" />

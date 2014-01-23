@@ -36,7 +36,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join t in _context.PA_TASKS_V on d.TASK_ID equals t.TASK_ID
                             join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                             where d.HEADER_ID == HeaderId
-                            select new { d.PRODUCTION_ID, h.PROJECT_ID, p.LONG_NAME, t.TASK_ID, t.DESCRIPTION, d.TIME_IN, d.TIME_OUT, d.WORK_AREA, d.POLE_FROM, d.POLE_TO, d.ACRES_MILE, d.QUANTITY }).ToList();
+                            select new { d.PRODUCTION_ID, h.PROJECT_ID, p.LONG_NAME, t.TASK_ID, t.DESCRIPTION, d.BILL_RATE, d.STATION, d.COMMENTS, d.UNIT_OF_MEASURE, d.EXPENDITURE_TYPE, d.QUANTITY }).ToList();
 
                 if (data.Count >= 1)
                 {
@@ -100,7 +100,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEditProductionTask.SelectedItems.Add(new Ext.Net.ListItem(Production["DESCRIPTION"], Production["TASK_ID"]));
                 uxEditProductionTask.UpdateSelectedItems();
                 uxEditProductionStation.SetValue(Production["STATION"]);
-                uxEditProductionExpenditureType.SetValue(Production["EXPENDITURE_TYPE"]);
+                uxEditProductionExpenditureType.SetValue(Production["EXPENDITURE_TYPE"], Production["EXPENDITURE_TYPE"]);
                 uxEditProductionQuantity.SetValue(Production["QUANTITY"]);
                 uxEditProductionBillRate.SetValue(Production["BILL_RATE"]);
                 uxEditProductionUOM.SetValue(Production["UNIT_OF_MEASURE"]);
@@ -227,6 +227,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.BILL_RATE = BillRate;
             data.MODIFY_DATE = DateTime.Now;
             data.UNIT_OF_MEASURE = uxEditProductionUOM.Value.ToString();
+            data.COMMENTS = uxEditProductionComments.Value.ToString();
             data.MODIFIED_BY = User.Identity.Name;
 
             //Write to DB
@@ -265,7 +266,29 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 e.Total = count;
 
                 uxAddProductionExpenditureStore.DataSource = data;
+                uxEditProductionExpenditureStore.DataSource = data;
             }
         }
+
+        protected void deStoreExpenditureType(object sender, DirectEventArgs e)
+        {
+            if (e.ExtraParams["Type"] == "Edit")
+            {
+                uxEditProductionExpenditureType.SetValue(e.ExtraParams["ExpenditureType"], e.ExtraParams["ExpenditureType"]);
+                uxEditProductionUOM.SetValue(e.ExtraParams["UnitOfMeasure"]);
+                uxEditProductionBillRate.SetValue(e.ExtraParams["BillRate"]);
+
+                uxEditProductionExpenditureStore.ClearFilter();
+            }
+            else
+            {
+                uxAddProductionExpenditureType.SetValue(e.ExtraParams["ExpenditureType"], e.ExtraParams["ExpenditureType"]);
+                uxAddProductionUOM.SetValue(e.ExtraParams["UnitOfMeasure"]);
+                uxAddProductionBillRate.SetValue(e.ExtraParams["BillRate"]);
+
+                uxAddProductionExpenditureStore.ClearFilter();
+            }
+        }
+
     }
 }

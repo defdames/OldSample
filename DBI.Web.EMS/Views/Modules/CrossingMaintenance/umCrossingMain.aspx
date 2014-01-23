@@ -22,7 +22,7 @@
                                 ID="uxCrossingSecurity"
                                 Disabled="false">
                                 <Loader runat="server"
-                                    ID="Loader5" Mode="Frame" AutoLoad="true" ReloadOnEvent="false" Url="umCrossingSecurity.aspx">
+                                    ID="Loader5" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umCrossingSecurity.aspx">
                                     <LoadMask ShowMask="true" />
                                 </Loader>
 
@@ -33,7 +33,7 @@
                                 ID="uxCrossingInfoTab"
                                 Disabled="false">
                                 <Loader runat="server"
-                                    ID="uxHeaderLoader" Mode="Frame" AutoLoad="true" ReloadOnEvent="false" Url="umCrossingInfoTab.aspx">
+                                    ID="uxHeaderLoader" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umCrossingInfoTab.aspx">
                                     <LoadMask ShowMask="true" />
                                 </Loader>
 
@@ -63,7 +63,7 @@
                                 ID="uxServiceUnitsTab"
                                 Disabled="false">
                                 <Loader runat="server"
-                                    ID="Loader3" Mode="Frame" AutoLoad="true" ReloadOnEvent="false" Url="umServiceUnitsTab.aspx">
+                                    ID="Loader3" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umServiceUnitsTab.aspx">
                                     <LoadMask ShowMask="true" />
                                 </Loader>
 

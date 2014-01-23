@@ -122,7 +122,8 @@
     <Content Include="Views\Modules\DailyActivity\umEmployeesTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umEquipmentTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umHeaderTab.aspx" />
-    <Content Include="Views\Modules\DailyActivity\umInventoryTab.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umInventoryTab_DBI.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umInventoryTab_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umManageExisting.aspx" />
     <Content Include="Views\Modules\DailyActivity\umProductionTab_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umProductionTab_IRM.aspx" />
@@ -262,12 +263,19 @@
     <Compile Include="Views\Modules\DailyActivity\umHeaderTab.aspx.designer.cs">
       <DependentUpon>umHeaderTab.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umInventoryTab.aspx.cs">
-      <DependentUpon>umInventoryTab.aspx</DependentUpon>
+    <Compile Include="Views\Modules\DailyActivity\umInventoryTab_DBI.aspx.cs">
+      <DependentUpon>umInventoryTab_DBI.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umInventoryTab.aspx.designer.cs">
-      <DependentUpon>umInventoryTab.aspx</DependentUpon>
+    <Compile Include="Views\Modules\DailyActivity\umInventoryTab_DBI.aspx.designer.cs">
+      <DependentUpon>umInventoryTab_DBI.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umInventoryTab_IRM.aspx.cs">
+      <DependentUpon>umInventoryTab_IRM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umInventoryTab_IRM.aspx.designer.cs">
+      <DependentUpon>umInventoryTab_IRM.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umManageExisting.aspx.cs">
       <DependentUpon>umManageExisting.aspx</DependentUpon>

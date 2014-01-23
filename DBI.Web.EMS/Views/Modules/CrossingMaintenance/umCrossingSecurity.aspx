@@ -11,12 +11,9 @@
         <ext:ResourceManager ID="ResourceManager1" runat="server" />
         <div></div>
                        
-        <ext:Panel ID="Panel1" runat="server" Width="1500" Height="355">
-            <LayoutConfig>
-                <ext:HBoxLayoutConfig Align="Stretch" Padding="5" />
-            </LayoutConfig>
-            <Items>
-                <ext:GridPanel ID="GridPanel2" runat="server" Flex="1" Title="Select Project" Margins="0 2 0 0" Width="750">
+      
+                <ext:GridPanel ID="GridPanel2" runat="server" Flex="1" SimpleSelect="true" Title="Select Project" Margins="0 2 0 0" >
+                    
                     <Store>
                         <ext:Store runat="server"
                             ID="uxCurrentSecurityProjectStore"
@@ -29,7 +26,7 @@
                                         <ext:ModelField Name="PROJECT_ID" />
                                         <ext:ModelField Name="LONG_NAME" />
                                         <ext:ModelField Name="SEGMENT1" />
-                                        <ext:ModelField Name="STATUS_VALUE" />
+                                        <ext:ModelField Name="ORGANIZATION_NAME" />
                                </Fields>
                                 </ext:Model>
                             </Model>
@@ -42,14 +39,14 @@
                         <Columns>
                             <ext:Column ID="Column1" runat="server" DataIndex="SEGMENT1" Text="Project" Flex="1" />
                             <ext:Column ID="Column2" runat="server" DataIndex="LONG_NAME" Text="Project Name" Flex="2" />
-                            <ext:Column ID="Column3" runat="server" DataIndex="STATUS_VALUE" Text="Status" Flex="1" />
+                            <ext:Column ID="Column3" runat="server" DataIndex="ORGANIZATION_NAME" Text="Organization Name" Flex="1" />
                         </Columns>
                     </ColumnModel>
                     <Plugins>
                         <ext:FilterHeader ID="FilterHeader2" runat="server" />
                     </Plugins>
                     <SelectionModel>
-                        <ext:CellSelectionModel ID="CellSelectionModel1" runat="server" Mode="Single" />
+                        <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" Mode="Single" />
                     </SelectionModel>
                     <BottomBar>
                         <ext:PagingToolbar ID="PagingToolbar2" runat="server" />
@@ -57,7 +54,7 @@
                         
                     </ext:GridPanel>
                 <%--  ---------------------------------------------------------------------------------------------------------------------%>
-                <ext:GridPanel ID="GridPanel1" runat="server" Flex="1" Title="Apply Selected Crossing to Project" Margins="0 2 0 0" Width="750">
+                <ext:GridPanel ID="GridPanel1" runat="server" Flex="1" Title="Apply Selected Crossing to Project" Margins="0 2 0 0" >
                     <Store>
                         <ext:Store runat="server"
                             ID="uxCurrentSecurityCrossingStore"
@@ -82,7 +79,7 @@
                     <ColumnModel>
                         <Columns>
                             <ext:Column ID="uxNameCON" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing #" Flex="1" />
-                            <ext:Column ID="Column4" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
+                            <ext:Column ID="Column4" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="2" />
                             <ext:Column ID="Column5" runat="server" DataIndex="MTM" Text="Manager" Flex="1" />
 
                         </Columns>
@@ -98,8 +95,7 @@
 
                     </BottomBar>
                 </ext:GridPanel>
-            </Items>
-            <BottomBar>
+          
                 <ext:Toolbar ID="Toolbar1" runat="server">
                     <Items>
                         <ext:ToolbarFill ID="ToolbarFill1" runat="server" />
@@ -108,8 +104,7 @@
                         <ext:Button ID="CancelButtonCS" runat="server" Text="Cancel" Icon="Delete" />
                     </Items>
                 </ext:Toolbar>
-            </BottomBar>
-        </ext:Panel>
+      
     </form>
 </body>
 </html>
