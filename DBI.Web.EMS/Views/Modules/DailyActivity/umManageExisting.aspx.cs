@@ -4,14 +4,18 @@ using System.IO;
 using System.Linq;
 using System.Data.Entity;
 using System.Data.Objects;
+using System.Net.Mail;
+using System.Security.Claims;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DBI.Core.Security;
 using DBI.Core.Web;
 using DBI.Data;
 using Ext.Net;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+
 
 namespace DBI.Web.EMS.Views.Modules.DailyActivity
 {
@@ -42,11 +46,33 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 List<object> rawData;
 
-                //Get List of all new headers
-                rawData = (from d in _context.DAILY_ACTIVITY_HEADER
-                           join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
-                           join s in _context.DAILY_ACTIVITY_STATUS on d.STATUS equals s.STATUS
-                           select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE }).ToList<object>();
+
+                if (validateComponentSecurity("SYS.DailyActivity.ViewAll"))
+                {
+                    //Get List of all new headers
+                    rawData = (from d in _context.DAILY_ACTIVITY_HEADER
+                               join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                               join s in _context.DAILY_ACTIVITY_STATUS on d.STATUS equals s.STATUS
+                               select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE }).ToList<object>();
+                }
+                else
+                {
+                    Authentication Authenticator = new Authentication();
+                    string EmployeeName = Authenticator.GetClaimValue("EmployeeName", User as ClaimsPrincipal);
+                    long PersonId = (from d in _context.EMPLOYEES_V
+                                     where d.EMPLOYEE_NAME == EmployeeName
+                                     select d.PERSON_ID).Single();
+
+                    rawData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                               join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                               join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
+                               join s in _context.DAILY_ACTIVITY_STATUS on h.STATUS equals s.STATUS
+                               where d.PERSON_ID == PersonId
+                               select new { d.HEADER_ID, h.PROJECT_ID, h.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE }).ToList<object>();
+
+                    uxCreateActivityButton.Disabled = true;
+                    
+                }
                 List<HeaderData> data = new List<HeaderData>();
 
                 List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime("Hours per day");
@@ -125,38 +151,42 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void deUpdateUrlAndButtons(object sender, DirectEventArgs e)
         {
             string homeUrl = string.Format("umCombinedTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-            string headerUrl = string.Format("umHeaderTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-            string equipUrl = string.Format("umEquipmentTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-            string prodUrl = string.Format("umProductionTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-            string emplUrl = string.Format("umEmployeesTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-            string chemUrl = string.Format("umChemicalTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-            string weatherUrl = string.Format("umWeatherTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-            string invUrl = string.Format("umInventoryTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-
             uxCombinedTab.Disabled = false;
-            uxHeaderTab.Disabled = false;
-            uxEquipmentTab.Disabled = false;
-            uxProductionTab.Disabled = false;
-            uxEmployeeTab.Disabled = false;
-            uxChemicalTab.Disabled = false;
-            uxWeatherTab.Disabled = false;
-            uxInventoryTab.Disabled = false;
-
             uxCombinedTab.LoadContent(homeUrl);
-            uxHeaderTab.LoadContent(headerUrl);
-            uxEquipmentTab.LoadContent(equipUrl);
-            uxProductionTab.LoadContent(prodUrl);
-            uxEmployeeTab.LoadContent(emplUrl);
-            uxChemicalTab.LoadContent(chemUrl);
-            uxWeatherTab.LoadContent(weatherUrl);
-            uxInventoryTab.LoadContent(invUrl);
 
+            if (validateComponentSecurity("SYS.DailyActivity.ViewAll"))
+            {
+                string headerUrl = string.Format("umHeaderTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                string equipUrl = string.Format("umEquipmentTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                string prodUrl = string.Format("umProductionTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                string emplUrl = string.Format("umEmployeesTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                string chemUrl = string.Format("umChemicalTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                string weatherUrl = string.Format("umWeatherTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                string invUrl = string.Format("umInventoryTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+
+                uxHeaderTab.Disabled = false;
+                uxEquipmentTab.Disabled = false;
+                uxProductionTab.Disabled = false;
+                uxEmployeeTab.Disabled = false;
+                uxChemicalTab.Disabled = false;
+                uxWeatherTab.Disabled = false;
+                uxInventoryTab.Disabled = false;
+
+                uxHeaderTab.LoadContent(headerUrl);
+                uxEquipmentTab.LoadContent(equipUrl);
+                uxProductionTab.LoadContent(prodUrl);
+                uxEmployeeTab.LoadContent(emplUrl);
+                uxChemicalTab.LoadContent(chemUrl);
+                uxWeatherTab.LoadContent(weatherUrl);
+                uxInventoryTab.LoadContent(invUrl);
+            }
 
             uxApproveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
             uxPostActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
-            uxInactiveActivityButton.Disabled = false;
-            uxSubmitActivityButton.Disabled = false;
+            uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.ViewAll");
+            uxSubmitActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.ViewAll");
             uxExportToPDF.Disabled = false;
+            uxEmailPdf.Disabled = false;
         }
 
         /// <summary>
@@ -400,11 +430,42 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deExportToPDF(object sender, DirectEventArgs e)
         {
-            using (MemoryStream PdfStream = new MemoryStream())
-            {
                 //Set header Id
                 long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
 
+                MemoryStream PdfStream = generatePDF(HeaderId);
+
+                Response.Clear();
+                Response.ClearContent();
+                Response.ClearHeaders();
+                Response.ContentType = "application/pdf";
+                Response.AppendHeader("Content-Disposition", "attachment;filename=export.pdf");
+                Response.BinaryWrite(PdfStream.ToArray());
+                Response.End();
+        }
+
+        protected void deSendPDF(object sender, DirectEventArgs e)
+        {
+            long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
+
+            using (MemoryStream PdfStream = new MemoryStream(generatePDF(HeaderId).ToArray()))
+            {
+                string Subject = "Copy of Daily Activity Report";
+                bool IsHtml = true;
+                string Message = "Please find attached the Daily Activity Report you requested.";
+                
+                PdfStream.Position = 0;
+
+                Attachment MailAttachment = new Attachment(PdfStream, "dailyActivityExport.pdf");
+
+                Mailer.SendMessage(User.Identity.Name + "@dbiservices.com", Subject, Message, IsHtml, MailAttachment);
+            }
+        }
+
+        protected MemoryStream generatePDF(long HeaderId)
+        {
+            using (MemoryStream PdfStream = new MemoryStream())
+            {
                 //Create the document
                 Document ExportedPDF = new Document(iTextSharp.text.PageSize.LETTER, 0f, 0f, 42f, 42f);
                 PdfWriter ExportWriter = PdfWriter.GetInstance(ExportedPDF, PdfStream);
@@ -791,15 +852,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 //Close Stream and start Download
                 ExportWriter.CloseStream = false;
                 ExportedPDF.Close();
-                PdfStream.Position = 0;
-
-                Response.Clear();
-                Response.ClearContent();
-                Response.ClearHeaders();
-                Response.ContentType = "application/pdf";
-                Response.AppendHeader("Content-Disposition", "attachment;filename=export.pdf");
-                Response.BinaryWrite(PdfStream.ToArray());
-                Response.End();
+                return PdfStream;
             }
         }
 
@@ -848,6 +901,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxSubmitActivityWindow.ClearContent();
             uxSubmitActivityWindow.LoadContent(string.Format("umSubmitActivity.aspx?HeaderId={0}", HeaderId));
         }
+
         /// <summary>
         /// Load create activity form and display the window.
         /// </summary>

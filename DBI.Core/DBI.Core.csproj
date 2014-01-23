@@ -41,6 +41,7 @@
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.identitymodel.services" />
@@ -71,6 +72,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Web\ExtensionMethods\DateTime_xm.cs" />
+    <Compile Include="Web\Mailer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
