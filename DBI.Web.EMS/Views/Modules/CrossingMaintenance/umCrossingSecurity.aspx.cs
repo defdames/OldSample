@@ -18,21 +18,18 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         protected void deSecurityProjectGrid(object sender, StoreReadDataEventArgs e)
         {
-
-            using (Entities _context = new Entities())
             {
-                List<object> data;
+            List<WEB_PROJECTS_V> dataIn;
+           
+                dataIn = WEB_PROJECTS_V.ProjectList();
+            
+            int count;
+            //Get paged, filterable list of data
+            List<WEB_PROJECTS_V> data = GenericData.EnumerableFilterHeader<WEB_PROJECTS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
 
-                //Get List of all new headers
-                data = (from d in _context.DAILY_ACTIVITY_HEADER
-                           join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
-                           join s in _context.DAILY_ACTIVITY_STATUS on d.STATUS equals s.STATUS
-                           select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE }).ToList<object>();
-              
-
-                int count;
-                uxCurrentSecurityProjectStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-                e.Total = count;
+            e.Total = count;
+            uxCurrentSecurityProjectStore.DataSource = data;
+            uxCurrentSecurityProjectStore.DataBind();
             }
         }
         protected void deSecurityCrossingGridData(object sender, StoreReadDataEventArgs e)

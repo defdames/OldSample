@@ -33,6 +33,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                 int count;
                 uxCurrentCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                e.Total = count;
             }
         }
          
