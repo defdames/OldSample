@@ -21,6 +21,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 {
     public partial class umManageExisting : BasePage
     {
+        
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!validateComponentSecurity("SYS.DailyActivity.View"))
@@ -34,6 +36,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        protected long GetOrgId(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
+                long OrgId;
+                return OrgId = (from d in _context.DAILY_ACTIVITY_HEADER
+                         join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                         where d.HEADER_ID == HeaderId
+                         select (long)p.ORG_ID).Single();
+            }
+            
+        }
         /// <summary>
         /// Gets filterable list of header data
         /// </summary>
@@ -152,15 +166,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void deUpdateUrlAndButtons(object sender, DirectEventArgs e)
         {
             long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
-            long OrgId;
             string homeUrl = string.Empty;
-            using (Entities _context = new Entities())
-            {
-                OrgId = (from d in _context.DAILY_ACTIVITY_HEADER
-                         join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
-                         where d.HEADER_ID == HeaderId
-                         select (long) p.ORG_ID).Single();
-            }
+            long OrgId = GetOrgId(HeaderId);
+
             if (OrgId == 121)
             {
                 homeUrl = string.Format("umCombinedTab_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
@@ -271,7 +279,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
             }
 
-            string WindowUrl = string.Format("umSubmitActivity.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+            string WindowUrl = string.Empty;
+
+            long OrgId = GetOrgId(HeaderId);
+
+            if (OrgId == 121)
+            {
+                WindowUrl = string.Format("umSubmitActivity_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+            }
+            else if (OrgId == 123)
+            {
+                WindowUrl = string.Format("umSubmitActivity_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+            }
             if (!BadHeader)
             {
                 uxSubmitActivityWindow.LoadContent(WindowUrl);

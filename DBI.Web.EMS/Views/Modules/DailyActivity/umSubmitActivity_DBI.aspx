@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umSubmitActivity.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.DailyActivity.umSubmitActivity" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umSubmitActivity_DBI.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.DailyActivity.umSubmitActivity_DBI" %>
 
 <!DOCTYPE html>
 
@@ -41,14 +41,19 @@
                             FieldLabel="Foreman Signature" />
                         <ext:Image runat="server"
                             ID="uxForemanSignatureImage"
-                            Height="150"
+                            Width="240"
+                            Height="160"
                             Hidden="true" />
+                        <ext:TextField runat="server"
+                            ID="uxContractRepresentative"
+                            FieldLabel="Contarct Representative Name" />
                         <ext:FileUploadField runat="server"
                             ID="uxSubmitContract"
                             FieldLabel="Contract Representative" />
                         <ext:Image runat="server"
                             ID="uxContractRepresentativeImage"
-                            Height="150"
+                            Width="240"
+                            Height="160"
                             Hidden="true" />
                     </Items>
                     <Buttons>
