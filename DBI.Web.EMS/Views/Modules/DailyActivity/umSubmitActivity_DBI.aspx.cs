@@ -12,7 +12,7 @@ using Ext.Net;
 
 namespace DBI.Web.EMS.Views.Modules.DailyActivity
 {
-    public partial class umSubmitActivity : BasePage
+    public partial class umSubmitActivity_DBI : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -180,6 +180,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 {
                 }
 
+                try
+                {
+                    string ContractRepName = uxContractRepresentative.Value.ToString();
+                    data.CONTRACT_REP_NAME = ContractRepName;
+                }
+                catch
+                {
+
+                }
                 //file upload
                 HttpPostedFile ForemanSignatureFile = uxSubmitSignature.PostedFile;
                 byte[] ForemanSignatureArray = ImageToByteArray(ForemanSignatureFile);
@@ -257,6 +266,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 catch
                 {
                     data.HOTEL_PHONE = null;
+                }
+
+                try
+                {
+                    string ContractRepName = uxContractRepresentative.Value.ToString();
+                    data.CONTRACT_REP_NAME = ContractRepName;
+                }
+                catch
+                {
+                    data.CONTRACT_REP_NAME = null;
                 }
 
                 try

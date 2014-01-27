@@ -31,9 +31,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     {
                         imageContent = data.FOREMAN_SIGNATURE.ToArray();
                     }
-                    else
+                    else if (Request.QueryString["type"] == "contract")
                     {
                         imageContent = data.CONTRACT_REP.ToArray();
+                    }
+                    else
+                    {
+                        imageContent = data.DOT_REP.ToArray();
                     }
 
                     imageStream.Position = 0;

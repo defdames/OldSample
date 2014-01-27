@@ -117,7 +117,8 @@
     <Content Include="Views\Modules\DailyActivity\ImageLoader\ImageLoader.aspx" />
     <Content Include="Views\Modules\DailyActivity\umChemicalTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umChoosePerDiem.aspx" />
-    <Content Include="Views\Modules\DailyActivity\umCombinedTab.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umCombinedTab_DBI.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umCombinedTab_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umDailyActivity.aspx" />
     <Content Include="Views\Modules\DailyActivity\umEmployeesTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umEquipmentTab.aspx" />
@@ -127,7 +128,8 @@
     <Content Include="Views\Modules\DailyActivity\umManageExisting.aspx" />
     <Content Include="Views\Modules\DailyActivity\umProductionTab_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umProductionTab_IRM.aspx" />
-    <Content Include="Views\Modules\DailyActivity\umSubmitActivity.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umSubmitActivity_DBI.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
     <Content Include="Views\Modules\Security\umSecurityLogList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityActivityList.aspx" />
@@ -228,12 +230,19 @@
     <Compile Include="Views\Modules\DailyActivity\umChoosePerDiem.aspx.designer.cs">
       <DependentUpon>umChoosePerDiem.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umCombinedTab.aspx.cs">
-      <DependentUpon>umCombinedTab.aspx</DependentUpon>
+    <Compile Include="Views\Modules\DailyActivity\umCombinedTab_DBI.aspx.cs">
+      <DependentUpon>umCombinedTab_DBI.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umCombinedTab.aspx.designer.cs">
-      <DependentUpon>umCombinedTab.aspx</DependentUpon>
+    <Compile Include="Views\Modules\DailyActivity\umCombinedTab_DBI.aspx.designer.cs">
+      <DependentUpon>umCombinedTab_DBI.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umCombinedTab_IRM.aspx.cs">
+      <DependentUpon>umCombinedTab_IRM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umCombinedTab_IRM.aspx.designer.cs">
+      <DependentUpon>umCombinedTab_IRM.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umDailyActivity.aspx.cs">
       <DependentUpon>umDailyActivity.aspx</DependentUpon>
@@ -298,12 +307,19 @@
     <Compile Include="Views\Modules\DailyActivity\umProductionTab_IRM.aspx.designer.cs">
       <DependentUpon>umProductionTab_IRM.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umSubmitActivity.aspx.cs">
-      <DependentUpon>umSubmitActivity.aspx</DependentUpon>
+    <Compile Include="Views\Modules\DailyActivity\umSubmitActivity_DBI.aspx.cs">
+      <DependentUpon>umSubmitActivity_DBI.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umSubmitActivity.aspx.designer.cs">
-      <DependentUpon>umSubmitActivity.aspx</DependentUpon>
+    <Compile Include="Views\Modules\DailyActivity\umSubmitActivity_DBI.aspx.designer.cs">
+      <DependentUpon>umSubmitActivity_DBI.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx.cs">
+      <DependentUpon>umSubmitActivity_IRM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx.designer.cs">
+      <DependentUpon>umSubmitActivity_IRM.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umWeatherTab.aspx.cs">
       <DependentUpon>umWeatherTab.aspx</DependentUpon>
