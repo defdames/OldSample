@@ -68,7 +68,7 @@ namespace DBI.Data
         public string MTM_PHONE_NUMBER { get; set; }
         public string MTM_OFFICE_NUMBER { get; set; }
         public string CROSSING_NUMBER { get; set; }
-        public long CONTACT_ID { get; set; }
+        public Nullable<long> CONTACT_ID { get; set; }
     
         public virtual CROSSING_CONTACTS CROSSING_CONTACTS { get; set; }
         public virtual ICollection<CROSSING_DATA_ENTRY> CROSSING_DATA_ENTRY { get; set; }
