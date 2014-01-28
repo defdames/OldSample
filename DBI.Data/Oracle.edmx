@@ -544,7 +544,7 @@
           <Key>
             <PropertyRef Name="CONTACT_ID" />
           </Key>
-          <Property Name="CONTACT_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="CONTACT_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="CONTACT_NAME" Type="varchar2" Nullable="false" MaxLength="100" />
           <Property Name="ADDRESS_1" Type="varchar2" MaxLength="200" />
           <Property Name="ADDRESS_2" Type="varchar2" MaxLength="200" />
@@ -601,7 +601,7 @@
           <Key>
             <PropertyRef Name="CROSSING_ID" />
           </Key>
-          <Property Name="CROSSING_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="CROSSING_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="DOT" Type="varchar2" MaxLength="30" />
           <Property Name="PREF" Type="varchar2" MaxLength="5" />
           <Property Name="MILE_POST" Type="number" Precision="15" Scale="2" />
@@ -650,7 +650,7 @@
           <Property Name="MTM_PHONE_NUMBER" Type="varchar2" MaxLength="20" />
           <Property Name="MTM_OFFICE_NUMBER" Type="varchar2" MaxLength="20" />
           <Property Name="CROSSING_NUMBER" Type="varchar2" Nullable="false" MaxLength="20" />
-          <Property Name="CONTACT_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="CONTACT_ID" Type="number" Precision="15" />
         </EntityType>
         <EntityType Name="DAILY_ACTIVITY_CHEMICAL_MIX">
           <Key>
@@ -1448,7 +1448,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CROSSINGS_CONTACT_ID">
-          <End Role="CROSSING_CONTACTS" Type="OracleModel.Store.CROSSING_CONTACTS" Multiplicity="1" />
+          <End Role="CROSSING_CONTACTS" Type="OracleModel.Store.CROSSING_CONTACTS" Multiplicity="0..1" />
           <End Role="CROSSINGS" Type="OracleModel.Store.CROSSINGS" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CROSSING_CONTACTS">
@@ -2704,7 +2704,7 @@
           <Key>
             <PropertyRef Name="CONTACT_ID" />
           </Key>
-          <Property Type="Int64" Name="CONTACT_ID" Nullable="false" />
+          <Property Type="Int64" Name="CONTACT_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="CONTACT_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="ADDRESS_1" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="ADDRESS_2" MaxLength="200" FixedLength="false" Unicode="false" />
@@ -2724,7 +2724,7 @@
           <Key>
             <PropertyRef Name="CROSSING_ID" />
           </Key>
-          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
+          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="DOT" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="PREF" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Type="Decimal" Name="MILE_POST" Precision="15" Scale="2" />
@@ -2773,12 +2773,12 @@
           <Property Type="String" Name="MTM_PHONE_NUMBER" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MTM_OFFICE_NUMBER" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="CROSSING_NUMBER" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="CONTACT_ID" Nullable="false" />
+          <Property Type="Int64" Name="CONTACT_ID" />
           <NavigationProperty Name="CROSSING_CONTACTS" Relationship="OracleModel.FK_CROSSINGS_CONTACT_ID" FromRole="CROSSING" ToRole="CROSSING_CONTACTS" />
           <NavigationProperty Name="CROSSING_DATA_ENTRY" Relationship="OracleModel.FK_DATA_ENTRY_CROSSING_ID" FromRole="CROSSING" ToRole="CROSSING_DATA_ENTRY" />
         </EntityType>
         <Association Name="FK_CROSSINGS_CONTACT_ID">
-          <End Type="OracleModel.CROSSING_CONTACTS" Role="CROSSING_CONTACTS" Multiplicity="1" />
+          <End Type="OracleModel.CROSSING_CONTACTS" Role="CROSSING_CONTACTS" Multiplicity="0..1" />
           <End Type="OracleModel.CROSSING" Role="CROSSING" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CROSSING_CONTACTS">
