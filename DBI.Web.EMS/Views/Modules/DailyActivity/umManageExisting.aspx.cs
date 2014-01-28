@@ -969,5 +969,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxPlaceholderWindow.LoadContent(string.Format("umAddEditChemical.aspx?HeaderId={0}&Type={1}&ChemicalMixId={2}", HeaderId, WindowType, ChemicalMixId));
             uxPlaceholderWindow.Show();
         }
+
+        [DirectMethod]
+        public void dmLoadEmployeeWindow(string WindowType, string HeaderId, string EmployeeId)
+        {
+            uxPlaceholderWindow.ClearContent();
+            uxPlaceholderWindow.LoadContent(string.Format("umAddEditEmployee.aspx?HeaderId={0}&Type={1}&EmployeeId={2}", HeaderId, WindowType, EmployeeId));
+            uxPlaceholderWindow.Show();
+        }
     }
 }

@@ -116,6 +116,7 @@
     <Content Include="Views\Modules\CrossingMaintenance\umSubDivisionsTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\ImageLoader\ImageLoader.aspx" />
     <Content Include="Views\Modules\DailyActivity\umAddEditChemical.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umAddEditEmployee.aspx" />
     <Content Include="Views\Modules\DailyActivity\umChemicalTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umChoosePerDiem.aspx" />
     <Content Include="Views\Modules\DailyActivity\umCombinedTab_DBI.aspx" />
@@ -223,6 +224,13 @@
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umAddEditChemical.aspx.designer.cs">
       <DependentUpon>umAddEditChemical.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditEmployee.aspx.cs">
+      <DependentUpon>umAddEditEmployee.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditEmployee.aspx.designer.cs">
+      <DependentUpon>umAddEditEmployee.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umChemicalTab.aspx.cs">
       <DependentUpon>umChemicalTab.aspx</DependentUpon>
