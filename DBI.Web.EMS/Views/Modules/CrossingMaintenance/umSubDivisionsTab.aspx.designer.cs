@@ -265,13 +265,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Window uxAddSubdivisionWindow;
         
         /// <summary>
-        /// uxAddWindowFormPanel control.
+        /// uxAddSDForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FormPanel uxAddWindowFormPanel;
+        protected global::Ext.Net.FormPanel uxAddSDForm;
         
         /// <summary>
         /// uxAddNewSubDivSD control.
@@ -427,13 +427,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Window uxEditSubdivisionWindow;
         
         /// <summary>
-        /// FormPanel2 control.
+        /// uxEditSDForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FormPanel FormPanel2;
+        protected global::Ext.Net.FormPanel uxEditSDForm;
         
         /// <summary>
         /// uxEditSubDivSD control.

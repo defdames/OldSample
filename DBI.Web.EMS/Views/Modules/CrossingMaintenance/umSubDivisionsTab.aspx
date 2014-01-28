@@ -137,9 +137,9 @@
                 Layout="FormLayout"
                 Hidden="true"
                 Title="Add New Sub-Division"
-                Width="500">
+                Width="500" Closable="false">
                 <Items>
-                    <ext:FormPanel runat="server" ID="uxAddWindowFormPanel" Layout="FormLayout">
+                    <ext:FormPanel runat="server" ID="uxAddSDForm" Layout="FormLayout">
                         <Items>
                             <ext:TextField ID="uxAddNewSubDivSD" runat="server" FieldLabel="Subdivision" LabelAlign="Right" AnchorHorizontal="100%" Width="300" />
                             <ext:FieldContainer ID="FieldContainer3" runat="server" Layout="HBoxLayout">
@@ -175,7 +175,12 @@
 								<Click OnEvent="deAddSubDiv" />
 							</DirectEvents>
                                 </ext:Button>
-                            <ext:Button ID="uxCancelNNewSubdivisionButton" runat="server" Text="Cancel" Icon="Delete" />
+                            <ext:Button ID="uxCancelNNewSubdivisionButton" runat="server" Text="Cancel" Icon="Delete" >
+                                 <Listeners>
+								<Click Handler="#{uxAddSDForm}.reset();
+									#{uxAddSubdivisionWindow}.hide()" />
+							</Listeners>
+						</ext:Button>
                         </Buttons>
                     </ext:FormPanel>
                 </Items>
@@ -187,9 +192,9 @@
                 Layout="FormLayout"
                 Hidden="true"
                 Title="Edit Existing Sub-Division"
-                Width="500">
+                Width="500" Closable="false">
                 <Items>
-                    <ext:FormPanel runat="server" ID="FormPanel2" Layout="FormLayout">
+                    <ext:FormPanel runat="server" ID="uxEditSDForm" Layout="FormLayout">
                         <Items>
                             <ext:TextField ID="uxEditSubDivSD" runat="server" FieldLabel="Subdivision" LabelAlign="Right" AnchorHorizontal="100%" Width="300" />
                             <ext:FieldContainer runat="server" Layout="HBoxLayout">
@@ -228,7 +233,12 @@
                                     </Click>
 							</DirectEvents>
                                 </ext:Button>
-                            <ext:Button ID="uxCancelUpdateSubDivButton" runat="server" Text="Cancel" Icon="Delete" />
+                            <ext:Button ID="uxCancelUpdateSubDivButton" runat="server" Text="Cancel" Icon="Delete" >
+                                 <Listeners>
+								<Click Handler="#{uxEditSDForm}.reset();
+									#{uxEditSubdivisionWindow}.hide()" />
+							</Listeners>
+						</ext:Button>
                         </Buttons>
                     </ext:FormPanel>
                 </Items>

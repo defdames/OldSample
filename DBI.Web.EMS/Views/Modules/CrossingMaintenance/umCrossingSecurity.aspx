@@ -9,12 +9,9 @@
 <body>
     <form id="form1" runat="server">
         <ext:ResourceManager ID="ResourceManager1" runat="server" />
-        <div></div>
-                       
-      
+        <div></div>    
                 <ext:GridPanel ID="GridPanel2" runat="server" Flex="1" SimpleSelect="true" Title="Select Project" Margins="0 2 0 0" >
-                    
-                    <Store>
+                     <Store>
                         <ext:Store runat="server"
                             ID="uxCurrentSecurityProjectStore"
                             OnReadData="deSecurityProjectGrid"
@@ -51,8 +48,7 @@
                     <BottomBar>
                         <ext:PagingToolbar ID="PagingToolbar2" runat="server" />
                     </BottomBar>
-                        
-                    </ext:GridPanel>
+                  </ext:GridPanel>
                 <%--  ---------------------------------------------------------------------------------------------------------------------%>
                 <ext:GridPanel ID="GridPanel1" runat="server" Flex="1" Title="Apply Selected Crossing to Project" Margins="0 2 0 0" >
                     <Store>
@@ -81,14 +77,13 @@
                             <ext:Column ID="uxNameCON" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing #" Flex="1" />
                             <ext:Column ID="Column4" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="2" />
                             <ext:Column ID="Column5" runat="server" DataIndex="MTM" Text="Manager" Flex="1" />
-
                         </Columns>
                     </ColumnModel>
                     <Plugins>
                         <ext:FilterHeader ID="FilterHeader1" runat="server" />
                     </Plugins>
                     <SelectionModel>
-                        <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi" />
+                        <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi" />           
                     </SelectionModel>
                     <BottomBar>
                         <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
@@ -100,11 +95,15 @@
                     <Items>
                         <ext:ToolbarFill ID="ToolbarFill1" runat="server" />
 
-                        <ext:Button ID="uxApplyButtonCS" runat="server" Text="Associate" Icon="ArrowJoin" />
-                        <ext:Button ID="CancelButtonCS" runat="server" Text="Cancel" Icon="Delete" />
+                        <ext:Button ID="uxApplyButtonCS" runat="server" Text="Associate" Icon="ArrowJoin"  >
+                             <DirectEvents>
+                                    <Click OnEvent="deAssociateCrossings">
+                                        <Confirmation ConfirmRequest="true" Title="Associate?" Message="Are you sure you want to associate the selected crossings with the selected project?" />
+                                        </Click>
+                                 </DirectEvents>
+                            </ext:Button>                     
                     </Items>
-                </ext:Toolbar>
-      
+                </ext:Toolbar>     
     </form>
 </body>
 </html>

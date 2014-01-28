@@ -43,7 +43,6 @@
                         <ext:Column runat="server" ID="uxWorkNumCON" Text="Work #" DataIndex="WORK_NUMBER" Flex="1" />
                         <ext:Column runat="server" ID="uxCellNumCON" Text="Cell #" DataIndex="CELL_NUMBER" Flex="1" />
                         <ext:Column ID="uxRRCON" runat="server" DataIndex="RAIL_ROAD" Text="RR" Flex="1" />
-
                     </Columns>
                 </ColumnModel>
                 <DirectEvents>
@@ -84,7 +83,7 @@
                             </Click>
                         </DirectEvents>
                     </ext:Button>
-                    <ext:Button ID="uxAssignContactButton" runat="server" Text="Assign Crossing to Contact" Icon="ApplicationGo">
+                    <ext:Button ID="uxAssignContactButton" runat="server" Text="Assign Crossings to Contact" Icon="ApplicationGo">
                         <Listeners>
                             <Click Handler="#{uxAssignCrossingWindow}.show()" />
                         </Listeners>
@@ -126,7 +125,7 @@
                 Layout="FormLayout"
                 Hidden="true"
                 Title="Add New Contact"
-                Width="250">
+                Width="250" Closable="false">
                 <Items>
                     <ext:FormPanel runat="server" ID="uxAddContactForm" Layout="FormLayout">
                         <Items>
@@ -139,7 +138,6 @@
                             <ext:TextField ID="uxAddNewContactZip" runat="server" FieldLabel="Zip" AnchorHorizontal="100%" LabelAlign="Right" />
                             <ext:TextField ID="uxAddNewContactCell" runat="server" FieldLabel="Cell #" AnchorHorizontal="100%" LabelAlign="Right" />
                             <ext:TextField ID="uxAddNewContactOffice" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right" />
-
                         </Items>
                         <Buttons>
                             <ext:Button runat="server" ID="deAddContacts" Text="Add" Icon="Add">
@@ -147,7 +145,12 @@
                                     <Click OnEvent="deAddContact" />
                                 </DirectEvents>
                             </ext:Button>
-                            <ext:Button runat="server" ID="uxAddNewContactCancelButton" Text="Cancel" Icon="Delete" />
+                            <ext:Button runat="server" ID="uxAddNewContactCancelButton" Text="Cancel" Icon="Delete" >
+                                 <Listeners>
+								<Click Handler="#{uxAddContactForm}.reset();
+									#{uxAddContactWindow}.hide()" />
+							</Listeners>
+						</ext:Button>
                         </Buttons>
                     </ext:FormPanel>
                 </Items>
@@ -158,9 +161,9 @@
                 Layout="FormLayout"
                 Hidden="true"
                 Title="Edit Existing Contact"
-                Width="250">
+                Width="250" Closable="false">
                 <Items>
-                    <ext:FormPanel ID="FormPanel1" runat="server" Layout="FormLayout">
+                    <ext:FormPanel ID="uxEditContactForm" runat="server" Layout="FormLayout">
                         <Items>
                             <ext:TextField ID="uxEditManagerName" runat="server" FieldLabel="Manager Name" AnchorHorizontal="100%" LabelAlign="Right" />
                             <ext:TextField ID="uxEditRRTextField" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right" />
@@ -171,8 +174,6 @@
                             <ext:TextField ID="uxEditContactZip" runat="server" FieldLabel="Zip" AnchorHorizontal="100%" LabelAlign="Right" />
                             <ext:TextField ID="uxEditContactCellNum" runat="server" FieldLabel="Cell #" AnchorHorizontal="100%" LabelAlign="Right" />
                             <ext:TextField ID="uxEditContactPhoneNum" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right" />
-
-
                         </Items>
                         <Buttons>
                             <ext:Button runat="server" ID="uxEditUpdateButton" Text="Update" Icon="Add">
@@ -184,25 +185,29 @@
                                     </Click>
                                 </DirectEvents>
                             </ext:Button>
-                            <ext:Button runat="server" ID="uxEditContactCancelButton" Text="Cancel" Icon="Delete" />
+                            <ext:Button runat="server" ID="uxEditContactCancelButton" Text="Cancel" Icon="Delete" >
+                                 <Listeners>
+								<Click Handler="#{uxEditContactForm}.reset();
+									#{uxEditContactWindow}.hide()" />
+							</Listeners>
+						</ext:Button>
                         </Buttons>
                     </ext:FormPanel>
                 </Items>
             </ext:Window>
             <%--------------------------------------------------------------------------------------------------------------------------------------%>
-
-            <ext:Window runat="server"
+              <ext:Window runat="server"
                 ID="uxAssignCrossingWindow"
                 Layout="FormLayout"
                 Hidden="true"
                 Title="Assign Crossing to Manager" Width="750">
                 <Items>
-                    <ext:Panel runat="server" Width="740" Height="330">
+                    <ext:Panel ID="uxAssignContactPanel" runat="server" Width="740" Height="330">
                         <LayoutConfig>
                             <ext:HBoxLayoutConfig Align="Stretch" Padding="5" />
                         </LayoutConfig>
                         <Items>
-                            <ext:GridPanel ID="GridPanel1" runat="server" Flex="1" SimpleSelect="true" Title="Managers" Margins="0 2 0 0">
+                            <ext:GridPanel ID="uxAssignContactGrid" runat="server" Flex="1" SimpleSelect="true" Title="Managers" Margins="0 2 0 0">
 
                                 <Store>
                                     <ext:Store runat="server"
@@ -215,8 +220,7 @@
                                                 <Fields>
                                                     <ext:ModelField Name="CONTACT_ID" />
                                                     <ext:ModelField Name="CONTACT_NAME" />
-                                                    <%--  <ext:ModelField Name="SEGMENT1" />
-                                        <ext:ModelField Name="ORGANIZATION_NAME" />--%>
+
                                                 </Fields>
                                             </ext:Model>
                                         </Model>
@@ -227,9 +231,7 @@
                                 </Store>
                                 <ColumnModel>
                                     <Columns>
-                                        <ext:Column ID="Column2" runat="server" DataIndex="CONTACT_NAME" Text="Manager" Flex="2" />
-                                        <%--   <ext:Column ID="Column3" runat="server" DataIndex="LONG_NAME" Text="Project Name" Flex="2" />
-                            <ext:Column ID="Column5" runat="server" DataIndex="ORGANIZATION_NAME" Text="Organization Name" Flex="1" />--%>
+                                        <ext:Column ID="Column2" runat="server" DataIndex="CONTACT_NAME" Text="Manager" Flex="2" />                                  
                                     </Columns>
                                 </ColumnModel>
                                 <Plugins>
@@ -256,8 +258,6 @@
                                                 <Fields>
                                                     <ext:ModelField Name="CROSSING_ID" />
                                                     <ext:ModelField Name="CROSSING_NUMBER" />
-                                                    <%-- <ext:ModelField Name="SUB_DIVISION" />
-                                        <ext:ModelField Name="MTM" />--%>
                                                 </Fields>
                                             </ext:Model>
                                         </Model>
@@ -269,8 +269,6 @@
                                 <ColumnModel>
                                     <Columns>
                                         <ext:Column ID="Column6" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing #" Flex="2" />
-                                        <%-- <ext:Column ID="Column7" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="2" />
-                            <ext:Column ID="Column8" runat="server" DataIndex="MTM" Text="Manager" Flex="1" />--%>
                                     </Columns>
                                 </ColumnModel>
                                 <Plugins>
@@ -284,20 +282,24 @@
                                 </BottomBar>
                             </ext:GridPanel>
 
-
-
                         </Items>
                     </ext:Panel>
-                    <ext:Toolbar ID="Toolbar3" runat="server">
+                  <ext:Toolbar ID="Toolbar3" runat="server">
                         <Items>
-                            <ext:ToolbarFill ID="ToolbarFill2" runat="server" />
-
+                            <ext:ToolbarFill ID="ToolbarFill2" runat="server" />    
+                                             
                             <ext:Button ID="uxApplyButtonCON" runat="server" Text="Associate" Icon="ArrowJoin" />
-                            <ext:Button ID="CancelButtonCON" runat="server" Text="Cancel" Icon="Delete" />
+                            <ext:Button ID="CancelButtonCON" runat="server" Text="Cancel" Icon="Delete" >
+                               <Listeners>
+								<Click Handler="#{uxEditContactForm}.reset();
+									#{uxAssignCrossingWindow}.hide()" />
+							</Listeners>
+						</ext:Button> 					
                         </Items>
                     </ext:Toolbar>
                 </Items>
             </ext:Window>
+          
             <%----------------------------------------------------------------------------------------------------------------------------------%>
 
             <ext:Window runat="server"
@@ -305,13 +307,108 @@
                 Layout="FormLayout"
                 Hidden="true"
                 Title="Update Crossings To New Manager"
-                Width="350" Height="150">
+                Width="550" Height="120" Closable="false">
                 <Items>
-                    <ext:FormPanel ID="FormPanel3" runat="server" Layout="FormLayout">
-                        <Items>
-                            <ext:DropDownField ID="uxUpdateContactRR" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right" />
-                            <ext:DropDownField ID="uxUpdateContactCurrentManager" runat="server" FieldLabel="Current Manager" AnchorHorizontal="100%" LabelAlign="Right" />
-                            <ext:DropDownField ID="uxUpdateContactNewManager" runat="server" FieldLabel="New Manager" AnchorHorizontal="100%" LabelAlign="Right" />
+                    <ext:FormPanel ID="uxUpdateContactForm" runat="server" Layout="FormLayout">
+                        <Items>       
+                            <ext:DropDownField ID="uxUpdateContactCurrentManager" runat="server" FieldLabel="Current Manager" AnchorHorizontal="100%" LabelAlign="Right" >
+                                <Component>
+                                    <ext:GridPanel runat="server"
+									ID="uxAddCurrentManager"
+									Layout="HBoxLayout">
+									<Store>
+										<ext:Store runat="server"
+											ID="uxCurrentManagerStore"
+											PageSize="10"
+											RemoteSort="true"
+											OnReadData="deCurrentManagerGrid">
+											<Model>
+												<ext:Model ID="Model6" runat="server">
+													<Fields>
+														<ext:ModelField Name="CONTACT_ID" Type="Int" />
+														<ext:ModelField Name="CONTACT_NAME" Type="String" />
+													</Fields>
+												</ext:Model>
+											</Model>
+											<Proxy>
+												<ext:PageProxy />
+											</Proxy>
+										</ext:Store>
+									</Store>
+									<ColumnModel>
+										<Columns>
+											<ext:Column ID="Column3" runat="server" Text="Manager Name" DataIndex="CONTACT_NAME" Width="425" />
+										</Columns>
+									</ColumnModel>
+									<BottomBar>
+										<ext:PagingToolbar ID="PagingToolbar3" runat="server" />
+									</BottomBar>
+									<SelectionModel>
+										<ext:RowSelectionModel ID="RowSelectionModel3" runat="server" Mode="Single" />
+									</SelectionModel>
+                                        <DirectEvents>
+										<SelectionChange OnEvent="deStoreCurrentManagerValue">
+											<ExtraParams>
+												<ext:Parameter Name="ContactName" Value="#{uxAddCurrentManager}.getSelectionModel().getSelection()[0].data.CONTACT_NAME" Mode="Raw" />
+												<ext:Parameter Name="Type" Value="CurrentManager" />
+											</ExtraParams>
+										</SelectionChange>
+                                         </DirectEvents>
+									<Plugins>
+										<ext:FilterHeader runat="server" ID="uxAddCurrentManagerFilter" Remote="true" />
+									</Plugins>                                    
+								</ext:GridPanel>
+                                </Component>
+                                </ext:DropDownField>
+                            <ext:DropDownField ID="uxUpdateContactNewManager" runat="server" FieldLabel="New Manager" AnchorHorizontal="100%" LabelAlign="Right" >
+                                <Component>
+                                    <ext:GridPanel runat="server"
+									ID="uxNewManagerMainGrid"
+									Layout="HBoxLayout">
+									<Store>
+										<ext:Store runat="server"
+											ID="uxNewManagerStore"
+											PageSize="10"
+											RemoteSort="true"
+											OnReadData="deNewManagerGrid">
+											<Model>
+												<ext:Model ID="Model7" runat="server">
+													<Fields>
+														<ext:ModelField Name="CONTACT_ID" Type="Int" />
+														<ext:ModelField Name="CONTACT_NAME" Type="String" />
+													</Fields>
+												</ext:Model>
+											</Model>
+											<Proxy>
+												<ext:PageProxy />
+											</Proxy>
+										</ext:Store>
+									</Store>
+									<ColumnModel>
+										<Columns>
+											<ext:Column ID="Column5" runat="server" Text="Manager Name" DataIndex="CONTACT_NAME" Width="425" />
+										</Columns>
+									</ColumnModel>
+									<BottomBar>
+										<ext:PagingToolbar ID="PagingToolbar5" runat="server" />
+									</BottomBar>
+									<SelectionModel>
+										<ext:RowSelectionModel ID="RowSelectionModel4" runat="server" Mode="Single" />
+									</SelectionModel>
+                                        <DirectEvents>
+										<SelectionChange OnEvent="deStoreNewManagerValue">
+											<ExtraParams>
+												<ext:Parameter Name="ContactName" Value="#{uxNewManagerMainGrid}.getSelectionModel().getSelection()[0].data.CONTACT_NAME" Mode="Raw" />
+												<ext:Parameter Name="Type" Value="NewManager" />
+											</ExtraParams>
+										</SelectionChange>
+                                         </DirectEvents>
+									<Plugins>
+										<ext:FilterHeader runat="server" ID="uxNewManagerFilter" Remote="true" />
+									</Plugins>                                    
+								</ext:GridPanel>
+                                </Component>
+                                </ext:DropDownField>
                         </Items>
                         <Buttons>
                             <ext:Button runat="server" ID="uxSelectCrossingToUpdate" Text="Select Crossings to Update" Icon="Add">
@@ -319,7 +416,12 @@
                                     <Click Handler="#{uxTransferCrossingWindow}.show()" />
                                 </Listeners>
                             </ext:Button>
-                            <ext:Button runat="server" ID="uxCancelCrossingToUpdate" Text="Cancel Selection" Icon="Delete" />
+                            <ext:Button runat="server" ID="uxCancelCrossingToUpdate" Text="Cancel Selection" Icon="Delete" >
+                                 <Listeners>
+								<Click Handler="#{uxUpdateContactForm}.reset();
+									#{uxUpdateContactWindow}.hide()" />
+							</Listeners>
+						</ext:Button>
                         </Buttons>
                     </ext:FormPanel>
                 </Items>
@@ -332,7 +434,7 @@
                 Title="Drag and Drop Crossing That Are To Be Updated"
                 Width="660">
                 <Items>
-                    <ext:Panel ID="Panel1" runat="server" Width="650" Height="355">
+                    <ext:Panel ID="uxTransferCrossingPanel" runat="server" Width="650" Height="355">
                         <LayoutConfig>
                             <ext:HBoxLayoutConfig Align="Stretch" Padding="5" />
                         </LayoutConfig>
@@ -345,11 +447,12 @@
                                 Title="Current Managers Crossings"
                                 Margins="0 2 0 0">
                                 <Store>
-                                    <ext:Store ID="Store1" runat="server">
+                                    <ext:Store ID="Store1" runat="server" OnReadData="deTransferCrossingsOldManager">
                                         <Model>
                                             <ext:Model ID="Model2" runat="server">
                                                 <Fields>
-                                                    <ext:ModelField Name="Name" />
+                                                    <ext:ModelField Name="CROSSING_ID" />
+                                                    <ext:ModelField Name="CROSSING_NUMBER" />
                                                 </Fields>
                                             </ext:Model>
                                         </Model>
@@ -357,18 +460,20 @@
                                 </Store>
                                 <ColumnModel>
                                     <Columns>
-                                        <ext:Column ID="Column1" runat="server" Text="Crossing #" Width="280" DataIndex="Name" Flex="1" />
+                                        <ext:Column ID="Column1" runat="server" Text="Crossing #" Width="280" DataIndex="CROSSING_NUMBER" Flex="1" />
                                     </Columns>
                                 </ColumnModel>
+                                 
                                 <View>
                                     <ext:GridView ID="GridView1" runat="server">
                                         <Plugins>
                                             <ext:GridDragDrop ID="GridDragDrop1" runat="server" DragGroup="firstGridDDGroup" DropGroup="secondGridDDGroup" />
                                         </Plugins>
+                                          
                                         <Listeners>
                                             <AfterRender Handler="this.plugins[0].dragZone.getDragText = getDragDropText;" Delay="1" />
-                                            <Drop Handler="var dropOn = overModel ? ' ' + dropPosition + ' ' + overModel.get('Name') : ' on empty view'; 
-                                               Ext.net.Notification.show({title:'Drag from right to left', html:'Dropped ' + data.records[0].get('Name') + dropOn});" />
+                                            <Drop Handler="var dropOn = overModel ? ' ' + dropPosition + ' ' + overModel.get('CROSSING_NUMBER') : ' on empty view'; 
+                                               Ext.net.Notification.show({title:'Drag from right to left', html:'Dropped ' + data.records[0].get('CROSSING_NUMBER') + dropOn});" />
                                         </Listeners>
                                     </ext:GridView>
                                 </View>
@@ -381,19 +486,23 @@
                                 Flex="1"
                                 Margins="0 0 0 3">
                                 <Store>
-                                    <ext:Store ID="Store2" runat="server">
+                                    <ext:Store ID="Store2" runat="server" OnReadData="deTransferCrossingsNewManager">
                                         <Model>
                                             <ext:Model ID="Model3" runat="server">
                                                 <Fields>
-                                                    <ext:ModelField Name="Name" />
+                                                    <ext:ModelField Name="CROSSING_ID" />
+                                                    <ext:ModelField Name="CROSSING_NUMBER" />
                                                 </Fields>
                                             </ext:Model>
                                         </Model>
+                                          <Proxy>
+                                        <ext:PageProxy />
+                                         </Proxy>
                                     </ext:Store>
                                 </Store>
                                 <ColumnModel>
                                     <Columns>
-                                        <ext:Column ID="Column4" runat="server" Text="Crossing #" Width="280" DataIndex="Name" Flex="1" />
+                                        <ext:Column ID="Column4" runat="server" Text="Crossing #" Width="280" DataIndex="CROSSING_NUMBER" Flex="1" />
                                     </Columns>
                                 </ColumnModel>
                                 <View>
@@ -401,10 +510,11 @@
                                         <Plugins>
                                             <ext:GridDragDrop ID="GridDragDrop2" runat="server" DragGroup="secondGridDDGroup" DropGroup="firstGridDDGroup" />
                                         </Plugins>
+                                     
                                         <Listeners>
                                             <AfterRender Handler="this.plugins[0].dragZone.getDragText = getDragDropText;" Delay="1" />
-                                            <Drop Handler="var dropOn = overModel ? ' ' + dropPosition + ' ' + overModel.get('Name') : ' on empty view'; 
-                                               Ext.net.Notification.show({title:'Drag from left to right', html:'Dropped ' + data.records[0].get('Name') + dropOn});" />
+                                            <Drop Handler="var dropOn = overModel ? ' ' + dropPosition + ' ' + overModel.get('CROSSING_NUMBER') : ' on empty view'; 
+                                               Ext.net.Notification.show({title:'Drag from left to right', html:'Dropped ' + data.records[0].get('CROSSING_NUMBER') + dropOn});" />
                                         </Listeners>
                                     </ext:GridView>
                                 </View>
@@ -415,10 +525,15 @@
                                 <Items>
                                     <ext:ToolbarFill ID="ToolbarFill1" runat="server" />
                                     <ext:Button ID="TransferCrossingtoContact" runat="server" Text="Update" Icon="TransmitGo" />
-                                    <ext:Button ID="CancelTransfer" runat="server" Text="Cancel" Icon="Delete" />
+                                    <ext:Button ID="CancelTransfer" runat="server" Text="Cancel" Icon="Delete" >
+                                         <Listeners>
+								        <Click Handler="#{uxEditContactForm}.reset();
+									                    #{uxTransferCrossingWindow}.hide()" />
+							            </Listeners>
+						                </ext:Button>
                                     <ext:Button ID="ResetTransfer" runat="server" Text="Reset" Icon="RewindBlue">
                                         <Listeners>
-                                            <Click Handler="#{Store1}.loadData(#{Store1}.proxy.data); #{Store2}.removeAll();" />
+                                            <Click Handler="#{deTransferCrossingsOldManager}.loadData(#{deTranferCrossingsNewManager}.proxy.data); #{deTransferCrossingsNewManager}.removeAll();" />
                                         </Listeners>
                                     </ext:Button>
                                 </Items>
