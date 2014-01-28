@@ -251,7 +251,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 e.Total = count;
             }
         }
-              protected void deAssignContactCrossingGrid(object sender, StoreReadDataEventArgs e)
+        protected void deAssignContactCrossingGrid(object sender, StoreReadDataEventArgs e)
         {
 
             using (Entities _context = new Entities())
@@ -261,12 +261,90 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 //Get List of all new headers
 
                 data = (from d in _context.CROSSINGS
-                        select new { d.CROSSING_NUMBER,  }).ToList<object>();
+                        select new { d.CROSSING_NUMBER, }).ToList<object>();
 
                 int count;
                 uxAssignContactCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
             }
+        }
+             protected void deCurrentManagerGrid(object sender, StoreReadDataEventArgs e)
+        {
+          
+            //Get Contacts
+            using (Entities _context = new Entities())
+            {
+                List<object> data;
+                 data = (from d in _context.CROSSING_CONTACTS                
+                            select new
+                            {  d.CONTACT_ID, d.CONTACT_NAME  }).ToList<object>();
+                int count;
+             uxCurrentManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+             e.Total = count;
+            }
+         }
+             protected void deNewManagerGrid(object sender, StoreReadDataEventArgs e)
+             {
+
+                 //Get Contacts
+                 using (Entities _context = new Entities())
+                 {
+                     List<object> data;
+                     data = (from d in _context.CROSSING_CONTACTS
+                             select new { d.CONTACT_ID, d.CONTACT_NAME }).ToList<object>();
+                     int count;
+                     uxNewManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                     e.Total = count;
+                 }
+             }
+                  protected void deStoreCurrentManagerValue(object sender, DirectEventArgs e)
+                 {
+                    switch (e.ExtraParams["Type"])
+                    {
+                         case "CurrentManager":
+                         uxUpdateContactCurrentManager.SetValue(e.ExtraParams["ContactName"], e.ExtraParams["Name"]);
+                         uxAddCurrentManagerFilter.ClearFilter();
+                         break;
+                
+                    }
+                  }
+                      protected void deStoreNewManagerValue(object sender, DirectEventArgs e)
+                      {
+                          switch(e.ExtraParams["Type"])
+                          {
+                          case "NewManager":
+                            uxUpdateContactNewManager.SetValue(e.ExtraParams["ContactName"], e.ExtraParams["Name"]);
+                            uxNewManagerFilter.ClearFilter();
+                          break;
+                          }
+                      }
+                      protected void deTransferCrossingsOldManager(object sender, StoreReadDataEventArgs e)
+                      {
+                          using (Entities _context = new Entities())
+                          {
+                              
+                              var data = (from d in _context.CROSSINGS
+                                          //join c in _context.CROSSING_CONTACTS on d.CROSSING_ID equals c.CROSSING_ID
+                                          //where d.CROSSING_ID == CrossingId
+                                          select new
+                                      {
+                                          d.CROSSING_NUMBER
+                                      }).SingleOrDefault();
+                          }
+                      }
+                         protected void deTransferCrossingsNewManager(object sender, StoreReadDataEventArgs e)
+                      {
+                         using (Entities _context = new Entities())
+                         {
+                             
+                                var data = (from d in _context.CROSSINGS
+                                //join c in _context.CROSSING_CONTACTS on d.CROSSING_ID equals c.CROSSING_ID
+                                // where d.CROSSING_ID == CrossingId
+                                select new
+                            { d.CROSSING_NUMBER
+                                }).SingleOrDefault();
+                      }
 
         }
-    }
-}
+
+}}
+    

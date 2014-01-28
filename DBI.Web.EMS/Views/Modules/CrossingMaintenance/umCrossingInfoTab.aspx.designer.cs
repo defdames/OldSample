@@ -85,31 +85,22 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Column Column1;
         
         /// <summary>
-        /// uxSubConGrid control.
+        /// uxSubDiv control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column uxSubConGrid;
+        protected global::Ext.Net.Column uxSubDiv;
         
         /// <summary>
-        /// uxRestricted control.
+        /// uxMTM control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column uxRestricted;
-        
-        /// <summary>
-        /// uxCrossingManager control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column uxCrossingManager;
+        protected global::Ext.Net.Column uxMTM;
         
         /// <summary>
         /// FilterHeader1 control.
@@ -544,13 +535,22 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FieldContainer FieldContainer34;
         
         /// <summary>
-        /// uxMTMCI control.
+        /// uxAddManagerCI control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxMTMCI;
+        protected global::Ext.Net.TextField uxAddManagerCI;
+        
+        /// <summary>
+        /// FieldContainer35 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer FieldContainer35;
         
         /// <summary>
         /// uxMainTracksCI control.
@@ -580,22 +580,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Checkbox uxRestrictedBoxCI;
         
         /// <summary>
-        /// FieldContainer35 control.
+        /// FieldContainer36 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer35;
-        
-        /// <summary>
-        /// uxMTMCellCI control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxMTMCellCI;
+        protected global::Ext.Net.FieldContainer FieldContainer36;
         
         /// <summary>
         /// uxOtherTracksCI control.
@@ -623,24 +614,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Checkbox uxOnSpurCI;
-        
-        /// <summary>
-        /// FieldContainer36 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer36;
-        
-        /// <summary>
-        /// uxMTMOfficeCI control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxMTMOfficeCI;
         
         /// <summary>
         /// uxMaxSpeedCI control.
@@ -1039,13 +1012,103 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FieldContainer FieldContainer18;
         
         /// <summary>
-        /// uxAddMTMCI control.
+        /// uxAddManagerCIDropDownField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxAddMTMCI;
+        protected global::Ext.Net.DropDownField uxAddManagerCIDropDownField;
+        
+        /// <summary>
+        /// uxAddManager control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridPanel uxAddManager;
+        
+        /// <summary>
+        /// uxAddManagerStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxAddManagerStore;
+        
+        /// <summary>
+        /// Model6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model Model6;
+        
+        /// <summary>
+        /// Column3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column3;
+        
+        /// <summary>
+        /// Column2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column2;
+        
+        /// <summary>
+        /// Column4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column4;
+        
+        /// <summary>
+        /// PagingToolbar3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.PagingToolbar PagingToolbar3;
+        
+        /// <summary>
+        /// RowSelectionModel3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel RowSelectionModel3;
+        
+        /// <summary>
+        /// uxAddManagerFilter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FilterHeader uxAddManagerFilter;
+        
+        /// <summary>
+        /// FieldContainer19 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer FieldContainer19;
         
         /// <summary>
         /// uxAddMainTracksCI control.
@@ -1075,22 +1138,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Checkbox uxAddRestrictedCI;
         
         /// <summary>
-        /// FieldContainer19 control.
+        /// FieldContainer20 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer19;
-        
-        /// <summary>
-        /// uxAddMTMCellCI control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxAddMTMCellCI;
+        protected global::Ext.Net.FieldContainer FieldContainer20;
         
         /// <summary>
         /// uxAddOtherTracksCI control.
@@ -1120,31 +1174,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Checkbox uxAddOnSpurCI;
         
         /// <summary>
-        /// FieldContainer20 control.
+        /// uxAddMaxSpeedCINumberField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer20;
-        
-        /// <summary>
-        /// uxAddMTMOfficeCI control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxAddMTMOfficeCI;
-        
-        /// <summary>
-        /// uxAddMaxSpeedCI control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxAddMaxSpeedCI;
+        protected global::Ext.Net.NumberField uxAddMaxSpeedCINumberField;
         
         /// <summary>
         /// uxAddSpecialInstructCI control.
@@ -1183,13 +1219,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Window uxEditCrossingWindow;
         
         /// <summary>
-        /// FormPanel1 control.
+        /// uxEditCrossingForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FormPanel FormPanel1;
+        protected global::Ext.Net.FormPanel uxEditCrossingForm;
         
         /// <summary>
         /// FieldSet7 control.
@@ -1552,13 +1588,103 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FieldContainer FieldContainer30;
         
         /// <summary>
-        /// uxEditMTMCI control.
+        /// uxEditManagerCI control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxEditMTMCI;
+        protected global::Ext.Net.DropDownField uxEditManagerCI;
+        
+        /// <summary>
+        /// uxEditManager control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridPanel uxEditManager;
+        
+        /// <summary>
+        /// uxEditManagerStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxEditManagerStore;
+        
+        /// <summary>
+        /// Model1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model Model1;
+        
+        /// <summary>
+        /// Column5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column5;
+        
+        /// <summary>
+        /// Column6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column6;
+        
+        /// <summary>
+        /// Column7 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column7;
+        
+        /// <summary>
+        /// PagingToolbar2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.PagingToolbar PagingToolbar2;
+        
+        /// <summary>
+        /// RowSelectionModel2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel RowSelectionModel2;
+        
+        /// <summary>
+        /// uxEditManagerFilter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FilterHeader uxEditManagerFilter;
+        
+        /// <summary>
+        /// FieldContainer31 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer FieldContainer31;
         
         /// <summary>
         /// uxEditMainTracksCI control.
@@ -1588,22 +1714,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Checkbox uxEditRestrictedCI;
         
         /// <summary>
-        /// FieldContainer31 control.
+        /// FieldContainer32 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer31;
-        
-        /// <summary>
-        /// uxEditMTMCellCI control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxEditMTMCellCI;
+        protected global::Ext.Net.FieldContainer FieldContainer32;
         
         /// <summary>
         /// uxEditOtherTracksCI control.
@@ -1633,31 +1750,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Checkbox uxEditOnSpurCI;
         
         /// <summary>
-        /// FieldContainer32 control.
+        /// uxEditMaxSpeedCINumberField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer32;
-        
-        /// <summary>
-        /// uxEditMTMOfficeCI control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxEditMTMOfficeCI;
-        
-        /// <summary>
-        /// uxEditMaxSpeedCI control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxEditMaxSpeedCI;
+        protected global::Ext.Net.NumberField uxEditMaxSpeedCINumberField;
         
         /// <summary>
         /// uxEditSpecialInstructCI control.
