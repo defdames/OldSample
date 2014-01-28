@@ -271,13 +271,12 @@
 				</ext:TabPanel>
 				<%-- Hidden Windows --%>
 				<ext:Window runat="server"
-					ID="uxSubmitActivityWindow"
-					Title="Submit Activity"
+					ID="uxPlaceholderWindow"
 					Hidden="true"
 					Width="650"
 					Y="50">
 					<Loader runat="server"
-						ID="uxSubmitActivityLoader"
+						ID="uxPlaceholderLoader"
 						Mode="Frame"
 						AutoLoad="false" />
 				</ext:Window>

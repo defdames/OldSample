@@ -10,16 +10,7 @@
 namespace DBI.Web.EMS.Views.Modules.DailyActivity {
     
     
-    public partial class umManageExisting {
-        
-        /// <summary>
-        /// ResourceManager1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ResourceManager ResourceManager1;
+    public partial class umAddEditChemical {
         
         /// <summary>
         /// form1 control.
@@ -31,237 +22,255 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// uxViewPort control.
+        /// ResourceManager1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Viewport uxViewPort;
+        protected global::Ext.Net.ResourceManager ResourceManager1;
         
         /// <summary>
-        /// uxManageGrid control.
+        /// uxAddEditPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxManageGrid;
+        protected global::Ext.Net.Panel uxAddEditPanel;
         
         /// <summary>
-        /// RowSelectionModel1 control.
+        /// uxAddChemicalForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.RowSelectionModel RowSelectionModel1;
+        protected global::Ext.Net.FormPanel uxAddChemicalForm;
         
         /// <summary>
-        /// uxManageGridStore control.
+        /// uxAddChemicalTargetAre control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxManageGridStore;
+        protected global::Ext.Net.TextField uxAddChemicalTargetAre;
         
         /// <summary>
-        /// Column1 control.
+        /// uxAddChemicalGallonAcre control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column1;
+        protected global::Ext.Net.TextField uxAddChemicalGallonAcre;
         
         /// <summary>
-        /// uxManageGridPaging control.
+        /// uxAddChemicalGallonStart control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.PagingToolbar uxManageGridPaging;
+        protected global::Ext.Net.TextField uxAddChemicalGallonStart;
         
         /// <summary>
-        /// uxCreateActivityButton control.
+        /// uxAddChemicalGallonMixed control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxCreateActivityButton;
+        protected global::Ext.Net.TextField uxAddChemicalGallonMixed;
         
         /// <summary>
-        /// uxSubmitActivityButton control.
+        /// uxAddChemicalGallonTotal control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxSubmitActivityButton;
+        protected global::Ext.Net.TextField uxAddChemicalGallonTotal;
         
         /// <summary>
-        /// ToolbarSpacer2 control.
+        /// uxAddChemicalGallonRemain control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer2;
+        protected global::Ext.Net.TextField uxAddChemicalGallonRemain;
         
         /// <summary>
-        /// uxInactiveActivityButton control.
+        /// uxAddChemicalGallonUsed control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxInactiveActivityButton;
+        protected global::Ext.Net.TextField uxAddChemicalGallonUsed;
         
         /// <summary>
-        /// uxApproveActivityButton control.
+        /// uxAddChemicalAcresSprayed control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxApproveActivityButton;
+        protected global::Ext.Net.TextField uxAddChemicalAcresSprayed;
         
         /// <summary>
-        /// ToolbarSpacer1 control.
+        /// uxAddChemicalState control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer1;
+        protected global::Ext.Net.TextField uxAddChemicalState;
         
         /// <summary>
-        /// uxPostActivityButton control.
+        /// uxAddChemicalCounty control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxPostActivityButton;
+        protected global::Ext.Net.TextField uxAddChemicalCounty;
         
         /// <summary>
-        /// uxExportToPDF control.
+        /// uxAddChemicalSubmit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxExportToPDF;
+        protected global::Ext.Net.Button uxAddChemicalSubmit;
         
         /// <summary>
-        /// uxEmailPdf control.
+        /// uxAddChemicalCancel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxEmailPdf;
+        protected global::Ext.Net.Button uxAddChemicalCancel;
         
         /// <summary>
-        /// uxTabPanel control.
+        /// uxEditChemicalForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TabPanel uxTabPanel;
+        protected global::Ext.Net.FormPanel uxEditChemicalForm;
         
         /// <summary>
-        /// uxCombinedTab control.
+        /// uxEditChemicalTargetAre control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxCombinedTab;
+        protected global::Ext.Net.TextField uxEditChemicalTargetAre;
         
         /// <summary>
-        /// uxHeaderTab control.
+        /// uxEditChemicalGallonAcre control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxHeaderTab;
+        protected global::Ext.Net.TextField uxEditChemicalGallonAcre;
         
         /// <summary>
-        /// uxEquipmentTab control.
+        /// uxEditChemicalGallonStart control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxEquipmentTab;
+        protected global::Ext.Net.TextField uxEditChemicalGallonStart;
         
         /// <summary>
-        /// uxEmployeeTab control.
+        /// uxEditChemicalGallonMixed control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxEmployeeTab;
+        protected global::Ext.Net.TextField uxEditChemicalGallonMixed;
         
         /// <summary>
-        /// uxWeatherTab control.
+        /// uxEditChemicalGallonTotal control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxWeatherTab;
+        protected global::Ext.Net.TextField uxEditChemicalGallonTotal;
         
         /// <summary>
-        /// uxChemicalTab control.
+        /// uxEditChemicalGallonRemain control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxChemicalTab;
+        protected global::Ext.Net.TextField uxEditChemicalGallonRemain;
         
         /// <summary>
-        /// uxInventoryTab control.
+        /// uxEditChemicalGallonUsed control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxInventoryTab;
+        protected global::Ext.Net.TextField uxEditChemicalGallonUsed;
         
         /// <summary>
-        /// uxProductionTab control.
+        /// uxEditChemicalAcresSprayed control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxProductionTab;
+        protected global::Ext.Net.TextField uxEditChemicalAcresSprayed;
         
         /// <summary>
-        /// uxPlaceholderWindow control.
+        /// uxEditChemicalState control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Window uxPlaceholderWindow;
+        protected global::Ext.Net.TextField uxEditChemicalState;
         
         /// <summary>
-        /// uxCreateActivityWindow control.
+        /// uxEditChemicalCounty control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Window uxCreateActivityWindow;
+        protected global::Ext.Net.TextField uxEditChemicalCounty;
+        
+        /// <summary>
+        /// uxEditChemicalSubmit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxEditChemicalSubmit;
+        
+        /// <summary>
+        /// uxEditChemicalCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxEditChemicalCancel;
     }
 }

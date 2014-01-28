@@ -90,9 +90,13 @@
 							ID="uxAddChemicalButton"
 							Icon="ApplicationAdd"
 							Text="Add Chemical Mix">
-							<Listeners>
-								<Click Handler="#{uxAddChemicalWindow}.show()" />
-							</Listeners>
+							<DirectEvents>
+								<Click OnEvent="deLoadChemicalWindow">
+									<ExtraParams>
+										<ext:Parameter Name="type" Value="Add" />
+									</ExtraParams>
+								</Click>
+							</DirectEvents>
 						</ext:Button>
 						<ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server" />
 						<ext:Button runat="server"
@@ -101,15 +105,13 @@
 							Text="Edit Chemical Mix"
 							Disabled="true">
 							<DirectEvents>
-								<Click OnEvent="deEditChemicalForm">
+								<Click OnEvent="deLoadChemicalWindow">
 									<ExtraParams>
-										<ext:Parameter Name="ChemicalInfo" Value="Ext.encode(#{uxCurrentChemicalGrid}.getRowsValues({selectedOnly : true}))" Mode="Raw" />
+										<ext:Parameter Name="type" Value="Edit" />
+										<ext:Parameter Name="ChemicalId" Value="#{uxCurrentChemicalGrid}.getSelectionModel().getSelection()[0].data.CHEMICAL_MIX_ID" Mode="Raw" />
 									</ExtraParams>
 								</Click>
 							</DirectEvents>
-							<Listeners>                                
-								<Click Handler="#{uxEditChemicalWindow}.show()" />
-							</Listeners>
 						</ext:Button>
 						<ext:ToolbarSpacer ID="ToolbarSpacer2" runat="server" />
 						<ext:Button runat="server"
@@ -139,190 +141,6 @@
 					#{uxRemoveChemicalButton}.disable()" />
 			</Listeners>
 		</ext:GridPanel>
-
-		<%-- Hidden Windows --%>
-		<ext:Window runat="server"
-			ID="uxAddChemicalWindow"
-			Layout="FormLayout"
-			Hidden="true"
-			Width="650">
-			<Items>
-				<ext:FormPanel runat="server"
-					ID="uxAddChemicalForm"
-					Layout="FormLayout">
-					<Items>
-						<ext:TextField runat="server"
-							ID="uxAddChemicalTargetAre"
-							FieldLabel="Target"
-							AllowBlank="false" />
-						<ext:TextField runat="server"
-							ID="uxAddChemicalGallonAcre"
-							FieldLabel="Gallons / Acre"
-							AllowBlank="false" />
-						<ext:TextField runat="server"
-							ID="uxAddChemicalGallonStart"
-							FieldLabel="Gallons Start"
-							AllowBlank="false">
-							<Listeners>
-								<Change Fn="updateAddTotalAndUsed" />
-							</Listeners>
-						</ext:TextField>
-						<ext:TextField runat="server"
-							ID="uxAddChemicalGallonMixed"
-							FieldLabel="Gallons Mixed"
-							AllowBlank="false">
-							<Listeners>
-								<Change Fn="updateAddTotalAndUsed" />
-							</Listeners>
-						</ext:TextField>
-						<ext:TextField runat="server"
-							ID="uxAddChemicalGallonTotal" 
-							FieldLabel="Gallons Total" Disabled="true" />
-						<ext:TextField runat="server"
-							ID="uxAddChemicalGallonRemain"
-							FieldLabel="Gallons Remaining"
-							AllowBlank="false">
-							<Listeners>
-								<Change Fn="updateAddTotalAndUsed" />
-							</Listeners>
-						</ext:TextField>
-						<ext:TextField runat="server"
-							ID="uxAddChemicalGallonUsed"
-							FieldLabel="Gallons Used" Disabled="true"/>
-						<ext:TextField runat="server"
-							ID="uxAddChemicalAcresSprayed"
-							FieldLabel="Acres Sprayed" Disabled="true" />
-						<ext:TextField runat="server"
-							ID="uxAddChemicalState"
-							FieldLabel="State"
-							AllowBlank="false" />
-						<ext:TextField runat="server"
-							ID="uxAddChemicalCounty"
-							FieldLabel="County"
-							AllowBlank="false" />
-					</Items>
-					<Buttons>
-						<ext:Button runat="server"
-							ID="uxAddChemicalSubmit"
-							Icon="Add"
-							Text="Submit"
-							Disabled="true">
-							<DirectEvents>
-								<Click OnEvent="deAddChemical" />
-							</DirectEvents>
-						</ext:Button>
-						<ext:Button runat="server"
-							ID="uxAddChemicalCancel"
-							Icon="Delete"
-							Text="Cancel">
-							<Listeners>
-								<Click Handler="#{uxAddChemicalForm}.reset();
-									#{uxAddChemicalWindow}.hide()" />
-							</Listeners>
-						</ext:Button>
-					</Buttons>
-					<Listeners>
-						<ValidityChange Handler="#{uxAddChemicalSubmit}.setDisabled(!valid);" />
-					</Listeners>
-				</ext:FormPanel>
-			</Items>
-			<Listeners>
-				<Show Handler="#{uxAddChemicalTargetAre}.focus()" />
-			</Listeners>
-		</ext:Window>
-		<ext:Window runat="server"
-			ID="uxEditChemicalWindow"
-			Layout="FormLayout"
-			Hidden="true"
-			Width="650">
-			<Items>
-				<ext:FormPanel runat="server"
-					ID="uxEditChemicalForm"
-					Layout="FormLayout">
-					<Items>
-						<ext:TextField runat="server"
-							ID="uxEditChemicalTargetAre"
-							FieldLabel="Target"
-							AllowBlank="false" />
-						<ext:TextField runat="server"
-							ID="uxEditChemicalGallonAcre"
-							FieldLabel="Gallons / Acre"
-							AllowBlank="false" />
-						<ext:TextField runat="server"
-							ID="uxEditChemicalGallonStart"
-							FieldLabel="Gallons Start"
-							AllowBlank="false">
-							<Listeners>
-								<Change Fn="updateEditTotalAndUsed" />
-							</Listeners>
-						</ext:TextField>
-						<ext:TextField runat="server"
-							ID="uxEditChemicalGallonMixed"
-							FieldLabel="Gallons Mixed"
-							AllowBlank="false">
-							<Listeners>
-								<Change Fn="updateEditTotalAndUsed" />
-							</Listeners>
-						</ext:TextField>
-						<ext:TextField runat="server"
-							ID="uxEditChemicalGallonTotal"
-							FieldLabel="Gallons Total" Disabled="true" />
-						<ext:TextField runat="server"
-							ID="uxEditChemicalGallonRemain"
-							FieldLabel="Gallons Remaining"
-							AllowBlank="false">
-							<Listeners>
-								<Change Fn="updateEditTotalAndUsed" />
-							</Listeners>
-						</ext:TextField>
-						<ext:TextField runat="server"
-							ID="uxEditChemicalGallonUsed" 
-							FieldLabel="Gallons Used" Disabled="true" />
-						<ext:TextField runat="server"
-							ID="uxEditChemicalAcresSprayed"
-							FieldLabel="Acres Sprayed" Disabled="true" />
-						<ext:TextField runat="server"
-							ID="uxEditChemicalState"
-							FieldLabel="State"
-							AllowBlank="false" />
-						<ext:TextField runat="server"
-							ID="uxEditChemicalCounty"
-							FieldLabel="County"
-							AllowBlank="false" />
-					</Items>
-					<Buttons>
-						<ext:Button runat="server"
-							ID="uxEditChemicalSubmit"
-							Icon="Add"
-							Text="Submit"
-							Disabled="true">
-							<DirectEvents>
-								<Click OnEvent="deEditChemical">
-									<ExtraParams>
-										<ext:Parameter Name="ChemicalId" Value="#{uxCurrentChemicalGrid}.getSelectionModel().getSelection()[0].data.CHEMICAL_MIX_ID" Mode="Raw" />
-									</ExtraParams>
-								 </Click>                                    
-							</DirectEvents>
-						</ext:Button>
-						<ext:Button runat="server"
-							ID="uxEditChemicalCancel"
-							Icon="Delete"
-							Text="Cancel">
-							<Listeners>
-								<Click Handler="#{uxEditChemicalForm}.reset();
-									#{uxEditChemicalWindow}.hide()" />
-							</Listeners>
-						</ext:Button>
-					</Buttons>
-					<Listeners>
-						<ValidityChange Handler="#{uxEditChemicalSubmit}.setDisabled(!valid);" />
-					</Listeners>
-				</ext:FormPanel>
-			</Items>
-			<Listeners>
-				<Show Handler="#{uxEditChemicalTargetAre}.focus()" />
-			</Listeners>
-		</ext:Window>
 	</form>
 </body>
 </html>

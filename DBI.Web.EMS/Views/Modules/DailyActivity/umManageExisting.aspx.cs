@@ -238,7 +238,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deSubmitActivity(object sender, DirectEventArgs e)
         {
-            uxSubmitActivityWindow.ClearContent();
+            uxPlaceholderWindow.ClearContent();
             long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
             List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime("Hours per day");
             EmployeeData DuplicatePerDiems = ValidationChecks.checkPerDiem(HeaderId);
@@ -259,7 +259,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             if (DuplicatePerDiems != null)
             {
                     //uxSubmitActivityWindow.Html += string.Format("<span>{0} has duplicate per diem entries on {1:MM-dd-yy}.  Please fix.</span><br />", DuplicatePerDiem.EMPLOYEE_NAME, DuplicatePerDiem.DA_DATE);
-                    uxSubmitActivityWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&PersonId={1}", DuplicatePerDiems.HEADER_ID, DuplicatePerDiems.PERSON_ID));
+                    uxPlaceholderWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&PersonId={1}", DuplicatePerDiems.HEADER_ID, DuplicatePerDiems.PERSON_ID));
                     BadHeader = true;
                 
             }
@@ -273,7 +273,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                           join emp in _context.EMPLOYEES_V on d.PERSON_ID equals emp.PERSON_ID
                                           where d.HEADER_ID == HeaderId
                                           select new { d.DAILY_ACTIVITY_HEADER.DA_DATE, emp.EMPLOYEE_NAME }).Single();
-                        uxSubmitActivityWindow.Html += string.Format("<span color='#ff0000'>{0} has overlapping time on {1}.  Please fix.</span><br />", HeaderData.EMPLOYEE_NAME, HeaderData.DA_DATE.ToString());
+                        uxPlaceholderWindow.Html += string.Format("<span color='#ff0000'>{0} has overlapping time on {1}.  Please fix.</span><br />", HeaderData.EMPLOYEE_NAME, HeaderData.DA_DATE.ToString());
                         BadHeader = true;
                     }
                 }
@@ -293,10 +293,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             if (!BadHeader)
             {
-                uxSubmitActivityWindow.LoadContent(WindowUrl);
+                uxPlaceholderWindow.LoadContent(WindowUrl);
             }
-            
-            uxSubmitActivityWindow.Show();
+
+            uxPlaceholderWindow.Show();
         }
 
         /// <summary>
@@ -940,15 +940,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         [DirectMethod]
         public void dmHideWindowUpdateGrid()
         {
-            uxSubmitActivityWindow.Hide();
+            uxPlaceholderWindow.Hide();
             uxManageGridStore.Reload();
         }
 
         [DirectMethod]
         public void dmRefreshShowSubmit(string HeaderId)
         {
-            uxSubmitActivityWindow.ClearContent();
-            uxSubmitActivityWindow.LoadContent(string.Format("umSubmitActivity.aspx?HeaderId={0}", HeaderId));
+            uxPlaceholderWindow.ClearContent();
+            uxPlaceholderWindow.LoadContent(string.Format("umSubmitActivity.aspx?HeaderId={0}", HeaderId));
         }
 
         /// <summary>
@@ -960,6 +960,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             uxCreateActivityWindow.LoadContent();
             uxCreateActivityWindow.Show();
+        }
+
+        [DirectMethod]
+        public void dmLoadChemicalWindow(string WindowType, string HeaderId, string ChemicalMixId)
+        {
+            uxPlaceholderWindow.ClearContent();
+            uxPlaceholderWindow.LoadContent(string.Format("umAddEditChemical.aspx?HeaderId={0}&Type={1}&ChemicalMixId={2}", HeaderId, WindowType, ChemicalMixId));
+            uxPlaceholderWindow.Show();
         }
     }
 }
