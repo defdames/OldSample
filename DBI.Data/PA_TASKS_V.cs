@@ -19,5 +19,7 @@ namespace DBI.Data
         public string TASK_NUMBER { get; set; }
         public string DESCRIPTION { get; set; }
         public System.DateTime LAST_UPDATE_DATE { get; set; }
+        public Nullable<System.DateTime> START_DATE { get; set; }
+        public Nullable<System.DateTime> COMPLETION_DATE { get; set; }
     }
 }
