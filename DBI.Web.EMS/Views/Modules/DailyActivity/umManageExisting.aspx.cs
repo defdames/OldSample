@@ -985,5 +985,21 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxPlaceholderWindow.LoadContent(string.Format("umAddEditEquipment.aspx?HeaderId={0}&Type={1}&EquipmentId={2}", HeaderId, WindowType, EquipmentId));
             uxPlaceholderWindow.Show();
         }
+
+        [DirectMethod]
+        public void dmLoadInventoryWindow_DBI(string WindowType, string HeaderId, string InventoryId)
+        {
+            uxPlaceholderWindow.ClearContent();
+            uxPlaceholderWindow.LoadContent(string.Format("umAddEditInventory_DBI.aspx?HeaderId={0}&Type={1}&InventoryId={2}", HeaderId, WindowType, InventoryId));
+            uxPlaceholderWindow.Show();
+        }
+
+        [DirectMethod]
+        public void dmLoadInventoryWindow_IRM(string WindowType, string HeaderId, string InventoryId)
+        {
+            uxPlaceholderWindow.ClearContent();
+            uxPlaceholderWindow.LoadContent(string.Format("umAddEditInventory_IRM.aspx?HeaderId={0}&Type={1}&InventoryId={2}", HeaderId, WindowType, InventoryId));
+            uxPlaceholderWindow.Show();
+        }
     }
 }
