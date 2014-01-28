@@ -32,8 +32,7 @@
         <EntityTypeShape EntityType="OracleModel.SYS_ACTIVITY" Width="1.5" PointX="3.75" PointY="4.75" />
         <AssociationConnector Association="OracleModel.SYS_ACTIVITYSYS_USER_ACTIVITY" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_DATA_ENTRY" Width="1.5" PointX="34" PointY="1.625" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING_CONTACTS" Width="1.5" PointX="29" PointY="1.125" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING_SUB_DIVISION" Width="1.5" PointX="29" PointY="5.625" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_SUB_DIVISION" Width="1.5" PointX="29.125" PointY="5.5" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" Width="1.5" PointX="1.5" PointY="21" />
         <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" ManuallyRouted="true" >
           <ConnectorPoint PointX="5.265625" PointY="16.249410807291667" />
@@ -45,8 +44,6 @@
           <ConnectorPoint PointX="3" PointY="23.432403971354169" />
         </AssociationConnector>
         <EntityTypeShape EntityType="OracleModel.EXPENDITURE_TYPE_V" Width="1.5" PointX="13.25" PointY="0.625" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING" Width="1.5" PointX="31.5" PointY="1.625" />
-        <AssociationConnector Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_FOOTER" Width="1.5" PointX="4" PointY="21.25" />
         <AssociationConnector Association="OracleModel.FK_FOOTER_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_INVENTORY" Width="1.5" PointX="6.25" PointY="21.625" />
@@ -54,6 +51,10 @@
         </AssociationConnector>
         <AssociationConnector Association="OracleModel.FK_INVENTORY_HEADER_ID" ManuallyRouted="false" >
         </AssociationConnector>
+        <EntityTypeShape EntityType="OracleModel.CROSSING_CONTACTS" Width="1.5" PointX="29.125" PointY="1.375" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING" Width="1.5" PointX="32.125" PointY="1.625" />
+        <AssociationConnector Association="OracleModel.FK_CROSSINGS_CONTACT_ID" />
+        <AssociationConnector Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
