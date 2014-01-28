@@ -26,6 +26,7 @@
                             <ext:Model ID="Model2" runat="server">
                                 <Fields>
                                     <ext:ModelField Name="CROSSING_ID" />
+                                    <ext:ModelField Name="CONTACT_ID" />
                                     <ext:ModelField Name="CROSSING_NUMBER" Type="String" />
                                     <ext:ModelField Name="SUB_DIVISION" />
                                     <ext:ModelField Name="CONTACT_NAME" />
@@ -326,7 +327,7 @@
                                     <ext:FieldContainer ID="FieldContainer18" runat="server" Layout="HBoxLayout">
                                         <Items>
                                           
-                                <ext:DropDownField ID="uxAddManagerCIDropDownField" runat="server" FieldLabel="Manager" AnchorHorizontal="100%" LabelAlign="Right" Width="475" >
+                              <%--  <ext:DropDownField ID="uxAddManagerCIDropDownField" runat="server" FieldLabel="Manager" AnchorHorizontal="100%" LabelAlign="Right" Width="475" Mode="ValueText" >
                                 <Component>
                                     <ext:GridPanel runat="server"
 									ID="uxAddManager"
@@ -340,7 +341,8 @@
 											<Model>
 												<ext:Model ID="Model6" runat="server">
 													<Fields>
-														<ext:ModelField Name="CONTACT_ID" Type="Int" />
+                                                        
+														<ext:ModelField Name="CONTACT_ID" />
 														<ext:ModelField Name="CONTACT_NAME" Type="String" />
                                                         <ext:ModelField Name="CELL_NUMBER" />
                                                         <ext:ModelField Name="WORK_NUMBER" />
@@ -368,7 +370,8 @@
                                         <DirectEvents>
 										<SelectionChange OnEvent="deStoreAddManagerValue">
 											<ExtraParams>
-												<ext:Parameter Name="ContactName" Value="#{uxAddManager}.getSelectionModel().getSelection()[0].data.CONTACT_NAME" Mode="Raw" />
+												<ext:Parameter Name="ContactId" Value="#{uxAddManager}.getSelectionModel().getSelection()[0].data.CONTACT_ID" Mode="Raw" />
+                                                <ext:Parameter Name="ContactName" Value="#{uxAddManager}.getSelectionModel().getSelection()[0].data.CONTACT_NAME" Mode="Raw" />
 												<ext:Parameter Name="Type" Value="AddManager" />
 											</ExtraParams>
 										</SelectionChange>
@@ -378,7 +381,7 @@
 									</Plugins>                                    
 								</ext:GridPanel>
                                 </Component>
-                                </ext:DropDownField>
+                                </ext:DropDownField>--%>
                                            
                                         </Items>
                                     </ext:FieldContainer>

@@ -46,14 +46,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
                 var data = (from d in _context.CROSSINGS
-                            join c in _context.CROSSING_CONTACTS on d.CROSSING_ID equals c.CROSSING_ID
+                            join c in _context.CROSSING_CONTACTS on d.CONTACT_ID equals c.CONTACT_ID
                             where d.CROSSING_ID == CrossingId
+                           
                             select new
-                            {
+                            { 
                                 d,
                                 c.CONTACT_NAME,
                                 
-                            }).SingleOrDefault();
+                            }).Single();
                 uxAddManagerCI.SetValue(data.CONTACT_NAME);
                 uxCrossingNumCI.SetValue(data.d.CROSSING_NUMBER);
                 uxRouteCI.SetValue(data.d.ROUTE);
@@ -214,7 +215,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 RESTRICTED_COUNTY = Restricted,
                 FENCE_ENCROACHMENT = FenceEncroach,
                 ON_SPUR = OnSpur,
-
+                
             };
 
             //Write to DB
@@ -498,20 +499,21 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             });
         }
-        protected void deAddManagerGrid(object sender, StoreReadDataEventArgs e)
-        {
+        //protected void deAddManagerGrid(object sender, StoreReadDataEventArgs e)
+        //{
 
-            //Get Contacts
-            using (Entities _context = new Entities())
-            {
-                List<object> data;
-                data = (from d in _context.CROSSING_CONTACTS
-                        select new { d.CONTACT_ID, d.CONTACT_NAME, d.CELL_NUMBER, d.WORK_NUMBER }).ToList<object>();
-                int count;
-                uxAddManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-                e.Total = count;
-            }
-        }
+        //    //Get Contacts
+        //    using (Entities _context = new Entities())
+        //    {
+        //        List<object> data;
+        //        data = (from d in _context.CROSSING_CONTACTS
+                        
+        //                select new { d.CONTACT_ID, d.CONTACT_NAME, d.CELL_NUMBER, d.WORK_NUMBER }).ToList<object>();
+        //        int count;
+        //        uxAddManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+        //        e.Total = count;
+        //    }
+        //}
         protected void deEditManagerGrid(object sender, StoreReadDataEventArgs e)
         {
 
@@ -520,23 +522,24 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 List<object> data;
                 data = (from d in _context.CROSSING_CONTACTS
+
                         select new { d.CONTACT_ID, d.CONTACT_NAME, d.CELL_NUMBER, d.WORK_NUMBER }).ToList<object>();
                 int count;
                 uxEditManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 e.Total = count;
             }
         }
-        protected void deStoreAddManagerValue(object sender, DirectEventArgs e)
-        {
-            switch (e.ExtraParams["Type"])
-            {
-                case "AddManager":
-                    uxAddManagerCIDropDownField.SetValue(e.ExtraParams["ContactName"], e.ExtraParams["Name"]);
-                    uxAddManagerFilter.ClearFilter();
-                    break;
+        //protected void deStoreAddManagerValue(object sender, DirectEventArgs e)
+        //{
+        //    switch (e.ExtraParams["Type"])
+        //    {
+        //        case "AddManager":
+        //            uxAddManagerCIDropDownField.SetValue(e.ExtraParams["ContactId"], e.ExtraParams["ContactName"]);
+        //            uxAddManagerFilter.ClearFilter();
+        //            break;
 
-            }
-        }
+        //    }
+        //}
         protected void deStoreEditManagerValue(object sender, DirectEventArgs e)
         {
             switch (e.ExtraParams["Type"])
