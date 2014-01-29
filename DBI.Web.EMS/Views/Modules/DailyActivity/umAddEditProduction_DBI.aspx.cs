@@ -45,7 +45,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                  where d.HEADER_ID == HeaderId
                                  select d.PROJECT_ID).Single();
                 var data = (from t in _context.PA_TASKS_V
-                            where t.PROJECT_ID == ProjectId
+                            where t.PROJECT_ID == ProjectId && t.START_DATE <= DateTime.Now && (t.COMPLETION_DATE >= DateTime.Now || t.COMPLETION_DATE == null)
                             select t).ToList();
 
                 //Set datasource for Add/Edit store
