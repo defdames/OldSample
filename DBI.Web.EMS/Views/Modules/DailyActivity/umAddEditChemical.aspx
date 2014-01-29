@@ -187,7 +187,7 @@
 							Text="Cancel">
 							<Listeners>
 								<Click Handler="#{uxEditChemicalForm}.reset();
-							#{uxEditChemicalWindow}.hide()" />
+							parentAutoLoadControl.hide();" />
 							</Listeners>
 						</ext:Button>
 					</Buttons>

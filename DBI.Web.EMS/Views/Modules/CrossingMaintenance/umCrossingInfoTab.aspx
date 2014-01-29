@@ -327,7 +327,7 @@
                                     <ext:FieldContainer ID="FieldContainer18" runat="server" Layout="HBoxLayout">
                                         <Items>
                                           
-                              <%--  <ext:DropDownField ID="uxAddManagerCIDropDownField" runat="server" FieldLabel="Manager" AnchorHorizontal="100%" LabelAlign="Right" Width="475" Mode="ValueText" >
+                                <ext:DropDownField ID="uxAddManagerCIDropDownField" runat="server" FieldLabel="Manager" AnchorHorizontal="100%" LabelAlign="Right" Width="475" Mode="ValueText" >
                                 <Component>
                                     <ext:GridPanel runat="server"
 									ID="uxAddManager"
@@ -381,7 +381,7 @@
 									</Plugins>                                    
 								</ext:GridPanel>
                                 </Component>
-                                </ext:DropDownField>--%>
+                                </ext:DropDownField>
                                            
                                         </Items>
                                     </ext:FieldContainer>
@@ -523,8 +523,7 @@
                                 <Items>
                                     <ext:FieldContainer ID="FieldContainer30" runat="server" Layout="HBoxLayout">
                                         <Items>
-                                           <%-- <ext:TextField ID="uxEditMTMCI" runat="server" FieldLabel="Manager" AnchorHorizontal="100%" LabelAlign="Right" />--%>
-                                          <ext:DropDownField ID="uxEditManagerCI" runat="server" FieldLabel="Manager" AnchorHorizontal="100%" LabelAlign="Right" Width="475" >
+                                          <ext:DropDownField ID="uxEditManagerCI" runat="server" FieldLabel="Manager" AnchorHorizontal="100%" LabelAlign="Right" Width="475" Mode="ValueText" >
                                 <Component>
                                     <ext:GridPanel runat="server"
 									ID="uxEditManager"
@@ -566,8 +565,9 @@
                                         <DirectEvents>
 										<SelectionChange OnEvent="deStoreEditManagerValue">
 											<ExtraParams>
+												<ext:Parameter Name="ContactId" Value="#{uxEditManager}.getSelectionModel().getSelection()[0].data.CONTACT_ID" Mode="Raw" />
 												<ext:Parameter Name="ContactName" Value="#{uxEditManager}.getSelectionModel().getSelection()[0].data.CONTACT_NAME" Mode="Raw" />
-												<ext:Parameter Name="Type" Value="EditManager" />
+                                                <ext:Parameter Name="Type" Value="EditManager" />
 											</ExtraParams>
 										</SelectionChange>
                                          </DirectEvents>

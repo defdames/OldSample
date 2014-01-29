@@ -26,8 +26,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 //Get List of all new headers
 
                 data = (from d in _context.CROSSINGS
-                      
-                        select new { d.CROSSING_ID, d.CROSSING_NUMBER, d.SUB_DIVISION, }).ToList<object>();
+                       
+                        select new { d.CONTACT_ID, d.CROSSING_ID, d.CROSSING_NUMBER, d.SUB_DIVISION, d.CROSSING_CONTACTS.CONTACT_NAME}).ToList<object>();
 
                 int count;
                 uxCurrentCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -48,14 +48,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 var data = (from d in _context.CROSSINGS
                             join c in _context.CROSSING_CONTACTS on d.CONTACT_ID equals c.CONTACT_ID
                             where d.CROSSING_ID == CrossingId
-                           
+                                                     
                             select new
-                            { 
+                            {
                                 d,
-                                c.CONTACT_NAME,
+                                c,
                                 
-                            }).Single();
-                uxAddManagerCI.SetValue(data.CONTACT_NAME);
+                            }).SingleOrDefault();
+                uxAddManagerCI.SetValue(data.c.CONTACT_NAME);
                 uxCrossingNumCI.SetValue(data.d.CROSSING_NUMBER);
                 uxRouteCI.SetValue(data.d.ROUTE);
                 uxDOTNumCI.SetValue(data.d.DOT);
@@ -146,6 +146,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string Restricted = uxAddRestrictedCI.Value.ToString();
             string FenceEncroach = uxAddFenceEnchroachCI.Value.ToString();
             string OnSpur = uxAddOnSpurCI.Value.ToString();
+            long ContactName = Convert.ToInt64(uxAddManagerCIDropDownField.Value);
 
             if (uxAddSubConCI.Checked)
             {
@@ -215,7 +216,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 RESTRICTED_COUNTY = Restricted,
                 FENCE_ENCROACHMENT = FenceEncroach,
                 ON_SPUR = OnSpur,
-                
+                CONTACT_ID = ContactName
             };
 
             //Write to DB
@@ -250,89 +251,59 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
                 var data = (from d in _context.CROSSINGS
+                            join c in _context.CROSSING_CONTACTS on d.CONTACT_ID equals c.CONTACT_ID
                             where d.CROSSING_ID == CrossingId
                             select new
                             {
-                                d.CROSSING_NUMBER,
-                                d.ROUTE,
-                                d.DOT,
-                                d.STREET,
-                                d.MILE_POST,
-                                d.STATE,
-                                d.CITY,
-                                d.LATITUDE,
-                                d.SUB_DIVISION,
-                                d.COUNTY,
-                                d.LONGITUDE,
-                                d.ROWNE,
-                                d.EXTNE,
-                                d.ROW_WIDTH,
-                                d.ROWNW,
-                                d.EXTNW,
-                                d.PROPERTY_TYPE,
-                                d.ROWSE,
-                                d.EXTSE,
-                                d.SURFACE,
-                                d.ROWSW,
-                                d.EXTSW,
-                                d.WARNING_DEVICE,
-                                d.MTM,
-                                d.MTM_OFFICE_NUMBER,
-                                d.MTM_PHONE_NUMBER,
-                                d.MAIN_TRACKS,
-                                d.OTHER_TRACKS,
-                                d.MAX_SPEED,
-                                d.SPECIAL_INSTRUCTIONS,
-                                d.FENCE_ENCROACHMENT,
-                                d.RESTRICTED_COUNTY,
-                                d.SUB_CONTRACTED,
-                                d.ON_SPUR
+                                c, d,
+                              
                             }).SingleOrDefault();
-                uxEditCrossingNumCI.SetValue(data.CROSSING_NUMBER);
-                uxEditRouteCI.SetValue(data.ROUTE);
-                uxEditDOTNumCI.SetValue(data.DOT);
-                uxEditStreetCI.SetValue(data.STREET);
-                uxEditMPCI.SetValue(data.MILE_POST);
-                uxEditStateCI.SetValue(data.STATE);
-                uxEditCityCI.SetValue(data.CITY);
-                uxEditLatCI.SetValue(data.LATITUDE);
-                uxEditSubDivCI.SetValue(data.SUB_DIVISION);
-                uxEditCountyCI.SetValue(data.COUNTY);
-                uxEditLongCI.SetValue(data.LONGITUDE);
-                uxEditNECI.SetValue(data.ROWNE);
-                uxEditNEextCI.SetValue(data.EXTNE);
-                uxEditRowWidthCI.SetValue(data.ROW_WIDTH);
-                uxEditNWCI.SetValue(data.ROWNW);
-                uxEditNWextCI.SetValue(data.EXTNW);
-                uxEditPropertyTypeCI.SetValue(data.PROPERTY_TYPE);
-                uxEditSECI.SetValue(data.ROWSE);
-                uxEditSEextCI.SetValue(data.EXTSE);
-                uxEditSurfaceCI.SetValue(data.SURFACE);
-                uxEditSWCI.SetValue(data.ROWSW);
-                uxEditSWextCI.SetValue(data.EXTSW);
-                uxEditWarningDeviceCI.SetValue(data.WARNING_DEVICE);
-                uxEditMainTracksCI.SetValue(data.MAIN_TRACKS);
-                uxEditOtherTracksCI.SetValue(data.OTHER_TRACKS);
-                uxEditMaxSpeedCINumberField.SetValue(data.MAX_SPEED);
-                uxEditSpecialInstructCI.SetValue(data.SPECIAL_INSTRUCTIONS);
-                uxEditSubConCI.SetValue(data.SUB_CONTRACTED);
-                uxEditRestrictedCI.SetValue(data.RESTRICTED_COUNTY);
-                uxEditFenceEnchroachCI.SetValue(data.FENCE_ENCROACHMENT);
-                uxEditOnSpurCI.SetValue(data.ON_SPUR);
+                uxEditManagerCI.SetValue(e.ExtraParams["ContactId"], e.ExtraParams["ContactName"]);
+                uxEditCrossingNumCI.SetValue(data.d.CROSSING_NUMBER);
+                uxEditRouteCI.SetValue(data.d.ROUTE);
+                uxEditDOTNumCI.SetValue(data.d.DOT);
+                uxEditStreetCI.SetValue(data.d.STREET);
+                uxEditMPCI.SetValue(data.d.MILE_POST);
+                uxEditStateCI.SetValue(data.d.STATE);
+                uxEditCityCI.SetValue(data.d.CITY);
+                uxEditLatCI.SetValue(data.d.LATITUDE);
+                uxEditSubDivCI.SetValue(data.d.SUB_DIVISION);
+                uxEditCountyCI.SetValue(data.d.COUNTY);
+                uxEditLongCI.SetValue(data.d.LONGITUDE);
+                uxEditNECI.SetValue(data.d.ROWNE);
+                uxEditNEextCI.SetValue(data.d.EXTNE);
+                uxEditRowWidthCI.SetValue(data.d.ROW_WIDTH);
+                uxEditNWCI.SetValue(data.d.ROWNW);
+                uxEditNWextCI.SetValue(data.d.EXTNW);
+                uxEditPropertyTypeCI.SetValue(data.d.PROPERTY_TYPE);
+                uxEditSECI.SetValue(data.d.ROWSE);
+                uxEditSEextCI.SetValue(data.d.EXTSE);
+                uxEditSurfaceCI.SetValue(data.d.SURFACE);
+                uxEditSWCI.SetValue(data.d.ROWSW);
+                uxEditSWextCI.SetValue(data.d.EXTSW);
+                uxEditWarningDeviceCI.SetValue(data.d.WARNING_DEVICE);
+                uxEditMainTracksCI.SetValue(data.d.MAIN_TRACKS);
+                uxEditOtherTracksCI.SetValue(data.d.OTHER_TRACKS);
+                uxEditMaxSpeedCINumberField.SetValue(data.d.MAX_SPEED);
+                uxEditSpecialInstructCI.SetValue(data.d.SPECIAL_INSTRUCTIONS);
+                uxEditSubConCI.SetValue(data.d.SUB_CONTRACTED);
+                uxEditRestrictedCI.SetValue(data.d.RESTRICTED_COUNTY);
+                uxEditFenceEnchroachCI.SetValue(data.d.FENCE_ENCROACHMENT);
+                uxEditOnSpurCI.SetValue(data.d.ON_SPUR);
 
-                if (data.SUB_CONTRACTED == "Y")
+                if (data.d.SUB_CONTRACTED == "Y")
                 {
                     uxEditSubConCI.Checked = true;
                 }
-                if (data.RESTRICTED_COUNTY == "Y")
+                if (data.d.RESTRICTED_COUNTY == "Y")
                 {
                     uxEditRestrictedCI.Checked = true;
                 }
-                if (data.FENCE_ENCROACHMENT == "Y")
+                if (data.d.FENCE_ENCROACHMENT == "Y")
                 {
                     uxEditFenceEnchroachCI.Checked = true;
                 }
-                if (data.ON_SPUR == "Y")
+                if (data.d.ON_SPUR == "Y")
                 {
                     uxEditOnSpurCI.Checked = true;
                 }
@@ -381,6 +352,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string Restricted = uxEditRestrictedCI.Value.ToString();
             string FenceEncroach = uxEditFenceEnchroachCI.Value.ToString();
             string OnSpur = uxEditSubConCI.Value.ToString();
+            long ContactName = Convert.ToInt64(uxEditManagerCI.Value);
 
             if (uxEditSubConCI.Checked)
             {
@@ -421,6 +393,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 var CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
                 data = (from d in _context.CROSSINGS
+                        join c in _context.CROSSING_CONTACTS on d.CONTACT_ID equals c.CONTACT_ID
                         where d.CROSSING_ID == CrossingId
                         select d).Single();
             }
@@ -451,6 +424,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             data.RESTRICTED_COUNTY = Restricted;
             data.FENCE_ENCROACHMENT = FenceEncroach;
             data.ON_SPUR = OnSpur;
+            data.CONTACT_ID = ContactName;
 
             //Write to DB
             GenericData.Update<CROSSING>(data);
@@ -499,21 +473,21 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             });
         }
-        //protected void deAddManagerGrid(object sender, StoreReadDataEventArgs e)
-        //{
+        protected void deAddManagerGrid(object sender, StoreReadDataEventArgs e)
+        {
 
-        //    //Get Contacts
-        //    using (Entities _context = new Entities())
-        //    {
-        //        List<object> data;
-        //        data = (from d in _context.CROSSING_CONTACTS
-                        
-        //                select new { d.CONTACT_ID, d.CONTACT_NAME, d.CELL_NUMBER, d.WORK_NUMBER }).ToList<object>();
-        //        int count;
-        //        uxAddManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-        //        e.Total = count;
-        //    }
-        //}
+            //Get Contacts
+            using (Entities _context = new Entities())
+            {
+                List<object> data;
+                data = (from d in _context.CROSSING_CONTACTS
+  
+                        select new { d.CONTACT_ID, d.CONTACT_NAME, d.CELL_NUMBER, d.WORK_NUMBER }).ToList<object>();
+                int count;
+                uxAddManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                e.Total = count;
+            }
+        }
         protected void deEditManagerGrid(object sender, StoreReadDataEventArgs e)
         {
 
@@ -529,23 +503,23 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 e.Total = count;
             }
         }
-        //protected void deStoreAddManagerValue(object sender, DirectEventArgs e)
-        //{
-        //    switch (e.ExtraParams["Type"])
-        //    {
-        //        case "AddManager":
-        //            uxAddManagerCIDropDownField.SetValue(e.ExtraParams["ContactId"], e.ExtraParams["ContactName"]);
-        //            uxAddManagerFilter.ClearFilter();
-        //            break;
+        protected void deStoreAddManagerValue(object sender, DirectEventArgs e)
+        {
+            switch (e.ExtraParams["Type"])
+            {
+                case "AddManager":
+                    uxAddManagerCIDropDownField.SetValue(e.ExtraParams["ContactId"], e.ExtraParams["ContactName"]);
+                    uxAddManagerFilter.ClearFilter();
+                    break;
 
-        //    }
-        //}
+            }
+        }
         protected void deStoreEditManagerValue(object sender, DirectEventArgs e)
         {
             switch (e.ExtraParams["Type"])
             {
                 case "EditManager":
-                    uxEditManagerCI.SetValue(e.ExtraParams["ContactName"], e.ExtraParams["Name"]);
+                    uxEditManagerCI.SetValue(e.ExtraParams["ContactId"], e.ExtraParams["ContactName"]);
                     uxEditManagerFilter.ClearFilter();
                     break;
 

@@ -10,25 +10,7 @@
 namespace DBI.Web.EMS.Views.Modules.DailyActivity {
     
     
-    public partial class umInventoryTab_IRM {
-        
-        /// <summary>
-        /// Head1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlHead Head1;
-        
-        /// <summary>
-        /// ResourceManager1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ResourceManager ResourceManager1;
+    public partial class umAddEditWeather {
         
         /// <summary>
         /// form1 control.
@@ -40,165 +22,255 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// uxCurrentInventoryGrid control.
+        /// ResourceManager1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxCurrentInventoryGrid;
+        protected global::Ext.Net.ResourceManager ResourceManager1;
         
         /// <summary>
-        /// uxCurrentInventoryStore control.
+        /// uxAddEditPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxCurrentInventoryStore;
+        protected global::Ext.Net.Panel uxAddEditPanel;
         
         /// <summary>
-        /// uxCurrentInventoryModel control.
+        /// uxAddWeatherForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Model uxCurrentInventoryModel;
+        protected global::Ext.Net.FormPanel uxAddWeatherForm;
         
         /// <summary>
-        /// Column1 control.
+        /// ctl69 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column1;
+        protected global::Ext.Net.FieldContainer ctl69;
         
         /// <summary>
-        /// Column4 control.
+        /// uxAddWeatherDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column4;
+        protected global::Ext.Net.DateField uxAddWeatherDate;
         
         /// <summary>
-        /// Column5 control.
+        /// uxAddWeatherTime control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column5;
+        protected global::Ext.Net.TimeField uxAddWeatherTime;
         
         /// <summary>
-        /// Column6 control.
+        /// uxAddWeatherTemp control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column6;
+        protected global::Ext.Net.TextField uxAddWeatherTemp;
         
         /// <summary>
-        /// Column7 control.
+        /// uxAddWeatherWindDirection control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column7;
+        protected global::Ext.Net.ComboBox uxAddWeatherWindDirection;
         
         /// <summary>
-        /// Column8 control.
+        /// uxAddWeatherWindStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column8;
+        protected global::Ext.Net.Store uxAddWeatherWindStore;
         
         /// <summary>
-        /// Column9 control.
+        /// ctl74 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column9;
+        protected global::Ext.Net.Model ctl74;
         
         /// <summary>
-        /// Column13 control.
+        /// uxAddWeatherWindVelocity control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column13;
+        protected global::Ext.Net.TextField uxAddWeatherWindVelocity;
         
         /// <summary>
-        /// Toolbar1 control.
+        /// uxAddWeatherHumidity control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Toolbar Toolbar1;
+        protected global::Ext.Net.TextField uxAddWeatherHumidity;
         
         /// <summary>
-        /// uxAddInventoryButton control.
+        /// uxAddWeatherComments control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxAddInventoryButton;
+        protected global::Ext.Net.TextArea uxAddWeatherComments;
         
         /// <summary>
-        /// ToolbarSpacer1 control.
+        /// uxAddWeatherSubmit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer1;
+        protected global::Ext.Net.Button uxAddWeatherSubmit;
         
         /// <summary>
-        /// uxEditInventoryButton control.
+        /// uxAddWeatherCancel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxEditInventoryButton;
+        protected global::Ext.Net.Button uxAddWeatherCancel;
         
         /// <summary>
-        /// ToolbarSpacer2 control.
+        /// uxEditWeatherForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer2;
+        protected global::Ext.Net.FormPanel uxEditWeatherForm;
         
         /// <summary>
-        /// uxRemoveInventoryButton control.
+        /// ctl75 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxRemoveInventoryButton;
+        protected global::Ext.Net.FieldContainer ctl75;
         
         /// <summary>
-        /// RowSelectionModel1 control.
+        /// uxEditWeatherDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.RowSelectionModel RowSelectionModel1;
+        protected global::Ext.Net.DateField uxEditWeatherDate;
+        
+        /// <summary>
+        /// uxEditWeatherTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TimeField uxEditWeatherTime;
+        
+        /// <summary>
+        /// uxEditWeatherTemp control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxEditWeatherTemp;
+        
+        /// <summary>
+        /// uxEditWeatherWindDirection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ComboBox uxEditWeatherWindDirection;
+        
+        /// <summary>
+        /// uxEditWeatherWindStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxEditWeatherWindStore;
+        
+        /// <summary>
+        /// ctl80 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model ctl80;
+        
+        /// <summary>
+        /// uxEditWeatherWindVelocity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxEditWeatherWindVelocity;
+        
+        /// <summary>
+        /// uxEditWeatherHumidity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxEditWeatherHumidity;
+        
+        /// <summary>
+        /// uxEditWeatherComments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextArea uxEditWeatherComments;
+        
+        /// <summary>
+        /// uxEditWeatherSubmit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxEditWeatherSubmit;
+        
+        /// <summary>
+        /// uxEditWeatherCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxEditWeatherCancel;
     }
 }
