@@ -21,7 +21,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 {
     public partial class umManageExisting : BasePage
     {
-        
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -42,11 +42,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 long OrgId;
                 return OrgId = (from d in _context.DAILY_ACTIVITY_HEADER
-                         join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
-                         where d.HEADER_ID == HeaderId
-                         select (long)p.ORG_ID).Single();
+                                join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                                where d.HEADER_ID == HeaderId
+                                select (long)p.ORG_ID).Single();
             }
-            
+
         }
         /// <summary>
         /// Gets filterable list of header data
@@ -86,7 +86,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                select new { d.HEADER_ID, h.PROJECT_ID, h.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE }).ToList<object>();
 
                     uxCreateActivityButton.Disabled = true;
-                    
+
                 }
                 List<HeaderData> data = new List<HeaderData>();
 
@@ -129,7 +129,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             Warning = "Red";
                         }
                     }
-                    
+
 
                     foreach (long OffendingProject in OverlapProjects)
                     {
@@ -138,7 +138,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             Warning = "Red";
                         }
                     }
-                    
+
 
                     data.Add(new HeaderData
                     {
@@ -202,7 +202,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEquipmentTab.LoadContent(equipUrl);
                 uxEmployeeTab.LoadContent(emplUrl);
                 uxWeatherTab.LoadContent(weatherUrl);
-                
+
                 if (OrgId == 121)
                 {
                     prodUrl = string.Format("umProductionTab_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
@@ -217,7 +217,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     prodUrl = string.Format("umProductionTab_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                     invUrl = string.Format("umInventoryTab_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                     //uxChemicalTab.Close();
-                    
+
                 }
                 uxProductionTab.LoadContent(prodUrl);
                 uxInventoryTab.LoadContent(invUrl);
@@ -247,27 +247,28 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             bool BadHeader = false;
             if (HoursOver24.Count > 0)
             {
-                if (HoursOver24.Exists(emp => emp.HEADER_ID == HeaderId)){
+                if (HoursOver24.Exists(emp => emp.HEADER_ID == HeaderId))
+                {
                     EmployeeData HeaderData = HoursOver24.Find(emp => emp.HEADER_ID == HeaderId);
                     //uxSubmitActivityWindow.Html += string.Format("<span color='#ff0000'>{0} has over 24 hours logged on {1:MM-dd-yy}.  Please fix.</span><br />", HeaderData.EMPLOYEE_NAME.ToString(), HeaderData.DA_DATE.ToString());
                     BadHeader = true;
                 }
-                
-                
+
+
             }
 
             if (DuplicatePerDiems != null)
             {
-                    //uxSubmitActivityWindow.Html += string.Format("<span>{0} has duplicate per diem entries on {1:MM-dd-yy}.  Please fix.</span><br />", DuplicatePerDiem.EMPLOYEE_NAME, DuplicatePerDiem.DA_DATE);
-                    uxPlaceholderWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&PersonId={1}", DuplicatePerDiems.HEADER_ID, DuplicatePerDiems.PERSON_ID));
-                    BadHeader = true;
-                
+                //uxSubmitActivityWindow.Html += string.Format("<span>{0} has duplicate per diem entries on {1:MM-dd-yy}.  Please fix.</span><br />", DuplicatePerDiem.EMPLOYEE_NAME, DuplicatePerDiem.DA_DATE);
+                uxPlaceholderWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&PersonId={1}", DuplicatePerDiems.HEADER_ID, DuplicatePerDiems.PERSON_ID));
+                BadHeader = true;
+
             }
             if (EmployeeOverLap.Count > 0)
             {
                 using (Entities _context = new Entities())
                 {
-                    if(EmployeeOverLap.Exists(x=> x == HeaderId))
+                    if (EmployeeOverLap.Exists(x => x == HeaderId))
                     {
                         var HeaderData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                           join emp in _context.EMPLOYEES_V on d.PERSON_ID equals emp.PERSON_ID
@@ -483,18 +484,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deExportToPDF(object sender, DirectEventArgs e)
         {
-                //Set header Id
-                long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
+            //Set header Id
+            long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
 
-                MemoryStream PdfStream = generatePDF(HeaderId);
+            MemoryStream PdfStream = generatePDF(HeaderId);
 
-                Response.Clear();
-                Response.ClearContent();
-                Response.ClearHeaders();
-                Response.ContentType = "application/pdf";
-                Response.AppendHeader("Content-Disposition", "attachment;filename=export.pdf");
-                Response.BinaryWrite(PdfStream.ToArray());
-                Response.End();
+            Response.Clear();
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.ContentType = "application/pdf";
+            Response.AppendHeader("Content-Disposition", "attachment;filename=export.pdf");
+            Response.BinaryWrite(PdfStream.ToArray());
+            Response.End();
         }
 
         protected void deSendPDF(object sender, DirectEventArgs e)
@@ -506,7 +507,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 string Subject = "Copy of Daily Activity Report";
                 bool IsHtml = true;
                 string Message = "Please find attached the Daily Activity Report you requested.";
-                
+
                 PdfStream.Position = 0;
 
                 Attachment MailAttachment = new Attachment(PdfStream, "dailyActivityExport.pdf");
@@ -999,6 +1000,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             uxPlaceholderWindow.ClearContent();
             uxPlaceholderWindow.LoadContent(string.Format("umAddEditInventory_IRM.aspx?HeaderId={0}&Type={1}&InventoryId={2}", HeaderId, WindowType, InventoryId));
+            uxPlaceholderWindow.Show();
+        }
+
+        [DirectMethod]
+        public void dmLoadProductionWindow_DBI(string WindowType, string HeaderId, string ProductionId)
+        {
+            uxPlaceholderWindow.ClearContent();
+            uxPlaceholderWindow.LoadContent(string.Format("umAddEditProduction_DBI.aspx?HeaderId={0}&Type={1}&ProductionId={2}", HeaderId, WindowType, ProductionId));
+            uxPlaceholderWindow.Show();
+        }
+
+        [DirectMethod]
+        public void dmLoadProductionWindow_IRM(string WindowType, string HeaderId, string ProductionId)
+        {
+            uxPlaceholderWindow.ClearContent();
+            uxPlaceholderWindow.LoadContent(string.Format("umAddEditProduction_IRM.aspx?HeaderId={0}&Type={1}&ProductionId={2}", HeaderId, WindowType, ProductionId));
             uxPlaceholderWindow.Show();
         }
     }
