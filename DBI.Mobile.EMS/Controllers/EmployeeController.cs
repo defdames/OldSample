@@ -20,7 +20,7 @@ namespace DBI.Mobile.EMS.Controllers
         public IEnumerable<MBL_EMPLOYEE_V> Get()
         {
             Entities _context = new Entities();
-            List<EMPLOYEES_V> pl = _context.EMPLOYEES_V.ToList();
+            List<EMPLOYEES_V> pl = _context.EMPLOYEES_V.Where(m => m.CURRENT_EMPLOYEE_FLAG == "Y").ToList();
 
             List<MBL_EMPLOYEE_V> returnList = new List<MBL_EMPLOYEE_V>();
 
@@ -47,7 +47,7 @@ namespace DBI.Mobile.EMS.Controllers
             DateTime checkDate;
             if (DateTime.TryParse(fromDate, out checkDate))
             {
-                List<EMPLOYEES_V> pl = _context.EMPLOYEES_V.Where(p => p.LAST_UPDATE_DATE >= checkDate && p.CURRENT_EMPLOYEE_FLAG == "Y").ToList();
+                List<EMPLOYEES_V> pl = _context.EMPLOYEES_V.Where(p => p.LAST_UPDATE_DATE >= checkDate).ToList();
                 foreach (EMPLOYEES_V item in pl)
                     {
                         MBL_EMPLOYEE_V rItem = new MBL_EMPLOYEE_V();

@@ -19,7 +19,7 @@ namespace DBI.Mobile.EMS.Controllers
         public IEnumerable<MBL_PROJECT_V> Get()
         {
             Entities _context = new Entities();
-            List<PROJECTS_V> pl = _context.PROJECTS_V.Where(p => p.PROJECT_TYPE == "CUSTOMER BILLING" && p.TEMPLATE_FLAG == "N").ToList();
+            List<PROJECTS_V> pl = _context.PROJECTS_V.Where(p => p.PROJECT_TYPE == "CUSTOMER BILLING" && p.TEMPLATE_FLAG == "N" && p.PROJECT_STATUS_CODE == "APPROVED").ToList();
 
             List<MBL_PROJECT_V> returnList = new List<MBL_PROJECT_V>();
 

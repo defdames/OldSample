@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -31,6 +32,8 @@ namespace DBI.Mobile.EMS.Controllers
                 nTask.TASK_DESCRIPTION = task.DESCRIPTION;
                 nTask.PROJECT_ID = task.PROJECT_ID;
                 nTask.LAST_UPDATE_DATE = task.LAST_UPDATE_DATE;
+                nTask.START_DATE = task.START_DATE.ToString();
+                nTask.COMPLETION_DATE = task.COMPLETION_DATE.ToString();
                 returnList.Add(nTask);
             }
 
@@ -57,6 +60,8 @@ namespace DBI.Mobile.EMS.Controllers
                     nTask.TASK_DESCRIPTION = task.DESCRIPTION;
                     nTask.PROJECT_ID = task.PROJECT_ID;
                     nTask.LAST_UPDATE_DATE = task.LAST_UPDATE_DATE;
+                    nTask.START_DATE = task.START_DATE.ToString();
+                    nTask.COMPLETION_DATE = task.COMPLETION_DATE.ToString();
                     returnList.Add(nTask);
                 }
             }
