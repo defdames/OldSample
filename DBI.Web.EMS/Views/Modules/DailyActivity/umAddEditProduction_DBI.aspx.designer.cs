@@ -10,16 +10,7 @@
 namespace DBI.Web.EMS.Views.Modules.DailyActivity {
     
     
-    public partial class umInventoryTab_IRM {
-        
-        /// <summary>
-        /// Head1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlHead Head1;
+    public partial class umAddEditProduction_DBI {
         
         /// <summary>
         /// ResourceManager1 control.
@@ -40,165 +31,210 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// uxCurrentInventoryGrid control.
+        /// uxAddEditPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxCurrentInventoryGrid;
+        protected global::Ext.Net.Panel uxAddEditPanel;
         
         /// <summary>
-        /// uxCurrentInventoryStore control.
+        /// uxAddProductionForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxCurrentInventoryStore;
+        protected global::Ext.Net.FormPanel uxAddProductionForm;
         
         /// <summary>
-        /// uxCurrentInventoryModel control.
+        /// uxAddProductionTask control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Model uxCurrentInventoryModel;
+        protected global::Ext.Net.ComboBox uxAddProductionTask;
         
         /// <summary>
-        /// Column1 control.
+        /// uxAddProductionTaskStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column1;
+        protected global::Ext.Net.Store uxAddProductionTaskStore;
         
         /// <summary>
-        /// Column4 control.
+        /// Model1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column4;
+        protected global::Ext.Net.Model Model1;
         
         /// <summary>
-        /// Column5 control.
+        /// uxAddProductionWorkArea control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column5;
+        protected global::Ext.Net.TextField uxAddProductionWorkArea;
         
         /// <summary>
-        /// Column6 control.
+        /// uxAddProductionPoleFrom control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column6;
+        protected global::Ext.Net.TextField uxAddProductionPoleFrom;
         
         /// <summary>
-        /// Column7 control.
+        /// uxAddProductionPoleTo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column7;
+        protected global::Ext.Net.TextField uxAddProductionPoleTo;
         
         /// <summary>
-        /// Column8 control.
+        /// uxAddProductionAcresPerMile control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column8;
+        protected global::Ext.Net.TextField uxAddProductionAcresPerMile;
         
         /// <summary>
-        /// Column9 control.
+        /// uxAddProductionGallons control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column9;
+        protected global::Ext.Net.TextField uxAddProductionGallons;
         
         /// <summary>
-        /// Column13 control.
+        /// uxAddProductionSubmit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column13;
+        protected global::Ext.Net.Button uxAddProductionSubmit;
         
         /// <summary>
-        /// Toolbar1 control.
+        /// uxAddProductionCancel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Toolbar Toolbar1;
+        protected global::Ext.Net.Button uxAddProductionCancel;
         
         /// <summary>
-        /// uxAddInventoryButton control.
+        /// uxEditProductionForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxAddInventoryButton;
+        protected global::Ext.Net.FormPanel uxEditProductionForm;
         
         /// <summary>
-        /// ToolbarSpacer1 control.
+        /// uxEditProductionTask control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer1;
+        protected global::Ext.Net.ComboBox uxEditProductionTask;
         
         /// <summary>
-        /// uxEditInventoryButton control.
+        /// uxEditProductionTaskStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxEditInventoryButton;
+        protected global::Ext.Net.Store uxEditProductionTaskStore;
         
         /// <summary>
-        /// ToolbarSpacer2 control.
+        /// Model2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer2;
+        protected global::Ext.Net.Model Model2;
         
         /// <summary>
-        /// uxRemoveInventoryButton control.
+        /// uxEditProductionWorkArea control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxRemoveInventoryButton;
+        protected global::Ext.Net.TextField uxEditProductionWorkArea;
         
         /// <summary>
-        /// RowSelectionModel1 control.
+        /// uxEditProductionPoleFrom control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.RowSelectionModel RowSelectionModel1;
+        protected global::Ext.Net.TextField uxEditProductionPoleFrom;
+        
+        /// <summary>
+        /// uxEditProductionPoleTo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxEditProductionPoleTo;
+        
+        /// <summary>
+        /// uxEditProductionAcresPerMile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxEditProductionAcresPerMile;
+        
+        /// <summary>
+        /// uxEditProductionGallons control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxEditProductionGallons;
+        
+        /// <summary>
+        /// uxEditProductionSubmit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxEditProductionSubmit;
+        
+        /// <summary>
+        /// uxEditProductionCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxEditProductionCancel;
     }
 }

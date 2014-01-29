@@ -116,6 +116,13 @@
     <Content Include="Views\Modules\CrossingMaintenance\umSubDivisionsTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\ImageLoader\ImageLoader.aspx" />
     <Content Include="Views\Modules\DailyActivity\umAddEditChemical.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umAddEditEmployee.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umAddEditEquipment.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umAddEditInventory_DBI.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umAddEditInventory_IRM.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umAddEditProduction_DBI.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umAddEditProduction_IRM.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umAddEditWeather.aspx" />
     <Content Include="Views\Modules\DailyActivity\umChemicalTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umChoosePerDiem.aspx" />
     <Content Include="Views\Modules\DailyActivity\umCombinedTab_DBI.aspx" />
@@ -223,6 +230,55 @@
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umAddEditChemical.aspx.designer.cs">
       <DependentUpon>umAddEditChemical.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditEmployee.aspx.cs">
+      <DependentUpon>umAddEditEmployee.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditEmployee.aspx.designer.cs">
+      <DependentUpon>umAddEditEmployee.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditEquipment.aspx.cs">
+      <DependentUpon>umAddEditEquipment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditEquipment.aspx.designer.cs">
+      <DependentUpon>umAddEditEquipment.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditInventory_DBI.aspx.cs">
+      <DependentUpon>umAddEditInventory_DBI.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditInventory_DBI.aspx.designer.cs">
+      <DependentUpon>umAddEditInventory_DBI.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditInventory_IRM.aspx.cs">
+      <DependentUpon>umAddEditInventory_IRM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditInventory_IRM.aspx.designer.cs">
+      <DependentUpon>umAddEditInventory_IRM.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditProduction_DBI.aspx.cs">
+      <DependentUpon>umAddEditProduction_DBI.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditProduction_DBI.aspx.designer.cs">
+      <DependentUpon>umAddEditProduction_DBI.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditProduction_IRM.aspx.cs">
+      <DependentUpon>umAddEditProduction_IRM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditProduction_IRM.aspx.designer.cs">
+      <DependentUpon>umAddEditProduction_IRM.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditWeather.aspx.cs">
+      <DependentUpon>umAddEditWeather.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditWeather.aspx.designer.cs">
+      <DependentUpon>umAddEditWeather.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umChemicalTab.aspx.cs">
       <DependentUpon>umChemicalTab.aspx</DependentUpon>

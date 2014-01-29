@@ -47,66 +47,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         }
 
         /// <summary>
-        /// Get Task List Based on project of header
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deGetTaskList(object sender, DirectEventArgs e)
-        {
-
-            //Query for project ID, and get tasks for that project
-            using (Entities _context = new Entities())
-            {
-                long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-                var ProjectId = (from d in _context.DAILY_ACTIVITY_HEADER
-                                where d.HEADER_ID == HeaderId
-                                select d.PROJECT_ID).Single();
-                var data = (from t in _context.PA_TASKS_V
-                            where t.PROJECT_ID == ProjectId
-                            select t).ToList();
-
-                //Set datasource for Add/Edit store
-                if (e.ExtraParams["Type"] == "Add")
-                {
-                    uxAddProductionTaskStore.DataSource = data;
-                    uxAddProductionTaskStore.DataBind();
-                }
-                else
-                {
-                    uxEditProductionTaskStore.DataSource = data;
-                    uxEditProductionTaskStore.DataBind();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Load current values into Edit Production Form
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deEditProductionForm(object sender, DirectEventArgs e)
-        {
-            deGetTaskList(sender, e);
-
-            //JSON Decode Row and assign to variables
-            string JsonValues = e.ExtraParams["ProductionInfo"];
-            Dictionary<string, string>[] ProductionInfo = JSON.Deserialize<Dictionary<string, string>[]>(JsonValues);
-
-            foreach (Dictionary<string, string> Production in ProductionInfo)
-            {
-                uxEditProductionTask.SelectedItems.Clear();
-                uxEditProductionTask.SetValueAndFireSelect(Production["TASK_ID"]);
-                uxEditProductionTask.SelectedItems.Add(new Ext.Net.ListItem(Production["DESCRIPTION"], Production["TASK_ID"]));
-                uxEditProductionTask.UpdateSelectedItems();
-                uxEditProductionWorkArea.SetValue(Production["WORK_AREA"]);
-                uxEditProductionPoleFrom.SetValue(Production["POLE_FROM"]);
-                uxEditProductionPoleTo.SetValue(Production["POLE_TO"]);
-                uxEditProductionAcresPerMile.SetValue(Production["ACRES_MILE"]);
-                uxEditProductionGallons.SetValue(Production["QUANTITY"]);
-            }
-        }
-
-        /// <summary>
         /// Remove production item from db
         /// </summary>
         /// <param name="sender"></param>
@@ -142,107 +82,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             });
         }
 
-        /// <summary>
-        /// Add Production Item to db
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deAddProduction(object sender, DirectEventArgs e)
+        protected void deLoadProductionWindow(object sender, DirectEventArgs e)
         {
-            DAILY_ACTIVITY_PRODUCTION data;
-            
-            //Do type conversions
-            long TaskId = long.Parse(uxAddProductionTask.Value.ToString());
-            long AcresPerMile = long.Parse(uxAddProductionAcresPerMile.Value.ToString());
-            long Gallons = long.Parse(uxAddProductionGallons.Value.ToString());
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-
-            using (Entities _context = new Entities())
+            if (e.ExtraParams["Type"] == "Add")
             {
-                data = new DAILY_ACTIVITY_PRODUCTION()
-                {
-                    HEADER_ID = HeaderId,
-                    TASK_ID = TaskId,
-                    WORK_AREA = uxAddProductionWorkArea.Value.ToString(),
-                    POLE_FROM = uxAddProductionPoleFrom.Value.ToString(),
-                    POLE_TO = uxAddProductionPoleTo.Value.ToString(),
-                    ACRES_MILE = AcresPerMile,
-                    QUANTITY = Gallons,
-                    CREATE_DATE = DateTime.Now,
-                    MODIFY_DATE = DateTime.Now,
-                    CREATED_BY = User.Identity.Name,
-                    MODIFIED_BY = User.Identity.Name
-                };
+                X.Js.Call(string.Format("parent.App.direct.dmLoadProductionWindow_DBI('{0}', '{1}', '{2}')", "Add", HeaderId.ToString(), "None"));
             }
-
-            //Write to DB
-            GenericData.Insert<DAILY_ACTIVITY_PRODUCTION>(data);
-
-            uxAddProductionWindow.Hide();
-            uxAddProductionForm.Reset();
-            uxCurrentProductionStore.Reload();
-
-            Notification.Show(new NotificationConfig()
+            else
             {
-                Title = "Success",
-                Html = "Production Added Successfully",
-                HideDelay = 1000,
-                AlignCfg = new NotificationAlignConfig
-                {
-                    ElementAnchor = AnchorPoint.Center,
-                    TargetAnchor = AnchorPoint.Center
-                }
-            });
-        }
-
-        /// <summary>
-        /// Store edit changes to database
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deEditProduction(object sender, DirectEventArgs e)
-        {
-            DAILY_ACTIVITY_PRODUCTION data;
-
-            //Do type conversions
-            long TaskId = long.Parse(uxEditProductionTask.Value.ToString());
-            long AcresPerMile = long.Parse(uxEditProductionAcresPerMile.Value.ToString());
-            long Gallons = long.Parse(uxEditProductionGallons.Value.ToString());
-            long ProductionId = long.Parse(e.ExtraParams["ProductionId"]);
-
-            //Get record to be edited
-            using (Entities _context = new Entities())
-            {
-                data = (from d in _context.DAILY_ACTIVITY_PRODUCTION
-                        where d.PRODUCTION_ID == ProductionId
-                        select d).Single();
+                X.Js.Call(string.Format("parent.App.direct.dmLoadProductionWindow_DBI('{0}', '{1}', '{2}')", "Edit", HeaderId.ToString(), e.ExtraParams["ProductionId"]));
             }
-            data.TASK_ID = TaskId;
-            data.WORK_AREA = uxEditProductionWorkArea.Value.ToString();
-            data.POLE_FROM = uxEditProductionPoleFrom.Value.ToString();
-            data.POLE_TO = uxEditProductionPoleTo.Value.ToString();
-            data.ACRES_MILE = AcresPerMile;
-            data.QUANTITY = Gallons;
-            data.MODIFY_DATE = DateTime.Now;
-            data.MODIFIED_BY = User.Identity.Name;
-
-            //Write to DB
-            GenericData.Update<DAILY_ACTIVITY_PRODUCTION>(data);
-
-            uxEditProductionWindow.Hide();
-            uxCurrentProductionStore.Reload();
-
-            Notification.Show(new NotificationConfig()
-            {
-                Title = "Success",
-                Html = "Production Edited Successfully",
-                HideDelay = 1000,
-                AlignCfg = new NotificationAlignConfig
-                {
-                    ElementAnchor = AnchorPoint.Center,
-                    TargetAnchor = AnchorPoint.Center
-                }
-            });
         }
     }
 }
