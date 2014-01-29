@@ -121,6 +121,7 @@
     <Content Include="Views\Modules\DailyActivity\umAddEditInventory_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umAddEditInventory_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umAddEditProduction_DBI.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umAddEditProduction_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umChemicalTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umChoosePerDiem.aspx" />
     <Content Include="Views\Modules\DailyActivity\umCombinedTab_DBI.aspx" />
@@ -263,6 +264,13 @@
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umAddEditProduction_DBI.aspx.designer.cs">
       <DependentUpon>umAddEditProduction_DBI.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditProduction_IRM.aspx.cs">
+      <DependentUpon>umAddEditProduction_IRM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditProduction_IRM.aspx.designer.cs">
+      <DependentUpon>umAddEditProduction_IRM.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umChemicalTab.aspx.cs">
       <DependentUpon>umChemicalTab.aspx</DependentUpon>
