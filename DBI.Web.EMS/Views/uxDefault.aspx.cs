@@ -185,11 +185,24 @@ namespace DBI.Web.EMS.Views
                         Name = "Location",
                         Value = userActivity.CONTAINER
                     });
-                    AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+                    if (userActivity.NAME == "SYS.EMSv1.View")
                     {
-                        Name = "Page",
-                        Value = userActivity.PATH
-                    });
+                        byte[] UserArray = System.Text.ASCIIEncoding.ASCII.GetBytes(User.Identity.Name.ToUpper());
+                        string EncodedUser =Convert.ToBase64String(UserArray);
+                        AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+                        {
+                            Name = "Page",
+                            Value = userActivity.PATH + "/Redirect.aspx?user=" + EncodedUser
+                        });
+                    }
+                    else
+                    {
+                        AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+                        {
+                            Name = "Page",
+                            Value = userActivity.PATH
+                        });
+                    }
                     uxWest.Items.Add(AppPanel);
                     AppPanel.Menu.Items.Add(AppMenuItem);
                 }

@@ -121,7 +121,7 @@ namespace DBI.Core.Web
             cl.Mode = LoadMode.Frame;
             cl.Scripts = true;
             cl.LoadMask.ShowMask = true;
-
+            
             // Only add a param collection if it's not null, otherwise this will cause an error.
             if (paramCollection != null)
             {
