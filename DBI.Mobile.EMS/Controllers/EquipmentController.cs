@@ -22,7 +22,7 @@ namespace DBI.Mobile.EMS.Controllers
 
             List<MBL_EQUIPMENT_V> returnList = new List<MBL_EQUIPMENT_V>();
 
-            List<PROJECTS_V> pl = _context.PROJECTS_V.Where(p => p.PROJECT_TYPE == "TRUCK & EQUIPMENT").ToList();
+            List<PROJECTS_V> pl = _context.PROJECTS_V.Where(p => p.PROJECT_TYPE == "TRUCK & EQUIPMENT" && p.PROJECT_STATUS_CODE == "APPROVED").ToList();
 
             foreach (PROJECTS_V item in pl)
             {

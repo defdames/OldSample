@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -15,7 +16,7 @@ namespace DBI.Mobile.EMS.Controllers
         /// This returns a list of customer billing projects
         /// </summary>
         /// <returns></returns>
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         public IEnumerable<MOBILE_TASK_V> Get()
         {
