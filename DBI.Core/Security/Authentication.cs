@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.IdentityModel.Services;
 using System.IdentityModel.Tokens;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 ///
 /// <summary>
@@ -29,17 +31,20 @@ namespace DBI.Core.Security
         {
             //First, create a new return variable
             bool _authenticated = true;
+            //UserPrincipal _usr;
 
             //Next, create a new context for the domain
             using (PrincipalContext ctx = new PrincipalContext(ContextType.Domain))
             {
                 //Next, attempt to validate the credentials
-                _authenticated = ctx.ValidateCredentials(username, password);
+                _authenticated = ctx.ValidateCredentials(username, password,ContextOptions.Negotiate);
+                //_usr = UserPrincipal.FindByIdentity(ctx, username);
             }
 
             //Finally, return the return variable
             return _authenticated;
         }
+
 
         /// <summary>
         /// Generates a security token based on claims security
@@ -56,5 +61,34 @@ namespace DBI.Core.Security
             return _token;
         }
 
+        /// <summary>
+        /// Logout and destroy Cookie
+        /// </summary>
+        public void Logout()
+        {
+            SessionAuthenticationModule sam = new SessionAuthenticationModule();
+            sam.CookieHandler.Delete(HttpContext.Current);
+        }
+
+        /// <summary>
+        /// Gets the value of a claim item by it's key
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns>Claim Value</returns>
+        public string GetClaimValue(string key, ClaimsPrincipal icp)
+        {
+            // Access IClaimsIdentity which contains claims
+            ClaimsIdentity claimsIdentity = (ClaimsIdentity)icp.Identity;
+
+            // Access claims
+            foreach (Claim claim in claimsIdentity.Claims)
+            {
+                if (claim.Type == key)
+                {
+                    return claim.Value;
+                }
+            }
+            return string.Empty;
+        }
     }
 }

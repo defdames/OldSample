@@ -26,6 +26,12 @@ namespace DBI.Data
         public string CREATED_BY { get; set; }
         public Nullable<System.DateTime> LAST_UPDATED { get; set; }
         public string LAST_UPDATED_BY { get; set; }
+        public string PATH { get; set; }
+        public string CONTAINER { get; set; }
+        public string ICON { get; set; }
+        public string CONTROL_TEXT { get; set; }
+        public Nullable<long> PARENT_ITEM_ID { get; set; }
+        public long SORT_NUMBER { get; set; }
     
         public virtual ICollection<SYS_USER_ACTIVITY> SYS_USER_ACTIVITY { get; set; }
     }

@@ -11,11 +11,16 @@ using DBI.Core;
 
 namespace DBI.Web.EMS.Views.Modules.Security
 {
+    /// <summary>
+    /// Security Activity List Page
+    /// </summary>
     public partial class umSecurityActivityList : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if(!validateComponentSecurity("SYS.Activities.View")){
+                X.Redirect("~/Views/uxDefault.aspx");
+            }
             if (!X.IsAjaxRequest)
             {
 
@@ -88,7 +93,11 @@ namespace DBI.Web.EMS.Views.Modules.Security
             {
                 Activity.ACTIVITY_ID,
                 Activity.NAME,
-                Activity.DESCRIPTION
+                Activity.DESCRIPTION,
+                Activity.PATH,
+                Activity.CONTAINER,
+                Activity.ICON,
+                Activity.CONTROL_TEXT
             });
 
         }
@@ -114,6 +123,10 @@ namespace DBI.Web.EMS.Views.Modules.Security
                 SYS_ACTIVITY Activity = SYS_ACTIVITY.Activity(pActivityID, out isNew);
                 Activity.NAME = uxName.Text;
                 Activity.DESCRIPTION = uxDescription.Text;
+                Activity.PATH = uxPath.Text;
+                Activity.ICON = uxIcon.Text;
+                Activity.CONTROL_TEXT = uxControlText.Text;
+                Activity.CONTAINER = uxContainer.Text;
 
                 if (isNew)
                 {

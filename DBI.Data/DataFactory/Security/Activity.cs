@@ -121,6 +121,7 @@ namespace DBI.Data
                     foreach (SYS_USER_ACTIVITY srole in roles)
                     {
                         claims.Add(new Claim(ClaimTypes.Role, srole.SYS_ACTIVITY.NAME));
+
                     }
 
                     // Add a claim for the username
@@ -128,6 +129,9 @@ namespace DBI.Data
 
                     // Add full name of user to the claims 
                     claims.Add(new Claim("EmployeeName", userInfo.EMPLOYEE_NAME));
+                    
+                    //Add current organization ID to claims
+                    claims.Add(new Claim("CurrentOrgId", userInfo.CURRENT_ORG_ID.ToString()));
 
                     return claims;
                 }   

@@ -15,7 +15,10 @@ namespace DBI.Web.EMS.Views.Modules.Security
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!validateComponentSecurity("SYS.Logs.View"))
+            {
+                X.Redirect("~/Views/uxDefault.aspx");
+            }
             if (!X.IsAjaxRequest)
             {
 

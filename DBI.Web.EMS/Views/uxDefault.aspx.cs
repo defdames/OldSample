@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IdentityModel.Services;
 using System.IdentityModel.Tokens;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Web;
@@ -14,11 +15,13 @@ using Ext.Net;
 
 namespace DBI.Web.EMS.Views
 {
+    /// <summary>
+    /// Default View with buttons and where modules are loaded
+    /// </summary>
     public partial class uxDefault : DBI.Core.Web.BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
-        {
-
+        {   
             if (!X.IsAjaxRequest)
             {
                 // Look for cookie information for language support
@@ -35,20 +38,16 @@ namespace DBI.Web.EMS.Views
                     }
                 }
 
-                /// Validate Security Objects ---------------------------------------------------
-                validateComponentSecurity<Ext.Net.MenuItem>("SYS.Users.View", "uxSecurityUsers");
-                validateComponentSecurity<Ext.Net.MenuItem>("SYS.Activities.View", "uxSecurityActivities");
-                validateComponentSecurity<Ext.Net.MenuItem>("SYS.Logs.View", "uxSecurityLogs");
-                //-------------------------------------------------------------------------------
-
+                var MyAuth = new Authentication();
                 // Get Impersonating Info/Details
-                string user = GetClaimValue("ImpersonatedUser");
-                string byuser = GetClaimValue("EmployeeName");
+                string user = MyAuth.GetClaimValue("ImpersonatedUser", User as ClaimsPrincipal);
+                string byuser = MyAuth.GetClaimValue("EmployeeName", User as ClaimsPrincipal);
 
                 uxWelcomeTime.Text = string.Format("Today is {0}", DateTime.Now.ToString("D"));
 
                 if (user != string.Empty)
                 {
+                    //todo Internationalize(currently only in English) because of string.Format
                     uxWelcomeName.Text = string.Format("Impersonating User {0} by ({1})", user, byuser);
                     uxWelcomeName.CtCls = "header-actions-button-red";
                     uxWelcomeName.Disabled = false;
@@ -60,41 +59,20 @@ namespace DBI.Web.EMS.Views
                     uxWelcomeName.CtCls = "header-actions-button-orange";
                     uxWelcomeName.Disabled = true;
                 }
-
-
             }
+            GenerateMenuItems(User as ClaimsPrincipal);
 
         }
 
         /// <summary>
-        /// Loads the panel that displays system security users
+        /// Direct Event that loads a panel given 2 ext.net extra parameters
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deLoadSecurityUsers(object sender, DirectEventArgs e)
+        /// <param name="e">Extra Parameters Page(which panel to load), and Location(where on the page to load it)</param>
+        protected void deLoadPage(object sender, DirectEventArgs e)
         {
-            LoadModule("~/Views/Modules/Security/umSecurityUsersList.aspx", "uxCenter");
-        }
-
-        /// <summary>
-        /// Loads the panel that displays system activies or securit ylevels
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deLoadSecurityActivities(object sender, DirectEventArgs e)
-        {
-            LoadModule("~/Views/Modules/Security/umSecurityActivityList.aspx", "uxCenter");
-        }
-
-
-        /// <summary>
-        /// Loads the panel that displays the system log files
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deLoadSecurityLogs(object sender, DirectEventArgs e)
-        {
-            LoadModule("~/Views/Modules/Security/umSecurityLogList.aspx", "uxCenter");
+            LoadModule(e.ExtraParams["Page"], e.ExtraParams["Location"]);
+            uxWest.Collapse();
         }
 
         /// <summary>
@@ -104,15 +82,16 @@ namespace DBI.Web.EMS.Views
         /// <param name="e"></param>
         protected void deRemoveImpersonate(object sender, DirectEventArgs e)
         {
-            if (GetClaimValue("ImpersonatorUsername") != null)
+            var MyAuth = new Authentication();
+            if (MyAuth.GetClaimValue("ImpersonatorUsername", User as ClaimsPrincipal) != null)
             {
 
-                SYS_USER_INFORMATION userDetails = SYS_USER_INFORMATION.UserByUserName(GetClaimValue("ImpersonatorUsername"));
+                SYS_USER_INFORMATION userDetails = SYS_USER_INFORMATION.UserByUserName(MyAuth.GetClaimValue("ImpersonatorUsername", User as ClaimsPrincipal));
 
                 List<Claim> claims = DBI.Data.SYS_ACTIVITY.Claims(userDetails.USER_NAME);
 
                 // Add full name of user to the claims 
-                claims.Add(new Claim("EmployeeName", GetClaimValue("EmployeeName")));
+                claims.Add(new Claim("EmployeeName", MyAuth.GetClaimValue("EmployeeName", User as ClaimsPrincipal)));
 
                 var token = Authentication.GenerateSessionSecurityToken(claims);
                 var sam = FederatedAuthentication.SessionAuthenticationModule;
@@ -123,6 +102,111 @@ namespace DBI.Web.EMS.Views
                 ResourceManager.GetInstance().AddScript("parent.window.location = '{0}';", "uxDefault.aspx");
             }
 
+        }
+
+        //todo Eventually move to Role contains default(but overrideable) Activities
+        /// <summary>
+        /// Generates the Menu Items for a logged in user based on all roles assigned to user in claims
+        /// </summary>
+        public void GenerateMenuItems(ClaimsPrincipal icp)
+        {
+            List<SYS_ACTIVITY> userActivities;
+
+            if(!User.IsInRole("SYS.Administrator"))
+            {
+                //Get all roles from claims
+                ClaimsIdentity claimsIdentity = (ClaimsIdentity)icp.Identity;
+
+                List<string> AssignedRoles = (from c in claimsIdentity.Claims
+                                              where c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+                                              select c.Value).ToList();
+                //Get Button config from server
+                Entities context = new Entities();
+                userActivities = (from s in context.SYS_ACTIVITY
+                                    where AssignedRoles.Contains(s.NAME) && s.PATH != null
+                                    select s).OrderBy(x => x.SORT_NUMBER).ToList();
+            }
+            else
+            {
+                Entities context = new Entities();
+                userActivities = (from s in context.SYS_ACTIVITY
+                                    where !(string.IsNullOrEmpty(s.PATH))
+                                    select s).OrderBy(x => x.PARENT_ITEM_ID).OrderBy(x => x.SORT_NUMBER).ToList();
+            }
+            //Iterate through allowed activities
+            foreach (SYS_ACTIVITY userActivity in userActivities)
+            {
+                if (userActivity.PARENT_ITEM_ID != null)
+                {
+                    Ext.Net.MenuItem AppMenuItem = new Ext.Net.MenuItem()
+                    {
+                        ID = "uxMenuItem" + userActivity.ACTIVITY_ID.ToString(),
+                        Text = userActivity.CONTROL_TEXT,
+                        Icon = (Icon)Enum.Parse(typeof(Icon), userActivity.ICON)
+                    };
+
+                    //Add click DirectEvent
+                    AppMenuItem.DirectEvents.Click.Event += deLoadPage;
+
+                    //Add DirectEvent Parameters
+                    AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+                    {
+                        Name = "Location",
+                        Value = userActivity.CONTAINER
+                    });
+                    AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+                    {
+                        Name = "Page",
+                        Value = userActivity.PATH
+                    });
+                    Ext.Net.MenuPanel AppPanel = X.GetCmp("uxMenu" + userActivity.PARENT_ITEM_ID.ToString()) as Ext.Net.MenuPanel;
+                    AppPanel.Menu.Items.Add(AppMenuItem);
+                }
+                else
+                {
+                    Ext.Net.MenuPanel AppPanel = new MenuPanel()
+                    {
+                        ID= "uxMenu" + userActivity.ACTIVITY_ID.ToString(),
+                        Title= userActivity.CONTROL_TEXT,
+                        Icon = (Icon)Enum.Parse(typeof(Icon), userActivity.ICON),
+                    };
+                    Ext.Net.MenuItem AppMenuItem = new Ext.Net.MenuItem()
+                    {
+                        ID = "uxMenuItem" + userActivity.ACTIVITY_ID.ToString(),
+                        Text = "Home",
+                        Icon = (Icon)Enum.Parse(typeof(Icon), userActivity.ICON),
+                        
+                    };
+                    AppMenuItem.DirectEvents.Click.Event += deLoadPage;
+
+                    //Add DirectEvent Parameters
+                    AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+                    {
+                        Name = "Location",
+                        Value = userActivity.CONTAINER
+                    });
+                    if (userActivity.NAME == "SYS.EMSv1.View")
+                    {
+                        byte[] UserArray = System.Text.ASCIIEncoding.ASCII.GetBytes(User.Identity.Name.ToUpper());
+                        string EncodedUser =Convert.ToBase64String(UserArray);
+                        AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+                        {
+                            Name = "Page",
+                            Value = userActivity.PATH + "/Redirect.aspx?user=" + EncodedUser
+                        });
+                    }
+                    else
+                    {
+                        AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+                        {
+                            Name = "Page",
+                            Value = userActivity.PATH
+                        });
+                    }
+                    uxWest.Items.Add(AppPanel);
+                    AppPanel.Menu.Items.Add(AppMenuItem);
+                }
+            }
         }
     }
 }

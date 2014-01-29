@@ -12,6 +12,7 @@ using Ext.Net;
 using DBI.Core;
 using System.Web.Script.Serialization;
 using System.Security.Claims;
+using DBI.Core.Security;
 
 namespace DBI.Core.Web
 {
@@ -19,19 +20,27 @@ namespace DBI.Core.Web
     {
 
         /// <summary>
-        /// Code the checks for Activity, returns false if user is in role to disable the button (setDisabled)
+        /// Code the checks for Activity, returns false if user is 
         /// </summary>
         /// <param name="activity"></param>
         /// <returns></returns>
-        public static void validateComponentSecurity<T>(string activity, string componentName) where T: Ext.Net.ComponentBase, new()
+        public static bool validateComponentSecurity(string activity)
         {
-            bool result = false;
             //Check for Administrator override, give access to everything
             if (!HttpContext.Current.User.IsInRole("SYS.Administrator"))
             {
-                result = (HttpContext.Current.User.IsInRole(activity)) ? false : true;
-                //Find the obect and validate it
-                Ext.Net.X.GetCmp<T>(componentName).Disabled = result;
+                if (HttpContext.Current.User.IsInRole(activity))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return true;
             }
         }
 
@@ -41,7 +50,7 @@ namespace DBI.Core.Web
         /// Returns the system time as Invariant, needed to store all data in tables that require datetimes.
         /// </summary>
         /// <param name="Invariant"></param>
-        /// <returns></returns>
+        /// <returns>DateTime</returns>
         public static DateTime SystemTime()
         {
             DateTime dt = DateTime.Now;
@@ -91,7 +100,8 @@ namespace DBI.Core.Web
         /// <param name="e"></param>
         protected void deLogout(object sender, DirectEventArgs e)
         {
-            FormsAuthentication.SignOut();
+            Authentication MyAuth = new Authentication();
+            MyAuth.Logout();
             X.Redirect("~/uxLogin.aspx");
         }
 
@@ -111,7 +121,7 @@ namespace DBI.Core.Web
             cl.Mode = LoadMode.Frame;
             cl.Scripts = true;
             cl.LoadMask.ShowMask = true;
-
+            
             // Only add a param collection if it's not null, otherwise this will cause an error.
             if (paramCollection != null)
             {
@@ -172,7 +182,7 @@ namespace DBI.Core.Web
         /// This displays a nice error message for all exceptions, handled and unhandled
         /// </summary>
         /// <param name="onRequestFailureScript"></param>
-        /// <returns></returns>
+        /// <returns>string</returns>
         protected string GetExceptionHandlerScript(string onRequestFailureScript)
         {
             StringBuilder script = new StringBuilder();
@@ -213,31 +223,5 @@ namespace DBI.Core.Web
 
             return script.ToString();
         }
-
-
-        /// <summary>
-        /// Gets the value of a claim item by it's key
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public string GetClaimValue(string key)
-        {
-            // Cast the Thread.CurrentPrincipal
-            ClaimsPrincipal icp = User as ClaimsPrincipal;
-
-            // Access IClaimsIdentity which contains claims
-            ClaimsIdentity claimsIdentity = (ClaimsIdentity)icp.Identity;
-
-            // Access claims
-            foreach (Claim claim in claimsIdentity.Claims)
-            {
-                if (claim.Type == key)
-                {
-                    return claim.Value;
-                }
-            }
-            return string.Empty;
-        }
-
     }
 }

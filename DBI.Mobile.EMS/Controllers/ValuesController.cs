@@ -11,10 +11,10 @@ namespace DBI.Mobile.EMS.Controllers
     public class ValuesController : ApiController
     {
         [Authorize]
-        public IEnumerable<XX_PROJECTS_V> Get()
+        public IEnumerable<PROJECTS_V> Get()
         {
             Entities _context = new Entities();
-            var pl = _context.XX_PROJECTS_V.ToList().Take(25);
+            var pl = _context.PROJECTS_V.ToList().Take(25);
             return pl;
         }
 

@@ -11,6 +11,7 @@ using DBI.Core;
 using System.Security.Claims;
 using System.IdentityModel.Tokens;
 using System.IdentityModel.Services;
+using DBI.Core.Security;
 
 namespace DBI.Web.EMS.Views.Modules.Security
 {
@@ -18,8 +19,14 @@ namespace DBI.Web.EMS.Views.Modules.Security
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!validateComponentSecurity("SYS.Users.View"))
+            {
+                X.Redirect("~/Views/uxDefault.aspx");
+            }
+
             if (!X.IsAjaxRequest)
             {
+
                 if (Request.Cookies["UserSettings"] != null)
                 {
                     string RTL;
@@ -115,7 +122,7 @@ namespace DBI.Web.EMS.Views.Modules.Security
             }
             catch (Exception ex)
             {
-                throw (ex);
+                throw;
             }
         }
 
@@ -235,13 +242,14 @@ namespace DBI.Web.EMS.Views.Modules.Security
                 // Add a claim to say they were impersonated and by who impersonated them
                 claims.Add(new Claim("ImpersonatedUser", userDetails.EMPLOYEE_NAME));
 
-                if (GetClaimValue("ImpersonatorUsername") == string.Empty)
+                var MyAuth = new Authentication();
+                if (MyAuth.GetClaimValue("ImpersonatorUsername", User as ClaimsPrincipal) == string.Empty)
                 {
                     claims.Add(new Claim("ImpersonatorUsername", HttpContext.Current.User.Identity.Name));
                 }
 
                 // Add full name of user to the claims 
-                claims.Add(new Claim("EmployeeName", GetClaimValue("EmployeeName")));
+                claims.Add(new Claim("EmployeeName", MyAuth.GetClaimValue("EmployeeName", User as ClaimsPrincipal)));
 
                 var id = new ClaimsIdentity(claims, "Forms");
                 var cp = new ClaimsPrincipal(id);
@@ -259,8 +267,8 @@ namespace DBI.Web.EMS.Views.Modules.Security
         {
                      
              // Setup Security
-            //uxImpersonate.Disabled = DisableActivity("SYS.Users.Impersonate");
-            //uxEditUser.Disabled = DisableActivity("SYS.Users.Edit");
+            uxImpersonate.Disabled = !validateComponentSecurity("SYS.Users.Impersonate");
+            uxEditUser.Disabled = !validateComponentSecurity("SYS.Users.Edit");
             
         }
 

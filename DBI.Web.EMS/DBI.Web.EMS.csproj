@@ -39,20 +39,35 @@
     <DocumentationFile>bin\DBI.Web.EMS.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ext.Net, Version=2.2.0.26560, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\root\Ext.Net\bin\WebForm NET40 Release\Ext.Net.dll</HintPath>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\packages\WebGrease.1.3.0\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="Ext.Net.Utilities, Version=2.2.0.0, Culture=neutral, PublicKeyToken=2c34ac34702a3c23, processorArchitecture=MSIL">
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\root\Ext.Net\bin\WebForm NET40 Release\Ext.Net.Utilities.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Ext.Net, Version=2.3.1.16379, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\EXT\Ext.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Ext.Net.Utilities, Version=2.3.0.0, Culture=neutral, PublicKeyToken=2c34ac34702a3c23, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\EXT\Ext.Net.Utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="iTextSharp">
+      <HintPath>..\packages\iTextSharp-LGPL.4.1.6\lib\iTextSharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Oracle.ManagedDataAccess, Version=4.112.3.60, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\lib\EXT\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\app\ljankowski\product\11.2.0\client_2\odp.net\managed\common\Oracle.ManagedDataAccess.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\app\ljankowski\product\12.1.0\client_1\odp.net\managed\common\Oracle.ManagedDataAccess.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.identitymodel.services" />
     <Reference Include="System.Net.Http" />
@@ -74,13 +89,18 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="Transformer.NET, Version=2.1.1.22883, Culture=neutral, PublicKeyToken=e274d618e7c603a7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\root\Ext.Net\bin\WebForm NET40 Release\Transformer.NET.dll</HintPath>
+      <HintPath>..\lib\EXT\Transformer.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <HintPath>..\packages\WebGrease.1.3.0\lib\WebGrease.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\EMSV2.pubxml" />
     <None Include="Resources\Scripts\jquery-2.0.1.intellisense.js" />
     <Content Include="Global.asax" />
+    <Content Include="Resources\Images\1pixel.jpg" />
     <Content Include="Resources\Images\bgimage.jpg" />
     <Content Include="uxLogin.aspx" />
     <Content Include="Resources\Images\background.jpg" />
@@ -92,6 +112,38 @@
     <Content Include="Resources\Images\wwbnight.png" />
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
+    <Content Include="Views\Modules\CrossingMaintenance\umContactsTab.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umCrossingMain.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umCrossingInfoTab.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umCrossingSecurity.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umServiceUnitsTab.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umSubDivisionsTab.aspx" />
+    <Content Include="Views\Modules\DailyActivity\ImageLoader\ImageLoader.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umAddEditChemical.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umAddEditEmployee.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umAddEditEquipment.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umAddEditInventory_DBI.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umAddEditInventory_IRM.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umAddEditProduction_DBI.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umAddEditProduction_IRM.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umAddEditWeather.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umChemicalTab.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umChoosePerDiem.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umCombinedTab_DBI.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umCombinedTab_IRM.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umDailyActivity.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umEmployeesTab.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umEquipmentTab.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umHeaderTab.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umInventoryTab_DBI.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umInventoryTab_IRM.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umManageExisting.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umProductionTab_DBI.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umProductionTab_IRM.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umSubmitActivity_DBI.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
     <Content Include="Views\Modules\Security\umSecurityLogList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityActivityList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityUsersList.aspx" />
@@ -115,9 +167,237 @@
       <DependentUpon>uxLogin.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\Handlers\WebProjects.ashx.cs">
+      <DependentUpon>WebProjects.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Handlers\SystemUsers.ashx.cs">
       <DependentUpon>SystemUsers.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umContactsTab.aspx.cs">
+      <DependentUpon>umContactsTab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umContactsTab.aspx.designer.cs">
+      <DependentUpon>umContactsTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umCrossingMain.aspx.cs">
+      <DependentUpon>umCrossingMain.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umCrossingMain.aspx.designer.cs">
+      <DependentUpon>umCrossingMain.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umCrossingInfoTab.aspx.cs">
+      <DependentUpon>umCrossingInfoTab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umCrossingInfoTab.aspx.designer.cs">
+      <DependentUpon>umCrossingInfoTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umCrossingSecurity.aspx.cs">
+      <DependentUpon>umCrossingSecurity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umCrossingSecurity.aspx.designer.cs">
+      <DependentUpon>umCrossingSecurity.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx.cs">
+      <DependentUpon>umDataEntryTab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx.designer.cs">
+      <DependentUpon>umDataEntryTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umServiceUnitsTab.aspx.cs">
+      <DependentUpon>umServiceUnitsTab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umServiceUnitsTab.aspx.designer.cs">
+      <DependentUpon>umServiceUnitsTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umSubDivisionsTab.aspx.cs">
+      <DependentUpon>umSubDivisionsTab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umSubDivisionsTab.aspx.designer.cs">
+      <DependentUpon>umSubDivisionsTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\ImageLoader\ImageLoader.aspx.cs">
+      <DependentUpon>ImageLoader.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\ImageLoader\ImageLoader.aspx.designer.cs">
+      <DependentUpon>ImageLoader.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditChemical.aspx.cs">
+      <DependentUpon>umAddEditChemical.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditChemical.aspx.designer.cs">
+      <DependentUpon>umAddEditChemical.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditEmployee.aspx.cs">
+      <DependentUpon>umAddEditEmployee.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditEmployee.aspx.designer.cs">
+      <DependentUpon>umAddEditEmployee.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditEquipment.aspx.cs">
+      <DependentUpon>umAddEditEquipment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditEquipment.aspx.designer.cs">
+      <DependentUpon>umAddEditEquipment.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditInventory_DBI.aspx.cs">
+      <DependentUpon>umAddEditInventory_DBI.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditInventory_DBI.aspx.designer.cs">
+      <DependentUpon>umAddEditInventory_DBI.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditInventory_IRM.aspx.cs">
+      <DependentUpon>umAddEditInventory_IRM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditInventory_IRM.aspx.designer.cs">
+      <DependentUpon>umAddEditInventory_IRM.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditProduction_DBI.aspx.cs">
+      <DependentUpon>umAddEditProduction_DBI.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditProduction_DBI.aspx.designer.cs">
+      <DependentUpon>umAddEditProduction_DBI.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditProduction_IRM.aspx.cs">
+      <DependentUpon>umAddEditProduction_IRM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditProduction_IRM.aspx.designer.cs">
+      <DependentUpon>umAddEditProduction_IRM.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditWeather.aspx.cs">
+      <DependentUpon>umAddEditWeather.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umAddEditWeather.aspx.designer.cs">
+      <DependentUpon>umAddEditWeather.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umChemicalTab.aspx.cs">
+      <DependentUpon>umChemicalTab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umChemicalTab.aspx.designer.cs">
+      <DependentUpon>umChemicalTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umChoosePerDiem.aspx.cs">
+      <DependentUpon>umChoosePerDiem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umChoosePerDiem.aspx.designer.cs">
+      <DependentUpon>umChoosePerDiem.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umCombinedTab_DBI.aspx.cs">
+      <DependentUpon>umCombinedTab_DBI.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umCombinedTab_DBI.aspx.designer.cs">
+      <DependentUpon>umCombinedTab_DBI.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umCombinedTab_IRM.aspx.cs">
+      <DependentUpon>umCombinedTab_IRM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umCombinedTab_IRM.aspx.designer.cs">
+      <DependentUpon>umCombinedTab_IRM.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umDailyActivity.aspx.cs">
+      <DependentUpon>umDailyActivity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umDailyActivity.aspx.designer.cs">
+      <DependentUpon>umDailyActivity.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umEmployeesTab.aspx.cs">
+      <DependentUpon>umEmployeesTab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umEmployeesTab.aspx.designer.cs">
+      <DependentUpon>umEmployeesTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umEquipmentTab.aspx.cs">
+      <DependentUpon>umEquipmentTab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umEquipmentTab.aspx.designer.cs">
+      <DependentUpon>umEquipmentTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umHeaderTab.aspx.cs">
+      <DependentUpon>umHeaderTab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umHeaderTab.aspx.designer.cs">
+      <DependentUpon>umHeaderTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umInventoryTab_DBI.aspx.cs">
+      <DependentUpon>umInventoryTab_DBI.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umInventoryTab_DBI.aspx.designer.cs">
+      <DependentUpon>umInventoryTab_DBI.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umInventoryTab_IRM.aspx.cs">
+      <DependentUpon>umInventoryTab_IRM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umInventoryTab_IRM.aspx.designer.cs">
+      <DependentUpon>umInventoryTab_IRM.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umManageExisting.aspx.cs">
+      <DependentUpon>umManageExisting.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umManageExisting.aspx.designer.cs">
+      <DependentUpon>umManageExisting.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umProductionTab_DBI.aspx.cs">
+      <DependentUpon>umProductionTab_DBI.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umProductionTab_DBI.aspx.designer.cs">
+      <DependentUpon>umProductionTab_DBI.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umProductionTab_IRM.aspx.cs">
+      <DependentUpon>umProductionTab_IRM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umProductionTab_IRM.aspx.designer.cs">
+      <DependentUpon>umProductionTab_IRM.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umSubmitActivity_DBI.aspx.cs">
+      <DependentUpon>umSubmitActivity_DBI.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umSubmitActivity_DBI.aspx.designer.cs">
+      <DependentUpon>umSubmitActivity_DBI.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx.cs">
+      <DependentUpon>umSubmitActivity_IRM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx.designer.cs">
+      <DependentUpon>umSubmitActivity_IRM.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umWeatherTab.aspx.cs">
+      <DependentUpon>umWeatherTab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umWeatherTab.aspx.designer.cs">
+      <DependentUpon>umWeatherTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\ValidationChecks.cs" />
     <Compile Include="Views\Modules\Security\umSecurityLogList.aspx.cs">
       <DependentUpon>umSecurityLogList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -150,6 +430,7 @@
   <ItemGroup>
     <Content Include="Resources\Scripts\jquery-2.0.1.min.map" />
     <Content Include="Views\Handlers\SystemUsers.ashx" />
+    <Content Include="Views\Handlers\WebProjects.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -168,7 +449,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_LocalResources\uxLogin.aspx.resx" />
+    <Content Include="App_LocalResources\uxLogin.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\uxLogin.aspx.fr.resx">
@@ -195,7 +478,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>18949</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44301/</IISUrl>
+          <IISUrl>http://localhost:44302/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

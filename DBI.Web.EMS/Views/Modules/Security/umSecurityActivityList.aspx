@@ -63,6 +63,10 @@
                                         <ext:ModelField Name="ACTIVITY_ID" Type="Int" />
                                         <ext:ModelField Name="NAME" Type="String" />
                                         <ext:ModelField Name="DESCRIPTION" Type="String" />
+                                        <ext:ModelField Name="PATH" Type="String" />
+                                        <ext:ModelField Name="CONTAINER" Type="String" />
+                                        <ext:ModelField Name="ICON" Type="String" />
+                                        <ext:ModelField Name="CONTROL_TEXT" Type="String" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -75,6 +79,10 @@
                         <Columns>
                             <ext:Column ID="cName" runat="server" DataIndex="NAME" Text="Name" Width="225" />
                             <ext:Column ID="cDescription" runat="server" DataIndex="DESCRIPTION" Text="Description" Flex="1" />
+                            <ext:Column ID="cPath" runat="server" DataIndex="PATH" Text="Path" />
+                            <ext:Column ID="cContainer" runat="server" DataIndex="CONTAINER" Text="Container" />
+                            <ext:Column ID="cIcon" runat="server" DataIndex="ICON" Text="Icon" />
+                            <ext:Column ID="cControlText" runat="server" DataIndex="CONTROL_TEXT" Text="Control Text" />
                         </Columns>
                     </ColumnModel>
                     <Features>
@@ -101,7 +109,7 @@
         </ext:Viewport>
 
         <!-- Hidden Window for Adding Security Activitys -->
-        <ext:Window runat="server" Resizable="false" Icon="UserAdd" DefaultButton="uxSaveActivity" Hidden="true" Width="350" Height="150" Layout="FitLayout" Header="true" Title="Security Activity Maintenance" ID="uxSecurityAddActivityWindow" Closable="true" CloseAction="Hide" Modal="true">
+        <ext:Window runat="server" Resizable="false" Icon="UserAdd" DefaultButton="uxSaveActivity" Hidden="true" Width="350" Layout="FitLayout" Header="true" Title="Security Activity Maintenance" ID="uxSecurityAddActivityWindow" Closable="true" CloseAction="Hide" Modal="true">
             <Items>
                 <ext:FormPanel
                     ID="uxSecurityActivityDetails"
@@ -115,6 +123,10 @@
                         <ext:TextField Name="ACTIVITY_ID" id="uxActivityID" Hidden="true" runat="server"></ext:TextField>
                         <ext:TextField Name="NAME" ID="uxName" runat="server" FieldLabel="Name" />
                         <ext:TextField Name="DESCRIPTION" ID="uxDescription" runat="server" FieldLabel="Description" />
+                        <ext:TextField Name="PATH" ID="uxPath" runat="server" FieldLabel="Path" />
+                        <ext:TextField Name="CONTAINER" ID="uxContainer" runat="server" FieldLabel="Container" />
+                        <ext:TextField Name="ICON" ID="uxIcon" runat="server" FieldLabel="Icon" />
+                        <ext:TextField Name="CONTROL_TEXT" ID="uxControlText" runat="server" FieldLabel="Control Text" />
                     </Items>
                 </ext:FormPanel>
             </Items>
