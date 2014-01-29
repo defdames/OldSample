@@ -6,6 +6,70 @@
     <edmx:StorageModels>
     <Schema Namespace="OracleModel.Store" Alias="Self" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="OracleModelStoreContainer">
+          <EntitySet Name="XXDBI_DAILY_ACTIVITY_HEADER" EntityType="OracleModel.Store.XXDBI_DAILY_ACTIVITY_HEADER" store:Type="Tables" store:Schema="XXDBI" store:Name="XXDBI_DAILY_ACTIVITY_HEADER">
+            <DefiningQuery>SELECT 
+      "XXDBI_DAILY_ACTIVITY_HEADER"."DA_HEADER_ID" AS "DA_HEADER_ID", 
+      "XXDBI_DAILY_ACTIVITY_HEADER"."PROJECT_NUMBER" AS "PROJECT_NUMBER", 
+      "XXDBI_DAILY_ACTIVITY_HEADER"."PROJECT_NAME" AS "PROJECT_NAME", 
+      "XXDBI_DAILY_ACTIVITY_HEADER"."STATE" AS "STATE", 
+      "XXDBI_DAILY_ACTIVITY_HEADER"."COUNTY" AS "COUNTY", 
+      "XXDBI_DAILY_ACTIVITY_HEADER"."ACTIVITY_DATE" AS "ACTIVITY_DATE", 
+      "XXDBI_DAILY_ACTIVITY_HEADER"."ORG_ID" AS "ORG_ID", 
+      "XXDBI_DAILY_ACTIVITY_HEADER"."CREATED_BY" AS "CREATED_BY", 
+      "XXDBI_DAILY_ACTIVITY_HEADER"."CREATION_DATE" AS "CREATION_DATE", 
+      "XXDBI_DAILY_ACTIVITY_HEADER"."LAST_UPDATED_BY" AS "LAST_UPDATED_BY", 
+      "XXDBI_DAILY_ACTIVITY_HEADER"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE", 
+      "XXDBI_DAILY_ACTIVITY_HEADER"."LAST_UPDATE_LOGIN" AS "LAST_UPDATE_LOGIN"
+      FROM "XXDBI"."XXDBI_DAILY_ACTIVITY_HEADER" "XXDBI_DAILY_ACTIVITY_HEADER"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="XXDBI_LABOR_HEADER" EntityType="OracleModel.Store.XXDBI_LABOR_HEADER" store:Type="Tables" store:Schema="XXDBI" store:Name="XXDBI_LABOR_HEADER">
+            <DefiningQuery>SELECT 
+      "XXDBI_LABOR_HEADER"."LABOR_HEADER_ID" AS "LABOR_HEADER_ID", 
+      "XXDBI_LABOR_HEADER"."DA_HEADER_ID" AS "DA_HEADER_ID", 
+      "XXDBI_LABOR_HEADER"."PROJECT_NUMBER" AS "PROJECT_NUMBER", 
+      "XXDBI_LABOR_HEADER"."TASK_NUMBER" AS "TASK_NUMBER", 
+      "XXDBI_LABOR_HEADER"."WORK_ORDER_NUM" AS "WORK_ORDER_NUM", 
+      "XXDBI_LABOR_HEADER"."EMPLOYEE_NUMBER" AS "EMPLOYEE_NUMBER", 
+      "XXDBI_LABOR_HEADER"."EMP_FULL_NAME" AS "EMP_FULL_NAME", 
+      "XXDBI_LABOR_HEADER"."ROLE" AS "ROLE", 
+      "XXDBI_LABOR_HEADER"."STATE" AS "STATE", 
+      "XXDBI_LABOR_HEADER"."COUNTY" AS "COUNTY", 
+      "XXDBI_LABOR_HEADER"."LAB_HEADER_DATE" AS "LAB_HEADER_DATE", 
+      "XXDBI_LABOR_HEADER"."QUANTITY" AS "QUANTITY", 
+      "XXDBI_LABOR_HEADER"."ELEMENT" AS "ELEMENT", 
+      "XXDBI_LABOR_HEADER"."ADJUSTMENT" AS "ADJUSTMENT", 
+      "XXDBI_LABOR_HEADER"."STATUS" AS "STATUS", 
+      "XXDBI_LABOR_HEADER"."ORG_ID" AS "ORG_ID", 
+      "XXDBI_LABOR_HEADER"."CREATED_BY" AS "CREATED_BY", 
+      "XXDBI_LABOR_HEADER"."CREATION_DATE" AS "CREATION_DATE", 
+      "XXDBI_LABOR_HEADER"."LAST_UPDATED_BY" AS "LAST_UPDATED_BY", 
+      "XXDBI_LABOR_HEADER"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE", 
+      "XXDBI_LABOR_HEADER"."LAST_UPDATE_LOGIN" AS "LAST_UPDATE_LOGIN", 
+      "XXDBI_LABOR_HEADER"."OVR_DAILYOT_FLAG" AS "OVR_DAILYOT_FLAG"
+      FROM "XXDBI"."XXDBI_LABOR_HEADER" "XXDBI_LABOR_HEADER"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="XXDBI_TRUCK_EQUIP_USAGE" EntityType="OracleModel.Store.XXDBI_TRUCK_EQUIP_USAGE" store:Type="Tables" store:Schema="XXDBI" store:Name="XXDBI_TRUCK_EQUIP_USAGE">
+            <DefiningQuery>SELECT 
+      "XXDBI_TRUCK_EQUIP_USAGE"."TRUCK_EQUIP" AS "TRUCK_EQUIP", 
+      "XXDBI_TRUCK_EQUIP_USAGE"."TRANSACTION_ID" AS "TRANSACTION_ID", 
+      "XXDBI_TRUCK_EQUIP_USAGE"."DA_HEADER_ID" AS "DA_HEADER_ID", 
+      "XXDBI_TRUCK_EQUIP_USAGE"."PROJECT_NUMBER" AS "PROJECT_NUMBER", 
+      "XXDBI_TRUCK_EQUIP_USAGE"."TASK_NUMBER" AS "TASK_NUMBER", 
+      "XXDBI_TRUCK_EQUIP_USAGE"."WORK_ORDER_NUM" AS "WORK_ORDER_NUM", 
+      "XXDBI_TRUCK_EQUIP_USAGE"."USAGE_DATE" AS "USAGE_DATE", 
+      "XXDBI_TRUCK_EQUIP_USAGE"."QUANTITY" AS "QUANTITY", 
+      "XXDBI_TRUCK_EQUIP_USAGE"."AMOUNT" AS "AMOUNT", 
+      "XXDBI_TRUCK_EQUIP_USAGE"."STATUS" AS "STATUS", 
+      "XXDBI_TRUCK_EQUIP_USAGE"."REJECTION_REASON" AS "REJECTION_REASON", 
+      "XXDBI_TRUCK_EQUIP_USAGE"."ORG_ID" AS "ORG_ID", 
+      "XXDBI_TRUCK_EQUIP_USAGE"."CREATED_BY" AS "CREATED_BY", 
+      "XXDBI_TRUCK_EQUIP_USAGE"."CREATION_DATE" AS "CREATION_DATE", 
+      "XXDBI_TRUCK_EQUIP_USAGE"."LAST_UPDATED_BY" AS "LAST_UPDATED_BY", 
+      "XXDBI_TRUCK_EQUIP_USAGE"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE", 
+      "XXDBI_TRUCK_EQUIP_USAGE"."LAST_UPDATE_LOGIN" AS "LAST_UPDATE_LOGIN", 
+      "XXDBI_TRUCK_EQUIP_USAGE"."OVERRIDE" AS "OVERRIDE"
+      FROM "XXDBI"."XXDBI_TRUCK_EQUIP_USAGE" "XXDBI_TRUCK_EQUIP_USAGE"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="CROSSING_CONTACTS" EntityType="OracleModel.Store.CROSSING_CONTACTS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_DATA_ENTRY" EntityType="OracleModel.Store.CROSSING_DATA_ENTRY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_SUB_DIVISION" EntityType="OracleModel.Store.CROSSING_SUB_DIVISION" store:Type="Tables" Schema="XXEMS" />
@@ -542,6 +606,122 @@
             <End Role="DAILY_ACTIVITY_WEATHER" EntitySet="DAILY_ACTIVITY_WEATHER" />
           </AssociationSet>
         </EntityContainer>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXDBI.XXDBI_DAILY_ACTIVITY_HEADER' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="XXDBI_DAILY_ACTIVITY_HEADER">
+          <Key>
+            <PropertyRef Name="DA_HEADER_ID" />
+            <PropertyRef Name="PROJECT_NUMBER" />
+            <PropertyRef Name="PROJECT_NAME" />
+            <PropertyRef Name="STATE" />
+            <PropertyRef Name="ACTIVITY_DATE" />
+            <PropertyRef Name="ORG_ID" />
+            <PropertyRef Name="CREATED_BY" />
+            <PropertyRef Name="CREATION_DATE" />
+            <PropertyRef Name="LAST_UPDATED_BY" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+          </Key>
+          <Property Name="DA_HEADER_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PROJECT_NUMBER" Type="varchar2" Nullable="false" MaxLength="25" />
+          <Property Name="PROJECT_NAME" Type="varchar2" Nullable="false" MaxLength="30" />
+          <Property Name="STATE" Type="varchar2" Nullable="false" MaxLength="50" />
+          <Property Name="COUNTY" Type="varchar2" MaxLength="50" />
+          <Property Name="ACTIVITY_DATE" Type="date" Nullable="false" />
+          <Property Name="ORG_ID" Type="number" Nullable="false" />
+          <Property Name="CREATED_BY" Type="number" Nullable="false" />
+          <Property Name="CREATION_DATE" Type="date" Nullable="false" />
+          <Property Name="LAST_UPDATED_BY" Type="number" Nullable="false" />
+          <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" />
+          <Property Name="LAST_UPDATE_LOGIN" Type="number" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXDBI.XXDBI_LABOR_HEADER' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="XXDBI_LABOR_HEADER">
+          <Key>
+            <PropertyRef Name="LABOR_HEADER_ID" />
+            <PropertyRef Name="DA_HEADER_ID" />
+            <PropertyRef Name="PROJECT_NUMBER" />
+            <PropertyRef Name="TASK_NUMBER" />
+            <PropertyRef Name="EMPLOYEE_NUMBER" />
+            <PropertyRef Name="EMP_FULL_NAME" />
+            <PropertyRef Name="STATE" />
+            <PropertyRef Name="LAB_HEADER_DATE" />
+            <PropertyRef Name="QUANTITY" />
+            <PropertyRef Name="STATUS" />
+            <PropertyRef Name="ORG_ID" />
+            <PropertyRef Name="CREATED_BY" />
+            <PropertyRef Name="CREATION_DATE" />
+            <PropertyRef Name="LAST_UPDATED_BY" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+          </Key>
+          <Property Name="LABOR_HEADER_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="DA_HEADER_ID" Type="number" Nullable="false" />
+          <Property Name="PROJECT_NUMBER" Type="varchar2" Nullable="false" MaxLength="25" />
+          <Property Name="TASK_NUMBER" Type="varchar2" Nullable="false" MaxLength="25" />
+          <Property Name="WORK_ORDER_NUM" Type="varchar2" MaxLength="25" />
+          <Property Name="EMPLOYEE_NUMBER" Type="varchar2" Nullable="false" MaxLength="30" />
+          <Property Name="EMP_FULL_NAME" Type="varchar2" Nullable="false" MaxLength="240" />
+          <Property Name="ROLE" Type="varchar2" MaxLength="100" />
+          <Property Name="STATE" Type="varchar2" Nullable="false" MaxLength="50" />
+          <Property Name="COUNTY" Type="varchar2" MaxLength="50" />
+          <Property Name="LAB_HEADER_DATE" Type="date" Nullable="false" />
+          <Property Name="QUANTITY" Type="number" Nullable="false" />
+          <Property Name="ELEMENT" Type="varchar2" MaxLength="100" />
+          <Property Name="ADJUSTMENT" Type="varchar2" MaxLength="1" />
+          <Property Name="STATUS" Type="varchar2" Nullable="false" MaxLength="50" />
+          <Property Name="ORG_ID" Type="number" Nullable="false" />
+          <Property Name="CREATED_BY" Type="number" Nullable="false" />
+          <Property Name="CREATION_DATE" Type="date" Nullable="false" />
+          <Property Name="LAST_UPDATED_BY" Type="number" Nullable="false" />
+          <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" />
+          <Property Name="LAST_UPDATE_LOGIN" Type="number" />
+          <Property Name="OVR_DAILYOT_FLAG" Type="varchar2" MaxLength="1" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXDBI.XXDBI_TRUCK_EQUIP_USAGE' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="XXDBI_TRUCK_EQUIP_USAGE">
+          <Key>
+            <PropertyRef Name="TRUCK_EQUIP" />
+            <PropertyRef Name="TRANSACTION_ID" />
+            <PropertyRef Name="DA_HEADER_ID" />
+            <PropertyRef Name="PROJECT_NUMBER" />
+            <PropertyRef Name="TASK_NUMBER" />
+            <PropertyRef Name="USAGE_DATE" />
+            <PropertyRef Name="QUANTITY" />
+            <PropertyRef Name="STATUS" />
+            <PropertyRef Name="ORG_ID" />
+            <PropertyRef Name="CREATED_BY" />
+            <PropertyRef Name="CREATION_DATE" />
+            <PropertyRef Name="LAST_UPDATED_BY" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+            <PropertyRef Name="WORK_ORDER_NUM" />
+            <PropertyRef Name="AMOUNT" />
+            <PropertyRef Name="REJECTION_REASON" />
+            <PropertyRef Name="LAST_UPDATE_LOGIN" />
+            <PropertyRef Name="OVERRIDE" />
+          </Key>
+          <Property Name="TRUCK_EQUIP" Type="varchar2" Nullable="false" MaxLength="100" StoreGeneratedPattern="Identity" />
+          <Property Name="TRANSACTION_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="DA_HEADER_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PROJECT_NUMBER" Type="varchar2" Nullable="false" MaxLength="50" StoreGeneratedPattern="Identity" />
+          <Property Name="TASK_NUMBER" Type="varchar2" Nullable="false" MaxLength="25" StoreGeneratedPattern="Identity" />
+          <Property Name="WORK_ORDER_NUM" Type="varchar2" MaxLength="25" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="USAGE_DATE" Type="date" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="QUANTITY" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="AMOUNT" Type="number" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="STATUS" Type="varchar2" Nullable="false" MaxLength="50" StoreGeneratedPattern="Identity" />
+          <Property Name="REJECTION_REASON" Type="varchar2" MaxLength="100" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ORG_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CREATED_BY" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CREATION_DATE" Type="date" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="LAST_UPDATED_BY" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="LAST_UPDATE_LOGIN" Type="number" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OVERRIDE" Type="varchar2" MaxLength="1" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
         <EntityType Name="CROSSING_CONTACTS">
           <Key>
             <PropertyRef Name="CONTACT_ID" />
@@ -1646,6 +1826,9 @@
             <End Role="CROSSING_DATA_ENTRY" EntitySet="CROSSING_DATA_ENTRY" />
           </AssociationSet>
           <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.PA_TASKS_V" />
+          <EntitySet Name="XXDBI_DAILY_ACTIVITY_HEADER" EntityType="OracleModel.XXDBI_DAILY_ACTIVITY_HEADER" />
+          <EntitySet Name="XXDBI_LABOR_HEADER" EntityType="OracleModel.XXDBI_LABOR_HEADER" />
+          <EntitySet Name="XXDBI_TRUCK_EQUIP_USAGE" EntityType="OracleModel.XXDBI_TRUCK_EQUIP_USAGE" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -2809,6 +2992,113 @@
           <Property Type="DateTime" Name="START_DATE" />
           <Property Type="DateTime" Name="COMPLETION_DATE" />
         </EntityType>
+        <EntityType Name="XXDBI_DAILY_ACTIVITY_HEADER">
+          <Key>
+            <PropertyRef Name="DA_HEADER_ID" />
+            <PropertyRef Name="PROJECT_NUMBER" />
+            <PropertyRef Name="PROJECT_NAME" />
+            <PropertyRef Name="STATE" />
+            <PropertyRef Name="ACTIVITY_DATE" />
+            <PropertyRef Name="ORG_ID" />
+            <PropertyRef Name="CREATED_BY" />
+            <PropertyRef Name="CREATION_DATE" />
+            <PropertyRef Name="LAST_UPDATED_BY" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+          </Key>
+          <Property Type="Decimal" Name="DA_HEADER_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="PROJECT_NUMBER" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROJECT_NAME" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STATE" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="COUNTY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="ACTIVITY_DATE" Nullable="false" />
+          <Property Type="Decimal" Name="ORG_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="CREATED_BY" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="CREATION_DATE" Nullable="false" />
+          <Property Type="Decimal" Name="LAST_UPDATED_BY" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
+          <Property Type="Decimal" Name="LAST_UPDATE_LOGIN" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="XXDBI_LABOR_HEADER">
+          <Key>
+            <PropertyRef Name="LABOR_HEADER_ID" />
+            <PropertyRef Name="DA_HEADER_ID" />
+            <PropertyRef Name="PROJECT_NUMBER" />
+            <PropertyRef Name="TASK_NUMBER" />
+            <PropertyRef Name="EMPLOYEE_NUMBER" />
+            <PropertyRef Name="EMP_FULL_NAME" />
+            <PropertyRef Name="STATE" />
+            <PropertyRef Name="LAB_HEADER_DATE" />
+            <PropertyRef Name="QUANTITY" />
+            <PropertyRef Name="STATUS" />
+            <PropertyRef Name="ORG_ID" />
+            <PropertyRef Name="CREATED_BY" />
+            <PropertyRef Name="CREATION_DATE" />
+            <PropertyRef Name="LAST_UPDATED_BY" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+          </Key>
+          <Property Type="Decimal" Name="LABOR_HEADER_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="DA_HEADER_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="PROJECT_NUMBER" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="TASK_NUMBER" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="WORK_ORDER_NUM" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EMPLOYEE_NUMBER" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EMP_FULL_NAME" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ROLE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STATE" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="COUNTY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAB_HEADER_DATE" Nullable="false" />
+          <Property Type="Decimal" Name="QUANTITY" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="ELEMENT" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ADJUSTMENT" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STATUS" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="ORG_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="CREATED_BY" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="CREATION_DATE" Nullable="false" />
+          <Property Type="Decimal" Name="LAST_UPDATED_BY" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
+          <Property Type="Decimal" Name="LAST_UPDATE_LOGIN" Precision="38" Scale="0" />
+          <Property Type="String" Name="OVR_DAILYOT_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="XXDBI_TRUCK_EQUIP_USAGE">
+          <Key>
+            <PropertyRef Name="TRUCK_EQUIP" />
+            <PropertyRef Name="TRANSACTION_ID" />
+            <PropertyRef Name="DA_HEADER_ID" />
+            <PropertyRef Name="PROJECT_NUMBER" />
+            <PropertyRef Name="TASK_NUMBER" />
+            <PropertyRef Name="USAGE_DATE" />
+            <PropertyRef Name="QUANTITY" />
+            <PropertyRef Name="STATUS" />
+            <PropertyRef Name="ORG_ID" />
+            <PropertyRef Name="CREATED_BY" />
+            <PropertyRef Name="CREATION_DATE" />
+            <PropertyRef Name="LAST_UPDATED_BY" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+            <PropertyRef Name="WORK_ORDER_NUM" />
+            <PropertyRef Name="AMOUNT" />
+            <PropertyRef Name="REJECTION_REASON" />
+            <PropertyRef Name="LAST_UPDATE_LOGIN" />
+            <PropertyRef Name="OVERRIDE" />
+          </Key>
+          <Property Type="String" Name="TRUCK_EQUIP" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="TRANSACTION_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="DA_HEADER_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="PROJECT_NUMBER" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="TASK_NUMBER" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="WORK_ORDER_NUM" MaxLength="25" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Type="DateTime" Name="USAGE_DATE" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="QUANTITY" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="AMOUNT" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Type="String" Name="STATUS" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="REJECTION_REASON" MaxLength="100" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Type="Decimal" Name="ORG_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="CREATED_BY" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="CREATION_DATE" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="LAST_UPDATED_BY" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="LAST_UPDATE_LOGIN" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Type="String" Name="OVERRIDE" MaxLength="1" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3651,6 +3941,76 @@
                 <ScalarProperty Name="TASK_NUMBER" ColumnName="TASK_NUMBER" />
                 <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
                 <ScalarProperty Name="TASK_ID" ColumnName="TASK_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="XXDBI_DAILY_ACTIVITY_HEADER">
+            <EntityTypeMapping TypeName="OracleModel.XXDBI_DAILY_ACTIVITY_HEADER">
+              <MappingFragment StoreEntitySet="XXDBI_DAILY_ACTIVITY_HEADER">
+                <ScalarProperty Name="LAST_UPDATE_LOGIN" ColumnName="LAST_UPDATE_LOGIN" />
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+                <ScalarProperty Name="CREATION_DATE" ColumnName="CREATION_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="ACTIVITY_DATE" ColumnName="ACTIVITY_DATE" />
+                <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+                <ScalarProperty Name="PROJECT_NAME" ColumnName="PROJECT_NAME" />
+                <ScalarProperty Name="PROJECT_NUMBER" ColumnName="PROJECT_NUMBER" />
+                <ScalarProperty Name="DA_HEADER_ID" ColumnName="DA_HEADER_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="XXDBI_LABOR_HEADER">
+            <EntityTypeMapping TypeName="OracleModel.XXDBI_LABOR_HEADER">
+              <MappingFragment StoreEntitySet="XXDBI_LABOR_HEADER">
+                <ScalarProperty Name="OVR_DAILYOT_FLAG" ColumnName="OVR_DAILYOT_FLAG" />
+                <ScalarProperty Name="LAST_UPDATE_LOGIN" ColumnName="LAST_UPDATE_LOGIN" />
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+                <ScalarProperty Name="CREATION_DATE" ColumnName="CREATION_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="ADJUSTMENT" ColumnName="ADJUSTMENT" />
+                <ScalarProperty Name="ELEMENT" ColumnName="ELEMENT" />
+                <ScalarProperty Name="QUANTITY" ColumnName="QUANTITY" />
+                <ScalarProperty Name="LAB_HEADER_DATE" ColumnName="LAB_HEADER_DATE" />
+                <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+                <ScalarProperty Name="ROLE" ColumnName="ROLE" />
+                <ScalarProperty Name="EMP_FULL_NAME" ColumnName="EMP_FULL_NAME" />
+                <ScalarProperty Name="EMPLOYEE_NUMBER" ColumnName="EMPLOYEE_NUMBER" />
+                <ScalarProperty Name="WORK_ORDER_NUM" ColumnName="WORK_ORDER_NUM" />
+                <ScalarProperty Name="TASK_NUMBER" ColumnName="TASK_NUMBER" />
+                <ScalarProperty Name="PROJECT_NUMBER" ColumnName="PROJECT_NUMBER" />
+                <ScalarProperty Name="DA_HEADER_ID" ColumnName="DA_HEADER_ID" />
+                <ScalarProperty Name="LABOR_HEADER_ID" ColumnName="LABOR_HEADER_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="XXDBI_TRUCK_EQUIP_USAGE">
+            <EntityTypeMapping TypeName="OracleModel.XXDBI_TRUCK_EQUIP_USAGE">
+              <MappingFragment StoreEntitySet="XXDBI_TRUCK_EQUIP_USAGE">
+                <ScalarProperty Name="OVERRIDE" ColumnName="OVERRIDE" />
+                <ScalarProperty Name="LAST_UPDATE_LOGIN" ColumnName="LAST_UPDATE_LOGIN" />
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+                <ScalarProperty Name="CREATION_DATE" ColumnName="CREATION_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="REJECTION_REASON" ColumnName="REJECTION_REASON" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="AMOUNT" ColumnName="AMOUNT" />
+                <ScalarProperty Name="QUANTITY" ColumnName="QUANTITY" />
+                <ScalarProperty Name="USAGE_DATE" ColumnName="USAGE_DATE" />
+                <ScalarProperty Name="WORK_ORDER_NUM" ColumnName="WORK_ORDER_NUM" />
+                <ScalarProperty Name="TASK_NUMBER" ColumnName="TASK_NUMBER" />
+                <ScalarProperty Name="PROJECT_NUMBER" ColumnName="PROJECT_NUMBER" />
+                <ScalarProperty Name="DA_HEADER_ID" ColumnName="DA_HEADER_ID" />
+                <ScalarProperty Name="TRANSACTION_ID" ColumnName="TRANSACTION_ID" />
+                <ScalarProperty Name="TRUCK_EQUIP" ColumnName="TRUCK_EQUIP" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -219,6 +219,15 @@
     <Compile Include="WEB_PROJECTS_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="XXDBI_DAILY_ACTIVITY_HEADER.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="XXDBI_LABOR_HEADER.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="XXDBI_TRUCK_EQUIP_USAGE.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
