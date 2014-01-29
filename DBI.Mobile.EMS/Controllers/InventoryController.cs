@@ -28,7 +28,7 @@ namespace DBI.Mobile.EMS.Controllers
             DateTime checkDate;
             if (DateTime.TryParse(fromDate, out checkDate))
             {
-                List<INVENTORY_V> pl = _context.INVENTORY_V.Where(p => p.LAST_UPDATE_DATE >= checkDate && p.ACTIVE == "Y").ToList();
+                List<INVENTORY_V> pl = _context.INVENTORY_V.Where(p => p.LAST_UPDATE_DATE >= checkDate).ToList();
                 foreach (INVENTORY_V item in pl)
                 {
                     MOBILE_INVENTORY_V rItem = new MOBILE_INVENTORY_V();

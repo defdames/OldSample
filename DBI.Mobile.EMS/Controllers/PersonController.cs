@@ -12,17 +12,20 @@ namespace DBI.Mobile.EMS.Controllers
     {
 
         [Authorize]
-        public SYS_USER_INFORMATION Get(string id)
+        [HttpGet]
+        public SYS_USER_INFORMATION Get(string username)
         {
             Entities _context = new Entities();
             SYS_USER_INFORMATION pl = new SYS_USER_INFORMATION();
-            pl = _context.SYS_USER_INFORMATION.Where(p => p.USER_NAME.Equals(id.ToUpper())).FirstOrDefault();
+
+            pl = _context.SYS_USER_INFORMATION.Where(p => p.USER_NAME.ToLower() == username.ToLower()).FirstOrDefault();
 
             if (pl.EMPLOYEE_NAME == null)
             {
                 // Error 204 no account information found
-                throw new HttpResponseException(HttpStatusCode.NoContent);
+                throw new HttpResponseException(HttpStatusCode.BadGateway);
             }
+
 
             return pl;
         }
