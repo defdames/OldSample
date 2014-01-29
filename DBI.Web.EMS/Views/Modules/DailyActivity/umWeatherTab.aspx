@@ -55,9 +55,13 @@
 							ID="uxAddWeatherButton"
 							Icon="ApplicationAdd"
 							Text="Add Weather">
-							<Listeners>
-								<Click Handler="#{uxAddWeatherWindow}.show()" />
-							</Listeners>
+							<DirectEvents>
+								<Click OnEvent="deLoadWeatherWindow">
+									<ExtraParams>
+										<ext:Parameter Name="Type" Value="Add" />
+									</ExtraParams>
+								</Click>
+							</DirectEvents>
 						</ext:Button>
 						<ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server" />
 						<ext:Button runat="server"
@@ -66,15 +70,13 @@
 							Text="Edit Weather"
 							Disabled="true">
 							<DirectEvents>
-								<Click OnEvent="deEditWeatherForm">
+								<Click OnEvent="deLoadWeatherWindow">
 									<ExtraParams>
-										<ext:Parameter Name="WeatherInfo" Value="Ext.encode(#{uxCurrentWeatherGrid}.getRowsValues({selectedOnly : true}))" Mode="Raw" />
+										<ext:Parameter Name="WeatherId" Value="#{uxCurrentWeatherGrid}.getSelectionModel().getSelection()[0].data.WEATHER_ID" Mode="Raw" />
+										<ext:Parameter Name="Type" Value="Edit" />
 									</ExtraParams>
 								</Click>
 							</DirectEvents>
-							<Listeners>
-								<Click Handler="#{uxEditWeatherWindow}.show()" />
-							</Listeners>
 						</ext:Button>
 						<ext:ToolbarSpacer ID="ToolbarSpacer2" runat="server" />
 						<ext:Button runat="server"
@@ -104,201 +106,6 @@
 					#{uxRemoveWeatherButton}.disable()" />
 			</Listeners>
 		</ext:GridPanel>
-
-		<%-- Hidden Windows --%>
-		<ext:Window runat="server"
-			ID="uxAddWeatherWindow"
-			Layout="FormLayout"
-			Hidden="true"
-			Width="650">
-			<Items>
-				<ext:FormPanel runat="server"
-					ID="uxAddWeatherForm"
-					Layout="FormLayout">
-					<Items>
-						<ext:FieldContainer runat="server"
-							FieldLabel="Date and Time" ID="ctl69">
-							<Items>
-								<ext:DateField runat="server"
-									ID="uxAddWeatherDate"
-									AllowBlank="false" />
-								<ext:TimeField runat="server"
-									ID="uxAddWeatherTime"
-									Increment="30"
-									SelectedTime="09:00"
-									AllowBlank="false" />
-							</Items>                            
-						</ext:FieldContainer>
-						<ext:TextField runat="server"
-							ID="uxAddWeatherTemp"
-							FieldLabel="Temperature"
-							AllowBlank="false" />
-						<ext:ComboBox runat="server"
-							ID="uxAddWeatherWindDirection"
-							FieldLabel="Wind Direction"
-							DisplayField="name"
-							ValueField="abbr"
-							QueryMode="Local"
-							TypeAhead="true"
-							AllowBlank="false">
-							<Store>
-								<ext:Store runat="server"
-									ID="uxAddWeatherWindStore">
-									<Model>
-										<ext:Model runat="server" ID="ctl74">
-											<Fields>
-												<ext:ModelField Name="abbr" />
-												<ext:ModelField Name="name" />
-											</Fields>
-										</ext:Model>
-									</Model>
-									<Reader>
-										<ext:ArrayReader />
-									</Reader>
-								</ext:Store>
-							</Store>                            
-						</ext:ComboBox>
-						<ext:TextField runat="server"
-							ID="uxAddWeatherWindVelocity"
-							FieldLabel="Wind Velocity"
-							AllowBlank="false" />
-						<ext:TextField runat="server"
-							ID="uxAddWeatherHumidity"
-							FieldLabel="Humidity"
-							AllowBlank="false" />
-						<ext:TextArea runat="server"
-							ID="uxAddWeatherComments"
-							FieldLabel="Comments"
-							AllowBlank="true" />
-					</Items>
-					<Buttons>
-						<ext:Button runat="server"
-							ID="uxAddWeatherSubmit"
-							Text="Submit"
-							Icon="Add"
-							Disabled="true">
-							<DirectEvents>
-								<Click OnEvent="deAddWeather" />
-							</DirectEvents>
-						</ext:Button>
-						<ext:Button runat="server"
-							ID="uxAddWeatherCancel"
-							Text="Cancel"
-							Icon="Delete">
-							<Listeners>
-								<Click Handler="#{uxAddWeatherForm}.reset();
-									#{uxAddWeatherWindow}.hide()" />
-							</Listeners>
-						</ext:Button>
-					</Buttons>
-					<Listeners>
-						<ValidityChange Handler="#{uxAddWeatherSubmit}.setDisabled(!valid);" />
-					</Listeners>
-				</ext:FormPanel>
-			</Items>
-			<Listeners>
-				<Show Handler="#{uxAddWeatherDate}.focus()" />
-			</Listeners>
-		</ext:Window>
-		<ext:Window runat="server"
-			ID="uxEditWeatherWindow"
-			Layout="FormLayout"
-			Hidden="true"
-			Width="650">
-			 <Items>
-				 <ext:FormPanel runat="server"
-					 ID="uxEditWeatherForm"
-					 Layout="FormLayout">
-					 <Items>
-						<ext:FieldContainer runat="server"
-							FieldLabel="Date and Time" ID="ctl75">
-							<Items>
-								<ext:DateField runat="server"
-									ID="uxEditWeatherDate"
-									AllowBlank="false" />
-								<ext:TimeField runat="server"
-									ID="uxEditWeatherTime"
-									Format="H:mm"
-									Increment="30"
-									SelectedTime="09:00"
-									AllowBlank="false" />
-							</Items>                            
-						</ext:FieldContainer>
-						<ext:TextField runat="server"
-							ID="uxEditWeatherTemp"
-							FieldLabel="Temperature"
-							AllowBlank="false" />
-						<ext:ComboBox runat="server"
-							ID="uxEditWeatherWindDirection"
-							FieldLabel="Wind Direction"
-							DisplayField="name"
-							ValueField="abbr"
-							QueryMode="Local"
-							TypeAhead="true"
-							AllowBlank="false">
-							<Store>
-								<ext:Store runat="server"
-									ID="uxEditWeatherWindStore">
-									<Model>
-										<ext:Model runat="server" ID="ctl80">
-											<Fields>
-												<ext:ModelField Name="abbr" />
-												<ext:ModelField Name="name" />
-											</Fields>
-										</ext:Model>
-									</Model>
-									<Reader>
-										<ext:ArrayReader />
-									</Reader>
-								</ext:Store>
-							</Store>                            
-						</ext:ComboBox>
-						<ext:TextField runat="server"
-							ID="uxEditWeatherWindVelocity"
-							FieldLabel="Wind Velocity"
-							AllowBlank="false" />
-						<ext:TextField runat="server"
-							ID="uxEditWeatherHumidity"
-							FieldLabel="Humidity"
-							AllowBlank="false" />
-						<ext:TextArea runat="server"
-							ID="uxEditWeatherComments"
-							FieldLabel="Comments"
-							AllowBlank="true" />
-					</Items>
-					 <Buttons>
-						 <ext:Button runat="server"
-							 ID="uxEditWeatherSubmit"
-							 Text="Submit"
-							 Icon="Add"
-							 Disabled="true">
-							 <DirectEvents>
-								 <Click OnEvent="deEditWeather">
-									 <ExtraParams>
-										 <ext:Parameter Name="WeatherId" Value="#{uxCurrentWeatherGrid}.getSelectionModel().getSelection()[0].data.WEATHER_ID" Mode="Raw" />
-									 </ExtraParams>
-								 </Click>
-							 </DirectEvents>
-						 </ext:Button>
-						 <ext:Button runat="server"
-							 ID="uxEditWeatherCancel"
-							 Text="Cancel"
-							 Icon="Delete">
-							 <Listeners>
-								 <Click Handler="#{uxEditWeatherForm}.reset();
-									 #{uxEditWeatherWindow}.hide()" />
-							 </Listeners>
-						 </ext:Button>
-					 </Buttons>
-					 <Listeners>
-						<ValidityChange Handler="#{uxEditWeatherSubmit}.setDisabled(!valid);" />
-					</Listeners>
-				 </ext:FormPanel>            
-			</Items>
-			<Listeners>
-				<Show Handler="#{uxEditWeatherDate}.focus()" />
-			</Listeners>
-		</ext:Window>
 	</form>
 </body>
 </html>

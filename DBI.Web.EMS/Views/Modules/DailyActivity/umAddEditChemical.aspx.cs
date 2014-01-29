@@ -14,15 +14,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Request.QueryString["type"] == "Add")
+            if (!X.IsAjaxRequest)
             {
-                uxAddChemicalForm.Show();
-            }
-            else
-            {
-                uxEditChemicalForm.Show();
-                if (!X.IsAjaxRequest)
+                if (Request.QueryString["type"] == "Add")
                 {
+                    uxAddChemicalForm.Show();
+                }
+                else
+                {
+                    uxEditChemicalForm.Show();
                     LoadEditChemicalForm();
                 }
             }
