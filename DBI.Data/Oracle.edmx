@@ -264,7 +264,9 @@
       "PA_TASKS_V"."PROJECT_ID" AS "PROJECT_ID", 
       "PA_TASKS_V"."TASK_NUMBER" AS "TASK_NUMBER", 
       "PA_TASKS_V"."DESCRIPTION" AS "DESCRIPTION", 
-      "PA_TASKS_V"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE"
+      "PA_TASKS_V"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE", 
+      "PA_TASKS_V"."START_DATE" AS "START_DATE", 
+      "PA_TASKS_V"."COMPLETION_DATE" AS "COMPLETION_DATE"
       FROM "XXEMS"."PA_TASKS_V" "PA_TASKS_V"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="PROJECTS_V" EntityType="OracleModel.Store.PROJECTS_V" store:Type="Views" store:Schema="XXEMS" store:Name="PROJECTS_V">
@@ -1158,6 +1160,8 @@
           <Property Name="TASK_NUMBER" Type="varchar2" Nullable="false" MaxLength="25" />
           <Property Name="DESCRIPTION" Type="varchar2" MaxLength="250" />
           <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" />
+          <Property Name="START_DATE" Type="date" />
+          <Property Name="COMPLETION_DATE" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'XXEMS.PROJECTS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -1577,7 +1581,6 @@
             <End Role="SYS_LOG" EntitySet="SYS_LOG" />
           </AssociationSet>
           <EntitySet Name="EMPLOYEES_V" EntityType="OracleModel.EMPLOYEES_V" />
-          <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.PA_TASKS_V" />
           <EntitySet Name="DAILY_ACTIVITY_WEATHER" EntityType="OracleModel.DAILY_ACTIVITY_WEATHER" />
           <EntitySet Name="DAILY_ACTIVITY_EQUIPMENT" EntityType="OracleModel.DAILY_ACTIVITY_EQUIPMENT" />
           <EntitySet Name="INVENTORY_V" EntityType="OracleModel.INVENTORY_V" />
@@ -1642,6 +1645,7 @@
             <End Role="CROSSING" EntitySet="CROSSINGS" />
             <End Role="CROSSING_DATA_ENTRY" EntitySet="CROSSING_DATA_ENTRY" />
           </AssociationSet>
+          <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.PA_TASKS_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -1797,19 +1801,6 @@
           <Property Type="Int64" Name="ORGANIZATION_ID" />
           <Property Type="String" Name="ORGANIZATION_NAME" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="LAST_UPDATE_DATE" />
-        </EntityType>
-        <EntityType Name="PA_TASKS_V">
-          <Key>
-            <PropertyRef Name="TASK_ID" />
-            <PropertyRef Name="PROJECT_ID" />
-            <PropertyRef Name="TASK_NUMBER" />
-            <PropertyRef Name="LAST_UPDATE_DATE" />
-          </Key>
-          <Property Type="Int64" Name="TASK_ID" Nullable="false" />
-          <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
-          <Property Type="String" Name="TASK_NUMBER" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="DESCRIPTION" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
         </EntityType>
         <ComplexType Name="MBL_EQUIPMENT_V" >
           <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
@@ -2477,6 +2468,8 @@
           <Property Type="String" Name="TASK_NUMBER" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="TASK_DESCRIPTION" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
+          <Property Type="DateTime" Name="START_DATE" Nullable="false" />
+          <Property Type="DateTime" Name="COMPLETION_DATE" Nullable="false" />
         </ComplexType>
         <EntityType Name="UNIT_OF_MEASURE_V">
           <Key>
@@ -2801,6 +2794,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="PA_TASKS_V">
+          <Key>
+            <PropertyRef Name="TASK_ID" />
+            <PropertyRef Name="PROJECT_ID" />
+            <PropertyRef Name="TASK_NUMBER" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+          </Key>
+          <Property Type="Int64" Name="TASK_ID" Nullable="false" />
+          <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
+          <Property Type="String" Name="TASK_NUMBER" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DESCRIPTION" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
+          <Property Type="DateTime" Name="START_DATE" />
+          <Property Type="DateTime" Name="COMPLETION_DATE" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2875,17 +2883,6 @@
                 <ScalarProperty Name="CURRENT_EMPLOYEE_FLAG" ColumnName="CURRENT_EMPLOYEE_FLAG" />
                 <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
                 <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PA_TASKS_V">
-            <EntityTypeMapping TypeName="OracleModel.PA_TASKS_V">
-              <MappingFragment StoreEntitySet="PA_TASKS_V">
-                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
-                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
-                <ScalarProperty Name="TASK_NUMBER" ColumnName="TASK_NUMBER" />
-                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
-                <ScalarProperty Name="TASK_ID" ColumnName="TASK_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3641,6 +3638,19 @@
                 <ScalarProperty Name="PREF" ColumnName="PREF" />
                 <ScalarProperty Name="DOT" ColumnName="DOT" />
                 <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PA_TASKS_V">
+            <EntityTypeMapping TypeName="OracleModel.PA_TASKS_V">
+              <MappingFragment StoreEntitySet="PA_TASKS_V">
+                <ScalarProperty Name="COMPLETION_DATE" ColumnName="COMPLETION_DATE" />
+                <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="TASK_NUMBER" ColumnName="TASK_NUMBER" />
+                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
+                <ScalarProperty Name="TASK_ID" ColumnName="TASK_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

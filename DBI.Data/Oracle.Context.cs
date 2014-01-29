@@ -30,7 +30,6 @@ namespace DBI.Data
         public DbSet<SYS_USER_ACTIVITY> SYS_USER_ACTIVITY { get; set; }
         public DbSet<SYS_LOG> SYS_LOG { get; set; }
         public DbSet<EMPLOYEES_V> EMPLOYEES_V { get; set; }
-        public DbSet<PA_TASKS_V> PA_TASKS_V { get; set; }
         public DbSet<DAILY_ACTIVITY_WEATHER> DAILY_ACTIVITY_WEATHER { get; set; }
         public DbSet<DAILY_ACTIVITY_EQUIPMENT> DAILY_ACTIVITY_EQUIPMENT { get; set; }
         public DbSet<INVENTORY_V> INVENTORY_V { get; set; }
@@ -51,5 +50,6 @@ namespace DBI.Data
         public DbSet<DAILY_ACTIVITY_INVENTORY> DAILY_ACTIVITY_INVENTORY { get; set; }
         public DbSet<CROSSING_CONTACTS> CROSSING_CONTACTS { get; set; }
         public DbSet<CROSSING> CROSSINGS { get; set; }
+        public DbSet<PA_TASKS_V> PA_TASKS_V { get; set; }
     }
 }
