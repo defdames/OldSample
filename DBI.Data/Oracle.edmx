@@ -2468,8 +2468,8 @@
           <Property Type="String" Name="TASK_NUMBER" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="TASK_DESCRIPTION" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
-          <Property Type="DateTime" Name="START_DATE" Nullable="false" />
-          <Property Type="DateTime" Name="COMPLETION_DATE" Nullable="false" />
+          <Property Type="String" Name="START_DATE" Nullable="true" />
+          <Property Type="String" Name="COMPLETION_DATE" Nullable="true" />
         </ComplexType>
         <EntityType Name="UNIT_OF_MEASURE_V">
           <Key>
