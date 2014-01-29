@@ -1018,5 +1018,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxPlaceholderWindow.LoadContent(string.Format("umAddEditProduction_IRM.aspx?HeaderId={0}&Type={1}&ProductionId={2}", HeaderId, WindowType, ProductionId));
             uxPlaceholderWindow.Show();
         }
+
+        [DirectMethod]
+        public void dmLoadWeatherWindow(string WindowType, string HeaderId, string WeatherId)
+        {
+            uxPlaceholderWindow.ClearContent();
+            uxPlaceholderWindow.LoadContent(string.Format("umAddEditWeather.aspx?HeaderId={0}&Type={1}&WeatherId={2}", HeaderId, WindowType, WeatherId));
+            uxPlaceholderWindow.Show();
+        }
     }
 }
