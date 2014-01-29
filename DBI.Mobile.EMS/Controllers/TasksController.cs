@@ -15,7 +15,7 @@ namespace DBI.Mobile.EMS.Controllers
         /// This returns a list of customer billing projects
         /// </summary>
         /// <returns></returns>
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public IEnumerable<MOBILE_TASK_V> Get()
         {
@@ -31,6 +31,8 @@ namespace DBI.Mobile.EMS.Controllers
                 nTask.TASK_DESCRIPTION = task.DESCRIPTION;
                 nTask.PROJECT_ID = task.PROJECT_ID;
                 nTask.LAST_UPDATE_DATE = task.LAST_UPDATE_DATE;
+                nTask.START_DATE = task.START_DATE.ToString();
+                nTask.COMPLETION_DATE = task.COMPLETION_DATE.ToString();
                 returnList.Add(nTask);
             }
 
@@ -57,6 +59,8 @@ namespace DBI.Mobile.EMS.Controllers
                     nTask.TASK_DESCRIPTION = task.DESCRIPTION;
                     nTask.PROJECT_ID = task.PROJECT_ID;
                     nTask.LAST_UPDATE_DATE = task.LAST_UPDATE_DATE;
+                    nTask.START_DATE = task.START_DATE.ToString();
+                    nTask.COMPLETION_DATE = task.COMPLETION_DATE.ToString();
                     returnList.Add(nTask);
                 }
             }
