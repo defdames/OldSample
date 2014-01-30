@@ -87,6 +87,20 @@
           <EntitySet Name="SYS_LOG" EntityType="OracleModel.Store.SYS_LOG" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USER_ACTIVITY" EntityType="OracleModel.Store.SYS_USER_ACTIVITY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USERS" EntityType="OracleModel.Store.SYS_USERS" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="PA_LOCATIONS_V" EntityType="OracleModel.Store.PA_LOCATIONS_V" store:Type="Views" store:Schema="APPS" store:Name="PA_LOCATIONS_V">
+            <DefiningQuery>SELECT 
+      "PA_LOCATIONS_V"."ROW_ID" AS "ROW_ID", 
+      "PA_LOCATIONS_V"."LOCATION_ID" AS "LOCATION_ID", 
+      "PA_LOCATIONS_V"."CITY" AS "CITY", 
+      "PA_LOCATIONS_V"."REGION" AS "REGION", 
+      "PA_LOCATIONS_V"."COUNTRY_CODE" AS "COUNTRY_CODE", 
+      "PA_LOCATIONS_V"."COUNTRY_NAME" AS "COUNTRY_NAME", 
+      "PA_LOCATIONS_V"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE", 
+      "PA_LOCATIONS_V"."LAST_UPDATED_BY" AS "LAST_UPDATED_BY", 
+      "PA_LOCATIONS_V"."CREATED_BY" AS "CREATED_BY", 
+      "PA_LOCATIONS_V"."LAST_UPDATE_LOGIN" AS "LAST_UPDATE_LOGIN"
+      FROM "APPS"."PA_LOCATIONS_V" "PA_LOCATIONS_V"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="CLASS_CODES_V" EntityType="OracleModel.Store.CLASS_CODES_V" store:Type="Views" store:Schema="XXEMS" store:Name="CLASS_CODES_V">
             <DefiningQuery>SELECT 
       "CLASS_CODES_V"."ORGANIZATION_NAME" AS "ORGANIZATION_NAME", 
@@ -321,6 +335,12 @@
       "INVENTORY_V"."INV_LOCATION" AS "INV_LOCATION", 
       "INVENTORY_V"."ORGANIZATION_ID" AS "ORGANIZATION_ID"
       FROM "XXEMS"."INVENTORY_V" "INVENTORY_V"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="PA_ROLES_V" EntityType="OracleModel.Store.PA_ROLES_V" store:Type="Views" store:Schema="XXEMS" store:Name="PA_ROLES_V">
+            <DefiningQuery>SELECT 
+      "PA_ROLES_V"."PROJECT_ROLE_TYPE" AS "PROJECT_ROLE_TYPE", 
+      "PA_ROLES_V"."MEANING" AS "MEANING"
+      FROM "XXEMS"."PA_ROLES_V" "PA_ROLES_V"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.Store.PA_TASKS_V" store:Type="Views" store:Schema="XXEMS" store:Name="PA_TASKS_V">
             <DefiningQuery>SELECT 
@@ -697,30 +717,25 @@
             <PropertyRef Name="CREATION_DATE" />
             <PropertyRef Name="LAST_UPDATED_BY" />
             <PropertyRef Name="LAST_UPDATE_DATE" />
-            <PropertyRef Name="WORK_ORDER_NUM" />
-            <PropertyRef Name="AMOUNT" />
-            <PropertyRef Name="REJECTION_REASON" />
-            <PropertyRef Name="LAST_UPDATE_LOGIN" />
-            <PropertyRef Name="OVERRIDE" />
           </Key>
           <Property Name="TRUCK_EQUIP" Type="varchar2" Nullable="false" MaxLength="100" StoreGeneratedPattern="Identity" />
           <Property Name="TRANSACTION_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DA_HEADER_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="PROJECT_NUMBER" Type="varchar2" Nullable="false" MaxLength="50" StoreGeneratedPattern="Identity" />
           <Property Name="TASK_NUMBER" Type="varchar2" Nullable="false" MaxLength="25" StoreGeneratedPattern="Identity" />
-          <Property Name="WORK_ORDER_NUM" Type="varchar2" MaxLength="25" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WORK_ORDER_NUM" Type="varchar2" MaxLength="25" StoreGeneratedPattern="Identity" />
           <Property Name="USAGE_DATE" Type="date" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="QUANTITY" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="AMOUNT" Type="number" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AMOUNT" Type="number" StoreGeneratedPattern="Identity" />
           <Property Name="STATUS" Type="varchar2" Nullable="false" MaxLength="50" StoreGeneratedPattern="Identity" />
-          <Property Name="REJECTION_REASON" Type="varchar2" MaxLength="100" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="REJECTION_REASON" Type="varchar2" MaxLength="100" StoreGeneratedPattern="Identity" />
           <Property Name="ORG_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CREATED_BY" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CREATION_DATE" Type="date" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="LAST_UPDATED_BY" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="LAST_UPDATE_LOGIN" Type="number" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="OVERRIDE" Type="varchar2" MaxLength="1" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LAST_UPDATE_LOGIN" Type="number" StoreGeneratedPattern="Identity" />
+          <Property Name="OVERRIDE" Type="varchar2" MaxLength="1" StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="CROSSING_CONTACTS">
           <Key>
@@ -1049,6 +1064,29 @@
           <Property Name="LAST_ACTIVITY_DATE" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
+      warning 6002: The table/view 'APPS.PA_LOCATIONS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="PA_LOCATIONS_V">
+          <Key>
+            <PropertyRef Name="LOCATION_ID" />
+            <PropertyRef Name="COUNTRY_CODE" />
+            <PropertyRef Name="COUNTRY_NAME" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+            <PropertyRef Name="LAST_UPDATED_BY" />
+            <PropertyRef Name="CREATED_BY" />
+          </Key>
+          <Property Name="ROW_ID" Type="rowid" />
+          <Property Name="LOCATION_ID" Type="number" Nullable="false" />
+          <Property Name="CITY" Type="varchar2" MaxLength="80" />
+          <Property Name="REGION" Type="varchar2" MaxLength="240" />
+          <Property Name="COUNTRY_CODE" Type="varchar2" Nullable="false" MaxLength="2" />
+          <Property Name="COUNTRY_NAME" Type="varchar2" Nullable="false" MaxLength="80" />
+          <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" />
+          <Property Name="LAST_UPDATED_BY" Type="number" Nullable="false" />
+          <Property Name="CREATED_BY" Type="number" Nullable="false" />
+          <Property Name="LAST_UPDATE_LOGIN" Type="number" />
+        </EntityType>
+        <!--Errors Found During Generation:
       warning 6002: The table/view 'XXEMS.CLASS_CODES_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="CLASS_CODES_V">
@@ -1324,6 +1362,17 @@
           <Property Name="INV_NAME" Type="varchar2" Nullable="false" MaxLength="240" />
           <Property Name="INV_LOCATION" Type="number" Precision="15" />
           <Property Name="ORGANIZATION_ID" Type="number" Nullable="false" Precision="15" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXEMS.PA_ROLES_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="PA_ROLES_V">
+          <Key>
+            <PropertyRef Name="PROJECT_ROLE_TYPE" />
+            <PropertyRef Name="MEANING" />
+          </Key>
+          <Property Name="PROJECT_ROLE_TYPE" Type="varchar2" Nullable="false" MaxLength="20" />
+          <Property Name="MEANING" Type="varchar2" Nullable="false" MaxLength="80" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'XXEMS.PA_TASKS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -1826,6 +1875,8 @@
             <End Role="CROSSING_DATA_ENTRY" EntitySet="CROSSING_DATA_ENTRY" />
           </AssociationSet>
           <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.PA_TASKS_V" />
+          <EntitySet Name="PA_ROLES_V" EntityType="OracleModel.PA_ROLES_V" />
+          <EntitySet Name="PA_LOCATIONS_V" EntityType="OracleModel.PA_LOCATIONS_V" />
           <EntitySet Name="XXDBI_DAILY_ACTIVITY_HEADER" EntityType="OracleModel.XXDBI_DAILY_ACTIVITY_HEADER" />
           <EntitySet Name="XXDBI_LABOR_HEADER" EntityType="OracleModel.XXDBI_LABOR_HEADER" />
           <EntitySet Name="XXDBI_TRUCK_EQUIP_USAGE" EntityType="OracleModel.XXDBI_TRUCK_EQUIP_USAGE" />
@@ -2992,6 +3043,34 @@
           <Property Type="DateTime" Name="START_DATE" />
           <Property Type="DateTime" Name="COMPLETION_DATE" />
         </EntityType>
+        <EntityType Name="PA_ROLES_V">
+          <Key>
+            <PropertyRef Name="PROJECT_ROLE_TYPE" />
+            <PropertyRef Name="MEANING" />
+          </Key>
+          <Property Type="String" Name="PROJECT_ROLE_TYPE" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MEANING" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="PA_LOCATIONS_V">
+          <Key>
+            <PropertyRef Name="LOCATION_ID" />
+            <PropertyRef Name="COUNTRY_CODE" />
+            <PropertyRef Name="COUNTRY_NAME" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+            <PropertyRef Name="LAST_UPDATED_BY" />
+            <PropertyRef Name="CREATED_BY" />
+          </Key>
+          <Property Type="String" Name="ROW_ID" MaxLength="18" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="LOCATION_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="CITY" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="REGION" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="COUNTRY_CODE" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="COUNTRY_NAME" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
+          <Property Type="Decimal" Name="LAST_UPDATED_BY" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="CREATED_BY" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="LAST_UPDATE_LOGIN" Precision="38" Scale="0" />
+        </EntityType>
         <EntityType Name="XXDBI_DAILY_ACTIVITY_HEADER">
           <Key>
             <PropertyRef Name="DA_HEADER_ID" />
@@ -3074,11 +3153,6 @@
             <PropertyRef Name="CREATION_DATE" />
             <PropertyRef Name="LAST_UPDATED_BY" />
             <PropertyRef Name="LAST_UPDATE_DATE" />
-            <PropertyRef Name="WORK_ORDER_NUM" />
-            <PropertyRef Name="AMOUNT" />
-            <PropertyRef Name="REJECTION_REASON" />
-            <PropertyRef Name="LAST_UPDATE_LOGIN" />
-            <PropertyRef Name="OVERRIDE" />
           </Key>
           <Property Type="String" Name="TRUCK_EQUIP" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Decimal" Name="TRANSACTION_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
@@ -3941,6 +4015,30 @@
                 <ScalarProperty Name="TASK_NUMBER" ColumnName="TASK_NUMBER" />
                 <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
                 <ScalarProperty Name="TASK_ID" ColumnName="TASK_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PA_ROLES_V">
+            <EntityTypeMapping TypeName="OracleModel.PA_ROLES_V">
+              <MappingFragment StoreEntitySet="PA_ROLES_V">
+                <ScalarProperty Name="MEANING" ColumnName="MEANING" />
+                <ScalarProperty Name="PROJECT_ROLE_TYPE" ColumnName="PROJECT_ROLE_TYPE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PA_LOCATIONS_V">
+            <EntityTypeMapping TypeName="OracleModel.PA_LOCATIONS_V">
+              <MappingFragment StoreEntitySet="PA_LOCATIONS_V">
+                <ScalarProperty Name="LAST_UPDATE_LOGIN" ColumnName="LAST_UPDATE_LOGIN" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="COUNTRY_NAME" ColumnName="COUNTRY_NAME" />
+                <ScalarProperty Name="COUNTRY_CODE" ColumnName="COUNTRY_CODE" />
+                <ScalarProperty Name="REGION" ColumnName="REGION" />
+                <ScalarProperty Name="CITY" ColumnName="CITY" />
+                <ScalarProperty Name="LOCATION_ID" ColumnName="LOCATION_ID" />
+                <ScalarProperty Name="ROW_ID" ColumnName="ROW_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
