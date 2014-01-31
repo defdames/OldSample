@@ -33,6 +33,7 @@
 								<ext:ModelField Name="DRIVE_TIME" Type="Float" />
 								<ext:ModelField Name="PER_DIEM" Type="String"  />
 								<ext:ModelField Name="COMMENTS" Type="String"  />
+								<ext:ModelField Name="ROLE_TYPE" Type="String" />
 							</Fields>
 						</ext:Model>
 					</Model>
@@ -78,6 +79,10 @@
 						Text="Comments"
 						DataIndex="COMMENTS"
 						Flex="1" />
+                    <ext:Column runat="server"
+                        Text="Role Type"
+                        DataIndex="ROLE_TYPE"
+                        Flex="1" />
 				</Columns>
 			</ColumnModel>
 			<TopBar>
