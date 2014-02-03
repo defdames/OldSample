@@ -16,6 +16,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (roleNeeded())
+            {
+                addRoleComboBox();
+            }
+
             if (!X.IsAjaxRequest)
             {
                 if (Request.QueryString["type"] == "Add")
@@ -43,16 +48,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 var Employee = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                                join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
-                                join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.EQUIPMENT_ID equals eq.EQUIPMENT_ID
-                                join p in _context.PROJECTS_V on eq.PROJECT_ID equals p.PROJECT_ID
-                                where d.EMPLOYEE_ID == EmployeeId
-                                select new { d.TIME_IN, d.TIME_OUT, d.EQUIPMENT_ID, d.PERSON_ID, d.COMMENTS, d.DRIVE_TIME, d.TRAVEL_TIME, d.PER_DIEM, e.EMPLOYEE_NAME, p.SEGMENT1 }).Single();
+                            join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
+                            join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.EQUIPMENT_ID equals eq.EQUIPMENT_ID into equ
+                            from equip in equ.DefaultIfEmpty()
+                            join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
+                            from projects in proj.DefaultIfEmpty()
+                            where d.EMPLOYEE_ID == EmployeeId
+                            select new { d.EMPLOYEE_ID, d.HEADER_ID, d.PERSON_ID, e.EMPLOYEE_NAME, d.EQUIPMENT_ID, projects.NAME, projects.SEGMENT1, d.TIME_IN, d.TIME_OUT, d.TRAVEL_TIME, d.DRIVE_TIME, d.PER_DIEM, d.COMMENTS, d.ROLE_TYPE }).Single();
                 DateTime TimeIn = (DateTime)Employee.TIME_IN;
                 DateTime TimeOut = (DateTime)Employee.TIME_OUT;
 
                 uxEditEmployeeEmpDropDown.SetValue(Employee.PERSON_ID.ToString(), Employee.EMPLOYEE_NAME);
-                uxEditEmployeeEqDropDown.SetValue(Employee.EQUIPMENT_ID.ToString(), Employee.SEGMENT1.ToString());
+                
+                try
+                {
+                    uxEditEmployeeEqDropDown.SetValue(Employee.EQUIPMENT_ID.ToString(), Employee.SEGMENT1.ToString());
+                }
+                catch (NullReferenceException) { }
+
                 uxEditEmployeeTimeInDate.SetValue(TimeIn.Date);
                 uxEditEmployeeTimeInTime.SetValue(TimeIn.TimeOfDay);
                 uxEditEmployeeTimeOutDate.SetValue(TimeOut.Date);
@@ -63,6 +76,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 if (Employee.PER_DIEM == "Y")
                 {
                     uxEditEmployeePerDiem.Checked = true;
+                }
+
+                if (roleNeeded())
+                {
+                    ComboBox Rolebox = uxAddEmployeeForm.FindControl("uxEditEmployeeRole") as ComboBox;
+                    Rolebox.Value = Employee.ROLE_TYPE;
                 }
             }
         }
@@ -248,8 +267,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 PerDiem = "N";
             }
-
-
+            
             DAILY_ACTIVITY_EMPLOYEE data = new DAILY_ACTIVITY_EMPLOYEE()
             {
                 HEADER_ID = HeaderId,
@@ -263,6 +281,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 MODIFIED_BY = User.Identity.Name
             };
 
+            if (roleNeeded())
+            {
+                ComboBox Rolebox = uxAddEmployeeForm.FindControl("uxAddEmployeeRole") as ComboBox;
+                data.ROLE_TYPE = Rolebox.Value.ToString();
+            }
             //Check for travel time
             try
             {
@@ -368,13 +391,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             data.PERSON_ID = PersonId;
 
+            if (roleNeeded())
+            {
+                ComboBox Rolebox = uxAddEmployeeForm.FindControl("uxEditEmployeeRole") as ComboBox;
+                data.ROLE_TYPE = Rolebox.Value.ToString();
+            }
+
             //Check for Equipment
             try
             {
                 long EquipmentId = long.Parse(uxEditEmployeeEqDropDown.Value.ToString());
                 data.EQUIPMENT_ID = EquipmentId;
             }
-            catch (NullReferenceException)
+            catch (Exception)
             {
                 data.EQUIPMENT_ID = null;
             }
@@ -409,6 +438,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 data.COMMENTS = null;
             }
+
+
             data.TIME_IN = TimeIn;
             data.TIME_OUT = TimeOut;
             data.PER_DIEM = PerDiem;
@@ -479,6 +510,64 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        protected bool roleNeeded()
+        {
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
 
+            using (Entities _context = new Entities())
+            {
+                string PrevailingWage = (from d in _context.DAILY_ACTIVITY_HEADER
+                                         join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                                         where d.HEADER_ID == HeaderId
+                                         select p.ATTRIBUTE3).Single();
+                if (PrevailingWage == "Y")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        protected void addRoleComboBox()
+        {
+            using (Entities _context = new Entities())
+            {
+                List<PA_ROLES_V> RoleList = (from p in _context.PA_ROLES_V
+                                                select p).ToList();
+                Store RoleStore = new Store
+                {
+                    AutoDataBind = true
+                };
+                Model RoleModel = new Model();
+                RoleModel.Fields.Add(new ModelField{
+                    Name = "MEANING"
+                });
+
+                RoleStore.Model.Add(RoleModel);
+                ComboBox RoleBox = new ComboBox()
+                {
+                    QueryMode = DataLoadMode.Local,
+                    TypeAhead = true,
+                    FieldLabel = "Role Type",
+                    DisplayField = "MEANING",
+                    Text="Choose Role"
+                };
+                RoleBox.Store.Add(RoleStore);
+                RoleStore.DataSource = RoleList;
+                if (Request.QueryString["type"] == "Add")
+                {
+                    RoleBox.ID = "uxAddEmployeeRole";
+                    uxAddEmployeeForm.Items.Add(RoleBox);
+                }
+                else
+                {
+                    RoleBox.ID = "uxEditEmployeeRole";
+                    uxEditEmployeeForm.Items.Add(RoleBox);
+                }
+            }
+        }
     }
 }

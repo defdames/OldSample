@@ -36,7 +36,6 @@ namespace DBI.Data
         public DbSet<DAILY_ACTIVITY_HEADER> DAILY_ACTIVITY_HEADER { get; set; }
         public DbSet<SUBINVENTORY_V> SUBINVENTORY_V { get; set; }
         public DbSet<DAILY_ACTIVITY_CHEMICAL_MIX> DAILY_ACTIVITY_CHEMICAL_MIX { get; set; }
-        public DbSet<DAILY_ACTIVITY_EMPLOYEE> DAILY_ACTIVITY_EMPLOYEE { get; set; }
         public DbSet<PROJECTS_V> PROJECTS_V { get; set; }
         public DbSet<CLASS_CODES_V> CLASS_CODES_V { get; set; }
         public DbSet<UNIT_OF_MEASURE_V> UNIT_OF_MEASURE_V { get; set; }
@@ -52,9 +51,10 @@ namespace DBI.Data
         public DbSet<CROSSING> CROSSINGS { get; set; }
         public DbSet<PA_TASKS_V> PA_TASKS_V { get; set; }
         public DbSet<PA_ROLES_V> PA_ROLES_V { get; set; }
-        public DbSet<PA_LOCATIONS_V> PA_LOCATIONS_V { get; set; }
+        public DbSet<DAILY_ACTIVITY_EMPLOYEE> DAILY_ACTIVITY_EMPLOYEE { get; set; }
         public DbSet<XXDBI_DAILY_ACTIVITY_HEADER> XXDBI_DAILY_ACTIVITY_HEADER { get; set; }
         public DbSet<XXDBI_LABOR_HEADER> XXDBI_LABOR_HEADER { get; set; }
         public DbSet<XXDBI_TRUCK_EQUIP_USAGE> XXDBI_TRUCK_EQUIP_USAGE { get; set; }
+        public DbSet<PA_LOCATIONS_V> PA_LOCATIONS_V { get; set; }
     }
 }
