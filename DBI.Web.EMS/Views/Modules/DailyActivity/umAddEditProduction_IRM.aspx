@@ -77,8 +77,9 @@
 												<ext:Model ID="Model1" runat="server">
 													<Fields>
 														<ext:ModelField Name="EXPENDITURE_TYPE" />
-														<ext:ModelField Name="BILL_RATE" />
+														<ext:ModelField Name="DESCRIPTION" />
 														<ext:ModelField Name="UNIT_OF_MEASURE" />
+														<ext:ModelField Name="BILL_RATE" />
 													</Fields>
 												</ext:Model>
 											</Model>
@@ -90,6 +91,7 @@
 									<ColumnModel>
 										<Columns>
 											<ext:Column ID="Column1" runat="server" DataIndex="EXPENDITURE_TYPE" Text="Expenditure Type" />
+											<ext:Column runat="server" DataIndex="DESCRIPTION" Text="Description" />
 											<ext:Column ID="Column2" runat="server" DataIndex="BILL_RATE" Text="Bill Rate" />
 											<ext:Column ID="Column3" runat="server" DataIndex="UNIT_OF_MEASURE" Text="Unit Of Measure" />
 										</Columns>
@@ -200,6 +202,7 @@
 												<ext:Model ID="Model4" runat="server">
 													<Fields>
 														<ext:ModelField Name="EXPENDITURE_TYPE" />
+														<ext:ModelField Name="DESCRIPTION" />
 														<ext:ModelField Name="BILL_RATE" />
 														<ext:ModelField Name="UNIT_OF_MEASURE" />
 													</Fields>
@@ -213,6 +216,7 @@
 									<ColumnModel>
 										<Columns>
 											<ext:Column ID="Column4" runat="server" DataIndex="EXPENDITURE_TYPE" Text="Expenditure Type" />
+											<ext:Column runat="server" DataIndex="DESCRIPTION" Text="Description" />
 											<ext:Column ID="Column5" runat="server" DataIndex="BILL_RATE" Text="Bill Rate" />
 											<ext:Column ID="Column6" runat="server" DataIndex="UNIT_OF_MEASURE" Text="Unit Of Measure" />
 										</Columns>
