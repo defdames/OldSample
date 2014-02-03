@@ -105,7 +105,10 @@ namespace DBI.Mobile.EMS.Controllers
                     e.ACRES_MILE = j.acres_mile;
                     e.QUANTITY = j.quantity;
                     e.UNIT_OF_MEASURE = j.uom;
-                    e.BILL_RATE = (Decimal)j.bill_rate;
+                    if (j.bill_rate.ToString().Length > 0)
+                    {
+                        e.BILL_RATE = (Decimal)j.bill_rate;
+                    }
                     e.STATION = j.station;
                     e.EXPENDITURE_TYPE = j.expenditure_type;
                     e.COMMENTS = j.comments;
@@ -187,6 +190,7 @@ namespace DBI.Mobile.EMS.Controllers
                     e.HOTEL_CITY = j.hotel_city;
                     e.HOTEL_STATE = j.hotel_state;
                     e.HOTEL_PHONE = j.hotel_phone;
+
                     e.DOT_REP = Convert.FromBase64String(j.dot_rep);
                     e.DOT_REP_NAME = j.dot_rep_name;
                     e.COMMENTS = j.comments;

@@ -460,7 +460,7 @@
             and signing the request (in case of client) and response (in case of service) by creating an HMAC.
             </summary>
         </member>
-        <member name="M:Thinktecture.IdentityModel.Http.Hawk.Core.Cryptographer.IsSignatureValid(System.String,System.String)">
+        <member name="M:Thinktecture.IdentityModel.Http.Hawk.Core.Cryptographer.IsSignatureValid(System.String,System.String,System.Boolean)">
             <summary>
             Returns true, if the HMAC computed for the normalized request matches the HMAC 
             sent in by the client (ArtifactsContainer.Mac) and if a payload hash is present,
@@ -763,6 +763,11 @@
         <member name="P:Thinktecture.IdentityModel.Http.Hawk.Core.NormalizedRequest.IsBewit">
             <summary>
             Set to true, if this instance is for a bewit.
+            </summary>
+        </member>
+        <member name="P:Thinktecture.IdentityModel.Http.Hawk.Core.NormalizedRequest.IsServerAuthorization">
+            <summary>
+            Set to true, if this instance is for server authorization response.
             </summary>
         </member>
         <member name="T:Thinktecture.IdentityModel.Http.Hawk.Core.NormalizedTimestamp">
