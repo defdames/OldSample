@@ -15,31 +15,42 @@ namespace DBI.Web.EMS
         {
             // Post to Oracle
 
-            Entities _context = new Entities();
 
             int pHeaderID = 148; // passed in from method
 
-            var daHeader = _context.DAILY_ACTIVITY_HEADER.Where(s => s.HEADER_ID  == pHeaderID)
-                            .Join(_context.PROJECTS_V, h => h.PROJECT_ID, p => p.PROJECT_ID, (h, p) =>
-                                new {
-                                    HEADER_ID = h.HEADER_ID,
-                                    ACTIVITY_DATE = h.DA_DATE,
-                                    STATE = h.STATE,
-                                    PROJECT_NUMBER = p.SEGMENT1,
-                                    PROJECT_NAME = p.NAME,
-                                    ORG_ID = p.ORG_ID,
-                                    }).SingleOrDefault();
+            using (Entities _context = new Entities())
+            {
+                var query = from h in _context.DAILY_ACTIVITY_HEADER
+                                join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
+                                join l in _context.PA_LOCATIONS_V on p.LOCATION_ID equals (long)l.LOCATION_ID
+                                join u in _context.SYS_USER_INFORMATION on h.CREATED_BY equals u.USER_NAME
+                                where h.HEADER_ID == pHeaderID
+                                select new {h, p, l, u};
+
+                var data  = query.Single();
+
+                Decimal generatedHeaderID = DBI.Data.Interface.nextHeaderID();
+
+                XXDBI_DAILY_ACTIVITY_HEADER header = new XXDBI_DAILY_ACTIVITY_HEADER();
+                header.STATE = data.l.REGION;
+                header.COUNTY = "NONE";
+                header.ACTIVITY_DATE = (DateTime)data.h.DA_DATE;
+                header.ORG_ID = (Decimal)data.p.ORG_ID;
+                header.PROJECT_NUMBER = data.p.SEGMENT1;
+                header.PROJECT_NAME = data.p.NAME;
+                header.CREATED_BY = data.u.USER_ID;
+                header.CREATION_DATE = DateTime.Now;
+                header.LAST_UPDATED_BY = data.u.USER_ID;
+                header.LAST_UPDATE_DATE = DateTime.Now;
+
+                var included = new[] { "STATE", "COUNTY", "ACTIVITY_DATE" };
+
+                GenericData.Insert<XXDBI_DAILY_ACTIVITY_HEADER>(header, included, "XXDBI.XXDBI_DAILY_ACTIVITY_HEADER");
 
 
-            XXDBI_DAILY_ACTIVITY_HEADER header = new XXDBI_DAILY_ACTIVITY_HEADER();
-            header.STATE = daHeader.STATE;
-            header.COUNTY = "None";
-            header.ACTIVITY_DATE = (DateTime)daHeader.ACTIVITY_DATE;
-            header.ORG_ID = (Decimal)daHeader.ORG_ID;
-            header.PROJECT_NUMBER = daHeader.PROJECT_NUMBER;
-            header.PROJECT_NAME = daHeader.PROJECT_NAME;
-            GenericData.Insert<XXDBI_DAILY_ACTIVITY_HEADER>(header);
-
+                
+  
+            }
 
         }
     }
