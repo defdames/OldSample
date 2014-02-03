@@ -60,7 +60,8 @@
 											ID="uxEquipmentStore"
 											OnReadData="deReadGrid"
 											PageSize="10"
-											RemoteSort="true">
+											RemoteSort="true"
+											AutoDataBind="true">
 											<Model>
 												<ext:Model ID="Model1" runat="server">
 													<Fields>
@@ -198,7 +199,8 @@
 											ID="uxEditEquipmentProjectStore"
 											OnReadData="deReadGrid"
 											PageSize="10"
-											RemoteSort="true">
+											RemoteSort="true"
+											AutoDataBind="true">
 											<Model>
 												<ext:Model ID="Model2" runat="server">
 													<Fields>
@@ -243,7 +245,7 @@
 										</Columns>
 									</ColumnModel>
 									<Plugins>
-										<ext:FilterHeader runat="server" ID="uxEditEquipmentFilter" />
+										<ext:FilterHeader runat="server" ID="uxEditEquipmentFilter" Remote="true" />
 									</Plugins>
 									<TopBar>
 										<ext:Toolbar ID="Toolbar1" runat="server">
