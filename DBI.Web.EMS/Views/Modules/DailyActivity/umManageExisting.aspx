@@ -36,7 +36,7 @@
 						<ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="false" Mode="Single" />
 					</SelectionModel>
 					<Store>
-						<ext:Store runat="server" AutoDataBind="true" ID="uxManageGridStore" OnReadData="deReadHeaderData" PageSize="10">
+						<ext:Store runat="server" AutoDataBind="true" ID="uxManageGridStore" OnReadData="deReadHeaderData" PageSize="10" RemoteSort="true">
 							<Fields>
 								<ext:ModelField Name="HEADER_ID" Type="String" />
 								<ext:ModelField Name="ORG_ID" Type="String" />
