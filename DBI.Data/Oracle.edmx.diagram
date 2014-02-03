@@ -32,11 +32,10 @@
         <EntityTypeShape EntityType="OracleModel.CROSSING_SUB_DIVISION" Width="1.5" PointX="29.125" PointY="5.5" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" Width="1.5" PointX="1.5" PointY="21" />
         <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" ManuallyRouted="true" >
-          <ConnectorPoint PointX="4.625" PointY="15.319153645833334" />
-          <ConnectorPoint PointX="2.65625" PointY="15.319153645833334" />
+          <ConnectorPoint PointX="4.625" PointY="15.415304361979167" />
+          <ConnectorPoint PointX="2.65625" PointY="15.415304361979167" />
           <ConnectorPoint PointX="2.65625" PointY="21" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="OracleModel.EXPENDITURE_TYPE_V" Width="1.5" PointX="13.25" PointY="0.625" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_FOOTER" Width="1.5" PointX="4" PointY="21.25" />
         <AssociationConnector Association="OracleModel.FK_FOOTER_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_INVENTORY" Width="1.5" PointX="6.25" PointY="21.625" />
@@ -53,10 +52,11 @@
         <EntityTypeShape EntityType="OracleModel.PA_ROLES_V" Width="1.5" PointX="2.5" PointY="9.125" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="0.5" PointY="16.375" />
         <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
-        <EntityTypeShape EntityType="OracleModel.XXDBI_DAILY_ACTIVITY_HEADER" Width="1.5" PointX="1.3275326310319513" PointY="14.855305142167632" />
-        <EntityTypeShape EntityType="OracleModel.XXDBI_LABOR_HEADER" Width="1.5" PointX="6.3256850868117454" PointY="15.890457816370976" />
-        <EntityTypeShape EntityType="OracleModel.XXDBI_TRUCK_EQUIP_USAGE" Width="1.5" PointX="1.7689970777225668" PointY="6.0450664488808563" />
-        <EntityTypeShape EntityType="OracleModel.PA_LOCATIONS_V" Width="1.5" PointX="4.35324568504153" PointY="9.6151232466172072" />
+        <EntityTypeShape EntityType="OracleModel.XXDBI_DAILY_ACTIVITY_HEADER" Width="1.5" PointX="16.75" PointY="14.75" />
+        <EntityTypeShape EntityType="OracleModel.XXDBI_LABOR_HEADER" Width="1.5" PointX="16.625" PointY="9.25" />
+        <EntityTypeShape EntityType="OracleModel.XXDBI_TRUCK_EQUIP_USAGE" Width="1.5" PointX="16.625" PointY="4.125" />
+        <EntityTypeShape EntityType="OracleModel.PA_LOCATIONS_V" Width="1.5" PointX="14.75" PointY="4" />
+        <EntityTypeShape EntityType="OracleModel.EXPENDITURE_TYPE_V" Width="1.5" PointX="9.0868840800071524" PointY="17.314541228727691" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
