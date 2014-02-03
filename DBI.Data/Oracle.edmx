@@ -2011,6 +2011,7 @@
           <Property Type="String" Name="PROJECT_STATUS_CODE" Nullable="false" />
           <Property Type="DateTime" Name="START_DATE" Nullable="true" />
           <Property Type="DateTime" Name="COMPLETION_DATE" Nullable="true" />
+          <Property Type="String" Name="PREVAILING_WAGE_FLAG" Nullable="false" />
         </ComplexType>
         <ComplexType Name="MBL_STRING" >
           <Property Type="String" Name="TokenValidation" Nullable="false" />

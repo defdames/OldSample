@@ -23,5 +23,6 @@ namespace DBI.Data
         public string PROJECT_STATUS_CODE { get; set; }
         public Nullable<System.DateTime> START_DATE { get; set; }
         public Nullable<System.DateTime> COMPLETION_DATE { get; set; }
+        public string PREVAILING_WAGE_FLAG { get; set; }
     }
 }
