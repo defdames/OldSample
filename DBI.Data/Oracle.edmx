@@ -316,7 +316,8 @@
       "EXPENDITURE_TYPE_V"."BILL_RATE" AS "BILL_RATE", 
       "EXPENDITURE_TYPE_V"."UNIT_OF_MEASURE" AS "UNIT_OF_MEASURE", 
       "EXPENDITURE_TYPE_V"."RATE_CURRENCY_CODE" AS "RATE_CURRENCY_CODE", 
-      "EXPENDITURE_TYPE_V"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE"
+      "EXPENDITURE_TYPE_V"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE", 
+      "EXPENDITURE_TYPE_V"."DESCRIPTION" AS "DESCRIPTION"
       FROM "XXEMS"."EXPENDITURE_TYPE_V" "EXPENDITURE_TYPE_V"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="INVENTORY_V" EntityType="OracleModel.Store.INVENTORY_V" store:Type="Views" store:Schema="XXEMS" store:Name="INVENTORY_V">
@@ -1338,6 +1339,7 @@
           <Property Name="UNIT_OF_MEASURE" Type="varchar2" Nullable="false" MaxLength="30" />
           <Property Name="RATE_CURRENCY_CODE" Type="varchar2" MaxLength="15" />
           <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'XXEMS.INVENTORY_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -1845,7 +1847,6 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_PRODUCTION" EntitySet="DAILY_ACTIVITY_PRODUCTION" />
           </AssociationSet>
-          <EntitySet Name="EXPENDITURE_TYPE_V" EntityType="OracleModel.EXPENDITURE_TYPE_V" />
           <EntitySet Name="DAILY_ACTIVITY_FOOTER" EntityType="OracleModel.DAILY_ACTIVITY_FOOTER" />
           <AssociationSet Name="FK_FOOTER_HEADER_ID" Association="OracleModel.FK_FOOTER_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
@@ -1881,6 +1882,7 @@
           <EntitySet Name="XXDBI_LABOR_HEADER" EntityType="OracleModel.XXDBI_LABOR_HEADER" />
           <EntitySet Name="XXDBI_TRUCK_EQUIP_USAGE" EntityType="OracleModel.XXDBI_TRUCK_EQUIP_USAGE" />
           <EntitySet Name="PA_LOCATIONS_V" EntityType="OracleModel.PA_LOCATIONS_V" />
+          <EntitySet Name="EXPENDITURE_TYPE_V" EntityType="OracleModel.EXPENDITURE_TYPE_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -2805,19 +2807,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="EXPENDITURE_TYPE_V">
-          <Key>
-            <PropertyRef Name="EXPENDITURE_TYPE" />
-            <PropertyRef Name="UNIT_OF_MEASURE" />
-            <PropertyRef Name="LAST_UPDATE_DATE" />
-          </Key>
-          <Property Type="Int64" Name="PROJECT_ID" />
-          <Property Type="String" Name="EXPENDITURE_TYPE" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="BILL_RATE" Precision="22" Scale="5" />
-          <Property Type="String" Name="UNIT_OF_MEASURE" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="RATE_CURRENCY_CODE" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
-        </EntityType>
         <EntityType Name="DAILY_ACTIVITY_FOOTER">
           <Key>
             <PropertyRef Name="FOOTER_ID" />
@@ -3175,6 +3164,20 @@
           <Property Type="Decimal" Name="LAST_UPDATED_BY" Nullable="false" Precision="38" Scale="0" />
           <Property Type="Decimal" Name="CREATED_BY" Nullable="false" Precision="38" Scale="0" />
           <Property Type="Decimal" Name="LAST_UPDATE_LOGIN" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="EXPENDITURE_TYPE_V">
+          <Key>
+            <PropertyRef Name="EXPENDITURE_TYPE" />
+            <PropertyRef Name="UNIT_OF_MEASURE" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+          </Key>
+          <Property Type="Int64" Name="PROJECT_ID" />
+          <Property Type="String" Name="EXPENDITURE_TYPE" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="BILL_RATE" Precision="22" Scale="5" />
+          <Property Type="String" Name="UNIT_OF_MEASURE" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="RATE_CURRENCY_CODE" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
+          <Property Type="String" Name="DESCRIPTION" MaxLength="250" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3858,18 +3861,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="EXPENDITURE_TYPE_V">
-            <EntityTypeMapping TypeName="OracleModel.EXPENDITURE_TYPE_V">
-              <MappingFragment StoreEntitySet="EXPENDITURE_TYPE_V">
-                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
-                <ScalarProperty Name="RATE_CURRENCY_CODE" ColumnName="RATE_CURRENCY_CODE" />
-                <ScalarProperty Name="UNIT_OF_MEASURE" ColumnName="UNIT_OF_MEASURE" />
-                <ScalarProperty Name="BILL_RATE" ColumnName="BILL_RATE" />
-                <ScalarProperty Name="EXPENDITURE_TYPE" ColumnName="EXPENDITURE_TYPE" />
-                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="DAILY_ACTIVITY_FOOTER">
             <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_FOOTER">
               <MappingFragment StoreEntitySet="DAILY_ACTIVITY_FOOTER">
@@ -4113,6 +4104,19 @@
                 <ScalarProperty Name="CITY" ColumnName="CITY" />
                 <ScalarProperty Name="LOCATION_ID" ColumnName="LOCATION_ID" />
                 <ScalarProperty Name="ROW_ID" ColumnName="ROW_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EXPENDITURE_TYPE_V">
+            <EntityTypeMapping TypeName="OracleModel.EXPENDITURE_TYPE_V">
+              <MappingFragment StoreEntitySet="EXPENDITURE_TYPE_V">
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="RATE_CURRENCY_CODE" ColumnName="RATE_CURRENCY_CODE" />
+                <ScalarProperty Name="UNIT_OF_MEASURE" ColumnName="UNIT_OF_MEASURE" />
+                <ScalarProperty Name="BILL_RATE" ColumnName="BILL_RATE" />
+                <ScalarProperty Name="EXPENDITURE_TYPE" ColumnName="EXPENDITURE_TYPE" />
+                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
