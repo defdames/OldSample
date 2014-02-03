@@ -79,10 +79,10 @@
 						Text="Comments"
 						DataIndex="COMMENTS"
 						Flex="1" />
-                    <ext:Column runat="server"
-                        Text="Role Type"
-                        DataIndex="ROLE_TYPE"
-                        Flex="1" />
+					<ext:Column runat="server"
+						Text="Role Type"
+						DataIndex="ROLE_TYPE"
+						Flex="1" />
 				</Columns>
 			</ColumnModel>
 			<TopBar>

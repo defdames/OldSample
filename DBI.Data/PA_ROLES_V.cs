@@ -14,10 +14,13 @@ namespace DBI.Data
     
     public partial class PA_ROLES_V
     {
+        public long PROJECT_ID { get; set; }
         public string PROJECT_ROLE_TYPE { get; set; }
+        public string STATE { get; set; }
+        public string COUNTY { get; set; }
         public string MEANING { get; set; }
-        public System.DateTime START_DATE_ACTIVE { get; set; }
-        public Nullable<System.DateTime> END_DATE_ACTIVE { get; set; }
+        public System.DateTime EFFECTIVE_START_DATE { get; set; }
+        public Nullable<System.DateTime> EFFECTIVE_END_DATE { get; set; }
         public System.DateTime LAST_UPDATE_DATE { get; set; }
     }
 }
