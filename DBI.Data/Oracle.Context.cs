@@ -54,7 +54,7 @@ namespace DBI.Data
         public DbSet<XXDBI_LABOR_HEADER> XXDBI_LABOR_HEADER { get; set; }
         public DbSet<XXDBI_TRUCK_EQUIP_USAGE> XXDBI_TRUCK_EQUIP_USAGE { get; set; }
         public DbSet<PA_LOCATIONS_V> PA_LOCATIONS_V { get; set; }
-        public DbSet<EXPENDITURE_TYPE_V> EXPENDITURE_TYPE_V { get; set; }
         public DbSet<PA_ROLES_V> PA_ROLES_V { get; set; }
+        public DbSet<EXPENDITURE_TYPE_V> EXPENDITURE_TYPE_V { get; set; }
     }
 }
