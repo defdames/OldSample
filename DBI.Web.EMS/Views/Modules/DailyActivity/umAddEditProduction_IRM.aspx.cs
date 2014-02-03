@@ -75,10 +75,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                   join t in _context.PA_TASKS_V on d.TASK_ID equals t.TASK_ID
                                   where d.PRODUCTION_ID == ProductionId
                                   select new { d, t.DESCRIPTION }).Single();
-                uxEditProductionTask.SelectedItems.Clear();
-                uxEditProductionTask.SetValueAndFireSelect(Production.d.TASK_ID);
-                uxEditProductionTask.SelectedItems.Add(new Ext.Net.ListItem(Production.DESCRIPTION, Production.d.TASK_ID));
-                uxEditProductionTask.UpdateSelectedItems();
+                uxEditProductionTask.SetValue(Production.d.TASK_ID.ToString(), Production.DESCRIPTION);
                 uxEditProductionStation.SetValue(Production.d.STATION);
                 uxEditProductionExpenditureType.SetValue(Production.d.EXPENDITURE_TYPE, Production.d.EXPENDITURE_TYPE);
                 uxEditProductionQuantity.SetValue(Production.d.QUANTITY);
@@ -231,5 +228,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxAddProductionExpenditureStore.ClearFilter();
             }
         }
+
+        protected void deStoreTask(object sender, DirectEventArgs e)
+        {
+            if (e.ExtraParams["Type"] == "Edit")
+            {
+                uxEditProductionTask.SetValue(e.ExtraParams["TaskId"], e.ExtraParams["Description"]);
+
+                uxEditProductionTaskStore.ClearFilter();
+            }
+            else
+            {
+                uxAddProductionTask.SetValue(e.ExtraParams["TaskId"], e.ExtraParams["Description"]);
+
+                uxAddProductionTaskStore.ClearFilter();
+            }
+        }
+
     }
 }

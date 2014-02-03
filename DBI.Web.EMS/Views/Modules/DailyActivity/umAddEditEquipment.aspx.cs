@@ -79,12 +79,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             if (e.Parameters["Form"] == "Add")
             {
                 uxEquipmentStore.DataSource = data;
-                uxEquipmentStore.DataBind();
             }
             else
             {
                 uxEditEquipmentProjectStore.DataSource = data;
-                uxEditEquipmentProjectStore.DataBind();
             }
         }
 
