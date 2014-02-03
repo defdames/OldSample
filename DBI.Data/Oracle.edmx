@@ -340,7 +340,10 @@
           <EntitySet Name="PA_ROLES_V" EntityType="OracleModel.Store.PA_ROLES_V" store:Type="Views" store:Schema="XXEMS" store:Name="PA_ROLES_V">
             <DefiningQuery>SELECT 
       "PA_ROLES_V"."PROJECT_ROLE_TYPE" AS "PROJECT_ROLE_TYPE", 
-      "PA_ROLES_V"."MEANING" AS "MEANING"
+      "PA_ROLES_V"."MEANING" AS "MEANING", 
+      "PA_ROLES_V"."START_DATE_ACTIVE" AS "START_DATE_ACTIVE", 
+      "PA_ROLES_V"."END_DATE_ACTIVE" AS "END_DATE_ACTIVE", 
+      "PA_ROLES_V"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE"
       FROM "XXEMS"."PA_ROLES_V" "PA_ROLES_V"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.Store.PA_TASKS_V" store:Type="Views" store:Schema="XXEMS" store:Name="PA_TASKS_V">
@@ -1373,9 +1376,14 @@
           <Key>
             <PropertyRef Name="PROJECT_ROLE_TYPE" />
             <PropertyRef Name="MEANING" />
+            <PropertyRef Name="START_DATE_ACTIVE" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
           </Key>
           <Property Name="PROJECT_ROLE_TYPE" Type="varchar2" Nullable="false" MaxLength="20" />
           <Property Name="MEANING" Type="varchar2" Nullable="false" MaxLength="80" />
+          <Property Name="START_DATE_ACTIVE" Type="date" Nullable="false" />
+          <Property Name="END_DATE_ACTIVE" Type="date" />
+          <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'XXEMS.PA_TASKS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -1872,7 +1880,6 @@
             <End Role="CROSSING_DATA_ENTRY" EntitySet="CROSSING_DATA_ENTRY" />
           </AssociationSet>
           <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.PA_TASKS_V" />
-          <EntitySet Name="PA_ROLES_V" EntityType="OracleModel.PA_ROLES_V" />
           <EntitySet Name="DAILY_ACTIVITY_EMPLOYEE" EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" />
           <AssociationSet Name="FK_EMPLOYEE_HEADER_ID" Association="OracleModel.FK_EMPLOYEE_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
@@ -1883,6 +1890,7 @@
           <EntitySet Name="XXDBI_TRUCK_EQUIP_USAGE" EntityType="OracleModel.XXDBI_TRUCK_EQUIP_USAGE" />
           <EntitySet Name="PA_LOCATIONS_V" EntityType="OracleModel.PA_LOCATIONS_V" />
           <EntitySet Name="EXPENDITURE_TYPE_V" EntityType="OracleModel.EXPENDITURE_TYPE_V" />
+          <EntitySet Name="PA_ROLES_V" EntityType="OracleModel.PA_ROLES_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -3001,14 +3009,6 @@
           <Property Type="DateTime" Name="START_DATE" />
           <Property Type="DateTime" Name="COMPLETION_DATE" />
         </EntityType>
-        <EntityType Name="PA_ROLES_V">
-          <Key>
-            <PropertyRef Name="PROJECT_ROLE_TYPE" />
-            <PropertyRef Name="MEANING" />
-          </Key>
-          <Property Type="String" Name="PROJECT_ROLE_TYPE" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MEANING" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="DAILY_ACTIVITY_EMPLOYEE">
           <Key>
             <PropertyRef Name="EMPLOYEE_ID" />
@@ -3178,6 +3178,19 @@
           <Property Type="String" Name="RATE_CURRENCY_CODE" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
           <Property Type="String" Name="DESCRIPTION" MaxLength="250" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="PA_ROLES_V">
+          <Key>
+            <PropertyRef Name="PROJECT_ROLE_TYPE" />
+            <PropertyRef Name="MEANING" />
+            <PropertyRef Name="START_DATE_ACTIVE" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+          </Key>
+          <Property Type="String" Name="PROJECT_ROLE_TYPE" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MEANING" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="START_DATE_ACTIVE" Nullable="false" />
+          <Property Type="DateTime" Name="END_DATE_ACTIVE" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3991,14 +4004,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PA_ROLES_V">
-            <EntityTypeMapping TypeName="OracleModel.PA_ROLES_V">
-              <MappingFragment StoreEntitySet="PA_ROLES_V">
-                <ScalarProperty Name="MEANING" ColumnName="MEANING" />
-                <ScalarProperty Name="PROJECT_ROLE_TYPE" ColumnName="PROJECT_ROLE_TYPE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="DAILY_ACTIVITY_EMPLOYEE">
             <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_EMPLOYEE">
               <MappingFragment StoreEntitySet="DAILY_ACTIVITY_EMPLOYEE">
@@ -4117,6 +4122,17 @@
                 <ScalarProperty Name="BILL_RATE" ColumnName="BILL_RATE" />
                 <ScalarProperty Name="EXPENDITURE_TYPE" ColumnName="EXPENDITURE_TYPE" />
                 <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PA_ROLES_V">
+            <EntityTypeMapping TypeName="OracleModel.PA_ROLES_V">
+              <MappingFragment StoreEntitySet="PA_ROLES_V">
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="END_DATE_ACTIVE" ColumnName="END_DATE_ACTIVE" />
+                <ScalarProperty Name="START_DATE_ACTIVE" ColumnName="START_DATE_ACTIVE" />
+                <ScalarProperty Name="MEANING" ColumnName="MEANING" />
+                <ScalarProperty Name="PROJECT_ROLE_TYPE" ColumnName="PROJECT_ROLE_TYPE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

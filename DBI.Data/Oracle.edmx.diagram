@@ -49,14 +49,14 @@
         </AssociationConnector>
         <AssociationConnector Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID" />
         <EntityTypeShape EntityType="OracleModel.PA_TASKS_V" Width="1.5" PointX="0.5" PointY="8.375" />
-        <EntityTypeShape EntityType="OracleModel.PA_ROLES_V" Width="1.5" PointX="2.5" PointY="9.125" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="0.5" PointY="16.375" />
         <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.XXDBI_DAILY_ACTIVITY_HEADER" Width="1.5" PointX="16.75" PointY="14.75" />
         <EntityTypeShape EntityType="OracleModel.XXDBI_LABOR_HEADER" Width="1.5" PointX="16.625" PointY="9.25" />
         <EntityTypeShape EntityType="OracleModel.XXDBI_TRUCK_EQUIP_USAGE" Width="1.5" PointX="16.625" PointY="4.125" />
         <EntityTypeShape EntityType="OracleModel.PA_LOCATIONS_V" Width="1.5" PointX="14.75" PointY="4" />
-        <EntityTypeShape EntityType="OracleModel.EXPENDITURE_TYPE_V" Width="1.5" PointX="9.0868840800071524" PointY="17.314541228727691" />
+        <EntityTypeShape EntityType="OracleModel.EXPENDITURE_TYPE_V" Width="1.5" PointX="16.75" PointY="18.375" />
+        <EntityTypeShape EntityType="OracleModel.PA_ROLES_V" Width="1.5" PointX="2.375" PointY="8.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
