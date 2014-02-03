@@ -24,21 +24,19 @@ namespace DBI.Mobile.EMS.Controllers
             return pl;
         }
 
-         [Authorize]
+        [Authorize]
         [HttpGet]
         public IEnumerable<PA_ROLES_V> GetByDate(string fromDate)
         {
             Entities _context = new Entities();
-           
+            List<PA_ROLES_V> pl = new List<PA_ROLES_V>();
             DateTime checkDate;
             if (DateTime.TryParse(fromDate, out checkDate))
             {
-                 List<PA_ROLES_V> pl = _context.PA_ROLES_V.Where(p =>p.LAST_UPDATE_DATE >= checkDate).ToList();     
+                 pl = _context.PA_ROLES_V.Where(p =>p.LAST_UPDATE_DATE >= checkDate).ToList();     
             }
             return pl;
         }
-    }
-
 
     }
 }
