@@ -79,6 +79,7 @@
           <EntitySet Name="DAILY_ACTIVITY_EQUIPMENT" EntityType="OracleModel.Store.DAILY_ACTIVITY_EQUIPMENT" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_FOOTER" EntityType="OracleModel.Store.DAILY_ACTIVITY_FOOTER" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_HEADER" EntityType="OracleModel.Store.DAILY_ACTIVITY_HEADER" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="DAILY_ACTIVITY_IMPORT" EntityType="OracleModel.Store.DAILY_ACTIVITY_IMPORT" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_INVENTORY" EntityType="OracleModel.Store.DAILY_ACTIVITY_INVENTORY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_PRODUCTION" EntityType="OracleModel.Store.DAILY_ACTIVITY_PRODUCTION" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_STATUS" EntityType="OracleModel.Store.DAILY_ACTIVITY_STATUS" store:Type="Tables" Schema="XXEMS" />
@@ -955,6 +956,22 @@
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="STATUS" Type="number" Precision="10" />
+        </EntityType>
+        <EntityType Name="DAILY_ACTIVITY_IMPORT">
+          <Key>
+            <PropertyRef Name="IMPORT_ID" />
+          </Key>
+          <Property Name="IMPORT_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
+          <Property Name="DEVICE_ID" Type="varchar2" Nullable="false" MaxLength="200" />
+          <Property Name="RESPONSE" Type="clob" />
+          <Property Name="ERROR_CODE" Type="clob" />
+          <Property Name="MODEL" Type="varchar2" MaxLength="200" />
+          <Property Name="SYSTEM_VERSION" Type="varchar2" MaxLength="200" />
+          <Property Name="APP_VERSION" Type="varchar2" MaxLength="200" />
+          <Property Name="LATITUDE" Type="number" Precision="9" Scale="6" />
+          <Property Name="LONGITUDE" Type="number" Precision="9" Scale="6" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="DAILY_ACTIVITY_INVENTORY">
           <Key>
@@ -1902,6 +1919,7 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_EMPLOYEE" EntitySet="DAILY_ACTIVITY_EMPLOYEE" />
           </AssociationSet>
+          <EntitySet Name="DAILY_ACTIVITY_IMPORT" EntityType="OracleModel.DAILY_ACTIVITY_IMPORT" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -3211,6 +3229,22 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="DAILY_ACTIVITY_IMPORT">
+          <Key>
+            <PropertyRef Name="IMPORT_ID" />
+          </Key>
+          <Property Type="Int64" Name="IMPORT_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="DEVICE_ID" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="RESPONSE" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ERROR_CODE" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODEL" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SYSTEM_VERSION" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="APP_VERSION" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="LATITUDE" Precision="9" Scale="6" />
+          <Property Type="Decimal" Name="LONGITUDE" Precision="9" Scale="6" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4159,6 +4193,23 @@
                 <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
                 <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
                 <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DAILY_ACTIVITY_IMPORT">
+            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_IMPORT">
+              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_IMPORT">
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="LONGITUDE" ColumnName="LONGITUDE" />
+                <ScalarProperty Name="LATITUDE" ColumnName="LATITUDE" />
+                <ScalarProperty Name="APP_VERSION" ColumnName="APP_VERSION" />
+                <ScalarProperty Name="SYSTEM_VERSION" ColumnName="SYSTEM_VERSION" />
+                <ScalarProperty Name="MODEL" ColumnName="MODEL" />
+                <ScalarProperty Name="ERROR_CODE" ColumnName="ERROR_CODE" />
+                <ScalarProperty Name="RESPONSE" ColumnName="RESPONSE" />
+                <ScalarProperty Name="DEVICE_ID" ColumnName="DEVICE_ID" />
+                <ScalarProperty Name="IMPORT_ID" ColumnName="IMPORT_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
