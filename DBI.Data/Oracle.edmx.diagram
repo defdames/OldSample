@@ -32,9 +32,9 @@
         <EntityTypeShape EntityType="OracleModel.CROSSING_SUB_DIVISION" Width="1.5" PointX="29.125" PointY="5.5" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" Width="1.5" PointX="1.5" PointY="21" />
         <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" ManuallyRouted="true" >
-          <ConnectorPoint PointX="4.625" PointY="15.415304361979167" />
-          <ConnectorPoint PointX="2.65625" PointY="15.415304361979167" />
-          <ConnectorPoint PointX="2.65625" PointY="21" />
+          <ConnectorPoint PointX="4.625" PointY="15.319153645833334" />
+          <ConnectorPoint PointX="2.4375" PointY="15.319153645833334" />
+          <ConnectorPoint PointX="2.4375" PointY="21" />
         </AssociationConnector>
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_FOOTER" Width="1.5" PointX="4" PointY="21.25" />
         <AssociationConnector Association="OracleModel.FK_FOOTER_HEADER_ID" />
@@ -44,8 +44,6 @@
         <AssociationConnector Association="OracleModel.FK_INVENTORY_HEADER_ID" ManuallyRouted="false" >
         </AssociationConnector>
         <EntityTypeShape EntityType="OracleModel.PA_TASKS_V" Width="1.5" PointX="0.5" PointY="8.375" />
-        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="0.5" PointY="16.375" />
-        <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.XXDBI_DAILY_ACTIVITY_HEADER" Width="1.5" PointX="16.75" PointY="14.75" />
         <EntityTypeShape EntityType="OracleModel.XXDBI_LABOR_HEADER" Width="1.5" PointX="16.625" PointY="9.25" />
         <EntityTypeShape EntityType="OracleModel.XXDBI_TRUCK_EQUIP_USAGE" Width="1.5" PointX="16.625" PointY="4.125" />
@@ -56,6 +54,8 @@
         <EntityTypeShape EntityType="OracleModel.CROSSING" Width="1.5" PointX="27.5" PointY="2.125" />
         <AssociationConnector Association="OracleModel.FK_CROSSINGS_CONTACT_ID" />
         <AssociationConnector Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID" />
+        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="0.5" PointY="15.375" />
+        <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
