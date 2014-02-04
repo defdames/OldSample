@@ -48,26 +48,7 @@
                                 </Loader>
 
                             </ext:Panel>
-                            <ext:Panel runat="server"
-                                Title="Sub-Divisions"
-                                ID="uxSubDivisionsTab"
-                                Disabled="false">
-                                <Loader runat="server"
-                                    ID="Loader2" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umSubDivisionsTab.aspx">
-                                    <LoadMask ShowMask="true" />
-                                </Loader>
-
-                            </ext:Panel>
-                            <ext:Panel runat="server"
-                                Title="Service Units"
-                                ID="uxServiceUnitsTab"
-                                Disabled="false">
-                                <Loader runat="server"
-                                    ID="Loader3" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umServiceUnitsTab.aspx">
-                                    <LoadMask ShowMask="true" />
-                                </Loader>
-
-                            </ext:Panel>
+                           
                             <ext:Panel runat="server"
                                 Title="Data Entry"
                                 ID="uxDataEntryTab"

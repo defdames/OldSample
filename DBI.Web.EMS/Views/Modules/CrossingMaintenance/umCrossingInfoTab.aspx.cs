@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Net;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using DBI.Core.Web;
 using DBI.Data;
 using Ext.Net;
+using DBI.Data.GMS;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
@@ -14,8 +16,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!X.IsAjaxRequest)
+            {
+                deLoadType();
+            
+                
+            }
+          
         }
+
         protected void deCrossingGridData(object sender, StoreReadDataEventArgs e)
         {
 
@@ -57,8 +66,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                             }).SingleOrDefault();
                 uxAddManagerCI.SetValue(data.c.CONTACT_NAME);
                 uxCrossingNumCI.SetValue(data.d.CROSSING_NUMBER);
-                uxRouteCI.SetValue(data.d.ROUTE);
-                uxDOTNumCI.SetValue(data.d.DOT);
+                uxRouteCI.SetValue(data.d.ROUTE);               
                 uxStreetCI.SetValue(data.d.STREET);
                 uxMPCI.SetValue(data.d.MILE_POST);
                 uxStateCI.SetValue(data.d.STATE);
@@ -117,7 +125,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             //Do type conversions
             string CrossingNum = uxAddCrossingNumCI.Value.ToString();
             string Route = uxAddRouteCI.Value.ToString();
-            string DotNum = uxAddDOTNumCI.Value.ToString();
             string Street = uxAddStreetCI.Value.ToString();
             decimal MP = Convert.ToDecimal(uxAddMPCI.Value);
             string State = uxAddStateCI.Value.ToString();
@@ -186,7 +193,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
 
                 CROSSING_NUMBER = CrossingNum,
-                DOT = DotNum,
                 MILE_POST = MP,
                 SUB_DIVISION = Sub_divisions,
                 CITY = City,
@@ -258,16 +264,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                                 c, d,
                               
                             }).SingleOrDefault();
-                uxEditManagerCI.SetValue(e.ExtraParams["ContactId"], e.ExtraParams["ContactName"]);
+                uxEditManagerCI.SetValue(data.d.CONTACT_ID.ToString(), data.c.CONTACT_NAME);
                 uxEditCrossingNumCI.SetValue(data.d.CROSSING_NUMBER);
                 uxEditRouteCI.SetValue(data.d.ROUTE);
-                uxEditDOTNumCI.SetValue(data.d.DOT);
                 uxEditStreetCI.SetValue(data.d.STREET);
                 uxEditMPCI.SetValue(data.d.MILE_POST);
                 uxEditStateCI.SetValue(data.d.STATE);
                 uxEditCityCI.SetValue(data.d.CITY);
                 uxEditLatCI.SetValue(data.d.LATITUDE);
-                uxEditSubDivCI.SetValue(data.d.SUB_DIVISION);
+                uxEditSubDivCIBox.SetValue(data.d.SUB_DIVISION);
                 uxEditCountyCI.SetValue(data.d.COUNTY);
                 uxEditLongCI.SetValue(data.d.LONGITUDE);
                 uxEditNECI.SetValue(data.d.ROWNE);
@@ -323,13 +328,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             //Do type conversions
             string CrossingNum = uxEditCrossingNumCI.Value.ToString();
             string Route = uxEditRouteCI.Value.ToString();
-            string DotNum = uxEditDOTNumCI.Value.ToString();
             string Street = uxEditStreetCI.Value.ToString();
             decimal MP = Convert.ToDecimal(uxEditMPCI.Value);
             string State = uxEditStateCI.Value.ToString();
             string City = uxEditCityCI.Value.ToString();
             decimal Latitude = Convert.ToDecimal(uxEditLatCI.Value);
-            string Sub_divisions = uxEditSubDivCI.Value.ToString();
+            string Sub_divisions = uxEditSubDivCIBox.Value.ToString();
             string County = uxEditCountyCI.Value.ToString();
             decimal Longitude = Convert.ToDecimal(uxEditLongCI.Value);
             decimal NE = Convert.ToDecimal(uxEditNECI.Value);
@@ -398,7 +402,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                         select d).Single();
             }
             data.CROSSING_NUMBER = CrossingNum;
-            data.DOT = DotNum;
             data.MILE_POST = MP;
             data.SUB_DIVISION = Sub_divisions;
             data.CITY = City;
@@ -473,6 +476,34 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             });
         }
+
+       protected void deLoadType()
+        {
+            
+            List<ServiceUnitResponse> types = ServiceUnitData.ServiceUnitTypes().ToList();
+          
+                uxAddRailRoadStore.DataSource = types;
+                uxAddRailRoadStore.DataBind();
+                uxAddRailRoadCI.Value.ToString();
+        }
+       protected void deLoadUnit(object sender, DirectEventArgs e)
+       {
+           List<ServiceUnitResponse> units = ServiceUnitData.ServiceUnitUnits().ToList();
+           
+           uxAddServiceUnitStore.DataSource = units;
+           uxAddServiceUnitStore.DataBind();
+           uxAddServiceUnitCI.Value.ToString();
+
+       }
+        protected void deLoadSubDiv(object sender, DirectEventArgs e)
+       {
+           List<ServiceUnitResponse> divisions = ServiceUnitData.ServiceUnitDivisions().ToList();
+           
+           uxAddSubDivStore.DataSource = divisions;
+           uxAddSubDivStore.DataBind();
+           uxAddServiceUnitCI.Value.ToString();
+       }
+           
         protected void deAddManagerGrid(object sender, StoreReadDataEventArgs e)
         {
 
