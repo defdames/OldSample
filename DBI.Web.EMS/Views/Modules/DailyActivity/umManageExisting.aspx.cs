@@ -98,20 +98,25 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 foreach (dynamic record in rawData)
                 {
-                    string Warning = "Green";
+                    string Warning = "None";
+                    string WarningType = string.Empty;
 
                     foreach (EmployeeData OffendingProject in HoursOver14)
                     {
                         if (OffendingProject.HEADER_ID == record.HEADER_ID)
                         {
-                            Warning = "Yellow";
+                            Warning = "Warning";
+                            WarningType = "Over 14 hours logged for an employee <br />";
+                            break;
                         }
                     }
                     foreach (long OffendingProject in BusinessUnitProjects)
                     {
                         if (OffendingProject == record.HEADER_ID)
                         {
-                            Warning = "Yellow";
+                            Warning = "Warning";
+                            WarningType += "Contains Equipment outside of Business Unit.<br />";
+                            break;
                         }
                     }
 
@@ -119,14 +124,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     {
                         if (OffendingProject == record.HEADER_ID)
                         {
-                            Warning = "Yellow";
+                            Warning = "Warning";
+                            WarningType += "Contains Employees outside of Business Unit.<br />";
+                            break;
                         }
                     }
                     foreach (EmployeeData OffendingProject in HoursOver24)
                     {
                         if (OffendingProject.HEADER_ID == record.HEADER_ID)
                         {
-                            Warning = "Red";
+                            Warning = "Error";
+                            WarningType += "24 or more hours logged for an employee.<br />";
+                            break;
                         }
                     }
 
@@ -135,7 +144,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     {
                         if (OffendingProject == record.HEADER_ID)
                         {
-                            Warning = "Red";
+                            Warning = "Error";
+                            WarningType += "An employee has overlapping time with another project.";
+                            break;
                         }
                     }
 
@@ -148,7 +159,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         SEGMENT1 = record.SEGMENT1,
                         LONG_NAME = record.LONG_NAME,
                         STATUS_VALUE = record.STATUS_VALUE,
-                        WARNING = Warning
+                        WARNING = Warning,
+                        WARNING_TYPE = WarningType
                     });
                 }
 

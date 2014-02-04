@@ -270,5 +270,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public string LONG_NAME { get; set; }
         public string STATUS_VALUE { get; set; }
         public string WARNING { get; set; }
+        public string WARNING_TYPE { get; set; }
     }
 }

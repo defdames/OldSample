@@ -30,6 +30,8 @@ namespace DBI.Data
         public string MODIFIED_BY { get; set; }
         public string FOREMAN_LICENSE { get; set; }
         public string ROLE_TYPE { get; set; }
+        public string STATE { get; set; }
+        public string COUNTY { get; set; }
     
         public virtual DAILY_ACTIVITY_HEADER DAILY_ACTIVITY_HEADER { get; set; }
     }

@@ -8,12 +8,30 @@
 	<link href="../../../Resources/StyleSheets/main.css" rel="stylesheet" />
 	<script type="text/javascript">
 		var getRowClass = function (record, rowIndex, rowParams, store) {
-			if (record.data.WARNING == "Red") {
+			if (record.data.WARNING == "Error") {
 				return "red-warning";
 			}
-			else if(record.data.WARNING == "Yellow"){
+			else if(record.data.WARNING == "Warning"){
 				return "yellow-warning";
 			}
+		};
+
+		var onShow = function (toolTip, grid) {
+			var view = grid.getView(),
+				record = view.getRecord(toolTip.triggerElement),
+				data = record.data.WARNING_TYPE;
+
+			toolTip.update(data);
+		};
+
+		var beforeShow = function (toolTip, grid) {
+		    var view = grid.getView(),
+				record = view.getRecord(toolTip.triggerElement),
+				data = record.data.WARNING_TYPE;
+		    if (data == "") {
+		        return false;
+		    }
+		    return true;
 		};
 	</script>
 	<style type="text/css">
@@ -36,7 +54,7 @@
 						<ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="false" Mode="Single" />
 					</SelectionModel>
 					<Store>
-						<ext:Store runat="server" AutoDataBind="true" ID="uxManageGridStore" OnReadData="deReadHeaderData" PageSize="10">
+						<ext:Store runat="server" AutoDataBind="true" ID="uxManageGridStore" OnReadData="deReadHeaderData" PageSize="10" RemoteSort="true">
 							<Fields>
 								<ext:ModelField Name="HEADER_ID" Type="String" />
 								<ext:ModelField Name="ORG_ID" Type="String" />
@@ -46,6 +64,7 @@
 								<ext:ModelField Name="LONG_NAME" Type="String" />
 								<ext:ModelField Name="STATUS_VALUE" Type="String" />
 								<ext:ModelField Name="WARNING" Type="String" />
+								<ext:ModelField Name="WARNING_TYPE" Type="String" />
 							</Fields>
 							<Proxy>
 								<ext:PageProxy />
@@ -65,7 +84,7 @@
 						</Columns>
 					</ColumnModel>
 					<View>
-						<ext:GridView runat="server">
+						<ext:GridView runat="server" StripeRows="true" TrackOver="true">
 							<GetRowClass Fn="getRowClass" />
 						</ext:GridView>
 					</View>
@@ -83,6 +102,17 @@
 							</ExtraParams>
 						</Select>
 					</DirectEvents>
+					<ToolTips>
+						<ext:ToolTip ID="uxWarningTooltip" 
+							runat="server" 
+							Delegate="tr.x-grid-row"
+							TrackMouse="true">
+							<Listeners>
+								<BeforeShow Handler="return beforeShow(this, #{uxManageGrid});" />
+								<Show Handler="onShow(this, #{uxManageGrid});" />
+							</Listeners>
+						</ext:ToolTip>
+					</ToolTips>
 					<TopBar>
 						<ext:Toolbar runat="server">
 							<Items>
@@ -173,7 +203,8 @@
 							</Items>
 						</ext:Toolbar>
 					</TopBar>
-				</ext:GridPanel>
+					
+				</ext:GridPanel>				
 				<ext:TabPanel runat="server" ID="uxTabPanel" Region="Center">
 					<Items>
 						<ext:Panel runat="server"
@@ -295,6 +326,7 @@
 				</ext:Window>
 			</Items>
 		</ext:Viewport>
+
 	</form>
 </body>
 </html>

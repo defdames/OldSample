@@ -868,22 +868,22 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Panel uxTransferCrossingPanel;
         
         /// <summary>
-        /// GridPanel2 control.
+        /// uxTransferCrossingsOldManagerGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel GridPanel2;
+        protected global::Ext.Net.GridPanel uxTransferCrossingsOldManagerGrid;
         
         /// <summary>
-        /// Store1 control.
+        /// uxCurrentManagerCrossingStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store Store1;
+        protected global::Ext.Net.Store uxCurrentManagerCrossingStore;
         
         /// <summary>
         /// Model2 control.
@@ -922,13 +922,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.GridDragDrop GridDragDrop1;
         
         /// <summary>
-        /// GridPanel3 control.
+        /// deTransferCrossingsNewManagerGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel GridPanel3;
+        protected global::Ext.Net.GridPanel deTransferCrossingsNewManagerGrid;
         
         /// <summary>
         /// Store2 control.

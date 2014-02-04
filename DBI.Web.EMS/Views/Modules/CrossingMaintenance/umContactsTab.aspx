@@ -311,7 +311,7 @@
                 <Items>
                     <ext:FormPanel ID="uxUpdateContactForm" runat="server" Layout="FormLayout">
                         <Items>       
-                            <ext:DropDownField ID="uxUpdateContactCurrentManager" runat="server" FieldLabel="Current Manager" AnchorHorizontal="100%" LabelAlign="Right" >
+                            <ext:DropDownField ID="uxUpdateContactCurrentManager" runat="server" FieldLabel="Current Manager" AnchorHorizontal="100%" LabelAlign="Right" Mode="ValueText" >
                                 <Component>
                                     <ext:GridPanel runat="server"
 									ID="uxAddCurrentManager"
@@ -349,7 +349,8 @@
                                         <DirectEvents>
 										<SelectionChange OnEvent="deStoreCurrentManagerValue">
 											<ExtraParams>
-												<ext:Parameter Name="ContactName" Value="#{uxAddCurrentManager}.getSelectionModel().getSelection()[0].data.CONTACT_NAME" Mode="Raw" />
+												<ext:Parameter Name="ContactId" Value="#{uxAddCurrentManager}.getSelectionModel().getSelection()[0].data.CONTACT_ID" Mode="Raw" />
+                                                <ext:Parameter Name="ContactName" Value="#{uxAddCurrentManager}.getSelectionModel().getSelection()[0].data.CONTACT_NAME" Mode="Raw" />
 												<ext:Parameter Name="Type" Value="CurrentManager" />
 											</ExtraParams>
 										</SelectionChange>
@@ -360,7 +361,7 @@
 								</ext:GridPanel>
                                 </Component>
                                 </ext:DropDownField>
-                            <ext:DropDownField ID="uxUpdateContactNewManager" runat="server" FieldLabel="New Manager" AnchorHorizontal="100%" LabelAlign="Right" >
+                            <ext:DropDownField ID="uxUpdateContactNewManager" runat="server" FieldLabel="New Manager" AnchorHorizontal="100%" LabelAlign="Right" Mode="ValueText" >
                                 <Component>
                                     <ext:GridPanel runat="server"
 									ID="uxNewManagerMainGrid"
@@ -398,8 +399,9 @@
                                         <DirectEvents>
 										<SelectionChange OnEvent="deStoreNewManagerValue">
 											<ExtraParams>
-												<ext:Parameter Name="ContactName" Value="#{uxNewManagerMainGrid}.getSelectionModel().getSelection()[0].data.CONTACT_NAME" Mode="Raw" />
-												<ext:Parameter Name="Type" Value="NewManager" />
+												<ext:Parameter Name="ContactId" Value="#{uxNewManagerMainGrid}.getSelectionModel().getSelection()[0].data.CONTACT_ID" Mode="Raw" />
+                                                <ext:Parameter Name="ContactName" Value="#{uxNewManagerMainGrid}.getSelectionModel().getSelection()[0].data.CONTACT_NAME" Mode="Raw" />
+											<ext:Parameter Name="Type" Value="NewManager" />
 											</ExtraParams>
 										</SelectionChange>
                                          </DirectEvents>
@@ -440,24 +442,26 @@
                         </LayoutConfig>
                         <Items>
                             <ext:GridPanel
-                                ID="GridPanel2"
+                                ID="uxTransferCrossingsOldManagerGrid"
                                 runat="server"
                                 MultiSelect="true"
                                 Flex="1"
                                 Title="Current Managers Crossings"
                                 Margins="0 2 0 0">
                                 <Store>
-                                    <ext:Store ID="Store1" runat="server" OnReadData="deTransferCrossingsOldManager">
+                                    <ext:Store ID="uxCurrentManagerCrossingStore" runat="server" OnReadData="deTransferCrossingsOldManager">
                                         <Model>
                                             <ext:Model ID="Model2" runat="server">
                                                 <Fields>
                                                     <ext:ModelField Name="CROSSING_ID" />
+                                                    <ext:ModelField Name="CONTACT_ID" />
                                                     <ext:ModelField Name="CROSSING_NUMBER" />
                                                 </Fields>
                                             </ext:Model>
                                         </Model>
                                     </ext:Store>
                                 </Store>
+                                  
                                 <ColumnModel>
                                     <Columns>
                                         <ext:Column ID="Column1" runat="server" Text="Crossing #" Width="280" DataIndex="CROSSING_NUMBER" Flex="1" />
@@ -479,18 +483,18 @@
                                 </View>
                             </ext:GridPanel>
                             <ext:GridPanel
-                                ID="GridPanel3"
+                                ID="deTransferCrossingsNewManagerGrid"
                                 runat="server"
                                 MultiSelect="true"
                                 Title="Crossings Tranferred to New Manager"
                                 Flex="1"
                                 Margins="0 0 0 3">
                                 <Store>
-                                    <ext:Store ID="Store2" runat="server" OnReadData="deTransferCrossingsNewManager">
+                                    <ext:Store ID="Store2" runat="server" >
                                         <Model>
                                             <ext:Model ID="Model3" runat="server">
                                                 <Fields>
-                                                    <ext:ModelField Name="CROSSING_ID" />
+                                                    <ext:ModelField Name="CONTACT_ID" />
                                                     <ext:ModelField Name="CROSSING_NUMBER" />
                                                 </Fields>
                                             </ext:Model>
