@@ -20,14 +20,37 @@ namespace DBI.Mobile.EMS.Controllers
         {
             string jsonString = req.Content.ReadAsStringAsync().Result;
 
-            System.IO.StreamWriter file2 = new System.IO.StreamWriter("c:\\temp\\json.txt");
-            file2.Write(jsonString);
-            file2.Close();
+            IEnumerable<string> headerValues = req.Headers.GetValues("DeviceID");
+            var id = headerValues.FirstOrDefault();
 
+            //DEBUG TESTING
+            //System.IO.StreamWriter file2 = new System.IO.StreamWriter("c:\\temp\\" + id.ToString() + ".txt");
+            //file2.Write(jsonString);
+            //file2.Close();
+
+            var jsonObj = new DailyActivityResponse.RootObject();
 
             try
             {
-                var jsonObj = JsonConvert.DeserializeObject<DailyActivityResponse.RootObject>(jsonString);
+                jsonObj = JsonConvert.DeserializeObject<DailyActivityResponse.RootObject>(jsonString);
+            }
+            catch (Exception)
+            {
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
+
+            DAILY_ACTIVITY_HEADER h = new DAILY_ACTIVITY_HEADER();
+            List<DAILY_ACTIVITY_EQUIPMENT> eq = new List<DAILY_ACTIVITY_EQUIPMENT>();
+            List<DAILY_ACTIVITY_EMPLOYEE> em = new List<DAILY_ACTIVITY_EMPLOYEE>();
+            List<DAILY_ACTIVITY_PRODUCTION> pr = new List<DAILY_ACTIVITY_PRODUCTION>();
+            List<DAILY_ACTIVITY_WEATHER> we = new List<DAILY_ACTIVITY_WEATHER>();
+            List<DAILY_ACTIVITY_CHEMICAL_MIX> cm = new List<DAILY_ACTIVITY_CHEMICAL_MIX>();
+            List<DAILY_ACTIVITY_INVENTORY> iv = new List<DAILY_ACTIVITY_INVENTORY>();
+            DAILY_ACTIVITY_FOOTER f = new DAILY_ACTIVITY_FOOTER();
+
+            try
+            {
+                //var jsonObj = JsonConvert.DeserializeObject<DailyActivityResponse.RootObject>(jsonString);
                 
 
 

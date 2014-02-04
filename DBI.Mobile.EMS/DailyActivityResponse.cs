@@ -17,7 +17,7 @@ namespace DBI.Mobile.EMS
             public int chemical_mix_number { get; set; }
             public string state { get; set; }
             public int gallon_mixed { get; set; }
-            public double acres_sprayed { get; set; }
+            public int acres_sprayed { get; set; }
             public string target_area { get; set; }
         }
 
@@ -58,17 +58,17 @@ namespace DBI.Mobile.EMS
 
         public class DailyActivityProduction
         {
-            public string uom { get; set; }
+            public object uom { get; set; }
             public int acres_mile { get; set; }
             public string pole_from { get; set; }
             public string pole_to { get; set; }
             public int quantity { get; set; }
             public int task_id { get; set; }
-            public double bill_rate { get; set; }
-            public string station { get; set; }
-            public string expenditure_type { get; set; }
+            public int bill_rate { get; set; }
+            public object station { get; set; }
+            public object expenditure_type { get; set; }
             public string time_out { get; set; }
-            public string comments { get; set; }
+            public object comments { get; set; }
             public string work_area { get; set; }
             public string time_in { get; set; }
         }
@@ -97,14 +97,17 @@ namespace DBI.Mobile.EMS
 
         public class DailyActivityEmployee
         {
-            public int travel_time { get; set; }
+            public int drive_time { get; set; }
             public int equipment_id { get; set; }
+            public object state { get; set; }
+            public string foreman_license { get; set; }
+            public object county { get; set; }
+            public int travel_time { get; set; }
+            public object role_type { get; set; }
             public string time_out { get; set; }
-            public int person_id { get; set; }
             public string comments { get; set; }
             public string per_diem { get; set; }
-            public string foreman_license { get; set; }
-            public int drive_time { get; set; }
+            public int person_id { get; set; }
             public string time_in { get; set; }
         }
 

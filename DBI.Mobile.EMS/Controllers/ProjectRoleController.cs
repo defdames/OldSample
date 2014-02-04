@@ -20,7 +20,7 @@ namespace DBI.Mobile.EMS.Controllers
         public IEnumerable<PA_ROLES_V> Get()
         {
             Entities _context = new Entities();
-            List<PA_ROLES_V> pl = _context.PA_ROLES_V.ToList();
+            List<PA_ROLES_V> pl = _context.PA_ROLES_V.Where(p =>p.EFFECTIVE_END_DATE <= DateTime.Now).ToList();
             return pl;
         }
 
