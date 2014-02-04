@@ -19,7 +19,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             if (!X.IsAjaxRequest)
             {
                 deLoadType();
-            
+                deLoadEditType();
                 
             }
           
@@ -36,7 +36,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                 data = (from d in _context.CROSSINGS
                        
-                        select new { d.CONTACT_ID, d.CROSSING_ID, d.CROSSING_NUMBER, d.SUB_DIVISION, d.CROSSING_CONTACTS.CONTACT_NAME}).ToList<object>();
+                        select new { d.CONTACT_ID, d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.SUB_DIVISION, d.CROSSING_CONTACTS.CONTACT_NAME}).ToList<object>();
 
                 int count;
                 uxCurrentCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -234,6 +234,16 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 
             };
 
+            //try
+            //{
+            //    long ContactName = Convert.ToInt64(uxAddManagerCIDropDownField.Value);
+            //    data.CONTACT_ID = ContactName;
+            //}
+            //catch (FormatException)
+            //{
+            //    data.CONTACT_ID = null;
+            //}
+
             //Write to DB
             GenericData.Insert<CROSSING>(data);
 
@@ -304,6 +314,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxEditRestrictedCI.SetValue(data.d.RESTRICTED_COUNTY);
                 uxEditFenceEnchroachCI.SetValue(data.d.FENCE_ENCROACHMENT);
                 uxEditOnSpurCI.SetValue(data.d.ON_SPUR);
+                uxEditRRCI.SetValue(data.d.RAILROAD);
+                uxEditServiceUnitCI.SetValue(data.d.SERVICE_UNIT);
 
                 if (data.d.SUB_CONTRACTED == "Y")
                 {
@@ -366,6 +378,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string FenceEncroach = uxEditFenceEnchroachCI.Value.ToString();
             string OnSpur = uxEditSubConCI.Value.ToString();
             long ContactName = Convert.ToInt64(uxEditManagerCI.Value);
+            string RailRoad = uxEditRRCI.Value.ToString();
+            string ServiceUnit = uxEditServiceUnitCI.Value.ToString();
 
             if (uxEditSubConCI.Checked)
             {
@@ -437,6 +451,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             data.FENCE_ENCROACHMENT = FenceEncroach;
             data.ON_SPUR = OnSpur;
             data.CONTACT_ID = ContactName;
+            data.RAILROAD = RailRoad;
+            data.SERVICE_UNIT = ServiceUnit;
 
             //Write to DB
             GenericData.Update<CROSSING>(data);
@@ -490,28 +506,55 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         {
             
             List<ServiceUnitResponse> types = ServiceUnitData.ServiceUnitTypes().ToList();
-          
+                
                 uxAddRailRoadStore.DataSource = types;
                 uxAddRailRoadStore.DataBind();
                 
         }
        protected void deLoadUnit(object sender, DirectEventArgs e)
        {
-           List<ServiceUnitResponse> units = ServiceUnitData.ServiceUnitUnits(uxAddServiceUnitCI.SelectedItem.Value).ToList();
-           
+           List<ServiceUnitResponse> units = ServiceUnitData.ServiceUnitUnits(uxAddRailRoadCI.SelectedItem.Value).ToList();
+           uxAddServiceUnitCI.Clear();
+           uxAddSubDivCI.Clear();
            uxAddServiceUnitStore.DataSource = units;
            uxAddServiceUnitStore.DataBind();
            
-
        }
         protected void deLoadSubDiv(object sender, DirectEventArgs e)
        {
-           List<ServiceUnitResponse> divisions = ServiceUnitData.ServiceUnitDivisions().ToList();
-           
+           List<ServiceUnitResponse> divisions = ServiceUnitData.ServiceUnitDivisions(uxAddServiceUnitCI.SelectedItem.Value).ToList();
+           uxAddSubDivCI.Clear();
            uxAddSubDivStore.DataSource = divisions;
            uxAddSubDivStore.DataBind();
           
        }
+        protected void deLoadEditType()
+        {
+
+            List<ServiceUnitResponse> types = ServiceUnitData.ServiceUnitTypes().ToList();
+
+            uxEditRRStore.DataSource = types;
+            uxEditRRStore.DataBind();
+
+        }
+        protected void deLoadEditUnit(object sender, DirectEventArgs e)
+        {
+            List<ServiceUnitResponse> units = ServiceUnitData.ServiceUnitUnits(uxEditRRCI.SelectedItem.Value).ToList();
+            uxEditServiceUnitCI.Clear();
+            uxEditSubDivCIBox.Clear();
+            uxEditServiceUnitStore.DataSource = units;
+            uxEditServiceUnitStore.DataBind();
+
+
+        }
+        protected void deLoadEditSubDiv(object sender, DirectEventArgs e)
+        {
+            List<ServiceUnitResponse> divisions = ServiceUnitData.ServiceUnitDivisions(uxEditServiceUnitCI.SelectedItem.Value).ToList();
+            uxEditSubDivCIBox.Clear();
+            uxEditSubDivStore.DataSource = divisions;
+            uxEditSubDivStore.DataBind();
+
+        }
            
         protected void deAddManagerGrid(object sender, StoreReadDataEventArgs e)
         {

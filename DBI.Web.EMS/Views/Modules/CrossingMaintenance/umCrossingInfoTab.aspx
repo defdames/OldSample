@@ -29,6 +29,7 @@
                                     <ext:ModelField Name="CROSSING_ID" />
                                     <ext:ModelField Name="CONTACT_ID" />
                                     <ext:ModelField Name="CROSSING_NUMBER" Type="String" />
+                                    <ext:ModelField Name="SERVICE_UNIT" />
                                     <ext:ModelField Name="SUB_DIVISION" />
                                     <ext:ModelField Name="CONTACT_NAME" />
 
@@ -45,6 +46,7 @@
 
                         <ext:Column ID="uxMainCrossingNum" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing #" Flex="1" />
                         <ext:Column ID="Column1" runat="server" DataIndex="" Text="Project Name" Flex="1" />
+                        <ext:Column ID="Column12" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
                         <ext:Column ID="uxSubDiv" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
                         <ext:Column ID="uxMTM" runat="server" DataIndex="CONTACT_NAME" Text="Manager" Flex="1" />
 
@@ -133,7 +135,7 @@
 
                             <ext:FieldContainer ID="FieldContainer4" runat="server" Layout="HBoxLayout">
                                 <Items>
-                                    <ext:TextField ID="uxSubDivCI" runat="server" FieldLabel="Sub-Division" LabelAlign="Right" AnchorHorizontal="100%" />
+                                    <ext:TextField ID="uxServiceUnitCI" runat="server" FieldLabel="Service Unit" LabelAlign="Right" AnchorHorizontal="100%" />
                                     <ext:TextField ID="uxStreetCI" runat="server" FieldLabel="Street" AnchorHorizontal="100%" LabelAlign="Right" />
                                     <ext:TextField ID="uxLatCI" runat="server" FieldLabel="Latitude" AnchorHorizontal="92%" LabelAlign="Right" />
                                 </Items>
@@ -141,8 +143,8 @@
 
                             <ext:FieldContainer ID="FieldContainer3" runat="server" Layout="HBoxLayout">
                                 <Items>
-
-                                    <ext:TextField ID="uxServiceUnitCI" runat="server" FieldLabel="Service Unit" LabelAlign="Right" AnchorHorizontal="100%" />
+                                    <ext:TextField ID="uxSubDivCI" runat="server" FieldLabel="Sub-Division" LabelAlign="Right" AnchorHorizontal="100%" />
+                                    
                                     <ext:TextField ID="uxCityCI" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />
                                     <ext:TextField ID="uxLongCI" runat="server" FieldLabel="Longitude" AnchorHorizontal="92%" LabelAlign="Right" />
                                 </Items>
@@ -261,7 +263,7 @@
                                                 FieldLabel="Rail Road"
                                                 LabelAlign="Right"
                                                 DisplayField="project"
-                                                ValueField="m_project"
+                                                ValueField="project"
                                                 QueryMode="Local"
                                                 TypeAhead="true"  >
                                                     <Store>
@@ -271,7 +273,7 @@
                                                             <ext:Model ID="Model4" runat="server">
                                                                 <Fields>
                                                                     <ext:ModelField Name="project" />
-                                                                    <ext:ModelField Name="m_proejct" />
+                                                                    <ext:ModelField Name="project" />
                                                                 </Fields>
                                                             </ext:Model>
                                                         </Model>
@@ -279,7 +281,7 @@
                                                 </Store>
                                                      <DirectEvents>
                                                          <Select OnEvent="deLoadUnit">
-
+                                                             
                                                          </Select>
                                                      </DirectEvents>     
                                             <Listeners>
@@ -297,8 +299,8 @@
                                                 runat="server" FieldLabel="Service Unit" 
                                                 LabelAlign="Right" 
                                                 DisplayField="service_unit"
-                                                ValueField="m_service_unit"
-                                                QueryMode="Local">
+                                                ValueField="service_unit"
+                                                QueryMode="Local" TypeAhead="true">
                                                  <Store>
                                                     <ext:Store runat="server"
                                                         ID="uxAddServiceUnitStore"  >
@@ -306,7 +308,7 @@
                                                             <ext:Model ID="Model5" runat="server">
                                                                 <Fields>
                                                                     <ext:ModelField Name="service_unit"  />
-                                                                    <ext:ModelField Name="m_service_unit" />
+                                                                    <ext:ModelField Name="service_unit" />
                                                                 </Fields>
                                                             </ext:Model>
                                                         </Model>                                                  
@@ -314,7 +316,7 @@
                                                      </Store>                                        
                                                <DirectEvents>
                                                    <Select OnEvent="deLoadSubDiv">
-
+                                                     
                                                    </Select>
                                                </DirectEvents>
                                                 <Listeners>
@@ -334,7 +336,8 @@
                                                 LabelAlign="Right" 
                                                 AnchorHorizontal="100%" 
                                                 DisplayField="sub_division"
-                                                ValueField="m_sub_division">
+                                                ValueField="sub_division"
+                                                TypeAhead="true">
                                                  <Store>
                                                     <ext:Store runat="server"
                                                         ID="uxAddSubDivStore"  >
@@ -342,7 +345,7 @@
                                                             <ext:Model ID="Model7" runat="server">
                                                                 <Fields>
                                                                     <ext:ModelField Name="sub_division"  />
-                                                                    <ext:ModelField Name="m_sub_division" />
+                                                                    <ext:ModelField Name="sub_division" />
                                                                 </Fields>
                                                             </ext:Model>
                                                         </Model>                                                  
@@ -530,29 +533,31 @@
 
                                     <ext:FieldContainer ID="FieldContainer22" runat="server" Layout="HBoxLayout">
                                         <Items>
-                                            <ext:ComboBox ID="uxEditRRCI" runat="server" FieldLabel="Rail Road" AnchorHorizontal="100%" LabelAlign="Right" DisplayValue="" ValueField="">
-                                                <Store>
+                                            <ext:ComboBox ID="uxEditRRCI" runat="server" FieldLabel="Rail Road" AnchorHorizontal="100%" LabelAlign="Right"
+                                                 
+                                                DisplayField="project"
+                                                ValueField="project"
+                                                QueryMode="Local"
+                                                TypeAhead="true"  >
+                                                    <Store>
                                                     <ext:Store runat="server"
-                                                        ID="uxAddRailRoadTypeStore">
+                                                        ID="uxEditRRStore" >
                                                         <Model>
                                                             <ext:Model ID="Model3" runat="server">
                                                                 <Fields>
-                                                                    <ext:ModelField Name="INV_NAME" />
-                                                                    <ext:ModelField Name="ORGANIZATION_ID" />
+                                                                    <ext:ModelField Name="project" />
+                                                                    <ext:ModelField Name="project" />
                                                                 </Fields>
                                                             </ext:Model>
                                                         </Model>
                                                     </ext:Store>
                                                 </Store>
-                                                <%--<DirectEvents>
-								<Select OnEvent="deLoadType">
-									<ExtraParams>
-										<ext:Parameter Name="Type" Value="Add" />
-									</ExtraParams>
-								</Select>
-							</DirectEvents>--%>
-                                                <Listeners>
-                                                    <Select Handler="#{uxAddInventoryItemStore}.load()" />
+                                                     <DirectEvents>
+                                                         <Select OnEvent="deLoadEditUnit">
+                                                         </Select>
+                                                     </DirectEvents>     
+                                            <Listeners>
+                                                    <Select Handler="#{uxEditServiceUnitStore}.load()" />
                                                 </Listeners>
                                             </ext:ComboBox>
                                             <ext:TextField ID="uxEditRouteCI" runat="server" FieldLabel="Route" AnchorHorizontal="100%" LabelAlign="Right" />
@@ -562,7 +567,34 @@
 
                                     <ext:FieldContainer ID="FieldContainer23" runat="server" Layout="HBoxLayout">
                                         <Items>
-                                            <ext:ComboBox ID="uxEditServiceUnitCI" runat="server" FieldLabel="Service Unit" LabelAlign="Right" AnchorHorizontal="100%" />
+                                            <ext:ComboBox ID="uxEditServiceUnitCI"
+                                                 runat="server" 
+                                                FieldLabel="Service Unit"
+                                                DisplayField="service_unit"
+                                                ValueField="service_unit"
+                                                 LabelAlign="Right" 
+                                                AnchorHorizontal="100%" >
+                                                <Store>
+                                                    <ext:Store runat="server"
+                                                        ID="uxEditServiceUnitStore" >
+                                                        <Model>
+                                                            <ext:Model ID="Model8" runat="server">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="service_unit" />
+                                                                    <ext:ModelField Name="service_unit" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                    </ext:Store>
+                                                </Store>
+                                                     <DirectEvents>
+                                                         <Select OnEvent="deLoadEditSubDiv">
+                                                         </Select>
+                                                     </DirectEvents>     
+                                            <Listeners>
+                                                    <Select Handler="#{uxEditSubDivStore}.load()" />
+                                                </Listeners>
+                                            </ext:ComboBox>
                                             <ext:TextField ID="uxEditStreetCI" runat="server" FieldLabel="Street" AnchorHorizontal="100%" LabelAlign="Right" />
                                             <ext:TextField ID="uxEditLatCI" runat="server" FieldLabel="Latitude" AnchorHorizontal="92%" LabelAlign="Right" />
                                         </Items>
@@ -570,7 +602,27 @@
 
                                     <ext:FieldContainer ID="FieldContainer24" runat="server" Layout="HBoxLayout">
                                         <Items>
-                                            <ext:ComboBox ID="uxEditSubDivCIBox" runat="server" FieldLabel="Sub-Division" LabelAlign="Right" AnchorHorizontal="100%" />
+                                            <ext:ComboBox ID="uxEditSubDivCIBox" 
+                                                runat="server" FieldLabel="Sub-Division"
+                                                 LabelAlign="Right"
+                                                 DisplayField="sub_division"
+                                                 ValueField="sub_division"
+                                                 AnchorHorizontal="100%" >
+                                                <Store>
+                                                    <ext:Store runat="server"
+                                                        ID="uxEditSubDivStore" >
+                                                        <Model>
+                                                            <ext:Model ID="Model9" runat="server">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="sub_division" />
+                                                                    <ext:ModelField Name="sub_division" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                    </ext:Store>
+                                                </Store>
+                                                    
+                                            </ext:ComboBox>
                                             <ext:TextField ID="uxEditCityCI" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />
                                             <ext:TextField ID="uxEditLongCI" runat="server" FieldLabel="Longitude" AnchorHorizontal="92%" LabelAlign="Right" />
                                         </Items>

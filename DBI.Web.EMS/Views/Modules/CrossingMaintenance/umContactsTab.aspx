@@ -200,9 +200,9 @@
                 ID="uxAssignCrossingWindow"
                 Layout="FormLayout"
                 Hidden="true"
-                Title="Assign Crossing to Manager" Width="750">
+                Title="Assign Crossing to Manager" Width="950">
                 <Items>
-                    <ext:Panel ID="uxAssignContactPanel" runat="server" Width="740" Height="330">
+                    <ext:Panel ID="uxAssignContactPanel" runat="server" Width="940" Height="330">
                         <LayoutConfig>
                             <ext:HBoxLayoutConfig Align="Stretch" Padding="5" />
                         </LayoutConfig>
@@ -220,6 +220,8 @@
                                                 <Fields>
                                                     <ext:ModelField Name="CONTACT_ID" />
                                                     <ext:ModelField Name="CONTACT_NAME" />
+                                                    <ext:ModelField Name="WORK_NUMBER" />
+                                                    <ext:ModelField Name="CELL_NUMBER" />
 
                                                 </Fields>
                                             </ext:Model>
@@ -231,7 +233,9 @@
                                 </Store>
                                 <ColumnModel>
                                     <Columns>
-                                        <ext:Column ID="Column2" runat="server" DataIndex="CONTACT_NAME" Text="Manager" Flex="2" />                                  
+                                        <ext:Column ID="Column2" runat="server" DataIndex="CONTACT_NAME" Text="Manager" Flex="2" />
+                                        <ext:Column ID="Column10" runat="server" DataIndex="WORK_NUMBER" Text="Work Number" Flex="2" />   
+                                        <ext:Column ID="Column11" runat="server" DataIndex="CELL_NUMBER" Text="Cell Number" Flex="2" />                                     
                                     </Columns>
                                 </ColumnModel>
                                 <Plugins>
@@ -258,6 +262,9 @@
                                                 <Fields>
                                                     <ext:ModelField Name="CROSSING_ID" />
                                                     <ext:ModelField Name="CROSSING_NUMBER" />
+                                                     <ext:ModelField Name="RAILROAD" />
+                                                     <ext:ModelField Name="SERVICE_UNIT" />
+                                                     <ext:ModelField Name="SUB_DIVISION" />
                                                 </Fields>
                                             </ext:Model>
                                         </Model>
@@ -269,6 +276,9 @@
                                 <ColumnModel>
                                     <Columns>
                                         <ext:Column ID="Column6" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing #" Flex="2" />
+                                        <ext:Column ID="Column7" runat="server" DataIndex="RAILROAD" Text="Rail Road" Flex="2" />
+                                        <ext:Column ID="Column8" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="2" />
+                                        <ext:Column ID="Column9" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="2" />
                                     </Columns>
                                 </ColumnModel>
                                 <Plugins>
