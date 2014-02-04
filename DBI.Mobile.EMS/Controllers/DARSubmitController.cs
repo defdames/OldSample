@@ -50,11 +50,7 @@ namespace DBI.Mobile.EMS.Controllers
 
             try
             {
-                //var jsonObj = JsonConvert.DeserializeObject<DailyActivityResponse.RootObject>(jsonString);
-                
 
-
-                DAILY_ACTIVITY_HEADER h = new DAILY_ACTIVITY_HEADER();
                 foreach (DailyActivityResponse.DailyActivityHeader j in jsonObj.daily_activity_header)
                 {
                         h.PROJECT_ID = j.project_id;
@@ -71,7 +67,6 @@ namespace DBI.Mobile.EMS.Controllers
                         h.CREATED_BY = j.created_by.ToUpper();
                         h.MODIFIED_BY = j.created_by.ToUpper();
                         h.STATUS = 1;
-                        GenericData.Insert<DAILY_ACTIVITY_HEADER>(h);
                 }
 
                 foreach (DailyActivityResponse.DailyActivityEquipment j in jsonObj.daily_activity_equipment)
@@ -85,7 +80,7 @@ namespace DBI.Mobile.EMS.Controllers
                     e.MODIFY_DATE = DateTime.Now;
                     e.CREATED_BY = h.CREATED_BY;
                     e.MODIFIED_BY = h.CREATED_BY;
-                    GenericData.Insert<DAILY_ACTIVITY_EQUIPMENT>(e);
+                    eq.Add(e);
                 }
 
                 foreach (DailyActivityResponse.DailyActivityEmployee j in jsonObj.daily_activity_employee)
@@ -104,23 +99,23 @@ namespace DBI.Mobile.EMS.Controllers
                     e.MODIFY_DATE = DateTime.Now;
                     e.CREATED_BY = h.CREATED_BY;
                     e.MODIFIED_BY = h.CREATED_BY;
+                    e.ROLE_TYPE = j.role_type;
+                    e.STATE = j.state;
+                    e.COUNTY = j.county;
 
                     if (j.equipment_id > 0)
                     {
                         Entities _context = new Entities();
-                        DAILY_ACTIVITY_EQUIPMENT m = _context.DAILY_ACTIVITY_EQUIPMENT.Where(s => s.PROJECT_ID == j.equipment_id & s.HEADER_ID == h.HEADER_ID).SingleOrDefault();
+                        DAILY_ACTIVITY_EQUIPMENT m = _context.DAILY_ACTIVITY_EQUIPMENT.Where(s => s.PROJECT_ID == j.equipment_id & s.HEADER_ID == h.HEADER_ID).FirstOrDefault();
                         e.EQUIPMENT_ID = m.EQUIPMENT_ID;
                     }
- 
-                    GenericData.Insert<DAILY_ACTIVITY_EMPLOYEE>(e);
+                    em.Add(e);
                 }
 
                 foreach (DailyActivityResponse.DailyActivityProduction j in jsonObj.daily_activity_production)
                 {
                     DAILY_ACTIVITY_PRODUCTION e = new DAILY_ACTIVITY_PRODUCTION();
                     e.HEADER_ID = h.HEADER_ID; 
-                    //e.TIME_IN = DateTime.ParseExact(j.time_in, "dd-MMM-yyyy HH:mm", null);
-                    //e.TIME_OUT = DateTime.ParseExact(j.time_out, "dd-MMM-yyyy HH:mm", null);
                     e.TASK_ID = j.task_id;
                     e.WORK_AREA = j.work_area;
                     e.POLE_FROM = j.pole_from;
@@ -139,14 +134,17 @@ namespace DBI.Mobile.EMS.Controllers
                     e.MODIFY_DATE = DateTime.Now;
                     e.CREATED_BY = h.CREATED_BY;
                     e.MODIFIED_BY = h.CREATED_BY;
-                    GenericData.Insert<DAILY_ACTIVITY_PRODUCTION>(e);
+                    pr.Add(e);
                 }
 
                 foreach (DailyActivityResponse.DailyActivityWeather j in jsonObj.daily_activity_weather)
                 {
                     DAILY_ACTIVITY_WEATHER e = new DAILY_ACTIVITY_WEATHER();
                     e.HEADER_ID = h.HEADER_ID;
-                    e.WEATHER_DATE_TIME = DateTime.ParseExact(j.weather_date_time, "dd-MMM-yyyy HH:mm", null);
+                    if (j.weather_date_time.Length > 0)
+                    {
+                        e.WEATHER_DATE_TIME = DateTime.ParseExact(j.weather_date_time, "dd-MMM-yyyy HH:mm", null);
+                    }
                     e.TEMP = j.temp.ToString();
                     e.WIND_DIRECTION = j.wind_direction;
                     e.WIND_VELOCITY = j.wind_velocity;
@@ -156,7 +154,7 @@ namespace DBI.Mobile.EMS.Controllers
                     e.MODIFY_DATE = DateTime.Now;
                     e.CREATED_BY = h.CREATED_BY;
                     e.MODIFIED_BY = h.CREATED_BY;
-                    GenericData.Insert<DAILY_ACTIVITY_WEATHER>(e);
+                    we.Add(e);
                 }
 
                 foreach (DailyActivityResponse.DailyActivityChemicalMix j in jsonObj.daily_activity_chemical_mix)
@@ -176,7 +174,7 @@ namespace DBI.Mobile.EMS.Controllers
                     e.MODIFY_DATE = DateTime.Now;
                     e.CREATED_BY = h.CREATED_BY;
                     e.MODIFIED_BY = h.CREATED_BY;
-                    GenericData.Insert<DAILY_ACTIVITY_CHEMICAL_MIX>(e);
+                    cm.Add(e);
                 }
 
                 foreach (DailyActivityResponse.DailyActivityInventory j in jsonObj.daily_activity_inventory)
@@ -197,47 +195,78 @@ namespace DBI.Mobile.EMS.Controllers
                     if (j.chemical_mix_id > 0)
                     {
                         Entities _context = new Entities();
-                        DAILY_ACTIVITY_CHEMICAL_MIX m = _context.DAILY_ACTIVITY_CHEMICAL_MIX.Where(s => s.CHEMICAL_MIX_NUMBER == j.chemical_mix_id & s.HEADER_ID == h.HEADER_ID).SingleOrDefault();
+                        DAILY_ACTIVITY_CHEMICAL_MIX m = _context.DAILY_ACTIVITY_CHEMICAL_MIX.Where(s => s.CHEMICAL_MIX_NUMBER == j.chemical_mix_id & s.HEADER_ID == h.HEADER_ID).FirstOrDefault();
                         e.CHEMICAL_MIX_ID = m.CHEMICAL_MIX_ID;
                     }
-
-
-                    GenericData.Insert<DAILY_ACTIVITY_INVENTORY>(e);
+                    iv.Add(e);
                 }
 
                 foreach (DailyActivityResponse.DailyActivityFooter j in jsonObj.daily_activity_footer)
                 {
-                    DAILY_ACTIVITY_FOOTER e = new DAILY_ACTIVITY_FOOTER();
-                    e.HEADER_ID = h.HEADER_ID;
-                    e.HOTEL_NAME = j.hotel_name;
-                    e.HOTEL_CITY = j.hotel_city;
-                    e.HOTEL_STATE = j.hotel_state;
-                    e.HOTEL_PHONE = j.hotel_phone;
+                    f.HEADER_ID = h.HEADER_ID;
+                    f.HOTEL_NAME = j.hotel_name;
+                    f.HOTEL_CITY = j.hotel_city;
+                    f.HOTEL_STATE = j.hotel_state;
+                    f.HOTEL_PHONE = j.hotel_phone;
 
-                    e.DOT_REP = Convert.FromBase64String(j.dot_rep);
-                    e.DOT_REP_NAME = j.dot_rep_name;
-                    e.COMMENTS = j.comments;
-                    e.FOREMAN_SIGNATURE = Convert.FromBase64String(j.foreman_signature);
-                    e.CONTRACT_REP = Convert.FromBase64String(j.contract_rep);
-                    e.CONTRACT_REP_NAME = j.contract_rep_name;
-                    e.CREATE_DATE = DateTime.Now;
-                    e.MODIFY_DATE = DateTime.Now;
-                    e.CREATED_BY = h.CREATED_BY;
-                    e.MODIFIED_BY = h.CREATED_BY;
-                    GenericData.Insert<DAILY_ACTIVITY_FOOTER>(e);
+                    f.DOT_REP = Convert.FromBase64String(j.dot_rep);
+                    f.DOT_REP_NAME = j.dot_rep_name;
+                    f.COMMENTS = j.comments;
+                    f.FOREMAN_SIGNATURE = Convert.FromBase64String(j.foreman_signature);
+                    f.CONTRACT_REP = Convert.FromBase64String(j.contract_rep);
+                    f.CONTRACT_REP_NAME = j.contract_rep_name;
+                    f.CREATE_DATE = DateTime.Now;
+                    f.MODIFY_DATE = DateTime.Now;
+                    f.CREATED_BY = h.CREATED_BY;
+                    f.MODIFIED_BY = h.CREATED_BY;
                 }
 
             
             }
             catch (Exception ex)
             {
-                System.IO.StreamWriter file3 = new System.IO.StreamWriter("c:\\temp\\error.txt");
-                file3.Write(ex.ToString());
-               file3.Close();
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+               //DEBUG TESTING
+               //System.IO.StreamWriter file3 = new System.IO.StreamWriter("c:\\temp\\error.txt");
+               //file3.Write(ex.ToString());
+               //file3.Close();
             }
 
-
-         
+            // Perform Save
+            try
+            {
+                GenericData.Insert<DAILY_ACTIVITY_HEADER>(h);
+                foreach (DAILY_ACTIVITY_EQUIPMENT e in eq)
+                {
+                    GenericData.Insert<DAILY_ACTIVITY_EQUIPMENT>(e);
+                }
+                foreach (DAILY_ACTIVITY_EMPLOYEE e in em)
+                {
+                    GenericData.Insert<DAILY_ACTIVITY_EMPLOYEE>(e);
+                }
+                foreach (DAILY_ACTIVITY_PRODUCTION e in pr)
+                {
+                    GenericData.Insert<DAILY_ACTIVITY_PRODUCTION>(e);
+                }
+                foreach (DAILY_ACTIVITY_WEATHER e in we)
+                {
+                    GenericData.Insert<DAILY_ACTIVITY_WEATHER>(e);
+                }
+                foreach (DAILY_ACTIVITY_CHEMICAL_MIX e in cm)
+                {
+                    GenericData.Insert<DAILY_ACTIVITY_CHEMICAL_MIX>(e);
+                }
+                foreach (DAILY_ACTIVITY_INVENTORY e in iv)
+                {
+                    GenericData.Insert<DAILY_ACTIVITY_INVENTORY>(e);
+                }
+                GenericData.Insert<DAILY_ACTIVITY_FOOTER>(f);
+            }
+            catch (Exception)
+            {
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                throw;
+            }
 
 
 
