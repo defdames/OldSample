@@ -560,7 +560,7 @@
 					Handler="var win = parentAutoLoadControl.target || parentAutoLoadControl, //you can use just 'parentAutoLoadControl' after update to Ext.NET v2 beta.
 									size = this.getSize();
  
-								size.height += 34;
+								size.height += 100;
 								size.width += 12;
 								win.setSize(size);"
 					Delay="100" />
