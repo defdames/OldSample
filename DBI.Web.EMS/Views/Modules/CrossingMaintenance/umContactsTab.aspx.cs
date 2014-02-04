@@ -29,7 +29,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 data = (from d in _context.CROSSING_CONTACTS
                         //join c in _context.CROSSINGS
                         //on d.CROSSING_ID equals c.CROSSING_ID                 
-                        select new { d.CONTACT_ID, d.CONTACT_NAME, d.WORK_NUMBER, d.CELL_NUMBER, d.RAIL_ROAD }).ToList<object>();
+                        select new { d.CONTACT_ID, d.CONTACT_NAME, d.WORK_NUMBER, d.CELL_NUMBER, d.RAILROAD }).ToList<object>();
                 int count;
                 uxCurrentContactStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 e.Total = count;
@@ -47,7 +47,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                             {
                                 d.CONTACT_ID,
                                 d.CONTACT_NAME,
-                                d.RAIL_ROAD,
+                                d.RAILROAD,
                                 d.ADDRESS_1,
                                 d.ADDRESS_2,
                                 d.CITY,
@@ -57,7 +57,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                                 d.WORK_NUMBER,
                             }).SingleOrDefault();
                 uxContactManagerName.SetValue(data.CONTACT_NAME);
-                uxContactRR.SetValue(data.RAIL_ROAD);
+                uxContactRR.SetValue(data.RAILROAD);
                 uxContactAddress1.SetValue(data.ADDRESS_1);
                 uxContactAddress2.SetValue(data.ADDRESS_2);
                 uxContactCity.SetValue(data.CITY);
@@ -90,7 +90,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 {
 
                     CONTACT_NAME = ContactName,
-                    RAIL_ROAD = RailRoad.ToString(),
+                    RAILROAD = RailRoad.ToString(),
                     ADDRESS_1 = Address1,
                     ADDRESS_2 = Address2,
                     CITY = City,
@@ -135,7 +135,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                             {
                                 d.CONTACT_ID,
                                 d.CONTACT_NAME,
-                                d.RAIL_ROAD,
+                                d.RAILROAD,
                                 d.ADDRESS_1,
                                 d.ADDRESS_2,
                                 d.CITY,
@@ -145,7 +145,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                                 d.WORK_NUMBER,
                             }).SingleOrDefault();
                 uxEditManagerName.SetValue(data.CONTACT_NAME);
-                uxEditRRTextField.SetValue(data.RAIL_ROAD);
+                uxEditRRTextField.SetValue(data.RAILROAD);
                 uxEditContactAdd1.SetValue(data.ADDRESS_1);
                 uxEditContactAdd2.SetValue(data.ADDRESS_2);
                 uxEditContactCity.SetValue(data.CITY);
@@ -189,7 +189,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
 
             data.CONTACT_NAME = ContactName;
-            data.RAIL_ROAD = RailRoad;
+            data.RAILROAD = RailRoad;
             data.ADDRESS_1 = Address1;
             data.ADDRESS_2 = Address2;
             data.CITY = City;
