@@ -56,6 +56,7 @@
         <AssociationConnector Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="0.5" PointY="15.375" />
         <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
+        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_IMPORT" Width="1.5" PointX="0.71306958641534179" PointY="12.722977822983161" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
