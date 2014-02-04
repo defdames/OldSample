@@ -65,6 +65,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                                 
                             }).SingleOrDefault();
                 uxAddManagerCI.SetValue(data.c.CONTACT_NAME);
+                uxServiceUnitCI.SetValue(data.d.SERVICE_UNIT);
+                uxSubDivCI.SetValue(data.d.SUB_DIVISION);
+                uxRRCI.SetValue(data.d.RAILROAD);
                 uxCrossingNumCI.SetValue(data.d.CROSSING_NUMBER);
                 uxRouteCI.SetValue(data.d.ROUTE);               
                 uxStreetCI.SetValue(data.d.STREET);
@@ -154,6 +157,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string FenceEncroach = uxAddFenceEnchroachCI.Value.ToString();
             string OnSpur = uxAddOnSpurCI.Value.ToString();
             long ContactName = Convert.ToInt64(uxAddManagerCIDropDownField.Value);
+            string RailRoad = uxAddRailRoadCI.Value.ToString();
+            string ServiceUnit = uxAddServiceUnitCI.Value.ToString();
+            string SubDiv = uxAddSubDivCI.Value.ToString();
 
             if (uxAddSubConCI.Checked)
             {
@@ -194,7 +200,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                 CROSSING_NUMBER = CrossingNum,
                 MILE_POST = MP,
-                SUB_DIVISION = Sub_divisions,
                 CITY = City,
                 STREET = Street,
                 STATE = State,
@@ -222,7 +227,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 RESTRICTED_COUNTY = Restricted,
                 FENCE_ENCROACHMENT = FenceEncroach,
                 ON_SPUR = OnSpur,
-                CONTACT_ID = ContactName
+                CONTACT_ID = ContactName,
+                RAILROAD = RailRoad,
+                SERVICE_UNIT = ServiceUnit,
+                SUB_DIVISION = SubDiv,
+                
             };
 
             //Write to DB
@@ -484,15 +493,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
           
                 uxAddRailRoadStore.DataSource = types;
                 uxAddRailRoadStore.DataBind();
-                uxAddRailRoadCI.Value.ToString();
+                
         }
        protected void deLoadUnit(object sender, DirectEventArgs e)
        {
-           List<ServiceUnitResponse> units = ServiceUnitData.ServiceUnitUnits().ToList();
+           List<ServiceUnitResponse> units = ServiceUnitData.ServiceUnitUnits(uxAddServiceUnitCI.SelectedItem.Value).ToList();
            
            uxAddServiceUnitStore.DataSource = units;
            uxAddServiceUnitStore.DataBind();
-           uxAddServiceUnitCI.Value.ToString();
+           
 
        }
         protected void deLoadSubDiv(object sender, DirectEventArgs e)
@@ -501,7 +510,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
            
            uxAddSubDivStore.DataSource = divisions;
            uxAddSubDivStore.DataBind();
-           uxAddServiceUnitCI.Value.ToString();
+          
        }
            
         protected void deAddManagerGrid(object sender, StoreReadDataEventArgs e)

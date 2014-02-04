@@ -24,7 +24,7 @@ namespace DBI.Data.GMS
         }
         public static List<ServiceUnitResponse> ServiceUnitUnits(string proj)
         {
-            List<ServiceUnitResponse> results = (from u in ServiceUnits() where u.project == proj || proj == u.service_unit group u by u.service_unit into x select x.First()).ToList();
+            List<ServiceUnitResponse> results = (from u in ServiceUnits() where u.project == proj group u by u.service_unit into x select x.First()).ToList();
             return results;
         }
         public static List<ServiceUnitResponse> ServiceUnitDivisions()
