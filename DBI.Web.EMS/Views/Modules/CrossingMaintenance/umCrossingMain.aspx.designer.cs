@@ -58,6 +58,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Panel uxCrossingSecurity;
         
         /// <summary>
+        /// Loader5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Loader5;
+        
+        /// <summary>
         /// uxCrossingInfoTab control.
         /// </summary>
         /// <remarks>
@@ -65,6 +74,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Panel uxCrossingInfoTab;
+        
+        /// <summary>
+        /// uxHeaderLoader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl uxHeaderLoader;
         
         /// <summary>
         /// uxContactsTab control.
@@ -76,22 +94,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Panel uxContactsTab;
         
         /// <summary>
-        /// uxSubDivisionsTab control.
+        /// Loader1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxSubDivisionsTab;
-        
-        /// <summary>
-        /// uxServiceUnitsTab control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxServiceUnitsTab;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Loader1;
         
         /// <summary>
         /// uxDataEntryTab control.
@@ -101,5 +110,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Panel uxDataEntryTab;
+        
+        /// <summary>
+        /// Loader4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Loader4;
     }
 }
