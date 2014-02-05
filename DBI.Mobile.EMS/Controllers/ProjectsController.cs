@@ -36,6 +36,7 @@ namespace DBI.Mobile.EMS.Controllers
                 rItem.PROJECT_STATUS_CODE = item.PROJECT_STATUS_CODE;
                 rItem.START_DATE = item.START_DATE;
                 rItem.COMPLETION_DATE = item.COMPLETION_DATE;
+                rItem.PREVAILING_WAGE_FLAG = item.ATTRIBUTE3;
                 returnList.Add(rItem);
             }
             return returnList;
@@ -65,6 +66,7 @@ namespace DBI.Mobile.EMS.Controllers
                      rItem.PROJECT_STATUS_CODE = item.PROJECT_STATUS_CODE;
                      rItem.START_DATE = item.START_DATE;
                      rItem.COMPLETION_DATE = item.COMPLETION_DATE;
+                     rItem.PREVAILING_WAGE_FLAG = item.ATTRIBUTE3;
                      returnList.Add(rItem);
                 }
             }

@@ -11,13 +11,13 @@ namespace DBI.Mobile.EMS
         public class DailyActivityChemicalMix
         {
             public string county { get; set; }
-            public int gallon_acre { get; set; }
-            public int gallon_starting { get; set; }
-            public int gallon_remaining { get; set; }
+            public decimal gallon_acre { get; set; }
+            public decimal gallon_starting { get; set; }
+            public decimal gallon_remaining { get; set; }
             public int chemical_mix_number { get; set; }
             public string state { get; set; }
-            public int gallon_mixed { get; set; }
-            public double acres_sprayed { get; set; }
+            public decimal gallon_mixed { get; set; }
+            public decimal acres_sprayed { get; set; }
             public string target_area { get; set; }
         }
 
@@ -27,7 +27,7 @@ namespace DBI.Mobile.EMS
             public int item_id { get; set; }
             public int sub_inventory_org_id { get; set; }
             public string unit_of_measure { get; set; }
-            public int rate { get; set; }
+            public decimal rate { get; set; }
             public int chemical_mix_id { get; set; }
             public string sub_inventory_secondary_name { get; set; }
         }
@@ -48,23 +48,23 @@ namespace DBI.Mobile.EMS
 
         public class DailyActivityWeather
         {
-            public int temp { get; set; }
+            public string temp { get; set; }
             public string comments { get; set; }
             public string wind_direction { get; set; }
             public string wind_velocity { get; set; }
-            public int humidity { get; set; }
+            public string humidity { get; set; }
             public string weather_date_time { get; set; }
         }
 
         public class DailyActivityProduction
         {
             public string uom { get; set; }
-            public int acres_mile { get; set; }
+            public decimal acres_mile { get; set; }
             public string pole_from { get; set; }
             public string pole_to { get; set; }
-            public int quantity { get; set; }
+            public decimal quantity { get; set; }
             public int task_id { get; set; }
-            public double bill_rate { get; set; }
+            public decimal bill_rate { get; set; }
             public string station { get; set; }
             public string expenditure_type { get; set; }
             public string time_out { get; set; }
@@ -97,14 +97,17 @@ namespace DBI.Mobile.EMS
 
         public class DailyActivityEmployee
         {
-            public int travel_time { get; set; }
+            public decimal drive_time { get; set; }
             public int equipment_id { get; set; }
+            public string state { get; set; }
+            public string foreman_license { get; set; }
+            public string county { get; set; }
+            public decimal travel_time { get; set; }
+            public string role_type { get; set; }
             public string time_out { get; set; }
-            public int person_id { get; set; }
             public string comments { get; set; }
             public string per_diem { get; set; }
-            public string foreman_license { get; set; }
-            public int drive_time { get; set; }
+            public int person_id { get; set; }
             public string time_in { get; set; }
         }
 
