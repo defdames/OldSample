@@ -262,7 +262,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 if (HoursOver24.Exists(emp => emp.HEADER_ID == HeaderId))
                 {
                     EmployeeData HeaderData = HoursOver24.Find(emp => emp.HEADER_ID == HeaderId);
-                    //uxSubmitActivityWindow.Html += string.Format("<span color='#ff0000'>{0} has over 24 hours logged on {1:MM-dd-yy}.  Please fix.</span><br />", HeaderData.EMPLOYEE_NAME.ToString(), HeaderData.DA_DATE.ToString());
+                    uxPlaceholderWindow.Html += string.Format("<span color='#ff0000'>Employee has 24 hours logged on {0:MM-dd-yy}.  Please fix.</span><br />", HeaderData.DA_DATE.ToString());
                     BadHeader = true;
                 }
 
@@ -285,8 +285,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         var HeaderData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                           join emp in _context.EMPLOYEES_V on d.PERSON_ID equals emp.PERSON_ID
                                           where d.HEADER_ID == HeaderId
-                                          select new { d.DAILY_ACTIVITY_HEADER.DA_DATE, emp.EMPLOYEE_NAME }).Single();
-                        uxPlaceholderWindow.Html += string.Format("<span color='#ff0000'>{0} has overlapping time on {1}.  Please fix.</span><br />", HeaderData.EMPLOYEE_NAME, HeaderData.DA_DATE.ToString());
+                                          select new { d.DAILY_ACTIVITY_HEADER.DA_DATE, emp.EMPLOYEE_NAME }).First();
+                        uxPlaceholderWindow.Html += string.Format("<span color='#ff0000'>Employee has overlapping time on {0:MM-dd-yy}.  Please fix.</span><br />", HeaderData.DA_DATE.ToString());
                         BadHeader = true;
                     }
                 }
@@ -958,10 +958,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         }
 
         [DirectMethod]
-        public void dmRefreshShowSubmit(string HeaderId)
+        public void dmRefreshShowSubmit_DBI(string HeaderId)
         {
             uxPlaceholderWindow.ClearContent();
-            uxPlaceholderWindow.LoadContent(string.Format("umSubmitActivity.aspx?HeaderId={0}", HeaderId));
+            uxPlaceholderWindow.LoadContent(string.Format("umSubmitActivity_DBI.aspx?HeaderId={0}", HeaderId));
+        }
+
+        [DirectMethod]
+        public void dmRefreshShowSubmit_IRM(string HeaderId)
+        {
+            uxPlaceholderWindow.ClearContent();
+            uxPlaceholderWindow.LoadContent(string.Format("umSubmitActivity_IRM.aspx?HeaderId={0}", HeaderId));
         }
 
         /// <summary>

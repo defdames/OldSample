@@ -49,16 +49,6 @@
 						DataIndex="DESCRIPTION"
 						Text="Task Name"
 						Flex="1" />
-					<ext:DateColumn runat="server"
-						DataIndex="TIME_IN"
-						Format="M/d/yyyy h:mm tt"
-						Text="Time In"
-						Flex="1" />
-					<ext:DateColumn runat="server"
-						DataIndex="TIME_OUT"
-						Format="M/d/yyyy h:mm tt"
-						Text="Time Out"
-						Flex="1" />
 					<ext:Column runat="server"
 						DataIndex="WORK_AREA"
 						Text="Spray/Work Area"
