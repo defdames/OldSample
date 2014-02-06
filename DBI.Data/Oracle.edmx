@@ -70,6 +70,26 @@
       "XXDBI_TRUCK_EQUIP_USAGE"."OVERRIDE" AS "OVERRIDE"
       FROM "XXDBI"."XXDBI_TRUCK_EQUIP_USAGE" "XXDBI_TRUCK_EQUIP_USAGE"</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="XXPJ_PREV_WAGE_RATES" EntityType="OracleModel.Store.XXPJ_PREV_WAGE_RATES" store:Type="Tables" store:Schema="XXDBI" store:Name="XXPJ_PREV_WAGE_RATES">
+            <DefiningQuery>SELECT 
+      "XXPJ_PREV_WAGE_RATES"."PROJECT_NUMBER" AS "PROJECT_NUMBER", 
+      "XXPJ_PREV_WAGE_RATES"."PROJECT_NAME" AS "PROJECT_NAME", 
+      "XXPJ_PREV_WAGE_RATES"."PROJECT_ROLE" AS "PROJECT_ROLE", 
+      "XXPJ_PREV_WAGE_RATES"."STATE" AS "STATE", 
+      "XXPJ_PREV_WAGE_RATES"."COUNTY" AS "COUNTY", 
+      "XXPJ_PREV_WAGE_RATES"."PREVAILING_WAGE_RATE" AS "PREVAILING_WAGE_RATE", 
+      "XXPJ_PREV_WAGE_RATES"."PREVAILING_FRINGE_RATE" AS "PREVAILING_FRINGE_RATE", 
+      "XXPJ_PREV_WAGE_RATES"."EFFECTIVE_START_DATE" AS "EFFECTIVE_START_DATE", 
+      "XXPJ_PREV_WAGE_RATES"."EFFECTIVE_END_DATE" AS "EFFECTIVE_END_DATE", 
+      "XXPJ_PREV_WAGE_RATES"."ORG_ID" AS "ORG_ID", 
+      "XXPJ_PREV_WAGE_RATES"."CREATED_BY" AS "CREATED_BY", 
+      "XXPJ_PREV_WAGE_RATES"."CREATION_DATE" AS "CREATION_DATE", 
+      "XXPJ_PREV_WAGE_RATES"."LAST_UPDATED_BY" AS "LAST_UPDATED_BY", 
+      "XXPJ_PREV_WAGE_RATES"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE", 
+      "XXPJ_PREV_WAGE_RATES"."LAST_UPDATE_LOGIN" AS "LAST_UPDATE_LOGIN", 
+      "XXPJ_PREV_WAGE_RATES"."PROJECT_ID" AS "PROJECT_ID"
+      FROM "XXDBI"."XXPJ_PREV_WAGE_RATES" "XXPJ_PREV_WAGE_RATES"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="CROSSING_CONTACTS" EntityType="OracleModel.Store.CROSSING_CONTACTS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_DATA_ENTRY" EntityType="OracleModel.Store.CROSSING_DATA_ENTRY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_SUB_DIVISION" EntityType="OracleModel.Store.CROSSING_SUB_DIVISION" store:Type="Tables" Schema="XXEMS" />
@@ -744,6 +764,42 @@
           <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="LAST_UPDATE_LOGIN" Type="number" StoreGeneratedPattern="Identity" />
           <Property Name="OVERRIDE" Type="varchar2" MaxLength="1" StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="XXPJ_PREV_WAGE_RATES">
+          <Key>
+            <PropertyRef Name="PROJECT_NUMBER" />
+            <PropertyRef Name="PROJECT_NAME" />
+            <PropertyRef Name="PROJECT_ROLE" />
+            <PropertyRef Name="PREVAILING_WAGE_RATE" />
+            <PropertyRef Name="PREVAILING_FRINGE_RATE" />
+            <PropertyRef Name="EFFECTIVE_START_DATE" />
+            <PropertyRef Name="ORG_ID" />
+            <PropertyRef Name="CREATED_BY" />
+            <PropertyRef Name="CREATION_DATE" />
+            <PropertyRef Name="LAST_UPDATED_BY" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+            <PropertyRef Name="LAST_UPDATE_LOGIN" />
+            <PropertyRef Name="PROJECT_ID" />
+          </Key>
+          <Property Name="PROJECT_NUMBER" Type="varchar2" Nullable="false" MaxLength="25" />
+          <Property Name="PROJECT_NAME" Type="varchar2" Nullable="false" MaxLength="30" />
+          <Property Name="PROJECT_ROLE" Type="varchar2" Nullable="false" MaxLength="80" />
+          <Property Name="STATE" Type="char" MaxLength="2" />
+          <Property Name="COUNTY" Type="varchar2" MaxLength="50" />
+          <Property Name="PREVAILING_WAGE_RATE" Type="number" Nullable="false" Precision="15" Scale="2" />
+          <Property Name="PREVAILING_FRINGE_RATE" Type="number" Nullable="false" Precision="15" Scale="2" />
+          <Property Name="EFFECTIVE_START_DATE" Type="date" Nullable="false" />
+          <Property Name="EFFECTIVE_END_DATE" Type="date" />
+          <Property Name="ORG_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="CREATED_BY" Type="number" Nullable="false" Precision="15" />
+          <Property Name="CREATION_DATE" Type="date" Nullable="false" />
+          <Property Name="LAST_UPDATED_BY" Type="number" Nullable="false" Precision="15" />
+          <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" />
+          <Property Name="LAST_UPDATE_LOGIN" Type="number" Nullable="false" Precision="15" />
+          <Property Name="PROJECT_ID" Type="number" Nullable="false" Precision="15" />
         </EntityType>
         <EntityType Name="CROSSING_CONTACTS">
           <Key>
@@ -1920,6 +1976,7 @@
             <End Role="DAILY_ACTIVITY_EMPLOYEE" EntitySet="DAILY_ACTIVITY_EMPLOYEE" />
           </AssociationSet>
           <EntitySet Name="DAILY_ACTIVITY_IMPORT" EntityType="OracleModel.DAILY_ACTIVITY_IMPORT" />
+          <EntitySet Name="XXPJ_PREV_WAGE_RATES" EntityType="OracleModel.XXPJ_PREV_WAGE_RATES" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -3245,6 +3302,39 @@
           <Property Type="DateTime" Name="CREATE_DATE" />
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="XXPJ_PREV_WAGE_RATES">
+          <Key>
+            <PropertyRef Name="PROJECT_NUMBER" />
+            <PropertyRef Name="PROJECT_NAME" />
+            <PropertyRef Name="PROJECT_ROLE" />
+            <PropertyRef Name="PREVAILING_WAGE_RATE" />
+            <PropertyRef Name="PREVAILING_FRINGE_RATE" />
+            <PropertyRef Name="EFFECTIVE_START_DATE" />
+            <PropertyRef Name="ORG_ID" />
+            <PropertyRef Name="CREATED_BY" />
+            <PropertyRef Name="CREATION_DATE" />
+            <PropertyRef Name="LAST_UPDATED_BY" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+            <PropertyRef Name="LAST_UPDATE_LOGIN" />
+            <PropertyRef Name="PROJECT_ID" />
+          </Key>
+          <Property Type="String" Name="PROJECT_NUMBER" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROJECT_NAME" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROJECT_ROLE" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STATE" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="COUNTY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="PREVAILING_WAGE_RATE" Nullable="false" Precision="15" Scale="2" />
+          <Property Type="Decimal" Name="PREVAILING_FRINGE_RATE" Nullable="false" Precision="15" Scale="2" />
+          <Property Type="DateTime" Name="EFFECTIVE_START_DATE" Nullable="false" />
+          <Property Type="DateTime" Name="EFFECTIVE_END_DATE" />
+          <Property Type="Int64" Name="ORG_ID" Nullable="false" />
+          <Property Type="Int64" Name="CREATED_BY" Nullable="false" />
+          <Property Type="DateTime" Name="CREATION_DATE" Nullable="false" />
+          <Property Type="Int64" Name="LAST_UPDATED_BY" Nullable="false" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
+          <Property Type="Int64" Name="LAST_UPDATE_LOGIN" Nullable="false" />
+          <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4210,6 +4300,28 @@
                 <ScalarProperty Name="RESPONSE" ColumnName="RESPONSE" />
                 <ScalarProperty Name="DEVICE_ID" ColumnName="DEVICE_ID" />
                 <ScalarProperty Name="IMPORT_ID" ColumnName="IMPORT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="XXPJ_PREV_WAGE_RATES">
+            <EntityTypeMapping TypeName="OracleModel.XXPJ_PREV_WAGE_RATES">
+              <MappingFragment StoreEntitySet="XXPJ_PREV_WAGE_RATES">
+                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
+                <ScalarProperty Name="LAST_UPDATE_LOGIN" ColumnName="LAST_UPDATE_LOGIN" />
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+                <ScalarProperty Name="CREATION_DATE" ColumnName="CREATION_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="EFFECTIVE_END_DATE" ColumnName="EFFECTIVE_END_DATE" />
+                <ScalarProperty Name="EFFECTIVE_START_DATE" ColumnName="EFFECTIVE_START_DATE" />
+                <ScalarProperty Name="PREVAILING_FRINGE_RATE" ColumnName="PREVAILING_FRINGE_RATE" />
+                <ScalarProperty Name="PREVAILING_WAGE_RATE" ColumnName="PREVAILING_WAGE_RATE" />
+                <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+                <ScalarProperty Name="PROJECT_ROLE" ColumnName="PROJECT_ROLE" />
+                <ScalarProperty Name="PROJECT_NAME" ColumnName="PROJECT_NAME" />
+                <ScalarProperty Name="PROJECT_NUMBER" ColumnName="PROJECT_NUMBER" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

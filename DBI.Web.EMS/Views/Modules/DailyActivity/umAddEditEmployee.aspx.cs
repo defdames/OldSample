@@ -16,20 +16,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (roleNeeded())
-            //{
-            //    addRoleComboBox();
-            //}
-
             if (!X.IsAjaxRequest)
             {
                 if (Request.QueryString["type"] == "Add")
                 {
                     uxAddEmployeeForm.Show();
+                    uxAddEmployeeRole.Show();
                 }
                 else
                 {
                     uxEditEmployeeForm.Show();
+                    uxEditEmployeeRole.Show();
                     LoadEditEmployeeForm();
                 }
                 uxAddEmployeeTimeInDate.SelectedDate = DateTime.Now.Date;
@@ -73,15 +70,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEditEmployeeComments.SetValue(Employee.COMMENTS);
                 uxEditEmployeeDriveTime.SetValue(Employee.DRIVE_TIME);
                 uxEditEmployeeTravelTime.SetValue(Employee.TRAVEL_TIME);
+                uxEditEmployeeRole.SetValue(Employee.ROLE_TYPE);
                 if (Employee.PER_DIEM == "Y")
                 {
                     uxEditEmployeePerDiem.Checked = true;
-                }
-
-                if (roleNeeded())
-                {
-                    DropDownField Rolebox = uxAddEmployeeForm.FindControl("uxEditEmployeeRole") as DropDownField;
-                    Rolebox.SetValue(Employee.ROLE_TYPE);
                 }
             }
         }
@@ -369,6 +361,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             TimeIn = TimeIn + TimeInTime.TimeOfDay;
             TimeOut = TimeOut + TimeOutTime.TimeOfDay;
 
+
             //Convert PerDiem to string
             string PerDiem;
             if (uxEditEmployeePerDiem.Checked)
@@ -390,12 +383,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         select d).Single();
             }
             data.PERSON_ID = PersonId;
-
-            if (roleNeeded())
-            {
-                ComboBox Rolebox = uxAddEmployeeForm.FindControl("uxEditEmployeeRole") as ComboBox;
-                data.ROLE_TYPE = Rolebox.Value.ToString();
-            }
 
             //Check for Equipment
             try
@@ -446,6 +433,33 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.MODIFIED_BY = User.Identity.Name;
             data.MODIFY_DATE = DateTime.Now;
 
+            if (roleNeeded())
+            {
+                try
+                {
+                    data.ROLE_TYPE = uxEditEmployeeRole.Value.ToString();
+                }
+                catch (NullReferenceException)
+                {
+                    data.ROLE_TYPE = null;
+                }
+                try
+                {
+                    data.STATE = uxEditEmployeeState.Value.ToString();
+                }
+                catch (NullReferenceException)
+                {
+                    data.STATE = null;
+                }
+                try
+                {
+                    data.COUNTY = uxEditEmployeeCounty.Value.ToString();
+                }
+                catch (NullReferenceException)
+                {
+                    data.COUNTY = null;
+                }
+            }
             //Write to db
             GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(data);
 
@@ -531,157 +545,41 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
-        //protected void addRoleComboBox()
-        //{
-        //    using (Entities _context = new Entities())
-        //    {
-        //        long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-        //        List<PA_ROLES_V> RoleList = (from d in _context.DAILY_ACTIVITY_HEADER
-        //                                        join p in _context.PA_ROLES_V on d.PROJECT_ID equals p.PROJECT_ID
-        //                                        where d.HEADER_ID == HeaderId
-        //                                        select p).ToList();
-        //        Store RoleStore = new Store
-        //        {
-        //            AutoDataBind = true
-        //        };
-        //        Model RoleModel = new Model();
-        //        RoleModel.Fields.Add(new ModelField
-        //        {
-        //            Name = "MEANING"
-        //        });
-        //        RoleModel.Fields.Add(new ModelField
-        //        {
-        //            Name = "COUNTY"
-        //        });
-        //        RoleModel.Fields.Add(new ModelField
-        //        {
-        //            Name = "STATE"
-        //        });
+        protected void deReadRoleData(object sender, StoreReadDataEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+                List<PA_ROLES_V> RoleList = (from d in _context.DAILY_ACTIVITY_HEADER
+                                             join p in _context.PA_ROLES_V on d.PROJECT_ID equals p.PROJECT_ID
+                                             where d.HEADER_ID == HeaderId
+                                             select p).ToList();
 
-        //        RoleStore.Model.Add(RoleModel);
+                if (e.Parameters["FormType"] == "Add")
+                {
+                    uxAddEmployeeRoleStore.DataSource = RoleList;
+                }
+                else
+                {
+                    uxEditEmployeeRoleStore.DataSource = RoleList;
+                }
+            }
+        }
 
-
-        //        DropDownField RoleBox = new DropDownField
-        //        {
-        //            FieldLabel = "Select Role",
-        //            Mode = DropDownMode.ValueText
-        //        };
-                    
-        //        GridPanel RoleGrid = new GridPanel();
-                
-        //        Column MeaningColumn = new Column
-        //        {
-        //            Text = "Meaning",
-        //            DataIndex = "MEANING"
-        //        };
-        //        Column CountyColumn = new Column
-        //        {
-        //            Text = "County",
-        //            DataIndex = "COUNTY"
-        //        };
-        //        Column StateColumn = new Column
-        //        {
-        //            Text = "State",
-        //            DataIndex = "STATE"
-        //        };
-
-        //        RoleGrid.SelectionModel.Add(new RowSelectionModel());
-        //        RoleGrid.ColumnModel.Add(MeaningColumn);
-        //        RoleGrid.ColumnModel.Add(CountyColumn);
-        //        RoleGrid.ColumnModel.Add(StateColumn);
-        //        RoleGrid.DirectEvents.SelectionChange.Event += deStoreRoleType;
-                
-                
-        //        RoleGrid.Store.Add(RoleStore);
-        //        RoleStore.DataSource = RoleList;
-
-        //        RoleBox.Component.Add(RoleGrid);
-        //        if (Request.QueryString["type"] == "Add")
-        //        {
-        //            RoleGrid.DirectEvents.SelectionChange.ExtraParams.Add(new Ext.Net.Parameter
-        //            {
-        //                Name = "Meaning",
-        //                Value = "#{uxAddEmployeeRoleGrid}.getSelectionModel().getSelection()[0].data.MEANING",
-        //                Mode = ParameterMode.Raw
-        //            });
-        //            RoleGrid.DirectEvents.SelectionChange.ExtraParams.Add(new Ext.Net.Parameter
-        //            {
-        //                Name = "County",
-        //                Value = "#{uxAddEmployeeRoleGrid}.getSelectionModel().getSelection()[0].data.COUNTY",
-        //                Mode = ParameterMode.Raw
-        //            });
-        //            RoleGrid.DirectEvents.SelectionChange.ExtraParams.Add(new Ext.Net.Parameter
-        //            {
-        //                Name = "State",
-        //                Value = "#{uxAddEmployeeRoleGrid}.getSelectionModel().getSelection()[0].data.STATE",
-        //                Mode = ParameterMode.Raw
-        //            });
-        //            RoleGrid.DirectEvents.SelectionChange.ExtraParams.Add(new Ext.Net.Parameter
-        //            {
-        //                Name = "Type",
-        //                Value = "Add",
-        //            });
-        //            RoleGrid.ID = "uxAddEmployeeRoleGrid";
-        //            RoleBox.ID = "uxAddEmployeeRole";
-        //            uxAddEmployeeForm.Items.Add(RoleBox);
-        //        }
-        //        else
-        //        {
-        //            RoleGrid.DirectEvents.SelectionChange.ExtraParams.Add(new Ext.Net.Parameter
-        //            {
-        //                Name = "Meaning",
-        //                Value = "#{uxEditEmployeeRoleGrid}.getSelectionModel().getSelection()[0].data.MEANING",
-        //                Mode = ParameterMode.Raw
-        //            });
-        //            RoleGrid.DirectEvents.SelectionChange.ExtraParams.Add(new Ext.Net.Parameter
-        //            {
-        //                Name = "County",
-        //                Value = "#{uxEditEmployeeRoleGrid}.getSelectionModel().getSelection()[0].data.COUNTY",
-        //                Mode = ParameterMode.Raw
-        //            });
-        //            RoleGrid.DirectEvents.SelectionChange.ExtraParams.Add(new Ext.Net.Parameter
-        //            {
-        //                Name = "State",
-        //                Value = "#{uxEditEmployeeRoleGrid}.getSelectionModel().getSelection()[0].data.STATE",
-        //                Mode = ParameterMode.Raw
-        //            });
-        //            RoleGrid.DirectEvents.SelectionChange.ExtraParams.Add(new Ext.Net.Parameter
-        //            {
-        //                Name = "Type",
-        //                Value = "Edit",
-        //            });
-        //            RoleGrid.ID = "uxEditEmployeeRoleGrid";
-        //            RoleBox.ID = "uxEditEmployeeRole";
-        //            uxEditEmployeeForm.Items.Add(RoleBox);
-        //        }
-        //    }
-        //}
-
-        private void deStoreRoleType(object sender, DirectEventArgs e)
+        protected void deStoreRoleGridValue(object sender, DirectEventArgs e)
         {
             if (e.ExtraParams["Type"] == "Add")
             {
-                DropDownField AddRole = FindControl("uxAddEmployeeRole") as DropDownField;
-                AddRole.SetValue(e.ExtraParams["County"], e.ExtraParams["Meaning"]);
-                Hidden HiddenField = new Hidden
-                {
-                    ID = "uxAddEmployeeState",
-                    Value = e.ExtraParams["State"]
-                };
-                uxAddEmployeeForm.Items.Add(HiddenField);
+                uxAddEmployeeRole.SetValue(e.ExtraParams["Meaning"], e.ExtraParams["Meaning"]);
+                uxAddEmployeeState.SetValue(e.ExtraParams["State"]);
+                uxAddEmployeeCounty.SetValue(e.ExtraParams["County"]);
             }
             else
             {
-                DropDownField EditRole = FindControl("uxEditEmployeeRole") as DropDownField;
-                EditRole.SetValue(e.ExtraParams["County"], e.ExtraParams["Meaning"]);
-                Hidden HiddenField = new Hidden
-                {
-                    ID = "uxEditEmployeeState",
-                    Value = e.ExtraParams["State"]
-                };
-                uxEditEmployeeForm.Items.Add(HiddenField);
+                uxEditEmployeeRole.SetValue(e.ExtraParams["Meaning"], e.ExtraParams["Meaning"]);
+                uxEditEmployeeState.SetValue(e.ExtraParams["State"]);
+                uxEditEmployeeCounty.SetValue(e.ExtraParams["County"]);
             }
-           
         }
     }
 }

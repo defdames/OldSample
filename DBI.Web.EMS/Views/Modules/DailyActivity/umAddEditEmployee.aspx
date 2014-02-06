@@ -267,6 +267,64 @@
 						   ID="uxAddEmployeeComments"
 						   AllowBlank="true"
 							TabIndex="10" />
+						<ext:DropDownField runat="server"
+							ID="uxAddEmployeeRole"
+                            Mode="ValueText"
+							FieldLabel="Role"
+							AllowBlank="true"
+							TabIndex="11"
+							Hidden="true">
+							<Component>
+								<ext:GridPanel runat="server"
+									ID="uxAddEmployeeRoleGrid"
+									Layout="HBoxLayout">
+									<Store>
+										<ext:Store runat="server"
+											ID="uxAddEmployeeRoleStore"
+											OnReadData="deReadRoleData"
+											AutoDataBind="true">
+											<Model>
+												<ext:Model ID="Model5" runat="server">
+													<Fields>
+														<ext:ModelField Name="MEANING" Type="Int" />
+														<ext:ModelField Name="COUNTY" Type="String" />
+														<ext:ModelField Name="STATE" Type="Int" />
+													</Fields>
+												</ext:Model>
+											</Model>
+											<Parameters>
+												<ext:StoreParameter Name="Form" Value="Add" />
+											</Parameters>
+											<Proxy>
+												<ext:PageProxy />
+											</Proxy>
+										</ext:Store>
+									</Store>
+									<ColumnModel>
+										<Columns>
+											<ext:Column ID="Column13" runat="server" Text="Role Name" DataIndex="MEANING" />
+											<ext:Column ID="Column14" runat="server" Text="County" DataIndex="COUNTY" />
+											<ext:Column ID="Column15" runat="server" Text="State" DataIndex="STATE" />
+										</Columns>
+									</ColumnModel>
+									<SelectionModel>
+										<ext:RowSelectionModel Mode="Single" />
+									</SelectionModel>
+									<DirectEvents>
+										<SelectionChange OnEvent="deStoreRoleGridValue">
+											<ExtraParams>
+												<ext:Parameter Name="Meaning" Value="#{uxAddEmployeeRoleGrid}.getSelectionModel().getSelection()[0].data.MEANING" Mode="Raw" />
+												<ext:Parameter Name="County" Value="#{uxAddEmployeeRoleGrid}.getSelectionModel().getSelection()[0].data.COUNTY" Mode="Raw" />
+												<ext:Parameter Name="State" Value="#{uxAddEmployeeRoleGrid}.getSelectionModel().getSelection()[0].data.STATE" Mode="Raw" />
+												<ext:Parameter Name="Type" Value="Add" />
+											</ExtraParams>
+										</SelectionChange>
+									</DirectEvents>
+								</ext:GridPanel>
+							</Component>
+						</ext:DropDownField>
+						<ext:Hidden runat="server"  ID="uxAddEmployeeState" />
+						<ext:Hidden runat="server"  ID="uxAddEmployeeCounty" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
@@ -528,6 +586,64 @@
 						   ID="uxEditEmployeeComments"
 						   AllowBlank="true"
 						   TabIndex="10" />
+						<ext:DropDownField runat="server"
+							ID="uxEditEmployeeRole"
+							FieldLabel="Role"
+                            Mode="ValueText"
+							AllowBlank="true"
+							TabIndex="11"
+							Hidden="true">
+							<Component>
+								<ext:GridPanel runat="server"
+									ID="uxEditEmployeeRoleGrid"
+									Layout="HBoxLayout">
+									<Store>
+										<ext:Store runat="server"
+											ID="uxEditEmployeeRoleStore"
+											OnReadData="deReadRoleData"
+											AutoDataBind="true">
+											<Model>
+												<ext:Model ID="Model6" runat="server">
+													<Fields>
+														<ext:ModelField Name="MEANING" Type="String" />
+														<ext:ModelField Name="COUNTY" Type="String" />
+														<ext:ModelField Name="STATE" Type="String" />
+													</Fields>
+												</ext:Model>
+											</Model>
+											<Parameters>
+												<ext:StoreParameter Name="Form" Value="Edit" />
+											</Parameters>
+											<Proxy>
+												<ext:PageProxy />
+											</Proxy>
+										</ext:Store>
+									</Store>
+									<ColumnModel>
+										<Columns>
+											<ext:Column ID="Column16" runat="server" Text="Role Name" DataIndex="MEANING" />
+											<ext:Column ID="Column17" runat="server" Text="County" DataIndex="COUNTY" />
+											<ext:Column ID="Column18" runat="server" Text="State" DataIndex="STATE" />
+										</Columns>
+									</ColumnModel>
+									<SelectionModel>
+										<ext:RowSelectionModel Mode="Single" />
+									</SelectionModel>
+									<DirectEvents>
+										<SelectionChange OnEvent="deStoreRoleGridValue">
+											<ExtraParams>
+												<ext:Parameter Name="Meaning" Value="#{uxEditEmployeeRoleGrid}.getSelectionModel().getSelection()[0].data.MEANING" Mode="Raw" />
+												<ext:Parameter Name="County" Value="#{uxEditEmployeeRoleGrid}.getSelectionModel().getSelection()[0].data.COUNTY" Mode="Raw" />
+												<ext:Parameter Name="State" Value="#{uxEditEmployeeRoleGrid}.getSelectionModel().getSelection()[0].data.STATE" Mode="Raw" />
+												<ext:Parameter Name="Type" Value="Edit" />
+											</ExtraParams>
+										</SelectionChange>
+									</DirectEvents>
+								</ext:GridPanel>
+							</Component>
+						</ext:DropDownField>
+						<ext:Hidden runat="server"  ID="uxEditEmployeeState" />
+						<ext:Hidden runat="server"  ID="uxEditEmployeeCounty" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"

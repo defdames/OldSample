@@ -35,28 +35,56 @@
 					Layout="FormLayout"
 					Hidden="true">
 					<Items>
-						<ext:ComboBox runat="server"
+						<ext:DropDownField runat="server"
 							ID="uxAddProductionTask"
-							ValueField="TASK_ID"
-							DisplayField="DESCRIPTION"
-							FieldLabel="Select Task"
-							QueryMode="Local"
-							TypeAhead="true"
-							AllowBlank="false">
-							<Store>
-								<ext:Store runat="server"
-									ID="uxAddProductionTaskStore">
-									<Model>
-										<ext:Model ID="Model1" runat="server">
-											<Fields>
-												<ext:ModelField Name="TASK_ID" />
-												<ext:ModelField Name="DESCRIPTION" />
-											</Fields>
-										</ext:Model>
-									</Model>
-								</ext:Store>
-							</Store>
-						</ext:ComboBox>
+							Mode="ValueText"
+							AllowBlank="false"
+							FieldLabel="Select Task">
+							<Component>
+								<ext:GridPanel runat="server"
+									ID="uxAddProductionTaskGrid"
+									Layout="HBoxLayout">
+									<Store>
+										<ext:Store runat="server"
+											ID="uxAddProductionTaskStore">
+											<Model>
+												<ext:Model ID="Model1" runat="server">
+													<Fields>
+														<ext:ModelField Name="TASK_ID" />
+														<ext:ModelField Name="TASK_NUMBER" />
+														<ext:ModelField Name="DESCRIPTION" />
+													</Fields>
+												</ext:Model>
+											</Model>
+										</ext:Store>
+									</Store>
+									<ColumnModel>
+										<Columns>
+											<ext:Column ID="Column7" runat="server" DataIndex="TASK_NUMBER" Text="Task Number" />
+											<ext:Column ID="Column10" runat="server" DataIndex="DESCRIPTION" Text="Name" />
+										</Columns>
+									</ColumnModel>
+									<DirectEvents>
+										<SelectionChange OnEvent="deStoreTask">
+											<ExtraParams>
+												<ext:Parameter Name="TaskId" Value="#{uxAddProductionTaskGrid}.getSelectionModel().getSelection()[0].data.TASK_ID" Mode="Raw" />
+												<ext:Parameter Name="Description" Value ="#{uxAddProductionTaskGrid}.getSelectionModel().getSelection()[0].data.DESCRIPTION" Mode="Raw" />
+												<ext:Parameter Name="Type" Value="Add" />
+											</ExtraParams>    
+										</SelectionChange>
+									</DirectEvents>
+									<SelectionModel>
+										<ext:RowSelectionModel ID="RowSelectionModel3" runat="server" Mode="Single" />
+									</SelectionModel>
+									<Plugins>
+										<ext:FilterHeader ID="FilterHeader3" runat="server" Remote="true" />
+									</Plugins>
+									<BottomBar>
+										<ext:PagingToolbar ID="PagingToolbar3" runat="server" />
+									</BottomBar>
+								</ext:GridPanel>
+							</Component>
+						</ext:DropDownField>
 						<ext:TextField runat="server"
 							ID="uxAddProductionWorkArea"
 							FieldLabel="Spray/Work Area"
@@ -107,28 +135,56 @@
 					Layout="FormLayout"
 					Hidden="true">
 					<Items>
-						<ext:ComboBox runat="server"
+						<ext:DropDownField runat="server"
 							ID="uxEditProductionTask"
-							ValueField="TASK_ID"
-							DisplayField="DESCRIPTION"
-							FieldLabel="Select Task"
-							QueryMode="Local"
-							TypeAhead="true"
-							AllowBlank="false">
-							<Store>
-								<ext:Store runat="server"
-									ID="uxEditProductionTaskStore">
-									<Model>
-										<ext:Model ID="Model2" runat="server">
-											<Fields>
-												<ext:ModelField Name="TASK_ID" />
-												<ext:ModelField Name="DESCRIPTION" />
-											</Fields>
-										</ext:Model>
-									</Model>
-								</ext:Store>
-							</Store>
-						</ext:ComboBox>
+							Mode="ValueText"
+							AllowBlank="false"
+							FieldLabel="Select Task">
+							<Component>
+								<ext:GridPanel runat="server"
+									ID="uxEditProductionTaskGrid"
+									Layout="HBoxLayout">
+									<Store>
+										<ext:Store runat="server"
+											ID="uxEditProductionTaskStore">
+											<Model>
+												<ext:Model ID="Model3" runat="server">
+													<Fields>
+														<ext:ModelField Name="TASK_ID" />
+														<ext:ModelField Name="TASK_NUMBER" />
+														<ext:ModelField Name="DESCRIPTION" />
+													</Fields>
+												</ext:Model>
+											</Model>
+										</ext:Store>
+									</Store>
+									<ColumnModel>
+										<Columns>
+											<ext:Column ID="Column8" runat="server" DataIndex="TASK_NUMBER" Text="Task Number" />
+											<ext:Column ID="Column9" runat="server" DataIndex="DESCRIPTION" Text="Name" />
+										</Columns>
+									</ColumnModel>
+									<DirectEvents>
+										<SelectionChange OnEvent="deStoreTask">
+											<ExtraParams>
+												<ext:Parameter Name="TaskId" Value="#{uxEditProductionTaskGrid}.getSelectionModel().getSelection()[0].data.TASK_ID" Mode="Raw" />
+												<ext:Parameter Name="Description" Value ="#{uxEditProductionTaskGrid}.getSelectionModel().getSelection()[0].data.DESCRIPTION" Mode="Raw" />
+												<ext:Parameter Name="Type" Value="Edit" />
+											</ExtraParams>    
+										</SelectionChange>
+									</DirectEvents>
+									<SelectionModel>
+										<ext:RowSelectionModel ID="RowSelectionModel4" runat="server" Mode="Single" />
+									</SelectionModel>
+									<Plugins>
+										<ext:FilterHeader ID="FilterHeader4" runat="server" Remote="true" />
+									</Plugins>
+									<BottomBar>
+										<ext:PagingToolbar ID="PagingToolbar4" runat="server" />
+									</BottomBar>
+								</ext:GridPanel>
+							</Component>
+						</ext:DropDownField>
 						<ext:TextField runat="server"
 							ID="uxEditProductionWorkArea"
 							FieldLabel="Spray/Work Area"
