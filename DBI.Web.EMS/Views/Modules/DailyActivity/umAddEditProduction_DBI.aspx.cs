@@ -77,10 +77,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                   where d.PRODUCTION_ID == ProductionId
                                   select new { d.TASK_ID, e.DESCRIPTION, d.WORK_AREA, d.POLE_FROM, d.POLE_TO, d.ACRES_MILE, d.QUANTITY }).Single();
 
-                uxEditProductionTask.SelectedItems.Clear();
-                uxEditProductionTask.SetValueAndFireSelect(Production.TASK_ID);
-                uxEditProductionTask.SelectedItems.Add(new Ext.Net.ListItem(Production.DESCRIPTION, Production.TASK_ID));
-                uxEditProductionTask.UpdateSelectedItems();
+                uxEditProductionTask.SetValue(Production.TASK_ID.ToString(), Production.DESCRIPTION);
                 uxEditProductionWorkArea.SetValue(Production.WORK_AREA);
                 uxEditProductionPoleFrom.SetValue(Production.POLE_FROM);
                 uxEditProductionPoleTo.SetValue(Production.POLE_TO);
@@ -188,6 +185,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     TargetAnchor = AnchorPoint.Center
                 }
             });
+        }
+
+        protected void deStoreTask(object sender, DirectEventArgs e)
+        {
+            if (e.ExtraParams["Type"] == "Edit")
+            {
+                uxEditProductionTask.SetValue(e.ExtraParams["TaskId"], e.ExtraParams["Description"]);
+
+                uxEditProductionTaskStore.ClearFilter();
+            }
+            else
+            {
+                uxAddProductionTask.SetValue(e.ExtraParams["TaskId"], e.ExtraParams["Description"]);
+
+                uxAddProductionTaskStore.ClearFilter();
+            }
         }
     }
 }

@@ -101,7 +101,7 @@
 											<ext:Column runat="server"
 												ID="uxEquipmentSegment"
 												DataIndex="SEGMENT1"
-												Text="Project ID" />
+												Text="Project Number" />
 										</Columns>
 									</ColumnModel>
 									<Plugins>
@@ -241,7 +241,7 @@
 											<ext:Column runat="server"
 												ID="Column5"
 												DataIndex="SEGMENT1"
-												Text="Project ID" />
+												Text="Project Number" />
 										</Columns>
 									</ColumnModel>
 									<Plugins>
