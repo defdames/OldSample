@@ -57,6 +57,7 @@
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="0.5" PointY="15.375" />
         <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_IMPORT" Width="1.5" PointX="0.71306958641534179" PointY="12.722977822983161" />
+        <EntityTypeShape EntityType="OracleModel.XXPJ_PREV_WAGE_RATES" Width="1.5" PointX="14.75" PointY="10.125" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
