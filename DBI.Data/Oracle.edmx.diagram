@@ -53,6 +53,7 @@
         <AssociationConnector Association="OracleModel.FK_INVENTORY_HEADER_ID" />
         <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" />
         <AssociationConnector Association="OracleModel.FK_WEATHER_HEADER_ID" />
+        <EntityTypeShape EntityType="OracleModel.MTL_TRANSACTIONS_INTERFACE" Width="1.5" PointX="2.1442304356695292" PointY="9.92102417811799" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
