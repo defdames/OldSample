@@ -14,44 +14,26 @@ namespace DBI.Web.EMS
         protected void Page_Load(object sender, EventArgs e)
         {
             // Post to Oracle
+             using (Entities _context = new Entities())
+                {
+                    DAILY_ACTIVITY_HEADER headerQuery = _context.DAILY_ACTIVITY_HEADER.Where(h => h.HEADER_ID == 137).SingleOrDefault();
 
+                    XXDBI_DAILY_ACTIVITY_HEADER header = DBI.Data.Interface.headerInterfaceRecords(headerQuery.HEADER_ID);
+                    var columns = new[] { "DA_HEADER_ID", "STATE", "COUNTY", "ACTIVITY_DATE", "ORG_ID", "PROJECT_NUMBER", "PROJECT_NAME", "CREATED_BY", "CREATION_DATE", "LAST_UPDATED_BY", "LAST_UPDATE_DATE" };
+                    GenericData.Insert<XXDBI_DAILY_ACTIVITY_HEADER>(header, columns, "XXDBI.XXDBI_DAILY_ACTIVITY_HEADER");
 
-            int pHeaderID = 148; // passed in from method
+                    List<XXDBI_LABOR_HEADER> employees = DBI.Data.Interface.laborInterfaceRecords(headerQuery.HEADER_ID, header.DA_HEADER_ID, header.ACTIVITY_DATE);
+                    
+                    foreach (XXDBI_LABOR_HEADER record in employees)
+                    {
+                        var laborColumns = new[] { "LABOR_HEADER_ID", "DA_HEADER_ID", "PROJECT_NUMBER", "TASK_NUMBER", "EMPLOYEE_NUMBER", "EMP_FULL_NAME", "ROLE", "STATE", "COUNTY", "LAB_HEADER_DATE", "QUANTITY", "ELEMENT", "ADJUSTMENT", "STATUS", "ORG_ID", "CREATED_BY", "CREATION_DATE", "LAST_UPDATE_DATE", "LAST_UPDATED_BY"};
+                        GenericData.Insert<XXDBI_LABOR_HEADER>(record, laborColumns, "XXDBI.XXDBI_LABOR_HEADER");
+                    }
+                    
 
-            using (Entities _context = new Entities())
-            {
-                var query = from h in _context.DAILY_ACTIVITY_HEADER
-                                join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
-                                join l in _context.PA_LOCATIONS_V on p.LOCATION_ID equals (long)l.LOCATION_ID
-                                join u in _context.SYS_USER_INFORMATION on h.CREATED_BY equals u.USER_NAME
-                                where h.HEADER_ID == pHeaderID
-                                select new {h, p, l, u};
-
-                var data  = query.Single();
-
-                Decimal generatedHeaderID = DBI.Data.Interface.nextHeaderID();
-
-                XXDBI_DAILY_ACTIVITY_HEADER header = new XXDBI_DAILY_ACTIVITY_HEADER();
-                header.STATE = data.l.REGION;
-                header.COUNTY = "NONE";
-                header.ACTIVITY_DATE = (DateTime)data.h.DA_DATE;
-                header.ORG_ID = (Decimal)data.p.ORG_ID;
-                header.PROJECT_NUMBER = data.p.SEGMENT1;
-                header.PROJECT_NAME = data.p.NAME;
-                header.CREATED_BY = data.u.USER_ID;
-                header.CREATION_DATE = DateTime.Now;
-                header.LAST_UPDATED_BY = data.u.USER_ID;
-                header.LAST_UPDATE_DATE = DateTime.Now;
-
-                var included = new[] { "STATE", "COUNTY", "ACTIVITY_DATE" };
-
-                GenericData.Insert<XXDBI_DAILY_ACTIVITY_HEADER>(header, included, "XXDBI.XXDBI_DAILY_ACTIVITY_HEADER");
-
-
-                
-  
-            }
-
+             }
         }
+
     }
 }
+
