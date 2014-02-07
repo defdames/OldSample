@@ -45,7 +45,8 @@
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="0.5" PointY="15.375" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_IMPORT" Width="1.5" PointX="7.875" PointY="20" />
         <EntityTypeShape EntityType="OracleModel.XXPJ_PREV_WAGE_RATES" Width="1.5" PointX="14.75" PointY="10.125" />
-        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_HEADER" Width="1.5" PointX="4.875" PointY="10.75" />
+        <EntityTypeShape EntityType="OracleModel.MTL_TRANSACTIONS_INTERFACE" Width="1.5" PointX="14.75" PointY="14.625" />
+        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_HEADER" Width="1.5" PointX="5" PointY="10.875" />
         <AssociationConnector Association="OracleModel.FK_CHEMICAL_HEADER_ID" />
         <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
         <AssociationConnector Association="OracleModel.FK_HEADER_ID" />
@@ -53,7 +54,6 @@
         <AssociationConnector Association="OracleModel.FK_INVENTORY_HEADER_ID" />
         <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" />
         <AssociationConnector Association="OracleModel.FK_WEATHER_HEADER_ID" />
-        <EntityTypeShape EntityType="OracleModel.MTL_TRANSACTIONS_INTERFACE" Width="1.5" PointX="2.1442304356695292" PointY="9.92102417811799" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

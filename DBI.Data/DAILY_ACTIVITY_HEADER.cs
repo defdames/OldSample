@@ -41,6 +41,7 @@ namespace DBI.Data
         public string MODIFIED_BY { get; set; }
         public Nullable<int> STATUS { get; set; }
         public string DEVICE_ID { get; set; }
+        public Nullable<decimal> DA_HEADER_ID { get; set; }
     
         public virtual ICollection<DAILY_ACTIVITY_CHEMICAL_MIX> DAILY_ACTIVITY_CHEMICAL_MIX { get; set; }
         public virtual ICollection<DAILY_ACTIVITY_EMPLOYEE> DAILY_ACTIVITY_EMPLOYEE { get; set; }

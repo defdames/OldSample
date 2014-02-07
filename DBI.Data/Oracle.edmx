@@ -1640,6 +1640,7 @@
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="STATUS" Type="number" Precision="10" />
           <Property Name="DEVICE_ID" Type="varchar2" MaxLength="200" />
+          <Property Name="DA_HEADER_ID" Type="number" />
         </EntityType>
         <EntityType Name="DAILY_ACTIVITY_IMPORT">
           <Key>
@@ -2576,6 +2577,7 @@
           <EntitySet Name="DAILY_ACTIVITY_EMPLOYEE" EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" />
           <EntitySet Name="DAILY_ACTIVITY_IMPORT" EntityType="OracleModel.DAILY_ACTIVITY_IMPORT" />
           <EntitySet Name="XXPJ_PREV_WAGE_RATES" EntityType="OracleModel.XXPJ_PREV_WAGE_RATES" />
+          <EntitySet Name="MTL_TRANSACTIONS_INTERFACE" EntityType="OracleModel.MTL_TRANSACTIONS_INTERFACE" />
           <EntitySet Name="DAILY_ACTIVITY_HEADER" EntityType="OracleModel.DAILY_ACTIVITY_HEADER" />
           <AssociationSet Name="FK_CHEMICAL_HEADER_ID" Association="OracleModel.FK_CHEMICAL_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
@@ -2605,7 +2607,6 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_WEATHER" EntitySet="DAILY_ACTIVITY_WEATHER" />
           </AssociationSet>
-          <EntitySet Name="MTL_TRANSACTIONS_INTERFACE" EntityType="OracleModel.MTL_TRANSACTIONS_INTERFACE" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -3853,118 +3854,6 @@
           <Property Type="Int64" Name="LAST_UPDATE_LOGIN" Nullable="false" />
           <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
         </EntityType>
-        <EntityType Name="DAILY_ACTIVITY_HEADER">
-          <Key>
-            <PropertyRef Name="HEADER_ID" />
-          </Key>
-          <Property Type="Int64" Name="HEADER_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int64" Name="PROJECT_ID" />
-          <Property Type="DateTime" Name="DA_DATE" />
-          <Property Type="String" Name="SUBDIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CONTRACTOR" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="Int32" Name="PERSON_ID" />
-          <Property Type="String" Name="LICENSE" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STATE" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="APPLICATION_TYPE" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="DENSITY" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="Int32" Name="STATUS" />
-          <Property Type="String" Name="DEVICE_ID" MaxLength="200" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="DAILY_ACTIVITY_CHEMICAL_MIX" Relationship="OracleModel.FK_CHEMICAL_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_CHEMICAL_MIX" />
-          <NavigationProperty Name="DAILY_ACTIVITY_EMPLOYEE" Relationship="OracleModel.FK_EMPLOYEE_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_EMPLOYEE" />
-          <NavigationProperty Name="DAILY_ACTIVITY_EQUIPMENT" Relationship="OracleModel.FK_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_EQUIPMENT" />
-          <NavigationProperty Name="DAILY_ACTIVITY_FOOTER" Relationship="OracleModel.FK_FOOTER_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_FOOTER" />
-          <NavigationProperty Name="DAILY_ACTIVITY_INVENTORY" Relationship="OracleModel.FK_INVENTORY_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_INVENTORY" />
-          <NavigationProperty Name="DAILY_ACTIVITY_PRODUCTION" Relationship="OracleModel.FK_PRODUCTION_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_PRODUCTION" />
-          <NavigationProperty Name="DAILY_ACTIVITY_WEATHER" Relationship="OracleModel.FK_WEATHER_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_WEATHER" />
-        </EntityType>
-        <Association Name="FK_CHEMICAL_HEADER_ID">
-          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
-          <End Type="OracleModel.DAILY_ACTIVITY_CHEMICAL_MIX" Role="DAILY_ACTIVITY_CHEMICAL_MIX" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DAILY_ACTIVITY_HEADER">
-              <PropertyRef Name="HEADER_ID" />
-            </Principal>
-            <Dependent Role="DAILY_ACTIVITY_CHEMICAL_MIX">
-              <PropertyRef Name="HEADER_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EMPLOYEE_HEADER_ID">
-          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
-          <End Type="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Role="DAILY_ACTIVITY_EMPLOYEE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DAILY_ACTIVITY_HEADER">
-              <PropertyRef Name="HEADER_ID" />
-            </Principal>
-            <Dependent Role="DAILY_ACTIVITY_EMPLOYEE">
-              <PropertyRef Name="HEADER_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_HEADER_ID">
-          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
-          <End Type="OracleModel.DAILY_ACTIVITY_EQUIPMENT" Role="DAILY_ACTIVITY_EQUIPMENT" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DAILY_ACTIVITY_HEADER">
-              <PropertyRef Name="HEADER_ID" />
-            </Principal>
-            <Dependent Role="DAILY_ACTIVITY_EQUIPMENT">
-              <PropertyRef Name="HEADER_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_FOOTER_HEADER_ID">
-          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
-          <End Type="OracleModel.DAILY_ACTIVITY_FOOTER" Role="DAILY_ACTIVITY_FOOTER" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DAILY_ACTIVITY_HEADER">
-              <PropertyRef Name="HEADER_ID" />
-            </Principal>
-            <Dependent Role="DAILY_ACTIVITY_FOOTER">
-              <PropertyRef Name="HEADER_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_INVENTORY_HEADER_ID">
-          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
-          <End Type="OracleModel.DAILY_ACTIVITY_INVENTORY" Role="DAILY_ACTIVITY_INVENTORY" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DAILY_ACTIVITY_HEADER">
-              <PropertyRef Name="HEADER_ID" />
-            </Principal>
-            <Dependent Role="DAILY_ACTIVITY_INVENTORY">
-              <PropertyRef Name="HEADER_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PRODUCTION_HEADER_ID">
-          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
-          <End Type="OracleModel.DAILY_ACTIVITY_PRODUCTION" Role="DAILY_ACTIVITY_PRODUCTION" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DAILY_ACTIVITY_HEADER">
-              <PropertyRef Name="HEADER_ID" />
-            </Principal>
-            <Dependent Role="DAILY_ACTIVITY_PRODUCTION">
-              <PropertyRef Name="HEADER_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_WEATHER_HEADER_ID">
-          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
-          <End Type="OracleModel.DAILY_ACTIVITY_WEATHER" Role="DAILY_ACTIVITY_WEATHER" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DAILY_ACTIVITY_HEADER">
-              <PropertyRef Name="HEADER_ID" />
-            </Principal>
-            <Dependent Role="DAILY_ACTIVITY_WEATHER">
-              <PropertyRef Name="HEADER_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="MTL_TRANSACTIONS_INTERFACE">
           <Key>
             <PropertyRef Name="SOURCE_CODE" />
@@ -4284,6 +4173,119 @@
           <Property Type="Decimal" Name="COMPLETION_TRANSACTION_ID" Precision="38" Scale="0" />
           <Property Type="Decimal" Name="WIP_SUPPLY_TYPE" Precision="38" Scale="0" />
         </EntityType>
+        <EntityType Name="DAILY_ACTIVITY_HEADER">
+          <Key>
+            <PropertyRef Name="HEADER_ID" />
+          </Key>
+          <Property Type="Int64" Name="HEADER_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="PROJECT_ID" />
+          <Property Type="DateTime" Name="DA_DATE" />
+          <Property Type="String" Name="SUBDIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CONTRACTOR" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="PERSON_ID" />
+          <Property Type="String" Name="LICENSE" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STATE" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="APPLICATION_TYPE" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DENSITY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="STATUS" />
+          <Property Type="String" Name="DEVICE_ID" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="DA_HEADER_ID" Precision="38" Scale="0" />
+          <NavigationProperty Name="DAILY_ACTIVITY_CHEMICAL_MIX" Relationship="OracleModel.FK_CHEMICAL_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_CHEMICAL_MIX" />
+          <NavigationProperty Name="DAILY_ACTIVITY_EMPLOYEE" Relationship="OracleModel.FK_EMPLOYEE_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_EMPLOYEE" />
+          <NavigationProperty Name="DAILY_ACTIVITY_EQUIPMENT" Relationship="OracleModel.FK_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_EQUIPMENT" />
+          <NavigationProperty Name="DAILY_ACTIVITY_FOOTER" Relationship="OracleModel.FK_FOOTER_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_FOOTER" />
+          <NavigationProperty Name="DAILY_ACTIVITY_INVENTORY" Relationship="OracleModel.FK_INVENTORY_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_INVENTORY" />
+          <NavigationProperty Name="DAILY_ACTIVITY_PRODUCTION" Relationship="OracleModel.FK_PRODUCTION_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_PRODUCTION" />
+          <NavigationProperty Name="DAILY_ACTIVITY_WEATHER" Relationship="OracleModel.FK_WEATHER_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_WEATHER" />
+        </EntityType>
+        <Association Name="FK_CHEMICAL_HEADER_ID">
+          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
+          <End Type="OracleModel.DAILY_ACTIVITY_CHEMICAL_MIX" Role="DAILY_ACTIVITY_CHEMICAL_MIX" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_HEADER">
+              <PropertyRef Name="HEADER_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_CHEMICAL_MIX">
+              <PropertyRef Name="HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EMPLOYEE_HEADER_ID">
+          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
+          <End Type="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Role="DAILY_ACTIVITY_EMPLOYEE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_HEADER">
+              <PropertyRef Name="HEADER_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_EMPLOYEE">
+              <PropertyRef Name="HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HEADER_ID">
+          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
+          <End Type="OracleModel.DAILY_ACTIVITY_EQUIPMENT" Role="DAILY_ACTIVITY_EQUIPMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_HEADER">
+              <PropertyRef Name="HEADER_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_EQUIPMENT">
+              <PropertyRef Name="HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FOOTER_HEADER_ID">
+          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
+          <End Type="OracleModel.DAILY_ACTIVITY_FOOTER" Role="DAILY_ACTIVITY_FOOTER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_HEADER">
+              <PropertyRef Name="HEADER_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_FOOTER">
+              <PropertyRef Name="HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_INVENTORY_HEADER_ID">
+          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
+          <End Type="OracleModel.DAILY_ACTIVITY_INVENTORY" Role="DAILY_ACTIVITY_INVENTORY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_HEADER">
+              <PropertyRef Name="HEADER_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_INVENTORY">
+              <PropertyRef Name="HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCTION_HEADER_ID">
+          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
+          <End Type="OracleModel.DAILY_ACTIVITY_PRODUCTION" Role="DAILY_ACTIVITY_PRODUCTION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_HEADER">
+              <PropertyRef Name="HEADER_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_PRODUCTION">
+              <PropertyRef Name="HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WEATHER_HEADER_ID">
+          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
+          <End Type="OracleModel.DAILY_ACTIVITY_WEATHER" Role="DAILY_ACTIVITY_WEATHER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_HEADER">
+              <PropertyRef Name="HEADER_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_WEATHER">
+              <PropertyRef Name="HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5253,28 +5255,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DAILY_ACTIVITY_HEADER">
-            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_HEADER">
-              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_HEADER">
-                <ScalarProperty Name="DEVICE_ID" ColumnName="DEVICE_ID" />
-                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="DENSITY" ColumnName="DENSITY" />
-                <ScalarProperty Name="APPLICATION_TYPE" ColumnName="APPLICATION_TYPE" />
-                <ScalarProperty Name="STATE" ColumnName="STATE" />
-                <ScalarProperty Name="LICENSE" ColumnName="LICENSE" />
-                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
-                <ScalarProperty Name="CONTRACTOR" ColumnName="CONTRACTOR" />
-                <ScalarProperty Name="SUBDIVISION" ColumnName="SUBDIVISION" />
-                <ScalarProperty Name="DA_DATE" ColumnName="DA_DATE" />
-                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
-                <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="MTL_TRANSACTIONS_INTERFACE">
             <EntityTypeMapping TypeName="OracleModel.MTL_TRANSACTIONS_INTERFACE">
               <MappingFragment StoreEntitySet="MTL_TRANSACTIONS_INTERFACE">
@@ -5579,6 +5559,29 @@
                 <ScalarProperty Name="SOURCE_CODE" ColumnName="SOURCE_CODE" />
                 <ScalarProperty Name="TRANSACTION_HEADER_ID" ColumnName="TRANSACTION_HEADER_ID" />
                 <ScalarProperty Name="TRANSACTION_INTERFACE_ID" ColumnName="TRANSACTION_INTERFACE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DAILY_ACTIVITY_HEADER">
+            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_HEADER">
+              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_HEADER">
+                <ScalarProperty Name="DA_HEADER_ID" ColumnName="DA_HEADER_ID" />
+                <ScalarProperty Name="DEVICE_ID" ColumnName="DEVICE_ID" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="DENSITY" ColumnName="DENSITY" />
+                <ScalarProperty Name="APPLICATION_TYPE" ColumnName="APPLICATION_TYPE" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+                <ScalarProperty Name="LICENSE" ColumnName="LICENSE" />
+                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
+                <ScalarProperty Name="CONTRACTOR" ColumnName="CONTRACTOR" />
+                <ScalarProperty Name="SUBDIVISION" ColumnName="SUBDIVISION" />
+                <ScalarProperty Name="DA_DATE" ColumnName="DA_DATE" />
+                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
+                <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
