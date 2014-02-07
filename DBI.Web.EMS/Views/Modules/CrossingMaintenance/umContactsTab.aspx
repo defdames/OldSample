@@ -208,7 +208,9 @@
                         </LayoutConfig>
                         <Items>
                             <ext:GridPanel ID="uxAssignContactGrid" runat="server" Flex="1" SimpleSelect="true" Title="Managers" Margins="0 2 0 0">
-
+                               <%-- <SelectionModel>
+                                     <ext:RowSelectionModel ID="RowSelectionModel5" runat="server" AllowDeselect="true" Mode="Single" />
+                                </SelectionModel>--%>
                                 <Store>
                                     <ext:Store runat="server"
                                         ID="uxAssignContactManagerStore"

@@ -281,7 +281,9 @@
                                                 </Store>
                                                      <DirectEvents>
                                                          <Select OnEvent="deLoadUnit">
-                                                             
+                                                                 <ExtraParams>
+										                            <ext:Parameter Name="Type" Value="Add" />
+									                            </ExtraParams>   
                                                          </Select>
                                                      </DirectEvents>     
                                             <Listeners>
@@ -316,7 +318,9 @@
                                                      </Store>                                        
                                                <DirectEvents>
                                                    <Select OnEvent="deLoadSubDiv">
-                                                     
+                                                       <ExtraParams>
+										                  <ext:Parameter Name="Type" Value="Add" />
+									                    </ExtraParams>
                                                    </Select>
                                                </DirectEvents>
                                                 <Listeners>
@@ -409,7 +413,7 @@
                                     <ext:FieldContainer ID="FieldContainer18" runat="server" Layout="HBoxLayout">
                                         <Items>
 
-                                            <ext:DropDownField ID="uxAddManagerCIDropDownField" runat="server" FieldLabel="Manager" AnchorHorizontal="100%" LabelAlign="Right" Width="475" Mode="ValueText">
+                                            <ext:DropDownField ID="uxAddManagerCIDropDownField" runat="server" FieldLabel="Manager" AnchorHorizontal="100%" LabelAlign="Right" Width="475" Mode="ValueText" >
                                                 <Component>
                                                     <ext:GridPanel runat="server"
                                                         ID="uxAddManager"
@@ -553,9 +557,12 @@
                                                     </ext:Store>
                                                 </Store>
                                                      <DirectEvents>
-                                                         <Select OnEvent="deLoadEditUnit">
-                                                         </Select>
-                                                     </DirectEvents>     
+                                                         <Select OnEvent="deLoadUnit">
+                                                             <ExtraParams>
+										                  <ext:Parameter Name="Type" Value="Edit" />
+									                    </ExtraParams>
+                                                               </Select>
+                                                     </DirectEvents>                                                           
                                             <Listeners>
                                                     <Select Handler="#{uxEditServiceUnitStore}.load()" />
                                                 </Listeners>
@@ -588,7 +595,10 @@
                                                     </ext:Store>
                                                 </Store>
                                                      <DirectEvents>
-                                                         <Select OnEvent="deLoadEditSubDiv">
+                                                         <Select OnEvent="deLoadSubDiv">
+                                                              <ExtraParams>
+										                  <ext:Parameter Name="Type" Value="Edit" />
+									                    </ExtraParams>
                                                          </Select>
                                                      </DirectEvents>     
                                             <Listeners>
@@ -678,7 +688,7 @@
                                 <Items>
                                     <ext:FieldContainer ID="FieldContainer30" runat="server" Layout="HBoxLayout">
                                         <Items>
-                                            <ext:DropDownField ID="uxEditManagerCI" runat="server" FieldLabel="Manager" AnchorHorizontal="100%" LabelAlign="Right" Width="475" Mode="ValueText">
+                                            <ext:DropDownField ID="uxEditManagerCI" runat="server" FieldLabel="Manager" AnchorHorizontal="100%" LabelAlign="Right" Width="475" Mode="ValueText" >
                                                 <Component>
                                                     <ext:GridPanel runat="server"
                                                         ID="uxEditManager"

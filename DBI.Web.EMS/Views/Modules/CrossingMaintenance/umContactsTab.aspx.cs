@@ -270,6 +270,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 //Get List of all new headers
 
                 data = (from d in _context.CROSSINGS
+                        where d.CONTACT_ID == null
                         select new { d.CROSSING_NUMBER, d.SERVICE_UNIT, d.RAILROAD, d.SUB_DIVISION}).ToList<object>();
 
                 int count;
