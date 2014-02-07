@@ -208,9 +208,7 @@
                         </LayoutConfig>
                         <Items>
                             <ext:GridPanel ID="uxAssignContactGrid" runat="server" Flex="1" SimpleSelect="true" Title="Managers" Margins="0 2 0 0">
-                               <%-- <SelectionModel>
-                                     <ext:RowSelectionModel ID="RowSelectionModel5" runat="server" AllowDeselect="true" Mode="Single" />
-                                </SelectionModel>--%>
+                              
                                 <Store>
                                     <ext:Store runat="server"
                                         ID="uxAssignContactManagerStore"
@@ -244,7 +242,7 @@
                                     <ext:FilterHeader ID="FilterHeader2" runat="server" />
                                 </Plugins>
                                 <SelectionModel>
-                                    <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" Mode="Single" />
+                                    <ext:RowSelectionModel ID="uxManagerRow" runat="server" Mode="Single" />
                                 </SelectionModel>
                                 <BottomBar>
                                     <ext:PagingToolbar ID="PagingToolbar2" runat="server" />
@@ -287,20 +285,24 @@
                                     <ext:FilterHeader ID="FilterHeader3" runat="server" />
                                 </Plugins>
                                 <SelectionModel>
-                                    <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi" />
+                                    <ext:CheckboxSelectionModel ID="uxCrossingCheckBox" runat="server" Mode="Multi" />
                                 </SelectionModel>
                                 <BottomBar>
                                     <ext:PagingToolbar ID="PagingToolbar4" runat="server" />
                                 </BottomBar>
                             </ext:GridPanel>
-
+                           
                         </Items>
                     </ext:Panel>
                   <ext:Toolbar ID="Toolbar3" runat="server">
                         <Items>
                             <ext:ToolbarFill ID="ToolbarFill2" runat="server" />    
                                              
-                            <ext:Button ID="uxApplyButtonCON" runat="server" Text="Associate" Icon="ArrowJoin" />
+                            <ext:Button ID="uxApplyButtonCON" runat="server" Text="Associate" Icon="ArrowJoin" >
+                                 <DirectEvents>
+                                    <Click OnEvent="deAssignCrossingtoContact" />
+                                </DirectEvents>
+                                </ext:Button>
                             <ext:Button ID="CancelButtonCON" runat="server" Text="Cancel" Icon="Delete" >
                                <Listeners>
 								<Click Handler="#{uxEditContactForm}.reset();

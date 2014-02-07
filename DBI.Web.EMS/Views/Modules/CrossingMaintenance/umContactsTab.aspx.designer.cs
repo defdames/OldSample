@@ -571,13 +571,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FilterHeader FilterHeader2;
         
         /// <summary>
-        /// RowSelectionModel2 control.
+        /// uxManagerRow control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.RowSelectionModel RowSelectionModel2;
+        protected global::Ext.Net.RowSelectionModel uxManagerRow;
         
         /// <summary>
         /// PagingToolbar2 control.
@@ -661,13 +661,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FilterHeader FilterHeader3;
         
         /// <summary>
-        /// CheckboxSelectionModel1 control.
+        /// uxCrossingCheckBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.CheckboxSelectionModel CheckboxSelectionModel1;
+        protected global::Ext.Net.CheckboxSelectionModel uxCrossingCheckBox;
         
         /// <summary>
         /// PagingToolbar4 control.
