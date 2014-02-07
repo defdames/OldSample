@@ -269,7 +269,7 @@
 							TabIndex="10" />
 						<ext:DropDownField runat="server"
 							ID="uxAddEmployeeRole"
-                            Mode="ValueText"
+							Mode="ValueText"
 							FieldLabel="Role"
 							AllowBlank="true"
 							TabIndex="11"
@@ -589,7 +589,7 @@
 						<ext:DropDownField runat="server"
 							ID="uxEditEmployeeRole"
 							FieldLabel="Role"
-                            Mode="ValueText"
+							Mode="ValueText"
 							AllowBlank="true"
 							TabIndex="11"
 							Hidden="true">

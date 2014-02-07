@@ -385,12 +385,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.PERSON_ID = PersonId;
 
             //Check for Equipment
-            try
-            {
+            if(uxEditEmployeeEqDropDown.Text != ""){
                 long EquipmentId = long.Parse(uxEditEmployeeEqDropDown.Value.ToString());
                 data.EQUIPMENT_ID = EquipmentId;
             }
-            catch (Exception)
+            else
             {
                 data.EQUIPMENT_ID = null;
             }
