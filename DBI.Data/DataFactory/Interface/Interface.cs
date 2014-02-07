@@ -167,6 +167,49 @@ namespace DBI.Data
             }
         }
 
+        protected static void PostInventory(long HeaderId)
+        {
+            List<MTL_TRANSACTIONS_INTERFACE> RecordsToInsert = new List<MTL_TRANSACTIONS_INTERFACE>();
+            using (Entities _context = new Entities())
+            {
+                var InventoryList = (from i in _context.DAILY_ACTIVITY_INVENTORY
+                                     join u in _context.SYS_USER_INFORMATION on i.MODIFIED_BY equals u.USER_NAME
+                                     where i.HEADER_ID == HeaderId
+                                     select new{i, u.USER_ID}).ToList();
+
+                int InventoryCount = 1;
+                foreach (var InventoryItem in InventoryList)
+                {
+                    decimal Quantity = -Math.Abs((decimal)InventoryItem.i.RATE);
+                    MTL_TRANSACTIONS_INTERFACE Record = new MTL_TRANSACTIONS_INTERFACE
+                    {
+                        SOURCE_CODE = "EMS",
+                        SOURCE_HEADER_ID = InventoryItem.i.HEADER_ID,
+                        SOURCE_LINE_ID = InventoryCount,
+                        PROCESS_FLAG = 1,
+                        TRANSACTION_MODE = 3,
+                        INVENTORY_ITEM_ID = InventoryItem.i.ITEM_ID,
+                        ORGANIZATION_ID = (decimal)InventoryItem.i.SUB_INVENTORY_ORG_ID,
+                        SUBINVENTORY_CODE = InventoryItem.i.SUB_INVENTORY_SECONDARY_NAME,
+                        TRANSACTION_QUANTITY = Quantity,
+                        TRANSACTION_UOM = InventoryItem.i.UNIT_OF_MEASURE,
+                        TRANSACTION_DATE = (DateTime)InventoryItem.i.DAILY_ACTIVITY_HEADER.DA_DATE,
+                        TRANSACTION_SOURCE_NAME = "EMS",
+                        LOCK_FLAG = 2,
+                        VALIDATION_REQUIRED = 1,
+                        LAST_UPDATE_DATE = (DateTime)InventoryItem.i.MODIFY_DATE,
+                        LAST_UPDATED_BY = InventoryItem.USER_ID,
+                        CREATED_BY= InventoryItem.USER_ID,
+                        CREATION_DATE = (DateTime)InventoryItem.i.MODIFY_DATE
+                    };
+                    InventoryCount++;
+                    RecordsToInsert.Add(Record);
+                    var InventoryColumns = new[]{"SOURCE_CODE", "SOURCE_HEADER_ID", "SOURCE_LINE_ID", "PROCESS_FLAG", "TRANSACTION_MODE", "INVENTORY_ITEM_ID", "ORGANIZATION_ID", "SUBINVENTORY_CODE", "TRANSACTION_QUANTITY", "TRANSACTION_UOM", "TRANSACTION_DATE", "TRANSACTION_SOURCE_NAME", "LOCK_FLAG", "VALIDATION_REQUIRED", "LAST_UPDATED_DATE", "LAST_UPDATED_BY", "CREATED_BY", "CREATION_DATE" };
+                    GenericData.Insert<MTL_TRANSACTIONS_INTERFACE>(Record, InventoryColumns, "INV.MTL_TRANSACTIONS_INTERFACE");
+                }
+                
+            }
+        }
 
 
 
