@@ -65,31 +65,29 @@ namespace DBI.Data
                     PropertyInfo propInfo = entity.GetType().GetProperty(column);
                     object columnValue = propInfo.GetValue(entity,null);
 
-                        if (columnValue != null)
+                        count = count + 1;
+                        sqlColumns.Append(column);
+
+                        if (count < includedColumns.Count())
                         {
-                             sqlColumns.Append(column);
-                            count = count + 1;
-                            if (count < colNames.Count)
-                            {
-                                sqlColumns.Append(",");
-                            }
+                            sqlColumns.Append(",");
+                        }
 
-                            if (propInfo.PropertyType == typeof(DateTime))
-                            {
-                                DateTime dateValue = (DateTime)columnValue;
+                        if (propInfo.PropertyType == typeof(DateTime))
+                        {
+                            DateTime dateValue = (DateTime)columnValue;
 
-                                sqlValues.Append("TO_DATE('" + dateValue.ToString("MM/dd/yyyy HH:mm:ss") + "','MM/DD/YYYY HH24:MI:SS')");
-                            }
-                            else
-                            {
-                                sqlValues.Append("'" + columnValue + "'");
-                            }
+                            sqlValues.Append("TO_DATE('" + dateValue.ToString("MM/dd/yyyy HH:mm:ss") + "','MM/DD/YYYY HH24:MI:SS')");
+                        }
+                        else
+                        {
+                            sqlValues.Append("'" + columnValue + "'");
+                        }
 
-                            if (count < colNames.Count)
-                            {
-                                sqlValues.Append(",");
-                            }
-                     }
+                        if (count < includedColumns.Count())
+                        {
+                            sqlValues.Append(",");
+                        }
                 }
 
                 sqlInsert.Append(sql);

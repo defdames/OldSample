@@ -16,11 +16,24 @@ namespace DBI.Web.EMS
             // Post to Oracle
              using (Entities _context = new Entities())
                 {
-                    DAILY_ACTIVITY_HEADER header = _context.DAILY_ACTIVITY_HEADER.Where(h => h.HEADER_ID == 61).SingleOrDefault();
-                    List<DAILY_ACTIVITY_EMPLOYEE.LABOR_HEADER_RECORD> employees = DAILY_ACTIVITY_EMPLOYEE.interfaceRecords(header.HEADER_ID, (DateTime)header.DA_DATE);
+                    DAILY_ACTIVITY_HEADER headerQuery = _context.DAILY_ACTIVITY_HEADER.Where(h => h.HEADER_ID == 137).SingleOrDefault();
+
+                    XXDBI_DAILY_ACTIVITY_HEADER header = DBI.Data.Interface.headerInterfaceRecords(headerQuery.HEADER_ID);
+                    var columns = new[] { "DA_HEADER_ID", "STATE", "COUNTY", "ACTIVITY_DATE", "ORG_ID", "PROJECT_NUMBER", "PROJECT_NAME", "CREATED_BY", "CREATION_DATE", "LAST_UPDATED_BY", "LAST_UPDATE_DATE" };
+                    GenericData.Insert<XXDBI_DAILY_ACTIVITY_HEADER>(header, columns, "XXDBI.XXDBI_DAILY_ACTIVITY_HEADER");
+
+                    List<XXDBI_LABOR_HEADER> employees = DBI.Data.Interface.laborInterfaceRecords(headerQuery.HEADER_ID, header.DA_HEADER_ID, header.ACTIVITY_DATE);
+                    
+                    foreach (XXDBI_LABOR_HEADER record in employees)
+                    {
+                        var laborColumns = new[] { "LABOR_HEADER_ID", "DA_HEADER_ID", "PROJECT_NUMBER", "TASK_NUMBER", "EMPLOYEE_NUMBER", "EMP_FULL_NAME", "ROLE", "STATE", "COUNTY", "LAB_HEADER_DATE", "QUANTITY", "ELEMENT", "ADJUSTMENT", "STATUS", "ORG_ID", "CREATED_BY", "CREATION_DATE", "LAST_UPDATE_DATE", "LAST_UPDATED_BY"};
+                        GenericData.Insert<XXDBI_LABOR_HEADER>(record, laborColumns, "XXDBI.XXDBI_LABOR_HEADER");
+                    }
+                    
 
              }
         }
 
     }
 }
+
