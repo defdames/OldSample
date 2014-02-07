@@ -68,7 +68,7 @@ namespace DBI.Data
         }
 
 
-        public static List<XXDBI_LABOR_HEADER> laborInterfaceRecords(decimal dailyActivityHeaderId, decimal generatedHeaderID, DateTime daDate)
+        public static void createInterfaceRecords(decimal dailyActivityHeaderId, decimal generatedHeaderID, DateTime daDate)
         {
             List<XXDBI_LABOR_HEADER> records = new List<XXDBI_LABOR_HEADER>();
             using (Entities _context = new Entities())
@@ -94,8 +94,8 @@ namespace DBI.Data
                                 EMPLOYEE_NUMBER = e.EMPLOYEE_NUMBER,
                                 EMP_FULL_NAME = e.EMPLOYEE_NAME,
                                 ROLE = d.ROLE_TYPE,
-                                STATE = l.REGION,
-                                COUNTY = "NONE",
+                                STATE = (d.STATE == null) ? l.REGION : d.STATE,
+                                COUNTY = (d.COUNTY == null) ? "NONE" : d.COUNTY,
                                 LAB_HEADER_DATE = daDate,
                                 ELEMENT = "Time Entry Wages",
                                 ADJUSTMENT = "N",
@@ -132,7 +132,11 @@ namespace DBI.Data
                     records.Add(record);
                 }
 
-                return records;
+                foreach (XXDBI_LABOR_HEADER record in records)
+                {
+                    var laborColumns = new[] { "LABOR_HEADER_ID", "DA_HEADER_ID", "PROJECT_NUMBER", "TASK_NUMBER", "EMPLOYEE_NUMBER", "EMP_FULL_NAME", "ROLE", "STATE", "COUNTY", "LAB_HEADER_DATE", "QUANTITY", "ELEMENT", "ADJUSTMENT", "STATUS", "ORG_ID", "CREATED_BY", "CREATION_DATE", "LAST_UPDATE_DATE", "LAST_UPDATED_BY" };
+                    GenericData.Insert<XXDBI_LABOR_HEADER>(record, laborColumns, "XXDBI.XXDBI_LABOR_HEADER");
+                }
             }
         }
 

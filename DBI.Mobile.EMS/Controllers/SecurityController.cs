@@ -14,6 +14,8 @@ namespace DBI.Mobile.EMS.Controllers
         [HttpGet]
         public Data.MBL_STRING GetValidateToken()
         {
+
+
                 Data.MBL_STRING returnValue = new Data.MBL_STRING();
                 returnValue.TokenValidation = "Valid";
                 return returnValue;
