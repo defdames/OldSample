@@ -187,7 +187,7 @@
                                         <ext:ModelField Name="COUNTY" />
                                         <ext:ModelField Name="TOTAL" />
                                         <ext:ModelField Name="USED" />
-                                        <ext:ModelField Name="SPRAYED" />
+                                        <ext:ModelField Name="ACRES_SPRAYED" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
