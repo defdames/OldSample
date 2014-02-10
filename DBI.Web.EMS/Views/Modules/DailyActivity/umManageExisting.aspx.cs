@@ -254,6 +254,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
             List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime(24);
             EmployeeData DuplicatePerDiems = ValidationChecks.checkPerDiem(HeaderId);
+            List<EmployeeData> RequiredLunches = ValidationChecks.LunchCheck(HeaderId);
             List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
 
             bool BadHeader = false;
@@ -267,6 +268,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
 
 
+            }
+
+            if (RequiredLunches.Count > 0)
+            {
+                uxPlaceholderWindow.LoadContent(string.Format("umChooseLunchHeader.aspx?HeaderId={0}", HeaderId));
+                BadHeader = true;
             }
 
             if (DuplicatePerDiems != null)

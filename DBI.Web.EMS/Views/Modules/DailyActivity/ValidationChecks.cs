@@ -237,31 +237,46 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 List<EmployeeData> EmployeeList = new List<EmployeeData>();
                 var HeaderEmployees = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                       join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
                                        where d.HEADER_ID == HeaderId
-                                       select new {d.PERSON_ID, d.DAILY_ACTIVITY_HEADER.DA_DATE}).ToList();
+                                       select new {d.PERSON_ID, e.EMPLOYEE_NAME, d.DAILY_ACTIVITY_HEADER.DA_DATE}).ToList();
                 foreach (var Employee in HeaderEmployees)
                 {
                     var TotalMinutes = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                             where d.DAILY_ACTIVITY_HEADER.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID
                                             group d by new {d.PERSON_ID} into g
                                             select new{g.Key.PERSON_ID, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value))}).Single();
-                    if (TotalMinutes.TotalMinutes >= 5 && TotalMinutes.TotalMinutes < 12)
+                    if (TotalMinutes.TotalMinutes / 60 >= 5 && TotalMinutes.TotalMinutes / 60 < 12)
                     {
-                        EmployeeList.Add(new EmployeeData
+                        var LoggedLunches = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                             where d.DAILY_ACTIVITY_HEADER.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID && d.LUNCH == "Y"
+                                             select d.LUNCH).Count();
+                        if (LoggedLunches == 0)
                         {
-                            PERSON_ID = Employee.PERSON_ID,
-                            LUNCH_LENGTH = 30,
-                            DA_DATE = Employee.DA_DATE
-                        });
+                            EmployeeList.Add(new EmployeeData
+                            {
+                                PERSON_ID = Employee.PERSON_ID,
+                                EMPLOYEE_NAME = Employee.EMPLOYEE_NAME,
+                                LUNCH_LENGTH = 30,
+                                DA_DATE = Employee.DA_DATE
+                            });
+                        }
                     }
                     else if (TotalMinutes.TotalMinutes >= 12)
                     {
-                        EmployeeList.Add(new EmployeeData
+                        var LoggedLunches = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                             where d.DAILY_ACTIVITY_HEADER.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID && d.LUNCH == "Y" && d.LUNCH_LENGTH == 60
+                                             select d.LUNCH).Count();
+                        if (LoggedLunches == 0)
                         {
-                            PERSON_ID = Employee.PERSON_ID,
-                            LUNCH_LENGTH = 60,
-                            DA_DATE = Employee.DA_DATE
-                        });
+                            EmployeeList.Add(new EmployeeData
+                            {
+                                PERSON_ID = Employee.PERSON_ID,
+                                LUNCH_LENGTH = 60,
+                                EMPLOYEE_NAME = Employee.EMPLOYEE_NAME,
+                                DA_DATE = Employee.DA_DATE
+                            });
+                        }
                     }
                 }
                 return EmployeeList;
