@@ -16,16 +16,12 @@ namespace DBI.Web.EMS
             // Post to Oracle
              using (Entities _context = new Entities())
                 {
-                    DAILY_ACTIVITY_HEADER headerQuery = _context.DAILY_ACTIVITY_HEADER.Where(h => h.HEADER_ID == 137).SingleOrDefault();
-
-                    XXDBI_DAILY_ACTIVITY_HEADER header = DBI.Data.Interface.headerInterfaceRecords(headerQuery.HEADER_ID);
-                    var columns = new[] { "DA_HEADER_ID", "STATE", "COUNTY", "ACTIVITY_DATE", "ORG_ID", "PROJECT_NUMBER", "PROJECT_NAME", "CREATED_BY", "CREATION_DATE", "LAST_UPDATED_BY", "LAST_UPDATE_DATE" };
-                    GenericData.Insert<XXDBI_DAILY_ACTIVITY_HEADER>(header, columns, "XXDBI.XXDBI_DAILY_ACTIVITY_HEADER");
-
-                    List<XXDBI_LABOR_HEADER> employees = DBI.Data.Interface.laborInterfaceRecords(headerQuery.HEADER_ID, header.DA_HEADER_ID, header.ACTIVITY_DATE);
-                    
+                    //Create header record
+                    XXDBI_DAILY_ACTIVITY_HEADER header;
+                    DBI.Data.Interface.createHeaderRecords(138, out header);
                   
-                    
+                    //Create Labor Records
+                    DBI.Data.Interface.createLaborRecords(138, header);
 
              }
         }

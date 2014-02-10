@@ -39,21 +39,6 @@ namespace DBI.Data
         }
 
 
-        public IQueryable dailyActivityRecordById(long dailyActivityHeaderId)
-        {
-            using (Entities _context = new Entities())
-            {
-                var query = from h in _context.DAILY_ACTIVITY_HEADER
-                            join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
-                            join l in _context.PA_LOCATIONS_V on p.LOCATION_ID equals (long)l.LOCATION_ID
-                            join u in _context.SYS_USER_INFORMATION on h.CREATED_BY equals u.USER_NAME
-                            where h.HEADER_ID == dailyActivityHeaderId
-                            select new { h, p, l, u };
-                return query;
-            }
-        }
-
-
         public static decimal payrollHoursCalculation(DateTime dateIn, DateTime dateOut)
         {
             TimeSpan span = dateOut.Subtract(dateIn);
@@ -67,8 +52,8 @@ namespace DBI.Data
             return returnValue;
         }
 
-
-        public static void createInterfaceRecords(decimal dailyActivityHeaderId, decimal generatedHeaderID, DateTime daDate)
+   
+        public static void createLaborRecords(long dailyActivityHeaderId, XXDBI_DAILY_ACTIVITY_HEADER dailyActivityHeaderRecord)
         {
             List<XXDBI_LABOR_HEADER> records = new List<XXDBI_LABOR_HEADER>();
             using (Entities _context = new Entities())
@@ -90,13 +75,13 @@ namespace DBI.Data
                             select new
                             {
                                 PROJECT_NUMBER = p.SEGMENT1,
-                                TASK_NUMBER = tasks.TASK_NUMBER,
+                                TASK_NUMBER = (tasks.TASK_NUMBER == null) ? "9999" : tasks.TASK_NUMBER,
                                 EMPLOYEE_NUMBER = e.EMPLOYEE_NUMBER,
                                 EMP_FULL_NAME = e.EMPLOYEE_NAME,
                                 ROLE = d.ROLE_TYPE,
                                 STATE = (d.STATE == null) ? l.REGION : d.STATE,
                                 COUNTY = (d.COUNTY == null) ? "NONE" : d.COUNTY,
-                                LAB_HEADER_DATE = daDate,
+                                LAB_HEADER_DATE = dailyActivityHeaderRecord.ACTIVITY_DATE,
                                 ELEMENT = "Time Entry Wages",
                                 ADJUSTMENT = "N",
                                 STATUS = "UNPROCESSED",
@@ -111,7 +96,7 @@ namespace DBI.Data
                 {
                     XXDBI_LABOR_HEADER record = new XXDBI_LABOR_HEADER();
                     record.LABOR_HEADER_ID = DBI.Data.Interface.generateLaborHeaderSequence();
-                    record.DA_HEADER_ID = generatedHeaderID;
+                    record.DA_HEADER_ID = dailyActivityHeaderRecord.DA_HEADER_ID;
                     record.PROJECT_NUMBER = r.PROJECT_NUMBER;
                     record.TASK_NUMBER = r.TASK_NUMBER;
                     record.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
@@ -119,7 +104,7 @@ namespace DBI.Data
                     record.ROLE = r.ROLE;
                     record.STATE = r.STATE;
                     record.COUNTY = r.COUNTY;
-                    record.LAB_HEADER_DATE = daDate;
+                    record.LAB_HEADER_DATE = r.LAB_HEADER_DATE;
                     record.QUANTITY = payrollHoursCalculation((DateTime)r.TIME_IN, (DateTime)r.TIME_OUT);
                     record.ELEMENT = r.ELEMENT;
                     record.ADJUSTMENT = r.ADJUSTMENT;
@@ -140,7 +125,7 @@ namespace DBI.Data
             }
         }
 
-        public static XXDBI_DAILY_ACTIVITY_HEADER headerInterfaceRecords(long dailyActivityHeaderId)
+        public static void createHeaderRecords(long dailyActivityHeaderId, out XXDBI_DAILY_ACTIVITY_HEADER xxdbiHeaderRecord)
         {
             using (Entities _context = new Entities())
             {
@@ -167,7 +152,10 @@ namespace DBI.Data
                     header.LAST_UPDATED_BY = data.u.USER_ID;
                     header.LAST_UPDATE_DATE = DateTime.Now;
 
-                return header;
+                    xxdbiHeaderRecord = header;
+
+                    var columns = new[] { "DA_HEADER_ID", "STATE", "COUNTY", "ACTIVITY_DATE", "ORG_ID", "PROJECT_NUMBER", "PROJECT_NAME", "CREATED_BY", "CREATION_DATE", "LAST_UPDATED_BY", "LAST_UPDATE_DATE" };
+                    GenericData.Insert<XXDBI_DAILY_ACTIVITY_HEADER>(header, columns, "XXDBI.XXDBI_DAILY_ACTIVITY_HEADER");
             }
         }
 
