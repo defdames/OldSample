@@ -32,6 +32,8 @@ namespace DBI.Data
         public string ROLE_TYPE { get; set; }
         public string STATE { get; set; }
         public string COUNTY { get; set; }
+        public string LUNCH { get; set; }
+        public Nullable<decimal> LUNCH_LENGTH { get; set; }
     
         public virtual DAILY_ACTIVITY_HEADER DAILY_ACTIVITY_HEADER { get; set; }
     }
