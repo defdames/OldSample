@@ -399,6 +399,7 @@
           <EntitySet Name="CROSSING_DATA_ENTRY" EntityType="OracleModel.Store.CROSSING_DATA_ENTRY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_SUB_DIVISION" EntityType="OracleModel.Store.CROSSING_SUB_DIVISION" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSINGS" EntityType="OracleModel.Store.CROSSINGS" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="DAILY_ACTIVITY_AUDIT" EntityType="OracleModel.Store.DAILY_ACTIVITY_AUDIT" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_CHEMICAL_MIX" EntityType="OracleModel.Store.DAILY_ACTIVITY_CHEMICAL_MIX" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_EMPLOYEE" EntityType="OracleModel.Store.DAILY_ACTIVITY_EMPLOYEE" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_EQUIPMENT" EntityType="OracleModel.Store.DAILY_ACTIVITY_EQUIPMENT" store:Type="Tables" Schema="XXEMS" />
@@ -918,6 +919,10 @@
       "UNIT_OF_MEASURE_V"."ACTIVE" AS "ACTIVE"
       FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK_AUDIT_HEADER_ID" Association="OracleModel.Store.FK_AUDIT_HEADER_ID">
+            <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
+            <End Role="DAILY_ACTIVITY_AUDIT" EntitySet="DAILY_ACTIVITY_AUDIT" />
+          </AssociationSet>
           <AssociationSet Name="FK_CHEMICAL_HEADER_ID" Association="OracleModel.Store.FK_CHEMICAL_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_CHEMICAL_MIX" EntitySet="DAILY_ACTIVITY_CHEMICAL_MIX" />
@@ -1541,6 +1546,17 @@
           <Property Name="CONTACT_ID" Type="number" Precision="15" />
           <Property Name="RAILROAD" Type="varchar2" MaxLength="50" />
           <Property Name="SERVICE_UNIT" Type="varchar2" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="DAILY_ACTIVITY_AUDIT">
+          <Key>
+            <PropertyRef Name="AUDIT_ID" />
+          </Key>
+          <Property Name="AUDIT_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
+          <Property Name="HEADER_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="FROM_STATUS" Type="number" Nullable="false" Precision="10" />
+          <Property Name="TO_STATUS" Type="number" Nullable="false" Precision="10" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFY_DATE" Type="date" />
         </EntityType>
         <EntityType Name="DAILY_ACTIVITY_CHEMICAL_MIX">
           <Key>
@@ -2392,6 +2408,18 @@
           <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" />
           <Property Name="ACTIVE" Type="char" MaxLength="1" />
         </EntityType>
+        <Association Name="FK_AUDIT_HEADER_ID">
+          <End Role="DAILY_ACTIVITY_HEADER" Type="OracleModel.Store.DAILY_ACTIVITY_HEADER" Multiplicity="1" />
+          <End Role="DAILY_ACTIVITY_AUDIT" Type="OracleModel.Store.DAILY_ACTIVITY_AUDIT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_HEADER">
+              <PropertyRef Name="HEADER_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_AUDIT">
+              <PropertyRef Name="HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CHEMICAL_HEADER_ID">
           <End Role="DAILY_ACTIVITY_HEADER" Type="OracleModel.Store.DAILY_ACTIVITY_HEADER" Multiplicity="1" />
           <End Role="DAILY_ACTIVITY_CHEMICAL_MIX" Type="OracleModel.Store.DAILY_ACTIVITY_CHEMICAL_MIX" Multiplicity="*" />
@@ -2542,7 +2570,6 @@
           <EntitySet Name="PROJECTS_V" EntityType="OracleModel.PROJECTS_V" />
           <EntitySet Name="CLASS_CODES_V" EntityType="OracleModel.CLASS_CODES_V" />
           <EntitySet Name="UNIT_OF_MEASURE_V" EntityType="OracleModel.UNIT_OF_MEASURE_V" />
-          <EntitySet Name="DAILY_ACTIVITY_STATUS" EntityType="OracleModel.DAILY_ACTIVITY_STATUS" />
           <EntitySet Name="SYS_ACTIVITY" EntityType="OracleModel.SYS_ACTIVITY" />
           <AssociationSet Name="SYS_ACTIVITYSYS_USER_ACTIVITY" Association="OracleModel.SYS_ACTIVITYSYS_USER_ACTIVITY">
             <End Role="SYS_USER_ACTIVITY" EntitySet="SYS_USER_ACTIVITY" />
@@ -2606,6 +2633,12 @@
           <AssociationSet Name="FK_WEATHER_HEADER_ID" Association="OracleModel.FK_WEATHER_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_WEATHER" EntitySet="DAILY_ACTIVITY_WEATHER" />
+          </AssociationSet>
+          <EntitySet Name="DAILY_ACTIVITY_STATUS" EntityType="OracleModel.DAILY_ACTIVITY_STATUS" />
+          <EntitySet Name="DAILY_ACTIVITY_AUDIT" EntityType="OracleModel.DAILY_ACTIVITY_AUDIT" />
+          <AssociationSet Name="FK_AUDIT_HEADER_ID" Association="OracleModel.FK_AUDIT_HEADER_ID">
+            <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
+            <End Role="DAILY_ACTIVITY_AUDIT" EntitySet="DAILY_ACTIVITY_AUDIT" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
@@ -3352,14 +3385,6 @@
           <Property Type="DateTime" Name="DISABLE_DATE" />
           <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
           <Property Type="String" Name="ACTIVE" MaxLength="1" FixedLength="true" Unicode="false" />
-        </EntityType>
-        <EntityType Name="DAILY_ACTIVITY_STATUS">
-          <Key>
-            <PropertyRef Name="STATUS_ID" />
-          </Key>
-          <Property Type="Int64" Name="STATUS_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="STATUS" Nullable="false" />
-          <Property Type="String" Name="STATUS_VALUE" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="SYS_ACTIVITY">
           <Key>
@@ -4201,6 +4226,7 @@
           <NavigationProperty Name="DAILY_ACTIVITY_INVENTORY" Relationship="OracleModel.FK_INVENTORY_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_INVENTORY" />
           <NavigationProperty Name="DAILY_ACTIVITY_PRODUCTION" Relationship="OracleModel.FK_PRODUCTION_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_PRODUCTION" />
           <NavigationProperty Name="DAILY_ACTIVITY_WEATHER" Relationship="OracleModel.FK_WEATHER_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_WEATHER" />
+          <NavigationProperty Name="DAILY_ACTIVITY_AUDIT" Relationship="OracleModel.FK_AUDIT_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_AUDIT" />
         </EntityType>
         <Association Name="FK_CHEMICAL_HEADER_ID">
           <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
@@ -4282,6 +4308,38 @@
               <PropertyRef Name="HEADER_ID" />
             </Principal>
             <Dependent Role="DAILY_ACTIVITY_WEATHER">
+              <PropertyRef Name="HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DAILY_ACTIVITY_STATUS">
+          <Key>
+            <PropertyRef Name="STATUS_ID" />
+          </Key>
+          <Property Type="Int64" Name="STATUS_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="STATUS" Nullable="false" />
+          <Property Type="String" Name="STATUS_VALUE" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="DAILY_ACTIVITY_AUDIT">
+          <Key>
+            <PropertyRef Name="AUDIT_ID" />
+          </Key>
+          <Property Type="Int64" Name="AUDIT_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
+          <Property Type="Int32" Name="FROM_STATUS" Nullable="false" />
+          <Property Type="Int32" Name="TO_STATUS" Nullable="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <NavigationProperty Name="DAILY_ACTIVITY_HEADER" Relationship="OracleModel.FK_AUDIT_HEADER_ID" FromRole="DAILY_ACTIVITY_AUDIT" ToRole="DAILY_ACTIVITY_HEADER" />
+        </EntityType>
+        <Association Name="FK_AUDIT_HEADER_ID">
+          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
+          <End Type="OracleModel.DAILY_ACTIVITY_AUDIT" Role="DAILY_ACTIVITY_AUDIT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_HEADER">
+              <PropertyRef Name="HEADER_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_AUDIT">
               <PropertyRef Name="HEADER_ID" />
             </Dependent>
           </ReferentialConstraint>
@@ -4851,15 +4909,6 @@
                 <ScalarProperty Name="UOM_CLASS" ColumnName="UOM_CLASS" />
                 <ScalarProperty Name="UNIT_OF_MEASURE" ColumnName="UNIT_OF_MEASURE" />
                 <ScalarProperty Name="UOM_CODE" ColumnName="UOM_CODE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DAILY_ACTIVITY_STATUS">
-            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_STATUS">
-              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_STATUS">
-                <ScalarProperty Name="STATUS_VALUE" ColumnName="STATUS_VALUE" />
-                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
-                <ScalarProperty Name="STATUS_ID" ColumnName="STATUS_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5582,6 +5631,27 @@
                 <ScalarProperty Name="DA_DATE" ColumnName="DA_DATE" />
                 <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
                 <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DAILY_ACTIVITY_STATUS">
+            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_STATUS">
+              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_STATUS">
+                <ScalarProperty Name="STATUS_VALUE" ColumnName="STATUS_VALUE" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="STATUS_ID" ColumnName="STATUS_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DAILY_ACTIVITY_AUDIT">
+            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_AUDIT">
+              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_AUDIT">
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="TO_STATUS" ColumnName="TO_STATUS" />
+                <ScalarProperty Name="FROM_STATUS" ColumnName="FROM_STATUS" />
+                <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
+                <ScalarProperty Name="AUDIT_ID" ColumnName="AUDIT_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -23,6 +23,7 @@ namespace DBI.Data
             this.DAILY_ACTIVITY_INVENTORY = new HashSet<DAILY_ACTIVITY_INVENTORY>();
             this.DAILY_ACTIVITY_PRODUCTION = new HashSet<DAILY_ACTIVITY_PRODUCTION>();
             this.DAILY_ACTIVITY_WEATHER = new HashSet<DAILY_ACTIVITY_WEATHER>();
+            this.DAILY_ACTIVITY_AUDIT = new HashSet<DAILY_ACTIVITY_AUDIT>();
         }
     
         public long HEADER_ID { get; set; }
@@ -50,5 +51,6 @@ namespace DBI.Data
         public virtual ICollection<DAILY_ACTIVITY_INVENTORY> DAILY_ACTIVITY_INVENTORY { get; set; }
         public virtual ICollection<DAILY_ACTIVITY_PRODUCTION> DAILY_ACTIVITY_PRODUCTION { get; set; }
         public virtual ICollection<DAILY_ACTIVITY_WEATHER> DAILY_ACTIVITY_WEATHER { get; set; }
+        public virtual ICollection<DAILY_ACTIVITY_AUDIT> DAILY_ACTIVITY_AUDIT { get; set; }
     }
 }

@@ -38,7 +38,6 @@ namespace DBI.Data
         public DbSet<PROJECTS_V> PROJECTS_V { get; set; }
         public DbSet<CLASS_CODES_V> CLASS_CODES_V { get; set; }
         public DbSet<UNIT_OF_MEASURE_V> UNIT_OF_MEASURE_V { get; set; }
-        public DbSet<DAILY_ACTIVITY_STATUS> DAILY_ACTIVITY_STATUS { get; set; }
         public DbSet<SYS_ACTIVITY> SYS_ACTIVITY { get; set; }
         public DbSet<CROSSING_DATA_ENTRY> CROSSING_DATA_ENTRY { get; set; }
         public DbSet<CROSSING_SUB_DIVISION> CROSSING_SUB_DIVISION { get; set; }
@@ -59,5 +58,7 @@ namespace DBI.Data
         public DbSet<XXPJ_PREV_WAGE_RATES> XXPJ_PREV_WAGE_RATES { get; set; }
         public DbSet<MTL_TRANSACTIONS_INTERFACE> MTL_TRANSACTIONS_INTERFACE { get; set; }
         public DbSet<DAILY_ACTIVITY_HEADER> DAILY_ACTIVITY_HEADER { get; set; }
+        public DbSet<DAILY_ACTIVITY_STATUS> DAILY_ACTIVITY_STATUS { get; set; }
+        public DbSet<DAILY_ACTIVITY_AUDIT> DAILY_ACTIVITY_AUDIT { get; set; }
     }
 }
