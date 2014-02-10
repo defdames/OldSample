@@ -117,9 +117,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-                var data = (from c in _context.DAILY_ACTIVITY_CHEMICAL_MIX
+                List<DAILY_ACTIVITY_CHEMICAL_MIX> data = (from c in _context.DAILY_ACTIVITY_CHEMICAL_MIX
                             where c.HEADER_ID == HeaderId
-                            select new {c.CHEMICAL_MIX_NUMBER, c.TARGET_AREA, c.GALLON_ACRE, c.GALLON_STARTING, c.GALLON_MIXED, c.GALLON_REMAINING, c.STATE, c.COUNTY, TOTAL = c.GALLON_STARTING + c.GALLON_MIXED, USED = c.GALLON_STARTING + c.GALLON_MIXED - c.GALLON_REMAINING, SPRAYED = (c.GALLON_STARTING + c.GALLON_MIXED - c.GALLON_REMAINING) / c.GALLON_ACRE }).ToList();
+                            select c).ToList();
                 uxChemicalStore.DataSource = data;
                 uxChemicalStore.DataBind();
             }

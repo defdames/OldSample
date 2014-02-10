@@ -90,8 +90,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 List<HeaderData> data = new List<HeaderData>();
 
-                List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime("Hours per day");
-                List<EmployeeData> HoursOver14 = ValidationChecks.checkEmployeeTime("Hours over 14");
+                List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime(24);
+                List<EmployeeData> HoursOver14 = ValidationChecks.checkEmployeeTime(14);
                 List<long> OverlapProjects = ValidationChecks.employeeTimeOverlapCheck();
                 List<long> BusinessUnitProjects = ValidationChecks.EquipmentBusinessUnitCheck();
                 List<long> BusinessUnitEmployees = ValidationChecks.EmployeeBusinessUnitCheck();
@@ -252,7 +252,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             uxPlaceholderWindow.ClearContent();
             long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
-            List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime("Hours per day");
+            List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime(24);
             EmployeeData DuplicatePerDiems = ValidationChecks.checkPerDiem(HeaderId);
             List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
 
