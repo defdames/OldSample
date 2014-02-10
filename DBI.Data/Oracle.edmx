@@ -1494,7 +1494,7 @@
           <Key>
             <PropertyRef Name="CROSSING_ID" />
           </Key>
-          <Property Name="CROSSING_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="CROSSING_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="DOT" Type="varchar2" MaxLength="30" />
           <Property Name="PREF" Type="varchar2" MaxLength="5" />
           <Property Name="MILE_POST" Type="number" Precision="15" Scale="2" />
@@ -1583,7 +1583,7 @@
           <Key>
             <PropertyRef Name="EMPLOYEE_ID" />
           </Key>
-          <Property Name="EMPLOYEE_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="EMPLOYEE_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="HEADER_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="PERSON_ID" Type="number" Nullable="false" Precision="10" />
           <Property Name="EQUIPMENT_ID" Type="number" Precision="15" />
@@ -4232,7 +4232,7 @@
           <Key>
             <PropertyRef Name="EMPLOYEE_ID" />
           </Key>
-          <Property Type="Int64" Name="EMPLOYEE_ID" Nullable="false" />
+          <Property Type="Int64" Name="EMPLOYEE_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
           <Property Type="Int32" Name="PERSON_ID" Nullable="false" />
           <Property Type="Int64" Name="EQUIPMENT_ID" />
@@ -4270,7 +4270,7 @@
           <Key>
             <PropertyRef Name="CROSSING_ID" />
           </Key>
-          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
+          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="DOT" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="PREF" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Type="Decimal" Name="MILE_POST" Precision="15" Scale="2" />
