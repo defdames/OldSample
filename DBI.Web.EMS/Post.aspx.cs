@@ -20,8 +20,12 @@ namespace DBI.Web.EMS
                     XXDBI_DAILY_ACTIVITY_HEADER header;
                     DBI.Data.Interface.createHeaderRecords(138, out header);
                   
-                    //Create Labor Records
-                    DBI.Data.Interface.createLaborRecords(138, header);
+                    List<XXDBI_LABOR_HEADER> laborRecords;
+                    DBI.Data.Interface.createLaborRecords(138, header, out laborRecords);
+
+                    //Create truck records
+                    DBI.Data.Interface.createTruckUsageRecords(138, header, laborRecords);
+
 
              }
         }
