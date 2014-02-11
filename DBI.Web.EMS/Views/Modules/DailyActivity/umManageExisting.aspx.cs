@@ -68,7 +68,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                                join s in _context.DAILY_ACTIVITY_STATUS on d.STATUS equals s.STATUS
                                orderby d.STATUS ascending, d.DA_DATE descending
-                               select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE }).ToList<object>();
+                               select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID }).ToList<object>();
                 }
                 else
                 {
@@ -159,6 +159,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         SEGMENT1 = record.SEGMENT1,
                         LONG_NAME = record.LONG_NAME,
                         STATUS_VALUE = record.STATUS_VALUE,
+                        DA_HEADER_ID = record.DA_HEADER_ID,
                         WARNING = Warning,
                         WARNING_TYPE = WarningType
                     });
@@ -539,14 +540,27 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
 
-            //try
-            //{
-            //    Interface.PostToOracle(HeaderId);
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw (ex);
-            //}
+            try
+            {
+                Interface.PostToOracle(HeaderId);
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Daily Activity posted successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
+            uxManageGrid.Reload();
         }
 
         protected MemoryStream generatePDF(long HeaderId)

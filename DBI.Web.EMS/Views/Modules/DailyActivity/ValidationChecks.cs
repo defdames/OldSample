@@ -300,6 +300,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public DateTime DA_DATE { get; set; }
         public string SEGMENT1 { get; set; }
         public string LONG_NAME { get; set; }
+        public decimal DA_HEADER_ID { get; set; }
         public string STATUS_VALUE { get; set; }
         public string WARNING { get; set; }
         public string WARNING_TYPE { get; set; }

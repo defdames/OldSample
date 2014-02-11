@@ -8,6 +8,41 @@ namespace DBI.Data
 {
     public class Interface
     {
+        public static void PostToOracle(long HeaderId)
+        {
+            XXDBI_DAILY_ACTIVITY_HEADER header;
+            Interface.createHeaderRecords(HeaderId, out header);
+
+            List<XXDBI_LABOR_HEADER> laborRecords;
+            Interface.createLaborRecords(HeaderId, header, out laborRecords);
+
+            //Create truck records
+            Interface.createTruckUsageRecords(HeaderId, header, laborRecords);
+
+            //Create perdiem
+            Interface.createPerDiemRecords(HeaderId, header);
+
+            //Create Inventory 
+            Interface.PostInventory(HeaderId);
+
+            //Create Production
+            Interface.PostProduction(HeaderId);
+
+            //Update Header with Daily Activity ID
+            DAILY_ACTIVITY_HEADER HeaderRecord;
+            using (Entities _context = new Entities())
+            {
+                HeaderRecord = (from d in _context.DAILY_ACTIVITY_HEADER
+                                                      where d.HEADER_ID == HeaderId
+                                                      select d).Single();
+                HeaderRecord.DA_HEADER_ID = header.DA_HEADER_ID;
+                HeaderRecord.STATUS = 4;
+            }
+            GenericData.Update<DAILY_ACTIVITY_HEADER>(HeaderRecord);
+
+
+        }
+
         public static long generateDailyActivityHeaderSequence()
         {
             using (Entities _context = new Entities())
@@ -422,7 +457,7 @@ namespace DBI.Data
             }
             catch (Exception e)
             {
-
+                throw (e);
             }
         }
 
@@ -440,8 +475,8 @@ namespace DBI.Data
 
         public static void PostProduction(long HeaderId)
         {
-            //try
-            //{
+            try
+            {
                 PA_TRANSACTION_INTERFACE_ALL RowToAdd;
                 using (Entities _context = new Entities())
                 {
@@ -487,12 +522,11 @@ namespace DBI.Data
                         
                     }
                 }
-            //}
-            //catch (Exception e)
-            //{
-
-
-            //}
+            }
+            catch (Exception e)
+            {
+                throw (e);
+            }
         }
 
    

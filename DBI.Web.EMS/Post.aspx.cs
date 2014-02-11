@@ -44,10 +44,11 @@ namespace DBI.Web.EMS
                     //Create perdiem
                     DBI.Data.Interface.createPerDiemRecords(61, header);
 
+                    //Create Inventory 
+                    Interface.PostInventory(61);
 
-                    //Interface.PostInventory(61);
-
-                    //Interface.PostProduction(170);
+                    //Create Production
+                    Interface.PostProduction(170);
              }
         }
 

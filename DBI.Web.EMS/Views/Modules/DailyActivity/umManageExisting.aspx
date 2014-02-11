@@ -63,6 +63,7 @@
 								<ext:ModelField Name="SEGMENT1" Type="String" />
 								<ext:ModelField Name="LONG_NAME" Type="String" />
 								<ext:ModelField Name="STATUS_VALUE" Type="String" />
+								<ext:ModelField Name="DA_HEADER_ID" Type="String" />
 								<ext:ModelField Name="WARNING" Type="String" />
 								<ext:ModelField Name="WARNING_TYPE" Type="String" />
 							</Fields>
@@ -81,6 +82,7 @@
 							<ext:Column ID="Column1" runat="server" Text="Project" DataIndex="SEGMENT1" Flex="20"/>
 							<ext:Column runat="server" Text="Project Name" DataIndex="LONG_NAME" Flex="50" />
 							<ext:Column runat="server" Text="Status" DataIndex="STATUS_VALUE" Flex="30" />
+							<ext:Column runat="server" Text="Oracle Header Id" DataIndex="DA_HEADER_ID" Flex="30" />
 						</Columns>
 					</ColumnModel>
 					<View>
