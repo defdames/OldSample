@@ -311,6 +311,113 @@
       "MTL_TRANSACTIONS_INTERFACE"."WIP_SUPPLY_TYPE" AS "WIP_SUPPLY_TYPE"
       FROM "INV"."MTL_TRANSACTIONS_INTERFACE" "MTL_TRANSACTIONS_INTERFACE"</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="PA_TRANSACTION_INTERFACE_ALL" EntityType="OracleModel.Store.PA_TRANSACTION_INTERFACE_ALL" store:Type="Tables" store:Schema="PA" store:Name="PA_TRANSACTION_INTERFACE_ALL">
+            <DefiningQuery>SELECT 
+      "PA_TRANSACTION_INTERFACE_ALL"."TRANSACTION_SOURCE" AS "TRANSACTION_SOURCE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."BATCH_NAME" AS "BATCH_NAME", 
+      "PA_TRANSACTION_INTERFACE_ALL"."EXPENDITURE_ENDING_DATE" AS "EXPENDITURE_ENDING_DATE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."EMPLOYEE_NUMBER" AS "EMPLOYEE_NUMBER", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ORGANIZATION_NAME" AS "ORGANIZATION_NAME", 
+      "PA_TRANSACTION_INTERFACE_ALL"."EXPENDITURE_ITEM_DATE" AS "EXPENDITURE_ITEM_DATE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."PROJECT_NUMBER" AS "PROJECT_NUMBER", 
+      "PA_TRANSACTION_INTERFACE_ALL"."TASK_NUMBER" AS "TASK_NUMBER", 
+      "PA_TRANSACTION_INTERFACE_ALL"."EXPENDITURE_TYPE" AS "EXPENDITURE_TYPE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."NON_LABOR_RESOURCE" AS "NON_LABOR_RESOURCE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."NON_LABOR_RESOURCE_ORG_NAME" AS "NON_LABOR_RESOURCE_ORG_NAME", 
+      "PA_TRANSACTION_INTERFACE_ALL"."QUANTITY" AS "QUANTITY", 
+      "PA_TRANSACTION_INTERFACE_ALL"."RAW_COST" AS "RAW_COST", 
+      "PA_TRANSACTION_INTERFACE_ALL"."EXPENDITURE_COMMENT" AS "EXPENDITURE_COMMENT", 
+      "PA_TRANSACTION_INTERFACE_ALL"."TRANSACTION_STATUS_CODE" AS "TRANSACTION_STATUS_CODE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."TRANSACTION_REJECTION_CODE" AS "TRANSACTION_REJECTION_CODE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."EXPENDITURE_ID" AS "EXPENDITURE_ID", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ORIG_TRANSACTION_REFERENCE" AS "ORIG_TRANSACTION_REFERENCE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ATTRIBUTE_CATEGORY" AS "ATTRIBUTE_CATEGORY", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ATTRIBUTE1" AS "ATTRIBUTE1", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ATTRIBUTE2" AS "ATTRIBUTE2", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ATTRIBUTE3" AS "ATTRIBUTE3", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ATTRIBUTE4" AS "ATTRIBUTE4", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ATTRIBUTE5" AS "ATTRIBUTE5", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ATTRIBUTE6" AS "ATTRIBUTE6", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ATTRIBUTE7" AS "ATTRIBUTE7", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ATTRIBUTE8" AS "ATTRIBUTE8", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ATTRIBUTE9" AS "ATTRIBUTE9", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ATTRIBUTE10" AS "ATTRIBUTE10", 
+      "PA_TRANSACTION_INTERFACE_ALL"."RAW_COST_RATE" AS "RAW_COST_RATE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."INTERFACE_ID" AS "INTERFACE_ID", 
+      "PA_TRANSACTION_INTERFACE_ALL"."UNMATCHED_NEGATIVE_TXN_FLAG" AS "UNMATCHED_NEGATIVE_TXN_FLAG", 
+      "PA_TRANSACTION_INTERFACE_ALL"."EXPENDITURE_ITEM_ID" AS "EXPENDITURE_ITEM_ID", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ORG_ID" AS "ORG_ID", 
+      "PA_TRANSACTION_INTERFACE_ALL"."DR_CODE_COMBINATION_ID" AS "DR_CODE_COMBINATION_ID", 
+      "PA_TRANSACTION_INTERFACE_ALL"."CR_CODE_COMBINATION_ID" AS "CR_CODE_COMBINATION_ID", 
+      "PA_TRANSACTION_INTERFACE_ALL"."CDL_SYSTEM_REFERENCE1" AS "CDL_SYSTEM_REFERENCE1", 
+      "PA_TRANSACTION_INTERFACE_ALL"."CDL_SYSTEM_REFERENCE2" AS "CDL_SYSTEM_REFERENCE2", 
+      "PA_TRANSACTION_INTERFACE_ALL"."CDL_SYSTEM_REFERENCE3" AS "CDL_SYSTEM_REFERENCE3", 
+      "PA_TRANSACTION_INTERFACE_ALL"."GL_DATE" AS "GL_DATE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."BURDENED_COST" AS "BURDENED_COST", 
+      "PA_TRANSACTION_INTERFACE_ALL"."BURDENED_COST_RATE" AS "BURDENED_COST_RATE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."SYSTEM_LINKAGE" AS "SYSTEM_LINKAGE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."TXN_INTERFACE_ID" AS "TXN_INTERFACE_ID", 
+      "PA_TRANSACTION_INTERFACE_ALL"."USER_TRANSACTION_SOURCE" AS "USER_TRANSACTION_SOURCE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."CREATED_BY" AS "CREATED_BY", 
+      "PA_TRANSACTION_INTERFACE_ALL"."CREATION_DATE" AS "CREATION_DATE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."LAST_UPDATED_BY" AS "LAST_UPDATED_BY", 
+      "PA_TRANSACTION_INTERFACE_ALL"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."RECEIPT_CURRENCY_AMOUNT" AS "RECEIPT_CURRENCY_AMOUNT", 
+      "PA_TRANSACTION_INTERFACE_ALL"."RECEIPT_CURRENCY_CODE" AS "RECEIPT_CURRENCY_CODE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."RECEIPT_EXCHANGE_RATE" AS "RECEIPT_EXCHANGE_RATE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."DENOM_CURRENCY_CODE" AS "DENOM_CURRENCY_CODE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."DENOM_RAW_COST" AS "DENOM_RAW_COST", 
+      "PA_TRANSACTION_INTERFACE_ALL"."DENOM_BURDENED_COST" AS "DENOM_BURDENED_COST", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ACCT_RATE_DATE" AS "ACCT_RATE_DATE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ACCT_RATE_TYPE" AS "ACCT_RATE_TYPE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ACCT_EXCHANGE_RATE" AS "ACCT_EXCHANGE_RATE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ACCT_RAW_COST" AS "ACCT_RAW_COST", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ACCT_BURDENED_COST" AS "ACCT_BURDENED_COST", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ACCT_EXCHANGE_ROUNDING_LIMIT" AS "ACCT_EXCHANGE_ROUNDING_LIMIT", 
+      "PA_TRANSACTION_INTERFACE_ALL"."PROJECT_CURRENCY_CODE" AS "PROJECT_CURRENCY_CODE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."PROJECT_RATE_DATE" AS "PROJECT_RATE_DATE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."PROJECT_RATE_TYPE" AS "PROJECT_RATE_TYPE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."PROJECT_EXCHANGE_RATE" AS "PROJECT_EXCHANGE_RATE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ORIG_EXP_TXN_REFERENCE1" AS "ORIG_EXP_TXN_REFERENCE1", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ORIG_EXP_TXN_REFERENCE2" AS "ORIG_EXP_TXN_REFERENCE2", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ORIG_EXP_TXN_REFERENCE3" AS "ORIG_EXP_TXN_REFERENCE3", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ORIG_USER_EXP_TXN_REFERENCE" AS "ORIG_USER_EXP_TXN_REFERENCE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."VENDOR_NUMBER" AS "VENDOR_NUMBER", 
+      "PA_TRANSACTION_INTERFACE_ALL"."OVERRIDE_TO_ORGANIZATION_NAME" AS "OVERRIDE_TO_ORGANIZATION_NAME", 
+      "PA_TRANSACTION_INTERFACE_ALL"."REVERSED_ORIG_TXN_REFERENCE" AS "REVERSED_ORIG_TXN_REFERENCE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."BILLABLE_FLAG" AS "BILLABLE_FLAG", 
+      "PA_TRANSACTION_INTERFACE_ALL"."PERSON_BUSINESS_GROUP_NAME" AS "PERSON_BUSINESS_GROUP_NAME", 
+      "PA_TRANSACTION_INTERFACE_ALL"."PROJFUNC_CURRENCY_CODE" AS "PROJFUNC_CURRENCY_CODE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."PROJFUNC_COST_RATE_TYPE" AS "PROJFUNC_COST_RATE_TYPE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."PROJFUNC_COST_RATE_DATE" AS "PROJFUNC_COST_RATE_DATE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."PROJFUNC_COST_EXCHANGE_RATE" AS "PROJFUNC_COST_EXCHANGE_RATE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."PROJECT_RAW_COST" AS "PROJECT_RAW_COST", 
+      "PA_TRANSACTION_INTERFACE_ALL"."PROJECT_BURDENED_COST" AS "PROJECT_BURDENED_COST", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ASSIGNMENT_NAME" AS "ASSIGNMENT_NAME", 
+      "PA_TRANSACTION_INTERFACE_ALL"."WORK_TYPE_NAME" AS "WORK_TYPE_NAME", 
+      "PA_TRANSACTION_INTERFACE_ALL"."CDL_SYSTEM_REFERENCE4" AS "CDL_SYSTEM_REFERENCE4", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ACCRUAL_FLAG" AS "ACCRUAL_FLAG", 
+      "PA_TRANSACTION_INTERFACE_ALL"."PROJECT_ID" AS "PROJECT_ID", 
+      "PA_TRANSACTION_INTERFACE_ALL"."TASK_ID" AS "TASK_ID", 
+      "PA_TRANSACTION_INTERFACE_ALL"."PERSON_ID" AS "PERSON_ID", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ORGANIZATION_ID" AS "ORGANIZATION_ID", 
+      "PA_TRANSACTION_INTERFACE_ALL"."NON_LABOR_RESOURCE_ORG_ID" AS "NON_LABOR_RESOURCE_ORG_ID", 
+      "PA_TRANSACTION_INTERFACE_ALL"."VENDOR_ID" AS "VENDOR_ID", 
+      "PA_TRANSACTION_INTERFACE_ALL"."OVERRIDE_TO_ORGANIZATION_ID" AS "OVERRIDE_TO_ORGANIZATION_ID", 
+      "PA_TRANSACTION_INTERFACE_ALL"."ASSIGNMENT_ID" AS "ASSIGNMENT_ID", 
+      "PA_TRANSACTION_INTERFACE_ALL"."WORK_TYPE_ID" AS "WORK_TYPE_ID", 
+      "PA_TRANSACTION_INTERFACE_ALL"."PERSON_BUSINESS_GROUP_ID" AS "PERSON_BUSINESS_GROUP_ID", 
+      "PA_TRANSACTION_INTERFACE_ALL"."INVENTORY_ITEM_ID" AS "INVENTORY_ITEM_ID", 
+      "PA_TRANSACTION_INTERFACE_ALL"."WIP_RESOURCE_ID" AS "WIP_RESOURCE_ID", 
+      "PA_TRANSACTION_INTERFACE_ALL"."UNIT_OF_MEASURE" AS "UNIT_OF_MEASURE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."PO_NUMBER" AS "PO_NUMBER", 
+      "PA_TRANSACTION_INTERFACE_ALL"."PO_HEADER_ID" AS "PO_HEADER_ID", 
+      "PA_TRANSACTION_INTERFACE_ALL"."PO_LINE_NUM" AS "PO_LINE_NUM", 
+      "PA_TRANSACTION_INTERFACE_ALL"."PO_LINE_ID" AS "PO_LINE_ID", 
+      "PA_TRANSACTION_INTERFACE_ALL"."PERSON_TYPE" AS "PERSON_TYPE", 
+      "PA_TRANSACTION_INTERFACE_ALL"."PO_PRICE_TYPE" AS "PO_PRICE_TYPE"
+      FROM "PA"."PA_TRANSACTION_INTERFACE_ALL" "PA_TRANSACTION_INTERFACE_ALL"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="XXDBI_DAILY_ACTIVITY_HEADER" EntityType="OracleModel.Store.XXDBI_DAILY_ACTIVITY_HEADER" store:Type="Tables" store:Schema="XXDBI" store:Name="XXDBI_DAILY_ACTIVITY_HEADER">
             <DefiningQuery>SELECT 
       "XXDBI_DAILY_ACTIVITY_HEADER"."DA_HEADER_ID" AS "DA_HEADER_ID", 
@@ -1285,6 +1392,125 @@
           <Property Name="MOVE_TRANSACTION_ID" Type="number" />
           <Property Name="COMPLETION_TRANSACTION_ID" Type="number" />
           <Property Name="WIP_SUPPLY_TYPE" Type="number" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'PA.PA_TRANSACTION_INTERFACE_ALL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="PA_TRANSACTION_INTERFACE_ALL">
+          <Key>
+            <PropertyRef Name="TRANSACTION_SOURCE" />
+            <PropertyRef Name="BATCH_NAME" />
+            <PropertyRef Name="EXPENDITURE_ENDING_DATE" />
+            <PropertyRef Name="EXPENDITURE_ITEM_DATE" />
+            <PropertyRef Name="EXPENDITURE_TYPE" />
+            <PropertyRef Name="QUANTITY" />
+            <PropertyRef Name="TRANSACTION_STATUS_CODE" />
+            <PropertyRef Name="ORIG_TRANSACTION_REFERENCE" />
+            <PropertyRef Name="TXN_INTERFACE_ID" />
+          </Key>
+          <Property Name="TRANSACTION_SOURCE" Type="varchar2" Nullable="false" MaxLength="30" />
+          <Property Name="BATCH_NAME" Type="varchar2" Nullable="false" MaxLength="240" />
+          <Property Name="EXPENDITURE_ENDING_DATE" Type="date" Nullable="false" />
+          <Property Name="EMPLOYEE_NUMBER" Type="varchar2" MaxLength="30" />
+          <Property Name="ORGANIZATION_NAME" Type="varchar2" MaxLength="240" />
+          <Property Name="EXPENDITURE_ITEM_DATE" Type="date" Nullable="false" />
+          <Property Name="PROJECT_NUMBER" Type="varchar2" MaxLength="25" />
+          <Property Name="TASK_NUMBER" Type="varchar2" MaxLength="25" />
+          <Property Name="EXPENDITURE_TYPE" Type="varchar2" Nullable="false" MaxLength="30" />
+          <Property Name="NON_LABOR_RESOURCE" Type="varchar2" MaxLength="20" />
+          <Property Name="NON_LABOR_RESOURCE_ORG_NAME" Type="varchar2" MaxLength="240" />
+          <Property Name="QUANTITY" Type="number" Nullable="false" />
+          <Property Name="RAW_COST" Type="number" />
+          <Property Name="EXPENDITURE_COMMENT" Type="varchar2" MaxLength="240" />
+          <Property Name="TRANSACTION_STATUS_CODE" Type="varchar2" Nullable="false" MaxLength="2" />
+          <Property Name="TRANSACTION_REJECTION_CODE" Type="varchar2" MaxLength="30" />
+          <Property Name="EXPENDITURE_ID" Type="number" Precision="15" />
+          <Property Name="ORIG_TRANSACTION_REFERENCE" Type="varchar2" Nullable="false" MaxLength="30" />
+          <Property Name="ATTRIBUTE_CATEGORY" Type="varchar2" MaxLength="30" />
+          <Property Name="ATTRIBUTE1" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE2" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE3" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE4" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE5" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE6" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE7" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE8" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE9" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE10" Type="varchar2" MaxLength="150" />
+          <Property Name="RAW_COST_RATE" Type="number" Precision="22" Scale="5" />
+          <Property Name="INTERFACE_ID" Type="number" Precision="15" />
+          <Property Name="UNMATCHED_NEGATIVE_TXN_FLAG" Type="varchar2" MaxLength="1" />
+          <Property Name="EXPENDITURE_ITEM_ID" Type="number" Precision="15" />
+          <Property Name="ORG_ID" Type="number" Precision="15" />
+          <Property Name="DR_CODE_COMBINATION_ID" Type="number" Precision="15" />
+          <Property Name="CR_CODE_COMBINATION_ID" Type="number" Precision="15" />
+          <Property Name="CDL_SYSTEM_REFERENCE1" Type="varchar2" MaxLength="30" />
+          <Property Name="CDL_SYSTEM_REFERENCE2" Type="varchar2" MaxLength="30" />
+          <Property Name="CDL_SYSTEM_REFERENCE3" Type="varchar2" MaxLength="30" />
+          <Property Name="GL_DATE" Type="date" />
+          <Property Name="BURDENED_COST" Type="number" Precision="22" Scale="5" />
+          <Property Name="BURDENED_COST_RATE" Type="number" Precision="22" Scale="5" />
+          <Property Name="SYSTEM_LINKAGE" Type="varchar2" MaxLength="30" />
+          <Property Name="TXN_INTERFACE_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="USER_TRANSACTION_SOURCE" Type="varchar2" MaxLength="80" />
+          <Property Name="CREATED_BY" Type="number" Precision="15" />
+          <Property Name="CREATION_DATE" Type="date" />
+          <Property Name="LAST_UPDATED_BY" Type="number" Precision="15" />
+          <Property Name="LAST_UPDATE_DATE" Type="date" />
+          <Property Name="RECEIPT_CURRENCY_AMOUNT" Type="number" />
+          <Property Name="RECEIPT_CURRENCY_CODE" Type="varchar2" MaxLength="15" />
+          <Property Name="RECEIPT_EXCHANGE_RATE" Type="number" />
+          <Property Name="DENOM_CURRENCY_CODE" Type="varchar2" MaxLength="15" />
+          <Property Name="DENOM_RAW_COST" Type="number" />
+          <Property Name="DENOM_BURDENED_COST" Type="number" />
+          <Property Name="ACCT_RATE_DATE" Type="date" />
+          <Property Name="ACCT_RATE_TYPE" Type="varchar2" MaxLength="30" />
+          <Property Name="ACCT_EXCHANGE_RATE" Type="number" />
+          <Property Name="ACCT_RAW_COST" Type="number" />
+          <Property Name="ACCT_BURDENED_COST" Type="number" />
+          <Property Name="ACCT_EXCHANGE_ROUNDING_LIMIT" Type="number" />
+          <Property Name="PROJECT_CURRENCY_CODE" Type="varchar2" MaxLength="15" />
+          <Property Name="PROJECT_RATE_DATE" Type="date" />
+          <Property Name="PROJECT_RATE_TYPE" Type="varchar2" MaxLength="30" />
+          <Property Name="PROJECT_EXCHANGE_RATE" Type="number" />
+          <Property Name="ORIG_EXP_TXN_REFERENCE1" Type="varchar2" MaxLength="60" />
+          <Property Name="ORIG_EXP_TXN_REFERENCE2" Type="varchar2" MaxLength="60" />
+          <Property Name="ORIG_EXP_TXN_REFERENCE3" Type="varchar2" MaxLength="60" />
+          <Property Name="ORIG_USER_EXP_TXN_REFERENCE" Type="varchar2" MaxLength="60" />
+          <Property Name="VENDOR_NUMBER" Type="varchar2" MaxLength="30" />
+          <Property Name="OVERRIDE_TO_ORGANIZATION_NAME" Type="varchar2" MaxLength="240" />
+          <Property Name="REVERSED_ORIG_TXN_REFERENCE" Type="varchar2" MaxLength="30" />
+          <Property Name="BILLABLE_FLAG" Type="varchar2" MaxLength="1" />
+          <Property Name="PERSON_BUSINESS_GROUP_NAME" Type="varchar2" MaxLength="240" />
+          <Property Name="PROJFUNC_CURRENCY_CODE" Type="varchar2" MaxLength="15" />
+          <Property Name="PROJFUNC_COST_RATE_TYPE" Type="varchar2" MaxLength="30" />
+          <Property Name="PROJFUNC_COST_RATE_DATE" Type="date" />
+          <Property Name="PROJFUNC_COST_EXCHANGE_RATE" Type="number" />
+          <Property Name="PROJECT_RAW_COST" Type="number" />
+          <Property Name="PROJECT_BURDENED_COST" Type="number" />
+          <Property Name="ASSIGNMENT_NAME" Type="varchar2" MaxLength="80" />
+          <Property Name="WORK_TYPE_NAME" Type="varchar2" MaxLength="80" />
+          <Property Name="CDL_SYSTEM_REFERENCE4" Type="varchar2" MaxLength="30" />
+          <Property Name="ACCRUAL_FLAG" Type="varchar2" MaxLength="1" />
+          <Property Name="PROJECT_ID" Type="number" Precision="15" />
+          <Property Name="TASK_ID" Type="number" Precision="15" />
+          <Property Name="PERSON_ID" Type="number" Precision="15" />
+          <Property Name="ORGANIZATION_ID" Type="number" Precision="15" />
+          <Property Name="NON_LABOR_RESOURCE_ORG_ID" Type="number" Precision="15" />
+          <Property Name="VENDOR_ID" Type="number" Precision="15" />
+          <Property Name="OVERRIDE_TO_ORGANIZATION_ID" Type="number" Precision="15" />
+          <Property Name="ASSIGNMENT_ID" Type="number" Precision="15" />
+          <Property Name="WORK_TYPE_ID" Type="number" />
+          <Property Name="PERSON_BUSINESS_GROUP_ID" Type="number" Precision="15" />
+          <Property Name="INVENTORY_ITEM_ID" Type="number" />
+          <Property Name="WIP_RESOURCE_ID" Type="number" />
+          <Property Name="UNIT_OF_MEASURE" Type="varchar2" MaxLength="30" />
+          <Property Name="PO_NUMBER" Type="varchar2" MaxLength="20" />
+          <Property Name="PO_HEADER_ID" Type="number" />
+          <Property Name="PO_LINE_NUM" Type="number" />
+          <Property Name="PO_LINE_ID" Type="number" />
+          <Property Name="PERSON_TYPE" Type="varchar2" MaxLength="30" />
+          <Property Name="PO_PRICE_TYPE" Type="varchar2" MaxLength="30" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'XXDBI.XXDBI_DAILY_ACTIVITY_HEADER' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -2643,6 +2869,7 @@
             <End Role="CROSSING" EntitySet="CROSSINGS" />
             <End Role="CROSSING_DATA_ENTRY" EntitySet="CROSSING_DATA_ENTRY" />
           </AssociationSet>
+          <EntitySet Name="PA_TRANSACTION_INTERFACE_ALL" EntityType="OracleModel.PA_TRANSACTION_INTERFACE_ALL" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -4350,6 +4577,122 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="PA_TRANSACTION_INTERFACE_ALL">
+          <Key>
+            <PropertyRef Name="TRANSACTION_SOURCE" />
+            <PropertyRef Name="BATCH_NAME" />
+            <PropertyRef Name="EXPENDITURE_ENDING_DATE" />
+            <PropertyRef Name="EXPENDITURE_ITEM_DATE" />
+            <PropertyRef Name="EXPENDITURE_TYPE" />
+            <PropertyRef Name="QUANTITY" />
+            <PropertyRef Name="TRANSACTION_STATUS_CODE" />
+            <PropertyRef Name="ORIG_TRANSACTION_REFERENCE" />
+            <PropertyRef Name="TXN_INTERFACE_ID" />
+          </Key>
+          <Property Type="String" Name="TRANSACTION_SOURCE" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="BATCH_NAME" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="EXPENDITURE_ENDING_DATE" Nullable="false" />
+          <Property Type="String" Name="EMPLOYEE_NUMBER" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ORGANIZATION_NAME" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="EXPENDITURE_ITEM_DATE" Nullable="false" />
+          <Property Type="String" Name="PROJECT_NUMBER" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="TASK_NUMBER" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EXPENDITURE_TYPE" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="NON_LABOR_RESOURCE" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="NON_LABOR_RESOURCE_ORG_NAME" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="QUANTITY" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="RAW_COST" Precision="38" Scale="0" />
+          <Property Type="String" Name="EXPENDITURE_COMMENT" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="TRANSACTION_STATUS_CODE" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="TRANSACTION_REJECTION_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="EXPENDITURE_ID" />
+          <Property Type="String" Name="ORIG_TRANSACTION_REFERENCE" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE_CATEGORY" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE1" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE2" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE3" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE4" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE5" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE6" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE7" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE8" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE9" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE10" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="RAW_COST_RATE" Precision="22" Scale="5" />
+          <Property Type="Int64" Name="INTERFACE_ID" />
+          <Property Type="String" Name="UNMATCHED_NEGATIVE_TXN_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="EXPENDITURE_ITEM_ID" />
+          <Property Type="Int64" Name="ORG_ID" />
+          <Property Type="Int64" Name="DR_CODE_COMBINATION_ID" />
+          <Property Type="Int64" Name="CR_CODE_COMBINATION_ID" />
+          <Property Type="String" Name="CDL_SYSTEM_REFERENCE1" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CDL_SYSTEM_REFERENCE2" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CDL_SYSTEM_REFERENCE3" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="GL_DATE" />
+          <Property Type="Decimal" Name="BURDENED_COST" Precision="22" Scale="5" />
+          <Property Type="Decimal" Name="BURDENED_COST_RATE" Precision="22" Scale="5" />
+          <Property Type="String" Name="SYSTEM_LINKAGE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="TXN_INTERFACE_ID" Nullable="false" />
+          <Property Type="String" Name="USER_TRANSACTION_SOURCE" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="CREATED_BY" />
+          <Property Type="DateTime" Name="CREATION_DATE" />
+          <Property Type="Int64" Name="LAST_UPDATED_BY" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" />
+          <Property Type="Decimal" Name="RECEIPT_CURRENCY_AMOUNT" Precision="38" Scale="0" />
+          <Property Type="String" Name="RECEIPT_CURRENCY_CODE" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="RECEIPT_EXCHANGE_RATE" Precision="38" Scale="0" />
+          <Property Type="String" Name="DENOM_CURRENCY_CODE" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="DENOM_RAW_COST" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="DENOM_BURDENED_COST" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="ACCT_RATE_DATE" />
+          <Property Type="String" Name="ACCT_RATE_TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="ACCT_EXCHANGE_RATE" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="ACCT_RAW_COST" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="ACCT_BURDENED_COST" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="ACCT_EXCHANGE_ROUNDING_LIMIT" Precision="38" Scale="0" />
+          <Property Type="String" Name="PROJECT_CURRENCY_CODE" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="PROJECT_RATE_DATE" />
+          <Property Type="String" Name="PROJECT_RATE_TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="PROJECT_EXCHANGE_RATE" Precision="38" Scale="0" />
+          <Property Type="String" Name="ORIG_EXP_TXN_REFERENCE1" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ORIG_EXP_TXN_REFERENCE2" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ORIG_EXP_TXN_REFERENCE3" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ORIG_USER_EXP_TXN_REFERENCE" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="VENDOR_NUMBER" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="OVERRIDE_TO_ORGANIZATION_NAME" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="REVERSED_ORIG_TXN_REFERENCE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="BILLABLE_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PERSON_BUSINESS_GROUP_NAME" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROJFUNC_CURRENCY_CODE" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROJFUNC_COST_RATE_TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="PROJFUNC_COST_RATE_DATE" />
+          <Property Type="Decimal" Name="PROJFUNC_COST_EXCHANGE_RATE" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="PROJECT_RAW_COST" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="PROJECT_BURDENED_COST" Precision="38" Scale="0" />
+          <Property Type="String" Name="ASSIGNMENT_NAME" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="WORK_TYPE_NAME" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CDL_SYSTEM_REFERENCE4" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ACCRUAL_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="PROJECT_ID" />
+          <Property Type="Int64" Name="TASK_ID" />
+          <Property Type="Int64" Name="PERSON_ID" />
+          <Property Type="Int64" Name="ORGANIZATION_ID" />
+          <Property Type="Int64" Name="NON_LABOR_RESOURCE_ORG_ID" />
+          <Property Type="Int64" Name="VENDOR_ID" />
+          <Property Type="Int64" Name="OVERRIDE_TO_ORGANIZATION_ID" />
+          <Property Type="Int64" Name="ASSIGNMENT_ID" />
+          <Property Type="Decimal" Name="WORK_TYPE_ID" Precision="38" Scale="0" />
+          <Property Type="Int64" Name="PERSON_BUSINESS_GROUP_ID" />
+          <Property Type="Decimal" Name="INVENTORY_ITEM_ID" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="WIP_RESOURCE_ID" Precision="38" Scale="0" />
+          <Property Type="String" Name="UNIT_OF_MEASURE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PO_NUMBER" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="PO_HEADER_ID" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="PO_LINE_NUM" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="PO_LINE_ID" Precision="38" Scale="0" />
+          <Property Type="String" Name="PERSON_TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PO_PRICE_TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5661,6 +6004,115 @@
                 <ScalarProperty Name="PREF" ColumnName="PREF" />
                 <ScalarProperty Name="DOT" ColumnName="DOT" />
                 <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PA_TRANSACTION_INTERFACE_ALL">
+            <EntityTypeMapping TypeName="OracleModel.PA_TRANSACTION_INTERFACE_ALL">
+              <MappingFragment StoreEntitySet="PA_TRANSACTION_INTERFACE_ALL">
+                <ScalarProperty Name="PO_PRICE_TYPE" ColumnName="PO_PRICE_TYPE" />
+                <ScalarProperty Name="PERSON_TYPE" ColumnName="PERSON_TYPE" />
+                <ScalarProperty Name="PO_LINE_ID" ColumnName="PO_LINE_ID" />
+                <ScalarProperty Name="PO_LINE_NUM" ColumnName="PO_LINE_NUM" />
+                <ScalarProperty Name="PO_HEADER_ID" ColumnName="PO_HEADER_ID" />
+                <ScalarProperty Name="PO_NUMBER" ColumnName="PO_NUMBER" />
+                <ScalarProperty Name="UNIT_OF_MEASURE" ColumnName="UNIT_OF_MEASURE" />
+                <ScalarProperty Name="WIP_RESOURCE_ID" ColumnName="WIP_RESOURCE_ID" />
+                <ScalarProperty Name="INVENTORY_ITEM_ID" ColumnName="INVENTORY_ITEM_ID" />
+                <ScalarProperty Name="PERSON_BUSINESS_GROUP_ID" ColumnName="PERSON_BUSINESS_GROUP_ID" />
+                <ScalarProperty Name="WORK_TYPE_ID" ColumnName="WORK_TYPE_ID" />
+                <ScalarProperty Name="ASSIGNMENT_ID" ColumnName="ASSIGNMENT_ID" />
+                <ScalarProperty Name="OVERRIDE_TO_ORGANIZATION_ID" ColumnName="OVERRIDE_TO_ORGANIZATION_ID" />
+                <ScalarProperty Name="VENDOR_ID" ColumnName="VENDOR_ID" />
+                <ScalarProperty Name="NON_LABOR_RESOURCE_ORG_ID" ColumnName="NON_LABOR_RESOURCE_ORG_ID" />
+                <ScalarProperty Name="ORGANIZATION_ID" ColumnName="ORGANIZATION_ID" />
+                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
+                <ScalarProperty Name="TASK_ID" ColumnName="TASK_ID" />
+                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
+                <ScalarProperty Name="ACCRUAL_FLAG" ColumnName="ACCRUAL_FLAG" />
+                <ScalarProperty Name="CDL_SYSTEM_REFERENCE4" ColumnName="CDL_SYSTEM_REFERENCE4" />
+                <ScalarProperty Name="WORK_TYPE_NAME" ColumnName="WORK_TYPE_NAME" />
+                <ScalarProperty Name="ASSIGNMENT_NAME" ColumnName="ASSIGNMENT_NAME" />
+                <ScalarProperty Name="PROJECT_BURDENED_COST" ColumnName="PROJECT_BURDENED_COST" />
+                <ScalarProperty Name="PROJECT_RAW_COST" ColumnName="PROJECT_RAW_COST" />
+                <ScalarProperty Name="PROJFUNC_COST_EXCHANGE_RATE" ColumnName="PROJFUNC_COST_EXCHANGE_RATE" />
+                <ScalarProperty Name="PROJFUNC_COST_RATE_DATE" ColumnName="PROJFUNC_COST_RATE_DATE" />
+                <ScalarProperty Name="PROJFUNC_COST_RATE_TYPE" ColumnName="PROJFUNC_COST_RATE_TYPE" />
+                <ScalarProperty Name="PROJFUNC_CURRENCY_CODE" ColumnName="PROJFUNC_CURRENCY_CODE" />
+                <ScalarProperty Name="PERSON_BUSINESS_GROUP_NAME" ColumnName="PERSON_BUSINESS_GROUP_NAME" />
+                <ScalarProperty Name="BILLABLE_FLAG" ColumnName="BILLABLE_FLAG" />
+                <ScalarProperty Name="REVERSED_ORIG_TXN_REFERENCE" ColumnName="REVERSED_ORIG_TXN_REFERENCE" />
+                <ScalarProperty Name="OVERRIDE_TO_ORGANIZATION_NAME" ColumnName="OVERRIDE_TO_ORGANIZATION_NAME" />
+                <ScalarProperty Name="VENDOR_NUMBER" ColumnName="VENDOR_NUMBER" />
+                <ScalarProperty Name="ORIG_USER_EXP_TXN_REFERENCE" ColumnName="ORIG_USER_EXP_TXN_REFERENCE" />
+                <ScalarProperty Name="ORIG_EXP_TXN_REFERENCE3" ColumnName="ORIG_EXP_TXN_REFERENCE3" />
+                <ScalarProperty Name="ORIG_EXP_TXN_REFERENCE2" ColumnName="ORIG_EXP_TXN_REFERENCE2" />
+                <ScalarProperty Name="ORIG_EXP_TXN_REFERENCE1" ColumnName="ORIG_EXP_TXN_REFERENCE1" />
+                <ScalarProperty Name="PROJECT_EXCHANGE_RATE" ColumnName="PROJECT_EXCHANGE_RATE" />
+                <ScalarProperty Name="PROJECT_RATE_TYPE" ColumnName="PROJECT_RATE_TYPE" />
+                <ScalarProperty Name="PROJECT_RATE_DATE" ColumnName="PROJECT_RATE_DATE" />
+                <ScalarProperty Name="PROJECT_CURRENCY_CODE" ColumnName="PROJECT_CURRENCY_CODE" />
+                <ScalarProperty Name="ACCT_EXCHANGE_ROUNDING_LIMIT" ColumnName="ACCT_EXCHANGE_ROUNDING_LIMIT" />
+                <ScalarProperty Name="ACCT_BURDENED_COST" ColumnName="ACCT_BURDENED_COST" />
+                <ScalarProperty Name="ACCT_RAW_COST" ColumnName="ACCT_RAW_COST" />
+                <ScalarProperty Name="ACCT_EXCHANGE_RATE" ColumnName="ACCT_EXCHANGE_RATE" />
+                <ScalarProperty Name="ACCT_RATE_TYPE" ColumnName="ACCT_RATE_TYPE" />
+                <ScalarProperty Name="ACCT_RATE_DATE" ColumnName="ACCT_RATE_DATE" />
+                <ScalarProperty Name="DENOM_BURDENED_COST" ColumnName="DENOM_BURDENED_COST" />
+                <ScalarProperty Name="DENOM_RAW_COST" ColumnName="DENOM_RAW_COST" />
+                <ScalarProperty Name="DENOM_CURRENCY_CODE" ColumnName="DENOM_CURRENCY_CODE" />
+                <ScalarProperty Name="RECEIPT_EXCHANGE_RATE" ColumnName="RECEIPT_EXCHANGE_RATE" />
+                <ScalarProperty Name="RECEIPT_CURRENCY_CODE" ColumnName="RECEIPT_CURRENCY_CODE" />
+                <ScalarProperty Name="RECEIPT_CURRENCY_AMOUNT" ColumnName="RECEIPT_CURRENCY_AMOUNT" />
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+                <ScalarProperty Name="CREATION_DATE" ColumnName="CREATION_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="USER_TRANSACTION_SOURCE" ColumnName="USER_TRANSACTION_SOURCE" />
+                <ScalarProperty Name="TXN_INTERFACE_ID" ColumnName="TXN_INTERFACE_ID" />
+                <ScalarProperty Name="SYSTEM_LINKAGE" ColumnName="SYSTEM_LINKAGE" />
+                <ScalarProperty Name="BURDENED_COST_RATE" ColumnName="BURDENED_COST_RATE" />
+                <ScalarProperty Name="BURDENED_COST" ColumnName="BURDENED_COST" />
+                <ScalarProperty Name="GL_DATE" ColumnName="GL_DATE" />
+                <ScalarProperty Name="CDL_SYSTEM_REFERENCE3" ColumnName="CDL_SYSTEM_REFERENCE3" />
+                <ScalarProperty Name="CDL_SYSTEM_REFERENCE2" ColumnName="CDL_SYSTEM_REFERENCE2" />
+                <ScalarProperty Name="CDL_SYSTEM_REFERENCE1" ColumnName="CDL_SYSTEM_REFERENCE1" />
+                <ScalarProperty Name="CR_CODE_COMBINATION_ID" ColumnName="CR_CODE_COMBINATION_ID" />
+                <ScalarProperty Name="DR_CODE_COMBINATION_ID" ColumnName="DR_CODE_COMBINATION_ID" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="EXPENDITURE_ITEM_ID" ColumnName="EXPENDITURE_ITEM_ID" />
+                <ScalarProperty Name="UNMATCHED_NEGATIVE_TXN_FLAG" ColumnName="UNMATCHED_NEGATIVE_TXN_FLAG" />
+                <ScalarProperty Name="INTERFACE_ID" ColumnName="INTERFACE_ID" />
+                <ScalarProperty Name="RAW_COST_RATE" ColumnName="RAW_COST_RATE" />
+                <ScalarProperty Name="ATTRIBUTE10" ColumnName="ATTRIBUTE10" />
+                <ScalarProperty Name="ATTRIBUTE9" ColumnName="ATTRIBUTE9" />
+                <ScalarProperty Name="ATTRIBUTE8" ColumnName="ATTRIBUTE8" />
+                <ScalarProperty Name="ATTRIBUTE7" ColumnName="ATTRIBUTE7" />
+                <ScalarProperty Name="ATTRIBUTE6" ColumnName="ATTRIBUTE6" />
+                <ScalarProperty Name="ATTRIBUTE5" ColumnName="ATTRIBUTE5" />
+                <ScalarProperty Name="ATTRIBUTE4" ColumnName="ATTRIBUTE4" />
+                <ScalarProperty Name="ATTRIBUTE3" ColumnName="ATTRIBUTE3" />
+                <ScalarProperty Name="ATTRIBUTE2" ColumnName="ATTRIBUTE2" />
+                <ScalarProperty Name="ATTRIBUTE1" ColumnName="ATTRIBUTE1" />
+                <ScalarProperty Name="ATTRIBUTE_CATEGORY" ColumnName="ATTRIBUTE_CATEGORY" />
+                <ScalarProperty Name="ORIG_TRANSACTION_REFERENCE" ColumnName="ORIG_TRANSACTION_REFERENCE" />
+                <ScalarProperty Name="EXPENDITURE_ID" ColumnName="EXPENDITURE_ID" />
+                <ScalarProperty Name="TRANSACTION_REJECTION_CODE" ColumnName="TRANSACTION_REJECTION_CODE" />
+                <ScalarProperty Name="TRANSACTION_STATUS_CODE" ColumnName="TRANSACTION_STATUS_CODE" />
+                <ScalarProperty Name="EXPENDITURE_COMMENT" ColumnName="EXPENDITURE_COMMENT" />
+                <ScalarProperty Name="RAW_COST" ColumnName="RAW_COST" />
+                <ScalarProperty Name="QUANTITY" ColumnName="QUANTITY" />
+                <ScalarProperty Name="NON_LABOR_RESOURCE_ORG_NAME" ColumnName="NON_LABOR_RESOURCE_ORG_NAME" />
+                <ScalarProperty Name="NON_LABOR_RESOURCE" ColumnName="NON_LABOR_RESOURCE" />
+                <ScalarProperty Name="EXPENDITURE_TYPE" ColumnName="EXPENDITURE_TYPE" />
+                <ScalarProperty Name="TASK_NUMBER" ColumnName="TASK_NUMBER" />
+                <ScalarProperty Name="PROJECT_NUMBER" ColumnName="PROJECT_NUMBER" />
+                <ScalarProperty Name="EXPENDITURE_ITEM_DATE" ColumnName="EXPENDITURE_ITEM_DATE" />
+                <ScalarProperty Name="ORGANIZATION_NAME" ColumnName="ORGANIZATION_NAME" />
+                <ScalarProperty Name="EMPLOYEE_NUMBER" ColumnName="EMPLOYEE_NUMBER" />
+                <ScalarProperty Name="EXPENDITURE_ENDING_DATE" ColumnName="EXPENDITURE_ENDING_DATE" />
+                <ScalarProperty Name="BATCH_NAME" ColumnName="BATCH_NAME" />
+                <ScalarProperty Name="TRANSACTION_SOURCE" ColumnName="TRANSACTION_SOURCE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
