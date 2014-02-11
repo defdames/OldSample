@@ -339,7 +339,10 @@ namespace DBI.Data
         {
             using (Entities _context = new Entities())
             {
-                return DateTime.Now;
+                DateTime returnDate = (from p in _context.PA_PERIODS_ALL
+                                       where p.ORG_ID == OrgId && HeaderDate >= p.START_DATE && HeaderDate <= p.END_DATE
+                                       select p).Max(p => p.END_DATE);
+                return returnDate;
             }
         }
 
@@ -363,6 +366,8 @@ namespace DBI.Data
                     {
                         if (Production.p.ORG_ID == 123)
                         {
+                            DateTime periodDate = GetPADateFromHeader((DateTime) Production.DA_DATE, 123);
+
                             string transReference = Production.p.SEGMENT1 + Production.d.PRODUCTION_ID.ToString();
                             string batchName = Production.p.SEGMENT1 + DateTime.Now;
                             RowToAdd = new PA_TRANSACTION_INTERFACE_ALL
@@ -371,7 +376,7 @@ namespace DBI.Data
                                 ORIG_TRANSACTION_REFERENCE = transReference,
                                 TRANSACTION_SOURCE = "EMS",
                                 BATCH_NAME = batchName,
-                                EXPENDITURE_ENDING_DATE = (DateTime) Production.DA_DATE,
+                                EXPENDITURE_ENDING_DATE = periodDate,
                                 EXPENDITURE_ITEM_DATE = (DateTime) Production.DA_DATE,
                                 PROJECT_NUMBER = Production.p.SEGMENT1,
                                 TASK_NUMBER = Production.TASK_NUMBER,

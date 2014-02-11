@@ -73,7 +73,7 @@ namespace DBI.Data
                             sqlColumns.Append(",");
                         }
 
-                        if (propInfo.PropertyType == typeof(DateTime))
+                        if (propInfo.PropertyType == typeof(DateTime) || propInfo.PropertyType == typeof(DateTime?))
                         {
                             DateTime dateValue = (DateTime)columnValue;
 
