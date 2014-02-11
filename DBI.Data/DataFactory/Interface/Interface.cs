@@ -67,104 +67,211 @@ namespace DBI.Data
             return returnValue;
         }
 
-
-        public static List<XXDBI_LABOR_HEADER> laborInterfaceRecords(decimal dailyActivityHeaderId, decimal generatedHeaderID, DateTime daDate)
+        public static decimal maxLaborHoursCalculation(List<XXDBI_LABOR_HEADER> laborRecords)
         {
-            List<XXDBI_LABOR_HEADER> records = new List<XXDBI_LABOR_HEADER>();
+            decimal returnValue = 0;
+
+            var r = from records in laborRecords
+                    group records by records.EMPLOYEE_NUMBER into g
+                    orderby g.Key ascending
+                    select new
+                    {
+                        EMPLOYEENUM = g.Key,
+                        TOTALHOURS = g.Sum(h => h.QUANTITY)
+                    };
+            returnValue = r.Max(h => h.TOTALHOURS);
+            return returnValue;
+        }
+
+
+        public static void createHeaderRecords(long dailyActivityHeaderId, out XXDBI_DAILY_ACTIVITY_HEADER xxdbiHeaderRecord)
+        {
             using (Entities _context = new Entities())
             {
 
-                var data = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                            join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                            join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
+                try
+                {
+                     var query = from h in _context.DAILY_ACTIVITY_HEADER
                             join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                             join l in _context.PA_LOCATIONS_V on p.LOCATION_ID equals (long)l.LOCATION_ID
-                            join u in _context.SYS_USER_INFORMATION on d.CREATED_BY equals u.USER_NAME
-                            join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.EQUIPMENT_ID equals eq.EQUIPMENT_ID into equ
-                            from equip in equ.DefaultIfEmpty()
+                            join u in _context.SYS_USER_INFORMATION on h.CREATED_BY equals u.USER_NAME
+                            where h.HEADER_ID == dailyActivityHeaderId
+                            select new { h, p, l, u };
+
+                var data = query.SingleOrDefault();
+
+                XXDBI_DAILY_ACTIVITY_HEADER header = new XXDBI_DAILY_ACTIVITY_HEADER();
+                header.DA_HEADER_ID = generateDailyActivityHeaderSequence();
+                header.STATE = data.l.REGION;
+                header.COUNTY = "NONE";
+                header.ACTIVITY_DATE = (DateTime)data.h.DA_DATE;
+                header.ORG_ID = (Decimal)data.p.ORG_ID;
+                header.PROJECT_NUMBER = data.p.SEGMENT1;
+                header.PROJECT_NAME = data.p.NAME;
+                header.CREATED_BY = data.u.USER_ID;
+                header.CREATION_DATE = DateTime.Now;
+                header.LAST_UPDATED_BY = data.u.USER_ID;
+                header.LAST_UPDATE_DATE = DateTime.Now;
+
+                xxdbiHeaderRecord = header;
+
+                var columns = new[] { "DA_HEADER_ID", "STATE", "COUNTY", "ACTIVITY_DATE", "ORG_ID", "PROJECT_NUMBER", "PROJECT_NAME", "CREATED_BY", "CREATION_DATE", "LAST_UPDATED_BY", "LAST_UPDATE_DATE" };
+                GenericData.Insert<XXDBI_DAILY_ACTIVITY_HEADER>(header, columns, "XXDBI.XXDBI_DAILY_ACTIVITY_HEADER");
+
+                //Update the header
+                data.h.DA_HEADER_ID = header.DA_HEADER_ID;
+                _context.Set<DAILY_ACTIVITY_HEADER>().Attach(data.h);
+                _context.Entry(data.h).State = System.Data.EntityState.Modified;
+                _context.SaveChanges();
+
+                }
+                catch (Exception ex)
+                {
+                    throw(ex);
+                }
+            }
+
+        }
+
+        public static void createLaborRecords(long dailyActivityHeaderId, XXDBI_DAILY_ACTIVITY_HEADER xxdbiDailyActivityHeader, out List<XXDBI_LABOR_HEADER> xxdbiLaborHeaderRecords)
+        {
+            try
+            {
+                List<XXDBI_LABOR_HEADER> records = new List<XXDBI_LABOR_HEADER>();
+                using (Entities _context = new Entities())
+                {
+
+                    var data = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
+                                join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
+                                join l in _context.PA_LOCATIONS_V on p.LOCATION_ID equals (long)l.LOCATION_ID
+                                join u in _context.SYS_USER_INFORMATION on d.CREATED_BY equals u.USER_NAME
+                                join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.EQUIPMENT_ID equals eq.EQUIPMENT_ID into equ
+                                from equip in equ.DefaultIfEmpty()
+                                join pro in _context.DAILY_ACTIVITY_PRODUCTION on d.HEADER_ID equals pro.HEADER_ID into prod
+                                from production in prod.DefaultIfEmpty()
+                                join tsk in _context.PA_TASKS_V on production.TASK_ID equals tsk.TASK_ID into tsks
+                                from tasks in tsks.DefaultIfEmpty()
+                                where d.HEADER_ID == dailyActivityHeaderId
+                                select new
+                                {
+                                    PROJECT_NUMBER = p.SEGMENT1,
+                                    TASK_NUMBER = (tasks.TASK_NUMBER == null) ? "9999" : tasks.TASK_NUMBER,
+                                    EMPLOYEE_NUMBER = e.EMPLOYEE_NUMBER,
+                                    EMP_FULL_NAME = e.EMPLOYEE_NAME,
+                                    ROLE = d.ROLE_TYPE,
+                                    STATE = (d.STATE == null) ? l.REGION : d.STATE,
+                                    COUNTY = (d.COUNTY == null) ? "NONE" : d.COUNTY,
+                                    LAB_HEADER_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE,
+                                    ELEMENT = "Time Entry Wages",
+                                    ADJUSTMENT = "N",
+                                    STATUS = "UNPROCESSED",
+                                    ORG_ID = (decimal)p.ORG_ID,
+                                    CREATED_BY = u.USER_ID,
+                                    LAST_UPDATED_BY = u.USER_ID,
+                                    TIME_IN = d.TIME_IN,
+                                    TIME_OUT = d.TIME_OUT
+                                }).ToList();
+
+                    foreach (var r in data)
+                    {
+                        XXDBI_LABOR_HEADER record = new XXDBI_LABOR_HEADER();
+                        record.LABOR_HEADER_ID = DBI.Data.Interface.generateLaborHeaderSequence();
+                        record.DA_HEADER_ID = xxdbiDailyActivityHeader.DA_HEADER_ID;
+                        record.PROJECT_NUMBER = r.PROJECT_NUMBER;
+                        record.TASK_NUMBER = r.TASK_NUMBER;
+                        record.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
+                        record.EMP_FULL_NAME = r.EMP_FULL_NAME;
+                        record.ROLE = r.ROLE;
+                        record.STATE = r.STATE;
+                        record.COUNTY = r.COUNTY;
+                        record.LAB_HEADER_DATE = r.LAB_HEADER_DATE;
+                        record.QUANTITY = payrollHoursCalculation((DateTime)r.TIME_IN, (DateTime)r.TIME_OUT);
+                        record.ELEMENT = r.ELEMENT;
+                        record.ADJUSTMENT = r.ADJUSTMENT;
+                        record.STATUS = r.STATUS;
+                        record.ORG_ID = r.ORG_ID;
+                        record.CREATED_BY = r.CREATED_BY;
+                        record.CREATION_DATE = DateTime.Now;
+                        record.LAST_UPDATE_DATE = DateTime.Now;
+                        record.LAST_UPDATED_BY = r.LAST_UPDATED_BY;
+                        records.Add(record);
+                    }
+
+                    foreach (XXDBI_LABOR_HEADER record in records)
+                    {
+                        var laborColumns = new[] { "LABOR_HEADER_ID", "DA_HEADER_ID", "PROJECT_NUMBER", "TASK_NUMBER", "EMPLOYEE_NUMBER", "EMP_FULL_NAME", "ROLE", "STATE", "COUNTY", "LAB_HEADER_DATE", "QUANTITY", "ELEMENT", "ADJUSTMENT", "STATUS", "ORG_ID", "CREATED_BY", "CREATION_DATE", "LAST_UPDATE_DATE", "LAST_UPDATED_BY" };
+                        GenericData.Insert<XXDBI_LABOR_HEADER>(record, laborColumns, "XXDBI.XXDBI_LABOR_HEADER");
+                    }
+
+                    xxdbiLaborHeaderRecords = records;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw(ex);
+            }
+           
+        }
+
+      
+        public static void createTruckUsageRecords(long dailyActivityHeaderId, XXDBI_DAILY_ACTIVITY_HEADER dailyActivityHeaderRecord, List<XXDBI_LABOR_HEADER> laborRecords)
+        {
+
+            decimal maxHours = maxLaborHoursCalculation(laborRecords);
+            List<XXDBI_TRUCK_EQUIP_USAGE> records = new List<XXDBI_TRUCK_EQUIP_USAGE>();
+            using (Entities _context = new Entities())
+            {
+                var data = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
+                            join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                            join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                            join u in _context.SYS_USER_INFORMATION on h.CREATED_BY equals u.USER_NAME
                             join pro in _context.DAILY_ACTIVITY_PRODUCTION on d.HEADER_ID equals pro.HEADER_ID into prod
                             from production in prod.DefaultIfEmpty()
                             join tsk in _context.PA_TASKS_V on production.TASK_ID equals tsk.TASK_ID into tsks
                             from tasks in tsks.DefaultIfEmpty()
                             where d.HEADER_ID == dailyActivityHeaderId
-                            select new
-                            {
+                            select new {
+                                TRUCK_EQUIP = p.NAME,
+                                DA_HEADER_ID = dailyActivityHeaderRecord.DA_HEADER_ID,
                                 PROJECT_NUMBER = p.SEGMENT1,
-                                TASK_NUMBER = tasks.TASK_NUMBER,
-                                EMPLOYEE_NUMBER = e.EMPLOYEE_NUMBER,
-                                EMP_FULL_NAME = e.EMPLOYEE_NAME,
-                                ROLE = d.ROLE_TYPE,
-                                STATE = l.REGION,
-                                COUNTY = "NONE",
-                                LAB_HEADER_DATE = daDate,
-                                ELEMENT = "Time Entry Wages",
-                                ADJUSTMENT = "N",
+                                TASK_NUMBER = (tasks.TASK_NUMBER == null) ? "9999" : tasks.TASK_NUMBER,
+                                USAGE_DATE = dailyActivityHeaderRecord.ACTIVITY_DATE,
                                 STATUS = "UNPROCESSED",
-                                ORG_ID = (decimal)p.ORG_ID,
-                                CREATED_BY = u.USER_ID,
-                                LAST_UPDATED_BY = u.USER_ID,
-                                TIME_IN = d.TIME_IN,
-                                TIME_OUT = d.TIME_OUT
-                            }).ToList();
+                                ORG_ID = (Decimal)p.ORG_ID,
+                                USER_ID = u.USER_ID
+                                       });
 
-                foreach (var r in data)
-                {
-                    XXDBI_LABOR_HEADER record = new XXDBI_LABOR_HEADER();
-                    record.LABOR_HEADER_ID = DBI.Data.Interface.generateLaborHeaderSequence();
-                    record.DA_HEADER_ID = generatedHeaderID;
-                    record.PROJECT_NUMBER = r.PROJECT_NUMBER;
-                    record.TASK_NUMBER = r.TASK_NUMBER;
-                    record.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
-                    record.EMP_FULL_NAME = r.EMP_FULL_NAME;
-                    record.ROLE = r.ROLE;
-                    record.STATE = r.STATE;
-                    record.COUNTY = r.COUNTY;
-                    record.LAB_HEADER_DATE = daDate;
-                    record.QUANTITY = payrollHoursCalculation((DateTime)r.TIME_IN, (DateTime)r.TIME_OUT);
-                    record.ELEMENT = r.ELEMENT;
-                    record.ADJUSTMENT = r.ADJUSTMENT;
-                    record.STATUS = r.STATUS;
-                    record.ORG_ID = r.ORG_ID;
-                    record.CREATED_BY = r.CREATED_BY;
-                    record.CREATION_DATE = DateTime.Now;
-                    record.LAST_UPDATE_DATE = DateTime.Now;
-                    record.LAST_UPDATED_BY = r.LAST_UPDATED_BY;
-                    records.Add(record);
-                }
+                            foreach(var r in data)
+                            {
+                               XXDBI_TRUCK_EQUIP_USAGE record = new XXDBI_TRUCK_EQUIP_USAGE();
+                               record.DA_HEADER_ID = r.DA_HEADER_ID;
+                               record.CREATED_BY = r.USER_ID;
+                               record.CREATION_DATE = DateTime.Now;
+                               record.LAST_UPDATED_BY = r.USER_ID;
+                               record.LAST_UPDATE_DATE = DateTime.Now;
+                               record.TRUCK_EQUIP = r.TRUCK_EQUIP;
+                               record.TRANSACTION_ID = generateEquipmentUsageSequence();
+                               record.PROJECT_NUMBER = r.PROJECT_NUMBER;
+                               record.TASK_NUMBER = r.TASK_NUMBER;
+                               record.QUANTITY = maxHours;
+                               record.USAGE_DATE = r.USAGE_DATE;
+                               record.STATUS = r.STATUS;
+                               record.ORG_ID = r.ORG_ID;
+                               records.Add(record);
+                            }
 
-                return records;
+                            foreach (XXDBI_TRUCK_EQUIP_USAGE record in records)
+                            {
+                                var columns = new[] { "TRUCK_EQUIP", "TRANSACTION_ID", "DA_HEADER_ID", "PROJECT_NUMBER", "TASK_NUMBER", "USAGE_DATE", "QUANTITY", "STATUS", "ORG_ID", "CREATED_BY", "CREATION_DATE", "LAST_UPDATED_BY", "LAST_UPDATE_DATE" };
+                                GenericData.Insert<XXDBI_TRUCK_EQUIP_USAGE>(record, columns, "XXDBI.XXDBI_TRUCK_EQUIP_USAGE");
+                            }
+
             }
-        }
 
-        public static XXDBI_DAILY_ACTIVITY_HEADER headerInterfaceRecords(long dailyActivityHeaderId)
-        {
-            using (Entities _context = new Entities())
-            {
 
-                 var query = from h in _context.DAILY_ACTIVITY_HEADER
-                                join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
-                                join l in _context.PA_LOCATIONS_V on p.LOCATION_ID equals (long)l.LOCATION_ID
-                                join u in _context.SYS_USER_INFORMATION on h.CREATED_BY equals u.USER_NAME
-                                where h.HEADER_ID == dailyActivityHeaderId
-                                select new { h, p, l, u };
 
-                    var data = query.Single();
-
-                    XXDBI_DAILY_ACTIVITY_HEADER header = new XXDBI_DAILY_ACTIVITY_HEADER();
-                    header.DA_HEADER_ID = generateDailyActivityHeaderSequence();
-                    header.STATE = data.l.REGION;
-                    header.COUNTY = "NONE";
-                    header.ACTIVITY_DATE = (DateTime)data.h.DA_DATE;
-                    header.ORG_ID = (Decimal)data.p.ORG_ID;
-                    header.PROJECT_NUMBER = data.p.SEGMENT1;
-                    header.PROJECT_NAME = data.p.NAME;
-                    header.CREATED_BY = data.u.USER_ID;
-                    header.CREATION_DATE = DateTime.Now;
-                    header.LAST_UPDATED_BY = data.u.USER_ID;
-                    header.LAST_UPDATE_DATE = DateTime.Now;
-
-                return header;
-            }
         }
 
         public static void PostInventory(long HeaderId)
@@ -240,6 +347,7 @@ namespace DBI.Data
             }
         }
 
+<<<<<<< HEAD
         public static void PostProduction(long HeaderId)
         {
             //try
@@ -290,22 +398,15 @@ namespace DBI.Data
             //}
             //catch (Exception e)
             //{
+=======
+       
+>>>>>>> 9ffc130772fac40d1b65cbf135da187192bcf879
 
             //}
         }
 
-
-
-        //public int GetNextPaTransID()
-        //{
-        //    int? transid = ObjectContext.PA_TRANSACTION_INTERFACE_CP.Max(u => (int?)u.TRANS_ID);
-        //    if (transid == null)
-        //    {
-        //        transid = 0;
-        //    }
-        //    return int.Parse(transid.ToString());
-        //}
-
+   
+      
 
 
     }
