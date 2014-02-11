@@ -248,6 +248,9 @@
     <Compile Include="XXDBI_LABOR_HEADER.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="XXDBI_PER_DIEM.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="XXDBI_TRUCK_EQUIP_USAGE.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>

@@ -62,5 +62,6 @@ namespace DBI.Data
         public DbSet<CROSSING> CROSSINGS { get; set; }
         public DbSet<PA_TRANSACTION_INTERFACE_ALL> PA_TRANSACTION_INTERFACE_ALL { get; set; }
         public DbSet<PA_PERIODS_ALL> PA_PERIODS_ALL { get; set; }
+        public DbSet<XXDBI_PER_DIEM> XXDBI_PER_DIEM { get; set; }
     }
 }

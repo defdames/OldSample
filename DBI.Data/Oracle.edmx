@@ -476,6 +476,29 @@
       "XXDBI_LABOR_HEADER"."OVR_DAILYOT_FLAG" AS "OVR_DAILYOT_FLAG"
       FROM "XXDBI"."XXDBI_LABOR_HEADER" "XXDBI_LABOR_HEADER"</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="XXDBI_PER_DIEM" EntityType="OracleModel.Store.XXDBI_PER_DIEM" store:Type="Tables" store:Schema="XXDBI" store:Name="XXDBI_PER_DIEM">
+            <DefiningQuery>SELECT 
+      "XXDBI_PER_DIEM"."TRANSACTION_ID" AS "TRANSACTION_ID", 
+      "XXDBI_PER_DIEM"."DA_HEADER_ID" AS "DA_HEADER_ID", 
+      "XXDBI_PER_DIEM"."PROJECT_NUMBER" AS "PROJECT_NUMBER", 
+      "XXDBI_PER_DIEM"."TASK_NUMBER" AS "TASK_NUMBER", 
+      "XXDBI_PER_DIEM"."EMPLOYEE_NUMBER" AS "EMPLOYEE_NUMBER", 
+      "XXDBI_PER_DIEM"."EMP_FULL_NAME" AS "EMP_FULL_NAME", 
+      "XXDBI_PER_DIEM"."EXPENDITURE_TYPE" AS "EXPENDITURE_TYPE", 
+      "XXDBI_PER_DIEM"."PER_DIEM_DATE" AS "PER_DIEM_DATE", 
+      "XXDBI_PER_DIEM"."TERMS_NAME" AS "TERMS_NAME", 
+      "XXDBI_PER_DIEM"."AMOUNT" AS "AMOUNT", 
+      "XXDBI_PER_DIEM"."APPROVAL_STATUS" AS "APPROVAL_STATUS", 
+      "XXDBI_PER_DIEM"."STATUS" AS "STATUS", 
+      "XXDBI_PER_DIEM"."REJECTION_REASON" AS "REJECTION_REASON", 
+      "XXDBI_PER_DIEM"."ORG_ID" AS "ORG_ID", 
+      "XXDBI_PER_DIEM"."CREATED_BY" AS "CREATED_BY", 
+      "XXDBI_PER_DIEM"."CREATION_DATE" AS "CREATION_DATE", 
+      "XXDBI_PER_DIEM"."LAST_UPDATED_BY" AS "LAST_UPDATED_BY", 
+      "XXDBI_PER_DIEM"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE", 
+      "XXDBI_PER_DIEM"."LAST_UPDATE_LOGIN" AS "LAST_UPDATE_LOGIN"
+      FROM "XXDBI"."XXDBI_PER_DIEM" "XXDBI_PER_DIEM"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="XXDBI_TRUCK_EQUIP_USAGE" EntityType="OracleModel.Store.XXDBI_TRUCK_EQUIP_USAGE" store:Type="Tables" store:Schema="XXDBI" store:Name="XXDBI_TRUCK_EQUIP_USAGE">
             <DefiningQuery>SELECT 
       "XXDBI_TRUCK_EQUIP_USAGE"."TRUCK_EQUIP" AS "TRUCK_EQUIP", 
@@ -1629,6 +1652,47 @@
           <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" />
           <Property Name="LAST_UPDATE_LOGIN" Type="number" />
           <Property Name="OVR_DAILYOT_FLAG" Type="varchar2" MaxLength="1" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXDBI.XXDBI_PER_DIEM' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="XXDBI_PER_DIEM">
+          <Key>
+            <PropertyRef Name="TRANSACTION_ID" />
+            <PropertyRef Name="DA_HEADER_ID" />
+            <PropertyRef Name="PROJECT_NUMBER" />
+            <PropertyRef Name="TASK_NUMBER" />
+            <PropertyRef Name="EMPLOYEE_NUMBER" />
+            <PropertyRef Name="EMP_FULL_NAME" />
+            <PropertyRef Name="EXPENDITURE_TYPE" />
+            <PropertyRef Name="PER_DIEM_DATE" />
+            <PropertyRef Name="APPROVAL_STATUS" />
+            <PropertyRef Name="STATUS" />
+            <PropertyRef Name="ORG_ID" />
+            <PropertyRef Name="CREATED_BY" />
+            <PropertyRef Name="CREATION_DATE" />
+            <PropertyRef Name="LAST_UPDATED_BY" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+          </Key>
+          <Property Name="TRANSACTION_ID" Type="number" Nullable="false" />
+          <Property Name="DA_HEADER_ID" Type="number" Nullable="false" />
+          <Property Name="PROJECT_NUMBER" Type="varchar2" Nullable="false" MaxLength="50" />
+          <Property Name="TASK_NUMBER" Type="varchar2" Nullable="false" MaxLength="25" />
+          <Property Name="EMPLOYEE_NUMBER" Type="varchar2" Nullable="false" MaxLength="30" />
+          <Property Name="EMP_FULL_NAME" Type="varchar2" Nullable="false" MaxLength="240" />
+          <Property Name="EXPENDITURE_TYPE" Type="varchar2" Nullable="false" MaxLength="30" />
+          <Property Name="PER_DIEM_DATE" Type="date" Nullable="false" />
+          <Property Name="TERMS_NAME" Type="varchar2" MaxLength="50" />
+          <Property Name="AMOUNT" Type="number" />
+          <Property Name="APPROVAL_STATUS" Type="varchar2" Nullable="false" MaxLength="1" />
+          <Property Name="STATUS" Type="varchar2" Nullable="false" MaxLength="50" />
+          <Property Name="REJECTION_REASON" Type="varchar2" MaxLength="100" />
+          <Property Name="ORG_ID" Type="number" Nullable="false" />
+          <Property Name="CREATED_BY" Type="number" Nullable="false" />
+          <Property Name="CREATION_DATE" Type="date" Nullable="false" />
+          <Property Name="LAST_UPDATED_BY" Type="number" Nullable="false" />
+          <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" />
+          <Property Name="LAST_UPDATE_LOGIN" Type="number" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'XXDBI.XXDBI_TRUCK_EQUIP_USAGE' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -2916,6 +2980,7 @@
           </AssociationSet>
           <EntitySet Name="PA_TRANSACTION_INTERFACE_ALL" EntityType="OracleModel.PA_TRANSACTION_INTERFACE_ALL" />
           <EntitySet Name="PA_PERIODS_ALL" EntityType="OracleModel.PA_PERIODS_ALL" />
+          <EntitySet Name="XXDBI_PER_DIEM" EntityType="OracleModel.XXDBI_PER_DIEM" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -4765,6 +4830,44 @@
           <Property Type="String" Name="CURRENT_PA_PERIOD_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Type="Int64" Name="ORG_ID" />
         </EntityType>
+        <EntityType Name="XXDBI_PER_DIEM">
+          <Key>
+            <PropertyRef Name="TRANSACTION_ID" />
+            <PropertyRef Name="DA_HEADER_ID" />
+            <PropertyRef Name="PROJECT_NUMBER" />
+            <PropertyRef Name="TASK_NUMBER" />
+            <PropertyRef Name="EMPLOYEE_NUMBER" />
+            <PropertyRef Name="EMP_FULL_NAME" />
+            <PropertyRef Name="EXPENDITURE_TYPE" />
+            <PropertyRef Name="PER_DIEM_DATE" />
+            <PropertyRef Name="APPROVAL_STATUS" />
+            <PropertyRef Name="STATUS" />
+            <PropertyRef Name="ORG_ID" />
+            <PropertyRef Name="CREATED_BY" />
+            <PropertyRef Name="CREATION_DATE" />
+            <PropertyRef Name="LAST_UPDATED_BY" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+          </Key>
+          <Property Type="Decimal" Name="TRANSACTION_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="DA_HEADER_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="PROJECT_NUMBER" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="TASK_NUMBER" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EMPLOYEE_NUMBER" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EMP_FULL_NAME" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EXPENDITURE_TYPE" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="PER_DIEM_DATE" Nullable="false" />
+          <Property Type="String" Name="TERMS_NAME" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="AMOUNT" Precision="38" Scale="0" />
+          <Property Type="String" Name="APPROVAL_STATUS" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STATUS" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="REJECTION_REASON" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="ORG_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="CREATED_BY" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="CREATION_DATE" Nullable="false" />
+          <Property Type="Decimal" Name="LAST_UPDATED_BY" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
+          <Property Type="Decimal" Name="LAST_UPDATE_LOGIN" Precision="38" Scale="0" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6203,6 +6306,31 @@
                 <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
                 <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
                 <ScalarProperty Name="PERIOD_NAME" ColumnName="PERIOD_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="XXDBI_PER_DIEM">
+            <EntityTypeMapping TypeName="OracleModel.XXDBI_PER_DIEM">
+              <MappingFragment StoreEntitySet="XXDBI_PER_DIEM">
+                <ScalarProperty Name="LAST_UPDATE_LOGIN" ColumnName="LAST_UPDATE_LOGIN" />
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+                <ScalarProperty Name="CREATION_DATE" ColumnName="CREATION_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="REJECTION_REASON" ColumnName="REJECTION_REASON" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="APPROVAL_STATUS" ColumnName="APPROVAL_STATUS" />
+                <ScalarProperty Name="AMOUNT" ColumnName="AMOUNT" />
+                <ScalarProperty Name="TERMS_NAME" ColumnName="TERMS_NAME" />
+                <ScalarProperty Name="PER_DIEM_DATE" ColumnName="PER_DIEM_DATE" />
+                <ScalarProperty Name="EXPENDITURE_TYPE" ColumnName="EXPENDITURE_TYPE" />
+                <ScalarProperty Name="EMP_FULL_NAME" ColumnName="EMP_FULL_NAME" />
+                <ScalarProperty Name="EMPLOYEE_NUMBER" ColumnName="EMPLOYEE_NUMBER" />
+                <ScalarProperty Name="TASK_NUMBER" ColumnName="TASK_NUMBER" />
+                <ScalarProperty Name="PROJECT_NUMBER" ColumnName="PROJECT_NUMBER" />
+                <ScalarProperty Name="DA_HEADER_ID" ColumnName="DA_HEADER_ID" />
+                <ScalarProperty Name="TRANSACTION_ID" ColumnName="TRANSACTION_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
