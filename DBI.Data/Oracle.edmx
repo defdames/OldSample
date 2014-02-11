@@ -311,6 +311,22 @@
       "MTL_TRANSACTIONS_INTERFACE"."WIP_SUPPLY_TYPE" AS "WIP_SUPPLY_TYPE"
       FROM "INV"."MTL_TRANSACTIONS_INTERFACE" "MTL_TRANSACTIONS_INTERFACE"</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="PA_PERIODS_ALL" EntityType="OracleModel.Store.PA_PERIODS_ALL" store:Type="Tables" store:Schema="PA" store:Name="PA_PERIODS_ALL">
+            <DefiningQuery>SELECT 
+      "PA_PERIODS_ALL"."PERIOD_NAME" AS "PERIOD_NAME", 
+      "PA_PERIODS_ALL"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE", 
+      "PA_PERIODS_ALL"."LAST_UPDATED_BY" AS "LAST_UPDATED_BY", 
+      "PA_PERIODS_ALL"."CREATION_DATE" AS "CREATION_DATE", 
+      "PA_PERIODS_ALL"."CREATED_BY" AS "CREATED_BY", 
+      "PA_PERIODS_ALL"."LAST_UPDATE_LOGIN" AS "LAST_UPDATE_LOGIN", 
+      "PA_PERIODS_ALL"."START_DATE" AS "START_DATE", 
+      "PA_PERIODS_ALL"."END_DATE" AS "END_DATE", 
+      "PA_PERIODS_ALL"."STATUS" AS "STATUS", 
+      "PA_PERIODS_ALL"."GL_PERIOD_NAME" AS "GL_PERIOD_NAME", 
+      "PA_PERIODS_ALL"."CURRENT_PA_PERIOD_FLAG" AS "CURRENT_PA_PERIOD_FLAG", 
+      "PA_PERIODS_ALL"."ORG_ID" AS "ORG_ID"
+      FROM "PA"."PA_PERIODS_ALL" "PA_PERIODS_ALL"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="PA_TRANSACTION_INTERFACE_ALL" EntityType="OracleModel.Store.PA_TRANSACTION_INTERFACE_ALL" store:Type="Tables" store:Schema="PA" store:Name="PA_TRANSACTION_INTERFACE_ALL">
             <DefiningQuery>SELECT 
       "PA_TRANSACTION_INTERFACE_ALL"."TRANSACTION_SOURCE" AS "TRANSACTION_SOURCE", 
@@ -1392,6 +1408,35 @@
           <Property Name="MOVE_TRANSACTION_ID" Type="number" />
           <Property Name="COMPLETION_TRANSACTION_ID" Type="number" />
           <Property Name="WIP_SUPPLY_TYPE" Type="number" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'PA.PA_PERIODS_ALL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="PA_PERIODS_ALL">
+          <Key>
+            <PropertyRef Name="PERIOD_NAME" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+            <PropertyRef Name="LAST_UPDATED_BY" />
+            <PropertyRef Name="CREATION_DATE" />
+            <PropertyRef Name="CREATED_BY" />
+            <PropertyRef Name="LAST_UPDATE_LOGIN" />
+            <PropertyRef Name="START_DATE" />
+            <PropertyRef Name="END_DATE" />
+            <PropertyRef Name="STATUS" />
+            <PropertyRef Name="GL_PERIOD_NAME" />
+          </Key>
+          <Property Name="PERIOD_NAME" Type="varchar2" Nullable="false" MaxLength="20" />
+          <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" />
+          <Property Name="LAST_UPDATED_BY" Type="number" Nullable="false" Precision="15" />
+          <Property Name="CREATION_DATE" Type="date" Nullable="false" />
+          <Property Name="CREATED_BY" Type="number" Nullable="false" Precision="15" />
+          <Property Name="LAST_UPDATE_LOGIN" Type="number" Nullable="false" Precision="15" />
+          <Property Name="START_DATE" Type="date" Nullable="false" />
+          <Property Name="END_DATE" Type="date" Nullable="false" />
+          <Property Name="STATUS" Type="varchar2" Nullable="false" MaxLength="1" />
+          <Property Name="GL_PERIOD_NAME" Type="varchar2" Nullable="false" MaxLength="15" />
+          <Property Name="CURRENT_PA_PERIOD_FLAG" Type="varchar2" MaxLength="1" />
+          <Property Name="ORG_ID" Type="number" Precision="15" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'PA.PA_TRANSACTION_INTERFACE_ALL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -2870,6 +2915,7 @@
             <End Role="CROSSING_DATA_ENTRY" EntitySet="CROSSING_DATA_ENTRY" />
           </AssociationSet>
           <EntitySet Name="PA_TRANSACTION_INTERFACE_ALL" EntityType="OracleModel.PA_TRANSACTION_INTERFACE_ALL" />
+          <EntitySet Name="PA_PERIODS_ALL" EntityType="OracleModel.PA_PERIODS_ALL" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -4693,6 +4739,32 @@
           <Property Type="String" Name="PERSON_TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="PO_PRICE_TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="PA_PERIODS_ALL">
+          <Key>
+            <PropertyRef Name="PERIOD_NAME" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+            <PropertyRef Name="LAST_UPDATED_BY" />
+            <PropertyRef Name="CREATION_DATE" />
+            <PropertyRef Name="CREATED_BY" />
+            <PropertyRef Name="LAST_UPDATE_LOGIN" />
+            <PropertyRef Name="START_DATE" />
+            <PropertyRef Name="END_DATE" />
+            <PropertyRef Name="STATUS" />
+            <PropertyRef Name="GL_PERIOD_NAME" />
+          </Key>
+          <Property Type="String" Name="PERIOD_NAME" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
+          <Property Type="Int64" Name="LAST_UPDATED_BY" Nullable="false" />
+          <Property Type="DateTime" Name="CREATION_DATE" Nullable="false" />
+          <Property Type="Int64" Name="CREATED_BY" Nullable="false" />
+          <Property Type="Int64" Name="LAST_UPDATE_LOGIN" Nullable="false" />
+          <Property Type="DateTime" Name="START_DATE" Nullable="false" />
+          <Property Type="DateTime" Name="END_DATE" Nullable="false" />
+          <Property Type="String" Name="STATUS" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="GL_PERIOD_NAME" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CURRENT_PA_PERIOD_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="ORG_ID" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6113,6 +6185,24 @@
                 <ScalarProperty Name="EXPENDITURE_ENDING_DATE" ColumnName="EXPENDITURE_ENDING_DATE" />
                 <ScalarProperty Name="BATCH_NAME" ColumnName="BATCH_NAME" />
                 <ScalarProperty Name="TRANSACTION_SOURCE" ColumnName="TRANSACTION_SOURCE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PA_PERIODS_ALL">
+            <EntityTypeMapping TypeName="OracleModel.PA_PERIODS_ALL">
+              <MappingFragment StoreEntitySet="PA_PERIODS_ALL">
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="CURRENT_PA_PERIOD_FLAG" ColumnName="CURRENT_PA_PERIOD_FLAG" />
+                <ScalarProperty Name="GL_PERIOD_NAME" ColumnName="GL_PERIOD_NAME" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
+                <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
+                <ScalarProperty Name="LAST_UPDATE_LOGIN" ColumnName="LAST_UPDATE_LOGIN" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATION_DATE" ColumnName="CREATION_DATE" />
+                <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="PERIOD_NAME" ColumnName="PERIOD_NAME" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

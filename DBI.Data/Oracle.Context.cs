@@ -61,5 +61,6 @@ namespace DBI.Data
         public DbSet<DAILY_ACTIVITY_EMPLOYEE> DAILY_ACTIVITY_EMPLOYEE { get; set; }
         public DbSet<CROSSING> CROSSINGS { get; set; }
         public DbSet<PA_TRANSACTION_INTERFACE_ALL> PA_TRANSACTION_INTERFACE_ALL { get; set; }
+        public DbSet<PA_PERIODS_ALL> PA_PERIODS_ALL { get; set; }
     }
 }

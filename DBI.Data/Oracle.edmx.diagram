@@ -57,6 +57,7 @@
         <AssociationConnector Association="OracleModel.FK_CROSSINGS_CONTACT_ID" />
         <AssociationConnector Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID" />
         <EntityTypeShape EntityType="OracleModel.PA_TRANSACTION_INTERFACE_ALL" Width="1.5" PointX="2.3981082469216117" PointY="30.295906706850932" />
+        <EntityTypeShape EntityType="OracleModel.PA_PERIODS_ALL" Width="1.5" PointX="5.4906130104747666" PointY="24.072831925038635" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
