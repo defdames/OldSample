@@ -23,13 +23,13 @@ namespace DBI.Data.GMS
             return results;
         }
         public static List<ServiceUnitResponse> ServiceUnitUnits(string proj)
-        {
-            List<ServiceUnitResponse> results = (from u in ServiceUnits() where u.project == proj group u by u.service_unit into x select x.First()).ToList();
+        {          
+            List<ServiceUnitResponse> results = (from s in ServiceUnits() group s by s.service_unit into x select x.First()).Where(a => a.project == proj).ToList();
             return results;
         }
-        public static List<ServiceUnitResponse> ServiceUnitDivisions()
+        public static List<ServiceUnitResponse> ServiceUnitDivisions(string unit)
         {
-            List<ServiceUnitResponse> results = (from s in ServiceUnits() group s by s.sub_division into x select x.First()).ToList();
+            List<ServiceUnitResponse> results = (from s in ServiceUnits() group s by s.sub_division into x select x.First()).Where(a => a.service_unit == unit).ToList();
             return results;
         }
     }
