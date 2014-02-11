@@ -18,8 +18,6 @@ namespace DBI.Mobile.EMS
         protected void Application_Start()
         {
 
-            PassiveSessionConfiguration.ConfigureDefaultSessionDuration(TimeSpan.FromDays(12));
-
             AreaRegistration.RegisterAllAreas();
 
             HttpConfiguration config = GlobalConfiguration.Configuration;

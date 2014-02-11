@@ -25,8 +25,6 @@ namespace DBI.Mobile.EMS
                 EnableSessionToken = true
             };
 
-            
-
             // setup authentication against membership
             authConfig.AddBasicAuthentication((userName, password) => DBI.Core.Security.Authentication.Authenticate(userName, password));
             authConfig.SessionToken.DefaultTokenLifetime = TimeSpan.FromHours(12);
