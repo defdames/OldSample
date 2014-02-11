@@ -193,6 +193,9 @@
     <Compile Include="PA_LOCATIONS_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="PA_PERIODS_ALL.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="PA_ROLES_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
