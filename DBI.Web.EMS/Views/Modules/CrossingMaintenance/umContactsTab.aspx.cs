@@ -16,9 +16,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         {
 
         }
-        /// <summary>
-        /// 
-        /// </summary>
+     
         protected void deContactMainGrid(object sender, StoreReadDataEventArgs e)
         {
 
@@ -27,8 +25,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 List<object> data;
                 data = (from d in _context.CROSSING_CONTACTS
-                        //join c in _context.CROSSINGS
-                        //on d.CROSSING_ID equals c.CROSSING_ID                 
+                                        
                         select new { d.CONTACT_ID, d.CONTACT_NAME, d.WORK_NUMBER, d.CELL_NUMBER, d.RAILROAD }).ToList<object>();
                 int count;
                 uxCurrentContactStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -102,7 +99,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 };
             }
 
-            //Process addition
+            
             GenericData.Insert<CROSSING_CONTACTS>(data);
 
             uxAddContactWindow.Hide();
@@ -250,7 +247,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 List<object> data;
 
-                //Get List of all new headers
+                //Get List of all new contacts
 
                 data = (from d in _context.CROSSING_CONTACTS
                         select new { d.CONTACT_NAME, d.CELL_NUMBER, d.WORK_NUMBER }).ToList<object>();
@@ -267,7 +264,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 List<object> data;
 
-                //Get List of all new headers
+                //Get List of all new crossings
 
                 data = (from d in _context.CROSSINGS
                         where d.CONTACT_ID == null
@@ -276,6 +273,66 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 int count;
                 uxAssignContactCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
             }
+        }
+        protected void deAssignCrossingtoContact(object sender, DirectEventArgs e)
+        {
+            CROSSING_CONTACTS data;
+           
+            //do type conversions
+            long ContactId = long.Parse(e.ExtraParams["contactId"]);
+           
+            //Get record to be edited
+            using (Entities _context = new Entities())
+            {
+               
+                    var contactId = long.Parse(e.ExtraParams["contactId"]);
+                    data = (from d in _context.CROSSING_CONTACTS
+                            where d.CONTACT_ID == contactId
+                            select d).Single();
+                    //try
+                    //{
+                  
+                        long crossingId = long.Parse(e.ExtraParams["crossingId"]);
+                        var crossingdata = (from d in _context.CROSSINGS
+
+                                            where d.CROSSING_ID == crossingId
+
+                                            select
+
+                                                d.CROSSING_ID
+                                            ).Single();
+                      
+                            long CrossingId = long.Parse(e.ExtraParams["crossingId"]);
+                            CrossingId = (crossingdata);
+                        
+                     
+                   
+                    //}
+                    //catch (Exception) { }
+            
+            }
+
+            data.CONTACT_ID = ContactId;
+           
+            
+
+            GenericData.Update<CROSSING_CONTACTS>(data);
+
+            uxAssignContactPanel.Hide();
+            uxContactFormPanel.Reset();
+           
+            
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Crossing to Contact Updated Successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
         }
         protected void deCurrentManagerGrid(object sender, StoreReadDataEventArgs e)
         {

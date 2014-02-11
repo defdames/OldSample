@@ -208,7 +208,9 @@
                         </LayoutConfig>
                         <Items>
                             <ext:GridPanel ID="uxAssignContactGrid" runat="server" Flex="1" SimpleSelect="true" Title="Managers" Margins="0 2 0 0">
-                              
+                                <SelectionModel>
+                                    <ext:RowSelectionModel ID="uxManagerRow" runat="server" Mode="Single" />
+                                 </SelectionModel>
                                 <Store>
                                     <ext:Store runat="server"
                                         ID="uxAssignContactManagerStore"
@@ -241,16 +243,22 @@
                                 <Plugins>
                                     <ext:FilterHeader ID="FilterHeader2" runat="server" />
                                 </Plugins>
-                                <SelectionModel>
-                                    <ext:RowSelectionModel ID="uxManagerRow" runat="server" Mode="Single" />
-                                </SelectionModel>
+                              
+                                        <DirectEvents>
+                                            <Select OnEvent="deAssignCrossingtoContact">
+                                            <ExtraParams>
+                                          <ext:Parameter Name="contactId" Value="#{uxAssignContactGrid}.getSelectionModel().getSelection()[0].data.CONTACT_ID" Mode="Raw" />
+                                            </ExtraParams>
+                                                </Select>
+                                             </DirectEvents>
+                                        
                                 <BottomBar>
                                     <ext:PagingToolbar ID="PagingToolbar2" runat="server" />
                                 </BottomBar>
 
                             </ext:GridPanel>
                             <%--  ---------------------------------------------------------------------------------------------------------------------%>
-                            <ext:GridPanel ID="GridPanel4" runat="server" Flex="1" Title="Crossings" Margins="0 2 0 0">
+                            <ext:GridPanel ID="uxAssignCrossingGrid" runat="server" Flex="1" Title="Crossings" Margins="0 2 0 0">
                                 <Store>
                                     <ext:Store runat="server"
                                         ID="uxAssignContactCrossingStore"
@@ -287,6 +295,13 @@
                                 <SelectionModel>
                                     <ext:CheckboxSelectionModel ID="uxCrossingCheckBox" runat="server" Mode="Multi" />
                                 </SelectionModel>
+                                 <DirectEvents>
+                                            <Select OnEvent="deAssignCrossingtoContact">
+                                            <ExtraParams>
+                                          <ext:Parameter Name="crossingId" Value="#{uxAssignCrossingGrid}.getSelectionModel().getSelected().data.CROSSING_ID" Mode="Raw" />
+                                            </ExtraParams>
+                                                </Select>
+                                             </DirectEvents>
                                 <BottomBar>
                                     <ext:PagingToolbar ID="PagingToolbar4" runat="server" />
                                 </BottomBar>
@@ -300,7 +315,12 @@
                                              
                             <ext:Button ID="uxApplyButtonCON" runat="server" Text="Associate" Icon="ArrowJoin" >
                                  <DirectEvents>
-                                    <Click OnEvent="deAssignCrossingtoContact" />
+                                    <Click OnEvent="deAssignCrossingtoContact" >
+                                      <ExtraParams>
+                                       <ext:Parameter Name="contactId" Value="#{uxAssignContactGrid}.getSelectionModel().getSelection()[0].data.CONTACT_ID" Mode="Raw" />
+                                       <ext:Parameter Name="crossingId" Value="#{uxAssignCrossingGrid}.getSelectionModel().getSelected().data.CROSSING_ID" Mode="Raw" />
+                                       </ExtraParams>
+                                        </Click>
                                 </DirectEvents>
                                 </ext:Button>
                             <ext:Button ID="CancelButtonCON" runat="server" Text="Cancel" Icon="Delete" >

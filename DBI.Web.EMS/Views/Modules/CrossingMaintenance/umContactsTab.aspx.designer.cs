@@ -517,6 +517,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.GridPanel uxAssignContactGrid;
         
         /// <summary>
+        /// uxManagerRow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxManagerRow;
+        
+        /// <summary>
         /// uxAssignContactManagerStore control.
         /// </summary>
         /// <remarks>
@@ -571,15 +580,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FilterHeader FilterHeader2;
         
         /// <summary>
-        /// uxManagerRow control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.RowSelectionModel uxManagerRow;
-        
-        /// <summary>
         /// PagingToolbar2 control.
         /// </summary>
         /// <remarks>
@@ -589,13 +589,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.PagingToolbar PagingToolbar2;
         
         /// <summary>
-        /// GridPanel4 control.
+        /// uxAssignCrossingGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel GridPanel4;
+        protected global::Ext.Net.GridPanel uxAssignCrossingGrid;
         
         /// <summary>
         /// uxAssignContactCrossingStore control.
