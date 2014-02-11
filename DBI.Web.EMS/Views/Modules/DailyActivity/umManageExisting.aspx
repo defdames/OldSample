@@ -25,13 +25,13 @@
 		};
 
 		var beforeShow = function (toolTip, grid) {
-		    var view = grid.getView(),
+			var view = grid.getView(),
 				record = view.getRecord(toolTip.triggerElement),
 				data = record.data.WARNING_TYPE;
-		    if (data == "") {
-		        return false;
-		    }
-		    return true;
+			if (data == "") {
+				return false;
+			}
+			return true;
 		};
 	</script>
 	<style type="text/css">
@@ -172,7 +172,13 @@
 									Text="Post to Oracle"
 									Icon="ApplicationGet"
 									Disabled="true">
-
+									<DirectEvents>
+										<Click OnEvent="dePostToOracle">
+											<ExtraParams>
+												<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
+											</ExtraParams>
+										</Click>
+									</DirectEvents>
 								</ext:Button>
 								<ext:Button runat="server"
 									ID="uxExportToPDF"

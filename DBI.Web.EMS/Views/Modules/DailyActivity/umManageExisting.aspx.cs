@@ -535,6 +535,20 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        protected void dePostToOracle(object sender, DirectEventArgs e)
+        {
+            long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
+
+            //try
+            //{
+            //    Interface.PostToOracle(HeaderId);
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw (ex);
+            //}
+        }
+
         protected MemoryStream generatePDF(long HeaderId)
         {
             using (MemoryStream PdfStream = new MemoryStream())
