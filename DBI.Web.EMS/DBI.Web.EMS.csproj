@@ -129,6 +129,7 @@
     <Content Include="Views\Modules\DailyActivity\umAddEditProduction_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umAddEditWeather.aspx" />
     <Content Include="Views\Modules\DailyActivity\umChemicalTab.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umChooseLunchHeader.aspx" />
     <Content Include="Views\Modules\DailyActivity\umChoosePerDiem.aspx" />
     <Content Include="Views\Modules\DailyActivity\umCombinedTab_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umCombinedTab_IRM.aspx" />
@@ -284,6 +285,13 @@
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umChemicalTab.aspx.designer.cs">
       <DependentUpon>umChemicalTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umChooseLunchHeader.aspx.cs">
+      <DependentUpon>umChooseLunchHeader.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umChooseLunchHeader.aspx.designer.cs">
+      <DependentUpon>umChooseLunchHeader.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umChoosePerDiem.aspx.cs">
       <DependentUpon>umChoosePerDiem.aspx</DependentUpon>

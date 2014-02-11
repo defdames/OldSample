@@ -211,6 +211,7 @@ namespace DBI.Data
            
         }
 
+<<<<<<< HEAD
       
         public static void createTruckUsageRecords(long dailyActivityHeaderId, XXDBI_DAILY_ACTIVITY_HEADER dailyActivityHeaderRecord, List<XXDBI_LABOR_HEADER> laborRecords)
         {
@@ -266,10 +267,7 @@ namespace DBI.Data
 
             }
 
-
-
-        }
-
+=======
         public static void PostInventory(long HeaderId)
         {
             List<MTL_TRANSACTIONS_INTERFACE> RecordsToInsert = new List<MTL_TRANSACTIONS_INTERFACE>();
@@ -327,6 +325,11 @@ namespace DBI.Data
                 
             }
         }
+>>>>>>> develop
+
+
+        }
+
 
        
 

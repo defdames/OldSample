@@ -26,7 +26,7 @@ namespace DBI.Web.EMS
                     //Create truck records
                     DBI.Data.Interface.createTruckUsageRecords(138, header, laborRecords);
 
-
+                    Interface.PostInventory(61);
              }
         }
 

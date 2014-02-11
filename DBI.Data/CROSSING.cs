@@ -71,7 +71,7 @@ namespace DBI.Data
         public Nullable<long> CONTACT_ID { get; set; }
         public string RAILROAD { get; set; }
         public string SERVICE_UNIT { get; set; }
-    
+        public Nullable<long> PROJECT_ID { get; set; }
         public virtual CROSSING_CONTACTS CROSSING_CONTACTS { get; set; }
         public virtual ICollection<CROSSING_DATA_ENTRY> CROSSING_DATA_ENTRY { get; set; }
     }
