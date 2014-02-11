@@ -48,9 +48,19 @@ namespace DBI.Data
             }
         }
 
+        public static long generatePerDiemSequence()
+        {
+            using (Entities _context = new Entities())
+            {
+                string sql = @"select XXDBI.XXDBI_PERDIEMTRANSID_S.NEXTVAL from dual";
+                long query = _context.Database.SqlQuery<long>(sql).First();
+                return query;
+            }
+        }
 
 
-        public static decimal payrollHoursCalculation(DateTime dateIn, DateTime dateOut)
+
+        public static decimal payrollHoursCalculation(DateTime dateIn, DateTime dateOut, string lunchFlag, decimal? lunchAmount)
         {
             TimeSpan span = dateOut.Subtract(dateIn);
             double calc = (span.Minutes > 0 && span.Minutes <= 8) ? 0
@@ -60,7 +70,14 @@ namespace DBI.Data
                          : (span.Minutes > 53 && span.Minutes <= 60) ? 1
                          : 0;
             decimal returnValue = span.Hours + (decimal)calc;
-            return returnValue;
+
+            //Lunch calculation 
+            if(lunchFlag == "Y")
+            {
+                returnValue = returnValue - (decimal)((lunchAmount == 30) ? .50 : 1);
+            }
+
+             return returnValue;
         }
 
         public static decimal maxLaborHoursCalculation(List<XXDBI_LABOR_HEADER> laborRecords)
@@ -167,7 +184,9 @@ namespace DBI.Data
                                     CREATED_BY = u.USER_ID,
                                     LAST_UPDATED_BY = u.USER_ID,
                                     TIME_IN = d.TIME_IN,
-                                    TIME_OUT = d.TIME_OUT
+                                    TIME_OUT = d.TIME_OUT,
+                                    LUNCH_FLAG = d.LUNCH,
+                                    LUNCH_LENGTH = d.LUNCH_LENGTH
                                 }).ToList();
 
                     foreach (var r in data)
@@ -183,7 +202,7 @@ namespace DBI.Data
                         record.STATE = r.STATE;
                         record.COUNTY = r.COUNTY;
                         record.LAB_HEADER_DATE = r.LAB_HEADER_DATE;
-                        record.QUANTITY = payrollHoursCalculation((DateTime)r.TIME_IN, (DateTime)r.TIME_OUT);
+                        record.QUANTITY = payrollHoursCalculation((DateTime)r.TIME_IN, (DateTime)r.TIME_OUT,r.LUNCH_FLAG,r.LUNCH_LENGTH);
                         record.ELEMENT = r.ELEMENT;
                         record.ADJUSTMENT = r.ADJUSTMENT;
                         record.STATUS = r.STATUS;
@@ -209,6 +228,81 @@ namespace DBI.Data
                 throw(ex);
             }
            
+        }
+
+        public static void createPerDiemRecords(long dailyActivityHeaderId, XXDBI_DAILY_ACTIVITY_HEADER xxdbiDailyActivityHeader)
+        {
+            try
+            {
+                List<XXDBI_PER_DIEM> records = new List<XXDBI_PER_DIEM>();
+                using (Entities _context = new Entities())
+                {
+
+                    var data = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
+                                join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
+                                join l in _context.PA_LOCATIONS_V on p.LOCATION_ID equals (long)l.LOCATION_ID
+                                join u in _context.SYS_USER_INFORMATION on d.CREATED_BY equals u.USER_NAME
+                                join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.EQUIPMENT_ID equals eq.EQUIPMENT_ID into equ
+                                from equip in equ.DefaultIfEmpty()
+                                join pro in _context.DAILY_ACTIVITY_PRODUCTION on d.HEADER_ID equals pro.HEADER_ID into prod
+                                from production in prod.DefaultIfEmpty()
+                                join tsk in _context.PA_TASKS_V on production.TASK_ID equals tsk.TASK_ID into tsks
+                                from tasks in tsks.DefaultIfEmpty()
+                                where d.HEADER_ID == dailyActivityHeaderId && d.PER_DIEM == "Y"
+                                select new
+                                {
+                                    DA_HEADER_ID = xxdbiDailyActivityHeader.DA_HEADER_ID,
+                                    PROJECT_NUMBER = xxdbiDailyActivityHeader.PROJECT_NUMBER,
+                                    TASK_NUMBER = (tasks.TASK_NUMBER == null) ? "9999" : tasks.TASK_NUMBER,
+                                    EMPLOYEE_NUMBER = e.EMPLOYEE_NUMBER,
+                                    EMP_FULL_NAME = e.EMPLOYEE_NAME,
+                                    EXPENDITURE_TYPE = "PER DIEM",
+                                    PER_DIEM_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE,
+                                    AMOUNT = (xxdbiDailyActivityHeader.ORG_ID == 121) ? 25.00 : (xxdbiDailyActivityHeader.ORG_ID == 123) ? 35.00 : 25.00,
+                                    APPROVAL_STATUS = "N",
+                                    STATUS = "UNPROCESSED",
+                                    ORG_ID = (decimal)p.ORG_ID,
+                                    CREATED_BY = u.USER_ID,
+                                    LAST_UPDATED_BY = u.USER_ID,
+                                }).ToList();
+
+                    foreach (var r in data)
+                    {
+                        XXDBI_PER_DIEM record = new XXDBI_PER_DIEM();
+                        record.TRANSACTION_ID = DBI.Data.Interface.generatePerDiemSequence();
+                        record.DA_HEADER_ID = r.DA_HEADER_ID;
+                        record.PROJECT_NUMBER = r.PROJECT_NUMBER;
+                        record.TASK_NUMBER = r.TASK_NUMBER;
+                        record.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
+                        record.EMP_FULL_NAME = r.EMP_FULL_NAME;
+                        record.EXPENDITURE_TYPE = r.EXPENDITURE_TYPE;
+                        record.PER_DIEM_DATE = r.PER_DIEM_DATE;
+                        record.AMOUNT = (decimal)r.AMOUNT;
+                        record.APPROVAL_STATUS = r.APPROVAL_STATUS;
+                        record.STATUS = r.STATUS;
+                        record.ORG_ID = r.ORG_ID;
+                        record.CREATED_BY = r.CREATED_BY;
+                        record.CREATION_DATE = DateTime.Now;
+                        record.LAST_UPDATE_DATE = DateTime.Now;
+                        record.LAST_UPDATED_BY = r.LAST_UPDATED_BY;
+                        records.Add(record);
+                    }
+
+                    foreach (XXDBI_PER_DIEM record in records)
+                    {
+                        var columns = new[] { "TRANSACTION_ID", "DA_HEADER_ID", "PROJECT_NUMBER", "TASK_NUMBER", "EMPLOYEE_NUMBER", "EMP_FULL_NAME", "EXPENDITURE_TYPE", "PER_DIEM_DATE", "AMOUNT", "APPROVAL_STATUS", "STATUS", "ORG_ID", "CREATED_BY", "CREATION_DATE", "LAST_UPDATE_DATE", "LAST_UPDATED_BY" };
+                        GenericData.Insert<XXDBI_PER_DIEM>(record, columns, "XXDBI.XXDBI_PER_DIEM");
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+
         }
 
       
@@ -263,10 +357,7 @@ namespace DBI.Data
                                 var columns = new[] { "TRUCK_EQUIP", "TRANSACTION_ID", "DA_HEADER_ID", "PROJECT_NUMBER", "TASK_NUMBER", "USAGE_DATE", "QUANTITY", "STATUS", "ORG_ID", "CREATED_BY", "CREATION_DATE", "LAST_UPDATED_BY", "LAST_UPDATE_DATE" };
                                 GenericData.Insert<XXDBI_TRUCK_EQUIP_USAGE>(record, columns, "XXDBI.XXDBI_TRUCK_EQUIP_USAGE");
                             }
-
             }
-
-
 
         }
 
