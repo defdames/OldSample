@@ -38,20 +38,16 @@ namespace DBI.Data
             }
         }
 
-
-        public IQueryable dailyActivityRecordById(long dailyActivityHeaderId)
+        public static long generateEquipmentUsageSequence()
         {
             using (Entities _context = new Entities())
             {
-                var query = from h in _context.DAILY_ACTIVITY_HEADER
-                            join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
-                            join l in _context.PA_LOCATIONS_V on p.LOCATION_ID equals (long)l.LOCATION_ID
-                            join u in _context.SYS_USER_INFORMATION on h.CREATED_BY equals u.USER_NAME
-                            where h.HEADER_ID == dailyActivityHeaderId
-                            select new { h, p, l, u };
+                string sql = @"select XXDBI.XXDBI_MTLTRANSID_S.NEXTVAL from dual";
+                long query = _context.Database.SqlQuery<long>(sql).First();
                 return query;
             }
         }
+
 
 
         public static decimal payrollHoursCalculation(DateTime dateIn, DateTime dateOut)
@@ -347,7 +343,7 @@ namespace DBI.Data
             }
         }
 
-<<<<<<< HEAD
+
         public static void PostProduction(long HeaderId)
         {
             //try
@@ -398,9 +394,7 @@ namespace DBI.Data
             //}
             //catch (Exception e)
             //{
-=======
-       
->>>>>>> 9ffc130772fac40d1b65cbf135da187192bcf879
+
 
             //}
         }

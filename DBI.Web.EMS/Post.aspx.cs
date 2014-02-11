@@ -16,6 +16,7 @@ namespace DBI.Web.EMS
             // Post to Oracle
              using (Entities _context = new Entities())
                 {
+
                     //DAILY_ACTIVITY_HEADER headerQuery = _context.DAILY_ACTIVITY_HEADER.Where(h => h.HEADER_ID == 137).SingleOrDefault();
 
                     //XXDBI_DAILY_ACTIVITY_HEADER header = DBI.Data.Interface.headerInterfaceRecords(headerQuery.HEADER_ID);
@@ -29,6 +30,17 @@ namespace DBI.Web.EMS
                     //    var laborColumns = new[] { "LABOR_HEADER_ID", "DA_HEADER_ID", "PROJECT_NUMBER", "TASK_NUMBER", "EMPLOYEE_NUMBER", "EMP_FULL_NAME", "ROLE", "STATE", "COUNTY", "LAB_HEADER_DATE", "QUANTITY", "ELEMENT", "ADJUSTMENT", "STATUS", "ORG_ID", "CREATED_BY", "CREATION_DATE", "LAST_UPDATE_DATE", "LAST_UPDATED_BY" };
                     //    GenericData.Insert<XXDBI_LABOR_HEADER>(record, laborColumns, "XXDBI.XXDBI_LABOR_HEADER");
                     //}
+
+                    //Create header record
+                    XXDBI_DAILY_ACTIVITY_HEADER header;
+                    DBI.Data.Interface.createHeaderRecords(138, out header);
+                  
+                    List<XXDBI_LABOR_HEADER> laborRecords;
+                    DBI.Data.Interface.createLaborRecords(138, header, out laborRecords);
+
+                    //Create truck records
+                    DBI.Data.Interface.createTruckUsageRecords(138, header, laborRecords);
+
 
                     //Interface.PostInventory(61);
 
