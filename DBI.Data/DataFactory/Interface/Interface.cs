@@ -119,16 +119,24 @@ namespace DBI.Data
         {
             decimal returnValue = 0;
 
-            var r = from records in laborRecords
-                    group records by records.EMPLOYEE_NUMBER into g
-                    orderby g.Key ascending
-                    select new
-                    {
-                        EMPLOYEENUM = g.Key,
-                        TOTALHOURS = g.Sum(h => h.QUANTITY)
-                    };
-            returnValue = r.Max(h => h.TOTALHOURS);
+            if (laborRecords.Count > 1)
+            {
+                var r = from records in laborRecords
+                        group records by records.EMPLOYEE_NUMBER into g
+                        orderby g.Key ascending
+                        select new
+                        {
+                            EMPLOYEENUM = g.Key,
+                            TOTALHOURS = g.Sum(h => h.QUANTITY)
+                        };
+                returnValue = r.Max(h => h.TOTALHOURS);
+            }
+            else
+            {
+                returnValue = 0;
+            }
             return returnValue;
+
         }
 
 
@@ -343,7 +351,6 @@ namespace DBI.Data
       
         public static void createTruckUsageRecords(long dailyActivityHeaderId, XXDBI_DAILY_ACTIVITY_HEADER dailyActivityHeaderRecord, List<XXDBI_LABOR_HEADER> laborRecords)
         {
-
             decimal maxHours = maxLaborHoursCalculation(laborRecords);
             List<XXDBI_TRUCK_EQUIP_USAGE> records = new List<XXDBI_TRUCK_EQUIP_USAGE>();
             using (Entities _context = new Entities())
