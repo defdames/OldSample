@@ -26,7 +26,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                      group d by new {d.DAILY_ACTIVITY_HEADER.DA_DATE, d.PERSON_ID } into g
                                      select new { g.Key.PERSON_ID, g.Key.DA_DATE, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value))}).ToList();
 
-                int i = 0;
                 List<EmployeeData> OffendingProjects = new List<EmployeeData>();
                 foreach (var TotalHour in TotalHoursList)
                 {

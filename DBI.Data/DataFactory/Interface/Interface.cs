@@ -169,63 +169,130 @@ namespace DBI.Data
 
         public static void PostInventory(long HeaderId)
         {
-            List<MTL_TRANSACTIONS_INTERFACE> RecordsToInsert = new List<MTL_TRANSACTIONS_INTERFACE>();
-            using (Entities _context = new Entities())
+            try
             {
-                var InventoryList = (from i in _context.DAILY_ACTIVITY_INVENTORY
-                                     join u in _context.SYS_USER_INFORMATION on i.MODIFIED_BY equals u.USER_NAME
-                                     join h in _context.DAILY_ACTIVITY_HEADER on i.HEADER_ID equals h.HEADER_ID
-                                     join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
-                                     join iv in _context.INVENTORY_V on i.ITEM_ID equals iv.ITEM_ID
-                                     where i.HEADER_ID == HeaderId
-                                     select new{i, iv, u.USER_ID, p.ORG_ID}).ToList();
-
-                int InventoryCount = 1;
-                foreach (var InventoryItem in InventoryList)
+                List<MTL_TRANSACTIONS_INTERFACE> RecordsToInsert = new List<MTL_TRANSACTIONS_INTERFACE>();
+                using (Entities _context = new Entities())
                 {
-                    decimal TransactionType;
-                    if (InventoryItem.ORG_ID == 121)
+                    var InventoryList = (from i in _context.DAILY_ACTIVITY_INVENTORY
+                                         join u in _context.SYS_USER_INFORMATION on i.MODIFIED_BY equals u.USER_NAME
+                                         join h in _context.DAILY_ACTIVITY_HEADER on i.HEADER_ID equals h.HEADER_ID
+                                         join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
+                                         join iv in _context.INVENTORY_V on i.ITEM_ID equals iv.ITEM_ID
+                                         where i.HEADER_ID == HeaderId
+                                         select new { i, iv, u.USER_ID, p.ORG_ID }).ToList();
+
+                    int InventoryCount = 1;
+                    foreach (var InventoryItem in InventoryList)
                     {
-                        TransactionType = 161;
+                        decimal TransactionType;
+                        if (InventoryItem.ORG_ID == 121)
+                        {
+                            TransactionType = 161;
+                        }
+                        else
+                        {
+                            TransactionType = 120;
+                        }
+                        decimal Quantity = -Math.Abs((decimal)InventoryItem.i.RATE);
+                        MTL_TRANSACTIONS_INTERFACE Record = new MTL_TRANSACTIONS_INTERFACE
+                        {
+                            SOURCE_CODE = "EMS",
+                            SOURCE_HEADER_ID = InventoryItem.i.HEADER_ID,
+                            SOURCE_LINE_ID = InventoryCount,
+                            PROCESS_FLAG = 2,
+                            TRANSACTION_MODE = 3,
+                            INVENTORY_ITEM_ID = InventoryItem.i.ITEM_ID,
+                            ORGANIZATION_ID = (decimal)InventoryItem.i.SUB_INVENTORY_ORG_ID,
+                            SUBINVENTORY_CODE = InventoryItem.i.SUB_INVENTORY_SECONDARY_NAME,
+                            ITEM_SEGMENT1 = InventoryItem.iv.SEGMENT1,
+                            TRANSACTION_QUANTITY = Quantity,
+                            TRANSACTION_UOM = InventoryItem.i.UNIT_OF_MEASURE,
+                            TRANSACTION_DATE = (DateTime)InventoryItem.i.DAILY_ACTIVITY_HEADER.DA_DATE,
+                            TRANSACTION_TYPE_ID = TransactionType,
+                            TRANSACTION_SOURCE_NAME = "EMS",
+                            LOCK_FLAG = 2,
+                            VALIDATION_REQUIRED = 1,
+                            LAST_UPDATE_DATE = DateTime.Now,
+                            LAST_UPDATED_BY = InventoryItem.USER_ID,
+                            CREATED_BY = InventoryItem.USER_ID,
+                            CREATION_DATE = DateTime.Now,
+                        };
+                        InventoryCount++;
+                        RecordsToInsert.Add(Record);
+                        var InventoryColumns = new[] { "SOURCE_CODE", "SOURCE_HEADER_ID", "SOURCE_LINE_ID", "PROCESS_FLAG", "TRANSACTION_MODE", "INVENTORY_ITEM_ID", "ORGANIZATION_ID", "SUBINVENTORY_CODE", "ITEM_SEGMENT1", "TRANSACTION_QUANTITY", "TRANSACTION_UOM", "TRANSACTION_DATE", "TRANSACTION_TYPE_ID", "TRANSACTION_SOURCE_NAME", "LOCK_FLAG", "VALIDATION_REQUIRED", "LAST_UPDATE_DATE", "LAST_UPDATED_BY", "CREATED_BY", "CREATION_DATE" };
+                        GenericData.Insert<MTL_TRANSACTIONS_INTERFACE>(Record, InventoryColumns, "INV.MTL_TRANSACTIONS_INTERFACE");
                     }
-                    else
-                    {
-                        TransactionType = 120;
-                    }
-                    decimal Quantity = -Math.Abs((decimal)InventoryItem.i.RATE);
-                    MTL_TRANSACTIONS_INTERFACE Record = new MTL_TRANSACTIONS_INTERFACE
-                    {
-                        SOURCE_CODE = "EMS",
-                        SOURCE_HEADER_ID = InventoryItem.i.HEADER_ID,
-                        SOURCE_LINE_ID = InventoryCount,
-                        PROCESS_FLAG = 2,
-                        TRANSACTION_MODE = 3,
-                        INVENTORY_ITEM_ID = InventoryItem.i.ITEM_ID,
-                        ORGANIZATION_ID = (decimal)InventoryItem.i.SUB_INVENTORY_ORG_ID,
-                        SUBINVENTORY_CODE = InventoryItem.i.SUB_INVENTORY_SECONDARY_NAME,
-                        ITEM_SEGMENT1 = InventoryItem.iv.SEGMENT1,
-                        TRANSACTION_QUANTITY = Quantity,
-                        TRANSACTION_UOM = InventoryItem.i.UNIT_OF_MEASURE,
-                        TRANSACTION_DATE = (DateTime)InventoryItem.i.DAILY_ACTIVITY_HEADER.DA_DATE,
-                        TRANSACTION_TYPE_ID = TransactionType,
-                        TRANSACTION_SOURCE_NAME = "EMS",
-                        LOCK_FLAG = 2,
-                        VALIDATION_REQUIRED = 1,
-                        LAST_UPDATE_DATE = (DateTime)InventoryItem.i.MODIFY_DATE,
-                        LAST_UPDATED_BY = InventoryItem.USER_ID,
-                        CREATED_BY= InventoryItem.USER_ID,
-                        CREATION_DATE = (DateTime)InventoryItem.i.MODIFY_DATE
-                    };
-                    InventoryCount++;
-                    RecordsToInsert.Add(Record);
-                    var InventoryColumns = new[]{"SOURCE_CODE", "SOURCE_HEADER_ID", "SOURCE_LINE_ID", "PROCESS_FLAG", "TRANSACTION_MODE", "INVENTORY_ITEM_ID", "ORGANIZATION_ID", "SUBINVENTORY_CODE", "SEGMENT1", "TRANSACTION_QUANTITY", "TRANSACTION_UOM", "TRANSACTION_DATE", "TRANSACTION_TYPE_ID", "TRANSACTION_SOURCE_NAME", "LOCK_FLAG", "VALIDATION_REQUIRED", "LAST_UPDATE_DATE", "LAST_UPDATED_BY", "CREATED_BY", "CREATION_DATE" };
-                    GenericData.Insert<MTL_TRANSACTIONS_INTERFACE>(Record, InventoryColumns, "INV.MTL_TRANSACTIONS_INTERFACE");
+
                 }
-                
+            }
+            catch (Exception e)
+            {
+
             }
         }
 
+        public static DateTime GetPADateFromHeader(DateTime HeaderDate, long OrgId)
+        {
+            using (Entities _context = new Entities())
+            {
+                return DateTime.Now;
+            }
+        }
 
+        public static void PostProduction(long HeaderId)
+        {
+            //try
+            //{
+                PA_TRANSACTION_INTERFACE_ALL RowToAdd;
+                using (Entities _context = new Entities())
+                {
+                    var ProductionList = (from d in _context.DAILY_ACTIVITY_PRODUCTION
+                                          join u in _context.SYS_USER_INFORMATION on d.CREATED_BY equals u.USER_NAME
+                                          join t in _context.PA_TASKS_V on d.TASK_ID equals t.TASK_ID
+                                          join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                          join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
+                                          where d.HEADER_ID == HeaderId
+                                          select new { d, p, t.TASK_NUMBER, u.USER_ID, h.DA_DATE }).ToList();
+                    
+                    foreach (var Production in ProductionList)
+                    {
+                        if (Production.p.ORG_ID == 123)
+                        {
+                            string transReference = Production.p.SEGMENT1 + Production.d.PRODUCTION_ID.ToString();
+                            string batchName = Production.p.SEGMENT1 + DateTime.Now;
+                            RowToAdd = new PA_TRANSACTION_INTERFACE_ALL
+                            {
+                                QUANTITY = (decimal) Production.d.QUANTITY,
+                                ORIG_TRANSACTION_REFERENCE = transReference,
+                                TRANSACTION_SOURCE = "EMS",
+                                BATCH_NAME = batchName,
+                                EXPENDITURE_ENDING_DATE = (DateTime) Production.DA_DATE,
+                                EXPENDITURE_ITEM_DATE = (DateTime) Production.DA_DATE,
+                                PROJECT_NUMBER = Production.p.SEGMENT1,
+                                TASK_NUMBER = Production.TASK_NUMBER,
+                                EXPENDITURE_TYPE = Production.d.EXPENDITURE_TYPE,
+                                TRANSACTION_STATUS_CODE = "P",
+                                ORG_ID = Production.p.ORG_ID,
+                                ORGANIZATION_NAME = Production.p.ORGANIZATION_NAME,
+                                UNMATCHED_NEGATIVE_TXN_FLAG = "N",
+                                CREATED_BY = Production.USER_ID,
+                                CREATION_DATE = DateTime.Now,
+                                LAST_UPDATE_DATE = DateTime.Now,
+                                LAST_UPDATED_BY = Production.USER_ID
+                            };
+                            var ProductionColumns = new[] { "QUANTITY", "ORIG_TRANSACTION_REFERENCE", "TRANSACTION_SOURCE", "BATCH_NAME", "EXPENDITURE_ENDING_DATE", "EXPENDITURE_ITEM_DATE", "PROJECT_NUMBER", "TASK_NUMBER", "EXPENDITURE_TYPE", "TRANSACTION_STATUS_CODE", "ORG_ID", "ORGANIZATION_NAME", "UNMATCHED_NEGATIVE_TXN_FLAG", "CREATED_BY", "CREATION_DATE", "LAST_UPDATED_BY", "LAST_UPDATE_DATE" };
+                            GenericData.Insert<PA_TRANSACTION_INTERFACE_ALL>(RowToAdd, ProductionColumns, "PA.PA_TRANSACTION_INTERFACE_ALL");
+                        }
+                        
+                    }
+                }
+            //}
+            //catch (Exception e)
+            //{
+
+            //}
+        }
 
 
 
