@@ -119,16 +119,24 @@ namespace DBI.Data
         {
             decimal returnValue = 0;
 
-            var r = from records in laborRecords
-                    group records by records.EMPLOYEE_NUMBER into g
-                    orderby g.Key ascending
-                    select new
-                    {
-                        EMPLOYEENUM = g.Key,
-                        TOTALHOURS = g.Sum(h => h.QUANTITY)
-                    };
-            returnValue = r.Max(h => h.TOTALHOURS);
+            if (laborRecords.Count > 1)
+            {
+                var r = from records in laborRecords
+                        group records by records.EMPLOYEE_NUMBER into g
+                        orderby g.Key ascending
+                        select new
+                        {
+                            EMPLOYEENUM = g.Key,
+                            TOTALHOURS = g.Sum(h => h.QUANTITY)
+                        };
+                returnValue = r.Max(h => h.TOTALHOURS);
+            }
+            else
+            {
+                returnValue = 0;
+            }
             return returnValue;
+
         }
 
 
@@ -167,10 +175,10 @@ namespace DBI.Data
                 GenericData.Insert<XXDBI_DAILY_ACTIVITY_HEADER>(header, columns, "XXDBI.XXDBI_DAILY_ACTIVITY_HEADER");
 
                 //Update the header
-                data.h.DA_HEADER_ID = header.DA_HEADER_ID;
-                _context.Set<DAILY_ACTIVITY_HEADER>().Attach(data.h);
-                _context.Entry(data.h).State = System.Data.EntityState.Modified;
-                _context.SaveChanges();
+                //data.h.DA_HEADER_ID = header.DA_HEADER_ID;
+                //_context.Set<DAILY_ACTIVITY_HEADER>().Attach(data.h);
+                // _context.Entry(data.h).State = System.Data.EntityState.Modified;
+                //_context.SaveChanges();
 
                 }
                 catch (Exception ex)
@@ -343,14 +351,13 @@ namespace DBI.Data
       
         public static void createTruckUsageRecords(long dailyActivityHeaderId, XXDBI_DAILY_ACTIVITY_HEADER dailyActivityHeaderRecord, List<XXDBI_LABOR_HEADER> laborRecords)
         {
-
             decimal maxHours = maxLaborHoursCalculation(laborRecords);
             List<XXDBI_TRUCK_EQUIP_USAGE> records = new List<XXDBI_TRUCK_EQUIP_USAGE>();
             using (Entities _context = new Entities())
             {
                 var data = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
                             join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                            join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                            join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                             join u in _context.SYS_USER_INFORMATION on h.CREATED_BY equals u.USER_NAME
                             join pro in _context.DAILY_ACTIVITY_PRODUCTION on d.HEADER_ID equals pro.HEADER_ID into prod
                             from production in prod.DefaultIfEmpty()
@@ -500,7 +507,7 @@ namespace DBI.Data
                             {
                                 QUANTITY = (decimal) Production.d.QUANTITY,
                                 ORIG_TRANSACTION_REFERENCE = transReference,
-                                TRANSACTION_SOURCE = "EMS",
+                                TRANSACTION_SOURCE = "DBI Daily Activity Sheet",
                                 BATCH_NAME = batchName,
                                 EXPENDITURE_ENDING_DATE = periodDate,
                                 EXPENDITURE_ITEM_DATE = (DateTime) Production.DA_DATE,

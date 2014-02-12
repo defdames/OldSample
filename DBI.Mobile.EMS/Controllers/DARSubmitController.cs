@@ -74,6 +74,7 @@ namespace DBI.Mobile.EMS.Controllers
                         h.CREATED_BY = j.created_by.ToUpper();
                         h.MODIFIED_BY = j.created_by.ToUpper();
                         h.STATUS = 1;
+                        h.DA_HEADER_ID = 0;
                         GenericData.Insert<DAILY_ACTIVITY_HEADER>(h);
                 }
 
