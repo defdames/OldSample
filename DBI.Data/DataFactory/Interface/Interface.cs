@@ -14,10 +14,10 @@ namespace DBI.Data
             //return user information for logged in user account
             SYS_USER_INFORMATION userInformation = SYS_USER_INFORMATION.UserByUserName(UserByUserName);
 
-            XXDBI_DAILY_ACTIVITY_HEADER header;
+            XXDBI_DAILY_ACTIVITY_HEADER_V header;
             Interface.createHeaderRecords(HeaderId,userInformation.USER_ID, out header);
 
-            List<XXDBI_LABOR_HEADER> laborRecords;
+            List<XXDBI_LABOR_HEADER_V> laborRecords;
             Interface.createLaborRecords(HeaderId,userInformation.USER_ID, header, out laborRecords);
 
             //Create truck records
@@ -119,7 +119,7 @@ namespace DBI.Data
              return returnValue;
         }
 
-        public static decimal maxLaborHoursCalculation(List<XXDBI_LABOR_HEADER> laborRecords)
+        public static decimal maxLaborHoursCalculation(List<XXDBI_LABOR_HEADER_V> laborRecords)
         {
             decimal returnValue = 0;
 
@@ -144,7 +144,7 @@ namespace DBI.Data
         }
 
 
-        public static void createHeaderRecords(long dailyActivityHeaderId, long postedByUserId, out XXDBI_DAILY_ACTIVITY_HEADER xxdbiHeaderRecord)
+        public static void createHeaderRecords(long dailyActivityHeaderId, long postedByUserId, out XXDBI_DAILY_ACTIVITY_HEADER_V xxdbiHeaderRecord)
         {
             using (Entities _context = new Entities())
             {
@@ -159,7 +159,7 @@ namespace DBI.Data
 
                 var data = query.SingleOrDefault();
 
-                XXDBI_DAILY_ACTIVITY_HEADER header = new XXDBI_DAILY_ACTIVITY_HEADER();
+                XXDBI_DAILY_ACTIVITY_HEADER_V header = new XXDBI_DAILY_ACTIVITY_HEADER_V();
                 header.DA_HEADER_ID = generateDailyActivityHeaderSequence();
                 header.STATE = data.l.REGION;
                 header.COUNTY = "NONE";
@@ -174,14 +174,7 @@ namespace DBI.Data
 
                 xxdbiHeaderRecord = header;
 
-                var columns = new[] { "DA_HEADER_ID", "STATE", "COUNTY", "ACTIVITY_DATE", "ORG_ID", "PROJECT_NUMBER", "PROJECT_NAME", "CREATED_BY", "CREATION_DATE", "LAST_UPDATED_BY", "LAST_UPDATE_DATE" };
-                GenericData.Insert<XXDBI_DAILY_ACTIVITY_HEADER>(header, columns, "XXDBI.XXDBI_DAILY_ACTIVITY_HEADER");
-
-                //Update the header
-                //data.h.DA_HEADER_ID = header.DA_HEADER_ID;
-                //_context.Set<DAILY_ACTIVITY_HEADER>().Attach(data.h);
-                // _context.Entry(data.h).State = System.Data.EntityState.Modified;
-                //_context.SaveChanges();
+                GenericData.Insert<XXDBI_DAILY_ACTIVITY_HEADER_V>(header);
 
                 }
                 catch (Exception ex)
@@ -192,11 +185,11 @@ namespace DBI.Data
 
         }
 
-        public static void createLaborRecords(long dailyActivityHeaderId, long postedByUserId, XXDBI_DAILY_ACTIVITY_HEADER xxdbiDailyActivityHeader, out List<XXDBI_LABOR_HEADER> xxdbiLaborHeaderRecords)
+        public static void createLaborRecords(long dailyActivityHeaderId, long postedByUserId, XXDBI_DAILY_ACTIVITY_HEADER_V xxdbiDailyActivityHeader, out List<XXDBI_LABOR_HEADER_V> xxdbiLaborHeaderRecords)
         {
             try
             {
-                List<XXDBI_LABOR_HEADER> records = new List<XXDBI_LABOR_HEADER>();
+                List<XXDBI_LABOR_HEADER_V> records = new List<XXDBI_LABOR_HEADER_V>();
                 using (Entities _context = new Entities())
                 {
 
@@ -235,7 +228,7 @@ namespace DBI.Data
 
                     foreach (var r in data)
                     {
-                        XXDBI_LABOR_HEADER record = new XXDBI_LABOR_HEADER();
+                        XXDBI_LABOR_HEADER_V record = new XXDBI_LABOR_HEADER_V();
                         record.LABOR_HEADER_ID = DBI.Data.Interface.generateLaborHeaderSequence();
                         record.DA_HEADER_ID = xxdbiDailyActivityHeader.DA_HEADER_ID;
                         record.PROJECT_NUMBER = r.PROJECT_NUMBER;
@@ -258,10 +251,9 @@ namespace DBI.Data
                         records.Add(record);
                     }
 
-                    foreach (XXDBI_LABOR_HEADER record in records)
+                    foreach (XXDBI_LABOR_HEADER_V record in records)
                     {
-                        var laborColumns = new[] { "LABOR_HEADER_ID", "DA_HEADER_ID", "PROJECT_NUMBER", "TASK_NUMBER", "EMPLOYEE_NUMBER", "EMP_FULL_NAME", "ROLE", "STATE", "COUNTY", "LAB_HEADER_DATE", "QUANTITY", "ELEMENT", "ADJUSTMENT", "STATUS", "ORG_ID", "CREATED_BY", "CREATION_DATE", "LAST_UPDATE_DATE", "LAST_UPDATED_BY" };
-                        GenericData.Insert<XXDBI_LABOR_HEADER>(record, laborColumns, "XXDBI.XXDBI_LABOR_HEADER");
+                        GenericData.Insert<XXDBI_LABOR_HEADER_V>(record);
                     }
 
                     xxdbiLaborHeaderRecords = records;
@@ -274,11 +266,11 @@ namespace DBI.Data
            
         }
 
-        public static void createPerDiemRecords(long dailyActivityHeaderId, long postedByUserId, XXDBI_DAILY_ACTIVITY_HEADER xxdbiDailyActivityHeader)
+        public static void createPerDiemRecords(long dailyActivityHeaderId, long postedByUserId, XXDBI_DAILY_ACTIVITY_HEADER_V xxdbiDailyActivityHeader)
         {
             try
             {
-                List<XXDBI_PER_DIEM> records = new List<XXDBI_PER_DIEM>();
+                List<XXDBI_PER_DIEM_V> records = new List<XXDBI_PER_DIEM_V>();
                 using (Entities _context = new Entities())
                 {
 
@@ -311,7 +303,7 @@ namespace DBI.Data
 
                     foreach (var r in data)
                     {
-                        XXDBI_PER_DIEM record = new XXDBI_PER_DIEM();
+                        XXDBI_PER_DIEM_V record = new XXDBI_PER_DIEM_V();
                         record.TRANSACTION_ID = DBI.Data.Interface.generatePerDiemSequence();
                         record.DA_HEADER_ID = r.DA_HEADER_ID;
                         record.PROJECT_NUMBER = r.PROJECT_NUMBER;
@@ -331,10 +323,9 @@ namespace DBI.Data
                         records.Add(record);
                     }
 
-                    foreach (XXDBI_PER_DIEM record in records)
+                    foreach (XXDBI_PER_DIEM_V record in records)
                     {
-                        var columns = new[] { "TRANSACTION_ID", "DA_HEADER_ID", "PROJECT_NUMBER", "TASK_NUMBER", "EMPLOYEE_NUMBER", "EMP_FULL_NAME", "EXPENDITURE_TYPE", "PER_DIEM_DATE", "AMOUNT", "APPROVAL_STATUS", "STATUS", "ORG_ID", "CREATED_BY", "CREATION_DATE", "LAST_UPDATE_DATE", "LAST_UPDATED_BY" };
-                        GenericData.Insert<XXDBI_PER_DIEM>(record, columns, "XXDBI.XXDBI_PER_DIEM");
+                        GenericData.Insert<XXDBI_PER_DIEM_V>(record);
                     }
 
                 }
@@ -347,10 +338,10 @@ namespace DBI.Data
         }
 
 
-        public static void createTruckUsageRecords(long dailyActivityHeaderId, long postedByUserId, XXDBI_DAILY_ACTIVITY_HEADER dailyActivityHeaderRecord, List<XXDBI_LABOR_HEADER> laborRecords)
+        public static void createTruckUsageRecords(long dailyActivityHeaderId, long postedByUserId, XXDBI_DAILY_ACTIVITY_HEADER_V dailyActivityHeaderRecord, List<XXDBI_LABOR_HEADER_V> laborRecords)
         {
             decimal maxHours = maxLaborHoursCalculation(laborRecords);
-            List<XXDBI_TRUCK_EQUIP_USAGE> records = new List<XXDBI_TRUCK_EQUIP_USAGE>();
+            List<XXDBI_TRUCK_EQUIP_USAGE_V> records = new List<XXDBI_TRUCK_EQUIP_USAGE_V>();
             using (Entities _context = new Entities())
             {
 
@@ -375,7 +366,7 @@ namespace DBI.Data
 
                             foreach(var r in data)
                             {
-                               XXDBI_TRUCK_EQUIP_USAGE record = new XXDBI_TRUCK_EQUIP_USAGE();
+                                XXDBI_TRUCK_EQUIP_USAGE_V record = new XXDBI_TRUCK_EQUIP_USAGE_V();
                                record.DA_HEADER_ID = r.DA_HEADER_ID;
                                record.CREATED_BY = r.USER_ID;
                                record.CREATION_DATE = DateTime.Now;
@@ -392,10 +383,9 @@ namespace DBI.Data
                                records.Add(record);
                             }
 
-                            foreach (XXDBI_TRUCK_EQUIP_USAGE record in records)
+                            foreach (XXDBI_TRUCK_EQUIP_USAGE_V record in records)
                             {
-                                var columns = new[] { "TRUCK_EQUIP", "TRANSACTION_ID", "DA_HEADER_ID", "PROJECT_NUMBER", "TASK_NUMBER", "USAGE_DATE", "QUANTITY", "STATUS", "ORG_ID", "CREATED_BY", "CREATION_DATE", "LAST_UPDATED_BY", "LAST_UPDATE_DATE" };
-                                GenericData.Insert<XXDBI_TRUCK_EQUIP_USAGE>(record, columns, "XXDBI.XXDBI_TRUCK_EQUIP_USAGE");
+                                GenericData.Insert<XXDBI_TRUCK_EQUIP_USAGE_V>(record);
                             }
             }
 
@@ -405,7 +395,7 @@ namespace DBI.Data
         {
             try
             {
-                List<MTL_TRANSACTIONS_INTERFACE> RecordsToInsert = new List<MTL_TRANSACTIONS_INTERFACE>();
+                List<MTL_TRANSACTION_INT_V> RecordsToInsert = new List<MTL_TRANSACTION_INT_V>();
                 using (Entities _context = new Entities())
                 {
                     var InventoryList = (from i in _context.DAILY_ACTIVITY_INVENTORY
@@ -428,7 +418,7 @@ namespace DBI.Data
                             TransactionType = 120;
                         }
                         decimal Quantity = -Math.Abs((decimal)InventoryItem.i.RATE);
-                        MTL_TRANSACTIONS_INTERFACE Record = new MTL_TRANSACTIONS_INTERFACE
+                        MTL_TRANSACTION_INT_V Record = new MTL_TRANSACTION_INT_V
                         {
                             SOURCE_CODE = "EMS",
                             SOURCE_HEADER_ID = InventoryItem.i.HEADER_ID,
@@ -453,8 +443,7 @@ namespace DBI.Data
                         };
                         InventoryCount++;
                         RecordsToInsert.Add(Record);
-                        var InventoryColumns = new[] { "SOURCE_CODE", "SOURCE_HEADER_ID", "SOURCE_LINE_ID", "PROCESS_FLAG", "TRANSACTION_MODE", "INVENTORY_ITEM_ID", "ORGANIZATION_ID", "SUBINVENTORY_CODE", "ITEM_SEGMENT1", "TRANSACTION_QUANTITY", "TRANSACTION_UOM", "TRANSACTION_DATE", "TRANSACTION_TYPE_ID", "TRANSACTION_SOURCE_NAME", "LOCK_FLAG", "VALIDATION_REQUIRED", "LAST_UPDATE_DATE", "LAST_UPDATED_BY", "CREATED_BY", "CREATION_DATE" };
-                        GenericData.Insert<MTL_TRANSACTIONS_INTERFACE>(Record, InventoryColumns, "INV.MTL_TRANSACTIONS_INTERFACE");
+                        GenericData.Insert<MTL_TRANSACTION_INT_V>(Record);
                     }
 
                 }
@@ -481,7 +470,7 @@ namespace DBI.Data
         {
             try
             {
-                PA_TRANSACTION_INTERFACE_ALL RowToAdd;
+                PA_TRANSACTION_INT_V RowToAdd;
                 using (Entities _context = new Entities())
                 {
                     var ProductionList = (from d in _context.DAILY_ACTIVITY_PRODUCTION
@@ -499,7 +488,7 @@ namespace DBI.Data
 
                             string transReference = Production.p.SEGMENT1 + Production.d.PRODUCTION_ID.ToString();
                             string batchName = Production.p.SEGMENT1 + DateTime.Now;
-                            RowToAdd = new PA_TRANSACTION_INTERFACE_ALL
+                            RowToAdd = new PA_TRANSACTION_INT_V
                             {
                                 QUANTITY = (decimal) Production.d.QUANTITY,
                                 ORIG_TRANSACTION_REFERENCE = transReference,
@@ -519,8 +508,7 @@ namespace DBI.Data
                                 LAST_UPDATE_DATE = DateTime.Now,
                                 LAST_UPDATED_BY = postedByUserId
                             };
-                            var ProductionColumns = new[] { "QUANTITY", "ORIG_TRANSACTION_REFERENCE", "TRANSACTION_SOURCE", "BATCH_NAME", "EXPENDITURE_ENDING_DATE", "EXPENDITURE_ITEM_DATE", "PROJECT_NUMBER", "TASK_NUMBER", "EXPENDITURE_TYPE", "TRANSACTION_STATUS_CODE", "ORG_ID", "ORGANIZATION_NAME", "UNMATCHED_NEGATIVE_TXN_FLAG", "CREATED_BY", "CREATION_DATE", "LAST_UPDATED_BY", "LAST_UPDATE_DATE" };
-                            GenericData.Insert<PA_TRANSACTION_INTERFACE_ALL>(RowToAdd, ProductionColumns, "PA.PA_TRANSACTION_INTERFACE_ALL");
+                            GenericData.Insert<PA_TRANSACTION_INT_V>(RowToAdd);
                         }
                         
                     }
