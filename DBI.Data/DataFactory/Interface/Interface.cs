@@ -357,7 +357,7 @@ namespace DBI.Data
             {
                 var data = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
                             join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                            join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                            join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                             join u in _context.SYS_USER_INFORMATION on h.CREATED_BY equals u.USER_NAME
                             join pro in _context.DAILY_ACTIVITY_PRODUCTION on d.HEADER_ID equals pro.HEADER_ID into prod
                             from production in prod.DefaultIfEmpty()
