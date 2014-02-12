@@ -250,7 +250,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 //Get List of all new contacts
 
                 data = (from d in _context.CROSSING_CONTACTS
-                        select new { d.CONTACT_NAME, d.CELL_NUMBER, d.WORK_NUMBER }).ToList<object>();
+                        select new {d.CONTACT_ID, d.CONTACT_NAME, d.CELL_NUMBER, d.WORK_NUMBER }).ToList<object>();
 
                 int count;
                 uxAssignContactManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -268,7 +268,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                 data = (from d in _context.CROSSINGS
                         where d.CONTACT_ID == null
-                        select new { d.CROSSING_NUMBER, d.SERVICE_UNIT, d.RAILROAD, d.SUB_DIVISION}).ToList<object>();
+                        select new {d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.RAILROAD, d.SUB_DIVISION}).ToList<object>();
 
                 int count;
                 uxAssignContactCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -279,20 +279,28 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             CROSSING_CONTACTS data;
            
             //do type conversions
-            long ContactId = long.Parse(e.ExtraParams["contactId"]);
+
+            RowSelectionModel sm = uxAssignContactGrid.GetSelectionModel() as RowSelectionModel;
+            long ContactId = long.Parse(sm.SelectedRow.RecordID);
            
             //Get record to be edited
             using (Entities _context = new Entities())
             {
-               
-                    var contactId = long.Parse(e.ExtraParams["contactId"]);
-                    data = (from d in _context.CROSSING_CONTACTS
-                            where d.CONTACT_ID == contactId
-                            select d).Single();
+
+                //var contactId = long.Parse(e.ExtraParams["contactId"]);
+                data = (from d in _context.CROSSING_CONTACTS
+                        where d.CONTACT_ID == ContactId
+                        select d).Single();
+              
+            
+                  
                     //try
                     //{
-                  
-                        long crossingId = long.Parse(e.ExtraParams["crossingId"]);
+                CheckboxSelectionModel cm = uxAssignCrossingGrid.GetSelectionModel() as CheckboxSelectionModel;
+                long crossingId = long.Parse(sm.SelectedRow.RecordID);
+
+
+                        //long crossingId = long.Parse(e.ExtraParams["crossingId"]);
                         var crossingdata = (from d in _context.CROSSINGS
 
                                             where d.CROSSING_ID == crossingId
@@ -301,9 +309,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                                                 d.CROSSING_ID
                                             ).Single();
+
+                        //long CrossingId = long.Parse(e.ExtraParams["crossingId"]);
+                        crossingId = (crossingdata);
                       
-                            long CrossingId = long.Parse(e.ExtraParams["crossingId"]);
-                            CrossingId = (crossingdata);
+                     
                         
                      
                    
