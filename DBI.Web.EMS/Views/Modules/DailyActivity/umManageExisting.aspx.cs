@@ -1173,6 +1173,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxCreateActivityWindow.Show();
         }
 
+        protected void deOpenPostMultipleWindow(object sender, DirectEventArgs e)
+        {
+            uxPlaceholderWindow.ClearContent();
+            uxPlaceholderWindow.LoadContent("umPostMultipleWindow.aspx");
+            uxPlaceholderWindow.Show();
+        }
+
         [DirectMethod]
         public void dmLoadChemicalWindow(string WindowType, string HeaderId, string ChemicalMixId)
         {

@@ -129,20 +129,6 @@
 								</ext:Button>
 								<ext:ToolbarSpacer runat="server" />
 								<ext:Button runat="server"
-									ID="uxSubmitActivityButton"
-									Text="Submit for Approval"
-									Icon="ApplicationGo"
-									Disabled="true">
-									<DirectEvents>
-										<Click OnEvent="deSubmitActivity">
-											<ExtraParams>
-												<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
-											</ExtraParams>
-										</Click>
-									</DirectEvents>    
-								</ext:Button>
-								<ext:ToolbarSpacer ID="ToolbarSpacer2" runat="server" />
-								<ext:Button runat="server"
 									ID="uxInactiveActivityButton"
 									Text="Set Inactive"
 									Icon="ApplicationStop"
@@ -156,6 +142,20 @@
 									</DirectEvents>
 								</ext:Button>
 								<ext:ToolbarSpacer runat="server" />
+								<ext:Button runat="server"
+									ID="uxSubmitActivityButton"
+									Text="Submit for Approval"
+									Icon="ApplicationGo"
+									Disabled="true">
+									<DirectEvents>
+										<Click OnEvent="deSubmitActivity">
+											<ExtraParams>
+												<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
+											</ExtraParams>
+										</Click>
+									</DirectEvents>    
+								</ext:Button>
+								<ext:ToolbarSpacer ID="ToolbarSpacer2" runat="server" />
 								<ext:Button runat="server"
 									ID="uxApproveActivityButton"
 									Text="Approve"
@@ -183,6 +183,15 @@
 										</Click>
 									</DirectEvents>
 								</ext:Button>
+								<ext:ToolbarSpacer ID="ToolbarSpacer5" runat="server" />
+								<ext:Button ID="uxPostMultipleButton" runat="server"
+									Text="Post Multiple Headers"
+									Icon="ApplicationGet">
+									<DirectEvents>
+										<Click OnEvent="deOpenPostMultipleWindow" />
+									</DirectEvents>
+								</ext:Button>
+								<ext:ToolbarSpacer ID="ToolbarSpacer3" runat="server" />
 								<ext:Button runat="server"
 									ID="uxExportToPDF"
 									Text="Export to PDF"
@@ -196,6 +205,7 @@
 										</Click>
 									</DirectEvents>
 								</ext:Button>
+								<ext:ToolbarSpacer ID="ToolbarSpacer4" runat="server" />
 								<ext:Button runat="server"
 									ID="uxEmailPdf"
 									Text="Email Copy"

@@ -103,6 +103,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Button uxCreateActivityButton;
         
         /// <summary>
+        /// uxInactiveActivityButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxInactiveActivityButton;
+        
+        /// <summary>
         /// uxSubmitActivityButton control.
         /// </summary>
         /// <remarks>
@@ -119,15 +128,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.ToolbarSpacer ToolbarSpacer2;
-        
-        /// <summary>
-        /// uxInactiveActivityButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxInactiveActivityButton;
         
         /// <summary>
         /// uxApproveActivityButton control.
@@ -157,6 +157,33 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Button uxPostActivityButton;
         
         /// <summary>
+        /// ToolbarSpacer5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer5;
+        
+        /// <summary>
+        /// uxPostMultipleButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxPostMultipleButton;
+        
+        /// <summary>
+        /// ToolbarSpacer3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer3;
+        
+        /// <summary>
         /// uxExportToPDF control.
         /// </summary>
         /// <remarks>
@@ -164,6 +191,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxExportToPDF;
+        
+        /// <summary>
+        /// ToolbarSpacer4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer4;
         
         /// <summary>
         /// uxEmailPdf control.
