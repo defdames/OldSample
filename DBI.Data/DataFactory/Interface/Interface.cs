@@ -8,25 +8,29 @@ namespace DBI.Data
 {
     public class Interface
     {
-        public static void PostToOracle(long HeaderId)
+        public static void PostToOracle(long HeaderId, string UserByUserName)
         {
+
+            //return user information for logged in user account
+            SYS_USER_INFORMATION userInformation = SYS_USER_INFORMATION.UserByUserName(UserByUserName);
+
             XXDBI_DAILY_ACTIVITY_HEADER header;
-            Interface.createHeaderRecords(HeaderId, out header);
+            Interface.createHeaderRecords(HeaderId,userInformation.USER_ID, out header);
 
             List<XXDBI_LABOR_HEADER> laborRecords;
-            Interface.createLaborRecords(HeaderId, header, out laborRecords);
+            Interface.createLaborRecords(HeaderId,userInformation.USER_ID, header, out laborRecords);
 
             //Create truck records
-            Interface.createTruckUsageRecords(HeaderId, header, laborRecords);
+            Interface.createTruckUsageRecords(HeaderId,userInformation.USER_ID, header, laborRecords);
 
             //Create perdiem
-            Interface.createPerDiemRecords(HeaderId, header);
+            Interface.createPerDiemRecords(HeaderId,userInformation.USER_ID, header);
 
             //Create Inventory 
-            Interface.PostInventory(HeaderId);
+            Interface.PostInventory(HeaderId, userInformation.USER_ID);
 
             //Create Production
-            Interface.PostProduction(HeaderId);
+            Interface.PostProduction(HeaderId, userInformation.USER_ID);
 
             //Update Header with Daily Activity ID
             DAILY_ACTIVITY_HEADER HeaderRecord;
@@ -140,7 +144,7 @@ namespace DBI.Data
         }
 
 
-        public static void createHeaderRecords(long dailyActivityHeaderId, out XXDBI_DAILY_ACTIVITY_HEADER xxdbiHeaderRecord)
+        public static void createHeaderRecords(long dailyActivityHeaderId, long postedByUserId, out XXDBI_DAILY_ACTIVITY_HEADER xxdbiHeaderRecord)
         {
             using (Entities _context = new Entities())
             {
@@ -150,9 +154,8 @@ namespace DBI.Data
                      var query = from h in _context.DAILY_ACTIVITY_HEADER
                             join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                             join l in _context.PA_LOCATIONS_V on p.LOCATION_ID equals (long)l.LOCATION_ID
-                            join u in _context.SYS_USER_INFORMATION on h.CREATED_BY equals u.USER_NAME
                             where h.HEADER_ID == dailyActivityHeaderId
-                            select new { h, p, l, u };
+                            select new { h, p, l};
 
                 var data = query.SingleOrDefault();
 
@@ -164,9 +167,9 @@ namespace DBI.Data
                 header.ORG_ID = (Decimal)data.p.ORG_ID;
                 header.PROJECT_NUMBER = data.p.SEGMENT1;
                 header.PROJECT_NAME = data.p.NAME;
-                header.CREATED_BY = data.u.USER_ID;
+                header.CREATED_BY = postedByUserId;
                 header.CREATION_DATE = DateTime.Now;
-                header.LAST_UPDATED_BY = data.u.USER_ID;
+                header.LAST_UPDATED_BY = postedByUserId;
                 header.LAST_UPDATE_DATE = DateTime.Now;
 
                 xxdbiHeaderRecord = header;
@@ -189,7 +192,7 @@ namespace DBI.Data
 
         }
 
-        public static void createLaborRecords(long dailyActivityHeaderId, XXDBI_DAILY_ACTIVITY_HEADER xxdbiDailyActivityHeader, out List<XXDBI_LABOR_HEADER> xxdbiLaborHeaderRecords)
+        public static void createLaborRecords(long dailyActivityHeaderId, long postedByUserId, XXDBI_DAILY_ACTIVITY_HEADER xxdbiDailyActivityHeader, out List<XXDBI_LABOR_HEADER> xxdbiLaborHeaderRecords)
         {
             try
             {
@@ -197,17 +200,15 @@ namespace DBI.Data
                 using (Entities _context = new Entities())
                 {
 
+                    DAILY_ACTIVITY_PRODUCTION productionRecord = _context.DAILY_ACTIVITY_PRODUCTION.Where(p => p.HEADER_ID == dailyActivityHeaderId).FirstOrDefault();
+
+
                     var data = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                 join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
                                 join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
                                 join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                 join l in _context.PA_LOCATIONS_V on p.LOCATION_ID equals (long)l.LOCATION_ID
-                                join u in _context.SYS_USER_INFORMATION on d.CREATED_BY equals u.USER_NAME
-                                join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.EQUIPMENT_ID equals eq.EQUIPMENT_ID into equ
-                                from equip in equ.DefaultIfEmpty()
-                                join pro in _context.DAILY_ACTIVITY_PRODUCTION on d.HEADER_ID equals pro.HEADER_ID into prod
-                                from production in prod.DefaultIfEmpty()
-                                join tsk in _context.PA_TASKS_V on production.TASK_ID equals tsk.TASK_ID into tsks
+                                join tsk in _context.PA_TASKS_V on productionRecord.TASK_ID equals tsk.TASK_ID into tsks
                                 from tasks in tsks.DefaultIfEmpty()
                                 where d.HEADER_ID == dailyActivityHeaderId
                                 select new
@@ -224,8 +225,8 @@ namespace DBI.Data
                                     ADJUSTMENT = "N",
                                     STATUS = "UNPROCESSED",
                                     ORG_ID = (decimal)p.ORG_ID,
-                                    CREATED_BY = u.USER_ID,
-                                    LAST_UPDATED_BY = u.USER_ID,
+                                    CREATED_BY = postedByUserId,
+                                    LAST_UPDATED_BY = postedByUserId,
                                     TIME_IN = d.TIME_IN,
                                     TIME_OUT = d.TIME_OUT,
                                     LUNCH_FLAG = d.LUNCH,
@@ -273,7 +274,7 @@ namespace DBI.Data
            
         }
 
-        public static void createPerDiemRecords(long dailyActivityHeaderId, XXDBI_DAILY_ACTIVITY_HEADER xxdbiDailyActivityHeader)
+        public static void createPerDiemRecords(long dailyActivityHeaderId, long postedByUserId, XXDBI_DAILY_ACTIVITY_HEADER xxdbiDailyActivityHeader)
         {
             try
             {
@@ -281,17 +282,14 @@ namespace DBI.Data
                 using (Entities _context = new Entities())
                 {
 
+                    DAILY_ACTIVITY_PRODUCTION productionRecord = _context.DAILY_ACTIVITY_PRODUCTION.Where(p => p.HEADER_ID == dailyActivityHeaderId).FirstOrDefault();
+
                     var data = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                 join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
                                 join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
                                 join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                 join l in _context.PA_LOCATIONS_V on p.LOCATION_ID equals (long)l.LOCATION_ID
-                                join u in _context.SYS_USER_INFORMATION on d.CREATED_BY equals u.USER_NAME
-                                join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.EQUIPMENT_ID equals eq.EQUIPMENT_ID into equ
-                                from equip in equ.DefaultIfEmpty()
-                                join pro in _context.DAILY_ACTIVITY_PRODUCTION on d.HEADER_ID equals pro.HEADER_ID into prod
-                                from production in prod.DefaultIfEmpty()
-                                join tsk in _context.PA_TASKS_V on production.TASK_ID equals tsk.TASK_ID into tsks
+                                join tsk in _context.PA_TASKS_V on productionRecord.TASK_ID equals tsk.TASK_ID into tsks
                                 from tasks in tsks.DefaultIfEmpty()
                                 where d.HEADER_ID == dailyActivityHeaderId && d.PER_DIEM == "Y"
                                 select new
@@ -307,8 +305,8 @@ namespace DBI.Data
                                     APPROVAL_STATUS = "N",
                                     STATUS = "UNPROCESSED",
                                     ORG_ID = (decimal)p.ORG_ID,
-                                    CREATED_BY = u.USER_ID,
-                                    LAST_UPDATED_BY = u.USER_ID,
+                                    CREATED_BY = postedByUserId,
+                                    LAST_UPDATED_BY = postedByUserId,
                                 }).ToList();
 
                     foreach (var r in data)
@@ -348,20 +346,20 @@ namespace DBI.Data
 
         }
 
-      
-        public static void createTruckUsageRecords(long dailyActivityHeaderId, XXDBI_DAILY_ACTIVITY_HEADER dailyActivityHeaderRecord, List<XXDBI_LABOR_HEADER> laborRecords)
+
+        public static void createTruckUsageRecords(long dailyActivityHeaderId, long postedByUserId, XXDBI_DAILY_ACTIVITY_HEADER dailyActivityHeaderRecord, List<XXDBI_LABOR_HEADER> laborRecords)
         {
             decimal maxHours = maxLaborHoursCalculation(laborRecords);
             List<XXDBI_TRUCK_EQUIP_USAGE> records = new List<XXDBI_TRUCK_EQUIP_USAGE>();
             using (Entities _context = new Entities())
             {
+
+                DAILY_ACTIVITY_PRODUCTION productionRecord = _context.DAILY_ACTIVITY_PRODUCTION.Where(p => p.HEADER_ID == dailyActivityHeaderId).FirstOrDefault();
+
                 var data = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
                             join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
                             join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
-                            join u in _context.SYS_USER_INFORMATION on h.CREATED_BY equals u.USER_NAME
-                            join pro in _context.DAILY_ACTIVITY_PRODUCTION on d.HEADER_ID equals pro.HEADER_ID into prod
-                            from production in prod.DefaultIfEmpty()
-                            join tsk in _context.PA_TASKS_V on production.TASK_ID equals tsk.TASK_ID into tsks
+                            join tsk in _context.PA_TASKS_V on productionRecord.TASK_ID equals tsk.TASK_ID into tsks
                             from tasks in tsks.DefaultIfEmpty()
                             where d.HEADER_ID == dailyActivityHeaderId
                             select new {
@@ -372,7 +370,7 @@ namespace DBI.Data
                                 USAGE_DATE = dailyActivityHeaderRecord.ACTIVITY_DATE,
                                 STATUS = "UNPROCESSED",
                                 ORG_ID = (Decimal)p.ORG_ID,
-                                USER_ID = u.USER_ID
+                                USER_ID = postedByUserId,
                                        });
 
                             foreach(var r in data)
@@ -403,7 +401,7 @@ namespace DBI.Data
 
         }
 
-        public static void PostInventory(long HeaderId)
+        public static void PostInventory(long HeaderId, long postedByUserId)
         {
             try
             {
@@ -411,12 +409,11 @@ namespace DBI.Data
                 using (Entities _context = new Entities())
                 {
                     var InventoryList = (from i in _context.DAILY_ACTIVITY_INVENTORY
-                                         join u in _context.SYS_USER_INFORMATION on i.MODIFIED_BY equals u.USER_NAME
                                          join h in _context.DAILY_ACTIVITY_HEADER on i.HEADER_ID equals h.HEADER_ID
                                          join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                          join iv in _context.INVENTORY_V on i.ITEM_ID equals iv.ITEM_ID
                                          where i.HEADER_ID == HeaderId
-                                         select new { i, iv, u.USER_ID, p.ORG_ID }).ToList();
+                                         select new { i, iv, p.ORG_ID }).ToList();
 
                     int InventoryCount = 1;
                     foreach (var InventoryItem in InventoryList)
@@ -450,8 +447,8 @@ namespace DBI.Data
                             LOCK_FLAG = 2,
                             VALIDATION_REQUIRED = 1,
                             LAST_UPDATE_DATE = DateTime.Now,
-                            LAST_UPDATED_BY = InventoryItem.USER_ID,
-                            CREATED_BY = InventoryItem.USER_ID,
+                            LAST_UPDATED_BY = postedByUserId,
+                            CREATED_BY = postedByUserId,
                             CREATION_DATE = DateTime.Now,
                         };
                         InventoryCount++;
@@ -480,7 +477,7 @@ namespace DBI.Data
         }
 
 
-        public static void PostProduction(long HeaderId)
+        public static void PostProduction(long HeaderId, long postedByUserId)
         {
             try
             {
@@ -488,12 +485,11 @@ namespace DBI.Data
                 using (Entities _context = new Entities())
                 {
                     var ProductionList = (from d in _context.DAILY_ACTIVITY_PRODUCTION
-                                          join u in _context.SYS_USER_INFORMATION on d.CREATED_BY equals u.USER_NAME
                                           join t in _context.PA_TASKS_V on d.TASK_ID equals t.TASK_ID
                                           join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
                                           join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                           where d.HEADER_ID == HeaderId
-                                          select new { d, p, t.TASK_NUMBER, u.USER_ID, h.DA_DATE }).ToList();
+                                          select new { d, p, t.TASK_NUMBER, h.DA_DATE }).ToList();
                     
                     foreach (var Production in ProductionList)
                     {
@@ -518,10 +514,10 @@ namespace DBI.Data
                                 ORG_ID = Production.p.ORG_ID,
                                 ORGANIZATION_NAME = Production.p.ORGANIZATION_NAME,
                                 UNMATCHED_NEGATIVE_TXN_FLAG = "N",
-                                CREATED_BY = Production.USER_ID,
+                                CREATED_BY = postedByUserId,
                                 CREATION_DATE = DateTime.Now,
                                 LAST_UPDATE_DATE = DateTime.Now,
-                                LAST_UPDATED_BY = Production.USER_ID
+                                LAST_UPDATED_BY = postedByUserId
                             };
                             var ProductionColumns = new[] { "QUANTITY", "ORIG_TRANSACTION_REFERENCE", "TRANSACTION_SOURCE", "BATCH_NAME", "EXPENDITURE_ENDING_DATE", "EXPENDITURE_ITEM_DATE", "PROJECT_NUMBER", "TASK_NUMBER", "EXPENDITURE_TYPE", "TRANSACTION_STATUS_CODE", "ORG_ID", "ORGANIZATION_NAME", "UNMATCHED_NEGATIVE_TXN_FLAG", "CREATED_BY", "CREATION_DATE", "LAST_UPDATED_BY", "LAST_UPDATE_DATE" };
                             GenericData.Insert<PA_TRANSACTION_INTERFACE_ALL>(RowToAdd, ProductionColumns, "PA.PA_TRANSACTION_INTERFACE_ALL");
