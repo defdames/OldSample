@@ -33,22 +33,22 @@ namespace DBI.Web.EMS
 
                     //Create header record
                     XXDBI_DAILY_ACTIVITY_HEADER header;
-                    DBI.Data.Interface.createHeaderRecords(61, out header);
+                    DBI.Data.Interface.createHeaderRecords(170, out header);
                   
                     List<XXDBI_LABOR_HEADER> laborRecords;
-                    DBI.Data.Interface.createLaborRecords(61, header, out laborRecords);
+                    DBI.Data.Interface.createLaborRecords(170, header, out laborRecords);
 
                     //Create truck records
-                    DBI.Data.Interface.createTruckUsageRecords(61, header, laborRecords);
+                    //DBI.Data.Interface.createTruckUsageRecords(61, header, laborRecords);
 
                     //Create perdiem
-                    DBI.Data.Interface.createPerDiemRecords(61, header);
+                    //DBI.Data.Interface.createPerDiemRecords(61, header);
 
                     //Create Inventory 
-                    Interface.PostInventory(61);
+                    //Interface.PostInventory(61);
 
                     //Create Production
-                    Interface.PostProduction(170);
+                    //Interface.PostProduction(170);
              }
         }
 

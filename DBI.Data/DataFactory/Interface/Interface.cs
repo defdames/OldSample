@@ -197,17 +197,16 @@ namespace DBI.Data
                 using (Entities _context = new Entities())
                 {
 
+                    DAILY_ACTIVITY_PRODUCTION productionRecord = _context.DAILY_ACTIVITY_PRODUCTION.Where(p => p.HEADER_ID == dailyActivityHeaderId).FirstOrDefault();
+
+
                     var data = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                 join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
                                 join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
                                 join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                 join l in _context.PA_LOCATIONS_V on p.LOCATION_ID equals (long)l.LOCATION_ID
                                 join u in _context.SYS_USER_INFORMATION on d.CREATED_BY equals u.USER_NAME
-                                join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.EQUIPMENT_ID equals eq.EQUIPMENT_ID into equ
-                                from equip in equ.DefaultIfEmpty()
-                                join pro in _context.DAILY_ACTIVITY_PRODUCTION on d.HEADER_ID equals pro.HEADER_ID into prod
-                                from production in prod.DefaultIfEmpty()
-                                join tsk in _context.PA_TASKS_V on production.TASK_ID equals tsk.TASK_ID into tsks
+                                join tsk in _context.PA_TASKS_V on productionRecord.TASK_ID equals tsk.TASK_ID into tsks
                                 from tasks in tsks.DefaultIfEmpty()
                                 where d.HEADER_ID == dailyActivityHeaderId
                                 select new
@@ -287,8 +286,6 @@ namespace DBI.Data
                                 join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                 join l in _context.PA_LOCATIONS_V on p.LOCATION_ID equals (long)l.LOCATION_ID
                                 join u in _context.SYS_USER_INFORMATION on d.CREATED_BY equals u.USER_NAME
-                                join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.EQUIPMENT_ID equals eq.EQUIPMENT_ID into equ
-                                from equip in equ.DefaultIfEmpty()
                                 join pro in _context.DAILY_ACTIVITY_PRODUCTION on d.HEADER_ID equals pro.HEADER_ID into prod
                                 from production in prod.DefaultIfEmpty()
                                 join tsk in _context.PA_TASKS_V on production.TASK_ID equals tsk.TASK_ID into tsks
