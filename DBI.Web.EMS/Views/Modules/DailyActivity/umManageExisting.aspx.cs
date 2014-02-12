@@ -587,7 +587,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             try
             {
-                Interface.PostToOracle(HeaderId);
+                Interface.PostToOracle(HeaderId, User.Identity.Name);
             }
             catch (Exception ex)
             {

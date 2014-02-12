@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -41,7 +42,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             List<HeaderData> HeadersToPost = JSON.Deserialize<List<HeaderData>>(json);
             foreach (HeaderData HeaderToPost in HeadersToPost)
             {
-                Interface.PostToOracle(HeaderToPost.HEADER_ID);
+                Interface.PostToOracle(HeaderToPost.HEADER_ID, User.Identity.Name);
             }
         }
     }
