@@ -266,6 +266,7 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\HelpPageApiModel.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <Content Include="iems\1392251685_19.png" />
     <Content Include="iems\iEMS.plist">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
