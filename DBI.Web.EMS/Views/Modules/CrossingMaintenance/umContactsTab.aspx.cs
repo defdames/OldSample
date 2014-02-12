@@ -276,60 +276,35 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         protected void deAssignCrossingtoContact(object sender, DirectEventArgs e)
         {
-            CROSSING_CONTACTS data;
+            CROSSING data;
            
             //do type conversions
 
             RowSelectionModel sm = uxAssignContactGrid.GetSelectionModel() as RowSelectionModel;
-            long ContactId = long.Parse(sm.SelectedRow.RecordID);
+            long ContactId = long.Parse(e.ExtraParams["contactId"]);
            
-            //Get record to be edited
-            using (Entities _context = new Entities())
-            {
+          
+                string json = (e.ExtraParams["selectedCrossings"]);
+                List<CrossingDetails> crossingList = JSON.Deserialize<List<CrossingDetails>>(json);
+                foreach (CrossingDetails crossing in crossingList)
+                {
+                    //Get record to be edited
+                    using (Entities _context = new Entities())
+                    {
 
-                //var contactId = long.Parse(e.ExtraParams["contactId"]);
-                data = (from d in _context.CROSSING_CONTACTS
-                        where d.CONTACT_ID == ContactId
-                        select d).Single();
-              
-            
-                  
-                    //try
-                    //{
-                CheckboxSelectionModel cm = uxAssignCrossingGrid.GetSelectionModel() as CheckboxSelectionModel;
-                long crossingId = long.Parse(sm.SelectedRow.RecordID);
-
-
-                        //long crossingId = long.Parse(e.ExtraParams["crossingId"]);
-                        var crossingdata = (from d in _context.CROSSINGS
-
-                                            where d.CROSSING_ID == crossingId
-
-                                            select
-
-                                                d.CROSSING_ID
-                                            ).Single();
-
-                        //long CrossingId = long.Parse(e.ExtraParams["crossingId"]);
-                        crossingId = (crossingdata);
-                      
-                     
-                        
-                     
-                   
-                    //}
-                    //catch (Exception) { }
-            
-            }
-
-            data.CONTACT_ID = ContactId;
+                        data = (from d in _context.CROSSINGS
+                                where d.CROSSING_ID == crossing.CROSSING_ID
+                                select d).Single();
+                        data.CONTACT_ID = ContactId;
+                    }
+                    GenericData.Update<CROSSING>(data);
+                }
            
-            
-
-            GenericData.Update<CROSSING_CONTACTS>(data);
-
-            uxAssignContactPanel.Hide();
+            uxAssignCrossingWindow.Hide();
+            uxAssignContactManagerStore.Reload();
+            uxAssignContactCrossingStore.Reload();
             uxContactFormPanel.Reset();
+           
            
             
             Notification.Show(new NotificationConfig()
@@ -416,6 +391,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             
         }
 
+    }
+
+    public class CrossingDetails
+    {
+      public long CROSSING_ID {get;set;}
+      public string CROSSING_NUMBER {get; set;}
+      public string RAILROAD {get; set;}
+      public string SERVICE_UNIT {get; set;}
+      public string SUB_DIVISION { get; set; }
     }
 }
     
