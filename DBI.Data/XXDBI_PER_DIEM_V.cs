@@ -12,7 +12,7 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class XXDBI_PER_DIEM
+    public partial class XXDBI_PER_DIEM_V
     {
         public decimal TRANSACTION_ID { get; set; }
         public decimal DA_HEADER_ID { get; set; }

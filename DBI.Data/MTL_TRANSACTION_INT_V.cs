@@ -12,7 +12,7 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class MTL_TRANSACTIONS_INTERFACE
+    public partial class MTL_TRANSACTION_INT_V
     {
         public Nullable<decimal> TRANSACTION_INTERFACE_ID { get; set; }
         public Nullable<decimal> TRANSACTION_HEADER_ID { get; set; }

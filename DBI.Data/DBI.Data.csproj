@@ -172,7 +172,7 @@
     <Compile Include="MOBILE_TASK_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
-    <Compile Include="MTL_TRANSACTIONS_INTERFACE.cs">
+    <Compile Include="MTL_TRANSACTION_INT_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="Oracle.Context.cs">
@@ -202,7 +202,7 @@
     <Compile Include="PA_TASKS_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
-    <Compile Include="PA_TRANSACTION_INTERFACE_ALL.cs">
+    <Compile Include="PA_TRANSACTION_INT_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="PROJECTS_V.cs">
@@ -242,16 +242,16 @@
     <Compile Include="WEB_PROJECTS_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
-    <Compile Include="XXDBI_DAILY_ACTIVITY_HEADER.cs">
+    <Compile Include="XXDBI_DAILY_ACTIVITY_HEADER_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
-    <Compile Include="XXDBI_LABOR_HEADER.cs">
+    <Compile Include="XXDBI_LABOR_HEADER_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
-    <Compile Include="XXDBI_PER_DIEM.cs">
+    <Compile Include="XXDBI_PER_DIEM_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
-    <Compile Include="XXDBI_TRUCK_EQUIP_USAGE.cs">
+    <Compile Include="XXDBI_TRUCK_EQUIP_USAGE_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="XXPJ_PREV_WAGE_RATES.cs">

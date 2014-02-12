@@ -12,19 +12,29 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class XXDBI_DAILY_ACTIVITY_HEADER
+    public partial class XXDBI_LABOR_HEADER_V
     {
+        public decimal LABOR_HEADER_ID { get; set; }
         public decimal DA_HEADER_ID { get; set; }
         public string PROJECT_NUMBER { get; set; }
-        public string PROJECT_NAME { get; set; }
+        public string TASK_NUMBER { get; set; }
+        public string WORK_ORDER_NUM { get; set; }
+        public string EMPLOYEE_NUMBER { get; set; }
+        public string EMP_FULL_NAME { get; set; }
+        public string ROLE { get; set; }
         public string STATE { get; set; }
         public string COUNTY { get; set; }
-        public System.DateTime ACTIVITY_DATE { get; set; }
+        public System.DateTime LAB_HEADER_DATE { get; set; }
+        public decimal QUANTITY { get; set; }
+        public string ELEMENT { get; set; }
+        public string ADJUSTMENT { get; set; }
+        public string STATUS { get; set; }
         public decimal ORG_ID { get; set; }
         public decimal CREATED_BY { get; set; }
         public System.DateTime CREATION_DATE { get; set; }
         public decimal LAST_UPDATED_BY { get; set; }
         public System.DateTime LAST_UPDATE_DATE { get; set; }
         public Nullable<decimal> LAST_UPDATE_LOGIN { get; set; }
+        public string OVR_DAILYOT_FLAG { get; set; }
     }
 }

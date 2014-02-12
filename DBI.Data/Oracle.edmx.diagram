@@ -31,16 +31,12 @@
         <AssociationConnector Association="OracleModel.FK_INVENTORY_CHEMICAL_MIX_ID" ManuallyRouted="false" >
         </AssociationConnector>
         <EntityTypeShape EntityType="OracleModel.PA_TASKS_V" Width="1.5" PointX="0.5" PointY="8.375" />
-        <EntityTypeShape EntityType="OracleModel.XXDBI_DAILY_ACTIVITY_HEADER" Width="1.5" PointX="16.75" PointY="14.75" />
-        <EntityTypeShape EntityType="OracleModel.XXDBI_LABOR_HEADER" Width="1.5" PointX="16.625" PointY="9.25" />
-        <EntityTypeShape EntityType="OracleModel.XXDBI_TRUCK_EQUIP_USAGE" Width="1.5" PointX="16.625" PointY="4.125" />
         <EntityTypeShape EntityType="OracleModel.PA_LOCATIONS_V" Width="1.5" PointX="14.75" PointY="4" />
         <EntityTypeShape EntityType="OracleModel.EXPENDITURE_TYPE_V" Width="1.5" PointX="14.75" PointY="7.375" />
         <EntityTypeShape EntityType="OracleModel.PA_ROLES_V" Width="1.5" PointX="2.625" PointY="8.625" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_CONTACTS" Width="1.5" PointX="24.5" PointY="0.625" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_IMPORT" Width="1.5" PointX="7.875" PointY="20" />
         <EntityTypeShape EntityType="OracleModel.XXPJ_PREV_WAGE_RATES" Width="1.5" PointX="14.75" PointY="10.125" />
-        <EntityTypeShape EntityType="OracleModel.MTL_TRANSACTIONS_INTERFACE" Width="1.5" PointX="14.75" PointY="14.625" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_HEADER" Width="1.5" PointX="5" PointY="10.875" />
         <AssociationConnector Association="OracleModel.FK_CHEMICAL_HEADER_ID" />
         <AssociationConnector Association="OracleModel.FK_HEADER_ID" />
@@ -56,9 +52,13 @@
         <EntityTypeShape EntityType="OracleModel.CROSSING" Width="1.5" PointX="26.5" PointY="0.5" />
         <AssociationConnector Association="OracleModel.FK_CROSSINGS_CONTACT_ID" />
         <AssociationConnector Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID" />
-        <EntityTypeShape EntityType="OracleModel.PA_TRANSACTION_INTERFACE_ALL" Width="1.5" PointX="2.3981082469216117" PointY="30.295906706850932" />
         <EntityTypeShape EntityType="OracleModel.PA_PERIODS_ALL" Width="1.5" PointX="5.4906130104747666" PointY="24.072831925038635" />
-        <EntityTypeShape EntityType="OracleModel.XXDBI_PER_DIEM" Width="1.5" PointX="7.4343685393381715" PointY="4.1897888352115586" />
+        <EntityTypeShape EntityType="OracleModel.MTL_TRANSACTION_INT_V" Width="1.5" PointX="1.2729639603164811" PointY="25.727599841415696" />
+        <EntityTypeShape EntityType="OracleModel.PA_TRANSACTION_INT_V" Width="1.5" PointX="1.4488875686418672" PointY="28.172751857048251" />
+        <EntityTypeShape EntityType="OracleModel.XXDBI_DAILY_ACTIVITY_HEADER_V" Width="1.5" PointX="3.0236078943235833" PointY="26.1399874659907" />
+        <EntityTypeShape EntityType="OracleModel.XXDBI_LABOR_HEADER_V" Width="1.5" PointX="6.3745817851156845" PointY="6.2552364944737571" />
+        <EntityTypeShape EntityType="OracleModel.XXDBI_PER_DIEM_V" Width="1.5" PointX="5.9814358865755777" PointY="5.190760093364287" />
+        <EntityTypeShape EntityType="OracleModel.XXDBI_TRUCK_EQUIP_USAGE_V" Width="1.5" PointX="6.6666420654704055" PointY="26.451616105833843" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

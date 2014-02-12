@@ -12,7 +12,7 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class XXDBI_TRUCK_EQUIP_USAGE
+    public partial class XXDBI_TRUCK_EQUIP_USAGE_V
     {
         public string TRUCK_EQUIP { get; set; }
         public decimal TRANSACTION_ID { get; set; }
@@ -22,7 +22,7 @@ namespace DBI.Data
         public string WORK_ORDER_NUM { get; set; }
         public System.DateTime USAGE_DATE { get; set; }
         public decimal QUANTITY { get; set; }
-        public decimal AMOUNT { get; set; }
+        public Nullable<decimal> AMOUNT { get; set; }
         public string STATUS { get; set; }
         public string REJECTION_REASON { get; set; }
         public decimal ORG_ID { get; set; }
@@ -30,7 +30,7 @@ namespace DBI.Data
         public System.DateTime CREATION_DATE { get; set; }
         public decimal LAST_UPDATED_BY { get; set; }
         public System.DateTime LAST_UPDATE_DATE { get; set; }
-        public decimal LAST_UPDATE_LOGIN { get; set; }
+        public Nullable<decimal> LAST_UPDATE_LOGIN { get; set; }
         public string OVERRIDE { get; set; }
     }
 }

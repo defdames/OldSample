@@ -12,7 +12,7 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class PA_TRANSACTION_INTERFACE_ALL
+    public partial class PA_TRANSACTION_INT_V
     {
         public string TRANSACTION_SOURCE { get; set; }
         public string BATCH_NAME { get; set; }

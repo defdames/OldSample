@@ -45,23 +45,23 @@ namespace DBI.Data
         public DbSet<DAILY_ACTIVITY_FOOTER> DAILY_ACTIVITY_FOOTER { get; set; }
         public DbSet<DAILY_ACTIVITY_INVENTORY> DAILY_ACTIVITY_INVENTORY { get; set; }
         public DbSet<PA_TASKS_V> PA_TASKS_V { get; set; }
-        public DbSet<XXDBI_DAILY_ACTIVITY_HEADER> XXDBI_DAILY_ACTIVITY_HEADER { get; set; }
-        public DbSet<XXDBI_LABOR_HEADER> XXDBI_LABOR_HEADER { get; set; }
-        public DbSet<XXDBI_TRUCK_EQUIP_USAGE> XXDBI_TRUCK_EQUIP_USAGE { get; set; }
         public DbSet<PA_LOCATIONS_V> PA_LOCATIONS_V { get; set; }
         public DbSet<EXPENDITURE_TYPE_V> EXPENDITURE_TYPE_V { get; set; }
         public DbSet<PA_ROLES_V> PA_ROLES_V { get; set; }
         public DbSet<CROSSING_CONTACTS> CROSSING_CONTACTS { get; set; }
         public DbSet<DAILY_ACTIVITY_IMPORT> DAILY_ACTIVITY_IMPORT { get; set; }
         public DbSet<XXPJ_PREV_WAGE_RATES> XXPJ_PREV_WAGE_RATES { get; set; }
-        public DbSet<MTL_TRANSACTIONS_INTERFACE> MTL_TRANSACTIONS_INTERFACE { get; set; }
         public DbSet<DAILY_ACTIVITY_HEADER> DAILY_ACTIVITY_HEADER { get; set; }
         public DbSet<DAILY_ACTIVITY_STATUS> DAILY_ACTIVITY_STATUS { get; set; }
         public DbSet<DAILY_ACTIVITY_AUDIT> DAILY_ACTIVITY_AUDIT { get; set; }
         public DbSet<DAILY_ACTIVITY_EMPLOYEE> DAILY_ACTIVITY_EMPLOYEE { get; set; }
         public DbSet<CROSSING> CROSSINGS { get; set; }
-        public DbSet<PA_TRANSACTION_INTERFACE_ALL> PA_TRANSACTION_INTERFACE_ALL { get; set; }
         public DbSet<PA_PERIODS_ALL> PA_PERIODS_ALL { get; set; }
-        public DbSet<XXDBI_PER_DIEM> XXDBI_PER_DIEM { get; set; }
+        public DbSet<MTL_TRANSACTION_INT_V> MTL_TRANSACTION_INT_V { get; set; }
+        public DbSet<PA_TRANSACTION_INT_V> PA_TRANSACTION_INT_V { get; set; }
+        public DbSet<XXDBI_DAILY_ACTIVITY_HEADER_V> XXDBI_DAILY_ACTIVITY_HEADER_V { get; set; }
+        public DbSet<XXDBI_LABOR_HEADER_V> XXDBI_LABOR_HEADER_V { get; set; }
+        public DbSet<XXDBI_PER_DIEM_V> XXDBI_PER_DIEM_V { get; set; }
+        public DbSet<XXDBI_TRUCK_EQUIP_USAGE_V> XXDBI_TRUCK_EQUIP_USAGE_V { get; set; }
     }
 }
