@@ -101,6 +101,7 @@
 							<ExtraParams>
 								<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
 								<ext:Parameter Name="OrgId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.ORG_ID" Mode="Raw" />
+								<ext:Parameter Name="Status" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.STATUS_VALUE" Mode="Raw" />
 							</ExtraParams>
 						</Select>
 					</DirectEvents>

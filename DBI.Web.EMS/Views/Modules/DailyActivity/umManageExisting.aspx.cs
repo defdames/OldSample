@@ -236,10 +236,26 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxInventoryTab.LoadContent(invUrl);
             }
 
-            uxApproveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
-            uxPostActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
+            switch(e.ExtraParams["Status"]){
+                case "NEW":
+                    uxSubmitActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.ViewAll");
+                    uxApproveActivityButton.Disabled = true;
+                    uxPostActivityButton.Disabled = true;
+                    break;
+                case "PENDING APPROVAL":
+                    uxApproveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
+                    uxSubmitActivityButton.Disabled = true;
+                    uxPostActivityButton.Disabled = true;
+                    break;
+                case "APPROVED":
+                    uxPostActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
+                    uxSubmitActivityButton.Disabled = true;
+                    uxApproveActivityButton.Disabled = true;
+                    break;
+            }
+            
             uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.ViewAll");
-            uxSubmitActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.ViewAll");
+            
             uxExportToPDF.Disabled = false;
             uxEmailPdf.Disabled = false;
         }
@@ -413,7 +429,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         /// <param name="HeaderId"></param>
         /// <returns></returns>
-        protected List<object> GetProduction(long HeaderId)
+        protected List<object> GetProductionDBI(long HeaderId)
         {
             using (Entities _context = new Entities())
             {
@@ -427,6 +443,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        protected List<object> GetProductionIRM(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
+                var returnData = (from d in _context.DAILY_ACTIVITY_PRODUCTION
+                                  join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                  join t in _context.PA_TASKS_V on d.TASK_ID equals t.TASK_ID
+                                  join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
+                                  where d.HEADER_ID == HeaderId
+                                  select new { t.DESCRIPTION, d.WORK_AREA, d.STATION, d.EXPENDITURE_TYPE, d.COMMENTS, d.QUANTITY }).ToList<object>();
+                return returnData;
+            }
+        }
         /// <summary>
         /// Get Weather Information
         /// </summary>
@@ -464,7 +493,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         /// <param name="HeaderId"></param>
         /// <returns></returns>
-        protected List<object> GetInventory(long HeaderId)
+        protected List<object> GetInventoryDBI(long HeaderId)
         {
             using (Entities _context = new Entities())
             {
@@ -476,6 +505,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                            from j in joined
                                            where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
                                            select new { c.CHEMICAL_MIX_NUMBER, d.SUB_INVENTORY_SECONDARY_NAME, j.DESCRIPTION, d.RATE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).ToList<object>();
+
+                return returnData;
+            }
+        }
+
+        protected List<object> GetInventoryIRM(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
+                List<object> returnData = (from d in _context.DAILY_ACTIVITY_INVENTORY
+                                           join i in _context.INVENTORY_V on d.ITEM_ID equals i.ITEM_ID into joined
+                                           join u in _context.UNIT_OF_MEASURE_V on d.UNIT_OF_MEASURE equals u.UOM_CODE
+                                           where d.HEADER_ID == HeaderId
+                                           from j in joined
+                                           where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
+                                           select new {d.SUB_INVENTORY_SECONDARY_NAME, j.DESCRIPTION, d.RATE, u.UNIT_OF_MEASURE}).ToList<object>();
 
                 return returnData;
             }
@@ -565,6 +610,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected MemoryStream generatePDF(long HeaderId)
         {
+            long OrgId;
+            using (Entities _context = new Entities())
+            {
+                OrgId = (from d in _context.DAILY_ACTIVITY_HEADER
+                         join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                         where d.HEADER_ID == HeaderId
+                         select (long)p.ORG_ID).Single();
+            }
+
             using (MemoryStream PdfStream = new MemoryStream())
             {
                 //Create the document
@@ -697,34 +751,78 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 ExportedPDF.Add(NewLine);
 
                 //Get Production Data
-                var ProductionData = GetProduction(HeaderId);
-
-                PdfPTable ProductionTable = new PdfPTable(7);
-
-                Cells = new PdfPCell[]{
+                if (OrgId == 121)
+                {
+                    string WorkArea;
+                    var ProductionData = GetProductionDBI(HeaderId);
+                    PdfPTable ProductionTable = new PdfPTable(5);
+                    
+                    Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Spray/Work Area", HeaderFont)),
                     new PdfPCell(new Phrase("Pole/MP\nFrom", HeaderFont)),
                     new PdfPCell(new Phrase("Pole/MP\nTo", HeaderFont)),
                     new PdfPCell(new Phrase("Acres/Mile", HeaderFont)),
                     new PdfPCell(new Phrase("Gallons", HeaderFont))};
 
-                Row = new PdfPRow(Cells);
-                ProductionTable.Rows.Add(Row);
+                    Row = new PdfPRow(Cells);
+                    ProductionTable.Rows.Add(Row);
 
-                foreach (dynamic Data in ProductionData)
-                {
-                    Cells = new PdfPCell[]{
-                        new PdfPCell(new Phrase(Data.WORK_AREA, CellFont)),
+                    foreach (dynamic Data in ProductionData)
+                    {
+                        try
+                        {
+                            WorkArea = Data.WORK_AREA.ToString();
+                        }
+                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                        {
+                            WorkArea = string.Empty;
+                        }
+                        Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase(WorkArea, CellFont)),
                         new PdfPCell(new Phrase(Data.POLE_FROM, CellFont)),
                         new PdfPCell(new Phrase(Data.POLE_TO, CellFont)),
                         new PdfPCell(new Phrase(Data.ACRES_MILE.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Data.QUANTITY.ToString(), CellFont))
                     };
 
+                        Row = new PdfPRow(Cells);
+                        ProductionTable.Rows.Add(Row);
+                    }
+                    ExportedPDF.Add(ProductionTable);
+                }
+                if (OrgId == 123)
+                {
+                    var ProductionData = GetProductionIRM(HeaderId);
+                    PdfPTable ProductionTable = new PdfPTable(6);
+
+
+                    Cells = new PdfPCell[]{
+                    new PdfPCell(new Phrase("Task", HeaderFont)),
+                    new PdfPCell(new Phrase("Spray/Work Area", HeaderFont)),
+                    new PdfPCell(new Phrase("Quantity", HeaderFont)),
+                    new PdfPCell(new Phrase("Station", HeaderFont)),
+                    new PdfPCell(new Phrase("Expenditure Type", HeaderFont)),
+                    new PdfPCell(new Phrase("Comments", HeaderFont))};
+
                     Row = new PdfPRow(Cells);
                     ProductionTable.Rows.Add(Row);
+
+                    foreach (dynamic Data in ProductionData)
+                    {
+                        Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
+                        new PdfPCell(new Phrase(Data.WORK_AREA, CellFont)),
+                        new PdfPCell(new Phrase(Data.QUANTITY.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.STATION, CellFont)),
+                        new PdfPCell(new Phrase(Data.EXPENDITURE_TYPE.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.COMMENTS.ToString(), CellFont))
+                    };
+
+                        Row = new PdfPRow(Cells);
+                        ProductionTable.Rows.Add(Row);
+                    }
+                    ExportedPDF.Add(ProductionTable);
                 }
-                ExportedPDF.Add(ProductionTable);
                 ExportedPDF.Add(NewLine);
 
                 //Get Weather
@@ -761,12 +859,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 ExportedPDF.Add(WeatherTable);
                 ExportedPDF.Add(NewLine);
 
-                //Get Chemical Mix Data
-                var ChemicalData = GetChemicalMix(HeaderId);
+                if (OrgId == 121)
+                {
+                    //Get Chemical Mix Data
+                    var ChemicalData = GetChemicalMix(HeaderId);
 
-                PdfPTable ChemicalTable = new PdfPTable(11);
+                    PdfPTable ChemicalTable = new PdfPTable(11);
 
-                Cells = new PdfPCell[]{
+                    Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Mix #", HeaderFont)),
                     new PdfPCell(new Phrase("Target\nArea", HeaderFont)),
                     new PdfPCell(new Phrase("Gals/Acre", HeaderFont)),
@@ -779,15 +879,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     new PdfPCell(new Phrase("State", HeaderFont)),
                     new PdfPCell(new Phrase("County", HeaderFont))
                 };
-                Row = new PdfPRow(Cells);
-                ChemicalTable.Rows.Add(Row);
+                    Row = new PdfPRow(Cells);
+                    ChemicalTable.Rows.Add(Row);
 
-                foreach (dynamic Data in ChemicalData)
-                {
-                    decimal TotalGallons = Data.GALLON_STARTING + Data.GALLON_MIXED;
-                    decimal GallonsUsed = TotalGallons - Data.GALLON_REMAINING;
+                    foreach (dynamic Data in ChemicalData)
+                    {
+                        decimal TotalGallons = Data.GALLON_STARTING + Data.GALLON_MIXED;
+                        decimal GallonsUsed = TotalGallons - Data.GALLON_REMAINING;
 
-                    Cells = new PdfPCell[]{
+                        Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(Data.CHEMICAL_MIX_NUMBER != null ? Data.CHEMICAL_MIX_NUMBER.ToString() : string.Empty, CellFont)),
                         new PdfPCell(new Phrase(Data.TARGET_AREA != null ? Data.TARGET_AREA : string.Empty, CellFont)),
                         new PdfPCell(new Phrase(Data.GALLON_ACRE != null ? Data.GALLON_ACRE.ToString() : string.Empty, CellFont)),
@@ -800,30 +900,33 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         new PdfPCell(new Phrase(Data.STATE != null ? Data.STATE : string.Empty, CellFont)),
                         new PdfPCell(new Phrase(Data.COUNTY != null ? Data.COUNTY : string.Empty, CellFont))
                     };
-                    Row = new PdfPRow(Cells);
-                    ChemicalTable.Rows.Add(Row);
+                        Row = new PdfPRow(Cells);
+                        ChemicalTable.Rows.Add(Row);
+                    }
+
+                    ExportedPDF.Add(ChemicalTable);
+                    ExportedPDF.Add(NewLine);
                 }
 
-                ExportedPDF.Add(ChemicalTable);
-                ExportedPDF.Add(NewLine);
-
                 //Get Inventory Data
-                var InventoryData = GetInventory(HeaderId);
-                PdfPTable InventoryTable = new PdfPTable(5);
+                if (OrgId == 121)
+                {
+                    var InventoryData = GetInventoryDBI(HeaderId);
+                    PdfPTable InventoryTable = new PdfPTable(5);
 
-                Cells = new PdfPCell[]{
+                    Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Mix #", HeaderFont)),
                     new PdfPCell(new Phrase("Sub-Inventory", HeaderFont)),
                     new PdfPCell(new Phrase("Item Name", HeaderFont)),
                     new PdfPCell(new Phrase("Rate", HeaderFont)),
                     new PdfPCell(new Phrase("EPA \n Number", HeaderFont))
                 };
-                Row = new PdfPRow(Cells);
-                InventoryTable.Rows.Add(Row);
+                    Row = new PdfPRow(Cells);
+                    InventoryTable.Rows.Add(Row);
 
-                foreach (dynamic Data in InventoryData)
-                {
-                    Cells = new PdfPCell[]{
+                    foreach (dynamic Data in InventoryData)
+                    {
+                        Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(Data.CHEMICAL_MIX_NUMBER.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Data.SUB_INVENTORY_SECONDARY_NAME, CellFont)),
                         new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
@@ -831,11 +934,39 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         new PdfPCell(new Phrase(Data.EPA_NUMBER, CellFont))
                     };
 
+                        Row = new PdfPRow(Cells);
+                        InventoryTable.Rows.Add(Row);
+                    }
+
+                    ExportedPDF.Add(InventoryTable);
+                }
+                if (OrgId == 123)
+                {
+                    var InventoryData = GetInventoryIRM(HeaderId);
+                    PdfPTable InventoryTable = new PdfPTable(3);
+
+                    Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase("Sub-Inventory", HeaderFont)),
+                        new PdfPCell(new Phrase("Item Name", HeaderFont)),
+                        new PdfPCell(new Phrase("Quantity", HeaderFont)),
+                     };
                     Row = new PdfPRow(Cells);
                     InventoryTable.Rows.Add(Row);
-                }
 
-                ExportedPDF.Add(InventoryTable);
+                    foreach (dynamic Data in InventoryData)
+                    {
+                        Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase(Data.SUB_INVENTORY_SECONDARY_NAME, CellFont)),
+                        new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
+                        new PdfPCell(new Phrase(string.Format("{0} {1}", Data.RATE.ToString(), Data.UNIT_OF_MEASURE), CellFont)),
+                    };
+
+                        Row = new PdfPRow(Cells);
+                        InventoryTable.Rows.Add(Row);
+                    }
+
+                    ExportedPDF.Add(InventoryTable);
+                }
                 ExportedPDF.Add(NewLine);
 
                 //Get Footer Data
@@ -944,7 +1075,32 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 Row = new PdfPRow(Cells);
                 FooterTable.Rows.Add(Row);
+                if (OrgId == 123)
+                {
+                    iTextSharp.text.Image DotRepImage;
+                    try
+                    {
+                        DotRepImage = iTextSharp.text.Image.GetInstance(FooterData.DOT_REP.ToArray());
+                        DotRepImage.ScaleAbsolute(75f, 25f);
+                    }
+                    catch (Exception)
+                    {
+                        DotRepImage = iTextSharp.text.Image.GetInstance(Server.MapPath("/Resources/Images") + "/1pixel.jpg");
+                    }
 
+                    Cells = new PdfPCell[]{
+                    new PdfPCell(new Phrase("DOT Representative", HeadFootTitleFont)),
+                    new PdfPCell(DotRepImage),
+                    new PdfPCell(new Phrase("Name", HeadFootTitleFont)),
+                    new PdfPCell(new Phrase(FooterData.DOT_REP_NAME, HeadFootCellFont))
+                    };
+                    foreach (PdfPCell Cell in Cells)
+                    {
+                        Cell.Border = PdfPCell.NO_BORDER;
+                    }
+                    Row = new PdfPRow(Cells);
+                    FooterTable.Rows.Add(Row);
+                }
                 ExportedPDF.Add(FooterTable);
                 //Close Stream and start Download
                 ExportWriter.CloseStream = false;
