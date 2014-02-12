@@ -175,10 +175,10 @@ namespace DBI.Data
                 GenericData.Insert<XXDBI_DAILY_ACTIVITY_HEADER>(header, columns, "XXDBI.XXDBI_DAILY_ACTIVITY_HEADER");
 
                 //Update the header
-                data.h.DA_HEADER_ID = header.DA_HEADER_ID;
-                _context.Set<DAILY_ACTIVITY_HEADER>().Attach(data.h);
-                _context.Entry(data.h).State = System.Data.EntityState.Modified;
-                _context.SaveChanges();
+                //data.h.DA_HEADER_ID = header.DA_HEADER_ID;
+                //_context.Set<DAILY_ACTIVITY_HEADER>().Attach(data.h);
+                // _context.Entry(data.h).State = System.Data.EntityState.Modified;
+                //_context.SaveChanges();
 
                 }
                 catch (Exception ex)
@@ -507,7 +507,7 @@ namespace DBI.Data
                             {
                                 QUANTITY = (decimal) Production.d.QUANTITY,
                                 ORIG_TRANSACTION_REFERENCE = transReference,
-                                TRANSACTION_SOURCE = "EMS",
+                                TRANSACTION_SOURCE = "DBI Daily Activity Sheet",
                                 BATCH_NAME = batchName,
                                 EXPENDITURE_ENDING_DATE = periodDate,
                                 EXPENDITURE_ITEM_DATE = (DateTime) Production.DA_DATE,
