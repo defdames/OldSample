@@ -286,9 +286,9 @@
 											<Model>
 												<ext:Model ID="Model5" runat="server">
 													<Fields>
-														<ext:ModelField Name="MEANING" Type="Int" />
+														<ext:ModelField Name="MEANING" />
 														<ext:ModelField Name="COUNTY" Type="String" />
-														<ext:ModelField Name="STATE" Type="Int" />
+														<ext:ModelField Name="STATE"  />
 													</Fields>
 												</ext:Model>
 											</Model>
