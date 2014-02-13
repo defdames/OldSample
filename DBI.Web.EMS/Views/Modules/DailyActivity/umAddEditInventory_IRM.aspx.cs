@@ -100,6 +100,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     SUB_INVENTORY_ORG_ID = SubInventoryOrg,
                     ITEM_ID = ItemId,
                     RATE = Rate,
+                    UNIT_OF_MEASURE = uxAddInventoryMeasure.Value.ToString(),
                     CREATE_DATE = DateTime.Now,
                     MODIFY_DATE = DateTime.Now,
                     CREATED_BY = User.Identity.Name,
@@ -146,7 +147,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             where d.INVENTORY_ID == InventoryID
                             from j in joined
                             where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
-                            select new { j.ENABLED_FLAG, j.ITEM_ID, j.ACTIVE, j.LE, j.LAST_UPDATE_DATE, j.ATTRIBUTE2, j.INV_LOCATION, j.INV_NAME, d.INVENTORY_ID, d.SUB_INVENTORY_SECONDARY_NAME, d.SUB_INVENTORY_ORG_ID, j.SEGMENT1, j.DESCRIPTION, d.RATE}).Single();
+                            select new { j.ENABLED_FLAG, j.ITEM_ID, j.ACTIVE, j.LE, j.LAST_UPDATE_DATE, j.ATTRIBUTE2, j.INV_LOCATION, j.INV_NAME, j.UOM_CODE, d.INVENTORY_ID, d.UNIT_OF_MEASURE, d.SUB_INVENTORY_SECONDARY_NAME, d.SUB_INVENTORY_ORG_ID, j.SEGMENT1, j.DESCRIPTION, d.RATE}).Single();
 
                     var OrgId = Inventory.SUB_INVENTORY_ORG_ID;
                     var InvName = Inventory.SUB_INVENTORY_SECONDARY_NAME;
@@ -161,6 +162,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     uxEditInventoryRegion.SelectedItems.Add(new Ext.Net.ListItem(Inventory.INV_NAME, Inventory.SUB_INVENTORY_ORG_ID));
                     uxEditInventoryRegion.UpdateSelectedItems();
                     uxEditInventorySub.SetValueAndFireSelect(SubData.DESCRIPTION);
+                    GetUnitOfMeasure("Edit", Inventory.UOM_CODE);
+                    uxEditInventoryMeasure.SelectedItems.Clear();
+                    uxEditInventoryMeasure.SelectedItems.Add(new Ext.Net.ListItem(Inventory.UNIT_OF_MEASURE, Inventory.UOM_CODE));
+                    uxEditInventoryMeasure.UpdateSelectedItems();
                     uxEditInventoryItem.SetValue(Inventory.ITEM_ID.ToString(), Inventory.DESCRIPTION);
                     uxEditInventoryRate.SetValue(Inventory.RATE);
                 }
@@ -194,6 +199,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.SUB_INVENTORY_ORG_ID = OrgId;
             data.ITEM_ID = ItemId;
             data.RATE = Rate;
+            data.UNIT_OF_MEASURE = uxEditInventoryMeasure.Value.ToString();
             data.MODIFIED_BY = User.Identity.Name;
             data.MODIFY_DATE = DateTime.Now;
 
@@ -312,6 +318,45 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 uxEditInventoryItem.SetValue(e.ExtraParams["ItemId"], e.ExtraParams["Description"]);
                 uxEditInventoryItemStore.ClearFilter();
+            }
+        }
+
+        protected void deGetUnitOfMeasure(object sender, DirectEventArgs e)
+        {
+            GetUnitOfMeasure(e.ExtraParams["Type"], e.ExtraParams["uomCode"]);
+        }
+
+        /// <summary>
+        /// Gets Units of Measure from DB
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void GetUnitOfMeasure(string FormType, string uomCode)
+        {
+            //Query Db for units of measure based on uom_code
+            using (Entities _context = new Entities())
+            {
+                List<UNIT_OF_MEASURE_V> data;
+                var uomClass = (from u in _context.UNIT_OF_MEASURE_V
+                                where u.UOM_CODE == uomCode
+                                select u.UOM_CLASS).Single().ToString();
+
+                data = (from u in _context.UNIT_OF_MEASURE_V
+                        where u.UOM_CLASS == uomClass
+                        select u).ToList();
+
+                //Set datasource for store add/edit
+                if (FormType == "Add")
+                {
+                    uxAddInventoryMeasureStore.DataSource = data;
+                    uxAddInventoryMeasureStore.DataBind();
+                }
+                else
+                {
+                    uxEditInventoryMeasureStore.DataSource = data;
+                    uxEditInventoryMeasureStore.DataBind();
+                }
+
             }
         }
     }
