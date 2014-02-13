@@ -275,8 +275,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             if (roleNeeded())
             {
-                ComboBox Rolebox = uxAddEmployeeForm.FindControl("uxAddEmployeeRole") as ComboBox;
-                data.ROLE_TYPE = Rolebox.Value.ToString();
+                data.ROLE_TYPE = uxAddEmployeeRole.Value.ToString();
             }
             //Check for travel time
             try
@@ -554,7 +553,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                              where d.HEADER_ID == HeaderId
                                              select p).ToList();
 
-                if (e.Parameters["FormType"] == "Add")
+                if (e.Parameters["Form"] == "Add")
                 {
                     uxAddEmployeeRoleStore.DataSource = RoleList;
                 }
