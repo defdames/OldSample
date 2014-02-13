@@ -180,6 +180,7 @@
 											<ExtraParams>
 												<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
 											</ExtraParams>
+											<EventMask ShowMask="true" />
 										</Click>
 									</DirectEvents>
 								</ext:Button>

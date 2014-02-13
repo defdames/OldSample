@@ -44,6 +44,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 Interface.PostToOracle(HeaderToPost.HEADER_ID, User.Identity.Name);
             }
+
+            X.Js.Call("parent.App.uxManageGridStore.reload()");
         }
     }
 }

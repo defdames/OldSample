@@ -605,7 +605,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     TargetAnchor = AnchorPoint.Center
                 }
             });
-            uxManageGrid.Reload();
+            uxManageGridStore.Reload();
         }
 
         protected MemoryStream generatePDF(long HeaderId)
