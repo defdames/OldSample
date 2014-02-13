@@ -58,10 +58,10 @@ namespace DBI.Data
         public DbSet<CROSSING> CROSSINGS { get; set; }
         public DbSet<PA_PERIODS_ALL> PA_PERIODS_ALL { get; set; }
         public DbSet<MTL_TRANSACTION_INT_V> MTL_TRANSACTION_INT_V { get; set; }
-        public DbSet<PA_TRANSACTION_INT_V> PA_TRANSACTION_INT_V { get; set; }
         public DbSet<XXDBI_DAILY_ACTIVITY_HEADER_V> XXDBI_DAILY_ACTIVITY_HEADER_V { get; set; }
         public DbSet<XXDBI_LABOR_HEADER_V> XXDBI_LABOR_HEADER_V { get; set; }
         public DbSet<XXDBI_PER_DIEM_V> XXDBI_PER_DIEM_V { get; set; }
         public DbSet<XXDBI_TRUCK_EQUIP_USAGE_V> XXDBI_TRUCK_EQUIP_USAGE_V { get; set; }
+        public DbSet<PA_TRANSACTION_INT_V> PA_TRANSACTION_INT_V { get; set; }
     }
 }
