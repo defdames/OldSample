@@ -183,7 +183,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 MODIFY_DATE = DateTime.Now,
                 CREATED_BY = AddingUser,
                 MODIFIED_BY = AddingUser,
-                STATUS = 1
+                STATUS = 1,
+                DA_HEADER_ID = 0
             };
 
             //check for SubDivision value
