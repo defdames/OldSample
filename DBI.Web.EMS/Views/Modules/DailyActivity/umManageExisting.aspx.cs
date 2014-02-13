@@ -589,9 +589,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 Interface.PostToOracle(HeaderId, User.Identity.Name);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw (ex);
+                throw;
             }
 
             Notification.Show(new NotificationConfig()
