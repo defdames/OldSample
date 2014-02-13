@@ -98,7 +98,6 @@ namespace DBI.Data
         }
 
 
-
         public static decimal payrollHoursCalculation(DateTime dateIn, DateTime dateOut, string lunchFlag, decimal? lunchAmount)
         {
             TimeSpan span = dateOut.Subtract(dateIn);
@@ -439,7 +438,7 @@ namespace DBI.Data
                         {
                             DateTime periodDate = GetPADateFromHeader((DateTime) Production.DA_DATE, 123);
 
-                            string transReference = Production.p.SEGMENT1 + Production.d.PRODUCTION_ID.ToString();
+                            string transReference = "EMS" + Production.p.SEGMENT1 + Production.d.PRODUCTION_ID.ToString();
                             string batchName = Production.p.SEGMENT1 + DateTime.Now;
                             string taskName = returnDailyActivityTaskNumber(HeaderId);
                             RowToAdd = new PA_TRANSACTION_INT_V
