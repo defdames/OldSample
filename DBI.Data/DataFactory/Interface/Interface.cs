@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace DBI.Data
 {
@@ -10,40 +11,51 @@ namespace DBI.Data
     {
         public static void PostToOracle(long HeaderId, string UserByUserName)
         {
-
-            //return user information for logged in user account
-            SYS_USER_INFORMATION userInformation = SYS_USER_INFORMATION.UserByUserName(UserByUserName);
-
-            XXDBI_DAILY_ACTIVITY_HEADER_V header;
-            Interface.createHeaderRecords(HeaderId,userInformation.USER_ID, out header);
-
-            List<XXDBI_LABOR_HEADER_V> laborRecords;
-            Interface.createLaborRecords(HeaderId,userInformation.USER_ID, header, out laborRecords);
-
-            //Create truck records
-            Interface.createTruckUsageRecords(HeaderId,userInformation.USER_ID, header, laborRecords);
-
-            //Create perdiem
-            Interface.createPerDiemRecords(HeaderId,userInformation.USER_ID, header);
-
-            //Create Inventory 
-            Interface.PostInventory(HeaderId, userInformation.USER_ID);
-
-            //Create Production
-            Interface.PostProduction(HeaderId, userInformation.USER_ID);
-
-            //Update Header with Daily Activity ID
-            DAILY_ACTIVITY_HEADER HeaderRecord;
-            using (Entities _context = new Entities())
+            try
             {
-                HeaderRecord = (from d in _context.DAILY_ACTIVITY_HEADER
-                                                      where d.HEADER_ID == HeaderId
-                                                      select d).Single();
-                HeaderRecord.DA_HEADER_ID = header.DA_HEADER_ID;
-                HeaderRecord.STATUS = 4;
-            }
-            GenericData.Update<DAILY_ACTIVITY_HEADER>(HeaderRecord);
+                using (var transaction = new TransactionScope())
+                {
+                    //return user information for logged in user account
+                    SYS_USER_INFORMATION userInformation = SYS_USER_INFORMATION.UserByUserName(UserByUserName);
 
+                    XXDBI_DAILY_ACTIVITY_HEADER_V header;
+                    Interface.createHeaderRecords(HeaderId, userInformation.USER_ID, out header);
+
+                    List<XXDBI_LABOR_HEADER_V> laborRecords;
+                    Interface.createLaborRecords(HeaderId, userInformation.USER_ID, header, out laborRecords);
+
+                    //Create truck records
+                    Interface.createTruckUsageRecords(HeaderId, userInformation.USER_ID, header, laborRecords);
+
+                    //Create perdiem
+                    Interface.createPerDiemRecords(HeaderId, userInformation.USER_ID, header);
+
+                    //Create Inventory 
+                    Interface.PostInventory(HeaderId, userInformation.USER_ID);
+
+                    //Create Production
+                    Interface.PostProduction(HeaderId, userInformation.USER_ID);
+
+                    //Update Header with Daily Activity ID
+                    DAILY_ACTIVITY_HEADER HeaderRecord;
+                    using (Entities _context = new Entities())
+                    {
+                        HeaderRecord = (from d in _context.DAILY_ACTIVITY_HEADER
+                                        where d.HEADER_ID == HeaderId
+                                        select d).Single();
+                        HeaderRecord.DA_HEADER_ID = header.DA_HEADER_ID;
+                        HeaderRecord.STATUS = 4;
+                    }
+                    GenericData.Update<DAILY_ACTIVITY_HEADER>(HeaderRecord);
+
+                    transaction.Complete();
+                }
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
 
         }
 
