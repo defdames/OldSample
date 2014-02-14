@@ -49,7 +49,6 @@ namespace DBI.Data
         public DbSet<EXPENDITURE_TYPE_V> EXPENDITURE_TYPE_V { get; set; }
         public DbSet<PA_ROLES_V> PA_ROLES_V { get; set; }
         public DbSet<CROSSING_CONTACTS> CROSSING_CONTACTS { get; set; }
-        public DbSet<DAILY_ACTIVITY_IMPORT> DAILY_ACTIVITY_IMPORT { get; set; }
         public DbSet<XXPJ_PREV_WAGE_RATES> XXPJ_PREV_WAGE_RATES { get; set; }
         public DbSet<DAILY_ACTIVITY_HEADER> DAILY_ACTIVITY_HEADER { get; set; }
         public DbSet<DAILY_ACTIVITY_STATUS> DAILY_ACTIVITY_STATUS { get; set; }
@@ -63,5 +62,6 @@ namespace DBI.Data
         public DbSet<XXDBI_PER_DIEM_V> XXDBI_PER_DIEM_V { get; set; }
         public DbSet<XXDBI_TRUCK_EQUIP_USAGE_V> XXDBI_TRUCK_EQUIP_USAGE_V { get; set; }
         public DbSet<PA_TRANSACTION_INT_V> PA_TRANSACTION_INT_V { get; set; }
+        public DbSet<DAILY_ACTIVITY_IMPORT> DAILY_ACTIVITY_IMPORT { get; set; }
     }
 }

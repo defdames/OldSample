@@ -25,5 +25,6 @@ namespace DBI.Data
         public Nullable<decimal> LONGITUDE { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public string CREATED_BY { get; set; }
+        public Nullable<long> HEADER_ID { get; set; }
     }
 }
