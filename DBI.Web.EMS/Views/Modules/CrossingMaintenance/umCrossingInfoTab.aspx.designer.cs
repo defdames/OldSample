@@ -76,13 +76,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Column uxMainCrossingNum;
         
         /// <summary>
-        /// Column1 control.
+        /// Column8 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column1;
+        protected global::Ext.Net.Column Column8;
         
         /// <summary>
         /// Column12 control.

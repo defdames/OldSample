@@ -14,7 +14,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+           
         }
      
         protected void deContactMainGrid(object sender, StoreReadDataEventArgs e)
@@ -378,11 +378,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                         where d.CONTACT_ID == ContactId
                         select d).ToList<object>();
 
-                uxTransferCrossingsOldManagerGrid.GetStore();
+               
                 int count;
-                uxNewManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], list, out count);
+                uxCurrentManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], list, out count);
                 e.Total = count;
-                uxTransferCrossingWindow.Show();
+                //uxTransferCrossingWindow.Show();
+                //uxTransferCrossingsOldManagerGrid.GetStore();
             }
             
         }

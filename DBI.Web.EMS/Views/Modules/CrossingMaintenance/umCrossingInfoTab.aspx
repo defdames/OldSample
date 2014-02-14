@@ -29,6 +29,8 @@
                                     <ext:ModelField Name="CROSSING_ID" />
                                     <ext:ModelField Name="CONTACT_ID" />
                                     <ext:ModelField Name="CROSSING_NUMBER" Type="String" />
+                                    <ext:ModelField Name="PROJECT_ID" />
+                                     <ext:ModelField Name="LONG_NAME" />
                                     <ext:ModelField Name="SERVICE_UNIT" />
                                     <ext:ModelField Name="SUB_DIVISION" />
                                     <ext:ModelField Name="CONTACT_NAME" />
@@ -45,7 +47,7 @@
                     <Columns>
 
                         <ext:Column ID="uxMainCrossingNum" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing #" Flex="1" />
-                        <ext:Column ID="Column1" runat="server" DataIndex="" Text="Project Name" Flex="1" />
+                        <ext:Column ID="Column8" runat="server" DataIndex="LONG_NAME" Text="Project Name" Flex="1" />
                         <ext:Column ID="Column12" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
                         <ext:Column ID="uxSubDiv" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
                         <ext:Column ID="uxMTM" runat="server" DataIndex="CONTACT_NAME" Text="Manager" Flex="1" />
@@ -243,7 +245,7 @@
                 Title="Add New Crossing"
                 Width="850" Closable="false">
                 <Items>
-                    <ext:FormPanel runat="server" ID="uxAddCrossingForm" Layout="FormLayout">
+                    <ext:FormPanel runat="server" ID="uxAddCrossingForm" Layout="FormLayout" FocusOnToFront="true">
                         <Items>
                             <ext:FieldSet ID="FieldSet4" runat="server" Title="Crossing Details">
                                 <Items>
