@@ -35,7 +35,7 @@ namespace DBI.Data
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
     
-        public virtual ICollection<DAILY_ACTIVITY_INVENTORY> DAILY_ACTIVITY_INVENTORY { get; set; }
         public virtual DAILY_ACTIVITY_HEADER DAILY_ACTIVITY_HEADER { get; set; }
+        public virtual ICollection<DAILY_ACTIVITY_INVENTORY> DAILY_ACTIVITY_INVENTORY { get; set; }
     }
 }

@@ -27,6 +27,7 @@ namespace DBI.Data
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
         public long HEADER_ID { get; set; }
+        public Nullable<decimal> TOTAL { get; set; }
     
         public virtual DAILY_ACTIVITY_CHEMICAL_MIX DAILY_ACTIVITY_CHEMICAL_MIX { get; set; }
         public virtual DAILY_ACTIVITY_HEADER DAILY_ACTIVITY_HEADER { get; set; }
