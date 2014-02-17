@@ -79,7 +79,7 @@
                     <ColumnModel>
                         <Columns>
                             <ext:Column ID="uxNameCON" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing #" Flex="1" />
-                            <ext:Column ID="Column8" runat="server" DataIndex="LONG_NAME" Text="Current Project Name" Flex="1" /> 
+                            <ext:Column ID="Column8" runat="server" DataIndex="LONG_NAME" Text="Current Project Name" Flex="2" /> 
                             <ext:Column ID="Column7" runat="server" DataIndex="RAILROAD" Text="RailRoad" Flex="1" />                                                                         
                             <ext:Column ID="Column6" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
                             <ext:Column ID="Column4" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
