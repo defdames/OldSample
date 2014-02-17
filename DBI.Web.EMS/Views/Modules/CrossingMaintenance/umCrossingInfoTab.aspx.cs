@@ -28,16 +28,18 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
         protected void deCrossingGridData(object sender, StoreReadDataEventArgs e)
         {
-
+           
             using (Entities _context = new Entities())
             {
                 List<object> data;
 
                 //Get List of all new headers
-
-                data = (from d in _context.CROSSINGS
-                       
-                        select new { d.CONTACT_ID, d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.SUB_DIVISION, d.CROSSING_CONTACTS.CONTACT_NAME}).ToList<object>();
+                
+                    data = (from d in _context.CROSSINGS
+                            join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID into pn
+                            from proj in pn.DefaultIfEmpty()
+                            select new { d.CONTACT_ID, d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.SUB_DIVISION, d.CROSSING_CONTACTS.CONTACT_NAME, d.PROJECT_ID, proj.LONG_NAME}).ToList<object>();
+              
 
                 int count;
                 uxCurrentCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -406,7 +408,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string Restricted = uxEditRestrictedCI.Value.ToString();
             string FenceEncroach = uxEditFenceEnchroachCI.Value.ToString();
             string OnSpur = uxEditSubConCI.Value.ToString();
-            //long ContactName = Convert.ToInt64(uxEditManagerCI.Value.ToString());
             string RailRoad = uxEditRRCI.Value.ToString();
             string ServiceUnit = uxEditServiceUnitCI.Value.ToString();
 

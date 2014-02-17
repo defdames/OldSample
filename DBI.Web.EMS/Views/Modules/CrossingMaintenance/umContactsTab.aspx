@@ -246,8 +246,6 @@
                                     <ext:FilterHeader ID="FilterHeader2" runat="server" />
                                 </Plugins>
 
-
-
                                 <BottomBar>
                                     <ext:PagingToolbar ID="PagingToolbar2" runat="server" />
                                 </BottomBar>
@@ -305,7 +303,8 @@
                             <ext:Button ID="uxApplyButtonCON" runat="server" Text="Associate" Icon="ArrowJoin">
                                 <DirectEvents>
                                     <Click OnEvent="deAssignCrossingtoContact">
-                                        <ExtraParams>
+                                        <Confirmation ConfirmRequest="true" Title="Associate?" Message="Are you sure you want to associate the selected crossings with the selected contact?" />
+                                       <ExtraParams>
                                             <ext:Parameter Name="contactId" Value="#{uxAssignContactGrid}.getSelectionModel().getSelection()[0].data.CONTACT_ID" Mode="Raw" />
                                             <ext:Parameter Name="selectedCrossings" Value="Ext.encode(#{uxAssignCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
                                         </ExtraParams>
@@ -315,7 +314,7 @@
                             <ext:Button ID="CancelButtonCON" runat="server" Text="Cancel" Icon="Delete">
                                 <Listeners>
                                     <Click Handler="#{uxEditContactForm}.reset();
-									#{uxAssignCrossingWindow}.hide()" />
+									#{uxAssignCrossingWindow}.hide(); #{uxAssignContactManagerStore}.reload(); #{uxAssignContactCrossingStore}.reload()"  />
                                 </Listeners>
                             </ext:Button>
                         </Items>
@@ -438,7 +437,7 @@
                         <Buttons>
                             <ext:Button runat="server" ID="uxSelectCrossingToUpdate" Text="Select Crossings to Update" Icon="Add">
                                 <Listeners>
-                                    <Click Handler="#{uxTransferCrossingWindow}.show()" />
+                                    <Click Handler="#{uxTransferCrossingWindow}.show()" />                           
                                 </Listeners>
                             </ext:Button>
                             <ext:Button runat="server" ID="uxCancelCrossingToUpdate" Text="Cancel Selection" Icon="Delete">

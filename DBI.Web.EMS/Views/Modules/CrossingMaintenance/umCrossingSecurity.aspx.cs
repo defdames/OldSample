@@ -42,7 +42,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 //Get List of all new headers
 
                 data = (from d in _context.CROSSINGS
-                        select new { d.CROSSING_ID, d.CROSSING_NUMBER, d.SUB_DIVISION, d.MTM }).ToList<object>();
+                        join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID into pn
+                        from projects in pn.DefaultIfEmpty()
+                        select new { d.CROSSING_ID, d.CROSSING_NUMBER, d.RAILROAD, d.SERVICE_UNIT, d.PROJECT_ID, d.SUB_DIVISION, projects.LONG_NAME}).ToList<object>();
+                
 
                 int count;
                 uxCurrentSecurityCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -50,7 +53,51 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
             protected void deAssociateCrossings(object sender, DirectEventArgs e)
             {
-            
+                CROSSING data;
+
+                //do type conversions
+
+                RowSelectionModel project = uxProjectGrid.GetSelectionModel() as RowSelectionModel;
+                long ProjectId = long.Parse(e.ExtraParams["projectId"]);
+                             
+                string json = (e.ExtraParams["selectedCrossings"]);
+                List<ProjectDetails> projectList = JSON.Deserialize<List<ProjectDetails>>(json);
+                foreach (ProjectDetails crossing in projectList)
+                {
+                    //Get record to be edited
+                    using (Entities _context = new Entities())
+                    {
+                        data = (from d in _context.CROSSINGS
+                                where d.CROSSING_ID == crossing.CROSSING_ID
+                                select d).Single();
+                        data.PROJECT_ID = ProjectId;
+                      
+                    }
+                    GenericData.Update<CROSSING>(data);
+                }
+             
+                uxCurrentSecurityCrossingStore.Reload();
+                uxCurrentSecurityProjectStore.Reload();
+                
+                Notification.Show(new NotificationConfig()
+                {
+                    Title = "Success",
+                    Html = "Crossing to Project Updated Successfully",
+                    HideDelay = 1000,
+                    AlignCfg = new NotificationAlignConfig
+                    {
+                        ElementAnchor = AnchorPoint.Center,
+                        TargetAnchor = AnchorPoint.Center
+                    }
+                });
+            }
+            public class ProjectDetails
+            {
+                public long CROSSING_ID { get; set; }
+                public string CROSSING_NUMBER { get; set; }              
+                public string SERVICE_UNIT { get; set; }
+                public string SUB_DIVISION { get; set; }
+                public string CONTACT_ID { get; set; }
             }
     }
          

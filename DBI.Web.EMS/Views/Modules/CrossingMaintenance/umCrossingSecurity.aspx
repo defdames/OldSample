@@ -10,7 +10,7 @@
     <form id="form1" runat="server">
         <ext:ResourceManager ID="ResourceManager1" runat="server" />
         <div></div>    
-                <ext:GridPanel ID="GridPanel2" runat="server" Flex="1" SimpleSelect="true" Title="Select Project" Margins="0 2 0 0" >
+                <ext:GridPanel ID="uxProjectGrid" runat="server" Flex="1" SimpleSelect="true" Title="Select Project" Margins="0 2 0 0" >
                      <Store>
                         <ext:Store runat="server"
                             ID="uxCurrentSecurityProjectStore"
@@ -43,14 +43,14 @@
                         <ext:FilterHeader ID="FilterHeader2" runat="server" />
                     </Plugins>
                     <SelectionModel>
-                        <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" Mode="Single" />
+                        <ext:RowSelectionModel ID="project" runat="server" Mode="Single" AllowDeselect="true" />
                     </SelectionModel>
                     <BottomBar>
                         <ext:PagingToolbar ID="PagingToolbar2" runat="server" />
                     </BottomBar>
                   </ext:GridPanel>
                 <%--  ---------------------------------------------------------------------------------------------------------------------%>
-                <ext:GridPanel ID="GridPanel1" runat="server" Flex="1" Title="Apply Selected Crossing to Project" Margins="0 2 0 0" >
+                <ext:GridPanel ID="uxCrossingGrid" runat="server" Flex="1" Title="Apply Selected Crossing to Project" Margins="0 2 0 0" >
                     <Store>
                         <ext:Store runat="server"
                             ID="uxCurrentSecurityCrossingStore"
@@ -62,8 +62,12 @@
                                     <Fields>
                                         <ext:ModelField Name="CROSSING_ID" />
                                         <ext:ModelField Name="CROSSING_NUMBER" />
+                                        <ext:ModelField Name="PROJECT_ID" />
+                                        <ext:ModelField Name="LONG_NAME" />
+                                        <ext:ModelField Name="RAILROAD" />
+                                        <ext:ModelField Name="SERVICE_UNIT" />
                                         <ext:ModelField Name="SUB_DIVISION" />
-                                        <ext:ModelField Name="MTM" />
+                                      
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -75,8 +79,11 @@
                     <ColumnModel>
                         <Columns>
                             <ext:Column ID="uxNameCON" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing #" Flex="1" />
-                            <ext:Column ID="Column4" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="2" />
-                            <ext:Column ID="Column5" runat="server" DataIndex="MTM" Text="Manager" Flex="1" />
+                            <ext:Column ID="Column8" runat="server" DataIndex="LONG_NAME" Text="Current Project Name" Flex="2" /> 
+                            <ext:Column ID="Column7" runat="server" DataIndex="RAILROAD" Text="RailRoad" Flex="1" />                                                                         
+                            <ext:Column ID="Column6" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
+                            <ext:Column ID="Column4" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
+                           
                         </Columns>
                     </ColumnModel>
                     <Plugins>
@@ -99,7 +106,14 @@
                              <DirectEvents>
                                     <Click OnEvent="deAssociateCrossings">
                                         <Confirmation ConfirmRequest="true" Title="Associate?" Message="Are you sure you want to associate the selected crossings with the selected project?" />
-                                        </Click>
+                                        <ExtraParams>
+                                            <ext:Parameter Name="projectId" Value="#{uxProjectGrid}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
+                                            <ext:Parameter Name="selectedCrossings" Value="Ext.encode(#{uxCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+                                          
+                                        </ExtraParams>
+                                    </Click>
+                                       
+                                         
                                  </DirectEvents>
                             </ext:Button>                     
                     </Items>
