@@ -109,6 +109,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long ItemId = long.Parse(uxAddInventoryItem.Value.ToString());
             long Rate = long.Parse(uxAddInventoryRate.Value.ToString());
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            decimal Total = decimal.Parse(uxAddInventoryTotal.Value.ToString());
 
             //Add to Db
             using (Entities _context = new Entities())
@@ -126,7 +127,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     MODIFY_DATE = DateTime.Now,
                     CREATED_BY = User.Identity.Name,
                     MODIFIED_BY = User.Identity.Name,
-                    HEADER_ID = HeaderId
+                    HEADER_ID = HeaderId,
+                    TOTAL = Total
                 };
             }
 
@@ -168,7 +170,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             where d.INVENTORY_ID == InventoryId
                             from j in joined
                             where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
-                            select new { j.ENABLED_FLAG, j.ITEM_ID, j.ACTIVE, j.LE, j.LAST_UPDATE_DATE, j.ATTRIBUTE2, j.INV_LOCATION, j.INV_NAME, d.INVENTORY_ID, d.CHEMICAL_MIX_ID, c.CHEMICAL_MIX_NUMBER, d.SUB_INVENTORY_SECONDARY_NAME, d.SUB_INVENTORY_ORG_ID, j.SEGMENT1, j.DESCRIPTION, d.RATE, u.UOM_CODE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).Single();
+                            select new { j.ENABLED_FLAG, j.ITEM_ID, j.ACTIVE, j.LE, j.LAST_UPDATE_DATE, j.ATTRIBUTE2, j.INV_LOCATION, d.TOTAL, j.INV_NAME, d.INVENTORY_ID, d.CHEMICAL_MIX_ID, c.CHEMICAL_MIX_NUMBER, d.SUB_INVENTORY_SECONDARY_NAME, d.SUB_INVENTORY_ORG_ID, j.SEGMENT1, j.DESCRIPTION, d.RATE, u.UOM_CODE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).Single();
                 SUBINVENTORY_V SubData;
                 var OrgId = Inventory.SUB_INVENTORY_ORG_ID;
                 var InvName = Inventory.SUB_INVENTORY_SECONDARY_NAME;
@@ -193,6 +195,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEditInventoryMeasure.UpdateSelectedItems();
                 uxEditInventoryEPA.SetValue(Inventory.EPA_NUMBER);
                 uxEditInventoryRate.SetValue(Inventory.RATE);
+                uxEditInventoryTotal.SetValue(Inventory.TOTAL.ToString());
             }
 
 
@@ -226,6 +229,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long OrgId = long.Parse(uxEditInventoryRegion.Value.ToString());
             decimal ItemId = decimal.Parse(uxEditInventoryItem.Value.ToString());
             decimal Rate = decimal.Parse(uxEditInventoryRate.Value.ToString());
+            decimal Total = decimal.Parse(uxEditInventoryTotal.Value.ToString());
 
             //Get record to be updated
             using (Entities _context = new Entities())
@@ -243,6 +247,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.EPA_NUMBER = uxEditInventoryEPA.Value.ToString();
             data.MODIFIED_BY = User.Identity.Name;
             data.MODIFY_DATE = DateTime.Now;
+            data.TOTAL = Total;
 
             //Write to DB
             GenericData.Update<DAILY_ACTIVITY_INVENTORY>(data);

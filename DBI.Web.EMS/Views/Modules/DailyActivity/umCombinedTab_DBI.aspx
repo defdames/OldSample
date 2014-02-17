@@ -226,6 +226,7 @@
                                         <ext:ModelField Name="SUB_INVENTORY_SECONDARY_NAME" />
                                         <ext:ModelField Name="DESCRIPTION" />
                                         <ext:ModelField Name="RATE" />
+                                        <ext:ModelField Name="TOTAL" />
                                         <ext:ModelField Name="UNIT_OF_MEASURE" />
                                         <ext:ModelField Name="EPA_NUMBER" />
                                     </Fields>
@@ -239,6 +240,7 @@
                             <ext:Column ID="Column37" runat="server" DataIndex="SUB_INVENTORY_SECONDARY_NAME" Text="Sub-Inv Name" Flex="7" />
                             <ext:Column ID="Column38" runat="server" DataIndex="DESCRIPTION" Text="Item" Flex="2" />
                             <ext:Column ID="Column39" runat="server" DataIndex="RATE" Text="Rate" Flex="3" />
+                            <ext:Column runat="server" DataIndex="TOTAL" Text="Total" Flex="3" />
                             <ext:Column ID="Column40" runat="server" DataIndex="UNIT_OF_MEASURE" Text="Unit" Flex="3" />
                             <ext:Column ID="Column41" runat="server" DataIndex="EPA_NUMBER" Text="EPA Number" Flex="6" />
                         </Columns>
