@@ -33,6 +33,19 @@
 			}
 			return true;
 		};
+
+		var setIcon = function (value, metadata, record) {
+			var tpl = "<img src='{0}' />";
+			if (value == "Error") {
+				return "<img src='"+ App.uxRedWarning.getValue()+"' />";
+			}
+			else if (value == "Warning") {
+			    return "<img src='" + App.uxYellowWarning.getValue() + "' />";
+			}
+			else {
+				return "";
+			}
+		};
 	</script>
 	<style type="text/css">
 		.red-warning .x-grid-cell, .red-warning .x-grid-rowwrap-div {
@@ -49,6 +62,8 @@
 	<form id="form1" runat="server">
 		<ext:Viewport runat="server" ID="uxViewPort" Layout="BorderLayout" IDMode="Explicit" IsDynamic="False" Namespace="App" RenderXType="True">
 			<Items>
+				<ext:Hidden ID="uxYellowWarning" runat="server" />
+				<ext:Hidden ID="uxRedWarning" runat="server" />
 				<ext:GridPanel runat="server" ID="uxManageGrid" Region="North" Layout="HBoxLayout">
 					<SelectionModel>
 						<ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="false" Mode="Single" />
@@ -79,17 +94,20 @@
 									<ext:DateField runat="server" Format="MM-dd-yyyy" />
 								</HeaderItems>
 							</ext:DateColumn>
+							<ext:Column runat="server" ID="uxWarningColumn" Text="Errors" DataIndex="WARNING">
+								<Renderer Fn="setIcon" />
+							</ext:Column>
 							<ext:Column ID="Column1" runat="server" Text="Project" DataIndex="SEGMENT1" Flex="20"/>
 							<ext:Column runat="server" Text="Project Name" DataIndex="LONG_NAME" Flex="50" />
 							<ext:Column runat="server" Text="Status" DataIndex="STATUS_VALUE" Flex="30" />
 							<ext:Column runat="server" Text="Oracle Header Id" DataIndex="DA_HEADER_ID" Flex="30" />
 						</Columns>
 					</ColumnModel>
-					<View>
+					<%--<View>
 						<ext:GridView runat="server" StripeRows="true" TrackOver="true">
 							<GetRowClass Fn="getRowClass" />
 						</ext:GridView>
-					</View>
+					</View>--%>
 					<BottomBar>
 						<ext:PagingToolbar ID="uxManageGridPaging" runat="server" />
 					</BottomBar>

@@ -30,9 +30,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 X.Redirect("~/Views/uxDefault.aspx");
 
             }
-            if (!X.IsAjaxRequest)
+            if (!X.IsAjaxRequest && !IsPostBack)
             {
-                //employeeHoursCheck();
+                this.uxRedWarning.Value = ResourceManager.GetInstance().GetIconUrl(Icon.Exclamation);
+                this.uxYellowWarning.Value = ResourceManager.GetInstance().GetIconUrl(Icon.Error);
             }
         }
 

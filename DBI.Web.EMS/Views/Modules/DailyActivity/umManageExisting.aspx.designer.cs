@@ -40,6 +40,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Viewport uxViewPort;
         
         /// <summary>
+        /// uxYellowWarning control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Hidden uxYellowWarning;
+        
+        /// <summary>
+        /// uxRedWarning control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Hidden uxRedWarning;
+        
+        /// <summary>
         /// uxManageGrid control.
         /// </summary>
         /// <remarks>
@@ -65,6 +83,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Store uxManageGridStore;
+        
+        /// <summary>
+        /// uxWarningColumn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column uxWarningColumn;
         
         /// <summary>
         /// Column1 control.
