@@ -68,8 +68,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     rawData = (from d in _context.DAILY_ACTIVITY_HEADER
                                join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                                join s in _context.DAILY_ACTIVITY_STATUS on d.STATUS equals s.STATUS
-                               orderby d.STATUS ascending, d.DA_DATE descending
-                               select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID }).ToList<object>();
+                               select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS }).ToList<object>();
                 }
                 else
                 {
@@ -99,7 +98,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 foreach (dynamic record in rawData)
                 {
-                    string Warning = "None";
+                    string Warning = "Zero";
                     string WarningType = string.Empty;
 
                     foreach (EmployeeData OffendingProject in HoursOver14)
@@ -110,6 +109,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             WarningType = "Over 14 hours logged for an employee <br />";
                             break;
                         }
+
                     }
                     foreach (long OffendingProject in BusinessUnitProjects)
                     {
@@ -161,13 +161,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         LONG_NAME = record.LONG_NAME,
                         STATUS_VALUE = record.STATUS_VALUE,
                         DA_HEADER_ID = record.DA_HEADER_ID,
+                        STATUS = record.STATUS,
                         WARNING = Warning,
                         WARNING_TYPE = WarningType
                     });
                 }
 
+                var SortedData = data.OrderBy(x => x.STATUS).ThenBy(x => x.WARNING).ThenBy(x => x.DA_DATE).ToList<HeaderData>();
                 int count;
-                uxManageGridStore.DataSource = GenericData.EnumerableFilterHeader<HeaderData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                uxManageGridStore.DataSource = GenericData.EnumerableFilterHeader<HeaderData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], SortedData, out count);
                 e.Total = count;
             }
         }
