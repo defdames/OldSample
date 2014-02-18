@@ -949,15 +949,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Column Column1;
         
         /// <summary>
-        /// GridView1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.GridView GridView1;
-        
-        /// <summary>
         /// GridDragDrop1 control.
         /// </summary>
         /// <remarks>
@@ -976,13 +967,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.GridPanel deTransferCrossingsNewManagerGrid;
         
         /// <summary>
-        /// Store2 control.
+        /// uxTransferCrossingsNewManagerStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store Store2;
+        protected global::Ext.Net.Store uxTransferCrossingsNewManagerStore;
         
         /// <summary>
         /// Model3 control.
