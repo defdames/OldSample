@@ -58,6 +58,8 @@
         <AssociationConnector Association="OracleModel.FK_INVENTORY_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" Width="1.5" PointX="1.5" PointY="21" />
         <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_SUPPLEMENTAL" Width="1.5" PointX="31.125" PointY="0.5" />
+        <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
