@@ -155,6 +155,28 @@
 							ID="uxAddProductionQuantity"
 							FieldLabel="Quantity"
 							AllowBlank="false" />
+						<ext:ComboBox runat="server" ID="uxAddProductionSurfaceType"
+							FieldLabel="Surface Type"
+							DisplayField="type"
+							ValueField="type"
+							QueryMode="Local"
+							TypeAhead="true"
+							AllowBlank="false">
+							<Store>
+								<ext:Store runat="server" ID="uxAddProductionSurfaceTypeStore" AutoDataBind="true">
+									<Model>
+										<ext:Model runat="server">
+											<Fields>
+												<ext:ModelField Name="type" />
+											</Fields>
+										</ext:Model>
+									</Model>
+									<Reader>
+										<ext:ArrayReader />
+									</Reader>
+								</ext:Store>
+							</Store>
+						</ext:ComboBox>
 						<ext:TextArea runat="server"
 							ID="uxAddProductionComments"
 							FieldLabel="Comments" />
@@ -315,6 +337,28 @@
 							ID="uxEditProductionUOM"
 							FieldLabel="Unit of Measure"
 							AllowBlank="false" />
+						<ext:ComboBox runat="server" ID="uxEditProductionSurfaceType"
+							FieldLabel="Surface Type"
+							DisplayField="type"
+							ValueField="type"
+							QueryMode="Local"
+							TypeAhead="true"
+							AllowBlank="false">
+							<Store>
+								<ext:Store runat="server" ID="uxEditProductionSurfaceTypeStore" AutoDataBind="true">
+									<Model>
+										<ext:Model ID="Model5" runat="server">
+											<Fields>
+												<ext:ModelField Name="type" />
+											</Fields>
+										</ext:Model>
+									</Model>
+									<Reader>
+										<ext:ArrayReader />
+									</Reader>
+								</ext:Store>
+							</Store>
+						</ext:ComboBox>
 						<ext:TextArea runat="server"
 							ID="uxEditProductionComments"
 							FieldLabel="Comments" />

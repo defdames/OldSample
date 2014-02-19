@@ -109,5 +109,18 @@ namespace DBI.Data.DataFactory
             }
         }
 
+        public static object SurfaceTypes
+        {
+            get
+            {
+                return new object[]{
+                    new object[]{"Scratch", "Scratch"},
+                    new object[]{"Millings", "Millings"},
+                    new object[]{"Michigan Joint", "Michigan Joint"},
+                    new object[]{"Top", "Top"}
+                };
+            }
+        }
+
     }
 }
