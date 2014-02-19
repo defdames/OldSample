@@ -41,7 +41,6 @@ namespace DBI.Data
         public DbSet<SYS_ACTIVITY> SYS_ACTIVITY { get; set; }
         public DbSet<CROSSING_DATA_ENTRY> CROSSING_DATA_ENTRY { get; set; }
         public DbSet<CROSSING_SUB_DIVISION> CROSSING_SUB_DIVISION { get; set; }
-        public DbSet<DAILY_ACTIVITY_PRODUCTION> DAILY_ACTIVITY_PRODUCTION { get; set; }
         public DbSet<DAILY_ACTIVITY_FOOTER> DAILY_ACTIVITY_FOOTER { get; set; }
         public DbSet<PA_TASKS_V> PA_TASKS_V { get; set; }
         public DbSet<PA_LOCATIONS_V> PA_LOCATIONS_V { get; set; }
@@ -63,5 +62,6 @@ namespace DBI.Data
         public DbSet<PA_TRANSACTION_INT_V> PA_TRANSACTION_INT_V { get; set; }
         public DbSet<DAILY_ACTIVITY_IMPORT> DAILY_ACTIVITY_IMPORT { get; set; }
         public DbSet<DAILY_ACTIVITY_INVENTORY> DAILY_ACTIVITY_INVENTORY { get; set; }
+        public DbSet<DAILY_ACTIVITY_PRODUCTION> DAILY_ACTIVITY_PRODUCTION { get; set; }
     }
 }
