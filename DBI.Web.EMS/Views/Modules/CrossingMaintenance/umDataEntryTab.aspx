@@ -131,9 +131,6 @@
 
                         <ext:Column ID="Column1" runat="server" DataIndex="" Text="Application #" Flex="1" />
                         <ext:Column ID="Column2" runat="server" DataIndex="" Text="Date" Flex="1" />
-                        <ext:Column ID="Column3" runat="server" DataIndex="" Text="RailRoad" Flex="1" />
-                        <ext:Column ID="Column6" runat="server" DataIndex="" Text="Service Unit" Flex="1" />
-                        <ext:Column ID="Column4" runat="server" DataIndex="" Text="Sub-Division" Flex="1" />
                         <ext:Column ID="Column7" runat="server" DataIndex="" Text="Spray" Flex="1" />
                         <ext:Column ID="Column9" runat="server" DataIndex="" Text="Cut" Flex="1" />
                         <ext:Column ID="Column10" runat="server" DataIndex="" Text="Inspect" Flex="1" />
@@ -168,49 +165,16 @@
 			ID="uxAddNewApplicationEntryWindow"
 			Layout="FormLayout"
 			Hidden="true"
-            Title="Add New Entry"
-			Width="720">
+            Title="Add Application Entry"
+			Width="650">
             <Items>
-                 <ext:FormPanel ID="FormPanel2" runat="server" Layout="FormLayout">
+                 <ext:FormPanel ID="uxAddApplicationForm" runat="server" Layout="FormLayout">
                    <Items>
 
                        
                         <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                                   <Items>
                                   <ext:TextField ID="uxAddEntryNumber" runat="server"  FieldLabel=" Application #" LabelAlign="Right" />
-                                 
-                                       <ext:ComboBox ID="uxAddRailRoadAPP"
-                                                runat="server"
-                                                FieldLabel="Rail Road"
-                                                LabelAlign="Right"
-                                                DisplayField="project"
-                                                ValueField="project"
-                                                QueryMode="Local"
-                                                TypeAhead="true" TabIndex="2" >
-                                                    <Store>
-                                                    <ext:Store runat="server"
-                                                        ID="uxAddRailRoadStore" >
-                                                        <Model>
-                                                            <ext:Model ID="Model4" runat="server">
-                                                                <Fields>
-                                                                    <ext:ModelField Name="project" />
-                                                                    <ext:ModelField Name="project" />
-                                                                </Fields>
-                                                            </ext:Model>
-                                                        </Model>
-                                                    </ext:Store>
-                                                </Store>
-                                                     <%--<DirectEvents>
-                                                         <Select OnEvent="deLoadUnit">
-                                                                 <ExtraParams>
-										                            <ext:Parameter Name="Type" Value="Add" />
-									                            </ExtraParams>   
-                                                         </Select>
-                                                     </DirectEvents>     
-                                            <Listeners>
-                                                    <Select Handler="#{uxAddServiceUnitStore}.load()" />
-                                                </Listeners>--%>
-                                            </ext:ComboBox>
                                   
                                   <ext:Checkbox ID="uxAddEntrySprayBox" runat="server" FieldLabel="Spray" LabelAlign="Right" Width="250" />
                                   </Items>
@@ -219,38 +183,7 @@
                                 <ext:FieldContainer ID="FieldContainer0" runat="server" Layout="HBoxLayout">
                                     <Items>
                                     <ext:DateField ID="uxAddEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" />
-                                         <ext:ComboBox ID="uxAddServiceUnitAPP" 
-                                                runat="server" FieldLabel="Service Unit" 
-                                                LabelAlign="Right" 
-                                                DisplayField="service_unit"
-                                                ValueField="service_unit"
-                                                QueryMode="Local" TypeAhead="true" TabIndex="3">
-                                                 <Store>
-                                                    <ext:Store runat="server"
-                                                        ID="uxAddServiceUnitStore"  >
-                                                        <Model>
-                                                            <ext:Model ID="Model5" runat="server">
-                                                                <Fields>
-                                                                    <ext:ModelField Name="service_unit"  />
-                                                                    <ext:ModelField Name="service_unit" />
-                                                                </Fields>
-                                                            </ext:Model>
-                                                        </Model>                                                  
-                                                    </ext:Store>
-                                                     </Store>                                        
-                                             <%--  <DirectEvents>
-                                                   <Select OnEvent="deLoadSubDiv">
-                                                       <ExtraParams>
-										                  <ext:Parameter Name="Type" Value="Add" />
-									                    </ExtraParams>
-                                                   </Select>
-                                               </DirectEvents>
-                                                <Listeners>
-                                                    <Select Handler="#{uxAddSubDivStore}.load()" />
-                                                </Listeners>--%>
-                                            </ext:ComboBox>
-                                   
-                                   
+                                        
                                     <ext:Checkbox ID="uxAddEntryCutBox" runat="server" FieldLabel="Cut" LabelAlign="Right" Width="250" />
                                     </Items>
                                 </ext:FieldContainer>
@@ -259,30 +192,7 @@
                                 <ext:FieldContainer ID="FieldContainer2" runat="server" Layout="HBoxLayout">
                                     <Items>
                                      <ext:TextField ID="uxAddEntryTruckNum" runat="server" FieldLabel="Truck #" AnchorHorizontal="100%" LabelAlign="Right" />
-                                       <ext:ComboBox ID="uxAddSubDivAPP"
-                                                 runat="server" 
-                                                FieldLabel="Sub-Division" 
-                                                LabelAlign="Right" 
-                                                AnchorHorizontal="100%" 
-                                                DisplayField="sub_division"
-                                                ValueField="sub_division"
-                                                TypeAhead="true" TabIndex="4">
-                                                 <Store>
-                                                    <ext:Store runat="server"
-                                                        ID="uxAddSubDivStore"  >
-                                                        <Model>
-                                                            <ext:Model ID="Model7" runat="server">
-                                                                <Fields>
-                                                                    <ext:ModelField Name="sub_division"  />
-                                                                    <ext:ModelField Name="sub_division" />
-                                                                </Fields>
-                                                            </ext:Model>
-                                                        </Model>                                                  
-                                                    </ext:Store>
-                                                     </Store>                                        
-                                               
-                                            </ext:ComboBox>
-                                    
+                                      
                                      <ext:Checkbox ID="uxAddEntryInspectBox" runat="server" FieldLabel="Inspect" LabelAlign="Right" Width="250" />
                                     </Items>                                  
                                 </ext:FieldContainer>
@@ -295,8 +205,8 @@
                             <ext:Button ID="uxAddApplicationEntryButton" runat="server" Text="Add" Icon="Add" />
                             <ext:Button ID="uxCancelNewApplicationEntryButton" runat="server" Text="Cancel" Icon="Delete" >
                                 <Listeners>
-                                    <Click Handler="
-									#{uxAddNewApplicationEntryWindow}.hide();" />
+                                    <Click Handler="#{uxAddApplicationForm}.reset();
+									#{uxAddNewApplicationEntryWindow}.hide()" />
                                 </Listeners>
                             </ext:Button>
                         </Buttons>               
@@ -307,45 +217,15 @@
 			ID="uxEditApplicationEntryWindow"
 			Layout="FormLayout"
 			Hidden="true"
-            Title="Edit Existing Entry"
-			Width="720">
+            Title="Edit Application Entry"
+			Width="650">
             <Items>
-                 <ext:FormPanel ID="FormPanel1" runat="server" Layout="FormLayout">
+                 <ext:FormPanel ID="uxEditApplicationForm" runat="server" Layout="FormLayout">
                    <Items>
                         
                         <ext:FieldContainer ID="FieldContainer3" runat="server" Layout="HBoxLayout">
                                   <Items>
                                 <ext:TextField ID="uxEditEntryNumber" runat="server"  FieldLabel="Application #" LabelAlign="Right" />
-                                <ext:ComboBox ID="uxEditRRAPP" runat="server" FieldLabel="Rail Road" AnchorHorizontal="100%" LabelAlign="Right"
-                                                 
-                                                DisplayField="project"
-                                                ValueField="project"
-                                                QueryMode="Local"
-                                                TypeAhead="true"  TabIndex="2">
-                                                    <Store>
-                                                    <ext:Store runat="server"
-                                                        ID="uxEditRRStore" >
-                                                        <Model>
-                                                            <ext:Model ID="Model3" runat="server">
-                                                                <Fields>
-                                                                    <ext:ModelField Name="project" />
-                                                                    <ext:ModelField Name="project" />
-                                                                </Fields>
-                                                            </ext:Model>
-                                                        </Model>
-                                                    </ext:Store>
-                                                </Store>
-                                                    <%-- <DirectEvents>
-                                                         <Select OnEvent="deLoadUnit">
-                                                             <ExtraParams>
-										                  <ext:Parameter Name="Type" Value="Edit" />
-									                    </ExtraParams>
-                                                               </Select>
-                                                     </DirectEvents>                                                           
-                                            <Listeners>
-                                                    <Select Handler="#{uxEditServiceUnitStore}.load()" />
-                                                </Listeners>--%>
-                                            </ext:ComboBox>
                                
                                 <ext:Checkbox ID="uxEditEntrySprayBox" runat="server" FieldLabel="Spray" LabelAlign="Right" Width="250" />
                                   </Items>
@@ -354,37 +234,6 @@
                                 <ext:FieldContainer ID="FieldContainer4" runat="server" Layout="HBoxLayout">
                                     <Items>
                                      <ext:DateField ID="uxEditEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" />
-                                     <ext:ComboBox ID="uxEditServiceUnitAPP"
-                                                 runat="server" 
-                                                FieldLabel="Service Unit"
-                                                DisplayField="service_unit"
-                                                ValueField="service_unit"
-                                                 LabelAlign="Right" 
-                                                AnchorHorizontal="100%" TabIndex="3" >
-                                                <Store>
-                                                    <ext:Store runat="server"
-                                                        ID="uxEditServiceUnitStore" >
-                                                        <Model>
-                                                            <ext:Model ID="Model8" runat="server">
-                                                                <Fields>
-                                                                    <ext:ModelField Name="service_unit" />
-                                                                    <ext:ModelField Name="service_unit" />
-                                                                </Fields>
-                                                            </ext:Model>
-                                                        </Model>
-                                                    </ext:Store>
-                                                </Store>
-                                                    <%-- <DirectEvents>
-                                                         <Select OnEvent="deLoadSubDiv">
-                                                              <ExtraParams>
-										                  <ext:Parameter Name="Type" Value="Edit" />
-									                    </ExtraParams>
-                                                         </Select>
-                                                     </DirectEvents>     
-                                            <Listeners>
-                                                    <Select Handler="#{uxEditSubDivStore}.load()" />
-                                                </Listeners>--%>
-                                            </ext:ComboBox>
                                     
                                      <ext:Checkbox ID="uxEditEntryCutBox" runat="server" FieldLabel="Cut" LabelAlign="Right" Width="250" />
                                     </Items>
@@ -395,27 +244,7 @@
                                     <Items>
                                      
                                      <ext:DropDownFIeld ID="uxEditEntryTruckNum" runat="server" FieldLabel="Truck #" AnchorHorizontal="100%" LabelAlign="Right" />
-                                        <ext:ComboBox ID="uxEditSubDivAPP" 
-                                                runat="server" FieldLabel="Sub-Division"
-                                                 LabelAlign="Right"
-                                                 DisplayField="sub_division"
-                                                 ValueField="sub_division"
-                                                 AnchorHorizontal="100%" TabIndex="4" >
-                                                <Store>
-                                                    <ext:Store runat="server"
-                                                        ID="uxEditSubDivStore" >
-                                                        <Model>
-                                                            <ext:Model ID="Model9" runat="server">
-                                                                <Fields>
-                                                                    <ext:ModelField Name="sub_division" />
-                                                                    <ext:ModelField Name="sub_division" />
-                                                                </Fields>
-                                                            </ext:Model>
-                                                        </Model>
-                                                    </ext:Store>
-                                                </Store>
-                                                    
-                                            </ext:ComboBox>
+                                       
                                      <ext:Checkbox ID="uxEditEntryInspectNum" runat="server" FieldLabel="Inspect" LabelAlign="Right" Width="250" />
                                     </Items>                                 
                                 </ext:FieldContainer>
@@ -428,7 +257,7 @@
                             <ext:Button ID="uxUpdateAppEntryButton" runat="server" Text="Update" Icon="Add" />
                             <ext:Button ID="uxCancelUpdateAppEntryButton" runat="server" Text="Cancel" Icon="Delete" >
                                   <Listeners>
-                                    <Click Handler="
+                                    <Click Handler="#{uxEditApplicationForm}.reset();
 									#{uxEditApplicationEntryWindow}.hide();" />
                                 </Listeners>
                             </ext:Button>

@@ -175,7 +175,7 @@
             Title="Add New Supplemental"
 			Width="770">
             <Items>
-                 <ext:FormPanel ID="FormPanel2" runat="server" Layout="FormLayout">
+                 <ext:FormPanel ID="uxAddSupplementalForm" runat="server" Layout="FormLayout">
                    <Items>
                             <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                                   <Items>
@@ -209,8 +209,13 @@
                              <ext:TextArea ID="uxAddNewServiceUnitRemarks" runat="server" FieldLabel="Remarks" AnchorHorizontal="92%" LabelAlign="Right" />
                           </Items>
                         <Buttons>
-                            <ext:Button ID="uxAddNewServiceUnitButton" runat="server" Text="Add" Icon="Add" />
-                            <ext:Button ID="uxCancelNewServiceUnitButton" runat="server" Text="Cancel" Icon="Delete" />
+                            <ext:Button ID="uxAddNewSupplementalButton" runat="server" Text="Add" Icon="Add" />
+                            <ext:Button ID="uxCancelNewSupplementalButton" runat="server" Text="Cancel" Icon="Delete" >
+                                 <Listeners>
+                                    <Click Handler="#{uxAddSupplementalForm}.reset();
+									#{uxAddNewSupplementalWindow}.hide()" />
+                                </Listeners>
+                            </ext:Button>
                         </Buttons>
                     </ext:FormPanel>
                    </Items>
@@ -224,7 +229,7 @@
             Title="Edit Supplemental"
 			Width="770">
             <Items>
-                 <ext:FormPanel ID="FormPanel3" runat="server" Layout="FormLayout">
+                 <ext:FormPanel ID="uxEditSupplementalForm" runat="server" Layout="FormLayout">
                    <Items>
                         <ext:FieldContainer ID="FieldContainer5" runat="server" Layout="HBoxLayout">
                                   <Items>
@@ -259,8 +264,13 @@
                                  <ext:TextArea ID="uxEditSURemarks" runat="server" FieldLabel="Remarks" AnchorHorizontal="92%" LabelAlign="Right" />
                              </Items>
                         <Buttons>
-                            <ext:Button ID="Button1" runat="server" Text="Update" Icon="Add" />
-                            <ext:Button ID="Button2" runat="server" Text="Cancel" Icon="Delete" />
+                            <ext:Button ID="uxEditSupplemental" runat="server" Text="Update" Icon="Add" />
+                            <ext:Button ID="uxCancelSupplemental" runat="server" Text="Cancel" Icon="Delete" >
+                                 <Listeners>
+                                    <Click Handler="#{uxEditSupplementalForm}.reset();
+									#{uxEditSupplementalWindow}.hide()" />
+                                </Listeners>
+                            </ext:Button>
                         </Buttons>
                     </ext:FormPanel>
                    </Items>

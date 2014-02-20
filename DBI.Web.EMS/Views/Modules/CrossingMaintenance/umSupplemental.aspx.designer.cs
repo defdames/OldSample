@@ -463,22 +463,22 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextArea uxAddNewServiceUnitRemarks;
         
         /// <summary>
-        /// uxAddNewServiceUnitButton control.
+        /// uxAddNewSupplementalButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxAddNewServiceUnitButton;
+        protected global::Ext.Net.Button uxAddNewSupplementalButton;
         
         /// <summary>
-        /// uxCancelNewServiceUnitButton control.
+        /// uxCancelNewSupplementalButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxCancelNewServiceUnitButton;
+        protected global::Ext.Net.Button uxCancelNewSupplementalButton;
         
         /// <summary>
         /// uxEditSupplementalWindow control.
@@ -490,13 +490,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Window uxEditSupplementalWindow;
         
         /// <summary>
-        /// FormPanel3 control.
+        /// uxEditSupplementalForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FormPanel FormPanel3;
+        protected global::Ext.Net.FormPanel uxEditSupplementalForm;
         
         /// <summary>
         /// FieldContainer5 control.
@@ -634,21 +634,21 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextArea uxEditSURemarks;
         
         /// <summary>
-        /// Button1 control.
+        /// uxEditSupplemental control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button1;
+        protected global::Ext.Net.Button uxEditSupplemental;
         
         /// <summary>
-        /// Button2 control.
+        /// uxCancelSupplemental control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button2;
+        protected global::Ext.Net.Button uxCancelSupplemental;
     }
 }
