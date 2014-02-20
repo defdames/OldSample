@@ -106,6 +106,27 @@
     <Compile Include="CROSSING_SUPPLEMENTAL.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="CUSTOMER_SURVEY_FIELDSETS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CUSTOMER_SURVEY_FORMS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CUSTOMER_SURVEY_FORMS_ANS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CUSTOMER_SURVEY_FORMS_COMP.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CUSTOMER_SURVEY_QUESTIONS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CUSTOMER_SURVEY_QUES_TYPES.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CUSTOMER_SURVEY_RELATION.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="DAILY_ACTIVITY_AUDIT.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>

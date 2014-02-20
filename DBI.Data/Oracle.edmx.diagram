@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="8b6e550daa334a819f81705cc030411f" Name="Diagram1" ZoomLevel="86">
+      <Diagram DiagramId="8b6e550daa334a819f81705cc030411f" Name="Diagram1" ZoomLevel="59">
         <EntityTypeShape EntityType="OracleModel.SYS_USERS" Width="1.875" PointX="0.5" PointY="0.625" />
         <EntityTypeShape EntityType="OracleModel.SYS_USER_INFORMATION" Width="2.875" PointX="3.75" PointY="0.75" />
         <AssociationConnector Association="OracleModel.SYS_USERSSYS_USER_INFORMATION" />
@@ -60,6 +60,20 @@
         <EntityTypeShape EntityType="OracleModel.CROSSING_SUPPLEMENTAL" Width="1.5" PointX="31.125" PointY="0.5" />
         <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
         <EntityTypeShape EntityType="OracleModel.PA_ROLES_V" Width="1.5" PointX="11.759545292593327" PointY="17.546334528152986" />
+        <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_FIELDSETS" Width="1.5" PointX="45.375" PointY="58.25" />
+        <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_FORMS" Width="1.5" PointX="43.125" PointY="58.375" />
+        <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_FORMS_ANS" Width="1.5" PointX="37.125" PointY="58.25" />
+        <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_FORMS_COMP" Width="1.5" PointX="40.75" PointY="58.5" />
+        <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_QUES_TYPES" Width="1.5" PointX="35.875" PointY="63" />
+        <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_QUESTIONS" Width="1.5" PointX="39.375" PointY="63" />
+        <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_RELATION" Width="1.5" PointX="45.25" PointY="62.625" />
+        <AssociationConnector Association="OracleModel.FK_FIELDSETS_FORM_ID" />
+        <AssociationConnector Association="OracleModel.FK_RELATION_FIELDSET_ID" />
+        <AssociationConnector Association="OracleModel.FK_FORMS_COMP_FORM_ID" />
+        <AssociationConnector Association="OracleModel.FK_FORMS_ANS_COMPLETION_ID" />
+        <AssociationConnector Association="OracleModel.FK_FORMS_ANSWER_QUESTION_ID" />
+        <AssociationConnector Association="OracleModel.FK_QUESTION_TYPE_ID" />
+        <AssociationConnector Association="OracleModel.FK_RELATION_QUESTION_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
