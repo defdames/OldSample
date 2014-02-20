@@ -324,7 +324,7 @@ namespace DBI.Data
 
                 var data = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
                             join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                            join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
+                            join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                             where d.HEADER_ID == dailyActivityHeaderId
                             select new { p.NAME, p.SEGMENT1, p.ORG_ID }).ToList();
 

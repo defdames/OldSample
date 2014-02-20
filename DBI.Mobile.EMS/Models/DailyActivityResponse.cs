@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using DBI.Data;
 
-namespace DBI.Mobile.EMS
+namespace DBI.Mobile.EMS.Models
 {
     public class DailyActivityResponse
     {
@@ -30,6 +30,7 @@ namespace DBI.Mobile.EMS
             public decimal rate { get; set; }
             public int chemical_mix_id { get; set; }
             public string sub_inventory_secondary_name { get; set; }
+            public decimal total { get; set; }
         }
 
         public class DailyActivityFooter
