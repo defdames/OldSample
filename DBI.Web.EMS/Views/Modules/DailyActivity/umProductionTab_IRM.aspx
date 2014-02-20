@@ -40,6 +40,7 @@
 								<ext:ModelField Name="EXPENDITURE_TYPE" />
 								<ext:ModelField Name="BILL_RATE" />
 								<ext:ModelField Name="UNIT_OF_MEASURE" />
+								<ext:ModelField Name="SURFACE_TYPE" />
 								<ext:ModelField Name="COMMENTS" />
 								<ext:ModelField Name="QUANTITY" />
 							</Fields>
@@ -80,6 +81,10 @@
 					<ext:Column runat="server"
 						DataIndex="UNIT_OF_MEASURE"
 						Text="Unit Of Measure"
+						Flex="1" />
+					<ext:Column runat="server"
+						DataIndex="SURFACE_TYPE"
+						Text="Surface Type"
 						Flex="1" />
 					<ext:Column runat="server"
 						DataIndex="COMMENTS"

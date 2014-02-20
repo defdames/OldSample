@@ -103,6 +103,9 @@
     <Compile Include="CROSSING_SUB_DIVISION.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="CROSSING_SUPPLEMENTAL.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="DAILY_ACTIVITY_AUDIT.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>

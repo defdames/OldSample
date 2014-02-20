@@ -25,7 +25,6 @@
         <AssociationConnector Association="OracleModel.SYS_ACTIVITYSYS_USER_ACTIVITY" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_DATA_ENTRY" Width="1.5" PointX="22.875" PointY="1.625" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_SUB_DIVISION" Width="1.5" PointX="29.125" PointY="5.5" />
-        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" Width="1.5" PointX="1.5" PointY="21" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_FOOTER" Width="1.5" PointX="4" PointY="21.25" />
         <EntityTypeShape EntityType="OracleModel.PA_TASKS_V" Width="1.5" PointX="0.5" PointY="8.375" />
         <EntityTypeShape EntityType="OracleModel.PA_LOCATIONS_V" Width="1.5" PointX="14.75" PointY="4" />
@@ -37,7 +36,6 @@
         <AssociationConnector Association="OracleModel.FK_CHEMICAL_HEADER_ID" />
         <AssociationConnector Association="OracleModel.FK_HEADER_ID" />
         <AssociationConnector Association="OracleModel.FK_FOOTER_HEADER_ID" />
-        <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" />
         <AssociationConnector Association="OracleModel.FK_WEATHER_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_STATUS" Width="1.5" PointX="3.25" PointY="27.25" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_AUDIT" Width="1.5" PointX="7.875" PointY="11.625" />
@@ -58,6 +56,10 @@
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_INVENTORY" Width="1.5" PointX="5.75" PointY="21.625" />
         <AssociationConnector Association="OracleModel.FK_INVENTORY_CHEMICAL_MIX_ID" />
         <AssociationConnector Association="OracleModel.FK_INVENTORY_HEADER_ID" />
+        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" Width="1.5" PointX="1.5" PointY="21" />
+        <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_SUPPLEMENTAL" Width="1.5" PointX="31.125" PointY="0.5" />
+        <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

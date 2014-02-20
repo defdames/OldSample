@@ -50,14 +50,31 @@
                             </ext:Panel>
                            
                             <ext:Panel runat="server"
-                                Title="Data Entry"
+                                Title="Application Entry"
                                 ID="uxDataEntryTab"
                                 Disabled="false">
                                 <Loader runat="server"
-                                    ID="Loader4" Mode="Frame" AutoLoad="false" ReloadOnEvent="false" Url="umDataEntryTab.aspx">
+                                    ID="Loader4" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umDataEntryTab.aspx">
                                     <LoadMask ShowMask="true" />
                                 </Loader>
-
+                                </ext:Panel>
+                                 <ext:Panel runat="server"
+                                Title="Inspection Entry"
+                                ID="uxInspectionEntryTab"
+                                Disabled="false">
+                                <Loader runat="server"
+                                    ID="Loader2" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umInspectionEntry.aspx">
+                                    <LoadMask ShowMask="true" />
+                                </Loader>
+                            </ext:Panel>
+                             <ext:Panel runat="server"
+                                Title="Supplemental"
+                                ID="uxSupplemental"
+                                Disabled="false">
+                                <Loader runat="server"
+                                    ID="Loader3" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umSupplemental.aspx">
+                                    <LoadMask ShowMask="true" />
+                                </Loader>
                             </ext:Panel>
 
                         </Items>

@@ -112,6 +112,7 @@
                                         <ext:ModelField Name="EXPENDITURE_TYPE" />
                                         <ext:ModelField Name="BILL_RATE" />
                                         <ext:ModelField Name="UNIT_OF_MEASURE" />
+                                        <ext:ModelField Name="SURFACE_TYPE" />
                                         <ext:ModelField Name="COMMENTS" />
                                     </Fields>
                                 </ext:Model>
@@ -127,6 +128,7 @@
                             <ext:Column runat="server" DataIndex="EXPENDITURE_TYPE" Text="Expenditure Type" Flex="4" />
                             <ext:Column runat="server" DataIndex="BILL_RATE" Text="Bill Rate" />
                             <ext:Column runat="server" DataIndex="UNIT_OF_MEASURE" Text="Unit of Measure" />
+                            <ext:Column runat="server" DataIndex="SURFACE_TYPE" Text="Surface Type" />
                             <ext:Column runat="server" DataIndex="COMMENTS" Text="Comments" Flex="4" />
                         </Columns>
                     </ColumnModel>

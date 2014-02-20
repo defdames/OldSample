@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using DBI.Core.Web;
 using DBI.Data;
+using DBI.Data.DataFactory;
 using Ext.Net;
 
 namespace DBI.Web.EMS.Views.Modules.DailyActivity
@@ -19,10 +20,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 if (Request.QueryString["Type"] == "Add")
                 {
                     uxAddProductionForm.Show();
+                    uxAddProductionSurfaceTypeStore.Data = StaticLists.SurfaceTypes;
                 }
                 else
                 {
                     uxEditProductionForm.Show();
+                    uxEditProductionSurfaceTypeStore.Data = StaticLists.SurfaceTypes;
                     LoadEditProductionForm();
                 }
                 GetTaskList(Request.QueryString["Type"]);
@@ -81,6 +84,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEditProductionQuantity.SetValue(Production.d.QUANTITY);
                 uxEditProductionBillRate.SetValue(Production.d.BILL_RATE);
                 uxEditProductionUOM.SetValue(Production.d.UNIT_OF_MEASURE);
+                uxEditProductionSurfaceType.SetValueAndFireSelect(Production.d.SURFACE_TYPE);
+                uxEditProductionSurfaceType.SetValue(Production.d.SURFACE_TYPE);
                 uxEditProductionComments.SetValue(Production.d.COMMENTS);
             }
         }
@@ -112,6 +117,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     STATION = uxAddProductionStation.Value.ToString(),
                     UNIT_OF_MEASURE = uxAddProductionUOM.Value.ToString(),
                     QUANTITY = Quantity,
+                    SURFACE_TYPE = uxAddProductionSurfaceType.Value.ToString(),
                     CREATE_DATE = DateTime.Now,
                     MODIFY_DATE = DateTime.Now,
                     CREATED_BY = User.Identity.Name,
@@ -167,6 +173,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.BILL_RATE = BillRate;
             data.MODIFY_DATE = DateTime.Now;
             data.UNIT_OF_MEASURE = uxEditProductionUOM.Value.ToString();
+            data.SURFACE_TYPE = uxEditProductionSurfaceType.Value.ToString();
             data.COMMENTS = uxEditProductionComments.Value.ToString();
             data.MODIFIED_BY = User.Identity.Name;
 

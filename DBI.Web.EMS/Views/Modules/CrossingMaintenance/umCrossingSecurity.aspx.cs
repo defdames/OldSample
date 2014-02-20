@@ -91,6 +91,18 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     }
                 });
             }
+            //protected void ButtonValidityCheck(object sender, DirectEventArgs e)
+            //{
+                
+            //    if ()
+            //    {
+            //        uxApplyButtonCS.Enable();
+            //    }
+            //    else
+            //    {
+            //        uxApplyButtonCS.Disabled();
+            //    }
+            //}
             public class ProjectDetails
             {
                 public long CROSSING_ID { get; set; }
