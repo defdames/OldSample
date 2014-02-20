@@ -50,7 +50,6 @@ namespace DBI.Data
         public DbSet<DAILY_ACTIVITY_HEADER> DAILY_ACTIVITY_HEADER { get; set; }
         public DbSet<DAILY_ACTIVITY_STATUS> DAILY_ACTIVITY_STATUS { get; set; }
         public DbSet<DAILY_ACTIVITY_AUDIT> DAILY_ACTIVITY_AUDIT { get; set; }
-        public DbSet<DAILY_ACTIVITY_EMPLOYEE> DAILY_ACTIVITY_EMPLOYEE { get; set; }
         public DbSet<CROSSING> CROSSINGS { get; set; }
         public DbSet<PA_PERIODS_ALL> PA_PERIODS_ALL { get; set; }
         public DbSet<MTL_TRANSACTION_INT_V> MTL_TRANSACTION_INT_V { get; set; }
@@ -73,5 +72,6 @@ namespace DBI.Data
         public DbSet<CUSTOMER_SURVEY_RELATION> CUSTOMER_SURVEY_RELATION { get; set; }
         public DbSet<CROSSING_APPLICATION> CROSSING_APPLICATION { get; set; }
         public DbSet<CROSSING_INSPECTION> CROSSING_INSPECTION { get; set; }
+        public DbSet<DAILY_ACTIVITY_EMPLOYEE> DAILY_ACTIVITY_EMPLOYEE { get; set; }
     }
 }

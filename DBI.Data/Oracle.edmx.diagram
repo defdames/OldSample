@@ -39,8 +39,6 @@
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_STATUS" Width="1.5" PointX="3.25" PointY="27.25" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_AUDIT" Width="1.5" PointX="7.875" PointY="11.625" />
         <AssociationConnector Association="OracleModel.FK_AUDIT_HEADER_ID" />
-        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="0.75" PointY="15.25" />
-        <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.CROSSING" Width="1.5" PointX="26.5" PointY="0.5" />
         <AssociationConnector Association="OracleModel.FK_CROSSINGS_CONTACT_ID" />
         <AssociationConnector Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID" />
@@ -76,6 +74,8 @@
         <AssociationConnector Association="OracleModel.FK_RELATION_QUESTION_ID" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_APPLICATION" Width="1.5" PointX="24.625" PointY="5.75" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_INSPECTION" Width="1.5" PointX="22.875" PointY="5.625" />
+        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="0.75" PointY="15.125" />
+        <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
