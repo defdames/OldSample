@@ -246,6 +246,7 @@ namespace DBI.Mobile.EMS.Controllers
 
 
             import.CREATED_BY = h.CREATED_BY;
+            import.HEADER_ID = h.HEADER_ID;
             GenericData.Insert<DAILY_ACTIVITY_IMPORT>(import);
 
 
