@@ -124,6 +124,10 @@
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingSecurity.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umSupplemental.aspx" />
+    <Content Include="Views\Modules\CustomerSurveys\umCustomerSurveyAdmin.aspx" />
+    <Content Include="Views\Modules\CustomerSurveys\umManageForms.aspx" />
+    <Content Include="Views\Modules\CustomerSurveys\umManageOrgs.aspx" />
+    <Content Include="Views\Modules\CustomerSurveys\umManageQuestions.aspx" />
     <Content Include="Views\Modules\DailyActivity\ImageLoader\ImageLoader.aspx" />
     <Content Include="Views\Modules\DailyActivity\umAddEditChemical.aspx" />
     <Content Include="Views\Modules\DailyActivity\umAddEditEmployee.aspx" />
@@ -228,6 +232,33 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umSupplemental.aspx.designer.cs">
       <DependentUpon>umSupplemental.aspx</DependentUpon>
+    <Compile Include="Views\Modules\CustomerSurveys\umCustomerSurveyAdmin.aspx.cs">
+      <DependentUpon>umCustomerSurveyAdmin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CustomerSurveys\umCustomerSurveyAdmin.aspx.designer.cs">
+      <DependentUpon>umCustomerSurveyAdmin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CustomerSurveys\umManageForms.aspx.cs">
+      <DependentUpon>umManageForms.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CustomerSurveys\umManageForms.aspx.designer.cs">
+      <DependentUpon>umManageForms.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CustomerSurveys\umManageOrgs.aspx.cs">
+      <DependentUpon>umManageOrgs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CustomerSurveys\umManageOrgs.aspx.designer.cs">
+      <DependentUpon>umManageOrgs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CustomerSurveys\umManageQuestions.aspx.cs">
+      <DependentUpon>umManageQuestions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CustomerSurveys\umManageQuestions.aspx.designer.cs">
+      <DependentUpon>umManageQuestions.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\ImageLoader\ImageLoader.aspx.cs">
       <DependentUpon>ImageLoader.aspx</DependentUpon>
@@ -487,6 +518,7 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
