@@ -130,17 +130,15 @@ namespace DBI.Mobile.EMS.Controllers
                 {
                     DAILY_ACTIVITY_PRODUCTION e = new DAILY_ACTIVITY_PRODUCTION();
                     e.HEADER_ID = h.HEADER_ID; 
-                    e.TASK_ID = j.task_id;
+                    e.TASK_ID = (long)j.task_id;
                     e.WORK_AREA = j.work_area;
                     e.POLE_FROM = j.pole_from;
                     e.POLE_TO  = j.pole_to;
                     e.ACRES_MILE = (long)j.acres_mile;
                     e.QUANTITY = j.quantity;
                     e.UNIT_OF_MEASURE = j.uom;
-                    if (j.bill_rate.ToString().Length > 0)
-                    {
-                        e.BILL_RATE = (Decimal)j.bill_rate;
-                    }
+                    e.BILL_RATE = (Decimal)j.bill_rate;
+                    e.SURFACE_TYPE = j.surface_type;
                     e.STATION = j.station;
                     e.EXPENDITURE_TYPE = j.expenditure_type;
                     e.COMMENTS = j.comments;
@@ -224,7 +222,6 @@ namespace DBI.Mobile.EMS.Controllers
                     f.HOTEL_CITY = j.hotel_city;
                     f.HOTEL_STATE = j.hotel_state;
                     f.HOTEL_PHONE = j.hotel_phone;
-
                     f.DOT_REP = Convert.FromBase64String(j.dot_rep);
                     f.DOT_REP_NAME = j.dot_rep_name;
                     f.COMMENTS = j.comments;
