@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Http;
 using DBI.Data;
 using Newtonsoft.Json;
+using DBI.Mobile.EMS.Models;
 
 namespace DBI.Mobile.EMS.Controllers
 {
@@ -200,6 +201,7 @@ namespace DBI.Mobile.EMS.Controllers
                     e.MODIFY_DATE = DateTime.Now;
                     e.CREATED_BY = h.CREATED_BY;
                     e.MODIFIED_BY = h.CREATED_BY;
+                    e.TOTAL = j.total;
 
                     if (j.chemical_mix_id > 0)
                     {
