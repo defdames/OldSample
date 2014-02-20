@@ -34,6 +34,10 @@ namespace DBI.Mobile.EMS.Controllers
             }
             catch (Exception ex)
             {
+                //DEBUG TESTING
+                System.IO.StreamWriter file2 = new System.IO.StreamWriter("c:\\temp\\error.txt");
+                file2.Write(ex.ToString());
+                file2.Close();
                 throw(ex);
             }
 
