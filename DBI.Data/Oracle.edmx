@@ -322,7 +322,8 @@
       "PA_ROLES_V"."MEANING" AS "MEANING", 
       "PA_ROLES_V"."EFFECTIVE_START_DATE" AS "EFFECTIVE_START_DATE", 
       "PA_ROLES_V"."EFFECTIVE_END_DATE" AS "EFFECTIVE_END_DATE", 
-      "PA_ROLES_V"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE"
+      "PA_ROLES_V"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE", 
+      "PA_ROLES_V"."PROJECT_STATUS_CODE" AS "PROJECT_STATUS_CODE"
       FROM "XXEMS"."PA_ROLES_V" "PA_ROLES_V"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.Store.PA_TASKS_V" store:Type="Views" store:Schema="XXEMS" store:Name="PA_TASKS_V">
@@ -1698,6 +1699,7 @@
             <PropertyRef Name="MEANING" />
             <PropertyRef Name="EFFECTIVE_START_DATE" />
             <PropertyRef Name="LAST_UPDATE_DATE" />
+            <PropertyRef Name="PROJECT_STATUS_CODE" />
             <PropertyRef Name="STATE" />
             <PropertyRef Name="COUNTY" />
           </Key>
@@ -1709,6 +1711,7 @@
           <Property Name="EFFECTIVE_START_DATE" Type="date" Nullable="false" />
           <Property Name="EFFECTIVE_END_DATE" Type="date" />
           <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" />
+          <Property Name="PROJECT_STATUS_CODE" Type="varchar2" Nullable="false" MaxLength="30" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'XXEMS.PA_TASKS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -2388,7 +2391,6 @@
           <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.PA_TASKS_V" />
           <EntitySet Name="PA_LOCATIONS_V" EntityType="OracleModel.PA_LOCATIONS_V" />
           <EntitySet Name="EXPENDITURE_TYPE_V" EntityType="OracleModel.EXPENDITURE_TYPE_V" />
-          <EntitySet Name="PA_ROLES_V" EntityType="OracleModel.PA_ROLES_V" />
           <EntitySet Name="CROSSING_CONTACTS" EntityType="OracleModel.CROSSING_CONTACTS" />
           <EntitySet Name="XXPJ_PREV_WAGE_RATES" EntityType="OracleModel.XXPJ_PREV_WAGE_RATES" />
           <EntitySet Name="DAILY_ACTIVITY_HEADER" EntityType="OracleModel.DAILY_ACTIVITY_HEADER" />
@@ -2455,6 +2457,7 @@
             <End Role="CROSSING" EntitySet="CROSSINGS" />
             <End Role="CROSSING_SUPPLEMENTAL" EntitySet="CROSSING_SUPPLEMENTAL" />
           </AssociationSet>
+          <EntitySet Name="PA_ROLES_V" EntityType="OracleModel.PA_ROLES_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -3341,25 +3344,6 @@
           <Property Type="String" Name="RATE_CURRENCY_CODE" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
           <Property Type="String" Name="EXPENDITURE_DESCRIPTION" MaxLength="250" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="PA_ROLES_V">
-          <Key>
-            <PropertyRef Name="PROJECT_ID" />
-            <PropertyRef Name="PROJECT_ROLE_TYPE" />
-            <PropertyRef Name="MEANING" />
-            <PropertyRef Name="EFFECTIVE_START_DATE" />
-            <PropertyRef Name="LAST_UPDATE_DATE" />
-            <PropertyRef Name="STATE" />
-            <PropertyRef Name="COUNTY" />
-          </Key>
-          <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
-          <Property Type="String" Name="PROJECT_ROLE_TYPE" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STATE" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Type="String" Name="COUNTY" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Type="String" Name="MEANING" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="EFFECTIVE_START_DATE" Nullable="false" />
-          <Property Type="DateTime" Name="EFFECTIVE_END_DATE" />
-          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
         </EntityType>
         <EntityType Name="CROSSING_CONTACTS">
           <Key>
@@ -4319,6 +4303,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="PA_ROLES_V">
+          <Key>
+            <PropertyRef Name="PROJECT_ID" />
+            <PropertyRef Name="PROJECT_ROLE_TYPE" />
+            <PropertyRef Name="MEANING" />
+            <PropertyRef Name="EFFECTIVE_START_DATE" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+            <PropertyRef Name="PROJECT_STATUS_CODE" />
+            <PropertyRef Name="STATE" />
+            <PropertyRef Name="COUNTY" />
+          </Key>
+          <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
+          <Property Type="String" Name="PROJECT_ROLE_TYPE" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STATE" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Type="String" Name="COUNTY" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Type="String" Name="MEANING" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="EFFECTIVE_START_DATE" Nullable="false" />
+          <Property Type="DateTime" Name="EFFECTIVE_END_DATE" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
+          <Property Type="String" Name="PROJECT_STATUS_CODE" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5006,20 +5011,6 @@
                 <ScalarProperty Name="UNIT_OF_MEASURE" ColumnName="UNIT_OF_MEASURE" />
                 <ScalarProperty Name="BILL_RATE" ColumnName="BILL_RATE" />
                 <ScalarProperty Name="EXPENDITURE_TYPE" ColumnName="EXPENDITURE_TYPE" />
-                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PA_ROLES_V">
-            <EntityTypeMapping TypeName="OracleModel.PA_ROLES_V">
-              <MappingFragment StoreEntitySet="PA_ROLES_V">
-                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
-                <ScalarProperty Name="EFFECTIVE_END_DATE" ColumnName="EFFECTIVE_END_DATE" />
-                <ScalarProperty Name="EFFECTIVE_START_DATE" ColumnName="EFFECTIVE_START_DATE" />
-                <ScalarProperty Name="MEANING" ColumnName="MEANING" />
-                <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
-                <ScalarProperty Name="STATE" ColumnName="STATE" />
-                <ScalarProperty Name="PROJECT_ROLE_TYPE" ColumnName="PROJECT_ROLE_TYPE" />
                 <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -5813,6 +5804,21 @@
                 <ScalarProperty Name="SERVICE_TYPE" ColumnName="SERVICE_TYPE" />
                 <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
                 <ScalarProperty Name="SUPPLEMENTAL_ID" ColumnName="SUPPLEMENTAL_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PA_ROLES_V">
+            <EntityTypeMapping TypeName="OracleModel.PA_ROLES_V">
+              <MappingFragment StoreEntitySet="PA_ROLES_V">
+                <ScalarProperty Name="PROJECT_STATUS_CODE" ColumnName="PROJECT_STATUS_CODE" />
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="EFFECTIVE_END_DATE" ColumnName="EFFECTIVE_END_DATE" />
+                <ScalarProperty Name="EFFECTIVE_START_DATE" ColumnName="EFFECTIVE_START_DATE" />
+                <ScalarProperty Name="MEANING" ColumnName="MEANING" />
+                <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+                <ScalarProperty Name="PROJECT_ROLE_TYPE" ColumnName="PROJECT_ROLE_TYPE" />
+                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

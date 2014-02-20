@@ -22,5 +22,6 @@ namespace DBI.Data
         public System.DateTime EFFECTIVE_START_DATE { get; set; }
         public Nullable<System.DateTime> EFFECTIVE_END_DATE { get; set; }
         public System.DateTime LAST_UPDATE_DATE { get; set; }
+        public string PROJECT_STATUS_CODE { get; set; }
     }
 }

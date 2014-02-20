@@ -29,7 +29,6 @@
         <EntityTypeShape EntityType="OracleModel.PA_TASKS_V" Width="1.5" PointX="0.5" PointY="8.375" />
         <EntityTypeShape EntityType="OracleModel.PA_LOCATIONS_V" Width="1.5" PointX="14.75" PointY="4" />
         <EntityTypeShape EntityType="OracleModel.EXPENDITURE_TYPE_V" Width="1.5" PointX="14.75" PointY="7.375" />
-        <EntityTypeShape EntityType="OracleModel.PA_ROLES_V" Width="1.5" PointX="2.625" PointY="8.625" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_CONTACTS" Width="1.5" PointX="24.5" PointY="0.625" />
         <EntityTypeShape EntityType="OracleModel.XXPJ_PREV_WAGE_RATES" Width="1.5" PointX="14.75" PointY="10.125" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_HEADER" Width="1.5" PointX="5" PointY="10.875" />
@@ -60,6 +59,7 @@
         <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_SUPPLEMENTAL" Width="1.5" PointX="31.125" PointY="0.5" />
         <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
+        <EntityTypeShape EntityType="OracleModel.PA_ROLES_V" Width="1.5" PointX="11.920765584297836" PointY="9.3100327892741337" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
