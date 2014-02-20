@@ -412,8 +412,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             uxTransferCrossingWindow.Hide();
             uxUpdateContactWindow.Hide();
-            uxUpdateContactWindow.ClearContent();
             uxCurrentManagerCrossingStore.Reload();
+            uxTransferCrossingsNewManagerStore.Reload();
+            uxUpdateContactForm.Reset();
             uxContactFormPanel.Reset();
 
 

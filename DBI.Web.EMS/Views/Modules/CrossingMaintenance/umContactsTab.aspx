@@ -349,7 +349,7 @@
                 <Items>
                     <ext:FormPanel ID="uxUpdateContactForm" runat="server" Layout="FormLayout">
                         <Items>
-                            <ext:DropDownField ID="uxUpdateContactCurrentManager" runat="server" FieldLabel="Current Manager" AnchorHorizontal="100%" LabelAlign="Right" Mode="ValueText">
+                            <ext:DropDownField ID="uxUpdateContactCurrentManager" runat="server" FieldLabel="Current Manager" AnchorHorizontal="100%" LabelAlign="Right" Mode="ValueText" AllowBlank="false">
                                 <Component>
                                     <ext:GridPanel runat="server"
                                         ID="uxAddCurrentManager"
@@ -399,7 +399,7 @@
                                     </ext:GridPanel>
                                 </Component>
                             </ext:DropDownField>
-                            <ext:DropDownField ID="uxUpdateContactNewManager" runat="server" FieldLabel="New Manager" AnchorHorizontal="100%" LabelAlign="Right" Mode="ValueText">
+                            <ext:DropDownField ID="uxUpdateContactNewManager" runat="server" FieldLabel="New Manager" AnchorHorizontal="100%" LabelAlign="Right" Mode="ValueText" AllowBlank="false">
                                 <Component>
                                     <ext:GridPanel runat="server"
                                         ID="uxNewManagerMainGrid"
@@ -464,8 +464,12 @@
                                     <Click Handler="#{uxUpdateContactForm}.reset();
 									#{uxUpdateContactWindow}.hide()" />
                                 </Listeners>
+                               
                             </ext:Button>
                         </Buttons>
+                         <Listeners>
+						   <ValidityChange Handler="#{uxSelectCrossingToUpdate}.setDisabled(!valid);" />
+					     </Listeners>
                     </ext:FormPanel>
                 </Items>
             </ext:Window>
@@ -557,7 +561,9 @@
                                         <Plugins>
                                             <ext:GridDragDrop ID="GridDragDrop2" runat="server" DragGroup="secondGridDDGroup" DropGroup="firstGridDDGroup"  />
                                         </Plugins>
-
+                                                <Listeners>
+                                                <Select Handler="#{TransferCrossingtoContact}.enable()" />
+                                             </Listeners>
                                          <Listeners>
                                             <AfterRender Handler="this.plugins[0].dragZone.getDragText = getDragDropText;" Delay="1"  />
                                             <Drop Handler="var dropOn = overModel ? ' ' + dropPosition + ' ' + overModel.get('CROSSING_NUMBER') : ' To New Contact'; 
@@ -571,7 +577,7 @@
                             <ext:Toolbar ID="Toolbar1" runat="server">
                                 <Items>
                                     <ext:ToolbarFill ID="ToolbarFill1" runat="server" />
-                                    <ext:Button ID="TransferCrossingtoContact" runat="server" Text="Update" Icon="TransmitGo" >
+                                    <ext:Button ID="TransferCrossingtoContact" runat="server" Text="Update" Icon="TransmitGo" Disabled="true" >
                                      <DirectEvents>
                                     <Click OnEvent="AssociateTransfer">
                                         <Confirmation ConfirmRequest="true" Title="Associate?" Message="Are you sure you want to transfer the selected crossings to the new contact?" />
@@ -593,6 +599,7 @@
                                             <Click Handler="#{uxCurrentManagerCrossingStore}.loadData(#{uxCurrentManagerCrossingStore}.proxy.data); #{uxTransferCrossingsNewManagerStore}.removeAll();" />
                                         </Listeners>
                                     </ext:Button>
+                                    
                                 </Items>
                             </ext:Toolbar>
                         </BottomBar>

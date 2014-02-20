@@ -12,13 +12,13 @@ using DBI.Data.GMS;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
-    public partial class umDataEntryTab : System.Web.UI.Page
+    public partial class umSupplemental : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
 
         }
-        protected void deApplicationGridData(object sender, StoreReadDataEventArgs e)
+        protected void deInspectionGridData(object sender, StoreReadDataEventArgs e)
         {
 
             using (Entities _context = new Entities())
@@ -34,14 +34,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
 
                 int count;
-                uxAppEntryCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                uxSupplementalCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 e.Total = count;
             }
         }
-        protected void deRemoveApplicationEntry(object sender, EventArgs e)
-        {
-
-        }
-     
     }
 }
