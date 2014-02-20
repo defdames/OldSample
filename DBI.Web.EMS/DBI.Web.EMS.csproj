@@ -232,6 +232,7 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umSupplemental.aspx.designer.cs">
       <DependentUpon>umSupplemental.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\CustomerSurveys\umCustomerSurveyAdmin.aspx.cs">
       <DependentUpon>umCustomerSurveyAdmin.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
