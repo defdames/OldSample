@@ -20,7 +20,7 @@ namespace DBI.Mobile.EMS.Controllers
         public IEnumerable<PA_ROLES_V> Get()
         {
             Entities _context = new Entities();
-            List<PA_ROLES_V> pl = _context.PA_ROLES_V.ToList();
+            List<PA_ROLES_V> pl = _context.PA_ROLES_V.Where(p =>p.PROJECT_STATUS_CODE == "APPROVED").ToList();
             return pl;
         }
 

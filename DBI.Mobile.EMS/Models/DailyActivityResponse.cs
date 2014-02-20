@@ -72,6 +72,7 @@ namespace DBI.Mobile.EMS.Models
             public string comments { get; set; }
             public string work_area { get; set; }
             public string time_in { get; set; }
+            public string surface_type { get; set; }
         }
 
         public class DailyActivityHeader
