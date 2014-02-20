@@ -1700,13 +1700,11 @@
             <PropertyRef Name="EFFECTIVE_START_DATE" />
             <PropertyRef Name="LAST_UPDATE_DATE" />
             <PropertyRef Name="PROJECT_STATUS_CODE" />
-            <PropertyRef Name="STATE" />
-            <PropertyRef Name="COUNTY" />
           </Key>
           <Property Name="PROJECT_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="PROJECT_ROLE_TYPE" Type="varchar2" Nullable="false" MaxLength="20" />
-          <Property Name="STATE" Type="char" MaxLength="2" Nullable="false" />
-          <Property Name="COUNTY" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="STATE" Type="char" MaxLength="2" />
+          <Property Name="COUNTY" Type="varchar2" MaxLength="50" />
           <Property Name="MEANING" Type="varchar2" Nullable="false" MaxLength="80" />
           <Property Name="EFFECTIVE_START_DATE" Type="date" Nullable="false" />
           <Property Name="EFFECTIVE_END_DATE" Type="date" />
@@ -4311,13 +4309,11 @@
             <PropertyRef Name="EFFECTIVE_START_DATE" />
             <PropertyRef Name="LAST_UPDATE_DATE" />
             <PropertyRef Name="PROJECT_STATUS_CODE" />
-            <PropertyRef Name="STATE" />
-            <PropertyRef Name="COUNTY" />
           </Key>
           <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
           <Property Type="String" Name="PROJECT_ROLE_TYPE" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STATE" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Type="String" Name="COUNTY" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Type="String" Name="STATE" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="COUNTY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MEANING" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="EFFECTIVE_START_DATE" Nullable="false" />
           <Property Type="DateTime" Name="EFFECTIVE_END_DATE" />
