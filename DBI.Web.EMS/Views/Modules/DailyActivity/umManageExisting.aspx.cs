@@ -301,9 +301,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             uxPlaceholderWindow.ClearContent();
             long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
+            long OrgId = GetOrgId(HeaderId);
             List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime(24);
             EmployeeData DuplicatePerDiems = ValidationChecks.checkPerDiem(HeaderId);
-            List<EmployeeData> RequiredLunches = ValidationChecks.LunchCheck(HeaderId);
+            if (OrgId != 123)
+            {
+                List<EmployeeData> RequiredLunches = ValidationChecks.LunchCheck(HeaderId);
+                if (RequiredLunches.Count > 0)
+                {
+                    uxPlaceholderWindow.LoadContent(string.Format("umChooseLunchHeader.aspx?HeaderId={0}", HeaderId));
+                    BadHeader = true;
+                }
+            }
             List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
 
             bool BadHeader = false;
@@ -319,11 +328,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             }
 
-            if (RequiredLunches.Count > 0)
-            {
-                uxPlaceholderWindow.LoadContent(string.Format("umChooseLunchHeader.aspx?HeaderId={0}", HeaderId));
-                BadHeader = true;
-            }
+            
 
             if (DuplicatePerDiems != null)
             {
@@ -350,7 +355,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             string WindowUrl = string.Empty;
 
-            long OrgId = GetOrgId(HeaderId);
+
 
             if (OrgId == 121)
             {

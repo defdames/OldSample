@@ -83,9 +83,9 @@
 							<Proxy>
 								<ext:PageProxy />
 							</Proxy>
-                            <Listeners>
-                                <Load Handler="#{uxManageGrid}.getSelectionModel().select(parseInt(#{uxGridIndex}.value))" />
-                            </Listeners>
+							<Listeners>
+								<Load Handler="#{uxManageGrid}.getSelectionModel().select(parseInt(#{uxGridIndex}.value))" />
+							</Listeners>
 						</ext:Store>
 					</Store>
 					<ColumnModel>
