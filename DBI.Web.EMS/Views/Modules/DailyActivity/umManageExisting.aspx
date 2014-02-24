@@ -451,7 +451,8 @@
 					ID="uxPlaceholderWindow"
 					Hidden="true"
 					Width="650"
-					Y="50">
+					Y="50"
+					Modal="true">
 					<Loader runat="server"
 						ID="uxPlaceholderLoader"
 						Mode="Frame"
