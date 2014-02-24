@@ -31,13 +31,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.ResourceManager ResourceManager1;
         
         /// <summary>
-        /// uxCrossingMainGrid control.
+        /// uxInspectionCrossingGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxCrossingMainGrid;
+        protected global::Ext.Net.GridPanel uxInspectionCrossingGrid;
         
         /// <summary>
         /// RowSelectionModel1 control.
@@ -184,13 +184,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.RowSelectionModel RowSelectionModel2;
         
         /// <summary>
-        /// Store1 control.
+        /// uxInspectionStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store Store1;
+        protected global::Ext.Net.Store uxInspectionStore;
         
         /// <summary>
         /// Model1 control.
@@ -481,13 +481,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.DropDownField uxEditInspectEntryTruckNum;
         
         /// <summary>
-        /// uxEditInspectEntryInspectNum control.
+        /// uxEditInspectEntryInspectBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Checkbox uxEditInspectEntryInspectNum;
+        protected global::Ext.Net.Checkbox uxEditInspectEntryInspectBox;
         
         /// <summary>
         /// uxEditInspectEntryRemarks control.
