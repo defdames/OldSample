@@ -304,6 +304,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long OrgId = GetOrgId(HeaderId);
             List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime(24);
             EmployeeData DuplicatePerDiems = ValidationChecks.checkPerDiem(HeaderId);
+            bool BadHeader = false;
             if (OrgId != 123)
             {
                 List<EmployeeData> RequiredLunches = ValidationChecks.LunchCheck(HeaderId);
@@ -315,7 +316,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
 
-            bool BadHeader = false;
+            
             if (HoursOver24.Count > 0)
             {
                 if (HoursOver24.Exists(emp => emp.HEADER_ID == HeaderId))
