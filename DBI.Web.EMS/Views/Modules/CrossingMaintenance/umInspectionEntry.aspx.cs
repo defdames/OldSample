@@ -38,5 +38,240 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 e.Total = count;
             }
         }
+        //protected void GetInspectionGridData(object sender, DirectEventArgs e)
+        //{
+        //    //Get Supplemental data and set datasource
+        //    using (Entities _context = new Entities())
+        //    {
+        //        long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+        //        var data = (from s in _context.CROSSING_INSPECTION
+        //                    join c in _context.CROSSINGS on s.CROSSING_ID equals c.CROSSING_ID
+        //                    where s.CROSSING_ID == CrossingId
+
+        //                    select new { s.CROSSING_ID, s.SUPPLEMENTAL_ID, s.APPROVED_DATE, s.COMPLETED_DATE, s.SERVICE_TYPE, s.INSPECT_START, s.INSPECT_END, s.TRUCK_NUMBER, s.SPRAY, s.CUT, s.INSPECT, s.MAINTAIN, s.RECURRING, s.REMARKS }).ToList<object>();
+
+
+        //        uxInspectionEntryGrid.Store.Primary.DataSource = data;
+        //        uxInspectionEntryGrid.Store.Primary.DataBind();
+
+
+        //    }
+        //}
+        //protected void deAddInspection(object sender, DirectEventArgs e)
+        //{
+        //    CROSSING_SUPPLEMENTAL data;
+
+        //    long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+
+        //    //do type conversions
+          
+           
+        //    long InspectionNumber =  Convert.ToInt64(uxAddInspectEntryNumber.Value);
+        //    DateTime Date = (DateTime)uxAddInspectEntryDate.Value;
+        //    long TruckNumber = Convert.ToInt64(uxAddInspectEntryTruckNum.Value);
+        //    string Spray = uxAddInspectEntrySprayBox.Value.ToString();
+        //    string Cut = uxAddInspectEntryCutBox.Value.ToString();         
+        //    string Inspect = uxAddInspectEntryInspectBox.Value.ToString();          
+        //    string Remarks = uxAddInspectEntryRemarks.Value.ToString();
+        //    if (uxAddInspectEntrySprayBox.Checked)
+        //    {
+        //        Spray = "Y";
+        //    }
+        //    else
+        //    {
+        //        Spray = "N";
+        //    }
+
+        //    if (uxAddInspectEntryCutBox.Checked)
+        //    {
+        //        Cut = "Y";
+        //    }
+        //    else
+        //    {
+        //        Cut = "N";
+        //    }
+           
+        //    if (uxAddInspectEntryInspectBox.Checked)
+        //    {
+        //        Inspect = "Y";
+        //    }
+        //    else
+        //    {
+        //        Inspect = "N";
+        //    }
+           
+
+        //    //Add to Db
+        //    using (Entities _context = new Entities())
+        //    {
+        //        data = new CROSSING_SUPPLEMENTAL()
+        //        {
+        //            INSPECTION_NUMBER = InspectionNumber,
+        //            DATE = Date,              
+        //            TRUCK_NUMBER = TruckNumber,
+        //            SPRAY = Spray,
+        //            CUT = Cut,                 
+        //            INSPECT = Inspect,            
+        //            REMARKS = Remarks,
+        //            CROSSING_ID = CrossingId,
+        //        };
+        //    }
+
+
+        //    GenericData.Insert<CROSSING_SUPPLEMENTAL>(data);
+
+        //    uxAddInspectionEntryWindow.Hide();
+        //    uxInspectionStore.Reload();
+
+
+        //    Notification.Show(new NotificationConfig()
+        //    {
+        //        Title = "Success",
+        //        Html = "Supplemental Added Successfully",
+        //        HideDelay = 1000,
+        //        AlignCfg = new NotificationAlignConfig
+        //        {
+        //            ElementAnchor = AnchorPoint.Center,
+        //            TargetAnchor = AnchorPoint.Center
+        //        }
+        //    });
+        //}
+        //protected void deEditInspectionForm(object sender, DirectEventArgs e)
+        //{
+        //    string json = e.ExtraParams["SupplementalInfo"];
+        //    List<InspectionDetails> InspectionList = JSON.Deserialize<List<InspectionDetails>>(json);
+        //    foreach (InspectionDetails Inspection in InspectionList)
+        //    {
+
+               
+        //        uxEditInspectEntryNumber.SetValue(Inspection.INSPECTION_NUMBER);
+        //        uxEditInspectEntryTruckNum.SetValue(Inspection.TRUCK_NUMBER);
+        //        uxEditInspectEntryDate.SetValue(Inspection.DATE);
+        //        uxEditInspectEntrySprayBox.SetValue(Inspection.SPRAY);
+        //        uxEditInspectEntryCutBox.SetValue(Inspection.CUT);
+        //        uxEditInspectEntryInspectBox.SetValue(Inspection.INSPECT);
+        //        uxEditInspectEntryRemarks.SetValue(Inspection.REMARKS);
+
+        //        if (Inspection.SPRAY == "Y")
+        //        {
+        //            uxEditInspectEntrySprayBox.Checked = true;
+        //        }
+        //        if (Inspection.CUT == "Y")
+        //        {
+        //            uxEditInspectEntryCutBox.Checked = true;
+        //        }
+               
+        //        if (Inspection.INSPECT == "Y")
+        //        {
+        //            uxEditInspectEntryInspectBox.Checked = true;
+        //        }
+                
+        //    }
+
+        //}
+
+
+
+
+        ///// <summary>
+        ///// Store edit changes to database
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //protected void deEditInspection(object sender, DirectEventArgs e)
+        //{
+        //    CROSSING_INSPECTION data;
+
+        //    //Do type conversions
+          
+        //    long InspectionNumber = Convert.ToInt64(uxEditInspectEntryNumber.Value);
+        //    DateTime Date = (DateTime)uxEditInspectEntryDate.Value;
+        //    long TruckNumber = Convert.ToInt64(uxEditInspectEntryTruckNum.Value);
+        //    string Spray = uxEditInspectEntrySprayBox.Value.ToString();
+        //    string Cut = uxEditInspectEntryCutBox.Value.ToString();          
+        //    string Inspect = uxEditInspectEntryInspectBox.Value.ToString();           
+        //    string Remarks = uxEditInspectEntryRemarks.Value.ToString();
+        //    if (uxEditInspectEntrySprayBox.Checked)
+        //    {
+        //        Spray = "Y";
+        //    }
+        //    else
+        //    {
+        //        Spray = "N";
+        //    }
+
+        //    if (uxEditInspectEntryCutBox.Checked)
+        //    {
+        //        Cut = "Y";
+        //    }
+        //    else
+        //    {
+        //        Cut = "N";
+        //    }
+        //    if (uxEditInspectEntryInspectBox.Checked)
+        //    {
+        //        Inspect = "Y";
+        //    }
+        //    else
+        //    {
+        //        Inspect = "N";
+        //    }
+           
+
+
+        //    //Get record to be edited
+        //    using (Entities _context = new Entities())
+        //    {
+        //        var CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+        //        data = (from d in _context.CROSSING_SUPPLEMENTAL
+        //                join c in _context.CROSSINGS on d.CROSSING_ID equals c.CROSSING_ID
+        //                where d.CROSSING_ID == CrossingId
+
+        //                select d).Single();
+
+        //    }
+
+
+
+        //    data.DATE = Date;
+        //    data.INSPECTION_NUMBER = InspectionNumber;
+        //    data.TRUCK_NUMBER = TruckNumber;
+        //    data.SPRAY = Spray;
+        //    data.CUT = Cut;     
+        //    data.INSPECT = Inspect;         
+        //    data.REMARKS = Remarks;
+        //    //data.CROSSING_ID = CrossingId;
+
+        //    //Write to DB
+        //    GenericData.Update<CROSSING_INSPECTION>(data);
+
+        //    uxEditInspectionEntryWindow.Hide();
+
+        //    uxInspectionStore.Reload();
+
+        //    Notification.Show(new NotificationConfig()
+        //    {
+        //        Title = "Success",
+        //        Html = "Supplemental Edited Successfully",
+        //        HideDelay = 1000,
+        //        AlignCfg = new NotificationAlignConfig
+        //        {
+        //            ElementAnchor = AnchorPoint.Center,
+        //            TargetAnchor = AnchorPoint.Center
+        //        }
+        //    });
+        //}
+        public class InspectionDetails
+        {
+            public long INSPECTION_ID { get; set; }
+            public Int64 INSPECTION_NUMBER { get; set; }
+            public DateTime DATE { get; set; }
+            public Int64 TRUCK_NUMBER { get; set; }           
+            public string SPRAY { get; set; }
+            public string CUT { get; set; }        
+            public string INSPECT { get; set; }
+            public string REMARKS { get; set; }
+
+        }
     }
 }

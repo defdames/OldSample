@@ -231,8 +231,9 @@ namespace DBI.Data
                                 join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                 join l in _context.PA_LOCATIONS_V on p.LOCATION_ID equals (long)l.LOCATION_ID
                                 where d.HEADER_ID == dailyActivityHeaderId
-                                select new { p.SEGMENT1, e.EMPLOYEE_NUMBER, e.EMPLOYEE_NAME, d.ROLE_TYPE, d.STATE, l.REGION, d.COUNTY, p.ORG_ID, d.TIME_IN, d.TIME_OUT, d.LUNCH, d.LUNCH_LENGTH}).ToList();
+                                select new { d.TRAVEL_TIME, d.DRIVE_TIME, p.SEGMENT1, e.PERSON_ID, e.EMPLOYEE_NUMBER, e.EMPLOYEE_NAME, d.ROLE_TYPE, d.STATE, l.REGION, d.COUNTY, p.ORG_ID, d.TIME_IN, d.TIME_OUT, d.LUNCH, d.LUNCH_LENGTH}).ToList();
 
+                    //Add Time Entry Wages
                     foreach (var r in data)
                     {
                         XXDBI_LABOR_HEADER_V record = new XXDBI_LABOR_HEADER_V();
@@ -241,7 +242,7 @@ namespace DBI.Data
                         record.PROJECT_NUMBER = r.SEGMENT1;
                         record.TASK_NUMBER = returnDailyActivityTaskNumber(dailyActivityHeaderId);
                         record.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
-                        record.EMP_FULL_NAME = r.EMPLOYEE_NAME;
+                        record.EMP_FULL_NAME = DBI.Data.EMPLOYEES_V.oracleEmployeeName(r.PERSON_ID);
                         record.ROLE = r.ROLE_TYPE;
                         record.STATE = (r.STATE == null) ? r.REGION : r.STATE;
                         record.COUNTY = r.COUNTY;
@@ -257,7 +258,64 @@ namespace DBI.Data
                         record.LAST_UPDATED_BY = postedByUserId;
                         records.Add(record);
                         GenericData.Insert<XXDBI_LABOR_HEADER_V>(record);
+
+                        //Check if record is IRM and Drive time added, then add Drive Time Base
+                        if (xxdbiDailyActivityHeader.ORG_ID == 123 && r.DRIVE_TIME > 0)
+                        {
+                            XXDBI_LABOR_HEADER_V dtrecord = new XXDBI_LABOR_HEADER_V();
+                            dtrecord.LABOR_HEADER_ID = DBI.Data.Interface.generateLaborHeaderSequence();
+                            dtrecord.DA_HEADER_ID = xxdbiDailyActivityHeader.DA_HEADER_ID;
+                            dtrecord.PROJECT_NUMBER = r.SEGMENT1;
+                            dtrecord.TASK_NUMBER = returnDailyActivityTaskNumber(dailyActivityHeaderId);
+                            dtrecord.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
+                            dtrecord.EMP_FULL_NAME = DBI.Data.EMPLOYEES_V.oracleEmployeeName(r.PERSON_ID);
+                            dtrecord.ROLE = null;
+                            dtrecord.STATE = xxdbiDailyActivityHeader.STATE;
+                            dtrecord.COUNTY = xxdbiDailyActivityHeader.COUNTY;
+                            dtrecord.LAB_HEADER_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE;
+                            dtrecord.QUANTITY = (decimal)r.DRIVE_TIME;
+                            dtrecord.ELEMENT = "Drive Time Base";
+                            dtrecord.ADJUSTMENT = "N";
+                            dtrecord.STATUS = "UNPROCESSED";
+                            dtrecord.ORG_ID = (decimal)r.ORG_ID;
+                            dtrecord.CREATED_BY = postedByUserId;
+                            dtrecord.CREATION_DATE = DateTime.Now;
+                            dtrecord.LAST_UPDATE_DATE = DateTime.Now;
+                            dtrecord.LAST_UPDATED_BY = postedByUserId;
+                            records.Add(dtrecord);
+                            GenericData.Insert<XXDBI_LABOR_HEADER_V>(dtrecord);
+                        }
+
+                        //Check if record is IRM and Travel time added, then add Travel Time Base
+                        if (xxdbiDailyActivityHeader.ORG_ID == 123 && r.DRIVE_TIME > 0)
+                        {
+                            XXDBI_LABOR_HEADER_V dtrecord = new XXDBI_LABOR_HEADER_V();
+                            dtrecord.LABOR_HEADER_ID = DBI.Data.Interface.generateLaborHeaderSequence();
+                            dtrecord.DA_HEADER_ID = xxdbiDailyActivityHeader.DA_HEADER_ID;
+                            dtrecord.PROJECT_NUMBER = r.SEGMENT1;
+                            dtrecord.TASK_NUMBER = returnDailyActivityTaskNumber(dailyActivityHeaderId);
+                            dtrecord.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
+                            dtrecord.EMP_FULL_NAME = DBI.Data.EMPLOYEES_V.oracleEmployeeName(r.PERSON_ID);
+                            dtrecord.ROLE = null;
+                            dtrecord.STATE = xxdbiDailyActivityHeader.STATE;
+                            dtrecord.COUNTY = xxdbiDailyActivityHeader.COUNTY;
+                            dtrecord.LAB_HEADER_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE;
+                            dtrecord.QUANTITY = (decimal)r.TRAVEL_TIME;
+                            dtrecord.ELEMENT = "Travel Time Base";
+                            dtrecord.ADJUSTMENT = "N";
+                            dtrecord.STATUS = "UNPROCESSED";
+                            dtrecord.ORG_ID = (decimal)r.ORG_ID;
+                            dtrecord.CREATED_BY = postedByUserId;
+                            dtrecord.CREATION_DATE = DateTime.Now;
+                            dtrecord.LAST_UPDATE_DATE = DateTime.Now;
+                            dtrecord.LAST_UPDATED_BY = postedByUserId;
+                            records.Add(dtrecord);
+                            GenericData.Insert<XXDBI_LABOR_HEADER_V>(dtrecord);
+                        }
+
+
                     }
+
 
                     xxdbiLaborHeaderRecords = records;
                 }
@@ -282,7 +340,7 @@ namespace DBI.Data
                                 join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                 join l in _context.PA_LOCATIONS_V on p.LOCATION_ID equals (long)l.LOCATION_ID
                                 where d.HEADER_ID == dailyActivityHeaderId && d.PER_DIEM == "Y"
-                                select new { e.EMPLOYEE_NAME, e.EMPLOYEE_NUMBER, p.ORG_ID}).ToList();
+                                select new { e.EMPLOYEE_NAME, e.EMPLOYEE_NUMBER, p.ORG_ID, e.PERSON_ID}).ToList();
 
                     foreach (var r in data)
                     {
@@ -292,7 +350,7 @@ namespace DBI.Data
                         record.PROJECT_NUMBER = xxdbiDailyActivityHeader.PROJECT_NUMBER;
                         record.TASK_NUMBER = returnDailyActivityTaskNumber(dailyActivityHeaderId);
                         record.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
-                        record.EMP_FULL_NAME = r.EMPLOYEE_NAME;
+                        record.EMP_FULL_NAME = DBI.Data.EMPLOYEES_V.oracleEmployeeName(r.PERSON_ID);
                         record.EXPENDITURE_TYPE = "PER DIEM";
                         record.PER_DIEM_DATE =xxdbiDailyActivityHeader.ACTIVITY_DATE;
                         record.AMOUNT = (decimal)((xxdbiDailyActivityHeader.ORG_ID == 121) ? 25.00 : (xxdbiDailyActivityHeader.ORG_ID == 123) ? 35.00 : 25.00);
@@ -326,7 +384,7 @@ namespace DBI.Data
                             join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
                             join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                             where d.HEADER_ID == dailyActivityHeaderId
-                            select new { p.NAME, p.SEGMENT1, p.ORG_ID }).ToList();
+                            select new { p.NAME, p.SEGMENT1, p.ORG_ID}).ToList();
 
                             foreach(var r in data)
                             {
@@ -338,7 +396,7 @@ namespace DBI.Data
                                record.LAST_UPDATE_DATE = DateTime.Now;
                                record.TRUCK_EQUIP = r.NAME;
                                record.TRANSACTION_ID = generateEquipmentUsageSequence();
-                               record.PROJECT_NUMBER = r.SEGMENT1;
+                               record.PROJECT_NUMBER = dailyActivityHeaderRecord.PROJECT_NUMBER;
                                record.TASK_NUMBER = returnDailyActivityTaskNumber(dailyActivityHeaderId);
                                record.QUANTITY = maxHours;
                                record.USAGE_DATE = dailyActivityHeaderRecord.ACTIVITY_DATE;

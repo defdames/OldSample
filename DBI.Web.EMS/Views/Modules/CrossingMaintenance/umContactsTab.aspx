@@ -577,7 +577,7 @@
                             <ext:Toolbar ID="Toolbar1" runat="server">
                                 <Items>
                                     <ext:ToolbarFill ID="ToolbarFill1" runat="server" />
-                                    <ext:Button ID="TransferCrossingtoContact" runat="server" Text="Update" Icon="TransmitGo" Disabled="true" >
+                                    <ext:Button ID="TransferCrossingtoContact" runat="server" Text="Update" Icon="TransmitGo"  >
                                      <DirectEvents>
                                     <Click OnEvent="AssociateTransfer">
                                         <Confirmation ConfirmRequest="true" Title="Associate?" Message="Are you sure you want to transfer the selected crossings to the new contact?" />

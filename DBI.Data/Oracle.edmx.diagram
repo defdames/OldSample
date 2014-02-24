@@ -39,8 +39,6 @@
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_STATUS" Width="1.5" PointX="3.25" PointY="27.25" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_AUDIT" Width="1.5" PointX="7.875" PointY="11.625" />
         <AssociationConnector Association="OracleModel.FK_AUDIT_HEADER_ID" />
-        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="0.75" PointY="15.25" />
-        <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.CROSSING" Width="1.5" PointX="26.5" PointY="0.5" />
         <AssociationConnector Association="OracleModel.FK_CROSSINGS_CONTACT_ID" />
         <AssociationConnector Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID" />
@@ -59,7 +57,7 @@
         <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_SUPPLEMENTAL" Width="1.5" PointX="31.125" PointY="0.5" />
         <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
-        <EntityTypeShape EntityType="OracleModel.PA_ROLES_V" Width="1.5" PointX="11.759545292593327" PointY="17.546334528152986" />
+        <EntityTypeShape EntityType="OracleModel.PA_ROLES_V" Width="1.5" PointX="14" PointY="17.375" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_FIELDSETS" Width="1.5" PointX="45.375" PointY="58.25" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_FORMS" Width="1.5" PointX="43.125" PointY="58.375" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_FORMS_ANS" Width="1.5" PointX="37.125" PointY="58.25" />
@@ -74,6 +72,10 @@
         <AssociationConnector Association="OracleModel.FK_FORMS_ANSWER_QUESTION_ID" />
         <AssociationConnector Association="OracleModel.FK_QUESTION_TYPE_ID" />
         <AssociationConnector Association="OracleModel.FK_RELATION_QUESTION_ID" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_APPLICATION" Width="1.5" PointX="24.625" PointY="5.75" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_INSPECTION" Width="1.5" PointX="22.875" PointY="5.625" />
+        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="0.75" PointY="15.125" />
+        <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
