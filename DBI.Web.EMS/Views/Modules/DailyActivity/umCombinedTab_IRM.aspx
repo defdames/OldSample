@@ -14,9 +14,9 @@
             <Items>
                 <ext:GridPanel runat="server"
                     ID="uxHeaderGrid"
-                    Title="Details"
+                    Title="Header"
                     TitleAlign="Center"
-                    Border="false">
+                    Padding="10">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxHeaderStore">
@@ -55,10 +55,7 @@
                     ID="uxEquipmentGrid"
                     Title="Equipment and Employees"
                     TitleAlign="Center"
-                    Border="false"
-                    Collapsed="true"
-                    Collapsible="true"
-                    TitleCollapse="true">
+                    Padding="10">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxEquipmentStore">
@@ -95,10 +92,7 @@
                     ID="uxProductionGrid"
                     Title="Production"
                     TitleAlign="Center"
-                    Border="false"
-                    Collapsed="true"
-                    Collapsible="true"
-                    TitleCollapse="true">
+                    Padding="10">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxProductionStore">
@@ -137,10 +131,7 @@
                     ID="uxWeatherGrid"
                     Title="Weather"
                     TitleAlign="Center"
-                    Border="false"
-                    Collapsed="true"
-                    Collapsible="true"
-                    TitleCollapse="true">
+                    Padding="10">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxWeatherStore">
@@ -173,10 +164,7 @@
                     ID="uxInventoryGrid"
                     Title="Inventory"
                     TitleAlign="Center"
-                    Border="false"
-                    Collapsed="true"
-                    Collapsible="true"
-                    TitleCollapse="true">
+                    Padding="10">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxInventoryStore">
@@ -203,10 +191,7 @@
                     ID="uxFooterGrid"
                     Title="Footer"
                     TitleAlign="Center"
-                    Border="false"
-                    Collapsed="true"
-                    Collapsible="true"
-                    TitleCollapse="true">
+                    Padding="10">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxFooterStore">

@@ -40,7 +40,7 @@
 				return "<img src='"+ App.uxRedWarning.getValue()+"' />";
 			}
 			else if (value == "Warning") {
-			    return "<img src='" + App.uxYellowWarning.getValue() + "' />";
+				return "<img src='" + App.uxYellowWarning.getValue() + "' />";
 			}
 			else {
 				return "";
@@ -60,16 +60,14 @@
 <body>
 	<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
 	<form id="form1" runat="server">
-		<ext:Viewport runat="server" ID="uxViewPort" Layout="BorderLayout" IDMode="Explicit" IsDynamic="False" Namespace="App" RenderXType="True">
+		<ext:Viewport runat="server" ID="uxViewPort" Layout="AccordionLayout" IDMode="Explicit" Namespace="App" RenderXType="True">
 			<Items>
-				<ext:Hidden ID="uxYellowWarning" runat="server" />
-				<ext:Hidden ID="uxRedWarning" runat="server" />
-				<ext:GridPanel runat="server" ID="uxManageGrid" Region="North" Layout="HBoxLayout">
+				<ext:GridPanel runat="server" ID="uxManageGrid" Layout="FitLayout" Title="Headers" SelectionMemory="false" SelectionMemoryEvents="false">
 					<SelectionModel>
 						<ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="false" Mode="Single" />
 					</SelectionModel>
 					<Store>
-						<ext:Store runat="server" AutoDataBind="true" ID="uxManageGridStore" OnReadData="deReadHeaderData" PageSize="10" RemoteSort="true">
+						<ext:Store runat="server" AutoDataBind="true" ID="uxManageGridStore" OnReadData="deReadHeaderData" PageSize="20" RemoteSort="true">
 							<Fields>
 								<ext:ModelField Name="HEADER_ID" Type="String" />
 								<ext:ModelField Name="ORG_ID" Type="String" />
@@ -85,6 +83,9 @@
 							<Proxy>
 								<ext:PageProxy />
 							</Proxy>
+                            <Listeners>
+                                <Load Handler="#{uxManageGrid}.getSelectionModel().select(parseInt(#{uxGridIndex}.value))" />
+                            </Listeners>
 						</ext:Store>
 					</Store>
 					<ColumnModel>
@@ -121,6 +122,7 @@
 								<ext:Parameter Name="OrgId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.ORG_ID" Mode="Raw" />
 								<ext:Parameter Name="Status" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.STATUS_VALUE" Mode="Raw" />
 							</ExtraParams>
+							<EventMask ShowMask="true" />
 						</Select>
 					</DirectEvents>
 					<ToolTips>
@@ -241,16 +243,20 @@
 							</Items>
 						</ext:Toolbar>
 					</TopBar>
-					
+					<Listeners>
+						<Select Handler ="#{uxGridIndex}.setValue(#{uxManageGrid}.store.indexOf(#{uxManageGrid}.getSelectionModel().getSelection()[0]))" />
+					</Listeners>
 				</ext:GridPanel>				
-				<ext:TabPanel runat="server" ID="uxTabPanel" Region="Center">
+				<ext:TabPanel runat="server" ID="uxTabPanel" Collapsible="true" Collapsed="true" Layout="FitLayout" Title="Header Details">
 					<Items>
+						<ext:Hidden runat="server" ID="uxGridIndex" />
+						<ext:Hidden ID="uxYellowWarning" runat="server" />
+						<ext:Hidden ID="uxRedWarning" runat="server" />
 						<ext:Panel runat="server"
 							Title="Home"
-							ID="uxCombinedTab"
-							Disabled="true">
+							ID="uxCombinedTab">
 							<Loader runat="server"
-								ID="uxCombinedTabLoader" Mode="Frame" AutoLoad="false" ReloadOnEvent="true">
+								ID="uxCombinedTabLoader" Mode="Frame" AutoLoad="true" ReloadOnEvent="true">
 								<LoadMask ShowMask="true" />
 							</Loader>
 							<Listeners>
@@ -337,6 +343,108 @@
 							</Listeners>
 						</ext:Panel>                        
 					</Items>
+					<TopBar>
+						<ext:Toolbar ID="uxTabPanelToolbar" runat="server">
+							<Items>
+								<ext:Button runat="server"
+									ID="uxTabSetInactiveButton"
+									Text="Set Inactive"
+									Icon="ApplicationStop"
+									Disabled="true">
+									<DirectEvents>
+										<Click OnEvent="deSetHeaderInactive">
+											<ExtraParams>
+												<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
+											</ExtraParams>
+										</Click>
+									</DirectEvents>
+								</ext:Button>
+								<ext:ToolbarSpacer ID="ToolbarSpacer7" runat="server" />
+								<ext:Button runat="server"
+									ID="uxTabSubmitForApprovalButton"
+									Text="Submit for Approval"
+									Icon="ApplicationGo"
+									Disabled="true">
+									<DirectEvents>
+										<Click OnEvent="deSubmitActivity">
+											<ExtraParams>
+												<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
+											</ExtraParams>
+										</Click>
+									</DirectEvents>    
+								</ext:Button>
+								<ext:ToolbarSpacer ID="ToolbarSpacer8" runat="server" />
+								<ext:Button runat="server"
+									ID="uxTabApproveButton"
+									Text="Approve"
+									Icon="ApplicationPut"
+									Disabled="true">
+									<DirectEvents>
+										<Click OnEvent="deApproveActivity">
+											<ExtraParams>
+												<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
+											</ExtraParams>
+										</Click>
+									</DirectEvents>
+								</ext:Button>
+								<ext:ToolbarSpacer ID="ToolbarSpacer9" runat="server" />
+								<ext:Button runat="server"
+									ID="uxTabPostButton"
+									Text="Post to Oracle"
+									Icon="ApplicationGet"
+									Disabled="true">
+									<DirectEvents>
+										<Click OnEvent="dePostToOracle">
+											<ExtraParams>
+												<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
+											</ExtraParams>
+											<EventMask ShowMask="true" />
+										</Click>
+									</DirectEvents>
+								</ext:Button>
+								<ext:ToolbarSpacer ID="ToolbarSpacer10" runat="server" />
+								<ext:Button runat="server"
+									ID="uxTabExportButton"
+									Text="Export to PDF"
+									Icon="PageWhiteAcrobat"
+									Disabled="true">
+									<DirectEvents>
+										<Click OnEvent="deExportToPDF" IsUpload="true">
+											<ExtraParams>
+												<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
+											</ExtraParams>
+										</Click>
+									</DirectEvents>
+								</ext:Button>
+								<ext:ToolbarSpacer ID="ToolbarSpacer12" runat="server" />
+								<ext:Button runat="server"
+									ID="uxTabEmailButton"
+									Text="Email Copy"
+									Icon ="EmailAttach"
+									Disabled="true">
+									<DirectEvents>
+										<Click OnEvent="deSendPDF" IsUpload="true">
+											<ExtraParams>
+												<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
+											</ExtraParams>
+										</Click>
+									</DirectEvents>
+								</ext:Button>
+							</Items>
+						</ext:Toolbar>
+					</TopBar>
+					<Buttons>
+						<ext:Button runat="server" Icon="ArrowLeft" Text="Previous">
+							<DirectEvents>
+								<Click OnEvent="deLoadPreviousActivity" />
+							</DirectEvents>
+						</ext:Button>
+						<ext:Button runat="server" Icon="ArrowRight" IconAlign="Right" Text="Next">
+							<DirectEvents>
+								<Click OnEvent="deLoadNextActivity" />
+							</DirectEvents>
+						</ext:Button>
+					</Buttons>
 				</ext:TabPanel>
 				<%-- Hidden Windows --%>
 				<ext:Window runat="server"

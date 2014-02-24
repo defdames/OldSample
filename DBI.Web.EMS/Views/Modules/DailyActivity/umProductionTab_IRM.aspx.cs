@@ -38,10 +38,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             where d.HEADER_ID == HeaderId
                             select new { d.PRODUCTION_ID, h.PROJECT_ID, p.LONG_NAME, t.TASK_ID, t.DESCRIPTION, d.BILL_RATE, d.STATION, d.COMMENTS, d.UNIT_OF_MEASURE, d.EXPENDITURE_TYPE, d.SURFACE_TYPE, d.QUANTITY }).ToList();
 
-                if (data.Count >= 1)
-                {
-                    uxAddProductionButton.Disabled = true;
-                }
                 uxCurrentProductionStore.DataSource = data;
             }
         }

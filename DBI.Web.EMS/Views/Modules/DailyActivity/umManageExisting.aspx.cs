@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Threading;
 using DBI.Core.Security;
 using DBI.Core.Web;
 using DBI.Data;
@@ -242,27 +243,55 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             switch(e.ExtraParams["Status"]){
                 case "NEW":
                     uxSubmitActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.ViewAll");
+                    uxTabSubmitForApprovalButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.ViewAll");
                     uxApproveActivityButton.Disabled = true;
+                    uxTabApproveButton.Disabled = true;
                     uxPostActivityButton.Disabled = true;
+                    uxTabPostButton.Disabled = true;
+
                     break;
                 case "PENDING APPROVAL":
                     uxApproveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
+                    uxTabApproveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
                     uxSubmitActivityButton.Disabled = true;
+                    uxTabSubmitForApprovalButton.Disabled = true;
                     uxPostActivityButton.Disabled = true;
+                    uxTabPostButton.Disabled = true;
                     break;
                 case "APPROVED":
                     uxPostActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
+                    uxTabPostButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
                     uxSubmitActivityButton.Disabled = true;
+                    uxTabSubmitForApprovalButton.Disabled = true;
                     uxApproveActivityButton.Disabled = true;
+                    uxTabApproveButton.Disabled = true;
                     break;
             }
             
             uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.ViewAll");
             
             uxExportToPDF.Disabled = false;
+            uxTabExportButton.Disabled = false;
             uxEmailPdf.Disabled = false;
+            uxTabEmailButton.Disabled = false;
+            uxTabPanel.Expand();
+            uxTabPanel.SetActiveTab(uxCombinedTab);
         }
 
+        protected void deLoadNextActivity(object sender, DirectEventArgs e)
+        {
+            RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
+            var Index = GridModel.SelectedIndex;
+            GridModel.SelectedRow.RowIndex = GridModel.SelectedIndex + 1;
+            GridModel.UpdateSelection();
+        }
+        protected void deLoadPreviousActivity(object sender, DirectEventArgs e)
+        {
+            RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
+            var Index = GridModel.SelectedIndex;
+            GridModel.SelectedRow.RowIndex = GridModel.SelectedIndex - 1;
+            GridModel.UpdateSelection();
+        }
         /// <summary>
         /// Shows Submit activity Window/Form
         /// </summary>
@@ -385,8 +414,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             //Update record in DB
             GenericData.Update<DAILY_ACTIVITY_HEADER>(data);
-
+            var GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
+            var GridIndex = GridModel.SelectedIndex;
             uxManageGridStore.Reload();
+            GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
+            GridModel.SelectedRows.Add(new SelectedRow{
+                RowIndex = GridIndex
+            });
+            GridModel.UpdateSelection();
         }
 
         /// <summary>
@@ -1148,6 +1183,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public void dmHideWindowUpdateGrid()
         {
             uxPlaceholderWindow.Hide();
+            var GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
+            var GridIndex = GridModel.SelectedIndex;
             uxManageGridStore.Reload();
         }
 
