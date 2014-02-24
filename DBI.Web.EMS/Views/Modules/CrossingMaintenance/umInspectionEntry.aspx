@@ -13,7 +13,7 @@
     </div>
      <ext:ResourceManager ID="ResourceManager1" runat="server" />
     <div></div>
-         <ext:GridPanel ID="uxInspectionCrossingGrid" Title="CROSSING LIST FOR INSPECTION ENTRY" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true">
+         <ext:GridPanel ID="uxInspectionCrossingGrid" Title="CROSSING LIST FOR INSPECTION ENTRY" runat="server" Layout="HBoxLayout" Collapsible="true">
                 <SelectionModel>
                     <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
                 </SelectionModel>
@@ -57,21 +57,14 @@
                 <Plugins>
                     <ext:FilterHeader ID="FilterHeader1" runat="server" />
                 </Plugins>
-            <DirectEvents>
+                 <DirectEvents>
                     <Select OnEvent="GetInspectionGridData">
                         <ExtraParams>
                             <ext:Parameter Name="CrossingId" Value="#{uxInspectionCrossingGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
                         </ExtraParams>
                     </Select>
                 </DirectEvents>
-               <%-- <DirectEvents>
-                    <Select OnEvent="deEditCrossingForm">
-                        <ExtraParams>
-                            <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                        </ExtraParams>
-                    </Select>
-                </DirectEvents>--%>
-
+             
                 <BottomBar>
                     <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True">
                     </ext:PagingToolbar>
@@ -89,6 +82,14 @@
                             <Listeners>
 								<Click Handler="#{uxEditInspectionEntryWindow}.show()" />
 							</Listeners>
+                              <DirectEvents>
+                             <Click OnEvent="deEditInspectionForm">
+                                 <ExtraParams>
+						            <ext:Parameter Name="InspectionInfo" Value="Ext.encode(#{uxInspectionEntryGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+					                 </ExtraParams>
+                             </Click>
+                            </DirectEvents>
+
                         </ext:Button>
                         <ext:Button ID="uxDeleteInspectButton" runat="server" Text="Delete Entry" Icon="ApplicationDelete" >
                            <%-- <DirectEvents>
@@ -108,14 +109,14 @@
                     <ext:Store runat="server"
                         ID="uxInspectionStore"
                         PageSize="10"
-                        AutoDataBind="true" WarningOnDirty="false">
+                        >
                         <Model>
                             <ext:Model ID="Model1" runat="server">
                                 <Fields>
                                     <ext:ModelField Name="CROSSING_ID" />
                                     <ext:ModelField Name="INSPECTION_ID" />
                                     <ext:ModelField Name="INSPECTION_NUMBER"  />
-                                    <ext:ModelField Name="DATE" />
+                                    <ext:ModelField Name="INSPECTION_DATE" />
                                      <ext:ModelField Name="TRUCK_NUMBER" />
                                     <ext:ModelField Name="SPRAY" />
                                     <ext:ModelField Name="CUT" />
@@ -125,39 +126,23 @@
                                 </Fields>
                             </ext:Model>
                         </Model>
-                        <Proxy>
-                            <ext:PageProxy />
-                        </Proxy>
+                        
                     </ext:Store>
                 </Store>
                 <ColumnModel>
                     <Columns>
 
-                        <ext:Column ID="Column1" runat="server" DataIndex="" Text="Inspection #" Flex="1" />
-                        <ext:Column ID="Column2" runat="server" DataIndex="" Text="Date" Flex="1" />
-                        <ext:Column ID="Column11" runat="server" DataIndex="" Text="Truck" Flex="1" />
-                        <ext:Column ID="Column7" runat="server" DataIndex="" Text="Spray" Flex="1" />
-                        <ext:Column ID="Column9" runat="server" DataIndex="" Text="Cut" Flex="1" />
-                        <ext:Column ID="Column10" runat="server" DataIndex="" Text="Inspect" Flex="1" />
-                        <ext:Column ID="Column5" runat="server" DataIndex="" Text="Remarks" Flex="1" />
+                        <ext:Column ID="Column1" runat="server" DataIndex="INSPECTION_NUMBER" Text="Inspection #" Flex="1" />
+                        <ext:Column ID="Column2" runat="server" DataIndex="INSPECTION_DATE" Text="Date" Flex="1" />
+                        <ext:Column ID="Column11" runat="server" DataIndex="TRUCK_NUMBER" Text="Truck" Flex="1" />
+                        <ext:Column ID="Column7" runat="server" DataIndex="SPRAY" Text="Spray" Flex="1" />
+                        <ext:Column ID="Column9" runat="server" DataIndex="CUT" Text="Cut" Flex="1" />
+                        <ext:Column ID="Column10" runat="server" DataIndex="INSPECT" Text="Inspect" Flex="1" />
+                        <ext:Column ID="Column5" runat="server" DataIndex="REMARKS" Text="Remarks" Flex="1" />
 
                     </Columns>
                 </ColumnModel>
-               
-               <%-- <DirectEvents>
-                    <Select OnEvent="GetFormData">
-                        <ExtraParams>
-                            <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                        </ExtraParams>
-                    </Select>
-                </DirectEvents>
-                <DirectEvents>
-                    <Select OnEvent="deEditCrossingForm">
-                        <ExtraParams>
-                            <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                        </ExtraParams>
-                    </Select>
-                </DirectEvents>--%>
+             
 
                 
 
@@ -215,6 +200,7 @@
                                       </ExtraParams>
                                         </Click>
                                 </DirectEvents>
+                                </ext:Button>
                             <ext:Button ID="uxCancelInspectionEntryButton" runat="server" Text="Cancel" Icon="Delete" >
                                  <Listeners>
                                     <Click Handler="#{uxAddInspectionForm}.reset();
@@ -265,7 +251,15 @@
                     </ext:FormPanel>
                  </Items>
                         <Buttons>
-                            <ext:Button ID="uxUpdateInspectEntryButton" runat="server" Text="Update" Icon="Add" />
+                            <ext:Button ID="uxUpdateInspectEntryButton" runat="server" Text="Update" Icon="Add" >
+                                 <DirectEvents>
+                                    <Click OnEvent="deEditInspection" >
+                                      <ExtraParams>
+                                           <ext:Parameter Name="CrossingId" Value="#{uxInspectionCrossingGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                                      </ExtraParams>
+                                        </Click>
+                                </DirectEvents>
+                                </ext:Button>
                             <ext:Button ID="uxCancelUpdateInspectEntryButton" runat="server" Text="Cancel" Icon="Delete" >
                                  <Listeners>
                                     <Click Handler="#{uxEditInspectionForm}.reset();

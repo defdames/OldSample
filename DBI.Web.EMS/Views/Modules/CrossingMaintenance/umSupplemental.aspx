@@ -90,14 +90,14 @@
                             </DirectEvents>
                         </ext:Button>
                         <ext:Button ID="uxDeleteAppButton" runat="server" Text="Delete Supplemental" Icon="ApplicationDelete" >
-                            <DirectEvents>
+                            <%--<DirectEvents>
 								<Click OnEvent="deRemoveSupplemental">
 									<Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete this supplemental entry?" />
                                     <ExtraParams>
                                     <ext:Parameter Name="CrossingId" Value="#{uxSupplementalCrossingGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
                                      </ExtraParams>
 						       </Click>
-							</DirectEvents>
+							</DirectEvents>--%>
                         </ext:Button>                     
                 </Items>                       
         </ext:Toolbar>

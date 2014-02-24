@@ -10,7 +10,7 @@
     <form id="form1" runat="server">
         <ext:ResourceManager runat="server" />
     <div></div>
-         <ext:GridPanel ID="uxCrossingMainGrid" Title="CROSSING LIST FOR APPLICATION ENTRY" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true">
+         <ext:GridPanel ID="uxApplicationCrossingGrid" Title="CROSSING LIST FOR APPLICATION ENTRY" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true">
                 <SelectionModel>
                     <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
                 </SelectionModel>
@@ -54,20 +54,15 @@
                 <Plugins>
                     <ext:FilterHeader ID="FilterHeader1" runat="server" />
                 </Plugins>
-               <%-- <DirectEvents>
-                    <Select OnEvent="GetFormData">
+              <DirectEvents>
+                    <Select OnEvent="GetApplicationGridData">
                         <ExtraParams>
-                            <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                            <ext:Parameter Name="CrossingId" Value="#{uxApplicationCrossingGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
                         </ExtraParams>
                     </Select>
                 </DirectEvents>
-                <DirectEvents>
-                    <Select OnEvent="deEditCrossingForm">
-                        <ExtraParams>
-                            <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                        </ExtraParams>
-                    </Select>
-                </DirectEvents>--%>
+             
+              
 
                 <BottomBar>
                     <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True">
@@ -86,6 +81,14 @@
                             <Listeners>
 								<Click Handler="#{uxEditApplicationEntryWindow}.show()" />
 							</Listeners>
+                             <DirectEvents>
+                             <Click OnEvent="deEditApplicationForm">
+                                 <ExtraParams>
+						            <ext:Parameter Name="ApplicationInfo" Value="Ext.encode(#{uxApplicationEntryGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+					                 </ExtraParams>
+                             </Click>
+                            </DirectEvents>
+
                         </ext:Button>
                         <ext:Button ID="uxDeleteAppButton" runat="server" Text="Delete Entry" Icon="ApplicationDelete" >
                             <DirectEvents>
@@ -96,65 +99,47 @@
                         </ext:Button>                     
                 </Items>                       
         </ext:Toolbar>
-              <ext:GridPanel ID="GridPanel1" Title="APPLICATION ENTRIES" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true">
+              <ext:GridPanel ID="uxApplicationEntryGrid" Title="APPLICATION ENTRIES" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true">
                 <SelectionModel>
                     <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" AllowDeselect="true" Mode="Single" />
                 </SelectionModel>
                 <Store>
                     <ext:Store runat="server"
-                        ID="Store1"
-                        OnReadData="deApplicationGridData"
-                        PageSize="10"
-                        AutoDataBind="true" WarningOnDirty="false">
+                        ID="uxApplicationStore">
                         <Model>
                             <ext:Model ID="Model1" runat="server">
                                 <Fields>
                                     <ext:ModelField Name="CROSSING_ID" />
-                                    <ext:ModelField Name="CONTACT_ID" />
-                                    <ext:ModelField Name="CROSSING_NUMBER" Type="String" />
-                                    <ext:ModelField Name="PROJECT_ID" />
-                                     <ext:ModelField Name="LONG_NAME" />
-                                    <ext:ModelField Name="SERVICE_UNIT" />
-                                    <ext:ModelField Name="SUB_DIVISION" />
-                                    <ext:ModelField Name="CONTACT_NAME" />
+                                  
+                                   
+                                    <ext:ModelField Name="APPLICATION_ID" />
+                                    <ext:ModelField Name="APPLICATION_NUMBER" />
+                                    <ext:ModelField Name="APPLICATION_DATE" />
+                                    <ext:ModelField Name="TRUCK_NUMBER" />
+                                    <ext:ModelField Name="SPRAY" />
+                                    <ext:ModelField Name="CUT" />
+                                    <ext:ModelField Name="INSPECT" />
+                                    <ext:ModelField Name="REMARKS" />
 
                                 </Fields>
                             </ext:Model>
                         </Model>
-                        <Proxy>
-                            <ext:PageProxy />
-                        </Proxy>
+                       
                     </ext:Store>
                 </Store>
                 <ColumnModel>
                     <Columns>
 
-                        <ext:Column ID="Column1" runat="server" DataIndex="" Text="Application #" Flex="1" />
-                        <ext:Column ID="Column2" runat="server" DataIndex="" Text="Date" Flex="1" />
-                        <ext:Column ID="Column7" runat="server" DataIndex="" Text="Spray" Flex="1" />
-                        <ext:Column ID="Column9" runat="server" DataIndex="" Text="Cut" Flex="1" />
-                        <ext:Column ID="Column10" runat="server" DataIndex="" Text="Inspect" Flex="1" />
-                        <ext:Column ID="Column5" runat="server" DataIndex="" Text="Remarks" Flex="1" />
+                        <ext:Column ID="Column1" runat="server" DataIndex="APPLICATION_NUMBER" Text="Application #" Flex="1" />
+                        <ext:Column ID="Column2" runat="server" DataIndex="APPLICATION_DATE" Text="Date" Flex="1" />
+                        <ext:Column ID="Column3" runat="server" DataIndex="TRUCK_NUMBER" Text="Truck #" Flex="1" />
+                        <ext:Column ID="Column7" runat="server" DataIndex="SPRAY" Text="Spray" Flex="1" />
+                        <ext:Column ID="Column9" runat="server" DataIndex="CUT" Text="Cut" Flex="1" />
+                        <ext:Column ID="Column10" runat="server" DataIndex="INSPECT" Text="Inspect" Flex="1" />
+                        <ext:Column ID="Column5" runat="server" DataIndex="REMARKS" Text="Remarks" Flex="1" />
 
                     </Columns>
-                </ColumnModel>
-               
-               <%-- <DirectEvents>
-                    <Select OnEvent="GetFormData">
-                        <ExtraParams>
-                            <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                        </ExtraParams>
-                    </Select>
-                </DirectEvents>
-                <DirectEvents>
-                    <Select OnEvent="deEditCrossingForm">
-                        <ExtraParams>
-                            <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                        </ExtraParams>
-                    </Select>
-                </DirectEvents>--%>
-
-                
+                </ColumnModel>               
 
             </ext:GridPanel>
               
@@ -202,7 +187,15 @@
                         </ext:FormPanel>
                     </Items>
                         <Buttons>
-                            <ext:Button ID="uxAddApplicationEntryButton" runat="server" Text="Add" Icon="Add" />
+                            <ext:Button ID="uxAddApplicationEntryButton" runat="server" Text="Add" Icon="Add" >
+                                <DirectEvents>
+                                    <Click OnEvent="deAddApplication" >
+                                      <ExtraParams>
+                                           <ext:Parameter Name="CrossingId" Value="#{uxApplicationCrossingGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                                      </ExtraParams>
+                                        </Click>
+                                </DirectEvents>
+                                </ext:Button>
                             <ext:Button ID="uxCancelNewApplicationEntryButton" runat="server" Text="Cancel" Icon="Delete" >
                                 <Listeners>
                                     <Click Handler="#{uxAddApplicationForm}.reset();
@@ -245,7 +238,7 @@
                                      
                                      <ext:DropDownFIeld ID="uxEditEntryTruckNum" runat="server" FieldLabel="Truck #" AnchorHorizontal="100%" LabelAlign="Right" />
                                        
-                                     <ext:Checkbox ID="uxEditEntryInspectNum" runat="server" FieldLabel="Inspect" LabelAlign="Right" Width="250" />
+                                     <ext:Checkbox ID="uxEditEntryInspectBox" runat="server" FieldLabel="Inspect" LabelAlign="Right" Width="250" />
                                     </Items>                                 
                                 </ext:FieldContainer>
 
@@ -254,7 +247,15 @@
                     </ext:FormPanel>
                  </Items>
                         <Buttons>
-                            <ext:Button ID="uxUpdateAppEntryButton" runat="server" Text="Update" Icon="Add" />
+                            <ext:Button ID="uxUpdateAppEntryButton" runat="server" Text="Update" Icon="Add" >
+                                <DirectEvents>
+                                    <Click OnEvent="deEditApplication" >
+                                      <ExtraParams>
+                                           <ext:Parameter Name="CrossingId" Value="#{uxApplicationCrossingGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                                      </ExtraParams>
+                                        </Click>
+                                </DirectEvents>
+                                </ext:Button>
                             <ext:Button ID="uxCancelUpdateAppEntryButton" runat="server" Text="Cancel" Icon="Delete" >
                                   <Listeners>
                                     <Click Handler="#{uxEditApplicationForm}.reset();

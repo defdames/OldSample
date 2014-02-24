@@ -22,13 +22,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// uxCrossingMainGrid control.
+        /// uxApplicationCrossingGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxCrossingMainGrid;
+        protected global::Ext.Net.GridPanel uxApplicationCrossingGrid;
         
         /// <summary>
         /// RowSelectionModel1 control.
@@ -157,13 +157,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Button uxDeleteAppButton;
         
         /// <summary>
-        /// GridPanel1 control.
+        /// uxApplicationEntryGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel GridPanel1;
+        protected global::Ext.Net.GridPanel uxApplicationEntryGrid;
         
         /// <summary>
         /// RowSelectionModel2 control.
@@ -175,13 +175,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.RowSelectionModel RowSelectionModel2;
         
         /// <summary>
-        /// Store1 control.
+        /// uxApplicationStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store Store1;
+        protected global::Ext.Net.Store uxApplicationStore;
         
         /// <summary>
         /// Model1 control.
@@ -463,13 +463,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.DropDownField uxEditEntryTruckNum;
         
         /// <summary>
-        /// uxEditEntryInspectNum control.
+        /// uxEditEntryInspectBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Checkbox uxEditEntryInspectNum;
+        protected global::Ext.Net.Checkbox uxEditEntryInspectBox;
         
         /// <summary>
         /// uxEditEntryRemarks control.
