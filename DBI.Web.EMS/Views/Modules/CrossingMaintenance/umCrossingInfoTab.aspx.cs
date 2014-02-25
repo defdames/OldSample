@@ -21,7 +21,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 
                 deLoadType("Add");
                 deLoadType("Edit");
-                //deLoadEditType();
+              
             }
           
         }

@@ -94,7 +94,10 @@
                             <DirectEvents>
 								<Click OnEvent="deRemoveApplicationEntry">
 									<Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete this application entry?" />
-						       </Click>
+						       <ExtraParams>
+						            <ext:Parameter Name="ApplicationInfo" Value="Ext.encode(#{uxApplicationEntryGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+					                </ExtraParams>
+                                     </Click>
 							</DirectEvents>
                         </ext:Button>                     
                 </Items>                       
@@ -114,7 +117,7 @@
                                    
                                     <ext:ModelField Name="APPLICATION_ID" />
                                     <ext:ModelField Name="APPLICATION_NUMBER" />
-                                    <ext:ModelField Name="APPLICATION_DATE" />
+                                    <ext:ModelField Name="APPLICATION_DATE" Type="Date" />
                                     <ext:ModelField Name="TRUCK_NUMBER" />
                                     <ext:ModelField Name="SPRAY" />
                                     <ext:ModelField Name="CUT" />
@@ -131,7 +134,7 @@
                     <Columns>
 
                         <ext:Column ID="Column1" runat="server" DataIndex="APPLICATION_NUMBER" Text="Application #" Flex="1" />
-                        <ext:Column ID="Column2" runat="server" DataIndex="APPLICATION_DATE" Text="Date" Flex="1" />
+                        <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="APPLICATION_DATE" Text="Date" Flex="1" Format="MM/dd/yyyy" />
                         <ext:Column ID="Column3" runat="server" DataIndex="TRUCK_NUMBER" Text="Truck #" Flex="1" />
                         <ext:Column ID="Column7" runat="server" DataIndex="SPRAY" Text="Spray" Flex="1" />
                         <ext:Column ID="Column9" runat="server" DataIndex="CUT" Text="Cut" Flex="1" />

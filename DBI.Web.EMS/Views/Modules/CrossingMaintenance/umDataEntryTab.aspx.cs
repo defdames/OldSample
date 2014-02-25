@@ -121,6 +121,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             GenericData.Insert<CROSSING_APPLICATION>(data);
 
             uxAddNewApplicationEntryWindow.Hide();
+            uxAddApplicationForm.Reset();
             uxApplicationStore.Reload();
 
 
@@ -244,6 +245,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             GenericData.Update<CROSSING_APPLICATION>(data);
 
             uxEditApplicationEntryWindow.Hide();
+            uxEditApplicationForm.Reset();
             uxApplicationStore.Reload();
 
             Notification.Show(new NotificationConfig()
@@ -272,10 +274,38 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
     
 
-        protected void deRemoveApplicationEntry(object sender, EventArgs e)
+        protected void deRemoveApplicationEntry(object sender, DirectEventArgs e)
         {
+              CROSSING_APPLICATION data;
+            string json = e.ExtraParams["ApplicationInfo"];
 
+            List<ApplicationDetails> ApplicationList = JSON.Deserialize<List<ApplicationDetails>>(json);
+            foreach (ApplicationDetails Application in ApplicationList)
+            {
+                using (Entities _context = new Entities())
+                {
+                    data = (from d in _context.CROSSING_APPLICATION
+                            where d.APPLICATION_ID == Application.APPLICATION_ID
+                            select d).Single();
+
+                }
+                GenericData.Delete<CROSSING_APPLICATION>(data);
+
+                uxApplicationStore.Reload();
+
+                Notification.Show(new NotificationConfig()
+                {
+                    Title = "Success",
+                    Html = "Application Removed Successfully",
+                    HideDelay = 1000,
+                    AlignCfg = new NotificationAlignConfig
+                    {
+                        ElementAnchor = AnchorPoint.Center,
+                        TargetAnchor = AnchorPoint.Center
+                    }
+                });
+            }
+        }
         }
      
     }
-}

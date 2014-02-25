@@ -121,6 +121,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             GenericData.Insert<CROSSING_INSPECTION>(data);
 
             uxAddInspectionEntryWindow.Hide();
+            uxAddInspectionForm.Reset();
             uxInspectionStore.Reload();
 
 
@@ -229,8 +230,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             }
 
-
-
             data.INSPECTION_DATE = Date;
             data.INSPECTION_NUMBER = InspectionNumber;
             data.TRUCK_NUMBER = TruckNumber;
@@ -244,7 +243,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             GenericData.Update<CROSSING_INSPECTION>(data);
 
             uxEditInspectionEntryWindow.Hide();
-
+            uxEditInspectionForm.Reset();
             uxInspectionStore.Reload();
 
             Notification.Show(new NotificationConfig()
@@ -258,6 +257,38 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     TargetAnchor = AnchorPoint.Center
                 }
             });
+        }
+        protected void deRemoveInspectionEntry(object sender, DirectEventArgs e)
+        {
+            CROSSING_INSPECTION data;
+            string json = e.ExtraParams["InspectionInfo"];
+
+            List<InspectionDetails> InspectionList = JSON.Deserialize<List<InspectionDetails>>(json);
+            foreach (InspectionDetails Inspection in InspectionList)
+            {
+                using (Entities _context = new Entities())
+                {
+                    data = (from d in _context.CROSSING_INSPECTION
+                            where d.INSPECTION_ID == Inspection.INSPECTION_ID
+                            select d).Single();
+
+                }
+                GenericData.Delete<CROSSING_INSPECTION>(data);
+
+                uxInspectionStore.Reload();
+
+                Notification.Show(new NotificationConfig()
+                {
+                    Title = "Success",
+                    Html = "Inspection Removed Successfully",
+                    HideDelay = 1000,
+                    AlignCfg = new NotificationAlignConfig
+                    {
+                        ElementAnchor = AnchorPoint.Center,
+                        TargetAnchor = AnchorPoint.Center
+                    }
+                });
+            }
         }
         public class InspectionDetails
         {

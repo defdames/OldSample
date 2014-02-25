@@ -92,11 +92,15 @@
 
                         </ext:Button>
                         <ext:Button ID="uxDeleteInspectButton" runat="server" Text="Delete Entry" Icon="ApplicationDelete" >
-                           <%-- <DirectEvents>
-								<Click OnEvent="deRemoveApplicationEntry">
-									<Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete this application entry?" />
-						       </Click>
-							</DirectEvents>--%>
+                            <DirectEvents>
+								<Click OnEvent="deRemoveInspectionEntry">
+									<Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete this inspection entry?" />
+						             <ExtraParams>
+						            <ext:Parameter Name="InspectionInfo" Value="Ext.encode(#{uxInspectionEntryGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+					                </ExtraParams>
+                                     </Click>
+                                     
+							</DirectEvents>
                         </ext:Button>                     
                 </Items>                       
         </ext:Toolbar>
@@ -116,7 +120,7 @@
                                     <ext:ModelField Name="CROSSING_ID" />
                                     <ext:ModelField Name="INSPECTION_ID" />
                                     <ext:ModelField Name="INSPECTION_NUMBER"  />
-                                    <ext:ModelField Name="INSPECTION_DATE" />
+                                    <ext:ModelField Name="INSPECTION_DATE" Type="Date"/>
                                      <ext:ModelField Name="TRUCK_NUMBER" />
                                     <ext:ModelField Name="SPRAY" />
                                     <ext:ModelField Name="CUT" />
@@ -133,12 +137,12 @@
                     <Columns>
 
                         <ext:Column ID="Column1" runat="server" DataIndex="INSPECTION_NUMBER" Text="Inspection #" Flex="1" />
-                        <ext:Column ID="Column2" runat="server" DataIndex="INSPECTION_DATE" Text="Date" Flex="1" />
+                        <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="INSPECTION_DATE" Text="Date" Flex="1" Format="MM/dd/yyyy" />
                         <ext:Column ID="Column11" runat="server" DataIndex="TRUCK_NUMBER" Text="Truck" Flex="1" />
                         <ext:Column ID="Column7" runat="server" DataIndex="SPRAY" Text="Spray" Flex="1" />
                         <ext:Column ID="Column9" runat="server" DataIndex="CUT" Text="Cut" Flex="1" />
                         <ext:Column ID="Column10" runat="server" DataIndex="INSPECT" Text="Inspect" Flex="1" />
-                        <ext:Column ID="Column5" runat="server" DataIndex="REMARKS" Text="Remarks" Flex="1" />
+                        <ext:Column ID="Column5" runat="server" DataIndex="REMARKS" Text="Remarks" Flex="3" />
 
                     </Columns>
                 </ColumnModel>
