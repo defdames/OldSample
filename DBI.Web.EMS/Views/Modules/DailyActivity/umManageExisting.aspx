@@ -256,7 +256,7 @@
 							Title="Home"
 							ID="uxCombinedTab">
 							<Loader runat="server"
-								ID="uxCombinedTabLoader" Mode="Frame" AutoLoad="true" ReloadOnEvent="true">
+								ID="uxCombinedTabLoader" Mode="Frame" AutoLoad="false" ReloadOnEvent="true">
 								<LoadMask ShowMask="true" />
 							</Loader>
 							<Listeners>

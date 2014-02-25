@@ -190,7 +190,7 @@
                             <ext:Column ID="Column30" runat="server" DataIndex="GALLON_MIXED" Text="Gallon Mixed" Flex="5" />
                             <ext:Column ID="Column31" runat="server" DataIndex="TOTAL" Text="Total Gallons" Flex="5" />
                             <ext:Column ID="Column32" runat="server" DataIndex="USED" Text="Gallons Used" Flex="5" />
-                            <ext:Column ID="Column33" runat="server" DataIndex="SPRAYED" Text="Acres Sprayed" Flex="5" />
+                            <ext:Column ID="Column33" runat="server" DataIndex="ACRES_SPRAYED" Text="Acres Sprayed" Flex="5" />
                             <ext:Column ID="Column34" runat="server" DataIndex="STATE" Text="State" Flex="2" />
                             <ext:Column ID="Column35" runat="server" DataIndex="COUNTY" Text="County" Flex="7" />
                         </Columns>
