@@ -283,13 +283,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
             var Index = GridModel.SelectedIndex;
             GridModel.SelectedRow.RowIndex = GridModel.SelectedIndex + 1;
+            GridModel.Select(GridModel.SelectedIndex);
             GridModel.UpdateSelection();
+            
         }
         protected void deLoadPreviousActivity(object sender, DirectEventArgs e)
         {
             RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
             var Index = GridModel.SelectedIndex;
             GridModel.SelectedRow.RowIndex = GridModel.SelectedIndex - 1;
+            GridModel.Select(GridModel.SelectedIndex);
             GridModel.UpdateSelection();
         }
         /// <summary>
@@ -738,12 +741,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 ExportedPDF.Add(NewLine);
 
-                //Get Equipment/Employee Data
-                var EmployeeData = GetEmployee(HeaderId);
+                try
+                {
+                    //Get Equipment/Employee Data
+                    var EmployeeData = GetEmployee(HeaderId);
 
-                PdfPTable EmployeeTable = new PdfPTable(8);
+                    PdfPTable EmployeeTable = new PdfPTable(8);
 
-                Cells = new PdfPCell[]{
+                    Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Truck/Equipment \n Name", HeaderFont)),
                     new PdfPCell(new Phrase("Operator(s)", HeaderFont)),
                     new PdfPCell(new Phrase("Time\nIn", HeaderFont)),
@@ -753,32 +758,32 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     new PdfPCell(new Phrase("Per\nDiem", HeaderFont)),
                     new PdfPCell(new Phrase("Comments", HeaderFont))};
 
-                Row = new PdfPRow(Cells);
-                EmployeeTable.Rows.Add(Row);
+                    Row = new PdfPRow(Cells);
+                    EmployeeTable.Rows.Add(Row);
 
-                foreach (dynamic Data in EmployeeData)
-                {
-                    string TravelTime;
-                    try
+                    foreach (dynamic Data in EmployeeData)
                     {
-                        TravelTime = Data.TRAVEL_TIME.ToString();
-                    }
-                    catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
-                    {
-                        TravelTime = string.Empty;
-                    }
-                    string EquipmentName;
-                    try
-                    {
-                        EquipmentName = Data.NAME.ToString();
-                    }
-                    catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
-                    {
-                        EquipmentName = String.Empty;
-                    }
+                        string TravelTime;
+                        try
+                        {
+                            TravelTime = Data.TRAVEL_TIME.ToString();
+                        }
+                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                        {
+                            TravelTime = string.Empty;
+                        }
+                        string EquipmentName;
+                        try
+                        {
+                            EquipmentName = Data.NAME.ToString();
+                        }
+                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                        {
+                            EquipmentName = String.Empty;
+                        }
 
-                    TimeSpan TotalHours = DateTime.Parse(Data.TIME_OUT.ToString()).TimeOfDay - DateTime.Parse(Data.TIME_IN.ToString()).TimeOfDay;
-                    Cells = new PdfPCell[]{
+                        TimeSpan TotalHours = DateTime.Parse(Data.TIME_OUT.ToString()).TimeOfDay - DateTime.Parse(Data.TIME_IN.ToString()).TimeOfDay;
+                        Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(EquipmentName , CellFont)),
                         new PdfPCell(new Phrase(Data.EMPLOYEE_NAME.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Data.TIME_IN.TimeOfDay.ToString(), CellFont)),
@@ -788,40 +793,46 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Data.COMMENTS.ToString(), CellFont))
                     };
-                    Row = new PdfPRow(Cells);
-                    EmployeeTable.Rows.Add(Row);
+                        Row = new PdfPRow(Cells);
+                        EmployeeTable.Rows.Add(Row);
+                    }
+                    ExportedPDF.Add(EmployeeTable);
+                    ExportedPDF.Add(NewLine);
                 }
-                ExportedPDF.Add(EmployeeTable);
-                ExportedPDF.Add(NewLine);
-
-                //Get Production Data
-                if (OrgId == 121)
+                catch (Exception)
                 {
-                    string WorkArea;
-                    var ProductionData = GetProductionDBI(HeaderId);
-                    PdfPTable ProductionTable = new PdfPTable(5);
-                    
-                    Cells = new PdfPCell[]{
+
+                }
+                try
+                {
+                    //Get Production Data
+                    if (OrgId == 121)
+                    {
+                        string WorkArea;
+                        var ProductionData = GetProductionDBI(HeaderId);
+                        PdfPTable ProductionTable = new PdfPTable(5);
+
+                        Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Spray/Work Area", HeaderFont)),
                     new PdfPCell(new Phrase("Pole/MP\nFrom", HeaderFont)),
                     new PdfPCell(new Phrase("Pole/MP\nTo", HeaderFont)),
                     new PdfPCell(new Phrase("Acres/Mile", HeaderFont)),
                     new PdfPCell(new Phrase("Gallons", HeaderFont))};
 
-                    Row = new PdfPRow(Cells);
-                    ProductionTable.Rows.Add(Row);
+                        Row = new PdfPRow(Cells);
+                        ProductionTable.Rows.Add(Row);
 
-                    foreach (dynamic Data in ProductionData)
-                    {
-                        try
+                        foreach (dynamic Data in ProductionData)
                         {
-                            WorkArea = Data.WORK_AREA.ToString();
-                        }
-                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
-                        {
-                            WorkArea = string.Empty;
-                        }
-                        Cells = new PdfPCell[]{
+                            try
+                            {
+                                WorkArea = Data.WORK_AREA.ToString();
+                            }
+                            catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                            {
+                                WorkArea = string.Empty;
+                            }
+                            Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(WorkArea, CellFont)),
                         new PdfPCell(new Phrase(Data.POLE_FROM, CellFont)),
                         new PdfPCell(new Phrase(Data.POLE_TO, CellFont)),
@@ -829,18 +840,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         new PdfPCell(new Phrase(Data.QUANTITY.ToString(), CellFont))
                     };
 
-                        Row = new PdfPRow(Cells);
-                        ProductionTable.Rows.Add(Row);
+                            Row = new PdfPRow(Cells);
+                            ProductionTable.Rows.Add(Row);
+                        }
+                        ExportedPDF.Add(ProductionTable);
                     }
-                    ExportedPDF.Add(ProductionTable);
-                }
-                if (OrgId == 123)
-                {
-                    var ProductionData = GetProductionIRM(HeaderId);
-                    PdfPTable ProductionTable = new PdfPTable(6);
+                    if (OrgId == 123)
+                    {
+                        var ProductionData = GetProductionIRM(HeaderId);
+                        PdfPTable ProductionTable = new PdfPTable(6);
 
 
-                    Cells = new PdfPCell[]{
+                        Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Task", HeaderFont)),
                     new PdfPCell(new Phrase("Spray/Work Area", HeaderFont)),
                     new PdfPCell(new Phrase("Quantity", HeaderFont)),
@@ -848,12 +859,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     new PdfPCell(new Phrase("Expenditure Type", HeaderFont)),
                     new PdfPCell(new Phrase("Comments", HeaderFont))};
 
-                    Row = new PdfPRow(Cells);
-                    ProductionTable.Rows.Add(Row);
+                        Row = new PdfPRow(Cells);
+                        ProductionTable.Rows.Add(Row);
 
-                    foreach (dynamic Data in ProductionData)
-                    {
-                        Cells = new PdfPCell[]{
+                        foreach (dynamic Data in ProductionData)
+                        {
+                            Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
                         new PdfPCell(new Phrase(Data.WORK_AREA, CellFont)),
                         new PdfPCell(new Phrase(Data.QUANTITY.ToString(), CellFont)),
@@ -862,19 +873,25 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         new PdfPCell(new Phrase(Data.COMMENTS.ToString(), CellFont))
                     };
 
-                        Row = new PdfPRow(Cells);
-                        ProductionTable.Rows.Add(Row);
+                            Row = new PdfPRow(Cells);
+                            ProductionTable.Rows.Add(Row);
+                        }
+                        ExportedPDF.Add(ProductionTable);
                     }
-                    ExportedPDF.Add(ProductionTable);
+                    ExportedPDF.Add(NewLine);
                 }
-                ExportedPDF.Add(NewLine);
+                catch (Exception)
+                {
 
+                }
                 //Get Weather
-                var WeatherData = GetWeather(HeaderId);
+                try
+                {
+                    var WeatherData = GetWeather(HeaderId);
 
-                PdfPTable WeatherTable = new PdfPTable(6);
+                    PdfPTable WeatherTable = new PdfPTable(6);
 
-                Cells = new PdfPCell[]{
+                    Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Time", HeaderFont)),
                     new PdfPCell(new Phrase("Wind\nDirection", HeaderFont)),
                     new PdfPCell(new Phrase("Wind\nVelocity", HeaderFont)),
@@ -883,12 +900,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     new PdfPCell(new Phrase("Comments", HeaderFont))
                 };
 
-                Row = new PdfPRow(Cells);
-                WeatherTable.Rows.Add(Row);
+                    Row = new PdfPRow(Cells);
+                    WeatherTable.Rows.Add(Row);
 
-                foreach (dynamic Weather in WeatherData)
-                {
-                    Cells = new PdfPCell[]{
+                    foreach (dynamic Weather in WeatherData)
+                    {
+                        Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(Weather.WEATHER_DATE_TIME.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Weather.WIND_DIRECTION, CellFont)),
                         new PdfPCell(new Phrase(Weather.WIND_VELOCITY, CellFont)),
@@ -897,20 +914,26 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         new PdfPCell(new Phrase(Weather.COMMENTS, CellFont))
                     };
 
-                    Row = new PdfPRow(Cells);
-                    WeatherTable.Rows.Add(Row);
+                        Row = new PdfPRow(Cells);
+                        WeatherTable.Rows.Add(Row);
+                    }
+                    ExportedPDF.Add(WeatherTable);
+                    ExportedPDF.Add(NewLine);
                 }
-                ExportedPDF.Add(WeatherTable);
-                ExportedPDF.Add(NewLine);
+                catch (Exception)
+                {
 
+                }
                 if (OrgId == 121)
                 {
-                    //Get Chemical Mix Data
-                    var ChemicalData = GetChemicalMix(HeaderId);
+                    try
+                    {
+                        //Get Chemical Mix Data
+                        var ChemicalData = GetChemicalMix(HeaderId);
 
-                    PdfPTable ChemicalTable = new PdfPTable(11);
+                        PdfPTable ChemicalTable = new PdfPTable(11);
 
-                    Cells = new PdfPCell[]{
+                        Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Mix #", HeaderFont)),
                     new PdfPCell(new Phrase("Target\nArea", HeaderFont)),
                     new PdfPCell(new Phrase("Gals/Acre", HeaderFont)),
@@ -923,15 +946,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     new PdfPCell(new Phrase("State", HeaderFont)),
                     new PdfPCell(new Phrase("County", HeaderFont))
                 };
-                    Row = new PdfPRow(Cells);
-                    ChemicalTable.Rows.Add(Row);
+                        Row = new PdfPRow(Cells);
+                        ChemicalTable.Rows.Add(Row);
 
-                    foreach (dynamic Data in ChemicalData)
-                    {
-                        decimal TotalGallons = Data.GALLON_STARTING + Data.GALLON_MIXED;
-                        decimal GallonsUsed = TotalGallons - Data.GALLON_REMAINING;
+                        foreach (dynamic Data in ChemicalData)
+                        {
+                            decimal TotalGallons = Data.GALLON_STARTING + Data.GALLON_MIXED;
+                            decimal GallonsUsed = TotalGallons - Data.GALLON_REMAINING;
 
-                        Cells = new PdfPCell[]{
+                            Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(Data.CHEMICAL_MIX_NUMBER != null ? Data.CHEMICAL_MIX_NUMBER.ToString() : string.Empty, CellFont)),
                         new PdfPCell(new Phrase(Data.TARGET_AREA != null ? Data.TARGET_AREA : string.Empty, CellFont)),
                         new PdfPCell(new Phrase(Data.GALLON_ACRE != null ? Data.GALLON_ACRE.ToString() : string.Empty, CellFont)),
@@ -944,33 +967,39 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         new PdfPCell(new Phrase(Data.STATE != null ? Data.STATE : string.Empty, CellFont)),
                         new PdfPCell(new Phrase(Data.COUNTY != null ? Data.COUNTY : string.Empty, CellFont))
                     };
-                        Row = new PdfPRow(Cells);
-                        ChemicalTable.Rows.Add(Row);
-                    }
+                            Row = new PdfPRow(Cells);
+                            ChemicalTable.Rows.Add(Row);
+                        }
 
-                    ExportedPDF.Add(ChemicalTable);
-                    ExportedPDF.Add(NewLine);
+                        ExportedPDF.Add(ChemicalTable);
+                        ExportedPDF.Add(NewLine);
+                    }
+                    catch (Exception)
+                    {
+                    }
                 }
 
                 //Get Inventory Data
-                if (OrgId == 121)
+                try
                 {
-                    var InventoryData = GetInventoryDBI(HeaderId);
-                    PdfPTable InventoryTable = new PdfPTable(5);
+                    if (OrgId == 121)
+                    {
+                        var InventoryData = GetInventoryDBI(HeaderId);
+                        PdfPTable InventoryTable = new PdfPTable(5);
 
-                    Cells = new PdfPCell[]{
+                        Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Mix #", HeaderFont)),
                     new PdfPCell(new Phrase("Sub-Inventory", HeaderFont)),
                     new PdfPCell(new Phrase("Item Name", HeaderFont)),
                     new PdfPCell(new Phrase("Rate", HeaderFont)),
                     new PdfPCell(new Phrase("EPA \n Number", HeaderFont))
                 };
-                    Row = new PdfPRow(Cells);
-                    InventoryTable.Rows.Add(Row);
+                        Row = new PdfPRow(Cells);
+                        InventoryTable.Rows.Add(Row);
 
-                    foreach (dynamic Data in InventoryData)
-                    {
-                        Cells = new PdfPCell[]{
+                        foreach (dynamic Data in InventoryData)
+                        {
+                            Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(Data.CHEMICAL_MIX_NUMBER.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Data.SUB_INVENTORY_SECONDARY_NAME, CellFont)),
                         new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
@@ -978,174 +1007,185 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         new PdfPCell(new Phrase(Data.EPA_NUMBER, CellFont))
                     };
 
-                        Row = new PdfPRow(Cells);
-                        InventoryTable.Rows.Add(Row);
+                            Row = new PdfPRow(Cells);
+                            InventoryTable.Rows.Add(Row);
+                        }
+
+                        ExportedPDF.Add(InventoryTable);
                     }
+                    if (OrgId == 123)
+                    {
+                        var InventoryData = GetInventoryIRM(HeaderId);
+                        PdfPTable InventoryTable = new PdfPTable(3);
 
-                    ExportedPDF.Add(InventoryTable);
-                }
-                if (OrgId == 123)
-                {
-                    var InventoryData = GetInventoryIRM(HeaderId);
-                    PdfPTable InventoryTable = new PdfPTable(3);
-
-                    Cells = new PdfPCell[]{
+                        Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase("Sub-Inventory", HeaderFont)),
                         new PdfPCell(new Phrase("Item Name", HeaderFont)),
                         new PdfPCell(new Phrase("Quantity", HeaderFont)),
                      };
-                    Row = new PdfPRow(Cells);
-                    InventoryTable.Rows.Add(Row);
+                        Row = new PdfPRow(Cells);
+                        InventoryTable.Rows.Add(Row);
 
-                    foreach (dynamic Data in InventoryData)
-                    {
-                        Cells = new PdfPCell[]{
+                        foreach (dynamic Data in InventoryData)
+                        {
+                            Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(Data.SUB_INVENTORY_SECONDARY_NAME, CellFont)),
                         new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
                         new PdfPCell(new Phrase(string.Format("{0} {1}", Data.RATE.ToString(), Data.UNIT_OF_MEASURE), CellFont)),
                     };
 
-                        Row = new PdfPRow(Cells);
-                        InventoryTable.Rows.Add(Row);
+                            Row = new PdfPRow(Cells);
+                            InventoryTable.Rows.Add(Row);
+                        }
+
+                        ExportedPDF.Add(InventoryTable);
+                    }
+                    ExportedPDF.Add(NewLine);
+                }
+                catch (Exception)
+                {
+
+                }
+                //Get Footer Data
+                try
+                {
+                    var FooterData = GetFooter(HeaderId);
+
+                    PdfPTable FooterTable = new PdfPTable(4);
+                    FooterTable.DefaultCell.Border = PdfPCell.NO_BORDER;
+
+                    string ReasonForNoWork;
+                    string Hotel;
+                    string City;
+                    string State;
+                    string Phone;
+
+                    try
+                    {
+                        ReasonForNoWork = FooterData.COMMENTS;
+                    }
+                    catch (NullReferenceException)
+                    {
+                        ReasonForNoWork = string.Empty;
                     }
 
-                    ExportedPDF.Add(InventoryTable);
-                }
-                ExportedPDF.Add(NewLine);
+                    try
+                    {
+                        Hotel = FooterData.HOTEL_NAME;
+                    }
+                    catch (NullReferenceException)
+                    {
+                        Hotel = string.Empty;
+                    }
 
-                //Get Footer Data
-                var FooterData = GetFooter(HeaderId);
+                    try
+                    {
+                        City = FooterData.HOTEL_CITY;
+                    }
+                    catch (NullReferenceException)
+                    {
+                        City = string.Empty;
+                    }
 
-                PdfPTable FooterTable = new PdfPTable(4);
-                FooterTable.DefaultCell.Border = PdfPCell.NO_BORDER;
+                    try
+                    {
+                        State = FooterData.HOTEL_STATE;
+                    }
+                    catch (NullReferenceException)
+                    {
+                        State = string.Empty;
+                    }
 
-                string ReasonForNoWork;
-                string Hotel;
-                string City;
-                string State;
-                string Phone;
+                    try
+                    {
+                        Phone = FooterData.HOTEL_PHONE;
+                    }
+                    catch (NullReferenceException)
+                    {
+                        Phone = string.Empty;
+                    }
 
-                try
-                {
-                    ReasonForNoWork = FooterData.COMMENTS;
-                }
-                catch (NullReferenceException)
-                {
-                    ReasonForNoWork = string.Empty;
-                }
-
-                try
-                {
-                    Hotel = FooterData.HOTEL_NAME;
-                }
-                catch (NullReferenceException)
-                {
-                    Hotel = string.Empty;
-                }
-
-                try
-                {
-                    City = FooterData.HOTEL_CITY;
-                }
-                catch (NullReferenceException)
-                {
-                    City = string.Empty;
-                }
-
-                try
-                {
-                    State = FooterData.HOTEL_STATE;
-                }
-                catch (NullReferenceException)
-                {
-                    State = string.Empty;
-                }
-
-                try
-                {
-                    Phone = FooterData.HOTEL_PHONE;
-                }
-                catch (NullReferenceException)
-                {
-                    Phone = string.Empty;
-                }
-
-                Cells = new PdfPCell[] {
+                    Cells = new PdfPCell[] {
                     new PdfPCell(new Phrase("Reason for no work", HeadFootTitleFont)),
                     new PdfPCell(new Phrase(ReasonForNoWork, HeadFootCellFont)),
                     new PdfPCell(new Phrase("Hotel, City, State, & Phone", HeadFootTitleFont)),
                     new PdfPCell(new Phrase(string.Format("{0} {1} {2} {3}",Hotel, City, State, Phone ), HeadFootCellFont))
                 };
 
-                foreach (PdfPCell Cell in Cells)
-                {
-                    Cell.Border = PdfPCell.NO_BORDER;
-                }
-                Row = new PdfPRow(Cells);
-                FooterTable.Rows.Add(Row);
-
-                iTextSharp.text.Image ForemanImage;
-                iTextSharp.text.Image ContractImage;
-                try
-                {
-                    ForemanImage = iTextSharp.text.Image.GetInstance(FooterData.FOREMAN_SIGNATURE.ToArray());
-                    ForemanImage.ScaleAbsolute(75f, 25f);
-                }
-                catch (Exception)
-                {
-                    ForemanImage = iTextSharp.text.Image.GetInstance(Server.MapPath("/Resources/Images") + "/1pixel.jpg");
-                }
-
-                try
-                {
-                    ContractImage = iTextSharp.text.Image.GetInstance(FooterData.CONTRACT_REP.ToArray());
-                    ContractImage.ScaleAbsolute(75f, 25f);
-                }
-                catch (Exception)
-                {
-                    ContractImage = iTextSharp.text.Image.GetInstance(Server.MapPath("/Resources/Images") + "/1pixel.jpg");
-                }
-
-
-                Cells = new PdfPCell[]{
-                    new PdfPCell(new Phrase("Foreman Signature", HeadFootTitleFont)),
-                    new PdfPCell(ForemanImage),
-                    new PdfPCell(new Phrase("Contract Representative", HeadFootTitleFont)),
-                    new PdfPCell(ContractImage),
-                };
-                foreach (PdfPCell Cell in Cells)
-                {
-                    Cell.Border = PdfPCell.NO_BORDER;
-                }
-                Row = new PdfPRow(Cells);
-                FooterTable.Rows.Add(Row);
-                if (OrgId == 123)
-                {
-                    iTextSharp.text.Image DotRepImage;
-                    try
-                    {
-                        DotRepImage = iTextSharp.text.Image.GetInstance(FooterData.DOT_REP.ToArray());
-                        DotRepImage.ScaleAbsolute(75f, 25f);
-                    }
-                    catch (Exception)
-                    {
-                        DotRepImage = iTextSharp.text.Image.GetInstance(Server.MapPath("/Resources/Images") + "/1pixel.jpg");
-                    }
-
-                    Cells = new PdfPCell[]{
-                    new PdfPCell(new Phrase("DOT Representative", HeadFootTitleFont)),
-                    new PdfPCell(DotRepImage),
-                    new PdfPCell(new Phrase("Name", HeadFootTitleFont)),
-                    new PdfPCell(new Phrase(FooterData.DOT_REP_NAME, HeadFootCellFont))
-                    };
                     foreach (PdfPCell Cell in Cells)
                     {
                         Cell.Border = PdfPCell.NO_BORDER;
                     }
                     Row = new PdfPRow(Cells);
                     FooterTable.Rows.Add(Row);
+
+                    iTextSharp.text.Image ForemanImage;
+                    iTextSharp.text.Image ContractImage;
+                    try
+                    {
+                        ForemanImage = iTextSharp.text.Image.GetInstance(FooterData.FOREMAN_SIGNATURE.ToArray());
+                        ForemanImage.ScaleAbsolute(75f, 25f);
+                    }
+                    catch (Exception)
+                    {
+                        ForemanImage = iTextSharp.text.Image.GetInstance(Server.MapPath("/Resources/Images") + "/1pixel.jpg");
+                    }
+
+                    try
+                    {
+                        ContractImage = iTextSharp.text.Image.GetInstance(FooterData.CONTRACT_REP.ToArray());
+                        ContractImage.ScaleAbsolute(75f, 25f);
+                    }
+                    catch (Exception)
+                    {
+                        ContractImage = iTextSharp.text.Image.GetInstance(Server.MapPath("/Resources/Images") + "/1pixel.jpg");
+                    }
+
+
+                    Cells = new PdfPCell[]{
+                    new PdfPCell(new Phrase("Foreman Signature", HeadFootTitleFont)),
+                    new PdfPCell(ForemanImage),
+                    new PdfPCell(new Phrase("Contract Representative", HeadFootTitleFont)),
+                    new PdfPCell(ContractImage),
+                };
+                    foreach (PdfPCell Cell in Cells)
+                    {
+                        Cell.Border = PdfPCell.NO_BORDER;
+                    }
+                    Row = new PdfPRow(Cells);
+                    FooterTable.Rows.Add(Row);
+                    if (OrgId == 123)
+                    {
+                        iTextSharp.text.Image DotRepImage;
+                        try
+                        {
+                            DotRepImage = iTextSharp.text.Image.GetInstance(FooterData.DOT_REP.ToArray());
+                            DotRepImage.ScaleAbsolute(75f, 25f);
+                        }
+                        catch (Exception)
+                        {
+                            DotRepImage = iTextSharp.text.Image.GetInstance(Server.MapPath("/Resources/Images") + "/1pixel.jpg");
+                        }
+
+                        Cells = new PdfPCell[]{
+                    new PdfPCell(new Phrase("DOT Representative", HeadFootTitleFont)),
+                    new PdfPCell(DotRepImage),
+                    new PdfPCell(new Phrase("Name", HeadFootTitleFont)),
+                    new PdfPCell(new Phrase(FooterData.DOT_REP_NAME, HeadFootCellFont))
+                    };
+                        foreach (PdfPCell Cell in Cells)
+                        {
+                            Cell.Border = PdfPCell.NO_BORDER;
+                        }
+                        Row = new PdfPRow(Cells);
+                        FooterTable.Rows.Add(Row);
+                    }
+                    ExportedPDF.Add(FooterTable);
                 }
-                ExportedPDF.Add(FooterTable);
+                catch (Exception)
+                {
+
+                }
                 //Close Stream and start Download
                 ExportWriter.CloseStream = false;
                 ExportedPDF.Close();
