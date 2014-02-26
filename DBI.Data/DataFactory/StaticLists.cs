@@ -133,6 +133,17 @@ namespace DBI.Data.DataFactory
                 };
             }
         }
+             public static object ApplicationRequested
+             {
+                 get
+                 {
+                     return new object[]{
+                    new object[]{"1", "1"},
+                    new object[]{"2", "2"},
+                    new object[]{"3", "3"},
+                };
+                 }
+             }
 
     }
 }

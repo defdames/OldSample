@@ -139,13 +139,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Toolbar Toolbar1;
         
         /// <summary>
-        /// uxAddAppButton control.
+        /// uxAddSuppButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxAddAppButton;
+        protected global::Ext.Net.Button uxAddSuppButton;
         
         /// <summary>
         /// uxEditSuppButton control.
@@ -157,13 +157,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Button uxEditSuppButton;
         
         /// <summary>
-        /// uxDeleteAppButton control.
+        /// uxRemoveSuppButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxDeleteAppButton;
+        protected global::Ext.Net.Button uxRemoveSuppButton;
         
         /// <summary>
         /// uxSupplementalGrid control.

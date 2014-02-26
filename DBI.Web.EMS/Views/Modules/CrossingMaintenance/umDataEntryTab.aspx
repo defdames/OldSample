@@ -118,6 +118,7 @@
                                     <ext:ModelField Name="APPLICATION_ID" />
                                     <ext:ModelField Name="APPLICATION_NUMBER" />
                                     <ext:ModelField Name="APPLICATION_DATE" Type="Date" />
+                                    <ext:ModelField Name="APPLICATION_REQUESTED" />
                                     <ext:ModelField Name="TRUCK_NUMBER" />
                                     <ext:ModelField Name="SPRAY" />
                                     <ext:ModelField Name="CUT" />
@@ -136,10 +137,11 @@
                         <ext:Column ID="Column1" runat="server" DataIndex="APPLICATION_NUMBER" Text="Application #" Flex="1" />
                         <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="APPLICATION_DATE" Text="Date" Flex="1" Format="MM/dd/yyyy" />
                         <ext:Column ID="Column3" runat="server" DataIndex="TRUCK_NUMBER" Text="Truck #" Flex="1" />
+                         <ext:Column ID="Column2" runat="server" DataIndex="APPLICATION_REQUESTED" Text="App Requested" Flex="1" />
                         <ext:Column ID="Column7" runat="server" DataIndex="SPRAY" Text="Spray" Flex="1" />
                         <ext:Column ID="Column9" runat="server" DataIndex="CUT" Text="Cut" Flex="1" />
                         <ext:Column ID="Column10" runat="server" DataIndex="INSPECT" Text="Inspect" Flex="1" />
-                        <ext:Column ID="Column5" runat="server" DataIndex="REMARKS" Text="Remarks" Flex="1" />
+                        <ext:Column ID="Column5" runat="server" DataIndex="REMARKS" Text="Remarks" Flex="3" />
 
                     </Columns>
                 </ColumnModel>               
@@ -179,12 +181,57 @@
                             
                                 <ext:FieldContainer ID="FieldContainer2" runat="server" Layout="HBoxLayout">
                                     <Items>
-                                     <ext:TextField ID="uxAddEntryTruckNum" runat="server" FieldLabel="Truck #" AnchorHorizontal="100%" LabelAlign="Right" />
-                                      
+                                     <ext:ComboBox ID="uxAddAppReqeusted"
+                                                runat="server"
+                                                FieldLabel="App Requested"
+                                                LabelAlign="Right"
+                                                DisplayField="type"
+                                                ValueField="type"
+                                                QueryMode="Local"
+                                                TypeAhead="true" >
+                                                    <Store>
+                                                    <ext:Store runat="server"
+                                                        ID="uxAddAppRequestedStore" AutoDataBind="true" >
+                                                        <Model>
+                                                            <ext:Model ID="Model3" runat="server">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="type" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                        <Reader>
+										            <ext:ArrayReader />
+									                    </Reader>
+                                                    </ext:Store>
+                                                </Store>                                                      
+                                            </ext:ComboBox> 
+                                     
                                      <ext:Checkbox ID="uxAddEntryInspectBox" runat="server" FieldLabel="Inspect" LabelAlign="Right" Width="250" />
                                     </Items>                                  
                                 </ext:FieldContainer>
-
+                         <ext:ComboBox ID="uxAddApplicationTruckComboBox"
+                                                runat="server"
+                                                FieldLabel="Truck #"
+                                                LabelAlign="Right"
+                                                DisplayField="NAME"
+                                                ValueField="PROJECT_ID"
+                                                QueryMode="Local"
+                                                TypeAhead="true"  Width="355" >
+                                                    <Store>
+                                                    <ext:Store runat="server"
+                                                        ID="uxAddApplicationTruckStore" AutoDataBind="true" >
+                                                        <Model>
+                                                            <ext:Model ID="Model5" runat="server">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="NAME" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                     
+                                                    </ext:Store>
+                                                </Store>                                                      
+                                            </ext:ComboBox> 
+                                    
                                  <ext:TextArea ID="uxAddEntryRemarks" FieldLabel="Remarks" runat="server" LabelAlign="Right" />
                               </Items>
                         </ext:FormPanel>
@@ -238,13 +285,57 @@
                             
                                 <ext:FieldContainer ID="FieldContainer5" runat="server" Layout="HBoxLayout">
                                     <Items>
-                                     
-                                     <ext:DropDownFIeld ID="uxEditEntryTruckNum" runat="server" FieldLabel="Truck #" AnchorHorizontal="100%" LabelAlign="Right" />
-                                       
+                                          <ext:ComboBox ID="uxEditAppRequested"
+                                                runat="server"
+                                                FieldLabel="App Requested"
+                                                LabelAlign="Right"
+                                                DisplayField="type"
+                                                ValueField="type"
+                                                QueryMode="Local"
+                                                TypeAhead="true" >
+                                                    <Store>
+                                                    <ext:Store runat="server"
+                                                        ID="uxEditAppRequestedStore" AutoDataBind="true" >
+                                                        <Model>
+                                                            <ext:Model ID="Model4" runat="server">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="type" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                        <Reader>
+										            <ext:ArrayReader />
+									                    </Reader>
+                                                    </ext:Store>
+                                                </Store>                                                      
+                                            </ext:ComboBox> 
+                                         
                                      <ext:Checkbox ID="uxEditEntryInspectBox" runat="server" FieldLabel="Inspect" LabelAlign="Right" Width="250" />
                                     </Items>                                 
                                 </ext:FieldContainer>
-
+                                <ext:ComboBox ID="uxEditApplicationTruckNumber"
+                                                runat="server"
+                                                FieldLabel="Truck #"
+                                                LabelAlign="Right"
+                                                DisplayField="NAME"
+                                                ValueField="PROJECT_ID"
+                                                QueryMode="Local"
+                                                TypeAhead="true"  Width="355" >
+                                                    <Store>
+                                                    <ext:Store runat="server"
+                                                        ID="uxEditApplicationTruckStore" AutoDataBind="true" >
+                                                        <Model>
+                                                            <ext:Model ID="Model6" runat="server">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="NAME" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                        
+                                                    </ext:Store>
+                                                </Store>
+                                                   
+                                            </ext:ComboBox>
                                 <ext:TextArea ID="uxEditEntryRemarks" FieldLabel="Remarks" runat="server" LabelAlign="Right" />
                        </Items>
                     </ext:FormPanel>

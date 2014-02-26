@@ -16,7 +16,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!X.IsAjaxRequest)
+            {
 
+                ReadInTruckNumberForInspection("Add");
+                ReadInTruckNumberForInspection("Edit");
+            }
         }
         protected void deInspectionGridData(object sender, StoreReadDataEventArgs e)
         {
@@ -68,7 +73,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             long InspectionNumber = Convert.ToInt64(uxAddInspectEntryNumber.Value);
             DateTime Date = (DateTime)uxAddInspectEntryDate.Value;
-            long TruckNumber = Convert.ToInt64(uxAddInspectEntryTruckNum.Value);
+            Int64 TruckNumber = Convert.ToInt64(uxAddInspectionTruckComboBox.Value);
             string Spray = uxAddInspectEntrySprayBox.Value.ToString();
             string Cut = uxAddInspectEntryCutBox.Value.ToString();
             string Inspect = uxAddInspectEntryInspectBox.Value.ToString();
@@ -146,7 +151,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
 
                 uxEditInspectEntryNumber.SetValue(Inspection.INSPECTION_NUMBER);
-                uxEditInspectEntryTruckNum.SetValue(Inspection.TRUCK_NUMBER);
+                uxEditInspectionTruckNumber.SetValue(Inspection.TRUCK_NUMBER);
                 uxEditInspectEntryDate.SetValue(Inspection.INSPECTION_DATE);
                 uxEditInspectEntrySprayBox.SetValue(Inspection.SPRAY);
                 uxEditInspectEntryCutBox.SetValue(Inspection.CUT);
@@ -185,7 +190,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             long InspectionNumber = Convert.ToInt64(uxEditInspectEntryNumber.Value);
             DateTime Date = (DateTime)uxEditInspectEntryDate.Value;
-            long TruckNumber = Convert.ToInt64(uxEditInspectEntryTruckNum.Value);
+            Int64 TruckNumber = Convert.ToInt64(uxEditInspectionTruckNumber.Value);
             string Spray = uxEditInspectEntrySprayBox.Value.ToString();
             string Cut = uxEditInspectEntryCutBox.Value.ToString();
             string Inspect = uxEditInspectEntryInspectBox.Value.ToString();
@@ -288,6 +293,33 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                         TargetAnchor = AnchorPoint.Center
                     }
                 });
+            }
+        }
+        protected void ReadInTruckNumberForInspection(string truckType)
+        {
+
+            using (Entities _context = new Entities())
+            {
+                List<object> data;
+
+                //Get List of all new headers
+
+                data = (from p in _context.PROJECTS_V
+                        where p.PROJECT_TYPE == "TRUCK & EQUIPMENT"
+                        select new { p.PROJECT_ID, p.PROJECT_TYPE, p.NAME }).ToList<object>();
+
+
+                if (truckType == "Add")
+                {
+                    uxAddInspectionTruckStore.DataSource = data;
+                }
+                else
+                {
+                    uxEditInspectionTruckStore.DataSource = data;
+                }
+
+
+
             }
         }
         public class InspectionDetails

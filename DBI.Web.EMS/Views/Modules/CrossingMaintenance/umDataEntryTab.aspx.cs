@@ -9,6 +9,7 @@ using DBI.Core.Web;
 using DBI.Data;
 using Ext.Net;
 using DBI.Data.GMS;
+using DBI.Data.DataFactory;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
@@ -16,7 +17,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!X.IsAjaxRequest)
+            {
+                uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
+                uxEditAppRequestedStore.Data = StaticLists.ApplicationRequested;
+                ReadInTruckNumberForApplication("Add");
+                ReadInTruckNumberForApplication("Edit");
+            }
         }
         protected void deApplicationGridData(object sender, StoreReadDataEventArgs e)
         {
@@ -68,7 +75,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             long ApplicationNumber = Convert.ToInt64(uxAddEntryNumber.Value);
             DateTime Date = (DateTime)uxAddEntryDate.Value;
-            long TruckNumber = Convert.ToInt64(uxAddEntryTruckNum.Value);
+            string AppRequested = uxAddAppReqeusted.Value.ToString();
+            long TruckNumber = Convert.ToInt64(uxAddApplicationTruckComboBox.Value);
             string Spray = uxAddEntrySprayBox.Value.ToString();
             string Cut = uxAddEntryCutBox.Value.ToString();
             string Inspect = uxAddEntryInspectBox.Value.ToString();
@@ -108,6 +116,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 {
                     APPLICATION_NUMBER = ApplicationNumber,
                     APPLICATION_DATE = Date,
+                    //APPLICATION_REQUESTED = AppRequested,
                     TRUCK_NUMBER = TruckNumber,
                     SPRAY = Spray,
                     CUT = Cut,
@@ -146,7 +155,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
 
                 uxEditEntryNumber.SetValue(Application.APPLICATION_NUMBER);
-                uxEditEntryTruckNum.SetValue(Application.TRUCK_NUMBER);
+                uxEditApplicationTruckNumber.SetValue(Application.TRUCK_NUMBER);
+                uxEditAppRequested.SetValue(Application.APPLICATION_REQUESTED);
                 uxEditEntryDate.SetValue(Application.APPLICATION_DATE);
                 uxEditEntrySprayBox.SetValue(Application.SPRAY);
                 uxEditEntryCutBox.SetValue(Application.CUT);
@@ -185,7 +195,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             long ApplicationNumber = Convert.ToInt64(uxEditEntryNumber.Value);
             DateTime Date = (DateTime)uxEditEntryDate.Value;
-            long TruckNumber = Convert.ToInt64(uxEditEntryTruckNum.Value);
+            long TruckNumber = Convert.ToInt64(uxEditApplicationTruckNumber.Value);
+            string AppRequested = uxEditAppRequested.Value.ToString();
             string Spray = uxEditEntrySprayBox.Value.ToString();
             string Cut = uxEditEntryCutBox.Value.ToString();
             string Inspect = uxEditEntryInspectBox.Value.ToString();
@@ -234,6 +245,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             data.APPLICATION_DATE = Date;
             data.APPLICATION_NUMBER = ApplicationNumber;
+            //data.APPLICATION_REQUESTED = AppRequested;
             data.TRUCK_NUMBER = TruckNumber;
             data.SPRAY = Spray;
             data.CUT = Cut;
@@ -264,6 +276,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         {
             public long APPLICATION_ID { get; set; }
             public Int64 APPLICATION_NUMBER { get; set; }
+            public string APPLICATION_REQUESTED { get; set; }
             public DateTime APPLICATION_DATE { get; set; }
             public Int64 TRUCK_NUMBER { get; set; }           
             public string SPRAY { get; set; }
@@ -272,7 +285,33 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             public string REMARKS { get; set; }
 
         }
-    
+        protected void ReadInTruckNumberForApplication(string truckType)
+        {
+
+            using (Entities _context = new Entities())
+            {
+                List<object> data;
+
+                //Get List of all new headers
+
+                data = (from p in _context.PROJECTS_V
+                        where p.PROJECT_TYPE == "TRUCK & EQUIPMENT"
+                        select new { p.PROJECT_ID, p.PROJECT_TYPE, p.NAME }).ToList<object>();
+
+
+                if (truckType == "Add")
+                {
+                    uxAddApplicationTruckStore.DataSource = data;
+                }
+                else
+                {
+                    uxEditApplicationTruckStore.DataSource = data;
+                }
+
+
+
+            }
+        }
 
         protected void deRemoveApplicationEntry(object sender, DirectEventArgs e)
         {

@@ -15,7 +15,7 @@
     <div></div>
          <ext:GridPanel ID="uxInspectionCrossingGrid" Title="CROSSING LIST FOR INSPECTION ENTRY" runat="server" Layout="HBoxLayout" Collapsible="true">
                 <SelectionModel>
-                    <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
+                    <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" Mode="Single" />
                 </SelectionModel>
                 <Store>
                     <ext:Store runat="server"
@@ -69,16 +69,22 @@
                     <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True">
                     </ext:PagingToolbar>
                 </BottomBar>
-
+              <Listeners>
+				<Select Handler="#{uxAddInspectButton}.enable();" /> 
+                            
+			</Listeners>
+             <Listeners>
+                   <SelectionChange Handler="#{uxEditInspectButton}.disabled();" /> 
+             </Listeners>
             </ext:GridPanel>
         <ext:Toolbar ID="Toolbar1" runat="server">
                   <Items>
-                        <ext:Button ID="uxAddInspectButton" runat="server" Text="Add Entry" Icon="ApplicationAdd" >
+                        <ext:Button ID="uxAddInspectButton" runat="server" Text="Add Entry" Icon="ApplicationAdd" Disabled="true">
                             <Listeners>
 								<Click Handler="#{uxAddInspectionEntryWindow}.show()" />
 							</Listeners>
                         </ext:Button>
-                        <ext:Button ID="uxEditInspectButton" runat="server" Text="Edit Entry" Icon="ApplicationEdit" >
+                        <ext:Button ID="uxEditInspectButton" runat="server" Text="Edit Entry" Icon="ApplicationEdit" Disabled="true" >
                             <Listeners>
 								<Click Handler="#{uxEditInspectionEntryWindow}.show()" />
 							</Listeners>
@@ -91,7 +97,7 @@
                             </DirectEvents>
 
                         </ext:Button>
-                        <ext:Button ID="uxDeleteInspectButton" runat="server" Text="Delete Entry" Icon="ApplicationDelete" >
+                        <ext:Button ID="uxDeleteInspectButton" runat="server" Text="Delete Entry" Icon="ApplicationDelete" Disabled="true" >
                             <DirectEvents>
 								<Click OnEvent="deRemoveInspectionEntry">
 									<Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete this inspection entry?" />
@@ -146,7 +152,13 @@
 
                     </Columns>
                 </ColumnModel>
-             
+              <Listeners>
+				<Select Handler="#{uxEditInspectButton}.enable();
+					#{uxDeleteInspectButton}.enable()" />
+				<Deselect Handler="#{uxEditInspectButton}.disable();
+					#{uxDeleteInspectButton}.disable()" />
+               
+			</Listeners>
 
                 
 
@@ -168,7 +180,7 @@
                         <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                                   <Items>
                                   
-                                  <ext:TextField ID="uxAddInspectEntryNumber" runat="server"  FieldLabel="Number" LabelAlign="Right" />
+                                  <ext:TextField ID="uxAddInspectEntryNumber" runat="server"  FieldLabel="Number" LabelAlign="Right" Width="300" />
                                         
                                   <ext:Checkbox ID="uxAddInspectEntrySprayBox" runat="server" FieldLabel="Spray" LabelAlign="Right" Width="250" />
                                   </Items>
@@ -176,7 +188,7 @@
 
                                 <ext:FieldContainer ID="FieldContainer0" runat="server" Layout="HBoxLayout">
                                     <Items>
-                                        <ext:DateField ID="uxAddInspectEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" />
+                                        <ext:DateField ID="uxAddInspectEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" Width="300"/>
                                     
                                     <ext:Checkbox ID="uxAddInspectEntryCutBox" runat="server" FieldLabel="Cut" LabelAlign="Right" Width="250" />
                                     </Items>
@@ -185,8 +197,29 @@
                             
                                 <ext:FieldContainer ID="FieldContainer2" runat="server" Layout="HBoxLayout">
                                     <Items>
-                                     <ext:TextField ID="uxAddInspectEntryTruckNum" runat="server" FieldLabel="Truck #" AnchorHorizontal="100%" LabelAlign="Right" />
-                                         
+                                  
+                                         <ext:ComboBox ID="uxAddInspectionTruckComboBox"
+                                                runat="server"
+                                                FieldLabel="Truck #"
+                                                LabelAlign="Right"
+                                                DisplayField="NAME"
+                                                ValueField="PROJECT_ID"
+                                                QueryMode="Local"
+                                                TypeAhead="true"  Width="300" >
+                                                    <Store>
+                                                    <ext:Store runat="server"
+                                                        ID="uxAddInspectionTruckStore" AutoDataBind="true" >
+                                                        <Model>
+                                                            <ext:Model ID="Model5" runat="server">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="NAME" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                     
+                                                    </ext:Store>
+                                                </Store>                                                      
+                                            </ext:ComboBox> 
                                      <ext:Checkbox ID="uxAddInspectEntryInspectBox" runat="server" FieldLabel="Inspect" LabelAlign="Right" Width="250" />
                                     </Items>                                  
                                 </ext:FieldContainer>
@@ -227,7 +260,7 @@
                         
                         <ext:FieldContainer ID="FieldContainer3" runat="server" Layout="HBoxLayout">
                                   <Items>
-                                 <ext:TextField ID="uxEditInspectEntryNumber" runat="server"  FieldLabel="Number" LabelAlign="Right" />
+                                 <ext:TextField ID="uxEditInspectEntryNumber" runat="server"  FieldLabel="Number" LabelAlign="Right" Width="300" />
                                
                                 <ext:Checkbox ID="uxEditInspectEntrySprayBox" runat="server" FieldLabel="Spray" LabelAlign="Right" Width="250" />
                                   </Items>
@@ -235,7 +268,7 @@
 
                                 <ext:FieldContainer ID="FieldContainer4" runat="server" Layout="HBoxLayout">
                                     <Items>
-                                     <ext:DateField ID="uxEditInspectEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" />
+                                     <ext:DateField ID="uxEditInspectEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" Width="300"/>
                                 
                                      <ext:Checkbox ID="uxEditInspectEntryCutBox" runat="server" FieldLabel="Cut" LabelAlign="Right" Width="250" />
                                     </Items>
@@ -244,7 +277,30 @@
                             
                                 <ext:FieldContainer ID="FieldContainer5" runat="server" Layout="HBoxLayout">
                                     <Items>
-                                     <ext:DropDownFIeld ID="uxEditInspectEntryTruckNum" runat="server" FieldLabel="Truck #" AnchorHorizontal="100%" LabelAlign="Right" />
+                                
+                                         <ext:ComboBox ID="uxEditInspectionTruckNumber"
+                                                runat="server"
+                                                FieldLabel="Truck #"
+                                                LabelAlign="Right"
+                                                DisplayField="NAME"
+                                                ValueField="PROJECT_ID"
+                                                QueryMode="Local"
+                                                TypeAhead="true"  Width="300" >
+                                                    <Store>
+                                                    <ext:Store runat="server"
+                                                        ID="uxEditInspectionTruckStore" AutoDataBind="true" >
+                                                        <Model>
+                                                            <ext:Model ID="Model6" runat="server">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="NAME" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                        
+                                                    </ext:Store>
+                                                </Store>
+                                                   
+                                            </ext:ComboBox>
                                        
                                      <ext:Checkbox ID="uxEditInspectEntryInspectBox" runat="server" FieldLabel="Inspect" LabelAlign="Right" Width="250" />
                                     </Items>                                 

@@ -9,6 +9,7 @@ using DBI.Core.Web;
 using DBI.Data;
 using Ext.Net;
 using DBI.Data.GMS;
+using DBI.Data.DataFactory;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
@@ -21,7 +22,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 
                 deLoadType("Add");
                 deLoadType("Edit");
-              
+                uxAddStateList.Data = StaticLists.StateList;
+                uxEditStateList.Data = StaticLists.StateList;
             }
           
         }
@@ -150,7 +152,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string Route = uxAddRouteCI.Value.ToString();
             string Street = uxAddStreetCI.Value.ToString();
             decimal MP = Convert.ToDecimal(uxAddMPCI.Value);
-            string State = uxAddStateCI.Value.ToString();
+            string State = uxAddStateComboBox.Value.ToString();
             string City = uxAddCityCI.Value.ToString();
             decimal Latitude = Convert.ToDecimal(uxAddLatCI.Value);
             string Sub_divisions = uxAddSubDivCI.Value.ToString();
@@ -319,7 +321,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxEditRouteCI.SetValue(data.d.ROUTE);
                 uxEditStreetCI.SetValue(data.d.STREET);
                 uxEditMPCI.SetValue(data.d.MILE_POST);
-                uxEditStateCI.SetValue(data.d.STATE);
+                uxEditStateComboBox.SetValue(data.d.STATE);
                 uxEditCityCI.SetValue(data.d.CITY);
                 uxEditLatCI.SetValue(data.d.LATITUDE);
                 uxEditSubDivCIBox.SetValueAndFireSelect(data.d.SUB_DIVISION);
@@ -382,7 +384,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string Route = uxEditRouteCI.Value.ToString();
             string Street = uxEditStreetCI.Value.ToString();
             decimal MP = Convert.ToDecimal(uxEditMPCI.Value);
-            string State = uxEditStateCI.Value.ToString();
+            string State = uxEditStateComboBox.Value.ToString();
             string City = uxEditCityCI.Value.ToString();
             decimal Latitude = Convert.ToDecimal(uxEditLatCI.Value);
             string Sub_divisions = uxEditSubDivCIBox.Value.ToString();

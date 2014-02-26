@@ -13,7 +13,7 @@
         <%-- <Service Units Tab>--%>
         <ext:GridPanel ID="uxSupplementalCrossingGrid" Title="CROSSING LIST FOR SUPPLEMENTAL ENTRY" runat="server" Layout="HBoxLayout" Collapsible="true">
             <SelectionModel>
-                <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
+                <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="false" Mode="Single" />
             </SelectionModel>
             <Store>
                 <ext:Store runat="server"
@@ -68,16 +68,20 @@
                 <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True">
                 </ext:PagingToolbar>
             </BottomBar>
+            <Listeners>
+				<Select Handler="#{uxAddSuppButton}.enable();" /> 
+                <Deselect Handler= "#{uxAddSuppButton}.disable();" />
+			</Listeners>
 
         </ext:GridPanel>
-        <ext:Toolbar ID="Toolbar1" runat="server">
+        <ext:Toolbar ID="Toolbar1" runat="server" >
             <Items>
-                <ext:Button ID="uxAddAppButton" runat="server" Text="Add Supplemental" Icon="ApplicationAdd">
+                <ext:Button ID="uxAddSuppButton" runat="server" Text="Add Supplemental" Icon="ApplicationAdd" Disabled="true">
                     <Listeners>
                         <Click Handler="#{uxAddNewSupplementalWindow}.show()" />
                     </Listeners>
                 </ext:Button>
-                <ext:Button ID="uxEditSuppButton" runat="server" Text="Edit Supplemental" Icon="ApplicationEdit">
+                <ext:Button ID="uxEditSuppButton" runat="server" Text="Edit Supplemental" Icon="ApplicationEdit" Disabled="true">
                     <Listeners>
                         <Click Handler="#{uxEditSupplementalWindow}.show()" />
                     </Listeners>
@@ -89,7 +93,7 @@
                         </Click>
                     </DirectEvents>
                 </ext:Button>
-                <ext:Button ID="uxDeleteAppButton" runat="server" Text="Delete Supplemental" Icon="ApplicationDelete">
+                <ext:Button ID="uxRemoveSuppButton" runat="server" Text="Delete Supplemental" Icon="ApplicationDelete" Disabled="true">
                     <DirectEvents>
                         <Click OnEvent="deRemoveSupplemental">
                             <Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete this supplemental entry?" />
@@ -136,8 +140,8 @@
 
                     <ext:DateColumn ID="DateColumn1" runat="server" DataIndex="APPROVED_DATE" Text="Approved Date" Flex="1" Format="MM/dd/yyyy" />
                     <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="COMPLETED_DATE" Text="Completed Date" Flex="1" Format="MM/dd/yyyy" />
-                    <ext:Column ID="Column6" runat="server" DataIndex="SERVICE_TYPE" Text="Service Type" Flex="1" />
-                    <ext:Column ID="Column3" runat="server" DataIndex="TRUCK_NUMBER" Text="Truck" Flex="1" />
+                    <ext:Column ID="Column6" runat="server" DataIndex="SERVICE_TYPE" Text="Service Type" Flex="2" />
+                    <ext:Column ID="Column3" runat="server" DataIndex="TRUCK_NUMBER" Text="Truck" Flex="2" />
                     <ext:DateColumn ID="DateColumn4" runat="server" DataIndex="INSPECT_START" Text="Inspection Start" Flex="1" Format="MM/dd/yyyy" />
                     <ext:DateColumn ID="DateColumn7" runat="server" DataIndex="INSPECT_END" Text="Inspection End" Flex="1" Format="MM/dd/yyyy" />
                     <ext:Column ID="Column10" runat="server" DataIndex="SPRAY" Text="Spray" Flex="1" />
@@ -152,7 +156,12 @@
             <SelectionModel>
                 <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" AllowDeselect="true" Mode="Single" />
             </SelectionModel>
-
+            <Listeners>
+				<Select Handler="#{uxEditSuppButton}.enable();
+					#{uxRemoveSuppButton}.enable()" />
+				<Deselect Handler="#{uxEditSuppButton}.disable();
+					#{uxRemoveSuppButton}.disable()" />
+			</Listeners>
 
 
 
@@ -208,7 +217,7 @@
                             <Items>
 
                                 <ext:DateField ID="uxAddCompleteDateField" runat="server" FieldLabel="Completed Date" AnchorHorizontal="100%" LabelAlign="Right" />
-                             <%--   <ext:TextField ID="uxAddTruck" runat="server" FieldLabel="Truck" AnchorHorizontal="100%" LabelAlign="Right" Width="300"/>--%>
+                           
                                  <ext:ComboBox ID="uxAddTruckComboBox"
                                                 runat="server"
                                                 FieldLabel="Truck #"
@@ -317,7 +326,7 @@
                             <Items>
 
                                 <ext:DateField ID="uxEditCompletedDateField" runat="server" FieldLabel="Completed Date" AnchorHorizontal="100%" LabelAlign="Right" />
-                              <%--  <ext:TextField ID="uxEditTruckNumber" runat="server" FieldLabel="Truck" AnchorHorizontal="100%" LabelAlign="Right" Width="300"/>--%>
+                           
                                   <ext:ComboBox ID="EditTruckNumber"
                                                 runat="server"
                                                 FieldLabel="Truck #"
