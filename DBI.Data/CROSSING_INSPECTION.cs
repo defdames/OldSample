@@ -22,7 +22,7 @@ namespace DBI.Data
         public string RAILROAD { get; set; }
         public string SERVICE_UNIT { get; set; }
         public string SUB_DIVISION { get; set; }
-        public Nullable<long> TRUCK_NUMBER { get; set; }
+        public string TRUCK_NUMBER { get; set; }
         public string SPRAY { get; set; }
         public string CUT { get; set; }
         public string INSPECT { get; set; }

@@ -22,7 +22,7 @@ namespace DBI.Data
         public string SUB_DIVISION { get; set; }
         public Nullable<System.DateTime> APPROVED_DATE { get; set; }
         public Nullable<System.DateTime> COMPLETED_DATE { get; set; }
-        public Nullable<long> TRUCK_NUMBER { get; set; }
+        public string TRUCK_NUMBER { get; set; }
         public Nullable<decimal> SQUARE_FEET { get; set; }
         public Nullable<System.DateTime> INSPECT_START { get; set; }
         public Nullable<System.DateTime> INSPECT_END { get; set; }

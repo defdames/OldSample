@@ -55,8 +55,6 @@
         <AssociationConnector Association="OracleModel.FK_INVENTORY_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" Width="1.5" PointX="1.5" PointY="21" />
         <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING_SUPPLEMENTAL" Width="1.5" PointX="31.125" PointY="0.5" />
-        <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
         <EntityTypeShape EntityType="OracleModel.PA_ROLES_V" Width="1.5" PointX="14" PointY="17.375" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_FIELDSETS" Width="1.5" PointX="45.375" PointY="58.25" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_FORMS" Width="1.5" PointX="43.125" PointY="58.375" />
@@ -72,10 +70,12 @@
         <AssociationConnector Association="OracleModel.FK_FORMS_ANSWER_QUESTION_ID" />
         <AssociationConnector Association="OracleModel.FK_QUESTION_TYPE_ID" />
         <AssociationConnector Association="OracleModel.FK_RELATION_QUESTION_ID" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING_APPLICATION" Width="1.5" PointX="24.625" PointY="5.75" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING_INSPECTION" Width="1.5" PointX="22.875" PointY="5.625" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="0.75" PointY="15.125" />
         <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_APPLICATION" Width="1.5" PointX="29.125" PointY="1" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_INSPECTION" Width="1.5" PointX="20.375" PointY="4.25" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_SUPPLEMENTAL" Width="1.5" PointX="22.875" PointY="5.75" />
+        <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

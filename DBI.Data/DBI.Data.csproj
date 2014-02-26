@@ -192,9 +192,6 @@
     <Compile Include="EXPENDITURE_TYPE_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
-    <Compile Include="GL_CODE.cs">
-      <DependentUpon>Oracle.tt</DependentUpon>
-    </Compile>
     <Compile Include="INVENTORY_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>

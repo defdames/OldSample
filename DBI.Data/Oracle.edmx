@@ -729,15 +729,15 @@
           <Key>
             <PropertyRef Name="APPLICATION_ID" />
           </Key>
-          <Property Name="APPLICATION_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="APPLICATION_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="APPLICATION_NUMBER" Type="number" Nullable="false" />
           <Property Name="CROSSING_ID" Type="number" Nullable="false" Precision="15" />
-          <Property Name="APPLICATION_REQUESTED" Type="number" />
+          <Property Name="APPLICATION_REQUESTED" Type="varchar2" MaxLength="3" />
           <Property Name="APPLICATION_DATE" Type="date" />
           <Property Name="RAILROAD" Type="varchar2" MaxLength="50" />
           <Property Name="SERVICE_UNIT" Type="varchar2" MaxLength="100" />
           <Property Name="SUB_DIVISION" Type="varchar2" MaxLength="100" />
-          <Property Name="TRUCK_NUMBER" Type="number" Precision="15" />
+          <Property Name="TRUCK_NUMBER" Type="varchar2" MaxLength="30" />
           <Property Name="SPRAY" Type="char" MaxLength="1" />
           <Property Name="CUT" Type="char" MaxLength="1" />
           <Property Name="INSPECT" Type="char" MaxLength="1" />
@@ -788,7 +788,7 @@
           <Key>
             <PropertyRef Name="INSPECTION_ID" />
           </Key>
-          <Property Name="INSPECTION_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="INSPECTION_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="INSPECTION_NUMBER" Type="number" Nullable="false" />
           <Property Name="CROSSING_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="INSPECTION_REQUESTED" Type="number" />
@@ -796,7 +796,7 @@
           <Property Name="RAILROAD" Type="varchar2" MaxLength="50" />
           <Property Name="SERVICE_UNIT" Type="varchar2" MaxLength="100" />
           <Property Name="SUB_DIVISION" Type="varchar2" MaxLength="100" />
-          <Property Name="TRUCK_NUMBER" Type="number" Precision="15" />
+          <Property Name="TRUCK_NUMBER" Type="varchar2" MaxLength="30" />
           <Property Name="SPRAY" Type="char" MaxLength="1" />
           <Property Name="CUT" Type="char" MaxLength="1" />
           <Property Name="INSPECT" Type="char" MaxLength="1" />
@@ -838,7 +838,7 @@
           <Property Name="SUB_DIVISION" Type="varchar2" MaxLength="100" />
           <Property Name="APPROVED_DATE" Type="date" />
           <Property Name="COMPLETED_DATE" Type="date" />
-          <Property Name="TRUCK_NUMBER" Type="number" Precision="15" />
+          <Property Name="TRUCK_NUMBER" Type="varchar2" MaxLength="30" />
           <Property Name="SQUARE_FEET" Type="number" Precision="15" Scale="4" />
           <Property Name="INSPECT_START" Type="date" />
           <Property Name="INSPECT_END" Type="date" />
@@ -2699,11 +2699,6 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_PRODUCTION" EntitySet="DAILY_ACTIVITY_PRODUCTION" />
           </AssociationSet>
-          <EntitySet Name="CROSSING_SUPPLEMENTAL" EntityType="OracleModel.CROSSING_SUPPLEMENTAL" />
-          <AssociationSet Name="FK_SUPPLEMENTAL_CROSSING_ID" Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID">
-            <End Role="CROSSING" EntitySet="CROSSINGS" />
-            <End Role="CROSSING_SUPPLEMENTAL" EntitySet="CROSSING_SUPPLEMENTAL" />
-          </AssociationSet>
           <EntitySet Name="PA_ROLES_V" EntityType="OracleModel.PA_ROLES_V" />
           <EntitySet Name="CUSTOMER_SURVEY_FIELDSETS" EntityType="OracleModel.CUSTOMER_SURVEY_FIELDSETS" />
           <EntitySet Name="CUSTOMER_SURVEY_FORMS" EntityType="OracleModel.CUSTOMER_SURVEY_FORMS" />
@@ -2740,12 +2735,17 @@
             <End Role="CUSTOMER_SURVEY_QUESTIONS" EntitySet="CUSTOMER_SURVEY_QUESTIONS" />
             <End Role="CUSTOMER_SURVEY_RELATION" EntitySet="CUSTOMER_SURVEY_RELATION" />
           </AssociationSet>
-          <EntitySet Name="CROSSING_APPLICATION" EntityType="OracleModel.CROSSING_APPLICATION" />
-          <EntitySet Name="CROSSING_INSPECTION" EntityType="OracleModel.CROSSING_INSPECTION" />
           <EntitySet Name="DAILY_ACTIVITY_EMPLOYEE" EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" />
           <AssociationSet Name="FK_EMPLOYEE_HEADER_ID" Association="OracleModel.FK_EMPLOYEE_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_EMPLOYEE" EntitySet="DAILY_ACTIVITY_EMPLOYEE" />
+          </AssociationSet>
+          <EntitySet Name="CROSSING_APPLICATION" EntityType="OracleModel.CROSSING_APPLICATION" />
+          <EntitySet Name="CROSSING_INSPECTION" EntityType="OracleModel.CROSSING_INSPECTION" />
+          <EntitySet Name="CROSSING_SUPPLEMENTAL" EntityType="OracleModel.CROSSING_SUPPLEMENTAL" />
+          <AssociationSet Name="FK_SUPPLEMENTAL_CROSSING_ID" Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID">
+            <End Role="CROSSING" EntitySet="CROSSINGS" />
+            <End Role="CROSSING_SUPPLEMENTAL" EntitySet="CROSSING_SUPPLEMENTAL" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
@@ -4514,46 +4514,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="CROSSING_SUPPLEMENTAL">
-          <Key>
-            <PropertyRef Name="SUPPLEMENTAL_ID" />
-          </Key>
-          <Property Type="Int64" Name="SUPPLEMENTAL_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
-          <Property Type="String" Name="SERVICE_TYPE" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SERVICE_UNIT" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="RAILROAD" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SUB_DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="APPROVED_DATE" />
-          <Property Type="DateTime" Name="COMPLETED_DATE" />
-          <Property Type="Int64" Name="TRUCK_NUMBER" />
-          <Property Type="Decimal" Name="SQUARE_FEET" Precision="15" Scale="4" />
-          <Property Type="DateTime" Name="INSPECT_START" />
-          <Property Type="DateTime" Name="INSPECT_END" />
-          <Property Type="String" Name="SPRAY" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="CUT" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="MAINTAIN" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="INSPECT" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="RECURRING" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <NavigationProperty Name="CROSSING" Relationship="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" FromRole="CROSSING_SUPPLEMENTAL" ToRole="CROSSING" />
-        </EntityType>
-        <Association Name="FK_SUPPLEMENTAL_CROSSING_ID">
-          <End Type="OracleModel.CROSSING" Role="CROSSING" Multiplicity="1" />
-          <End Type="OracleModel.CROSSING_SUPPLEMENTAL" Role="CROSSING_SUPPLEMENTAL" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CROSSING">
-              <PropertyRef Name="CROSSING_ID" />
-            </Principal>
-            <Dependent Role="CROSSING_SUPPLEMENTAL">
-              <PropertyRef Name="CROSSING_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="PA_ROLES_V">
           <Key>
             <PropertyRef Name="PROJECT_ID" />
@@ -4760,50 +4720,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="CROSSING_APPLICATION">
-          <Key>
-            <PropertyRef Name="APPLICATION_ID" />
-          </Key>
-          <Property Type="Int64" Name="APPLICATION_ID" Nullable="false" />
-          <Property Type="Decimal" Name="APPLICATION_NUMBER" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
-          <Property Type="Decimal" Name="APPLICATION_REQUESTED" Precision="38" Scale="0" />
-          <Property Type="DateTime" Name="APPLICATION_DATE" />
-          <Property Type="String" Name="RAILROAD" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SERVICE_UNIT" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SUB_DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="TRUCK_NUMBER" />
-          <Property Type="String" Name="SPRAY" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="CUT" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="INSPECT" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-        </EntityType>
-        <EntityType Name="CROSSING_INSPECTION">
-          <Key>
-            <PropertyRef Name="INSPECTION_ID" />
-          </Key>
-          <Property Type="Int64" Name="INSPECTION_ID" Nullable="false" />
-          <Property Type="Decimal" Name="INSPECTION_NUMBER" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
-          <Property Type="Decimal" Name="INSPECTION_REQUESTED" Precision="38" Scale="0" />
-          <Property Type="DateTime" Name="INSPECTION_DATE" />
-          <Property Type="String" Name="RAILROAD" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SERVICE_UNIT" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SUB_DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="TRUCK_NUMBER" />
-          <Property Type="String" Name="SPRAY" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="CUT" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="INSPECT" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-        </EntityType>
         <EntityType Name="DAILY_ACTIVITY_EMPLOYEE">
           <Key>
             <PropertyRef Name="EMPLOYEE_ID" />
@@ -4842,9 +4758,90 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="GL_CODE" >
-          <Property Type="Int64" Name="CODE" Nullable="false" />
-        </ComplexType>
+        <EntityType Name="CROSSING_APPLICATION">
+          <Key>
+            <PropertyRef Name="APPLICATION_ID" />
+          </Key>
+          <Property Type="Int64" Name="APPLICATION_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="APPLICATION_NUMBER" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
+          <Property Type="String" Name="APPLICATION_REQUESTED" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="APPLICATION_DATE" />
+          <Property Type="String" Name="RAILROAD" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SERVICE_UNIT" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SUB_DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="TRUCK_NUMBER" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SPRAY" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="CUT" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="INSPECT" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+        </EntityType>
+        <EntityType Name="CROSSING_INSPECTION">
+          <Key>
+            <PropertyRef Name="INSPECTION_ID" />
+          </Key>
+          <Property Type="Int64" Name="INSPECTION_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="INSPECTION_NUMBER" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
+          <Property Type="Decimal" Name="INSPECTION_REQUESTED" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="INSPECTION_DATE" />
+          <Property Type="String" Name="RAILROAD" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SERVICE_UNIT" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SUB_DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="TRUCK_NUMBER" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SPRAY" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="CUT" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="INSPECT" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+        </EntityType>
+        <EntityType Name="CROSSING_SUPPLEMENTAL">
+          <Key>
+            <PropertyRef Name="SUPPLEMENTAL_ID" />
+          </Key>
+          <Property Type="Int64" Name="SUPPLEMENTAL_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
+          <Property Type="String" Name="SERVICE_TYPE" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SERVICE_UNIT" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="RAILROAD" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SUB_DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="APPROVED_DATE" />
+          <Property Type="DateTime" Name="COMPLETED_DATE" />
+          <Property Type="String" Name="TRUCK_NUMBER" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="SQUARE_FEET" Precision="15" Scale="4" />
+          <Property Type="DateTime" Name="INSPECT_START" />
+          <Property Type="DateTime" Name="INSPECT_END" />
+          <Property Type="String" Name="SPRAY" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="CUT" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="MAINTAIN" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="INSPECT" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="RECURRING" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <NavigationProperty Name="CROSSING" Relationship="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" FromRole="CROSSING_SUPPLEMENTAL" ToRole="CROSSING" />
+        </EntityType>
+        <Association Name="FK_SUPPLEMENTAL_CROSSING_ID">
+          <End Type="OracleModel.CROSSING" Role="CROSSING" Multiplicity="1" />
+          <End Type="OracleModel.CROSSING_SUPPLEMENTAL" Role="CROSSING_SUPPLEMENTAL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSING">
+              <PropertyRef Name="CROSSING_ID" />
+            </Principal>
+            <Dependent Role="CROSSING_SUPPLEMENTAL">
+              <PropertyRef Name="CROSSING_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6274,34 +6271,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CROSSING_SUPPLEMENTAL">
-            <EntityTypeMapping TypeName="OracleModel.CROSSING_SUPPLEMENTAL">
-              <MappingFragment StoreEntitySet="CROSSING_SUPPLEMENTAL">
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="REMARKS" ColumnName="REMARKS" />
-                <ScalarProperty Name="RECURRING" ColumnName="RECURRING" />
-                <ScalarProperty Name="INSPECT" ColumnName="INSPECT" />
-                <ScalarProperty Name="MAINTAIN" ColumnName="MAINTAIN" />
-                <ScalarProperty Name="CUT" ColumnName="CUT" />
-                <ScalarProperty Name="SPRAY" ColumnName="SPRAY" />
-                <ScalarProperty Name="INSPECT_END" ColumnName="INSPECT_END" />
-                <ScalarProperty Name="INSPECT_START" ColumnName="INSPECT_START" />
-                <ScalarProperty Name="SQUARE_FEET" ColumnName="SQUARE_FEET" />
-                <ScalarProperty Name="TRUCK_NUMBER" ColumnName="TRUCK_NUMBER" />
-                <ScalarProperty Name="COMPLETED_DATE" ColumnName="COMPLETED_DATE" />
-                <ScalarProperty Name="APPROVED_DATE" ColumnName="APPROVED_DATE" />
-                <ScalarProperty Name="SUB_DIVISION" ColumnName="SUB_DIVISION" />
-                <ScalarProperty Name="RAILROAD" ColumnName="RAILROAD" />
-                <ScalarProperty Name="SERVICE_UNIT" ColumnName="SERVICE_UNIT" />
-                <ScalarProperty Name="SERVICE_TYPE" ColumnName="SERVICE_TYPE" />
-                <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
-                <ScalarProperty Name="SUPPLEMENTAL_ID" ColumnName="SUPPLEMENTAL_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="PA_ROLES_V">
             <EntityTypeMapping TypeName="OracleModel.PA_ROLES_V">
               <MappingFragment StoreEntitySet="PA_ROLES_V">
@@ -6413,6 +6382,32 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="DAILY_ACTIVITY_EMPLOYEE">
+            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_EMPLOYEE">
+              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_EMPLOYEE">
+                <ScalarProperty Name="LUNCH_LENGTH" ColumnName="LUNCH_LENGTH" />
+                <ScalarProperty Name="LUNCH" ColumnName="LUNCH" />
+                <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+                <ScalarProperty Name="ROLE_TYPE" ColumnName="ROLE_TYPE" />
+                <ScalarProperty Name="FOREMAN_LICENSE" ColumnName="FOREMAN_LICENSE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
+                <ScalarProperty Name="PER_DIEM" ColumnName="PER_DIEM" />
+                <ScalarProperty Name="DRIVE_TIME" ColumnName="DRIVE_TIME" />
+                <ScalarProperty Name="TRAVEL_TIME" ColumnName="TRAVEL_TIME" />
+                <ScalarProperty Name="TIME_OUT" ColumnName="TIME_OUT" />
+                <ScalarProperty Name="TIME_IN" ColumnName="TIME_IN" />
+                <ScalarProperty Name="EQUIPMENT_ID" ColumnName="EQUIPMENT_ID" />
+                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
+                <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="CROSSING_APPLICATION">
             <EntityTypeMapping TypeName="OracleModel.CROSSING_APPLICATION">
               <MappingFragment StoreEntitySet="CROSSING_APPLICATION">
@@ -6459,29 +6454,31 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DAILY_ACTIVITY_EMPLOYEE">
-            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_EMPLOYEE">
-              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_EMPLOYEE">
-                <ScalarProperty Name="LUNCH_LENGTH" ColumnName="LUNCH_LENGTH" />
-                <ScalarProperty Name="LUNCH" ColumnName="LUNCH" />
-                <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
-                <ScalarProperty Name="STATE" ColumnName="STATE" />
-                <ScalarProperty Name="ROLE_TYPE" ColumnName="ROLE_TYPE" />
-                <ScalarProperty Name="FOREMAN_LICENSE" ColumnName="FOREMAN_LICENSE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+          <EntitySetMapping Name="CROSSING_SUPPLEMENTAL">
+            <EntityTypeMapping TypeName="OracleModel.CROSSING_SUPPLEMENTAL">
+              <MappingFragment StoreEntitySet="CROSSING_SUPPLEMENTAL">
                 <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
                 <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
-                <ScalarProperty Name="PER_DIEM" ColumnName="PER_DIEM" />
-                <ScalarProperty Name="DRIVE_TIME" ColumnName="DRIVE_TIME" />
-                <ScalarProperty Name="TRAVEL_TIME" ColumnName="TRAVEL_TIME" />
-                <ScalarProperty Name="TIME_OUT" ColumnName="TIME_OUT" />
-                <ScalarProperty Name="TIME_IN" ColumnName="TIME_IN" />
-                <ScalarProperty Name="EQUIPMENT_ID" ColumnName="EQUIPMENT_ID" />
-                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
-                <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
-                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="REMARKS" ColumnName="REMARKS" />
+                <ScalarProperty Name="RECURRING" ColumnName="RECURRING" />
+                <ScalarProperty Name="INSPECT" ColumnName="INSPECT" />
+                <ScalarProperty Name="MAINTAIN" ColumnName="MAINTAIN" />
+                <ScalarProperty Name="CUT" ColumnName="CUT" />
+                <ScalarProperty Name="SPRAY" ColumnName="SPRAY" />
+                <ScalarProperty Name="INSPECT_END" ColumnName="INSPECT_END" />
+                <ScalarProperty Name="INSPECT_START" ColumnName="INSPECT_START" />
+                <ScalarProperty Name="SQUARE_FEET" ColumnName="SQUARE_FEET" />
+                <ScalarProperty Name="TRUCK_NUMBER" ColumnName="TRUCK_NUMBER" />
+                <ScalarProperty Name="COMPLETED_DATE" ColumnName="COMPLETED_DATE" />
+                <ScalarProperty Name="APPROVED_DATE" ColumnName="APPROVED_DATE" />
+                <ScalarProperty Name="SUB_DIVISION" ColumnName="SUB_DIVISION" />
+                <ScalarProperty Name="RAILROAD" ColumnName="RAILROAD" />
+                <ScalarProperty Name="SERVICE_UNIT" ColumnName="SERVICE_UNIT" />
+                <ScalarProperty Name="SERVICE_TYPE" ColumnName="SERVICE_TYPE" />
+                <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
+                <ScalarProperty Name="SUPPLEMENTAL_ID" ColumnName="SUPPLEMENTAL_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
