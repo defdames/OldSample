@@ -20,7 +20,10 @@
                             <Model>
                                 <ext:Model runat="server">
                                     <Fields>
-                                
+                                        <ext:ModelField Name="FORM_ID" />
+                                        <ext:ModelField Name="FORMS_NAME" />
+                                        <ext:ModelField Name="ORGANIZATION" />
+                                        <ext:ModelField Name="NUM_QUESTIONS" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -31,7 +34,9 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-
+                            <ext:Column runat="server" DataIndex="FORMS_NAME" Text="Form Name" />
+                            <ext:Column runat="server" DataIndex="ORGANIZATION" Text="Organization" />
+                            <ext:Column runat="server" DataIndex="NUM_QUESTIONS" Text="Number of Questions" />
                         </Columns>
                     </ColumnModel>
                     <Plugins>
@@ -41,14 +46,18 @@
                         <ext:Toolbar runat="server">
                             <Items>
                                 <ext:Button runat="server" ID="uxAddFormButton" Text="Add Form" Icon="ApplicationAdd">
-
+                                    <Listeners>
+                                        <Click Handler="#{uxAddFormWindow}.show()" />
+                                    </Listeners>
                                 </ext:Button>
                                 <ext:Button runat="server" ID="uxEditFormButton" Text="Edit Form" Icon="ApplicationEdit">
 
                                 </ext:Button>
                                 <ext:ToolbarSeparator runat="server" />
                                 <ext:Button runat="server" ID="uxAddFieldSetButton" Text="Add FieldSet" Icon="ApplicationAdd">
-                                    
+                                    <Listeners>
+                                        <Click Handler="#{uxAddFieldSetWindow}.show()" />
+                                    </Listeners>
                                 </ext:Button>
                                 <ext:Button runat="server" ID="uxEditFieldSetButton" Text="Edit FieldSet" Icon="ApplicationEdit">
 
@@ -60,9 +69,19 @@
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
+                    <SelectionModel>
+                        <ext:RowSelectionModel runat="server" AllowDeselect="false" Mode="Single" />
+                    </SelectionModel>
                     <BottomBar>
                         <ext:PagingToolbar runat="server" />
                     </BottomBar>
+                    <DirectEvents>
+                        <SelectionChange OnEvent="deLoadFieldSets">
+                            <ExtraParams>
+                                <ext:Parameter Name="FormId" Value="#{uxCurrentFormsGrid}.getSelectionModel().getSelection()[0].data.FORM_ID" Mode="Raw" />
+                            </ExtraParams>
+                        </SelectionChange>
+                    </DirectEvents>
                 </ext:GridPanel>
                     </Items>
                 </ext:Panel>
@@ -71,10 +90,24 @@
                         <ext:Panel runat="server" Layout="HBoxLayout" ID="uxFieldSetDragDropContainer">
                             <Items>
                                 <ext:GridPanel ID="uxCurrentFieldSetsGrid" runat="server" Title="Current Fieldsets" Flex="1" Layout="HBoxLayout">
+                                    <Store>
+                                        <ext:Store runat="server" ID="uxCurrentFieldSetsStore" AutoDataBind="true">
+                                            <Model>
+                                                <ext:Model runat="server">
+                                                    <Fields>
+                                                        <ext:ModelField Name="FIELDSET_ID" />
+                                                        <ext:ModelField Name="TITLE" />
+                                                        <ext:ModelField Name="NUM_QUESTIONS" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                        </ext:Store>
+                                    </Store>
                                     <ColumnModel>
                                         <Columns>
-                                            <ext:Column runat="server" Text="Fieldset" Flex="2"/>
-                                            <ext:Column runat="server" Text="Number of Questions" Flex="1" />
+                                            <ext:Column runat="server" Text="Fieldset" DataIndex="FIELDSET_ID" Flex="2"/>
+                                            <ext:Column runat="server" Text="Title" DataIndex="TITLE" Flex="2" />
+                                            <ext:Column runat="server" Text="Number of Questions" DataIndex="NUM_QUESTIONS" Flex="1" />
                                         </Columns>
                                     </ColumnModel>
                                 </ext:GridPanel>
@@ -132,6 +165,60 @@
                 </ext:Panel>
             </Items>
         </ext:Panel>
+ <!--Hidden Windows-->
+        <ext:Window ID="uxAddFormWindow" runat="server" 
+            Title="Add Form" 
+            Hidden="true" 
+            Width="450" 
+            Y="50"
+            Modal="true" >
+            <Items> 
+                <ext:FormPanel runat="server" ID="uxAddFormPanel" Layout="FormLayout">
+                    <Items>
+                        <ext:TextField runat="server" ID="uxAddFormName" FieldLabel="Name" />                            
+                        <ext:ComboBox runat="server" ID="uxAddFormOrg" FieldLabel="Organization" QueryMode="Local" TypeAhead="true">
+                            
+                        </ext:ComboBox>
+                    </Items>
+                    <Buttons>
+                        <ext:Button runat="server" ID="uxAddFormSubmit" Text="Submit" Icon="Add">
+                            <DirectEvents>
+                                <Click OnEvent="deAddForm" />
+                            </DirectEvents>
+                        </ext:Button>
+                        <ext:Button runat="server" ID="uxAddFormCancel" Text="Cancel" Icon="Delete">
+                            <Listeners>
+                                <Click Handler="#{uxAddFormPanel}.reset(); #{uxAddFormWindow}.hide()" />
+                            </Listeners>
+                        </ext:Button>
+                    </Buttons>
+                </ext:FormPanel>
+            </Items>
+        </ext:Window>
+        <ext:Window ID="uxAddFieldSetWindow" runat="server" 
+            Title="Add FieldSet" 
+            Hidden="true" 
+            Width="450"
+            Y="50"
+            Modal="true">
+            <Items>
+                <ext:FormPanel runat="server" ID="uxAddFieldSetPanel" Layout="HBoxLayout">
+                    <Items>
+                        <ext:TextField runat="server" ID="uxAddFieldSetTitle" FieldLabel="Title" Flex="1" />
+                    </Items>
+                    <Buttons>
+                        <ext:Button runat="server" ID="uxAddFieldSetSubmit" Text="Submit" Icon="Add">
+
+                        </ext:Button>
+                        <ext:Button runat="server" ID="uxAddFieldSetCancel" Text="Cancel" Icon="Delete">
+                            <Listeners>
+                                <Click Handler="#{uxAddFieldSetPanel}.reset(); #{uxAddFieldSetWindow}.hide()" />
+                            </Listeners>
+                        </ext:Button>
+                    </Buttons>
+                </ext:FormPanel>
+            </Items>
+        </ext:Window>
     </form>
 </body>
 </html>

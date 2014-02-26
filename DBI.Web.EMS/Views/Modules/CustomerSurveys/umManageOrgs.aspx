@@ -11,22 +11,47 @@
         <ext:ResourceManager runat="server" IsDynamic="false" />
         <ext:Viewport runat="server" Layout="AutoLayout">
             <Items>
-                <ext:FormPanel runat="server" ID="uxOrganizationForm" BodyPadding="10">
+                <ext:FormPanel runat="server" ID="uxOrganizationForm" BodyPadding="10" Layout="FormLayout" Width="650">
                     <Items>
                         <ext:ComboBox runat="server" ID="uxOrganizationComboBox"
                             QueryMode="Local"
                             TypeAhead="true"
-                            FieldLabel="Choose an Organization">
-
+                            FieldLabel="Choose an Organization"
+                            DisplayField="LONG_NAME"
+                            ValueField="ORG_ID">
+                            <Store>
+                                <ext:Store runat="server" ID="uxOrganizationStore" AutoDataBind="true">
+                                    <Model>
+                                        <ext:Model runat="server">
+                                            <Fields>
+                                                <ext:ModelField Name="ORG_ID" />
+                                                <ext:ModelField Name="LONG_NAME" />
+                                            </Fields>
+                                        </ext:Model>
+                                    </Model>
+                                </ext:Store>
+                            </Store>
                         </ext:ComboBox>
                         <ext:DropDownField runat="server" ID="uxFormDropDown"
                             FieldLabel="Choose a form">
                             <Component>
                                 <ext:GridPanel runat="server" ID="uxFormDropGrid">
+                                    <Store>
+                                        <ext:Store runat="server" ID="uxFormDropStore" OnReadData="deReadForms" AutoDataBind="true">
+                                            <Model>
+                                                <ext:Model runat="server">
+                                                    <Fields>
+                                                        <ext:ModelField Name="FORMS_NAME" />
+                                                        <ext:ModelField Name="NUM_QUESTIONS" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                        </ext:Store>
+                                    </Store>
                                     <ColumnModel>
                                         <Columns>
-                                            <ext:Column runat="server" Text="Form Name" />
-                                            <ext:Column runat="server" Text="Number of Questions" />
+                                            <ext:Column runat="server" Text="Form Name" DataIndex="FORMS_NAME" />
+                                            <ext:Column runat="server" Text="Number of Questions" DataIndex="NUM_QUESTIONS" />
                                         </Columns>
                                     </ColumnModel>
                                 </ext:GridPanel>

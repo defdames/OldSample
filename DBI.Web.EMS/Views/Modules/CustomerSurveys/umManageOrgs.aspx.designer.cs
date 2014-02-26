@@ -40,6 +40,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.ComboBox uxOrganizationComboBox;
         
         /// <summary>
+        /// uxOrganizationStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxOrganizationStore;
+        
+        /// <summary>
         /// uxFormDropDown control.
         /// </summary>
         /// <remarks>
@@ -56,6 +65,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.GridPanel uxFormDropGrid;
+        
+        /// <summary>
+        /// uxFormDropStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxFormDropStore;
         
         /// <summary>
         /// uxFirstLargeThreshold control.
