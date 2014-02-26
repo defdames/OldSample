@@ -13,9 +13,9 @@
     </div>
      <ext:ResourceManager ID="ResourceManager1" runat="server" />
     <div></div>
-         <ext:GridPanel ID="uxInspectionCrossingGrid" Title="CROSSING LIST FOR INSPECTION ENTRY" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true">
+         <ext:GridPanel ID="uxInspectionCrossingGrid" Title="CROSSING LIST FOR INSPECTION ENTRY" runat="server" Layout="HBoxLayout" Collapsible="true">
                 <SelectionModel>
-                    <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
+                    <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" Mode="Single" />
                 </SelectionModel>
                 <Store>
                     <ext:Store runat="server"
@@ -57,45 +57,56 @@
                 <Plugins>
                     <ext:FilterHeader ID="FilterHeader1" runat="server" />
                 </Plugins>
-            <DirectEvents>
+                 <DirectEvents>
                     <Select OnEvent="GetInspectionGridData">
                         <ExtraParams>
                             <ext:Parameter Name="CrossingId" Value="#{uxInspectionCrossingGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
                         </ExtraParams>
                     </Select>
                 </DirectEvents>
-               <%-- <DirectEvents>
-                    <Select OnEvent="deEditCrossingForm">
-                        <ExtraParams>
-                            <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                        </ExtraParams>
-                    </Select>
-                </DirectEvents>--%>
-
+             
                 <BottomBar>
                     <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True">
                     </ext:PagingToolbar>
                 </BottomBar>
-
+              <Listeners>
+				<Select Handler="#{uxAddInspectButton}.enable();" /> 
+                            
+			</Listeners>
+             <Listeners>
+                   <SelectionChange Handler="#{uxEditInspectButton}.disabled();" /> 
+             </Listeners>
             </ext:GridPanel>
         <ext:Toolbar ID="Toolbar1" runat="server">
                   <Items>
-                        <ext:Button ID="uxAddInspectButton" runat="server" Text="Add Entry" Icon="ApplicationAdd" >
+                        <ext:Button ID="uxAddInspectButton" runat="server" Text="Add Entry" Icon="ApplicationAdd" Disabled="true">
                             <Listeners>
 								<Click Handler="#{uxAddInspectionEntryWindow}.show()" />
 							</Listeners>
                         </ext:Button>
-                        <ext:Button ID="uxEditInspectButton" runat="server" Text="Edit Entry" Icon="ApplicationEdit" >
+                        <ext:Button ID="uxEditInspectButton" runat="server" Text="Edit Entry" Icon="ApplicationEdit" Disabled="true" >
                             <Listeners>
 								<Click Handler="#{uxEditInspectionEntryWindow}.show()" />
 							</Listeners>
+                              <DirectEvents>
+                             <Click OnEvent="deEditInspectionForm">
+                                 <ExtraParams>
+						            <ext:Parameter Name="InspectionInfo" Value="Ext.encode(#{uxInspectionEntryGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+					                 </ExtraParams>
+                             </Click>
+                            </DirectEvents>
+
                         </ext:Button>
-                        <ext:Button ID="uxDeleteInspectButton" runat="server" Text="Delete Entry" Icon="ApplicationDelete" >
-                           <%-- <DirectEvents>
-								<Click OnEvent="deRemoveApplicationEntry">
-									<Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete this application entry?" />
-						       </Click>
-							</DirectEvents>--%>
+                        <ext:Button ID="uxDeleteInspectButton" runat="server" Text="Delete Entry" Icon="ApplicationDelete" Disabled="true" >
+                            <DirectEvents>
+								<Click OnEvent="deRemoveInspectionEntry">
+									<Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete this inspection entry?" />
+						             <ExtraParams>
+						            <ext:Parameter Name="InspectionInfo" Value="Ext.encode(#{uxInspectionEntryGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+					                </ExtraParams>
+                                     </Click>
+                                     
+							</DirectEvents>
                         </ext:Button>                     
                 </Items>                       
         </ext:Toolbar>
@@ -108,14 +119,14 @@
                     <ext:Store runat="server"
                         ID="uxInspectionStore"
                         PageSize="10"
-                        AutoDataBind="true" WarningOnDirty="false">
+                        >
                         <Model>
                             <ext:Model ID="Model1" runat="server">
                                 <Fields>
                                     <ext:ModelField Name="CROSSING_ID" />
                                     <ext:ModelField Name="INSPECTION_ID" />
                                     <ext:ModelField Name="INSPECTION_NUMBER"  />
-                                    <ext:ModelField Name="DATE" />
+                                    <ext:ModelField Name="INSPECTION_DATE" Type="Date"/>
                                      <ext:ModelField Name="TRUCK_NUMBER" />
                                     <ext:ModelField Name="SPRAY" />
                                     <ext:ModelField Name="CUT" />
@@ -125,39 +136,29 @@
                                 </Fields>
                             </ext:Model>
                         </Model>
-                        <Proxy>
-                            <ext:PageProxy />
-                        </Proxy>
+                        
                     </ext:Store>
                 </Store>
                 <ColumnModel>
                     <Columns>
 
-                        <ext:Column ID="Column1" runat="server" DataIndex="" Text="Inspection #" Flex="1" />
-                        <ext:Column ID="Column2" runat="server" DataIndex="" Text="Date" Flex="1" />
-                        <ext:Column ID="Column11" runat="server" DataIndex="" Text="Truck" Flex="1" />
-                        <ext:Column ID="Column7" runat="server" DataIndex="" Text="Spray" Flex="1" />
-                        <ext:Column ID="Column9" runat="server" DataIndex="" Text="Cut" Flex="1" />
-                        <ext:Column ID="Column10" runat="server" DataIndex="" Text="Inspect" Flex="1" />
-                        <ext:Column ID="Column5" runat="server" DataIndex="" Text="Remarks" Flex="1" />
+                        <ext:Column ID="Column1" runat="server" DataIndex="INSPECTION_NUMBER" Text="Inspection #" Flex="1" />
+                        <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="INSPECTION_DATE" Text="Date" Flex="1" Format="MM/dd/yyyy" />
+                        <ext:Column ID="Column11" runat="server" DataIndex="TRUCK_NUMBER" Text="Truck" Flex="1" />
+                        <ext:Column ID="Column7" runat="server" DataIndex="SPRAY" Text="Spray" Flex="1" />
+                        <ext:Column ID="Column9" runat="server" DataIndex="CUT" Text="Cut" Flex="1" />
+                        <ext:Column ID="Column10" runat="server" DataIndex="INSPECT" Text="Inspect" Flex="1" />
+                        <ext:Column ID="Column5" runat="server" DataIndex="REMARKS" Text="Remarks" Flex="3" />
 
                     </Columns>
                 </ColumnModel>
+              <Listeners>
+				<Select Handler="#{uxEditInspectButton}.enable();
+					#{uxDeleteInspectButton}.enable()" />
+				<Deselect Handler="#{uxEditInspectButton}.disable();
+					#{uxDeleteInspectButton}.disable()" />
                
-               <%-- <DirectEvents>
-                    <Select OnEvent="GetFormData">
-                        <ExtraParams>
-                            <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                        </ExtraParams>
-                    </Select>
-                </DirectEvents>
-                <DirectEvents>
-                    <Select OnEvent="deEditCrossingForm">
-                        <ExtraParams>
-                            <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                        </ExtraParams>
-                    </Select>
-                </DirectEvents>--%>
+			</Listeners>
 
                 
 
@@ -179,7 +180,7 @@
                         <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                                   <Items>
                                   
-                                  <ext:TextField ID="uxAddInspectEntryNumber" runat="server"  FieldLabel="Number" LabelAlign="Right" />
+                                  <ext:TextField ID="uxAddInspectEntryNumber" runat="server"  FieldLabel="Number" LabelAlign="Right" Width="300" />
                                         
                                   <ext:Checkbox ID="uxAddInspectEntrySprayBox" runat="server" FieldLabel="Spray" LabelAlign="Right" Width="250" />
                                   </Items>
@@ -187,7 +188,7 @@
 
                                 <ext:FieldContainer ID="FieldContainer0" runat="server" Layout="HBoxLayout">
                                     <Items>
-                                        <ext:DateField ID="uxAddInspectEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" />
+                                        <ext:DateField ID="uxAddInspectEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" Width="300"/>
                                     
                                     <ext:Checkbox ID="uxAddInspectEntryCutBox" runat="server" FieldLabel="Cut" LabelAlign="Right" Width="250" />
                                     </Items>
@@ -196,8 +197,29 @@
                             
                                 <ext:FieldContainer ID="FieldContainer2" runat="server" Layout="HBoxLayout">
                                     <Items>
-                                     <ext:TextField ID="uxAddInspectEntryTruckNum" runat="server" FieldLabel="Truck #" AnchorHorizontal="100%" LabelAlign="Right" />
-                                         
+                                  
+                                         <ext:ComboBox ID="uxAddInspectionTruckComboBox"
+                                                runat="server"
+                                                FieldLabel="Truck #"
+                                                LabelAlign="Right"
+                                                DisplayField="NAME"
+                                                ValueField="PROJECT_ID"
+                                                QueryMode="Local"
+                                                TypeAhead="true"  Width="300" >
+                                                    <Store>
+                                                    <ext:Store runat="server"
+                                                        ID="uxAddInspectionTruckStore" AutoDataBind="true" >
+                                                        <Model>
+                                                            <ext:Model ID="Model5" runat="server">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="NAME" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                     
+                                                    </ext:Store>
+                                                </Store>                                                      
+                                            </ext:ComboBox> 
                                      <ext:Checkbox ID="uxAddInspectEntryInspectBox" runat="server" FieldLabel="Inspect" LabelAlign="Right" Width="250" />
                                     </Items>                                  
                                 </ext:FieldContainer>
@@ -215,6 +237,7 @@
                                       </ExtraParams>
                                         </Click>
                                 </DirectEvents>
+                                </ext:Button>
                             <ext:Button ID="uxCancelInspectionEntryButton" runat="server" Text="Cancel" Icon="Delete" >
                                  <Listeners>
                                     <Click Handler="#{uxAddInspectionForm}.reset();
@@ -237,7 +260,7 @@
                         
                         <ext:FieldContainer ID="FieldContainer3" runat="server" Layout="HBoxLayout">
                                   <Items>
-                                 <ext:TextField ID="uxEditInspectEntryNumber" runat="server"  FieldLabel="Number" LabelAlign="Right" />
+                                 <ext:TextField ID="uxEditInspectEntryNumber" runat="server"  FieldLabel="Number" LabelAlign="Right" Width="300" />
                                
                                 <ext:Checkbox ID="uxEditInspectEntrySprayBox" runat="server" FieldLabel="Spray" LabelAlign="Right" Width="250" />
                                   </Items>
@@ -245,7 +268,7 @@
 
                                 <ext:FieldContainer ID="FieldContainer4" runat="server" Layout="HBoxLayout">
                                     <Items>
-                                     <ext:DateField ID="uxEditInspectEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" />
+                                     <ext:DateField ID="uxEditInspectEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" Width="300"/>
                                 
                                      <ext:Checkbox ID="uxEditInspectEntryCutBox" runat="server" FieldLabel="Cut" LabelAlign="Right" Width="250" />
                                     </Items>
@@ -254,7 +277,30 @@
                             
                                 <ext:FieldContainer ID="FieldContainer5" runat="server" Layout="HBoxLayout">
                                     <Items>
-                                     <ext:DropDownFIeld ID="uxEditInspectEntryTruckNum" runat="server" FieldLabel="Truck #" AnchorHorizontal="100%" LabelAlign="Right" />
+                                
+                                         <ext:ComboBox ID="uxEditInspectionTruckNumber"
+                                                runat="server"
+                                                FieldLabel="Truck #"
+                                                LabelAlign="Right"
+                                                DisplayField="NAME"
+                                                ValueField="PROJECT_ID"
+                                                QueryMode="Local"
+                                                TypeAhead="true"  Width="300" >
+                                                    <Store>
+                                                    <ext:Store runat="server"
+                                                        ID="uxEditInspectionTruckStore" AutoDataBind="true" >
+                                                        <Model>
+                                                            <ext:Model ID="Model6" runat="server">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="NAME" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                        
+                                                    </ext:Store>
+                                                </Store>
+                                                   
+                                            </ext:ComboBox>
                                        
                                      <ext:Checkbox ID="uxEditInspectEntryInspectBox" runat="server" FieldLabel="Inspect" LabelAlign="Right" Width="250" />
                                     </Items>                                 
@@ -265,7 +311,15 @@
                     </ext:FormPanel>
                  </Items>
                         <Buttons>
-                            <ext:Button ID="uxUpdateInspectEntryButton" runat="server" Text="Update" Icon="Add" />
+                            <ext:Button ID="uxUpdateInspectEntryButton" runat="server" Text="Update" Icon="Add" >
+                                 <DirectEvents>
+                                    <Click OnEvent="deEditInspection" >
+                                      <ExtraParams>
+                                           <ext:Parameter Name="CrossingId" Value="#{uxInspectionCrossingGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                                      </ExtraParams>
+                                        </Click>
+                                </DirectEvents>
+                                </ext:Button>
                             <ext:Button ID="uxCancelUpdateInspectEntryButton" runat="server" Text="Cancel" Icon="Delete" >
                                  <Listeners>
                                     <Click Handler="#{uxEditInspectionForm}.reset();

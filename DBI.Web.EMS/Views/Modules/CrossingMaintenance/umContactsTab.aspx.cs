@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using DBI.Core.Web;
 using DBI.Data;
 using Ext.Net;
+using DBI.Data.DataFactory;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
@@ -14,7 +15,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-           
+            if (!X.IsAjaxRequest)
+            {
+                uxAddStateList.Data = StaticLists.StateList;
+                uxEditStateList.Data = StaticLists.StateList;
+            }
         }
 
         protected void deContactMainGrid(object sender, StoreReadDataEventArgs e)
@@ -76,7 +81,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string Address2 = uxAddNewAddress2.Value.ToString();
             string City = uxAddNewContactCityTextField.Value.ToString();
             string Zip = uxAddNewContactZip.Value.ToString();
-            string State = uxAddNewContactStateTextField.Value.ToString();
+            string State = uxAddContactStateComboBox.Value.ToString();
             string Cell = uxAddNewContactCell.Value.ToString();
             string Office = uxAddNewContactOffice.Value.ToString();
 
@@ -146,7 +151,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxEditContactAdd1.SetValue(data.ADDRESS_1);
                 uxEditContactAdd2.SetValue(data.ADDRESS_2);
                 uxEditContactCity.SetValue(data.CITY);
-                uxEditContactStateTextField.SetValue(data.STATE);
+                uxEditContactState.SetValue(data.STATE);
                 uxEditContactZip.SetValue(data.ZIP_CODE);
                 uxEditContactCellNum.SetValue(data.CELL_NUMBER);
                 uxEditContactPhoneNum.SetValue(data.WORK_NUMBER);
@@ -172,7 +177,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string Address2 = uxEditContactAdd2.Value.ToString();
             string City = uxEditContactCity.Value.ToString();
             string Zip = uxEditContactZip.Value.ToString();
-            string State = uxEditContactStateTextField.Value.ToString();
+            string State = uxEditContactState.Value.ToString();
             string Cell = uxEditContactCellNum.Value.ToString();
             string Office = uxEditContactPhoneNum.Value.ToString();
 

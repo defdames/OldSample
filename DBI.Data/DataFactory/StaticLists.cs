@@ -121,6 +121,29 @@ namespace DBI.Data.DataFactory
                 };
             }
         }
+             public static object ServiceTypes
+        {
+            get
+            {
+                return new object[]{
+                    new object[]{"SB Addl Cut", "SB Addl Cut"},
+                    new object[]{"SB Addl Maintenance", "SB Addl Maintenance"},
+                    new object[]{"SB EXTROW Cut", "SB EXTROW Cut"},
+                    new object[]{"SB EXTROW Maintenance", "SB EXTROW Maintenance"}
+                };
+            }
+        }
+             public static object ApplicationRequested
+             {
+                 get
+                 {
+                     return new object[]{
+                    new object[]{"1", "1"},
+                    new object[]{"2", "2"},
+                    new object[]{"3", "3"},
+                };
+                 }
+             }
 
     }
 }
