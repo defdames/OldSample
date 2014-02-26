@@ -59,6 +59,16 @@ namespace DBI.Data
 
         }
 
+
+
+        //public static  long GetProjectGLCode(long project_id)
+        //{
+        //   using (Entities _context = new Entities())
+        //       {
+        //            string sql = @"select XXEMS"
+        //       }
+        //}
+
         public static long generateDailyActivityHeaderSequence()
         {
             using (Entities _context = new Entities())
@@ -109,6 +119,17 @@ namespace DBI.Data
             }
         }
 
+        public static long getGlCode(long ProjectId)
+        {
+            using (Entities _context = new Entities())
+            {
+                string sql = @"select xxems.EMS_INVENTORY.GET_GL_CODE (" + ProjectId + ")from dual";
+                long query = _context.Database.SqlQuery<long>(sql).First();
+                return query;
+            }
+        }
+
+       
 
         public static decimal payrollHoursCalculation(DateTime dateIn, DateTime dateOut, string lunchFlag, decimal? lunchAmount)
         {
@@ -423,9 +444,9 @@ namespace DBI.Data
                     var InventoryList = (from i in _context.DAILY_ACTIVITY_INVENTORY
                                          join h in _context.DAILY_ACTIVITY_HEADER on i.HEADER_ID equals h.HEADER_ID
                                          join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
-                                         join iv in _context.INVENTORY_V on i.ITEM_ID equals iv.ITEM_ID
+                                         join iv in _context.INVENTORY_V on new {JoinProperty1 = (decimal) i.ITEM_ID, JoinProperty2 = (long)i.SUB_INVENTORY_ORG_ID } equals new {JoinProperty1 = iv.ITEM_ID, JoinProperty2 = iv.ORGANIZATION_ID }                                        
                                          where i.HEADER_ID == HeaderId
-                                         select new { i, iv, p.ORG_ID }).ToList();
+                                         select new { i, iv, p.ORG_ID, h.PROJECT_ID}).ToList();
 
                     int InventoryCount = 1;
                     foreach (var InventoryItem in InventoryList)
@@ -439,7 +460,11 @@ namespace DBI.Data
                         {
                             TransactionType = 120;
                         }
+                                                
+
+                        long GlCode = getGlCode((long)InventoryItem.PROJECT_ID);
                         decimal Quantity = -Math.Abs((decimal)InventoryItem.i.RATE);
+                        //GL_CODE Account = GetProjectGLCode (InventoryItem.PROJECT_ID);
                         MTL_TRANSACTION_INT_V Record = new MTL_TRANSACTION_INT_V
                         {
                             SOURCE_CODE = "EMS",
@@ -456,6 +481,7 @@ namespace DBI.Data
                             TRANSACTION_DATE = (DateTime)InventoryItem.i.DAILY_ACTIVITY_HEADER.DA_DATE,
                             TRANSACTION_TYPE_ID = TransactionType,
                             TRANSACTION_SOURCE_NAME = "EMS",
+                            DISTRIBUTION_ACCOUNT_ID = GlCode,
                             LOCK_FLAG = 2,
                             VALIDATION_REQUIRED = 1,
                             LAST_UPDATE_DATE = DateTime.Now,

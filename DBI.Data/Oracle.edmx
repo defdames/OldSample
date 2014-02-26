@@ -4842,6 +4842,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="GL_CODE" >
+          <Property Type="Int64" Name="CODE" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
