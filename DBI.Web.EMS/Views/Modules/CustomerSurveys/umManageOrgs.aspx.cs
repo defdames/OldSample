@@ -18,5 +18,16 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         {
 
         }
+
+        protected void deReadForms(object sender, StoreReadDataEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                var data = (from d in _context.CUSTOMER_SURVEY_FORMS
+                            select d).ToList();
+
+                uxFormDropStore.DataSource = data;
+            }
+        }
     }
 }
