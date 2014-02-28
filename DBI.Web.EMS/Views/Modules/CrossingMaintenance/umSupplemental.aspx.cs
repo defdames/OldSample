@@ -79,7 +79,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string ServiceType = uxAddServiceType.Value.ToString();
             DateTime InspectionStart = (DateTime)uxAddInspectStartDateField.Value;
             DateTime InspectionEnd = (DateTime)uxAddInspectEndDateField.Value;
-            Int64 TruckNumber = Int64.Parse(uxAddTruckComboBox.Value.ToString());
+            string TruckNumber = uxAddTruckComboBox.Value.ToString();
             string Spray = uxAddSpray.Value.ToString();
             string Cut = uxAddCut.Value.ToString();
             string Maintain = uxAddMaintainBox.Value.ToString();
@@ -179,7 +179,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxEditApprovedDateField.SetValue(Supplemental.APPROVED_DATE);
                 uxEditCompletedDateField.SetValue(Supplemental.COMPLETED_DATE);
                 uxEditServiceTypes.SetValue(Supplemental.SERVICE_TYPE);
-                EditTruckNumber.SetValue(Supplemental.TRUCK_NUMBER);
+                uxEditTruckNumber.SetValue(Supplemental.TRUCK_NUMBER);
                 uxEditInspectStartDateField.SetValue(Supplemental.INSPECT_START);
                 uxEditInspectEndDateField.SetValue(Supplemental.INSPECT_END);
                 uxEditSprayBox.SetValue(Supplemental.SPRAY);
@@ -231,7 +231,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string ServiceType = uxEditServiceTypes.Value.ToString();
             DateTime InspectionStart = (DateTime)uxEditInspectStartDateField.Value;
             DateTime InspectionEnd = (DateTime)uxEditInspectEndDateField.Value;
-            long TruckNumber = Convert.ToInt64(EditTruckNumber.Value);
+            string TruckNumber = uxEditTruckNumber.Value.ToString();
             string Spray = uxEditSprayBox.Value.ToString();
             string Cut = uxEditCut.Value.ToString();
             string Maintain = uxEditMaintain.Value.ToString();
@@ -296,7 +296,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     data.SERVICE_TYPE = ServiceType;
                     data.INSPECT_START = InspectionStart;
                     data.INSPECT_END = InspectionEnd;
-                    data.TRUCK_NUMBER = TruckNumber;
+                    data.TRUCK_NUMBER = TruckNumber.ToString();
                     data.SPRAY = Spray;
                     data.CUT = Cut;
                     data.MAINTAIN = Maintain;
@@ -364,7 +364,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             public DateTime APPROVED_DATE { get; set; }
             public DateTime COMPLETED_DATE { get; set; }
             public string SERVICE_TYPE { get; set; }
-            public Int64 TRUCK_NUMBER { get; set; }
+            public string TRUCK_NUMBER { get; set; }
             public DateTime INSPECT_START { get; set; }
             public DateTime INSPECT_END { get; set; }
             public string SPRAY { get; set; }

@@ -607,13 +607,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.DateField uxEditCompletedDateField;
         
         /// <summary>
-        /// EditTruckNumber control.
+        /// uxEditTruckNumber control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ComboBox EditTruckNumber;
+        protected global::Ext.Net.ComboBox uxEditTruckNumber;
         
         /// <summary>
         /// uxEditTruckStore control.

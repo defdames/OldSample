@@ -117,12 +117,16 @@
     <Content Include="Resources\Images\wwbnight.png" />
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
+    <Content Include="Views\Modules\CrossingMaintenance\umCrossingHome.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umDataEntryMain.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umInspectionEntry.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umContactsTab.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingMain.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingInfoTab.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingSecurity.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umReportsMain.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umStateCrossingsList.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umSupplemental.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umCustomerSurveyAdmin.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umManageForms.aspx" />
@@ -184,6 +188,20 @@
     <Compile Include="Views\Handlers\SystemUsers.ashx.cs">
       <DependentUpon>SystemUsers.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umCrossingHome.aspx.cs">
+      <DependentUpon>umCrossingHome.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umCrossingHome.aspx.designer.cs">
+      <DependentUpon>umCrossingHome.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umDataEntryMain.aspx.cs">
+      <DependentUpon>umDataEntryMain.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umDataEntryMain.aspx.designer.cs">
+      <DependentUpon>umDataEntryMain.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umInspectionEntry.aspx.cs">
       <DependentUpon>umInspectionEntry.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -225,6 +243,20 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx.designer.cs">
       <DependentUpon>umDataEntryTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umReportsMain.aspx.cs">
+      <DependentUpon>umReportsMain.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umReportsMain.aspx.designer.cs">
+      <DependentUpon>umReportsMain.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umStateCrossingsList.aspx.cs">
+      <DependentUpon>umStateCrossingsList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umStateCrossingsList.aspx.designer.cs">
+      <DependentUpon>umStateCrossingsList.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umSupplemental.aspx.cs">
       <DependentUpon>umSupplemental.aspx</DependentUpon>

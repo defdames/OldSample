@@ -327,14 +327,14 @@
 
                                 <ext:DateField ID="uxEditCompletedDateField" runat="server" FieldLabel="Completed Date" AnchorHorizontal="100%" LabelAlign="Right" />
                            
-                                  <ext:ComboBox ID="EditTruckNumber"
+                                  <ext:ComboBox ID="uxEditTruckNumber"
                                                 runat="server"
                                                 FieldLabel="Truck #"
                                                 LabelAlign="Right"
                                                 DisplayField="NAME"
-                                                ValueField="PROJECT_ID"
+                                                ValueField="NAME"
                                                 QueryMode="Local"
-                                                TypeAhead="true"  Width="300" >
+                                                TypeAhead="true" Width="300">
                                                     <Store>
                                                     <ext:Store runat="server"
                                                         ID="uxEditTruckStore" AutoDataBind="true" >

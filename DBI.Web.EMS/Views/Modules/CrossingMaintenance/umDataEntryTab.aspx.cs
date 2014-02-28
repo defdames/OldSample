@@ -55,7 +55,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                             join c in _context.CROSSINGS on a.CROSSING_ID equals c.CROSSING_ID
                             where a.CROSSING_ID == CrossingId
 
-                            select new { a.CROSSING_ID, a.APPLICATION_ID, a.APPLICATION_NUMBER, a.APPLICATION_DATE, a.TRUCK_NUMBER, a.SPRAY, a.CUT, a.INSPECT, a.REMARKS }).ToList<object>();
+                            select new { a.CROSSING_ID, a.APPLICATION_ID, a.APPLICATION_NUMBER, a.APPLICATION_REQUESTED, a.APPLICATION_DATE, a.TRUCK_NUMBER, a.SPRAY, a.CUT, a.INSPECT, a.REMARKS }).ToList<object>();
 
 
                 uxApplicationEntryGrid.Store.Primary.DataSource = data;
@@ -76,7 +76,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             long ApplicationNumber = Convert.ToInt64(uxAddEntryNumber.Value);
             DateTime Date = (DateTime)uxAddEntryDate.Value;
             string AppRequested = uxAddAppReqeusted.Value.ToString();
-            long TruckNumber = Convert.ToInt64(uxAddApplicationTruckComboBox.Value);
+            string TruckNumber = uxAddApplicationTruckComboBox.Value.ToString();
             string Spray = uxAddEntrySprayBox.Value.ToString();
             string Cut = uxAddEntryCutBox.Value.ToString();
             string Inspect = uxAddEntryInspectBox.Value.ToString();
@@ -116,7 +116,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 {
                     APPLICATION_NUMBER = ApplicationNumber,
                     APPLICATION_DATE = Date,
-                    //APPLICATION_REQUESTED = AppRequested,
+                    APPLICATION_REQUESTED = AppRequested,
                     TRUCK_NUMBER = TruckNumber,
                     SPRAY = Spray,
                     CUT = Cut,
@@ -195,7 +195,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             long ApplicationNumber = Convert.ToInt64(uxEditEntryNumber.Value);
             DateTime Date = (DateTime)uxEditEntryDate.Value;
-            long TruckNumber = Convert.ToInt64(uxEditApplicationTruckNumber.Value);
+            string TruckNumber = uxEditApplicationTruckNumber.Value.ToString();
             string AppRequested = uxEditAppRequested.Value.ToString();
             string Spray = uxEditEntrySprayBox.Value.ToString();
             string Cut = uxEditEntryCutBox.Value.ToString();
@@ -232,10 +232,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             //Get record to be edited
             using (Entities _context = new Entities())
             {
-                var CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+                var ApplicationId = long.Parse(e.ExtraParams["ApplicationId"]);
                 data = (from d in _context.CROSSING_APPLICATION
-                        join c in _context.CROSSINGS on d.CROSSING_ID equals c.CROSSING_ID
-                        where d.CROSSING_ID == CrossingId
+                        where d.APPLICATION_ID == ApplicationId
 
                         select d).Single();
 
@@ -245,7 +244,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             data.APPLICATION_DATE = Date;
             data.APPLICATION_NUMBER = ApplicationNumber;
-            //data.APPLICATION_REQUESTED = AppRequested;
+            data.APPLICATION_REQUESTED = AppRequested;
             data.TRUCK_NUMBER = TruckNumber;
             data.SPRAY = Spray;
             data.CUT = Cut;
@@ -278,7 +277,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             public Int64 APPLICATION_NUMBER { get; set; }
             public string APPLICATION_REQUESTED { get; set; }
             public DateTime APPLICATION_DATE { get; set; }
-            public Int64 TRUCK_NUMBER { get; set; }           
+            public string TRUCK_NUMBER { get; set; }           
             public string SPRAY { get; set; }
             public string CUT { get; set; }        
             public string INSPECT { get; set; }

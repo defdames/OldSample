@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umCrossingMain.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.CrossingMaintenance.umCrossingMain" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umDataEntryMain.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.CrossingMaintenance.umDataEntryMain" %>
 
 <!DOCTYPE html>
 
@@ -8,8 +8,8 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div></div>
-        <ext:ResourceManager ID="ResourceManager2" runat="server" />
+    <div></div>
+      <ext:ResourceManager ID="ResourceManager2" runat="server" />
 
         <div>
             <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
@@ -17,39 +17,9 @@
 
                     <ext:TabPanel ID="uxCrossingTab" runat="server" Region="Center">
                         <Items>
-                            <ext:Panel runat="server"
-                                Title="Crossing Security"
-                                ID="uxCrossingSecurity"
-                                Disabled="false">
-                                <Loader runat="server"
-                                    ID="Loader5" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umCrossingSecurity.aspx">
-                                    <LoadMask ShowMask="true" />
-                                </Loader>
-
-                            </ext:Panel>
-
-                            <ext:Panel runat="server"
-                                Title="Crossing Information"
-                                ID="uxCrossingInfoTab"
-                                Disabled="false">
-                                <Loader runat="server"
-                                    ID="uxHeaderLoader" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umCrossingInfoTab.aspx">
-                                    <LoadMask ShowMask="true" />
-                                </Loader>
-
-                            </ext:Panel>
-                            <ext:Panel runat="server"
-                                Title="Contacts"
-                                ID="uxContactsTab"
-                                Disabled="false">
-                                <Loader runat="server"
-                                    ID="Loader1" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umContactsTab.aspx">
-                                    <LoadMask ShowMask="true" />
-                                </Loader>
-
-                            </ext:Panel>
+                            
                            
-                          <%--  <ext:Panel runat="server"
+                            <ext:Panel runat="server"
                                 Title="Application Entry"
                                 ID="uxDataEntryTab"
                                 Disabled="false">
@@ -75,14 +45,14 @@
                                     ID="Loader3" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umSupplemental.aspx">
                                     <LoadMask ShowMask="true" />
                                 </Loader>
-                            </ext:Panel>--%>
+                            </ext:Panel>
 
                         </Items>
                     </ext:TabPanel>
 
                 </Items>
             </ext:Viewport>
-        </div>
+   </div>
     </form>
 </body>
 </html>

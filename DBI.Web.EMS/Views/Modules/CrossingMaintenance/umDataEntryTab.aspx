@@ -214,7 +214,7 @@
                                                 FieldLabel="Truck #"
                                                 LabelAlign="Right"
                                                 DisplayField="NAME"
-                                                ValueField="PROJECT_ID"
+                                                ValueField="NAME"
                                                 QueryMode="Local"
                                                 TypeAhead="true"  Width="355" >
                                                     <Store>
@@ -318,7 +318,7 @@
                                                 FieldLabel="Truck #"
                                                 LabelAlign="Right"
                                                 DisplayField="NAME"
-                                                ValueField="PROJECT_ID"
+                                                ValueField="NAME"
                                                 QueryMode="Local"
                                                 TypeAhead="true"  Width="355" >
                                                     <Store>
@@ -345,7 +345,7 @@
                                 <DirectEvents>
                                     <Click OnEvent="deEditApplication" >
                                       <ExtraParams>
-                                           <ext:Parameter Name="CrossingId" Value="#{uxApplicationCrossingGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                                           <ext:Parameter Name="ApplicationId" Value="#{uxApplicationEntryGrid}.getSelectionModel().getSelection()[0].data.APPLICATION_ID" Mode="Raw" />
                                       </ExtraParams>
                                         </Click>
                                 </DirectEvents>
