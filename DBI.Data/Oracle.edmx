@@ -1053,7 +1053,7 @@
           <Key>
             <PropertyRef Name="EMPLOYEE_ID" />
           </Key>
-          <Property Name="EMPLOYEE_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="EMPLOYEE_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="HEADER_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="PERSON_ID" Type="number" Nullable="false" Precision="10" />
           <Property Name="EQUIPMENT_ID" Type="number" Precision="15" />
@@ -1073,8 +1073,8 @@
           <Property Name="COUNTY" Type="varchar2" MaxLength="100" />
           <Property Name="LUNCH" Type="char" MaxLength="1" />
           <Property Name="LUNCH_LENGTH" Type="number" />
-          <Property Name="SHOPTIME_AM" Type="date" />
-          <Property Name="SHOPTIME_PM" Type="date" />
+          <Property Name="SHOPTIME_AM" Type="number" Precision="15" Scale="4" />
+          <Property Name="SHOPTIME_PM" Type="number" Precision="15" Scale="4" />
         </EntityType>
         <EntityType Name="DAILY_ACTIVITY_EQUIPMENT">
           <Key>
@@ -1094,7 +1094,7 @@
           <Key>
             <PropertyRef Name="FOOTER_ID" />
           </Key>
-          <Property Name="FOOTER_ID" Type="number" Nullable="false" />
+          <Property Name="FOOTER_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="HEADER_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="COMMENTS" Type="varchar2" MaxLength="500" />
           <Property Name="HOTEL_NAME" Type="varchar2" MaxLength="100" />
@@ -2776,15 +2776,15 @@
             <End Role="CUSTOMER_SURVEY_QUESTIONS" EntitySet="CUSTOMER_SURVEY_QUESTIONS" />
             <End Role="CUSTOMER_SURVEY_OPTIONS" EntitySet="CUSTOMER_SURVEY_OPTIONS" />
           </AssociationSet>
-          <EntitySet Name="DAILY_ACTIVITY_EMPLOYEE" EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" />
-          <AssociationSet Name="FK_EMPLOYEE_HEADER_ID" Association="OracleModel.FK_EMPLOYEE_HEADER_ID">
-            <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
-            <End Role="DAILY_ACTIVITY_EMPLOYEE" EntitySet="DAILY_ACTIVITY_EMPLOYEE" />
-          </AssociationSet>
           <EntitySet Name="DAILY_ACTIVITY_FOOTER" EntityType="OracleModel.DAILY_ACTIVITY_FOOTER" />
           <AssociationSet Name="FK_FOOTER_HEADER_ID" Association="OracleModel.FK_FOOTER_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_FOOTER" EntitySet="DAILY_ACTIVITY_FOOTER" />
+          </AssociationSet>
+          <EntitySet Name="DAILY_ACTIVITY_EMPLOYEE" EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" />
+          <AssociationSet Name="FK_EMPLOYEE_HEADER_ID" Association="OracleModel.FK_EMPLOYEE_HEADER_ID">
+            <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
+            <End Role="DAILY_ACTIVITY_EMPLOYEE" EntitySet="DAILY_ACTIVITY_EMPLOYEE" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
@@ -3731,8 +3731,8 @@
           <NavigationProperty Name="DAILY_ACTIVITY_AUDIT" Relationship="OracleModel.FK_AUDIT_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_AUDIT" />
           <NavigationProperty Name="DAILY_ACTIVITY_INVENTORY" Relationship="OracleModel.FK_INVENTORY_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_INVENTORY" />
           <NavigationProperty Name="DAILY_ACTIVITY_PRODUCTION" Relationship="OracleModel.FK_PRODUCTION_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_PRODUCTION" />
-          <NavigationProperty Name="DAILY_ACTIVITY_EMPLOYEE" Relationship="OracleModel.FK_EMPLOYEE_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_EMPLOYEE" />
           <NavigationProperty Name="DAILY_ACTIVITY_FOOTER" Relationship="OracleModel.FK_FOOTER_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_FOOTER" />
+          <NavigationProperty Name="DAILY_ACTIVITY_EMPLOYEE" Relationship="OracleModel.FK_EMPLOYEE_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_EMPLOYEE" />
         </EntityType>
         <Association Name="FK_CHEMICAL_HEADER_ID">
           <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
@@ -4836,51 +4836,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="DAILY_ACTIVITY_EMPLOYEE">
-          <Key>
-            <PropertyRef Name="EMPLOYEE_ID" />
-          </Key>
-          <Property Type="Int64" Name="EMPLOYEE_ID" Nullable="false" />
-          <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
-          <Property Type="Int32" Name="PERSON_ID" Nullable="false" />
-          <Property Type="Int64" Name="EQUIPMENT_ID" />
-          <Property Type="DateTime" Name="TIME_IN" />
-          <Property Type="DateTime" Name="TIME_OUT" />
-          <Property Type="Decimal" Name="TRAVEL_TIME" Precision="15" Scale="4" />
-          <Property Type="Decimal" Name="DRIVE_TIME" Precision="15" Scale="4" />
-          <Property Type="String" Name="PER_DIEM" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="COMMENTS" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="FOREMAN_LICENSE" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ROLE_TYPE" MaxLength="80" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STATE" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="COUNTY" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="LUNCH" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="Decimal" Name="LUNCH_LENGTH" Precision="38" Scale="0" />
-          <Property Type="DateTime" Name="SHOPTIME_AM" />
-          <Property Type="DateTime" Name="SHOPTIME_PM" />
-          <NavigationProperty Name="DAILY_ACTIVITY_HEADER" Relationship="OracleModel.FK_EMPLOYEE_HEADER_ID" FromRole="DAILY_ACTIVITY_EMPLOYEE" ToRole="DAILY_ACTIVITY_HEADER" />
-        </EntityType>
-        <Association Name="FK_EMPLOYEE_HEADER_ID">
-          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
-          <End Type="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Role="DAILY_ACTIVITY_EMPLOYEE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DAILY_ACTIVITY_HEADER">
-              <PropertyRef Name="HEADER_ID" />
-            </Principal>
-            <Dependent Role="DAILY_ACTIVITY_EMPLOYEE">
-              <PropertyRef Name="HEADER_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="DAILY_ACTIVITY_FOOTER">
           <Key>
             <PropertyRef Name="FOOTER_ID" />
           </Key>
-          <Property Type="Decimal" Name="FOOTER_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="FOOTER_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
           <Property Type="String" Name="COMMENTS" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="HOTEL_NAME" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -4908,6 +4868,46 @@
               <PropertyRef Name="HEADER_ID" />
             </Principal>
             <Dependent Role="DAILY_ACTIVITY_FOOTER">
+              <PropertyRef Name="HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DAILY_ACTIVITY_EMPLOYEE">
+          <Key>
+            <PropertyRef Name="EMPLOYEE_ID" />
+          </Key>
+          <Property Type="Int64" Name="EMPLOYEE_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
+          <Property Type="Int32" Name="PERSON_ID" Nullable="false" />
+          <Property Type="Int64" Name="EQUIPMENT_ID" />
+          <Property Type="DateTime" Name="TIME_IN" />
+          <Property Type="DateTime" Name="TIME_OUT" />
+          <Property Type="Decimal" Name="TRAVEL_TIME" Precision="15" Scale="4" />
+          <Property Type="Decimal" Name="DRIVE_TIME" Precision="15" Scale="4" />
+          <Property Type="String" Name="PER_DIEM" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="COMMENTS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="FOREMAN_LICENSE" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ROLE_TYPE" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STATE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="COUNTY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="LUNCH" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="Decimal" Name="LUNCH_LENGTH" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="SHOPTIME_AM" Precision="15" Scale="4" />
+          <Property Type="Decimal" Name="SHOPTIME_PM" Precision="15" Scale="4" />
+          <NavigationProperty Name="DAILY_ACTIVITY_HEADER" Relationship="OracleModel.FK_EMPLOYEE_HEADER_ID" FromRole="DAILY_ACTIVITY_EMPLOYEE" ToRole="DAILY_ACTIVITY_HEADER" />
+        </EntityType>
+        <Association Name="FK_EMPLOYEE_HEADER_ID">
+          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
+          <End Type="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Role="DAILY_ACTIVITY_EMPLOYEE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_HEADER">
+              <PropertyRef Name="HEADER_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_EMPLOYEE">
               <PropertyRef Name="HEADER_ID" />
             </Dependent>
           </ReferentialConstraint>
@@ -6518,6 +6518,30 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="DAILY_ACTIVITY_FOOTER">
+            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_FOOTER">
+              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_FOOTER">
+                <ScalarProperty Name="DOT_REP_EMAIL" ColumnName="DOT_REP_EMAIL" />
+                <ScalarProperty Name="CONTRACT_REP_EMAIL" ColumnName="CONTRACT_REP_EMAIL" />
+                <ScalarProperty Name="DOT_REP_NAME" ColumnName="DOT_REP_NAME" />
+                <ScalarProperty Name="DOT_REP" ColumnName="DOT_REP" />
+                <ScalarProperty Name="CONTRACT_REP_NAME" ColumnName="CONTRACT_REP_NAME" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="CONTRACT_REP" ColumnName="CONTRACT_REP" />
+                <ScalarProperty Name="FOREMAN_SIGNATURE" ColumnName="FOREMAN_SIGNATURE" />
+                <ScalarProperty Name="HOTEL_PHONE" ColumnName="HOTEL_PHONE" />
+                <ScalarProperty Name="HOTEL_STATE" ColumnName="HOTEL_STATE" />
+                <ScalarProperty Name="HOTEL_CITY" ColumnName="HOTEL_CITY" />
+                <ScalarProperty Name="HOTEL_NAME" ColumnName="HOTEL_NAME" />
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
+                <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
+                <ScalarProperty Name="FOOTER_ID" ColumnName="FOOTER_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="DAILY_ACTIVITY_EMPLOYEE">
             <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_EMPLOYEE">
               <MappingFragment StoreEntitySet="DAILY_ACTIVITY_EMPLOYEE">
@@ -6543,30 +6567,6 @@
                 <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
                 <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
                 <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DAILY_ACTIVITY_FOOTER">
-            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_FOOTER">
-              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_FOOTER">
-                <ScalarProperty Name="DOT_REP_EMAIL" ColumnName="DOT_REP_EMAIL" />
-                <ScalarProperty Name="CONTRACT_REP_EMAIL" ColumnName="CONTRACT_REP_EMAIL" />
-                <ScalarProperty Name="DOT_REP_NAME" ColumnName="DOT_REP_NAME" />
-                <ScalarProperty Name="DOT_REP" ColumnName="DOT_REP" />
-                <ScalarProperty Name="CONTRACT_REP_NAME" ColumnName="CONTRACT_REP_NAME" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="CONTRACT_REP" ColumnName="CONTRACT_REP" />
-                <ScalarProperty Name="FOREMAN_SIGNATURE" ColumnName="FOREMAN_SIGNATURE" />
-                <ScalarProperty Name="HOTEL_PHONE" ColumnName="HOTEL_PHONE" />
-                <ScalarProperty Name="HOTEL_STATE" ColumnName="HOTEL_STATE" />
-                <ScalarProperty Name="HOTEL_CITY" ColumnName="HOTEL_CITY" />
-                <ScalarProperty Name="HOTEL_NAME" ColumnName="HOTEL_NAME" />
-                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
-                <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
-                <ScalarProperty Name="FOOTER_ID" ColumnName="FOOTER_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
