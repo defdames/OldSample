@@ -160,20 +160,6 @@
 								</ext:Button>
 								<ext:ToolbarSpacer runat="server" />
 								<ext:Button runat="server"
-									ID="uxSubmitActivityButton"
-									Text="Submit for Approval"
-									Icon="ApplicationGo"
-									Disabled="true">
-									<DirectEvents>
-										<Click OnEvent="deSubmitActivity">
-											<ExtraParams>
-												<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
-											</ExtraParams>
-										</Click>
-									</DirectEvents>    
-								</ext:Button>
-								<ext:ToolbarSpacer ID="ToolbarSpacer2" runat="server" />
-								<ext:Button runat="server"
 									ID="uxApproveActivityButton"
 									Text="Approve"
 									Icon="ApplicationPut"
@@ -357,20 +343,6 @@
 									</DirectEvents>
 								</ext:Button>
 								<ext:ToolbarSpacer ID="ToolbarSpacer7" runat="server" />
-								<ext:Button runat="server"
-									ID="uxTabSubmitForApprovalButton"
-									Text="Submit for Approval"
-									Icon="ApplicationGo"
-									Disabled="true">
-									<DirectEvents>
-										<Click OnEvent="deSubmitActivity">
-											<ExtraParams>
-												<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
-											</ExtraParams>
-										</Click>
-									</DirectEvents>    
-								</ext:Button>
-								<ext:ToolbarSpacer ID="ToolbarSpacer8" runat="server" />
 								<ext:Button runat="server"
 									ID="uxTabApproveButton"
 									Text="Approve"

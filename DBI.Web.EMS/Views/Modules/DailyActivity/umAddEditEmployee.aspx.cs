@@ -18,20 +18,44 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             if (!X.IsAjaxRequest)
             {
+                long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
                 if (Request.QueryString["type"] == "Add")
                 {
                     uxAddEmployeeForm.Show();
                     uxAddEmployeeRole.Show();
+                    if (GetOrgId(HeaderId) == 123)
+                    {
+                        uxAddEmployeeShopTimeAM.Show();
+                        uxAddEmployeeShopTimePM.Show();
+                    }
                 }
                 else
                 {
                     uxEditEmployeeForm.Show();
                     uxEditEmployeeRole.Show();
                     LoadEditEmployeeForm();
+                    if (GetOrgId(HeaderId) == 123)
+                    {
+                        uxEditEmployeeShopTimeAM.Show();
+                        uxEditEmployeeShopTimePM.Show();
+                    }
                 }
                 uxAddEmployeeTimeInDate.SelectedDate = DateTime.Now.Date;
                 uxAddEmployeeTimeOutDate.SelectedDate = DateTime.Now.Date;
             }
+        }
+
+        protected long GetOrgId(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
+                long OrgId;
+                return OrgId = (from d in _context.DAILY_ACTIVITY_HEADER
+                                join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                                where d.HEADER_ID == HeaderId
+                                select (long)p.ORG_ID).Single();
+            }
+
         }
 
         /// <summary>
@@ -273,10 +297,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 MODIFIED_BY = User.Identity.Name
             };
 
+            if (GetOrgId(HeaderId) == 123)
+            {
+                data.SHOPTIME_AM = decimal.Parse(uxAddEmployeeShopTimeAM.Value.ToString());
+                data.SHOPTIME_PM = decimal.Parse(uxAddEmployeeShopTimePM.Value.ToString());
+            }
             if (roleNeeded())
             {
                 data.ROLE_TYPE = uxAddEmployeeRole.Value.ToString();
             }
+
             //Check for travel time
             try
             {
@@ -350,7 +380,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             //Convert to correct types
             int PersonId = int.Parse(uxEditEmployeeEmpDropDown.Value.ToString());
-
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             //Combine Date/Time for TimeIn/Out
             DateTime TimeIn = DateTime.Parse(uxEditEmployeeTimeInDate.Value.ToString());
             DateTime TimeInTime = DateTime.Parse(uxEditEmployeeTimeInTime.Value.ToString());
@@ -430,6 +460,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.PER_DIEM = PerDiem;
             data.MODIFIED_BY = User.Identity.Name;
             data.MODIFY_DATE = DateTime.Now;
+
+            if (GetOrgId(HeaderId) == 123)
+            {
+                data.SHOPTIME_AM = decimal.Parse(uxEditEmployeeShopTimeAM.Value.ToString());
+                data.SHOPTIME_PM = decimal.Parse(uxEditEmployeeShopTimePM.Value.ToString());
+            }
 
             if (roleNeeded())
             {

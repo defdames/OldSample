@@ -187,6 +187,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
             string homeUrl = string.Empty;
             long OrgId = GetOrgId(HeaderId);
+            List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime(24);
+            EmployeeData DuplicatePerDiems = ValidationChecks.checkPerDiem(HeaderId);
+            bool BadHeader = false;
 
             if (OrgId == 121)
             {
@@ -243,33 +246,68 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
 
             switch(e.ExtraParams["Status"]){
-                case "NEW":
-                    uxSubmitActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.ViewAll");
-                    uxTabSubmitForApprovalButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.ViewAll");
-                    uxApproveActivityButton.Disabled = true;
-                    uxTabApproveButton.Disabled = true;
-                    uxPostActivityButton.Disabled = true;
-                    uxTabPostButton.Disabled = true;
-
-                    break;
                 case "PENDING APPROVAL":
                     uxApproveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
                     uxTabApproveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
-                    uxSubmitActivityButton.Disabled = true;
-                    uxTabSubmitForApprovalButton.Disabled = true;
                     uxPostActivityButton.Disabled = true;
                     uxTabPostButton.Disabled = true;
                     break;
                 case "APPROVED":
                     uxPostActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
                     uxTabPostButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
-                    uxSubmitActivityButton.Disabled = true;
-                    uxTabSubmitForApprovalButton.Disabled = true;
                     uxApproveActivityButton.Disabled = true;
                     uxTabApproveButton.Disabled = true;
                     break;
             }
-            
+
+            if (OrgId != 123)
+            {
+                List<EmployeeData> RequiredLunches = ValidationChecks.LunchCheck(HeaderId);
+                if (RequiredLunches.Count > 0)
+                {
+                    BadHeader = true;
+                }
+            }
+            List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
+
+            if (HoursOver24.Count > 0)
+            {
+                if (HoursOver24.Exists(emp => emp.HEADER_ID == HeaderId))
+                {
+                    EmployeeData HeaderData = HoursOver24.Find(emp => emp.HEADER_ID == HeaderId);
+                    BadHeader = true;
+                }
+
+
+            }
+            if (DuplicatePerDiems != null)
+            {
+                BadHeader = true;
+                uxPlaceholderWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&PersonId={1}", DuplicatePerDiems.HEADER_ID, DuplicatePerDiems.PERSON_ID));
+                uxPlaceholderWindow.Show();
+            }
+            if (EmployeeOverLap.Count > 0)
+            {
+                using (Entities _context = new Entities())
+                {
+                    if (EmployeeOverLap.Exists(x => x == HeaderId))
+                    {
+                        var HeaderData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                          join emp in _context.EMPLOYEES_V on d.PERSON_ID equals emp.PERSON_ID
+                                          where d.HEADER_ID == HeaderId
+                                          select new { d.DAILY_ACTIVITY_HEADER.DA_DATE, emp.EMPLOYEE_NAME }).First();
+                        BadHeader = true;
+                    }
+                }
+            }
+
+            if (BadHeader)
+            {
+                uxApproveActivityButton.Disabled = true;
+                uxTabApproveButton.Disabled = true;
+                uxPostActivityButton.Disabled = true;
+                uxTabPostButton.Disabled = true;
+            }
             uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.ViewAll");
             
             uxExportToPDF.Disabled = false;
@@ -296,87 +334,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GridModel.SelectedRow.RowIndex = GridModel.SelectedIndex - 1;
             GridModel.Select(GridModel.SelectedIndex);
             GridModel.UpdateSelection();
-        }
-        /// <summary>
-        /// Shows Submit activity Window/Form
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deSubmitActivity(object sender, DirectEventArgs e)
-        {
-            uxPlaceholderWindow.ClearContent();
-            long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
-            long OrgId = GetOrgId(HeaderId);
-            List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime(24);
-            EmployeeData DuplicatePerDiems = ValidationChecks.checkPerDiem(HeaderId);
-            bool BadHeader = false;
-            if (OrgId != 123)
-            {
-                List<EmployeeData> RequiredLunches = ValidationChecks.LunchCheck(HeaderId);
-                if (RequiredLunches.Count > 0)
-                {
-                    uxPlaceholderWindow.LoadContent(string.Format("umChooseLunchHeader.aspx?HeaderId={0}", HeaderId));
-                    BadHeader = true;
-                }
-            }
-            List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
-
-            
-            if (HoursOver24.Count > 0)
-            {
-                if (HoursOver24.Exists(emp => emp.HEADER_ID == HeaderId))
-                {
-                    EmployeeData HeaderData = HoursOver24.Find(emp => emp.HEADER_ID == HeaderId);
-                    uxPlaceholderWindow.Html += string.Format("<span color='#ff0000'>Employee has 24 hours logged on {0:MM-dd-yy}.  Please fix.</span><br />", HeaderData.DA_DATE.ToString());
-                    BadHeader = true;
-                }
-
-
-            }
-
-            
-
-            if (DuplicatePerDiems != null)
-            {
-                //uxSubmitActivityWindow.Html += string.Format("<span>{0} has duplicate per diem entries on {1:MM-dd-yy}.  Please fix.</span><br />", DuplicatePerDiem.EMPLOYEE_NAME, DuplicatePerDiem.DA_DATE);
-                uxPlaceholderWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&PersonId={1}", DuplicatePerDiems.HEADER_ID, DuplicatePerDiems.PERSON_ID));
-                BadHeader = true;
-
-            }
-            if (EmployeeOverLap.Count > 0)
-            {
-                using (Entities _context = new Entities())
-                {
-                    if (EmployeeOverLap.Exists(x => x == HeaderId))
-                    {
-                        var HeaderData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                                          join emp in _context.EMPLOYEES_V on d.PERSON_ID equals emp.PERSON_ID
-                                          where d.HEADER_ID == HeaderId
-                                          select new { d.DAILY_ACTIVITY_HEADER.DA_DATE, emp.EMPLOYEE_NAME }).First();
-                        uxPlaceholderWindow.Html += string.Format("<span color='#ff0000'>Employee has overlapping time on {0:MM-dd-yy}.  Please fix.</span><br />", HeaderData.DA_DATE.ToString());
-                        BadHeader = true;
-                    }
-                }
-            }
-
-            string WindowUrl = string.Empty;
-
-
-
-            if (OrgId == 121)
-            {
-                WindowUrl = string.Format("umSubmitActivity_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-            }
-            else if (OrgId == 123)
-            {
-                WindowUrl = string.Format("umSubmitActivity_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-            }
-            if (!BadHeader)
-            {
-                uxPlaceholderWindow.LoadContent(WindowUrl);
-            }
-
-            uxPlaceholderWindow.Show();
         }
 
         /// <summary>

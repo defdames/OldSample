@@ -121,24 +121,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Button uxInactiveActivityButton;
         
         /// <summary>
-        /// uxSubmitActivityButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxSubmitActivityButton;
-        
-        /// <summary>
-        /// ToolbarSpacer2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer2;
-        
-        /// <summary>
         /// uxApproveActivityButton control.
         /// </summary>
         /// <remarks>
@@ -353,24 +335,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.ToolbarSpacer ToolbarSpacer7;
-        
-        /// <summary>
-        /// uxTabSubmitForApprovalButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxTabSubmitForApprovalButton;
-        
-        /// <summary>
-        /// ToolbarSpacer8 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer8;
         
         /// <summary>
         /// uxTabApproveButton control.
