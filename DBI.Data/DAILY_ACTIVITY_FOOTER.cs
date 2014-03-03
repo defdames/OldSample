@@ -30,6 +30,8 @@ namespace DBI.Data
         public string CONTRACT_REP_NAME { get; set; }
         public byte[] DOT_REP { get; set; }
         public string DOT_REP_NAME { get; set; }
+        public string CONTRACT_REP_EMAIL { get; set; }
+        public string DOT_REP_EMAIL { get; set; }
     
         public virtual DAILY_ACTIVITY_HEADER DAILY_ACTIVITY_HEADER { get; set; }
     }
