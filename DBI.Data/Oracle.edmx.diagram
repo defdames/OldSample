@@ -70,14 +70,14 @@
         <AssociationConnector Association="OracleModel.FK_FORMS_ANSWER_QUESTION_ID" />
         <AssociationConnector Association="OracleModel.FK_QUESTION_TYPE_ID" />
         <AssociationConnector Association="OracleModel.FK_RELATION_QUESTION_ID" />
-        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="0.75" PointY="15.125" />
-        <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_APPLICATION" Width="1.5" PointX="29.125" PointY="1" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_INSPECTION" Width="1.5" PointX="20.375" PointY="4.25" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_SUPPLEMENTAL" Width="1.5" PointX="22.875" PointY="5.75" />
         <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_OPTIONS" Width="1.5" PointX="36.75" PointY="66.375" />
         <AssociationConnector Association="OracleModel.FK_OPTION_QUES_ID" />
+        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="0.625" PointY="14.875" />
+        <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
