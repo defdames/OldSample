@@ -62,12 +62,12 @@
 	<form id="form1" runat="server">
 		<ext:Viewport runat="server" ID="uxViewPort" Layout="AccordionLayout" IDMode="Explicit" Namespace="App" RenderXType="True">
 			<Items>
-				<ext:GridPanel runat="server" ID="uxManageGrid" Layout="FitLayout" Title="Headers" SelectionMemory="false" SelectionMemoryEvents="false">
+				<ext:GridPanel runat="server" ID="uxManageGrid" Layout="FitLayout" Title="Headers" SelectionMemoryEvents="false" SelectionMemory="true">
 					<SelectionModel>
-						<ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="false" Mode="Single" />
+						<ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
 					</SelectionModel>
 					<Store>
-						<ext:Store runat="server" AutoDataBind="true" ID="uxManageGridStore" OnReadData="deReadHeaderData" PageSize="20" RemoteSort="true">
+						<ext:Store runat="server" AutoDataBind="true" ID="uxManageGridStore" OnReadData="deReadHeaderData" PageSize="20" RemoteSort="true" IsPagingStore="true">
 							<Fields>
 								<ext:ModelField Name="HEADER_ID" Type="String" />
 								<ext:ModelField Name="ORG_ID" Type="String" />
@@ -81,11 +81,8 @@
 								<ext:ModelField Name="WARNING_TYPE" Type="String" />
 							</Fields>
 							<Proxy>
-								<ext:PageProxy />
+								<ext:PageProxy  />
 							</Proxy>
-							<Listeners>
-								<Load Handler="#{uxManageGrid}.getSelectionModel().select(parseInt(#{uxGridIndex}.value))" />
-							</Listeners>
 						</ext:Store>
 					</Store>
 					<ColumnModel>

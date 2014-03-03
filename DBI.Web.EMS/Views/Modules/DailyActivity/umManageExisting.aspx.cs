@@ -167,11 +167,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         WARNING_TYPE = WarningType
                     });
                 }
-
+                
+                
                 var SortedData = data.OrderBy(x => x.STATUS).ThenBy(x => x.WARNING).ThenBy(x => x.DA_DATE).ToList<HeaderData>();
                 int count;
                 uxManageGridStore.DataSource = GenericData.EnumerableFilterHeader<HeaderData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], SortedData, out count);
                 e.Total = count;
+
             }
         }
 
@@ -423,14 +425,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             //Update record in DB
             GenericData.Update<DAILY_ACTIVITY_HEADER>(data);
-            var GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
-            var GridIndex = GridModel.SelectedIndex;
-            uxManageGridStore.Reload();
-            GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
-            GridModel.SelectedRows.Add(new SelectedRow{
-                RowIndex = GridIndex
+            RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
+            var Index = GridModel.SelectedIndex;
+
+
+            uxManageGridStore.Reload(new
+            {
+                callback = JRawValue.From("function() {App.uxManageGrid.getSelectionModel().select(" + Index + ")}")
             });
-            GridModel.UpdateSelection();
+           
         }
 
         /// <summary>
