@@ -34,8 +34,8 @@ namespace DBI.Data
         public string COUNTY { get; set; }
         public string LUNCH { get; set; }
         public Nullable<decimal> LUNCH_LENGTH { get; set; }
-        public Nullable<System.DateTime> SHOPTIME_AM { get; set; }
-        public Nullable<System.DateTime> SHOPTIME_PM { get; set; }
+        public Nullable<decimal> SHOPTIME_AM { get; set; }
+        public Nullable<decimal> SHOPTIME_PM { get; set; }
     
         public virtual DAILY_ACTIVITY_HEADER DAILY_ACTIVITY_HEADER { get; set; }
     }
