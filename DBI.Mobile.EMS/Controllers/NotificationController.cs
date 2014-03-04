@@ -17,10 +17,11 @@ namespace DBI.Mobile.EMS.Controllers
 
             //Check the system for the registered device and if it's not saved to the database
             using (Entities _context = new Entities())
+            {
 
             }
 
-            import.DEVICE_ID = requestHeaderByValue("DeviceID", req);
+
 
         }
     }
