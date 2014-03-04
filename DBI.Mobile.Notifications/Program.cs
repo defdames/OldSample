@@ -27,7 +27,6 @@ namespace DBI.Mobile.Notifications
 			push.OnChannelCreated += ChannelCreated;
 			push.OnChannelDestroyed += ChannelDestroyed;
 
-
 			var appleCert = File.ReadAllBytes(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PushSharp.PushCert.Production.p12"));
             
             push.RegisterAppleService(new ApplePushChannelSettings(true, appleCert, "Dbi18201")); //Extension method
