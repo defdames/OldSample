@@ -78,7 +78,8 @@
         <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.PA_ROLES_V" Width="1.5" PointX="15.875" PointY="19" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_STATUS" Width="1.5" PointX="7.073317696840185" PointY="7.2952234033938606" />
-        <EntityTypeShape EntityType="OracleModel.SYS_MOBILE_NOTIFICATIONS" Width="1.5" PointX="8.3815091812897045" PointY="31.699175789812195" />
+        <EntityTypeShape EntityType="OracleModel.SYS_MOBILE_NOTIFICATIONS" Width="1.5" PointX="1.5" PointY="31.125" />
+        <EntityTypeShape EntityType="OracleModel.SYS_MOBILE_DEVICES" Width="1.5" PointX="3.125" PointY="31.125" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

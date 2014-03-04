@@ -75,5 +75,6 @@ namespace DBI.Data
         public DbSet<PA_ROLES_V> PA_ROLES_V { get; set; }
         public DbSet<DAILY_ACTIVITY_STATUS> DAILY_ACTIVITY_STATUS { get; set; }
         public DbSet<SYS_MOBILE_NOTIFICATIONS> SYS_MOBILE_NOTIFICATIONS { get; set; }
+        public DbSet<SYS_MOBILE_DEVICES> SYS_MOBILE_DEVICES { get; set; }
     }
 }

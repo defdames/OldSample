@@ -70,6 +70,7 @@
           <EntitySet Name="DAILY_ACTIVITY_WEATHER" EntityType="OracleModel.Store.DAILY_ACTIVITY_WEATHER" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_ACTIVITY" EntityType="OracleModel.Store.SYS_ACTIVITY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_LOG" EntityType="OracleModel.Store.SYS_LOG" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="SYS_MOBILE_DEVICES" EntityType="OracleModel.Store.SYS_MOBILE_DEVICES" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_MOBILE_NOTIFICATIONS" EntityType="OracleModel.Store.SYS_MOBILE_NOTIFICATIONS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USER_ACTIVITY" EntityType="OracleModel.Store.SYS_USER_ACTIVITY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USERS" EntityType="OracleModel.Store.SYS_USERS" store:Type="Tables" Schema="XXEMS" />
@@ -1242,6 +1243,14 @@
           <Property Name="STACKTRACE" Type="varchar2" Nullable="false" MaxLength="500" />
           <Property Name="DEBUG" Type="varchar2" MaxLength="1" />
           <Property Name="CREATED_DATE" Type="date" />
+        </EntityType>
+        <EntityType Name="SYS_MOBILE_DEVICES">
+          <Key>
+            <PropertyRef Name="DEVICE_ID" />
+          </Key>
+          <Property Name="DEVICE_ID" Type="varchar2" Nullable="false" MaxLength="200" StoreGeneratedPattern="Identity" />
+          <Property Name="DATE_CREATED" Type="date" />
+          <Property Name="LAST_ACTIVITY_DATE" Type="date" />
         </EntityType>
         <EntityType Name="SYS_MOBILE_NOTIFICATIONS">
           <Key>
@@ -2781,6 +2790,7 @@
           <EntitySet Name="PA_ROLES_V" EntityType="OracleModel.PA_ROLES_V" />
           <EntitySet Name="DAILY_ACTIVITY_STATUS" EntityType="OracleModel.DAILY_ACTIVITY_STATUS" />
           <EntitySet Name="SYS_MOBILE_NOTIFICATIONS" EntityType="OracleModel.SYS_MOBILE_NOTIFICATIONS" />
+          <EntitySet Name="SYS_MOBILE_DEVICES" EntityType="OracleModel.SYS_MOBILE_DEVICES" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -4915,6 +4925,14 @@
           <Property Type="Binary" Name="PROCESSING_ERROR" MaxLength="Max" FixedLength="false" />
           <Property Type="DateTime" Name="CREATE_DATE" />
         </EntityType>
+        <EntityType Name="SYS_MOBILE_DEVICES">
+          <Key>
+            <PropertyRef Name="DEVICE_ID" />
+          </Key>
+          <Property Type="String" Name="DEVICE_ID" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="DATE_CREATED" />
+          <Property Type="DateTime" Name="LAST_ACTIVITY_DATE" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6584,6 +6602,15 @@
                 <ScalarProperty Name="MESSAGE" ColumnName="MESSAGE" />
                 <ScalarProperty Name="DEVICE_ID" ColumnName="DEVICE_ID" />
                 <ScalarProperty Name="NOTIFICATION_ID" ColumnName="NOTIFICATION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_MOBILE_DEVICES">
+            <EntityTypeMapping TypeName="OracleModel.SYS_MOBILE_DEVICES">
+              <MappingFragment StoreEntitySet="SYS_MOBILE_DEVICES">
+                <ScalarProperty Name="LAST_ACTIVITY_DATE" ColumnName="LAST_ACTIVITY_DATE" />
+                <ScalarProperty Name="DATE_CREATED" ColumnName="DATE_CREATED" />
+                <ScalarProperty Name="DEVICE_ID" ColumnName="DEVICE_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
