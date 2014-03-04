@@ -34,7 +34,6 @@
         <AssociationConnector Association="OracleModel.FK_CHEMICAL_HEADER_ID" />
         <AssociationConnector Association="OracleModel.FK_HEADER_ID" />
         <AssociationConnector Association="OracleModel.FK_WEATHER_HEADER_ID" />
-        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_STATUS" Width="1.5" PointX="3.25" PointY="27.25" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_AUDIT" Width="1.5" PointX="7.875" PointY="11.625" />
         <AssociationConnector Association="OracleModel.FK_AUDIT_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.CROSSING" Width="1.5" PointX="26.5" PointY="0.5" />
@@ -53,7 +52,6 @@
         <AssociationConnector Association="OracleModel.FK_INVENTORY_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" Width="1.5" PointX="1.5" PointY="21" />
         <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" />
-        <EntityTypeShape EntityType="OracleModel.PA_ROLES_V" Width="1.5" PointX="14" PointY="17.375" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_FIELDSETS" Width="1.5" PointX="45.375" PointY="58.25" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_FORMS" Width="1.5" PointX="43.125" PointY="58.375" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_FORMS_ANS" Width="1.5" PointX="37.125" PointY="58.25" />
@@ -78,6 +76,9 @@
         <AssociationConnector Association="OracleModel.FK_FOOTER_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="1.125" PointY="15.375" />
         <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
+        <EntityTypeShape EntityType="OracleModel.PA_ROLES_V" Width="1.5" PointX="15.875" PointY="19" />
+        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_STATUS" Width="1.5" PointX="7.073317696840185" PointY="7.2952234033938606" />
+        <EntityTypeShape EntityType="OracleModel.SYS_MOBILE_NOTIFICATIONS" Width="1.5" PointX="8.3815091812897045" PointY="31.699175789812195" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

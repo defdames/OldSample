@@ -70,6 +70,7 @@
           <EntitySet Name="DAILY_ACTIVITY_WEATHER" EntityType="OracleModel.Store.DAILY_ACTIVITY_WEATHER" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_ACTIVITY" EntityType="OracleModel.Store.SYS_ACTIVITY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_LOG" EntityType="OracleModel.Store.SYS_LOG" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="SYS_MOBILE_NOTIFICATIONS" EntityType="OracleModel.Store.SYS_MOBILE_NOTIFICATIONS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USER_ACTIVITY" EntityType="OracleModel.Store.SYS_USER_ACTIVITY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USERS" EntityType="OracleModel.Store.SYS_USERS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="PA_LOCATIONS_V" EntityType="OracleModel.Store.PA_LOCATIONS_V" store:Type="Views" store:Schema="APPS" store:Name="PA_LOCATIONS_V">
@@ -323,19 +324,7 @@
       FROM "XXEMS"."INVENTORY_V" "INVENTORY_V"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="MTL_TRANSACTION_INT_V" EntityType="OracleModel.Store.MTL_TRANSACTION_INT_V" store:Type="Views" Schema="XXEMS" />
-          <EntitySet Name="PA_ROLES_V" EntityType="OracleModel.Store.PA_ROLES_V" store:Type="Views" store:Schema="XXEMS" store:Name="PA_ROLES_V">
-            <DefiningQuery>SELECT 
-      "PA_ROLES_V"."PROJECT_ID" AS "PROJECT_ID", 
-      "PA_ROLES_V"."PROJECT_ROLE_TYPE" AS "PROJECT_ROLE_TYPE", 
-      "PA_ROLES_V"."STATE" AS "STATE", 
-      "PA_ROLES_V"."COUNTY" AS "COUNTY", 
-      "PA_ROLES_V"."MEANING" AS "MEANING", 
-      "PA_ROLES_V"."EFFECTIVE_START_DATE" AS "EFFECTIVE_START_DATE", 
-      "PA_ROLES_V"."EFFECTIVE_END_DATE" AS "EFFECTIVE_END_DATE", 
-      "PA_ROLES_V"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE", 
-      "PA_ROLES_V"."PROJECT_STATUS_CODE" AS "PROJECT_STATUS_CODE"
-      FROM "XXEMS"."PA_ROLES_V" "PA_ROLES_V"</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="PA_ROLES_V" EntityType="OracleModel.Store.PA_ROLES_V" store:Type="Views" Schema="XXEMS" />
           <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.Store.PA_TASKS_V" store:Type="Views" store:Schema="XXEMS" store:Name="PA_TASKS_V">
             <DefiningQuery>SELECT 
       "PA_TASKS_V"."TASK_ID" AS "TASK_ID", 
@@ -1254,6 +1243,18 @@
           <Property Name="DEBUG" Type="varchar2" MaxLength="1" />
           <Property Name="CREATED_DATE" Type="date" />
         </EntityType>
+        <EntityType Name="SYS_MOBILE_NOTIFICATIONS">
+          <Key>
+            <PropertyRef Name="NOTIFICATION_ID" />
+          </Key>
+          <Property Name="NOTIFICATION_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="DEVICE_ID" Type="varchar2" Nullable="false" MaxLength="200" />
+          <Property Name="MESSAGE" Type="varchar2" MaxLength="200" />
+          <Property Name="SOUND" Type="varchar2" MaxLength="200" />
+          <Property Name="PROCESSED_DATE" Type="date" />
+          <Property Name="PROCESSING_ERROR" Type="blob" />
+          <Property Name="CREATE_DATE" Type="date" />
+        </EntityType>
         <EntityType Name="SYS_USER_ACTIVITY">
           <Key>
             <PropertyRef Name="USER_ACTIVITY_ID" />
@@ -1881,18 +1882,11 @@
           <Property Name="COMPLETION_TRANSACTION_ID" Type="number" />
           <Property Name="WIP_SUPPLY_TYPE" Type="number" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'XXEMS.PA_ROLES_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
         <EntityType Name="PA_ROLES_V">
           <Key>
-            <PropertyRef Name="PROJECT_ID" />
-            <PropertyRef Name="PROJECT_ROLE_TYPE" />
-            <PropertyRef Name="MEANING" />
-            <PropertyRef Name="EFFECTIVE_START_DATE" />
-            <PropertyRef Name="LAST_UPDATE_DATE" />
-            <PropertyRef Name="PROJECT_STATUS_CODE" />
+            <PropertyRef Name="ROWNUM" />
           </Key>
+          <Property Name="ROWNUM" Type="number" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PROJECT_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="PROJECT_ROLE_TYPE" Type="varchar2" Nullable="false" MaxLength="20" />
           <Property Name="STATE" Type="char" MaxLength="2" />
@@ -2691,7 +2685,6 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_WEATHER" EntitySet="DAILY_ACTIVITY_WEATHER" />
           </AssociationSet>
-          <EntitySet Name="DAILY_ACTIVITY_STATUS" EntityType="OracleModel.DAILY_ACTIVITY_STATUS" />
           <EntitySet Name="DAILY_ACTIVITY_AUDIT" EntityType="OracleModel.DAILY_ACTIVITY_AUDIT" />
           <AssociationSet Name="FK_AUDIT_HEADER_ID" Association="OracleModel.FK_AUDIT_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
@@ -2728,7 +2721,6 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_PRODUCTION" EntitySet="DAILY_ACTIVITY_PRODUCTION" />
           </AssociationSet>
-          <EntitySet Name="PA_ROLES_V" EntityType="OracleModel.PA_ROLES_V" />
           <EntitySet Name="CUSTOMER_SURVEY_FIELDSETS" EntityType="OracleModel.CUSTOMER_SURVEY_FIELDSETS" />
           <EntitySet Name="CUSTOMER_SURVEY_FORMS" EntityType="OracleModel.CUSTOMER_SURVEY_FORMS" />
           <EntitySet Name="CUSTOMER_SURVEY_FORMS_ANS" EntityType="OracleModel.CUSTOMER_SURVEY_FORMS_ANS" />
@@ -2786,6 +2778,9 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_EMPLOYEE" EntitySet="DAILY_ACTIVITY_EMPLOYEE" />
           </AssociationSet>
+          <EntitySet Name="PA_ROLES_V" EntityType="OracleModel.PA_ROLES_V" />
+          <EntitySet Name="DAILY_ACTIVITY_STATUS" EntityType="OracleModel.DAILY_ACTIVITY_STATUS" />
+          <EntitySet Name="SYS_MOBILE_NOTIFICATIONS" EntityType="OracleModel.SYS_MOBILE_NOTIFICATIONS" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -3770,14 +3765,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="DAILY_ACTIVITY_STATUS">
-          <Key>
-            <PropertyRef Name="STATUS_ID" />
-          </Key>
-          <Property Type="Int64" Name="STATUS_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="STATUS" Nullable="false" />
-          <Property Type="String" Name="STATUS_VALUE" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="DAILY_ACTIVITY_AUDIT">
           <Key>
             <PropertyRef Name="AUDIT_ID" />
@@ -4519,25 +4506,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="PA_ROLES_V">
-          <Key>
-            <PropertyRef Name="PROJECT_ID" />
-            <PropertyRef Name="PROJECT_ROLE_TYPE" />
-            <PropertyRef Name="MEANING" />
-            <PropertyRef Name="EFFECTIVE_START_DATE" />
-            <PropertyRef Name="LAST_UPDATE_DATE" />
-            <PropertyRef Name="PROJECT_STATUS_CODE" />
-          </Key>
-          <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
-          <Property Type="String" Name="PROJECT_ROLE_TYPE" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STATE" MaxLength="2" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="COUNTY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MEANING" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="EFFECTIVE_START_DATE" Nullable="false" />
-          <Property Type="DateTime" Name="EFFECTIVE_END_DATE" />
-          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
-          <Property Type="String" Name="PROJECT_STATUS_CODE" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_FIELDSETS">
           <Key>
             <PropertyRef Name="FIELDSET_ID" />
@@ -4912,6 +4880,41 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="PA_ROLES_V">
+          <Key>
+            <PropertyRef Name="ROWNUM" />
+          </Key>
+          <Property Type="Decimal" Name="ROWNUM" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
+          <Property Type="String" Name="PROJECT_ROLE_TYPE" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STATE" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="COUNTY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MEANING" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="EFFECTIVE_START_DATE" Nullable="false" />
+          <Property Type="DateTime" Name="EFFECTIVE_END_DATE" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
+          <Property Type="String" Name="PROJECT_STATUS_CODE" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="DAILY_ACTIVITY_STATUS">
+          <Key>
+            <PropertyRef Name="STATUS_ID" />
+          </Key>
+          <Property Type="Int64" Name="STATUS_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="STATUS" Nullable="false" />
+          <Property Type="String" Name="STATUS_VALUE" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SYS_MOBILE_NOTIFICATIONS">
+          <Key>
+            <PropertyRef Name="NOTIFICATION_ID" />
+          </Key>
+          <Property Type="Decimal" Name="NOTIFICATION_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="DEVICE_ID" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MESSAGE" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SOUND" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="PROCESSED_DATE" />
+          <Property Type="Binary" Name="PROCESSING_ERROR" MaxLength="Max" FixedLength="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5646,15 +5649,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DAILY_ACTIVITY_STATUS">
-            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_STATUS">
-              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_STATUS">
-                <ScalarProperty Name="STATUS_VALUE" ColumnName="STATUS_VALUE" />
-                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
-                <ScalarProperty Name="STATUS_ID" ColumnName="STATUS_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="DAILY_ACTIVITY_AUDIT">
             <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_AUDIT">
               <MappingFragment StoreEntitySet="DAILY_ACTIVITY_AUDIT">
@@ -6319,21 +6313,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PA_ROLES_V">
-            <EntityTypeMapping TypeName="OracleModel.PA_ROLES_V">
-              <MappingFragment StoreEntitySet="PA_ROLES_V">
-                <ScalarProperty Name="PROJECT_STATUS_CODE" ColumnName="PROJECT_STATUS_CODE" />
-                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
-                <ScalarProperty Name="EFFECTIVE_END_DATE" ColumnName="EFFECTIVE_END_DATE" />
-                <ScalarProperty Name="EFFECTIVE_START_DATE" ColumnName="EFFECTIVE_START_DATE" />
-                <ScalarProperty Name="MEANING" ColumnName="MEANING" />
-                <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
-                <ScalarProperty Name="STATE" ColumnName="STATE" />
-                <ScalarProperty Name="PROJECT_ROLE_TYPE" ColumnName="PROJECT_ROLE_TYPE" />
-                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CUSTOMER_SURVEY_FIELDSETS">
             <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_FIELDSETS">
               <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_FIELDSETS">
@@ -6567,6 +6546,44 @@
                 <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
                 <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
                 <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PA_ROLES_V">
+            <EntityTypeMapping TypeName="OracleModel.PA_ROLES_V">
+              <MappingFragment StoreEntitySet="PA_ROLES_V">
+                <ScalarProperty Name="PROJECT_STATUS_CODE" ColumnName="PROJECT_STATUS_CODE" />
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="EFFECTIVE_END_DATE" ColumnName="EFFECTIVE_END_DATE" />
+                <ScalarProperty Name="EFFECTIVE_START_DATE" ColumnName="EFFECTIVE_START_DATE" />
+                <ScalarProperty Name="MEANING" ColumnName="MEANING" />
+                <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+                <ScalarProperty Name="PROJECT_ROLE_TYPE" ColumnName="PROJECT_ROLE_TYPE" />
+                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
+                <ScalarProperty Name="ROWNUM" ColumnName="ROWNUM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DAILY_ACTIVITY_STATUS">
+            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_STATUS">
+              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_STATUS">
+                <ScalarProperty Name="STATUS_VALUE" ColumnName="STATUS_VALUE" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="STATUS_ID" ColumnName="STATUS_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_MOBILE_NOTIFICATIONS">
+            <EntityTypeMapping TypeName="OracleModel.SYS_MOBILE_NOTIFICATIONS">
+              <MappingFragment StoreEntitySet="SYS_MOBILE_NOTIFICATIONS">
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="PROCESSING_ERROR" ColumnName="PROCESSING_ERROR" />
+                <ScalarProperty Name="PROCESSED_DATE" ColumnName="PROCESSED_DATE" />
+                <ScalarProperty Name="SOUND" ColumnName="SOUND" />
+                <ScalarProperty Name="MESSAGE" ColumnName="MESSAGE" />
+                <ScalarProperty Name="DEVICE_ID" ColumnName="DEVICE_ID" />
+                <ScalarProperty Name="NOTIFICATION_ID" ColumnName="NOTIFICATION_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
