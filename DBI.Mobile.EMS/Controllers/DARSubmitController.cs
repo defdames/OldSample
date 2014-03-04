@@ -21,11 +21,6 @@ namespace DBI.Mobile.EMS.Controllers
         {
             string jsonString = req.Content.ReadAsStringAsync().Result;
 
-            //DEBUG TESTING
-            //System.IO.StreamWriter file2 = new System.IO.StreamWriter("c:\\temp\\" + id.ToString() + ".txt");
-            //file2.Write(jsonString);
-            //file2.Close();
-
             var jsonObj = new DailyActivityResponse.RootObject();
 
             try
@@ -35,10 +30,10 @@ namespace DBI.Mobile.EMS.Controllers
             catch (Exception ex)
             {
                 //DEBUG TESTING
-                System.IO.StreamWriter file2 = new System.IO.StreamWriter("c:\\temp\\error.txt");
-                file2.Write(ex.ToString());
-                file2.Close();
-                throw(ex);
+                //System.IO.StreamWriter file2 = new System.IO.StreamWriter("c:\\temp\\error.txt");
+                //file2.Write(ex.ToString());
+                //file2.Close();
+                //throw(ex);
             }
 
             //Save Data to logging table
@@ -54,11 +49,7 @@ namespace DBI.Mobile.EMS.Controllers
             //import.LATITUDE = decimal.Parse(req.Headers.Single(k => k.Key == "Latitude").Value.ToString());
             //import.LONGITUDE = decimal.Parse(req.Headers.Single(k => k.Key == "Longitude").Value.ToString());
             import.CREATE_DATE = DateTime.Now;
-            //import.CREATED_BY = h.CREATED_BY;
-            //GenericData.Insert<DAILY_ACTIVITY_IMPORT>(import);
            
-
- 
                try
             {
 
@@ -116,6 +107,8 @@ namespace DBI.Mobile.EMS.Controllers
                     e.ROLE_TYPE = j.role_type;
                     e.STATE = j.state;
                     e.COUNTY = j.county;
+                    e.SHOPTIME_AM = j.shoptime_am;
+                    e.SHOPTIME_PM = j.shoptime_pm;
 
                     if (j.equipment_id > 0)
                     {
@@ -228,6 +221,8 @@ namespace DBI.Mobile.EMS.Controllers
                     f.FOREMAN_SIGNATURE = Convert.FromBase64String(j.foreman_signature);
                     f.CONTRACT_REP = Convert.FromBase64String(j.contract_rep);
                     f.CONTRACT_REP_NAME = j.contract_rep_name;
+                    f.CONTRACT_REP_EMAIL = j.contract_rep_email;
+                    f.DOT_REP_EMAIL = j.dot_rep_email;
                     f.CREATE_DATE = DateTime.Now;
                     f.MODIFY_DATE = DateTime.Now;
                     f.CREATED_BY = h.CREATED_BY;

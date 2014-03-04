@@ -45,6 +45,8 @@ namespace DBI.Mobile.EMS.Models
             public string dot_rep_name { get; set; }
             public string hotel_state { get; set; }
             public string contract_rep_name { get; set; }
+            public string contract_rep_email { get; set; }
+            public string dot_rep_email { get; set; }
         }
 
         public class DailyActivityWeather
@@ -111,6 +113,8 @@ namespace DBI.Mobile.EMS.Models
             public string per_diem { get; set; }
             public int person_id { get; set; }
             public string time_in { get; set; }
+            public decimal shoptime_am { get; set; }
+            public decimal shoptime_pm { get; set; }
         }
 
         public class RootObject
