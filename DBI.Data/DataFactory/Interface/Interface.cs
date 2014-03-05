@@ -530,7 +530,7 @@ namespace DBI.Data
                         SYS_MOBILE_NOTIFICATIONS notification = new SYS_MOBILE_NOTIFICATIONS();
                         notification.DEVICE_ID = importDetails.DEVICE_ID;
                         notification.CREATE_DATE = DateTime.Now;
-                        notification.MESSAGE = string.Format("Daily activity for {0} completed on {1} has been posted by {2}",projectDetails.LONG_NAME,headerDetails.DA_DATE,postedByUser);
+                        notification.MESSAGE = string.Format("Daily activity for {0} completed on {1} has been posted by {2}",projectDetails.LONG_NAME,DateTime.Parse(headerDetails.DA_DATE.ToString()).ToShortDateString(),postedByUser);
                         notification.SOUND = "alert.caf";
                         GenericData.Insert<SYS_MOBILE_NOTIFICATIONS>(notification);
                     }

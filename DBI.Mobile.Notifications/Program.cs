@@ -4,9 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DBI.Data;
 using PushSharp;
 using PushSharp.Apple;
 using PushSharp.Core;
+
 
 namespace DBI.Mobile.Notifications
 {
@@ -31,20 +33,25 @@ namespace DBI.Mobile.Notifications
             
             push.RegisterAppleService(new ApplePushChannelSettings(true, appleCert, "Dbi18201")); //Extension method
 
-			push.QueueNotification(new AppleNotification()
-                                       .ForDeviceToken("d60e342cb3caad4562f1f972ea7159d6897069cb26c64c8716ee95384c8693d7")
-                                       .WithAlert("Daily activity for UP CROSSINGS completed on 3/5/2014 12:00:00 AM has been posted by Leonard J Jankowski")
-			                           .WithBadge(1)
-			                           .WithSound("alert.caf"));
 
+            List<SYS_MOBILE_NOTIFICATIONS> notifications = DBI.Data.SYS_MOBILE_NOTIFICATIONS.unprocessedNotifications();
+
+            foreach (SYS_MOBILE_NOTIFICATIONS notification in notifications)
+            {
+                push.QueueNotification(new AppleNotification()
+                           .ForDeviceToken(notification.DEVICE_ID)
+                           .WithAlert(notification.MESSAGE)
+                           .WithSound(notification.SOUND));
+
+                //update the notification to processed
+                notification.PROCESSED_DATE = DateTime.Now;
+                GenericData.Update<SYS_MOBILE_NOTIFICATIONS>(notification);
+            }
 
 			Console.WriteLine("Waiting for Queue to Finish...");
 
 			//Stop and wait for the queues to drains
 			push.StopAllServices();
-
-			Console.WriteLine("Queue Finished, press return to exit...");
-	
 		}
 
 		static void DeviceSubscriptionChanged(object sender, string oldSubscriptionId, string newSubscriptionId, INotification notification)
