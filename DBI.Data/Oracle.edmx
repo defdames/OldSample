@@ -1248,7 +1248,7 @@
           <Key>
             <PropertyRef Name="DEVICE_ID" />
           </Key>
-          <Property Name="DEVICE_ID" Type="varchar2" Nullable="false" MaxLength="200" StoreGeneratedPattern="Identity" />
+          <Property Name="DEVICE_ID" Type="varchar2" Nullable="false" MaxLength="200" StoreGeneratedPattern="None" />
           <Property Name="DATE_CREATED" Type="date" />
           <Property Name="LAST_ACTIVITY_DATE" Type="date" />
         </EntityType>
@@ -4929,7 +4929,7 @@
           <Key>
             <PropertyRef Name="DEVICE_ID" />
           </Key>
-          <Property Type="String" Name="DEVICE_ID" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="DEVICE_ID" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="None" />
           <Property Type="DateTime" Name="DATE_CREATED" />
           <Property Type="DateTime" Name="LAST_ACTIVITY_DATE" />
         </EntityType>
