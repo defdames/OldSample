@@ -1321,8 +1321,8 @@
           <Property Name="MESSAGE" Type="varchar2" MaxLength="200" />
           <Property Name="SOUND" Type="varchar2" MaxLength="200" />
           <Property Name="PROCESSED_DATE" Type="date" />
-          <Property Name="PROCESSING_ERROR" Type="blob" />
           <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="PROCESSING_ERROR" Type="clob" />
         </EntityType>
         <EntityType Name="SYS_MODULES">
           <Key>
@@ -2958,7 +2958,6 @@
           </AssociationSet>
           <EntitySet Name="PA_ROLES_V" EntityType="OracleModel.PA_ROLES_V" />
           <EntitySet Name="DAILY_ACTIVITY_STATUS" EntityType="OracleModel.DAILY_ACTIVITY_STATUS" />
-          <EntitySet Name="SYS_MOBILE_NOTIFICATIONS" EntityType="OracleModel.SYS_MOBILE_NOTIFICATIONS" />
           <EntitySet Name="SYS_GROUPS" EntityType="OracleModel.SYS_GROUPS" />
           <EntitySet Name="SYS_GROUPS_PERMS" EntityType="OracleModel.SYS_GROUPS_PERMS" />
           <EntitySet Name="SYS_MENU" EntityType="OracleModel.SYS_MENU" />
@@ -2994,6 +2993,7 @@
             <End Role="SYS_USER_PERMS" EntitySet="SYS_USER_PERMS" />
           </AssociationSet>
           <EntitySet Name="SYS_MOBILE_DEVICES" EntityType="OracleModel.SYS_MOBILE_DEVICES" />
+          <EntitySet Name="SYS_MOBILE_NOTIFICATIONS" EntityType="OracleModel.SYS_MOBILE_NOTIFICATIONS" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -5117,18 +5117,6 @@
           <Property Type="Int32" Name="STATUS" Nullable="false" />
           <Property Type="String" Name="STATUS_VALUE" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="SYS_MOBILE_NOTIFICATIONS">
-          <Key>
-            <PropertyRef Name="NOTIFICATION_ID" />
-          </Key>
-          <Property Type="Decimal" Name="NOTIFICATION_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="DEVICE_ID" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MESSAGE" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SOUND" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="PROCESSED_DATE" />
-          <Property Type="Binary" Name="PROCESSING_ERROR" MaxLength="Max" FixedLength="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-        </EntityType>
         <EntityType Name="SYS_GROUPS">
           <Key>
             <PropertyRef Name="GROUP_ID" />
@@ -5284,6 +5272,18 @@
           <Property Type="DateTime" Name="DATE_CREATED" />
           <Property Type="DateTime" Name="LAST_ACTIVITY_DATE" />
           <Property Type="Int64" Name="LAST_ACTIVITY_USER_ID" />
+        </EntityType>
+        <EntityType Name="SYS_MOBILE_NOTIFICATIONS">
+          <Key>
+            <PropertyRef Name="NOTIFICATION_ID" />
+          </Key>
+          <Property Type="Decimal" Name="NOTIFICATION_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="DEVICE_ID" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MESSAGE" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SOUND" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="PROCESSED_DATE" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="PROCESSING_ERROR" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -6944,19 +6944,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SYS_MOBILE_NOTIFICATIONS">
-            <EntityTypeMapping TypeName="OracleModel.SYS_MOBILE_NOTIFICATIONS">
-              <MappingFragment StoreEntitySet="SYS_MOBILE_NOTIFICATIONS">
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="PROCESSING_ERROR" ColumnName="PROCESSING_ERROR" />
-                <ScalarProperty Name="PROCESSED_DATE" ColumnName="PROCESSED_DATE" />
-                <ScalarProperty Name="SOUND" ColumnName="SOUND" />
-                <ScalarProperty Name="MESSAGE" ColumnName="MESSAGE" />
-                <ScalarProperty Name="DEVICE_ID" ColumnName="DEVICE_ID" />
-                <ScalarProperty Name="NOTIFICATION_ID" ColumnName="NOTIFICATION_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="SYS_GROUPS">
             <EntityTypeMapping TypeName="OracleModel.SYS_GROUPS">
               <MappingFragment StoreEntitySet="SYS_GROUPS">
@@ -7020,6 +7007,19 @@
                 <ScalarProperty Name="LAST_ACTIVITY_DATE" ColumnName="LAST_ACTIVITY_DATE" />
                 <ScalarProperty Name="DATE_CREATED" ColumnName="DATE_CREATED" />
                 <ScalarProperty Name="DEVICE_ID" ColumnName="DEVICE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_MOBILE_NOTIFICATIONS">
+            <EntityTypeMapping TypeName="OracleModel.SYS_MOBILE_NOTIFICATIONS">
+              <MappingFragment StoreEntitySet="SYS_MOBILE_NOTIFICATIONS">
+                <ScalarProperty Name="PROCESSING_ERROR" ColumnName="PROCESSING_ERROR" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="PROCESSED_DATE" ColumnName="PROCESSED_DATE" />
+                <ScalarProperty Name="SOUND" ColumnName="SOUND" />
+                <ScalarProperty Name="MESSAGE" ColumnName="MESSAGE" />
+                <ScalarProperty Name="DEVICE_ID" ColumnName="DEVICE_ID" />
+                <ScalarProperty Name="NOTIFICATION_ID" ColumnName="NOTIFICATION_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
