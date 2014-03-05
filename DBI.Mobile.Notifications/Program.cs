@@ -51,11 +51,6 @@ namespace DBI.Mobile.Notifications
 			push.StopAllServices();
 		}
 
-       static void updateNotificationByID(int notificationID)
-       {
-
-
-       }
 
 		static void DeviceSubscriptionChanged(object sender, string oldSubscriptionId, string newSubscriptionId, INotification notification)
 		{
@@ -67,22 +62,16 @@ namespace DBI.Mobile.Notifications
 		{
 			Console.WriteLine("Sent: " + sender + " -> " + notification);
 
-            decimal token = (decimal)notification.Tag;
-            DBI.Data.SYS_MOBILE_NOTIFICATIONS m_notification = DBI.Data.SYS_MOBILE_NOTIFICATIONS.notificationById(token);
-            //update the notification to processed
-            m_notification.PROCESSED_DATE = DateTime.Now;
-            GenericData.Update<SYS_MOBILE_NOTIFICATIONS>(m_notification);
+            int token = Convert.ToInt16(notification.Tag.ToString().Trim());
+            DBI.Data.SYS_MOBILE_NOTIFICATIONS.UpdateNotificationToProcessed(token);
+  
 		}
 
 		static void NotificationFailed(object sender, INotification notification, Exception notificationFailureException)
 		{
 			Console.WriteLine("Failure: " + sender + " -> " + notificationFailureException.Message + " -> " + notification);
-            decimal token = (decimal)notification.Tag;
-            DBI.Data.SYS_MOBILE_NOTIFICATIONS m_notification = DBI.Data.SYS_MOBILE_NOTIFICATIONS.notificationById(token);
-            //update the notification to processed
-            m_notification.PROCESSED_DATE = DateTime.Now;
-            m_notification.PROCESSING_ERROR = notificationFailureException.Message;
-            GenericData.Update<SYS_MOBILE_NOTIFICATIONS>(m_notification);
+            int token = Convert.ToInt16(notification.Tag.ToString().Trim());
+            DBI.Data.SYS_MOBILE_NOTIFICATIONS.UpdateNotificationToProcessed(token, notificationFailureException.Message);
 		}
 
 		static void ChannelException(object sender, IPushChannel channel, Exception exception)
@@ -97,13 +86,7 @@ namespace DBI.Mobile.Notifications
 
 		static void DeviceSubscriptionExpired(object sender, string expiredDeviceSubscriptionId, DateTime timestamp, INotification notification)
 		{
-			Console.WriteLine("Device Subscription Expired: " + sender + " -> " + expiredDeviceSubscriptionId);
-            decimal token = (decimal)notification.Tag;
-            DBI.Data.SYS_MOBILE_NOTIFICATIONS m_notification = DBI.Data.SYS_MOBILE_NOTIFICATIONS.notificationById(token);
-            //update the notification to processed
-            m_notification.PROCESSED_DATE = DateTime.Now;
-            m_notification.PROCESSING_ERROR = notificationFailureException.Message;
-            GenericData.Update<SYS_MOBILE_NOTIFICATIONS>(m_notification);
+            Console.WriteLine("Device Subscription Expired: " + sender + " -> " + expiredDeviceSubscriptionId);
 
 		}
 

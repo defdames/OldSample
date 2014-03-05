@@ -229,12 +229,13 @@ namespace DBI.Data
             using (Entities _context = new Entities())
             {
                 var productionData = (from p in _context.DAILY_ACTIVITY_PRODUCTION
-                                                           join t in _context.PA_TASKS_V on p.TASK_ID equals t.TASK_ID into task
-                                                           from tasks in task.DefaultIfEmpty()
-                                                           where p.HEADER_ID == dailyActivityHeaderID
-                                                           select new { tasks.TASK_NUMBER });
+                                                           join t in _context.PA_TASKS_V on p.TASK_ID equals t.TASK_ID 
+                                                             where p.HEADER_ID == dailyActivityHeaderID
+                                                           select new { t.TASK_NUMBER });
 
-                return (productionData != null) ? productionData.First().TASK_NUMBER : "9999";
+                var task = productionData.FirstOrDefault();
+
+                return (task != null) ? task.TASK_NUMBER : "9999";
 
             }
         }
