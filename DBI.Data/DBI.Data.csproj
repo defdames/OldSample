@@ -262,16 +262,31 @@
     <Compile Include="SYS_ACTIVITY.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="SYS_GROUPS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SYS_GROUPS_PERMS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="SYS_LOG.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="SYS_LOG_CT.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="SYS_MENU.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="SYS_MOBILE_DEVICES.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="SYS_MOBILE_NOTIFICATIONS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SYS_MODULES.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SYS_PERMISSIONS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="SYS_USERS.cs">
@@ -284,6 +299,9 @@
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="SYS_USER_INFORMATION.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SYS_USER_PERMS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="UNIT_OF_MEASURE_V.cs">
