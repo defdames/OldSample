@@ -41,11 +41,8 @@ namespace DBI.Mobile.Notifications
                 push.QueueNotification(new AppleNotification()
                            .ForDeviceToken(notification.DEVICE_ID)
                            .WithAlert(notification.MESSAGE)
-                           .WithSound(notification.SOUND));
-
-                //update the notification to processed
-                notification.PROCESSED_DATE = DateTime.Now;
-                GenericData.Update<SYS_MOBILE_NOTIFICATIONS>(notification);
+                           .WithSound(notification.SOUND)
+                           .WithTag(notification.NOTIFICATION_ID));
             }
 
 			Console.WriteLine("Waiting for Queue to Finish...");
@@ -53,6 +50,12 @@ namespace DBI.Mobile.Notifications
 			//Stop and wait for the queues to drains
 			push.StopAllServices();
 		}
+
+       static void updateNotificationByID(int notificationID)
+       {
+
+
+       }
 
 		static void DeviceSubscriptionChanged(object sender, string oldSubscriptionId, string newSubscriptionId, INotification notification)
 		{
@@ -63,11 +66,23 @@ namespace DBI.Mobile.Notifications
 		static void NotificationSent(object sender, INotification notification)
 		{
 			Console.WriteLine("Sent: " + sender + " -> " + notification);
+
+            decimal token = (decimal)notification.Tag;
+            DBI.Data.SYS_MOBILE_NOTIFICATIONS m_notification = DBI.Data.SYS_MOBILE_NOTIFICATIONS.notificationById(token);
+            //update the notification to processed
+            m_notification.PROCESSED_DATE = DateTime.Now;
+            GenericData.Update<SYS_MOBILE_NOTIFICATIONS>(m_notification);
 		}
 
 		static void NotificationFailed(object sender, INotification notification, Exception notificationFailureException)
 		{
 			Console.WriteLine("Failure: " + sender + " -> " + notificationFailureException.Message + " -> " + notification);
+            decimal token = (decimal)notification.Tag;
+            DBI.Data.SYS_MOBILE_NOTIFICATIONS m_notification = DBI.Data.SYS_MOBILE_NOTIFICATIONS.notificationById(token);
+            //update the notification to processed
+            m_notification.PROCESSED_DATE = DateTime.Now;
+            m_notification.PROCESSING_ERROR = notificationFailureException.Message;
+            GenericData.Update<SYS_MOBILE_NOTIFICATIONS>(m_notification);
 		}
 
 		static void ChannelException(object sender, IPushChannel channel, Exception exception)
@@ -83,6 +98,13 @@ namespace DBI.Mobile.Notifications
 		static void DeviceSubscriptionExpired(object sender, string expiredDeviceSubscriptionId, DateTime timestamp, INotification notification)
 		{
 			Console.WriteLine("Device Subscription Expired: " + sender + " -> " + expiredDeviceSubscriptionId);
+            decimal token = (decimal)notification.Tag;
+            DBI.Data.SYS_MOBILE_NOTIFICATIONS m_notification = DBI.Data.SYS_MOBILE_NOTIFICATIONS.notificationById(token);
+            //update the notification to processed
+            m_notification.PROCESSED_DATE = DateTime.Now;
+            m_notification.PROCESSING_ERROR = notificationFailureException.Message;
+            GenericData.Update<SYS_MOBILE_NOTIFICATIONS>(m_notification);
+
 		}
 
 		static void ChannelDestroyed(object sender)

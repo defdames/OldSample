@@ -16,7 +16,7 @@ namespace DBI.Mobile.EMS.Controllers
             return id.ToString();
         }
 
-        public static void registerDeviceForNotifications(string deviceID)
+        public static void registerDeviceForNotifications(string deviceID, long userID)
         {
 
             if(!string.IsNullOrEmpty(deviceID))
@@ -37,6 +37,7 @@ namespace DBI.Mobile.EMS.Controllers
                     {
                         SYS_MOBILE_DEVICES newDevice = new SYS_MOBILE_DEVICES();
                         newDevice.DEVICE_ID = deviceID;
+                        newDevice.LAST_ACTIVITY_USER_ID = userID;
                         newDevice.DATE_CREATED = DateTime.Now;
                         newDevice.LAST_ACTIVITY_DATE = newDevice.DATE_CREATED;
                         GenericData.Insert<SYS_MOBILE_DEVICES>(newDevice);

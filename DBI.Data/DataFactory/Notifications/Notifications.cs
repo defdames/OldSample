@@ -19,6 +19,16 @@ namespace DBI.Data
             }
         }
 
+        public static SYS_MOBILE_NOTIFICATIONS notificationById(decimal notificationID)
+        {
+            using (Entities _context = new Entities())
+            {
+                // Get a list of unprocessed notifications sort by device id
+                SYS_MOBILE_NOTIFICATIONS notification = _context.SYS_MOBILE_NOTIFICATIONS.Where(n => n.NOTIFICATION_ID == notificationID).SingleOrDefault();
+                return notification;
+            }
+        }
+
 
     }
 }
