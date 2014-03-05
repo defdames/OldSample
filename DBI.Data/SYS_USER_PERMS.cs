@@ -12,11 +12,14 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class SYS_MOBILE_DEVICES
+    public partial class SYS_USER_PERMS
     {
-        public string DEVICE_ID { get; set; }
-        public Nullable<System.DateTime> DATE_CREATED { get; set; }
-        public Nullable<System.DateTime> LAST_ACTIVITY_DATE { get; set; }
-        public Nullable<long> LAST_ACTIVITY_USER_ID { get; set; }
+        public decimal USER_PERMS_ID { get; set; }
+        public decimal PERMISSION_ID { get; set; }
+        public long USER_ID { get; set; }
+        public string ALLOW_DENY { get; set; }
+    
+        public virtual SYS_PERMISSIONS SYS_PERMISSIONS { get; set; }
+        public virtual SYS_USERS SYS_USERS { get; set; }
     }
 }

@@ -12,11 +12,15 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class SYS_MOBILE_DEVICES
+    public partial class SYS_MENU
     {
-        public string DEVICE_ID { get; set; }
-        public Nullable<System.DateTime> DATE_CREATED { get; set; }
-        public Nullable<System.DateTime> LAST_ACTIVITY_DATE { get; set; }
-        public Nullable<long> LAST_ACTIVITY_USER_ID { get; set; }
+        public decimal MENU_ID { get; set; }
+        public string ITEM_NAME { get; set; }
+        public string ITEM_URL { get; set; }
+        public decimal MODULE_ID { get; set; }
+        public decimal PERMISSION_ID { get; set; }
+    
+        public virtual SYS_MODULES SYS_MODULES { get; set; }
+        public virtual SYS_PERMISSIONS SYS_PERMISSIONS { get; set; }
     }
 }

@@ -12,11 +12,16 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class SYS_MOBILE_DEVICES
+    public partial class SYS_GROUPS
     {
-        public string DEVICE_ID { get; set; }
-        public Nullable<System.DateTime> DATE_CREATED { get; set; }
-        public Nullable<System.DateTime> LAST_ACTIVITY_DATE { get; set; }
-        public Nullable<long> LAST_ACTIVITY_USER_ID { get; set; }
+        public SYS_GROUPS()
+        {
+            this.SYS_GROUPS_PERMS = new HashSet<SYS_GROUPS_PERMS>();
+        }
+    
+        public decimal GROUP_ID { get; set; }
+        public string GROUP_NAME { get; set; }
+    
+        public virtual ICollection<SYS_GROUPS_PERMS> SYS_GROUPS_PERMS { get; set; }
     }
 }
