@@ -19,7 +19,7 @@ namespace DBI.Data
         public string MESSAGE { get; set; }
         public string SOUND { get; set; }
         public Nullable<System.DateTime> PROCESSED_DATE { get; set; }
-        public byte[] PROCESSING_ERROR { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
+        public string PROCESSING_ERROR { get; set; }
     }
 }
