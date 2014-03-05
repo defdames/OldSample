@@ -113,7 +113,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 {
                     INSPECTION_NUMBER = InspectionNumber,
                     INSPECTION_DATE = Date,
-                    TRUCK_NUMBER = TruckNumber,
+                    //TRUCK_NUMBER = TruckNumber,
                     SPRAY = Spray,
                     CUT = Cut,
                     INSPECT = Inspect,
@@ -237,7 +237,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             data.INSPECTION_DATE = Date;
             data.INSPECTION_NUMBER = InspectionNumber;
-            data.TRUCK_NUMBER = TruckNumber;
+            //data.TRUCK_NUMBER = TruckNumber;
             data.SPRAY = Spray;
             data.CUT = Cut;
             data.INSPECT = Inspect;

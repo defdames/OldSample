@@ -117,7 +117,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     APPLICATION_NUMBER = ApplicationNumber,
                     APPLICATION_DATE = Date,
                     //APPLICATION_REQUESTED = AppRequested,
-                    TRUCK_NUMBER = TruckNumber,
+                    //TRUCK_NUMBER = TruckNumber,
                     SPRAY = Spray,
                     CUT = Cut,
                     INSPECT = Inspect,
@@ -246,7 +246,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             data.APPLICATION_DATE = Date;
             data.APPLICATION_NUMBER = ApplicationNumber;
             //data.APPLICATION_REQUESTED = AppRequested;
-            data.TRUCK_NUMBER = TruckNumber;
+            //data.TRUCK_NUMBER = TruckNumber;
             data.SPRAY = Spray;
             data.CUT = Cut;
             data.INSPECT = Inspect;

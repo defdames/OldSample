@@ -69,7 +69,7 @@ namespace DBI.Mobile.EMS.Controllers
                         h.MODIFY_DATE = DateTime.Now;
                         h.CREATED_BY = j.created_by.ToUpper();
                         h.MODIFIED_BY = j.created_by.ToUpper();
-                        h.STATUS = 1;
+                        h.STATUS = 2;
                         h.DA_HEADER_ID = 0;
                         GenericData.Insert<DAILY_ACTIVITY_HEADER>(h);
                 }

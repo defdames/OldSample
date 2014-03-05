@@ -32,10 +32,10 @@ namespace DBI.Mobile.Notifications
             push.RegisterAppleService(new ApplePushChannelSettings(true, appleCert, "Dbi18201")); //Extension method
 
 			push.QueueNotification(new AppleNotification()
-			                           .ForDeviceToken("DEVICE TOKEN HERE")
-			                           .WithAlert("Hello World!")
-			                           .WithBadge(7)
-			                           .WithSound("sound.caf"));
+                                       .ForDeviceToken("51fc94b5a7c9fbc50bfbf2733ea0a90063a8bdb0dd00975279aad2d6a724c487")
+                                       .WithAlert("Daily activity for UP CROSSINGS completed on 3/5/2014 12:00:00 AM has been posted by Leonard J Jankowski")
+			                           .WithBadge(1)
+			                           .WithSound("alert.caf"));
 
 
 			Console.WriteLine("Waiting for Queue to Finish...");
@@ -89,5 +89,4 @@ namespace DBI.Mobile.Notifications
 		}
 	}
 
-    }
 }

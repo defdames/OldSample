@@ -48,6 +48,8 @@ namespace DBI.Data
                     }
                     GenericData.Update<DAILY_ACTIVITY_HEADER>(HeaderRecord);
 
+                    Interface.postNotificationMessage(userInformation.EMPLOYEE_NAME, HeaderRecord);
+
                     transaction.Complete();
                 }
             }
@@ -511,6 +513,37 @@ namespace DBI.Data
                                        select p).Max(p => p.END_DATE);
                 return returnDate;
             }
+        }
+
+        public static void postNotificationMessage(string postedByUser, DAILY_ACTIVITY_HEADER headerDetails)
+        {
+            try
+            {
+                using(Entities _context = new Entities())
+                {
+                    DAILY_ACTIVITY_IMPORT importDetails = _context.DAILY_ACTIVITY_IMPORT.Where(h => h.HEADER_ID == headerDetails.HEADER_ID).SingleOrDefault();
+
+                    PROJECTS_V projectDetails = _context.PROJECTS_V.Where(p => p.PROJECT_ID == headerDetails.PROJECT_ID).SingleOrDefault();
+
+                    if(importDetails != null || importDetails.DEVICE_ID != "0001")
+                    {
+                        SYS_MOBILE_NOTIFICATIONS notification = new SYS_MOBILE_NOTIFICATIONS();
+                        notification.DEVICE_ID = importDetails.DEVICE_ID;
+                        notification.CREATE_DATE = DateTime.Now;
+                        notification.MESSAGE = string.Format("Daily activity for {0} completed on {1} has been posted by {2}",projectDetails.LONG_NAME,headerDetails.DA_DATE,postedByUser);
+                        notification.SOUND = "alert.caf";
+                        GenericData.Insert<SYS_MOBILE_NOTIFICATIONS>(notification);
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                
+                throw;
+            }
+
         }
 
 

@@ -138,7 +138,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     SERVICE_TYPE = ServiceType,
                     INSPECT_START = InspectionStart,
                     INSPECT_END = InspectionEnd,
-                    TRUCK_NUMBER = TruckNumber,
+                    //TRUCK_NUMBER = TruckNumber,
                     SPRAY = Spray,
                     CUT = Cut,
                     MAINTAIN = Maintain,
@@ -296,7 +296,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     data.SERVICE_TYPE = ServiceType;
                     data.INSPECT_START = InspectionStart;
                     data.INSPECT_END = InspectionEnd;
-                    data.TRUCK_NUMBER = TruckNumber;
+                    //data.TRUCK_NUMBER = TruckNumber;
                     data.SPRAY = Spray;
                     data.CUT = Cut;
                     data.MAINTAIN = Maintain;
