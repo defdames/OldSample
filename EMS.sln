@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBI.AssemblyVersion", "DBI.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBI.Mobile.EMS", "DBI.Mobile.EMS\DBI.Mobile.EMS.csproj", "{EE80E524-B5FB-49A7-A367-D7AB809C6F52}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBI.Mobile.Notifications", "DBI.Mobile.Notifications\DBI.Mobile.Notifications.csproj", "{E8826726-F933-4D6E-91E3-46920DE62D98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,12 @@ Global
 		{EE80E524-B5FB-49A7-A367-D7AB809C6F52}.PCL03|Any CPU.Build.0 = PCL03|Any CPU
 		{EE80E524-B5FB-49A7-A367-D7AB809C6F52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE80E524-B5FB-49A7-A367-D7AB809C6F52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8826726-F933-4D6E-91E3-46920DE62D98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8826726-F933-4D6E-91E3-46920DE62D98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8826726-F933-4D6E-91E3-46920DE62D98}.PCL03|Any CPU.ActiveCfg = Release|Any CPU
+		{E8826726-F933-4D6E-91E3-46920DE62D98}.PCL03|Any CPU.Build.0 = Release|Any CPU
+		{E8826726-F933-4D6E-91E3-46920DE62D98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8826726-F933-4D6E-91E3-46920DE62D98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
