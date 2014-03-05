@@ -17,5 +17,6 @@ namespace DBI.Data
         public string DEVICE_ID { get; set; }
         public Nullable<System.DateTime> DATE_CREATED { get; set; }
         public Nullable<System.DateTime> LAST_ACTIVITY_DATE { get; set; }
+        public Nullable<long> LAST_ACTIVITY_USER_ID { get; set; }
     }
 }

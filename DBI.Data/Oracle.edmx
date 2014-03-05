@@ -1310,6 +1310,7 @@
           <Property Name="DEVICE_ID" Type="varchar2" Nullable="false" MaxLength="200" />
           <Property Name="DATE_CREATED" Type="date" />
           <Property Name="LAST_ACTIVITY_DATE" Type="date" />
+          <Property Name="LAST_ACTIVITY_USER_ID" Type="number" Precision="15" />
         </EntityType>
         <EntityType Name="SYS_MOBILE_NOTIFICATIONS">
           <Key>
@@ -2958,7 +2959,6 @@
           <EntitySet Name="PA_ROLES_V" EntityType="OracleModel.PA_ROLES_V" />
           <EntitySet Name="DAILY_ACTIVITY_STATUS" EntityType="OracleModel.DAILY_ACTIVITY_STATUS" />
           <EntitySet Name="SYS_MOBILE_NOTIFICATIONS" EntityType="OracleModel.SYS_MOBILE_NOTIFICATIONS" />
-          <EntitySet Name="SYS_MOBILE_DEVICES" EntityType="OracleModel.SYS_MOBILE_DEVICES" />
           <EntitySet Name="SYS_GROUPS" EntityType="OracleModel.SYS_GROUPS" />
           <EntitySet Name="SYS_GROUPS_PERMS" EntityType="OracleModel.SYS_GROUPS_PERMS" />
           <EntitySet Name="SYS_MENU" EntityType="OracleModel.SYS_MENU" />
@@ -2993,6 +2993,7 @@
             <End Role="SYS_USERS" EntitySet="SYS_USERS" />
             <End Role="SYS_USER_PERMS" EntitySet="SYS_USER_PERMS" />
           </AssociationSet>
+          <EntitySet Name="SYS_MOBILE_DEVICES" EntityType="OracleModel.SYS_MOBILE_DEVICES" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -5128,14 +5129,6 @@
           <Property Type="Binary" Name="PROCESSING_ERROR" MaxLength="Max" FixedLength="false" />
           <Property Type="DateTime" Name="CREATE_DATE" />
         </EntityType>
-        <EntityType Name="SYS_MOBILE_DEVICES">
-          <Key>
-            <PropertyRef Name="DEVICE_ID" />
-          </Key>
-          <Property Type="String" Name="DEVICE_ID" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="None" />
-          <Property Type="DateTime" Name="DATE_CREATED" />
-          <Property Type="DateTime" Name="LAST_ACTIVITY_DATE" />
-        </EntityType>
         <EntityType Name="SYS_GROUPS">
           <Key>
             <PropertyRef Name="GROUP_ID" />
@@ -5283,6 +5276,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="SYS_MOBILE_DEVICES">
+          <Key>
+            <PropertyRef Name="DEVICE_ID" />
+          </Key>
+          <Property Type="String" Name="DEVICE_ID" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="DATE_CREATED" />
+          <Property Type="DateTime" Name="LAST_ACTIVITY_DATE" />
+          <Property Type="Int64" Name="LAST_ACTIVITY_USER_ID" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6955,15 +6957,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SYS_MOBILE_DEVICES">
-            <EntityTypeMapping TypeName="OracleModel.SYS_MOBILE_DEVICES">
-              <MappingFragment StoreEntitySet="SYS_MOBILE_DEVICES">
-                <ScalarProperty Name="LAST_ACTIVITY_DATE" ColumnName="LAST_ACTIVITY_DATE" />
-                <ScalarProperty Name="DATE_CREATED" ColumnName="DATE_CREATED" />
-                <ScalarProperty Name="DEVICE_ID" ColumnName="DEVICE_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="SYS_GROUPS">
             <EntityTypeMapping TypeName="OracleModel.SYS_GROUPS">
               <MappingFragment StoreEntitySet="SYS_GROUPS">
@@ -7017,6 +7010,16 @@
                 <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
                 <ScalarProperty Name="PERMISSION_ID" ColumnName="PERMISSION_ID" />
                 <ScalarProperty Name="USER_PERMS_ID" ColumnName="USER_PERMS_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_MOBILE_DEVICES">
+            <EntityTypeMapping TypeName="OracleModel.SYS_MOBILE_DEVICES">
+              <MappingFragment StoreEntitySet="SYS_MOBILE_DEVICES">
+                <ScalarProperty Name="LAST_ACTIVITY_USER_ID" ColumnName="LAST_ACTIVITY_USER_ID" />
+                <ScalarProperty Name="LAST_ACTIVITY_DATE" ColumnName="LAST_ACTIVITY_DATE" />
+                <ScalarProperty Name="DATE_CREATED" ColumnName="DATE_CREATED" />
+                <ScalarProperty Name="DEVICE_ID" ColumnName="DEVICE_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
