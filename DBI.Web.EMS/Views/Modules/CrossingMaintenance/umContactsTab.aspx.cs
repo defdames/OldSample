@@ -406,11 +406,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 //Get record to be edited
                 using (Entities _context = new Entities())
                 {
+                   
+                        data = (from d in _context.CROSSINGS
+                                where d.CROSSING_ID == crossing.CROSSING_ID
+                                select d).SingleOrDefault();
 
-                    data = (from d in _context.CROSSINGS
-                            where d.CROSSING_ID == crossing.CROSSING_ID
-                            select d).Single();
-                    data.CONTACT_ID = ContactId;
+
+                        data.CONTACT_ID = ContactId;
+                    
                 }
                 GenericData.Update<CROSSING>(data);
             }
