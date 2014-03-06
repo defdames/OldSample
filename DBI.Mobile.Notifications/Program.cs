@@ -48,7 +48,9 @@ namespace DBI.Mobile.Notifications
 			Console.WriteLine("Waiting for Queue to Finish...");
 
 			//Stop and wait for the queues to drains
-			push.StopAllServices();
+            push.StopAllServices();
+
+            Console.ReadLine();
 		}
 
 
@@ -60,11 +62,9 @@ namespace DBI.Mobile.Notifications
 
 		static void NotificationSent(object sender, INotification notification)
 		{
-			Console.WriteLine("Sent: " + sender + " -> " + notification);
-
             int token = Convert.ToInt16(notification.Tag.ToString().Trim());
             DBI.Data.SYS_MOBILE_NOTIFICATIONS.UpdateNotificationToProcessed(token);
-  
+			Console.WriteLine("Sent: " + sender + " -> " + notification);  
 		}
 
 		static void NotificationFailed(object sender, INotification notification, Exception notificationFailureException)
