@@ -38,7 +38,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                     ComboBox AddLunchComboBox = new ComboBox()
                     {
-                        ID = Employee.PERSON_ID.ToString(),
+                        ID = "Combo" + Employee.PERSON_ID.ToString(),
                         FieldLabel = Employee.EMPLOYEE_NAME,
                         EmptyText = "Select a Project to assign lunch to",
                         TypeAhead = true,
@@ -84,7 +84,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long? OrgId;
             foreach (long PersonId in ComboBoxes)
             {
-                ComboBox LunchBox = FindControl(PersonId.ToString()) as ComboBox;
+                ComboBox LunchBox = FindControl("Combo" +PersonId.ToString()) as ComboBox;
                 DAILY_ACTIVITY_EMPLOYEE EmployeeToUpdate;
 
                 long ProjectID = long.Parse(LunchBox.Value.ToString());

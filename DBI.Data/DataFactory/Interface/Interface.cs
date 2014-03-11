@@ -48,6 +48,8 @@ namespace DBI.Data
                     }
                     GenericData.Update<DAILY_ACTIVITY_HEADER>(HeaderRecord);
 
+                    Interface.postNotificationMessage(userInformation.EMPLOYEE_NAME, HeaderRecord);
+
                     transaction.Complete();
                 }
             }
@@ -227,12 +229,13 @@ namespace DBI.Data
             using (Entities _context = new Entities())
             {
                 var productionData = (from p in _context.DAILY_ACTIVITY_PRODUCTION
-                                                           join t in _context.PA_TASKS_V on p.TASK_ID equals t.TASK_ID into task
-                                                           from tasks in task.DefaultIfEmpty()
-                                                           where p.HEADER_ID == dailyActivityHeaderID
-                                                           select new { tasks.TASK_NUMBER });
+                                                           join t in _context.PA_TASKS_V on p.TASK_ID equals t.TASK_ID 
+                                                             where p.HEADER_ID == dailyActivityHeaderID
+                                                           select new { t.TASK_NUMBER });
 
-                return (productionData != null) ? productionData.First().TASK_NUMBER : "9999";
+                var task = productionData.FirstOrDefault();
+
+                return (task != null) ? task.TASK_NUMBER : "9999";
 
             }
         }
@@ -511,6 +514,37 @@ namespace DBI.Data
                                        select p).Max(p => p.END_DATE);
                 return returnDate;
             }
+        }
+
+        public static void postNotificationMessage(string postedByUser, DAILY_ACTIVITY_HEADER headerDetails)
+        {
+            try
+            {
+                using(Entities _context = new Entities())
+                {
+                    DAILY_ACTIVITY_IMPORT importDetails = _context.DAILY_ACTIVITY_IMPORT.Where(h => h.HEADER_ID == headerDetails.HEADER_ID).SingleOrDefault();
+
+                    PROJECTS_V projectDetails = _context.PROJECTS_V.Where(p => p.PROJECT_ID == headerDetails.PROJECT_ID).SingleOrDefault();
+
+                    if(importDetails != null || importDetails.DEVICE_ID != "0001")
+                    {
+                        SYS_MOBILE_NOTIFICATIONS notification = new SYS_MOBILE_NOTIFICATIONS();
+                        notification.DEVICE_ID = importDetails.DEVICE_ID;
+                        notification.CREATE_DATE = DateTime.Now;
+                        notification.MESSAGE = string.Format("Daily activity for {0} completed on {1} has been posted by {2}",projectDetails.LONG_NAME,DateTime.Parse(headerDetails.DA_DATE.ToString()).ToShortDateString(),postedByUser);
+                        notification.SOUND = "alert.caf";
+                        GenericData.Insert<SYS_MOBILE_NOTIFICATIONS>(notification);
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                
+                throw;
+            }
+
         }
 
 

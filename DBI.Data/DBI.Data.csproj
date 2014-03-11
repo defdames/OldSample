@@ -65,6 +65,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\app\ljankowski\product\12.1.0\client_2\odp.net\managed\x86\Oracle.ManagedDataAccessDTC.dll</HintPath>
     </Reference>
+    <Reference Include="PushSharp.Apple">
+      <HintPath>..\..\PushSharp\PushSharp.Apple\bin\Release\PushSharp.Apple.dll</HintPath>
+    </Reference>
+    <Reference Include="PushSharp.Core">
+      <HintPath>..\..\PushSharp\PushSharp.Apple\bin\Release\PushSharp.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -180,6 +186,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
+    <Compile Include="DataFactory\Notifications\Notifications.cs" />
     <Compile Include="DataFactory\Projects\WebProjects.cs" />
     <Compile Include="DataFactory\Projects\Projects.cs" />
     <Compile Include="DataFactory\Security\Activity.cs" />
