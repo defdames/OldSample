@@ -8,51 +8,69 @@ using DBI.Data;
 using PushSharp;
 using PushSharp.Apple;
 using PushSharp.Core;
+using System.Threading;
 
 
 namespace DBI.Mobile.Notifications
 {
     class Program
     {
-       static void Main(string[] args)
+        
+       private static PushBroker push = new PushBroker();
+
+       public static void Main(string[] args)
 		{		
-			//Create our push services broker
-			var push = new PushBroker();
+            TimerCallback callback = new TimerCallback(OnTimedEvent);
 
-			//Wire up the events for all the services that the broker registers
-			push.OnNotificationSent += NotificationSent;
-			push.OnChannelException += ChannelException;
-			push.OnServiceException += ServiceException;
-			push.OnNotificationFailed += NotificationFailed;
-			push.OnDeviceSubscriptionExpired += DeviceSubscriptionExpired;
-			push.OnDeviceSubscriptionChanged += DeviceSubscriptionChanged;
-			push.OnChannelCreated += ChannelCreated;
-			push.OnChannelDestroyed += ChannelDestroyed;
+          Console.WriteLine("Creating timer: {0}\n", DateTime.Now.ToString("h:mm:ss"));
 
-			var appleCert = File.ReadAllBytes(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PushSharp.PushCert.Production.p12"));
-            
-            push.RegisterAppleService(new ApplePushChannelSettings(true, appleCert, "Dbi18201")); //Extension method
+          // create a 10 min timer tick
+          Timer stateTimer = new Timer(callback, null, 0, 600000);
 
-
-            List<SYS_MOBILE_NOTIFICATIONS> notifications = DBI.Data.SYS_MOBILE_NOTIFICATIONS.unprocessedNotifications();
-
-            foreach (SYS_MOBILE_NOTIFICATIONS notification in notifications)
-            {
-                push.QueueNotification(new AppleNotification()
-                           .ForDeviceToken(notification.DEVICE_ID)
-                           .WithAlert(notification.MESSAGE)
-                           .WithSound(notification.SOUND)
-                           .WithTag(notification.NOTIFICATION_ID));
-            }
-
-			Console.WriteLine("Waiting for Queue to Finish...");
-
-			//Stop and wait for the queues to drains
-            push.StopAllServices();
-
-            Console.ReadLine();
+          // loop here forever
+          for (
+              Thread.Sleep(600000)
+              );
 		}
 
+       private static void OnTimedEvent(object stateInfo)
+       {
+           //Wire up the events for all the services that the broker registers
+           push.OnNotificationSent += NotificationSent;
+           push.OnChannelException += ChannelException;
+           push.OnServiceException += ServiceException;
+           push.OnNotificationFailed += NotificationFailed;
+           push.OnDeviceSubscriptionExpired += DeviceSubscriptionExpired;
+           push.OnDeviceSubscriptionChanged += DeviceSubscriptionChanged;
+           push.OnChannelCreated += ChannelCreated;
+           push.OnChannelDestroyed += ChannelDestroyed;
+
+           var appleCert = File.ReadAllBytes(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PushSharp.PushCert.Production.p12"));
+
+           push.RegisterAppleService(new ApplePushChannelSettings(true, appleCert, "Dbi18201")); //Extension method
+
+
+           List<SYS_MOBILE_NOTIFICATIONS> notifications = DBI.Data.SYS_MOBILE_NOTIFICATIONS.unprocessedNotifications();
+
+           if (notifications.Count > 0)
+           {
+
+               foreach (SYS_MOBILE_NOTIFICATIONS notification in notifications)
+               {
+                   push.QueueNotification(new AppleNotification()
+                              .ForDeviceToken(notification.DEVICE_ID)
+                              .WithAlert(notification.MESSAGE)
+                              .WithSound(notification.SOUND)
+                              .WithTag(notification.NOTIFICATION_ID));
+               }
+
+               Console.WriteLine("Waiting for Queue to Finish...");
+           }
+           else
+           {
+               Console.WriteLine("No notifications to process");
+           }
+       }
 
 		static void DeviceSubscriptionChanged(object sender, string oldSubscriptionId, string newSubscriptionId, INotification notification)
 		{
