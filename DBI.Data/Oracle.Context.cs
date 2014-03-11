@@ -79,8 +79,8 @@ namespace DBI.Data
         public DbSet<SYS_MENU> SYS_MENU { get; set; }
         public DbSet<SYS_MODULES> SYS_MODULES { get; set; }
         public DbSet<SYS_PERMISSIONS> SYS_PERMISSIONS { get; set; }
-        public DbSet<SYS_USER_PERMS> SYS_USER_PERMS { get; set; }
         public DbSet<SYS_MOBILE_DEVICES> SYS_MOBILE_DEVICES { get; set; }
         public DbSet<SYS_MOBILE_NOTIFICATIONS> SYS_MOBILE_NOTIFICATIONS { get; set; }
+        public DbSet<SYS_USER_PERMS> SYS_USER_PERMS { get; set; }
     }
 }

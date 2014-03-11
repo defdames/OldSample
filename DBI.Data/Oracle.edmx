@@ -680,10 +680,6 @@
             <End Role="SYS_PERMISSIONS" EntitySet="SYS_PERMISSIONS" />
             <End Role="SYS_USER_PERMS" EntitySet="SYS_USER_PERMS" />
           </AssociationSet>
-          <AssociationSet Name="FK_USER_PERMS_USER_ID" Association="OracleModel.Store.FK_USER_PERMS_USER_ID">
-            <End Role="SYS_USERS" EntitySet="SYS_USERS" />
-            <End Role="SYS_USER_PERMS" EntitySet="SYS_USER_PERMS" />
-          </AssociationSet>
           <AssociationSet Name="FK_WEATHER_HEADER_ID" Association="OracleModel.Store.FK_WEATHER_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_WEATHER" EntitySet="DAILY_ACTIVITY_WEATHER" />
@@ -2784,18 +2780,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_USER_PERMS_USER_ID">
-          <End Role="SYS_USERS" Type="OracleModel.Store.SYS_USERS" Multiplicity="1" />
-          <End Role="SYS_USER_PERMS" Type="OracleModel.Store.SYS_USER_PERMS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SYS_USERS">
-              <PropertyRef Name="USER_ID" />
-            </Principal>
-            <Dependent Role="SYS_USER_PERMS">
-              <PropertyRef Name="USER_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_WEATHER_HEADER_ID">
           <End Role="DAILY_ACTIVITY_HEADER" Type="OracleModel.Store.DAILY_ACTIVITY_HEADER" Multiplicity="1" />
           <End Role="DAILY_ACTIVITY_WEATHER" Type="OracleModel.Store.DAILY_ACTIVITY_WEATHER" Multiplicity="*" />
@@ -2963,7 +2947,6 @@
           <EntitySet Name="SYS_MENU" EntityType="OracleModel.SYS_MENU" />
           <EntitySet Name="SYS_MODULES" EntityType="OracleModel.SYS_MODULES" />
           <EntitySet Name="SYS_PERMISSIONS" EntityType="OracleModel.SYS_PERMISSIONS" />
-          <EntitySet Name="SYS_USER_PERMS" EntityType="OracleModel.SYS_USER_PERMS" />
           <AssociationSet Name="FK_GRP_PERMS_GROUP_ID" Association="OracleModel.FK_GRP_PERMS_GROUP_ID">
             <End Role="SYS_GROUPS" EntitySet="SYS_GROUPS" />
             <End Role="SYS_GROUPS_PERMS" EntitySet="SYS_GROUPS_PERMS" />
@@ -2984,16 +2967,13 @@
             <End Role="SYS_PERMISSIONS" EntitySet="SYS_PERMISSIONS" />
             <End Role="SYS_MODULES" EntitySet="SYS_MODULES" />
           </AssociationSet>
+          <EntitySet Name="SYS_MOBILE_DEVICES" EntityType="OracleModel.SYS_MOBILE_DEVICES" />
+          <EntitySet Name="SYS_MOBILE_NOTIFICATIONS" EntityType="OracleModel.SYS_MOBILE_NOTIFICATIONS" />
+          <EntitySet Name="SYS_USER_PERMS" EntityType="OracleModel.SYS_USER_PERMS" />
           <AssociationSet Name="FK_USER_PERMS_PERM_ID" Association="OracleModel.FK_USER_PERMS_PERM_ID">
             <End Role="SYS_PERMISSIONS" EntitySet="SYS_PERMISSIONS" />
             <End Role="SYS_USER_PERMS" EntitySet="SYS_USER_PERMS" />
           </AssociationSet>
-          <AssociationSet Name="FK_USER_PERMS_USER_ID" Association="OracleModel.FK_USER_PERMS_USER_ID">
-            <End Role="SYS_USERS" EntitySet="SYS_USERS" />
-            <End Role="SYS_USER_PERMS" EntitySet="SYS_USER_PERMS" />
-          </AssociationSet>
-          <EntitySet Name="SYS_MOBILE_DEVICES" EntityType="OracleModel.SYS_MOBILE_DEVICES" />
-          <EntitySet Name="SYS_MOBILE_NOTIFICATIONS" EntityType="OracleModel.SYS_MOBILE_NOTIFICATIONS" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -3004,7 +2984,6 @@
           <NavigationProperty Name="SYS_USER_INFORMATION" Relationship="OracleModel.SYS_USERSSYS_USER_INFORMATION" FromRole="SYS_USERS" ToRole="SYS_USER_INFORMATION" />
           <NavigationProperty Name="SYS_USER_ACTIVITY" Relationship="OracleModel.SYS_USERSSYS_USER_ACTIVITY" FromRole="SYS_USERS" ToRole="SYS_USER_ACTIVITY" />
           <NavigationProperty Name="SYS_LOG" Relationship="OracleModel.SYS_USERSSYS_LOG" FromRole="SYS_USERS" ToRole="SYS_LOG" />
-          <NavigationProperty Name="SYS_USER_PERMS" Relationship="OracleModel.FK_USER_PERMS_USER_ID" FromRole="SYS_USERS" ToRole="SYS_USER_PERMS" />
         </EntityType>
         <ComplexType Name="SYS_USER_ACTIVITY_CT" >
           <Property Type="Int64" Name="USER_ACTIVITY_ID" Nullable="false" />
@@ -5169,17 +5148,6 @@
           <NavigationProperty Name="SYS_MODULES" Relationship="OracleModel.FK_MODULE_PERM_ID" FromRole="SYS_PERMISSIONS" ToRole="SYS_MODULES" />
           <NavigationProperty Name="SYS_USER_PERMS" Relationship="OracleModel.FK_USER_PERMS_PERM_ID" FromRole="SYS_PERMISSIONS" ToRole="SYS_USER_PERMS" />
         </EntityType>
-        <EntityType Name="SYS_USER_PERMS">
-          <Key>
-            <PropertyRef Name="USER_PERMS_ID" />
-          </Key>
-          <Property Type="Decimal" Name="USER_PERMS_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Decimal" Name="PERMISSION_ID" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="Int64" Name="USER_ID" Nullable="false" />
-          <Property Type="String" Name="ALLOW_DENY" MaxLength="1" FixedLength="true" Unicode="false" />
-          <NavigationProperty Name="SYS_PERMISSIONS" Relationship="OracleModel.FK_USER_PERMS_PERM_ID" FromRole="SYS_USER_PERMS" ToRole="SYS_PERMISSIONS" />
-          <NavigationProperty Name="SYS_USERS" Relationship="OracleModel.FK_USER_PERMS_USER_ID" FromRole="SYS_USER_PERMS" ToRole="SYS_USERS" />
-        </EntityType>
         <Association Name="FK_GRP_PERMS_GROUP_ID">
           <End Type="OracleModel.SYS_GROUPS" Role="SYS_GROUPS" Multiplicity="1" />
           <End Type="OracleModel.SYS_GROUPS_PERMS" Role="SYS_GROUPS_PERMS" Multiplicity="*" />
@@ -5240,30 +5208,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_USER_PERMS_PERM_ID">
-          <End Type="OracleModel.SYS_PERMISSIONS" Role="SYS_PERMISSIONS" Multiplicity="1" />
-          <End Type="OracleModel.SYS_USER_PERMS" Role="SYS_USER_PERMS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SYS_PERMISSIONS">
-              <PropertyRef Name="PERMISSION_ID" />
-            </Principal>
-            <Dependent Role="SYS_USER_PERMS">
-              <PropertyRef Name="PERMISSION_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_USER_PERMS_USER_ID">
-          <End Type="OracleModel.SYS_USERS" Role="SYS_USERS" Multiplicity="1" />
-          <End Type="OracleModel.SYS_USER_PERMS" Role="SYS_USER_PERMS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SYS_USERS">
-              <PropertyRef Name="USER_ID" />
-            </Principal>
-            <Dependent Role="SYS_USER_PERMS">
-              <PropertyRef Name="USER_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="SYS_MOBILE_DEVICES">
           <Key>
             <PropertyRef Name="DEVICE_ID" />
@@ -5285,6 +5229,28 @@
           <Property Type="DateTime" Name="CREATE_DATE" />
           <Property Type="String" Name="PROCESSING_ERROR" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="SYS_USER_PERMS">
+          <Key>
+            <PropertyRef Name="USER_PERMS_ID" />
+          </Key>
+          <Property Type="Decimal" Name="USER_PERMS_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="PERMISSION_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Int64" Name="USER_ID" Nullable="false" />
+          <Property Type="String" Name="ALLOW_DENY" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="SYS_PERMISSIONS" Relationship="OracleModel.FK_USER_PERMS_PERM_ID" FromRole="SYS_USER_PERMS" ToRole="SYS_PERMISSIONS" />
+        </EntityType>
+        <Association Name="FK_USER_PERMS_PERM_ID">
+          <End Type="OracleModel.SYS_PERMISSIONS" Role="SYS_PERMISSIONS" Multiplicity="1" />
+          <End Type="OracleModel.SYS_USER_PERMS" Role="SYS_USER_PERMS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SYS_PERMISSIONS">
+              <PropertyRef Name="PERMISSION_ID" />
+            </Principal>
+            <Dependent Role="SYS_USER_PERMS">
+              <PropertyRef Name="PERMISSION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6990,16 +6956,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SYS_USER_PERMS">
-            <EntityTypeMapping TypeName="OracleModel.SYS_USER_PERMS">
-              <MappingFragment StoreEntitySet="SYS_USER_PERMS">
-                <ScalarProperty Name="ALLOW_DENY" ColumnName="ALLOW_DENY" />
-                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
-                <ScalarProperty Name="PERMISSION_ID" ColumnName="PERMISSION_ID" />
-                <ScalarProperty Name="USER_PERMS_ID" ColumnName="USER_PERMS_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="SYS_MOBILE_DEVICES">
             <EntityTypeMapping TypeName="OracleModel.SYS_MOBILE_DEVICES">
               <MappingFragment StoreEntitySet="SYS_MOBILE_DEVICES">
@@ -7020,6 +6976,16 @@
                 <ScalarProperty Name="MESSAGE" ColumnName="MESSAGE" />
                 <ScalarProperty Name="DEVICE_ID" ColumnName="DEVICE_ID" />
                 <ScalarProperty Name="NOTIFICATION_ID" ColumnName="NOTIFICATION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_USER_PERMS">
+            <EntityTypeMapping TypeName="OracleModel.SYS_USER_PERMS">
+              <MappingFragment StoreEntitySet="SYS_USER_PERMS">
+                <ScalarProperty Name="ALLOW_DENY" ColumnName="ALLOW_DENY" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="PERMISSION_ID" ColumnName="PERMISSION_ID" />
+                <ScalarProperty Name="USER_PERMS_ID" ColumnName="USER_PERMS_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

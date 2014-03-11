@@ -83,16 +83,15 @@
         <EntityTypeShape EntityType="OracleModel.SYS_MENU" Width="1.5" PointX="29.5" PointY="24.125" />
         <EntityTypeShape EntityType="OracleModel.SYS_MODULES" Width="1.5" PointX="29.375" PointY="29.75" />
         <EntityTypeShape EntityType="OracleModel.SYS_PERMISSIONS" Width="1.5" PointX="33.25" PointY="24" />
-        <EntityTypeShape EntityType="OracleModel.SYS_USER_PERMS" Width="1.5" PointX="33" PointY="20.375" />
         <AssociationConnector Association="OracleModel.FK_GRP_PERMS_GROUP_ID" />
         <AssociationConnector Association="OracleModel.FK_GRP_PERMS_PERM_ID" />
         <AssociationConnector Association="OracleModel.FK_MENU_MODULE_ID" />
         <AssociationConnector Association="OracleModel.FK_MENU_PERM_ID" />
         <AssociationConnector Association="OracleModel.FK_MODULE_PERM_ID" />
-        <AssociationConnector Association="OracleModel.FK_USER_PERMS_PERM_ID" />
-        <AssociationConnector Association="OracleModel.FK_USER_PERMS_USER_ID" />
         <EntityTypeShape EntityType="OracleModel.SYS_MOBILE_DEVICES" Width="1.5" PointX="3.5" PointY="31.125" />
         <EntityTypeShape EntityType="OracleModel.SYS_MOBILE_NOTIFICATIONS" Width="1.5" PointX="4.9436277285887051" PointY="25.826942113147556" />
+        <EntityTypeShape EntityType="OracleModel.SYS_USER_PERMS" Width="1.5" PointX="32.625" PointY="19.875" />
+        <AssociationConnector Association="OracleModel.FK_USER_PERMS_PERM_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
