@@ -56,12 +56,10 @@ namespace DBI.Data
                               .WithTag(notification.NOTIFICATION_ID));
                }
 
-               Console.WriteLine("Waiting for Queue to Finish...");
            }
-           else
-           {
-               Console.WriteLine("No notifications to process");
-           }
+
+           //push.StopAllServices(true);
+
        }
 
 		static void DeviceSubscriptionChanged(object sender, string oldSubscriptionId, string newSubscriptionId, INotification notification)

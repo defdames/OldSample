@@ -30,7 +30,7 @@ namespace DBI.Data
                 {
                     //update the notification to processed
                     notification.PROCESSED_DATE = DateTime.Now;
-                    notification.MESSAGE = error;
+                    notification.PROCESSING_ERROR = error;
                     GenericData.Update<SYS_MOBILE_NOTIFICATIONS>(notification);
                 }
             }
