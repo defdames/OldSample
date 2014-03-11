@@ -205,8 +205,6 @@
     <Compile Include="INVENTORY_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataFactory\Jobs\Jobs.cs" />
-    <Compile Include="DataFactory\Jobs\JobScheduler.cs" />
     <Compile Include="MBL_EMPLOYEE_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
@@ -362,7 +360,6 @@
       <DependentUpon>Oracle.edmx</DependentUpon>
       <LastGenOutput>Oracle.cs</LastGenOutput>
     </None>
-    <EmbeddedResource Include="DataFactory\Jobs\PushSharp.PushCert.Production.p12" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DBI.Core\DBI.Core.csproj">
