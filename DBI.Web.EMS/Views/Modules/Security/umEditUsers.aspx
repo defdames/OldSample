@@ -30,6 +30,9 @@
                             <Proxy>
                                 <ext:PageProxy />
                             </Proxy>
+                            <Sorters>
+                                <ext:DataSorter Property="USER_NAME" Direction="ASC" />
+                            </Sorters>
                         </ext:Store>
                     </Store>
                     <ColumnModel>
@@ -76,9 +79,11 @@
                                 <ext:Store runat="server" ID="uxEditUserStore"
                                     AutoDataBind="true">
                                     <Model>
-                                        <ext:Model runat="server">
+                                        <ext:Model runat="server" IDProperty="PERMISSION_NAME">
                                             <Fields>
-                                                <ext:ModelField Name="PERMISSION_NAME" />
+                                                <ext:ModelField Name="PERMISSION_ID" />
+                                                <ext:ModelField Name="PERMISSION_NAME" Type="String" />
+                                                <ext:ModelField Name="PARENT_PERM_ID" />
                                                 <ext:ModelField Name="DESCRIPTION" />
                                             </Fields>
                                         </ext:Model>
@@ -92,7 +97,7 @@
                                 </Columns>
                             </ColumnModel>
                             <SelectionModel>
-                                <ext:CheckboxSelectionModel runat="server" AllowDeselect="true" />
+                                <ext:CheckboxSelectionModel runat="server" AllowDeselect="true" Mode="Multi" />
                             </SelectionModel>
                         </ext:GridPanel>
                     </Items>
@@ -100,13 +105,16 @@
                         <ext:Button runat="server" Text="Submit" Icon="Add">
                             <DirectEvents>
                                 <Click OnEvent="deUpdateUserPermissions">
-
+                                    <ExtraParams>
+                                        <ext:Parameter Name="Rows" Value="Ext.encode(#{uxEditUserGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+                                        <ext:Parameter Value="#{uxUsersGrid}.getSelectionModel().getSelection()[0].data.USER_ID" Mode="Raw" Name="UserId" />
+                                    </ExtraParams>
                                 </Click>
                             </DirectEvents>
                         </ext:Button>
                         <ext:Button runat="server" Text="Cancel" Icon="Delete">
                             <Listeners>
-                                <Click Handler="#{uxEditUserGrid}.getSelectionModel().clearSelections(); #{uxEditUserWindow}.hide()" />
+                                <Click Handler="#{uxEditUserGrid}.getSelectionModel().deselectAll(); #{uxEditUserWindow}.hide()" />
                             </Listeners>
                         </ext:Button>
                     </Buttons>
