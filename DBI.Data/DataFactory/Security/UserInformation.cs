@@ -79,6 +79,16 @@ namespace DBI.Data
             }
         }
 
+        public static string GetJobTitle(long UserId)
+        {
+            using (Entities _context = new Entities())
+            {
+                string JobTitle = (from s in _context.SYS_USER_INFORMATION
+                                   where s.USER_ID == UserId
+                                   select s.JOB_NAME).Single();
+                return JobTitle;
+            }
+        }
     }
 
 

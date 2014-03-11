@@ -48,8 +48,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 else
                 {
-                    var MyAuth = new Authentication();
-                    int CurrentOrg = Convert.ToInt32(MyAuth.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                    int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
                     //Get projects for my org only
                     dataIn = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
                 }
@@ -63,8 +62,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 else
                 {
-                    var MyAuth = new Authentication();
-                    int CurrentOrg = Convert.ToInt32(MyAuth.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                    int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
                     //Get projects for my org only
                     dataIn = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
                 }
@@ -98,9 +96,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long odStart;
             long odEnd;
 
-            var MyAuth = new Authentication();
             var icp = User as ClaimsPrincipal;
-            var AddingUser = MyAuth.GetClaimValue(ClaimTypes.Name, icp);
+            var AddingUser = Authentication.GetClaimValue(ClaimTypes.Name, icp);
 
             DAILY_ACTIVITY_EQUIPMENT added = new DAILY_ACTIVITY_EQUIPMENT()
             {

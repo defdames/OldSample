@@ -133,6 +133,8 @@ namespace DBI.Data
                     //Add current organization ID to claims
                     claims.Add(new Claim("CurrentOrgId", userInfo.CURRENT_ORG_ID.ToString()));
 
+                    claims.Add(new Claim("UserId", userInfo.USER_ID.ToString()));
+
                     return claims;
                 }   
             

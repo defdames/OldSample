@@ -38,10 +38,10 @@ namespace DBI.Web.EMS.Views
                     }
                 }
 
-                var MyAuth = new Authentication();
+               
                 // Get Impersonating Info/Details
-                string user = MyAuth.GetClaimValue("ImpersonatedUser", User as ClaimsPrincipal);
-                string byuser = MyAuth.GetClaimValue("EmployeeName", User as ClaimsPrincipal);
+                string user = Authentication.GetClaimValue("ImpersonatedUser", User as ClaimsPrincipal);
+                string byuser = Authentication.GetClaimValue("EmployeeName", User as ClaimsPrincipal);
 
                 uxWelcomeTime.Text = string.Format("Today is {0}", DateTime.Now.ToString("D"));
 
@@ -82,16 +82,15 @@ namespace DBI.Web.EMS.Views
         /// <param name="e"></param>
         protected void deRemoveImpersonate(object sender, DirectEventArgs e)
         {
-            var MyAuth = new Authentication();
-            if (MyAuth.GetClaimValue("ImpersonatorUsername", User as ClaimsPrincipal) != null)
+            if (Authentication.GetClaimValue("ImpersonatorUsername", User as ClaimsPrincipal) != null)
             {
 
-                SYS_USER_INFORMATION userDetails = SYS_USER_INFORMATION.UserByUserName(MyAuth.GetClaimValue("ImpersonatorUsername", User as ClaimsPrincipal));
+                SYS_USER_INFORMATION userDetails = SYS_USER_INFORMATION.UserByUserName(Authentication.GetClaimValue("ImpersonatorUsername", User as ClaimsPrincipal));
 
                 List<Claim> claims = DBI.Data.SYS_ACTIVITY.Claims(userDetails.USER_NAME);
 
                 // Add full name of user to the claims 
-                claims.Add(new Claim("EmployeeName", MyAuth.GetClaimValue("EmployeeName", User as ClaimsPrincipal)));
+                claims.Add(new Claim("EmployeeName", Authentication.GetClaimValue("EmployeeName", User as ClaimsPrincipal)));
 
                 var token = Authentication.GenerateSessionSecurityToken(claims);
                 var sam = FederatedAuthentication.SessionAuthenticationModule;
@@ -110,103 +109,235 @@ namespace DBI.Web.EMS.Views
         /// </summary>
         public void GenerateMenuItems(ClaimsPrincipal icp)
         {
-            List<SYS_ACTIVITY> userActivities;
 
-            if(!User.IsInRole("SYS.Administrator"))
+            long UserId = long.Parse(Authentication.GetClaimValue("UserId", icp));
+
+            List<SYS_PERMISSIONS> Permissions = SYS_PERMISSIONS.GetPermissions(UserId);
+
+            
+            List<SYS_PERMISSIONS> PermissionsHierarchy = SYS_PERMISSIONS.GetPermissionsHierarchy();
+
+            if (Permissions.Exists(x => x.PERMISSION_ID == 1))
             {
-                //Get all roles from claims
-                ClaimsIdentity claimsIdentity = (ClaimsIdentity)icp.Identity;
-
-                List<string> AssignedRoles = (from c in claimsIdentity.Claims
-                                              where c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-                                              select c.Value).ToList();
-                //Get Button config from server
-                Entities context = new Entities();
-                userActivities = (from s in context.SYS_ACTIVITY
-                                    where AssignedRoles.Contains(s.NAME) && s.PATH != null
-                                    select s).OrderBy(x => x.SORT_NUMBER).ToList();
+                //SuperUser, so load all modules and menu items
+                List<SYS_MODULES> ModulesList = SYS_MODULES.GetModules();
+                foreach (SYS_MODULES Module in ModulesList)
+                {
+                    Ext.Net.MenuPanel AppPanel = CreateMenu(Module);
+                    List<SYS_MENU> MenuItems = SYS_MENU.GetMenuItems(Module.MODULE_ID);
+                    foreach (SYS_MENU MenuItem in MenuItems)
+                    {
+                        Ext.Net.MenuItem AppMenuItem = CreateMenuItem(MenuItem);
+                        AppPanel.Menu.Items.Add(AppMenuItem);
+                    }
+                    uxWest.Items.Add(AppPanel);
+                }
+                
             }
             else
             {
-                Entities context = new Entities();
-                userActivities = (from s in context.SYS_ACTIVITY
-                                    where !(string.IsNullOrEmpty(s.PATH))
-                                    select s).OrderBy(x => x.PARENT_ITEM_ID).OrderBy(x => x.SORT_NUMBER).ToList();
-            }
-            //Iterate through allowed activities
-            foreach (SYS_ACTIVITY userActivity in userActivities)
-            {
-                if (userActivity.PARENT_ITEM_ID != null)
+                if (Permissions.Exists(x => x.PARENT_PERM_ID == 1))
                 {
-                    Ext.Net.MenuItem AppMenuItem = new Ext.Net.MenuItem()
+                    List<SYS_PERMISSIONS> SecondLevelPermissions = Permissions.FindAll(x => x.PARENT_PERM_ID == 1);
+                    foreach (SYS_PERMISSIONS SecondLevelPermission in SecondLevelPermissions)
                     {
-                        ID = "uxMenuItem" + userActivity.ACTIVITY_ID.ToString(),
-                        Text = userActivity.CONTROL_TEXT,
-                        Icon = (Icon)Enum.Parse(typeof(Icon), userActivity.ICON)
-                    };
+                        if (Permissions.Exists(x => x.PERMISSION_ID == SecondLevelPermission.PERMISSION_ID))
+                        {
+                            //App Admin, so load all menu items for module
+                            SYS_MODULES Module = SYS_MODULES.GetModules(SecondLevelPermission.PERMISSION_ID);
+                            Ext.Net.MenuPanel AppPanel = CreateMenu(Module);
+                            List<SYS_MENU> MenuItems = SYS_MENU.GetMenuItems(Module.MODULE_ID);
+                            foreach (SYS_MENU MenuItem in MenuItems)
+                            {
+                                Ext.Net.MenuItem AppMenuItem = CreateMenuItem(MenuItem);
+                                AppPanel.Menu.Items.Add(AppMenuItem);
+                            }
+                            uxWest.Items.Add(AppPanel);
+                            
+                        }
+                        else
+                        {
+                            if (Permissions.Exists(x => x.PARENT_PERM_ID == SecondLevelPermission.PERMISSION_ID))
+                            {
+                                SYS_MODULES Module = SYS_MODULES.GetModules(SecondLevelPermission.PERMISSION_ID);
+                                Ext.Net.MenuPanel AppPanel;
+                                decimal ModuleId = 0;
 
-                    //Add click DirectEvent
-                    AppMenuItem.DirectEvents.Click.Event += deLoadPage;
-
-                    //Add DirectEvent Parameters
-                    AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
-                    {
-                        Name = "Location",
-                        Value = userActivity.CONTAINER
-                    });
-                    AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
-                    {
-                        Name = "Page",
-                        Value = userActivity.PATH
-                    });
-                    Ext.Net.MenuPanel AppPanel = X.GetCmp("uxMenu" + userActivity.PARENT_ITEM_ID.ToString()) as Ext.Net.MenuPanel;
-                    AppPanel.Menu.Items.Add(AppMenuItem);
+                                ModuleId = Module.MODULE_ID;
+                                AppPanel = CreateMenu(Module);
+                                
+                                List<SYS_PERMISSIONS> ThirdLevelPermissions = Permissions.FindAll(x => x.PARENT_PERM_ID == SecondLevelPermission.PERMISSION_ID);
+                                foreach (SYS_PERMISSIONS ThirdLevelPermission in ThirdLevelPermissions)
+                                {
+                                    if (Permissions.Exists(x => x.PERMISSION_ID == ThirdLevelPermission.PERMISSION_ID))
+                                    {
+                                        
+                                        //Has App Permission, load this module
+                                        List<SYS_MENU> MenuItems = SYS_MENU.GetMenuItems(ModuleId, ThirdLevelPermission.PERMISSION_ID);
+                                        foreach (SYS_MENU MenuItem in MenuItems)
+                                        {
+                                            Ext.Net.MenuItem AppMenuItem = CreateMenuItem(MenuItem);
+                                           
+                                            AppPanel.Menu.Items.Add(AppMenuItem);
+                                        }
+                                        uxWest.Items.Add(AppPanel);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-                else
-                {
-                    Ext.Net.MenuPanel AppPanel = new MenuPanel()
-                    {
-                        ID= "uxMenu" + userActivity.ACTIVITY_ID.ToString(),
-                        Title= userActivity.CONTROL_TEXT,
-                        Icon = (Icon)Enum.Parse(typeof(Icon), userActivity.ICON),
-                    };
-                    Ext.Net.MenuItem AppMenuItem = new Ext.Net.MenuItem()
-                    {
-                        ID = "uxMenuItem" + userActivity.ACTIVITY_ID.ToString(),
-                        Text = "Home",
-                        Icon = (Icon)Enum.Parse(typeof(Icon), userActivity.ICON),
+            }
+            //List<SYS_ACTIVITY> userActivities;
+
+            //if(!User.IsInRole("SYS.Administrator"))
+            //{
+            //    //Get all roles from claims
+            //    ClaimsIdentity claimsIdentity = (ClaimsIdentity)icp.Identity;
+
+            //    List<string> AssignedRoles = (from c in claimsIdentity.Claims
+            //                                  where c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+            //                                  select c.Value).ToList();
+            //    //Get Button config from server
+            //    Entities context = new Entities();
+            //    userActivities = (from s in context.SYS_ACTIVITY
+            //                        where AssignedRoles.Contains(s.NAME) && s.PATH != null
+            //                        select s).OrderBy(x => x.SORT_NUMBER).ToList();
+            //}
+            //else
+            //{
+            //    Entities context = new Entities();
+            //    userActivities = (from s in context.SYS_ACTIVITY
+            //                        where !(string.IsNullOrEmpty(s.PATH))
+            //                        select s).OrderBy(x => x.PARENT_ITEM_ID).OrderBy(x => x.SORT_NUMBER).ToList();
+            //}
+            ////Iterate through allowed activities
+            //foreach (SYS_ACTIVITY userActivity in userActivities)
+            //{
+            //    if (userActivity.PARENT_ITEM_ID != null)
+            //    {
+            //        Ext.Net.MenuItem AppMenuItem = new Ext.Net.MenuItem()
+            //        {
+            //            ID = "uxMenuItem" + userActivity.ACTIVITY_ID.ToString(),
+            //            Text = userActivity.CONTROL_TEXT,
+            //            Icon = (Icon)Enum.Parse(typeof(Icon), userActivity.ICON)
+            //        };
+
+            //        //Add click DirectEvent
+            //        AppMenuItem.DirectEvents.Click.Event += deLoadPage;
+
+            //        //Add DirectEvent Parameters
+            //        AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+            //        {
+            //            Name = "Location",
+            //            Value = userActivity.CONTAINER
+            //        });
+            //        AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+            //        {
+            //            Name = "Page",
+            //            Value = userActivity.PATH
+            //        });
+            //        Ext.Net.MenuPanel AppPanel = X.GetCmp("uxMenu" + userActivity.PARENT_ITEM_ID.ToString()) as Ext.Net.MenuPanel;
+            //        AppPanel.Menu.Items.Add(AppMenuItem);
+            //    }
+            //    else
+            //    {
+            //        Ext.Net.MenuPanel AppPanel = new MenuPanel()
+            //        {
+            //            ID= "uxMenu" + userActivity.ACTIVITY_ID.ToString(),
+            //            Title= userActivity.CONTROL_TEXT,
+            //            Icon = (Icon)Enum.Parse(typeof(Icon), userActivity.ICON),
+            //        };
+            //        Ext.Net.MenuItem AppMenuItem = new Ext.Net.MenuItem()
+            //        {
+            //            ID = "uxMenuItem" + userActivity.ACTIVITY_ID.ToString(),
+            //            Text = "Home",
+            //            Icon = (Icon)Enum.Parse(typeof(Icon), userActivity.ICON),
                         
-                    };
-                    AppMenuItem.DirectEvents.Click.Event += deLoadPage;
+            //        };
+            //        AppMenuItem.DirectEvents.Click.Event += deLoadPage;
 
-                    //Add DirectEvent Parameters
-                    AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
-                    {
-                        Name = "Location",
-                        Value = userActivity.CONTAINER
-                    });
-                    if (userActivity.NAME == "SYS.EMSv1.View")
-                    {
-                        byte[] UserArray = System.Text.ASCIIEncoding.ASCII.GetBytes(User.Identity.Name.ToUpper());
-                        string EncodedUser =Convert.ToBase64String(UserArray);
-                        AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
-                        {
-                            Name = "Page",
-                            Value = userActivity.PATH + "/Redirect.aspx?user=" + EncodedUser
-                        });
-                    }
-                    else
-                    {
-                        AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
-                        {
-                            Name = "Page",
-                            Value = userActivity.PATH
-                        });
-                    }
-                    uxWest.Items.Add(AppPanel);
-                    AppPanel.Menu.Items.Add(AppMenuItem);
-                }
+            //        //Add DirectEvent Parameters
+            //        AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+            //        {
+            //            Name = "Location",
+            //            Value = userActivity.CONTAINER
+            //        });
+            //        if (userActivity.NAME == "SYS.EMSv1.View")
+            //        {
+            //            byte[] UserArray = System.Text.ASCIIEncoding.ASCII.GetBytes(User.Identity.Name.ToUpper());
+            //            string EncodedUser =Convert.ToBase64String(UserArray);
+            //            AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+            //            {
+            //                Name = "Page",
+            //                Value = userActivity.PATH + "/Redirect.aspx?user=" + EncodedUser
+            //            });
+            //        }
+            //        else
+            //        {
+            //            AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+            //            {
+            //                Name = "Page",
+            //                Value = userActivity.PATH
+            //            });
+            //        }
+            //        uxWest.Items.Add(AppPanel);
+            //        AppPanel.Menu.Items.Add(AppMenuItem);
+            //    }
+            //}
+        }
+
+
+        
+
+        protected Ext.Net.MenuPanel CreateMenu(SYS_MODULES Module)
+        {
+            Ext.Net.MenuPanel AppPanel = new MenuPanel()
+            {
+                ID = "uxMenu" + Module.PERMISSION_ID.ToString(),
+                Title = Module.MODULE_NAME,
+            };
+            return AppPanel;
+        }
+
+        protected Ext.Net.MenuItem CreateMenuItem(SYS_MENU MenuItem)
+        {
+            Ext.Net.MenuItem AppMenuItem = new Ext.Net.MenuItem()
+            {
+                ID = "uxMenuItem" + MenuItem.PERMISSION_ID.ToString(),
+                Text = MenuItem.ITEM_NAME,
+            };
+
+            //Add click DirectEvent
+            AppMenuItem.DirectEvents.Click.Event += deLoadPage;
+
+            //Add DirectEvent Parameters
+            AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+            {
+                Name = "Location",
+                Value = "uxCenter"
+            });
+
+            if (MenuItem.ITEM_URL == "http://ems.dbiservices.com")
+            {
+                byte[] UserArray = System.Text.ASCIIEncoding.ASCII.GetBytes(User.Identity.Name.ToUpper());
+                string EncodedUser = Convert.ToBase64String(UserArray);
+                AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+                {
+                    Name = "Page",
+                    Value = MenuItem.ITEM_URL + "/Redirect.aspx?user=" + EncodedUser
+                });
             }
+            else
+            {
+                AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+                {
+                    Name = "Page",
+                    Value = MenuItem.ITEM_URL
+                });
+            }
+
+            return AppMenuItem;
         }
     }
 }

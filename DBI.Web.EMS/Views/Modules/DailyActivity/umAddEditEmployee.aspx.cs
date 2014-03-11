@@ -119,8 +119,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 else
                 {
-                    var MyAuth = new Authentication();
-                    int CurrentOrg = Convert.ToInt32(MyAuth.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                    int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
                     //Get projects for my org only
                     dataIn = EMPLOYEES_V.EmployeeDropDown(CurrentOrg);
                 }
@@ -134,8 +133,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 else
                 {
-                    var MyAuth = new Authentication();
-                    int CurrentOrg = Convert.ToInt32(MyAuth.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                    int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
                     //Get projects for my org only
                     dataIn = EMPLOYEES_V.EmployeeDropDown(CurrentOrg);
                 }

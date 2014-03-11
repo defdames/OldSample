@@ -13,6 +13,15 @@ namespace DBI.Web.EMS.Views {
     public partial class uxDefault {
         
         /// <summary>
+        /// Head1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlHead Head1;
+        
+        /// <summary>
         /// uxResourceManager control.
         /// </summary>
         /// <remarks>
@@ -65,6 +74,15 @@ namespace DBI.Web.EMS.Views {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Panel uxToolBarPanel;
+        
+        /// <summary>
+        /// Container1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Container Container1;
         
         /// <summary>
         /// uxToolbarWelcome control.
