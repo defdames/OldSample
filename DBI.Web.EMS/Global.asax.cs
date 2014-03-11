@@ -8,6 +8,7 @@ using System.Web.Script.Serialization;
 using System.Web.Security;
 using System.Web.SessionState;
 using Ext.Net;
+using DBI.Data;
 
 namespace DBI.Web.EMS
 {
@@ -20,6 +21,9 @@ namespace DBI.Web.EMS
         {
             // Set the license key needed to hide "warning" windows when deploying to server
             Application["Ext.Net.LicenseKey"] = "ODUwODg1NjAsMiw5OTk5LTEyLTMx";
+
+            JobScheduler SystemJobs = new JobScheduler();
+            SystemJobs.Scheduler_Start();
         }
 
         protected void Session_Start(object sender, EventArgs e)
