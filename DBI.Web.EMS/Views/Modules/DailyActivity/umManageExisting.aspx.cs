@@ -260,15 +260,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     break;
             }
 
+            List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
+            
             if (OrgId != 123)
             {
                 List<EmployeeData> RequiredLunches = ValidationChecks.LunchCheck(HeaderId);
                 if (RequiredLunches.Count > 0)
                 {
-                    BadHeader = true;
+                    uxPlaceholderWindow.LoadContent(string.Format("umChooseLunchHeader.aspx?HeaderId={0}", HeaderId));
+                    uxPlaceholderWindow.Show();
                 }
             }
-            List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
 
             if (HoursOver24.Count > 0)
             {
@@ -369,6 +371,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void deApproveActivity(object sender, DirectEventArgs e)
         {
             long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
+            
             DAILY_ACTIVITY_HEADER data;
 
             //Get record to be updated
@@ -1198,7 +1201,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public void dmRefreshShowSubmit_DBI(string HeaderId)
         {
             uxPlaceholderWindow.ClearContent();
-            uxPlaceholderWindow.LoadContent(string.Format("umSubmitActivity_DBI.aspx?HeaderId={0}", HeaderId));
+            uxPlaceholderWindow.Hide();
+            uxManageGrid.Reload();
         }
 
         [DirectMethod]
