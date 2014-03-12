@@ -156,6 +156,7 @@
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
+    <Content Include="Views\Modules\Security\umEditGroups.aspx" />
     <Content Include="Views\Modules\Security\umEditModules.aspx" />
     <Content Include="Views\Modules\Security\umEditUsers.aspx" />
     <Content Include="Views\Modules\Security\umSecurityLogList.aspx" />
@@ -454,6 +455,13 @@
       <DependentUpon>umWeatherTab.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\ValidationChecks.cs" />
+    <Compile Include="Views\Modules\Security\umEditGroups.aspx.cs">
+      <DependentUpon>umEditGroups.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Security\umEditGroups.aspx.designer.cs">
+      <DependentUpon>umEditGroups.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\Security\umEditModules.aspx.cs">
       <DependentUpon>umEditModules.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

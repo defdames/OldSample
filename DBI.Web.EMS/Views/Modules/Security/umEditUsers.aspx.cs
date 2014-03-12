@@ -112,6 +112,7 @@ namespace DBI.Web.EMS.Views.Modules.Security
                     GenericData.Delete<SYS_USER_PERMS>(ToDelete);
                 }
             }
+            uxEditUserWindow.Hide();
         }
     }
 }
