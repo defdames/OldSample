@@ -294,7 +294,7 @@ namespace DBI.Web.EMS.Views
         {
             Ext.Net.MenuPanel AppPanel = new MenuPanel()
             {
-                ID = "uxMenu" + Module.PERMISSION_ID.ToString(),
+                ID = "uxMenu" + Module.MODULE_ID.ToString(),
                 Title = Module.MODULE_NAME,
             };
             return AppPanel;
@@ -304,7 +304,7 @@ namespace DBI.Web.EMS.Views
         {
             Ext.Net.MenuItem AppMenuItem = new Ext.Net.MenuItem()
             {
-                ID = "uxMenuItem" + MenuItem.PERMISSION_ID.ToString(),
+                ID = "uxMenuItem" + MenuItem.MENU_ID.ToString(),
                 Text = MenuItem.ITEM_NAME,
             };
 

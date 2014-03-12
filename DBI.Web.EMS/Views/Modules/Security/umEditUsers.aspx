@@ -82,7 +82,7 @@
                                         <ext:Model runat="server" IDProperty="PERMISSION_NAME">
                                             <Fields>
                                                 <ext:ModelField Name="PERMISSION_ID" />
-                                                <ext:ModelField Name="PERMISSION_NAME" Type="String" />
+                                                <ext:ModelField Name="PERMISSION_NAME" Type="String"  />
                                                 <ext:ModelField Name="PARENT_PERM_ID" />
                                                 <ext:ModelField Name="DESCRIPTION" />
                                             </Fields>
