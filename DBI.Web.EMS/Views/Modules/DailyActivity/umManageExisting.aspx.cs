@@ -408,7 +408,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 var returnData = (from d in _context.DAILY_ACTIVITY_HEADER
                                   join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                                   where d.HEADER_ID == HeaderId
-                                  select new { d.APPLICATION_TYPE, d.CONTRACTOR, d.DA_DATE, d.DENSITY, d.LICENSE, d.STATE, d.STATUS, d.SUBDIVISION, p.SEGMENT1 }).ToList<object>();
+                                  select new { d.APPLICATION_TYPE, d.CONTRACTOR, d.DA_DATE, d.DENSITY, d.LICENSE, d.STATE, d.STATUS, d.SUBDIVISION, p.SEGMENT1, p.LONG_NAME }).ToList<object>();
                 return returnData;
             }
         }
@@ -561,14 +561,21 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             //Set header Id
             long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
-
+            string ProjectName;
+            using (Entities _context = new Entities())
+            {
+                ProjectName = (from d in _context.DAILY_ACTIVITY_HEADER
+                                   join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                                   where d.HEADER_ID == HeaderId
+                                   select p.LONG_NAME).Single();
+            }
             MemoryStream PdfStream = generatePDF(HeaderId);
 
             Response.Clear();
             Response.ClearContent();
             Response.ClearHeaders();
             Response.ContentType = "application/pdf";
-            Response.AppendHeader("Content-Disposition", "attachment;filename=export.pdf");
+            Response.AppendHeader("Content-Disposition", string.Format("attachment;filename={0}{1}-export.pdf", HeaderId.ToString(), ProjectName));
             Response.BinaryWrite(PdfStream.ToArray());
             Response.End();
         }
@@ -585,7 +592,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 PdfStream.Position = 0;
 
-                Attachment MailAttachment = new Attachment(PdfStream, "dailyActivityExport.pdf");
+                Attachment MailAttachment = new Attachment(PdfStream, HeaderId.ToString() + "-export.pdf");
 
                 Mailer.SendMessage(User.Identity.Name + "@dbiservices.com", Subject, Message, IsHtml, MailAttachment);
             }
@@ -652,7 +659,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 PdfPRow Row;
                 foreach (dynamic Data in HeaderData)
                 {
-                    Paragraph Title = new Paragraph(string.Format("DAILY ACTIVITY REPORT FOR {0}", Data.DA_DATE.Date.ToString("MM/dd/yyyy")), FontFactory.GetFont("Verdana", 12, Font.BOLD));
+                    Paragraph Title = new Paragraph(string.Format("DAILY ACTIVITY REPORT FOR {0} - {1}", Data.LONG_NAME , Data.DA_DATE.Date.ToString("MM/dd/yyyy")), FontFactory.GetFont("Verdana", 12, Font.BOLD));
                     Title.Alignment = 1;
 
                     ExportedPDF.Add(Title);
