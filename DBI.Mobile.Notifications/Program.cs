@@ -16,7 +16,8 @@ namespace DBI.Mobile.Notifications
     class Program
     {
         
-       private static PushBroker push = new PushBroker();
+       static PushBroker push = new PushBroker();
+       static Boolean IsRunning = false;
 
        public static void Main(string[] args)
 		{
@@ -35,11 +36,11 @@ namespace DBI.Mobile.Notifications
 
             push.RegisterAppleService(new ApplePushChannelSettings(true, appleCert, "Dbi18201")); //Extension method
 
-
             List<SYS_MOBILE_NOTIFICATIONS> notifications = DBI.Data.SYS_MOBILE_NOTIFICATIONS.unprocessedNotifications();
 
             if (notifications.Count > 0)
             {
+                IsRunning = true;
 
                 foreach (SYS_MOBILE_NOTIFICATIONS notification in notifications)
                 {
@@ -52,6 +53,11 @@ namespace DBI.Mobile.Notifications
 
                 Console.WriteLine("Waiting for Queue to Finish...");
                 push.StopAllServices(true);
+
+                while (IsRunning)
+                {
+                    //Wait for event to finish
+                }
             }
             else
             {
@@ -70,6 +76,8 @@ namespace DBI.Mobile.Notifications
            int token = Convert.ToInt16(notification.Tag.ToString().Trim());
            DBI.Data.SYS_MOBILE_NOTIFICATIONS.UpdateNotificationToProcessed(token);
            Console.WriteLine("Sent: " + sender + " -> " + notification);
+           IsRunning = false;
+           
        }
 
        static void NotificationFailed(object sender, INotification notification, Exception notificationFailureException)
@@ -77,6 +85,7 @@ namespace DBI.Mobile.Notifications
            Console.WriteLine("Failure: " + sender + " -> " + notificationFailureException.Message + " -> " + notification);
            int token = Convert.ToInt16(notification.Tag.ToString().Trim());
            DBI.Data.SYS_MOBILE_NOTIFICATIONS.UpdateNotificationToProcessed(token, notificationFailureException.Message);
+           IsRunning = false;
        }
 
        static void ChannelException(object sender, IPushChannel channel, Exception exception)
