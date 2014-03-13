@@ -40,7 +40,7 @@
                 </Columns>
             </ColumnModel>
             <Plugins>
-                <ext:FilterHeader ID="FilterHeader2" runat="server" />
+                <ext:FilterHeader ID="FilterHeader2" runat="server" Remote="true" />
             </Plugins>
             <SelectionModel>
                 <ext:RowSelectionModel ID="project" runat="server" Mode="Single" AllowDeselect="true" />
@@ -90,7 +90,7 @@
                 </Columns>
             </ColumnModel>
             <Plugins>
-                <ext:FilterHeader ID="FilterHeader1" runat="server" />
+                <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true" />
             </Plugins>
             <SelectionModel>
                 <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi" />

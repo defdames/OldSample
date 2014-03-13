@@ -58,7 +58,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                             join c in _context.CROSSINGS on s.CROSSING_ID equals c.CROSSING_ID
                             where s.CROSSING_ID == CrossingId
 
-                            select new { s.CROSSING_ID, s.SUPPLEMENTAL_ID, s.APPROVED_DATE, s.COMPLETED_DATE, s.SERVICE_TYPE, s.INSPECT_START, s.INSPECT_END, s.TRUCK_NUMBER, s.SPRAY, s.CUT, s.INSPECT, s.MAINTAIN, s.RECURRING, s.REMARKS }).ToList<object>();
+                            select new { s.CROSSING_ID, s.SUPPLEMENTAL_ID, s.APPROVED_DATE, s.COMPLETED_DATE, s.SERVICE_TYPE, s.INSPECT_START, s.INSPECT_END, s.SQUARE_FEET, s.TRUCK_NUMBER, s.SPRAY, s.CUT, s.INSPECT, s.MAINTAIN, s.RECURRING, s.REMARKS }).ToList<object>();
 
 
                 uxSupplementalGrid.Store.Primary.DataSource = data;
@@ -75,50 +75,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
            
             //do type conversions
             DateTime ApprovedDate = (DateTime)uxAddApprovedDateField.Value;
-            DateTime CompletedDate = (DateTime)uxAddCompleteDateField.Value;
+            decimal SquareFeet = Convert.ToDecimal(uxAddSquareFeet.Value);
+            string TruckNumber = uxEditTruckNumber.Value.ToString();
             string ServiceType = uxAddServiceType.Value.ToString();
-            DateTime InspectionStart = (DateTime)uxAddInspectStartDateField.Value;
-            DateTime InspectionEnd = (DateTime)uxAddInspectEndDateField.Value;
-            Int64 TruckNumber = Int64.Parse(uxAddTruckComboBox.Value.ToString());
-            string Spray = uxAddSpray.Value.ToString();
-            string Cut = uxAddCut.Value.ToString();
-            string Maintain = uxAddMaintainBox.Value.ToString();
-            string Inspect = uxAddInspect.Value.ToString();
             string Recurring = uxAddRecurringBox.Value.ToString();
             string Remarks = uxAddRemarks.Value.ToString();
-            if (uxAddSpray.Checked)
-            {
-                Spray = "Y";
-            }
-            else
-            {
-                Spray = "N";
-            }
-
-            if (uxAddCut.Checked)
-            {
-                Cut = "Y";
-            }
-            else
-            {
-                Cut = "N";
-            }
-            if (uxAddMaintainBox.Checked)
-            {
-                Maintain = "Y";
-            }
-            else
-            {
-                Maintain = "N";
-            }
-            if (uxAddInspect.Checked)
-            {
-                Inspect = "Y";
-            }
-            else
-            {
-                Inspect = "N";
-            }
+           
             if (uxAddRecurringBox.Checked)
             {
                 Recurring = "Y";
@@ -133,16 +95,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 data = new CROSSING_SUPPLEMENTAL()
                 {
+
                     APPROVED_DATE = ApprovedDate,
-                    COMPLETED_DATE = CompletedDate,
+                    //COMPLETED_DATE = CompletedDate,
                     SERVICE_TYPE = ServiceType,
-                    INSPECT_START = InspectionStart,
-                    INSPECT_END = InspectionEnd,
-                    //TRUCK_NUMBER = TruckNumber,
-                    SPRAY = Spray,
-                    CUT = Cut,
-                    MAINTAIN = Maintain,
-                    INSPECT = Inspect,
+                    TRUCK_NUMBER = TruckNumber,
+                    SQUARE_FEET = SquareFeet,
                     RECURRING = Recurring,
                     REMARKS = Remarks,
                     CROSSING_ID = CrossingId,
@@ -177,34 +135,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
 
                 uxEditApprovedDateField.SetValue(Supplemental.APPROVED_DATE);
-                uxEditCompletedDateField.SetValue(Supplemental.COMPLETED_DATE);
+                uxEditSquareFeet.SetValue(Supplemental.SQUARE_FEET);
                 uxEditServiceTypes.SetValue(Supplemental.SERVICE_TYPE);
-                EditTruckNumber.SetValue(Supplemental.TRUCK_NUMBER);
-                uxEditInspectStartDateField.SetValue(Supplemental.INSPECT_START);
-                uxEditInspectEndDateField.SetValue(Supplemental.INSPECT_END);
-                uxEditSprayBox.SetValue(Supplemental.SPRAY);
-                uxEditCut.SetValue(Supplemental.CUT);
-                uxEditInspectBox.SetValue(Supplemental.MAINTAIN);
-                uxEditMaintain.SetValue(Supplemental.INSPECT);
+                uxEditTruckNumber.SetValue(Supplemental.TRUCK_NUMBER);
                 uxEditRecurringBox.SetValue(Supplemental.RECURRING);
                 uxEditRemarks.SetValue(Supplemental.REMARKS);
 
-                if (Supplemental.SPRAY == "Y")
-                {
-                    uxEditSprayBox.Checked = true;
-                }
-                if (Supplemental.CUT == "Y")
-                {
-                    uxEditCut.Checked = true;
-                }
-                if (Supplemental.MAINTAIN == "Y")
-                {
-                    uxEditMaintain.Checked = true;
-                }
-                if (Supplemental.INSPECT == "Y")
-                {
-                    uxEditInspectBox.Checked = true;
-                }
+               
                 if (Supplemental.RECURRING == "Y")
                 {
                     uxEditRecurringBox.Checked = true;
@@ -227,50 +164,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             //Do type conversions
             DateTime ApprovedDate = (DateTime)uxEditApprovedDateField.Value;
-            DateTime CompletedDate = (DateTime)uxEditCompletedDateField.Value;
+            decimal SquareFeet = Convert.ToDecimal(uxEditSquareFeet.Value);
             string ServiceType = uxEditServiceTypes.Value.ToString();
-            DateTime InspectionStart = (DateTime)uxEditInspectStartDateField.Value;
-            DateTime InspectionEnd = (DateTime)uxEditInspectEndDateField.Value;
-            long TruckNumber = Convert.ToInt64(EditTruckNumber.Value);
-            string Spray = uxEditSprayBox.Value.ToString();
-            string Cut = uxEditCut.Value.ToString();
-            string Maintain = uxEditMaintain.Value.ToString();
-            string Inspect = uxEditInspectBox.Value.ToString();
+            string TruckNumber = uxEditTruckNumber.Value.ToString();
             string Recurring = uxEditRecurringBox.Value.ToString();
             string Remarks = uxEditRemarks.Value.ToString();
-            if (uxEditSprayBox.Checked)
-            {
-                Spray = "Y";
-            }
-            else
-            {
-                Spray = "N";
-            }
-
-            if (uxEditCut.Checked)
-            {
-                Cut = "Y";
-            }
-            else
-            {
-                Cut = "N";
-            }
-            if (uxEditMaintain.Checked)
-            {
-                Maintain = "Y";
-            }
-            else
-            {
-                Maintain = "N";
-            }
-            if (uxEditInspectBox.Checked)
-            {
-                Inspect = "Y";
-            }
-            else
-            {
-                Inspect = "N";
-            }
+          
             if (uxEditRecurringBox.Checked)
             {
                 Recurring = "Y";
@@ -292,22 +191,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
          
                     data.APPROVED_DATE = ApprovedDate;
-                    data.COMPLETED_DATE = CompletedDate;
+                    //data.COMPLETED_DATE = CompletedDate;
+                    data.SQUARE_FEET = SquareFeet;
+                    data.TRUCK_NUMBER = TruckNumber;
                     data.SERVICE_TYPE = ServiceType;
-                    data.INSPECT_START = InspectionStart;
-                    data.INSPECT_END = InspectionEnd;
-                    //data.TRUCK_NUMBER = TruckNumber;
-                    data.SPRAY = Spray;
-                    data.CUT = Cut;
-                    data.MAINTAIN = Maintain;
-                    data.INSPECT = Inspect;
                     data.RECURRING = Recurring;
                     data.REMARKS = Remarks;
                 
-
-               
-
-
                 //Write to DB
                 GenericData.Update<CROSSING_SUPPLEMENTAL>(data);
             
@@ -364,10 +254,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             public DateTime APPROVED_DATE { get; set; }
             public DateTime COMPLETED_DATE { get; set; }
             public string SERVICE_TYPE { get; set; }
-            public Int64 TRUCK_NUMBER { get; set; }
+            public string TRUCK_NUMBER { get; set; }
             public DateTime INSPECT_START { get; set; }
             public DateTime INSPECT_END { get; set; }
             public string SPRAY { get; set; }
+            public long SQUARE_FEET { get; set; }
             public string CUT { get; set; }
             public string MAINTAIN { get; set; }
             public string INSPECT { get; set; }

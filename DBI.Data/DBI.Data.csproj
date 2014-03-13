@@ -63,7 +63,7 @@
     </Reference>
     <Reference Include="Oracle.ManagedDataAccessDTC, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\app\ljankowski\product\12.1.0\client_2\odp.net\managed\x86\Oracle.ManagedDataAccessDTC.dll</HintPath>
+      <HintPath>..\..\My Received Files\Oracle.ManagedDataAccessDTC.dll</HintPath>
     </Reference>
     <Reference Include="PushSharp.Apple">
       <HintPath>..\..\PushSharp\PushSharp.Apple\bin\Release\PushSharp.Apple.dll</HintPath>

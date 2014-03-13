@@ -51,7 +51,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxCurrentSecurityCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
             }
         }
-            protected void deAssociateCrossings(object sender, DirectEventArgs e)
+        protected void deAssociateCrossings(object sender, DirectEventArgs e)
             {
                 CROSSING data;
 
@@ -91,7 +91,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     }
                 });
             }
-            //protected void ButtonValidityCheck(object sender, DirectEventArgs e)
+       //protected void ButtonValidityCheck(object sender, DirectEventArgs e)
             //{
                 
             //    if ()
@@ -103,7 +103,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             //        uxApplyButtonCS.Disabled();
             //    }
             //}
-            public class ProjectDetails
+        public class ProjectDetails
             {
                 public long CROSSING_ID { get; set; }
                 public string CROSSING_NUMBER { get; set; }              
