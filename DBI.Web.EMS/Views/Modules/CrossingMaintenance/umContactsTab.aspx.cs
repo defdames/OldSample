@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using DBI.Core.Web;
 using DBI.Data;
 using Ext.Net;
+using DBI.Data.DataFactory;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
@@ -14,26 +15,26 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-          
+            if (!X.IsAjaxRequest)
+            {
+                uxAddStateList.Data = StaticLists.StateList;
+                uxEditStateList.Data = StaticLists.StateList;
+            }
         }
-        /// <summary>
-        /// 
-        /// </summary>
+
         protected void deContactMainGrid(object sender, StoreReadDataEventArgs e)
         {
-          
+
             //Get Contacts
             using (Entities _context = new Entities())
             {
                 List<object> data;
-                 data = (from d in _context.CROSSING_CONTACTS
-                         //join c in _context.CROSSINGS
-                         //on d.CROSSING_ID equals c.CROSSING_ID                 
-                            select new
-                            {  d.CONTACT_ID, d.CONTACT_NAME, d.WORK_NUMBER, d.CELL_NUMBER, d.RAIL_ROAD  }).ToList<object>();
+                data = (from d in _context.CROSSING_CONTACTS
+
+                        select new { d.CONTACT_ID, d.CONTACT_NAME, d.WORK_NUMBER, d.CELL_NUMBER, d.RAILROAD }).ToList<object>();
                 int count;
-             uxCurrentContactStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-             e.Total = count;
+                uxCurrentContactStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                e.Total = count;
             }
         }
         protected void GetContactGridData(object sender, DirectEventArgs e)
@@ -45,10 +46,20 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 var data = (from d in _context.CROSSING_CONTACTS
                             where d.CONTACT_ID == ContactId
                             select new
-                            { d.CONTACT_ID, d.CONTACT_NAME, d.RAIL_ROAD, d.ADDRESS_1, d.ADDRESS_2, d.CITY, d.STATE, d.ZIP_CODE, d.CELL_NUMBER, d.WORK_NUMBER,
-                          }).SingleOrDefault();
+                            {
+                                d.CONTACT_ID,
+                                d.CONTACT_NAME,
+                                d.RAILROAD,
+                                d.ADDRESS_1,
+                                d.ADDRESS_2,
+                                d.CITY,
+                                d.STATE,
+                                d.ZIP_CODE,
+                                d.CELL_NUMBER,
+                                d.WORK_NUMBER,
+                            }).SingleOrDefault();
                 uxContactManagerName.SetValue(data.CONTACT_NAME);
-                uxContactRR.SetValue(data.RAIL_ROAD);
+                uxContactRR.SetValue(data.RAILROAD);
                 uxContactAddress1.SetValue(data.ADDRESS_1);
                 uxContactAddress2.SetValue(data.ADDRESS_2);
                 uxContactCity.SetValue(data.CITY);
@@ -62,7 +73,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         protected void deAddContact(object sender, DirectEventArgs e)
         {
             CROSSING_CONTACTS data;
-           
+
             //do type conversions
             string ContactName = uxAddNewManagerName.Value.ToString();
             string RailRoad = uxAddNewRRTextField.Value.ToString();
@@ -70,18 +81,18 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string Address2 = uxAddNewAddress2.Value.ToString();
             string City = uxAddNewContactCityTextField.Value.ToString();
             string Zip = uxAddNewContactZip.Value.ToString();
-            string State = uxAddNewContactStateTextField.Value.ToString();
+            string State = uxAddContactStateComboBox.Value.ToString();
             string Cell = uxAddNewContactCell.Value.ToString();
             string Office = uxAddNewContactOffice.Value.ToString();
-            
+
             //Add to Db
             using (Entities _context = new Entities())
             {
                 data = new CROSSING_CONTACTS()
                 {
-                   
+
                     CONTACT_NAME = ContactName,
-                    RAIL_ROAD = RailRoad.ToString(),
+                    RAILROAD = RailRoad.ToString(),
                     ADDRESS_1 = Address1,
                     ADDRESS_2 = Address2,
                     CITY = City,
@@ -89,17 +100,17 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     STATE = State,
                     CELL_NUMBER = Cell,
                     WORK_NUMBER = Office,
-              
+
                 };
             }
-           
-            //Process addition
+
+
             GenericData.Insert<CROSSING_CONTACTS>(data);
 
             uxAddContactWindow.Hide();
             uxAddContactForm.Reset();
             uxCurrentContactStore.Reload();
-          
+
 
             Notification.Show(new NotificationConfig()
             {
@@ -126,7 +137,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                             {
                                 d.CONTACT_ID,
                                 d.CONTACT_NAME,
-                                d.RAIL_ROAD,
+                                d.RAILROAD,
                                 d.ADDRESS_1,
                                 d.ADDRESS_2,
                                 d.CITY,
@@ -136,17 +147,17 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                                 d.WORK_NUMBER,
                             }).SingleOrDefault();
                 uxEditManagerName.SetValue(data.CONTACT_NAME);
-                uxEditRRTextField.SetValue(data.RAIL_ROAD);
+                uxEditRRTextField.SetValue(data.RAILROAD);
                 uxEditContactAdd1.SetValue(data.ADDRESS_1);
                 uxEditContactAdd2.SetValue(data.ADDRESS_2);
                 uxEditContactCity.SetValue(data.CITY);
-                uxEditContactStateTextField.SetValue(data.STATE);
+                uxEditContactState.SetValue(data.STATE);
                 uxEditContactZip.SetValue(data.ZIP_CODE);
                 uxEditContactCellNum.SetValue(data.CELL_NUMBER);
                 uxEditContactPhoneNum.SetValue(data.WORK_NUMBER);
             }
         }
-        
+
 
 
 
@@ -166,10 +177,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string Address2 = uxEditContactAdd2.Value.ToString();
             string City = uxEditContactCity.Value.ToString();
             string Zip = uxEditContactZip.Value.ToString();
-            string State = uxEditContactStateTextField.Value.ToString();
+            string State = uxEditContactState.Value.ToString();
             string Cell = uxEditContactCellNum.Value.ToString();
             string Office = uxEditContactPhoneNum.Value.ToString();
-          
+
             //Get record to be edited
             using (Entities _context = new Entities())
             {
@@ -179,17 +190,17 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                         select d).Single();
             }
 
-                    data.CONTACT_NAME = ContactName;
-                    data.RAIL_ROAD = RailRoad;
-                    data.ADDRESS_1 = Address1;
-                    data.ADDRESS_2 = Address2;
-                    data.CITY = City;
-                    data.ZIP_CODE = Zip;
-                    data.STATE = State;
-                    data.CELL_NUMBER = Cell;
-                    data.WORK_NUMBER = Office;
-                   
-                
+            data.CONTACT_NAME = ContactName;
+            data.RAILROAD = RailRoad;
+            data.ADDRESS_1 = Address1;
+            data.ADDRESS_2 = Address2;
+            data.CITY = City;
+            data.ZIP_CODE = Zip;
+            data.STATE = State;
+            data.CELL_NUMBER = Cell;
+            data.WORK_NUMBER = Office;
+
+
             GenericData.Update<CROSSING_CONTACTS>(data);
 
             uxEditContactWindow.Hide();
@@ -241,10 +252,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 List<object> data;
 
-                //Get List of all new headers
+                //Get List of all new contacts
 
                 data = (from d in _context.CROSSING_CONTACTS
-                        select new { d.CONTACT_NAME, }).ToList<object>();
+                        select new { d.CONTACT_ID, d.CONTACT_NAME, d.CELL_NUMBER, d.WORK_NUMBER }).ToList<object>();
 
                 int count;
                 uxAssignContactManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -258,93 +269,182 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 List<object> data;
 
-                //Get List of all new headers
+                //Get List of all new crossings
 
                 data = (from d in _context.CROSSINGS
-                        select new { d.CROSSING_NUMBER, }).ToList<object>();
+                        where d.CONTACT_ID == null
+                        select new { d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.RAILROAD, d.SUB_DIVISION }).ToList<object>();
 
                 int count;
                 uxAssignContactCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
             }
         }
-             protected void deCurrentManagerGrid(object sender, StoreReadDataEventArgs e)
+        protected void deAssignCrossingtoContact(object sender, DirectEventArgs e)
         {
-          
+            CROSSING data;
+
+            //do type conversions
+
+            RowSelectionModel sm = uxAssignContactGrid.GetSelectionModel() as RowSelectionModel;
+            long ContactId = long.Parse(e.ExtraParams["contactId"]);
+
+
+            string json = (e.ExtraParams["selectedCrossings"]);
+            List<CrossingDetails> crossingList = JSON.Deserialize<List<CrossingDetails>>(json);
+            foreach (CrossingDetails crossing in crossingList)
+            {
+                //Get record to be edited
+                using (Entities _context = new Entities())
+                {
+
+                    data = (from d in _context.CROSSINGS
+                            where d.CROSSING_ID == crossing.CROSSING_ID
+                            select d).Single();
+                    data.CONTACT_ID = ContactId;
+                }
+                GenericData.Update<CROSSING>(data);
+            }
+
+            uxAssignCrossingWindow.Hide();
+            uxAssignContactManagerStore.Reload();
+            uxAssignContactCrossingStore.Reload();
+            uxContactFormPanel.Reset();
+
+
+
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Crossing to Contact Updated Successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
+        }
+        protected void deCurrentManagerGrid(object sender, StoreReadDataEventArgs e)
+        {
+
             //Get Contacts
             using (Entities _context = new Entities())
             {
                 List<object> data;
-                 data = (from d in _context.CROSSING_CONTACTS                
-                            select new
-                            {  d.CONTACT_ID, d.CONTACT_NAME  }).ToList<object>();
+                data = (from d in _context.CROSSING_CONTACTS
+                        select new { d.CONTACT_ID, d.CONTACT_NAME, }).ToList<object>();
                 int count;
-             uxCurrentManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-             e.Total = count;
+                uxCurrentManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                e.Total = count;
             }
-         }
-             protected void deNewManagerGrid(object sender, StoreReadDataEventArgs e)
-             {
+        }
+        protected void deNewManagerGrid(object sender, StoreReadDataEventArgs e)
+        {
 
-                 //Get Contacts
-                 using (Entities _context = new Entities())
-                 {
-                     List<object> data;
-                     data = (from d in _context.CROSSING_CONTACTS
-                             select new { d.CONTACT_ID, d.CONTACT_NAME }).ToList<object>();
-                     int count;
-                     uxNewManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-                     e.Total = count;
-                 }
-             }
-                  protected void deStoreCurrentManagerValue(object sender, DirectEventArgs e)
-                 {
-                    switch (e.ExtraParams["Type"])
-                    {
-                         case "CurrentManager":
-                         uxUpdateContactCurrentManager.SetValue(e.ExtraParams["ContactName"], e.ExtraParams["Name"]);
-                         uxAddCurrentManagerFilter.ClearFilter();
-                         break;
-                
-                    }
-                  }
-                      protected void deStoreNewManagerValue(object sender, DirectEventArgs e)
-                      {
-                          switch(e.ExtraParams["Type"])
-                          {
-                          case "NewManager":
-                            uxUpdateContactNewManager.SetValue(e.ExtraParams["ContactName"], e.ExtraParams["Name"]);
-                            uxNewManagerFilter.ClearFilter();
-                          break;
-                          }
-                      }
-                      protected void deTransferCrossingsOldManager(object sender, StoreReadDataEventArgs e)
-                      {
-                          using (Entities _context = new Entities())
-                          {
-                              
-                              var data = (from d in _context.CROSSINGS
-                                          //join c in _context.CROSSING_CONTACTS on d.CROSSING_ID equals c.CROSSING_ID
-                                          //where d.CROSSING_ID == CrossingId
-                                          select new
-                                      {
-                                          d.CROSSING_NUMBER
-                                      }).SingleOrDefault();
-                          }
-                      }
-                         protected void deTransferCrossingsNewManager(object sender, StoreReadDataEventArgs e)
-                      {
-                         using (Entities _context = new Entities())
-                         {
+            //Get Contacts
+            using (Entities _context = new Entities())
+            {
+                List<object> data;
+                data = (from d in _context.CROSSING_CONTACTS
+                        select new { d.CONTACT_ID, d.CONTACT_NAME }).ToList<object>();
+                int count;
+                uxNewManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                e.Total = count;
+            }
+        }
+        protected void deStoreCurrentManagerValue(object sender, DirectEventArgs e)
+        {
+            switch (e.ExtraParams["Type"])
+            {
+                case "CurrentManager":
+                    uxUpdateContactCurrentManager.SetValue(e.ExtraParams["ContactId"], e.ExtraParams["ContactName"]);
+                    uxAddCurrentManagerFilter.ClearFilter();
+                    break;
+
+            }
+        }
+        protected void deStoreNewManagerValue(object sender, DirectEventArgs e)
+        {
+            switch (e.ExtraParams["Type"])
+            {
+                case "NewManager":
+                    uxUpdateContactNewManager.SetValue(e.ExtraParams["ContactId"], e.ExtraParams["ContactName"]);
+                    uxNewManagerFilter.ClearFilter();
+                    break;
+            }
+        }
+       
+        protected void deShowGrid(object sender, DirectEventArgs e)
+        {
+                long ContactId = long.Parse(uxUpdateContactCurrentManager.Value.ToString());
                              
-                                var data = (from d in _context.CROSSINGS
-                                //join c in _context.CROSSING_CONTACTS on d.CROSSING_ID equals c.CROSSING_ID
-                                // where d.CROSSING_ID == CrossingId
-                                select new
-                            { d.CROSSING_NUMBER
-                                }).SingleOrDefault();
-                      }
+                    using (Entities _context = new Entities())
+                    {
+                        List<object> list;
+                        list = (from d in _context.CROSSINGS
+                                where d.CONTACT_ID == ContactId
+                                select d).ToList<object>();
 
+                        uxCurrentManagerCrossingStore.DataSource = list;
+                        uxCurrentManagerCrossingStore.DataBind();
+
+                        uxTransferCrossingWindow.Show();
+                    }      
+        }
+        protected void AssociateTransfer(object sender, DirectEventArgs e)
+        {
+            CROSSING data;
+
+            //do type conversions
+
+            long ContactId = long.Parse(uxUpdateContactNewManager.Value.ToString());
+
+            string json = (e.ExtraParams["selectedCrossings"]);
+            List<CrossingDetails> crossingList = JSON.Deserialize<List<CrossingDetails>>(json);
+            foreach (CrossingDetails crossing in crossingList)
+            {
+                //Get record to be edited
+                using (Entities _context = new Entities())
+                {
+
+                    data = (from d in _context.CROSSINGS
+                            where d.CROSSING_ID == crossing.CROSSING_ID
+                            select d).Single();
+                    data.CONTACT_ID = ContactId;
+                }
+                GenericData.Update<CROSSING>(data);
+            }
+
+            uxTransferCrossingWindow.Hide();
+            uxUpdateContactWindow.Hide();
+            uxCurrentManagerCrossingStore.Reload();
+            uxTransferCrossingsNewManagerStore.Reload();
+            uxUpdateContactForm.Reset();
+            uxContactFormPanel.Reset();
+
+
+
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Crossing(s) Transferred Successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
         }
 
-}}
+        public class CrossingDetails
+        {
+            public long CROSSING_ID { get; set; }
+            public string CROSSING_NUMBER { get; set; }
+            public string RAILROAD { get; set; }
+            public string SERVICE_UNIT { get; set; }
+            public string SUB_DIVISION { get; set; }
+        }
+    }
+}
     

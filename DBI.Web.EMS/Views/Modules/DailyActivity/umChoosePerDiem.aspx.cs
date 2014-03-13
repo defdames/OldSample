@@ -42,6 +42,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long PersonId = long.Parse(Request.QueryString["PersonId"]);
             long ChosenHeaderId = long.Parse(uxChoosePerDiemHeaderId.SelectedItem.Value.ToString());
             List<DAILY_ACTIVITY_EMPLOYEE> RecordsToUpdate;
+            long? OrgId;
             using (Entities _context = new Entities())
             {
                 DateTime HeaderDate = (from d in _context.DAILY_ACTIVITY_HEADER
@@ -52,6 +53,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                    join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
                                    where h.DA_DATE == HeaderDate && d.PERSON_ID == PersonId && d.PER_DIEM == "Y"
                                    select d).ToList();
+                OrgId = (from d in _context.DAILY_ACTIVITY_HEADER
+                         join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                         where d.HEADER_ID == HeaderId
+                         select p.ORG_ID).Single();
+                
             }
 
             foreach (DAILY_ACTIVITY_EMPLOYEE Record in RecordsToUpdate)
@@ -66,9 +72,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(Record);
             }
-            
 
-            X.Js.Call(string.Format("parent.App.direct.dmRefreshShowSubmit('{0}')", Request.QueryString["HeaderId"]));
+            if (OrgId == 121)
+            {
+                X.Js.Call(string.Format("parent.App.direct.dmRefreshShowSubmit_DBI('{0}')", Request.QueryString["HeaderId"])); 
+            }
+            else
+            {
+                X.Js.Call(string.Format("parent.App.direct.dmRefreshShowSubmit_IRM('{0}')", Request.QueryString["HeaderId"]));
+            }
 
         }
     }

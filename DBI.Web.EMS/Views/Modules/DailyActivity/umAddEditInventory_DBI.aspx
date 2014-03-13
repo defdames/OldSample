@@ -292,7 +292,6 @@
 						</ext:ComboBox>
 						<ext:TextField runat="server"
 							ID="uxAddInventoryTotal"
-							Disabled="true"
 							FieldLabel="Total" />
 						<ext:TextField runat="server"
 							ID="uxAddInventoryEPA"
@@ -473,7 +472,6 @@
 						</ext:ComboBox>
 						<ext:TextField runat="server"
 							ID="uxEditInventoryTotal"
-							Disabled="true"
 							FieldLabel="Total" />
 						<ext:TextField runat="server"
 							ID="uxEditInventoryEPA"

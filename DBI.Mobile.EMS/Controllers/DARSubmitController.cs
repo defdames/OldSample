@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Http;
 using DBI.Data;
 using Newtonsoft.Json;
+using DBI.Mobile.EMS.Models;
 
 namespace DBI.Mobile.EMS.Controllers
 {
@@ -20,20 +21,41 @@ namespace DBI.Mobile.EMS.Controllers
         {
             string jsonString = req.Content.ReadAsStringAsync().Result;
 
-            System.IO.StreamWriter file2 = new System.IO.StreamWriter("c:\\temp\\json.txt");
-            file2.Write(jsonString);
-            file2.Close();
-
+            var jsonObj = new DailyActivityResponse.RootObject();
 
             try
             {
-                var jsonObj = JsonConvert.DeserializeObject<DailyActivityResponse.RootObject>(jsonString);
-                
+                jsonObj= JsonConvert.DeserializeObject<DailyActivityResponse.RootObject>(jsonString);
+            }
+            catch (Exception ex)
+            {
+                //DEBUG TESTING
+                //System.IO.StreamWriter file2 = new System.IO.StreamWriter("c:\\temp\\error.txt");
+                //file2.Write(ex.ToString());
+                //file2.Close();
+                //throw(ex);
+            }
+
+            //Save Data to logging table
+            DAILY_ACTIVITY_IMPORT import = new DAILY_ACTIVITY_IMPORT();
+            DAILY_ACTIVITY_HEADER h = new DAILY_ACTIVITY_HEADER();
 
 
-                DAILY_ACTIVITY_HEADER h = new DAILY_ACTIVITY_HEADER();
+            import.DEVICE_ID = requestHeaderByValue("DeviceID", req);
+            import.RESPONSE = jsonString;
+            import.MODEL = requestHeaderByValue("Model", req);
+            import.SYSTEM_VERSION = requestHeaderByValue("SystemVersion", req);
+            import.APP_VERSION = requestHeaderByValue("AppVersion", req);
+            //import.LATITUDE = decimal.Parse(req.Headers.Single(k => k.Key == "Latitude").Value.ToString());
+            //import.LONGITUDE = decimal.Parse(req.Headers.Single(k => k.Key == "Longitude").Value.ToString());
+            import.CREATE_DATE = DateTime.Now;
+           
+               try
+            {
+
                 foreach (DailyActivityResponse.DailyActivityHeader j in jsonObj.daily_activity_header)
                 {
+                        
                         h.PROJECT_ID = j.project_id;
                         h.DA_DATE = DateTime.ParseExact(j.da_date, "dd-MMM-yyyy", null);
                         h.SUBDIVISION = j.subdivision;
@@ -47,7 +69,8 @@ namespace DBI.Mobile.EMS.Controllers
                         h.MODIFY_DATE = DateTime.Now;
                         h.CREATED_BY = j.created_by.ToUpper();
                         h.MODIFIED_BY = j.created_by.ToUpper();
-                        h.STATUS = 1;
+                        h.STATUS = 2;
+                        h.DA_HEADER_ID = 0;
                         GenericData.Insert<DAILY_ACTIVITY_HEADER>(h);
                 }
 
@@ -81,14 +104,18 @@ namespace DBI.Mobile.EMS.Controllers
                     e.MODIFY_DATE = DateTime.Now;
                     e.CREATED_BY = h.CREATED_BY;
                     e.MODIFIED_BY = h.CREATED_BY;
+                    e.ROLE_TYPE = j.role_type;
+                    e.STATE = j.state;
+                    e.COUNTY = j.county;
+                    e.SHOPTIME_AM = j.shoptime_am;
+                    e.SHOPTIME_PM = j.shoptime_pm;
 
                     if (j.equipment_id > 0)
                     {
                         Entities _context = new Entities();
-                        DAILY_ACTIVITY_EQUIPMENT m = _context.DAILY_ACTIVITY_EQUIPMENT.Where(s => s.PROJECT_ID == j.equipment_id & s.HEADER_ID == h.HEADER_ID).SingleOrDefault();
+                        DAILY_ACTIVITY_EQUIPMENT m = _context.DAILY_ACTIVITY_EQUIPMENT.Where(s => s.PROJECT_ID == j.equipment_id & s.HEADER_ID == h.HEADER_ID).FirstOrDefault();
                         e.EQUIPMENT_ID = m.EQUIPMENT_ID;
                     }
- 
                     GenericData.Insert<DAILY_ACTIVITY_EMPLOYEE>(e);
                 }
 
@@ -96,16 +123,15 @@ namespace DBI.Mobile.EMS.Controllers
                 {
                     DAILY_ACTIVITY_PRODUCTION e = new DAILY_ACTIVITY_PRODUCTION();
                     e.HEADER_ID = h.HEADER_ID; 
-                    //e.TIME_IN = DateTime.ParseExact(j.time_in, "dd-MMM-yyyy HH:mm", null);
-                    //e.TIME_OUT = DateTime.ParseExact(j.time_out, "dd-MMM-yyyy HH:mm", null);
-                    e.TASK_ID = j.task_id;
+                    e.TASK_ID = (long)j.task_id;
                     e.WORK_AREA = j.work_area;
                     e.POLE_FROM = j.pole_from;
                     e.POLE_TO  = j.pole_to;
-                    e.ACRES_MILE = j.acres_mile;
+                    e.ACRES_MILE = (long)j.acres_mile;
                     e.QUANTITY = j.quantity;
                     e.UNIT_OF_MEASURE = j.uom;
                     e.BILL_RATE = (Decimal)j.bill_rate;
+                    e.SURFACE_TYPE = j.surface_type;
                     e.STATION = j.station;
                     e.EXPENDITURE_TYPE = j.expenditure_type;
                     e.COMMENTS = j.comments;
@@ -120,7 +146,10 @@ namespace DBI.Mobile.EMS.Controllers
                 {
                     DAILY_ACTIVITY_WEATHER e = new DAILY_ACTIVITY_WEATHER();
                     e.HEADER_ID = h.HEADER_ID;
-                    e.WEATHER_DATE_TIME = DateTime.ParseExact(j.weather_date_time, "dd-MMM-yyyy HH:mm", null);
+                    if (j.weather_date_time.Length > 0)
+                    {
+                        e.WEATHER_DATE_TIME = DateTime.ParseExact(j.weather_date_time, "dd-MMM-yyyy HH:mm", null);
+                    }
                     e.TEMP = j.temp.ToString();
                     e.WIND_DIRECTION = j.wind_direction;
                     e.WIND_VELOCITY = j.wind_velocity;
@@ -167,54 +196,65 @@ namespace DBI.Mobile.EMS.Controllers
                     e.MODIFY_DATE = DateTime.Now;
                     e.CREATED_BY = h.CREATED_BY;
                     e.MODIFIED_BY = h.CREATED_BY;
+                    e.TOTAL = j.total;
 
                     if (j.chemical_mix_id > 0)
                     {
                         Entities _context = new Entities();
-                        DAILY_ACTIVITY_CHEMICAL_MIX m = _context.DAILY_ACTIVITY_CHEMICAL_MIX.Where(s => s.CHEMICAL_MIX_NUMBER == j.chemical_mix_id & s.HEADER_ID == h.HEADER_ID).SingleOrDefault();
+                        DAILY_ACTIVITY_CHEMICAL_MIX m = _context.DAILY_ACTIVITY_CHEMICAL_MIX.Where(s => s.CHEMICAL_MIX_NUMBER == j.chemical_mix_id & s.HEADER_ID == h.HEADER_ID).FirstOrDefault();
                         e.CHEMICAL_MIX_ID = m.CHEMICAL_MIX_ID;
                     }
-
-
                     GenericData.Insert<DAILY_ACTIVITY_INVENTORY>(e);
                 }
 
                 foreach (DailyActivityResponse.DailyActivityFooter j in jsonObj.daily_activity_footer)
                 {
-                    DAILY_ACTIVITY_FOOTER e = new DAILY_ACTIVITY_FOOTER();
-                    e.HEADER_ID = h.HEADER_ID;
-                    e.HOTEL_NAME = j.hotel_name;
-                    e.HOTEL_CITY = j.hotel_city;
-                    e.HOTEL_STATE = j.hotel_state;
-                    e.HOTEL_PHONE = j.hotel_phone;
-                    e.DOT_REP = Convert.FromBase64String(j.dot_rep);
-                    e.DOT_REP_NAME = j.dot_rep_name;
-                    e.COMMENTS = j.comments;
-                    e.FOREMAN_SIGNATURE = Convert.FromBase64String(j.foreman_signature);
-                    e.CONTRACT_REP = Convert.FromBase64String(j.contract_rep);
-                    e.CONTRACT_REP_NAME = j.contract_rep_name;
-                    e.CREATE_DATE = DateTime.Now;
-                    e.MODIFY_DATE = DateTime.Now;
-                    e.CREATED_BY = h.CREATED_BY;
-                    e.MODIFIED_BY = h.CREATED_BY;
-                    GenericData.Insert<DAILY_ACTIVITY_FOOTER>(e);
+                    DAILY_ACTIVITY_FOOTER f = new DAILY_ACTIVITY_FOOTER();
+                    f.HEADER_ID = h.HEADER_ID;
+                    f.HOTEL_NAME = j.hotel_name;
+                    f.HOTEL_CITY = j.hotel_city;
+                    f.HOTEL_STATE = j.hotel_state;
+                    f.HOTEL_PHONE = j.hotel_phone;
+                    f.DOT_REP = Convert.FromBase64String(j.dot_rep);
+                    f.DOT_REP_NAME = j.dot_rep_name;
+                    f.COMMENTS = j.comments;
+                    f.FOREMAN_SIGNATURE = Convert.FromBase64String(j.foreman_signature);
+                    f.CONTRACT_REP = Convert.FromBase64String(j.contract_rep);
+                    f.CONTRACT_REP_NAME = j.contract_rep_name;
+                    f.CONTRACT_REP_EMAIL = j.contract_rep_email;
+                    f.DOT_REP_EMAIL = j.dot_rep_email;
+                    f.CREATE_DATE = DateTime.Now;
+                    f.MODIFY_DATE = DateTime.Now;
+                    f.CREATED_BY = h.CREATED_BY;
+                    f.MODIFIED_BY = h.CREATED_BY;
+                    GenericData.Insert<DAILY_ACTIVITY_FOOTER>(f);
                 }
 
             
             }
             catch (Exception ex)
             {
-                System.IO.StreamWriter file3 = new System.IO.StreamWriter("c:\\temp\\error.txt");
-                file3.Write(ex.ToString());
-               file3.Close();
+                import.ERROR_CODE = ex.ToString();
+                import.CREATED_BY = h.CREATED_BY;
+                GenericData.Insert<DAILY_ACTIVITY_IMPORT>(import);
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
 
 
-         
-
+            import.CREATED_BY = h.CREATED_BY;
+            import.HEADER_ID = h.HEADER_ID;
+            GenericData.Insert<DAILY_ACTIVITY_IMPORT>(import);
 
 
         }
 
+        public string requestHeaderByValue(string headerID, HttpRequestMessage message)
+        {
+                 IEnumerable<string> headerValues = message.Headers.GetValues(headerID);
+                var id = headerValues.FirstOrDefault();
+                return id.ToString();
+        }
+
     }
+
 }

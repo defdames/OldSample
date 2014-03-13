@@ -33,6 +33,7 @@ namespace DBI.Data
         public string EXPENDITURE_TYPE { get; set; }
         public Nullable<decimal> BILL_RATE { get; set; }
         public string UNIT_OF_MEASURE { get; set; }
+        public string SURFACE_TYPE { get; set; }
     
         public virtual DAILY_ACTIVITY_HEADER DAILY_ACTIVITY_HEADER { get; set; }
     }

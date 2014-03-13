@@ -29,6 +29,13 @@ namespace DBI.Data
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
         public string FOREMAN_LICENSE { get; set; }
+        public string ROLE_TYPE { get; set; }
+        public string STATE { get; set; }
+        public string COUNTY { get; set; }
+        public string LUNCH { get; set; }
+        public Nullable<decimal> LUNCH_LENGTH { get; set; }
+        public Nullable<decimal> SHOPTIME_AM { get; set; }
+        public Nullable<decimal> SHOPTIME_PM { get; set; }
     
         public virtual DAILY_ACTIVITY_HEADER DAILY_ACTIVITY_HEADER { get; set; }
     }

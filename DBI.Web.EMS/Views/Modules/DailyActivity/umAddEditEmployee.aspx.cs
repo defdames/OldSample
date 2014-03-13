@@ -18,18 +18,44 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             if (!X.IsAjaxRequest)
             {
+                long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
                 if (Request.QueryString["type"] == "Add")
                 {
                     uxAddEmployeeForm.Show();
+                    uxAddEmployeeRole.Show();
+                    if (GetOrgId(HeaderId) == 123)
+                    {
+                        uxAddEmployeeShopTimeAM.Show();
+                        uxAddEmployeeShopTimePM.Show();
+                    }
                 }
                 else
                 {
                     uxEditEmployeeForm.Show();
+                    uxEditEmployeeRole.Show();
                     LoadEditEmployeeForm();
+                    if (GetOrgId(HeaderId) == 123)
+                    {
+                        uxEditEmployeeShopTimeAM.Show();
+                        uxEditEmployeeShopTimePM.Show();
+                    }
                 }
                 uxAddEmployeeTimeInDate.SelectedDate = DateTime.Now.Date;
                 uxAddEmployeeTimeOutDate.SelectedDate = DateTime.Now.Date;
             }
+        }
+
+        protected long GetOrgId(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
+                long OrgId;
+                return OrgId = (from d in _context.DAILY_ACTIVITY_HEADER
+                                join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                                where d.HEADER_ID == HeaderId
+                                select (long)p.ORG_ID).Single();
+            }
+
         }
 
         /// <summary>
@@ -43,16 +69,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 var Employee = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                                join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
-                                join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.EQUIPMENT_ID equals eq.EQUIPMENT_ID
-                                join p in _context.PROJECTS_V on eq.PROJECT_ID equals p.PROJECT_ID
-                                where d.EMPLOYEE_ID == EmployeeId
-                                select new { d.TIME_IN, d.TIME_OUT, d.EQUIPMENT_ID, d.PERSON_ID, d.COMMENTS, d.DRIVE_TIME, d.TRAVEL_TIME, d.PER_DIEM, e.EMPLOYEE_NAME, p.SEGMENT1 }).Single();
+                            join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
+                            join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.EQUIPMENT_ID equals eq.EQUIPMENT_ID into equ
+                            from equip in equ.DefaultIfEmpty()
+                            join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
+                            from projects in proj.DefaultIfEmpty()
+                            where d.EMPLOYEE_ID == EmployeeId
+                            select new { d.EMPLOYEE_ID, d.HEADER_ID, d.PERSON_ID, e.EMPLOYEE_NAME, d.EQUIPMENT_ID, projects.NAME, projects.SEGMENT1, d.TIME_IN, d.TIME_OUT, d.TRAVEL_TIME, d.DRIVE_TIME, d.PER_DIEM, d.COMMENTS, d.ROLE_TYPE }).Single();
                 DateTime TimeIn = (DateTime)Employee.TIME_IN;
                 DateTime TimeOut = (DateTime)Employee.TIME_OUT;
 
                 uxEditEmployeeEmpDropDown.SetValue(Employee.PERSON_ID.ToString(), Employee.EMPLOYEE_NAME);
-                uxEditEmployeeEqDropDown.SetValue(Employee.EQUIPMENT_ID.ToString(), Employee.SEGMENT1.ToString());
+                
+                try
+                {
+                    uxEditEmployeeEqDropDown.SetValue(Employee.EQUIPMENT_ID.ToString(), Employee.SEGMENT1.ToString());
+                }
+                catch (NullReferenceException) { }
+
                 uxEditEmployeeTimeInDate.SetValue(TimeIn.Date);
                 uxEditEmployeeTimeInTime.SetValue(TimeIn.TimeOfDay);
                 uxEditEmployeeTimeOutDate.SetValue(TimeOut.Date);
@@ -60,6 +94,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEditEmployeeComments.SetValue(Employee.COMMENTS);
                 uxEditEmployeeDriveTime.SetValue(Employee.DRIVE_TIME);
                 uxEditEmployeeTravelTime.SetValue(Employee.TRAVEL_TIME);
+                uxEditEmployeeRole.SetValue(Employee.ROLE_TYPE);
                 if (Employee.PER_DIEM == "Y")
                 {
                     uxEditEmployeePerDiem.Checked = true;
@@ -248,8 +283,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 PerDiem = "N";
             }
-
-
+            
             DAILY_ACTIVITY_EMPLOYEE data = new DAILY_ACTIVITY_EMPLOYEE()
             {
                 HEADER_ID = HeaderId,
@@ -262,6 +296,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 CREATED_BY = User.Identity.Name,
                 MODIFIED_BY = User.Identity.Name
             };
+
+            if (GetOrgId(HeaderId) == 123)
+            {
+                data.SHOPTIME_AM = decimal.Parse(uxAddEmployeeShopTimeAM.Value.ToString());
+                data.SHOPTIME_PM = decimal.Parse(uxAddEmployeeShopTimePM.Value.ToString());
+            }
+            if (roleNeeded())
+            {
+                data.ROLE_TYPE = uxAddEmployeeRole.Value.ToString();
+            }
 
             //Check for travel time
             try
@@ -336,7 +380,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             //Convert to correct types
             int PersonId = int.Parse(uxEditEmployeeEmpDropDown.Value.ToString());
-
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             //Combine Date/Time for TimeIn/Out
             DateTime TimeIn = DateTime.Parse(uxEditEmployeeTimeInDate.Value.ToString());
             DateTime TimeInTime = DateTime.Parse(uxEditEmployeeTimeInTime.Value.ToString());
@@ -345,6 +389,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             TimeIn = TimeIn + TimeInTime.TimeOfDay;
             TimeOut = TimeOut + TimeOutTime.TimeOfDay;
+
 
             //Convert PerDiem to string
             string PerDiem;
@@ -369,12 +414,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.PERSON_ID = PersonId;
 
             //Check for Equipment
-            try
-            {
+            if(uxEditEmployeeEqDropDown.Text != ""){
                 long EquipmentId = long.Parse(uxEditEmployeeEqDropDown.Value.ToString());
                 data.EQUIPMENT_ID = EquipmentId;
             }
-            catch (NullReferenceException)
+            else
             {
                 data.EQUIPMENT_ID = null;
             }
@@ -409,12 +453,47 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 data.COMMENTS = null;
             }
+
+
             data.TIME_IN = TimeIn;
             data.TIME_OUT = TimeOut;
             data.PER_DIEM = PerDiem;
             data.MODIFIED_BY = User.Identity.Name;
             data.MODIFY_DATE = DateTime.Now;
 
+            if (GetOrgId(HeaderId) == 123)
+            {
+                data.SHOPTIME_AM = decimal.Parse(uxEditEmployeeShopTimeAM.Value.ToString());
+                data.SHOPTIME_PM = decimal.Parse(uxEditEmployeeShopTimePM.Value.ToString());
+            }
+
+            if (roleNeeded())
+            {
+                try
+                {
+                    data.ROLE_TYPE = uxEditEmployeeRole.Value.ToString();
+                }
+                catch (NullReferenceException)
+                {
+                    data.ROLE_TYPE = null;
+                }
+                try
+                {
+                    data.STATE = uxEditEmployeeState.Value.ToString();
+                }
+                catch (NullReferenceException)
+                {
+                    data.STATE = null;
+                }
+                try
+                {
+                    data.COUNTY = uxEditEmployeeCounty.Value.ToString();
+                }
+                catch (NullReferenceException)
+                {
+                    data.COUNTY = null;
+                }
+            }
             //Write to db
             GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(data);
 
@@ -479,6 +558,62 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        protected bool roleNeeded()
+        {
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
 
+            using (Entities _context = new Entities())
+            {
+                string PrevailingWage = (from d in _context.DAILY_ACTIVITY_HEADER
+                                         join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                                         where d.HEADER_ID == HeaderId
+                                         select p.ATTRIBUTE3).Single();
+                if (PrevailingWage == "Y")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        protected void deReadRoleData(object sender, StoreReadDataEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+                List<PA_ROLES_V> RoleList = (from d in _context.DAILY_ACTIVITY_HEADER
+                                             join p in _context.PA_ROLES_V on d.PROJECT_ID equals p.PROJECT_ID
+                                             where d.HEADER_ID == HeaderId
+                                             select p).ToList();
+
+                if (e.Parameters["Form"] == "Add")
+                {
+                    uxAddEmployeeRoleStore.DataSource = RoleList;
+                }
+                else
+                {
+                    uxEditEmployeeRoleStore.DataSource = RoleList;
+                }
+            }
+        }
+
+        protected void deStoreRoleGridValue(object sender, DirectEventArgs e)
+        {
+            if (e.ExtraParams["Type"] == "Add")
+            {
+                uxAddEmployeeRole.SetValue(e.ExtraParams["Meaning"], e.ExtraParams["Meaning"]);
+                uxAddEmployeeState.SetValue(e.ExtraParams["State"]);
+                uxAddEmployeeCounty.SetValue(e.ExtraParams["County"]);
+            }
+            else
+            {
+                uxEditEmployeeRole.SetValue(e.ExtraParams["Meaning"], e.ExtraParams["Meaning"]);
+                uxEditEmployeeState.SetValue(e.ExtraParams["State"]);
+                uxEditEmployeeCounty.SetValue(e.ExtraParams["County"]);
+            }
+        }
     }
 }

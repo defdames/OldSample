@@ -10,6 +10,7 @@ using System.Web.UI.WebControls;
 using DBI.Core.Web;
 using DBI.Core.Security;
 using DBI.Data;
+using DBI.Data.DataFactory;
 using Ext.Net;
 
 namespace DBI.Web.EMS.Views.Modules.DailyActivity
@@ -26,6 +27,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             if (!X.IsAjaxRequest)
             {
                 GetFormData();
+                uxStateList.Data = StaticLists.StateList;
             }
         }
 
@@ -48,6 +50,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxFormContractor.SetValue(data.d.CONTRACTOR);
                 uxFormEmployee.SetValue(data.d.PERSON_ID.ToString(), data.EMPLOYEE_NAME);
                 uxFormLicense.SetValue(data.d.LICENSE);
+                uxFormState.SetValueAndFireSelect(data.d.STATE);
                 uxFormState.SetValue(data.d.STATE);
                 uxFormType.SetValue(data.d.APPLICATION_TYPE);
                 uxFormDensity.SetValue(data.d.DENSITY);                

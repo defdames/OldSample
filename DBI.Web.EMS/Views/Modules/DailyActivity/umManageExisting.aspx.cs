@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Threading;
 using DBI.Core.Security;
 using DBI.Core.Web;
 using DBI.Data;
@@ -30,9 +31,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 X.Redirect("~/Views/uxDefault.aspx");
 
             }
-            if (!X.IsAjaxRequest)
+            if (!X.IsAjaxRequest && !IsPostBack)
             {
-                //employeeHoursCheck();
+                this.uxRedWarning.Value = ResourceManager.GetInstance().GetIconUrl(Icon.Exclamation);
+                this.uxYellowWarning.Value = ResourceManager.GetInstance().GetIconUrl(Icon.Error);
             }
         }
 
@@ -67,8 +69,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     rawData = (from d in _context.DAILY_ACTIVITY_HEADER
                                join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                                join s in _context.DAILY_ACTIVITY_STATUS on d.STATUS equals s.STATUS
-                               orderby d.STATUS ascending, d.DA_DATE descending
-                               select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE }).ToList<object>();
+                               select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS }).ToList<object>();
                 }
                 else
                 {
@@ -90,28 +91,34 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 List<HeaderData> data = new List<HeaderData>();
 
-                List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime("Hours per day");
-                List<EmployeeData> HoursOver14 = ValidationChecks.checkEmployeeTime("Hours over 14");
+                List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime(24);
+                List<EmployeeData> HoursOver14 = ValidationChecks.checkEmployeeTime(14);
                 List<long> OverlapProjects = ValidationChecks.employeeTimeOverlapCheck();
                 List<long> BusinessUnitProjects = ValidationChecks.EquipmentBusinessUnitCheck();
                 List<long> BusinessUnitEmployees = ValidationChecks.EmployeeBusinessUnitCheck();
 
                 foreach (dynamic record in rawData)
                 {
-                    string Warning = "Green";
+                    string Warning = "Zero";
+                    string WarningType = string.Empty;
 
                     foreach (EmployeeData OffendingProject in HoursOver14)
                     {
                         if (OffendingProject.HEADER_ID == record.HEADER_ID)
                         {
-                            Warning = "Yellow";
+                            Warning = "Warning";
+                            WarningType = "Over 14 hours logged for an employee <br />";
+                            break;
                         }
+
                     }
                     foreach (long OffendingProject in BusinessUnitProjects)
                     {
                         if (OffendingProject == record.HEADER_ID)
                         {
-                            Warning = "Yellow";
+                            Warning = "Warning";
+                            WarningType += "Contains Equipment outside of Business Unit.<br />";
+                            break;
                         }
                     }
 
@@ -119,14 +126,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     {
                         if (OffendingProject == record.HEADER_ID)
                         {
-                            Warning = "Yellow";
+                            Warning = "Warning";
+                            WarningType += "Contains Employees outside of Business Unit.<br />";
+                            break;
                         }
                     }
                     foreach (EmployeeData OffendingProject in HoursOver24)
                     {
                         if (OffendingProject.HEADER_ID == record.HEADER_ID)
                         {
-                            Warning = "Red";
+                            Warning = "Error";
+                            WarningType += "24 or more hours logged for an employee.<br />";
+                            break;
                         }
                     }
 
@@ -135,7 +146,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     {
                         if (OffendingProject == record.HEADER_ID)
                         {
-                            Warning = "Red";
+                            Warning = "Error";
+                            WarningType += "An employee has overlapping time with another project.";
+                            break;
                         }
                     }
 
@@ -148,13 +161,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         SEGMENT1 = record.SEGMENT1,
                         LONG_NAME = record.LONG_NAME,
                         STATUS_VALUE = record.STATUS_VALUE,
-                        WARNING = Warning
+                        DA_HEADER_ID = record.DA_HEADER_ID,
+                        STATUS = record.STATUS,
+                        WARNING = Warning,
+                        WARNING_TYPE = WarningType
                     });
                 }
-
+                
+                
+                var SortedData = data.OrderBy(x => x.STATUS).ThenBy(x => x.WARNING).ThenBy(x => x.DA_DATE).ToList<HeaderData>();
                 int count;
-                uxManageGridStore.DataSource = GenericData.EnumerableFilterHeader<HeaderData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                uxManageGridStore.DataSource = GenericData.EnumerableFilterHeader<HeaderData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], SortedData, out count);
                 e.Total = count;
+
             }
         }
 
@@ -168,6 +187,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
             string homeUrl = string.Empty;
             long OrgId = GetOrgId(HeaderId);
+            List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime(24);
+            EmployeeData DuplicatePerDiems = ValidationChecks.checkPerDiem(HeaderId);
+            bool BadHeader = false;
 
             if (OrgId == 121)
             {
@@ -223,46 +245,48 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxInventoryTab.LoadContent(invUrl);
             }
 
-            uxApproveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
-            uxPostActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
-            uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.ViewAll");
-            uxSubmitActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.ViewAll");
-            uxExportToPDF.Disabled = false;
-            uxEmailPdf.Disabled = false;
-        }
+            switch(e.ExtraParams["Status"]){
+                case "PENDING APPROVAL":
+                    uxApproveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
+                    uxTabApproveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
+                    uxPostActivityButton.Disabled = true;
+                    uxTabPostButton.Disabled = true;
+                    break;
+                case "APPROVED":
+                    uxPostActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
+                    uxTabPostButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
+                    uxApproveActivityButton.Disabled = true;
+                    uxTabApproveButton.Disabled = true;
+                    break;
+            }
 
-        /// <summary>
-        /// Shows Submit activity Window/Form
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deSubmitActivity(object sender, DirectEventArgs e)
-        {
-            uxPlaceholderWindow.ClearContent();
-            long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
-            List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime("Hours per day");
-            EmployeeData DuplicatePerDiems = ValidationChecks.checkPerDiem(HeaderId);
             List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
+            
+            if (OrgId != 123)
+            {
+                List<EmployeeData> RequiredLunches = ValidationChecks.LunchCheck(HeaderId);
+                if (RequiredLunches.Count > 0)
+                {
+                    uxPlaceholderWindow.LoadContent(string.Format("umChooseLunchHeader.aspx?HeaderId={0}", HeaderId));
+                    uxPlaceholderWindow.Show();
+                }
+            }
 
-            bool BadHeader = false;
             if (HoursOver24.Count > 0)
             {
                 if (HoursOver24.Exists(emp => emp.HEADER_ID == HeaderId))
                 {
                     EmployeeData HeaderData = HoursOver24.Find(emp => emp.HEADER_ID == HeaderId);
-                    //uxSubmitActivityWindow.Html += string.Format("<span color='#ff0000'>{0} has over 24 hours logged on {1:MM-dd-yy}.  Please fix.</span><br />", HeaderData.EMPLOYEE_NAME.ToString(), HeaderData.DA_DATE.ToString());
                     BadHeader = true;
                 }
 
 
             }
-
             if (DuplicatePerDiems != null)
             {
-                //uxSubmitActivityWindow.Html += string.Format("<span>{0} has duplicate per diem entries on {1:MM-dd-yy}.  Please fix.</span><br />", DuplicatePerDiem.EMPLOYEE_NAME, DuplicatePerDiem.DA_DATE);
-                uxPlaceholderWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&PersonId={1}", DuplicatePerDiems.HEADER_ID, DuplicatePerDiems.PERSON_ID));
                 BadHeader = true;
-
+                uxPlaceholderWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&PersonId={1}", DuplicatePerDiems.HEADER_ID, DuplicatePerDiems.PERSON_ID));
+                uxPlaceholderWindow.Show();
             }
             if (EmployeeOverLap.Count > 0)
             {
@@ -273,31 +297,45 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         var HeaderData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                           join emp in _context.EMPLOYEES_V on d.PERSON_ID equals emp.PERSON_ID
                                           where d.HEADER_ID == HeaderId
-                                          select new { d.DAILY_ACTIVITY_HEADER.DA_DATE, emp.EMPLOYEE_NAME }).Single();
-                        uxPlaceholderWindow.Html += string.Format("<span color='#ff0000'>{0} has overlapping time on {1}.  Please fix.</span><br />", HeaderData.EMPLOYEE_NAME, HeaderData.DA_DATE.ToString());
+                                          select new { d.DAILY_ACTIVITY_HEADER.DA_DATE, emp.EMPLOYEE_NAME }).First();
                         BadHeader = true;
                     }
                 }
             }
 
-            string WindowUrl = string.Empty;
-
-            long OrgId = GetOrgId(HeaderId);
-
-            if (OrgId == 121)
+            if (BadHeader)
             {
-                WindowUrl = string.Format("umSubmitActivity_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                uxApproveActivityButton.Disabled = true;
+                uxTabApproveButton.Disabled = true;
+                uxPostActivityButton.Disabled = true;
+                uxTabPostButton.Disabled = true;
             }
-            else if (OrgId == 123)
-            {
-                WindowUrl = string.Format("umSubmitActivity_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-            }
-            if (!BadHeader)
-            {
-                uxPlaceholderWindow.LoadContent(WindowUrl);
-            }
+            uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.ViewAll");
+            
+            uxExportToPDF.Disabled = false;
+            uxTabExportButton.Disabled = false;
+            uxEmailPdf.Disabled = false;
+            uxTabEmailButton.Disabled = false;
+            uxTabPanel.Expand();
+            uxTabPanel.SetActiveTab(uxCombinedTab);
+        }
 
-            uxPlaceholderWindow.Show();
+        protected void deLoadNextActivity(object sender, DirectEventArgs e)
+        {
+            RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
+            var Index = GridModel.SelectedIndex;
+            GridModel.SelectedRow.RowIndex = GridModel.SelectedIndex + 1;
+            GridModel.Select(GridModel.SelectedIndex);
+            GridModel.UpdateSelection();
+            
+        }
+        protected void deLoadPreviousActivity(object sender, DirectEventArgs e)
+        {
+            RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
+            var Index = GridModel.SelectedIndex;
+            GridModel.SelectedRow.RowIndex = GridModel.SelectedIndex - 1;
+            GridModel.Select(GridModel.SelectedIndex);
+            GridModel.UpdateSelection();
         }
 
         /// <summary>
@@ -333,6 +371,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void deApproveActivity(object sender, DirectEventArgs e)
         {
             long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
+            
             DAILY_ACTIVITY_HEADER data;
 
             //Get record to be updated
@@ -346,8 +385,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             //Update record in DB
             GenericData.Update<DAILY_ACTIVITY_HEADER>(data);
+            RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
+            var Index = GridModel.SelectedIndex;
 
-            uxManageGridStore.Reload();
+
+            uxManageGridStore.Reload(new
+            {
+                callback = JRawValue.From("function() {App.uxManageGrid.getSelectionModel().select(" + Index + ")}")
+            });
+           
         }
 
         /// <summary>
@@ -393,7 +439,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         /// <param name="HeaderId"></param>
         /// <returns></returns>
-        protected List<object> GetProduction(long HeaderId)
+        protected List<object> GetProductionDBI(long HeaderId)
         {
             using (Entities _context = new Entities())
             {
@@ -407,6 +453,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        protected List<object> GetProductionIRM(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
+                var returnData = (from d in _context.DAILY_ACTIVITY_PRODUCTION
+                                  join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                  join t in _context.PA_TASKS_V on d.TASK_ID equals t.TASK_ID
+                                  join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
+                                  where d.HEADER_ID == HeaderId
+                                  select new { t.DESCRIPTION, d.WORK_AREA, d.STATION, d.EXPENDITURE_TYPE, d.COMMENTS, d.QUANTITY }).ToList<object>();
+                return returnData;
+            }
+        }
         /// <summary>
         /// Get Weather Information
         /// </summary>
@@ -444,7 +503,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         /// <param name="HeaderId"></param>
         /// <returns></returns>
-        protected List<object> GetInventory(long HeaderId)
+        protected List<object> GetInventoryDBI(long HeaderId)
         {
             using (Entities _context = new Entities())
             {
@@ -456,6 +515,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                            from j in joined
                                            where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
                                            select new { c.CHEMICAL_MIX_NUMBER, d.SUB_INVENTORY_SECONDARY_NAME, j.DESCRIPTION, d.RATE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).ToList<object>();
+
+                return returnData;
+            }
+        }
+
+        protected List<object> GetInventoryIRM(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
+                List<object> returnData = (from d in _context.DAILY_ACTIVITY_INVENTORY
+                                           join i in _context.INVENTORY_V on d.ITEM_ID equals i.ITEM_ID into joined
+                                           join u in _context.UNIT_OF_MEASURE_V on d.UNIT_OF_MEASURE equals u.UOM_CODE
+                                           where d.HEADER_ID == HeaderId
+                                           from j in joined
+                                           where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
+                                           select new {d.SUB_INVENTORY_SECONDARY_NAME, j.DESCRIPTION, d.RATE, u.UNIT_OF_MEASURE}).ToList<object>();
 
                 return returnData;
             }
@@ -516,8 +591,44 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        protected void dePostToOracle(object sender, DirectEventArgs e)
+        {
+            long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
+
+            try
+            {
+                Interface.PostToOracle(HeaderId, User.Identity.Name);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Daily Activity posted successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
+            uxManageGridStore.Reload();
+        }
+
         protected MemoryStream generatePDF(long HeaderId)
         {
+            long OrgId;
+            using (Entities _context = new Entities())
+            {
+                OrgId = (from d in _context.DAILY_ACTIVITY_HEADER
+                         join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                         where d.HEADER_ID == HeaderId
+                         select (long)p.ORG_ID).Single();
+            }
+
             using (MemoryStream PdfStream = new MemoryStream())
             {
                 //Create the document
@@ -593,12 +704,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 ExportedPDF.Add(NewLine);
 
-                //Get Equipment/Employee Data
-                var EmployeeData = GetEmployee(HeaderId);
+                try
+                {
+                    //Get Equipment/Employee Data
+                    var EmployeeData = GetEmployee(HeaderId);
 
-                PdfPTable EmployeeTable = new PdfPTable(8);
+                    PdfPTable EmployeeTable = new PdfPTable(8);
 
-                Cells = new PdfPCell[]{
+                    Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Truck/Equipment \n Name", HeaderFont)),
                     new PdfPCell(new Phrase("Operator(s)", HeaderFont)),
                     new PdfPCell(new Phrase("Time\nIn", HeaderFont)),
@@ -608,32 +721,32 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     new PdfPCell(new Phrase("Per\nDiem", HeaderFont)),
                     new PdfPCell(new Phrase("Comments", HeaderFont))};
 
-                Row = new PdfPRow(Cells);
-                EmployeeTable.Rows.Add(Row);
+                    Row = new PdfPRow(Cells);
+                    EmployeeTable.Rows.Add(Row);
 
-                foreach (dynamic Data in EmployeeData)
-                {
-                    string TravelTime;
-                    try
+                    foreach (dynamic Data in EmployeeData)
                     {
-                        TravelTime = Data.TRAVEL_TIME.ToString();
-                    }
-                    catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
-                    {
-                        TravelTime = string.Empty;
-                    }
-                    string EquipmentName;
-                    try
-                    {
-                        EquipmentName = Data.NAME.ToString();
-                    }
-                    catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
-                    {
-                        EquipmentName = String.Empty;
-                    }
+                        string TravelTime;
+                        try
+                        {
+                            TravelTime = Data.TRAVEL_TIME.ToString();
+                        }
+                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                        {
+                            TravelTime = string.Empty;
+                        }
+                        string EquipmentName;
+                        try
+                        {
+                            EquipmentName = Data.NAME.ToString();
+                        }
+                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                        {
+                            EquipmentName = String.Empty;
+                        }
 
-                    TimeSpan TotalHours = DateTime.Parse(Data.TIME_OUT.ToString()).TimeOfDay - DateTime.Parse(Data.TIME_IN.ToString()).TimeOfDay;
-                    Cells = new PdfPCell[]{
+                        TimeSpan TotalHours = DateTime.Parse(Data.TIME_OUT.ToString()).TimeOfDay - DateTime.Parse(Data.TIME_IN.ToString()).TimeOfDay;
+                        Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(EquipmentName , CellFont)),
                         new PdfPCell(new Phrase(Data.EMPLOYEE_NAME.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Data.TIME_IN.TimeOfDay.ToString(), CellFont)),
@@ -643,49 +756,105 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Data.COMMENTS.ToString(), CellFont))
                     };
-                    Row = new PdfPRow(Cells);
-                    EmployeeTable.Rows.Add(Row);
+                        Row = new PdfPRow(Cells);
+                        EmployeeTable.Rows.Add(Row);
+                    }
+                    ExportedPDF.Add(EmployeeTable);
+                    ExportedPDF.Add(NewLine);
                 }
-                ExportedPDF.Add(EmployeeTable);
-                ExportedPDF.Add(NewLine);
+                catch (Exception)
+                {
 
-                //Get Production Data
-                var ProductionData = GetProduction(HeaderId);
+                }
+                try
+                {
+                    //Get Production Data
+                    if (OrgId == 121)
+                    {
+                        string WorkArea;
+                        var ProductionData = GetProductionDBI(HeaderId);
+                        PdfPTable ProductionTable = new PdfPTable(5);
 
-                PdfPTable ProductionTable = new PdfPTable(7);
-
-                Cells = new PdfPCell[]{
+                        Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Spray/Work Area", HeaderFont)),
                     new PdfPCell(new Phrase("Pole/MP\nFrom", HeaderFont)),
                     new PdfPCell(new Phrase("Pole/MP\nTo", HeaderFont)),
                     new PdfPCell(new Phrase("Acres/Mile", HeaderFont)),
                     new PdfPCell(new Phrase("Gallons", HeaderFont))};
 
-                Row = new PdfPRow(Cells);
-                ProductionTable.Rows.Add(Row);
+                        Row = new PdfPRow(Cells);
+                        ProductionTable.Rows.Add(Row);
 
-                foreach (dynamic Data in ProductionData)
-                {
-                    Cells = new PdfPCell[]{
-                        new PdfPCell(new Phrase(Data.WORK_AREA, CellFont)),
+                        foreach (dynamic Data in ProductionData)
+                        {
+                            try
+                            {
+                                WorkArea = Data.WORK_AREA.ToString();
+                            }
+                            catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                            {
+                                WorkArea = string.Empty;
+                            }
+                            Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase(WorkArea, CellFont)),
                         new PdfPCell(new Phrase(Data.POLE_FROM, CellFont)),
                         new PdfPCell(new Phrase(Data.POLE_TO, CellFont)),
                         new PdfPCell(new Phrase(Data.ACRES_MILE.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Data.QUANTITY.ToString(), CellFont))
                     };
 
-                    Row = new PdfPRow(Cells);
-                    ProductionTable.Rows.Add(Row);
+                            Row = new PdfPRow(Cells);
+                            ProductionTable.Rows.Add(Row);
+                        }
+                        ExportedPDF.Add(ProductionTable);
+                    }
+                    if (OrgId == 123)
+                    {
+                        var ProductionData = GetProductionIRM(HeaderId);
+                        PdfPTable ProductionTable = new PdfPTable(6);
+
+
+                        Cells = new PdfPCell[]{
+                    new PdfPCell(new Phrase("Task", HeaderFont)),
+                    new PdfPCell(new Phrase("Spray/Work Area", HeaderFont)),
+                    new PdfPCell(new Phrase("Quantity", HeaderFont)),
+                    new PdfPCell(new Phrase("Station", HeaderFont)),
+                    new PdfPCell(new Phrase("Expenditure Type", HeaderFont)),
+                    new PdfPCell(new Phrase("Comments", HeaderFont))};
+
+                        Row = new PdfPRow(Cells);
+                        ProductionTable.Rows.Add(Row);
+
+                        foreach (dynamic Data in ProductionData)
+                        {
+                            Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
+                        new PdfPCell(new Phrase(Data.WORK_AREA, CellFont)),
+                        new PdfPCell(new Phrase(Data.QUANTITY.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.STATION, CellFont)),
+                        new PdfPCell(new Phrase(Data.EXPENDITURE_TYPE.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.COMMENTS.ToString(), CellFont))
+                    };
+
+                            Row = new PdfPRow(Cells);
+                            ProductionTable.Rows.Add(Row);
+                        }
+                        ExportedPDF.Add(ProductionTable);
+                    }
+                    ExportedPDF.Add(NewLine);
                 }
-                ExportedPDF.Add(ProductionTable);
-                ExportedPDF.Add(NewLine);
+                catch (Exception)
+                {
 
+                }
                 //Get Weather
-                var WeatherData = GetWeather(HeaderId);
+                try
+                {
+                    var WeatherData = GetWeather(HeaderId);
 
-                PdfPTable WeatherTable = new PdfPTable(6);
+                    PdfPTable WeatherTable = new PdfPTable(6);
 
-                Cells = new PdfPCell[]{
+                    Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Time", HeaderFont)),
                     new PdfPCell(new Phrase("Wind\nDirection", HeaderFont)),
                     new PdfPCell(new Phrase("Wind\nVelocity", HeaderFont)),
@@ -694,12 +863,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     new PdfPCell(new Phrase("Comments", HeaderFont))
                 };
 
-                Row = new PdfPRow(Cells);
-                WeatherTable.Rows.Add(Row);
+                    Row = new PdfPRow(Cells);
+                    WeatherTable.Rows.Add(Row);
 
-                foreach (dynamic Weather in WeatherData)
-                {
-                    Cells = new PdfPCell[]{
+                    foreach (dynamic Weather in WeatherData)
+                    {
+                        Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(Weather.WEATHER_DATE_TIME.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Weather.WIND_DIRECTION, CellFont)),
                         new PdfPCell(new Phrase(Weather.WIND_VELOCITY, CellFont)),
@@ -708,18 +877,26 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         new PdfPCell(new Phrase(Weather.COMMENTS, CellFont))
                     };
 
-                    Row = new PdfPRow(Cells);
-                    WeatherTable.Rows.Add(Row);
+                        Row = new PdfPRow(Cells);
+                        WeatherTable.Rows.Add(Row);
+                    }
+                    ExportedPDF.Add(WeatherTable);
+                    ExportedPDF.Add(NewLine);
                 }
-                ExportedPDF.Add(WeatherTable);
-                ExportedPDF.Add(NewLine);
+                catch (Exception)
+                {
 
-                //Get Chemical Mix Data
-                var ChemicalData = GetChemicalMix(HeaderId);
+                }
+                if (OrgId == 121)
+                {
+                    try
+                    {
+                        //Get Chemical Mix Data
+                        var ChemicalData = GetChemicalMix(HeaderId);
 
-                PdfPTable ChemicalTable = new PdfPTable(11);
+                        PdfPTable ChemicalTable = new PdfPTable(11);
 
-                Cells = new PdfPCell[]{
+                        Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Mix #", HeaderFont)),
                     new PdfPCell(new Phrase("Target\nArea", HeaderFont)),
                     new PdfPCell(new Phrase("Gals/Acre", HeaderFont)),
@@ -732,15 +909,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     new PdfPCell(new Phrase("State", HeaderFont)),
                     new PdfPCell(new Phrase("County", HeaderFont))
                 };
-                Row = new PdfPRow(Cells);
-                ChemicalTable.Rows.Add(Row);
+                        Row = new PdfPRow(Cells);
+                        ChemicalTable.Rows.Add(Row);
 
-                foreach (dynamic Data in ChemicalData)
-                {
-                    decimal TotalGallons = Data.GALLON_STARTING + Data.GALLON_MIXED;
-                    decimal GallonsUsed = TotalGallons - Data.GALLON_REMAINING;
+                        foreach (dynamic Data in ChemicalData)
+                        {
+                            decimal TotalGallons = Data.GALLON_STARTING + Data.GALLON_MIXED;
+                            decimal GallonsUsed = TotalGallons - Data.GALLON_REMAINING;
 
-                    Cells = new PdfPCell[]{
+                            Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(Data.CHEMICAL_MIX_NUMBER != null ? Data.CHEMICAL_MIX_NUMBER.ToString() : string.Empty, CellFont)),
                         new PdfPCell(new Phrase(Data.TARGET_AREA != null ? Data.TARGET_AREA : string.Empty, CellFont)),
                         new PdfPCell(new Phrase(Data.GALLON_ACRE != null ? Data.GALLON_ACRE.ToString() : string.Empty, CellFont)),
@@ -753,30 +930,39 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         new PdfPCell(new Phrase(Data.STATE != null ? Data.STATE : string.Empty, CellFont)),
                         new PdfPCell(new Phrase(Data.COUNTY != null ? Data.COUNTY : string.Empty, CellFont))
                     };
-                    Row = new PdfPRow(Cells);
-                    ChemicalTable.Rows.Add(Row);
+                            Row = new PdfPRow(Cells);
+                            ChemicalTable.Rows.Add(Row);
+                        }
+
+                        ExportedPDF.Add(ChemicalTable);
+                        ExportedPDF.Add(NewLine);
+                    }
+                    catch (Exception)
+                    {
+                    }
                 }
 
-                ExportedPDF.Add(ChemicalTable);
-                ExportedPDF.Add(NewLine);
-
                 //Get Inventory Data
-                var InventoryData = GetInventory(HeaderId);
-                PdfPTable InventoryTable = new PdfPTable(5);
+                try
+                {
+                    if (OrgId == 121)
+                    {
+                        var InventoryData = GetInventoryDBI(HeaderId);
+                        PdfPTable InventoryTable = new PdfPTable(5);
 
-                Cells = new PdfPCell[]{
+                        Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Mix #", HeaderFont)),
                     new PdfPCell(new Phrase("Sub-Inventory", HeaderFont)),
                     new PdfPCell(new Phrase("Item Name", HeaderFont)),
                     new PdfPCell(new Phrase("Rate", HeaderFont)),
                     new PdfPCell(new Phrase("EPA \n Number", HeaderFont))
                 };
-                Row = new PdfPRow(Cells);
-                InventoryTable.Rows.Add(Row);
+                        Row = new PdfPRow(Cells);
+                        InventoryTable.Rows.Add(Row);
 
-                foreach (dynamic Data in InventoryData)
-                {
-                    Cells = new PdfPCell[]{
+                        foreach (dynamic Data in InventoryData)
+                        {
+                            Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(Data.CHEMICAL_MIX_NUMBER.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Data.SUB_INVENTORY_SECONDARY_NAME, CellFont)),
                         new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
@@ -784,121 +970,185 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         new PdfPCell(new Phrase(Data.EPA_NUMBER, CellFont))
                     };
 
-                    Row = new PdfPRow(Cells);
-                    InventoryTable.Rows.Add(Row);
+                            Row = new PdfPRow(Cells);
+                            InventoryTable.Rows.Add(Row);
+                        }
+
+                        ExportedPDF.Add(InventoryTable);
+                    }
+                    if (OrgId == 123)
+                    {
+                        var InventoryData = GetInventoryIRM(HeaderId);
+                        PdfPTable InventoryTable = new PdfPTable(3);
+
+                        Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase("Sub-Inventory", HeaderFont)),
+                        new PdfPCell(new Phrase("Item Name", HeaderFont)),
+                        new PdfPCell(new Phrase("Quantity", HeaderFont)),
+                     };
+                        Row = new PdfPRow(Cells);
+                        InventoryTable.Rows.Add(Row);
+
+                        foreach (dynamic Data in InventoryData)
+                        {
+                            Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase(Data.SUB_INVENTORY_SECONDARY_NAME, CellFont)),
+                        new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
+                        new PdfPCell(new Phrase(string.Format("{0} {1}", Data.RATE.ToString(), Data.UNIT_OF_MEASURE), CellFont)),
+                    };
+
+                            Row = new PdfPRow(Cells);
+                            InventoryTable.Rows.Add(Row);
+                        }
+
+                        ExportedPDF.Add(InventoryTable);
+                    }
+                    ExportedPDF.Add(NewLine);
                 }
+                catch (Exception)
+                {
 
-                ExportedPDF.Add(InventoryTable);
-                ExportedPDF.Add(NewLine);
-
+                }
                 //Get Footer Data
-                var FooterData = GetFooter(HeaderId);
-
-                PdfPTable FooterTable = new PdfPTable(4);
-                FooterTable.DefaultCell.Border = PdfPCell.NO_BORDER;
-
-                string ReasonForNoWork;
-                string Hotel;
-                string City;
-                string State;
-                string Phone;
-
                 try
                 {
-                    ReasonForNoWork = FooterData.COMMENTS;
-                }
-                catch (NullReferenceException)
-                {
-                    ReasonForNoWork = string.Empty;
-                }
+                    var FooterData = GetFooter(HeaderId);
 
-                try
-                {
-                    Hotel = FooterData.HOTEL_NAME;
-                }
-                catch (NullReferenceException)
-                {
-                    Hotel = string.Empty;
-                }
+                    PdfPTable FooterTable = new PdfPTable(4);
+                    FooterTable.DefaultCell.Border = PdfPCell.NO_BORDER;
 
-                try
-                {
-                    City = FooterData.HOTEL_CITY;
-                }
-                catch (NullReferenceException)
-                {
-                    City = string.Empty;
-                }
+                    string ReasonForNoWork;
+                    string Hotel;
+                    string City;
+                    string State;
+                    string Phone;
 
-                try
-                {
-                    State = FooterData.HOTEL_STATE;
-                }
-                catch (NullReferenceException)
-                {
-                    State = string.Empty;
-                }
+                    try
+                    {
+                        ReasonForNoWork = FooterData.COMMENTS;
+                    }
+                    catch (NullReferenceException)
+                    {
+                        ReasonForNoWork = string.Empty;
+                    }
 
-                try
-                {
-                    Phone = FooterData.HOTEL_PHONE;
-                }
-                catch (NullReferenceException)
-                {
-                    Phone = string.Empty;
-                }
+                    try
+                    {
+                        Hotel = FooterData.HOTEL_NAME;
+                    }
+                    catch (NullReferenceException)
+                    {
+                        Hotel = string.Empty;
+                    }
 
-                Cells = new PdfPCell[] {
+                    try
+                    {
+                        City = FooterData.HOTEL_CITY;
+                    }
+                    catch (NullReferenceException)
+                    {
+                        City = string.Empty;
+                    }
+
+                    try
+                    {
+                        State = FooterData.HOTEL_STATE;
+                    }
+                    catch (NullReferenceException)
+                    {
+                        State = string.Empty;
+                    }
+
+                    try
+                    {
+                        Phone = FooterData.HOTEL_PHONE;
+                    }
+                    catch (NullReferenceException)
+                    {
+                        Phone = string.Empty;
+                    }
+
+                    Cells = new PdfPCell[] {
                     new PdfPCell(new Phrase("Reason for no work", HeadFootTitleFont)),
                     new PdfPCell(new Phrase(ReasonForNoWork, HeadFootCellFont)),
                     new PdfPCell(new Phrase("Hotel, City, State, & Phone", HeadFootTitleFont)),
                     new PdfPCell(new Phrase(string.Format("{0} {1} {2} {3}",Hotel, City, State, Phone ), HeadFootCellFont))
                 };
 
-                foreach (PdfPCell Cell in Cells)
-                {
-                    Cell.Border = PdfPCell.NO_BORDER;
-                }
-                Row = new PdfPRow(Cells);
-                FooterTable.Rows.Add(Row);
+                    foreach (PdfPCell Cell in Cells)
+                    {
+                        Cell.Border = PdfPCell.NO_BORDER;
+                    }
+                    Row = new PdfPRow(Cells);
+                    FooterTable.Rows.Add(Row);
 
-                iTextSharp.text.Image ForemanImage;
-                iTextSharp.text.Image ContractImage;
-                try
-                {
-                    ForemanImage = iTextSharp.text.Image.GetInstance(FooterData.FOREMAN_SIGNATURE.ToArray());
-                    ForemanImage.ScaleAbsolute(75f, 25f);
-                }
-                catch (Exception)
-                {
-                    ForemanImage = iTextSharp.text.Image.GetInstance(Server.MapPath("/Resources/Images") + "/1pixel.jpg");
-                }
+                    iTextSharp.text.Image ForemanImage;
+                    iTextSharp.text.Image ContractImage;
+                    try
+                    {
+                        ForemanImage = iTextSharp.text.Image.GetInstance(FooterData.FOREMAN_SIGNATURE.ToArray());
+                        ForemanImage.ScaleAbsolute(75f, 25f);
+                    }
+                    catch (Exception)
+                    {
+                        ForemanImage = iTextSharp.text.Image.GetInstance(Server.MapPath("/Resources/Images") + "/1pixel.jpg");
+                    }
 
-                try
-                {
-                    ContractImage = iTextSharp.text.Image.GetInstance(FooterData.CONTRACT_REP.ToArray());
-                    ContractImage.ScaleAbsolute(75f, 25f);
-                }
-                catch (Exception)
-                {
-                    ContractImage = iTextSharp.text.Image.GetInstance(Server.MapPath("/Resources/Images") + "/1pixel.jpg");
-                }
+                    try
+                    {
+                        ContractImage = iTextSharp.text.Image.GetInstance(FooterData.CONTRACT_REP.ToArray());
+                        ContractImage.ScaleAbsolute(75f, 25f);
+                    }
+                    catch (Exception)
+                    {
+                        ContractImage = iTextSharp.text.Image.GetInstance(Server.MapPath("/Resources/Images") + "/1pixel.jpg");
+                    }
 
 
-                Cells = new PdfPCell[]{
+                    Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Foreman Signature", HeadFootTitleFont)),
                     new PdfPCell(ForemanImage),
                     new PdfPCell(new Phrase("Contract Representative", HeadFootTitleFont)),
                     new PdfPCell(ContractImage),
                 };
-                foreach (PdfPCell Cell in Cells)
-                {
-                    Cell.Border = PdfPCell.NO_BORDER;
-                }
-                Row = new PdfPRow(Cells);
-                FooterTable.Rows.Add(Row);
+                    foreach (PdfPCell Cell in Cells)
+                    {
+                        Cell.Border = PdfPCell.NO_BORDER;
+                    }
+                    Row = new PdfPRow(Cells);
+                    FooterTable.Rows.Add(Row);
+                    if (OrgId == 123)
+                    {
+                        iTextSharp.text.Image DotRepImage;
+                        try
+                        {
+                            DotRepImage = iTextSharp.text.Image.GetInstance(FooterData.DOT_REP.ToArray());
+                            DotRepImage.ScaleAbsolute(75f, 25f);
+                        }
+                        catch (Exception)
+                        {
+                            DotRepImage = iTextSharp.text.Image.GetInstance(Server.MapPath("/Resources/Images") + "/1pixel.jpg");
+                        }
 
-                ExportedPDF.Add(FooterTable);
+                        Cells = new PdfPCell[]{
+                    new PdfPCell(new Phrase("DOT Representative", HeadFootTitleFont)),
+                    new PdfPCell(DotRepImage),
+                    new PdfPCell(new Phrase("Name", HeadFootTitleFont)),
+                    new PdfPCell(new Phrase(FooterData.DOT_REP_NAME, HeadFootCellFont))
+                    };
+                        foreach (PdfPCell Cell in Cells)
+                        {
+                            Cell.Border = PdfPCell.NO_BORDER;
+                        }
+                        Row = new PdfPRow(Cells);
+                        FooterTable.Rows.Add(Row);
+                    }
+                    ExportedPDF.Add(FooterTable);
+                }
+                catch (Exception)
+                {
+
+                }
                 //Close Stream and start Download
                 ExportWriter.CloseStream = false;
                 ExportedPDF.Close();
@@ -942,14 +1192,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public void dmHideWindowUpdateGrid()
         {
             uxPlaceholderWindow.Hide();
+            var GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
+            var GridIndex = GridModel.SelectedIndex;
             uxManageGridStore.Reload();
         }
 
         [DirectMethod]
-        public void dmRefreshShowSubmit(string HeaderId)
+        public void dmRefreshShowSubmit_DBI(string HeaderId)
         {
             uxPlaceholderWindow.ClearContent();
-            uxPlaceholderWindow.LoadContent(string.Format("umSubmitActivity.aspx?HeaderId={0}", HeaderId));
+            uxPlaceholderWindow.Hide();
+            uxManageGrid.Reload();
+        }
+
+        [DirectMethod]
+        public void dmRefreshShowSubmit_IRM(string HeaderId)
+        {
+            uxPlaceholderWindow.ClearContent();
+            uxPlaceholderWindow.LoadContent(string.Format("umSubmitActivity_IRM.aspx?HeaderId={0}", HeaderId));
         }
 
         /// <summary>
@@ -961,6 +1221,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             uxCreateActivityWindow.LoadContent();
             uxCreateActivityWindow.Show();
+        }
+
+        protected void deOpenPostMultipleWindow(object sender, DirectEventArgs e)
+        {
+            uxPlaceholderWindow.ClearContent();
+            uxPlaceholderWindow.LoadContent("umPostMultipleWindow.aspx");
+            uxPlaceholderWindow.Show();
         }
 
         [DirectMethod]

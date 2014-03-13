@@ -342,7 +342,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Store Footer to DB
             deStoreFooter(sender, e);
 
-            List<EmployeeData> HoursOver14 = ValidationChecks.checkEmployeeTime("Hours over 14");
+            List<EmployeeData> HoursOver14 = ValidationChecks.checkEmployeeTime(14);
             List<long> BusinessUnitEquipment = ValidationChecks.EquipmentBusinessUnitCheck();
             List<long> BusinessUnitEmployees = ValidationChecks.EmployeeBusinessUnitCheck();
             bool HasWarnings = false;

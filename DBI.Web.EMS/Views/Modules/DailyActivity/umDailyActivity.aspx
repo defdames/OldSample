@@ -185,7 +185,7 @@
 					ID="uxFormState"
 					FieldLabel="State"
 					DisplayField="name"
-					ValueField="abbr"
+					ValueField="name"
 					QueryMode="Local"
 					TypeAhead="true"
 					AllowBlank="false">

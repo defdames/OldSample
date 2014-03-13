@@ -43,8 +43,7 @@
 							ID="uxAddEmployeeEmpDropDown"
 							Mode="ValueText"
 							FieldLabel="Employee"
-							AllowBlank="false"
-							TabIndex="1">
+							AllowBlank="false">
 							<Component>
 								<ext:GridPanel runat="server"
 									ID="uxAddEmployeeEmpGrid"
@@ -129,8 +128,7 @@
 							ID="uxAddEmployeeEqDropDown"
 							Mode="ValueText"
 							FieldLabel="Equipment"
-							AllowBlank="true"
-							TabIndex="2">
+							AllowBlank="true">
 							<Component>
 								<ext:GridPanel runat="server"
 									ID="uxAddEmployeeEqGrid"
@@ -188,8 +186,7 @@
 									Vtype="daterange"
 									EndDateField="uxAddEmployeeTimeOutDate"
 									EnableKeyEvents="true"
-									AllowBlank="false"
-									TabIndex="3">
+									AllowBlank="false">
 									<Listeners>
 										<KeyUp Fn="valDateTime" />
 										<Change Handler="#{uxAddEmployeeTimeOutDate}.setValue(#{uxAddEmployeeTimeInDate}.value)" />
@@ -202,8 +199,7 @@
 									EnableKeyEvents="true"
 									Increment="30" 
 									SelectedTime="09:00" 
-									AllowBlank="false"
-									TabIndex="4">
+									AllowBlank="false">
 									<Listeners>
 										<KeyUp Fn="valDateTime" />
 									</Listeners>
@@ -227,8 +223,7 @@
 									Vtype="daterange"
 									StartDateField="uxAddEmployeeTimeInDate"
 									EnableKeyEvents="true"
-									AllowBlank="false"
-									TabIndex="5" >
+									AllowBlank="false">
 									<Listeners>
 										<KeyUp Fn="valDateTime" />
 									</Listeners>
@@ -240,8 +235,7 @@
 									Vtype="daterange"
 									StartDateField="uxAddEmployeeTimeInTime"
 									EnableKeyEvents="true"
-									AllowBlank="false"
-									TabIndex="6">
+									AllowBlank="false">
 									<Listeners>
 										<KeyUp Fn="valDateTime" />
 									</Listeners>
@@ -251,30 +245,90 @@
 						<ext:TextField runat="server"
 							ID="uxAddEmployeeTravelTime"
 							FieldLabel="Travel Time"
-							AllowBlank="true"
-							TabIndex="7" />
+							AllowBlank="true" />
 						<ext:TextField runat="server"
 							ID="uxAddEmployeeDriveTime"
 							FieldLabel="Drive Time"
-							AllowBlank="true"
-							TabIndex="8" />
+							AllowBlank="true" />
+						<ext:TextField runat="server"
+							ID="uxAddEmployeeShopTimeAM"
+							FieldLabel="Shop Time AM"
+							Hidden="true" />
+						<ext:TextField runat="server"
+							ID="uxAddEmployeeShopTimePM"
+							FieldLabel="Shop Time PM"
+							Hidden="true" />
 						<ext:Checkbox runat="server"
 							ID="uxAddEmployeePerDiem"
-							FieldLabel="Per Diem"
-							TabIndex="9" />
+							FieldLabel="Per Diem" />
 						<ext:TextArea runat="server"
 						   FieldLabel="Comments"
 						   ID="uxAddEmployeeComments"
-						   AllowBlank="true"
-							TabIndex="10" />
+						   AllowBlank="true" />
+						<ext:DropDownField runat="server"
+							ID="uxAddEmployeeRole"
+							Mode="ValueText"
+							FieldLabel="Role"
+							AllowBlank="true"
+							Hidden="true">
+							<Component>
+								<ext:GridPanel runat="server"
+									ID="uxAddEmployeeRoleGrid"
+									Layout="HBoxLayout">
+									<Store>
+										<ext:Store runat="server"
+											ID="uxAddEmployeeRoleStore"
+											OnReadData="deReadRoleData"
+											AutoDataBind="true">
+											<Model>
+												<ext:Model ID="Model5" runat="server">
+													<Fields>
+														<ext:ModelField Name="MEANING" />
+														<ext:ModelField Name="COUNTY" Type="String" />
+														<ext:ModelField Name="STATE"  />
+													</Fields>
+												</ext:Model>
+											</Model>
+											<Parameters>
+												<ext:StoreParameter Name="Form" Value="Add" />
+											</Parameters>
+											<Proxy>
+												<ext:PageProxy />
+											</Proxy>
+										</ext:Store>
+									</Store>
+									<ColumnModel>
+										<Columns>
+											<ext:Column ID="Column13" runat="server" Text="Role Name" DataIndex="MEANING" />
+											<ext:Column ID="Column14" runat="server" Text="County" DataIndex="COUNTY" />
+											<ext:Column ID="Column15" runat="server" Text="State" DataIndex="STATE" />
+										</Columns>
+									</ColumnModel>
+									<SelectionModel>
+										<ext:RowSelectionModel Mode="Single" />
+									</SelectionModel>
+									<DirectEvents>
+										<SelectionChange OnEvent="deStoreRoleGridValue">
+											<ExtraParams>
+												<ext:Parameter Name="Meaning" Value="#{uxAddEmployeeRoleGrid}.getSelectionModel().getSelection()[0].data.MEANING" Mode="Raw" />
+												<ext:Parameter Name="County" Value="#{uxAddEmployeeRoleGrid}.getSelectionModel().getSelection()[0].data.COUNTY" Mode="Raw" />
+												<ext:Parameter Name="State" Value="#{uxAddEmployeeRoleGrid}.getSelectionModel().getSelection()[0].data.STATE" Mode="Raw" />
+												<ext:Parameter Name="Type" Value="Add" />
+											</ExtraParams>
+										</SelectionChange>
+									</DirectEvents>
+								</ext:GridPanel>
+							</Component>
+						</ext:DropDownField>
+						<ext:Hidden runat="server"  ID="uxAddEmployeeState" />
+						<ext:Hidden runat="server"  ID="uxAddEmployeeCounty" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxAddEmployeeSubmit"
 							Icon="Add"
 							Text="Submit"
-							Disabled="true"
-							TabIndex="11">
+							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deAddEmployee" />
 							</DirectEvents>
@@ -282,8 +336,7 @@
 						<ext:Button runat="server"
 							ID="uxAddEmployeeCancel"
 							Icon="Delete"
-							Text="Cancel"
-							TabIndex="12">
+							Text="Cancel">
 							<Listeners>
 								<Click Handler="#{uxAddEmployeeForm}.reset();
 									parentAutoLoadControl.hide();" />
@@ -303,8 +356,7 @@
 							ID="uxEditEmployeeEmpDropDown"
 							Mode="ValueText"
 							FieldLabel="Employee"
-							AllowBlank="false"
-							TabIndex="1">
+							AllowBlank="false">
 							<Component>
 								<ext:GridPanel runat="server"
 									ID="uxEditEmployeeEmpGrid"
@@ -392,8 +444,7 @@
 							ID="uxEditEmployeeEqDropDown"
 							Mode="ValueText"
 							FieldLabel="Equipment"
-							AllowBlank="true"
-							TabIndex="2">
+							AllowBlank="true">
 							<Component>
 								<ext:GridPanel runat="server"
 									ID="uxEditEmployeeEqGrid"
@@ -451,8 +502,7 @@
 									Vtype="daterange"
 									EndDateField="uxEditEmployeeTimeOutDate"
 									EnableKeyEvents="true"
-									AllowBlank="false"
-									TabIndex="3">
+									AllowBlank="false">
 									<Listeners>
 										<KeyUp Fn="valDateTime" />
 									</Listeners>
@@ -463,8 +513,7 @@
 									EndDateField="uxEditEmployeeTimeOutTime"
 									EnableKeyEvents="true"
 									Increment="30" 
-									AllowBlank="false"
-									TabIndex="4">
+									AllowBlank="false">
 									<Listeners>
 										<KeyUp Fn="valDateTime" />
 									</Listeners>
@@ -488,8 +537,7 @@
 									Vtype="daterange"
 									StartDateField="uxEditEmployeeTimeInDate"
 									EnableKeyEvents="true"
-									AllowBlank="false"
-									TabIndex="5">
+									AllowBlank="false">
 									<Listeners>
 										<KeyUp Fn="valDateTime" />
 									</Listeners>
@@ -500,8 +548,7 @@
 									Vtype="daterange"
 									StartDateField="uxEditEmployeeTimeInTime"
 									EnableKeyEvents="true"
-									AllowBlank="false"
-									TabIndex="6">
+									AllowBlank="false">
 									<Listeners>
 										<KeyUp Fn="valDateTime" />
 									</Listeners>
@@ -511,31 +558,91 @@
 						<ext:TextField runat="server"
 							ID="uxEditEmployeeDriveTime"
 							FieldLabel="Drive Time"
-							AllowBlank="true"
-							TabIndex="7" />
+							AllowBlank="true" />
 						<ext:TextField runat="server"
 							ID="uxEditEmployeeTravelTime"
 							FieldLabel="Travel Time"
-							AllowBlank="true"
-							TabIndex="8" />
+							AllowBlank="true" />
+						<ext:TextField runat="server"
+							ID="uxEditEmployeeShopTimeAM"
+							FieldLabel="Shop Time AM"
+							Hidden="true" />
+						<ext:TextField runat="server"
+							ID="uxEditEmployeeShopTimePM"
+							FieldLabel="Shop Time PM"
+							Hidden="true" />                            
 						<ext:Checkbox runat="server"
 							ID="uxEditEmployeePerDiem"
 							FieldLabel="Per Diem"
-							AllowBlank="true"
-							TabIndex="9" />
+							AllowBlank="true" />
 					   <ext:TextArea runat="server"
 						   FieldLabel="Comments"
 						   ID="uxEditEmployeeComments"
-						   AllowBlank="true"
-						   TabIndex="10" />
+						   AllowBlank="true" />
+						<ext:DropDownField runat="server"
+							ID="uxEditEmployeeRole"
+							FieldLabel="Role"
+							Mode="ValueText"
+							AllowBlank="true"
+							Hidden="true">
+							<Component>
+								<ext:GridPanel runat="server"
+									ID="uxEditEmployeeRoleGrid"
+									Layout="HBoxLayout">
+									<Store>
+										<ext:Store runat="server"
+											ID="uxEditEmployeeRoleStore"
+											OnReadData="deReadRoleData"
+											AutoDataBind="true">
+											<Model>
+												<ext:Model ID="Model6" runat="server">
+													<Fields>
+														<ext:ModelField Name="MEANING" Type="String" />
+														<ext:ModelField Name="COUNTY" Type="String" />
+														<ext:ModelField Name="STATE" Type="String" />
+													</Fields>
+												</ext:Model>
+											</Model>
+											<Parameters>
+												<ext:StoreParameter Name="Form" Value="Edit" />
+											</Parameters>
+											<Proxy>
+												<ext:PageProxy />
+											</Proxy>
+										</ext:Store>
+									</Store>
+									<ColumnModel>
+										<Columns>
+											<ext:Column ID="Column16" runat="server" Text="Role Name" DataIndex="MEANING" />
+											<ext:Column ID="Column17" runat="server" Text="County" DataIndex="COUNTY" />
+											<ext:Column ID="Column18" runat="server" Text="State" DataIndex="STATE" />
+										</Columns>
+									</ColumnModel>
+									<SelectionModel>
+										<ext:RowSelectionModel Mode="Single" />
+									</SelectionModel>
+									<DirectEvents>
+										<SelectionChange OnEvent="deStoreRoleGridValue">
+											<ExtraParams>
+												<ext:Parameter Name="Meaning" Value="#{uxEditEmployeeRoleGrid}.getSelectionModel().getSelection()[0].data.MEANING" Mode="Raw" />
+												<ext:Parameter Name="County" Value="#{uxEditEmployeeRoleGrid}.getSelectionModel().getSelection()[0].data.COUNTY" Mode="Raw" />
+												<ext:Parameter Name="State" Value="#{uxEditEmployeeRoleGrid}.getSelectionModel().getSelection()[0].data.STATE" Mode="Raw" />
+												<ext:Parameter Name="Type" Value="Edit" />
+											</ExtraParams>
+										</SelectionChange>
+									</DirectEvents>
+								</ext:GridPanel>
+							</Component>
+						</ext:DropDownField>
+						<ext:Hidden runat="server"  ID="uxEditEmployeeState" />
+						<ext:Hidden runat="server"  ID="uxEditEmployeeCounty" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxEditEmployeeSubmit"
 							Icon="Add"
 							Text="Submit"
-							Disabled="true"
-							TabIndex="11">
+							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deEditEmployee" />
 							</DirectEvents>
@@ -543,8 +650,7 @@
 						<ext:Button runat="server"
 							ID="uxEditEmployeeCancel"
 							Icon="Delete"
-							Text="Cancel"
-							TabIndex="12">
+							Text="Cancel">
 							<Listeners>
 								<Click Handler="parentAutoLoadControl.hide();" />
 							</Listeners>
@@ -560,7 +666,7 @@
 					Handler="var win = parentAutoLoadControl.target || parentAutoLoadControl, //you can use just 'parentAutoLoadControl' after update to Ext.NET v2 beta.
 									size = this.getSize();
  
-								size.height += 34;
+								size.height += 100;
 								size.width += 12;
 								win.setSize(size);"
 					Delay="100" />

@@ -35,28 +35,56 @@
 					Layout="FormLayout"
 					Hidden="true">
 					<Items>
-						<ext:ComboBox runat="server"
+						<ext:DropDownField runat="server"
 							ID="uxAddProductionTask"
-							ValueField="TASK_ID"
-							DisplayField="DESCRIPTION"
-							FieldLabel="Select Task"
-							QueryMode="Local"
-							TypeAhead="true"
-							AllowBlank="false">
-							<Store>
-								<ext:Store runat="server"
-									ID="uxAddProductionTaskStore">
-									<Model>
-										<ext:Model ID="Model2" runat="server">
-											<Fields>
-												<ext:ModelField Name="TASK_ID" />
-												<ext:ModelField Name="DESCRIPTION" />
-											</Fields>
-										</ext:Model>
-									</Model>
-								</ext:Store>
-							</Store>
-						</ext:ComboBox>
+							Mode="ValueText"
+							AllowBlank="false"
+							FieldLabel="Select Task">
+							<Component>
+								<ext:GridPanel runat="server"
+									ID="uxAddProductionTaskGrid"
+									Layout="HBoxLayout">
+									<Store>
+										<ext:Store runat="server"
+											ID="uxAddProductionTaskStore">
+											<Model>
+												<ext:Model ID="Model2" runat="server">
+													<Fields>
+														<ext:ModelField Name="TASK_ID" />
+														<ext:ModelField Name="TASK_NUMBER" />
+														<ext:ModelField Name="DESCRIPTION" />
+													</Fields>
+												</ext:Model>
+											</Model>
+										</ext:Store>
+									</Store>
+									<ColumnModel>
+										<Columns>
+											<ext:Column ID="Column7" runat="server" DataIndex="TASK_NUMBER" Text="Task Number" />
+											<ext:Column ID="Column10" runat="server" DataIndex="DESCRIPTION" Text="Name" />
+										</Columns>
+									</ColumnModel>
+									<DirectEvents>
+										<SelectionChange OnEvent="deStoreTask">
+											<ExtraParams>
+												<ext:Parameter Name="TaskId" Value="#{uxAddProductionTaskGrid}.getSelectionModel().getSelection()[0].data.TASK_ID" Mode="Raw" />
+												<ext:Parameter Name="Description" Value ="#{uxAddProductionTaskGrid}.getSelectionModel().getSelection()[0].data.DESCRIPTION" Mode="Raw" />
+												<ext:Parameter Name="Type" Value="Add" />
+											</ExtraParams>    
+										</SelectionChange>
+									</DirectEvents>
+									<SelectionModel>
+										<ext:RowSelectionModel ID="RowSelectionModel3" runat="server" Mode="Single" />
+									</SelectionModel>
+									<Plugins>
+										<ext:FilterHeader ID="FilterHeader3" runat="server" Remote="true" />
+									</Plugins>
+									<BottomBar>
+										<ext:PagingToolbar ID="PagingToolbar3" runat="server" />
+									</BottomBar>
+								</ext:GridPanel>
+							</Component>
+						</ext:DropDownField>
 						<ext:DropDownField runat="server"
 							ID="uxAddProductionExpenditureType"
 							Mode="ValueText"
@@ -77,8 +105,9 @@
 												<ext:Model ID="Model1" runat="server">
 													<Fields>
 														<ext:ModelField Name="EXPENDITURE_TYPE" />
-														<ext:ModelField Name="BILL_RATE" />
+														<ext:ModelField Name="EXPENDITURE_DESCRIPTION" />
 														<ext:ModelField Name="UNIT_OF_MEASURE" />
+														<ext:ModelField Name="BILL_RATE" />
 													</Fields>
 												</ext:Model>
 											</Model>
@@ -90,6 +119,7 @@
 									<ColumnModel>
 										<Columns>
 											<ext:Column ID="Column1" runat="server" DataIndex="EXPENDITURE_TYPE" Text="Expenditure Type" />
+											<ext:Column runat="server" DataIndex="EXPENDITURE_DESCRIPTION" Text="Description" />
 											<ext:Column ID="Column2" runat="server" DataIndex="BILL_RATE" Text="Bill Rate" />
 											<ext:Column ID="Column3" runat="server" DataIndex="UNIT_OF_MEASURE" Text="Unit Of Measure" />
 										</Columns>
@@ -125,6 +155,28 @@
 							ID="uxAddProductionQuantity"
 							FieldLabel="Quantity"
 							AllowBlank="false" />
+						<ext:ComboBox runat="server" ID="uxAddProductionSurfaceType"
+							FieldLabel="Surface Type"
+							DisplayField="type"
+							ValueField="type"
+							QueryMode="Local"
+							TypeAhead="true"
+							AllowBlank="false">
+							<Store>
+								<ext:Store runat="server" ID="uxAddProductionSurfaceTypeStore" AutoDataBind="true">
+									<Model>
+										<ext:Model runat="server">
+											<Fields>
+												<ext:ModelField Name="type" />
+											</Fields>
+										</ext:Model>
+									</Model>
+									<Reader>
+										<ext:ArrayReader />
+									</Reader>
+								</ext:Store>
+							</Store>
+						</ext:ComboBox>
 						<ext:TextArea runat="server"
 							ID="uxAddProductionComments"
 							FieldLabel="Comments" />
@@ -158,28 +210,56 @@
 					Layout="FormLayout"
 					Hidden="true">
 					<Items>
-						<ext:ComboBox runat="server"
+						<ext:DropDownField runat="server"
 							ID="uxEditProductionTask"
-							ValueField="TASK_ID"
-							DisplayField="DESCRIPTION"
-							FieldLabel="Select Task"
-							QueryMode="Local"
-							TypeAhead="true"
-							AllowBlank="false">
-							<Store>
-								<ext:Store runat="server"
-									ID="uxEditProductionTaskStore">
-									<Model>
-										<ext:Model ID="Model3" runat="server">
-											<Fields>
-												<ext:ModelField Name="TASK_ID" />
-												<ext:ModelField Name="DESCRIPTION" />
-											</Fields>
-										</ext:Model>
-									</Model>
-								</ext:Store>
-							</Store>
-						</ext:ComboBox>
+							Mode="ValueText"
+							AllowBlank="false"
+							FieldLabel="Select Task">
+							<Component>
+								<ext:GridPanel runat="server"
+									ID="uxEditProductionTaskGrid"
+									Layout="HBoxLayout">
+									<Store>
+										<ext:Store runat="server"
+											ID="uxEditProductionTaskStore">
+											<Model>
+												<ext:Model ID="Model3" runat="server">
+													<Fields>
+														<ext:ModelField Name="TASK_ID" />
+														<ext:ModelField Name="TASK_NUMBER" />
+														<ext:ModelField Name="DESCRIPTION" />
+													</Fields>
+												</ext:Model>
+											</Model>
+										</ext:Store>
+									</Store>
+									<ColumnModel>
+										<Columns>
+											<ext:Column ID="Column8" runat="server" DataIndex="TASK_NUMBER" Text="Task Number" />
+											<ext:Column ID="Column9" runat="server" DataIndex="DESCRIPTION" Text="Name" />
+										</Columns>
+									</ColumnModel>
+									<DirectEvents>
+										<SelectionChange OnEvent="deStoreTask">
+											<ExtraParams>
+												<ext:Parameter Name="TaskId" Value="#{uxEditProductionTaskGrid}.getSelectionModel().getSelection()[0].data.TASK_ID" Mode="Raw" />
+												<ext:Parameter Name="Description" Value ="#{uxEditProductionTaskGrid}.getSelectionModel().getSelection()[0].data.DESCRIPTION" Mode="Raw" />
+												<ext:Parameter Name="Type" Value="Edit" />
+											</ExtraParams>    
+										</SelectionChange>
+									</DirectEvents>
+									<SelectionModel>
+										<ext:RowSelectionModel ID="RowSelectionModel4" runat="server" Mode="Single" />
+									</SelectionModel>
+									<Plugins>
+										<ext:FilterHeader ID="FilterHeader4" runat="server" Remote="true" />
+									</Plugins>
+									<BottomBar>
+										<ext:PagingToolbar ID="PagingToolbar4" runat="server" />
+									</BottomBar>
+								</ext:GridPanel>
+							</Component>
+						</ext:DropDownField>
 						<ext:DropDownField runat="server"
 							ID="uxEditProductionExpenditureType"
 							Mode="ValueText"
@@ -200,6 +280,7 @@
 												<ext:Model ID="Model4" runat="server">
 													<Fields>
 														<ext:ModelField Name="EXPENDITURE_TYPE" />
+														<ext:ModelField Name="EXPENDITURE_DESCRIPTION" />
 														<ext:ModelField Name="BILL_RATE" />
 														<ext:ModelField Name="UNIT_OF_MEASURE" />
 													</Fields>
@@ -213,6 +294,7 @@
 									<ColumnModel>
 										<Columns>
 											<ext:Column ID="Column4" runat="server" DataIndex="EXPENDITURE_TYPE" Text="Expenditure Type" />
+											<ext:Column runat="server" DataIndex="EXPENDITURE_DESCRIPTION" Text="Description" />
 											<ext:Column ID="Column5" runat="server" DataIndex="BILL_RATE" Text="Bill Rate" />
 											<ext:Column ID="Column6" runat="server" DataIndex="UNIT_OF_MEASURE" Text="Unit Of Measure" />
 										</Columns>
@@ -255,6 +337,28 @@
 							ID="uxEditProductionUOM"
 							FieldLabel="Unit of Measure"
 							AllowBlank="false" />
+						<ext:ComboBox runat="server" ID="uxEditProductionSurfaceType"
+							FieldLabel="Surface Type"
+							DisplayField="type"
+							ValueField="type"
+							QueryMode="Local"
+							TypeAhead="true"
+							AllowBlank="false">
+							<Store>
+								<ext:Store runat="server" ID="uxEditProductionSurfaceTypeStore" AutoDataBind="true">
+									<Model>
+										<ext:Model ID="Model5" runat="server">
+											<Fields>
+												<ext:ModelField Name="type" />
+											</Fields>
+										</ext:Model>
+									</Model>
+									<Reader>
+										<ext:ArrayReader />
+									</Reader>
+								</ext:Store>
+							</Store>
+						</ext:ComboBox>
 						<ext:TextArea runat="server"
 							ID="uxEditProductionComments"
 							FieldLabel="Comments" />

@@ -30,6 +30,15 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\DBI.Data.XML</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PCL03|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\PCL03\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
@@ -52,6 +61,16 @@
       <HintPath>..\..\..\..\..\..\app\ljankowski\product\12.1.0\client_1\odp.net\managed\common\Oracle.ManagedDataAccess.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Oracle.ManagedDataAccessDTC, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\app\ljankowski\product\12.1.0\client_2\odp.net\managed\x86\Oracle.ManagedDataAccessDTC.dll</HintPath>
+    </Reference>
+    <Reference Include="PushSharp.Apple">
+      <HintPath>..\..\PushSharp\PushSharp.Apple\bin\Release\PushSharp.Apple.dll</HintPath>
+    </Reference>
+    <Reference Include="PushSharp.Core">
+      <HintPath>..\..\PushSharp\PushSharp.Apple\bin\Release\PushSharp.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -59,6 +78,7 @@
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -80,13 +100,49 @@
     <Compile Include="CROSSING.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="CROSSING_APPLICATION.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="CROSSING_CONTACTS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="CROSSING_DATA_ENTRY.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="CROSSING_INSPECTION.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="CROSSING_SUB_DIVISION.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CROSSING_SUPPLEMENTAL.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CUSTOMER_SURVEY_FIELDSETS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CUSTOMER_SURVEY_FORMS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CUSTOMER_SURVEY_FORMS_ANS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CUSTOMER_SURVEY_FORMS_COMP.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CUSTOMER_SURVEY_OPTIONS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CUSTOMER_SURVEY_QUESTIONS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CUSTOMER_SURVEY_QUES_TYPES.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CUSTOMER_SURVEY_RELATION.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAILY_ACTIVITY_AUDIT.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="DAILY_ACTIVITY_CHEMICAL_MIX.cs">
@@ -104,6 +160,9 @@
     <Compile Include="DAILY_ACTIVITY_HEADER.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="DAILY_ACTIVITY_IMPORT.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="DAILY_ACTIVITY_INVENTORY.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
@@ -119,12 +178,15 @@
     <Compile Include="DataFactory\Employees\Employees.cs" />
     <Compile Include="DataFactory\Employees\WebEmployee.cs" />
     <Compile Include="DataFactory\Equipment\Equipment.cs" />
+    <Compile Include="DataFactory\Interface\Interface.cs" />
+    <Compile Include="DataFactory\GMS\Data.cs" />
     <Compile Include="DataFactory\Inventory\Inventory.cs" />
     <Compile Include="DataFactory\Messages\Resource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
+    <Compile Include="DataFactory\Notifications\Notifications.cs" />
     <Compile Include="DataFactory\Projects\WebProjects.cs" />
     <Compile Include="DataFactory\Projects\Projects.cs" />
     <Compile Include="DataFactory\Security\Activity.cs" />
@@ -164,6 +226,9 @@
     <Compile Include="MOBILE_TASK_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="MTL_TRANSACTION_INT_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="Oracle.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -179,7 +244,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Oracle.edmx</DependentUpon>
     </Compile>
+    <Compile Include="PA_LOCATIONS_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PA_PERIODS_ALL.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PA_ROLES_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="PA_TASKS_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PA_TRANSACTION_INT_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="PROJECTS_V.cs">
@@ -192,10 +269,31 @@
     <Compile Include="SYS_ACTIVITY.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="SYS_GROUPS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SYS_GROUPS_PERMS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="SYS_LOG.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="SYS_LOG_CT.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SYS_MENU.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SYS_MOBILE_DEVICES.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SYS_MOBILE_NOTIFICATIONS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SYS_MODULES.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SYS_PERMISSIONS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="SYS_USERS.cs">
@@ -210,6 +308,9 @@
     <Compile Include="SYS_USER_INFORMATION.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="SYS_USER_PERMS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="UNIT_OF_MEASURE_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
@@ -217,6 +318,21 @@
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="WEB_PROJECTS_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="XXDBI_DAILY_ACTIVITY_HEADER_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="XXDBI_LABOR_HEADER_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="XXDBI_PER_DIEM_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="XXDBI_TRUCK_EQUIP_USAGE_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="XXPJ_PREV_WAGE_RATES.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
   </ItemGroup>

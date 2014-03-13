@@ -60,7 +60,8 @@
 											ID="uxEquipmentStore"
 											OnReadData="deReadGrid"
 											PageSize="10"
-											RemoteSort="true">
+											RemoteSort="true"
+											AutoDataBind="true">
 											<Model>
 												<ext:Model ID="Model1" runat="server">
 													<Fields>
@@ -96,14 +97,11 @@
 											<ext:Column runat="server"
 												ID="uxEquipmentOrgName"
 												DataIndex="ORGANIZATION_NAME"
-												Text="Organization Name" />           
-											<ext:Column runat="server"
-												ID="uxEquipmentOrganization"
-												DataIndex="ORGANIZATION_ID"
-												Text="Organization ID" />                
+												Text="Organization Name" />                     
 											<ext:Column runat="server"
 												ID="uxEquipmentSegment"
-												DataIndex="SEGMENT1" />
+												DataIndex="SEGMENT1"
+												Text="Project Number" />
 										</Columns>
 									</ColumnModel>
 									<Plugins>
@@ -201,7 +199,8 @@
 											ID="uxEditEquipmentProjectStore"
 											OnReadData="deReadGrid"
 											PageSize="10"
-											RemoteSort="true">
+											RemoteSort="true"
+											AutoDataBind="true">
 											<Model>
 												<ext:Model ID="Model2" runat="server">
 													<Fields>
@@ -238,18 +237,15 @@
 											<ext:Column runat="server"
 												ID="Column3"
 												DataIndex="ORGANIZATION_NAME"
-												Text="Organization Name" />           
-											<ext:Column runat="server"
-												ID="Column4"
-												DataIndex="ORGANIZATION_ID"
-												Text="Organization ID" />                
+												Text="Organization Name" />                           
 											<ext:Column runat="server"
 												ID="Column5"
-												DataIndex="SEGMENT1" />
+												DataIndex="SEGMENT1"
+												Text="Project Number" />
 										</Columns>
 									</ColumnModel>
 									<Plugins>
-										<ext:FilterHeader runat="server" ID="uxEditEquipmentFilter" />
+										<ext:FilterHeader runat="server" ID="uxEditEquipmentFilter" Remote="true" />
 									</Plugins>
 									<TopBar>
 										<ext:Toolbar ID="Toolbar1" runat="server">
@@ -330,7 +326,7 @@
 					Handler="var win = parentAutoLoadControl.target || parentAutoLoadControl, //you can use just 'parentAutoLoadControl' after update to Ext.NET v2 beta.
 									size = this.getSize();
  
-								size.height += 200;
+								size.height += 300;
 								size.width += 12;
 								win.setSize(size);"
 					Delay="100" />

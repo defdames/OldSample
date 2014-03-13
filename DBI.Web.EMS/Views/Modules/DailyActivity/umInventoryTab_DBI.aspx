@@ -29,6 +29,7 @@
 								<ext:ModelField Name="ITEM_ID" Type="Float" />
 								<ext:ModelField Name="DESCRIPTION" Type="String" />
 								<ext:ModelField Name="RATE" Type="Float" />
+								<ext:ModelField Name="TOTAL" Type="Float" />
 								<ext:ModelField Name="UOM_CODE" Type="String" />
 								<ext:ModelField Name="UNIT_OF_MEASURE" Type="String" />
 								<ext:ModelField Name="EPA_NUMBER" Type="String" />
@@ -67,6 +68,9 @@
 					<ext:Column runat="server"
 						DataIndex="RATE"
 						Text="Rate" />
+					<ext:Column runat="server"
+						DataIndex="TOTAL"
+						Text="Total" />
 					<ext:Column runat="server"
 						DataIndex="UOM_CODE"
 						Text="Unit of Measure Code" Hidden="true" />

@@ -5,6 +5,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 	<title></title>
+	<script type="text/javascript">
+		var onShow = function (toolTip, grid) {
+			var view = grid.getView(),
+				store = grid.getStore(),
+				record = view.getRecord(view.findItemByChild(toolTip.triggerElement)),
+				column = view.getHeaderByCell(toolTip.triggerElement),
+				data = record.get(column.dataIndex);
+
+			toolTip.update(data);
+		};
+	</script>
 	<link href="../../../Resources/StyleSheets/main.css" rel="stylesheet" />
 </head>
 
@@ -31,8 +42,11 @@
 								<ext:ModelField Name="TIME_OUT" Type="Date" />
 								<ext:ModelField Name="TRAVEL_TIME" Type="Float"  />
 								<ext:ModelField Name="DRIVE_TIME" Type="Float" />
+								<ext:ModelField Name="SHOPTIME_AM" Type="String" />
+								<ext:ModelField Name="SHOPTIME_PM" Type="String" />
 								<ext:ModelField Name="PER_DIEM" Type="String"  />
 								<ext:ModelField Name="COMMENTS" Type="String"  />
+								<ext:ModelField Name="ROLE_TYPE" Type="String" />
 							</Fields>
 						</ext:Model>
 					</Model>
@@ -70,6 +84,16 @@
 						Text="Drive Time"
 						DataIndex="DRIVE_TIME"
 						Flex="1" />
+					<ext:Column ID="uxShopTimeAMColumn" runat="server"
+						Text="Shop Time AM"
+						DataIndex="SHOPTIME_AM"
+						Flex="1"
+						Hidden="true" />
+					<ext:Column ID="uxShopTimePMColumn" runat="server"
+						Text="Shop Time PM"
+						DataIndex="SHOPTIME_PM"
+						Flex="1"
+						Hidden="true" />
 					<ext:Column runat="server"
 						Text="Per Diem"
 						DataIndex="PER_DIEM"
@@ -77,6 +101,10 @@
 					<ext:Column runat="server"
 						Text="Comments"
 						DataIndex="COMMENTS"
+						Flex="1" />
+					<ext:Column runat="server"
+						Text="Role Type"
+						DataIndex="ROLE_TYPE"
 						Flex="1" />
 				</Columns>
 			</ColumnModel>
@@ -138,6 +166,15 @@
 					#{uxRemoveEmployee}.disable()" />
 			</Listeners>
 		</ext:GridPanel>
+		<ext:ToolTip ID="ToolTip1" 
+			runat="server" 
+			Target="={#{uxCurrentEmployeeGrid}.getView().el}"
+			Delegate=".x-grid-cell"
+			TrackMouse="true">
+			<Listeners>
+				<Show Handler="onShow(this, #{uxCurrentEmployeeGrid});" /> 
+			</Listeners>
+		</ext:ToolTip>
 	</form>
 </body>
 </html>

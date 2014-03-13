@@ -182,7 +182,30 @@
 					</Component>
 				</ext:DropDownField>
 				<ext:TextField runat="server" ID="uxFormLicense" FieldLabel="License #" AllowBlank="false" />
-				<ext:TextField runat="server" ID="uxFormState" FieldLabel="State" AllowBlank="false" />
+				<ext:ComboBox runat="server"
+					ID="uxFormState"
+					FieldLabel="State"
+					DisplayField="name"
+					ValueField="name"
+					QueryMode="Local"
+					TypeAhead="true"
+					AllowBlank="false">
+					<Store>
+						<ext:Store ID="uxStateList" runat="server" AutoDataBind="true">
+							<Model>
+								<ext:Model ID="Model1" runat="server">
+									<Fields>
+										<ext:ModelField Name="abbr" />
+										<ext:ModelField Name="name" />
+									</Fields>
+								</ext:Model>
+							</Model>
+							<Reader>
+								<ext:ArrayReader />
+							</Reader>
+						</ext:Store>
+					</Store>
+				</ext:ComboBox>
 				<ext:TextField runat="server" ID="uxFormType" FieldLabel="Type" AllowBlank="true" />
 				<ext:ComboBox runat="server" 
 					ID="uxFormDensity" 

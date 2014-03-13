@@ -14,9 +14,9 @@
             <Items>
                 <ext:GridPanel runat="server"
                     ID="uxHeaderGrid"
-                    Title="Details"
+                    Title="Header"
                     TitleAlign="Center"
-                    Border="false">
+                    Padding="10">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxHeaderStore">
@@ -55,10 +55,7 @@
                     ID="uxEquipmentGrid"
                     Title="Equipment and Employees"
                     TitleAlign="Center"
-                    Border="false"
-                    Collapsed="true"
-                    Collapsible="true"
-                    TitleCollapse="true">
+                    Padding="10">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxEquipmentStore">
@@ -95,10 +92,7 @@
                     ID="uxProductionGrid"
                     Title="Production"
                     TitleAlign="Center"
-                    Border="false"
-                    Collapsed="true"
-                    Collapsible="true"
-                    TitleCollapse="true">
+                    Padding="10">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxProductionStore">
@@ -131,10 +125,7 @@
                     ID="uxWeatherGrid"
                     Title="Weather"
                     TitleAlign="Center"
-                    Border="false"
-                    Collapsed="true"
-                    Collapsible="true"
-                    TitleCollapse="true">
+                    Padding="10">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxWeatherStore">
@@ -167,10 +158,7 @@
                     ID="uxChemicalGrid"
                     Title="Chemical Mix"
                     TitleAlign="Center"
-                    Border="false"
-                    Collapsed="true"
-                    Collapsible="true"
-                    TitleCollapse="true">
+                    Padding="10">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxChemicalStore">
@@ -187,7 +175,7 @@
                                         <ext:ModelField Name="COUNTY" />
                                         <ext:ModelField Name="TOTAL" />
                                         <ext:ModelField Name="USED" />
-                                        <ext:ModelField Name="SPRAYED" />
+                                        <ext:ModelField Name="ACRES_SPRAYED" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -202,7 +190,7 @@
                             <ext:Column ID="Column30" runat="server" DataIndex="GALLON_MIXED" Text="Gallon Mixed" Flex="5" />
                             <ext:Column ID="Column31" runat="server" DataIndex="TOTAL" Text="Total Gallons" Flex="5" />
                             <ext:Column ID="Column32" runat="server" DataIndex="USED" Text="Gallons Used" Flex="5" />
-                            <ext:Column ID="Column33" runat="server" DataIndex="SPRAYED" Text="Acres Sprayed" Flex="5" />
+                            <ext:Column ID="Column33" runat="server" DataIndex="ACRES_SPRAYED" Text="Acres Sprayed" Flex="5" />
                             <ext:Column ID="Column34" runat="server" DataIndex="STATE" Text="State" Flex="2" />
                             <ext:Column ID="Column35" runat="server" DataIndex="COUNTY" Text="County" Flex="7" />
                         </Columns>
@@ -212,10 +200,7 @@
                     ID="uxInventoryGrid"
                     Title="Inventory"
                     TitleAlign="Center"
-                    Border="false"
-                    Collapsed="true"
-                    Collapsible="true"
-                    TitleCollapse="true">
+                    Padding="10">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxInventoryStore">
@@ -226,6 +211,7 @@
                                         <ext:ModelField Name="SUB_INVENTORY_SECONDARY_NAME" />
                                         <ext:ModelField Name="DESCRIPTION" />
                                         <ext:ModelField Name="RATE" />
+                                        <ext:ModelField Name="TOTAL" />
                                         <ext:ModelField Name="UNIT_OF_MEASURE" />
                                         <ext:ModelField Name="EPA_NUMBER" />
                                     </Fields>
@@ -239,6 +225,7 @@
                             <ext:Column ID="Column37" runat="server" DataIndex="SUB_INVENTORY_SECONDARY_NAME" Text="Sub-Inv Name" Flex="7" />
                             <ext:Column ID="Column38" runat="server" DataIndex="DESCRIPTION" Text="Item" Flex="2" />
                             <ext:Column ID="Column39" runat="server" DataIndex="RATE" Text="Rate" Flex="3" />
+                            <ext:Column runat="server" DataIndex="TOTAL" Text="Total" Flex="3" />
                             <ext:Column ID="Column40" runat="server" DataIndex="UNIT_OF_MEASURE" Text="Unit" Flex="3" />
                             <ext:Column ID="Column41" runat="server" DataIndex="EPA_NUMBER" Text="EPA Number" Flex="6" />
                         </Columns>
@@ -248,10 +235,7 @@
                     ID="uxFooterGrid"
                     Title="Footer"
                     TitleAlign="Center"
-                    Border="false"
-                    Collapsed="true"
-                    Collapsible="true"
-                    TitleCollapse="true">
+                    Padding="10">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxFooterStore">

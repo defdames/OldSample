@@ -16,7 +16,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         /// <param name="HeaderId"></param>
         /// <returns></returns>
-        public static List<EmployeeData> checkEmployeeTime(string CheckType)
+        public static List<EmployeeData> checkEmployeeTime(int Hours)
         {
 
             using (Entities _context = new Entities())
@@ -26,46 +26,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                      group d by new {d.DAILY_ACTIVITY_HEADER.DA_DATE, d.PERSON_ID } into g
                                      select new { g.Key.PERSON_ID, g.Key.DA_DATE, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value))}).ToList();
 
-                int i = 0;
                 List<EmployeeData> OffendingProjects = new List<EmployeeData>();
                 foreach (var TotalHour in TotalHoursList)
                 {
-                    if (CheckType == "Hours per day")
+
+                    if (TotalHour.TotalMinutes / 60 >= Hours)
                     {
-                        if (TotalHour.TotalMinutes / 60 >= 24)
+                        var ProjectsWithEmployeeHoursOver24 = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                                                join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
+                                                                where d.PERSON_ID == TotalHour.PERSON_ID && d.DAILY_ACTIVITY_HEADER.DA_DATE == TotalHour.DA_DATE
+                                                                select new EmployeeData{HEADER_ID = d.HEADER_ID, EMPLOYEE_NAME = e.EMPLOYEE_NAME, DA_DATE = d.DAILY_ACTIVITY_HEADER.DA_DATE}).ToList();
+                        foreach (var Project in ProjectsWithEmployeeHoursOver24)
                         {
-                            var ProjectsWithEmployeeHoursOver24 = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                                                                   join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
-                                                                   where d.PERSON_ID == TotalHour.PERSON_ID && d.DAILY_ACTIVITY_HEADER.DA_DATE == TotalHour.DA_DATE
-                                                                   select new EmployeeData{HEADER_ID = d.HEADER_ID, EMPLOYEE_NAME = e.EMPLOYEE_NAME, DA_DATE = d.DAILY_ACTIVITY_HEADER.DA_DATE}).ToList();
-                            foreach (var Project in ProjectsWithEmployeeHoursOver24)
+                            OffendingProjects.Add(new EmployeeData
                             {
-                                OffendingProjects.Add(new EmployeeData
-                                {
-                                    HEADER_ID = Project.HEADER_ID,
-                                    EMPLOYEE_NAME = Project.EMPLOYEE_NAME,
-                                    DA_DATE = Project.DA_DATE
-                                });
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (TotalHour.TotalMinutes / 60 >= 14  && TotalHour.TotalMinutes / 60 < 24)
-                        {
-                            var ProjectsWithEmployeeHoursOver14 = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                                                                   join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
-                                                                   where d.PERSON_ID == TotalHour.PERSON_ID && d.DAILY_ACTIVITY_HEADER.DA_DATE == TotalHour.DA_DATE
-                                                                   select new EmployeeData{HEADER_ID = d.HEADER_ID, EMPLOYEE_NAME = e.EMPLOYEE_NAME, DA_DATE = d.DAILY_ACTIVITY_HEADER.DA_DATE}).ToList();
-                            foreach (var Project in ProjectsWithEmployeeHoursOver14)
-                            {
-                                OffendingProjects.Add(new EmployeeData
-                                {
-                                    HEADER_ID = Project.HEADER_ID,
-                                    EMPLOYEE_NAME = Project.EMPLOYEE_NAME,
-                                    DA_DATE = Project.DA_DATE
-                                });
-                            }
+                                HEADER_ID = Project.HEADER_ID,
+                                EMPLOYEE_NAME = Project.EMPLOYEE_NAME,
+                                DA_DATE = Project.DA_DATE
+                            });
                         }
                     }
                 }
@@ -152,14 +130,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         public static List<long> EquipmentBusinessUnitCheck()
         {
+            List<long> OffendingHeaders = new List<long>();
             using (Entities _context = new Entities())
             {
-                List<long> OffendingHeaders = new List<long>();
-                List<DAILY_ACTIVITY_HEADER> HeaderList = (from d in _context.DAILY_ACTIVITY_HEADER
-                                                          where d.STATUS != 5
-                                                          select d).ToList<DAILY_ACTIVITY_HEADER>();
 
-                foreach (DAILY_ACTIVITY_HEADER Header in HeaderList)
+                var HeaderList = (from d in _context.DAILY_ACTIVITY_HEADER
+                                  where d.STATUS != 5
+                                  select new { d.HEADER_ID, d.PROJECT_ID, d.DAILY_ACTIVITY_EQUIPMENT }).ToList();
+
+                foreach (var Header in HeaderList)
                 {
                     long ProjectId = (long)Header.PROJECT_ID;
                     long? ProjectOrgId = (from d in _context.PROJECTS_V
@@ -186,10 +165,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities()){
                 List<long>OffendingHeaders = new List<long>();
 
-                List<DAILY_ACTIVITY_HEADER> HeaderList = (from d in _context.DAILY_ACTIVITY_HEADER
-                                                              where d.STATUS != 5
-                                                              select d).ToList<DAILY_ACTIVITY_HEADER>();
-                foreach (DAILY_ACTIVITY_HEADER Header in HeaderList)
+                var HeaderList = (from d in _context.DAILY_ACTIVITY_HEADER
+                                  where d.STATUS != 5
+                                  select new { d.HEADER_ID, d.PROJECT_ID, d.DAILY_ACTIVITY_EMPLOYEE }).ToList();
+                foreach (var Header in HeaderList)
                 {
                     long ProjectId = (long)Header.PROJECT_ID;
                     long? ProjectOrgId = (from d in _context.PROJECTS_V
@@ -250,6 +229,58 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 return BadHeaders;
             }
         }
+
+        public static List<EmployeeData> LunchCheck(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
+                List<EmployeeData> EmployeeList = new List<EmployeeData>();
+                var HeaderEmployees = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                       join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
+                                       where d.HEADER_ID == HeaderId
+                                       select new {d.PERSON_ID, e.EMPLOYEE_NAME, d.DAILY_ACTIVITY_HEADER.DA_DATE}).ToList();
+                foreach (var Employee in HeaderEmployees)
+                {
+                    var TotalMinutes = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                            where d.DAILY_ACTIVITY_HEADER.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID
+                                            group d by new {d.PERSON_ID} into g
+                                            select new{g.Key.PERSON_ID, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value))}).Single();
+                    if (TotalMinutes.TotalMinutes / 60 >= 5 && TotalMinutes.TotalMinutes / 60 < 12)
+                    {
+                        var LoggedLunches = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                             where d.DAILY_ACTIVITY_HEADER.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID && d.LUNCH == "Y"
+                                             select d.LUNCH).Count();
+                        if (LoggedLunches == 0)
+                        {
+                            EmployeeList.Add(new EmployeeData
+                            {
+                                PERSON_ID = Employee.PERSON_ID,
+                                EMPLOYEE_NAME = Employee.EMPLOYEE_NAME,
+                                LUNCH_LENGTH = 30,
+                                DA_DATE = Employee.DA_DATE
+                            });
+                        }
+                    }
+                    else if (TotalMinutes.TotalMinutes >= 12)
+                    {
+                        var LoggedLunches = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                             where d.DAILY_ACTIVITY_HEADER.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID && d.LUNCH == "Y" && d.LUNCH_LENGTH == 60
+                                             select d.LUNCH).Count();
+                        if (LoggedLunches == 0)
+                        {
+                            EmployeeList.Add(new EmployeeData
+                            {
+                                PERSON_ID = Employee.PERSON_ID,
+                                LUNCH_LENGTH = 60,
+                                EMPLOYEE_NAME = Employee.EMPLOYEE_NAME,
+                                DA_DATE = Employee.DA_DATE
+                            });
+                        }
+                    }
+                }
+                return EmployeeList;
+            }
+        }
     }
 
     public class EmployeeData
@@ -259,6 +290,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public string EMPLOYEE_NAME {get; set;}
         public DateTime? DA_DATE {get; set;}
         public long PERSON_ID { get; set; }
+        public int LUNCH_LENGTH { get; set; }
     }
 
     public class HeaderData
@@ -268,7 +300,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public DateTime DA_DATE { get; set; }
         public string SEGMENT1 { get; set; }
         public string LONG_NAME { get; set; }
+        public decimal DA_HEADER_ID { get; set; }
         public string STATUS_VALUE { get; set; }
         public string WARNING { get; set; }
+        public string WARNING_TYPE { get; set; }
+        public int STATUS { get; set; }
     }
 }

@@ -5,6 +5,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
 	<title></title>
+	<script type="text/javascript">
+		var onShow = function (toolTip, grid) {
+			var view = grid.getView(),
+				store = grid.getStore(),
+				record = view.getRecord(view.findItemByChild(toolTip.triggerElement)),
+				column = view.getHeaderByCell(toolTip.triggerElement),
+				data = record.get(column.dataIndex);
+
+			toolTip.update(data);
+		};
+	</script>
 	<link href="../../../Resources/StyleSheets/main.css" rel="stylesheet" />
 </head>
 <body>
@@ -29,6 +40,7 @@
 								<ext:ModelField Name="EXPENDITURE_TYPE" />
 								<ext:ModelField Name="BILL_RATE" />
 								<ext:ModelField Name="UNIT_OF_MEASURE" />
+								<ext:ModelField Name="SURFACE_TYPE" />
 								<ext:ModelField Name="COMMENTS" />
 								<ext:ModelField Name="QUANTITY" />
 							</Fields>
@@ -69,6 +81,10 @@
 					<ext:Column runat="server"
 						DataIndex="UNIT_OF_MEASURE"
 						Text="Unit Of Measure"
+						Flex="1" />
+					<ext:Column runat="server"
+						DataIndex="SURFACE_TYPE"
+						Text="Surface Type"
 						Flex="1" />
 					<ext:Column runat="server"
 						DataIndex="COMMENTS"
@@ -134,6 +150,15 @@
 					#{uxRemoveProductionButton}.disable()" />
 			</Listeners>
 		</ext:GridPanel>
+		<ext:ToolTip ID="ToolTip1" 
+			runat="server" 
+			Target="={#{uxCurrentProductionGrid}.getView().el}"
+			Delegate=".x-grid-cell"
+			TrackMouse="true">
+			<Listeners>
+				<Show Handler="onShow(this, #{uxCurrentProductionGrid});" /> 
+			</Listeners>
+		</ext:ToolTip>
 	</form>
 </body>
 </html>

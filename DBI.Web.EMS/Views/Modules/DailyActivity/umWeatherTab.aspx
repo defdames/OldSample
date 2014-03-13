@@ -5,6 +5,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 	<title></title>
+	<script type="text/javascript">
+		var onShow = function (toolTip, grid) {
+			var view = grid.getView(),
+				store = grid.getStore(),
+				record = view.getRecord(view.findItemByChild(toolTip.triggerElement)),
+				column = view.getHeaderByCell(toolTip.triggerElement),
+				data = record.get(column.dataIndex);
+
+			toolTip.update(data);
+		};
+	</script>
 </head>
 <body>
 	<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
@@ -48,6 +59,9 @@
 						Text="Comments" DataIndex="COMMENTS" />
 				</Columns>
 			</ColumnModel>
+			<View>
+				<ext:GridView runat="server" StripeRows="true" TrackOver="true" />
+			</View>
 			<TopBar>
 				<ext:Toolbar runat="server">
 					<Items>
@@ -106,6 +120,15 @@
 					#{uxRemoveWeatherButton}.disable()" />
 			</Listeners>
 		</ext:GridPanel>
+		<ext:ToolTip ID="ToolTip1" 
+			runat="server" 
+			Target="={#{uxCurrentWeatherGrid}.getView().el}"
+			Delegate=".x-grid-cell"
+			TrackMouse="true">
+			<Listeners>
+				<Show Handler="onShow(this, #{uxCurrentWeatherGrid});" /> 
+			</Listeners>
+		</ext:ToolTip>
 	</form>
 </body>
 </html>

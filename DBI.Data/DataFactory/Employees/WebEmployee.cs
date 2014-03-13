@@ -15,5 +15,7 @@ namespace DBI.Data
                 return _context.Set<DAILY_ACTIVITY_EMPLOYEE>().ToList();
             }
         }
+
+
     }
 }

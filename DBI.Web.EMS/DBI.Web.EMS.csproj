@@ -28,6 +28,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -65,6 +66,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\app\ljankowski\product\12.1.0\client_1\odp.net\managed\common\Oracle.ManagedDataAccess.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccessDTC, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\app\ljankowski\product\12.1.0\client_2\odp.net\managed\x86\Oracle.ManagedDataAccessDTC.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Linq" />
@@ -112,13 +117,17 @@
     <Content Include="Resources\Images\wwbnight.png" />
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
+    <Content Include="Views\Modules\CrossingMaintenance\umInspectionEntry.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umContactsTab.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingMain.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingInfoTab.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingSecurity.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx" />
-    <Content Include="Views\Modules\CrossingMaintenance\umServiceUnitsTab.aspx" />
-    <Content Include="Views\Modules\CrossingMaintenance\umSubDivisionsTab.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umSupplemental.aspx" />
+    <Content Include="Views\Modules\CustomerSurveys\umCustomerSurveyAdmin.aspx" />
+    <Content Include="Views\Modules\CustomerSurveys\umManageForms.aspx" />
+    <Content Include="Views\Modules\CustomerSurveys\umManageOrgs.aspx" />
+    <Content Include="Views\Modules\CustomerSurveys\umManageQuestions.aspx" />
     <Content Include="Views\Modules\DailyActivity\ImageLoader\ImageLoader.aspx" />
     <Content Include="Views\Modules\DailyActivity\umAddEditChemical.aspx" />
     <Content Include="Views\Modules\DailyActivity\umAddEditEmployee.aspx" />
@@ -129,6 +138,7 @@
     <Content Include="Views\Modules\DailyActivity\umAddEditProduction_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umAddEditWeather.aspx" />
     <Content Include="Views\Modules\DailyActivity\umChemicalTab.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umChooseLunchHeader.aspx" />
     <Content Include="Views\Modules\DailyActivity\umChoosePerDiem.aspx" />
     <Content Include="Views\Modules\DailyActivity\umCombinedTab_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umCombinedTab_IRM.aspx" />
@@ -139,6 +149,7 @@
     <Content Include="Views\Modules\DailyActivity\umInventoryTab_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umInventoryTab_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umManageExisting.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umPostMultipleWindow.aspx" />
     <Content Include="Views\Modules\DailyActivity\umProductionTab_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umProductionTab_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_DBI.aspx" />
@@ -172,6 +183,13 @@
     </Compile>
     <Compile Include="Views\Handlers\SystemUsers.ashx.cs">
       <DependentUpon>SystemUsers.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umInspectionEntry.aspx.cs">
+      <DependentUpon>umInspectionEntry.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umInspectionEntry.aspx.designer.cs">
+      <DependentUpon>umInspectionEntry.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umContactsTab.aspx.cs">
       <DependentUpon>umContactsTab.aspx</DependentUpon>
@@ -208,19 +226,40 @@
     <Compile Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx.designer.cs">
       <DependentUpon>umDataEntryTab.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\CrossingMaintenance\umServiceUnitsTab.aspx.cs">
-      <DependentUpon>umServiceUnitsTab.aspx</DependentUpon>
+    <Compile Include="Views\Modules\CrossingMaintenance\umSupplemental.aspx.cs">
+      <DependentUpon>umSupplemental.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\CrossingMaintenance\umServiceUnitsTab.aspx.designer.cs">
-      <DependentUpon>umServiceUnitsTab.aspx</DependentUpon>
+    <Compile Include="Views\Modules\CrossingMaintenance\umSupplemental.aspx.designer.cs">
+      <DependentUpon>umSupplemental.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\CrossingMaintenance\umSubDivisionsTab.aspx.cs">
-      <DependentUpon>umSubDivisionsTab.aspx</DependentUpon>
+    <Compile Include="Views\Modules\CustomerSurveys\umCustomerSurveyAdmin.aspx.cs">
+      <DependentUpon>umCustomerSurveyAdmin.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\CrossingMaintenance\umSubDivisionsTab.aspx.designer.cs">
-      <DependentUpon>umSubDivisionsTab.aspx</DependentUpon>
+    <Compile Include="Views\Modules\CustomerSurveys\umCustomerSurveyAdmin.aspx.designer.cs">
+      <DependentUpon>umCustomerSurveyAdmin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CustomerSurveys\umManageForms.aspx.cs">
+      <DependentUpon>umManageForms.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CustomerSurveys\umManageForms.aspx.designer.cs">
+      <DependentUpon>umManageForms.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CustomerSurveys\umManageOrgs.aspx.cs">
+      <DependentUpon>umManageOrgs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CustomerSurveys\umManageOrgs.aspx.designer.cs">
+      <DependentUpon>umManageOrgs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CustomerSurveys\umManageQuestions.aspx.cs">
+      <DependentUpon>umManageQuestions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CustomerSurveys\umManageQuestions.aspx.designer.cs">
+      <DependentUpon>umManageQuestions.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\ImageLoader\ImageLoader.aspx.cs">
       <DependentUpon>ImageLoader.aspx</DependentUpon>
@@ -292,6 +331,13 @@
     <Compile Include="Views\Modules\DailyActivity\umChemicalTab.aspx.designer.cs">
       <DependentUpon>umChemicalTab.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umChooseLunchHeader.aspx.cs">
+      <DependentUpon>umChooseLunchHeader.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umChooseLunchHeader.aspx.designer.cs">
+      <DependentUpon>umChooseLunchHeader.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\DailyActivity\umChoosePerDiem.aspx.cs">
       <DependentUpon>umChoosePerDiem.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -361,6 +407,13 @@
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umManageExisting.aspx.designer.cs">
       <DependentUpon>umManageExisting.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umPostMultipleWindow.aspx.cs">
+      <DependentUpon>umPostMultipleWindow.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umPostMultipleWindow.aspx.designer.cs">
+      <DependentUpon>umPostMultipleWindow.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umProductionTab_DBI.aspx.cs">
       <DependentUpon>umProductionTab_DBI.aspx</DependentUpon>
@@ -434,6 +487,9 @@
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <None Include="Web.PCL03.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -463,9 +519,20 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PCL03|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>CODE_ANALYSIS;DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

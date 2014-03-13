@@ -14,9 +14,9 @@
             <Items>
                 <ext:GridPanel runat="server"
                     ID="uxHeaderGrid"
-                    Title="Details"
+                    Title="Header"
                     TitleAlign="Center"
-                    Border="false">
+                    Padding="10">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxHeaderStore">
@@ -55,10 +55,7 @@
                     ID="uxEquipmentGrid"
                     Title="Equipment and Employees"
                     TitleAlign="Center"
-                    Border="false"
-                    Collapsed="true"
-                    Collapsible="true"
-                    TitleCollapse="true">
+                    Padding="10">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxEquipmentStore">
@@ -95,10 +92,7 @@
                     ID="uxProductionGrid"
                     Title="Production"
                     TitleAlign="Center"
-                    Border="false"
-                    Collapsed="true"
-                    Collapsible="true"
-                    TitleCollapse="true">
+                    Padding="10">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxProductionStore">
@@ -112,6 +106,7 @@
                                         <ext:ModelField Name="EXPENDITURE_TYPE" />
                                         <ext:ModelField Name="BILL_RATE" />
                                         <ext:ModelField Name="UNIT_OF_MEASURE" />
+                                        <ext:ModelField Name="SURFACE_TYPE" />
                                         <ext:ModelField Name="COMMENTS" />
                                     </Fields>
                                 </ext:Model>
@@ -127,6 +122,7 @@
                             <ext:Column runat="server" DataIndex="EXPENDITURE_TYPE" Text="Expenditure Type" Flex="4" />
                             <ext:Column runat="server" DataIndex="BILL_RATE" Text="Bill Rate" />
                             <ext:Column runat="server" DataIndex="UNIT_OF_MEASURE" Text="Unit of Measure" />
+                            <ext:Column runat="server" DataIndex="SURFACE_TYPE" Text="Surface Type" />
                             <ext:Column runat="server" DataIndex="COMMENTS" Text="Comments" Flex="4" />
                         </Columns>
                     </ColumnModel>
@@ -135,10 +131,7 @@
                     ID="uxWeatherGrid"
                     Title="Weather"
                     TitleAlign="Center"
-                    Border="false"
-                    Collapsed="true"
-                    Collapsible="true"
-                    TitleCollapse="true">
+                    Padding="10">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxWeatherStore">
@@ -171,10 +164,7 @@
                     ID="uxInventoryGrid"
                     Title="Inventory"
                     TitleAlign="Center"
-                    Border="false"
-                    Collapsed="true"
-                    Collapsible="true"
-                    TitleCollapse="true">
+                    Padding="10">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxInventoryStore">
@@ -201,10 +191,7 @@
                     ID="uxFooterGrid"
                     Title="Footer"
                     TitleAlign="Center"
-                    Border="false"
-                    Collapsed="true"
-                    Collapsible="true"
-                    TitleCollapse="true">
+                    Padding="10">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxFooterStore">

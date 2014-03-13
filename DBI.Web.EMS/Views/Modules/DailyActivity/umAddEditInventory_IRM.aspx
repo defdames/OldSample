@@ -171,13 +171,45 @@
 										</Select>
 									</DirectEvents>
 								</ext:GridPanel>
-							</Component>                            
+							</Component>
+							<DirectEvents>
+								<Change OnEvent="deGetUnitOfMeasure">
+									<ExtraParams>
+										<ext:Parameter Name="uomCode" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.UOM_CODE" Mode="Raw" />
+										<ext:Parameter Name="Type" Value="Add" />
+									</ExtraParams>
+								</Change>
+							</DirectEvents>                            
 						</ext:DropDownField>
 						<ext:TextField runat="server"
 							ID="uxAddInventoryRate"
 							FieldLabel="Quantity"
 							AllowBlank="false">
 						</ext:TextField>
+						<ext:ComboBox runat="server"
+							ID="uxAddInventoryMeasure"
+							FieldLabel="Unit of Measure"
+							ValueField="UOM_CODE"
+							DisplayField="UNIT_OF_MEASURE"
+							QueryMode="Local"
+							TypeAhead="true"
+							AllowBlank="false">
+							<Store>
+								<ext:Store runat="server"
+									ID="uxAddInventoryMeasureStore">
+									<Model>
+										<ext:Model ID="Model4" runat="server">
+											<Fields>
+												<ext:ModelField Name="UOM_CODE" />
+												<ext:ModelField Name="UNIT_OF_MEASURE" />
+												<ext:ModelField Name="UOM_CLASS" />
+												<ext:ModelField Name="BASE_UOM_FLAG" />
+											</Fields>
+										</ext:Model>
+									</Model>
+								</ext:Store>
+							</Store>
+						</ext:ComboBox>
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
@@ -310,6 +342,30 @@
 							ID="uxEditInventoryRate"
 							FieldLabel="Quantity"
 							AllowBlank="false" />
+						<ext:ComboBox runat="server"
+							ID="uxEditInventoryMeasure"
+							FieldLabel="Unit of Measure"
+							ValueField="UOM_CODE"
+							DisplayField="UNIT_OF_MEASURE"
+							QueryMode="Local"
+							TypeAhead="true"
+							AllowBlank="false">
+							<Store>
+								<ext:Store runat="server"
+									ID="uxEditInventoryMeasureStore">
+									<Model>
+										<ext:Model ID="Model1" runat="server">
+											<Fields>
+												<ext:ModelField Name="UOM_CODE" />
+												<ext:ModelField Name="UNIT_OF_MEASURE" />
+												<ext:ModelField Name="UOM_CLASS" />
+												<ext:ModelField Name="BASE_UOM_FLAG" />
+											</Fields>
+										</ext:Model>
+									</Model>
+								</ext:Store>
+							</Store>
+						</ext:ComboBox>
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"

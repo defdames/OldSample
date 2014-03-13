@@ -9,6 +9,7 @@ using System.Web.Security;
 using System.Web.SessionState;
 using Ext.Net;
 
+
 namespace DBI.Web.EMS
 {
     public class Global : System.Web.HttpApplication
@@ -20,6 +21,7 @@ namespace DBI.Web.EMS
         {
             // Set the license key needed to hide "warning" windows when deploying to server
             Application["Ext.Net.LicenseKey"] = "ODUwODg1NjAsMiw5OTk5LTEyLTMx";
+
         }
 
         protected void Session_Start(object sender, EventArgs e)

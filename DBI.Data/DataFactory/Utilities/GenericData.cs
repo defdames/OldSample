@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.Entity;
+using System.Data.Objects;
 using System.Data.Objects.DataClasses;
 using System.Linq;
 using System.Linq.Expressions;
@@ -36,6 +37,67 @@ namespace DBI.Data
 
             return isValid;
 
+        }
+
+
+        /// <summary>
+        /// This inserts data into any entity object using sqlcommand
+        /// </summary>
+        /// <typeparam name="T">Entity object type</typeparam>
+        /// <param name="entity">Entity object you want to insert</param>
+        public static void Insert<T>(T entity, String[] includedColumns, string tableName) where T : class
+        {
+
+            using (Entities _context = new Entities())
+            {
+
+                var colNames = typeof(T).GetProperties().Select(a => a.Name).ToList();
+
+                StringBuilder sqlColumns = new StringBuilder();
+                StringBuilder sqlValues = new StringBuilder();
+                StringBuilder sqlInsert = new StringBuilder();
+
+                int count = 0;
+                string sql = "INSERT INTO " + tableName;
+
+                foreach (string column in includedColumns.ToList())
+                {
+                    PropertyInfo propInfo = entity.GetType().GetProperty(column);
+                    object columnValue = propInfo.GetValue(entity,null);
+
+                        count = count + 1;
+                        sqlColumns.Append(column);
+
+                        if (count < includedColumns.Count())
+                        {
+                            sqlColumns.Append(",");
+                        }
+
+                        if (propInfo.PropertyType == typeof(DateTime) || propInfo.PropertyType == typeof(DateTime?))
+                        {
+                            DateTime dateValue = (DateTime)columnValue;
+
+                            sqlValues.Append("TO_DATE('" + dateValue.ToString("MM/dd/yyyy HH:mm:ss") + "','MM/DD/YYYY HH24:MI:SS')");
+                        }
+                        else
+                        {
+                            sqlValues.Append("'" + columnValue + "'");
+                        }
+
+                        if (count < includedColumns.Count())
+                        {
+                            sqlValues.Append(",");
+                        }
+                }
+
+                sqlInsert.Append(sql);
+                sqlInsert.Append(" (");
+                sqlInsert.Append(sqlColumns.ToString());
+                sqlInsert.Append(") VALUES(");
+                sqlInsert.Append(sqlValues.ToString());
+                sqlInsert.Append(")");
+                _context.Database.ExecuteSqlCommand(sqlInsert.ToString());
+            }
         }
 
 

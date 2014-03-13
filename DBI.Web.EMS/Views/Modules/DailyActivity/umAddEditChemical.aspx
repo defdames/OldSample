@@ -84,10 +84,30 @@
 						<ext:TextField runat="server"
 							ID="uxAddChemicalAcresSprayed"
 							FieldLabel="Acres Sprayed" Disabled="true" />
-						<ext:TextField runat="server"
+						<ext:ComboBox runat="server"
 							ID="uxAddChemicalState"
 							FieldLabel="State"
-							AllowBlank="false" />
+							DisplayField="name"
+							ValueField="name"
+							QueryMode="Local"
+							TypeAhead="true"
+							AllowBlank="false">
+							<Store>
+								<ext:Store ID="uxAddStateList" runat="server" AutoDataBind="true">
+									<Model>
+										<ext:Model ID="Model1" runat="server">
+											<Fields>
+												<ext:ModelField Name="abbr" />
+												<ext:ModelField Name="name" />
+											</Fields>
+										</ext:Model>
+									</Model>
+									<Reader>
+										<ext:ArrayReader />
+									</Reader>
+								</ext:Store>
+							</Store>
+						</ext:ComboBox>
 						<ext:TextField runat="server"
 							ID="uxAddChemicalCounty"
 							FieldLabel="County"
@@ -162,10 +182,30 @@
 						<ext:TextField runat="server"
 							ID="uxEditChemicalAcresSprayed"
 							FieldLabel="Acres Sprayed" Disabled="true" />
-						<ext:TextField runat="server"
+						<ext:ComboBox runat="server"
 							ID="uxEditChemicalState"
 							FieldLabel="State"
-							AllowBlank="false" />
+							DisplayField="name"
+							ValueField="name"
+							QueryMode="Local"
+							TypeAhead="true"
+							AllowBlank="false">
+							<Store>
+								<ext:Store ID="uxEditStateList" runat="server" AutoDataBind="true">
+									<Model>
+										<ext:Model ID="Model2" runat="server">
+											<Fields>
+												<ext:ModelField Name="abbr" />
+												<ext:ModelField Name="name" />
+											</Fields>
+										</ext:Model>
+									</Model>
+									<Reader>
+										<ext:ArrayReader />
+									</Reader>
+								</ext:Store>
+							</Store>
+						</ext:ComboBox>
 						<ext:TextField runat="server"
 							ID="uxEditChemicalCounty"
 							FieldLabel="County"

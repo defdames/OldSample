@@ -26,6 +26,9 @@ namespace DBI.Mobile.EMS.Controllers
                 throw new HttpResponseException(HttpStatusCode.BadGateway);
             }
 
+            IEnumerable<string> headerValues = Request.Headers.GetValues("DeviceID");
+            var id = headerValues.FirstOrDefault();
+            Utility.registerDeviceForNotifications(id.ToString(),pl.USER_ID);
 
             return pl;
         }

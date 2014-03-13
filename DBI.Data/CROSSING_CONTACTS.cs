@@ -28,7 +28,7 @@ namespace DBI.Data
         public string ZIP_CODE { get; set; }
         public string WORK_NUMBER { get; set; }
         public string CELL_NUMBER { get; set; }
-        public string RAIL_ROAD { get; set; }
+        public string RAILROAD { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }

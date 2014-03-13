@@ -30,6 +30,17 @@ namespace DBI.Data
             }
         }
 
+        public static String oracleEmployeeName(long person_id)
+        {
+
+            using (Entities _context = new Entities())
+            {
+                string sql = @"select full_name from apps.per_people_x where person_id = " + person_id;
+                string employeeName = _context.Database.SqlQuery<string>(sql).Single<string>();
+                return employeeName;
+            }
+        }
+
         public static long GetEmployeeBusinessUnit(long EmployeeOrgId)
         {
             using (Entities _context = new Entities())
