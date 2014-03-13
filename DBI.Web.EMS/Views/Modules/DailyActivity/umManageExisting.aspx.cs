@@ -751,7 +751,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         {
                             EquipmentName = String.Empty;
                         }
-
+                        string Comments;
+                        try
+                        {
+                            Comments = Data.COMMENTS.ToString();
+                        }
+                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                        {
+                            Comments = String.Empty;
+                        }
                         TimeSpan TotalHours = DateTime.Parse(Data.TIME_OUT.ToString()).TimeOfDay - DateTime.Parse(Data.TIME_IN.ToString()).TimeOfDay;
                         Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(EquipmentName , CellFont)),
@@ -761,7 +769,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         new PdfPCell(new Phrase(TotalHours.ToString(), CellFont)),
                         new PdfPCell(new Phrase(TravelTime, CellFont)),
                         new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
-                        new PdfPCell(new Phrase(Data.COMMENTS.ToString(), CellFont))
+                        new PdfPCell(new Phrase(Comments, CellFont))
                     };
                         Row = new PdfPRow(Cells);
                         EmployeeTable.Rows.Add(Row);
@@ -802,10 +810,28 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             {
                                 WorkArea = string.Empty;
                             }
+                            string PoleFrom;
+                            string PoleTo;
+                            try
+                            {
+                                PoleFrom = Data.POLE_FROM.ToString();
+                            }
+                            catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                            {
+                                PoleFrom = String.Empty;
+                            }
+                            try
+                            {
+                                PoleTo = Data.POLE_TO.ToString();
+                            }
+                            catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                            {
+                                PoleTo = String.Empty;
+                            }
                             Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(WorkArea, CellFont)),
-                        new PdfPCell(new Phrase(Data.POLE_FROM, CellFont)),
-                        new PdfPCell(new Phrase(Data.POLE_TO, CellFont)),
+                        new PdfPCell(new Phrase(PoleFrom, CellFont)),
+                        new PdfPCell(new Phrase(PoleTo, CellFont)),
                         new PdfPCell(new Phrase(Data.ACRES_MILE.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Data.QUANTITY.ToString(), CellFont))
                     };
