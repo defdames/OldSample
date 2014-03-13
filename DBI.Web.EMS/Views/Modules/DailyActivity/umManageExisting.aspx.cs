@@ -429,7 +429,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                   join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
                                   from projects in proj.DefaultIfEmpty()
                                   where d.HEADER_ID == HeaderId
-                                  select new { e.EMPLOYEE_NAME, projects.NAME, d.TIME_IN, d.TIME_OUT, d.TRAVEL_TIME, d.DRIVE_TIME, d.PER_DIEM, d.COMMENTS }).ToList<object>();
+                                  select new { e.EMPLOYEE_NAME, projects.NAME, d.TIME_IN, d.TIME_OUT, d.FOREMAN_LICENSE, d.TRAVEL_TIME, d.DRIVE_TIME, d.PER_DIEM, d.COMMENTS }).ToList<object>();
                 return returnData;
             }
         }
