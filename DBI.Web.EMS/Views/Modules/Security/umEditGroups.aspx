@@ -5,10 +5,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    <script type="text/javascript" src="../../../Resources/Scripts/functions.js"></script>
 </head>
 <body>
     <form id="form1" runat="server">
-        <ext:ResourceManager runat="server" />
+        <ext:ResourceManager runat="server" Namespace="" />
         <ext:Viewport runat="server" ID="uxEditGroupViewPort" Layout="BorderLayout">
             <Items>
                 <ext:GridPanel runat="server" ID="uxGroupsGrid" Region="North">
@@ -100,23 +101,92 @@
             </Items>
         </ext:Viewport>
         <!--Hidden Windows -->
-        <ext:Window runat="server" ID="uxUpdateGroupPermissionWindow" Width="650">
+        <ext:Window runat="server" ID="uxUpdateGroupPermissionWindow" Width="650" Hidden="true" Layout="HBoxLayout">
             <Items>
-                <ext:FormPanel runat="server" ID="uxUpdateGroupPermissionForm" Layout="FormLayout">
+                <ext:GridPanel runat="server" ID="uxAvaialblePermissions" Title="Available Permissions" Flex="1"> 
+                    <Store>
+                        <ext:Store runat="server" ID="uxAvailablePermissionsStore">
+                            <Model>
+                                <ext:Model runat="server">
+                                    <Fields>
+                                        <ext:ModelField Name="PERMISSION_ID" />
+                                        <ext:ModelField Name="PERMISSION_NAME" />
+                                    </Fields>
+                                </ext:Model>
+                            </Model>
+                        </ext:Store>
+                    </Store>
+                    <ColumnModel>
+                        <Columns>
+                            <ext:Column runat="server" DataIndex="PERMISSION_NAME" />
+                        </Columns>
+                    </ColumnModel>
+                </ext:GridPanel>
+                <ext:Panel runat="server" ID="uxButtonsPanel" Layout ="VBoxLayout">
                     <Items>
-
-                    </Items>
-                    <Buttons>
-                        <ext:Button runat="server" ID="uxUpdateGroupPermissionsButton" Text="Submit" Icon="Add">
-                            <DirectEvents>
-                                <Click OnEvent="deUpdateGroupPermissions">
-                                    <EventMask ShowMask="true" />
-                                </Click>
-                            </DirectEvents>
+                        <ext:Button runat="server" Icon="ResultsetNext" StyleSpec="margin-bottom:2px;">
+                            <Listeners>
+                                <Click Handler="TwoGridSelector.add(uxAvaialblePermissions, uxSelectedPermissionsGrid);" />
+                            </Listeners>
+                            <ToolTips>
+                                <ext:ToolTip runat="server" Title="Add" Html="Add Selected Rows" />
+                            </ToolTips>
                         </ext:Button>
-                    </Buttons>
-                </ext:FormPanel>
+                        <ext:Button runat="server" Icon="ResultsetLast" StyleSpec="margin-bottom:2px;">
+                            <Listeners>
+                                <Click Handler="TwoGridSelector.addAll(uxAvaialblePermissions, uxSelectedPermissionsGrid);" />
+                            </Listeners>
+                            <ToolTips>
+                                <ext:ToolTip runat="server" Title="Add all" Html="Add All Rows" />
+                            </ToolTips>
+                        </ext:Button>
+                        <ext:Button runat="server" Icon="ResultsetPrevious" StyleSpec="margin-bottom:2px;">
+                            <Listeners>
+                                <Click Handler="TwoGridSelector.remove(uxAvaialblePermissions, uxSelectedPermissionsGrid);" />
+                            </Listeners>
+                            <ToolTips>
+                                <ext:ToolTip runat="server" Title="Remove" Html="Remove Selected Rows" />
+                            </ToolTips>
+                        </ext:Button>
+                        <ext:Button runat="server" Icon="ResultsetFirst" StyleSpec="margin-bottom:2px;">
+                            <Listeners>
+                                <Click Handler="TwoGridSelector.removeAll(uxAvaialblePermissions, uxSelectedPermissionsGrid);" />
+                            </Listeners>
+                            <ToolTips>
+                                <ext:ToolTip runat="server" Title="Remove all" Html="Remove All Rows" />
+                            </ToolTips>
+                        </ext:Button>
+                    </Items>
+                </ext:Panel>
+                <ext:GridPanel runat="server" ID="uxSelectedPermissionsGrid" Title="SelectedPermissions" Flex="1">
+                    <Store>
+                        <ext:Store runat="server" ID="uxSelectedPermissionsStore">
+                            <Model>
+                                <ext:Model runat="server">
+                                    <Fields>
+                                        <ext:ModelField Name="PERMISSION_ID" />
+                                        <ext:ModelField Name="PERMISSION_NAME" />
+                                    </Fields>
+                                </ext:Model>
+                            </Model>
+                        </ext:Store>
+                    </Store>
+                    <ColumnModel>
+                        <Columns>
+                            <ext:Column runat="server" DataIndex="PERMISSION_NAME" />
+                        </Columns>
+                    </ColumnModel>
+                </ext:GridPanel>
             </Items>
+            <Buttons>
+                <ext:Button runat="server" ID="uxUpdateGroupPermissionsButton" Text="Submit" Icon="Add">
+                    <DirectEvents>
+                        <Click OnEvent="deUpdateGroupPermissions">
+                            <EventMask ShowMask="true" />
+                        </Click>
+                    </DirectEvents>
+                </ext:Button>
+            </Buttons>
         </ext:Window>
     </form>
 </body>

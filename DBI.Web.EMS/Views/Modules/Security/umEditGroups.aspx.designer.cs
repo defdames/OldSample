@@ -85,13 +85,49 @@ namespace DBI.Web.EMS.Views.Modules.Security {
         protected global::Ext.Net.Window uxUpdateGroupPermissionWindow;
         
         /// <summary>
-        /// uxUpdateGroupPermissionForm control.
+        /// uxAvaialblePermissions control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FormPanel uxUpdateGroupPermissionForm;
+        protected global::Ext.Net.GridPanel uxAvaialblePermissions;
+        
+        /// <summary>
+        /// uxAvailablePermissionsStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxAvailablePermissionsStore;
+        
+        /// <summary>
+        /// uxButtonsPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Panel uxButtonsPanel;
+        
+        /// <summary>
+        /// uxSelectedPermissionsGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridPanel uxSelectedPermissionsGrid;
+        
+        /// <summary>
+        /// uxSelectedPermissionsStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxSelectedPermissionsStore;
         
         /// <summary>
         /// uxUpdateGroupPermissionsButton control.
