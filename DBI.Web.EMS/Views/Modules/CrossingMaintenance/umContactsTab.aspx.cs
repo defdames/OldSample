@@ -8,6 +8,7 @@ using DBI.Core.Web;
 using DBI.Data;
 using Ext.Net;
 using DBI.Data.DataFactory;
+using DBI.Data.GMS;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
@@ -17,6 +18,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         {
             if (!X.IsAjaxRequest)
             {
+                deLoadRRType("Add");
+                deLoadRRType("Edit");
                 uxAddStateList.Data = StaticLists.StateList;
                 uxEditStateList.Data = StaticLists.StateList;
             }
@@ -76,14 +79,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             //do type conversions
             string ContactName = uxAddNewManagerName.Value.ToString();
-            string RailRoad = uxAddNewRRTextField.Value.ToString();
-            string Address1 = uxAddNewAddress1.Value.ToString();
-            string Address2 = uxAddNewAddress2.Value.ToString();
-            string City = uxAddNewContactCityTextField.Value.ToString();
-            string Zip = uxAddNewContactZip.Value.ToString();
+            string RailRoad = uxAddRRType.Value.ToString();
+           
             string State = uxAddContactStateComboBox.Value.ToString();
-            string Cell = uxAddNewContactCell.Value.ToString();
-            string Office = uxAddNewContactOffice.Value.ToString();
+           
 
             //Add to Db
             using (Entities _context = new Entities())
@@ -93,17 +92,66 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                     CONTACT_NAME = ContactName,
                     RAILROAD = RailRoad.ToString(),
-                    ADDRESS_1 = Address1,
-                    ADDRESS_2 = Address2,
-                    CITY = City,
-                    ZIP_CODE = Zip,
+                   
                     STATE = State,
-                    CELL_NUMBER = Cell,
-                    WORK_NUMBER = Office,
-
+                   
                 };
             }
-
+            try
+            {
+             string Address1 = uxAddNewAddress1.Value.ToString();
+             data.ADDRESS_1 = Address1;
+            }
+            catch(Exception) 
+            {
+                data.ADDRESS_1 = null;
+            }
+            try
+            {
+            string Address2 = uxAddNewAddress2.Value.ToString();
+             data.ADDRESS_2 = Address2;
+            }
+            catch(Exception) 
+            {
+                data.ADDRESS_2 = null;
+            }
+            try
+            {
+            string City = uxAddNewContactCityTextField.Value.ToString();
+            data.CITY = City;
+            }
+            catch(Exception)
+            {
+                data.CITY = null;
+            }
+            try
+            {
+            string Zip = uxAddNewContactZip.Value.ToString();
+             data.ZIP_CODE = Zip;
+            }
+            catch 
+                (Exception)
+            {
+                data.ZIP_CODE = null;
+            }
+            try
+            {
+             string Cell = uxAddNewContactCell.Value.ToString();
+                  data.CELL_NUMBER = Cell;
+            }
+            catch(Exception)
+            {
+                data.CELL_NUMBER = null;
+            }
+            try
+            {
+            string Office = uxAddNewContactOffice.Value.ToString();
+            data.WORK_NUMBER = Office;
+            }
+            catch
+            {
+                data.WORK_NUMBER = null;
+            }
 
             GenericData.Insert<CROSSING_CONTACTS>(data);
 
@@ -147,7 +195,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                                 d.WORK_NUMBER,
                             }).SingleOrDefault();
                 uxEditManagerName.SetValue(data.CONTACT_NAME);
-                uxEditRRTextField.SetValue(data.RAILROAD);
+                uxEditRRType.SetValue(data.RAILROAD);
                 uxEditContactAdd1.SetValue(data.ADDRESS_1);
                 uxEditContactAdd2.SetValue(data.ADDRESS_2);
                 uxEditContactCity.SetValue(data.CITY);
@@ -172,15 +220,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             //do type conversions
             string ContactName = uxEditManagerName.Value.ToString();
-            string RailRoad = uxEditRRTextField.Value.ToString();
-            string Address1 = uxEditContactAdd1.Value.ToString();
-            string Address2 = uxEditContactAdd2.Value.ToString();
-            string City = uxEditContactCity.Value.ToString();
-            string Zip = uxEditContactZip.Value.ToString();
+            string RailRoad = uxEditRRType.Value.ToString();
+         
             string State = uxEditContactState.Value.ToString();
-            string Cell = uxEditContactCellNum.Value.ToString();
-            string Office = uxEditContactPhoneNum.Value.ToString();
-
+          
             //Get record to be edited
             using (Entities _context = new Entities())
             {
@@ -192,13 +235,65 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             data.CONTACT_NAME = ContactName;
             data.RAILROAD = RailRoad;
-            data.ADDRESS_1 = Address1;
-            data.ADDRESS_2 = Address2;
-            data.CITY = City;
-            data.ZIP_CODE = Zip;
             data.STATE = State;
-            data.CELL_NUMBER = Cell;
-            data.WORK_NUMBER = Office;
+
+            try
+            {
+                string Address1 = uxEditContactAdd1.Value.ToString();
+                data.ADDRESS_1 = Address1;
+            }
+            catch (Exception)
+            {
+                data.ADDRESS_1 = null;
+            }
+            try
+            {
+                string Address2 = uxEditContactAdd2.Value.ToString();
+                data.ADDRESS_2 = Address2;
+            }
+            catch (Exception)
+            {
+                data.ADDRESS_2 = null;
+            }
+            try
+            {
+                string City = uxEditContactCity.Value.ToString();
+                data.CITY = City;
+            }
+            catch (Exception)
+            {
+                data.CITY = null;
+            }
+            try
+            {
+                string Zip = uxEditContactZip.Value.ToString();
+                data.ZIP_CODE = Zip;
+            }
+            catch (Exception)
+            {
+                data.ZIP_CODE = null;
+            }
+            try
+            {
+                string Cell = uxEditContactCellNum.Value.ToString();
+                data.CELL_NUMBER = Cell;
+            }
+            catch (Exception)
+            {
+                data.CELL_NUMBER = null;
+            }
+            try
+            {
+                string Office = uxEditContactPhoneNum.Value.ToString();
+                data.WORK_NUMBER = Office;
+            }
+            catch (Exception)
+            {
+                data.WORK_NUMBER = null;
+            }
+        
+     
+         
 
 
             GenericData.Update<CROSSING_CONTACTS>(data);
@@ -439,7 +534,22 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             });
         }
+        protected void deLoadRRType(string rrType)
+        {
 
+            List<ServiceUnitResponse> types = ServiceUnitData.ServiceUnitTypes().ToList();
+            if (rrType == "Add")
+            {
+                uxAddContactRRStore.DataSource = types;
+                uxAddContactRRStore.DataBind();
+            }
+            else
+            {
+                uxEditContactRRStore.DataSource = types;
+                uxEditContactRRStore.DataBind();
+            }
+
+        }
         public class CrossingDetails
         {
             public long CROSSING_ID { get; set; }

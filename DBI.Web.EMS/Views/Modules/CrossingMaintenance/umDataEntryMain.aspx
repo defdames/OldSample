@@ -28,7 +28,7 @@
                                     <LoadMask ShowMask="true" />
                                 </Loader>
                                 </ext:Panel>
-                                 <ext:Panel runat="server"
+                               <%--  <ext:Panel runat="server"
                                 Title="Inspection Entry"
                                 ID="uxInspectionEntryTab"
                                 Disabled="false">
@@ -36,7 +36,7 @@
                                     ID="Loader2" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umInspectionEntry.aspx">
                                     <LoadMask ShowMask="true" />
                                 </Loader>
-                            </ext:Panel>
+                            </ext:Panel>--%>
                              <ext:Panel runat="server"
                                 Title="Supplemental"
                                 ID="uxSupplemental"

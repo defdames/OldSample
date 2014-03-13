@@ -11,14 +11,14 @@
         <ext:ResourceManager runat="server" />
     <div></div>
          <ext:GridPanel ID="uxApplicationCrossingGrid" Title="CROSSING LIST FOR APPLICATION ENTRY" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true">
-                <SelectionModel>
+                <%--<SelectionModel>
                     <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
-                </SelectionModel>
+                </SelectionModel>--%>
                 <Store>
                     <ext:Store runat="server"
                         ID="uxAppEntryCrossingStore"
                         OnReadData="deApplicationGridData"
-                        PageSize="10"
+                        PageSize="20"
                         AutoDataBind="true" WarningOnDirty="false">
                         <Model>
                             <ext:Model ID="Model2" runat="server">
@@ -52,15 +52,18 @@
                     </Columns>
                 </ColumnModel>
                 <Plugins>
-                    <ext:FilterHeader ID="FilterHeader1" runat="server" />
+                    <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true"/>
                 </Plugins>
-              <DirectEvents>
+               <SelectionModel>
+                <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi" />
+            </SelectionModel>
+             <%-- <DirectEvents>
                     <Select OnEvent="GetApplicationGridData">
                         <ExtraParams>
                             <ext:Parameter Name="CrossingId" Value="#{uxApplicationCrossingGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
                         </ExtraParams>
                     </Select>
-                </DirectEvents>
+                </DirectEvents>--%>
              
               
 
@@ -77,7 +80,7 @@
 								<Click Handler="#{uxAddNewApplicationEntryWindow}.show()" />
 							</Listeners>
                         </ext:Button>
-                        <ext:Button ID="uxEditAppButton" runat="server" Text="Edit Entry" Icon="ApplicationEdit" >
+                      <%--  <ext:Button ID="uxEditAppButton" runat="server" Text="Edit Entry" Icon="ApplicationEdit" >
                             <Listeners>
 								<Click Handler="#{uxEditApplicationEntryWindow}.show()" />
 							</Listeners>
@@ -99,10 +102,10 @@
 					                </ExtraParams>
                                      </Click>
 							</DirectEvents>
-                        </ext:Button>                     
+                        </ext:Button>                     --%>
                 </Items>                       
         </ext:Toolbar>
-              <ext:GridPanel ID="uxApplicationEntryGrid" Title="APPLICATION ENTRIES" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true">
+              <%--<ext:GridPanel ID="uxApplicationEntryGrid" Title="APPLICATION ENTRIES" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true" Hidden="true">
                 <SelectionModel>
                     <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" AllowDeselect="true" Mode="Single" />
                 </SelectionModel>
@@ -146,7 +149,7 @@
                     </Columns>
                 </ColumnModel>               
 
-            </ext:GridPanel>
+            </ext:GridPanel>--%>
               
                         
   <%---------------------------------------Hidden Windows-----------------------------------%>      
@@ -164,31 +167,14 @@
                        
                         <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                                   <Items>
-                                  <ext:TextField ID="uxAddEntryNumber" runat="server"  FieldLabel=" Application #" LabelAlign="Right" />
-                                  
-                                  <ext:Checkbox ID="uxAddEntrySprayBox" runat="server" FieldLabel="Spray" LabelAlign="Right" Width="250" />
-                                  </Items>
-                            </ext:FieldContainer>
-
-                                <ext:FieldContainer ID="FieldContainer0" runat="server" Layout="HBoxLayout">
-                                    <Items>
-                                    <ext:DateField ID="uxAddEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" />
-                                        
-                                    <ext:Checkbox ID="uxAddEntryCutBox" runat="server" FieldLabel="Cut" LabelAlign="Right" Width="250" />
-                                    </Items>
-                                </ext:FieldContainer>
-
-                            
-                                <ext:FieldContainer ID="FieldContainer2" runat="server" Layout="HBoxLayout">
-                                    <Items>
-                                     <ext:ComboBox ID="uxAddAppReqeusted"
+                                  <ext:ComboBox ID="uxAddAppReqeusted"
                                                 runat="server"
                                                 FieldLabel="App Requested"
                                                 LabelAlign="Right"
                                                 DisplayField="type"
                                                 ValueField="type"
                                                 QueryMode="Local"
-                                                TypeAhead="true" >
+                                                TypeAhead="true"  Width="300">
                                                     <Store>
                                                     <ext:Store runat="server"
                                                         ID="uxAddAppRequestedStore" AutoDataBind="true" >
@@ -205,18 +191,30 @@
                                                     </ext:Store>
                                                 </Store>                                                      
                                             </ext:ComboBox> 
-                                     
-                                     <ext:Checkbox ID="uxAddEntryInspectBox" runat="server" FieldLabel="Inspect" LabelAlign="Right" Width="250" />
-                                    </Items>                                  
+                                  
+                                  <ext:Checkbox ID="uxAddEntrySprayBox" runat="server" FieldLabel="Spray" LabelAlign="Right" Width="250" />
+                                  </Items>
+                            </ext:FieldContainer>
+
+                                <ext:FieldContainer ID="FieldContainer0" runat="server" Layout="HBoxLayout">
+                                    <Items>
+                                    <ext:DateField ID="uxAddEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" Width="300" />
+                                        
+                                    <ext:Checkbox ID="uxAddEntryCutBox" runat="server" FieldLabel="Cut" LabelAlign="Right" Width="250" />
+                                    </Items>
                                 </ext:FieldContainer>
-                         <ext:ComboBox ID="uxAddApplicationTruckComboBox"
+
+                            
+                                <ext:FieldContainer ID="FieldContainer2" runat="server" Layout="HBoxLayout">
+                                    <Items>
+                                      <ext:ComboBox ID="uxAddApplicationTruckComboBox"
                                                 runat="server"
                                                 FieldLabel="Truck #"
                                                 LabelAlign="Right"
                                                 DisplayField="NAME"
                                                 ValueField="NAME"
                                                 QueryMode="Local"
-                                                TypeAhead="true"  Width="355" >
+                                                TypeAhead="true"  Width="300" >
                                                     <Store>
                                                     <ext:Store runat="server"
                                                         ID="uxAddApplicationTruckStore" AutoDataBind="true" >
@@ -231,6 +229,11 @@
                                                     </ext:Store>
                                                 </Store>                                                      
                                             </ext:ComboBox> 
+                                     
+                                     <ext:Checkbox ID="uxAddEntryInspectBox" runat="server" FieldLabel="Inspect" LabelAlign="Right" Width="250" />
+                                    </Items>                                  
+                                </ext:FieldContainer>
+                       
                                     
                                  <ext:TextArea ID="uxAddEntryRemarks" FieldLabel="Remarks" runat="server" LabelAlign="Right" />
                               </Items>
@@ -242,6 +245,7 @@
                                     <Click OnEvent="deAddApplication" >
                                       <ExtraParams>
                                            <ext:Parameter Name="CrossingId" Value="#{uxApplicationCrossingGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                                           <ext:Parameter Name="selectedCrossings" Value="Ext.encode(#{uxApplicationCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
                                       </ExtraParams>
                                         </Click>
                                 </DirectEvents>
@@ -256,7 +260,7 @@
                 </ext:Window>
     <%-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------%>
 
-         <ext:Window runat="server"
+        <%-- <ext:Window runat="server"
 			ID="uxEditApplicationEntryWindow"
 			Layout="FormLayout"
 			Hidden="true"
@@ -357,7 +361,7 @@
                                 </Listeners>
                             </ext:Button>
                         </Buttons>              
-                </ext:Window>
+                </ext:Window>--%>
     </form>
 </body>
 </html>
