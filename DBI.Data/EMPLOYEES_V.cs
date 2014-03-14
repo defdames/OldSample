@@ -18,6 +18,7 @@ namespace DBI.Data
         public string EMPLOYEE_NAME { get; set; }
         public string CURRENT_EMPLOYEE_FLAG { get; set; }
         public string EMPLOYEE_NUMBER { get; set; }
+        public long JOB_ID { get; set; }
         public string JOB_NAME { get; set; }
         public Nullable<long> ORGANIZATION_ID { get; set; }
         public string ORGANIZATION_NAME { get; set; }

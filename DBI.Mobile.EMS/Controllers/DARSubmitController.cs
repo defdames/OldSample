@@ -217,6 +217,7 @@ namespace DBI.Mobile.EMS.Controllers
                     f.HOTEL_PHONE = j.hotel_phone;
                     f.DOT_REP = Convert.FromBase64String(j.dot_rep);
                     f.DOT_REP_NAME = j.dot_rep_name;
+                    f.DOT_REP_EMAIL = j.dot_rep_email;
                     f.COMMENTS = j.comments;
                     f.FOREMAN_SIGNATURE = Convert.FromBase64String(j.foreman_signature);
                     f.CONTRACT_REP = Convert.FromBase64String(j.contract_rep);

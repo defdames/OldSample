@@ -20,6 +20,5 @@ namespace DBI.Data
         public string ALLOW_DENY { get; set; }
     
         public virtual SYS_PERMISSIONS SYS_PERMISSIONS { get; set; }
-        public virtual SYS_USERS SYS_USERS { get; set; }
     }
 }

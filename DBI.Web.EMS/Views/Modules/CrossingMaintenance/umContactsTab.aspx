@@ -5,7 +5,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-    <script>
+    <script type="text/javascript">
+
         var getDragDropText = function () {
             var buf = [];
 
@@ -20,16 +21,18 @@
             return buf.join("");
         };
     </script>
+
+
 </head>
 <body>
-      
+
     <form id="form1" runat="server">
         <ext:ResourceManager runat="server" ID="ResourceManager2" />
         <div>
             <%--<ContactsTab>--%>
             <ext:GridPanel ID="uxContactMainGrid" runat="server" Layout="HBoxLayout" Collapsible="true" Title="CONTACTS">
                 <SelectionModel>
-                    <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
+                    <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="false" Mode="Single" />
                 </SelectionModel>
                 <Store>
                     <ext:Store runat="server"
@@ -44,7 +47,7 @@
                                     <ext:ModelField Name="CONTACT_NAME" />
                                     <ext:ModelField Name="WORK_NUMBER" />
                                     <ext:ModelField Name="CELL_NUMBER" />
-                                    <ext:ModelField Name="RAIL_ROAD" />
+                                    <ext:ModelField Name="RAILROAD" />
                                 </Fields>
                             </ext:Model>
                         </Model>
@@ -58,7 +61,7 @@
                         <ext:Column ID="uxNameCON" runat="server" DataIndex="CONTACT_NAME" Text="Manager Name" Flex="1" />
                         <ext:Column runat="server" ID="uxWorkNumCON" Text="Work #" DataIndex="WORK_NUMBER" Flex="1" />
                         <ext:Column runat="server" ID="uxCellNumCON" Text="Cell #" DataIndex="CELL_NUMBER" Flex="1" />
-                        <ext:Column ID="uxRRCON" runat="server" DataIndex="RAIL_ROAD" Text="RR" Flex="1" />
+                        <ext:Column ID="uxRRCON" runat="server" DataIndex="RAILROAD" Text="RR" Flex="1" />
                     </Columns>
                 </ColumnModel>
                 <DirectEvents>
@@ -79,6 +82,10 @@
                     <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True">
                     </ext:PagingToolbar>
                 </BottomBar>
+                 <Listeners>
+				<Select Handler="#{uxEditContactButton}.enable(); #{uxDeleteContact}.enable();" /> 
+                            
+			</Listeners>
             </ext:GridPanel>
             <ext:Toolbar ID="Toolbar2" runat="server">
                 <Items>
@@ -87,7 +94,7 @@
                             <Click Handler="#{uxAddContactWindow}.show()" />
                         </Listeners>
                     </ext:Button>
-                    <ext:Button ID="uxEditContactButton" runat="server" Text="Edit Contact" Icon="ApplicationEdit">
+                    <ext:Button ID="uxEditContactButton" runat="server" Text="Edit Contact" Icon="ApplicationEdit" Disabled="true">
                         <Listeners>
                             <Click Handler="#{uxEditContactWindow}.show()" />
                         </Listeners>
@@ -109,7 +116,7 @@
                             <Click Handler="#{uxUpdateContactWindow}.show()" />
                         </Listeners>
                     </ext:Button>
-                    <ext:Button ID="uxDeleteContact" runat="server" Text="Delete Contact" Icon="ApplicationDelete">
+                    <ext:Button ID="uxDeleteContact" runat="server" Text="Delete Contact" Icon="ApplicationDelete" Disabled="true">
                         <DirectEvents>
                             <Click OnEvent="deRemoveContact">
                                 <Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete this contact?" />
@@ -121,16 +128,16 @@
                     </ext:Button>
                 </Items>
             </ext:Toolbar>
-
+            
             <ext:FormPanel runat="server" ID="uxContactFormPanel" Layout="FormLayout">
                 <Items>
-                    <ext:TextField ID="uxContactManagerName" runat="server" FieldLabel="Manager Name" AnchorHorizontal="100%" LabelAlign="Right" />
-                    <ext:TextField ID="uxContactRR" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right" />
-                    <ext:TextField ID="uxContactAddress1" runat="server" FieldLabel="Address 1" AnchorHorizontal="100%" LabelAlign="Right" />
+                    <ext:TextField ID="uxContactManagerName" runat="server" FieldLabel="Manager Name" AnchorHorizontal="100%" LabelAlign="Right"  />
+                    <ext:TextField ID="uxContactRR" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right"  />
+                    <ext:TextField ID="uxContactAddress1" runat="server" FieldLabel="Address 1" AnchorHorizontal="100%" LabelAlign="Right"  />
                     <ext:TextField ID="uxContactAddress2" runat="server" FieldLabel="Address 2" AnchorHorizontal="100%" LabelAlign="Right" />
                     <ext:TextField ID="uxContactCity" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />
                     <ext:TextField ID="uxContactState" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />
-                    
+
                     <ext:TextField ID="uxContactZip" runat="server" FieldLabel="Zip" AnchorHorizontal="100%" LabelAlign="Right" />
                     <ext:TextField ID="uxContactCell" runat="server" FieldLabel="Cell #" AnchorHorizontal="100%" LabelAlign="Right" />
                     <ext:TextField ID="uxContactOffice" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right" />
@@ -146,38 +153,57 @@
                 <Items>
                     <ext:FormPanel runat="server" ID="uxAddContactForm" Layout="FormLayout">
                         <Items>
-                            <ext:TextField ID="uxAddNewManagerName" runat="server" FieldLabel="Manager Name" AnchorHorizontal="100%" LabelAlign="Right" />
-                            <ext:TextField ID="uxAddNewRRTextField" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right" />
-                            <ext:TextField ID="uxAddNewAddress1" runat="server" FieldLabel="Address 1" AnchorHorizontal="100%" LabelAlign="Right" />
-                            <ext:TextField ID="uxAddNewAddress2" runat="server" FieldLabel="Address 2" AnchorHorizontal="100%" LabelAlign="Right" />
-                            <ext:TextField ID="uxAddNewContactCityTextField" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />
-                           <%-- <ext:TextField ID="uxAddNewContactStateTextField" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />--%>
-                              <ext:ComboBox runat="server"
-                                                ID="uxAddContactStateComboBox"
-                                                FieldLabel="State"
-                                                LabelAlign="Right"
-                                                DisplayField="name"
-                                                ValueField="name"
+                            <ext:TextField ID="uxAddNewManagerName" runat="server" FieldLabel="Manager Name" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" />
+                     
+                              <ext:ComboBox ID="uxAddRRType" runat="server" FieldLabel="Rail Road" AnchorHorizontal="100%" LabelAlign="Right"
+                                                DisplayField="project"
+                                                ValueField="project"
                                                 QueryMode="Local"
-                                                TypeAhead="true"
-                                                AllowBlank="false">
+                                                TypeAhead="true" TabIndex="2" AllowBlank="false">
                                                 <Store>
-                                                    <ext:Store ID="uxAddStateList" runat="server" AutoDataBind="true">
+                                                    <ext:Store runat="server"
+                                                        ID="uxAddContactRRStore">
                                                         <Model>
-                                                            <ext:Model ID="Model10" runat="server">
+                                                            <ext:Model ID="Model9" runat="server">
                                                                 <Fields>
-                                                                    <ext:ModelField Name="abbr" />
-                                                                    <ext:ModelField Name="name" />
+                                                                    <ext:ModelField Name="project" />
+                                                                    <ext:ModelField Name="project" />
                                                                 </Fields>
                                                             </ext:Model>
                                                         </Model>
-                                                        <Reader>
-                                                            <ext:ArrayReader />
-                                                        </Reader>
                                                     </ext:Store>
-                                                </Store>
+                                                </Store>                                               
                                             </ext:ComboBox>
-                            <ext:TextField ID="uxAddNewContactZip" runat="server" FieldLabel="Zip" AnchorHorizontal="100%" LabelAlign="Right" />
+                            <ext:TextField ID="uxAddNewAddress1" runat="server" FieldLabel="Address 1" AnchorHorizontal="100%" LabelAlign="Right" />
+                            <ext:TextField ID="uxAddNewAddress2" runat="server" FieldLabel="Address 2" AnchorHorizontal="100%" LabelAlign="Right" />
+                            <ext:TextField ID="uxAddNewContactCityTextField" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />
+                           
+                            <ext:ComboBox runat="server"
+                                ID="uxAddContactStateComboBox"
+                                FieldLabel="State"
+                                LabelAlign="Right"
+                                DisplayField="name"
+                                ValueField="name"
+                                QueryMode="Local"
+                                TypeAhead="true"
+                                AllowBlank="false">
+                                <Store>
+                                    <ext:Store ID="uxAddStateList" runat="server" AutoDataBind="true">
+                                        <Model>
+                                            <ext:Model ID="Model10" runat="server">
+                                                <Fields>
+                                                    <ext:ModelField Name="abbr" />
+                                                    <ext:ModelField Name="name" />
+                                                </Fields>
+                                            </ext:Model>
+                                        </Model>
+                                        <Reader>
+                                            <ext:ArrayReader />
+                                        </Reader>
+                                    </ext:Store>
+                                </Store>
+                            </ext:ComboBox>
+                            <ext:TextField ID="uxAddNewContactZip" runat="server" FieldLabel="Zip" AnchorHorizontal="100%" LabelAlign="Right"  />
                             <ext:TextField ID="uxAddNewContactCell" runat="server" FieldLabel="Cell #" AnchorHorizontal="100%" LabelAlign="Right" />
                             <ext:TextField ID="uxAddNewContactOffice" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right" />
                         </Items>
@@ -194,6 +220,9 @@
                                 </Listeners>
                             </ext:Button>
                         </Buttons>
+                         <Listeners>
+						<ValidityChange Handler="#{deAddContacts}.setDisabled(!valid);" />
+					</Listeners>
                     </ext:FormPanel>
                 </Items>
             </ext:Window>
@@ -207,37 +236,58 @@
                 <Items>
                     <ext:FormPanel ID="uxEditContactForm" runat="server" Layout="FormLayout">
                         <Items>
-                            <ext:TextField ID="uxEditManagerName" runat="server" FieldLabel="Manager Name" AnchorHorizontal="100%" LabelAlign="Right" />
-                            <ext:TextField ID="uxEditRRTextField" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right" />
-                            <ext:TextField ID="uxEditContactAdd1" runat="server" FieldLabel="Address 1" AnchorHorizontal="100%" LabelAlign="Right" />
-                            <ext:TextField ID="uxEditContactAdd2" runat="server" FieldLabel="Address 2" AnchorHorizontal="100%" LabelAlign="Right" />
-                            <ext:TextField ID="uxEditContactCity" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />
-                           <%-- <ext:TextField ID="uxEditContactStateTextField" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />--%>
-                             <ext:ComboBox runat="server"
-                                                ID="uxEditContactState"
-                                                FieldLabel="State"
-                                                LabelAlign="Right"
-                                                DisplayField="name"
-                                                ValueField="name"
+                            <ext:TextField ID="uxEditManagerName" runat="server" FieldLabel="Manager Name" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" />
+                    
+                              <ext:ComboBox ID="uxEditRRType" runat="server" FieldLabel="Rail Road" AnchorHorizontal="100%" LabelAlign="Right"
+                                                DisplayField="project"
+                                                ValueField="project"
                                                 QueryMode="Local"
-                                                TypeAhead="true"
-                                                AllowBlank="false">
+                                                TypeAhead="true" TabIndex="2" AllowBlank="false">
                                                 <Store>
-                                                    <ext:Store ID="uxEditStateList" runat="server" AutoDataBind="true">
+                                                    <ext:Store runat="server"
+                                                        ID="uxEditContactRRStore">
                                                         <Model>
-                                                            <ext:Model ID="Model8" runat="server">
+                                                            <ext:Model ID="Model11" runat="server">
                                                                 <Fields>
-                                                                    <ext:ModelField Name="abbr" />
-                                                                    <ext:ModelField Name="name" />
+                                                                    <ext:ModelField Name="project" />
+                                                                    <ext:ModelField Name="project" />
                                                                 </Fields>
                                                             </ext:Model>
                                                         </Model>
-                                                        <Reader>
-                                                            <ext:ArrayReader />
-                                                        </Reader>
                                                     </ext:Store>
                                                 </Store>
+                                              
+                                                
                                             </ext:ComboBox>
+                            <ext:TextField ID="uxEditContactAdd1" runat="server" FieldLabel="Address 1" AnchorHorizontal="100%" LabelAlign="Right" />
+                            <ext:TextField ID="uxEditContactAdd2" runat="server" FieldLabel="Address 2" AnchorHorizontal="100%" LabelAlign="Right" />
+                            <ext:TextField ID="uxEditContactCity" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />
+                            <%-- <ext:TextField ID="uxEditContactStateTextField" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />--%>
+                            <ext:ComboBox runat="server"
+                                ID="uxEditContactState"
+                                FieldLabel="State"
+                                LabelAlign="Right"
+                                DisplayField="name"
+                                ValueField="name"
+                                QueryMode="Local"
+                                TypeAhead="true"
+                                AllowBlank="false">
+                                <Store>
+                                    <ext:Store ID="uxEditStateList" runat="server" AutoDataBind="true">
+                                        <Model>
+                                            <ext:Model ID="Model8" runat="server">
+                                                <Fields>
+                                                    <ext:ModelField Name="abbr" />
+                                                    <ext:ModelField Name="name" />
+                                                </Fields>
+                                            </ext:Model>
+                                        </Model>
+                                        <Reader>
+                                            <ext:ArrayReader />
+                                        </Reader>
+                                    </ext:Store>
+                                </Store>
+                            </ext:ComboBox>
                             <ext:TextField ID="uxEditContactZip" runat="server" FieldLabel="Zip" AnchorHorizontal="100%" LabelAlign="Right" />
                             <ext:TextField ID="uxEditContactCellNum" runat="server" FieldLabel="Cell #" AnchorHorizontal="100%" LabelAlign="Right" />
                             <ext:TextField ID="uxEditContactPhoneNum" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right" />
@@ -259,6 +309,9 @@
                                 </Listeners>
                             </ext:Button>
                         </Buttons>
+                         <Listeners>
+						<ValidityChange Handler="#{uxEditUpdateButton}.setDisabled(!valid);" />
+					</Listeners>
                     </ext:FormPanel>
                 </Items>
             </ext:Window>
@@ -371,7 +424,7 @@
                                 <DirectEvents>
                                     <Click OnEvent="deAssignCrossingtoContact">
                                         <Confirmation ConfirmRequest="true" Title="Associate?" Message="Are you sure you want to associate the selected crossings with the selected contact?" />
-                                       <ExtraParams>
+                                        <ExtraParams>
                                             <ext:Parameter Name="contactId" Value="#{uxAssignContactGrid}.getSelectionModel().getSelection()[0].data.CONTACT_ID" Mode="Raw" />
                                             <ext:Parameter Name="selectedCrossings" Value="Ext.encode(#{uxAssignCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
                                         </ExtraParams>
@@ -381,7 +434,7 @@
                             <ext:Button ID="CancelButtonCON" runat="server" Text="Cancel" Icon="Delete">
                                 <Listeners>
                                     <Click Handler="#{uxEditContactForm}.reset();
-									#{uxAssignCrossingWindow}.hide(); #{uxAssignContactManagerStore}.reload(); #{uxAssignContactCrossingStore}.reload()"  />
+									#{uxAssignCrossingWindow}.hide(); #{uxAssignContactManagerStore}.reload(); #{uxAssignContactCrossingStore}.reload()" />
                                 </Listeners>
                             </ext:Button>
                         </Items>
@@ -503,11 +556,10 @@
                         </Items>
                         <Buttons>
                             <ext:Button runat="server" ID="uxSelectCrossingToUpdate" Text="Select Crossings to Update" Icon="Add">
-                           
+
                                 <DirectEvents>
-                                    <Click OnEvent="deShowGrid" > 
-                                 
-                                        </Click>
+                                    <Click OnEvent="deShowGrid">
+                                    </Click>
                                 </DirectEvents>
                             </ext:Button>
                             <ext:Button runat="server" ID="uxCancelCrossingToUpdate" Text="Cancel Selection" Icon="Delete">
@@ -515,28 +567,34 @@
                                     <Click Handler="#{uxUpdateContactForm}.reset();
 									#{uxUpdateContactWindow}.hide()" />
                                 </Listeners>
-                               
+
                             </ext:Button>
                         </Buttons>
-                         <Listeners>
-						   <ValidityChange Handler="#{uxSelectCrossingToUpdate}.setDisabled(!valid);" />
-					     </Listeners>
+                        <Listeners>
+                            <ValidityChange Handler="#{uxSelectCrossingToUpdate}.setDisabled(!valid);" />
+                        </Listeners>
                     </ext:FormPanel>
                 </Items>
             </ext:Window>
             <%------------------------------------------------------------------------------------------------------------------------------------------%>
+
             <ext:Window runat="server"
                 ID="uxTransferCrossingWindow"
                 Layout="HBoxLayout"
+                Height="593"
+                Width="725"
                 Hidden="true"
-                Title="Drag and Drop Crossing That Are To Be Updated"
-                Width="660">
+                BodyPadding="5"
+                BodyBorder="0"
+                Title="Drag and Drop Crossing That Are To Be Updated">
                 <Items>
-                    <ext:Panel ID="uxTransferCrossingPanel" runat="server" Width="650" Height="355">
+                    <ext:Panel ID="uxTransferCrossingPanel" runat="server" Width="700" Height="553">
                         <LayoutConfig>
                             <ext:HBoxLayoutConfig Align="Stretch" Padding="5" />
                         </LayoutConfig>
+
                         <Items>
+
                             <ext:GridPanel
                                 ID="uxTransferCrossingsOldManagerGrid"
                                 runat="server"
@@ -544,6 +602,7 @@
                                 Flex="1"
                                 Title="Current Managers Crossings"
                                 Margins="0 2 0 0">
+
                                 <Store>
                                     <ext:Store ID="uxCurrentManagerCrossingStore" runat="server">
                                         <Model>
@@ -563,36 +622,67 @@
                                         <ext:Column ID="Column1" runat="server" Text="Crossing Number" Width="280" DataIndex="CROSSING_NUMBER" Flex="1" />
                                     </Columns>
                                 </ColumnModel>
-                                
+
                                 <View>
-                                  <ext:GridView>
-                                          
+                                    <ext:GridView>
+
                                         <Plugins>
                                             <ext:GridDragDrop ID="GridDragDrop1" runat="server" DragGroup="firstGridDDGroup" DropGroup="secondGridDDGroup" />
                                         </Plugins>
 
-                                         <Listeners>
+                                        <Listeners>
                                             <AfterRender Handler="this.plugins[0].dragZone.getDragText = getDragDropText;" Delay="1" />
                                             <Drop Handler="var dropOn = overModel ? ' ' + dropPosition + ' ' + overModel.get('CROSSING_NUMBER') : ' Back To Current Contact'; 
                                              Ext.net.Notification.show({title:'Drag from right to left', html:'Transferred ' + data.records[0].get('CROSSING_NUMBER') + dropOn});" />
                                         </Listeners>
-                                       
+
                                     </ext:GridView>
                                 </View>
                             </ext:GridPanel>
+                            <ext:Panel
+                                ID="Panel2"
+                                runat="server"
+                                Width="35"
+                                BodyStyle="background-color: Lightgrey;"
+                                Border="false"
+                                Layout="Anchor">
+
+                                <Items>
+                                    <ext:Panel ID="Panel1" runat="server" Border="false" BodyStyle="background-color: Lightgrey;" AnchorVertical="40%" />
+                                    <ext:Panel ID="Panel3" runat="server" Border="false" BodyStyle="background-color: Lightgrey;" BodyPadding="5">
+
+                                        <Items>
+                                            <ext:Button ID="Button1" runat="server" Icon="ResultsetNext">
+
+                                                <Listeners>
+                                                    <Click Handler="#{uxTransferCrossingsNewManagerStore}.loadData(#{uxCurrentManagerCrossingStore}.proxy.data); #{uxCurrentManagerCrossingStore}.removeAll(); #{uxCurrentManagerCrossingStore}.add();" />
+                                                </Listeners>
+                                            </ext:Button>
+                                            <ext:Label ID="Label1" runat="server" />
+                                            <ext:Button ID="ResetTransfer" runat="server" Icon="ResultsetPrevious">
+                                                <Listeners>
+                                                    <Click Handler="#{uxCurrentManagerCrossingStore}.loadData(#{uxCurrentManagerCrossingStore}.proxy.data); #{uxTransferCrossingsNewManagerStore}.removeAll();" />
+                                                </Listeners>
+                                            </ext:Button>
+
+                                        </Items>
+                                    </ext:Panel>
+                                </Items>
+                            </ext:Panel>
                             <ext:GridPanel
                                 ID="deTransferCrossingsNewManagerGrid"
                                 runat="server"
                                 MultiSelect="true"
                                 Title="Crossings Tranferred to New Manager"
                                 Flex="1"
-                                Margins="0 0 0 3">
+                                Margins="0 0 0 3" AllowDeselect="false">
                                 <Store>
                                     <ext:Store ID="uxTransferCrossingsNewManagerStore" runat="server">
                                         <Model>
                                             <ext:Model ID="Model3" runat="server">
                                                 <Fields>
                                                     <ext:ModelField Name="CONTACT_ID" />
+                                                    <ext:ModelField Name="CROSSING_ID" />
                                                     <ext:ModelField Name="CROSSING_NUMBER" />
                                                 </Fields>
                                             </ext:Model>
@@ -604,19 +694,19 @@
                                 </Store>
                                 <ColumnModel>
                                     <Columns>
-                                        <ext:Column ID="Column4" runat="server" Text="Crossing Number" Width="280" DataIndex="CROSSING_NUMBER" Flex="1"  />
+                                        <ext:Column ID="Column4" runat="server" Text="Crossing Number" Width="280" DataIndex="CROSSING_NUMBER" Flex="1" />
                                     </Columns>
                                 </ColumnModel>
                                 <View>
                                     <ext:GridView ID="GridView2" runat="server">
                                         <Plugins>
-                                            <ext:GridDragDrop ID="GridDragDrop2" runat="server" DragGroup="secondGridDDGroup" DropGroup="firstGridDDGroup"  />
+                                            <ext:GridDragDrop ID="GridDragDrop2" runat="server" DragGroup="secondGridDDGroup" DropGroup="firstGridDDGroup" />
                                         </Plugins>
-                                                <Listeners>
-                                                <Select Handler="#{TransferCrossingtoContact}.enable()" />
-                                             </Listeners>
-                                         <Listeners>
-                                            <AfterRender Handler="this.plugins[0].dragZone.getDragText = getDragDropText;" Delay="1"  />
+                                        <Listeners>
+                                            <Select Handler="#{TransferCrossingtoContact}.enable()" />
+                                        </Listeners>
+                                        <Listeners>
+                                            <AfterRender Handler="this.plugins[0].dragZone.getDragText = getDragDropText;" Delay="1" />
                                             <Drop Handler="var dropOn = overModel ? ' ' + dropPosition + ' ' + overModel.get('CROSSING_NUMBER') : ' To New Contact'; 
                                                Ext.net.Notification.show({title:'Drag from left to right', html:'Transferred ' + data.records[0].get('CROSSING_NUMBER') + dropOn});" />
                                         </Listeners>
@@ -628,34 +718,29 @@
                             <ext:Toolbar ID="Toolbar1" runat="server">
                                 <Items>
                                     <ext:ToolbarFill ID="ToolbarFill1" runat="server" />
-                                    <ext:Button ID="TransferCrossingtoContact" runat="server" Text="Update" Icon="TransmitGo"  >
-                                     <DirectEvents>
-                                    <Click OnEvent="AssociateTransfer">
-                                        <Confirmation ConfirmRequest="true" Title="Associate?" Message="Are you sure you want to transfer the selected crossings to the new contact?" />
-                                       <ExtraParams>
-                                            <ext:Parameter Name="ContactId" Value="#{deTransferCrossingsNewManagerGrid}.getSelectionModel().getSelection()[0].data.CONTACT_ID" Mode="Raw" />
-                                            <ext:Parameter Name="selectedCrossings" Value="Ext.encode(#{deTransferCrossingsNewManagerGrid}.getRowsValues())" Mode="Raw" />
-                                        </ExtraParams>
-                                    </Click>
-                                </DirectEvents>
-                                        </ext:Button>
+                                    <ext:Button ID="TransferCrossingtoContact" runat="server" Text="Update" Icon="TransmitGo">
+                                        <DirectEvents>
+                                            <Click OnEvent="AssociateTransfer">
+                                                <Confirmation ConfirmRequest="true" Title="Associate?" Message="Are you sure you want to transfer the selected crossings to the new contact?" />
+                                                <ExtraParams>
+                                                    <ext:Parameter Name="ContactId" Value="#{deTransferCrossingsNewManagerGrid}.getSelectionModel().getSelection()[0].data.CONTACT_ID" Mode="Raw" />
+                                                    <ext:Parameter Name="selectedCrossings" Value="Ext.encode(#{deTransferCrossingsNewManagerGrid}.getRowsValues())" Mode="Raw" />
+                                                </ExtraParams>
+                                            </Click>
+                                        </DirectEvents>
+                                    </ext:Button>
                                     <ext:Button ID="CancelTransfer" runat="server" Text="Cancel" Icon="Delete">
                                         <Listeners>
                                             <Click Handler="#{uxTransferCrossingsNewManagerStore}.reload();
 									                    #{uxTransferCrossingWindow}.hide()" />
                                         </Listeners>
                                     </ext:Button>
-                                    <ext:Button ID="ResetTransfer" runat="server" Text="Reset" Icon="RewindBlue">
-                                        <Listeners>
-                                            <Click Handler="#{uxCurrentManagerCrossingStore}.loadData(#{uxCurrentManagerCrossingStore}.proxy.data); #{uxTransferCrossingsNewManagerStore}.removeAll();" />
-                                        </Listeners>
-                                    </ext:Button>
-                                    
                                 </Items>
                             </ext:Toolbar>
                         </BottomBar>
                     </ext:Panel>
                 </Items>
+
             </ext:Window>
         </div>
     </form>

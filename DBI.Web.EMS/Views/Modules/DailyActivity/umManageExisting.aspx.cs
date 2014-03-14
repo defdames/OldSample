@@ -408,7 +408,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 var returnData = (from d in _context.DAILY_ACTIVITY_HEADER
                                   join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                                   where d.HEADER_ID == HeaderId
-                                  select new { d.APPLICATION_TYPE, d.CONTRACTOR, d.DA_DATE, d.DENSITY, d.LICENSE, d.STATE, d.STATUS, d.SUBDIVISION, p.SEGMENT1 }).ToList<object>();
+                                  select new { d.APPLICATION_TYPE, d.CONTRACTOR, d.DA_DATE, d.DENSITY, d.LICENSE, d.STATE, d.STATUS, d.SUBDIVISION, p.SEGMENT1, p.LONG_NAME }).ToList<object>();
                 return returnData;
             }
         }
@@ -429,7 +429,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                   join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
                                   from projects in proj.DefaultIfEmpty()
                                   where d.HEADER_ID == HeaderId
-                                  select new { e.EMPLOYEE_NAME, projects.NAME, d.TIME_IN, d.TIME_OUT, d.TRAVEL_TIME, d.DRIVE_TIME, d.PER_DIEM, d.COMMENTS }).ToList<object>();
+                                  select new { e.EMPLOYEE_NAME, projects.NAME, d.TIME_IN, d.TIME_OUT, d.FOREMAN_LICENSE, d.TRAVEL_TIME, d.DRIVE_TIME, d.PER_DIEM, d.COMMENTS }).ToList<object>();
                 return returnData;
             }
         }
@@ -514,7 +514,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                            where d.HEADER_ID == HeaderId
                                            from j in joined
                                            where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
-                                           select new { c.CHEMICAL_MIX_NUMBER, d.SUB_INVENTORY_SECONDARY_NAME, j.DESCRIPTION, d.RATE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).ToList<object>();
+                                           select new { c.CHEMICAL_MIX_NUMBER, d.SUB_INVENTORY_SECONDARY_NAME, j.DESCRIPTION, d.TOTAL, d.RATE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).ToList<object>();
 
                 return returnData;
             }
@@ -561,14 +561,21 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             //Set header Id
             long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
-
+            string ProjectName;
+            using (Entities _context = new Entities())
+            {
+                ProjectName = (from d in _context.DAILY_ACTIVITY_HEADER
+                                   join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                                   where d.HEADER_ID == HeaderId
+                                   select p.LONG_NAME).Single();
+            }
             MemoryStream PdfStream = generatePDF(HeaderId);
 
             Response.Clear();
             Response.ClearContent();
             Response.ClearHeaders();
             Response.ContentType = "application/pdf";
-            Response.AppendHeader("Content-Disposition", "attachment;filename=export.pdf");
+            Response.AppendHeader("Content-Disposition", string.Format("attachment;filename={0}{1}-export.pdf", HeaderId.ToString(), ProjectName));
             Response.BinaryWrite(PdfStream.ToArray());
             Response.End();
         }
@@ -585,7 +592,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 PdfStream.Position = 0;
 
-                Attachment MailAttachment = new Attachment(PdfStream, "dailyActivityExport.pdf");
+                Attachment MailAttachment = new Attachment(PdfStream, HeaderId.ToString() + "-export.pdf");
 
                 Mailer.SendMessage(User.Identity.Name + "@dbiservices.com", Subject, Message, IsHtml, MailAttachment);
             }
@@ -652,7 +659,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 PdfPRow Row;
                 foreach (dynamic Data in HeaderData)
                 {
-                    Paragraph Title = new Paragraph(string.Format("DAILY ACTIVITY REPORT FOR {0}", Data.DA_DATE.Date.ToString("MM/dd/yyyy")), FontFactory.GetFont("Verdana", 12, Font.BOLD));
+                    Paragraph Title = new Paragraph(string.Format("DAILY ACTIVITY REPORT FOR {0} - {1}", Data.LONG_NAME , Data.DA_DATE.Date.ToString("MM/dd/yyyy")), FontFactory.GetFont("Verdana", 12, Font.BOLD));
                     Title.Alignment = 1;
 
                     ExportedPDF.Add(Title);
@@ -709,11 +716,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     //Get Equipment/Employee Data
                     var EmployeeData = GetEmployee(HeaderId);
 
-                    PdfPTable EmployeeTable = new PdfPTable(8);
+                    PdfPTable EmployeeTable = new PdfPTable(9);
 
                     Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Truck/Equipment \n Name", HeaderFont)),
                     new PdfPCell(new Phrase("Operator(s)", HeaderFont)),
+                    new PdfPCell(new Phrase("License #", HeaderFont)),
                     new PdfPCell(new Phrase("Time\nIn", HeaderFont)),
                     new PdfPCell(new Phrase("Time\nOut", HeaderFont)),
                     new PdfPCell(new Phrase("Total\nHours", HeaderFont)),
@@ -744,17 +752,35 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         {
                             EquipmentName = String.Empty;
                         }
-
+                        string Comments;
+                        try
+                        {
+                            Comments = Data.COMMENTS.ToString();
+                        }
+                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                        {
+                            Comments = String.Empty;
+                        }
+                        string License;
+                        try
+                        {
+                            License = Data.FOREMAN_LICENSE;
+                        }
+                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                        {
+                            License = string.Empty;
+                        }
                         TimeSpan TotalHours = DateTime.Parse(Data.TIME_OUT.ToString()).TimeOfDay - DateTime.Parse(Data.TIME_IN.ToString()).TimeOfDay;
                         Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(EquipmentName , CellFont)),
                         new PdfPCell(new Phrase(Data.EMPLOYEE_NAME.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(License, CellFont)),
                         new PdfPCell(new Phrase(Data.TIME_IN.TimeOfDay.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Data.TIME_OUT.TimeOfDay.ToString(), CellFont)),
                         new PdfPCell(new Phrase(TotalHours.ToString(), CellFont)),
                         new PdfPCell(new Phrase(TravelTime, CellFont)),
                         new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
-                        new PdfPCell(new Phrase(Data.COMMENTS.ToString(), CellFont))
+                        new PdfPCell(new Phrase(Comments, CellFont))
                     };
                         Row = new PdfPRow(Cells);
                         EmployeeTable.Rows.Add(Row);
@@ -795,10 +821,28 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             {
                                 WorkArea = string.Empty;
                             }
+                            string PoleFrom;
+                            string PoleTo;
+                            try
+                            {
+                                PoleFrom = Data.POLE_FROM.ToString();
+                            }
+                            catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                            {
+                                PoleFrom = String.Empty;
+                            }
+                            try
+                            {
+                                PoleTo = Data.POLE_TO.ToString();
+                            }
+                            catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                            {
+                                PoleTo = String.Empty;
+                            }
                             Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(WorkArea, CellFont)),
-                        new PdfPCell(new Phrase(Data.POLE_FROM, CellFont)),
-                        new PdfPCell(new Phrase(Data.POLE_TO, CellFont)),
+                        new PdfPCell(new Phrase(PoleFrom, CellFont)),
+                        new PdfPCell(new Phrase(PoleTo, CellFont)),
                         new PdfPCell(new Phrase(Data.ACRES_MILE.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Data.QUANTITY.ToString(), CellFont))
                     };
@@ -948,26 +992,37 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     if (OrgId == 121)
                     {
                         var InventoryData = GetInventoryDBI(HeaderId);
-                        PdfPTable InventoryTable = new PdfPTable(5);
+                        PdfPTable InventoryTable = new PdfPTable(6);
 
                         Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Mix #", HeaderFont)),
                     new PdfPCell(new Phrase("Sub-Inventory", HeaderFont)),
                     new PdfPCell(new Phrase("Item Name", HeaderFont)),
                     new PdfPCell(new Phrase("Rate", HeaderFont)),
-                    new PdfPCell(new Phrase("EPA \n Number", HeaderFont))
+                    new PdfPCell(new Phrase("EPA \n Number", HeaderFont)),
+                    new PdfPCell(new Phrase("Total", HeaderFont))
                 };
                         Row = new PdfPRow(Cells);
                         InventoryTable.Rows.Add(Row);
 
                         foreach (dynamic Data in InventoryData)
                         {
+                            string EPANumber;
+                            try
+                            {
+                                EPANumber = Data.EPA_NUMBER;
+                            }
+                            catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                            {
+                                EPANumber = string.Empty;
+                            }
                             Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(Data.CHEMICAL_MIX_NUMBER.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Data.SUB_INVENTORY_SECONDARY_NAME, CellFont)),
                         new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
                         new PdfPCell(new Phrase(string.Format("{0} {1}", Data.RATE.ToString(), Data.UNIT_OF_MEASURE), CellFont)),
-                        new PdfPCell(new Phrase(Data.EPA_NUMBER, CellFont))
+                        new PdfPCell(new Phrase(EPANumber, CellFont)),
+                        new PdfPCell(new Phrase(Data.TOTAL.ToString(), CellFont))
                     };
 
                             Row = new PdfPRow(Cells);

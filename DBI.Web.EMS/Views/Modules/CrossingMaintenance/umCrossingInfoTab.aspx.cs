@@ -35,7 +35,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 List<object> data;
 
-                //Get List of all new headers
+                //GeList of all new crossings
                 
                     data = (from d in _context.CROSSINGS
                             join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID into pn
@@ -81,14 +81,17 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 catch (Exception)
                 {
                     uxAddManagerCI.Value = string.Empty;
-                }
+                   
 
+                }
+              
 
                 uxServiceUnitCI.SetValue(data.d.SERVICE_UNIT);
                 uxSubDivCI.SetValue(data.d.SUB_DIVISION);
                 uxRRCI.SetValue(data.d.RAILROAD);
                 uxCrossingNumCI.SetValue(data.d.CROSSING_NUMBER);
                 uxRouteCI.SetValue(data.d.ROUTE);
+                uxDOTCI.SetValue(data.d.DOT);
                 uxStreetCI.SetValue(data.d.STREET);
                 uxMPCI.SetValue(data.d.MILE_POST);
                 uxStateCI.SetValue(data.d.STATE);
@@ -135,6 +138,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     uxOnSpurCI.Checked = true;
                 }
 
+
             }  
             
         }
@@ -150,30 +154,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             //Do type conversions
             string CrossingNum = uxAddCrossingNumCI.Value.ToString();
             string Route = uxAddRouteCI.Value.ToString();
+            string DotNum = uxAddDotCI.Value.ToString();
             string Street = uxAddStreetCI.Value.ToString();
             decimal MP = Convert.ToDecimal(uxAddMPCI.Value);
             string State = uxAddStateComboBox.Value.ToString();
             string City = uxAddCityCI.Value.ToString();
-            decimal Latitude = Convert.ToDecimal(uxAddLatCI.Value);
             string Sub_divisions = uxAddSubDivCI.Value.ToString();
             string County = uxAddCountyCI.Value.ToString();
-            decimal Longitude = Convert.ToDecimal(uxAddLongCI.Value);
-            decimal NE = Convert.ToDecimal(uxAddNECI.Value);
-            decimal NEext = Convert.ToDecimal(uxAddNEextCI.Value);
-            string RowWidth = uxAddRowWidthCI.Value.ToString();
-            decimal NW = Convert.ToDecimal(uxAddNWCI.Value);
-            decimal NWext = Convert.ToDecimal(uxAddNWextCI.Value);
-            string PropertyType = uxAddPropertyTypeCI.Value.ToString();
-            decimal SE = Convert.ToDecimal(uxAddSECI.Value);
-            decimal SEext = Convert.ToDecimal(uxAddSEextCI.Value);
-            string Surface = uxAddSurfaceCI.Value.ToString();
-            decimal SW = Convert.ToDecimal(uxAddSWCI.Value);
-            decimal SWext = Convert.ToDecimal(uxAddSWextCI.Value);
-            string WarningDevice = uxAddWarningDeviceCI.Value.ToString();         
-            long MainTracks = Convert.ToInt64(uxAddMainTracksCI.Value);         
-            long OtherTracks = Convert.ToInt64(uxAddOtherTracksCI.Value);         
-            long MaxSpeed = Convert.ToInt64(uxAddMaxSpeedCINumberField.Value);
-            string SpecialInstructions = uxAddSpecialInstructCI.Value.ToString();
             string Sub_contracted = uxAddSubConCI.Value.ToString();
             string Restricted = uxAddRestrictedCI.Value.ToString();
             string FenceEncroach = uxAddFenceEnchroachCI.Value.ToString();
@@ -225,25 +212,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 STREET = Street,
                 STATE = State,
                 COUNTY = County,
-                SPECIAL_INSTRUCTIONS = SpecialInstructions,
-                ROUTE = Route,
-                MAIN_TRACKS = MainTracks,
-                OTHER_TRACKS = OtherTracks,
-                MAX_SPEED = MaxSpeed,
-                LONGITUDE = Longitude,
-                LATITUDE = Latitude,
-                PROPERTY_TYPE = PropertyType,
-                WARNING_DEVICE = WarningDevice,
-                SURFACE = Surface,
-                ROWNE = NE,
-                EXTNE = NEext,
-                ROWNW = NW,
-                EXTNW = NWext,
-                ROWSE = SE,
-                EXTSE = SEext,
-                ROWSW = SW,
-                EXTSW = SWext,
-                ROW_WIDTH = RowWidth,
+                ROUTE = Route,   
+                DOT = DotNum,
                 SUB_CONTRACTED = Sub_contracted,
                 RESTRICTED_COUNTY = Restricted,
                 FENCE_ENCROACHMENT = FenceEncroach,
@@ -263,6 +233,170 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 data.CONTACT_ID = null;
             }
+            try
+            {
+                decimal Latitude = Convert.ToDecimal(uxAddLatCI.Value);
+                data.LATITUDE = Latitude;
+            }
+            catch (FormatException)
+            {
+                data.LATITUDE = null;
+            }
+            try
+            {
+                decimal Longitude = Convert.ToDecimal(uxAddLongCI.Value);
+                data.LONGITUDE = Longitude;
+            }               
+                           
+            catch (FormatException)
+            {
+                data.LONGITUDE = null;
+            }
+            try
+            {
+                decimal NE = Convert.ToDecimal(uxAddNECI.Value);
+                data.ROWNE = NE;
+            }
+            catch (FormatException)
+            {
+                data.ROWNE = null;
+            }
+            try
+            {
+               decimal NEext = Convert.ToDecimal(uxAddNEextCI.Value);
+               data.EXTNE = NEext;
+            }
+            catch (FormatException)
+            {
+                data.EXTNE = null;
+            }
+            try
+            {
+                string RowWidth = uxAddRowWidthCI.Value.ToString();
+                data.ROW_WIDTH = RowWidth;
+            }
+            catch (Exception)
+            {
+                data.ROW_WIDTH = null;
+            }
+            try
+            {
+                 decimal NW = Convert.ToDecimal(uxAddNWCI.Value);
+                data.ROWNW = NW;
+            }
+            catch (Exception)
+            {
+                data.ROWNW = null;
+            }
+              try
+            {
+                 decimal NWext = Convert.ToDecimal(uxAddNWextCI.Value);
+                 data.EXTNW = NWext;
+            }
+            catch (Exception)
+            {
+                data.EXTNW = null;
+            }
+              try
+            {
+                string PropertyType = uxAddPropertyTypeCI.Value.ToString();
+                data.PROPERTY_TYPE = PropertyType;
+            }
+            catch (Exception)
+            {
+                data.PROPERTY_TYPE = null;
+            }
+              try
+            {
+                 decimal SE = Convert.ToDecimal(uxAddSECI.Value);
+                      data.ROWSE = SE;
+            }
+            catch (Exception)
+            {
+                data.ROWSE = null;
+            }
+              try
+            {
+               decimal SEext = Convert.ToDecimal(uxAddSEextCI.Value);
+                data.EXTSE = SEext;
+            }
+            catch (Exception)
+            {
+                data.EXTSE = null;
+            }
+              try
+            {
+                 string Surface = uxAddSurfaceCI.Value.ToString();
+                    data.SURFACE = Surface;
+            }
+            catch (Exception)
+            {
+                data.SURFACE = null;
+            }
+            try
+            {
+                decimal SW = Convert.ToDecimal(uxAddSWCI.Value);
+                    data.ROWSW = SW;
+            }
+            catch (Exception)
+            {
+                data.ROWSW = null;
+            }
+            try
+            {
+                 decimal SWext = Convert.ToDecimal(uxAddSWextCI.Value);
+                    data.EXTSW = SWext;
+            }
+            catch (Exception)
+            {
+                data.EXTSW = null;
+            }
+            try
+            {
+                   string WarningDevice = uxAddWarningDeviceCI.Value.ToString(); 
+                   data.WARNING_DEVICE = WarningDevice;
+            }
+            catch (Exception)
+            {
+                data.WARNING_DEVICE = null;
+            }
+            try
+            {
+                 long MainTracks = Convert.ToInt64(uxAddMainTracksCI.Value);    
+                     data.MAIN_TRACKS = MainTracks;
+            }
+            catch (Exception)
+            {
+                data.MAIN_TRACKS = null;
+            }
+            try
+            {
+                  long OtherTracks = Convert.ToInt64(uxAddOtherTracksCI.Value);  
+                  data.OTHER_TRACKS = OtherTracks;
+            }
+            catch (Exception)
+            {
+                data.OTHER_TRACKS = null;
+            }
+            try
+            {
+            long MaxSpeed = Convert.ToInt64(uxAddMaxSpeedCINumberField.Value);
+              data.MAX_SPEED = MaxSpeed;
+            }
+            catch (Exception)
+            {
+                data.MAX_SPEED = null;
+            }
+            try
+            {
+            string SpecialInstructions = uxAddSpecialInstructCI.Value.ToString();
+             data.SPECIAL_INSTRUCTIONS = SpecialInstructions;
+            }
+            catch(Exception)
+            {
+                data.SPECIAL_INSTRUCTIONS = null;
+            }
+                           
 
             //Write to DB
             GenericData.Insert<CROSSING>(data);
@@ -319,6 +453,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                
                 uxEditCrossingNumCI.SetValue(data.d.CROSSING_NUMBER);
                 uxEditRouteCI.SetValue(data.d.ROUTE);
+                uxEditDotCI.SetValue(data.d.DOT);
                 uxEditStreetCI.SetValue(data.d.STREET);
                 uxEditMPCI.SetValue(data.d.MILE_POST);
                 uxEditStateComboBox.SetValue(data.d.STATE);
@@ -382,30 +517,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             //Do type conversions
             string CrossingNum = uxEditCrossingNumCI.Value.ToString();
             string Route = uxEditRouteCI.Value.ToString();
+            string DotNum = uxEditDotCI.Value.ToString();
             string Street = uxEditStreetCI.Value.ToString();
             decimal MP = Convert.ToDecimal(uxEditMPCI.Value);
             string State = uxEditStateComboBox.Value.ToString();
             string City = uxEditCityCI.Value.ToString();
-            decimal Latitude = Convert.ToDecimal(uxEditLatCI.Value);
-            string Sub_divisions = uxEditSubDivCIBox.Value.ToString();
             string County = uxEditCountyCI.Value.ToString();
-            decimal Longitude = Convert.ToDecimal(uxEditLongCI.Value);
-            decimal NE = Convert.ToDecimal(uxEditNECI.Value);
-            decimal NEext = Convert.ToDecimal(uxEditNEextCI.Value);
-            string RowWidth = uxEditRowWidthCI.Value.ToString();
-            decimal NW = Convert.ToDecimal(uxEditNWCI.Value);
-            decimal NWext = Convert.ToDecimal(uxEditNWextCI.Value);
-            string PropertyType = uxEditPropertyTypeCI.Value.ToString();
-            decimal SE = Convert.ToDecimal(uxEditSECI.Value);
-            decimal SEext = Convert.ToDecimal(uxEditSEextCI.Value);
-            string Surface = uxEditSurfaceCI.Value.ToString();
-            decimal SW = Convert.ToDecimal(uxEditSWCI.Value);
-            decimal SWext = Convert.ToDecimal(uxEditSWextCI.Value);
-            string WarningDevice = uxEditWarningDeviceCI.Value.ToString();
-            long MainTracks = Convert.ToInt64(uxEditMainTracksCI.Value);
-            long OtherTracks = Convert.ToInt64(uxEditOtherTracksCI.Value);
-            long MaxSpeed = Convert.ToInt64(uxEditMaxSpeedCINumberField.Value);
-            string SpecialInstructions = uxEditSpecialInstructCI.Value.ToString();
+            string Sub_divisions = uxEditSubDivCIBox.Value.ToString();
             string Sub_contracted = uxEditSubConCI.Value.ToString();
             string Restricted = uxEditRestrictedCI.Value.ToString();
             string FenceEncroach = uxEditFenceEnchroachCI.Value.ToString();
@@ -474,28 +592,179 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 data.STREET = Street;
                 data.STATE = State;
                 data.COUNTY = County;
-                data.SPECIAL_INSTRUCTIONS = SpecialInstructions;
                 data.ROUTE = Route;
-                data.MAIN_TRACKS = MainTracks;
-                data.OTHER_TRACKS = OtherTracks;
-                data.MAX_SPEED = MaxSpeed;
-                data.LONGITUDE = Longitude;
-                data.LATITUDE = Latitude;
-                data.PROPERTY_TYPE = PropertyType;
-                data.WARNING_DEVICE = WarningDevice.ToString();
-                data.SURFACE = Surface;
-                data.ROWNE = NE; data.EXTNE = NEext;
-                data.ROWNW = NW; data.EXTNW = NWext;
-                data.ROWSE = SE; data.EXTSE = SEext;
-                data.ROWSW = SW; data.EXTSW = SWext;
-                data.ROW_WIDTH = RowWidth;
+                data.DOT = DotNum;
                 data.SUB_CONTRACTED = Sub_contracted;
                 data.RESTRICTED_COUNTY = Restricted;
                 data.FENCE_ENCROACHMENT = FenceEncroach;
                 data.ON_SPUR = OnSpur;
                 data.RAILROAD = RailRoad;
                 data.SERVICE_UNIT = ServiceUnit;
-                
+                try
+                {
+                    decimal Latitude = decimal.Parse(uxEditLatCI.Value.ToString());
+                    data.LATITUDE = Latitude;
+                }
+                catch (Exception)
+                {
+                    data.LATITUDE = null;
+                }
+                try
+                {
+                    decimal Longitude = Convert.ToDecimal(uxEditLongCI.Value);
+                    data.LONGITUDE = Longitude;
+                }
+                catch (Exception)
+                {
+                    data.LONGITUDE = null;
+                }
+                try
+                {
+                decimal NE = Convert.ToDecimal(uxEditNECI.Value);
+                data.ROWNE = NE;
+                }
+             catch (Exception)
+                {
+                 data.ROWNE = null;
+                }
+             try
+                {
+                decimal NEext = Convert.ToDecimal(uxEditNEextCI.Value);
+                data.EXTNE = NEext;
+                }
+             catch (Exception)
+                {
+                  data.EXTNE = null;
+                }
+             try
+                {
+                string RowWidth = uxEditRowWidthCI.Value.ToString();
+                data.ROW_WIDTH = RowWidth;
+                }
+                catch (Exception)
+                {
+                    data.ROW_WIDTH = null;
+                }
+             try
+                {
+                decimal NW = Convert.ToDecimal(uxEditNWCI.Value);
+                data.ROWNW = NW;
+                }
+                catch (Exception)
+                {
+                    data.ROWNW = null;
+                }
+             try
+                {
+                decimal NWext = Convert.ToDecimal(uxEditNWextCI.Value);
+                data.EXTNW = NWext;
+                }
+                catch (Exception)
+                {
+                    data.EXTNW = null;
+                }
+             try
+                {
+                string PropertyType = uxEditPropertyTypeCI.Value.ToString();
+                data.PROPERTY_TYPE = PropertyType;
+                }
+                  catch (Exception)
+                {
+                      data.PROPERTY_TYPE = null;
+                }
+             try
+                {
+                decimal SE = Convert.ToDecimal(uxEditSECI.Value);
+                data.ROWSE = SE;
+                }
+                catch (Exception)
+                {
+                    data.ROWSE = null;
+                }
+             try
+                {
+                decimal SEext = Convert.ToDecimal(uxEditSEextCI.Value);
+                data.EXTSE = SEext;
+                }
+                catch (Exception)
+                {
+                    data.EXTSE = null;
+                }
+             try
+                {
+                string Surface = uxEditSurfaceCI.Value.ToString();
+                data.SURFACE = Surface;
+                }  
+                catch (Exception)
+                {
+                    data.SURFACE = null;
+                }
+             try
+                {
+                decimal SW = Convert.ToDecimal(uxEditSWCI.Value);
+                data.ROWSW = SW;
+                }
+                 catch (Exception)
+                {
+                     data.ROWSW = null;
+                }
+             try
+                {
+                decimal SWext = Convert.ToDecimal(uxEditSWextCI.Value);
+                data.EXTSW = SWext;
+                }
+                 catch (Exception)
+                {
+                     data.EXTSW = null;
+                }
+             try
+                {
+                string WarningDevice = uxEditWarningDeviceCI.Value.ToString();
+                data.WARNING_DEVICE = WarningDevice.ToString();
+                }
+                catch (Exception)
+                {
+                    data.WARNING_DEVICE = null;
+                }
+             try
+                {
+                long MainTracks = Convert.ToInt64(uxEditMainTracksCI.Value);
+                data.MAIN_TRACKS = MainTracks;
+                }
+                 catch (Exception)
+                {
+                     data.MAIN_TRACKS = null;
+                }
+             try
+                {
+                long OtherTracks = Convert.ToInt64(uxEditOtherTracksCI.Value);
+                data.OTHER_TRACKS = OtherTracks;
+                }
+                 catch (Exception)
+                {
+                     data.OTHER_TRACKS = null;
+                }
+             try
+                {
+                long MaxSpeed = Convert.ToInt64(uxEditMaxSpeedCINumberField.Value);
+                data.MAX_SPEED = MaxSpeed;
+                }
+                catch (Exception)
+                {
+                    data.MAX_SPEED = null;
+                }
+             try
+             {
+                 string SpecialInstructions = uxEditSpecialInstructCI.Value.ToString();
+                 data.SPECIAL_INSTRUCTIONS = SpecialInstructions;
+             }
+
+             catch (Exception)
+             {
+                 data.SPECIAL_INSTRUCTIONS = null;
+             }
+           
+               
                 //Write to DB
                 GenericData.Update<CROSSING>(data);
                
@@ -545,7 +814,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             });
         }
 
-       protected void deLoadType(string rrType)
+        protected void deLoadType(string rrType)
         {
             
             List<ServiceUnitResponse> types = ServiceUnitData.ServiceUnitTypes().ToList();
@@ -561,7 +830,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
                 
         }
-       protected void deLoadUnit(object sender, DirectEventArgs e)
+        protected void deLoadUnit(object sender, DirectEventArgs e)
        {
            if (e.ExtraParams["Type"] == "Add")
            {
@@ -652,6 +921,65 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             }
         }
+        //protected void deAddIncident(object sender, DirectEventArgs e)
+        //{
+        //    CROSSING_INCIDENT data;
+
+        //    long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+
+        //    //do type conversions
+        //    long IncidentNumber = Convert.ToDecimal(uxIncidentNumber.Value);
+        //    DateTime DateReported  = (DateTime)uxIncidentDateReported.Value;
+        //    DateTime DateClosed = (DateTime)uxIncidentDateClosed.Value;
+        //    string Remarks = uxIncidentRemarks.Value.ToString();
+        //    string SlowOrder = uxIncidentSlowOrder.Value.ToString();
+
+        //    if (uxIncidentSlowOrder.Checked)
+        //    {
+        //        SlowOrder = "Y";
+        //    }
+        //    else
+        //    {
+        //        SlowOrder = "N";
+        //    }
+
+        //    //Add to Db
+        //    using (Entities _context = new Entities())
+        //    {
+        //        data = new CROSSING_INCIDENT()
+        //        {
+
+        //           INCIDENT_NUMBER = IncidentNumber,
+        //           DATE_REPORTED = DateReported,
+        //           DATE_CLOSED = DateClosed,
+        //           REMARKS = Remarks,
+        //           CROSSING_ID = CrossingId,
+        //        };
+        //    }
+        //    try
+        //    {
+        //        string Remarks = uxIncidentRemarks.Value.ToString();
+        //        data.REMARKS = Remarks;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        data.REMARKS = null;
+        //    }
+
+        //    GenericData.Insert<CROSSING_INCIDENT>(data);
+
+        //    Notification.Show(new NotificationConfig()
+        //    {
+        //        Title = "Success",
+        //        Html = "Supplemental Added Successfully",
+        //        HideDelay = 1000,
+        //        AlignCfg = new NotificationAlignConfig
+        //        {
+        //            ElementAnchor = AnchorPoint.Center,
+        //            TargetAnchor = AnchorPoint.Center
+        //        }
+        //    });
+        //}
     }
 }
     

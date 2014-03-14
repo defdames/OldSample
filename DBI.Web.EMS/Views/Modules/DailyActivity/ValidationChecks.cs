@@ -261,7 +261,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             });
                         }
                     }
-                    else if (TotalMinutes.TotalMinutes >= 12)
+                    else if (TotalMinutes.TotalMinutes > 12)
                     {
                         var LoggedLunches = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                              where d.DAILY_ACTIVITY_HEADER.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID && d.LUNCH == "Y" && d.LUNCH_LENGTH == 60

@@ -21,6 +21,7 @@ namespace DBI.Data
     
         public decimal GROUP_ID { get; set; }
         public string GROUP_NAME { get; set; }
+        public Nullable<long> JOB_ID { get; set; }
     
         public virtual ICollection<SYS_GROUPS_PERMS> SYS_GROUPS_PERMS { get; set; }
     }

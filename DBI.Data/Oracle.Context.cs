@@ -29,7 +29,6 @@ namespace DBI.Data
         public DbSet<SYS_USER_INFORMATION> SYS_USER_INFORMATION { get; set; }
         public DbSet<SYS_USER_ACTIVITY> SYS_USER_ACTIVITY { get; set; }
         public DbSet<SYS_LOG> SYS_LOG { get; set; }
-        public DbSet<EMPLOYEES_V> EMPLOYEES_V { get; set; }
         public DbSet<DAILY_ACTIVITY_WEATHER> DAILY_ACTIVITY_WEATHER { get; set; }
         public DbSet<DAILY_ACTIVITY_EQUIPMENT> DAILY_ACTIVITY_EQUIPMENT { get; set; }
         public DbSet<INVENTORY_V> INVENTORY_V { get; set; }
@@ -66,7 +65,6 @@ namespace DBI.Data
         public DbSet<CUSTOMER_SURVEY_QUES_TYPES> CUSTOMER_SURVEY_QUES_TYPES { get; set; }
         public DbSet<CUSTOMER_SURVEY_QUESTIONS> CUSTOMER_SURVEY_QUESTIONS { get; set; }
         public DbSet<CUSTOMER_SURVEY_RELATION> CUSTOMER_SURVEY_RELATION { get; set; }
-        public DbSet<CROSSING_APPLICATION> CROSSING_APPLICATION { get; set; }
         public DbSet<CROSSING_INSPECTION> CROSSING_INSPECTION { get; set; }
         public DbSet<CROSSING_SUPPLEMENTAL> CROSSING_SUPPLEMENTAL { get; set; }
         public DbSet<CUSTOMER_SURVEY_OPTIONS> CUSTOMER_SURVEY_OPTIONS { get; set; }
@@ -74,13 +72,17 @@ namespace DBI.Data
         public DbSet<DAILY_ACTIVITY_EMPLOYEE> DAILY_ACTIVITY_EMPLOYEE { get; set; }
         public DbSet<PA_ROLES_V> PA_ROLES_V { get; set; }
         public DbSet<DAILY_ACTIVITY_STATUS> DAILY_ACTIVITY_STATUS { get; set; }
-        public DbSet<SYS_GROUPS> SYS_GROUPS { get; set; }
         public DbSet<SYS_GROUPS_PERMS> SYS_GROUPS_PERMS { get; set; }
-        public DbSet<SYS_MENU> SYS_MENU { get; set; }
         public DbSet<SYS_MODULES> SYS_MODULES { get; set; }
         public DbSet<SYS_PERMISSIONS> SYS_PERMISSIONS { get; set; }
-        public DbSet<SYS_USER_PERMS> SYS_USER_PERMS { get; set; }
         public DbSet<SYS_MOBILE_DEVICES> SYS_MOBILE_DEVICES { get; set; }
         public DbSet<SYS_MOBILE_NOTIFICATIONS> SYS_MOBILE_NOTIFICATIONS { get; set; }
+        public DbSet<SYS_USER_PERMS> SYS_USER_PERMS { get; set; }
+        public DbSet<SYS_MENU> SYS_MENU { get; set; }
+        public DbSet<CROSSING_APPLICATION> CROSSING_APPLICATION { get; set; }
+        public DbSet<JOB_TITLE_V> JOB_TITLE_V { get; set; }
+        public DbSet<CROSSING_INCIDENT> CROSSING_INCIDENT { get; set; }
+        public DbSet<EMPLOYEES_V> EMPLOYEES_V { get; set; }
+        public DbSet<SYS_GROUPS> SYS_GROUPS { get; set; }
     }
 }

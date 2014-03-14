@@ -86,7 +86,8 @@
 						</ext:Store>
 					</Store>
 					<ColumnModel>
-						<Columns>                            
+						<Columns>
+							<ext:Column runat="server" Text="DRS Number" DataIndex="HEADER_ID" Flex="10" />                            
 							<ext:DateColumn runat="server" Text="Activity Date" DataIndex="DA_DATE" Flex="10" Format="MM-dd-yyyy">
 								<HeaderItems>
 									<ext:DateField runat="server" Format="MM-dd-yyyy" />

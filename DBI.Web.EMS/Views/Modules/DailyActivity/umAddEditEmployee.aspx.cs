@@ -75,7 +75,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
                             from projects in proj.DefaultIfEmpty()
                             where d.EMPLOYEE_ID == EmployeeId
-                            select new { d.EMPLOYEE_ID, d.HEADER_ID, d.PERSON_ID, e.EMPLOYEE_NAME, d.EQUIPMENT_ID, projects.NAME, projects.SEGMENT1, d.TIME_IN, d.TIME_OUT, d.TRAVEL_TIME, d.DRIVE_TIME, d.PER_DIEM, d.COMMENTS, d.ROLE_TYPE }).Single();
+                            select new { d.EMPLOYEE_ID, d.HEADER_ID, d.PERSON_ID, e.EMPLOYEE_NAME, d.EQUIPMENT_ID, d.FOREMAN_LICENSE, projects.NAME, projects.SEGMENT1, d.TIME_IN, d.TIME_OUT, d.TRAVEL_TIME, d.DRIVE_TIME, d.PER_DIEM, d.COMMENTS, d.ROLE_TYPE }).Single();
                 DateTime TimeIn = (DateTime)Employee.TIME_IN;
                 DateTime TimeOut = (DateTime)Employee.TIME_OUT;
 
@@ -95,6 +95,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEditEmployeeDriveTime.SetValue(Employee.DRIVE_TIME);
                 uxEditEmployeeTravelTime.SetValue(Employee.TRAVEL_TIME);
                 uxEditEmployeeRole.SetValue(Employee.ROLE_TYPE);
+                uxEditEmployeeLicense.SetValue(Employee.FOREMAN_LICENSE);
                 if (Employee.PER_DIEM == "Y")
                 {
                     uxEditEmployeePerDiem.Checked = true;
@@ -284,6 +285,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 PerDiem = "N";
             }
             
+            string License;
+            try
+            {
+                License = uxAddEmployeeLicense.Value.ToString();
+            }
+            catch(NullReferenceException){
+                License = null;
+            }
             DAILY_ACTIVITY_EMPLOYEE data = new DAILY_ACTIVITY_EMPLOYEE()
             {
                 HEADER_ID = HeaderId,
@@ -294,7 +303,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 CREATE_DATE = DateTime.Now,
                 MODIFY_DATE = DateTime.Now,
                 CREATED_BY = User.Identity.Name,
-                MODIFIED_BY = User.Identity.Name
+                MODIFIED_BY = User.Identity.Name,
+                FOREMAN_LICENSE = License
             };
 
             if (GetOrgId(HeaderId) == 123)
@@ -350,7 +360,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 data.EQUIPMENT_ID = null;
             }
-
+            try
+            {
+                License = uxAddEmployeeLicense.Value.ToString();
+                data.FOREMAN_LICENSE = License;
+            }
+            catch (NullReferenceException)
+            {
+                data.FOREMAN_LICENSE = null;
+            }
             //Write to DB
             GenericData.Insert<DAILY_ACTIVITY_EMPLOYEE>(data);
 

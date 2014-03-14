@@ -19,7 +19,6 @@ namespace DBI.Data
             this.SYS_USER_INFORMATION = new HashSet<SYS_USER_INFORMATION>();
             this.SYS_USER_ACTIVITY = new HashSet<SYS_USER_ACTIVITY>();
             this.SYS_LOG = new HashSet<SYS_LOG>();
-            this.SYS_USER_PERMS = new HashSet<SYS_USER_PERMS>();
         }
     
         public long USER_ID { get; set; }
@@ -28,6 +27,5 @@ namespace DBI.Data
         public virtual ICollection<SYS_USER_INFORMATION> SYS_USER_INFORMATION { get; set; }
         public virtual ICollection<SYS_USER_ACTIVITY> SYS_USER_ACTIVITY { get; set; }
         public virtual ICollection<SYS_LOG> SYS_LOG { get; set; }
-        public virtual ICollection<SYS_USER_PERMS> SYS_USER_PERMS { get; set; }
     }
 }

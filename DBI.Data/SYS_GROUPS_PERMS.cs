@@ -18,7 +18,7 @@ namespace DBI.Data
         public decimal GROUP_ID { get; set; }
         public decimal PERMISSION_ID { get; set; }
     
-        public virtual SYS_GROUPS SYS_GROUPS { get; set; }
         public virtual SYS_PERMISSIONS SYS_PERMISSIONS { get; set; }
+        public virtual SYS_GROUPS SYS_GROUPS { get; set; }
     }
 }
