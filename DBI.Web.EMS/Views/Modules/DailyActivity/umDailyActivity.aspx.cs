@@ -46,8 +46,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             else
             {
-                var MyAuth = new Authentication();
-                int CurrentOrg = Convert.ToInt32(MyAuth.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
                 //Get projects for my org only
                 dataIn = WEB_PROJECTS_V.ProjectList(CurrentOrg);
             }
@@ -89,8 +88,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             else
             {
-                var MyAuth = new Authentication();
-                int CurrentOrg = Convert.ToInt32(MyAuth.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
                 //Get Employees for my region only
                 dataIn = EMPLOYEES_V.EmployeeDropDown(CurrentOrg);
             }
@@ -160,10 +158,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Get values in correct formats
             long ProjectId = Convert.ToInt64(uxFormProject.Value);
             DateTime DaDate = (DateTime)uxFormDate.Value;
-            int PersonId = Convert.ToInt32(uxFormEmployee.Value);
-            var MyAuth = new Authentication();
+            int PersonId = Convert.ToInt32(uxFormEmployee.Value);            
             var icp = User as ClaimsPrincipal;
-            var AddingUser = MyAuth.GetClaimValue(ClaimTypes.Name, icp);
+            var AddingUser = Authentication.GetClaimValue(ClaimTypes.Name, icp);
             
             string SubDivision;
             string HeaderType;

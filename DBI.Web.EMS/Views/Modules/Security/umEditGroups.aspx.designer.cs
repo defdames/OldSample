@@ -7,162 +7,135 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DBI.Web.EMS.Views {
+namespace DBI.Web.EMS.Views.Modules.Security {
     
     
-    public partial class uxDefault {
+    public partial class umEditGroups {
         
         /// <summary>
-        /// Head1 control.
+        /// form1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlHead Head1;
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// uxResourceManager control.
+        /// uxEditGroupViewPort control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ResourceManager uxResourceManager;
+        protected global::Ext.Net.Viewport uxEditGroupViewPort;
         
         /// <summary>
-        /// uxForm control.
+        /// uxGroupsGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm uxForm;
+        protected global::Ext.Net.GridPanel uxGroupsGrid;
         
         /// <summary>
-        /// uxViewPort control.
+        /// uxGroupsStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Viewport uxViewPort;
+        protected global::Ext.Net.Store uxGroupsStore;
         
         /// <summary>
-        /// uxNorth control.
+        /// uxManageGroupsButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxNorth;
+        protected global::Ext.Net.Button uxManageGroupsButton;
         
         /// <summary>
-        /// uxLogo control.
+        /// uxPermissionsGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Image uxLogo;
+        protected global::Ext.Net.GridPanel uxPermissionsGrid;
         
         /// <summary>
-        /// uxToolBarPanel control.
+        /// uxPermissionsStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxToolBarPanel;
+        protected global::Ext.Net.Store uxPermissionsStore;
         
         /// <summary>
-        /// Container1 control.
+        /// uxUpdateGroupPermissionWindow control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Container Container1;
+        protected global::Ext.Net.Window uxUpdateGroupPermissionWindow;
         
         /// <summary>
-        /// uxToolbarWelcome control.
+        /// uxAvaialblePermissions control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Toolbar uxToolbarWelcome;
+        protected global::Ext.Net.GridPanel uxAvaialblePermissions;
         
         /// <summary>
-        /// uxWelcomeName control.
+        /// uxAvailablePermissionsStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.LinkButton uxWelcomeName;
+        protected global::Ext.Net.Store uxAvailablePermissionsStore;
         
         /// <summary>
-        /// uxToolbarTime control.
+        /// uxButtonsPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Toolbar uxToolbarTime;
+        protected global::Ext.Net.Panel uxButtonsPanel;
         
         /// <summary>
-        /// uxWelcomeTime control.
+        /// uxSelectedPermissionsGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Label uxWelcomeTime;
+        protected global::Ext.Net.GridPanel uxSelectedPermissionsGrid;
         
         /// <summary>
-        /// uxToolBarLinks control.
+        /// uxSelectedPermissionsStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Toolbar uxToolBarLinks;
+        protected global::Ext.Net.Store uxSelectedPermissionsStore;
         
         /// <summary>
-        /// uxHelp control.
+        /// uxUpdateGroupPermissionsButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.LinkButton uxHelp;
-        
-        /// <summary>
-        /// uxLogout control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.LinkButton uxLogout;
-        
-        /// <summary>
-        /// uxWest control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxWest;
-        
-        /// <summary>
-        /// uxCenter control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxCenter;
+        protected global::Ext.Net.Button uxUpdateGroupPermissionsButton;
     }
 }

@@ -73,8 +73,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 else
                 {
-                    Authentication Authenticator = new Authentication();
-                    string EmployeeName = Authenticator.GetClaimValue("EmployeeName", User as ClaimsPrincipal);
+                    string EmployeeName = Authentication.GetClaimValue("EmployeeName", User as ClaimsPrincipal);
                     long PersonId = (from d in _context.EMPLOYEES_V
                                      where d.EMPLOYEE_NAME == EmployeeName
                                      select d.PERSON_ID).Single();

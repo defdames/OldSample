@@ -100,8 +100,7 @@ namespace DBI.Core.Web
         /// <param name="e"></param>
         protected void deLogout(object sender, DirectEventArgs e)
         {
-            Authentication MyAuth = new Authentication();
-            MyAuth.Logout();
+            Authentication.Logout();
             X.Redirect("~/uxLogin.aspx");
         }
 

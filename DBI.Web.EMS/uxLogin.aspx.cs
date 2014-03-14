@@ -135,7 +135,7 @@ namespace DBI.Web.EMS
 
                 if (Authentication.Authenticate(this.uxUsername.Text, this.uxPassword.Text))
                 {
-                    List<Claim> claims = DBI.Data.SYS_ACTIVITY.Claims(this.uxUsername.Text.ToUpper());
+                    List<Claim> claims = SYS_PERMISSIONS.Claims(this.uxUsername.Text.ToUpper());
 
                     int cnt = claims.Count;
 

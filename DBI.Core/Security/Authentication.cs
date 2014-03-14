@@ -19,7 +19,7 @@ namespace DBI.Core.Security
     /// Authentication class used to verify usernames and passwords.
     /// </summary>
     /// <remarks>This class allows you to authenticate or verify your user account and password against all DBI systems, currently it's only windows domain supported.</remarks>
-    public class Authentication
+    public static class Authentication
     {
         /// <summary>
         /// Execute authentication check against Active Directory.
@@ -64,7 +64,7 @@ namespace DBI.Core.Security
         /// <summary>
         /// Logout and destroy Cookie
         /// </summary>
-        public void Logout()
+        public static void Logout()
         {
             SessionAuthenticationModule sam = new SessionAuthenticationModule();
             sam.CookieHandler.Delete(HttpContext.Current);
@@ -75,7 +75,7 @@ namespace DBI.Core.Security
         /// </summary>
         /// <param name="key"></param>
         /// <returns>Claim Value</returns>
-        public string GetClaimValue(string key, ClaimsPrincipal icp)
+        public static string GetClaimValue(string key, ClaimsPrincipal icp)
         {
             // Access IClaimsIdentity which contains claims
             ClaimsIdentity claimsIdentity = (ClaimsIdentity)icp.Identity;
