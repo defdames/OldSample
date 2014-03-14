@@ -195,6 +195,7 @@
     <Compile Include="Controllers\UnitOfMeasureController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\EquipmentController.cs" />
+    <Compile Include="Controllers\VersionController.cs" />
     <Compile Include="Models\DailyActivityResponse.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
