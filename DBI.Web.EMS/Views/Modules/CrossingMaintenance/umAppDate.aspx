@@ -64,18 +64,7 @@
                     <ext:Column ID="Column2" runat="server" Text="State" Flex="1" DataIndex="STATE" />  
                     <ext:Column ID="Column1" runat="server" Text="MP" Flex="1" DataIndex="MILE_POST" />
                     <ext:Column ID="Column3" runat="server" Text="DOT" Flex="1" DataIndex="DOT" />
-                    <ext:DateColumn runat="server" Text="Date" DataIndex="APPLICATION_DATE" Flex="1" Format="MM/dd/yyyy" >
-                        <HeaderItems>
-                            <ext:DateField ID="LastChangeFilter" runat="server" Editable="true" >
-                                <Listeners>
-                                    <Change Handler="applyFilter(this);" />
-                                </Listeners>
-                                <Plugins>
-                                    <ext:ClearButton ID="ClearButton1" runat="server" />
-                                </Plugins>
-                            </ext:DateField>
-                        </HeaderItems>
-                        </ext:DateColumn>
+                    <ext:DateColumn runat="server" Text="Date" DataIndex="APPLICATION_DATE" Flex="1" Format="MM/dd/yyyy" />
                     <ext:Column ID="Column4" runat="server" DataIndex="TRUCK_NUMBER" Text="Truck #" Flex="1" />                
                     <ext:Column ID="Column8" runat="server" DataIndex="REMARKS" Text="Remarks" Flex="3" />
                 </Columns>

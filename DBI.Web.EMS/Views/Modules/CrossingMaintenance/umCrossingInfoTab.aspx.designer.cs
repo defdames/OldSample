@@ -2065,13 +2065,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextArea uxIncidentRemarks;
         
         /// <summary>
-        /// Button2 control.
+        /// uxAddIncidentButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button2;
+        protected global::Ext.Net.Button uxAddIncidentButton;
         
         /// <summary>
         /// Button3 control.
