@@ -1295,6 +1295,7 @@
           </Key>
           <Property Name="GROUP_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="GROUP_NAME" Type="varchar2" Nullable="false" MaxLength="100" />
+          <Property Name="JOB_ID" Type="number" Precision="15" />
         </EntityType>
         <EntityType Name="SYS_GROUPS_PERMS">
           <Key>
@@ -2996,14 +2997,9 @@
           </AssociationSet>
           <EntitySet Name="PA_ROLES_V" EntityType="OracleModel.PA_ROLES_V" />
           <EntitySet Name="DAILY_ACTIVITY_STATUS" EntityType="OracleModel.DAILY_ACTIVITY_STATUS" />
-          <EntitySet Name="SYS_GROUPS" EntityType="OracleModel.SYS_GROUPS" />
           <EntitySet Name="SYS_GROUPS_PERMS" EntityType="OracleModel.SYS_GROUPS_PERMS" />
           <EntitySet Name="SYS_MODULES" EntityType="OracleModel.SYS_MODULES" />
           <EntitySet Name="SYS_PERMISSIONS" EntityType="OracleModel.SYS_PERMISSIONS" />
-          <AssociationSet Name="FK_GRP_PERMS_GROUP_ID" Association="OracleModel.FK_GRP_PERMS_GROUP_ID">
-            <End Role="SYS_GROUPS" EntitySet="SYS_GROUPS" />
-            <End Role="SYS_GROUPS_PERMS" EntitySet="SYS_GROUPS_PERMS" />
-          </AssociationSet>
           <AssociationSet Name="FK_GRP_PERMS_PERM_ID" Association="OracleModel.FK_GRP_PERMS_PERM_ID">
             <End Role="SYS_PERMISSIONS" EntitySet="SYS_PERMISSIONS" />
             <End Role="SYS_GROUPS_PERMS" EntitySet="SYS_GROUPS_PERMS" />
@@ -3036,6 +3032,11 @@
             <End Role="CROSSING_INCIDENT" EntitySet="CROSSING_INCIDENT" />
           </AssociationSet>
           <EntitySet Name="EMPLOYEES_V" EntityType="OracleModel.EMPLOYEES_V" />
+          <EntitySet Name="SYS_GROUPS" EntityType="OracleModel.SYS_GROUPS" />
+          <AssociationSet Name="FK_GRP_PERMS_GROUP_ID" Association="OracleModel.FK_GRP_PERMS_GROUP_ID">
+            <End Role="SYS_GROUPS" EntitySet="SYS_GROUPS" />
+            <End Role="SYS_GROUPS_PERMS" EntitySet="SYS_GROUPS_PERMS" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -5123,14 +5124,6 @@
           <Property Type="Int32" Name="STATUS" Nullable="false" />
           <Property Type="String" Name="STATUS_VALUE" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="SYS_GROUPS">
-          <Key>
-            <PropertyRef Name="GROUP_ID" />
-          </Key>
-          <Property Type="Decimal" Name="GROUP_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="GROUP_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="SYS_GROUPS_PERMS" Relationship="OracleModel.FK_GRP_PERMS_GROUP_ID" FromRole="SYS_GROUPS" ToRole="SYS_GROUPS_PERMS" />
-        </EntityType>
         <EntityType Name="SYS_GROUPS_PERMS">
           <Key>
             <PropertyRef Name="GROUPS_PERMS_ID" />
@@ -5138,8 +5131,8 @@
           <Property Type="Decimal" Name="GROUPS_PERMS_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Decimal" Name="GROUP_ID" Nullable="false" Precision="38" Scale="0" />
           <Property Type="Decimal" Name="PERMISSION_ID" Nullable="false" Precision="38" Scale="0" />
-          <NavigationProperty Name="SYS_GROUPS" Relationship="OracleModel.FK_GRP_PERMS_GROUP_ID" FromRole="SYS_GROUPS_PERMS" ToRole="SYS_GROUPS" />
           <NavigationProperty Name="SYS_PERMISSIONS" Relationship="OracleModel.FK_GRP_PERMS_PERM_ID" FromRole="SYS_GROUPS_PERMS" ToRole="SYS_PERMISSIONS" />
+          <NavigationProperty Name="SYS_GROUPS" Relationship="OracleModel.FK_GRP_PERMS_GROUP_ID" FromRole="SYS_GROUPS_PERMS" ToRole="SYS_GROUPS" />
         </EntityType>
         <EntityType Name="SYS_MODULES">
           <Key>
@@ -5163,18 +5156,6 @@
           <NavigationProperty Name="SYS_USER_PERMS" Relationship="OracleModel.FK_USER_PERMS_PERM_ID" FromRole="SYS_PERMISSIONS" ToRole="SYS_USER_PERMS" />
           <NavigationProperty Name="SYS_MENU" Relationship="OracleModel.FK_MENU_PERM_ID" FromRole="SYS_PERMISSIONS" ToRole="SYS_MENU" />
         </EntityType>
-        <Association Name="FK_GRP_PERMS_GROUP_ID">
-          <End Type="OracleModel.SYS_GROUPS" Role="SYS_GROUPS" Multiplicity="1" />
-          <End Type="OracleModel.SYS_GROUPS_PERMS" Role="SYS_GROUPS_PERMS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SYS_GROUPS">
-              <PropertyRef Name="GROUP_ID" />
-            </Principal>
-            <Dependent Role="SYS_GROUPS_PERMS">
-              <PropertyRef Name="GROUP_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_GRP_PERMS_PERM_ID">
           <End Type="OracleModel.SYS_PERMISSIONS" Role="SYS_PERMISSIONS" Multiplicity="1" />
           <End Type="OracleModel.SYS_GROUPS_PERMS" Role="SYS_GROUPS_PERMS" Multiplicity="*" />
@@ -5355,6 +5336,27 @@
           <Property Type="String" Name="ORGANIZATION_NAME" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="LAST_UPDATE_DATE" />
         </EntityType>
+        <EntityType Name="SYS_GROUPS">
+          <Key>
+            <PropertyRef Name="GROUP_ID" />
+          </Key>
+          <Property Type="Decimal" Name="GROUP_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="GROUP_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="JOB_ID" />
+          <NavigationProperty Name="SYS_GROUPS_PERMS" Relationship="OracleModel.FK_GRP_PERMS_GROUP_ID" FromRole="SYS_GROUPS" ToRole="SYS_GROUPS_PERMS" />
+        </EntityType>
+        <Association Name="FK_GRP_PERMS_GROUP_ID">
+          <End Type="OracleModel.SYS_GROUPS" Role="SYS_GROUPS" Multiplicity="1" />
+          <End Type="OracleModel.SYS_GROUPS_PERMS" Role="SYS_GROUPS_PERMS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SYS_GROUPS">
+              <PropertyRef Name="GROUP_ID" />
+            </Principal>
+            <Dependent Role="SYS_GROUPS_PERMS">
+              <PropertyRef Name="GROUP_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6977,14 +6979,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SYS_GROUPS">
-            <EntityTypeMapping TypeName="OracleModel.SYS_GROUPS">
-              <MappingFragment StoreEntitySet="SYS_GROUPS">
-                <ScalarProperty Name="GROUP_NAME" ColumnName="GROUP_NAME" />
-                <ScalarProperty Name="GROUP_ID" ColumnName="GROUP_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="SYS_GROUPS_PERMS">
             <EntityTypeMapping TypeName="OracleModel.SYS_GROUPS_PERMS">
               <MappingFragment StoreEntitySet="SYS_GROUPS_PERMS">
@@ -7119,6 +7113,15 @@
                 <ScalarProperty Name="CURRENT_EMPLOYEE_FLAG" ColumnName="CURRENT_EMPLOYEE_FLAG" />
                 <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
                 <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_GROUPS">
+            <EntityTypeMapping TypeName="OracleModel.SYS_GROUPS">
+              <MappingFragment StoreEntitySet="SYS_GROUPS">
+                <ScalarProperty Name="JOB_ID" ColumnName="JOB_ID" />
+                <ScalarProperty Name="GROUP_NAME" ColumnName="GROUP_NAME" />
+                <ScalarProperty Name="GROUP_ID" ColumnName="GROUP_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

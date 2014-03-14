@@ -72,7 +72,6 @@ namespace DBI.Data
         public DbSet<DAILY_ACTIVITY_EMPLOYEE> DAILY_ACTIVITY_EMPLOYEE { get; set; }
         public DbSet<PA_ROLES_V> PA_ROLES_V { get; set; }
         public DbSet<DAILY_ACTIVITY_STATUS> DAILY_ACTIVITY_STATUS { get; set; }
-        public DbSet<SYS_GROUPS> SYS_GROUPS { get; set; }
         public DbSet<SYS_GROUPS_PERMS> SYS_GROUPS_PERMS { get; set; }
         public DbSet<SYS_MODULES> SYS_MODULES { get; set; }
         public DbSet<SYS_PERMISSIONS> SYS_PERMISSIONS { get; set; }
@@ -84,5 +83,6 @@ namespace DBI.Data
         public DbSet<JOB_TITLE_V> JOB_TITLE_V { get; set; }
         public DbSet<CROSSING_INCIDENT> CROSSING_INCIDENT { get; set; }
         public DbSet<EMPLOYEES_V> EMPLOYEES_V { get; set; }
+        public DbSet<SYS_GROUPS> SYS_GROUPS { get; set; }
     }
 }
