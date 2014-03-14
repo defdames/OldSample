@@ -92,6 +92,7 @@
         <AssociationConnector Association="OracleModel.FK_MENU_MODULE_ID" />
         <AssociationConnector Association="OracleModel.FK_MENU_PERM_ID" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_APPLICATION" Width="1.5" PointX="29.125" PointY="0.625" />
+        <EntityTypeShape EntityType="OracleModel.JOB_TITLE_V" Width="1.5" PointX="6.2944649170592726" PointY="21.411381269531038" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

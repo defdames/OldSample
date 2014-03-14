@@ -205,6 +205,9 @@
     <Compile Include="INVENTORY_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="JOB_TITLE_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="MBL_EMPLOYEE_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>

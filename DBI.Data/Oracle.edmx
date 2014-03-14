@@ -330,6 +330,13 @@
       "INVENTORY_V"."ORGANIZATION_ID" AS "ORGANIZATION_ID"
       FROM "XXEMS"."INVENTORY_V" "INVENTORY_V"</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="JOB_TITLE_V" EntityType="OracleModel.Store.JOB_TITLE_V" store:Type="Views" store:Schema="XXEMS" store:Name="JOB_TITLE_V">
+            <DefiningQuery>SELECT 
+      "JOB_TITLE_V"."JOB_ID" AS "JOB_ID", 
+      "JOB_TITLE_V"."NAME" AS "NAME", 
+      "JOB_TITLE_V"."LOCATTION" AS "LOCATTION"
+      FROM "XXEMS"."JOB_TITLE_V" "JOB_TITLE_V"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="MTL_TRANSACTION_INT_V" EntityType="OracleModel.Store.MTL_TRANSACTION_INT_V" store:Type="Views" Schema="XXEMS" />
           <EntitySet Name="PA_ROLES_V" EntityType="OracleModel.Store.PA_ROLES_V" store:Type="Views" Schema="XXEMS" />
           <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.Store.PA_TASKS_V" store:Type="Views" store:Schema="XXEMS" store:Name="PA_TASKS_V">
@@ -1667,6 +1674,17 @@
           <Property Name="INV_LOCATION" Type="number" Precision="15" />
           <Property Name="ORGANIZATION_ID" Type="number" Nullable="false" Precision="15" />
         </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXEMS.JOB_TITLE_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="JOB_TITLE_V">
+          <Key>
+            <PropertyRef Name="JOB_ID" />
+          </Key>
+          <Property Name="JOB_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="NAME" Type="varchar2" MaxLength="700" />
+          <Property Name="LOCATTION" Type="varchar2" MaxLength="14" />
+        </EntityType>
         <EntityType Name="MTL_TRANSACTION_INT_V">
           <Key>
             <PropertyRef Name="SOURCE_LINE_ID" />
@@ -2976,6 +2994,7 @@
             <End Role="SYS_MENU" EntitySet="SYS_MENU" />
           </AssociationSet>
           <EntitySet Name="CROSSING_APPLICATION" EntityType="OracleModel.CROSSING_APPLICATION" />
+          <EntitySet Name="JOB_TITLE_V" EntityType="OracleModel.JOB_TITLE_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -5255,6 +5274,14 @@
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <Property Type="DateTime" Name="FISCAL_YEAR" />
         </EntityType>
+        <EntityType Name="JOB_TITLE_V">
+          <Key>
+            <PropertyRef Name="JOB_ID" />
+          </Key>
+          <Property Type="Int64" Name="JOB_ID" Nullable="false" />
+          <Property Type="String" Name="NAME" MaxLength="700" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="LOCATTION" MaxLength="14" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6992,6 +7019,15 @@
                 <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
                 <ScalarProperty Name="APPLICATION_NUMBER" ColumnName="APPLICATION_NUMBER" />
                 <ScalarProperty Name="APPLICATION_ID" ColumnName="APPLICATION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JOB_TITLE_V">
+            <EntityTypeMapping TypeName="OracleModel.JOB_TITLE_V">
+              <MappingFragment StoreEntitySet="JOB_TITLE_V">
+                <ScalarProperty Name="LOCATTION" ColumnName="LOCATTION" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="JOB_ID" ColumnName="JOB_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

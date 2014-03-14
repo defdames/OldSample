@@ -82,5 +82,6 @@ namespace DBI.Data
         public DbSet<SYS_USER_PERMS> SYS_USER_PERMS { get; set; }
         public DbSet<SYS_MENU> SYS_MENU { get; set; }
         public DbSet<CROSSING_APPLICATION> CROSSING_APPLICATION { get; set; }
+        public DbSet<JOB_TITLE_V> JOB_TITLE_V { get; set; }
     }
 }
