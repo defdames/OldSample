@@ -83,5 +83,6 @@ namespace DBI.Data
         public DbSet<SYS_MENU> SYS_MENU { get; set; }
         public DbSet<CROSSING_APPLICATION> CROSSING_APPLICATION { get; set; }
         public DbSet<JOB_TITLE_V> JOB_TITLE_V { get; set; }
+        public DbSet<CROSSING_INCIDENT> CROSSING_INCIDENT { get; set; }
     }
 }

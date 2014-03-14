@@ -93,6 +93,8 @@
         <AssociationConnector Association="OracleModel.FK_MENU_PERM_ID" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_APPLICATION" Width="1.5" PointX="29.125" PointY="0.625" />
         <EntityTypeShape EntityType="OracleModel.JOB_TITLE_V" Width="1.5" PointX="6.2944649170592726" PointY="21.411381269531038" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_INCIDENT" Width="1.5" PointX="26.625" PointY="13.5" />
+        <AssociationConnector Association="OracleModel.FK_INCIDENT_CROSSING_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

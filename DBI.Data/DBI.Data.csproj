@@ -109,6 +109,9 @@
     <Compile Include="CROSSING_DATA_ENTRY.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="CROSSING_INCIDENT.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="CROSSING_INSPECTION.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>

@@ -45,6 +45,7 @@
           <EntitySet Name="CROSSING_APPLICATION" EntityType="OracleModel.Store.CROSSING_APPLICATION" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_CONTACTS" EntityType="OracleModel.Store.CROSSING_CONTACTS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_DATA_ENTRY" EntityType="OracleModel.Store.CROSSING_DATA_ENTRY" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="CROSSING_INCIDENT" EntityType="OracleModel.Store.CROSSING_INCIDENT" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_INSPECTION" EntityType="OracleModel.Store.CROSSING_INSPECTION" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_SUB_DIVISION" EntityType="OracleModel.Store.CROSSING_SUB_DIVISION" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_SUPPLEMENTAL" EntityType="OracleModel.Store.CROSSING_SUPPLEMENTAL" store:Type="Tables" Schema="XXEMS" />
@@ -639,6 +640,10 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_EQUIPMENT" EntitySet="DAILY_ACTIVITY_EQUIPMENT" />
           </AssociationSet>
+          <AssociationSet Name="FK_INCIDENT_CROSSING_ID" Association="OracleModel.Store.FK_INCIDENT_CROSSING_ID">
+            <End Role="CROSSINGS" EntitySet="CROSSINGS" />
+            <End Role="CROSSING_INCIDENT" EntitySet="CROSSING_INCIDENT" />
+          </AssociationSet>
           <AssociationSet Name="FK_INVENTORY_CHEMICAL_MIX_ID" Association="OracleModel.Store.FK_INVENTORY_CHEMICAL_MIX_ID">
             <End Role="DAILY_ACTIVITY_CHEMICAL_MIX" EntitySet="DAILY_ACTIVITY_CHEMICAL_MIX" />
             <End Role="DAILY_ACTIVITY_INVENTORY" EntitySet="DAILY_ACTIVITY_INVENTORY" />
@@ -816,6 +821,22 @@
           <Property Name="STATE" Type="varchar2" MaxLength="100" />
           <Property Name="SUB_DIVISION" Type="varchar2" MaxLength="100" />
           <Property Name="REMARKS" Type="varchar2" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="CROSSING_INCIDENT">
+          <Key>
+            <PropertyRef Name="INCIDENT_ID" />
+          </Key>
+          <Property Name="INCIDENT_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
+          <Property Name="INCIDENT_NUMBER" Type="number" Nullable="false" Precision="15" />
+          <Property Name="CROSSING_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="DATE_REPORTED" Type="date" />
+          <Property Name="DATE_CLOSED" Type="date" />
+          <Property Name="SLOW_ORDER" Type="char" MaxLength="1" />
+          <Property Name="REMARKS" Type="varchar2" MaxLength="500" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFY_DATE" Type="date" />
         </EntityType>
         <EntityType Name="CROSSING_INSPECTION">
           <Key>
@@ -2656,6 +2677,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_INCIDENT_CROSSING_ID">
+          <End Role="CROSSINGS" Type="OracleModel.Store.CROSSINGS" Multiplicity="1" />
+          <End Role="CROSSING_INCIDENT" Type="OracleModel.Store.CROSSING_INCIDENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSINGS">
+              <PropertyRef Name="CROSSING_ID" />
+            </Principal>
+            <Dependent Role="CROSSING_INCIDENT">
+              <PropertyRef Name="CROSSING_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_INVENTORY_CHEMICAL_MIX_ID">
           <End Role="DAILY_ACTIVITY_CHEMICAL_MIX" Type="OracleModel.Store.DAILY_ACTIVITY_CHEMICAL_MIX" Multiplicity="0..1" />
           <End Role="DAILY_ACTIVITY_INVENTORY" Type="OracleModel.Store.DAILY_ACTIVITY_INVENTORY" Multiplicity="*" />
@@ -2995,6 +3028,11 @@
           </AssociationSet>
           <EntitySet Name="CROSSING_APPLICATION" EntityType="OracleModel.CROSSING_APPLICATION" />
           <EntitySet Name="JOB_TITLE_V" EntityType="OracleModel.JOB_TITLE_V" />
+          <EntitySet Name="CROSSING_INCIDENT" EntityType="OracleModel.CROSSING_INCIDENT" />
+          <AssociationSet Name="FK_INCIDENT_CROSSING_ID" Association="OracleModel.FK_INCIDENT_CROSSING_ID">
+            <End Role="CROSSING" EntitySet="CROSSINGS" />
+            <End Role="CROSSING_INCIDENT" EntitySet="CROSSING_INCIDENT" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -4063,6 +4101,7 @@
           <NavigationProperty Name="CROSSING_CONTACTS" Relationship="OracleModel.FK_CROSSINGS_CONTACT_ID" FromRole="CROSSING" ToRole="CROSSING_CONTACTS" />
           <NavigationProperty Name="CROSSING_DATA_ENTRY" Relationship="OracleModel.FK_DATA_ENTRY_CROSSING_ID" FromRole="CROSSING" ToRole="CROSSING_DATA_ENTRY" />
           <NavigationProperty Name="CROSSING_SUPPLEMENTAL" Relationship="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" FromRole="CROSSING" ToRole="CROSSING_SUPPLEMENTAL" />
+          <NavigationProperty Name="CROSSING_INCIDENT" Relationship="OracleModel.FK_INCIDENT_CROSSING_ID" FromRole="CROSSING" ToRole="CROSSING_INCIDENT" />
         </EntityType>
         <Association Name="FK_CROSSINGS_CONTACT_ID">
           <End Type="OracleModel.CROSSING_CONTACTS" Role="CROSSING_CONTACTS" Multiplicity="0..1" />
@@ -5282,6 +5321,35 @@
           <Property Type="String" Name="NAME" MaxLength="700" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="LOCATTION" MaxLength="14" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="CROSSING_INCIDENT">
+          <Key>
+            <PropertyRef Name="INCIDENT_ID" />
+          </Key>
+          <Property Type="Int64" Name="INCIDENT_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="INCIDENT_NUMBER" Nullable="false" />
+          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
+          <Property Type="DateTime" Name="DATE_REPORTED" />
+          <Property Type="DateTime" Name="DATE_CLOSED" />
+          <Property Type="String" Name="SLOW_ORDER" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <NavigationProperty Name="CROSSING" Relationship="OracleModel.FK_INCIDENT_CROSSING_ID" FromRole="CROSSING_INCIDENT" ToRole="CROSSING" />
+        </EntityType>
+        <Association Name="FK_INCIDENT_CROSSING_ID">
+          <End Type="OracleModel.CROSSING" Role="CROSSING" Multiplicity="1" />
+          <End Type="OracleModel.CROSSING_INCIDENT" Role="CROSSING_INCIDENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSING">
+              <PropertyRef Name="CROSSING_ID" />
+            </Principal>
+            <Dependent Role="CROSSING_INCIDENT">
+              <PropertyRef Name="CROSSING_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7028,6 +7096,23 @@
                 <ScalarProperty Name="LOCATTION" ColumnName="LOCATTION" />
                 <ScalarProperty Name="NAME" ColumnName="NAME" />
                 <ScalarProperty Name="JOB_ID" ColumnName="JOB_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CROSSING_INCIDENT">
+            <EntityTypeMapping TypeName="OracleModel.CROSSING_INCIDENT">
+              <MappingFragment StoreEntitySet="CROSSING_INCIDENT">
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="REMARKS" ColumnName="REMARKS" />
+                <ScalarProperty Name="SLOW_ORDER" ColumnName="SLOW_ORDER" />
+                <ScalarProperty Name="DATE_CLOSED" ColumnName="DATE_CLOSED" />
+                <ScalarProperty Name="DATE_REPORTED" ColumnName="DATE_REPORTED" />
+                <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
+                <ScalarProperty Name="INCIDENT_NUMBER" ColumnName="INCIDENT_NUMBER" />
+                <ScalarProperty Name="INCIDENT_ID" ColumnName="INCIDENT_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
