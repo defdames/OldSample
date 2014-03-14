@@ -80,9 +80,9 @@ namespace DBI.Data
         public DbSet<SYS_USER_PERMS> SYS_USER_PERMS { get; set; }
         public DbSet<SYS_MENU> SYS_MENU { get; set; }
         public DbSet<CROSSING_APPLICATION> CROSSING_APPLICATION { get; set; }
-        public DbSet<JOB_TITLE_V> JOB_TITLE_V { get; set; }
         public DbSet<CROSSING_INCIDENT> CROSSING_INCIDENT { get; set; }
         public DbSet<EMPLOYEES_V> EMPLOYEES_V { get; set; }
         public DbSet<SYS_GROUPS> SYS_GROUPS { get; set; }
+        public DbSet<JOB_TITLE_V> JOB_TITLE_V { get; set; }
     }
 }

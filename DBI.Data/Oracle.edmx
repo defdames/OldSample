@@ -336,7 +336,7 @@
             <DefiningQuery>SELECT 
       "JOB_TITLE_V"."JOB_ID" AS "JOB_ID", 
       "JOB_TITLE_V"."NAME" AS "NAME", 
-      "JOB_TITLE_V"."LOCATTION" AS "LOCATTION"
+      "JOB_TITLE_V"."LOCATION" AS "LOCATION"
       FROM "XXEMS"."JOB_TITLE_V" "JOB_TITLE_V"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="MTL_TRANSACTION_INT_V" EntityType="OracleModel.Store.MTL_TRANSACTION_INT_V" store:Type="Views" Schema="XXEMS" />
@@ -1708,7 +1708,7 @@
           </Key>
           <Property Name="JOB_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="NAME" Type="varchar2" MaxLength="700" />
-          <Property Name="LOCATTION" Type="varchar2" MaxLength="14" />
+          <Property Name="LOCATION" Type="varchar2" MaxLength="14" />
         </EntityType>
         <EntityType Name="MTL_TRANSACTION_INT_V">
           <Key>
@@ -3025,7 +3025,6 @@
             <End Role="SYS_MENU" EntitySet="SYS_MENU" />
           </AssociationSet>
           <EntitySet Name="CROSSING_APPLICATION" EntityType="OracleModel.CROSSING_APPLICATION" />
-          <EntitySet Name="JOB_TITLE_V" EntityType="OracleModel.JOB_TITLE_V" />
           <EntitySet Name="CROSSING_INCIDENT" EntityType="OracleModel.CROSSING_INCIDENT" />
           <AssociationSet Name="FK_INCIDENT_CROSSING_ID" Association="OracleModel.FK_INCIDENT_CROSSING_ID">
             <End Role="CROSSING" EntitySet="CROSSINGS" />
@@ -3037,6 +3036,7 @@
             <End Role="SYS_GROUPS" EntitySet="SYS_GROUPS" />
             <End Role="SYS_GROUPS_PERMS" EntitySet="SYS_GROUPS_PERMS" />
           </AssociationSet>
+          <EntitySet Name="JOB_TITLE_V" EntityType="OracleModel.JOB_TITLE_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -5283,14 +5283,6 @@
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <Property Type="DateTime" Name="FISCAL_YEAR" />
         </EntityType>
-        <EntityType Name="JOB_TITLE_V">
-          <Key>
-            <PropertyRef Name="JOB_ID" />
-          </Key>
-          <Property Type="Int64" Name="JOB_ID" Nullable="false" />
-          <Property Type="String" Name="NAME" MaxLength="700" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="LOCATTION" MaxLength="14" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="CROSSING_INCIDENT">
           <Key>
             <PropertyRef Name="INCIDENT_ID" />
@@ -5357,6 +5349,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="JOB_TITLE_V">
+          <Key>
+            <PropertyRef Name="JOB_ID" />
+          </Key>
+          <Property Type="Int64" Name="JOB_ID" Nullable="false" />
+          <Property Type="String" Name="NAME" MaxLength="700" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="LOCATION" MaxLength="14" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7075,15 +7075,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="JOB_TITLE_V">
-            <EntityTypeMapping TypeName="OracleModel.JOB_TITLE_V">
-              <MappingFragment StoreEntitySet="JOB_TITLE_V">
-                <ScalarProperty Name="LOCATTION" ColumnName="LOCATTION" />
-                <ScalarProperty Name="NAME" ColumnName="NAME" />
-                <ScalarProperty Name="JOB_ID" ColumnName="JOB_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CROSSING_INCIDENT">
             <EntityTypeMapping TypeName="OracleModel.CROSSING_INCIDENT">
               <MappingFragment StoreEntitySet="CROSSING_INCIDENT">
@@ -7122,6 +7113,15 @@
                 <ScalarProperty Name="JOB_ID" ColumnName="JOB_ID" />
                 <ScalarProperty Name="GROUP_NAME" ColumnName="GROUP_NAME" />
                 <ScalarProperty Name="GROUP_ID" ColumnName="GROUP_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JOB_TITLE_V">
+            <EntityTypeMapping TypeName="OracleModel.JOB_TITLE_V">
+              <MappingFragment StoreEntitySet="JOB_TITLE_V">
+                <ScalarProperty Name="LOCATION" ColumnName="LOCATION" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="JOB_ID" ColumnName="JOB_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

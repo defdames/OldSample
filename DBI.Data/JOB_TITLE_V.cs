@@ -16,6 +16,6 @@ namespace DBI.Data
     {
         public long JOB_ID { get; set; }
         public string NAME { get; set; }
-        public string LOCATTION { get; set; }
+        public string LOCATION { get; set; }
     }
 }
