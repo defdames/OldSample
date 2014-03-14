@@ -14,27 +14,44 @@ namespace DBI.Mobile.EMS.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public RootObject Get()
+        public RootObject Get(string id)
         {
-            Version ver = new Version();
-            ver.number = "1.0.B140312";
-            ver.mandatory = true;
+            if (id == "production")
+            {
+                Version ver = new Version();
+                ver.number = "1.0.B140314";
+                ver.mandatory = false;
+                ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobile.dbiservices.com/iems/iEMS.plist";
+                ver.descriptionText = "Employee drive time removed from non IRM Jobs. Added updated version control and modified the copy feature.";
 
-            RootObject root = new RootObject();
-            root.version = ver;
-            root.min_version_number = 1.0;
+                RootObject root = new RootObject();
+                root.version = ver;
+                root.min_version_number = 1.0;
+                return root;
+            }
+            else if (id == "internal")
+            {
+                Version ver = new Version();
+                ver.number = "1.0.B140314";
+                ver.mandatory = false;
+                ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobile.dbiservices.com/iems/iEMS.plist";
+                ver.descriptionText = "Employee drive time removed from non IRM Jobs. Added updated version control and modified the copy feature.";
 
-            return root;
+                RootObject root = new RootObject();
+                root.version = ver;
+                root.min_version_number = 1.0;
+                return root;
+            }
+            return null;
         }
     }
-
-
 
     public class Version
     {
     public string number { get; set; }
     public bool mandatory { get; set; }
     public string install_url { get; set; }
+    public string descriptionText { get; set; }
     }
 
     public class RootObject
