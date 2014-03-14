@@ -20,9 +20,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             if (!X.IsAjaxRequest)
             {
                 uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
-                //uxEditAppRequestedStore.Data = StaticLists.ApplicationRequested;
                 ReadInTruckNumberForApplication("Add");
-                //ReadInTruckNumberForApplication("Edit");
+              
             }
         }
         protected void deApplicationGridData(object sender, StoreReadDataEventArgs e)
@@ -74,9 +73,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string AppRequested = uxAddAppReqeusted.Value.ToString();
             string TruckNumber = uxAddApplicationTruckComboBox.Value.ToString();
             string Spray = uxAddEntrySprayBox.Value.ToString();
+            //string FiscalYear = uxAddFiscalYear.Value.ToString();
             string Cut = uxAddEntryCutBox.Value.ToString();
             string Inspect = uxAddEntryInspectBox.Value.ToString();
-            string Remarks = uxAddEntryRemarks.Value.ToString();
+            
             if (uxAddEntrySprayBox.Checked)
             {
                 Spray = "Y";
@@ -109,6 +109,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             foreach (CrossingForApplicationDetails crossing in crossingList)
             {
                 //check for if application requested has been duplicated in the same fiscal year.
+               
 
 
 
@@ -121,15 +122,25 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                         data.APPLICATION_REQUESTED = AppRequested;
                         data.TRUCK_NUMBER = TruckNumber;
                         data.SPRAY = Spray;
+                        //data.FISCAL_YEAR = FiscalYear;
                         data.CUT = Cut;
-                        data.INSPECT = Inspect;
-                        data.REMARKS = Remarks;
+                        data.INSPECT = Inspect;                       
                         data.CROSSING_ID = crossing.CROSSING_ID;
+                        try
+                        {
+                            string Remarks = uxAddEntryRemarks.Value.ToString();
+                            data.REMARKS = Remarks;
+                        }
+                        catch (Exception)
+                        {
+                            data.REMARKS = null;
+                        }
                        GenericData.Insert<CROSSING_APPLICATION>(data); 
                 }
 
                 uxAddNewApplicationEntryWindow.Hide();
                 uxAddApplicationForm.Reset();
+                uxAppEntryCrossingStore.Reload();
 
 
 
@@ -278,7 +289,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             public Int64 APPLICATION_NUMBER { get; set; }
             public string APPLICATION_REQUESTED { get; set; }
             public DateTime APPLICATION_DATE { get; set; }
-            public string TRUCK_NUMBER { get; set; }           
+            public string TRUCK_NUMBER { get; set; }
+            public long FISCAL_YEAR { get; set; }
             public string SPRAY { get; set; }
             public string CUT { get; set; }        
             public string INSPECT { get; set; }
@@ -303,13 +315,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 {
                     uxAddApplicationTruckStore.DataSource = data;
                 }
-                //else
-                //{
-                //    uxEditApplicationTruckStore.DataSource = data;
-                //}
-
-
-
+               
             }
         }
           public class CrossingForApplicationDetails

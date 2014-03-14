@@ -21,11 +21,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
               
                     uxAddServiceTypeStore.Data = StaticLists.ServiceTypes;
-                    uxEditServiceTypeStore.Data = StaticLists.ServiceTypes;
-                    ReadInTruckNumber("Add");
-                    ReadInTruckNumber("Edit");
-                
-                
+                    ReadInTruckNumber("Add");               
             }
         }
         protected void deSupplementalGridData(object sender, StoreReadDataEventArgs e)
@@ -76,10 +72,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             //do type conversions
             DateTime ApprovedDate = (DateTime)uxAddApprovedDateField.Value;
             decimal SquareFeet = Convert.ToDecimal(uxAddSquareFeet.Value);
-            string TruckNumber = uxEditTruckNumber.Value.ToString();
+            string TruckNumber = uxAddTruckComboBox.Value.ToString();
             string ServiceType = uxAddServiceType.Value.ToString();
             string Recurring = uxAddRecurringBox.Value.ToString();
-            string Remarks = uxAddRemarks.Value.ToString();
            
             if (uxAddRecurringBox.Checked)
             {
@@ -102,11 +97,19 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     TRUCK_NUMBER = TruckNumber,
                     SQUARE_FEET = SquareFeet,
                     RECURRING = Recurring,
-                    REMARKS = Remarks,
+                   
                     CROSSING_ID = CrossingId,
                 };
             }
-
+            try
+            {
+                string Remarks = uxAddRemarks.Value.ToString();
+                data.REMARKS = Remarks;
+            }
+            catch (Exception)
+            {
+                data.REMARKS = null;
+            }
 
             GenericData.Insert<CROSSING_SUPPLEMENTAL>(data);
 
@@ -127,97 +130,93 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             });
         }
-        protected void deEditSupplementalForm(object sender, DirectEventArgs e)
-        {
-            string json = e.ExtraParams["SupplementalInfo"];
-            List<SupplementalDetails> SupplementalList = JSON.Deserialize<List<SupplementalDetails>>(json);
-            foreach (SupplementalDetails Supplemental in SupplementalList)
-            {
+        //protected void deEditSupplementalForm(object sender, DirectEventArgs e)
+        //{
+        //    string json = e.ExtraParams["SupplementalInfo"];
+        //    List<SupplementalDetails> SupplementalList = JSON.Deserialize<List<SupplementalDetails>>(json);
+        //    foreach (SupplementalDetails Supplemental in SupplementalList)
+        //    {
 
-                uxEditApprovedDateField.SetValue(Supplemental.APPROVED_DATE);
-                uxEditSquareFeet.SetValue(Supplemental.SQUARE_FEET);
-                uxEditServiceTypes.SetValue(Supplemental.SERVICE_TYPE);
-                uxEditTruckNumber.SetValue(Supplemental.TRUCK_NUMBER);
-                uxEditRecurringBox.SetValue(Supplemental.RECURRING);
-                uxEditRemarks.SetValue(Supplemental.REMARKS);
+        //        uxEditApprovedDateField.SetValue(Supplemental.APPROVED_DATE);
+        //        uxEditSquareFeet.SetValue(Supplemental.SQUARE_FEET);
+        //        uxEditServiceTypes.SetValue(Supplemental.SERVICE_TYPE);
+        //        uxEditTruckNumber.SetValue(Supplemental.TRUCK_NUMBER);
+        //        uxEditRecurringBox.SetValue(Supplemental.RECURRING);
+        //        uxEditRemarks.SetValue(Supplemental.REMARKS);
 
                
-                if (Supplemental.RECURRING == "Y")
-                {
-                    uxEditRecurringBox.Checked = true;
-                }
-            }
+        //        if (Supplemental.RECURRING == "Y")
+        //        {
+        //            uxEditRecurringBox.Checked = true;
+        //        }
+        //    }
 
-        }
-
-
+        //}
 
 
-        /// <summary>
-        /// Store edit changes to database
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deEditSupplemental(object sender, DirectEventArgs e)
-        {
-            CROSSING_SUPPLEMENTAL data;
 
-            //Do type conversions
-            DateTime ApprovedDate = (DateTime)uxEditApprovedDateField.Value;
-            decimal SquareFeet = Convert.ToDecimal(uxEditSquareFeet.Value);
-            string ServiceType = uxEditServiceTypes.Value.ToString();
-            string TruckNumber = uxEditTruckNumber.Value.ToString();
-            string Recurring = uxEditRecurringBox.Value.ToString();
-            string Remarks = uxEditRemarks.Value.ToString();
+
+     
+        //protected void deEditSupplemental(object sender, DirectEventArgs e)
+        //{
+        //    CROSSING_SUPPLEMENTAL data;
+
+        //    //Do type conversions
+        //    DateTime ApprovedDate = (DateTime)uxEditApprovedDateField.Value;
+        //    decimal SquareFeet = Convert.ToDecimal(uxEditSquareFeet.Value);
+        //    string ServiceType = uxEditServiceTypes.Value.ToString();
+        //    string TruckNumber = uxEditTruckNumber.Value.ToString();
+        //    string Recurring = uxEditRecurringBox.Value.ToString();
+        //    string Remarks = uxEditRemarks.Value.ToString();
           
-            if (uxEditRecurringBox.Checked)
-            {
-                Recurring = "Y";
-            }
-            else
-            {
-                Recurring = "N";
-            }
+        //    if (uxEditRecurringBox.Checked)
+        //    {
+        //        Recurring = "Y";
+        //    }
+        //    else
+        //    {
+        //        Recurring = "N";
+        //    }
 
 
-            //Get record to be edited
-            using (Entities _context = new Entities())
-            {
-                var SupplementalId = long.Parse(e.ExtraParams["SupplementalId"]);
-                data = (from d in _context.CROSSING_SUPPLEMENTAL                   
-                        where d.SUPPLEMENTAL_ID == SupplementalId
+        //    //Get record to be edited
+        //    using (Entities _context = new Entities())
+        //    {
+        //        var SupplementalId = long.Parse(e.ExtraParams["SupplementalId"]);
+        //        data = (from d in _context.CROSSING_SUPPLEMENTAL                   
+        //                where d.SUPPLEMENTAL_ID == SupplementalId
 
-                        select d).Single();
-            }
+        //                select d).Single();
+        //    }
          
-                    data.APPROVED_DATE = ApprovedDate;
-                    //data.COMPLETED_DATE = CompletedDate;
-                    data.SQUARE_FEET = SquareFeet;
-                    data.TRUCK_NUMBER = TruckNumber;
-                    data.SERVICE_TYPE = ServiceType;
-                    data.RECURRING = Recurring;
-                    data.REMARKS = Remarks;
+        //            data.APPROVED_DATE = ApprovedDate;
+        //            //data.COMPLETED_DATE = CompletedDate;
+        //            data.SQUARE_FEET = SquareFeet;
+        //            data.TRUCK_NUMBER = TruckNumber;
+        //            data.SERVICE_TYPE = ServiceType;
+        //            data.RECURRING = Recurring;
+        //            data.REMARKS = Remarks;
                 
-                //Write to DB
-                GenericData.Update<CROSSING_SUPPLEMENTAL>(data);
+        //        //Write to DB
+        //        GenericData.Update<CROSSING_SUPPLEMENTAL>(data);
             
 
-                uxEditSupplementalWindow.Hide();
-                uxEditSupplementalForm.Reset();
-                uxSupplementalStore.Reload();
+        //        uxEditSupplementalWindow.Hide();
+        //        uxEditSupplementalForm.Reset();
+        //        uxSupplementalStore.Reload();
 
-                Notification.Show(new NotificationConfig()
-                {
-                    Title = "Success",
-                    Html = "Supplemental Edited Successfully",
-                    HideDelay = 1000,
-                    AlignCfg = new NotificationAlignConfig
-                    {
-                        ElementAnchor = AnchorPoint.Center,
-                        TargetAnchor = AnchorPoint.Center
-                    }
-                });
-            }
+        //        Notification.Show(new NotificationConfig()
+        //        {
+        //            Title = "Success",
+        //            Html = "Supplemental Edited Successfully",
+        //            HideDelay = 1000,
+        //            AlignCfg = new NotificationAlignConfig
+        //            {
+        //                ElementAnchor = AnchorPoint.Center,
+        //                TargetAnchor = AnchorPoint.Center
+        //            }
+        //        });
+        //    }
 
         protected void ReadInTruckNumber(string truckType)
         {
@@ -237,11 +236,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 {
                     uxAddTruckStore.DataSource = data;
                 }
-                else
-                {
-                    uxEditTruckStore.DataSource = data;
-                }
-              
+                
                
                 
             }

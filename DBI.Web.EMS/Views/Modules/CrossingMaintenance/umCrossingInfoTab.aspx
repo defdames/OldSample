@@ -909,9 +909,9 @@
                   
                 </Items>
                   <Buttons>
-                            <ext:Button runat="server" ID="Button2" Text="Add" Icon="Add">
+                            <ext:Button runat="server" ID="uxAddIncidentButton" Text="Add" Icon="Add">
                                 <%--<DirectEvents>
-                                    <Click OnEvent="deEditCrossings">
+                                    <Click OnEvent="deAddIncident">
                                         <ExtraParams>
                                             <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
                                         </ExtraParams>

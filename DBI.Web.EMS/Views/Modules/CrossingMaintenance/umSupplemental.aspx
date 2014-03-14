@@ -81,18 +81,7 @@
                         <Click Handler="#{uxAddNewSupplementalWindow}.show()" />
                     </Listeners>
                 </ext:Button>
-                <ext:Button ID="uxEditSuppButton" runat="server" Text="Edit Supplemental" Icon="ApplicationEdit" Disabled="true">
-                    <Listeners>
-                        <Click Handler="#{uxEditSupplementalWindow}.show()" />
-                    </Listeners>
-                    <DirectEvents>
-                        <Click OnEvent="deEditSupplementalForm">
-                            <ExtraParams>
-                                <ext:Parameter Name="SupplementalInfo" Value="Ext.encode(#{uxSupplementalGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
-                            </ExtraParams>
-                        </Click>
-                    </DirectEvents>
-                </ext:Button>
+               
                 <ext:Button ID="uxRemoveSuppButton" runat="server" Text="Delete Supplemental" Icon="ApplicationDelete" Disabled="true">
                     <DirectEvents>
                         <Click OnEvent="deRemoveSupplemental">
@@ -146,16 +135,11 @@
             <SelectionModel>
                 <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" AllowDeselect="true" Mode="Single" />
             </SelectionModel>
+            
             <Listeners>
-                <Select Handler="#{uxEditSuppButton}.enable();
-					#{uxRemoveSuppButton}.enable()" />
-                <Deselect Handler="#{uxEditSuppButton}.disable();
-					#{uxRemoveSuppButton}.disable()" />
+                <Select Handler="#{uxRemoveSuppButton}.enable();" />
+                <Deselect Handler="#{uxRemoveSuppButton}.disable();" />
             </Listeners>
-
-
-
-
         </ext:GridPanel>
 
 
@@ -172,7 +156,7 @@
                     <Items>
                         <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                             <Items>
-                                <ext:DateField ID="uxAddApprovedDateField" runat="server" FieldLabel="Approved Date" AnchorHorizontal="100%" LabelAlign="Right" />
+                                <ext:DateField ID="uxAddApprovedDateField" runat="server" FieldLabel="Approved Date" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false"/>
 
                                 <ext:ComboBox ID="uxAddServiceType"
                                     runat="server"
@@ -181,7 +165,7 @@
                                     DisplayField="type"
                                     ValueField="type"
                                     QueryMode="Local"
-                                    TypeAhead="true" TabIndex="2" Width="300">
+                                    TypeAhead="true" TabIndex="2" Width="300" AllowBlank="false">
                                     <Store>
                                         <ext:Store runat="server"
                                             ID="uxAddServiceTypeStore" AutoDataBind="true">
@@ -206,7 +190,7 @@
                         <ext:FieldContainer ID="FieldContainer2" runat="server" Layout="HBoxLayout">
                             <Items>
 
-                                <ext:TextField runat="server" ID="uxAddSquareFeet" FieldLabel="Square Feet" LabelAlign="Right" AnchorHorizontal="100%" />
+                                <ext:TextField runat="server" ID="uxAddSquareFeet" FieldLabel="Square Feet" LabelAlign="Right" AnchorHorizontal="100%" AllowBlank="false" />
 
                                 <ext:ComboBox ID="uxAddTruckComboBox"
                                     runat="server"
@@ -215,7 +199,7 @@
                                     DisplayField="NAME"
                                     ValueField="PROJECT_ID"
                                     QueryMode="Local"
-                                    TypeAhead="true" Width="300">
+                                    TypeAhead="true" Width="300" AllowBlank="false">
                                     <Store>
                                         <ext:Store runat="server"
                                             ID="uxAddTruckStore" AutoDataBind="true">
@@ -230,7 +214,7 @@
                                         </ext:Store>
                                     </Store>
                                 </ext:ComboBox>
-                                <ext:Checkbox ID="uxAddRecurringBox" runat="server" FieldLabel="Recurring" LabelAlign="Right" />
+                                <ext:Checkbox ID="uxAddRecurringBox" runat="server" FieldLabel="Recurring" LabelAlign="Right" AllowBlank="false" />
 
                             </Items>
                         </ext:FieldContainer>
@@ -255,109 +239,15 @@
                             </Listeners>
                         </ext:Button>
                     </Buttons>
+                    <Listeners>
+						<ValidityChange Handler="#{uxAddNewSupplementalButton}.setDisabled(!valid);" />
+					</Listeners>
                 </ext:FormPanel>
             </Items>
         </ext:Window>
 
         <%---------------------------------------------------------------------------------------------------------%>
-        <ext:Window runat="server"
-            ID="uxEditSupplementalWindow"
-            Layout="FormLayout"
-            Hidden="true"
-            Title="Edit Supplemental"
-            Width="800">
-            <Items>
-                <ext:FormPanel ID="uxEditSupplementalForm" runat="server" Layout="FormLayout">
-                    <Items>
-                        <ext:FieldContainer ID="FieldContainer5" runat="server" Layout="HBoxLayout">
-                            <Items>
-                                <ext:DateField ID="uxEditApprovedDateField" runat="server" FieldLabel="Approved Date" AnchorHorizontal="100%" LabelAlign="Right" />
-
-                                <ext:ComboBox ID="uxEditServiceTypes"
-                                    runat="server"
-                                    FieldLabel="Service Type"
-                                    LabelAlign="Right"
-                                    DisplayField="type"
-                                    ValueField="type"
-                                    QueryMode="Local"
-                                    TypeAhead="true" TabIndex="2" Width="300">
-                                    <Store>
-                                        <ext:Store runat="server"
-                                            ID="uxEditServiceTypeStore" AutoDataBind="true">
-                                            <Model>
-                                                <ext:Model ID="Model3" runat="server">
-                                                    <Fields>
-                                                        <ext:ModelField Name="type" />
-                                                    </Fields>
-                                                </ext:Model>
-                                            </Model>
-                                            <Reader>
-                                                <ext:ArrayReader />
-                                            </Reader>
-                                        </ext:Store>
-                                    </Store>
-
-                                </ext:ComboBox>
-                                <ext:TextField runat="server" ID="uxEditSquareFeet" FieldLabel="Square Feet" LabelAlign="Right" AnchorHorizontal="100%" />
-
-                            </Items>
-                        </ext:FieldContainer>
-
-                        <ext:FieldContainer ID="FieldContainer7" runat="server" Layout="HBoxLayout">
-                            <Items>
-
-                                <%--     <ext:DateField ID="uxEditCompletedDateField" runat="server" FieldLabel="Completed Date" AnchorHorizontal="100%" LabelAlign="Right" />--%>
-
-                                <ext:ComboBox ID="uxEditTruckNumber"
-                                    runat="server"
-                                    FieldLabel="Truck #"
-                                    LabelAlign="Right"
-                                    DisplayField="NAME"
-                                    ValueField="NAME"
-                                    QueryMode="Local"
-                                    TypeAhead="true" Width="300">
-                                    <Store>
-                                        <ext:Store runat="server"
-                                            ID="uxEditTruckStore" AutoDataBind="true">
-                                            <Model>
-                                                <ext:Model ID="Model6" runat="server">
-                                                    <Fields>
-                                                        <ext:ModelField Name="NAME" />
-                                                    </Fields>
-                                                </ext:Model>
-                                            </Model>
-
-                                        </ext:Store>
-                                    </Store>
-
-                                </ext:ComboBox>
-                                <ext:Checkbox ID="uxEditRecurringBox" runat="server" FieldLabel="Recurring" LabelAlign="Right" />
-
-                            </Items>
-                        </ext:FieldContainer>
-
-                        <ext:TextArea ID="uxEditRemarks" runat="server" FieldLabel="Remarks" AnchorHorizontal="92%" LabelAlign="Right" />
-                    </Items>
-                    <Buttons>
-                        <ext:Button ID="uxEditSupplemental" runat="server" Text="Update" Icon="Add">
-                            <DirectEvents>
-                                <Click OnEvent="deEditSupplemental">
-                                    <ExtraParams>
-                                        <ext:Parameter Name="SupplementalId" Value="#{uxSupplementalGrid}.getSelectionModel().getSelection()[0].data.SUPPLEMENTAL_ID" Mode="Raw" />
-                                    </ExtraParams>
-                                </Click>
-                            </DirectEvents>
-                        </ext:Button>
-                        <ext:Button ID="uxCancelSupplemental" runat="server" Text="Cancel" Icon="Delete">
-                            <Listeners>
-                                <Click Handler="#{uxEditSupplementalForm}.reset();
-									#{uxEditSupplementalWindow}.hide()" />
-                            </Listeners>
-                        </ext:Button>
-                    </Buttons>
-                </ext:FormPanel>
-            </Items>
-        </ext:Window>
+      
 
     </form>
 </body>
