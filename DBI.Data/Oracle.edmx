@@ -297,6 +297,7 @@
       "EMPLOYEES_V"."EMPLOYEE_NAME" AS "EMPLOYEE_NAME", 
       "EMPLOYEES_V"."CURRENT_EMPLOYEE_FLAG" AS "CURRENT_EMPLOYEE_FLAG", 
       "EMPLOYEES_V"."EMPLOYEE_NUMBER" AS "EMPLOYEE_NUMBER", 
+      "EMPLOYEES_V"."JOB_ID" AS "JOB_ID", 
       "EMPLOYEES_V"."JOB_NAME" AS "JOB_NAME", 
       "EMPLOYEES_V"."ORGANIZATION_ID" AS "ORGANIZATION_ID", 
       "EMPLOYEES_V"."ORGANIZATION_NAME" AS "ORGANIZATION_NAME", 
@@ -1642,12 +1643,14 @@
         <EntityType Name="EMPLOYEES_V">
           <Key>
             <PropertyRef Name="PERSON_ID" />
+            <PropertyRef Name="JOB_ID" />
             <PropertyRef Name="ORGANIZATION_NAME" />
           </Key>
           <Property Name="PERSON_ID" Type="number" Nullable="false" Precision="10" />
           <Property Name="EMPLOYEE_NAME" Type="varchar2" MaxLength="362" />
           <Property Name="CURRENT_EMPLOYEE_FLAG" Type="varchar2" MaxLength="30" />
           <Property Name="EMPLOYEE_NUMBER" Type="varchar2" MaxLength="30" />
+          <Property Name="JOB_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="JOB_NAME" Type="varchar2" MaxLength="700" />
           <Property Name="ORGANIZATION_ID" Type="number" Precision="15" />
           <Property Name="ORGANIZATION_NAME" Type="varchar2" Nullable="false" MaxLength="240" />
@@ -2866,7 +2869,6 @@
             <End Role="SYS_USERS" EntitySet="SYS_USERS" />
             <End Role="SYS_LOG" EntitySet="SYS_LOG" />
           </AssociationSet>
-          <EntitySet Name="EMPLOYEES_V" EntityType="OracleModel.EMPLOYEES_V" />
           <EntitySet Name="DAILY_ACTIVITY_WEATHER" EntityType="OracleModel.DAILY_ACTIVITY_WEATHER" />
           <EntitySet Name="DAILY_ACTIVITY_EQUIPMENT" EntityType="OracleModel.DAILY_ACTIVITY_EQUIPMENT" />
           <EntitySet Name="INVENTORY_V" EntityType="OracleModel.INVENTORY_V" />
@@ -3033,6 +3035,7 @@
             <End Role="CROSSING" EntitySet="CROSSINGS" />
             <End Role="CROSSING_INCIDENT" EntitySet="CROSSING_INCIDENT" />
           </AssociationSet>
+          <EntitySet Name="EMPLOYEES_V" EntityType="OracleModel.EMPLOYEES_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -3176,20 +3179,6 @@
           <Property Type="Int64" Name="CURRENT_ORG_ID" Nullable="true" />
           <Property Type="String" Name="CURRENT_EMPLOYEE_FLAG" Nullable="false" />
         </ComplexType>
-        <EntityType Name="EMPLOYEES_V">
-          <Key>
-            <PropertyRef Name="PERSON_ID" />
-            <PropertyRef Name="ORGANIZATION_NAME" />
-          </Key>
-          <Property Type="Int32" Name="PERSON_ID" Nullable="false" />
-          <Property Type="String" Name="EMPLOYEE_NAME" MaxLength="362" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CURRENT_EMPLOYEE_FLAG" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="EMPLOYEE_NUMBER" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="JOB_NAME" MaxLength="700" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="ORGANIZATION_ID" />
-          <Property Type="String" Name="ORGANIZATION_NAME" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="LAST_UPDATE_DATE" />
-        </EntityType>
         <ComplexType Name="MBL_EQUIPMENT_V" >
           <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
           <Property Type="String" Name="EQUIPMENT_NAME" Nullable="false" />
@@ -5350,6 +5339,22 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="EMPLOYEES_V">
+          <Key>
+            <PropertyRef Name="PERSON_ID" />
+            <PropertyRef Name="JOB_ID" />
+            <PropertyRef Name="ORGANIZATION_NAME" />
+          </Key>
+          <Property Type="Int32" Name="PERSON_ID" Nullable="false" />
+          <Property Type="String" Name="EMPLOYEE_NAME" MaxLength="362" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CURRENT_EMPLOYEE_FLAG" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EMPLOYEE_NUMBER" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="JOB_ID" Nullable="false" />
+          <Property Type="String" Name="JOB_NAME" MaxLength="700" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="ORGANIZATION_ID" />
+          <Property Type="String" Name="ORGANIZATION_NAME" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5410,20 +5415,6 @@
                 <ScalarProperty Name="USER_CULTURE" ColumnName="USER_CULTURE" />
                 <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EMPLOYEES_V">
-            <EntityTypeMapping TypeName="OracleModel.EMPLOYEES_V">
-              <MappingFragment StoreEntitySet="EMPLOYEES_V">
-                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
-                <ScalarProperty Name="ORGANIZATION_NAME" ColumnName="ORGANIZATION_NAME" />
-                <ScalarProperty Name="ORGANIZATION_ID" ColumnName="ORGANIZATION_ID" />
-                <ScalarProperty Name="JOB_NAME" ColumnName="JOB_NAME" />
-                <ScalarProperty Name="EMPLOYEE_NUMBER" ColumnName="EMPLOYEE_NUMBER" />
-                <ScalarProperty Name="CURRENT_EMPLOYEE_FLAG" ColumnName="CURRENT_EMPLOYEE_FLAG" />
-                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
-                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7113,6 +7104,21 @@
                 <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
                 <ScalarProperty Name="INCIDENT_NUMBER" ColumnName="INCIDENT_NUMBER" />
                 <ScalarProperty Name="INCIDENT_ID" ColumnName="INCIDENT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EMPLOYEES_V">
+            <EntityTypeMapping TypeName="OracleModel.EMPLOYEES_V">
+              <MappingFragment StoreEntitySet="EMPLOYEES_V">
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="ORGANIZATION_NAME" ColumnName="ORGANIZATION_NAME" />
+                <ScalarProperty Name="ORGANIZATION_ID" ColumnName="ORGANIZATION_ID" />
+                <ScalarProperty Name="JOB_NAME" ColumnName="JOB_NAME" />
+                <ScalarProperty Name="JOB_ID" ColumnName="JOB_ID" />
+                <ScalarProperty Name="EMPLOYEE_NUMBER" ColumnName="EMPLOYEE_NUMBER" />
+                <ScalarProperty Name="CURRENT_EMPLOYEE_FLAG" ColumnName="CURRENT_EMPLOYEE_FLAG" />
+                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
+                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
