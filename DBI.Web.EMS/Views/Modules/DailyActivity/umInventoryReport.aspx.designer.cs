@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
+namespace DBI.Web.EMS.Views.Modules.DailyActivity {
     
     
-    public partial class umCrossingMain {
+    public partial class umInventoryReport {
         
         /// <summary>
         /// form1 control.
@@ -22,57 +22,30 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// ResourceManager2 control.
+        /// uxInventoryReportViewport control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ResourceManager ResourceManager2;
+        protected global::Ext.Net.Viewport uxInventoryReportViewport;
         
         /// <summary>
-        /// Viewport1 control.
+        /// uxReportGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Viewport Viewport1;
+        protected global::Ext.Net.GridPanel uxReportGrid;
         
         /// <summary>
-        /// uxCrossingTab control.
+        /// uxReportStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TabPanel uxCrossingTab;
-        
-        /// <summary>
-        /// uxCrossingSecurity control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxCrossingSecurity;
-        
-        /// <summary>
-        /// uxCrossingInfoTab control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxCrossingInfoTab;
-        
-        /// <summary>
-        /// uxContactsTab control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxContactsTab;
+        protected global::Ext.Net.Store uxReportStore;
     }
 }

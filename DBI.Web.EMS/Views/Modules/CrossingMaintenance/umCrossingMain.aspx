@@ -49,7 +49,7 @@
 
                             </ext:Panel>
                            
-                            <ext:Panel runat="server"
+                          <%--  <ext:Panel runat="server"
                                 Title="Application Entry"
                                 ID="uxDataEntryTab"
                                 Disabled="false">
@@ -75,7 +75,7 @@
                                     ID="Loader3" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umSupplemental.aspx">
                                     <LoadMask ShowMask="true" />
                                 </Loader>
-                            </ext:Panel>
+                            </ext:Panel>--%>
 
                         </Items>
                     </ext:TabPanel>

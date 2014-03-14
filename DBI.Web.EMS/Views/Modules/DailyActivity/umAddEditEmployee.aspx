@@ -261,6 +261,9 @@
 						<ext:Checkbox runat="server"
 							ID="uxAddEmployeePerDiem"
 							FieldLabel="Per Diem" />
+						<ext:TextField runat="server"
+							FieldLabel="License"
+							ID="uxAddEmployeeLicense" />
 						<ext:TextArea runat="server"
 						   FieldLabel="Comments"
 						   ID="uxAddEmployeeComments"
@@ -574,6 +577,10 @@
 						<ext:Checkbox runat="server"
 							ID="uxEditEmployeePerDiem"
 							FieldLabel="Per Diem"
+							AllowBlank="true" />
+						<ext:TextField runat="server"
+							ID="uxEditEmployeeLicense"
+							FieldLabel="License"
 							AllowBlank="true" />
 					   <ext:TextArea runat="server"
 						   FieldLabel="Comments"

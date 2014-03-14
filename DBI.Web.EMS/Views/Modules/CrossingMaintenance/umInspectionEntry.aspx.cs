@@ -73,7 +73,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             long InspectionNumber = Convert.ToInt64(uxAddInspectEntryNumber.Value);
             DateTime Date = (DateTime)uxAddInspectEntryDate.Value;
-            Int64 TruckNumber = Convert.ToInt64(uxAddInspectionTruckComboBox.Value);
+            string TruckNumber = uxAddInspectionTruckComboBox.Value.ToString();
             string Spray = uxAddInspectEntrySprayBox.Value.ToString();
             string Cut = uxAddInspectEntryCutBox.Value.ToString();
             string Inspect = uxAddInspectEntryInspectBox.Value.ToString();
@@ -145,8 +145,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         protected void deEditInspectionForm(object sender, DirectEventArgs e)
         {
             string json = e.ExtraParams["InspectionInfo"];
-            List<InspectionDetails> InspectionList = JSON.Deserialize<List<InspectionDetails>>(json);
-            foreach (InspectionDetails Inspection in InspectionList)
+            List<InspectDetails> InspectionList = JSON.Deserialize<List<InspectDetails>>(json);
+            foreach (InspectDetails Inspection in InspectionList)
             {
 
 
@@ -190,7 +190,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             long InspectionNumber = Convert.ToInt64(uxEditInspectEntryNumber.Value);
             DateTime Date = (DateTime)uxEditInspectEntryDate.Value;
-            Int64 TruckNumber = Convert.ToInt64(uxEditInspectionTruckNumber.Value);
+            string TruckNumber = uxEditInspectionTruckNumber.Value.ToString();
             string Spray = uxEditInspectEntrySprayBox.Value.ToString();
             string Cut = uxEditInspectEntryCutBox.Value.ToString();
             string Inspect = uxEditInspectEntryInspectBox.Value.ToString();
@@ -226,10 +226,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             //Get record to be edited
             using (Entities _context = new Entities())
             {
-                var CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+                var InspectionId = long.Parse(e.ExtraParams["InspectionId"]);
                 data = (from d in _context.CROSSING_INSPECTION
-                        join c in _context.CROSSINGS on d.CROSSING_ID equals c.CROSSING_ID
-                        where d.CROSSING_ID == CrossingId
+                        where d.INSPECTION_ID == InspectionId
 
                         select d).Single();
 
@@ -268,8 +267,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             CROSSING_INSPECTION data;
             string json = e.ExtraParams["InspectionInfo"];
 
-            List<InspectionDetails> InspectionList = JSON.Deserialize<List<InspectionDetails>>(json);
-            foreach (InspectionDetails Inspection in InspectionList)
+            List<InspectDetails> InspectionList = JSON.Deserialize<List<InspectDetails>>(json);
+            foreach (InspectDetails Inspection in InspectionList)
             {
                 using (Entities _context = new Entities())
                 {
@@ -322,14 +321,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             }
         }
-        public class InspectionDetails
+        
+        public class InspectDetails
         {
             public long INSPECTION_ID { get; set; }
             public Int64 INSPECTION_NUMBER { get; set; }
             public DateTime INSPECTION_DATE { get; set; }
-            public Int64 TRUCK_NUMBER { get; set; }           
+            public string TRUCK_NUMBER { get; set; }
             public string SPRAY { get; set; }
-            public string CUT { get; set; }        
+            public string CUT { get; set; }
             public string INSPECT { get; set; }
             public string REMARKS { get; set; }
 

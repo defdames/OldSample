@@ -73,9 +73,7 @@
 				<Select Handler="#{uxAddInspectButton}.enable();" /> 
                             
 			</Listeners>
-             <Listeners>
-                   <SelectionChange Handler="#{uxEditInspectButton}.disabled();" /> 
-             </Listeners>
+           
             </ext:GridPanel>
         <ext:Toolbar ID="Toolbar1" runat="server">
                   <Items>
@@ -203,7 +201,7 @@
                                                 FieldLabel="Truck #"
                                                 LabelAlign="Right"
                                                 DisplayField="NAME"
-                                                ValueField="PROJECT_ID"
+                                                ValueField="NAME"
                                                 QueryMode="Local"
                                                 TypeAhead="true"  Width="300" >
                                                     <Store>
@@ -283,7 +281,7 @@
                                                 FieldLabel="Truck #"
                                                 LabelAlign="Right"
                                                 DisplayField="NAME"
-                                                ValueField="PROJECT_ID"
+                                                ValueField="NAME"
                                                 QueryMode="Local"
                                                 TypeAhead="true"  Width="300" >
                                                     <Store>
@@ -315,7 +313,7 @@
                                  <DirectEvents>
                                     <Click OnEvent="deEditInspection" >
                                       <ExtraParams>
-                                           <ext:Parameter Name="CrossingId" Value="#{uxInspectionCrossingGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                                           <ext:Parameter Name="InspectionId" Value="#{uxInspectionEntryGrid}.getSelectionModel().getSelection()[0].data.INSPECTION_ID" Mode="Raw" />
                                       </ExtraParams>
                                         </Click>
                                 </DirectEvents>

@@ -12,13 +12,10 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class SYS_GROUPS_PERMS
+    public partial class JOB_TITLE_V
     {
-        public decimal GROUPS_PERMS_ID { get; set; }
-        public decimal GROUP_ID { get; set; }
-        public decimal PERMISSION_ID { get; set; }
-    
-        public virtual SYS_PERMISSIONS SYS_PERMISSIONS { get; set; }
-        public virtual SYS_GROUPS SYS_GROUPS { get; set; }
+        public long JOB_ID { get; set; }
+        public string NAME { get; set; }
+        public string LOCATTION { get; set; }
     }
 }

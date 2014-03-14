@@ -19,6 +19,7 @@ namespace DBI.Data
         public string ITEM_URL { get; set; }
         public decimal MODULE_ID { get; set; }
         public decimal PERMISSION_ID { get; set; }
+        public string ICON { get; set; }
     
         public virtual SYS_MODULES SYS_MODULES { get; set; }
         public virtual SYS_PERMISSIONS SYS_PERMISSIONS { get; set; }

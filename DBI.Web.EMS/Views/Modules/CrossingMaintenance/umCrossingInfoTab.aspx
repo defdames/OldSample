@@ -15,7 +15,7 @@
             <%----------------------------------------------------- <CrossingInfo Tab>----------------------------------------------------------------------%>
             <ext:GridPanel ID="uxCrossingMainGrid" Title="CROSSING INFORMATION" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true">
                 <SelectionModel>
-                    <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
+                    <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="false" Mode="Single" />
                 </SelectionModel>
                 <Store>
                     <ext:Store runat="server"
@@ -55,7 +55,7 @@
                     </Columns>
                 </ColumnModel>
                 <Plugins>
-                    <ext:FilterHeader ID="FilterHeader1" runat="server" />
+                    <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true"/>
                 </Plugins>
                 <DirectEvents>
                     <Select OnEvent="GetFormData">
@@ -76,7 +76,10 @@
                     <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True">
                     </ext:PagingToolbar>
                 </BottomBar>
-
+                 <Listeners>
+				<Select Handler="#{uxEditCrossingsButton}.enable(); #{uxActivateCrossingButton}.enable(); #{uxDeleteCrossingButton}.enable();" /> 
+                            
+			</Listeners>
             </ext:GridPanel>
 
             <%-- -----------------------------------------------------------------------------------------------------------------------  --%>
@@ -89,7 +92,7 @@
                                     <Click Handler="#{uxAddCrossingWindow}.show()" />
                                 </Listeners>
                             </ext:Button>
-                            <ext:Button ID="uxEditCrossingsButton" runat="server" Text="Edit Crossing" Icon="ApplicationEdit">
+                            <ext:Button ID="uxEditCrossingsButton" runat="server" Text="Edit Crossing" Icon="ApplicationEdit" Disabled="true">
                                 <Listeners>
                                     <Click Handler="#{uxEditCrossingWindow}.show()" />
                                 </Listeners>
@@ -102,52 +105,64 @@
                                 </DirectEvents>
                             </ext:Button>
 
-                            <ext:Button ID="uxActivateCrossingButton" runat="server" Text="Activate Crossing" Icon="ApplicationGo" />
-                            <ext:Button ID="uxDeleteCrossingButton" runat="server" Text="Delete Crossing" Icon="ApplicationDelete">
+                            <ext:Button ID="uxActivateCrossingButton" runat="server" Text="Activate Crossing" Icon="ApplicationGo" Disabled="true"/>
+                            <ext:Button ID="uxDeleteCrossingButton" runat="server" Text="Delete Crossing" Icon="ApplicationDelete" Disabled="true">
                                 <DirectEvents>
                                     <Click OnEvent="deRemoveCrossing">
-                                        <Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete crossing?" />
+                                        <Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete crossing?"/>
                                         <ExtraParams>
                                             <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
                                         </ExtraParams>
                                     </Click>
                                 </DirectEvents>
                             </ext:Button>
+                             <ext:Button ID="Button1" runat="server" Text="Add Incident" Icon="ApplicationAdd">
+                                <Listeners>
+                                    <Click Handler="#{uxIncidentWindow}.show()" />
+                                </Listeners>
+                            </ext:Button>
                         </Items>
                     </ext:Toolbar>
 
                     <ext:FieldSet ID="FieldSet1" runat="server" Title="Crossing Details">
                         <Items>
-                            <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
+                             <ext:FieldContainer ID="FieldContainer39" runat="server">
+                            <Items>
+                             <ext:TextField ID="uxCrossingNumCI" runat="server" FieldLabel="Crossing #" LabelAlign="Right" AnchorHorizontal="100%" DisableKeyFilter="False" Width="300" />
+                            </Items>
+                                 </ext:FieldContainer>
+                                 <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                                 <Items>
-                                    <ext:TextField ID="uxCrossingNumCI" runat="server" FieldLabel="Crossing #" LabelAlign="Right" AnchorHorizontal="100%" DisableKeyFilter="False" />
-                                    <ext:TextField ID="uxStateCI" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />
-                                    <ext:TextField ID="uxCountyCI" runat="server" FieldLabel="County" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    <ext:TextField ID="uxRRCI" runat="server" FieldLabel="Rail Road" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    <ext:TextField ID="uxRouteCI" runat="server" FieldLabel="Route" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    <ext:TextField ID="uxDOTCI" runat="server" FieldLabel="DOT #" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    
+                                   
 
                                 </Items>
                             </ext:FieldContainer>
 
                             <ext:FieldContainer ID="FieldContainer2" runat="server" Layout="HBoxLayout">
                                 <Items>
-                                    <ext:TextField ID="uxRRCI" runat="server" FieldLabel="Rail Road" AnchorHorizontal="100%" LabelAlign="Right" />
-                                    <ext:TextField ID="uxRouteCI" runat="server" FieldLabel="Route" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    <ext:TextField ID="uxServiceUnitCI" runat="server" FieldLabel="Service Unit" LabelAlign="Right" AnchorHorizontal="100%" />
+                                    <ext:TextField ID="uxStreetCI" runat="server" FieldLabel="Street" AnchorHorizontal="100%" LabelAlign="Right" />
                                     <ext:TextField ID="uxMPCI" runat="server" FieldLabel="MP" LabelAlign="Right" />
                                 </Items>
                             </ext:FieldContainer>
 
                             <ext:FieldContainer ID="FieldContainer4" runat="server" Layout="HBoxLayout">
                                 <Items>
-                                    <ext:TextField ID="uxServiceUnitCI" runat="server" FieldLabel="Service Unit" LabelAlign="Right" AnchorHorizontal="100%" />
-                                    <ext:TextField ID="uxStreetCI" runat="server" FieldLabel="Street" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    <ext:TextField ID="uxSubDivCI" runat="server" FieldLabel="Sub-Division" LabelAlign="Right" AnchorHorizontal="100%" />
+                                    <ext:TextField ID="uxCityCI" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />
                                     <ext:TextField ID="uxLatCI" runat="server" FieldLabel="Latitude" AnchorHorizontal="92%" LabelAlign="Right" />
                                 </Items>
                             </ext:FieldContainer>
 
                             <ext:FieldContainer ID="FieldContainer3" runat="server" Layout="HBoxLayout">
                                 <Items>
-                                    <ext:TextField ID="uxSubDivCI" runat="server" FieldLabel="Sub-Division" LabelAlign="Right" AnchorHorizontal="100%" />
-
-                                    <ext:TextField ID="uxCityCI" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />
+                                   
+                                    <ext:TextField ID="uxStateCI" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />
+                                    <ext:TextField ID="uxCountyCI" runat="server" FieldLabel="County" AnchorHorizontal="100%" LabelAlign="Right" />
                                     <ext:TextField ID="uxLongCI" runat="server" FieldLabel="Longitude" AnchorHorizontal="92%" LabelAlign="Right" />
                                 </Items>
                             </ext:FieldContainer>
@@ -249,41 +264,12 @@
                         <Items>
                             <ext:FieldSet ID="FieldSet4" runat="server" Title="Crossing Details">
                                 <Items>
-                                    <ext:FieldContainer ID="FieldContainer9" runat="server" Layout="HBoxLayout">
+                                     <ext:FieldContainer ID="FieldContainer38" runat="server">
                                         <Items>
-                                            <ext:TextField ID="uxAddCrossingNumCI" runat="server" FieldLabel="Crossing #" LabelAlign="Right" AnchorHorizontal="100%" TabIndex="1" />
-
-                                            <ext:ComboBox runat="server"
-                                                ID="uxAddStateComboBox"
-                                                FieldLabel="State"
-                                                LabelAlign="Right"
-                                                DisplayField="name"
-                                                ValueField="name"
-                                                QueryMode="Local"
-                                                TypeAhead="true"
-                                                AllowBlank="false">
-                                                <Store>
-                                                    <ext:Store ID="uxAddStateList" runat="server" AutoDataBind="true">
-                                                        <Model>
-                                                            <ext:Model ID="Model10" runat="server">
-                                                                <Fields>
-                                                                    <ext:ModelField Name="abbr" />
-                                                                    <ext:ModelField Name="name" />
-                                                                </Fields>
-                                                            </ext:Model>
-                                                        </Model>
-                                                        <Reader>
-                                                            <ext:ArrayReader />
-                                                        </Reader>
-                                                    </ext:Store>
-                                                </Store>
-                                            </ext:ComboBox>
-                                            <ext:TextField ID="uxAddCountyCI" runat="server" FieldLabel="County" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="9" />
-
+                                    <ext:TextField ID="uxAddCrossingNumCI" runat="server" FieldLabel="Crossing #" LabelAlign="Right" AnchorHorizontal="100%" TabIndex="1" AllowBlank="false" Width="300"/>
                                         </Items>
-                                    </ext:FieldContainer>
-
-                                    <ext:FieldContainer ID="FieldContainer10" runat="server" Layout="HBoxLayout">
+                                         </ext:FieldContainer>
+                                    <ext:FieldContainer ID="FieldContainer9" runat="server" Layout="HBoxLayout">
                                         <Items>
                                             <ext:ComboBox ID="uxAddRailRoadCI"
                                                 runat="server"
@@ -292,7 +278,7 @@
                                                 DisplayField="project"
                                                 ValueField="project"
                                                 QueryMode="Local"
-                                                TypeAhead="true" TabIndex="2">
+                                                TypeAhead="true" TabIndex="2" AllowBlank="false">
                                                 <Store>
                                                     <ext:Store runat="server"
                                                         ID="uxAddRailRoadStore">
@@ -317,19 +303,20 @@
                                                     <Select Handler="#{uxAddServiceUnitStore}.load()" />
                                                 </Listeners>
                                             </ext:ComboBox>
-                                            <ext:TextField ID="uxAddRouteCI" runat="server" FieldLabel="Route" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="6" />
-                                            <ext:TextField ID="uxAddMPCI" runat="server" FieldLabel="MP" LabelAlign="Right" TabIndex="10" />
+                                           <ext:TextField ID="uxAddRouteCI" runat="server" FieldLabel="Route" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="6" AllowBlank="false" />
+                                           <ext:TextField ID="uxAddDotCI" runat="server" FieldLabel="DOT #" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="6" AllowBlank="false" />
+
                                         </Items>
                                     </ext:FieldContainer>
 
-                                    <ext:FieldContainer ID="FieldContainer11" runat="server" Layout="HBoxLayout">
+                                    <ext:FieldContainer ID="FieldContainer10" runat="server" Layout="HBoxLayout">
                                         <Items>
-                                            <ext:ComboBox ID="uxAddServiceUnitCI"
+                                             <ext:ComboBox ID="uxAddServiceUnitCI"
                                                 runat="server" FieldLabel="Service Unit"
                                                 LabelAlign="Right"
                                                 DisplayField="service_unit"
                                                 ValueField="service_unit"
-                                                QueryMode="Local" TypeAhead="true" TabIndex="3">
+                                                QueryMode="Local" TypeAhead="true" TabIndex="3" AllowBlank="false">
                                                 <Store>
                                                     <ext:Store runat="server"
                                                         ID="uxAddServiceUnitStore">
@@ -354,21 +341,23 @@
                                                     <Select Handler="#{uxAddSubDivStore}.load()" />
                                                 </Listeners>
                                             </ext:ComboBox>
-                                            <ext:TextField ID="uxAddStreetCI" runat="server" FieldLabel="Street" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="7" />
-                                            <ext:TextField ID="uxAddLatCI" runat="server" FieldLabel="Latitude" AnchorHorizontal="92%" LabelAlign="Right" TabIndex="11" />
+                                            
+                                            <ext:TextField ID="uxAddStreetCI" runat="server" FieldLabel="Street" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="7" AllowBlank="false"/>
+                                            
+                                            <ext:TextField ID="uxAddMPCI" runat="server" FieldLabel="MP" LabelAlign="Right" TabIndex="10" AllowBlank="false" />
                                         </Items>
                                     </ext:FieldContainer>
 
-                                    <ext:FieldContainer ID="FieldContainer12" runat="server" Layout="HBoxLayout">
+                                    <ext:FieldContainer ID="FieldContainer11" runat="server" Layout="HBoxLayout">
                                         <Items>
-                                            <ext:ComboBox ID="uxAddSubDivCI"
+                                             <ext:ComboBox ID="uxAddSubDivCI"
                                                 runat="server"
                                                 FieldLabel="Sub-Division"
                                                 LabelAlign="Right"
                                                 AnchorHorizontal="100%"
                                                 DisplayField="sub_division"
                                                 ValueField="sub_division"
-                                                TypeAhead="true" TabIndex="4">
+                                                TypeAhead="true" TabIndex="4" AllowBlank="false">
                                                 <Store>
                                                     <ext:Store runat="server"
                                                         ID="uxAddSubDivStore">
@@ -384,7 +373,41 @@
                                                 </Store>
 
                                             </ext:ComboBox>
-                                            <ext:TextField ID="uxAddCityCI" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="8" />
+                                           
+                                            <ext:TextField ID="uxAddCityCI" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="8" AllowBlank="false"/>
+                                            <ext:TextField ID="uxAddLatCI" runat="server" FieldLabel="Latitude" AnchorHorizontal="92%" LabelAlign="Right" TabIndex="11" />
+                                        </Items>
+                                    </ext:FieldContainer>
+
+                                    <ext:FieldContainer ID="FieldContainer12" runat="server" Layout="HBoxLayout">
+                                        <Items>
+                                             <ext:ComboBox runat="server"
+                                                ID="uxAddStateComboBox"
+                                                FieldLabel="State"
+                                                LabelAlign="Right"
+                                                DisplayField="name"
+                                                ValueField="name"
+                                                QueryMode="Local"
+                                                TypeAhead="true"
+                                                AllowBlank="false">
+                                                <Store>
+                                                    <ext:Store ID="uxAddStateList" runat="server" AutoDataBind="true">
+                                                        <Model>
+                                                            <ext:Model ID="Model10" runat="server">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="abbr" />
+                                                                    <ext:ModelField Name="name" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                        <Reader>
+                                                            <ext:ArrayReader />
+                                                        </Reader>
+                                                    </ext:Store>
+                                                </Store>
+                                            </ext:ComboBox>
+                                            <ext:TextField ID="uxAddCountyCI" runat="server" FieldLabel="County" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="9" AllowBlank="false" />
+                                           
                                             <ext:TextField ID="uxAddLongCI" runat="server" FieldLabel="Longitude" AnchorHorizontal="92%" LabelAlign="Right" TabIndex="12" />
                                         </Items>
                                     </ext:FieldContainer>
@@ -538,6 +561,9 @@
                                 </Listeners>
                             </ext:Button>
                         </Buttons>
+                        <Listeners>
+						<ValidityChange Handler="#{deAddCrossing}.setDisabled(!valid);" />
+					</Listeners>
                     </ext:FormPanel>
                 </Items>
             </ext:Window>
@@ -554,46 +580,18 @@
                         <Items>
                             <ext:FieldSet ID="FieldSet7" runat="server" Title="Crossing Details">
                                 <Items>
+                                    <ext:FieldContainer runat="server">
+                                        <Items>
+                                            <ext:TextField ID="uxEditCrossingNumCI" runat="server" FieldLabel="Crossing #" LabelAlign="Right" AnchorHorizontal="100%" TabIndex="1" AllowBlank="false" Width="300" />
+                                       </Items>
+                                             </ext:FieldContainer>
                                     <ext:FieldContainer ID="FieldContainer21" runat="server" Layout="HBoxLayout">
                                         <Items>
-                                            <ext:TextField ID="uxEditCrossingNumCI" runat="server" FieldLabel="Crossing #" LabelAlign="Right" AnchorHorizontal="100%" TabIndex="1" />
-
-                                            <ext:ComboBox runat="server"
-                                                ID="uxEditStateComboBox"
-                                                FieldLabel="State"
-                                                LabelAlign="Right"
-                                                DisplayField="name"
-                                                ValueField="name"
-                                                QueryMode="Local"
-                                                TypeAhead="true"
-                                                AllowBlank="false">
-                                                <Store>
-                                                    <ext:Store ID="uxEditStateList" runat="server" AutoDataBind="true">
-                                                        <Model>
-                                                            <ext:Model ID="Model11" runat="server">
-                                                                <Fields>
-                                                                    <ext:ModelField Name="abbr" />
-                                                                    <ext:ModelField Name="name" />
-                                                                </Fields>
-                                                            </ext:Model>
-                                                        </Model>
-                                                        <Reader>
-                                                            <ext:ArrayReader />
-                                                        </Reader>
-                                                    </ext:Store>
-                                                </Store>
-                                            </ext:ComboBox>
-                                            <ext:TextField ID="uxEditCountyCI" runat="server" FieldLabel="County" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="9" />
-                                        </Items>
-                                    </ext:FieldContainer>
-
-                                    <ext:FieldContainer ID="FieldContainer22" runat="server" Layout="HBoxLayout">
-                                        <Items>
-                                            <ext:ComboBox ID="uxEditRRCI" runat="server" FieldLabel="Rail Road" AnchorHorizontal="100%" LabelAlign="Right"
+                                              <ext:ComboBox ID="uxEditRRCI" runat="server" FieldLabel="Rail Road" AnchorHorizontal="100%" LabelAlign="Right"
                                                 DisplayField="project"
                                                 ValueField="project"
                                                 QueryMode="Local"
-                                                TypeAhead="true" TabIndex="2">
+                                                TypeAhead="true" TabIndex="2" AllowBlank="false">
                                                 <Store>
                                                     <ext:Store runat="server"
                                                         ID="uxEditRRStore">
@@ -618,20 +616,21 @@
                                                     <Select Handler="#{uxEditServiceUnitStore}.load()" />
                                                 </Listeners>
                                             </ext:ComboBox>
-                                            <ext:TextField ID="uxEditRouteCI" runat="server" FieldLabel="Route" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="6" />
-                                            <ext:TextField ID="uxEditMPCI" runat="server" FieldLabel="MP" LabelAlign="Right" TabIndex="10" />
+                                            <ext:TextField ID="uxEditRouteCI" runat="server" FieldLabel="Route" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="6" AllowBlank="false" />
+                                            <ext:TextField ID="uxEditDotCI" runat="server" FieldLabel="DOT #" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="6" AllowBlank="false" />
+                                           
                                         </Items>
                                     </ext:FieldContainer>
 
-                                    <ext:FieldContainer ID="FieldContainer23" runat="server" Layout="HBoxLayout">
+                                    <ext:FieldContainer ID="FieldContainer22" runat="server" Layout="HBoxLayout">
                                         <Items>
-                                            <ext:ComboBox ID="uxEditServiceUnitCI"
+                                           <ext:ComboBox ID="uxEditServiceUnitCI"
                                                 runat="server"
                                                 FieldLabel="Service Unit"
                                                 DisplayField="service_unit"
                                                 ValueField="service_unit"
                                                 LabelAlign="Right"
-                                                AnchorHorizontal="100%" TabIndex="3">
+                                                AnchorHorizontal="100%" TabIndex="3" AllowBlank="false">
                                                 <Store>
                                                     <ext:Store runat="server"
                                                         ID="uxEditServiceUnitStore">
@@ -656,19 +655,20 @@
                                                     <Select Handler="#{uxEditSubDivStore}.load()" />
                                                 </Listeners>
                                             </ext:ComboBox>
-                                            <ext:TextField ID="uxEditStreetCI" runat="server" FieldLabel="Street" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="7" />
-                                            <ext:TextField ID="uxEditLatCI" runat="server" FieldLabel="Latitude" AnchorHorizontal="92%" LabelAlign="Right" TabIndex="11" />
+                                            <ext:TextField ID="uxEditStreetCI" runat="server" FieldLabel="Street" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="7" AllowBlank="false" />
+
+                                            <ext:TextField ID="uxEditMPCI" runat="server" FieldLabel="MP" LabelAlign="Right" TabIndex="10" AllowBlank="false" />
                                         </Items>
                                     </ext:FieldContainer>
 
-                                    <ext:FieldContainer ID="FieldContainer24" runat="server" Layout="HBoxLayout">
+                                    <ext:FieldContainer ID="FieldContainer23" runat="server" Layout="HBoxLayout">
                                         <Items>
-                                            <ext:ComboBox ID="uxEditSubDivCIBox"
+                                             <ext:ComboBox ID="uxEditSubDivCIBox"
                                                 runat="server" FieldLabel="Sub-Division"
                                                 LabelAlign="Right"
                                                 DisplayField="sub_division"
                                                 ValueField="sub_division"
-                                                AnchorHorizontal="100%" TabIndex="4">
+                                                AnchorHorizontal="100%" TabIndex="4" AllowBlank="false">
                                                 <Store>
                                                     <ext:Store runat="server"
                                                         ID="uxEditSubDivStore">
@@ -684,7 +684,41 @@
                                                 </Store>
 
                                             </ext:ComboBox>
-                                            <ext:TextField ID="uxEditCityCI" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="8" />
+                                            <ext:TextField ID="uxEditCountyCI" runat="server" FieldLabel="County" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="9" AllowBlank="false" />
+                                           
+                                            <ext:TextField ID="uxEditLatCI" runat="server" FieldLabel="Latitude" AnchorHorizontal="92%" LabelAlign="Right" TabIndex="11"  />
+                                        </Items>
+                                    </ext:FieldContainer>
+
+                                    <ext:FieldContainer ID="FieldContainer24" runat="server" Layout="HBoxLayout">
+                                        <Items>
+                                             <ext:ComboBox runat="server"
+                                                ID="uxEditStateComboBox"
+                                                FieldLabel="State"
+                                                LabelAlign="Right"
+                                                DisplayField="name"
+                                                ValueField="name"
+                                                QueryMode="Local"
+                                                TypeAhead="true"
+                                                AllowBlank="false">
+                                                <Store>
+                                                    <ext:Store ID="uxEditStateList" runat="server" AutoDataBind="true">
+                                                        <Model>
+                                                            <ext:Model ID="Model11" runat="server">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="abbr" />
+                                                                    <ext:ModelField Name="name" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                        <Reader>
+                                                            <ext:ArrayReader />
+                                                        </Reader>
+                                                    </ext:Store>
+                                                </Store>
+                                            </ext:ComboBox>
+                                           
+                                            <ext:TextField ID="uxEditCityCI" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="8" AllowBlank="false"/>
                                             <ext:TextField ID="uxEditLongCI" runat="server" FieldLabel="Longitude" AnchorHorizontal="92%" LabelAlign="Right" TabIndex="12" />
                                         </Items>
                                     </ext:FieldContainer>
@@ -842,9 +876,58 @@
                                 </Listeners>
                             </ext:Button>
                         </Buttons>
+                          <Listeners>
+						<ValidityChange Handler="#{deEditCrossing}.setDisabled(!valid);" />
+					</Listeners>
                     </ext:FormPanel>
                 </Items>
             </ext:Window>
+            <ext:Window runat="server"
+                ID="uxIncidentWindow"
+                Layout="FormLayout"
+                Hidden="true"
+                Title="Add Incident"
+                Width="550"
+                Closable="false">
+                <Items>
+             <ext:FormPanel runat="server" ID="uxIncidentFormPanel" Layout="FormLayout">
+                <Items>
+                    <ext:FieldContainer runat="server" Layout="HBoxLayout">
+                        <Items>
+                    <ext:TextField ID="uxIncidentNumber" runat="server" FieldLabel="Incident #" AnchorHorizontal="100%" LabelAlign="Right"  />
+                    <ext:CheckBox ID="uxIncidentSlowOrder" runat="server" FieldLabel="Slow Order" AnchorHorizontal="100%" LabelAlign="Right" />
+                         </Items>
+                     </ext:FieldContainer>
+                    <ext:FieldContainer ID="FieldContainer37" runat="server" Layout="HBoxLayout">
+                    <Items>
+                    <ext:DateField ID="uxIncidentDateReported" runat="server" FieldLabel="Date Reported" AnchorHorizontal="100%" LabelAlign="Right"  />
+                    <ext:DateField ID="uxIncidentDateClosed" runat="server" FieldLabel="Date Closed" AnchorHorizontal="100%" LabelAlign="Right"  />
+                    </Items>
+                    </ext:FieldContainer>
+                    
+                    <ext:TextArea ID="uxIncidentRemarks" runat="server" FieldLabel="Remarks" AnchorHorizontal="100%" LabelAlign="Right" />
+                  
+                </Items>
+                  <Buttons>
+                            <ext:Button runat="server" ID="uxAddIncidentButton" Text="Add" Icon="Add">
+                                <%--<DirectEvents>
+                                    <Click OnEvent="deAddIncident">
+                                        <ExtraParams>
+                                            <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                                        </ExtraParams>
+                                    </Click>
+                                </DirectEvents>--%>
+                            </ext:Button>
+                            <ext:Button runat="server" ID="Button3" Text="Cancel" Icon="Delete">
+                                <Listeners>
+                                    <Click Handler="#{uxIncidentFormPanel}.reset();
+									#{uxIncidentWindow}.hide()" />
+                                </Listeners>
+                            </ext:Button>
+                        </Buttons>
+            </ext:FormPanel>
+            </Items>
+           </ext:Window>
         </div>
     </form>
 </body>

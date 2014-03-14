@@ -10,7 +10,7 @@
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
     
     
-    public partial class umCrossingMain {
+    public partial class umDataEntryMain {
         
         /// <summary>
         /// form1 control.
@@ -49,30 +49,21 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TabPanel uxCrossingTab;
         
         /// <summary>
-        /// uxCrossingSecurity control.
+        /// uxDataEntryTab control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxCrossingSecurity;
+        protected global::Ext.Net.Panel uxDataEntryTab;
         
         /// <summary>
-        /// uxCrossingInfoTab control.
+        /// uxSupplemental control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxCrossingInfoTab;
-        
-        /// <summary>
-        /// uxContactsTab control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxContactsTab;
+        protected global::Ext.Net.Panel uxSupplemental;
     }
 }

@@ -319,6 +319,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Checkbox uxAddEmployeePerDiem;
         
         /// <summary>
+        /// uxAddEmployeeLicense control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxAddEmployeeLicense;
+        
+        /// <summary>
         /// uxAddEmployeeComments control.
         /// </summary>
         /// <remarks>
@@ -704,6 +713,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Checkbox uxEditEmployeePerDiem;
+        
+        /// <summary>
+        /// uxEditEmployeeLicense control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxEditEmployeeLicense;
         
         /// <summary>
         /// uxEditEmployeeComments control.
