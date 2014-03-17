@@ -564,6 +564,7 @@
       "SYS_USER_INFORMATION"."EMPLOYEE_NUMBER" AS "EMPLOYEE_NUMBER", 
       "SYS_USER_INFORMATION"."EMAIL_ADDRESS" AS "EMAIL_ADDRESS", 
       "SYS_USER_INFORMATION"."JOB_NAME" AS "JOB_NAME", 
+      "SYS_USER_INFORMATION"."JOB_ID" AS "JOB_ID", 
       "SYS_USER_INFORMATION"."CURRENT_ORGANIZATION" AS "CURRENT_ORGANIZATION", 
       "SYS_USER_INFORMATION"."CURRENT_ORG_ID" AS "CURRENT_ORG_ID", 
       "SYS_USER_INFORMATION"."ORACLE_ACCOUNT_STATUS" AS "ORACLE_ACCOUNT_STATUS", 
@@ -2396,6 +2397,7 @@
           <Key>
             <PropertyRef Name="USER_ID" />
             <PropertyRef Name="USER_NAME" />
+            <PropertyRef Name="JOB_ID" />
             <PropertyRef Name="CURRENT_ORGANIZATION" />
             <PropertyRef Name="CURRENT_ORG_ID" />
             <PropertyRef Name="LOCATION_NAME" />
@@ -2406,6 +2408,7 @@
           <Property Name="EMPLOYEE_NUMBER" Type="varchar2" MaxLength="30" />
           <Property Name="EMAIL_ADDRESS" Type="varchar2" MaxLength="240" />
           <Property Name="JOB_NAME" Type="varchar2" MaxLength="700" />
+          <Property Name="JOB_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="CURRENT_ORGANIZATION" Type="varchar2" Nullable="false" MaxLength="240" />
           <Property Name="CURRENT_ORG_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="ORACLE_ACCOUNT_STATUS" Type="char" MaxLength="1" />
@@ -3060,6 +3063,7 @@
             <PropertyRef Name="CURRENT_ORGANIZATION" />
             <PropertyRef Name="CURRENT_ORG_ID" />
             <PropertyRef Name="LOCATION_NAME" />
+            <PropertyRef Name="JOB_ID" />
           </Key>
           <Property Type="Int64" Name="USER_ID" Nullable="false" />
           <Property Type="String" Name="USER_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -3076,6 +3080,7 @@
           <NavigationProperty Name="SYS_USERS" Relationship="OracleModel.SYS_USERSSYS_USER_INFORMATION" FromRole="SYS_USER_INFORMATION" ToRole="SYS_USERS" />
           <Property Type="Int64" Name="CURRENT_ORG_ID" Nullable="false" />
           <Property Type="String" Name="LOCATION_NAME" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="JOB_ID" Nullable="false" />
         </EntityType>
         <Association Name="SYS_USERSSYS_USER_INFORMATION">
           <End Type="OracleModel.SYS_USERS" Role="SYS_USERS" Multiplicity="1" />
@@ -5374,6 +5379,7 @@
           <EntitySetMapping Name="SYS_USER_INFORMATION">
             <EntityTypeMapping TypeName="OracleModel.SYS_USER_INFORMATION">
               <MappingFragment StoreEntitySet="SYS_USER_INFORMATION">
+                <ScalarProperty Name="JOB_ID" ColumnName="JOB_ID" />
                 <ScalarProperty Name="LOCATION_NAME" ColumnName="LOCATION_NAME" />
                 <ScalarProperty Name="CURRENT_ORG_ID" ColumnName="CURRENT_ORG_ID" />
                 <ScalarProperty Name="SUPERVISOR_USER_NAME" ColumnName="SUPERVISOR_USER_NAME" />
