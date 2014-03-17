@@ -133,7 +133,7 @@ namespace DBI.Data
 
        
 
-        public static decimal payrollHoursCalculation(DateTime dateIn, DateTime dateOut, string lunchFlag, decimal? lunchAmount)
+        public static decimal payrollHoursCalculation(DateTime dateIn, DateTime dateOut, string lunchFlag, decimal? lunchAmount,decimal? orgID, decimal? driveTime, decimal? travelTime)
         {
             TimeSpan span = dateOut.Subtract(dateIn);
             double calc = (span.Minutes > 0 && span.Minutes <= 8) ? 0
@@ -143,6 +143,11 @@ namespace DBI.Data
                          : (span.Minutes > 53 && span.Minutes <= 60) ? 1
                          : 0;
             decimal returnValue = span.Hours + (decimal)calc;
+
+            if (orgID != 123)
+            {
+                returnValue = returnValue - (decimal)travelTime;
+            }
 
             //Lunch calculation 
             if(lunchFlag == "Y")
@@ -271,7 +276,7 @@ namespace DBI.Data
                         record.STATE = (r.STATE == null) ? r.REGION : r.STATE;
                         record.COUNTY = r.COUNTY;
                         record.LAB_HEADER_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE;
-                        record.QUANTITY = payrollHoursCalculation((DateTime)r.TIME_IN, (DateTime)r.TIME_OUT,r.LUNCH,r.LUNCH_LENGTH);
+                        record.QUANTITY = payrollHoursCalculation((DateTime)r.TIME_IN, (DateTime)r.TIME_OUT,r.LUNCH,r.LUNCH_LENGTH,r.ORG_ID, r.DRIVE_TIME, r.TRAVEL_TIME);
                         record.ELEMENT = "Time Entry Wages";
                         record.ADJUSTMENT = "N";
                         record.STATUS = "UNPROCESSED";
