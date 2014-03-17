@@ -96,7 +96,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEditEmployeeTimeOutDate.SetValue(TimeOut.Date);
                 uxEditEmployeeTimeOutTime.SetValue(TimeOut.TimeOfDay);
                 uxEditEmployeeComments.SetValue(Employee.COMMENTS);
-                uxEditEmployeeDriveTime.SetValue(Employee.DRIVE_TIME);
+                try
+                {
+                    uxEditEmployeeDriveTimeHours.SetValue(Math.Truncate((double)Employee.DRIVE_TIME));
+                    uxEditEmployeeDriveTimeMinutes.SetValue(Math.Truncate(((double)Employee.DRIVE_TIME - Math.Truncate((double)Employee.DRIVE_TIME)) * 60));
+                }
+                catch (Exception)
+                {
+                }
                 try
                 {
                     uxEditEmployeeTravelTimeHours.SetValue(Math.Truncate((double)Employee.TRAVEL_TIME));
@@ -104,7 +111,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 catch (Exception)
                 {
-
                 }
                 uxEditEmployeeRole.SetValue(Employee.ROLE_TYPE);
                 uxEditEmployeeLicense.SetValue(Employee.FOREMAN_LICENSE);
@@ -118,7 +124,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     }
                     catch (Exception)
                     {
-
                     }
                     try
                     {
@@ -127,7 +132,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     }
                     catch (Exception)
                     {
-
                     }
                 }
                 if (Employee.PER_DIEM == "Y")
@@ -367,7 +371,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Check for drive time
             try
             {
-                decimal DriveTime = decimal.Parse(uxAddEmployeeDriveTime.Value.ToString());
+                decimal DriveTime = decimal.Parse(uxAddEmployeeDriveTimeHours.Value.ToString()) + (decimal.Parse(uxAddEmployeeDriveTimeMinutes.Value.ToString()) /60);
                 data.DRIVE_TIME = DriveTime;
             }
             catch (NullReferenceException)
@@ -491,7 +495,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Check for Drive Time
             try
             {
-                decimal DriveTime = decimal.Parse(uxEditEmployeeDriveTime.Value.ToString());
+                decimal DriveTime = decimal.Parse(uxEditEmployeeDriveTimeHours.Value.ToString()) + (decimal.Parse(uxEditEmployeeDriveTimeMinutes.Value.ToString()) /60);
                 data.DRIVE_TIME = DriveTime;
             }
             catch (NullReferenceException)
