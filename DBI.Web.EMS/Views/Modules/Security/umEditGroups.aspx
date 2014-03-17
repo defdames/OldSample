@@ -19,7 +19,7 @@
                                 <ext:Model runat="server">
                                     <Fields>
                                         <ext:ModelField Name="JOB_ID" />
-                                        <ext:ModelField Name="JOB_NAME" />
+                                        <ext:ModelField Name="NAME" />
                                         <ext:ModelField Name="LOCATION" />
                                     </Fields>
                                 </ext:Model>
@@ -28,13 +28,13 @@
                                 <ext:PageProxy />
                             </Proxy>
                             <Sorters>
-                                <ext:DataSorter Property="JOB_NAME" Direction="ASC" />
+                                <ext:DataSorter Property="NAME" Direction="ASC" />
                             </Sorters>
                         </ext:Store>
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column runat="server" Text="Job Title" DataIndex="JOB_NAME" />
+                            <ext:Column runat="server" Text="Job Title" DataIndex="NAME" />
                             <ext:Column runat="server" Text="Location" DataIndex="LOCATION" />
                         </Columns>
                     </ColumnModel>
@@ -76,7 +76,7 @@
                                     <Fields>
                                         <ext:ModelField Name="PERMISSION_ID" />
                                         <ext:ModelField Name="PERMISSION_NAME" />
-                                        <ext:ModelField Name="DESCRIPTION" />
+                                        <ext:ModelField Name="PARENT_PERM_ID" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -91,7 +91,7 @@
                     <ColumnModel>
                         <Columns>
                             <ext:Column runat="server" Text="Permission" DataIndex="PERMISSION_NAME" />
-                            <ext:Column runat="server" Text="Description" DataIndex="DESCRIPTION" />
+                            <ext:Column runat="server" Text="Permission Id" DataIndex="PARENT_PERM_ID" />
                         </Columns>
                     </ColumnModel>
                     <BottomBar>
@@ -103,7 +103,7 @@
         <!--Hidden Windows -->
         <ext:Window runat="server" ID="uxUpdateGroupPermissionWindow" Width="650" Hidden="true" Layout="HBoxLayout">
             <Items>
-                <ext:GridPanel runat="server" ID="uxAvaialblePermissions" Title="Available Permissions" Flex="1"> 
+                <ext:GridPanel runat="server" ID="uxAvailablePermissions" Title="Available Permissions" Flex="1"> 
                     <Store>
                         <ext:Store runat="server" ID="uxAvailablePermissionsStore">
                             <Model>
@@ -111,6 +111,7 @@
                                     <Fields>
                                         <ext:ModelField Name="PERMISSION_ID" />
                                         <ext:ModelField Name="PERMISSION_NAME" />
+                                        <ext:ModelField Name="PARENT_PERM_ID" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -126,7 +127,7 @@
                     <Items>
                         <ext:Button runat="server" Icon="ResultsetNext" StyleSpec="margin-bottom:2px;">
                             <Listeners>
-                                <Click Handler="TwoGridSelector.add(uxAvaialblePermissions, uxSelectedPermissionsGrid);" />
+                                <Click Handler="TwoGridSelector.add(uxAvailablePermissions, uxSelectedPermissionsGrid);" />
                             </Listeners>
                             <ToolTips>
                                 <ext:ToolTip runat="server" Title="Add" Html="Add Selected Rows" />
@@ -134,7 +135,7 @@
                         </ext:Button>
                         <ext:Button runat="server" Icon="ResultsetLast" StyleSpec="margin-bottom:2px;">
                             <Listeners>
-                                <Click Handler="TwoGridSelector.addAll(uxAvaialblePermissions, uxSelectedPermissionsGrid);" />
+                                <Click Handler="TwoGridSelector.addAll(uxAvailablePermissions, uxSelectedPermissionsGrid);" />
                             </Listeners>
                             <ToolTips>
                                 <ext:ToolTip runat="server" Title="Add all" Html="Add All Rows" />
@@ -142,7 +143,7 @@
                         </ext:Button>
                         <ext:Button runat="server" Icon="ResultsetPrevious" StyleSpec="margin-bottom:2px;">
                             <Listeners>
-                                <Click Handler="TwoGridSelector.remove(uxAvaialblePermissions, uxSelectedPermissionsGrid);" />
+                                <Click Handler="TwoGridSelector.remove(uxAvailablePermissions, uxSelectedPermissionsGrid);" />
                             </Listeners>
                             <ToolTips>
                                 <ext:ToolTip runat="server" Title="Remove" Html="Remove Selected Rows" />
@@ -150,7 +151,7 @@
                         </ext:Button>
                         <ext:Button runat="server" Icon="ResultsetFirst" StyleSpec="margin-bottom:2px;">
                             <Listeners>
-                                <Click Handler="TwoGridSelector.removeAll(uxAvaialblePermissions, uxSelectedPermissionsGrid);" />
+                                <Click Handler="TwoGridSelector.removeAll(uxAvailablePermissions, uxSelectedPermissionsGrid);" />
                             </Listeners>
                             <ToolTips>
                                 <ext:ToolTip runat="server" Title="Remove all" Html="Remove All Rows" />
@@ -166,6 +167,7 @@
                                     <Fields>
                                         <ext:ModelField Name="PERMISSION_ID" />
                                         <ext:ModelField Name="PERMISSION_NAME" />
+                                        <ext:ModelField Name="PARENT_PERM_ID" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -183,6 +185,11 @@
                     <DirectEvents>
                         <Click OnEvent="deUpdateGroupPermissions">
                             <EventMask ShowMask="true" />
+                            <ExtraParams>
+                                <ext:Parameter Name="SelectedPermissions" Value="Ext.encode(#{uxSelectedPermissionsGrid}.getRowsValues({selectedOnly : false}))" Mode="Raw" />
+                                <ext:Parameter Name="JobId" Value="#{uxGroupsGrid}.getSelectionModel().getSelection()[0].data.JOB_ID" Mode="Raw" />
+                                <ext:Parameter Name="LeftOverPermissions" Value="Ext.encode(#{uxAvailablePermissions}.getRowsValues({selectedOnly: false}))" Mode="Raw" />
+                            </ExtraParams>
                         </Click>
                     </DirectEvents>
                 </ext:Button>

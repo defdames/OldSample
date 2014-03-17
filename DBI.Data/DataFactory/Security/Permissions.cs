@@ -9,14 +9,14 @@ namespace DBI.Data
 {
     public partial class SYS_PERMISSIONS
     {
-        public static List<SYS_PERMISSIONS> GetGroupPermissions(string JobTitle)
+        public static List<SYS_PERMISSIONS> GetGroupPermissions(long JobId)
         {
             using (Entities _context = new Entities())
             {
                 List<SYS_PERMISSIONS> Permissions = (from g in _context.SYS_GROUPS
                                                      join gp in _context.SYS_GROUPS_PERMS on g.GROUP_ID equals gp.GROUP_ID
                                                      join p in _context.SYS_PERMISSIONS on gp.PERMISSION_ID equals p.PERMISSION_ID
-                                                     where g.GROUP_NAME == JobTitle
+                                                     where g.JOB_ID == JobId
                                                      select p).ToList();
                 return Permissions;
             }
@@ -67,9 +67,9 @@ namespace DBI.Data
 
         public static List<SYS_PERMISSIONS> GetPermissions(long UserId)
         {
-            string JobTitle = SYS_USER_INFORMATION.GetJobTitle(UserId);
+            long JobId = SYS_USER_INFORMATION.GetJobId(UserId);
 
-            List<SYS_PERMISSIONS> GroupPermissions = GetGroupPermissions(JobTitle);
+            List<SYS_PERMISSIONS> GroupPermissions = GetGroupPermissions(JobId);
             List<SYS_USER_PERMS> UserPermissions = DBI.Data.SYS_USER_PERMS.GetUserPermissions(UserId);
 
             foreach (SYS_USER_PERMS UserPermission in UserPermissions)

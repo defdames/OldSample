@@ -59,9 +59,9 @@ namespace DBI.Web.EMS.Views.Modules.Security
         protected void deUpdateUserPermissions(object sender, DirectEventArgs e)
         {
             long UserId = long.Parse(e.ExtraParams["UserId"]);
-            string JobTitle = SYS_USER_INFORMATION.GetJobTitle(UserId);
+            long JobId = SYS_USER_INFORMATION.GetJobId(UserId);
             List<SYS_PERMISSIONS> SelectedPermissions = JSON.Deserialize<List<SYS_PERMISSIONS>>(e.ExtraParams["Rows"]);
-            List<SYS_PERMISSIONS> GroupPermissions = SYS_PERMISSIONS.GetGroupPermissions(JobTitle);
+            List<SYS_PERMISSIONS> GroupPermissions = SYS_PERMISSIONS.GetGroupPermissions(JobId);
             List<SYS_USER_PERMS> UserPermissions = SYS_USER_PERMS.GetUserPermissions(UserId);
             List<SYS_PERMISSIONS> AllPermissions = GetPermissions();
             foreach (SYS_PERMISSIONS SelectedPermission in SelectedPermissions)

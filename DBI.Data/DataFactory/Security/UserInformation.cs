@@ -89,6 +89,17 @@ namespace DBI.Data
                 return JobTitle;
             }
         }
+
+        public static long GetJobId(long UserId)
+        {
+            using (Entities _context = new Entities())
+            {
+                long JobId = (from s in _context.SYS_USER_INFORMATION
+                              where s.USER_ID == UserId
+                              select s.JOB_ID).Single();
+                return JobId;
+            }
+        }
     }
 
 

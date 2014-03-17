@@ -21,8 +21,10 @@ namespace DBI.Web.EMS.Views.Modules.Security
         protected void deReadGroups(object sender, StoreReadDataEventArgs e)
         {
             using(Entities _context = new Entities()){
-                uxGroupsStore.DataSource = _context.SYS_GROUPS.ToList();
-                uxGroupsStore.DataBind();
+                var data = _context.JOB_TITLE_V.ToList();
+                int count;
+                uxGroupsStore.DataSource = GenericData.EnumerableFilterHeader<JOB_TITLE_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                e.Total = count;
             }
         }
 
@@ -38,19 +40,21 @@ namespace DBI.Web.EMS.Views.Modules.Security
 
         protected void deReadPermissions(object sender, StoreReadDataEventArgs e)
         {
+            long JobId = long.Parse(e.Parameters["JobId"]);
             using (Entities _context = new Entities())
             {
-                uxPermissionsStore.DataSource = SYS_PERMISSIONS.GetGroupPermissions("Programmer").ToList();
+                uxPermissionsStore.DataSource = SYS_PERMISSIONS.GetGroupPermissions(JobId).ToList();
                 uxPermissionsStore.DataBind();
             }
         }
 
         protected void deLoadPermissionsWindow(object sender, DirectEventArgs e)
         {
+            long JobId = long.Parse(e.ExtraParams["JobId"]);
             //Get All Permissions
             List<SYS_PERMISSIONS> AllPermissions = SYS_PERMISSIONS.GetPermissionsHierarchy();
             //Get Current Group Permissions
-            List<SYS_PERMISSIONS> GroupPermissions = SYS_PERMISSIONS.GetGroupPermissions("Programmer");
+            List<SYS_PERMISSIONS> GroupPermissions = SYS_PERMISSIONS.GetGroupPermissions(JobId);
 
             uxSelectedPermissionsStore.DataSource = GroupPermissions;
             uxSelectedPermissionsStore.DataBind();
@@ -68,7 +72,45 @@ namespace DBI.Web.EMS.Views.Modules.Security
 
         protected void deUpdateGroupPermissions(object sender, DirectEventArgs e)
         {
+            long JobId = long.Parse(e.ExtraParams["JobId"]);
+            List<SYS_PERMISSIONS> ChosenPermissions = JSON.Deserialize<List<SYS_PERMISSIONS>>(e.ExtraParams["SelectedPermissions"]);
+            List<SYS_PERMISSIONS> AvailablePermissions = JSON.Deserialize<List<SYS_PERMISSIONS>>(e.ExtraParams["LeftOverPermissions"]);
+            SYS_GROUPS Group;
+            List<SYS_GROUPS_PERMS> GroupPerms;
+            using (Entities _context = new Entities())
+            {
+                Group = (from g in _context.SYS_GROUPS
+                         where g.JOB_ID == JobId
+                         select g).Single();
+                GroupPerms = _context.SYS_GROUPS_PERMS.Where(x => x.GROUP_ID == Group.GROUP_ID).ToList();
+            }
+            foreach (SYS_PERMISSIONS Permission in ChosenPermissions)
+            {
+                if (!GroupPerms.Exists(x => x.PERMISSION_ID == Permission.PERMISSION_ID))
+                {
+                    SYS_GROUPS_PERMS NewGroupPermission = new SYS_GROUPS_PERMS
+                    {
+                        GROUP_ID = Group.GROUP_ID,
+                        PERMISSION_ID = Permission.PERMISSION_ID,
+                    };
+                    GenericData.Insert<SYS_GROUPS_PERMS>(NewGroupPermission);
+                }
+            }
+            foreach (SYS_PERMISSIONS Permission in AvailablePermissions)
+            {
+                if (GroupPerms.Exists(x => x.PERMISSION_ID == Permission.PERMISSION_ID))
+                {
+                    SYS_GROUPS_PERMS PermToRemove;
+                    using (Entities _context = new Entities())
+                    {
+                        PermToRemove = _context.SYS_GROUPS_PERMS.Where(x => (x.GROUP_ID == Group.GROUP_ID) && (x.PERMISSION_ID == Permission.PERMISSION_ID)).Single();
+                    }
+                    GenericData.Delete<SYS_GROUPS_PERMS>(PermToRemove);
+                }
+            }
 
+            uxUpdateGroupPermissionWindow.Hide();
+            uxPermissionsGrid.Reload();
         }
     }
 }
