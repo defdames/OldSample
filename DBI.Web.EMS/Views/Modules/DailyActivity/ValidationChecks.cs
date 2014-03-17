@@ -250,7 +250,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     decimal totalTime = (decimal)TotalMinutes.TotalMinutes;
                     if (Employee.ORG_ID == 121)
                     {
-                        totalTime = totalTime - ((decimal)Employee.TRAVEL_TIME / 60);
+                        totalTime = totalTime - ((((decimal)Employee.TRAVEL_TIME == null)?0:(decimal)Employee.TRAVEL_TIME) / 60);
                         if (totalTime >= 308 && totalTime < 728)
                         {
                             var LoggedLunches = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
