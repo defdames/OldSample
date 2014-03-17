@@ -25,8 +25,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     uxAddEmployeeRole.Show();
                     if (GetOrgId(HeaderId) == 123)
                     {
-                        uxAddEmployeeShopTimeAM.Show();
-                        uxAddEmployeeShopTimePM.Show();
+                        uxAddEmployeeShopTimeAMHours.Show();
+                        uxAddEmployeeShopTimeAMMinutes.Show();
+                        uxAddEmployeeShopTimePMHours.Show();
+                        uxAddEmployeeShopTimePMMinutes.Show();
                     }
                 }
                 else
@@ -36,8 +38,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     LoadEditEmployeeForm();
                     if (GetOrgId(HeaderId) == 123)
                     {
-                        uxEditEmployeeShopTimeAM.Show();
-                        uxEditEmployeeShopTimePM.Show();
+                        uxEditEmployeeShopTimeAMHours.Show();
+                        uxEditEmployeeShopTimeAMMinutes.Show();
+                        uxEditEmployeeShopTimePMHours.Show();
+                        uxEditEmployeeShopTimePMMinutes.Show();
                     }
                 }
                 uxAddEmployeeTimeInDate.SelectedDate = DateTime.Now.Date;
@@ -75,7 +79,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
                             from projects in proj.DefaultIfEmpty()
                             where d.EMPLOYEE_ID == EmployeeId
-                            select new { d.EMPLOYEE_ID, d.HEADER_ID, d.PERSON_ID, e.EMPLOYEE_NAME, d.EQUIPMENT_ID, d.FOREMAN_LICENSE, projects.NAME, projects.SEGMENT1, d.TIME_IN, d.TIME_OUT, d.TRAVEL_TIME, d.DRIVE_TIME, d.PER_DIEM, d.COMMENTS, d.ROLE_TYPE }).Single();
+                            select new { d.EMPLOYEE_ID, d.HEADER_ID, d.PERSON_ID, e.EMPLOYEE_NAME, d.EQUIPMENT_ID, d.FOREMAN_LICENSE, projects.NAME, projects.SEGMENT1, d.TIME_IN, d.TIME_OUT, d.TRAVEL_TIME, d.DRIVE_TIME, d.PER_DIEM, d.COMMENTS, d.ROLE_TYPE, d.SHOPTIME_AM, d.SHOPTIME_PM }).Single();
                 DateTime TimeIn = (DateTime)Employee.TIME_IN;
                 DateTime TimeOut = (DateTime)Employee.TIME_OUT;
 
@@ -92,10 +96,44 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEditEmployeeTimeOutDate.SetValue(TimeOut.Date);
                 uxEditEmployeeTimeOutTime.SetValue(TimeOut.TimeOfDay);
                 uxEditEmployeeComments.SetValue(Employee.COMMENTS);
-                uxEditEmployeeDriveTime.SetValue(Employee.DRIVE_TIME);
-                uxEditEmployeeTravelTime.SetValue(Employee.TRAVEL_TIME);
+                try
+                {
+                    uxEditEmployeeDriveTimeHours.SetValue(Math.Truncate((double)Employee.DRIVE_TIME));
+                    uxEditEmployeeDriveTimeMinutes.SetValue(Math.Truncate(((double)Employee.DRIVE_TIME - Math.Truncate((double)Employee.DRIVE_TIME)) * 60));
+                }
+                catch (Exception)
+                {
+                }
+                try
+                {
+                    uxEditEmployeeTravelTimeHours.SetValue(Math.Truncate((double)Employee.TRAVEL_TIME));
+                    uxEditEmployeeTravelTimeMinutes.SetValue(Math.Truncate(((double)Employee.TRAVEL_TIME - Math.Truncate((double)Employee.TRAVEL_TIME)) * 60));
+                }
+                catch (Exception)
+                {
+                }
                 uxEditEmployeeRole.SetValue(Employee.ROLE_TYPE);
                 uxEditEmployeeLicense.SetValue(Employee.FOREMAN_LICENSE);
+                if (GetOrgId(Employee.HEADER_ID) == 123)
+                {
+                    try
+                    {
+                        uxEditEmployeeShopTimeAMHours.SetValue(Math.Truncate((double)Employee.SHOPTIME_AM));
+                        uxEditEmployeeShopTimeAMMinutes.SetValue(Math.Truncate(((double)Employee.SHOPTIME_AM - Math.Truncate((double)Employee.SHOPTIME_AM)) * 60));
+                        
+                    }
+                    catch (Exception)
+                    {
+                    }
+                    try
+                    {
+                        uxEditEmployeeShopTimePMHours.SetValue(Math.Truncate((double)Employee.SHOPTIME_PM));
+                        uxEditEmployeeShopTimePMMinutes.SetValue(Math.Truncate(((double)Employee.SHOPTIME_PM - Math.Truncate((double)Employee.SHOPTIME_PM)) * 60));
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
                 if (Employee.PER_DIEM == "Y")
                 {
                     uxEditEmployeePerDiem.Checked = true;
@@ -309,8 +347,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             if (GetOrgId(HeaderId) == 123)
             {
-                data.SHOPTIME_AM = decimal.Parse(uxAddEmployeeShopTimeAM.Value.ToString());
-                data.SHOPTIME_PM = decimal.Parse(uxAddEmployeeShopTimePM.Value.ToString());
+                decimal ShoptimeAM = decimal.Parse(uxAddEmployeeShopTimeAMHours.Value.ToString()) + (decimal.Parse(uxAddEmployeeShopTimeAMMinutes.Value.ToString()) / 60);
+                decimal ShoptimePM = decimal.Parse(uxAddEmployeeShopTimePMHours.Value.ToString()) + (decimal.Parse(uxAddEmployeeShopTimePMMinutes.Value.ToString()) / 60);
+                data.SHOPTIME_AM = ShoptimeAM;
+                data.SHOPTIME_PM = ShoptimePM;
             }
             if (roleNeeded())
             {
@@ -320,7 +360,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Check for travel time
             try
             {
-                decimal TravelTime = decimal.Parse(uxAddEmployeeTravelTime.Value.ToString());
+                decimal TravelTime = decimal.Parse(uxAddEmployeeTravelTimeHours.Value.ToString()) + (decimal.Parse(uxAddEmployeeTravelTimeMinutes.Value.ToString()) /60);
                 data.TRAVEL_TIME = TravelTime;
             }
             catch (NullReferenceException)
@@ -331,7 +371,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Check for drive time
             try
             {
-                decimal DriveTime = decimal.Parse(uxAddEmployeeDriveTime.Value.ToString());
+                decimal DriveTime = decimal.Parse(uxAddEmployeeDriveTimeHours.Value.ToString()) + (decimal.Parse(uxAddEmployeeDriveTimeMinutes.Value.ToString()) /60);
                 data.DRIVE_TIME = DriveTime;
             }
             catch (NullReferenceException)
@@ -444,7 +484,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Check for Travel Time
             try
             {
-                decimal TravelTime = decimal.Parse(uxEditEmployeeTravelTime.Value.ToString());
+                decimal TravelTime = decimal.Parse(uxEditEmployeeTravelTimeHours.Value.ToString()) + (decimal.Parse(uxEditEmployeeTravelTimeMinutes.Value.ToString()) / 60);
                 data.TRAVEL_TIME = TravelTime;
             }
             catch (NullReferenceException)
@@ -455,7 +495,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Check for Drive Time
             try
             {
-                decimal DriveTime = decimal.Parse(uxEditEmployeeDriveTime.Value.ToString());
+                decimal DriveTime = decimal.Parse(uxEditEmployeeDriveTimeHours.Value.ToString()) + (decimal.Parse(uxEditEmployeeDriveTimeMinutes.Value.ToString()) /60);
                 data.DRIVE_TIME = DriveTime;
             }
             catch (NullReferenceException)
@@ -481,8 +521,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             if (GetOrgId(HeaderId) == 123)
             {
-                data.SHOPTIME_AM = decimal.Parse(uxEditEmployeeShopTimeAM.Value.ToString());
-                data.SHOPTIME_PM = decimal.Parse(uxEditEmployeeShopTimePM.Value.ToString());
+                decimal ShoptimeAM = decimal.Parse(uxEditEmployeeShopTimeAMHours.Value.ToString()) + (decimal.Parse(uxEditEmployeeShopTimeAMMinutes.Value.ToString()) / 60);
+                decimal ShoptimePM = decimal.Parse(uxEditEmployeeShopTimePMHours.Value.ToString()) + (decimal.Parse(uxEditEmployeeShopTimePMMinutes.Value.ToString()) / 60);
+                data.SHOPTIME_AM = ShoptimeAM;
+                data.SHOPTIME_PM = ShoptimePM;
             }
 
             if (roleNeeded())

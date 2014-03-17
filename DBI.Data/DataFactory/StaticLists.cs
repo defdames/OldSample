@@ -117,7 +117,11 @@ namespace DBI.Data.DataFactory
                     new object[]{"Scratch", "Scratch"},
                     new object[]{"Millings", "Millings"},
                     new object[]{"Michigan Joint", "Michigan Joint"},
-                    new object[]{"Top", "Top"}
+                    new object[]{"Top", "Top"},
+                    new object[]{"Concrete", "Concrete"},
+                    new object[]{"Slurry", "Slurry"},
+                    new object[]{"Restripe", "Restripe"},
+                    new object[]{"Ghost", "Ghost"}
                 };
             }
         }

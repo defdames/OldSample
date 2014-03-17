@@ -659,15 +659,35 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 PdfPRow Row;
                 foreach (dynamic Data in HeaderData)
                 {
-                    Paragraph Title = new Paragraph(string.Format("DAILY ACTIVITY REPORT FOR {0} - {1}", Data.LONG_NAME , Data.DA_DATE.Date.ToString("MM/dd/yyyy")), FontFactory.GetFont("Verdana", 12, Font.BOLD));
+                    Paragraph Title = new Paragraph("DAILY ACTIVITY REPORT", FontFactory.GetFont("Verdana", 12, Font.BOLD));
                     Title.Alignment = 1;
 
                     ExportedPDF.Add(Title);
+
+                    Title = new Paragraph(Data.LONG_NAME, FontFactory.GetFont("Verdana", 12, Font.BOLD));
+                    Title.Alignment = 1;
+                    ExportedPDF.Add(Title);
+
+                    Title = new Paragraph(Data.DA_DATE.Date.ToString("MM/dd/yyyy"), FontFactory.GetFont("Verdana", 12, Font.BOLD));
+                    Title.Alignment = 1;
+                    ExportedPDF.Add(Title);
                     ExportedPDF.Add(NewLine);
+                    Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase("DRS Id", HeadFootTitleFont )),
+                        new PdfPCell(new Phrase(HeaderId.ToString(), HeadFootCellFont)),
+                        new PdfPCell(),
+                        new PdfPCell()
+                    };
+                    foreach(PdfPCell Cell in Cells)
+                    {
+                        Cell.Border = PdfPCell.NO_BORDER;
+                    }
+                    Row = new PdfPRow(Cells);
+                    HeaderTable.Rows.Add(Row);
 
                     //First row
                     Cells = new PdfPCell[]{
-                    new PdfPCell(new Phrase("Contract", HeadFootTitleFont)),
+                    new PdfPCell(new Phrase("Project Number", HeadFootTitleFont)),
                     new PdfPCell(new Phrase(Data.SEGMENT1.ToString(), HeadFootCellFont)),
                     new PdfPCell(new Phrase("Sub-Division", HeadFootTitleFont)),
                     new PdfPCell(new Phrase(Data.SUBDIVISION, HeadFootCellFont))};
