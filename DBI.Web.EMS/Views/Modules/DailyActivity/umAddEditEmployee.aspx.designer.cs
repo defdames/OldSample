@@ -274,13 +274,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.TimeField uxAddEmployeeTimeOutTime;
         
         /// <summary>
-        /// uxAddEmployeeTravelTime control.
+        /// uxAddEmployeeTravelTimeHours control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxAddEmployeeTravelTime;
+        protected global::Ext.Net.TextField uxAddEmployeeTravelTimeHours;
+        
+        /// <summary>
+        /// uxAddEmployeeTravelTimeMinutes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxAddEmployeeTravelTimeMinutes;
         
         /// <summary>
         /// uxAddEmployeeDriveTime control.
@@ -292,22 +301,40 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.TextField uxAddEmployeeDriveTime;
         
         /// <summary>
-        /// uxAddEmployeeShopTimeAM control.
+        /// uxAddEmployeeShopTimeAMHours control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxAddEmployeeShopTimeAM;
+        protected global::Ext.Net.TextField uxAddEmployeeShopTimeAMHours;
         
         /// <summary>
-        /// uxAddEmployeeShopTimePM control.
+        /// uxAddEmployeeShopTimeAMMinutes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxAddEmployeeShopTimePM;
+        protected global::Ext.Net.TextField uxAddEmployeeShopTimeAMMinutes;
+        
+        /// <summary>
+        /// uxAddEmployeeShopTimePMHours control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxAddEmployeeShopTimePMHours;
+        
+        /// <summary>
+        /// uxAddEmployeeShopTimePMMinutes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxAddEmployeeShopTimePMMinutes;
         
         /// <summary>
         /// uxAddEmployeePerDiem control.
@@ -679,31 +706,58 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.TextField uxEditEmployeeDriveTime;
         
         /// <summary>
-        /// uxEditEmployeeTravelTime control.
+        /// uxEditEmployeeTravelTimeHours control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxEditEmployeeTravelTime;
+        protected global::Ext.Net.TextField uxEditEmployeeTravelTimeHours;
         
         /// <summary>
-        /// uxEditEmployeeShopTimeAM control.
+        /// uxEditEmployeeTravelTimeMinutes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxEditEmployeeShopTimeAM;
+        protected global::Ext.Net.TextField uxEditEmployeeTravelTimeMinutes;
         
         /// <summary>
-        /// uxEditEmployeeShopTimePM control.
+        /// uxEditEmployeeShopTimeAMHours control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxEditEmployeeShopTimePM;
+        protected global::Ext.Net.TextField uxEditEmployeeShopTimeAMHours;
+        
+        /// <summary>
+        /// uxEditEmployeeShopTimeAMMinutes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxEditEmployeeShopTimeAMMinutes;
+        
+        /// <summary>
+        /// uxEditEmployeeShopTimePMHours control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxEditEmployeeShopTimePMHours;
+        
+        /// <summary>
+        /// uxEditEmployeeShopTimePMMinutes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxEditEmployeeShopTimePMMinutes;
         
         /// <summary>
         /// uxEditEmployeePerDiem control.
