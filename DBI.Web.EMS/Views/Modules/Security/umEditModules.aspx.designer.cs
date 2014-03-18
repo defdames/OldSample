@@ -229,6 +229,15 @@ namespace DBI.Web.EMS.Views.Modules.Security {
         protected global::Ext.Net.Store uxMenuItemPermissionStore;
         
         /// <summary>
+        /// uxMenuItemIcon control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ComboBox uxMenuItemIcon;
+        
+        /// <summary>
         /// uxUpdateMenuItemButton control.
         /// </summary>
         /// <remarks>
