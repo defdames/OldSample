@@ -15,7 +15,7 @@ namespace DBI.Web.EMS.Views.Modules.Security
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            this.uxModuleIcon.ToBuilder().ItemsFromEnum(typeof(Icon));
+            this.uxMenuItemIcon.ToBuilder().ItemsFromEnum(typeof(Icon));
         }
 
         protected void deReadModules(object sender, StoreReadDataEventArgs e)

@@ -159,8 +159,6 @@
                                 </ext:Store>
                             </Store>
                         </ext:ComboBox>
-                        <ext:ComboBox runat="server" ID="uxModuleIcon" FieldLabel="Choose an Icon">
-                        </ext:ComboBox>
                     </Items>
                     <Buttons>
                         <ext:Button runat="server" ID="uxUpdateModuleButton" Text="Submit" Icon="Add">
@@ -212,6 +210,8 @@
                                     </Model>
                                 </ext:Store>
                             </Store>
+                        </ext:ComboBox>
+                        <ext:ComboBox runat="server" ID="uxMenuItemIcon" FieldLabel="Choose an Icon">
                         </ext:ComboBox>
                     </Items>
                     <Buttons>
