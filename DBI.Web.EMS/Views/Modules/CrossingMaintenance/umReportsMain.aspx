@@ -38,6 +38,16 @@
                                 </Loader>
 
                             </ext:Panel>
+                             <ext:Panel runat="server"
+                                Title="Incidents"
+                                ID="uxIncidents"
+                                Disabled="false">
+                                <Loader runat="server"
+                                    ID="Loader1" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umIncidentReports.aspx">
+                                    <LoadMask ShowMask="true" />
+                                </Loader>
+
+                            </ext:Panel>
                            
 
                         </Items>

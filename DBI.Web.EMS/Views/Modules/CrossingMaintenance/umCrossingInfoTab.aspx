@@ -77,7 +77,7 @@
                     </ext:PagingToolbar>
                 </BottomBar>
                  <Listeners>
-				<Select Handler="#{uxEditCrossingsButton}.enable(); #{uxActivateCrossingButton}.enable(); #{uxDeleteCrossingButton}.enable();" /> 
+				<Select Handler="#{uxEditCrossingsButton}.enable(); #{uxActivateCrossingButton}.enable(); #{uxDeleteCrossingButton}.enable(); #{uxAddIncident}.enable();" /> 
                             
 			</Listeners>
             </ext:GridPanel>
@@ -116,7 +116,7 @@
                                     </Click>
                                 </DirectEvents>
                             </ext:Button>
-                             <ext:Button ID="Button1" runat="server" Text="Add Incident" Icon="ApplicationAdd">
+                             <ext:Button ID="uxAddIncident" runat="server" Text="Add Incident" Icon="ApplicationAdd" Disabled="true">
                                 <Listeners>
                                     <Click Handler="#{uxIncidentWindow}.show()" />
                                 </Listeners>
@@ -894,14 +894,14 @@
                 <Items>
                     <ext:FieldContainer runat="server" Layout="HBoxLayout">
                         <Items>
-                    <ext:TextField ID="uxIncidentNumber" runat="server" FieldLabel="Incident #" AnchorHorizontal="100%" LabelAlign="Right"  />
-                    <ext:CheckBox ID="uxIncidentSlowOrder" runat="server" FieldLabel="Slow Order" AnchorHorizontal="100%" LabelAlign="Right" />
+                    <ext:TextField ID="uxIncidentNumber" runat="server" FieldLabel="Incident #" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" />
+                    <ext:CheckBox ID="uxIncidentSlowOrder" runat="server" FieldLabel="Slow Order" AnchorHorizontal="100%" LabelAlign="Right"  />
                          </Items>
                      </ext:FieldContainer>
                     <ext:FieldContainer ID="FieldContainer37" runat="server" Layout="HBoxLayout">
                     <Items>
-                    <ext:DateField ID="uxIncidentDateReported" runat="server" FieldLabel="Date Reported" AnchorHorizontal="100%" LabelAlign="Right"  />
-                    <ext:DateField ID="uxIncidentDateClosed" runat="server" FieldLabel="Date Closed" AnchorHorizontal="100%" LabelAlign="Right"  />
+                    <ext:DateField ID="uxIncidentDateReported" runat="server" FieldLabel="Date Reported" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" />
+                    <ext:DateField ID="uxIncidentDateClosed" runat="server" FieldLabel="Date Closed" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false"  />
                     </Items>
                     </ext:FieldContainer>
                     
@@ -909,14 +909,14 @@
                   
                 </Items>
                   <Buttons>
-                            <ext:Button runat="server" ID="uxAddIncidentButton" Text="Add" Icon="Add">
-                                <%--<DirectEvents>
+                            <ext:Button runat="server" ID="uxAddIncidentButton" Text="Add" Icon="Add" >
+                                <DirectEvents>
                                     <Click OnEvent="deAddIncident">
                                         <ExtraParams>
                                             <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
                                         </ExtraParams>
                                     </Click>
-                                </DirectEvents>--%>
+                                </DirectEvents>
                             </ext:Button>
                             <ext:Button runat="server" ID="Button3" Text="Cancel" Icon="Delete">
                                 <Listeners>
@@ -925,6 +925,9 @@
                                 </Listeners>
                             </ext:Button>
                         </Buttons>
+                 <Listeners>
+				    <ValidityChange Handler="#{uxAddIncidentButton}.setDisabled(!valid);" />
+				</Listeners>
             </ext:FormPanel>
             </Items>
            </ext:Window>
