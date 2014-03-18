@@ -70,8 +70,8 @@
                                         <ext:ModelField Name="NAME" />
                                         <ext:ModelField Name="TIME_IN" Type="Date" />
                                         <ext:ModelField Name="TIME_OUT" Type="Date" />
-                                        <ext:ModelField Name="TRAVEL_TIME" />
-                                        <ext:ModelField Name="DRIVE_TIME" />
+                                        <ext:ModelField Name="TRAVEL_TIME_FORMATTED" />
+                                        <ext:ModelField Name="DRIVE_TIME_FORMATTED" />
                                         <ext:ModelField Name="PER_DIEM" />
                                         <ext:ModelField Name="COMMENTS" />
                                     </Fields>
@@ -85,8 +85,8 @@
                             <ext:Column ID="Column10" runat="server" DataIndex="NAME" Text="Equipment Name" Flex="9" />
                             <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="TIME_IN" Text="Time In" Flex="6" Format="M/d/yyyy h:mm tt" />
                             <ext:DateColumn ID="DateColumn3" runat="server" DataIndex="TIME_OUT" Text="Time Out" Flex="6" Format="M/d/yyyy h:mm tt" />
-                            <ext:Column ID="Column11" runat="server" DataIndex="TRAVEL_TIME" Text="Travel Time" Flex="6" />
-                            <ext:Column ID="Column12" runat="server" DataIndex="DRIVE_TIME" Text="Drive Time" Flex="6" />
+                            <ext:Column ID="Column11" runat="server" DataIndex="TRAVEL_TIME_FORMATTED" Text="Travel Time" Flex="6" />
+                            <ext:Column ID="Column12" runat="server" DataIndex="DRIVE_TIME_FORMATTED" Text="Drive Time" Flex="6" />
                             <ext:Column ID="Column13" runat="server" DataIndex="PER_DIEM" Text="Per Diem" Flex="5" />
                             <ext:Column ID="Column14" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="9" />
                         </Columns>

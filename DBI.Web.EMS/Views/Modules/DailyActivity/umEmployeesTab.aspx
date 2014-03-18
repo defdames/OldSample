@@ -40,10 +40,10 @@
 								<ext:ModelField Name="NAME" Type="String"  />
 								<ext:ModelField Name="TIME_IN" Type="Date" />
 								<ext:ModelField Name="TIME_OUT" Type="Date" />
-								<ext:ModelField Name="TRAVEL_TIME" Type="Float"  />
-								<ext:ModelField Name="DRIVE_TIME" Type="Float" />
-								<ext:ModelField Name="SHOPTIME_AM" Type="String" />
-								<ext:ModelField Name="SHOPTIME_PM" Type="String" />
+								<ext:ModelField Name="TRAVEL_TIME_FORMATTED" Type="String" />
+								<ext:ModelField Name="DRIVE_TIME_FORMATTED" Type="String"  />
+								<ext:ModelField Name="SHOPTIME_AM_FORMATTED" Type="String"  />
+								<ext:ModelField Name="SHOPTIME_PM_FORMATTED" Type="String"  />
 								<ext:ModelField Name="PER_DIEM" Type="String"  />
 								<ext:ModelField Name="COMMENTS" Type="String"  />
 								<ext:ModelField Name="ROLE_TYPE" Type="String" />
@@ -78,20 +78,20 @@
 						Flex="1" />
 					<ext:Column runat="server"
 						Text="Travel Time"
-						Dataindex="TRAVEL_TIME"
+						Dataindex="TRAVEL_TIME_FORMATTED"
 						Flex="1" />
 					<ext:Column runat="server"
 						Text="Drive Time"
-						DataIndex="DRIVE_TIME"
+						DataIndex="DRIVE_TIME_FORMATTED"
 						Flex="1" />
 					<ext:Column ID="uxShopTimeAMColumn" runat="server"
 						Text="Shop Time AM"
-						DataIndex="SHOPTIME_AM"
+						DataIndex="SHOPTIME_AM_FORMATTED"
 						Flex="1"
 						Hidden="true" />
 					<ext:Column ID="uxShopTimePMColumn" runat="server"
 						Text="Shop Time PM"
-						DataIndex="SHOPTIME_PM"
+						DataIndex="SHOPTIME_PM_FORMATTED"
 						Flex="1"
 						Hidden="true" />
 					<ext:Column runat="server"
