@@ -23,6 +23,7 @@
                             <Model>
                                 <ext:Model ID="Model1" runat="server">
                                     <Fields>
+                                        <ext:ModelField Name="HEADER_ID" />
                                         <ext:ModelField Name="LONG_NAME" />
                                         <ext:ModelField Name="DA_DATE" />
                                         <ext:ModelField Name="SUBDIVISION" />
@@ -32,6 +33,7 @@
                                         <ext:ModelField Name="STATE" />
                                         <ext:ModelField Name="APPLICATION_TYPE" />
                                         <ext:ModelField Name="DENSITY" />
+                                        <ext:ModelField Name="DA_HEADER_ID" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -39,6 +41,7 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
+                            <ext:Column runat="server" DataIndex="HEADER_ID" Text="DRS Number" Flex="3" />
                             <ext:Column ID="Column1" runat="server" DataIndex="LONG_NAME" Text="Project Name" Flex="8" />
                             <ext:DateColumn ID="DateColumn1" runat="server" DataIndex="DA_DATE" Text="Date" Flex="3" />
                             <ext:Column ID="Column2" runat="server" DataIndex="SUBDIVISION" Text="Sub-Division" Flex="6" />
@@ -48,6 +51,7 @@
                             <ext:Column ID="Column6" runat="server" DataIndex="STATE" Text="State" Flex="2" />
                             <ext:Column ID="Column7" runat="server" DataIndex="APPLICATION_TYPE" Text="Application/Type of Work" Flex="6" />
                             <ext:Column ID="Column8" runat="server" DataIndex="DENSITY" Text="Density" Flex="3" />
+                            <ext:Column runat="server" DataIndex="DA_HEADER_ID" Text="Oracle Header ID" Flex="3" />
                         </Columns>
                     </ColumnModel>
                 </ext:GridPanel>

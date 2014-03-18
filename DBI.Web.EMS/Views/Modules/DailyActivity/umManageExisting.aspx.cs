@@ -408,7 +408,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 var returnData = (from d in _context.DAILY_ACTIVITY_HEADER
                                   join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                                   where d.HEADER_ID == HeaderId
-                                  select new { d.APPLICATION_TYPE, d.CONTRACTOR, d.DA_DATE, d.DENSITY, d.LICENSE, d.STATE, d.STATUS, d.SUBDIVISION, p.SEGMENT1, p.LONG_NAME }).ToList<object>();
+                                  select new { d.APPLICATION_TYPE, d.CONTRACTOR, d.DA_DATE, d.DENSITY, d.LICENSE, d.STATE, d.STATUS, d.SUBDIVISION, p.SEGMENT1, p.LONG_NAME, d.DA_HEADER_ID }).ToList<object>();
                 return returnData;
             }
         }
@@ -672,11 +672,21 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     Title.Alignment = 1;
                     ExportedPDF.Add(Title);
                     ExportedPDF.Add(NewLine);
+
+                    string OracleHeader;
+                    try
+                    {
+                        OracleHeader = Data.DA_HEADER_ID.ToString();
+                    }
+                    catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                    {
+                        OracleHeader = "0";
+                    }
                     Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase("DRS Id", HeadFootTitleFont )),
                         new PdfPCell(new Phrase(HeaderId.ToString(), HeadFootCellFont)),
-                        new PdfPCell(),
-                        new PdfPCell()
+                        new PdfPCell(new Phrase("Oracle Header Id", HeadFootTitleFont)),
+                        new PdfPCell(new Phrase(OracleHeader, HeadFootCellFont))
                     };
                     foreach(PdfPCell Cell in Cells)
                     {
