@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -134,25 +133,9 @@ namespace DBI.Data
 
        
 
-        public static decimal payrollHoursCalculation(DateTime dateIn, DateTime dateOut, string lunchFlag, decimal? lunchAmount,decimal? orgID, decimal? travelTime)
+        public static decimal payrollHoursCalculation(DateTime dateIn, DateTime dateOut, string lunchFlag, decimal? lunchAmount,decimal? orgID, decimal? driveTime, decimal? travelTime)
         {
-            //Get the total hours (Time Entry Wages)
             TimeSpan span = dateOut.Subtract(dateIn);
-
-            //If Not IRM subtract any travel time before you round
-            if (orgID != 123)
-            {
-                double hoursValue = (double)Math.Truncate((decimal)travelTime);
-                double minsValue = (double)travelTime - (double)Math.Truncate((decimal)travelTime);
-
-                TimeSpan travelHours = TimeSpan.FromHours(hoursValue);
-                TimeSpan travelMins = TimeSpan.FromMinutes(minsValue);
-
-                //Remove traveltime before you round
-                span = span.Subtract(travelHours);
-                span = span.Subtract(travelMins);
-            }
-
             double calc = (span.Minutes > 0 && span.Minutes <= 8) ? 0
                          : (span.Minutes > 8 && span.Minutes <= 23) ? .25
                          : (span.Minutes > 23 && span.Minutes <= 38) ? .50
@@ -161,6 +144,11 @@ namespace DBI.Data
                          : 0;
             decimal returnValue = span.Hours + (decimal)calc;
 
+            if (orgID != 123)
+            {
+                returnValue = returnValue - (decimal)travelTime;
+            }
+
             //Lunch calculation 
             if(lunchFlag == "Y")
             {
@@ -168,27 +156,6 @@ namespace DBI.Data
             }
 
              return returnValue;
-        }
-
-        //Rounds the time to the correct quarter hour
-        public static decimal doubleShopCalc(decimal? time)
-        {
-            double hoursValue = (double)Math.Truncate((decimal)time);
-            double minsValue = (double)time - (double)Math.Truncate((decimal)time);
-
-            TimeSpan travelHours = TimeSpan.FromHours(hoursValue);
-            TimeSpan travelMins = TimeSpan.FromMinutes(minsValue);
-
-            double calc = (travelMins.Minutes > 0 && travelMins.Minutes <= 8) ? 0
-                         : (travelMins.Minutes > 8 && travelMins.Minutes <= 23) ? .25
-                         : (travelMins.Minutes > 23 && travelMins.Minutes <= 38) ? .50
-                         : (travelMins.Minutes > 38 && travelMins.Minutes <= 53) ? .75
-                         : (travelMins.Minutes > 53 && travelMins.Minutes <= 60) ? 1
-                         : 0;
-
-            decimal returnValue = travelHours.Hours + (decimal)calc;
-            return returnValue;
-
         }
 
         public static decimal maxLaborHoursCalculation(List<XXDBI_LABOR_HEADER_V> laborRecords)
@@ -293,7 +260,7 @@ namespace DBI.Data
                                 join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                 join l in _context.PA_LOCATIONS_V on p.LOCATION_ID equals (long)l.LOCATION_ID
                                 where d.HEADER_ID == dailyActivityHeaderId
-                                select new { d.SHOPTIME_AM,d.SHOPTIME_PM,d.TRAVEL_TIME, d.DRIVE_TIME, p.SEGMENT1, e.PERSON_ID, e.EMPLOYEE_NUMBER, e.EMPLOYEE_NAME, d.ROLE_TYPE, d.STATE, l.REGION, d.COUNTY, p.ORG_ID, d.TIME_IN, d.TIME_OUT, d.LUNCH, d.LUNCH_LENGTH}).ToList();
+                                select new { d.TRAVEL_TIME, d.DRIVE_TIME, p.SEGMENT1, e.PERSON_ID, e.EMPLOYEE_NUMBER, e.EMPLOYEE_NAME, d.ROLE_TYPE, d.STATE, l.REGION, d.COUNTY, p.ORG_ID, d.TIME_IN, d.TIME_OUT, d.LUNCH, d.LUNCH_LENGTH}).ToList();
 
                     //Add Time Entry Wages
                     foreach (var r in data)
@@ -309,7 +276,7 @@ namespace DBI.Data
                         record.STATE = (r.STATE == null) ? r.REGION : r.STATE;
                         record.COUNTY = r.COUNTY;
                         record.LAB_HEADER_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE;
-                        record.QUANTITY = payrollHoursCalculation((DateTime)r.TIME_IN, (DateTime)r.TIME_OUT,r.LUNCH,r.LUNCH_LENGTH,r.ORG_ID, r.TRAVEL_TIME);
+                        record.QUANTITY = payrollHoursCalculation((DateTime)r.TIME_IN, (DateTime)r.TIME_OUT,r.LUNCH,r.LUNCH_LENGTH,r.ORG_ID, r.DRIVE_TIME, r.TRAVEL_TIME);
                         record.ELEMENT = "Time Entry Wages";
                         record.ADJUSTMENT = "N";
                         record.STATUS = "UNPROCESSED";
@@ -335,7 +302,7 @@ namespace DBI.Data
                             dtrecord.STATE = xxdbiDailyActivityHeader.STATE;
                             dtrecord.COUNTY = xxdbiDailyActivityHeader.COUNTY;
                             dtrecord.LAB_HEADER_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE;
-                            dtrecord.QUANTITY = doubleShopCalc(r.DRIVE_TIME);
+                            dtrecord.QUANTITY = (decimal)r.DRIVE_TIME;
                             dtrecord.ELEMENT = "Drive Time Base";
                             dtrecord.ADJUSTMENT = "N";
                             dtrecord.STATUS = "UNPROCESSED";
@@ -362,7 +329,7 @@ namespace DBI.Data
                             dtrecord.STATE = xxdbiDailyActivityHeader.STATE;
                             dtrecord.COUNTY = xxdbiDailyActivityHeader.COUNTY;
                             dtrecord.LAB_HEADER_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE;
-                            dtrecord.QUANTITY = doubleShopCalc(r.TRAVEL_TIME);
+                            dtrecord.QUANTITY = (decimal)r.TRAVEL_TIME;
                             dtrecord.ELEMENT = "Travel Time Base";
                             dtrecord.ADJUSTMENT = "N";
                             dtrecord.STATUS = "UNPROCESSED";
@@ -374,58 +341,7 @@ namespace DBI.Data
                             records.Add(dtrecord);
                             GenericData.Insert<XXDBI_LABOR_HEADER_V>(dtrecord);
                         }
-                        //Check if record is IRM and shop time added, then add Time Entry Wages for Shop Time AM
-                        if (xxdbiDailyActivityHeader.ORG_ID == 123 && r.SHOPTIME_AM > 0)
-                        {
-                            XXDBI_LABOR_HEADER_V dtrecord = new XXDBI_LABOR_HEADER_V();
-                            dtrecord.LABOR_HEADER_ID = DBI.Data.Interface.generateLaborHeaderSequence();
-                            dtrecord.DA_HEADER_ID = xxdbiDailyActivityHeader.DA_HEADER_ID;
-                            dtrecord.PROJECT_NUMBER = r.SEGMENT1;
-                            dtrecord.TASK_NUMBER = returnDailyActivityTaskNumber(dailyActivityHeaderId);
-                            dtrecord.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
-                            dtrecord.EMP_FULL_NAME = DBI.Data.EMPLOYEES_V.oracleEmployeeName(r.PERSON_ID);
-                            dtrecord.ROLE = null;
-                            dtrecord.STATE = xxdbiDailyActivityHeader.STATE;
-                            dtrecord.COUNTY = xxdbiDailyActivityHeader.COUNTY;
-                            dtrecord.LAB_HEADER_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE;
-                            dtrecord.QUANTITY = doubleShopCalc(r.SHOPTIME_AM);
-                            dtrecord.ELEMENT = "Travel Time Base";
-                            dtrecord.ADJUSTMENT = "N";
-                            dtrecord.STATUS = "UNPROCESSED";
-                            dtrecord.ORG_ID = (decimal)r.ORG_ID;
-                            dtrecord.CREATED_BY = postedByUserId;
-                            dtrecord.CREATION_DATE = DateTime.Now;
-                            dtrecord.LAST_UPDATE_DATE = DateTime.Now;
-                            dtrecord.LAST_UPDATED_BY = postedByUserId;
-                            records.Add(dtrecord);
-                            GenericData.Insert<XXDBI_LABOR_HEADER_V>(dtrecord);
-                        }
-                        //Check if record is IRM and shop time added, then add Time Entry Wages for Shop Time PM
-                        if (xxdbiDailyActivityHeader.ORG_ID == 123 && r.SHOPTIME_PM > 0)
-                        {
-                            XXDBI_LABOR_HEADER_V dtrecord = new XXDBI_LABOR_HEADER_V();
-                            dtrecord.LABOR_HEADER_ID = DBI.Data.Interface.generateLaborHeaderSequence();
-                            dtrecord.DA_HEADER_ID = xxdbiDailyActivityHeader.DA_HEADER_ID;
-                            dtrecord.PROJECT_NUMBER = r.SEGMENT1;
-                            dtrecord.TASK_NUMBER = returnDailyActivityTaskNumber(dailyActivityHeaderId);
-                            dtrecord.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
-                            dtrecord.EMP_FULL_NAME = DBI.Data.EMPLOYEES_V.oracleEmployeeName(r.PERSON_ID);
-                            dtrecord.ROLE = null;
-                            dtrecord.STATE = xxdbiDailyActivityHeader.STATE;
-                            dtrecord.COUNTY = xxdbiDailyActivityHeader.COUNTY;
-                            dtrecord.LAB_HEADER_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE;
-                            dtrecord.QUANTITY = doubleShopCalc(r.SHOPTIME_PM);
-                            dtrecord.ELEMENT = "Travel Time Base";
-                            dtrecord.ADJUSTMENT = "N";
-                            dtrecord.STATUS = "UNPROCESSED";
-                            dtrecord.ORG_ID = (decimal)r.ORG_ID;
-                            dtrecord.CREATED_BY = postedByUserId;
-                            dtrecord.CREATION_DATE = DateTime.Now;
-                            dtrecord.LAST_UPDATE_DATE = DateTime.Now;
-                            dtrecord.LAST_UPDATED_BY = postedByUserId;
-                            records.Add(dtrecord);
-                            GenericData.Insert<XXDBI_LABOR_HEADER_V>(dtrecord);
-                        }
+
 
                     }
 

@@ -19,10 +19,10 @@ namespace DBI.Mobile.EMS.Controllers
             if (id == "production")
             {
                 Version ver = new Version();
-                ver.number = "1.0.B1403181";
+                ver.number = "1.0.B140314";
                 ver.mandatory = false;
                 ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobile.dbiservices.com/iems/iEMS.plist";
-                ver.descriptionText = "Corrected Employee Time to allow for hours and mins for drive,travel,shop and updated surface types for IRM. Removed email production unfinished feature.";
+                ver.descriptionText = "Employee drive time removed from non IRM Jobs. Added updated version control and modified the copy feature.";
 
                 RootObject root = new RootObject();
                 root.version = ver;
