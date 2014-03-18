@@ -73,7 +73,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string AppRequested = uxAddAppReqeusted.Value.ToString();
             string TruckNumber = uxAddApplicationTruckComboBox.Value.ToString();
             string Spray = uxAddEntrySprayBox.Value.ToString();
-            //string FiscalYear = uxAddFiscalYear.Value.ToString();
+            //DateTime FiscalYear = uxAddFiscalYear.Value.ToString();
             string Cut = uxAddEntryCutBox.Value.ToString();
             string Inspect = uxAddEntryInspectBox.Value.ToString();
             

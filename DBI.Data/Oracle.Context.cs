@@ -84,5 +84,6 @@ namespace DBI.Data
         public DbSet<EMPLOYEES_V> EMPLOYEES_V { get; set; }
         public DbSet<SYS_GROUPS> SYS_GROUPS { get; set; }
         public DbSet<JOB_TITLE_V> JOB_TITLE_V { get; set; }
+        public DbSet<CROSSING_RELATIONSHIP> CROSSING_RELATIONSHIP { get; set; }
     }
 }

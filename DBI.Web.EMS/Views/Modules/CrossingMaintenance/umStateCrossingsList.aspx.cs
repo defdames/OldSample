@@ -91,18 +91,20 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         protected void deExportToPDF(object sender, DirectEventArgs e)
         {
             //Set crossing Id
+
             long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+           
+                MemoryStream PdfStream = generatePDF(CrossingId);
 
-            MemoryStream PdfStream = generatePDF(CrossingId);
-
-            Response.Clear();
-            Response.ClearContent();
-            Response.ClearHeaders();
-            Response.ContentType = "application/pdf";
-            Response.AppendHeader("Content-Disposition", "attachment;filename=export.pdf");
-            Response.BinaryWrite(PdfStream.ToArray());
-            Response.End();
-        }
+                Response.Clear();
+                Response.ClearContent();
+                Response.ClearHeaders();
+                Response.ContentType = "application/pdf";
+                Response.AppendHeader("Content-Disposition", "attachment;filename=export.pdf");
+                Response.BinaryWrite(PdfStream.ToArray());
+                Response.End();
+            }
+        
 
         protected void deSendPDF(object sender, DirectEventArgs e)
         {
@@ -123,7 +125,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         protected MemoryStream generatePDF(long CrossingId)
         {
-          
+           
             using (MemoryStream PdfStream = new MemoryStream())
             {
                 //Create the document
@@ -137,12 +139,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 //Open Document
                 ExportedPDF.Open();
 
-                //Get Header Data
-
-
-                //Create Header Table
-                PdfPTable HeaderTable = new PdfPTable(4);
-                HeaderTable.DefaultCell.Border = PdfPCell.NO_BORDER;
+                PdfPTable CrossingTable = new PdfPTable(4);
+                CrossingTable.DefaultCell.Border = PdfPCell.NO_BORDER;
                 PdfPCell[] Cells;
                 PdfPRow Row;
 
@@ -152,27 +150,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 ExportedPDF.Add(Title);
                 ExportedPDF.Add(NewLine);
 
-                //First row
-                Cells = new PdfPCell[]{
-                    new PdfPCell(new Phrase("Applicator Name", HeadFootTitleFont)),
-                   
-                    new PdfPCell(new Phrase("Truck Number", HeadFootTitleFont))};
-                try
-                {
-
-                    foreach (PdfPCell Cell in Cells)
+                    try
                     {
-                        Cell.Border = PdfPCell.NO_BORDER;
-                    }
-                    Row = new PdfPRow(Cells);
-                    HeaderTable.Rows.Add(Row);
-
-                    ExportedPDF.Add(HeaderTable);
-                    ExportedPDF.Add(NewLine);
 
                     var CrossingData = GetCrossingData(CrossingId);
-
-                    PdfPTable CrossingTable = new PdfPTable(8);
+                    
+                    //PdfPTable CrossingTable = new PdfPTable(8);
 
                     Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Sub-Division", HeaderFont)),
@@ -196,8 +179,72 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                     foreach (dynamic Data in CrossingData)
                     {
+                        string NE;
+                        try
+                        {
+                            NE = Data.ROWNE.ToString();
+                        }
+                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                        {
+                            NE = string.Empty;
+                        }
+                        string NW;
+                        try
+                        {
+                            NE = Data.ROWNW.ToString();
+                        }
+                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                        {
+                            NW = String.Empty;
+                        }
+                        string SE;
+                        try
+                        {
+                            SE = Data.ROWSE.ToString();
+                        }
+                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                        {
+                            SE = String.Empty;
+                        }
+                        string SW;
+                        try
+                        {
+                            SE = Data.ROWSW.ToString();
+                        }
+                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                        {
+                            SW = String.Empty;
+                        }
+                        string Lat;
+                        try
+                        {
+                            Lat = Data.LATITUDE.ToString();
+                        }
+                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                        {
+                            Lat = String.Empty;
+                        }
+                        string Long;
+                        try
+                        {
+                            Long = Data.LONGITUDE.ToString();
+                        }
+                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                        {
+                        Long = String.Empty;
+                        string SpecialInsturctions;
+                        try
+                        {
+                           SpecialInsturctions = Data.SPECIAL_INSTURCTIONS.ToString();
+                        }
+                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                        {
+                          SpecialInsturctions = String.Empty;
+                        }
+                        }
                         Cells = new PdfPCell[]{
-                           new PdfPCell(new Phrase(Data.CROSSING_ID, CellFont)),
+                           //new PdfPCell(new Phrase(Data.CROSSING_ID, CellFont)),
+                           //  new PdfPCell(new Phrase(Data.CROSSING_NUMBER, CellFont)),
                         new PdfPCell(new Phrase(Data.SUB_DIVISION, CellFont)),
                         new PdfPCell(new Phrase(Data.MILE_POST, CellFont)),
                         new PdfPCell(new Phrase(Data.DOT, CellFont)),
@@ -205,14 +252,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                         new PdfPCell(new Phrase(Data.CITY, CellFont)),
                         new PdfPCell(new Phrase(Data.COUNTY, CellFont)),
                         new PdfPCell(new Phrase(Data.STREET, CellFont)),
-                        new PdfPCell(new Phrase(Data.NE, CellFont)),
-                        new PdfPCell(new Phrase(Data.NW, CellFont)),
-                        new PdfPCell(new Phrase(Data.SE, CellFont)),
-                        new PdfPCell(new Phrase(Data.SW, CellFont)),
+                        new PdfPCell(new Phrase(Data.NE.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.NW.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.SE.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.SW.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Data.SUB_CONTRACTED, CellFont)),
-                        new PdfPCell(new Phrase(Data.LATITUDE, CellFont)),
-                        new PdfPCell(new Phrase(Data.LONGITUDE, CellFont)),
-                        new PdfPCell(new Phrase(Data.SPECIAL_INSTRUCTIONS, CellFont)),
+                        new PdfPCell(new Phrase(Data.LATITUDE.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.LONGITUDE.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.SPECIAL_INSTRUCTIONS.ToString(), CellFont)),
                      
                        
                     };
@@ -373,6 +420,17 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 ExportedPDF.Close();
                 return PdfStream;
             }
+        }
+        public class CrossingForApplicationDetails
+        {
+            public long CROSSING_ID { get; set; }
+            public string CROSSING_NUMBER { get; set; }
+            public string SERVICE_UNIT { get; set; }
+            public string SUB_DIVISION { get; set; }
+            public string DOT { get; set; }
+            public string MILE_POST { get; set; }
+            public string STATE { get; set; }
+            public string CONTACT_ID { get; set; }
         }
     }
 }
