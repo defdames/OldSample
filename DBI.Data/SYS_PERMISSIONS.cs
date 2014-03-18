@@ -17,18 +17,19 @@ namespace DBI.Data
         public SYS_PERMISSIONS()
         {
             this.SYS_GROUPS_PERMS = new HashSet<SYS_GROUPS_PERMS>();
+            this.SYS_MENU = new HashSet<SYS_MENU>();
             this.SYS_MODULES = new HashSet<SYS_MODULES>();
             this.SYS_USER_PERMS = new HashSet<SYS_USER_PERMS>();
-            this.SYS_MENU = new HashSet<SYS_MENU>();
         }
     
         public decimal PERMISSION_ID { get; set; }
         public string PERMISSION_NAME { get; set; }
         public Nullable<decimal> PARENT_PERM_ID { get; set; }
+        public string DESCRIPTION { get; set; }
     
         public virtual ICollection<SYS_GROUPS_PERMS> SYS_GROUPS_PERMS { get; set; }
+        public virtual ICollection<SYS_MENU> SYS_MENU { get; set; }
         public virtual ICollection<SYS_MODULES> SYS_MODULES { get; set; }
         public virtual ICollection<SYS_USER_PERMS> SYS_USER_PERMS { get; set; }
-        public virtual ICollection<SYS_MENU> SYS_MENU { get; set; }
     }
 }
