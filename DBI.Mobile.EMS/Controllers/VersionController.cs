@@ -19,7 +19,7 @@ namespace DBI.Mobile.EMS.Controllers
             if (id == "production")
             {
                 Version ver = new Version();
-                ver.number = "1.0.B1403181";
+                ver.number = "1.0.B1403182";
                 ver.mandatory = false;
                 ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobile.dbiservices.com/iems/iEMS.plist";
                 ver.descriptionText = "Updated time entry area for employees";
