@@ -921,65 +921,68 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             }
         }
-        //protected void deAddIncident(object sender, DirectEventArgs e)
-        //{
-        //    CROSSING_INCIDENT data;
+        protected void deAddIncident(object sender, DirectEventArgs e)
+        {
+            CROSSING_INCIDENT data;
 
-        //    long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+            long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
 
-        //    //do type conversions
-        //    long IncidentNumber = Convert.ToDecimal(uxIncidentNumber.Value);
-        //    DateTime DateReported  = (DateTime)uxIncidentDateReported.Value;
-        //    DateTime DateClosed = (DateTime)uxIncidentDateClosed.Value;
-        //    string Remarks = uxIncidentRemarks.Value.ToString();
-        //    string SlowOrder = uxIncidentSlowOrder.Value.ToString();
+            //do type conversions
+            long IncidentNumber = Convert.ToInt64(uxIncidentNumber.Value);
+            DateTime DateReported = (DateTime)uxIncidentDateReported.Value;
+            DateTime DateClosed = (DateTime)uxIncidentDateClosed.Value;           
+            string SlowOrder = uxIncidentSlowOrder.Value.ToString();
 
-        //    if (uxIncidentSlowOrder.Checked)
-        //    {
-        //        SlowOrder = "Y";
-        //    }
-        //    else
-        //    {
-        //        SlowOrder = "N";
-        //    }
+            if (uxIncidentSlowOrder.Checked)
+            {
+                SlowOrder = "Y";
+            }
+            else
+            {
+                SlowOrder = "N";
+            }
 
-        //    //Add to Db
-        //    using (Entities _context = new Entities())
-        //    {
-        //        data = new CROSSING_INCIDENT()
-        //        {
+            //Add to Db
+            using (Entities _context = new Entities())
+            {
+                data = new CROSSING_INCIDENT()
+                {
 
-        //           INCIDENT_NUMBER = IncidentNumber,
-        //           DATE_REPORTED = DateReported,
-        //           DATE_CLOSED = DateClosed,
-        //           REMARKS = Remarks,
-        //           CROSSING_ID = CrossingId,
-        //        };
-        //    }
-        //    try
-        //    {
-        //        string Remarks = uxIncidentRemarks.Value.ToString();
-        //        data.REMARKS = Remarks;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        data.REMARKS = null;
-        //    }
+                    INCIDENT_NUMBER = IncidentNumber,
+                    DATE_REPORTED = DateReported,
+                    DATE_CLOSED = DateClosed,    
+                    SLOW_ORDER = SlowOrder,
+                    CROSSING_ID = CrossingId,
+                };
+            }
+            try
+            {
+                string Remarks = uxIncidentRemarks.Value.ToString();
+                data.REMARKS = Remarks;
+            }
+            catch (Exception)
+            {
+                data.REMARKS = null;
+            }
 
-        //    GenericData.Insert<CROSSING_INCIDENT>(data);
+            GenericData.Insert<CROSSING_INCIDENT>(data);
 
-        //    Notification.Show(new NotificationConfig()
-        //    {
-        //        Title = "Success",
-        //        Html = "Supplemental Added Successfully",
-        //        HideDelay = 1000,
-        //        AlignCfg = new NotificationAlignConfig
-        //        {
-        //            ElementAnchor = AnchorPoint.Center,
-        //            TargetAnchor = AnchorPoint.Center
-        //        }
-        //    });
-        //}
+            uxIncidentWindow.Hide();
+            uxIncidentFormPanel.Reset();
+            uxCurrentCrossingStore.Reload();
+
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Supplemental Added Successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
+        }
     }
 }
     

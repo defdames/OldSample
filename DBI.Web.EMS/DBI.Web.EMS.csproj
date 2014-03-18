@@ -118,6 +118,7 @@
     <Content Include="Views\Modules\CrossingMaintenance\umAppDate.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingHome.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umDataEntryMain.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umIncidentReports.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umInspectionEntry.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umContactsTab.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingMain.aspx" />
@@ -208,6 +209,13 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umDataEntryMain.aspx.designer.cs">
       <DependentUpon>umDataEntryMain.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umIncidentReports.aspx.cs">
+      <DependentUpon>umIncidentReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umIncidentReports.aspx.designer.cs">
+      <DependentUpon>umIncidentReports.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umInspectionEntry.aspx.cs">
       <DependentUpon>umInspectionEntry.aspx</DependentUpon>
