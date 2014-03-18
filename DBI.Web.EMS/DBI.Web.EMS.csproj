@@ -163,6 +163,7 @@
     <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
     <Content Include="Views\Modules\Security\umEditGroups.aspx" />
     <Content Include="Views\Modules\Security\umEditModules.aspx" />
+    <Content Include="Views\Modules\Security\umEditPermissions.aspx" />
     <Content Include="Views\Modules\Security\umEditUsers.aspx" />
     <Content Include="Views\Modules\Security\umSecurityLogList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityActivityList.aspx" />
@@ -522,6 +523,13 @@
     </Compile>
     <Compile Include="Views\Modules\Security\umEditModules.aspx.designer.cs">
       <DependentUpon>umEditModules.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Security\umEditPermissions.aspx.cs">
+      <DependentUpon>umEditPermissions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Security\umEditPermissions.aspx.designer.cs">
+      <DependentUpon>umEditPermissions.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\Security\umEditUsers.aspx.cs">
       <DependentUpon>umEditUsers.aspx</DependentUpon>

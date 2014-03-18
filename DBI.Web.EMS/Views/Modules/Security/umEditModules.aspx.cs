@@ -108,6 +108,10 @@ namespace DBI.Web.EMS.Views.Modules.Security
                 uxMenuItemPermission.SetValueAndFireSelect(MenuToEdit.PERMISSION_ID.ToString());
                 uxMenuItemPermission.SelectedItems.Add(new Ext.Net.ListItem(MenuToEdit.SYS_PERMISSIONS.PERMISSION_NAME.ToString(), MenuToEdit.PERMISSION_ID));
                 uxMenuItemPermission.UpdateSelectedItems();
+                uxMenuItemIcon.SelectedItems.Clear();
+                uxMenuItemIcon.SetValueAndFireSelect(MenuToEdit.ICON);
+                uxMenuItemIcon.SelectedItems.Add(new Ext.Net.ListItem(MenuToEdit.ICON));
+                uxMenuItemIcon.UpdateSelectedItems();
                 uxMenuItemName.Value = MenuToEdit.ITEM_NAME;
                 uxMenuItemURL.Value = MenuToEdit.ITEM_URL;
             }
@@ -174,6 +178,7 @@ namespace DBI.Web.EMS.Views.Modules.Security
             NewMenu.ITEM_URL = uxMenuItemURL.Value.ToString();
             NewMenu.MODULE_ID = decimal.Parse(uxMenuItemModule.Value.ToString());
             NewMenu.PERMISSION_ID = decimal.Parse(uxMenuItemPermission.Value.ToString());
+            NewMenu.ICON = uxMenuItemIcon.Value.ToString();
             GenericData.Insert<SYS_MENU>(NewMenu);
 
             uxMenuItemsWindow.Hide();
@@ -194,6 +199,7 @@ namespace DBI.Web.EMS.Views.Modules.Security
                 MenuToEdit.ITEM_URL = uxMenuItemURL.Value.ToString();
                 MenuToEdit.MODULE_ID = decimal.Parse(uxMenuItemModule.Value.ToString());
                 MenuToEdit.PERMISSION_ID = decimal.Parse(uxMenuItemPermission.Value.ToString());
+                MenuToEdit.ICON = uxMenuItemIcon.Value.ToString();
             }
             GenericData.Update<SYS_MENU>(MenuToEdit);
 
