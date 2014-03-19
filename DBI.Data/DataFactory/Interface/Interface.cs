@@ -142,11 +142,17 @@ namespace DBI.Data
             //If Not IRM subtract any travel time before you round
             if (orgID != 123)
             {
-                double hoursValue = ((double)Math.Truncate((decimal)travelTime) * -1);
-                double minsValue = ((((double)travelTime - ((double)Math.Truncate((decimal)travelTime)* 60)) * 100) * - 1);
+
+                double hoursValue = (double)Math.Truncate((decimal)travelTime);
+                double minsValue = (double)travelTime - hoursValue;
+                
+                    if (minsValue > 0) {
+                        minsValue = ((minsValue * 60) * 100);
+                    }
+
                 //Remove traveltime before you round
-                span = span.Add(TimeSpan.FromHours(hoursValue));
-                span = span.Add(TimeSpan.FromMinutes(minsValue));
+                span = span.Add(TimeSpan.FromHours((hoursValue * -1)));
+                span = span.Add(TimeSpan.FromMinutes((minsValue * -1)));
             }
 
             double calc = (span.Minutes > 0 && span.Minutes <= 8) ? 0
@@ -170,10 +176,15 @@ namespace DBI.Data
         public static decimal doubleShopCalc(decimal? time)
         {
             double hoursValue = (double)Math.Truncate((decimal)time);
-            double minsValue = ((((double)time - ((double)Math.Truncate((decimal)time) * 60)) * 100) * -1);
+            double minsValue = (double)time - hoursValue;
 
-            TimeSpan travelHours = TimeSpan.FromHours(hoursValue);
-            TimeSpan travelMins = TimeSpan.FromMinutes(minsValue);
+            if (minsValue > 0)
+            {
+                minsValue = ((minsValue * 60) * 100);
+            }
+
+            TimeSpan travelHours = TimeSpan.FromHours((hoursValue * -1));
+            TimeSpan travelMins = TimeSpan.FromMinutes((minsValue * - 1));
 
             double calc = (travelMins.Minutes > 0 && travelMins.Minutes <= 8) ? 0
                          : (travelMins.Minutes > 8 && travelMins.Minutes <= 23) ? .25
