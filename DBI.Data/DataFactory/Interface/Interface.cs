@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,7 +56,7 @@ namespace DBI.Data
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
 
@@ -131,11 +132,29 @@ namespace DBI.Data
             }
         }
 
-       
 
-        public static decimal payrollHoursCalculation(DateTime dateIn, DateTime dateOut, string lunchFlag, decimal? lunchAmount,decimal? orgID, decimal? driveTime, decimal? travelTime)
+
+        public static decimal payrollHoursCalculation(DateTime dateIn, DateTime dateOut, string lunchFlag, decimal? lunchAmount, decimal? orgID, decimal? travelTime)
         {
+            //Get the total hours (Time Entry Wages)
             TimeSpan span = dateOut.Subtract(dateIn);
+
+            //If Not IRM subtract any travel time before you round
+            if (orgID != 123)
+            {
+
+                double hoursValue = (double)Math.Truncate((decimal)travelTime);
+                double minsValue = (double)travelTime - hoursValue;
+                
+                    if (minsValue > 0) {
+                        minsValue = ((minsValue * 60) * 100);
+                    }
+
+                //Remove traveltime before you round
+                span = span.Add(TimeSpan.FromHours((hoursValue * -1)));
+                span = span.Add(TimeSpan.FromMinutes((minsValue * -1)));
+            }
+
             double calc = (span.Minutes > 0 && span.Minutes <= 8) ? 0
                          : (span.Minutes > 8 && span.Minutes <= 23) ? .25
                          : (span.Minutes > 23 && span.Minutes <= 38) ? .50
@@ -144,18 +163,39 @@ namespace DBI.Data
                          : 0;
             decimal returnValue = span.Hours + (decimal)calc;
 
-            if (orgID != 123)
-            {
-                returnValue = returnValue - (decimal)travelTime;
-            }
-
             //Lunch calculation 
-            if(lunchFlag == "Y")
+            if (lunchFlag == "Y")
             {
                 returnValue = returnValue - (decimal)((lunchAmount == 30) ? .50 : 1);
             }
 
-             return returnValue;
+            return returnValue;
+        }
+
+        //Rounds the time to the correct quarter hour
+        public static decimal doubleShopCalc(decimal? time)
+        {
+            double hoursValue = (double)Math.Truncate((decimal)time);
+            double minsValue = (double)time - hoursValue;
+
+            if (minsValue > 0)
+            {
+                minsValue = ((minsValue * 60) * 100);
+            }
+
+            TimeSpan travelHours = TimeSpan.FromHours((hoursValue * -1));
+            TimeSpan travelMins = TimeSpan.FromMinutes((minsValue * - 1));
+
+            double calc = (travelMins.Minutes > 0 && travelMins.Minutes <= 8) ? 0
+                         : (travelMins.Minutes > 8 && travelMins.Minutes <= 23) ? .25
+                         : (travelMins.Minutes > 23 && travelMins.Minutes <= 38) ? .50
+                         : (travelMins.Minutes > 38 && travelMins.Minutes <= 53) ? .75
+                         : (travelMins.Minutes > 53 && travelMins.Minutes <= 60) ? 1
+                         : 0;
+
+            decimal returnValue = travelHours.Hours + (decimal)calc;
+            return returnValue;
+
         }
 
         public static decimal maxLaborHoursCalculation(List<XXDBI_LABOR_HEADER_V> laborRecords)
@@ -190,35 +230,35 @@ namespace DBI.Data
 
                 try
                 {
-                     var query = from h in _context.DAILY_ACTIVITY_HEADER
-                            join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
-                            join l in _context.PA_LOCATIONS_V on p.LOCATION_ID equals (long)l.LOCATION_ID
-                            where h.HEADER_ID == dailyActivityHeaderId
-                            select new { h, p, l};
+                    var query = from h in _context.DAILY_ACTIVITY_HEADER
+                                join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
+                                join l in _context.PA_LOCATIONS_V on p.LOCATION_ID equals (long)l.LOCATION_ID
+                                where h.HEADER_ID == dailyActivityHeaderId
+                                select new { h, p, l };
 
-                var data = query.SingleOrDefault();
+                    var data = query.SingleOrDefault();
 
-                XXDBI_DAILY_ACTIVITY_HEADER_V header = new XXDBI_DAILY_ACTIVITY_HEADER_V();
-                header.DA_HEADER_ID = generateDailyActivityHeaderSequence();
-                header.STATE = data.l.REGION;
-                header.COUNTY = "NONE";
-                header.ACTIVITY_DATE = (DateTime)data.h.DA_DATE;
-                header.ORG_ID = (Decimal)data.p.ORG_ID;
-                header.PROJECT_NUMBER = data.p.SEGMENT1;
-                header.PROJECT_NAME = data.p.NAME;
-                header.CREATED_BY = postedByUserId;
-                header.CREATION_DATE = DateTime.Now;
-                header.LAST_UPDATED_BY = postedByUserId;
-                header.LAST_UPDATE_DATE = DateTime.Now;
+                    XXDBI_DAILY_ACTIVITY_HEADER_V header = new XXDBI_DAILY_ACTIVITY_HEADER_V();
+                    header.DA_HEADER_ID = generateDailyActivityHeaderSequence();
+                    header.STATE = data.l.REGION;
+                    header.COUNTY = "NONE";
+                    header.ACTIVITY_DATE = (DateTime)data.h.DA_DATE;
+                    header.ORG_ID = (Decimal)data.p.ORG_ID;
+                    header.PROJECT_NUMBER = data.p.SEGMENT1;
+                    header.PROJECT_NAME = data.p.NAME;
+                    header.CREATED_BY = postedByUserId;
+                    header.CREATION_DATE = DateTime.Now;
+                    header.LAST_UPDATED_BY = postedByUserId;
+                    header.LAST_UPDATE_DATE = DateTime.Now;
 
-                xxdbiHeaderRecord = header;
+                    xxdbiHeaderRecord = header;
 
-                GenericData.Insert<XXDBI_DAILY_ACTIVITY_HEADER_V>(header);
+                    GenericData.Insert<XXDBI_DAILY_ACTIVITY_HEADER_V>(header);
 
                 }
                 catch (Exception ex)
                 {
-                    throw(ex);
+                    throw (ex);
                 }
             }
 
@@ -234,9 +274,9 @@ namespace DBI.Data
             using (Entities _context = new Entities())
             {
                 var productionData = (from p in _context.DAILY_ACTIVITY_PRODUCTION
-                                                           join t in _context.PA_TASKS_V on p.TASK_ID equals t.TASK_ID 
-                                                             where p.HEADER_ID == dailyActivityHeaderID
-                                                           select new { t.TASK_NUMBER });
+                                      join t in _context.PA_TASKS_V on p.TASK_ID equals t.TASK_ID
+                                      where p.HEADER_ID == dailyActivityHeaderID
+                                      select new { t.TASK_NUMBER });
 
                 var task = productionData.FirstOrDefault();
 
@@ -260,7 +300,7 @@ namespace DBI.Data
                                 join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                 join l in _context.PA_LOCATIONS_V on p.LOCATION_ID equals (long)l.LOCATION_ID
                                 where d.HEADER_ID == dailyActivityHeaderId
-                                select new { d.TRAVEL_TIME, d.DRIVE_TIME, p.SEGMENT1, e.PERSON_ID, e.EMPLOYEE_NUMBER, e.EMPLOYEE_NAME, d.ROLE_TYPE, d.STATE, l.REGION, d.COUNTY, p.ORG_ID, d.TIME_IN, d.TIME_OUT, d.LUNCH, d.LUNCH_LENGTH}).ToList();
+                                select new { d.SHOPTIME_AM, d.SHOPTIME_PM, d.TRAVEL_TIME, d.DRIVE_TIME, p.SEGMENT1, e.PERSON_ID, e.EMPLOYEE_NUMBER, e.EMPLOYEE_NAME, d.ROLE_TYPE, d.STATE, l.REGION, d.COUNTY, p.ORG_ID, d.TIME_IN, d.TIME_OUT, d.LUNCH, d.LUNCH_LENGTH }).ToList();
 
                     //Add Time Entry Wages
                     foreach (var r in data)
@@ -276,7 +316,7 @@ namespace DBI.Data
                         record.STATE = (r.STATE == null) ? r.REGION : r.STATE;
                         record.COUNTY = r.COUNTY;
                         record.LAB_HEADER_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE;
-                        record.QUANTITY = payrollHoursCalculation((DateTime)r.TIME_IN, (DateTime)r.TIME_OUT,r.LUNCH,r.LUNCH_LENGTH,r.ORG_ID, r.DRIVE_TIME, r.TRAVEL_TIME);
+                        record.QUANTITY = payrollHoursCalculation((DateTime)r.TIME_IN, (DateTime)r.TIME_OUT, r.LUNCH, r.LUNCH_LENGTH, r.ORG_ID, r.TRAVEL_TIME);
                         record.ELEMENT = "Time Entry Wages";
                         record.ADJUSTMENT = "N";
                         record.STATUS = "UNPROCESSED";
@@ -302,7 +342,7 @@ namespace DBI.Data
                             dtrecord.STATE = xxdbiDailyActivityHeader.STATE;
                             dtrecord.COUNTY = xxdbiDailyActivityHeader.COUNTY;
                             dtrecord.LAB_HEADER_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE;
-                            dtrecord.QUANTITY = (decimal)r.DRIVE_TIME;
+                            dtrecord.QUANTITY = doubleShopCalc(r.DRIVE_TIME);
                             dtrecord.ELEMENT = "Drive Time Base";
                             dtrecord.ADJUSTMENT = "N";
                             dtrecord.STATUS = "UNPROCESSED";
@@ -329,7 +369,7 @@ namespace DBI.Data
                             dtrecord.STATE = xxdbiDailyActivityHeader.STATE;
                             dtrecord.COUNTY = xxdbiDailyActivityHeader.COUNTY;
                             dtrecord.LAB_HEADER_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE;
-                            dtrecord.QUANTITY = (decimal)r.TRAVEL_TIME;
+                            dtrecord.QUANTITY = doubleShopCalc(r.TRAVEL_TIME);
                             dtrecord.ELEMENT = "Travel Time Base";
                             dtrecord.ADJUSTMENT = "N";
                             dtrecord.STATUS = "UNPROCESSED";
@@ -341,7 +381,58 @@ namespace DBI.Data
                             records.Add(dtrecord);
                             GenericData.Insert<XXDBI_LABOR_HEADER_V>(dtrecord);
                         }
-
+                        ////Check if record is IRM and shop time added, then add Time Entry Wages for Shop Time AM
+                        //if (xxdbiDailyActivityHeader.ORG_ID == 123 && r.SHOPTIME_AM > 0)
+                        //{
+                        //    XXDBI_LABOR_HEADER_V dtrecord = new XXDBI_LABOR_HEADER_V();
+                        //    dtrecord.LABOR_HEADER_ID = DBI.Data.Interface.generateLaborHeaderSequence();
+                        //    dtrecord.DA_HEADER_ID = xxdbiDailyActivityHeader.DA_HEADER_ID;
+                        //    dtrecord.PROJECT_NUMBER = r.SEGMENT1;
+                        //    dtrecord.TASK_NUMBER = returnDailyActivityTaskNumber(dailyActivityHeaderId);
+                        //    dtrecord.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
+                        //    dtrecord.EMP_FULL_NAME = DBI.Data.EMPLOYEES_V.oracleEmployeeName(r.PERSON_ID);
+                        //    dtrecord.ROLE = null;
+                        //    dtrecord.STATE = xxdbiDailyActivityHeader.STATE;
+                        //    dtrecord.COUNTY = xxdbiDailyActivityHeader.COUNTY;
+                        //    dtrecord.LAB_HEADER_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE;
+                        //    dtrecord.QUANTITY = doubleShopCalc(r.SHOPTIME_AM);
+                        //    dtrecord.ELEMENT = "Travel Time Base";
+                        //    dtrecord.ADJUSTMENT = "N";
+                        //    dtrecord.STATUS = "UNPROCESSED";
+                        //    dtrecord.ORG_ID = (decimal)r.ORG_ID;
+                        //    dtrecord.CREATED_BY = postedByUserId;
+                        //    dtrecord.CREATION_DATE = DateTime.Now;
+                        //    dtrecord.LAST_UPDATE_DATE = DateTime.Now;
+                        //    dtrecord.LAST_UPDATED_BY = postedByUserId;
+                        //    records.Add(dtrecord);
+                        //    GenericData.Insert<XXDBI_LABOR_HEADER_V>(dtrecord);
+                        //}
+                        ////Check if record is IRM and shop time added, then add Time Entry Wages for Shop Time PM
+                        //if (xxdbiDailyActivityHeader.ORG_ID == 123 && r.SHOPTIME_PM > 0)
+                        //{
+                        //    XXDBI_LABOR_HEADER_V dtrecord = new XXDBI_LABOR_HEADER_V();
+                        //    dtrecord.LABOR_HEADER_ID = DBI.Data.Interface.generateLaborHeaderSequence();
+                        //    dtrecord.DA_HEADER_ID = xxdbiDailyActivityHeader.DA_HEADER_ID;
+                        //    dtrecord.PROJECT_NUMBER = r.SEGMENT1;
+                        //    dtrecord.TASK_NUMBER = returnDailyActivityTaskNumber(dailyActivityHeaderId);
+                        //    dtrecord.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
+                        //    dtrecord.EMP_FULL_NAME = DBI.Data.EMPLOYEES_V.oracleEmployeeName(r.PERSON_ID);
+                        //    dtrecord.ROLE = null;
+                        //    dtrecord.STATE = xxdbiDailyActivityHeader.STATE;
+                        //    dtrecord.COUNTY = xxdbiDailyActivityHeader.COUNTY;
+                        //    dtrecord.LAB_HEADER_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE;
+                        //    dtrecord.QUANTITY = doubleShopCalc(r.SHOPTIME_PM);
+                        //    dtrecord.ELEMENT = "Travel Time Base";
+                        //    dtrecord.ADJUSTMENT = "N";
+                        //    dtrecord.STATUS = "UNPROCESSED";
+                        //    dtrecord.ORG_ID = (decimal)r.ORG_ID;
+                        //    dtrecord.CREATED_BY = postedByUserId;
+                        //    dtrecord.CREATION_DATE = DateTime.Now;
+                        //    dtrecord.LAST_UPDATE_DATE = DateTime.Now;
+                        //    dtrecord.LAST_UPDATED_BY = postedByUserId;
+                        //    records.Add(dtrecord);
+                        //    GenericData.Insert<XXDBI_LABOR_HEADER_V>(dtrecord);
+                        //}
 
                     }
 
@@ -351,9 +442,9 @@ namespace DBI.Data
             }
             catch (Exception ex)
             {
-                throw(ex);
+                throw (ex);
             }
-           
+
         }
 
         public static void createPerDiemRecords(long dailyActivityHeaderId, long postedByUserId, XXDBI_DAILY_ACTIVITY_HEADER_V xxdbiDailyActivityHeader)
@@ -369,7 +460,7 @@ namespace DBI.Data
                                 join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                 join l in _context.PA_LOCATIONS_V on p.LOCATION_ID equals (long)l.LOCATION_ID
                                 where d.HEADER_ID == dailyActivityHeaderId && d.PER_DIEM == "Y"
-                                select new { e.EMPLOYEE_NAME, e.EMPLOYEE_NUMBER, p.ORG_ID, e.PERSON_ID}).ToList();
+                                select new { e.EMPLOYEE_NAME, e.EMPLOYEE_NUMBER, p.ORG_ID, e.PERSON_ID }).ToList();
 
                     foreach (var r in data)
                     {
@@ -381,7 +472,7 @@ namespace DBI.Data
                         record.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
                         record.EMP_FULL_NAME = DBI.Data.EMPLOYEES_V.oracleEmployeeName(r.PERSON_ID);
                         record.EXPENDITURE_TYPE = "PER DIEM";
-                        record.PER_DIEM_DATE =xxdbiDailyActivityHeader.ACTIVITY_DATE;
+                        record.PER_DIEM_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE;
                         record.AMOUNT = (decimal)((xxdbiDailyActivityHeader.ORG_ID == 121) ? 25.00 : (xxdbiDailyActivityHeader.ORG_ID == 123) ? 35.00 : 25.00);
                         record.APPROVAL_STATUS = "N";
                         record.STATUS = "UNPROCESSED";
@@ -413,31 +504,31 @@ namespace DBI.Data
                             join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
                             join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                             where d.HEADER_ID == dailyActivityHeaderId
-                            select new { p.NAME, p.SEGMENT1, p.ORG_ID}).ToList();
+                            select new { p.NAME, p.SEGMENT1, p.ORG_ID }).ToList();
 
-                            foreach(var r in data)
-                            {
-                                XXDBI_TRUCK_EQUIP_USAGE_V record = new XXDBI_TRUCK_EQUIP_USAGE_V();
-                               record.DA_HEADER_ID = dailyActivityHeaderRecord.DA_HEADER_ID;
-                               record.CREATED_BY = postedByUserId;
-                               record.CREATION_DATE = DateTime.Now;
-                               record.LAST_UPDATED_BY = postedByUserId;
-                               record.LAST_UPDATE_DATE = DateTime.Now;
-                               record.TRUCK_EQUIP = r.NAME;
-                               record.TRANSACTION_ID = generateEquipmentUsageSequence();
-                               record.PROJECT_NUMBER = dailyActivityHeaderRecord.PROJECT_NUMBER;
-                               record.TASK_NUMBER = returnDailyActivityTaskNumber(dailyActivityHeaderId);
-                               record.QUANTITY = maxHours;
-                               record.USAGE_DATE = dailyActivityHeaderRecord.ACTIVITY_DATE;
-                               record.STATUS = "UNPROCESSED";
-                               record.ORG_ID = (decimal)r.ORG_ID;
-                               records.Add(record);
-                            }
+                foreach (var r in data)
+                {
+                    XXDBI_TRUCK_EQUIP_USAGE_V record = new XXDBI_TRUCK_EQUIP_USAGE_V();
+                    record.DA_HEADER_ID = dailyActivityHeaderRecord.DA_HEADER_ID;
+                    record.CREATED_BY = postedByUserId;
+                    record.CREATION_DATE = DateTime.Now;
+                    record.LAST_UPDATED_BY = postedByUserId;
+                    record.LAST_UPDATE_DATE = DateTime.Now;
+                    record.TRUCK_EQUIP = r.NAME;
+                    record.TRANSACTION_ID = generateEquipmentUsageSequence();
+                    record.PROJECT_NUMBER = dailyActivityHeaderRecord.PROJECT_NUMBER;
+                    record.TASK_NUMBER = returnDailyActivityTaskNumber(dailyActivityHeaderId);
+                    record.QUANTITY = maxHours;
+                    record.USAGE_DATE = dailyActivityHeaderRecord.ACTIVITY_DATE;
+                    record.STATUS = "UNPROCESSED";
+                    record.ORG_ID = (decimal)r.ORG_ID;
+                    records.Add(record);
+                }
 
-                            foreach (XXDBI_TRUCK_EQUIP_USAGE_V record in records)
-                            {
-                                GenericData.Insert<XXDBI_TRUCK_EQUIP_USAGE_V>(record);
-                            }
+                foreach (XXDBI_TRUCK_EQUIP_USAGE_V record in records)
+                {
+                    GenericData.Insert<XXDBI_TRUCK_EQUIP_USAGE_V>(record);
+                }
             }
 
         }
@@ -452,9 +543,9 @@ namespace DBI.Data
                     var InventoryList = (from i in _context.DAILY_ACTIVITY_INVENTORY
                                          join h in _context.DAILY_ACTIVITY_HEADER on i.HEADER_ID equals h.HEADER_ID
                                          join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
-                                         join iv in _context.INVENTORY_V on new {JoinProperty1 = (decimal) i.ITEM_ID, JoinProperty2 = (long)i.SUB_INVENTORY_ORG_ID } equals new {JoinProperty1 = iv.ITEM_ID, JoinProperty2 = iv.ORGANIZATION_ID }                                        
+                                         join iv in _context.INVENTORY_V on new { JoinProperty1 = (decimal)i.ITEM_ID, JoinProperty2 = (long)i.SUB_INVENTORY_ORG_ID } equals new { JoinProperty1 = iv.ITEM_ID, JoinProperty2 = iv.ORGANIZATION_ID }
                                          where i.HEADER_ID == HeaderId
-                                         select new { i, iv, p.ORG_ID, h.PROJECT_ID}).ToList();
+                                         select new { i, iv, p.ORG_ID, h.PROJECT_ID }).ToList();
 
                     int InventoryCount = 1;
                     foreach (var InventoryItem in InventoryList)
@@ -468,7 +559,7 @@ namespace DBI.Data
                         {
                             TransactionType = 120;
                         }
-                                                
+
 
                         long GlCode = getGlCode((long)InventoryItem.PROJECT_ID);
                         decimal Quantity = -Math.Abs((decimal)InventoryItem.i.RATE);
@@ -525,18 +616,18 @@ namespace DBI.Data
         {
             try
             {
-                using(Entities _context = new Entities())
+                using (Entities _context = new Entities())
                 {
                     DAILY_ACTIVITY_IMPORT importDetails = _context.DAILY_ACTIVITY_IMPORT.Where(h => h.HEADER_ID == headerDetails.HEADER_ID).SingleOrDefault();
 
                     PROJECTS_V projectDetails = _context.PROJECTS_V.Where(p => p.PROJECT_ID == headerDetails.PROJECT_ID).SingleOrDefault();
 
-                    if(importDetails != null || importDetails.DEVICE_ID != "0001")
+                    if (importDetails != null || importDetails.DEVICE_ID != "0001")
                     {
                         SYS_MOBILE_NOTIFICATIONS notification = new SYS_MOBILE_NOTIFICATIONS();
                         notification.DEVICE_ID = importDetails.DEVICE_ID;
                         notification.CREATE_DATE = DateTime.Now;
-                        notification.MESSAGE = string.Format("Daily activity for {0} completed on {1} has been posted by {2}",projectDetails.LONG_NAME,DateTime.Parse(headerDetails.DA_DATE.ToString()).ToShortDateString(),postedByUser);
+                        notification.MESSAGE = string.Format("Daily activity for {0} completed on {1} has been posted by {2}", projectDetails.LONG_NAME, DateTime.Parse(headerDetails.DA_DATE.ToString()).ToShortDateString(), postedByUser);
                         notification.SOUND = "alert.caf";
                         GenericData.Insert<SYS_MOBILE_NOTIFICATIONS>(notification);
                     }
@@ -546,7 +637,7 @@ namespace DBI.Data
             }
             catch (Exception ex)
             {
-                
+
                 throw;
             }
 
@@ -566,24 +657,24 @@ namespace DBI.Data
                                           join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                           where d.HEADER_ID == HeaderId
                                           select new { d, p, t.TASK_NUMBER, h.DA_DATE }).ToList();
-                    
+
                     foreach (var Production in ProductionList)
                     {
                         if (Production.p.ORG_ID == 123)
                         {
-                            DateTime periodDate = GetPADateFromHeader((DateTime) Production.DA_DATE, 123);
+                            DateTime periodDate = GetPADateFromHeader((DateTime)Production.DA_DATE, 123);
 
                             string transReference = "EMS" + Production.p.SEGMENT1 + Production.d.PRODUCTION_ID.ToString();
                             string batchName = Production.p.SEGMENT1 + DateTime.Now;
                             string taskName = returnDailyActivityTaskNumber(HeaderId);
                             RowToAdd = new PA_TRANSACTION_INT_V
                             {
-                                QUANTITY = (decimal) Production.d.QUANTITY,
+                                QUANTITY = (decimal)Production.d.QUANTITY,
                                 ORIG_TRANSACTION_REFERENCE = transReference,
                                 TRANSACTION_SOURCE = "DBI Daily Activity Sheet",
                                 BATCH_NAME = batchName,
                                 EXPENDITURE_ENDING_DATE = periodDate,
-                                EXPENDITURE_ITEM_DATE = (DateTime) Production.DA_DATE,
+                                EXPENDITURE_ITEM_DATE = (DateTime)Production.DA_DATE,
                                 PROJECT_NUMBER = Production.p.SEGMENT1,
                                 TASK_NUMBER = taskName,
                                 EXPENDITURE_TYPE = Production.d.EXPENDITURE_TYPE,
@@ -598,7 +689,7 @@ namespace DBI.Data
                             };
                             GenericData.Insert<PA_TRANSACTION_INT_V>(RowToAdd);
                         }
-                        
+
                     }
                 }
             }
@@ -608,8 +699,8 @@ namespace DBI.Data
             }
         }
 
-   
-      
+
+
 
 
     }
