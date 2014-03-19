@@ -84,6 +84,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             return false;
         }
 
+        public static bool employeeWithShopTimeCheck(long headerID)
+        {
+            return DAILY_ACTIVITY_EMPLOYEE.employeesWithShopTimeByDailyActivityID(headerID);
+        }
+
         public static List<long> employeeTimeOverlapCheck()
         {
             using (Entities _context = new Entities())
@@ -128,7 +133,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
-        public static List<long> EquipmentBusinessUnitCheck()
+       public static List<long> EquipmentBusinessUnitCheck()
         {
             List<long> OffendingHeaders = new List<long>();
             using (Entities _context = new Entities())

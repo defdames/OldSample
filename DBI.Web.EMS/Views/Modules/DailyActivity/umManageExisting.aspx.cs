@@ -287,6 +287,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxPlaceholderWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&PersonId={1}", DuplicatePerDiems.HEADER_ID, DuplicatePerDiems.PERSON_ID));
                 uxPlaceholderWindow.Show();
             }
+
+            if (OrgId == 123)
+            {
+                if (ValidationChecks.employeeWithShopTimeCheck(HeaderId))
+                {
+                    uxPlaceholderWindow.LoadContent(string.Format("umChooseSupportProject.aspx?HeaderId={0}", HeaderId));
+                    uxPlaceholderWindow.Show();
+                }
+            }
+
             if (EmployeeOverLap.Count > 0)
             {
                 using (Entities _context = new Entities())
