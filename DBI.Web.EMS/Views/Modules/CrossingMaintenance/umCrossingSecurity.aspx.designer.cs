@@ -103,13 +103,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FilterHeader FilterHeader2;
         
         /// <summary>
-        /// project control.
+        /// CheckboxSelectionModel2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.RowSelectionModel project;
+        protected global::Ext.Net.CheckboxSelectionModel CheckboxSelectionModel2;
         
         /// <summary>
         /// PagingToolbar2 control.

@@ -47,7 +47,6 @@
                     <Columns>
 
                         <ext:Column ID="uxMainCrossingNum" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing #" Flex="1" />
-                        <ext:Column ID="Column8" runat="server" DataIndex="LONG_NAME" Text="Project Name" Flex="2" />
                         <ext:Column ID="Column12" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
                         <ext:Column ID="uxSubDiv" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
                         <ext:Column ID="uxMTM" runat="server" DataIndex="CONTACT_NAME" Text="Manager" Flex="1" />
@@ -77,7 +76,7 @@
                     </ext:PagingToolbar>
                 </BottomBar>
                  <Listeners>
-				<Select Handler="#{uxEditCrossingsButton}.enable(); #{uxActivateCrossingButton}.enable(); #{uxDeleteCrossingButton}.enable(); #{uxAddIncident}.enable();" /> 
+				<Select Handler="#{uxEditCrossingsButton}.enable(); #{uxProjectListButton}.enable();  #{uxAddIncident}.enable();" /> 
                             
 			</Listeners>
             </ext:GridPanel>
@@ -105,22 +104,13 @@
                                 </DirectEvents>
                             </ext:Button>
 
-                            <ext:Button ID="uxActivateCrossingButton" runat="server" Text="Activate Crossing" Icon="ApplicationGo" Disabled="true"/>
-                            <ext:Button ID="uxDeleteCrossingButton" runat="server" Text="Delete Crossing" Icon="ApplicationDelete" Disabled="true">
-                                <DirectEvents>
-                                    <Click OnEvent="deRemoveCrossing">
-                                        <Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete crossing?"/>
-                                        <ExtraParams>
-                                            <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                                        </ExtraParams>
-                                    </Click>
-                                </DirectEvents>
-                            </ext:Button>
                              <ext:Button ID="uxAddIncident" runat="server" Text="Add Incident" Icon="ApplicationAdd" Disabled="true">
                                 <Listeners>
                                     <Click Handler="#{uxIncidentWindow}.show()" />
                                 </Listeners>
                             </ext:Button>
+                            <ext:Button ID="uxProjectListButton" runat="server" Text="Project List" Icon="ApplicationViewDetail" Disabled="true"/>
+
                         </Items>
                     </ext:Toolbar>
 
