@@ -22,6 +22,50 @@
       "PA_PERIODS_ALL"."ORG_ID" AS "ORG_ID"
       FROM "PA"."PA_PERIODS_ALL" "PA_PERIODS_ALL"</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="XXDBI_PAYROLL_AUDIT" EntityType="OracleModel.Store.XXDBI_PAYROLL_AUDIT" store:Type="Tables" store:Schema="XXDBI" store:Name="XXDBI_PAYROLL_AUDIT">
+            <DefiningQuery>SELECT 
+      "XXDBI_PAYROLL_AUDIT"."PAYROLL_AUDIT_ID" AS "PAYROLL_AUDIT_ID", 
+      "XXDBI_PAYROLL_AUDIT"."DA_HEADER_ID" AS "DA_HEADER_ID", 
+      "XXDBI_PAYROLL_AUDIT"."EMPLOYEE_NUMBER" AS "EMPLOYEE_NUMBER", 
+      "XXDBI_PAYROLL_AUDIT"."EMPLOYEE_NAME" AS "EMPLOYEE_NAME", 
+      "XXDBI_PAYROLL_AUDIT"."ELEMENT" AS "ELEMENT", 
+      "XXDBI_PAYROLL_AUDIT"."PROJECT_ROLE" AS "PROJECT_ROLE", 
+      "XXDBI_PAYROLL_AUDIT"."STATE" AS "STATE", 
+      "XXDBI_PAYROLL_AUDIT"."COUNTY" AS "COUNTY", 
+      "XXDBI_PAYROLL_AUDIT"."PROJECT_NUMBER" AS "PROJECT_NUMBER", 
+      "XXDBI_PAYROLL_AUDIT"."TASK_NUMBER" AS "TASK_NUMBER", 
+      "XXDBI_PAYROLL_AUDIT"."EXPENDITURE_TYPE" AS "EXPENDITURE_TYPE", 
+      "XXDBI_PAYROLL_AUDIT"."SUNDAY" AS "SUNDAY", 
+      "XXDBI_PAYROLL_AUDIT"."MONDAY" AS "MONDAY", 
+      "XXDBI_PAYROLL_AUDIT"."TUESDAY" AS "TUESDAY", 
+      "XXDBI_PAYROLL_AUDIT"."WEDNESDAY" AS "WEDNESDAY", 
+      "XXDBI_PAYROLL_AUDIT"."THURSDAY" AS "THURSDAY", 
+      "XXDBI_PAYROLL_AUDIT"."FRIDAY" AS "FRIDAY", 
+      "XXDBI_PAYROLL_AUDIT"."SATURDAY" AS "SATURDAY", 
+      "XXDBI_PAYROLL_AUDIT"."PREVAILING_WAGE_RATE" AS "PREVAILING_WAGE_RATE", 
+      "XXDBI_PAYROLL_AUDIT"."FRINGE_RATE" AS "FRINGE_RATE", 
+      "XXDBI_PAYROLL_AUDIT"."EFFECTIVE_START_DATE" AS "EFFECTIVE_START_DATE", 
+      "XXDBI_PAYROLL_AUDIT"."EFFECTIVE_END_DATE" AS "EFFECTIVE_END_DATE", 
+      "XXDBI_PAYROLL_AUDIT"."WORK_ORDER_NUM" AS "WORK_ORDER_NUM", 
+      "XXDBI_PAYROLL_AUDIT"."TOTAL_HOURS" AS "TOTAL_HOURS", 
+      "XXDBI_PAYROLL_AUDIT"."ORG_ID" AS "ORG_ID", 
+      "XXDBI_PAYROLL_AUDIT"."STATUS" AS "STATUS", 
+      "XXDBI_PAYROLL_AUDIT"."OVERTIME_STATUS" AS "OVERTIME_STATUS", 
+      "XXDBI_PAYROLL_AUDIT"."FRINGE_STATUS" AS "FRINGE_STATUS", 
+      "XXDBI_PAYROLL_AUDIT"."PROJECT_STATUS" AS "PROJECT_STATUS", 
+      "XXDBI_PAYROLL_AUDIT"."PAYROLLAPI_RETURN_ID" AS "PAYROLLAPI_RETURN_ID", 
+      "XXDBI_PAYROLL_AUDIT"."ADJUSTMENT" AS "ADJUSTMENT", 
+      "XXDBI_PAYROLL_AUDIT"."WAGE_SOURCE" AS "WAGE_SOURCE", 
+      "XXDBI_PAYROLL_AUDIT"."CREATED_BY" AS "CREATED_BY", 
+      "XXDBI_PAYROLL_AUDIT"."CREATION_DATE" AS "CREATION_DATE", 
+      "XXDBI_PAYROLL_AUDIT"."LAST_UPDATED_BY" AS "LAST_UPDATED_BY", 
+      "XXDBI_PAYROLL_AUDIT"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE", 
+      "XXDBI_PAYROLL_AUDIT"."LAST_UPDATE_LOGIN" AS "LAST_UPDATE_LOGIN", 
+      "XXDBI_PAYROLL_AUDIT"."PARENT_PAYROLL_ID" AS "PARENT_PAYROLL_ID", 
+      "XXDBI_PAYROLL_AUDIT"."SLIDING_SCALE_FLAG" AS "SLIDING_SCALE_FLAG", 
+      "XXDBI_PAYROLL_AUDIT"."DAILY_OVERTIME_FLAG" AS "DAILY_OVERTIME_FLAG"
+      FROM "XXDBI"."XXDBI_PAYROLL_AUDIT" "XXDBI_PAYROLL_AUDIT"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="XXPJ_PREV_WAGE_RATES" EntityType="OracleModel.Store.XXPJ_PREV_WAGE_RATES" store:Type="Tables" store:Schema="XXDBI" store:Name="XXPJ_PREV_WAGE_RATES">
             <DefiningQuery>SELECT 
       "XXPJ_PREV_WAGE_RATES"."PROJECT_NUMBER" AS "PROJECT_NUMBER", 
@@ -728,6 +772,65 @@
           <Property Name="GL_PERIOD_NAME" Type="varchar2" Nullable="false" MaxLength="15" />
           <Property Name="CURRENT_PA_PERIOD_FLAG" Type="varchar2" MaxLength="1" />
           <Property Name="ORG_ID" Type="number" Precision="15" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXDBI.XXDBI_PAYROLL_AUDIT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="XXDBI_PAYROLL_AUDIT">
+          <Key>
+            <PropertyRef Name="PAYROLL_AUDIT_ID" />
+            <PropertyRef Name="EMPLOYEE_NUMBER" />
+            <PropertyRef Name="EMPLOYEE_NAME" />
+            <PropertyRef Name="ORG_ID" />
+            <PropertyRef Name="STATUS" />
+            <PropertyRef Name="OVERTIME_STATUS" />
+            <PropertyRef Name="FRINGE_STATUS" />
+            <PropertyRef Name="PROJECT_STATUS" />
+            <PropertyRef Name="CREATED_BY" />
+            <PropertyRef Name="CREATION_DATE" />
+            <PropertyRef Name="LAST_UPDATED_BY" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+          </Key>
+          <Property Name="PAYROLL_AUDIT_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="DA_HEADER_ID" Type="number" />
+          <Property Name="EMPLOYEE_NUMBER" Type="varchar2" Nullable="false" MaxLength="20" />
+          <Property Name="EMPLOYEE_NAME" Type="varchar2" Nullable="false" MaxLength="100" />
+          <Property Name="ELEMENT" Type="varchar2" MaxLength="100" />
+          <Property Name="PROJECT_ROLE" Type="varchar2" MaxLength="100" />
+          <Property Name="STATE" Type="varchar2" MaxLength="50" />
+          <Property Name="COUNTY" Type="varchar2" MaxLength="50" />
+          <Property Name="PROJECT_NUMBER" Type="varchar2" MaxLength="25" />
+          <Property Name="TASK_NUMBER" Type="varchar2" MaxLength="25" />
+          <Property Name="EXPENDITURE_TYPE" Type="varchar2" MaxLength="30" />
+          <Property Name="SUNDAY" Type="number" />
+          <Property Name="MONDAY" Type="number" />
+          <Property Name="TUESDAY" Type="number" />
+          <Property Name="WEDNESDAY" Type="number" />
+          <Property Name="THURSDAY" Type="number" />
+          <Property Name="FRIDAY" Type="number" />
+          <Property Name="SATURDAY" Type="number" />
+          <Property Name="PREVAILING_WAGE_RATE" Type="number" />
+          <Property Name="FRINGE_RATE" Type="number" />
+          <Property Name="EFFECTIVE_START_DATE" Type="date" />
+          <Property Name="EFFECTIVE_END_DATE" Type="date" />
+          <Property Name="WORK_ORDER_NUM" Type="varchar2" MaxLength="25" />
+          <Property Name="TOTAL_HOURS" Type="number" />
+          <Property Name="ORG_ID" Type="number" Nullable="false" />
+          <Property Name="STATUS" Type="varchar2" Nullable="false" MaxLength="50" />
+          <Property Name="OVERTIME_STATUS" Type="varchar2" Nullable="false" MaxLength="50" />
+          <Property Name="FRINGE_STATUS" Type="varchar2" Nullable="false" MaxLength="50" />
+          <Property Name="PROJECT_STATUS" Type="varchar2" Nullable="false" MaxLength="50" />
+          <Property Name="PAYROLLAPI_RETURN_ID" Type="number" />
+          <Property Name="ADJUSTMENT" Type="char" MaxLength="1" />
+          <Property Name="WAGE_SOURCE" Type="varchar2" MaxLength="20" />
+          <Property Name="CREATED_BY" Type="number" Nullable="false" />
+          <Property Name="CREATION_DATE" Type="date" Nullable="false" />
+          <Property Name="LAST_UPDATED_BY" Type="number" Nullable="false" />
+          <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" />
+          <Property Name="LAST_UPDATE_LOGIN" Type="number" />
+          <Property Name="PARENT_PAYROLL_ID" Type="number" />
+          <Property Name="SLIDING_SCALE_FLAG" Type="varchar2" MaxLength="1" />
+          <Property Name="DAILY_OVERTIME_FLAG" Type="varchar2" MaxLength="1" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -3051,6 +3154,7 @@
             <End Role="SYS_PERMISSIONS" EntitySet="SYS_PERMISSIONS" />
             <End Role="SYS_USER_PERMS" EntitySet="SYS_USER_PERMS" />
           </AssociationSet>
+          <EntitySet Name="XXDBI_PAYROLL_AUDIT" EntityType="OracleModel.XXDBI_PAYROLL_AUDIT" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -5382,6 +5486,62 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="XXDBI_PAYROLL_AUDIT">
+          <Key>
+            <PropertyRef Name="PAYROLL_AUDIT_ID" />
+            <PropertyRef Name="EMPLOYEE_NUMBER" />
+            <PropertyRef Name="EMPLOYEE_NAME" />
+            <PropertyRef Name="ORG_ID" />
+            <PropertyRef Name="STATUS" />
+            <PropertyRef Name="OVERTIME_STATUS" />
+            <PropertyRef Name="FRINGE_STATUS" />
+            <PropertyRef Name="PROJECT_STATUS" />
+            <PropertyRef Name="CREATED_BY" />
+            <PropertyRef Name="CREATION_DATE" />
+            <PropertyRef Name="LAST_UPDATED_BY" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+          </Key>
+          <Property Type="Decimal" Name="PAYROLL_AUDIT_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="DA_HEADER_ID" Precision="38" Scale="0" />
+          <Property Type="String" Name="EMPLOYEE_NUMBER" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EMPLOYEE_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ELEMENT" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROJECT_ROLE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STATE" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="COUNTY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROJECT_NUMBER" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="TASK_NUMBER" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EXPENDITURE_TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="SUNDAY" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="MONDAY" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="TUESDAY" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="WEDNESDAY" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="THURSDAY" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="FRIDAY" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="SATURDAY" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="PREVAILING_WAGE_RATE" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="FRINGE_RATE" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="EFFECTIVE_START_DATE" />
+          <Property Type="DateTime" Name="EFFECTIVE_END_DATE" />
+          <Property Type="String" Name="WORK_ORDER_NUM" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="TOTAL_HOURS" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="ORG_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="STATUS" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="OVERTIME_STATUS" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="FRINGE_STATUS" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROJECT_STATUS" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="PAYROLLAPI_RETURN_ID" Precision="38" Scale="0" />
+          <Property Type="String" Name="ADJUSTMENT" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="WAGE_SOURCE" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="CREATED_BY" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="CREATION_DATE" Nullable="false" />
+          <Property Type="Decimal" Name="LAST_UPDATED_BY" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
+          <Property Type="Decimal" Name="LAST_UPDATE_LOGIN" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="PARENT_PAYROLL_ID" Precision="38" Scale="0" />
+          <Property Type="String" Name="SLIDING_SCALE_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DAILY_OVERTIME_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7158,6 +7318,52 @@
                 <ScalarProperty Name="PARENT_PERM_ID" ColumnName="PARENT_PERM_ID" />
                 <ScalarProperty Name="PERMISSION_NAME" ColumnName="PERMISSION_NAME" />
                 <ScalarProperty Name="PERMISSION_ID" ColumnName="PERMISSION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="XXDBI_PAYROLL_AUDIT">
+            <EntityTypeMapping TypeName="OracleModel.XXDBI_PAYROLL_AUDIT">
+              <MappingFragment StoreEntitySet="XXDBI_PAYROLL_AUDIT">
+                <ScalarProperty Name="DAILY_OVERTIME_FLAG" ColumnName="DAILY_OVERTIME_FLAG" />
+                <ScalarProperty Name="SLIDING_SCALE_FLAG" ColumnName="SLIDING_SCALE_FLAG" />
+                <ScalarProperty Name="PARENT_PAYROLL_ID" ColumnName="PARENT_PAYROLL_ID" />
+                <ScalarProperty Name="LAST_UPDATE_LOGIN" ColumnName="LAST_UPDATE_LOGIN" />
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+                <ScalarProperty Name="CREATION_DATE" ColumnName="CREATION_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="WAGE_SOURCE" ColumnName="WAGE_SOURCE" />
+                <ScalarProperty Name="ADJUSTMENT" ColumnName="ADJUSTMENT" />
+                <ScalarProperty Name="PAYROLLAPI_RETURN_ID" ColumnName="PAYROLLAPI_RETURN_ID" />
+                <ScalarProperty Name="PROJECT_STATUS" ColumnName="PROJECT_STATUS" />
+                <ScalarProperty Name="FRINGE_STATUS" ColumnName="FRINGE_STATUS" />
+                <ScalarProperty Name="OVERTIME_STATUS" ColumnName="OVERTIME_STATUS" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="TOTAL_HOURS" ColumnName="TOTAL_HOURS" />
+                <ScalarProperty Name="WORK_ORDER_NUM" ColumnName="WORK_ORDER_NUM" />
+                <ScalarProperty Name="EFFECTIVE_END_DATE" ColumnName="EFFECTIVE_END_DATE" />
+                <ScalarProperty Name="EFFECTIVE_START_DATE" ColumnName="EFFECTIVE_START_DATE" />
+                <ScalarProperty Name="FRINGE_RATE" ColumnName="FRINGE_RATE" />
+                <ScalarProperty Name="PREVAILING_WAGE_RATE" ColumnName="PREVAILING_WAGE_RATE" />
+                <ScalarProperty Name="SATURDAY" ColumnName="SATURDAY" />
+                <ScalarProperty Name="FRIDAY" ColumnName="FRIDAY" />
+                <ScalarProperty Name="THURSDAY" ColumnName="THURSDAY" />
+                <ScalarProperty Name="WEDNESDAY" ColumnName="WEDNESDAY" />
+                <ScalarProperty Name="TUESDAY" ColumnName="TUESDAY" />
+                <ScalarProperty Name="MONDAY" ColumnName="MONDAY" />
+                <ScalarProperty Name="SUNDAY" ColumnName="SUNDAY" />
+                <ScalarProperty Name="EXPENDITURE_TYPE" ColumnName="EXPENDITURE_TYPE" />
+                <ScalarProperty Name="TASK_NUMBER" ColumnName="TASK_NUMBER" />
+                <ScalarProperty Name="PROJECT_NUMBER" ColumnName="PROJECT_NUMBER" />
+                <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+                <ScalarProperty Name="PROJECT_ROLE" ColumnName="PROJECT_ROLE" />
+                <ScalarProperty Name="ELEMENT" ColumnName="ELEMENT" />
+                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
+                <ScalarProperty Name="EMPLOYEE_NUMBER" ColumnName="EMPLOYEE_NUMBER" />
+                <ScalarProperty Name="DA_HEADER_ID" ColumnName="DA_HEADER_ID" />
+                <ScalarProperty Name="PAYROLL_AUDIT_ID" ColumnName="PAYROLL_AUDIT_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
