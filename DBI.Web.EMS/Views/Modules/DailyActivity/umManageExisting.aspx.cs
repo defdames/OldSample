@@ -407,7 +407,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 var returnData = (from d in _context.DAILY_ACTIVITY_HEADER
                                   join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                                   where d.HEADER_ID == HeaderId
-                                  select new { d.APPLICATION_TYPE, d.CONTRACTOR, d.DA_DATE, d.DENSITY, d.LICENSE, d.STATE, d.STATUS, d.SUBDIVISION, p.SEGMENT1, p.LONG_NAME }).ToList<object>();
+                                  select new { d.APPLICATION_TYPE, d.CONTRACTOR, d.DA_DATE, d.DENSITY, d.LICENSE, d.STATE, d.STATUS, d.SUBDIVISION, p.SEGMENT1, p.LONG_NAME, d.DA_HEADER_ID }).ToList<object>();
                 return returnData;
             }
         }
@@ -417,7 +417,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         /// <param name="HeaderId"></param>
         /// <returns></returns>
-        protected List<object> GetEmployee(long HeaderId)
+        protected List<EmployeeDetails> GetEmployee(long HeaderId)
         {
             using (Entities _context = new Entities())
             {
@@ -428,7 +428,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                   join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
                                   from projects in proj.DefaultIfEmpty()
                                   where d.HEADER_ID == HeaderId
-                                  select new { e.EMPLOYEE_NAME, projects.NAME, d.TIME_IN, d.TIME_OUT, d.FOREMAN_LICENSE, d.TRAVEL_TIME, d.DRIVE_TIME, d.PER_DIEM, d.COMMENTS }).ToList<object>();
+                                  select new EmployeeDetails {EMPLOYEE_NAME = e.EMPLOYEE_NAME, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, FOREMAN_LICENSE = d.FOREMAN_LICENSE, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), SHOPTIME_AM = (d.SHOPTIME_AM == null ? 0 : d.SHOPTIME_AM), SHOPTIME_PM = (d.SHOPTIME_PM == null ? 0 : d.SHOPTIME_PM), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS }).ToList();
+                foreach (var item in returnData)
+                {
+                    double Hours = Math.Truncate((double)item.TRAVEL_TIME);
+                    double Minutes = Math.Round(((double)item.TRAVEL_TIME - Hours) * 60);
+                    item.TRAVEL_TIME_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
+                    Hours = Math.Truncate((double)item.DRIVE_TIME);
+                    Minutes = Math.Round(((double)item.DRIVE_TIME - Hours) * 60);
+                    item.DRIVE_TIME_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
+                    Hours = Math.Truncate((double)item.SHOPTIME_AM);
+                    Minutes = Math.Round(((double)item.SHOPTIME_AM - Hours) * 60);
+                    item.SHOPTIME_AM_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
+                    Hours = Math.Truncate((double)item.SHOPTIME_PM);
+                    Minutes = Math.Round(((double)item.SHOPTIME_PM - Hours) * 60);
+                    item.SHOPTIME_PM_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
+                }
                 return returnData;
             }
         }
@@ -671,11 +686,21 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     Title.Alignment = 1;
                     ExportedPDF.Add(Title);
                     ExportedPDF.Add(NewLine);
+
+                    string OracleHeader;
+                    try
+                    {
+                        OracleHeader = Data.DA_HEADER_ID.ToString();
+                    }
+                    catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                    {
+                        OracleHeader = "0";
+                    }
                     Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase("DRS Id", HeadFootTitleFont )),
                         new PdfPCell(new Phrase(HeaderId.ToString(), HeadFootCellFont)),
-                        new PdfPCell(),
-                        new PdfPCell()
+                        new PdfPCell(new Phrase("Oracle Header Id", HeadFootTitleFont)),
+                        new PdfPCell(new Phrase(OracleHeader, HeadFootCellFont))
                     };
                     foreach(PdfPCell Cell in Cells)
                     {
@@ -735,7 +760,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     //Get Equipment/Employee Data
                     var EmployeeData = GetEmployee(HeaderId);
 
-                    PdfPTable EmployeeTable = new PdfPTable(9);
+                    PdfPTable EmployeeTable = new PdfPTable(12);
 
                     Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Truck/Equipment \n Name", HeaderFont)),
@@ -745,20 +770,23 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     new PdfPCell(new Phrase("Time\nOut", HeaderFont)),
                     new PdfPCell(new Phrase("Total\nHours", HeaderFont)),
                     new PdfPCell(new Phrase("Travel\nTime", HeaderFont)),
+                    new PdfPCell(new Phrase("Drive\nTime", HeaderFont)),
+                    new PdfPCell(new Phrase("ShopTime\nAM", HeaderFont)),
+                    new PdfPCell(new Phrase("ShopTime\nPM", HeaderFont)),
                     new PdfPCell(new Phrase("Per\nDiem", HeaderFont)),
                     new PdfPCell(new Phrase("Comments", HeaderFont))};
 
                     Row = new PdfPRow(Cells);
                     EmployeeTable.Rows.Add(Row);
 
-                    foreach (dynamic Data in EmployeeData)
+                    foreach (var Data in EmployeeData)
                     {
                         string TravelTime;
                         try
                         {
-                            TravelTime = Data.TRAVEL_TIME.ToString();
+                            TravelTime = Data.TRAVEL_TIME_FORMATTED.ToString();
                         }
-                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                        catch (Exception)
                         {
                             TravelTime = string.Empty;
                         }
@@ -767,7 +795,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         {
                             EquipmentName = Data.NAME.ToString();
                         }
-                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                        catch (Exception)
                         {
                             EquipmentName = String.Empty;
                         }
@@ -776,7 +804,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         {
                             Comments = Data.COMMENTS.ToString();
                         }
-                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                        catch (Exception)
                         {
                             Comments = String.Empty;
                         }
@@ -785,7 +813,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         {
                             License = Data.FOREMAN_LICENSE;
                         }
-                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                        catch (Exception)
                         {
                             License = string.Empty;
                         }
@@ -797,7 +825,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         new PdfPCell(new Phrase(Data.TIME_IN.TimeOfDay.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Data.TIME_OUT.TimeOfDay.ToString(), CellFont)),
                         new PdfPCell(new Phrase(TotalHours.ToString(), CellFont)),
-                        new PdfPCell(new Phrase(TravelTime, CellFont)),
+                        new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED, CellFont)),
+                        new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED, CellFont)),
+                        new PdfPCell(new Phrase(Data.SHOPTIME_AM_FORMATTED, CellFont)),
+                        new PdfPCell(new Phrase(Data.SHOPTIME_PM_FORMATTED, CellFont)),
                         new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Comments, CellFont))
                     };

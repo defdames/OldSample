@@ -42,7 +42,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                             join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
                             where d.HEADER_ID == HeaderId
-                            select new {d.PROJECT_ID, p.LONG_NAME, d.DA_DATE, d.SUBDIVISION, d.CONTRACTOR, d.PERSON_ID, e.EMPLOYEE_NAME, d.LICENSE, d.STATE, d.APPLICATION_TYPE, d.DENSITY }).ToList();
+                            select new {d.HEADER_ID, d.PROJECT_ID, p.LONG_NAME, d.DA_DATE, d.SUBDIVISION, d.CONTRACTOR, d.PERSON_ID, e.EMPLOYEE_NAME, d.LICENSE, d.STATE, d.APPLICATION_TYPE, d.DENSITY, d.DA_HEADER_ID }).ToList();
                 uxHeaderStore.DataSource = data;
                 uxHeaderStore.DataBind();
             }
@@ -64,7 +64,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
                             from projects in proj.DefaultIfEmpty()
                             where d.HEADER_ID == HeaderId
-                            select new { e.EMPLOYEE_NAME, projects.NAME, d.TIME_IN, d.TIME_OUT, d.TRAVEL_TIME, d.DRIVE_TIME, d.PER_DIEM, d.COMMENTS }).ToList();
+                            select new EmployeeDetails {EMPLOYEE_NAME = e.EMPLOYEE_NAME, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS }).ToList();
+                foreach (var item in data)
+                {
+                    double Hours = Math.Truncate((double)item.TRAVEL_TIME);
+                    double Minutes = Math.Round(((double)item.TRAVEL_TIME - Hours) * 60);
+                    item.TRAVEL_TIME_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
+                    Hours = Math.Truncate((double)item.DRIVE_TIME);
+                    Minutes = Math.Round(((double)item.DRIVE_TIME - Hours) * 60);
+                    item.DRIVE_TIME_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
+                }
 
                 uxEquipmentStore.DataSource = data;
                 uxEquipmentStore.DataBind();
