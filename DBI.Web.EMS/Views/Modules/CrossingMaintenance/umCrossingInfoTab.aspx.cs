@@ -786,33 +786,33 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
         
       
-        protected void deRemoveCrossing(object sender, DirectEventArgs e)
-        {
-            long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
-            CROSSING data;
-            using (Entities _context = new Entities())
-            {
-                data = (from d in _context.CROSSINGS
-                        where d.CROSSING_ID == CrossingId
-                        select d).Single();
-            }
-            GenericData.Delete<CROSSING>(data);
+        //protected void deRemoveCrossing(object sender, DirectEventArgs e)
+        //{
+        //    long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+        //    CROSSING data;
+        //    using (Entities _context = new Entities())
+        //    {
+        //        data = (from d in _context.CROSSINGS
+        //                where d.CROSSING_ID == CrossingId
+        //                select d).Single();
+        //    }
+        //    GenericData.Delete<CROSSING>(data);
 
-            uxCurrentCrossingStore.Reload();
-            uxCrossingForm.Reset();
+        //    uxCurrentCrossingStore.Reload();
+        //    uxCrossingForm.Reset();
 
-            Notification.Show(new NotificationConfig()
-            {
-                Title = "Success",
-                Html = "Crossing Removed Successfully",
-                HideDelay = 1000,
-                AlignCfg = new NotificationAlignConfig
-                {
-                    ElementAnchor = AnchorPoint.Center,
-                    TargetAnchor = AnchorPoint.Center
-                }
-            });
-        }
+        //    Notification.Show(new NotificationConfig()
+        //    {
+        //        Title = "Success",
+        //        Html = "Crossing Removed Successfully",
+        //        HideDelay = 1000,
+        //        AlignCfg = new NotificationAlignConfig
+        //        {
+        //            ElementAnchor = AnchorPoint.Center,
+        //            TargetAnchor = AnchorPoint.Center
+        //        }
+        //    });
+        //}
 
         protected void deLoadType(string rrType)
         {

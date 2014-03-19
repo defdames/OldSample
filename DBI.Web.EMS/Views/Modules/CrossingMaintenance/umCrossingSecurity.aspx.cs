@@ -49,36 +49,44 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                 int count;
                 uxCurrentSecurityCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                e.Total = count;
             }
         }
         protected void deAssociateCrossings(object sender, DirectEventArgs e)
+        {
+            CROSSING_RELATIONSHIP data;
+            long ProjectId = long.Parse(e.ExtraParams["projectId"]);
+            //loop through list of projects
+
+            List<CrossingDetails> Projectdata = new List<CrossingDetails>();
+           
+            foreach (CrossingDetails projectid in Projectdata)
             {
-                CROSSING data;
-
-                //do type conversions
-
-                RowSelectionModel project = uxProjectGrid.GetSelectionModel() as RowSelectionModel;
-                long ProjectId = long.Parse(e.ExtraParams["projectId"]);
-                             
+                Projectdata.Add(new CrossingDetails
+                {
+                    PROJECT_ID = projectid.PROJECT_ID
+                });
+                //loop through list of crossings to assign to project
                 string json = (e.ExtraParams["selectedCrossings"]);
                 List<ProjectDetails> projectList = JSON.Deserialize<List<ProjectDetails>>(json);
                 foreach (ProjectDetails crossing in projectList)
                 {
-                    //Get record to be edited
+                    ////Get record to be edited
                     using (Entities _context = new Entities())
                     {
-                        data = (from d in _context.CROSSINGS
+                        data = (from d in _context.CROSSING_RELATIONSHIP
                                 where d.CROSSING_ID == crossing.CROSSING_ID
                                 select d).Single();
                         data.PROJECT_ID = ProjectId;
-                      
+
                     }
-                    GenericData.Update<CROSSING>(data);
+                 
+                    GenericData.Update<CROSSING_RELATIONSHIP>(data);
                 }
-             
+
                 uxCurrentSecurityCrossingStore.Reload();
                 uxCurrentSecurityProjectStore.Reload();
-                
+
                 Notification.Show(new NotificationConfig()
                 {
                     Title = "Success",
@@ -91,6 +99,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     }
                 });
             }
+        }
        //protected void ButtonValidityCheck(object sender, DirectEventArgs e)
             //{
                 
@@ -110,6 +119,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 public string SERVICE_UNIT { get; set; }
                 public string SUB_DIVISION { get; set; }
                 public string CONTACT_ID { get; set; }
+            }
+         public class CrossingDetails
+            {
+                public long PROJECT_ID { get; set; }
+                public string SEGMENT1 { get; set; }              
+                public string ORANGANIZATION_NAME { get; set; }
+                public string LONG_NAME { get; set; }
+                public string CROSSING_ID { get; set; }
             }
     }
          

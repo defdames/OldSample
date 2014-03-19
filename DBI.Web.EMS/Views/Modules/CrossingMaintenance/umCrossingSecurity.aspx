@@ -42,8 +42,8 @@
             <Plugins>
                 <ext:FilterHeader ID="FilterHeader2" runat="server" Remote="true" />
             </Plugins>
-            <SelectionModel>
-                <ext:RowSelectionModel ID="project" runat="server" Mode="Single" AllowDeselect="true" />
+             <SelectionModel>
+                <ext:CheckboxSelectionModel ID="CheckboxSelectionModel2" runat="server" Mode="Multi" />
             </SelectionModel>
            <%-- <Listeners>
                 <Select Handler="#{CheckboxSelectionModel1}.enable()" />
