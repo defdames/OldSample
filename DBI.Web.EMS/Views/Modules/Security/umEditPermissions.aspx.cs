@@ -49,7 +49,7 @@ namespace DBI.Web.EMS.Views.Modules.Security
         {
             decimal PermissionId = decimal.Parse(e.ExtraParams["PermissionId"]);
             uxPermissionFormType.Value = "Edit";
-
+            uxPermissionId.Value = PermissionId.ToString();
             using (Entities _context = new Entities())
             {
                 PermissionDetails PermissionToEdit = (from s in _context.SYS_PERMISSIONS
@@ -101,6 +101,7 @@ namespace DBI.Web.EMS.Views.Modules.Security
             GenericData.Update<SYS_PERMISSIONS>(PermissionToEdit);
 
             uxUpdatePermissionsForm.Reset();
+            uxUpdatePermissionsWindow.Hide();
             uxCurrentPermissionsStore.Reload();
         }
     }

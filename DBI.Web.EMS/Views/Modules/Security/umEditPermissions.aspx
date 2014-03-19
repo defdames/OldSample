@@ -73,7 +73,7 @@
             </Items>
         </ext:ViewPort>
         <!--Hidden Windows-->
-        <ext:Window runat="server" ID="uxUpdatePermissionsWindow" Width="650">
+        <ext:Window runat="server" ID="uxUpdatePermissionsWindow" Width="650" Hidden="true">
             <Items>
                 <ext:FormPanel runat="server" ID="uxUpdatePermissionsForm" Layout="FormLayout">
                     <Items>
