@@ -381,58 +381,58 @@ namespace DBI.Data
                             records.Add(dtrecord);
                             GenericData.Insert<XXDBI_LABOR_HEADER_V>(dtrecord);
                         }
-                        //Check if record is IRM and shop time added, then add Time Entry Wages for Shop Time AM
-                        if (xxdbiDailyActivityHeader.ORG_ID == 123 && r.SHOPTIME_AM > 0)
-                        {
-                            XXDBI_LABOR_HEADER_V dtrecord = new XXDBI_LABOR_HEADER_V();
-                            dtrecord.LABOR_HEADER_ID = DBI.Data.Interface.generateLaborHeaderSequence();
-                            dtrecord.DA_HEADER_ID = xxdbiDailyActivityHeader.DA_HEADER_ID;
-                            dtrecord.PROJECT_NUMBER = r.SEGMENT1;
-                            dtrecord.TASK_NUMBER = returnDailyActivityTaskNumber(dailyActivityHeaderId);
-                            dtrecord.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
-                            dtrecord.EMP_FULL_NAME = DBI.Data.EMPLOYEES_V.oracleEmployeeName(r.PERSON_ID);
-                            dtrecord.ROLE = null;
-                            dtrecord.STATE = xxdbiDailyActivityHeader.STATE;
-                            dtrecord.COUNTY = xxdbiDailyActivityHeader.COUNTY;
-                            dtrecord.LAB_HEADER_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE;
-                            dtrecord.QUANTITY = doubleShopCalc(r.SHOPTIME_AM);
-                            dtrecord.ELEMENT = "Travel Time Base";
-                            dtrecord.ADJUSTMENT = "N";
-                            dtrecord.STATUS = "UNPROCESSED";
-                            dtrecord.ORG_ID = (decimal)r.ORG_ID;
-                            dtrecord.CREATED_BY = postedByUserId;
-                            dtrecord.CREATION_DATE = DateTime.Now;
-                            dtrecord.LAST_UPDATE_DATE = DateTime.Now;
-                            dtrecord.LAST_UPDATED_BY = postedByUserId;
-                            records.Add(dtrecord);
-                            GenericData.Insert<XXDBI_LABOR_HEADER_V>(dtrecord);
-                        }
-                        //Check if record is IRM and shop time added, then add Time Entry Wages for Shop Time PM
-                        if (xxdbiDailyActivityHeader.ORG_ID == 123 && r.SHOPTIME_PM > 0)
-                        {
-                            XXDBI_LABOR_HEADER_V dtrecord = new XXDBI_LABOR_HEADER_V();
-                            dtrecord.LABOR_HEADER_ID = DBI.Data.Interface.generateLaborHeaderSequence();
-                            dtrecord.DA_HEADER_ID = xxdbiDailyActivityHeader.DA_HEADER_ID;
-                            dtrecord.PROJECT_NUMBER = r.SEGMENT1;
-                            dtrecord.TASK_NUMBER = returnDailyActivityTaskNumber(dailyActivityHeaderId);
-                            dtrecord.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
-                            dtrecord.EMP_FULL_NAME = DBI.Data.EMPLOYEES_V.oracleEmployeeName(r.PERSON_ID);
-                            dtrecord.ROLE = null;
-                            dtrecord.STATE = xxdbiDailyActivityHeader.STATE;
-                            dtrecord.COUNTY = xxdbiDailyActivityHeader.COUNTY;
-                            dtrecord.LAB_HEADER_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE;
-                            dtrecord.QUANTITY = doubleShopCalc(r.SHOPTIME_PM);
-                            dtrecord.ELEMENT = "Travel Time Base";
-                            dtrecord.ADJUSTMENT = "N";
-                            dtrecord.STATUS = "UNPROCESSED";
-                            dtrecord.ORG_ID = (decimal)r.ORG_ID;
-                            dtrecord.CREATED_BY = postedByUserId;
-                            dtrecord.CREATION_DATE = DateTime.Now;
-                            dtrecord.LAST_UPDATE_DATE = DateTime.Now;
-                            dtrecord.LAST_UPDATED_BY = postedByUserId;
-                            records.Add(dtrecord);
-                            GenericData.Insert<XXDBI_LABOR_HEADER_V>(dtrecord);
-                        }
+                        ////Check if record is IRM and shop time added, then add Time Entry Wages for Shop Time AM
+                        //if (xxdbiDailyActivityHeader.ORG_ID == 123 && r.SHOPTIME_AM > 0)
+                        //{
+                        //    XXDBI_LABOR_HEADER_V dtrecord = new XXDBI_LABOR_HEADER_V();
+                        //    dtrecord.LABOR_HEADER_ID = DBI.Data.Interface.generateLaborHeaderSequence();
+                        //    dtrecord.DA_HEADER_ID = xxdbiDailyActivityHeader.DA_HEADER_ID;
+                        //    dtrecord.PROJECT_NUMBER = r.SEGMENT1;
+                        //    dtrecord.TASK_NUMBER = returnDailyActivityTaskNumber(dailyActivityHeaderId);
+                        //    dtrecord.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
+                        //    dtrecord.EMP_FULL_NAME = DBI.Data.EMPLOYEES_V.oracleEmployeeName(r.PERSON_ID);
+                        //    dtrecord.ROLE = null;
+                        //    dtrecord.STATE = xxdbiDailyActivityHeader.STATE;
+                        //    dtrecord.COUNTY = xxdbiDailyActivityHeader.COUNTY;
+                        //    dtrecord.LAB_HEADER_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE;
+                        //    dtrecord.QUANTITY = doubleShopCalc(r.SHOPTIME_AM);
+                        //    dtrecord.ELEMENT = "Travel Time Base";
+                        //    dtrecord.ADJUSTMENT = "N";
+                        //    dtrecord.STATUS = "UNPROCESSED";
+                        //    dtrecord.ORG_ID = (decimal)r.ORG_ID;
+                        //    dtrecord.CREATED_BY = postedByUserId;
+                        //    dtrecord.CREATION_DATE = DateTime.Now;
+                        //    dtrecord.LAST_UPDATE_DATE = DateTime.Now;
+                        //    dtrecord.LAST_UPDATED_BY = postedByUserId;
+                        //    records.Add(dtrecord);
+                        //    GenericData.Insert<XXDBI_LABOR_HEADER_V>(dtrecord);
+                        //}
+                        ////Check if record is IRM and shop time added, then add Time Entry Wages for Shop Time PM
+                        //if (xxdbiDailyActivityHeader.ORG_ID == 123 && r.SHOPTIME_PM > 0)
+                        //{
+                        //    XXDBI_LABOR_HEADER_V dtrecord = new XXDBI_LABOR_HEADER_V();
+                        //    dtrecord.LABOR_HEADER_ID = DBI.Data.Interface.generateLaborHeaderSequence();
+                        //    dtrecord.DA_HEADER_ID = xxdbiDailyActivityHeader.DA_HEADER_ID;
+                        //    dtrecord.PROJECT_NUMBER = r.SEGMENT1;
+                        //    dtrecord.TASK_NUMBER = returnDailyActivityTaskNumber(dailyActivityHeaderId);
+                        //    dtrecord.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
+                        //    dtrecord.EMP_FULL_NAME = DBI.Data.EMPLOYEES_V.oracleEmployeeName(r.PERSON_ID);
+                        //    dtrecord.ROLE = null;
+                        //    dtrecord.STATE = xxdbiDailyActivityHeader.STATE;
+                        //    dtrecord.COUNTY = xxdbiDailyActivityHeader.COUNTY;
+                        //    dtrecord.LAB_HEADER_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE;
+                        //    dtrecord.QUANTITY = doubleShopCalc(r.SHOPTIME_PM);
+                        //    dtrecord.ELEMENT = "Travel Time Base";
+                        //    dtrecord.ADJUSTMENT = "N";
+                        //    dtrecord.STATUS = "UNPROCESSED";
+                        //    dtrecord.ORG_ID = (decimal)r.ORG_ID;
+                        //    dtrecord.CREATED_BY = postedByUserId;
+                        //    dtrecord.CREATION_DATE = DateTime.Now;
+                        //    dtrecord.LAST_UPDATE_DATE = DateTime.Now;
+                        //    dtrecord.LAST_UPDATED_BY = postedByUserId;
+                        //    records.Add(dtrecord);
+                        //    GenericData.Insert<XXDBI_LABOR_HEADER_V>(dtrecord);
+                        //}
 
                     }
 
