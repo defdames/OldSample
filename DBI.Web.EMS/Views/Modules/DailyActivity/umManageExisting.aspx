@@ -227,13 +227,9 @@
 							</Items>
 						</ext:Toolbar>
 					</TopBar>
-					<Listeners>
-						<Select Handler ="#{uxGridIndex}.setValue(#{uxManageGrid}.store.indexOf(#{uxManageGrid}.getSelectionModel().getSelection()[0]))" />
-					</Listeners>
 				</ext:GridPanel>				
 				<ext:TabPanel runat="server" ID="uxTabPanel" Collapsible="true" Collapsed="true" Layout="FitLayout" Title="Header Details">
 					<Items>
-						<ext:Hidden runat="server" ID="uxGridIndex" />
 						<ext:Hidden ID="uxYellowWarning" runat="server" />
 						<ext:Hidden ID="uxRedWarning" runat="server" />
 						<ext:Panel runat="server"

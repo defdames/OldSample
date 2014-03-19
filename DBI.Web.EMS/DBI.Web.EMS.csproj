@@ -107,6 +107,7 @@
     <Content Include="Global.asax" />
     <Content Include="Resources\Images\1pixel.jpg" />
     <Content Include="Resources\Images\bgimage.jpg" />
+    <Content Include="Resources\Scripts\functions.js" />
     <Content Include="uxLogin.aspx" />
     <Content Include="Resources\Images\background.jpg" />
     <Content Include="Resources\Images\dbis_logo.png" />
@@ -120,6 +121,7 @@
     <Content Include="Views\Modules\CrossingMaintenance\umAppDate.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingHome.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umDataEntryMain.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umIncidentReports.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umInspectionEntry.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umContactsTab.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingMain.aspx" />
@@ -161,6 +163,11 @@
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
+    <Content Include="Views\Modules\Security\umEditGroups.aspx" />
+    <Content Include="Views\Modules\Security\umEditModules.aspx" />
+    <Content Include="Views\Modules\Security\umEditOrgs.aspx" />
+    <Content Include="Views\Modules\Security\umEditPermissions.aspx" />
+    <Content Include="Views\Modules\Security\umEditUsers.aspx" />
     <Content Include="Views\Modules\Security\umSecurityLogList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityActivityList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityUsersList.aspx" />
@@ -210,6 +217,13 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umDataEntryMain.aspx.designer.cs">
       <DependentUpon>umDataEntryMain.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umIncidentReports.aspx.cs">
+      <DependentUpon>umIncidentReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umIncidentReports.aspx.designer.cs">
+      <DependentUpon>umIncidentReports.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umInspectionEntry.aspx.cs">
       <DependentUpon>umInspectionEntry.aspx</DependentUpon>
@@ -499,6 +513,41 @@
       <DependentUpon>umWeatherTab.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\ValidationChecks.cs" />
+    <Compile Include="Views\Modules\Security\umEditGroups.aspx.cs">
+      <DependentUpon>umEditGroups.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Security\umEditGroups.aspx.designer.cs">
+      <DependentUpon>umEditGroups.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Security\umEditModules.aspx.cs">
+      <DependentUpon>umEditModules.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Security\umEditModules.aspx.designer.cs">
+      <DependentUpon>umEditModules.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Security\umEditOrgs.aspx.cs">
+      <DependentUpon>umEditOrgs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Security\umEditOrgs.aspx.designer.cs">
+      <DependentUpon>umEditOrgs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Security\umEditPermissions.aspx.cs">
+      <DependentUpon>umEditPermissions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Security\umEditPermissions.aspx.designer.cs">
+      <DependentUpon>umEditPermissions.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Security\umEditUsers.aspx.cs">
+      <DependentUpon>umEditUsers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Security\umEditUsers.aspx.designer.cs">
+      <DependentUpon>umEditUsers.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\Security\umSecurityLogList.aspx.cs">
       <DependentUpon>umSecurityLogList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

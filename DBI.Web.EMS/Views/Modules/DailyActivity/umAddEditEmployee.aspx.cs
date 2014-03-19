@@ -23,12 +23,20 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 {
                     uxAddEmployeeForm.Show();
                     uxAddEmployeeRole.Show();
+                    uxAddEmployeeDriveTimeHours.Value = "0";
+                    uxAddEmployeeDriveTimeMinutes.Value = "0";
+                    uxAddEmployeeTravelTimeHours.Value = "0";
+                    uxAddEmployeeTravelTimeMinutes.Value = "0";
                     if (GetOrgId(HeaderId) == 123)
                     {
                         uxAddEmployeeShopTimeAMHours.Show();
                         uxAddEmployeeShopTimeAMMinutes.Show();
                         uxAddEmployeeShopTimePMHours.Show();
                         uxAddEmployeeShopTimePMMinutes.Show();
+                        uxAddEmployeeShopTimeAMHours.Value = "0";
+                        uxAddEmployeeShopTimeAMMinutes.Value = "0";
+                        uxAddEmployeeShopTimePMHours.Value = "0";
+                        uxAddEmployeeShopTimePMMinutes.Value = "0";
                     }
                 }
                 else
@@ -158,8 +166,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 else
                 {
-                    var MyAuth = new Authentication();
-                    int CurrentOrg = Convert.ToInt32(MyAuth.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                    int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
                     //Get projects for my org only
                     dataIn = EMPLOYEES_V.EmployeeDropDown(CurrentOrg);
                 }
@@ -173,8 +180,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 else
                 {
-                    var MyAuth = new Authentication();
-                    int CurrentOrg = Convert.ToInt32(MyAuth.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                    int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
                     //Get projects for my org only
                     dataIn = EMPLOYEES_V.EmployeeDropDown(CurrentOrg);
                 }
@@ -347,8 +353,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             if (GetOrgId(HeaderId) == 123)
             {
-                decimal ShoptimeAM = decimal.Parse(uxAddEmployeeShopTimeAMHours.Value.ToString()) + (decimal.Parse(uxAddEmployeeShopTimeAMMinutes.Value.ToString()) / 60);
-                decimal ShoptimePM = decimal.Parse(uxAddEmployeeShopTimePMHours.Value.ToString()) + (decimal.Parse(uxAddEmployeeShopTimePMMinutes.Value.ToString()) / 60);
+                decimal Hours = 0;
+                decimal Minutes = 0;
+                decimal.TryParse(uxAddEmployeeShopTimeAMHours.Value.ToString(), out Hours);
+                decimal.TryParse(uxAddEmployeeShopTimeAMMinutes.Value.ToString(), out Minutes);
+                decimal ShoptimeAM = Hours + (Minutes / 60);
+                Hours = 0;
+                Minutes = 0;
+                decimal.TryParse(uxAddEmployeeShopTimePMHours.Value.ToString(), out Hours);
+                decimal.TryParse(uxAddEmployeeShopTimePMMinutes.Value.ToString(), out Minutes);
+                decimal ShoptimePM = Hours + (Minutes / 60);
                 data.SHOPTIME_AM = ShoptimeAM;
                 data.SHOPTIME_PM = ShoptimePM;
             }
@@ -360,7 +374,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Check for travel time
             try
             {
-                decimal TravelTime = decimal.Parse(uxAddEmployeeTravelTimeHours.Value.ToString()) + (decimal.Parse(uxAddEmployeeTravelTimeMinutes.Value.ToString()) /60);
+                decimal Hours = 0;
+                decimal Minutes = 0;
+                decimal.TryParse(uxAddEmployeeTravelTimeHours.Value.ToString(), out Hours);
+                decimal.TryParse(uxAddEmployeeTravelTimeMinutes.Value.ToString(), out Minutes);
+                decimal TravelTime = Hours + (Minutes /60);
                 data.TRAVEL_TIME = TravelTime;
             }
             catch (NullReferenceException)
@@ -371,7 +389,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Check for drive time
             try
             {
-                decimal DriveTime = decimal.Parse(uxAddEmployeeDriveTimeHours.Value.ToString()) + (decimal.Parse(uxAddEmployeeDriveTimeMinutes.Value.ToString()) /60);
+                decimal Hours = 0;
+                decimal Minutes = 0;
+                decimal.TryParse(uxAddEmployeeDriveTimeHours.Value.ToString(), out Hours);
+                decimal.TryParse(uxAddEmployeeDriveTimeMinutes.Value.ToString(), out Minutes);
+                decimal DriveTime = Hours + (Minutes / 60);
                 data.DRIVE_TIME = DriveTime;
             }
             catch (NullReferenceException)

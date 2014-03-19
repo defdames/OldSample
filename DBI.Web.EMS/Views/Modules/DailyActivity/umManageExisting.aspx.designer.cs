@@ -211,15 +211,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.TabPanel uxTabPanel;
         
         /// <summary>
-        /// uxGridIndex control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Hidden uxGridIndex;
-        
-        /// <summary>
         /// uxYellowWarning control.
         /// </summary>
         /// <remarks>

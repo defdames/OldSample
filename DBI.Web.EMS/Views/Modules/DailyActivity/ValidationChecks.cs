@@ -240,7 +240,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                        join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                        join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
                                        where d.HEADER_ID == HeaderId
-                                       select new {d.PERSON_ID, e.EMPLOYEE_NAME, d.DAILY_ACTIVITY_HEADER.DA_DATE, d.TRAVEL_TIME, p.ORG_ID}).ToList();
+                                       select new {d.PERSON_ID, e.EMPLOYEE_NAME, d.DAILY_ACTIVITY_HEADER.DA_DATE, d.TRAVEL_TIME, d.DRIVE_TIME, p.ORG_ID}).ToList();
                 foreach (var Employee in HeaderEmployees)
                 {
                     var TotalMinutes = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
@@ -252,7 +252,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     {
                         try
                         {
-                            totalTime = totalTime - ((decimal)Employee.TRAVEL_TIME / 60);
+                            totalTime = totalTime - ((decimal)Employee.TRAVEL_TIME * 60) -((decimal)Employee.DRIVE_TIME * 60);
                         }
                         catch(Exception e){
                             

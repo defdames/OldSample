@@ -115,6 +115,9 @@
     <Compile Include="CROSSING_INSPECTION.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="CROSSING_RELATIONSHIP.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="CROSSING_SUB_DIVISION.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
@@ -194,7 +197,11 @@
     <Compile Include="DataFactory\Projects\Projects.cs" />
     <Compile Include="DataFactory\Security\Activity.cs" />
     <Compile Include="DataFactory\Security\Logger.cs" />
+    <Compile Include="DataFactory\Security\MenuItems.cs" />
+    <Compile Include="DataFactory\Security\Modules.cs" />
+    <Compile Include="DataFactory\Security\Permissions.cs" />
     <Compile Include="DataFactory\Security\UserActivity.cs" />
+    <Compile Include="DataFactory\Security\UserPermissions.cs" />
     <Compile Include="DataFactory\StaticLists.cs" />
     <Compile Include="DataFactory\Security\UserInformation.cs" />
     <Compile Include="DataFactory\Utilities\GenericData.cs" />
@@ -249,6 +256,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Oracle.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="ORG_HIER_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="PA_LOCATIONS_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
@@ -314,6 +324,9 @@
     <Compile Include="SYS_USER_INFORMATION.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="SYS_USER_ORGS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="SYS_USER_PERMS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
@@ -330,6 +343,9 @@
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="XXDBI_LABOR_HEADER_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="XXDBI_PAYROLL_AUDIT.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="XXDBI_PER_DIEM_V.cs">

@@ -86,9 +86,7 @@
             <Features>
                 <ext:Grouping ID="Grouping1"
                     runat="server"
-                    HideGroupedHeader="true"
-                    Collapsible="false"
-                    BodyStyle="background-color: Lightgrey;" />
+                    HideGroupedHeader="true" />
             </Features>
 
             <Plugins>
@@ -130,6 +128,7 @@
                         <Click OnEvent="deExportToPDF" IsUpload="true">
                             <ExtraParams>
                                 <ext:Parameter Name="CrossingId" Value="#{GridPanel1}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                               <ext:Parameter Name="selectedCrossings" Value="Ext.encode(#{GridPanel1}.getRowsValues())" Mode="Raw" />
                             </ExtraParams>
                         </Click>
                     </DirectEvents>
@@ -143,7 +142,8 @@
 										<Click OnEvent="deSendPDF" IsUpload="true">
 											<ExtraParams>
 												<ext:Parameter Name="CrossingId" Value="#{GridPanel1}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-											</ExtraParams>
+											   <%--<ext:Parameter Name="CrossingId" Value="Ext.encode(#{GridPanel1}.getRowsValues())" Mode="Raw" />--%>
+                                            </ExtraParams>
 										</Click>
 									</DirectEvents>
 								</ext:Button>

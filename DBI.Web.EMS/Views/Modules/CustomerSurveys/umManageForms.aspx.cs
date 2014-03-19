@@ -42,9 +42,30 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                             where f.FORM_ID == FormId
                             select f).ToList();
                 uxCurrentFieldSetsStore.DataSource = data;
+                uxCurrentFieldSetsStore.DataBind();
+
+                uxFieldSetsStore.DataSource = data;
+                uxFieldSetsStore.DataBind();
             }
         }
 
+        protected void deLoadQuestions(object sender, DirectEventArgs e)
+        {
+            decimal FieldSetId = decimal.Parse(e.ExtraParams["FieldSetId"]);
+            using (Entities _context = new Entities())
+            {
+                var data = (from f in _context.CUSTOMER_SURVEY_FIELDSETS
+                            from r in _context.CUSTOMER_SURVEY_RELATION
+                            from q in _context.CUSTOMER_SURVEY_QUESTIONS
+                            from qt in _context.CUSTOMER_SURVEY_QUES_TYPES
+                            where f.FIELDSET_ID == FieldSetId
+                            select new { q.TEXT, q.IS_ACTIVE, q.IS_REQUIRED, qt.QUESTION_TYPE_NAME }).ToList();
+
+                uxCurrentQuestionsStore.DataSource = data;
+                uxCurrentQuestionsStore.DataBind();
+                           
+            }
+        }
         protected void deAddForm(object sender, DirectEventArgs e)
         {
             CUSTOMER_SURVEY_FORMS NewForm;
@@ -99,12 +120,13 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         {
             CUSTOMER_SURVEY_FIELDSETS NewFieldSet;
 
+            decimal FormId = decimal.Parse(e.ExtraParams["FormId"]);
             using (Entities _context = new Entities())
             {
                 NewFieldSet = new CUSTOMER_SURVEY_FIELDSETS
                 {
                     TITLE = uxAddFieldSetTitle.Value.ToString(),
-                    FORM_ID = 0
+                    FORM_ID = FormId
                 };
             }
             GenericData.Insert<CUSTOMER_SURVEY_FIELDSETS>(NewFieldSet);

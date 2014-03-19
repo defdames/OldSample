@@ -22,6 +22,50 @@
       "PA_PERIODS_ALL"."ORG_ID" AS "ORG_ID"
       FROM "PA"."PA_PERIODS_ALL" "PA_PERIODS_ALL"</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="XXDBI_PAYROLL_AUDIT" EntityType="OracleModel.Store.XXDBI_PAYROLL_AUDIT" store:Type="Tables" store:Schema="XXDBI" store:Name="XXDBI_PAYROLL_AUDIT">
+            <DefiningQuery>SELECT 
+      "XXDBI_PAYROLL_AUDIT"."PAYROLL_AUDIT_ID" AS "PAYROLL_AUDIT_ID", 
+      "XXDBI_PAYROLL_AUDIT"."DA_HEADER_ID" AS "DA_HEADER_ID", 
+      "XXDBI_PAYROLL_AUDIT"."EMPLOYEE_NUMBER" AS "EMPLOYEE_NUMBER", 
+      "XXDBI_PAYROLL_AUDIT"."EMPLOYEE_NAME" AS "EMPLOYEE_NAME", 
+      "XXDBI_PAYROLL_AUDIT"."ELEMENT" AS "ELEMENT", 
+      "XXDBI_PAYROLL_AUDIT"."PROJECT_ROLE" AS "PROJECT_ROLE", 
+      "XXDBI_PAYROLL_AUDIT"."STATE" AS "STATE", 
+      "XXDBI_PAYROLL_AUDIT"."COUNTY" AS "COUNTY", 
+      "XXDBI_PAYROLL_AUDIT"."PROJECT_NUMBER" AS "PROJECT_NUMBER", 
+      "XXDBI_PAYROLL_AUDIT"."TASK_NUMBER" AS "TASK_NUMBER", 
+      "XXDBI_PAYROLL_AUDIT"."EXPENDITURE_TYPE" AS "EXPENDITURE_TYPE", 
+      "XXDBI_PAYROLL_AUDIT"."SUNDAY" AS "SUNDAY", 
+      "XXDBI_PAYROLL_AUDIT"."MONDAY" AS "MONDAY", 
+      "XXDBI_PAYROLL_AUDIT"."TUESDAY" AS "TUESDAY", 
+      "XXDBI_PAYROLL_AUDIT"."WEDNESDAY" AS "WEDNESDAY", 
+      "XXDBI_PAYROLL_AUDIT"."THURSDAY" AS "THURSDAY", 
+      "XXDBI_PAYROLL_AUDIT"."FRIDAY" AS "FRIDAY", 
+      "XXDBI_PAYROLL_AUDIT"."SATURDAY" AS "SATURDAY", 
+      "XXDBI_PAYROLL_AUDIT"."PREVAILING_WAGE_RATE" AS "PREVAILING_WAGE_RATE", 
+      "XXDBI_PAYROLL_AUDIT"."FRINGE_RATE" AS "FRINGE_RATE", 
+      "XXDBI_PAYROLL_AUDIT"."EFFECTIVE_START_DATE" AS "EFFECTIVE_START_DATE", 
+      "XXDBI_PAYROLL_AUDIT"."EFFECTIVE_END_DATE" AS "EFFECTIVE_END_DATE", 
+      "XXDBI_PAYROLL_AUDIT"."WORK_ORDER_NUM" AS "WORK_ORDER_NUM", 
+      "XXDBI_PAYROLL_AUDIT"."TOTAL_HOURS" AS "TOTAL_HOURS", 
+      "XXDBI_PAYROLL_AUDIT"."ORG_ID" AS "ORG_ID", 
+      "XXDBI_PAYROLL_AUDIT"."STATUS" AS "STATUS", 
+      "XXDBI_PAYROLL_AUDIT"."OVERTIME_STATUS" AS "OVERTIME_STATUS", 
+      "XXDBI_PAYROLL_AUDIT"."FRINGE_STATUS" AS "FRINGE_STATUS", 
+      "XXDBI_PAYROLL_AUDIT"."PROJECT_STATUS" AS "PROJECT_STATUS", 
+      "XXDBI_PAYROLL_AUDIT"."PAYROLLAPI_RETURN_ID" AS "PAYROLLAPI_RETURN_ID", 
+      "XXDBI_PAYROLL_AUDIT"."ADJUSTMENT" AS "ADJUSTMENT", 
+      "XXDBI_PAYROLL_AUDIT"."WAGE_SOURCE" AS "WAGE_SOURCE", 
+      "XXDBI_PAYROLL_AUDIT"."CREATED_BY" AS "CREATED_BY", 
+      "XXDBI_PAYROLL_AUDIT"."CREATION_DATE" AS "CREATION_DATE", 
+      "XXDBI_PAYROLL_AUDIT"."LAST_UPDATED_BY" AS "LAST_UPDATED_BY", 
+      "XXDBI_PAYROLL_AUDIT"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE", 
+      "XXDBI_PAYROLL_AUDIT"."LAST_UPDATE_LOGIN" AS "LAST_UPDATE_LOGIN", 
+      "XXDBI_PAYROLL_AUDIT"."PARENT_PAYROLL_ID" AS "PARENT_PAYROLL_ID", 
+      "XXDBI_PAYROLL_AUDIT"."SLIDING_SCALE_FLAG" AS "SLIDING_SCALE_FLAG", 
+      "XXDBI_PAYROLL_AUDIT"."DAILY_OVERTIME_FLAG" AS "DAILY_OVERTIME_FLAG"
+      FROM "XXDBI"."XXDBI_PAYROLL_AUDIT" "XXDBI_PAYROLL_AUDIT"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="XXPJ_PREV_WAGE_RATES" EntityType="OracleModel.Store.XXPJ_PREV_WAGE_RATES" store:Type="Tables" store:Schema="XXDBI" store:Name="XXPJ_PREV_WAGE_RATES">
             <DefiningQuery>SELECT 
       "XXPJ_PREV_WAGE_RATES"."PROJECT_NUMBER" AS "PROJECT_NUMBER", 
@@ -47,6 +91,7 @@
           <EntitySet Name="CROSSING_DATA_ENTRY" EntityType="OracleModel.Store.CROSSING_DATA_ENTRY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_INCIDENT" EntityType="OracleModel.Store.CROSSING_INCIDENT" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_INSPECTION" EntityType="OracleModel.Store.CROSSING_INSPECTION" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="CROSSING_RELATIONSHIP" EntityType="OracleModel.Store.CROSSING_RELATIONSHIP" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_SUB_DIVISION" EntityType="OracleModel.Store.CROSSING_SUB_DIVISION" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_SUPPLEMENTAL" EntityType="OracleModel.Store.CROSSING_SUPPLEMENTAL" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSINGS" EntityType="OracleModel.Store.CROSSINGS" store:Type="Tables" Schema="XXEMS" />
@@ -79,6 +124,7 @@
           <EntitySet Name="SYS_MODULES" EntityType="OracleModel.Store.SYS_MODULES" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_PERMISSIONS" EntityType="OracleModel.Store.SYS_PERMISSIONS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USER_ACTIVITY" EntityType="OracleModel.Store.SYS_USER_ACTIVITY" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="SYS_USER_ORGS" EntityType="OracleModel.Store.SYS_USER_ORGS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USER_PERMS" EntityType="OracleModel.Store.SYS_USER_PERMS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USERS" EntityType="OracleModel.Store.SYS_USERS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="PA_LOCATIONS_V" EntityType="OracleModel.Store.PA_LOCATIONS_V" store:Type="Views" store:Schema="APPS" store:Name="PA_LOCATIONS_V">
@@ -336,10 +382,22 @@
             <DefiningQuery>SELECT 
       "JOB_TITLE_V"."JOB_ID" AS "JOB_ID", 
       "JOB_TITLE_V"."NAME" AS "NAME", 
-      "JOB_TITLE_V"."LOCATTION" AS "LOCATTION"
+      "JOB_TITLE_V"."LOCATION" AS "LOCATION"
       FROM "XXEMS"."JOB_TITLE_V" "JOB_TITLE_V"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="MTL_TRANSACTION_INT_V" EntityType="OracleModel.Store.MTL_TRANSACTION_INT_V" store:Type="Views" Schema="XXEMS" />
+          <EntitySet Name="ORG_HIER_V" EntityType="OracleModel.Store.ORG_HIER_V" store:Type="Views" store:Schema="XXEMS" store:Name="ORG_HIER_V">
+            <DefiningQuery>SELECT 
+      "ORG_HIER_V"."PARENT_ORG" AS "PARENT_ORG", 
+      "ORG_HIER_V"."ORG_ID_PARENT" AS "ORG_ID_PARENT", 
+      "ORG_HIER_V"."ORG_ID_CHILD" AS "ORG_ID_CHILD", 
+      "ORG_HIER_V"."ORG_HIER" AS "ORG_HIER", 
+      "ORG_HIER_V"."LEVEL" AS "LEVEL", 
+      "ORG_HIER_V"."ORG_ID" AS "ORG_ID", 
+      "ORG_HIER_V"."TYPE" AS "TYPE", 
+      "ORG_HIER_V"."BU_ORG" AS "BU_ORG"
+      FROM "XXEMS"."ORG_HIER_V" "ORG_HIER_V"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="PA_ROLES_V" EntityType="OracleModel.Store.PA_ROLES_V" store:Type="Views" Schema="XXEMS" />
           <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.Store.PA_TASKS_V" store:Type="Views" store:Schema="XXEMS" store:Name="PA_TASKS_V">
             <DefiningQuery>SELECT 
@@ -564,6 +622,7 @@
       "SYS_USER_INFORMATION"."EMPLOYEE_NUMBER" AS "EMPLOYEE_NUMBER", 
       "SYS_USER_INFORMATION"."EMAIL_ADDRESS" AS "EMAIL_ADDRESS", 
       "SYS_USER_INFORMATION"."JOB_NAME" AS "JOB_NAME", 
+      "SYS_USER_INFORMATION"."JOB_ID" AS "JOB_ID", 
       "SYS_USER_INFORMATION"."CURRENT_ORGANIZATION" AS "CURRENT_ORGANIZATION", 
       "SYS_USER_INFORMATION"."CURRENT_ORG_ID" AS "CURRENT_ORG_ID", 
       "SYS_USER_INFORMATION"."ORACLE_ACCOUNT_STATUS" AS "ORACLE_ACCOUNT_STATUS", 
@@ -669,6 +728,10 @@
             <End Role="CUSTOMER_SURVEY_QUESTIONS" EntitySet="CUSTOMER_SURVEY_QUESTIONS" />
             <End Role="CUSTOMER_SURVEY_OPTIONS" EntitySet="CUSTOMER_SURVEY_OPTIONS" />
           </AssociationSet>
+          <AssociationSet Name="FK_ORGS_USER_ID" Association="OracleModel.Store.FK_ORGS_USER_ID">
+            <End Role="SYS_USERS" EntitySet="SYS_USERS" />
+            <End Role="SYS_USER_ORGS" EntitySet="SYS_USER_ORGS" />
+          </AssociationSet>
           <AssociationSet Name="FK_PRODUCTION_HEADER_ID" Association="OracleModel.Store.FK_PRODUCTION_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_PRODUCTION" EntitySet="DAILY_ACTIVITY_PRODUCTION" />
@@ -726,6 +789,65 @@
           <Property Name="GL_PERIOD_NAME" Type="varchar2" Nullable="false" MaxLength="15" />
           <Property Name="CURRENT_PA_PERIOD_FLAG" Type="varchar2" MaxLength="1" />
           <Property Name="ORG_ID" Type="number" Precision="15" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXDBI.XXDBI_PAYROLL_AUDIT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="XXDBI_PAYROLL_AUDIT">
+          <Key>
+            <PropertyRef Name="PAYROLL_AUDIT_ID" />
+            <PropertyRef Name="EMPLOYEE_NUMBER" />
+            <PropertyRef Name="EMPLOYEE_NAME" />
+            <PropertyRef Name="ORG_ID" />
+            <PropertyRef Name="STATUS" />
+            <PropertyRef Name="OVERTIME_STATUS" />
+            <PropertyRef Name="FRINGE_STATUS" />
+            <PropertyRef Name="PROJECT_STATUS" />
+            <PropertyRef Name="CREATED_BY" />
+            <PropertyRef Name="CREATION_DATE" />
+            <PropertyRef Name="LAST_UPDATED_BY" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+          </Key>
+          <Property Name="PAYROLL_AUDIT_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="DA_HEADER_ID" Type="number" />
+          <Property Name="EMPLOYEE_NUMBER" Type="varchar2" Nullable="false" MaxLength="20" />
+          <Property Name="EMPLOYEE_NAME" Type="varchar2" Nullable="false" MaxLength="100" />
+          <Property Name="ELEMENT" Type="varchar2" MaxLength="100" />
+          <Property Name="PROJECT_ROLE" Type="varchar2" MaxLength="100" />
+          <Property Name="STATE" Type="varchar2" MaxLength="50" />
+          <Property Name="COUNTY" Type="varchar2" MaxLength="50" />
+          <Property Name="PROJECT_NUMBER" Type="varchar2" MaxLength="25" />
+          <Property Name="TASK_NUMBER" Type="varchar2" MaxLength="25" />
+          <Property Name="EXPENDITURE_TYPE" Type="varchar2" MaxLength="30" />
+          <Property Name="SUNDAY" Type="number" />
+          <Property Name="MONDAY" Type="number" />
+          <Property Name="TUESDAY" Type="number" />
+          <Property Name="WEDNESDAY" Type="number" />
+          <Property Name="THURSDAY" Type="number" />
+          <Property Name="FRIDAY" Type="number" />
+          <Property Name="SATURDAY" Type="number" />
+          <Property Name="PREVAILING_WAGE_RATE" Type="number" />
+          <Property Name="FRINGE_RATE" Type="number" />
+          <Property Name="EFFECTIVE_START_DATE" Type="date" />
+          <Property Name="EFFECTIVE_END_DATE" Type="date" />
+          <Property Name="WORK_ORDER_NUM" Type="varchar2" MaxLength="25" />
+          <Property Name="TOTAL_HOURS" Type="number" />
+          <Property Name="ORG_ID" Type="number" Nullable="false" />
+          <Property Name="STATUS" Type="varchar2" Nullable="false" MaxLength="50" />
+          <Property Name="OVERTIME_STATUS" Type="varchar2" Nullable="false" MaxLength="50" />
+          <Property Name="FRINGE_STATUS" Type="varchar2" Nullable="false" MaxLength="50" />
+          <Property Name="PROJECT_STATUS" Type="varchar2" Nullable="false" MaxLength="50" />
+          <Property Name="PAYROLLAPI_RETURN_ID" Type="number" />
+          <Property Name="ADJUSTMENT" Type="char" MaxLength="1" />
+          <Property Name="WAGE_SOURCE" Type="varchar2" MaxLength="20" />
+          <Property Name="CREATED_BY" Type="number" Nullable="false" />
+          <Property Name="CREATION_DATE" Type="date" Nullable="false" />
+          <Property Name="LAST_UPDATED_BY" Type="number" Nullable="false" />
+          <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" />
+          <Property Name="LAST_UPDATE_LOGIN" Type="number" />
+          <Property Name="PARENT_PAYROLL_ID" Type="number" />
+          <Property Name="SLIDING_SCALE_FLAG" Type="varchar2" MaxLength="1" />
+          <Property Name="DAILY_OVERTIME_FLAG" Type="varchar2" MaxLength="1" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -860,6 +982,14 @@
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
+        </EntityType>
+        <EntityType Name="CROSSING_RELATIONSHIP">
+          <Key>
+            <PropertyRef Name="RELATIONSHIP_ID" />
+          </Key>
+          <Property Name="RELATIONSHIP_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PROJECT_ID" Type="number" Precision="15" />
+          <Property Name="CROSSING_ID" Type="number" Precision="15" />
         </EntityType>
         <EntityType Name="CROSSING_SUB_DIVISION">
           <Key>
@@ -1125,6 +1255,7 @@
           <Property Name="LUNCH_LENGTH" Type="number" />
           <Property Name="SHOPTIME_AM" Type="number" Precision="15" Scale="4" />
           <Property Name="SHOPTIME_PM" Type="number" Precision="15" Scale="4" />
+          <Property Name="SUPPORT_PROJ_ID" Type="number" Precision="15" />
         </EntityType>
         <EntityType Name="DAILY_ACTIVITY_EQUIPMENT">
           <Key>
@@ -1367,6 +1498,7 @@
           <Property Name="PERMISSION_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="PERMISSION_NAME" Type="varchar2" Nullable="false" MaxLength="100" />
           <Property Name="PARENT_PERM_ID" Type="number" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="300" />
         </EntityType>
         <EntityType Name="SYS_USER_ACTIVITY">
           <Key>
@@ -1379,6 +1511,14 @@
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="500" />
           <Property Name="LAST_UPDATED" Type="date" />
           <Property Name="LAST_UPDATED_BY" Type="varchar2" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="SYS_USER_ORGS">
+          <Key>
+            <PropertyRef Name="SYS_ORG_ID" />
+          </Key>
+          <Property Name="SYS_ORG_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="USER_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="ORG_ID" Type="number" Nullable="false" Precision="15" />
         </EntityType>
         <EntityType Name="SYS_USER_PERMS">
           <Key>
@@ -1708,7 +1848,7 @@
           </Key>
           <Property Name="JOB_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="NAME" Type="varchar2" MaxLength="700" />
-          <Property Name="LOCATTION" Type="varchar2" MaxLength="14" />
+          <Property Name="LOCATION" Type="varchar2" MaxLength="14" />
         </EntityType>
         <EntityType Name="MTL_TRANSACTION_INT_V">
           <Key>
@@ -2016,6 +2156,24 @@
           <Property Name="MOVE_TRANSACTION_ID" Type="number" />
           <Property Name="COMPLETION_TRANSACTION_ID" Type="number" />
           <Property Name="WIP_SUPPLY_TYPE" Type="number" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXEMS.ORG_HIER_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="ORG_HIER_V">
+          <Key>
+            <PropertyRef Name="ORG_ID_PARENT" />
+            <PropertyRef Name="ORG_ID_CHILD" />
+            <PropertyRef Name="ORG_ID" />
+          </Key>
+          <Property Name="PARENT_ORG" Type="varchar2" MaxLength="240" />
+          <Property Name="ORG_ID_PARENT" Type="number" Nullable="false" Precision="15" />
+          <Property Name="ORG_ID_CHILD" Type="number" Nullable="false" Precision="15" />
+          <Property Name="ORG_HIER" Type="varchar2" />
+          <Property Name="LEVEL" Type="number" />
+          <Property Name="ORG_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="TYPE" Type="varchar2" MaxLength="30" />
+          <Property Name="BU_ORG" Type="varchar2" MaxLength="10" />
         </EntityType>
         <EntityType Name="PA_ROLES_V">
           <Key>
@@ -2396,6 +2554,7 @@
           <Key>
             <PropertyRef Name="USER_ID" />
             <PropertyRef Name="USER_NAME" />
+            <PropertyRef Name="JOB_ID" />
             <PropertyRef Name="CURRENT_ORGANIZATION" />
             <PropertyRef Name="CURRENT_ORG_ID" />
             <PropertyRef Name="LOCATION_NAME" />
@@ -2406,6 +2565,7 @@
           <Property Name="EMPLOYEE_NUMBER" Type="varchar2" MaxLength="30" />
           <Property Name="EMAIL_ADDRESS" Type="varchar2" MaxLength="240" />
           <Property Name="JOB_NAME" Type="varchar2" MaxLength="700" />
+          <Property Name="JOB_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="CURRENT_ORGANIZATION" Type="varchar2" Nullable="false" MaxLength="240" />
           <Property Name="CURRENT_ORG_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="ORACLE_ACCOUNT_STATUS" Type="char" MaxLength="1" />
@@ -2765,6 +2925,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ORGS_USER_ID">
+          <End Role="SYS_USERS" Type="OracleModel.Store.SYS_USERS" Multiplicity="1" />
+          <End Role="SYS_USER_ORGS" Type="OracleModel.Store.SYS_USER_ORGS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SYS_USERS">
+              <PropertyRef Name="USER_ID" />
+            </Principal>
+            <Dependent Role="SYS_USER_ORGS">
+              <PropertyRef Name="USER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PRODUCTION_HEADER_ID">
           <End Role="DAILY_ACTIVITY_HEADER" Type="OracleModel.Store.DAILY_ACTIVITY_HEADER" Multiplicity="1" />
           <End Role="DAILY_ACTIVITY_PRODUCTION" Type="OracleModel.Store.DAILY_ACTIVITY_PRODUCTION" Multiplicity="*" />
@@ -2990,42 +3162,19 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_FOOTER" EntitySet="DAILY_ACTIVITY_FOOTER" />
           </AssociationSet>
-          <EntitySet Name="DAILY_ACTIVITY_EMPLOYEE" EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" />
-          <AssociationSet Name="FK_EMPLOYEE_HEADER_ID" Association="OracleModel.FK_EMPLOYEE_HEADER_ID">
-            <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
-            <End Role="DAILY_ACTIVITY_EMPLOYEE" EntitySet="DAILY_ACTIVITY_EMPLOYEE" />
-          </AssociationSet>
           <EntitySet Name="PA_ROLES_V" EntityType="OracleModel.PA_ROLES_V" />
           <EntitySet Name="DAILY_ACTIVITY_STATUS" EntityType="OracleModel.DAILY_ACTIVITY_STATUS" />
           <EntitySet Name="SYS_GROUPS_PERMS" EntityType="OracleModel.SYS_GROUPS_PERMS" />
           <EntitySet Name="SYS_MODULES" EntityType="OracleModel.SYS_MODULES" />
-          <EntitySet Name="SYS_PERMISSIONS" EntityType="OracleModel.SYS_PERMISSIONS" />
-          <AssociationSet Name="FK_GRP_PERMS_PERM_ID" Association="OracleModel.FK_GRP_PERMS_PERM_ID">
-            <End Role="SYS_PERMISSIONS" EntitySet="SYS_PERMISSIONS" />
-            <End Role="SYS_GROUPS_PERMS" EntitySet="SYS_GROUPS_PERMS" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MODULE_PERM_ID" Association="OracleModel.FK_MODULE_PERM_ID">
-            <End Role="SYS_PERMISSIONS" EntitySet="SYS_PERMISSIONS" />
-            <End Role="SYS_MODULES" EntitySet="SYS_MODULES" />
-          </AssociationSet>
           <EntitySet Name="SYS_MOBILE_DEVICES" EntityType="OracleModel.SYS_MOBILE_DEVICES" />
           <EntitySet Name="SYS_MOBILE_NOTIFICATIONS" EntityType="OracleModel.SYS_MOBILE_NOTIFICATIONS" />
           <EntitySet Name="SYS_USER_PERMS" EntityType="OracleModel.SYS_USER_PERMS" />
-          <AssociationSet Name="FK_USER_PERMS_PERM_ID" Association="OracleModel.FK_USER_PERMS_PERM_ID">
-            <End Role="SYS_PERMISSIONS" EntitySet="SYS_PERMISSIONS" />
-            <End Role="SYS_USER_PERMS" EntitySet="SYS_USER_PERMS" />
-          </AssociationSet>
           <EntitySet Name="SYS_MENU" EntityType="OracleModel.SYS_MENU" />
           <AssociationSet Name="FK_MENU_MODULE_ID" Association="OracleModel.FK_MENU_MODULE_ID">
             <End Role="SYS_MODULES" EntitySet="SYS_MODULES" />
             <End Role="SYS_MENU" EntitySet="SYS_MENU" />
           </AssociationSet>
-          <AssociationSet Name="FK_MENU_PERM_ID" Association="OracleModel.FK_MENU_PERM_ID">
-            <End Role="SYS_PERMISSIONS" EntitySet="SYS_PERMISSIONS" />
-            <End Role="SYS_MENU" EntitySet="SYS_MENU" />
-          </AssociationSet>
           <EntitySet Name="CROSSING_APPLICATION" EntityType="OracleModel.CROSSING_APPLICATION" />
-          <EntitySet Name="JOB_TITLE_V" EntityType="OracleModel.JOB_TITLE_V" />
           <EntitySet Name="CROSSING_INCIDENT" EntityType="OracleModel.CROSSING_INCIDENT" />
           <AssociationSet Name="FK_INCIDENT_CROSSING_ID" Association="OracleModel.FK_INCIDENT_CROSSING_ID">
             <End Role="CROSSING" EntitySet="CROSSINGS" />
@@ -3037,6 +3186,37 @@
             <End Role="SYS_GROUPS" EntitySet="SYS_GROUPS" />
             <End Role="SYS_GROUPS_PERMS" EntitySet="SYS_GROUPS_PERMS" />
           </AssociationSet>
+          <EntitySet Name="JOB_TITLE_V" EntityType="OracleModel.JOB_TITLE_V" />
+          <EntitySet Name="CROSSING_RELATIONSHIP" EntityType="OracleModel.CROSSING_RELATIONSHIP" />
+          <EntitySet Name="SYS_PERMISSIONS" EntityType="OracleModel.SYS_PERMISSIONS" />
+          <AssociationSet Name="FK_GRP_PERMS_PERM_ID" Association="OracleModel.FK_GRP_PERMS_PERM_ID">
+            <End Role="SYS_PERMISSIONS" EntitySet="SYS_PERMISSIONS" />
+            <End Role="SYS_GROUPS_PERMS" EntitySet="SYS_GROUPS_PERMS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MENU_PERM_ID" Association="OracleModel.FK_MENU_PERM_ID">
+            <End Role="SYS_PERMISSIONS" EntitySet="SYS_PERMISSIONS" />
+            <End Role="SYS_MENU" EntitySet="SYS_MENU" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MODULE_PERM_ID" Association="OracleModel.FK_MODULE_PERM_ID">
+            <End Role="SYS_PERMISSIONS" EntitySet="SYS_PERMISSIONS" />
+            <End Role="SYS_MODULES" EntitySet="SYS_MODULES" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USER_PERMS_PERM_ID" Association="OracleModel.FK_USER_PERMS_PERM_ID">
+            <End Role="SYS_PERMISSIONS" EntitySet="SYS_PERMISSIONS" />
+            <End Role="SYS_USER_PERMS" EntitySet="SYS_USER_PERMS" />
+          </AssociationSet>
+          <EntitySet Name="XXDBI_PAYROLL_AUDIT" EntityType="OracleModel.XXDBI_PAYROLL_AUDIT" />
+          <EntitySet Name="DAILY_ACTIVITY_EMPLOYEE" EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" />
+          <AssociationSet Name="FK_EMPLOYEE_HEADER_ID" Association="OracleModel.FK_EMPLOYEE_HEADER_ID">
+            <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
+            <End Role="DAILY_ACTIVITY_EMPLOYEE" EntitySet="DAILY_ACTIVITY_EMPLOYEE" />
+          </AssociationSet>
+          <EntitySet Name="ORG_HIER_V" EntityType="OracleModel.ORG_HIER_V" />
+          <EntitySet Name="SYS_USER_ORGS" EntityType="OracleModel.SYS_USER_ORGS" />
+          <AssociationSet Name="FK_ORGS_USER_ID" Association="OracleModel.FK_ORGS_USER_ID">
+            <End Role="SYS_USERS" EntitySet="SYS_USERS" />
+            <End Role="SYS_USER_ORGS" EntitySet="SYS_USER_ORGS" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -3047,6 +3227,7 @@
           <NavigationProperty Name="SYS_USER_INFORMATION" Relationship="OracleModel.SYS_USERSSYS_USER_INFORMATION" FromRole="SYS_USERS" ToRole="SYS_USER_INFORMATION" />
           <NavigationProperty Name="SYS_USER_ACTIVITY" Relationship="OracleModel.SYS_USERSSYS_USER_ACTIVITY" FromRole="SYS_USERS" ToRole="SYS_USER_ACTIVITY" />
           <NavigationProperty Name="SYS_LOG" Relationship="OracleModel.SYS_USERSSYS_LOG" FromRole="SYS_USERS" ToRole="SYS_LOG" />
+          <NavigationProperty Name="SYS_USER_ORGS" Relationship="OracleModel.FK_ORGS_USER_ID" FromRole="SYS_USERS" ToRole="SYS_USER_ORGS" />
         </EntityType>
         <ComplexType Name="SYS_USER_ACTIVITY_CT" >
           <Property Type="Int64" Name="USER_ACTIVITY_ID" Nullable="false" />
@@ -3060,6 +3241,7 @@
             <PropertyRef Name="CURRENT_ORGANIZATION" />
             <PropertyRef Name="CURRENT_ORG_ID" />
             <PropertyRef Name="LOCATION_NAME" />
+            <PropertyRef Name="JOB_ID" />
           </Key>
           <Property Type="Int64" Name="USER_ID" Nullable="false" />
           <Property Type="String" Name="USER_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -3076,6 +3258,7 @@
           <NavigationProperty Name="SYS_USERS" Relationship="OracleModel.SYS_USERSSYS_USER_INFORMATION" FromRole="SYS_USER_INFORMATION" ToRole="SYS_USERS" />
           <Property Type="Int64" Name="CURRENT_ORG_ID" Nullable="false" />
           <Property Type="String" Name="LOCATION_NAME" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="JOB_ID" Nullable="false" />
         </EntityType>
         <Association Name="SYS_USERSSYS_USER_INFORMATION">
           <End Type="OracleModel.SYS_USERS" Role="SYS_USERS" Multiplicity="1" />
@@ -5061,46 +5244,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="DAILY_ACTIVITY_EMPLOYEE">
-          <Key>
-            <PropertyRef Name="EMPLOYEE_ID" />
-          </Key>
-          <Property Type="Int64" Name="EMPLOYEE_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
-          <Property Type="Int32" Name="PERSON_ID" Nullable="false" />
-          <Property Type="Int64" Name="EQUIPMENT_ID" />
-          <Property Type="DateTime" Name="TIME_IN" />
-          <Property Type="DateTime" Name="TIME_OUT" />
-          <Property Type="Decimal" Name="TRAVEL_TIME" Precision="15" Scale="4" />
-          <Property Type="Decimal" Name="DRIVE_TIME" Precision="15" Scale="4" />
-          <Property Type="String" Name="PER_DIEM" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="COMMENTS" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="FOREMAN_LICENSE" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ROLE_TYPE" MaxLength="80" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STATE" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="COUNTY" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="LUNCH" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="Decimal" Name="LUNCH_LENGTH" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="SHOPTIME_AM" Precision="15" Scale="4" />
-          <Property Type="Decimal" Name="SHOPTIME_PM" Precision="15" Scale="4" />
-          <NavigationProperty Name="DAILY_ACTIVITY_HEADER" Relationship="OracleModel.FK_EMPLOYEE_HEADER_ID" FromRole="DAILY_ACTIVITY_EMPLOYEE" ToRole="DAILY_ACTIVITY_HEADER" />
-        </EntityType>
-        <Association Name="FK_EMPLOYEE_HEADER_ID">
-          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
-          <End Type="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Role="DAILY_ACTIVITY_EMPLOYEE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DAILY_ACTIVITY_HEADER">
-              <PropertyRef Name="HEADER_ID" />
-            </Principal>
-            <Dependent Role="DAILY_ACTIVITY_EMPLOYEE">
-              <PropertyRef Name="HEADER_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="PA_ROLES_V">
           <Key>
             <PropertyRef Name="ROWNUM" />
@@ -5131,8 +5274,8 @@
           <Property Type="Decimal" Name="GROUPS_PERMS_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Decimal" Name="GROUP_ID" Nullable="false" Precision="38" Scale="0" />
           <Property Type="Decimal" Name="PERMISSION_ID" Nullable="false" Precision="38" Scale="0" />
-          <NavigationProperty Name="SYS_PERMISSIONS" Relationship="OracleModel.FK_GRP_PERMS_PERM_ID" FromRole="SYS_GROUPS_PERMS" ToRole="SYS_PERMISSIONS" />
           <NavigationProperty Name="SYS_GROUPS" Relationship="OracleModel.FK_GRP_PERMS_GROUP_ID" FromRole="SYS_GROUPS_PERMS" ToRole="SYS_GROUPS" />
+          <NavigationProperty Name="SYS_PERMISSIONS" Relationship="OracleModel.FK_GRP_PERMS_PERM_ID" FromRole="SYS_GROUPS_PERMS" ToRole="SYS_PERMISSIONS" />
         </EntityType>
         <EntityType Name="SYS_MODULES">
           <Key>
@@ -5141,45 +5284,9 @@
           <Property Type="Decimal" Name="MODULE_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="MODULE_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="Decimal" Name="PERMISSION_ID" Nullable="false" Precision="38" Scale="0" />
-          <NavigationProperty Name="SYS_PERMISSIONS" Relationship="OracleModel.FK_MODULE_PERM_ID" FromRole="SYS_MODULES" ToRole="SYS_PERMISSIONS" />
           <NavigationProperty Name="SYS_MENU" Relationship="OracleModel.FK_MENU_MODULE_ID" FromRole="SYS_MODULES" ToRole="SYS_MENU" />
+          <NavigationProperty Name="SYS_PERMISSIONS" Relationship="OracleModel.FK_MODULE_PERM_ID" FromRole="SYS_MODULES" ToRole="SYS_PERMISSIONS" />
         </EntityType>
-        <EntityType Name="SYS_PERMISSIONS">
-          <Key>
-            <PropertyRef Name="PERMISSION_ID" />
-          </Key>
-          <Property Type="Decimal" Name="PERMISSION_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="PERMISSION_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="PARENT_PERM_ID" Precision="38" Scale="0" />
-          <NavigationProperty Name="SYS_GROUPS_PERMS" Relationship="OracleModel.FK_GRP_PERMS_PERM_ID" FromRole="SYS_PERMISSIONS" ToRole="SYS_GROUPS_PERMS" />
-          <NavigationProperty Name="SYS_MODULES" Relationship="OracleModel.FK_MODULE_PERM_ID" FromRole="SYS_PERMISSIONS" ToRole="SYS_MODULES" />
-          <NavigationProperty Name="SYS_USER_PERMS" Relationship="OracleModel.FK_USER_PERMS_PERM_ID" FromRole="SYS_PERMISSIONS" ToRole="SYS_USER_PERMS" />
-          <NavigationProperty Name="SYS_MENU" Relationship="OracleModel.FK_MENU_PERM_ID" FromRole="SYS_PERMISSIONS" ToRole="SYS_MENU" />
-        </EntityType>
-        <Association Name="FK_GRP_PERMS_PERM_ID">
-          <End Type="OracleModel.SYS_PERMISSIONS" Role="SYS_PERMISSIONS" Multiplicity="1" />
-          <End Type="OracleModel.SYS_GROUPS_PERMS" Role="SYS_GROUPS_PERMS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SYS_PERMISSIONS">
-              <PropertyRef Name="PERMISSION_ID" />
-            </Principal>
-            <Dependent Role="SYS_GROUPS_PERMS">
-              <PropertyRef Name="PERMISSION_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MODULE_PERM_ID">
-          <End Type="OracleModel.SYS_PERMISSIONS" Role="SYS_PERMISSIONS" Multiplicity="1" />
-          <End Type="OracleModel.SYS_MODULES" Role="SYS_MODULES" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SYS_PERMISSIONS">
-              <PropertyRef Name="PERMISSION_ID" />
-            </Principal>
-            <Dependent Role="SYS_MODULES">
-              <PropertyRef Name="PERMISSION_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="SYS_MOBILE_DEVICES">
           <Key>
             <PropertyRef Name="DEVICE_ID" />
@@ -5211,18 +5318,6 @@
           <Property Type="String" Name="ALLOW_DENY" MaxLength="1" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="SYS_PERMISSIONS" Relationship="OracleModel.FK_USER_PERMS_PERM_ID" FromRole="SYS_USER_PERMS" ToRole="SYS_PERMISSIONS" />
         </EntityType>
-        <Association Name="FK_USER_PERMS_PERM_ID">
-          <End Type="OracleModel.SYS_PERMISSIONS" Role="SYS_PERMISSIONS" Multiplicity="1" />
-          <End Type="OracleModel.SYS_USER_PERMS" Role="SYS_USER_PERMS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SYS_PERMISSIONS">
-              <PropertyRef Name="PERMISSION_ID" />
-            </Principal>
-            <Dependent Role="SYS_USER_PERMS">
-              <PropertyRef Name="PERMISSION_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="SYS_MENU">
           <Key>
             <PropertyRef Name="MENU_ID" />
@@ -5248,18 +5343,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_MENU_PERM_ID">
-          <End Type="OracleModel.SYS_PERMISSIONS" Role="SYS_PERMISSIONS" Multiplicity="1" />
-          <End Type="OracleModel.SYS_MENU" Role="SYS_MENU" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SYS_PERMISSIONS">
-              <PropertyRef Name="PERMISSION_ID" />
-            </Principal>
-            <Dependent Role="SYS_MENU">
-              <PropertyRef Name="PERMISSION_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="CROSSING_APPLICATION">
           <Key>
             <PropertyRef Name="APPLICATION_ID" />
@@ -5282,14 +5365,6 @@
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <Property Type="DateTime" Name="FISCAL_YEAR" />
-        </EntityType>
-        <EntityType Name="JOB_TITLE_V">
-          <Key>
-            <PropertyRef Name="JOB_ID" />
-          </Key>
-          <Property Type="Int64" Name="JOB_ID" Nullable="false" />
-          <Property Type="String" Name="NAME" MaxLength="700" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="LOCATTION" MaxLength="14" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="CROSSING_INCIDENT">
           <Key>
@@ -5357,6 +5432,216 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="JOB_TITLE_V">
+          <Key>
+            <PropertyRef Name="JOB_ID" />
+          </Key>
+          <Property Type="Int64" Name="JOB_ID" Nullable="false" />
+          <Property Type="String" Name="NAME" MaxLength="700" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="LOCATION" MaxLength="14" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="CROSSING_RELATIONSHIP">
+          <Key>
+            <PropertyRef Name="RELATIONSHIP_ID" />
+          </Key>
+          <Property Type="Decimal" Name="RELATIONSHIP_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="PROJECT_ID" />
+          <Property Type="Int64" Name="CROSSING_ID" />
+        </EntityType>
+        <EntityType Name="SYS_PERMISSIONS">
+          <Key>
+            <PropertyRef Name="PERMISSION_ID" />
+          </Key>
+          <Property Type="Decimal" Name="PERMISSION_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="PERMISSION_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="PARENT_PERM_ID" Precision="38" Scale="0" />
+          <Property Type="String" Name="DESCRIPTION" MaxLength="300" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SYS_GROUPS_PERMS" Relationship="OracleModel.FK_GRP_PERMS_PERM_ID" FromRole="SYS_PERMISSIONS" ToRole="SYS_GROUPS_PERMS" />
+          <NavigationProperty Name="SYS_MENU" Relationship="OracleModel.FK_MENU_PERM_ID" FromRole="SYS_PERMISSIONS" ToRole="SYS_MENU" />
+          <NavigationProperty Name="SYS_MODULES" Relationship="OracleModel.FK_MODULE_PERM_ID" FromRole="SYS_PERMISSIONS" ToRole="SYS_MODULES" />
+          <NavigationProperty Name="SYS_USER_PERMS" Relationship="OracleModel.FK_USER_PERMS_PERM_ID" FromRole="SYS_PERMISSIONS" ToRole="SYS_USER_PERMS" />
+        </EntityType>
+        <Association Name="FK_GRP_PERMS_PERM_ID">
+          <End Type="OracleModel.SYS_PERMISSIONS" Role="SYS_PERMISSIONS" Multiplicity="1" />
+          <End Type="OracleModel.SYS_GROUPS_PERMS" Role="SYS_GROUPS_PERMS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SYS_PERMISSIONS">
+              <PropertyRef Name="PERMISSION_ID" />
+            </Principal>
+            <Dependent Role="SYS_GROUPS_PERMS">
+              <PropertyRef Name="PERMISSION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MENU_PERM_ID">
+          <End Type="OracleModel.SYS_PERMISSIONS" Role="SYS_PERMISSIONS" Multiplicity="1" />
+          <End Type="OracleModel.SYS_MENU" Role="SYS_MENU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SYS_PERMISSIONS">
+              <PropertyRef Name="PERMISSION_ID" />
+            </Principal>
+            <Dependent Role="SYS_MENU">
+              <PropertyRef Name="PERMISSION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MODULE_PERM_ID">
+          <End Type="OracleModel.SYS_PERMISSIONS" Role="SYS_PERMISSIONS" Multiplicity="1" />
+          <End Type="OracleModel.SYS_MODULES" Role="SYS_MODULES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SYS_PERMISSIONS">
+              <PropertyRef Name="PERMISSION_ID" />
+            </Principal>
+            <Dependent Role="SYS_MODULES">
+              <PropertyRef Name="PERMISSION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USER_PERMS_PERM_ID">
+          <End Type="OracleModel.SYS_PERMISSIONS" Role="SYS_PERMISSIONS" Multiplicity="1" />
+          <End Type="OracleModel.SYS_USER_PERMS" Role="SYS_USER_PERMS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SYS_PERMISSIONS">
+              <PropertyRef Name="PERMISSION_ID" />
+            </Principal>
+            <Dependent Role="SYS_USER_PERMS">
+              <PropertyRef Name="PERMISSION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="XXDBI_PAYROLL_AUDIT">
+          <Key>
+            <PropertyRef Name="PAYROLL_AUDIT_ID" />
+            <PropertyRef Name="EMPLOYEE_NUMBER" />
+            <PropertyRef Name="EMPLOYEE_NAME" />
+            <PropertyRef Name="ORG_ID" />
+            <PropertyRef Name="STATUS" />
+            <PropertyRef Name="OVERTIME_STATUS" />
+            <PropertyRef Name="FRINGE_STATUS" />
+            <PropertyRef Name="PROJECT_STATUS" />
+            <PropertyRef Name="CREATED_BY" />
+            <PropertyRef Name="CREATION_DATE" />
+            <PropertyRef Name="LAST_UPDATED_BY" />
+            <PropertyRef Name="LAST_UPDATE_DATE" />
+          </Key>
+          <Property Type="Decimal" Name="PAYROLL_AUDIT_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="DA_HEADER_ID" Precision="38" Scale="0" />
+          <Property Type="String" Name="EMPLOYEE_NUMBER" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EMPLOYEE_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ELEMENT" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROJECT_ROLE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STATE" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="COUNTY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROJECT_NUMBER" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="TASK_NUMBER" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EXPENDITURE_TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="SUNDAY" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="MONDAY" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="TUESDAY" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="WEDNESDAY" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="THURSDAY" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="FRIDAY" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="SATURDAY" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="PREVAILING_WAGE_RATE" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="FRINGE_RATE" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="EFFECTIVE_START_DATE" />
+          <Property Type="DateTime" Name="EFFECTIVE_END_DATE" />
+          <Property Type="String" Name="WORK_ORDER_NUM" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="TOTAL_HOURS" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="ORG_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="STATUS" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="OVERTIME_STATUS" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="FRINGE_STATUS" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROJECT_STATUS" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="PAYROLLAPI_RETURN_ID" Precision="38" Scale="0" />
+          <Property Type="String" Name="ADJUSTMENT" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="WAGE_SOURCE" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="CREATED_BY" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="CREATION_DATE" Nullable="false" />
+          <Property Type="Decimal" Name="LAST_UPDATED_BY" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" Nullable="false" />
+          <Property Type="Decimal" Name="LAST_UPDATE_LOGIN" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="PARENT_PAYROLL_ID" Precision="38" Scale="0" />
+          <Property Type="String" Name="SLIDING_SCALE_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DAILY_OVERTIME_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="DAILY_ACTIVITY_EMPLOYEE">
+          <Key>
+            <PropertyRef Name="EMPLOYEE_ID" />
+          </Key>
+          <Property Type="Int64" Name="EMPLOYEE_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
+          <Property Type="Int32" Name="PERSON_ID" Nullable="false" />
+          <Property Type="Int64" Name="EQUIPMENT_ID" />
+          <Property Type="DateTime" Name="TIME_IN" />
+          <Property Type="DateTime" Name="TIME_OUT" />
+          <Property Type="Decimal" Name="TRAVEL_TIME" Precision="15" Scale="4" />
+          <Property Type="Decimal" Name="DRIVE_TIME" Precision="15" Scale="4" />
+          <Property Type="String" Name="PER_DIEM" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="COMMENTS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="FOREMAN_LICENSE" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ROLE_TYPE" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STATE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="COUNTY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="LUNCH" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="Decimal" Name="LUNCH_LENGTH" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="SHOPTIME_AM" Precision="15" Scale="4" />
+          <Property Type="Decimal" Name="SHOPTIME_PM" Precision="15" Scale="4" />
+          <Property Type="Int64" Name="SUPPORT_PROJ_ID" />
+          <NavigationProperty Name="DAILY_ACTIVITY_HEADER" Relationship="OracleModel.FK_EMPLOYEE_HEADER_ID" FromRole="DAILY_ACTIVITY_EMPLOYEE" ToRole="DAILY_ACTIVITY_HEADER" />
+        </EntityType>
+        <Association Name="FK_EMPLOYEE_HEADER_ID">
+          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
+          <End Type="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Role="DAILY_ACTIVITY_EMPLOYEE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_HEADER">
+              <PropertyRef Name="HEADER_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_EMPLOYEE">
+              <PropertyRef Name="HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ORG_HIER_V">
+          <Key>
+            <PropertyRef Name="ORG_ID_PARENT" />
+            <PropertyRef Name="ORG_ID_CHILD" />
+            <PropertyRef Name="ORG_ID" />
+          </Key>
+          <Property Type="String" Name="PARENT_ORG" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="ORG_ID_PARENT" Nullable="false" />
+          <Property Type="Int64" Name="ORG_ID_CHILD" Nullable="false" />
+          <Property Type="String" Name="ORG_HIER" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="LEVEL" Precision="38" Scale="0" />
+          <Property Type="Int64" Name="ORG_ID" Nullable="false" />
+          <Property Type="String" Name="TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="BU_ORG" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SYS_USER_ORGS">
+          <Key>
+            <PropertyRef Name="SYS_ORG_ID" />
+          </Key>
+          <Property Type="Decimal" Name="SYS_ORG_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="USER_ID" Nullable="false" />
+          <Property Type="Int64" Name="ORG_ID" Nullable="false" />
+          <NavigationProperty Name="SYS_USERS" Relationship="OracleModel.FK_ORGS_USER_ID" FromRole="SYS_USER_ORGS" ToRole="SYS_USERS" />
+        </EntityType>
+        <Association Name="FK_ORGS_USER_ID">
+          <End Type="OracleModel.SYS_USERS" Role="SYS_USERS" Multiplicity="1" />
+          <End Type="OracleModel.SYS_USER_ORGS" Role="SYS_USER_ORGS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SYS_USERS">
+              <PropertyRef Name="USER_ID" />
+            </Principal>
+            <Dependent Role="SYS_USER_ORGS">
+              <PropertyRef Name="USER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5374,6 +5659,7 @@
           <EntitySetMapping Name="SYS_USER_INFORMATION">
             <EntityTypeMapping TypeName="OracleModel.SYS_USER_INFORMATION">
               <MappingFragment StoreEntitySet="SYS_USER_INFORMATION">
+                <ScalarProperty Name="JOB_ID" ColumnName="JOB_ID" />
                 <ScalarProperty Name="LOCATION_NAME" ColumnName="LOCATION_NAME" />
                 <ScalarProperty Name="CURRENT_ORG_ID" ColumnName="CURRENT_ORG_ID" />
                 <ScalarProperty Name="SUPERVISOR_USER_NAME" ColumnName="SUPERVISOR_USER_NAME" />
@@ -6926,34 +7212,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DAILY_ACTIVITY_EMPLOYEE">
-            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_EMPLOYEE">
-              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_EMPLOYEE">
-                <ScalarProperty Name="SHOPTIME_PM" ColumnName="SHOPTIME_PM" />
-                <ScalarProperty Name="SHOPTIME_AM" ColumnName="SHOPTIME_AM" />
-                <ScalarProperty Name="LUNCH_LENGTH" ColumnName="LUNCH_LENGTH" />
-                <ScalarProperty Name="LUNCH" ColumnName="LUNCH" />
-                <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
-                <ScalarProperty Name="STATE" ColumnName="STATE" />
-                <ScalarProperty Name="ROLE_TYPE" ColumnName="ROLE_TYPE" />
-                <ScalarProperty Name="FOREMAN_LICENSE" ColumnName="FOREMAN_LICENSE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
-                <ScalarProperty Name="PER_DIEM" ColumnName="PER_DIEM" />
-                <ScalarProperty Name="DRIVE_TIME" ColumnName="DRIVE_TIME" />
-                <ScalarProperty Name="TRAVEL_TIME" ColumnName="TRAVEL_TIME" />
-                <ScalarProperty Name="TIME_OUT" ColumnName="TIME_OUT" />
-                <ScalarProperty Name="TIME_IN" ColumnName="TIME_IN" />
-                <ScalarProperty Name="EQUIPMENT_ID" ColumnName="EQUIPMENT_ID" />
-                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
-                <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
-                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="PA_ROLES_V">
             <EntityTypeMapping TypeName="OracleModel.PA_ROLES_V">
               <MappingFragment StoreEntitySet="PA_ROLES_V">
@@ -6994,15 +7252,6 @@
                 <ScalarProperty Name="PERMISSION_ID" ColumnName="PERMISSION_ID" />
                 <ScalarProperty Name="MODULE_NAME" ColumnName="MODULE_NAME" />
                 <ScalarProperty Name="MODULE_ID" ColumnName="MODULE_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SYS_PERMISSIONS">
-            <EntityTypeMapping TypeName="OracleModel.SYS_PERMISSIONS">
-              <MappingFragment StoreEntitySet="SYS_PERMISSIONS">
-                <ScalarProperty Name="PARENT_PERM_ID" ColumnName="PARENT_PERM_ID" />
-                <ScalarProperty Name="PERMISSION_NAME" ColumnName="PERMISSION_NAME" />
-                <ScalarProperty Name="PERMISSION_ID" ColumnName="PERMISSION_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7075,15 +7324,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="JOB_TITLE_V">
-            <EntityTypeMapping TypeName="OracleModel.JOB_TITLE_V">
-              <MappingFragment StoreEntitySet="JOB_TITLE_V">
-                <ScalarProperty Name="LOCATTION" ColumnName="LOCATTION" />
-                <ScalarProperty Name="NAME" ColumnName="NAME" />
-                <ScalarProperty Name="JOB_ID" ColumnName="JOB_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CROSSING_INCIDENT">
             <EntityTypeMapping TypeName="OracleModel.CROSSING_INCIDENT">
               <MappingFragment StoreEntitySet="CROSSING_INCIDENT">
@@ -7122,6 +7362,132 @@
                 <ScalarProperty Name="JOB_ID" ColumnName="JOB_ID" />
                 <ScalarProperty Name="GROUP_NAME" ColumnName="GROUP_NAME" />
                 <ScalarProperty Name="GROUP_ID" ColumnName="GROUP_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JOB_TITLE_V">
+            <EntityTypeMapping TypeName="OracleModel.JOB_TITLE_V">
+              <MappingFragment StoreEntitySet="JOB_TITLE_V">
+                <ScalarProperty Name="LOCATION" ColumnName="LOCATION" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="JOB_ID" ColumnName="JOB_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CROSSING_RELATIONSHIP">
+            <EntityTypeMapping TypeName="OracleModel.CROSSING_RELATIONSHIP">
+              <MappingFragment StoreEntitySet="CROSSING_RELATIONSHIP">
+                <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
+                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
+                <ScalarProperty Name="RELATIONSHIP_ID" ColumnName="RELATIONSHIP_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_PERMISSIONS">
+            <EntityTypeMapping TypeName="OracleModel.SYS_PERMISSIONS">
+              <MappingFragment StoreEntitySet="SYS_PERMISSIONS">
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="PARENT_PERM_ID" ColumnName="PARENT_PERM_ID" />
+                <ScalarProperty Name="PERMISSION_NAME" ColumnName="PERMISSION_NAME" />
+                <ScalarProperty Name="PERMISSION_ID" ColumnName="PERMISSION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="XXDBI_PAYROLL_AUDIT">
+            <EntityTypeMapping TypeName="OracleModel.XXDBI_PAYROLL_AUDIT">
+              <MappingFragment StoreEntitySet="XXDBI_PAYROLL_AUDIT">
+                <ScalarProperty Name="DAILY_OVERTIME_FLAG" ColumnName="DAILY_OVERTIME_FLAG" />
+                <ScalarProperty Name="SLIDING_SCALE_FLAG" ColumnName="SLIDING_SCALE_FLAG" />
+                <ScalarProperty Name="PARENT_PAYROLL_ID" ColumnName="PARENT_PAYROLL_ID" />
+                <ScalarProperty Name="LAST_UPDATE_LOGIN" ColumnName="LAST_UPDATE_LOGIN" />
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+                <ScalarProperty Name="CREATION_DATE" ColumnName="CREATION_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="WAGE_SOURCE" ColumnName="WAGE_SOURCE" />
+                <ScalarProperty Name="ADJUSTMENT" ColumnName="ADJUSTMENT" />
+                <ScalarProperty Name="PAYROLLAPI_RETURN_ID" ColumnName="PAYROLLAPI_RETURN_ID" />
+                <ScalarProperty Name="PROJECT_STATUS" ColumnName="PROJECT_STATUS" />
+                <ScalarProperty Name="FRINGE_STATUS" ColumnName="FRINGE_STATUS" />
+                <ScalarProperty Name="OVERTIME_STATUS" ColumnName="OVERTIME_STATUS" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="TOTAL_HOURS" ColumnName="TOTAL_HOURS" />
+                <ScalarProperty Name="WORK_ORDER_NUM" ColumnName="WORK_ORDER_NUM" />
+                <ScalarProperty Name="EFFECTIVE_END_DATE" ColumnName="EFFECTIVE_END_DATE" />
+                <ScalarProperty Name="EFFECTIVE_START_DATE" ColumnName="EFFECTIVE_START_DATE" />
+                <ScalarProperty Name="FRINGE_RATE" ColumnName="FRINGE_RATE" />
+                <ScalarProperty Name="PREVAILING_WAGE_RATE" ColumnName="PREVAILING_WAGE_RATE" />
+                <ScalarProperty Name="SATURDAY" ColumnName="SATURDAY" />
+                <ScalarProperty Name="FRIDAY" ColumnName="FRIDAY" />
+                <ScalarProperty Name="THURSDAY" ColumnName="THURSDAY" />
+                <ScalarProperty Name="WEDNESDAY" ColumnName="WEDNESDAY" />
+                <ScalarProperty Name="TUESDAY" ColumnName="TUESDAY" />
+                <ScalarProperty Name="MONDAY" ColumnName="MONDAY" />
+                <ScalarProperty Name="SUNDAY" ColumnName="SUNDAY" />
+                <ScalarProperty Name="EXPENDITURE_TYPE" ColumnName="EXPENDITURE_TYPE" />
+                <ScalarProperty Name="TASK_NUMBER" ColumnName="TASK_NUMBER" />
+                <ScalarProperty Name="PROJECT_NUMBER" ColumnName="PROJECT_NUMBER" />
+                <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+                <ScalarProperty Name="PROJECT_ROLE" ColumnName="PROJECT_ROLE" />
+                <ScalarProperty Name="ELEMENT" ColumnName="ELEMENT" />
+                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
+                <ScalarProperty Name="EMPLOYEE_NUMBER" ColumnName="EMPLOYEE_NUMBER" />
+                <ScalarProperty Name="DA_HEADER_ID" ColumnName="DA_HEADER_ID" />
+                <ScalarProperty Name="PAYROLL_AUDIT_ID" ColumnName="PAYROLL_AUDIT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DAILY_ACTIVITY_EMPLOYEE">
+            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_EMPLOYEE">
+              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_EMPLOYEE">
+                <ScalarProperty Name="SUPPORT_PROJ_ID" ColumnName="SUPPORT_PROJ_ID" />
+                <ScalarProperty Name="SHOPTIME_PM" ColumnName="SHOPTIME_PM" />
+                <ScalarProperty Name="SHOPTIME_AM" ColumnName="SHOPTIME_AM" />
+                <ScalarProperty Name="LUNCH_LENGTH" ColumnName="LUNCH_LENGTH" />
+                <ScalarProperty Name="LUNCH" ColumnName="LUNCH" />
+                <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+                <ScalarProperty Name="ROLE_TYPE" ColumnName="ROLE_TYPE" />
+                <ScalarProperty Name="FOREMAN_LICENSE" ColumnName="FOREMAN_LICENSE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
+                <ScalarProperty Name="PER_DIEM" ColumnName="PER_DIEM" />
+                <ScalarProperty Name="DRIVE_TIME" ColumnName="DRIVE_TIME" />
+                <ScalarProperty Name="TRAVEL_TIME" ColumnName="TRAVEL_TIME" />
+                <ScalarProperty Name="TIME_OUT" ColumnName="TIME_OUT" />
+                <ScalarProperty Name="TIME_IN" ColumnName="TIME_IN" />
+                <ScalarProperty Name="EQUIPMENT_ID" ColumnName="EQUIPMENT_ID" />
+                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
+                <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ORG_HIER_V">
+            <EntityTypeMapping TypeName="OracleModel.ORG_HIER_V">
+              <MappingFragment StoreEntitySet="ORG_HIER_V">
+                <ScalarProperty Name="BU_ORG" ColumnName="BU_ORG" />
+                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="LEVEL" ColumnName="LEVEL" />
+                <ScalarProperty Name="ORG_HIER" ColumnName="ORG_HIER" />
+                <ScalarProperty Name="ORG_ID_CHILD" ColumnName="ORG_ID_CHILD" />
+                <ScalarProperty Name="ORG_ID_PARENT" ColumnName="ORG_ID_PARENT" />
+                <ScalarProperty Name="PARENT_ORG" ColumnName="PARENT_ORG" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_USER_ORGS">
+            <EntityTypeMapping TypeName="OracleModel.SYS_USER_ORGS">
+              <MappingFragment StoreEntitySet="SYS_USER_ORGS">
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="SYS_ORG_ID" ColumnName="SYS_ORG_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
