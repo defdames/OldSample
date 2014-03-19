@@ -112,6 +112,15 @@ namespace DBI.Web.EMS.Views.Modules.Security {
         protected global::Ext.Net.TextField uxPermissionName;
         
         /// <summary>
+        /// uxPermissionDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxPermissionDescription;
+        
+        /// <summary>
         /// uxParentPermissionName control.
         /// </summary>
         /// <remarks>

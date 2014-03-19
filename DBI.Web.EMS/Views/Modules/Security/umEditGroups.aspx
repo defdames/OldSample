@@ -76,6 +76,7 @@
                                     <Fields>
                                         <ext:ModelField Name="PERMISSION_ID" />
                                         <ext:ModelField Name="PERMISSION_NAME" />
+                                        <ext:ModelField Name="DESCRIPTION" />
                                         <ext:ModelField Name="PARENT_PERM_ID" />
                                     </Fields>
                                 </ext:Model>
@@ -91,7 +92,7 @@
                     <ColumnModel>
                         <Columns>
                             <ext:Column runat="server" Text="Permission" DataIndex="PERMISSION_NAME" />
-                            <ext:Column runat="server" Text="Permission Id" DataIndex="PARENT_PERM_ID" />
+                            <ext:Column runat="server" Text="Description" DataIndex="DESCRIPTION" />
                         </Columns>
                     </ColumnModel>
                     <BottomBar>
@@ -103,7 +104,7 @@
         <!--Hidden Windows -->
         <ext:Window runat="server" ID="uxUpdateGroupPermissionWindow" Width="650" Hidden="true" Layout="HBoxLayout">
             <Items>
-                <ext:GridPanel runat="server" ID="uxAvailablePermissions" Title="Available Permissions" Flex="1"> 
+                <ext:GridPanel runat="server" ID="uxAvailablePermissions" Title="Available Permissions" Flex="1" Layout="HBoxLayout"> 
                     <Store>
                         <ext:Store runat="server" ID="uxAvailablePermissionsStore">
                             <Model>
@@ -112,6 +113,7 @@
                                         <ext:ModelField Name="PERMISSION_ID" />
                                         <ext:ModelField Name="PERMISSION_NAME" />
                                         <ext:ModelField Name="PARENT_PERM_ID" />
+                                        <ext:ModelField Name="DESCRIPTION" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -119,7 +121,7 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column runat="server" DataIndex="PERMISSION_NAME" />
+                            <ext:Column runat="server" DataIndex="PERMISSION_NAME" Flex="1" />
                         </Columns>
                     </ColumnModel>
                 </ext:GridPanel>
@@ -159,7 +161,7 @@
                         </ext:Button>
                     </Items>
                 </ext:Panel>
-                <ext:GridPanel runat="server" ID="uxSelectedPermissionsGrid" Title="SelectedPermissions" Flex="1">
+                <ext:GridPanel runat="server" ID="uxSelectedPermissionsGrid" Title="SelectedPermissions" Flex="1" Layout="HBoxLayout">
                     <Store>
                         <ext:Store runat="server" ID="uxSelectedPermissionsStore">
                             <Model>
@@ -175,7 +177,7 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column runat="server" DataIndex="PERMISSION_NAME" />
+                            <ext:Column runat="server" DataIndex="PERMISSION_NAME" Flex="1" />
                         </Columns>
                     </ColumnModel>
                 </ext:GridPanel>

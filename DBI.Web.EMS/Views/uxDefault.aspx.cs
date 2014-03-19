@@ -128,6 +128,7 @@ namespace DBI.Web.EMS.Views
                     foreach (SYS_MENU MenuItem in MenuItems)
                     {
                         Ext.Net.MenuItem AppMenuItem = CreateMenuItem(MenuItem);
+                        AppMenuItem.Icon = (MenuItem.ICON == null ? Icon.None : (Icon)Enum.Parse(typeof(Icon), MenuItem.ICON));
                         AppPanel.Menu.Items.Add(AppMenuItem);
                     }
                     uxWest.Items.Add(AppPanel);
@@ -150,6 +151,7 @@ namespace DBI.Web.EMS.Views
                             foreach (SYS_MENU MenuItem in MenuItems)
                             {
                                 Ext.Net.MenuItem AppMenuItem = CreateMenuItem(MenuItem);
+                                AppMenuItem.Icon = (MenuItem.ICON == null ? Icon.None : (Icon)Enum.Parse(typeof(Icon), MenuItem.ICON));
                                 AppPanel.Menu.Items.Add(AppMenuItem);
                             }
                             uxWest.Items.Add(AppPanel);
@@ -177,7 +179,7 @@ namespace DBI.Web.EMS.Views
                                         foreach (SYS_MENU MenuItem in MenuItems)
                                         {
                                             Ext.Net.MenuItem AppMenuItem = CreateMenuItem(MenuItem);
-                                           
+                                            AppMenuItem.Icon = (MenuItem.ICON == null ? Icon.None : (Icon)Enum.Parse(typeof(Icon), MenuItem.ICON));
                                             AppPanel.Menu.Items.Add(AppMenuItem);
                                         }
                                         uxWest.Items.Add(AppPanel);

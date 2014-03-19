@@ -9,7 +9,7 @@
 <body>
     <form id="form1" runat="server">
         <ext:ResourceManager runat="server" />
-        <ext:ViewPort runat="server" ID="uxPermissionsViewPort">
+        <ext:Viewport runat="server" ID="uxPermissionsViewPort">
             <Items>
                 <ext:GridPanel runat="server" ID="uxCurrentPermissionsGrid" Layout="HBoxLayout">
                     <Store>
@@ -19,7 +19,7 @@
                                     <Fields>
                                         <ext:ModelField Name="PermissionId" />
                                         <ext:ModelField Name="PermissionName" />
-                                        <ext:ModelField Name="DESCRIPTION" />
+                                        <ext:ModelField Name="Description" />
                                         <ext:ModelField Name="ParentPermissionName" />
                                         <ext:ModelField Name="ParentPermId" />
                                     </Fields>
@@ -36,7 +36,7 @@
                     <ColumnModel>
                         <Columns>
                             <ext:Column runat="server" DataIndex="PermissionName" Text="Name" Flex="1" />
-                            <ext:Column runat="server" DataIndex="DESCRIPTION" Text="Description" Flex="1" />
+                            <ext:Column runat="server" DataIndex="Description" Text="Description" Flex="1" />
                             <ext:Column runat="server" DataIndex="ParentPermissionName" Text="Parent Permission" Flex="1" />
                         </Columns>
                     </ColumnModel>
@@ -71,7 +71,7 @@
                     </BottomBar>
                 </ext:GridPanel>
             </Items>
-        </ext:ViewPort>
+        </ext:Viewport>
         <!--Hidden Windows-->
         <ext:Window runat="server" ID="uxUpdatePermissionsWindow" Width="650" Hidden="true">
             <Items>
@@ -80,6 +80,7 @@
                         <ext:Hidden  runat="server" ID="uxPermissionFormType" />
                         <ext:Hidden runat="server" ID="uxPermissionId" />
                         <ext:TextField runat="server" ID="uxPermissionName" FieldLabel="Permission Name" />
+                        <ext:TextField runat="server" ID="uxPermissionDescription" FieldLabel="Description" />
                         <ext:ComboBox runat="server" ID="uxParentPermissionName" DisplayField="PERMISSION_NAME" ValueField="PERMISSION_ID" QueryMode="Local" TypeAhead="true" FieldLabel="Parent Permission">
                             <Store>
                                 <ext:Store runat="server" ID="uxParentPermissionStore" OnReadData="deReadParents" AutoDataBind="true">

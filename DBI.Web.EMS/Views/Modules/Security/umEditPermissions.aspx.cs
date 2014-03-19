@@ -24,7 +24,7 @@ namespace DBI.Web.EMS.Views.Modules.Security
             {
                 var data = (from p in _context.SYS_PERMISSIONS
                             join s in _context.SYS_PERMISSIONS on (decimal)p.PARENT_PERM_ID equals s.PERMISSION_ID
-                            select new PermissionDetails { PermissionId = p.PERMISSION_ID, PermissionName = p.PERMISSION_NAME, ParentPermissionId = (p.PARENT_PERM_ID == null ?0:p.PARENT_PERM_ID) , ParentPermissionName = s.PERMISSION_NAME }).ToList();
+                            select new PermissionDetails { PermissionId = p.PERMISSION_ID, Description = p.DESCRIPTION, PermissionName = p.PERMISSION_NAME, ParentPermissionId = (p.PARENT_PERM_ID == null ?0:p.PARENT_PERM_ID) , ParentPermissionName = s.PERMISSION_NAME }).ToList();
                 int count;
                 uxCurrentPermissionsStore.DataSource = GenericData.EnumerableFilterHeader<PermissionDetails>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 e.Total = count;
@@ -55,8 +55,9 @@ namespace DBI.Web.EMS.Views.Modules.Security
                 PermissionDetails PermissionToEdit = (from s in _context.SYS_PERMISSIONS
                                                           join p in _context.SYS_PERMISSIONS on (decimal)s.PARENT_PERM_ID equals p.PERMISSION_ID
                                                           where s.PERMISSION_ID == PermissionId
-                                                          select new PermissionDetails{PermissionName = s.PERMISSION_NAME, ParentPermissionName = p.PERMISSION_NAME, ParentPermissionId = p.PERMISSION_ID}).Single();
+                                                          select new PermissionDetails{PermissionName = s.PERMISSION_NAME, Description = s.DESCRIPTION, ParentPermissionName = p.PERMISSION_NAME, ParentPermissionId = p.PERMISSION_ID}).Single();
                 uxPermissionName.Value = PermissionToEdit.PermissionName;
+                uxPermissionDescription.Value = PermissionToEdit.Description;
                 uxParentPermissionName.SelectedItems.Clear();
                 uxParentPermissionName.SetValueAndFireSelect(PermissionToEdit.ParentPermissionId.ToString());
                 uxParentPermissionName.SelectedItems.Add(new Ext.Net.ListItem(PermissionToEdit.ParentPermissionName, PermissionToEdit.ParentPermissionId.ToString()));
@@ -82,6 +83,7 @@ namespace DBI.Web.EMS.Views.Modules.Security
             SYS_PERMISSIONS PermissionToAdd = new SYS_PERMISSIONS();
             PermissionToAdd.PERMISSION_NAME = uxPermissionName.Value.ToString();
             PermissionToAdd.PARENT_PERM_ID = decimal.Parse(uxParentPermissionName.Value.ToString());
+            PermissionToAdd.DESCRIPTION = uxPermissionDescription.Value.ToString();
             GenericData.Insert<SYS_PERMISSIONS>(PermissionToAdd);
             uxUpdatePermissionsForm.Reset();
             uxUpdatePermissionsWindow.Hide();
@@ -98,6 +100,7 @@ namespace DBI.Web.EMS.Views.Modules.Security
             }
             PermissionToEdit.PERMISSION_NAME = uxPermissionName.Value.ToString();
             PermissionToEdit.PARENT_PERM_ID = decimal.Parse(uxParentPermissionName.Value.ToString());
+            PermissionToEdit.DESCRIPTION = uxPermissionDescription.Value.ToString();
             GenericData.Update<SYS_PERMISSIONS>(PermissionToEdit);
 
             uxUpdatePermissionsForm.Reset();

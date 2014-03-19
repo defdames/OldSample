@@ -11,7 +11,7 @@
         <ext:ResourceManager runat="server" />
         <ext:Viewport runat="server" ID="uxEditUsersViewPort">
             <Items>
-                <ext:GridPanel runat="server" ID="uxUsersGrid">
+                <ext:GridPanel runat="server" ID="uxUsersGrid" Layout="HBoxLayout">
                     <Store>
                         <ext:Store runat="server" ID="uxUsersStore"
                             AutoDataBind="true" OnReadData="deReadUsers" PageSize="25" RemoteSort="true" RemotePaging="true">
@@ -37,12 +37,12 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column runat="server" Text="User Id" DataIndex="USER_ID" />
-                            <ext:Column runat="server" Text="User Name" DataIndex="USER_NAME" />
-                            <ext:Column runat="server" Text="Employee Name" DataIndex="EMPLOYEE_NAME" />
-                            <ext:Column runat="server" Text="Employee Number" DataIndex="EMPLOYEE_NUMBER" />
-                            <ext:Column runat="server" Text="Organization" DataIndex="CURRENT_ORGANIZATION" />
-                            <ext:Column runat="server" Text="Job Name" DataIndex="JOB_NAME" />
+                            <ext:Column runat="server" Text="User Id" DataIndex="USER_ID" Flex="1" />
+                            <ext:Column runat="server" Text="User Name" DataIndex="USER_NAME" Flex="1" />
+                            <ext:Column runat="server" Text="Employee Name" DataIndex="EMPLOYEE_NAME" Flex="1"/>
+                            <ext:Column runat="server" Text="Employee Number" DataIndex="EMPLOYEE_NUMBER" Flex="1" />
+                            <ext:Column runat="server" Text="Organization" DataIndex="CURRENT_ORGANIZATION" Flex="1" />
+                            <ext:Column runat="server" Text="Job Name" DataIndex="JOB_NAME" Flex="1" />
                         </Columns>
                     </ColumnModel>
                     <Plugins>
@@ -70,11 +70,11 @@
             </Items>
         </ext:Viewport>
         <!--Hidden Window -->
-        <ext:Window runat="server" ID="uxEditUserWindow" Hidden="true">
+        <ext:Window runat="server" ID="uxEditUserWindow" Hidden="true" Width="650">
             <Items>
                 <ext:FormPanel runat="server" ID="uxEditUserForm">
                     <Items>
-                        <ext:GridPanel runat="server" ID="uxEditUserGrid">
+                        <ext:GridPanel runat="server" ID="uxEditUserGrid" Layout="HBoxLayout">
                             <Store>
                                 <ext:Store runat="server" ID="uxEditUserStore"
                                     AutoDataBind="true">
@@ -92,8 +92,8 @@
                             </Store>
                             <ColumnModel>
                                 <Columns>
-                                    <ext:Column runat="server" Text="Name" DataIndex="PERMISSION_NAME" />
-                                    <ext:Column runat="server" Text="Description" DataIndex="DESCRIPTION" />
+                                    <ext:Column runat="server" Text="Name" DataIndex="PERMISSION_NAME" Flex="1" />
+                                    <ext:Column runat="server" Text="Description" DataIndex="DESCRIPTION" Flex="1" />
                                 </Columns>
                             </ColumnModel>
                             <SelectionModel>

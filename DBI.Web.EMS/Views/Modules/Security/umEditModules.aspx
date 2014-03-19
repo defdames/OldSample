@@ -11,7 +11,7 @@
         <ext:ResourceManager runat="server" />
         <ext:Viewport runat="server" Layout="BorderLayout">
             <Items>
-                <ext:GridPanel runat="server" ID="uxModuleGrid" Region="North">
+                <ext:GridPanel runat="server" ID="uxModuleGrid" Region="North" Layout="HBoxLayout">
                     <Store>
                         <ext:Store runat="server" ID="uxModuleStore" AutoDataBind="true" OnReadData="deReadModules" PageSize="10" RemoteSort="true">
                             <Model>
@@ -20,6 +20,7 @@
                                         <ext:ModelField Name="MODULE_ID" />
                                         <ext:ModelField Name="MODULE_NAME" />
                                         <ext:ModelField Name="PERMISSION_NAME" ServerMapping="SYS_PERMISSIONS.PERMISSION_NAME" />
+                                        <ext:ModelField Name="PERMISSION_DESCRIPTION" ServerMapping="SYS_PERMISSIONS.DESCRIPTION" />
                                     </Fields>                                    
                                 </ext:Model>
                             </Model>
@@ -33,8 +34,9 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column runat="server" Text="Name" DataIndex="MODULE_NAME" />
-                            <ext:Column runat="server" Text="Permission Required" DataIndex="PERMISSION_NAME" />
+                            <ext:Column runat="server" Text="Name" DataIndex="MODULE_NAME" Flex="1" />
+                            <ext:Column runat="server" Text="Permission Required" DataIndex="PERMISSION_NAME" Flex="1" />
+                            <ext:Column runat="server" Text="Permission Description" DataIndex="PERMISSION_DESCRIPTION" Flex="1" />
                         </Columns>
                     </ColumnModel>
                     <SelectionModel>
