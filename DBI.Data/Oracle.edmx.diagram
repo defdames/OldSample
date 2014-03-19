@@ -97,6 +97,7 @@
         <EntityTypeShape EntityType="OracleModel.XXDBI_PAYROLL_AUDIT" Width="1.5" PointX="18.375" PointY="4" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="0.5" PointY="15.125" />
         <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
+        <EntityTypeShape EntityType="OracleModel.ORG_HIER_V" Width="1.5" PointX="13.75" PointY="18" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

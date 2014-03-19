@@ -385,6 +385,18 @@
       FROM "XXEMS"."JOB_TITLE_V" "JOB_TITLE_V"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="MTL_TRANSACTION_INT_V" EntityType="OracleModel.Store.MTL_TRANSACTION_INT_V" store:Type="Views" Schema="XXEMS" />
+          <EntitySet Name="ORG_HIER_V" EntityType="OracleModel.Store.ORG_HIER_V" store:Type="Views" store:Schema="XXEMS" store:Name="ORG_HIER_V">
+            <DefiningQuery>SELECT 
+      "ORG_HIER_V"."PARENT_ORG" AS "PARENT_ORG", 
+      "ORG_HIER_V"."ORG_ID_PARENT" AS "ORG_ID_PARENT", 
+      "ORG_HIER_V"."ORG_ID_CHILD" AS "ORG_ID_CHILD", 
+      "ORG_HIER_V"."ORG_HIER" AS "ORG_HIER", 
+      "ORG_HIER_V"."LEVEL" AS "LEVEL", 
+      "ORG_HIER_V"."ORG_ID" AS "ORG_ID", 
+      "ORG_HIER_V"."TYPE" AS "TYPE", 
+      "ORG_HIER_V"."BU_ORG" AS "BU_ORG"
+      FROM "XXEMS"."ORG_HIER_V" "ORG_HIER_V"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="PA_ROLES_V" EntityType="OracleModel.Store.PA_ROLES_V" store:Type="Views" Schema="XXEMS" />
           <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.Store.PA_TASKS_V" store:Type="Views" store:Schema="XXEMS" store:Name="PA_TASKS_V">
             <DefiningQuery>SELECT 
@@ -2132,6 +2144,24 @@
           <Property Name="COMPLETION_TRANSACTION_ID" Type="number" />
           <Property Name="WIP_SUPPLY_TYPE" Type="number" />
         </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXEMS.ORG_HIER_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="ORG_HIER_V">
+          <Key>
+            <PropertyRef Name="ORG_ID_PARENT" />
+            <PropertyRef Name="ORG_ID_CHILD" />
+            <PropertyRef Name="ORG_ID" />
+          </Key>
+          <Property Name="PARENT_ORG" Type="varchar2" MaxLength="240" />
+          <Property Name="ORG_ID_PARENT" Type="number" Nullable="false" Precision="15" />
+          <Property Name="ORG_ID_CHILD" Type="number" Nullable="false" Precision="15" />
+          <Property Name="ORG_HIER" Type="varchar2" />
+          <Property Name="LEVEL" Type="number" />
+          <Property Name="ORG_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="TYPE" Type="varchar2" MaxLength="30" />
+          <Property Name="BU_ORG" Type="varchar2" MaxLength="10" />
+        </EntityType>
         <EntityType Name="PA_ROLES_V">
           <Key>
             <PropertyRef Name="ROWNUM" />
@@ -3156,6 +3186,7 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_EMPLOYEE" EntitySet="DAILY_ACTIVITY_EMPLOYEE" />
           </AssociationSet>
+          <EntitySet Name="ORG_HIER_V" EntityType="OracleModel.ORG_HIER_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -5544,6 +5575,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ORG_HIER_V">
+          <Key>
+            <PropertyRef Name="ORG_ID_PARENT" />
+            <PropertyRef Name="ORG_ID_CHILD" />
+            <PropertyRef Name="ORG_ID" />
+          </Key>
+          <Property Type="String" Name="PARENT_ORG" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="ORG_ID_PARENT" Nullable="false" />
+          <Property Type="Int64" Name="ORG_ID_CHILD" Nullable="false" />
+          <Property Type="String" Name="ORG_HIER" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="LEVEL" Precision="38" Scale="0" />
+          <Property Type="Int64" Name="ORG_ID" Nullable="false" />
+          <Property Type="String" Name="TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="BU_ORG" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7367,6 +7413,20 @@
                 <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
                 <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
                 <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ORG_HIER_V">
+            <EntityTypeMapping TypeName="OracleModel.ORG_HIER_V">
+              <MappingFragment StoreEntitySet="ORG_HIER_V">
+                <ScalarProperty Name="BU_ORG" ColumnName="BU_ORG" />
+                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="LEVEL" ColumnName="LEVEL" />
+                <ScalarProperty Name="ORG_HIER" ColumnName="ORG_HIER" />
+                <ScalarProperty Name="ORG_ID_CHILD" ColumnName="ORG_ID_CHILD" />
+                <ScalarProperty Name="ORG_ID_PARENT" ColumnName="ORG_ID_PARENT" />
+                <ScalarProperty Name="PARENT_ORG" ColumnName="PARENT_ORG" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

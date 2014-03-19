@@ -86,5 +86,6 @@ namespace DBI.Data
         public DbSet<SYS_PERMISSIONS> SYS_PERMISSIONS { get; set; }
         public DbSet<XXDBI_PAYROLL_AUDIT> XXDBI_PAYROLL_AUDIT { get; set; }
         public DbSet<DAILY_ACTIVITY_EMPLOYEE> DAILY_ACTIVITY_EMPLOYEE { get; set; }
+        public DbSet<ORG_HIER_V> ORG_HIER_V { get; set; }
     }
 }

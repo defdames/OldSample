@@ -257,6 +257,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Oracle.edmx</DependentUpon>
     </Compile>
+    <Compile Include="ORG_HIER_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="PA_LOCATIONS_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
