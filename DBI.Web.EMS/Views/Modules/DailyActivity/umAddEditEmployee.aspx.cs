@@ -706,33 +706,67 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void ValidateDateTime(object sender, RemoteValidationEventArgs e)
         {
-            DateTime StartDate = DateTime.Parse(uxAddEmployeeTimeInDate.Value.ToString());
-            DateTime StartTime = DateTime.Parse(uxAddEmployeeTimeInTime.Value.ToString());
-            DateTime EndDate = DateTime.Parse(uxAddEmployeeTimeOutDate.Value.ToString());
-            DateTime EndTime = DateTime.Parse(uxAddEmployeeTimeOutTime.Value.ToString());
-
-            DateTime CombinedStart = StartDate.Date + StartTime.TimeOfDay;
-            DateTime CombinedEnd = EndDate.Date + EndTime.TimeOfDay;
-            if (CombinedStart > CombinedEnd)
+            if (e.ExtraParams["Type"] == "Add")
             {
-                e.Success = false;
-                e.ErrorMessage = "End Date and Time must be later than Start Date and Time";
-                uxAddEmployeeTimeInDate.MarkInvalid();
-                uxAddEmployeeTimeOutDate.MarkInvalid();
-                uxAddEmployeeTimeInTime.MarkInvalid();
-                uxAddEmployeeTimeOutTime.MarkInvalid();
+                DateTime StartDate = DateTime.Parse(uxAddEmployeeTimeInDate.Value.ToString());
+                DateTime StartTime = DateTime.Parse(uxAddEmployeeTimeInTime.Value.ToString());
+                DateTime EndDate = DateTime.Parse(uxAddEmployeeTimeOutDate.Value.ToString());
+                DateTime EndTime = DateTime.Parse(uxAddEmployeeTimeOutTime.Value.ToString());
+
+                DateTime CombinedStart = StartDate.Date + StartTime.TimeOfDay;
+                DateTime CombinedEnd = EndDate.Date + EndTime.TimeOfDay;
+                if (CombinedStart > CombinedEnd)
+                {
+                    e.Success = false;
+                    e.ErrorMessage = "End Date and Time must be later than Start Date and Time";
+                    uxAddEmployeeTimeInDate.MarkInvalid();
+                    uxAddEmployeeTimeOutDate.MarkInvalid();
+                    uxAddEmployeeTimeInTime.MarkInvalid();
+                    uxAddEmployeeTimeOutTime.MarkInvalid();
+                }
+                else
+                {
+                    e.Success = true;
+                    uxAddEmployeeTimeInDate.ClearInvalid();
+                    uxAddEmployeeTimeInDate.MarkAsValid();
+                    uxAddEmployeeTimeOutDate.ClearInvalid();
+                    uxAddEmployeeTimeOutDate.MarkAsValid();
+                    uxAddEmployeeTimeInTime.ClearInvalid();
+                    uxAddEmployeeTimeInTime.MarkAsValid();
+                    uxAddEmployeeTimeOutTime.ClearInvalid();
+                    uxAddEmployeeTimeOutTime.MarkAsValid();
+                }
             }
             else
             {
-                e.Success = true;
-                uxAddEmployeeTimeInDate.ClearInvalid();
-                uxAddEmployeeTimeInDate.MarkAsValid();
-                uxAddEmployeeTimeOutDate.ClearInvalid();
-                uxAddEmployeeTimeOutDate.MarkAsValid();
-                uxAddEmployeeTimeInTime.ClearInvalid();
-                uxAddEmployeeTimeInTime.MarkAsValid();
-                uxAddEmployeeTimeOutTime.ClearInvalid();
-                uxAddEmployeeTimeOutTime.MarkAsValid();
+                DateTime StartDate = DateTime.Parse(uxEditEmployeeTimeInDate.Value.ToString());
+                DateTime StartTime = DateTime.Parse(uxEditEmployeeTimeInTime.Value.ToString());
+                DateTime EndDate = DateTime.Parse(uxEditEmployeeTimeOutDate.Value.ToString());
+                DateTime EndTime = DateTime.Parse(uxEditEmployeeTimeOutTime.Value.ToString());
+
+                DateTime CombinedStart = StartDate.Date + StartTime.TimeOfDay;
+                DateTime CombinedEnd = EndDate.Date + EndTime.TimeOfDay;
+                if (CombinedStart > CombinedEnd)
+                {
+                    e.Success = false;
+                    e.ErrorMessage = "End Date and Time must be later than Start Date and Time";
+                    uxEditEmployeeTimeInDate.MarkInvalid();
+                    uxEditEmployeeTimeOutDate.MarkInvalid();
+                    uxEditEmployeeTimeInTime.MarkInvalid();
+                    uxEditEmployeeTimeOutTime.MarkInvalid();
+                }
+                else
+                {
+                    e.Success = true;
+                    uxEditEmployeeTimeInDate.ClearInvalid();
+                    uxEditEmployeeTimeInDate.MarkAsValid();
+                    uxEditEmployeeTimeOutDate.ClearInvalid();
+                    uxEditEmployeeTimeOutDate.MarkAsValid();
+                    uxEditEmployeeTimeInTime.ClearInvalid();
+                    uxEditEmployeeTimeInTime.MarkAsValid();
+                    uxEditEmployeeTimeOutTime.ClearInvalid();
+                    uxEditEmployeeTimeOutTime.MarkAsValid();
+                }
             }
         }
     }
