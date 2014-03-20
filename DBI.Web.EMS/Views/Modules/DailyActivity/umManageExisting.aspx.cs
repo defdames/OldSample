@@ -250,13 +250,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     uxTabApproveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
                     uxPostActivityButton.Disabled = true;
                     uxTabPostButton.Disabled = true;
+                    uxTabSetInactiveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.ViewAll");
+                    uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.ViewAll");
                     break;
                 case "APPROVED":
                     uxPostActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
                     uxTabPostButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
                     uxApproveActivityButton.Disabled = true;
                     uxTabApproveButton.Disabled = true;
+                    uxTabSetInactiveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.ViewAll");
+                    uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.ViewAll");
                     break;
+                case "POSTED":
+                    uxTabSetInactiveButton.Disabled = true;
+                    uxInactiveActivityButton.Disabled = true;
+                    break;
+
             }
 
             List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
@@ -309,7 +318,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxPostActivityButton.Disabled = true;
                 uxTabPostButton.Disabled = true;
             }
-            uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.ViewAll");
+            
             
             uxExportToPDF.Disabled = false;
             uxTabExportButton.Disabled = false;
@@ -328,6 +337,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GridModel.UpdateSelection();
             
         }
+
         protected void deLoadPreviousActivity(object sender, DirectEventArgs e)
         {
             RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
@@ -358,7 +368,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Update record in DB
             GenericData.Update<DAILY_ACTIVITY_HEADER>(data);
 
-            uxManageGridStore.Reload();
+            RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
+            var Index = GridModel.SelectedIndex;
+
+
+            uxManageGridStore.Reload(new
+            {
+                callback = JRawValue.From("function() {App.uxManageGrid.getSelectionModel().select(" + Index + ")}")
+            });
 
         }
 
