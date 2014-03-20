@@ -124,6 +124,7 @@
           <EntitySet Name="SYS_MODULES" EntityType="OracleModel.Store.SYS_MODULES" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_PERMISSIONS" EntityType="OracleModel.Store.SYS_PERMISSIONS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USER_ACTIVITY" EntityType="OracleModel.Store.SYS_USER_ACTIVITY" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="SYS_USER_ORGS" EntityType="OracleModel.Store.SYS_USER_ORGS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USER_PERMS" EntityType="OracleModel.Store.SYS_USER_PERMS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USERS" EntityType="OracleModel.Store.SYS_USERS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="PA_LOCATIONS_V" EntityType="OracleModel.Store.PA_LOCATIONS_V" store:Type="Views" store:Schema="APPS" store:Name="PA_LOCATIONS_V">
@@ -726,6 +727,10 @@
           <AssociationSet Name="FK_OPTION_QUES_ID" Association="OracleModel.Store.FK_OPTION_QUES_ID">
             <End Role="CUSTOMER_SURVEY_QUESTIONS" EntitySet="CUSTOMER_SURVEY_QUESTIONS" />
             <End Role="CUSTOMER_SURVEY_OPTIONS" EntitySet="CUSTOMER_SURVEY_OPTIONS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ORGS_USER_ID" Association="OracleModel.Store.FK_ORGS_USER_ID">
+            <End Role="SYS_USERS" EntitySet="SYS_USERS" />
+            <End Role="SYS_USER_ORGS" EntitySet="SYS_USER_ORGS" />
           </AssociationSet>
           <AssociationSet Name="FK_PRODUCTION_HEADER_ID" Association="OracleModel.Store.FK_PRODUCTION_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
@@ -1506,6 +1511,14 @@
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="500" />
           <Property Name="LAST_UPDATED" Type="date" />
           <Property Name="LAST_UPDATED_BY" Type="varchar2" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="SYS_USER_ORGS">
+          <Key>
+            <PropertyRef Name="SYS_ORG_ID" />
+          </Key>
+          <Property Name="SYS_ORG_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="USER_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="ORG_ID" Type="number" Nullable="false" Precision="15" />
         </EntityType>
         <EntityType Name="SYS_USER_PERMS">
           <Key>
@@ -2912,6 +2925,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ORGS_USER_ID">
+          <End Role="SYS_USERS" Type="OracleModel.Store.SYS_USERS" Multiplicity="1" />
+          <End Role="SYS_USER_ORGS" Type="OracleModel.Store.SYS_USER_ORGS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SYS_USERS">
+              <PropertyRef Name="USER_ID" />
+            </Principal>
+            <Dependent Role="SYS_USER_ORGS">
+              <PropertyRef Name="USER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PRODUCTION_HEADER_ID">
           <End Role="DAILY_ACTIVITY_HEADER" Type="OracleModel.Store.DAILY_ACTIVITY_HEADER" Multiplicity="1" />
           <End Role="DAILY_ACTIVITY_PRODUCTION" Type="OracleModel.Store.DAILY_ACTIVITY_PRODUCTION" Multiplicity="*" />
@@ -3187,6 +3212,11 @@
             <End Role="DAILY_ACTIVITY_EMPLOYEE" EntitySet="DAILY_ACTIVITY_EMPLOYEE" />
           </AssociationSet>
           <EntitySet Name="ORG_HIER_V" EntityType="OracleModel.ORG_HIER_V" />
+          <EntitySet Name="SYS_USER_ORGS" EntityType="OracleModel.SYS_USER_ORGS" />
+          <AssociationSet Name="FK_ORGS_USER_ID" Association="OracleModel.FK_ORGS_USER_ID">
+            <End Role="SYS_USERS" EntitySet="SYS_USERS" />
+            <End Role="SYS_USER_ORGS" EntitySet="SYS_USER_ORGS" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -3197,6 +3227,7 @@
           <NavigationProperty Name="SYS_USER_INFORMATION" Relationship="OracleModel.SYS_USERSSYS_USER_INFORMATION" FromRole="SYS_USERS" ToRole="SYS_USER_INFORMATION" />
           <NavigationProperty Name="SYS_USER_ACTIVITY" Relationship="OracleModel.SYS_USERSSYS_USER_ACTIVITY" FromRole="SYS_USERS" ToRole="SYS_USER_ACTIVITY" />
           <NavigationProperty Name="SYS_LOG" Relationship="OracleModel.SYS_USERSSYS_LOG" FromRole="SYS_USERS" ToRole="SYS_LOG" />
+          <NavigationProperty Name="SYS_USER_ORGS" Relationship="OracleModel.FK_ORGS_USER_ID" FromRole="SYS_USERS" ToRole="SYS_USER_ORGS" />
         </EntityType>
         <ComplexType Name="SYS_USER_ACTIVITY_CT" >
           <Property Type="Int64" Name="USER_ACTIVITY_ID" Nullable="false" />
@@ -5590,6 +5621,27 @@
           <Property Type="String" Name="TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="BU_ORG" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="SYS_USER_ORGS">
+          <Key>
+            <PropertyRef Name="SYS_ORG_ID" />
+          </Key>
+          <Property Type="Decimal" Name="SYS_ORG_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="USER_ID" Nullable="false" />
+          <Property Type="Int64" Name="ORG_ID" Nullable="false" />
+          <NavigationProperty Name="SYS_USERS" Relationship="OracleModel.FK_ORGS_USER_ID" FromRole="SYS_USER_ORGS" ToRole="SYS_USERS" />
+        </EntityType>
+        <Association Name="FK_ORGS_USER_ID">
+          <End Type="OracleModel.SYS_USERS" Role="SYS_USERS" Multiplicity="1" />
+          <End Type="OracleModel.SYS_USER_ORGS" Role="SYS_USER_ORGS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SYS_USERS">
+              <PropertyRef Name="USER_ID" />
+            </Principal>
+            <Dependent Role="SYS_USER_ORGS">
+              <PropertyRef Name="USER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7427,6 +7479,15 @@
                 <ScalarProperty Name="ORG_ID_CHILD" ColumnName="ORG_ID_CHILD" />
                 <ScalarProperty Name="ORG_ID_PARENT" ColumnName="ORG_ID_PARENT" />
                 <ScalarProperty Name="PARENT_ORG" ColumnName="PARENT_ORG" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_USER_ORGS">
+            <EntityTypeMapping TypeName="OracleModel.SYS_USER_ORGS">
+              <MappingFragment StoreEntitySet="SYS_USER_ORGS">
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="SYS_ORG_ID" ColumnName="SYS_ORG_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
