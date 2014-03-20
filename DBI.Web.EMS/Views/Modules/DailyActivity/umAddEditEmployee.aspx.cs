@@ -697,5 +697,37 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEditEmployeeCounty.SetValue(e.ExtraParams["County"]);
             }
         }
+
+        protected void ValidateDateTime(object sender, RemoteValidationEventArgs e)
+        {
+            DateTime StartDate = DateTime.Parse(uxAddEmployeeTimeInDate.Value.ToString());
+            DateTime StartTime = DateTime.Parse(uxAddEmployeeTimeInTime.Value.ToString());
+            DateTime EndDate = DateTime.Parse(uxAddEmployeeTimeOutDate.Value.ToString());
+            DateTime EndTime = DateTime.Parse(uxAddEmployeeTimeOutTime.Value.ToString());
+
+            DateTime CombinedStart = StartDate.Date + StartTime.TimeOfDay;
+            DateTime CombinedEnd = EndDate.Date + EndTime.TimeOfDay;
+            if (CombinedStart > CombinedEnd)
+            {
+                e.Success = false;
+                e.ErrorMessage = "End Date and Time must be later than Start Date and Time";
+                uxAddEmployeeTimeInDate.MarkInvalid();
+                uxAddEmployeeTimeOutDate.MarkInvalid();
+                uxAddEmployeeTimeInTime.MarkInvalid();
+                uxAddEmployeeTimeOutTime.MarkInvalid();
+            }
+            else
+            {
+                e.Success = true;
+                uxAddEmployeeTimeInDate.ClearInvalid();
+                uxAddEmployeeTimeInDate.MarkAsValid();
+                uxAddEmployeeTimeOutDate.ClearInvalid();
+                uxAddEmployeeTimeOutDate.MarkAsValid();
+                uxAddEmployeeTimeInTime.ClearInvalid();
+                uxAddEmployeeTimeInTime.MarkAsValid();
+                uxAddEmployeeTimeOutTime.ClearInvalid();
+                uxAddEmployeeTimeOutTime.MarkAsValid();
+            }
+        }
     }
 }
