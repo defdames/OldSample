@@ -31,6 +31,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
+        /// uxDeactivate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Hidden uxDeactivate;
+        
+        /// <summary>
         /// uxViewPort control.
         /// </summary>
         /// <remarks>

@@ -139,7 +139,7 @@ namespace DBI.Web.EMS.Views
             {
                 if (Permissions.Exists(x => x.PARENT_PERM_ID == 1))
                 {
-                    List<SYS_PERMISSIONS> SecondLevelPermissions = Permissions.FindAll(x => x.PARENT_PERM_ID == 1);
+                    List<SYS_PERMISSIONS> SecondLevelPermissions = PermissionsHierarchy.FindAll(x => x.PARENT_PERM_ID == 1);
                     foreach (SYS_PERMISSIONS SecondLevelPermission in SecondLevelPermissions)
                     {
                         if (Permissions.Exists(x => x.PERMISSION_ID == SecondLevelPermission.PERMISSION_ID))
@@ -168,7 +168,7 @@ namespace DBI.Web.EMS.Views
                                 ModuleId = Module.MODULE_ID;
                                 AppPanel = CreateMenu(Module);
                                 
-                                List<SYS_PERMISSIONS> ThirdLevelPermissions = Permissions.FindAll(x => x.PARENT_PERM_ID == SecondLevelPermission.PERMISSION_ID);
+                                List<SYS_PERMISSIONS> ThirdLevelPermissions = PermissionsHierarchy.FindAll(x => x.PARENT_PERM_ID == SecondLevelPermission.PERMISSION_ID);
                                 foreach (SYS_PERMISSIONS ThirdLevelPermission in ThirdLevelPermissions)
                                 {
                                     if (Permissions.Exists(x => x.PERMISSION_ID == ThirdLevelPermission.PERMISSION_ID))

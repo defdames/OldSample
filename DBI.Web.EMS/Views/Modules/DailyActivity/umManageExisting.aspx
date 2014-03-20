@@ -60,8 +60,10 @@
 <body>
 	<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
 	<form id="form1" runat="server">
+		<ext:Hidden ID="uxDeactivate" runat="server" />
 		<ext:Viewport runat="server" ID="uxViewPort" Layout="AccordionLayout" IDMode="Explicit" Namespace="App" RenderXType="True">
 			<Items>
+				
 				<ext:GridPanel runat="server" ID="uxManageGrid" Layout="FitLayout" Title="Headers" SelectionMemoryEvents="false" SelectionMemory="true">
 					<SelectionModel>
 						<ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
@@ -191,7 +193,8 @@
 								<ext:ToolbarSpacer ID="ToolbarSpacer5" runat="server" />
 								<ext:Button ID="uxPostMultipleButton" runat="server"
 									Text="Post Multiple Headers"
-									Icon="ApplicationGet">
+									Icon="ApplicationGet"
+									Disabled="true">
 									<DirectEvents>
 										<Click OnEvent="deOpenPostMultipleWindow" />
 									</DirectEvents>
