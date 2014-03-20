@@ -13,7 +13,7 @@
             <Items>
                 <ext:FormPanel runat="server" ID="uxChoosePerDiemFormPanel" Layout="FormLayout">
                     <Items>
-                        <ext:ComboBox runat="server" ID="uxChoosePerDiemHeaderId" DisplayField="LONG_NAME" ValueField="HEADER_ID" FieldLabel="Choose Project for Per Diem">
+                        <ext:ComboBox runat="server" ID="uxChoosePerDiemHeaderId" DisplayField="LONG_NAME" ValueField="HEADER_ID" FieldLabel="Choose Project for Per Diem" ForceSelection="true">
                             <Store>
                                 <ext:Store runat="server" ID="uxChoosePerDiemHeaderIdStore">
                                     <Model>

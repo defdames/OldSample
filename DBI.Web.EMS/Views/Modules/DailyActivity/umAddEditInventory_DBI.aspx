@@ -161,7 +161,8 @@
 							ValueField="ORGANIZATION_ID"
 							QueryMode="Local"
 							TypeAhead="true"
-							AllowBlank="false">
+							AllowBlank="false"
+							ForceSelection="true">
 							<Store>
 								<ext:Store runat="server"
 									ID="uxAddInventoryRegionStore">
@@ -193,7 +194,8 @@
 							DisplayField="SECONDARY_INV_NAME"
 							QueryMode="Local"
 							TypeAhead="true"
-							AllowBlank="false">
+							AllowBlank="false"
+							ForceSelection="true">
 							<Store>
 								<ext:Store runat="server"
 									ID="uxAddInventorySubStore">
@@ -273,7 +275,8 @@
 							DisplayField="UNIT_OF_MEASURE"
 							QueryMode="Local"
 							TypeAhead="true"
-							AllowBlank="false">
+							AllowBlank="false"
+							ForceSelection="true">
 							<Store>
 								<ext:Store runat="server"
 									ID="uxAddInventoryMeasureStore">
@@ -343,7 +346,8 @@
 							ValueField="ORGANIZATION_ID"
 							QueryMode="Local"
 							TypeAhead="true"
-							AllowBlank="false">
+							AllowBlank="false"
+							ForceSelection="true">
 							<Store>
 								<ext:Store runat="server"
 									ID="uxEditInventoryRegionStore">
@@ -375,7 +379,8 @@
 							DisplayField="SECONDARY_INV_NAME"
 							QueryMode="Local"
 							TypeAhead="true"
-							AllowBlank="false">
+							AllowBlank="false"
+							ForceSelection="true">
 							<Store>
 								<ext:Store runat="server"
 									ID="uxEditInventorySubStore">
@@ -453,7 +458,8 @@
 							ValueField="UOM_CODE"
 							QueryMode="Local"
 							TypeAhead="true"
-							AllowBlank="false">
+							AllowBlank="false"
+							ForceSelection="true">
 							<Store>
 								<ext:Store runat="server"
 									ID="uxEditInventoryMeasureStore">

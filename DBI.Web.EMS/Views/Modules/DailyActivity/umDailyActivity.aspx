@@ -188,7 +188,8 @@
 					ValueField="name"
 					QueryMode="Local"
 					TypeAhead="true"
-					AllowBlank="false">
+					AllowBlank="false"
+					ForceSelection="true">
 					<Store>
 						<ext:Store ID="uxStateList" runat="server" AutoDataBind="true">
 							<Model>
@@ -206,7 +207,7 @@
 					</Store>
 				</ext:ComboBox>
 				<ext:TextField runat="server" ID="uxFormType" FieldLabel="Type" AllowBlank="true" />
-				<ext:ComboBox runat="server" ID="uxFormDensity" FieldLabel="Density" AllowBlank="true">
+				<ext:ComboBox runat="server" ID="uxFormDensity" FieldLabel="Density" AllowBlank="true" ForceSelection="true">
 					<Items>
 						<ext:ListItem Text="Low" Value="LOW" />
 						<ext:ListItem Text="Medium" Value="MEDIUM" />

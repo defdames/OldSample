@@ -46,8 +46,18 @@ namespace DBI.Data
 
                     foreach (SYS_PERMISSIONS Permission in Permissions)
                     {
-                        claims.Add(new Claim(ClaimTypes.Role, Permission.PERMISSION_NAME));
-
+                        if (Permission.PARENT_PERM_ID == 1)
+                        {
+                            List<SYS_PERMISSIONS> ChildPermissions = (_context.SYS_PERMISSIONS.Where(x => x.PARENT_PERM_ID == Permission.PERMISSION_ID)).ToList();
+                            foreach (SYS_PERMISSIONS ChildPermission in ChildPermissions)
+                            {
+                                claims.Add(new Claim(ClaimTypes.Role, ChildPermission.PERMISSION_NAME));
+                            }
+                        }
+                        else
+                        {
+                            claims.Add(new Claim(ClaimTypes.Role, Permission.PERMISSION_NAME));
+                        }
                     }
 
                     // Add a claim for the username

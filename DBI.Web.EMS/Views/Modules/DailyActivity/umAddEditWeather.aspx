@@ -40,7 +40,8 @@
 							ValueField="abbr"
 							QueryMode="Local"
 							TypeAhead="true"
-							AllowBlank="false">
+							AllowBlank="false"
+							ForceSelection="true">
 							<Store>
 								<ext:Store runat="server"
 									ID="uxAddWeatherWindStore">
@@ -125,7 +126,8 @@
 							ValueField="abbr"
 							QueryMode="Local"
 							TypeAhead="true"
-							AllowBlank="false">
+							AllowBlank="false"
+							ForceSelection="true">
 							<Store>
 								<ext:Store runat="server"
 									ID="uxEditWeatherWindStore">
