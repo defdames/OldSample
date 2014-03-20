@@ -10,13 +10,14 @@ namespace DBI.Data
     {
         public static List<SYS_USER_PERMS> GetUserPermissions(long UserId)
         {
-            using (Entities _context = new Entities())
-            {
+            //using (Entities _context = new Entities())
+            //{
+                Entities _context = new Entities();
                 List<SYS_USER_PERMS> Permissions = (from p in _context.SYS_USER_PERMS
                                                     where p.USER_ID == UserId
                                                     select p).ToList();
                 return Permissions;
-            }
+            //}
         }
     }
 }
