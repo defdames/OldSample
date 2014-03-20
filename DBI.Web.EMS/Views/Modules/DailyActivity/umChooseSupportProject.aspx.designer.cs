@@ -40,40 +40,121 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Viewport Viewport1;
         
         /// <summary>
-        /// uxChoosePerDiemFormPanel control.
+        /// uxChooseSupportProjectFormPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FormPanel uxChoosePerDiemFormPanel;
+        protected global::Ext.Net.FormPanel uxChooseSupportProjectFormPanel;
         
         /// <summary>
-        /// uxChoosePerDiemHeaderId control.
+        /// uxFormProject control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ComboBox uxChoosePerDiemHeaderId;
+        protected global::Ext.Net.DropDownField uxFormProject;
         
         /// <summary>
-        /// uxChoosePerDiemHeaderIdStore control.
+        /// uxFormProjectGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxChoosePerDiemHeaderIdStore;
+        protected global::Ext.Net.GridPanel uxFormProjectGrid;
         
         /// <summary>
-        /// Model1 control.
+        /// uxFormProjectStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Model Model1;
+        protected global::Ext.Net.Store uxFormProjectStore;
+        
+        /// <summary>
+        /// uxFormProjectModel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model uxFormProjectModel;
+        
+        /// <summary>
+        /// uxFormSegment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column uxFormSegment;
+        
+        /// <summary>
+        /// uxFormLong control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column uxFormLong;
+        
+        /// <summary>
+        /// uxFormOrg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column uxFormOrg;
+        
+        /// <summary>
+        /// uxFormProjectSelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxFormProjectSelection;
+        
+        /// <summary>
+        /// uxFormProjectFilter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FilterHeader uxFormProjectFilter;
+        
+        /// <summary>
+        /// uxFormProjectTop control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Toolbar uxFormProjectTop;
+        
+        /// <summary>
+        /// uxFormProjectToggleOrg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxFormProjectToggleOrg;
+        
+        /// <summary>
+        /// uxFormProjectPaging control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.PagingToolbar uxFormProjectPaging;
         
         /// <summary>
         /// uxChoosePerDiemSubmitButton control.
