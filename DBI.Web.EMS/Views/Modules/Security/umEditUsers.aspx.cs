@@ -75,7 +75,7 @@ namespace DBI.Web.EMS.Views.Modules.Security
                     }
                     GenericData.Delete<SYS_USER_PERMS>(ToDelete);
                 }
-                else if (!GroupPermissions.Exists(x => x.PERMISSION_ID == SelectedPermission.PERMISSION_ID))
+                else if (!GroupPermissions.Exists(x => x.PERMISSION_ID == SelectedPermission.PERMISSION_ID) && !UserPermissions.Exists(x => x.PERMISSION_ID == SelectedPermission.PERMISSION_ID))
                 {
                     //add userpermission entry as it's not in the group
                     SYS_USER_PERMS PermissionToAdd = new SYS_USER_PERMS
