@@ -22,7 +22,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 var TotalHoursList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                                      where d.DAILY_ACTIVITY_HEADER.STATUS != 4 || d.DAILY_ACTIVITY_HEADER.STATUS != 5
+                                      where d.DAILY_ACTIVITY_HEADER.STATUS != 4 && d.DAILY_ACTIVITY_HEADER.STATUS != 5
                                      group d by new {d.DAILY_ACTIVITY_HEADER.DA_DATE, d.PERSON_ID } into g
                                      select new { g.Key.PERSON_ID, g.Key.DA_DATE, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value))}).ToList();
 
@@ -34,7 +34,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     {
                         var ProjectsWithEmployeeHoursOver24 = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                                                 join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
-                                                                where d.PERSON_ID == TotalHour.PERSON_ID && d.DAILY_ACTIVITY_HEADER.DA_DATE == TotalHour.DA_DATE
+                                                                where d.PERSON_ID == TotalHour.PERSON_ID && d.DAILY_ACTIVITY_HEADER.DA_DATE == TotalHour.DA_DATE && d.DAILY_ACTIVITY_HEADER.STATUS !=5
                                                                 select new EmployeeData{HEADER_ID = d.HEADER_ID, EMPLOYEE_NAME = e.EMPLOYEE_NAME, DA_DATE = d.DAILY_ACTIVITY_HEADER.DA_DATE}).ToList();
                         foreach (var Project in ProjectsWithEmployeeHoursOver24)
                         {

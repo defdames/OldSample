@@ -137,8 +137,6 @@ namespace DBI.Web.EMS.Views
             }
             else
             {
-                if (Permissions.Exists(x => x.PARENT_PERM_ID == 1))
-                {
                     List<SYS_PERMISSIONS> SecondLevelPermissions = PermissionsHierarchy.FindAll(x => x.PARENT_PERM_ID == 1);
                     foreach (SYS_PERMISSIONS SecondLevelPermission in SecondLevelPermissions)
                     {
@@ -187,7 +185,7 @@ namespace DBI.Web.EMS.Views
                                 }
                             }
                         }
-                    }
+                    
                 }
             }
             //List<SYS_ACTIVITY> userActivities;
