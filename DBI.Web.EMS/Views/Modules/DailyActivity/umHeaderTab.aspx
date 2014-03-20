@@ -189,7 +189,8 @@
 					ValueField="name"
 					QueryMode="Local"
 					TypeAhead="true"
-					AllowBlank="false">
+					AllowBlank="false"
+					ForceSelection="true">
 					<Store>
 						<ext:Store ID="uxStateList" runat="server" AutoDataBind="true">
 							<Model>

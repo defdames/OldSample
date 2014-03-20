@@ -91,7 +91,8 @@
 							ValueField="name"
 							QueryMode="Local"
 							TypeAhead="true"
-							AllowBlank="false">
+							AllowBlank="false"
+							ForceSelection="true">
 							<Store>
 								<ext:Store ID="uxAddStateList" runat="server" AutoDataBind="true">
 									<Model>
@@ -189,7 +190,8 @@
 							ValueField="name"
 							QueryMode="Local"
 							TypeAhead="true"
-							AllowBlank="false">
+							AllowBlank="false"
+							ForceSelection="true">
 							<Store>
 								<ext:Store ID="uxEditStateList" runat="server" AutoDataBind="true">
 									<Model>

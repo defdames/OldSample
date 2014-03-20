@@ -44,6 +44,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         TypeAhead = true,
                         QueryMode = DataLoadMode.Local,
                         ValueField = "PROJECT_ID",
+                        ForceSelection=true,
                         DisplayField = "LONG_NAME"
                     };
 
