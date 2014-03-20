@@ -22,7 +22,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 if (Request.QueryString["type"] == "Add")
                 {
                     uxAddEmployeeForm.Show();
-                    uxAddEmployeeRole.Show();
+                    if (roleNeeded())
+                    {
+                        uxAddEmployeeRole.Show();
+                    }
                     uxAddEmployeeDriveTimeHours.Value = "0";
                     uxAddEmployeeDriveTimeMinutes.Value = "0";
                     uxAddEmployeeTravelTimeHours.Value = "0";
@@ -42,7 +45,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 else
                 {
                     uxEditEmployeeForm.Show();
-                    uxEditEmployeeRole.Show();
+                    if (roleNeeded())
+                    {
+                        uxEditEmployeeRole.Show();
+                    }
                     LoadEditEmployeeForm();
                     if (GetOrgId(HeaderId) == 123)
                     {
