@@ -10,7 +10,7 @@
 <body>
     <form id="form1" runat="server">
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
-        <ext:Panel runat="server" ID="uxSubmitActivityPanel" Layout="FitLayout">
+        <ext:ViewPort runat="server" ID="uxSubmitActivityPanel" Layout="FitLayout">
             <Items>
                 <ext:FormPanel runat="server"
                     ID="uxSubmitActivityForm"
@@ -68,47 +68,25 @@
                     </Items>
                     <Buttons>
                         <ext:Button runat="server"
-                            ID="uxSaveAndSubmitButton"
-                            Text="Save and Submit"
-                            Icon="DatabaseAdd">
-                            <DirectEvents>
-                                <Click OnEvent="deStoreFooterAndSubmit" />
-                            </DirectEvents>
-                        </ext:Button>
-                        <ext:Button runat="server"
                             ID="uxSaveOnlyButton"
-                            Text="Save Only"
-                            Icon="DatabaseSave">
+                            Text="Submit"
+                            Icon="Add">
                             <DirectEvents>
                                 <Click OnEvent="deStoreFooter" />
                             </DirectEvents>
-                            <Listeners>
-                                <Click Handler="parentAutoLoadControl.hide();" />
-                            </Listeners>
                         </ext:Button>
                         <ext:Button runat="server"
                             ID="uxCancelButton"
                             Text="Cancel"
-                            Icon="DatabaseStop">
+                            Icon="Delete">
                             <Listeners>
-                                <Click Handler="#{uxSubmitActivityForm}.reset();
-                                    parentAutoLoadControl.hide();" />
+                                <Click Handler="#{uxSubmitActivityForm}.reset();" />
                             </Listeners>
                         </ext:Button>
                     </Buttons>
                 </ext:FormPanel>
             </Items>
-            <Listeners>
-                <AfterRender
-                    Handler="var win = parentAutoLoadControl.target || parentAutoLoadControl, //you can use just 'parentAutoLoadControl' after update to Ext.NET v2 beta.
-                                    size = this.getSize();
- 
-                                size.height += 34;
-                                size.width += 12;
-                                win.setSize(size);" 
-                    Delay="100" />
-            </Listeners>
-        </ext:Panel>
+        </ext:ViewPort>
     </form>
 </body>
 </html>
