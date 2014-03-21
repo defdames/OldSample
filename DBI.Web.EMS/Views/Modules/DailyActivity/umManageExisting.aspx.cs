@@ -26,7 +26,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!validateComponentSecurity("SYS.DailyActivity.View"))
+            if (!validateComponentSecurity("SYS.DailyActivity.View") && !validateComponentSecurity("SYS.DailyActivity.EmployeeView"))
             {
                 X.Redirect("~/Views/uxDefault.aspx");
 
@@ -63,7 +63,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 List<object> rawData;
 
 
-                if (validateComponentSecurity("SYS.DailyActivity.ViewAll"))
+                if (validateComponentSecurity("SYS.DailyActivity.View"))
                 {
                     //Get List of all new headers
                     rawData = (from d in _context.DAILY_ACTIVITY_HEADER
@@ -83,7 +83,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                join s in _context.DAILY_ACTIVITY_STATUS on h.STATUS equals s.STATUS
                                where d.PERSON_ID == PersonId
-                               select new { d.HEADER_ID, h.PROJECT_ID, h.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE }).ToList<object>();
+                               select new { d.HEADER_ID, h.PROJECT_ID, h.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, h.DA_HEADER_ID, h.STATUS }).ToList<object>();
 
                     uxCreateActivityButton.Disabled = true;
 
@@ -202,7 +202,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxCombinedTab.Disabled = false;
             uxCombinedTab.LoadContent(homeUrl);
 
-            if (validateComponentSecurity("SYS.DailyActivity.ViewAll"))
+            if (validateComponentSecurity("SYS.DailyActivity.View"))
             {
                 string prodUrl = string.Empty;
                 string headerUrl = string.Format("umHeaderTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
@@ -250,13 +250,43 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     uxTabApproveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
                     uxPostActivityButton.Disabled = true;
                     uxTabPostButton.Disabled = true;
+                    uxPostMultipleButton.Disabled = true;
+                    uxTabSetInactiveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
+                    uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
+                    uxDeactivate.Value = "Deactivate";
+                    uxTabSetInactiveButton.Text = "Set Inactive";
+                    uxInactiveActivityButton.Text = "Set Inactive";
                     break;
                 case "APPROVED":
+                    uxTabSetInactiveButton.Text = "Set Inactive";
+                    uxInactiveActivityButton.Text = "Set Inactive";
                     uxPostActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
                     uxTabPostButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
+                    uxPostMultipleButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
                     uxApproveActivityButton.Disabled = true;
                     uxTabApproveButton.Disabled = true;
+                    uxTabSetInactiveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
+                    uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
+                    uxDeactivate.Value = "Deactivate";
+                    
                     break;
+                case "POSTED":
+                    uxTabSetInactiveButton.Disabled = true;
+                    uxInactiveActivityButton.Disabled = true;
+                    break;
+                case "INACTIVE":
+                    uxApproveActivityButton.Disabled = true;
+                    uxTabApproveButton.Disabled = true;
+                    uxPostActivityButton.Disabled = true;
+                    uxTabPostButton.Disabled = true;
+                    uxPostMultipleButton.Disabled = true;
+                    uxTabSetInactiveButton.Text = "Activate";
+                    uxInactiveActivityButton.Text = "Activate";
+                    uxTabSetInactiveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
+                    uxDeactivate.Value = "Activate";
+                    uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
+                    break;
+
             }
 
             List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
@@ -266,8 +296,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 List<EmployeeData> RequiredLunches = ValidationChecks.LunchCheck(HeaderId);
                 if (RequiredLunches.Count > 0)
                 {
-                    uxPlaceholderWindow.LoadContent(string.Format("umChooseLunchHeader.aspx?HeaderId={0}", HeaderId));
-                    uxPlaceholderWindow.Show();
+                    if (validateComponentSecurity("SYS.DailyActivity.View"))
+                    {
+                        uxPlaceholderWindow.LoadContent(string.Format("umChooseLunchHeader.aspx?HeaderId={0}", HeaderId));
+                        uxPlaceholderWindow.Show();
+                    }
                 }
             }
 
@@ -283,9 +316,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             if (DuplicatePerDiems != null)
             {
-                BadHeader = true;
-                uxPlaceholderWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&PersonId={1}", DuplicatePerDiems.HEADER_ID, DuplicatePerDiems.PERSON_ID));
-                uxPlaceholderWindow.Show();
+                
+                if (validateComponentSecurity("SYS.DailyActivity.View"))
+                {
+                    uxPlaceholderWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&PersonId={1}", DuplicatePerDiems.HEADER_ID, DuplicatePerDiems.PERSON_ID));
+                    uxPlaceholderWindow.Show();
+                }
             }
 
             if (OrgId == 123)
@@ -319,7 +355,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxPostActivityButton.Disabled = true;
                 uxTabPostButton.Disabled = true;
             }
-            uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.ViewAll");
+            
             
             uxExportToPDF.Disabled = false;
             uxTabExportButton.Disabled = false;
@@ -338,6 +374,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GridModel.UpdateSelection();
             
         }
+
         protected void deLoadPreviousActivity(object sender, DirectEventArgs e)
         {
             RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
@@ -356,19 +393,33 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
             DAILY_ACTIVITY_HEADER data;
-
             //Get Record to be updated
             using (Entities _context = new Entities())
             {
                 data = (from d in _context.DAILY_ACTIVITY_HEADER
                         where d.HEADER_ID == HeaderId
                         select d).Single();
+            }
+            Ext.Net.Button MyButton = sender as Ext.Net.Button;
+            if (uxDeactivate.Value.ToString() == "Deactivate")
+            {
                 data.STATUS = 5;
+                
+            }
+            else
+            {
+                data.STATUS = 2;
             }
             //Update record in DB
             GenericData.Update<DAILY_ACTIVITY_HEADER>(data);
+            RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
+            var Index = GridModel.SelectedIndex;
 
-            uxManageGridStore.Reload();
+
+            uxManageGridStore.Reload(new
+            {
+                callback = JRawValue.From("function() {App.uxManageGrid.getSelectionModel().select(" + Index + ")}")
+            });
 
         }
 

@@ -161,7 +161,8 @@
 							ValueField="type"
 							QueryMode="Local"
 							TypeAhead="true"
-							AllowBlank="false">
+							AllowBlank="false"
+							ForceSelection="true">
 							<Store>
 								<ext:Store runat="server" ID="uxAddProductionSurfaceTypeStore" AutoDataBind="true">
 									<Model>
@@ -343,7 +344,8 @@
 							ValueField="type"
 							QueryMode="Local"
 							TypeAhead="true"
-							AllowBlank="false">
+							AllowBlank="false"
+							ForceSelection="true">
 							<Store>
 								<ext:Store runat="server" ID="uxEditProductionSurfaceTypeStore" AutoDataBind="true">
 									<Model>
