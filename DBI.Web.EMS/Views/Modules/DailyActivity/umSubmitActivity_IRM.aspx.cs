@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using DBI.Core.Web;
 using DBI.Data;
+using DBI.Data.DataFactory;
 using Ext.Net;
 
 namespace DBI.Web.EMS.Views.Modules.DailyActivity
@@ -24,6 +25,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             if (!X.IsAjaxRequest && !IsPostBack)
             {
                 GetFooterData();
+                uxStateList.Data = StaticLists.StateList;
             }
 
         }
