@@ -50,50 +50,68 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void deRemoveChemical(object sender, DirectEventArgs e)
         {
             long ChemicalId = long.Parse(e.ExtraParams["ChemicalId"]);
+            //check for existing inven
             DAILY_ACTIVITY_CHEMICAL_MIX data;
+            
 
             //Get record to be deleted.
             using (Entities _context = new Entities())
             {
-                data = (from d in _context.DAILY_ACTIVITY_CHEMICAL_MIX
-                        where d.CHEMICAL_MIX_ID == ChemicalId
-                        select d).Single();
-            }
-            //Log Mix #
-            long DeletedMix = data.CHEMICAL_MIX_NUMBER;
-
-            //Delete from db
-            GenericData.Delete<DAILY_ACTIVITY_CHEMICAL_MIX>(data);
-            
-            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-            //Get all records from this header where mix# is greater than the one that was deleted
-            using (Entities _context = new Entities())
-            {
-                var Updates = (from d in _context.DAILY_ACTIVITY_CHEMICAL_MIX
-                               where d.CHEMICAL_MIX_NUMBER > DeletedMix && d.HEADER_ID == HeaderId
-                               select d).ToList();
-                
-                //Loop through and update db
-                foreach (var ToUpdate in Updates)
-                {
-                    ToUpdate.CHEMICAL_MIX_NUMBER = ToUpdate.CHEMICAL_MIX_NUMBER - 1;
-                    _context.SaveChanges();
-                }
+                data = _context.DAILY_ACTIVITY_CHEMICAL_MIX.Include("DAILY_ACTIVITY_INVENTORY").Where(x => x.CHEMICAL_MIX_ID == ChemicalId).Single();
                 
             }
-            uxCurrentChemicalStore.Reload();
-
-            Notification.Show(new NotificationConfig()
+            if (data.DAILY_ACTIVITY_INVENTORY.Count == 0)
             {
-                Title = "Success",
-                Html = "Chemical Mix Removed Successfully",
-                HideDelay = 1000,
-                AlignCfg = new NotificationAlignConfig
+                //Log Mix #
+                long DeletedMix = data.CHEMICAL_MIX_NUMBER;
+
+                //Delete from db
+                GenericData.Delete<DAILY_ACTIVITY_CHEMICAL_MIX>(data);
+
+                long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+                //Get all records from this header where mix# is greater than the one that was deleted
+                using (Entities _context = new Entities())
                 {
-                    ElementAnchor = AnchorPoint.Center,
-                    TargetAnchor = AnchorPoint.Center
+                    var Updates = (from d in _context.DAILY_ACTIVITY_CHEMICAL_MIX
+                                   where d.CHEMICAL_MIX_NUMBER > DeletedMix && d.HEADER_ID == HeaderId
+                                   select d).ToList();
+
+                    //Loop through and update db
+                    foreach (var ToUpdate in Updates)
+                    {
+                        ToUpdate.CHEMICAL_MIX_NUMBER = ToUpdate.CHEMICAL_MIX_NUMBER - 1;
+                        _context.SaveChanges();
+                    }
+
                 }
-            });
+                uxCurrentChemicalStore.Reload();
+
+                Notification.Show(new NotificationConfig()
+                {
+                    Title = "Success",
+                    Html = "Chemical Mix Removed Successfully",
+                    HideDelay = 1000,
+                    AlignCfg = new NotificationAlignConfig
+                    {
+                        ElementAnchor = AnchorPoint.Center,
+                        TargetAnchor = AnchorPoint.Center
+                    }
+                });
+            }
+            else
+            {
+                Notification.Show(new NotificationConfig()
+                    {
+                        Title = "Error",
+                        Html = "You must first delete the associated inventory entries before deleting this item",
+                        HideDelay = 1000,
+                        AlignCfg = new NotificationAlignConfig
+                        {
+                            ElementAnchor = AnchorPoint.Center,
+                            TargetAnchor = AnchorPoint.Center
+                        }
+                    });
+            }
         }
 
         protected void deLoadChemicalWindow(object sender, DirectEventArgs e)
