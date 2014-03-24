@@ -211,6 +211,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 string chemUrl = string.Format("umChemicalTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                 string weatherUrl = string.Format("umWeatherTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                 string invUrl = string.Empty;
+                string footerURL = string.Empty;
 
                 uxHeaderTab.Disabled = false;
                 uxEquipmentTab.Disabled = false;
@@ -218,6 +219,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEmployeeTab.Disabled = false;
                 uxWeatherTab.Disabled = false;
                 uxInventoryTab.Disabled = false;
+                uxFooterTab.Disabled = false;
 
                 uxHeaderTab.LoadContent(headerUrl);
                 uxEquipmentTab.LoadContent(equipUrl);
@@ -228,6 +230,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 {
                     prodUrl = string.Format("umProductionTab_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                     invUrl = string.Format("umInventoryTab_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                    footerURL = string.Format("umSubmitActivity_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                     uxChemicalTab.Disabled = false;
                     uxTabPanel.ShowTab(uxChemicalTab);
                     uxChemicalTab.LoadContent(chemUrl);
@@ -237,11 +240,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     uxTabPanel.HideTab(uxChemicalTab);
                     prodUrl = string.Format("umProductionTab_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                     invUrl = string.Format("umInventoryTab_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                    footerURL = string.Format("umSubmitActivity_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                     //uxChemicalTab.Close();
 
                 }
                 uxProductionTab.LoadContent(prodUrl);
                 uxInventoryTab.LoadContent(invUrl);
+                uxFooterTab.LoadContent(footerURL);
             }
 
             switch(e.ExtraParams["Status"]){
@@ -1361,21 +1366,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             var GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
             var GridIndex = GridModel.SelectedIndex;
             uxManageGridStore.Reload();
-        }
-
-        [DirectMethod]
-        public void dmRefreshShowSubmit_DBI(string HeaderId)
-        {
-            uxPlaceholderWindow.ClearContent();
-            uxPlaceholderWindow.Hide();
-            uxManageGrid.Reload();
-        }
-
-        [DirectMethod]
-        public void dmRefreshShowSubmit_IRM(string HeaderId)
-        {
-            uxPlaceholderWindow.ClearContent();
-            uxPlaceholderWindow.LoadContent(string.Format("umSubmitActivity_IRM.aspx?HeaderId={0}", HeaderId));
         }
 
         /// <summary>
