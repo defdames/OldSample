@@ -65,18 +65,23 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             select new EmployeeDetails{EMPLOYEE_ID = d.EMPLOYEE_ID, HEADER_ID = d.HEADER_ID, PERSON_ID =  d.PERSON_ID, EMPLOYEE_NAME = e.EMPLOYEE_NAME, EQUIPMENT_ID = d.EQUIPMENT_ID, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null? 0 : d.TRAVEL_TIME), SHOPTIME_AM = (d.SHOPTIME_AM == null ? 0 : d.SHOPTIME_AM), SHOPTIME_PM = (d.SHOPTIME_PM == null ? 0 : d.SHOPTIME_PM), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS, ROLE_TYPE = d.ROLE_TYPE }).ToList();
                 foreach (var item in data)
                 {
+                    
                     double Hours = Math.Truncate((double)item.TRAVEL_TIME);
                     double Minutes = Math.Round(((double)item.TRAVEL_TIME - Hours) * 60);
-                    item.TRAVEL_TIME_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
+                    TimeSpan TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
+                    item.TRAVEL_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
                     Hours = Math.Truncate((double)item.DRIVE_TIME);
                     Minutes = Math.Round(((double)item.DRIVE_TIME - Hours) * 60);
-                    item.DRIVE_TIME_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
+                    TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
+                    item.DRIVE_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
                     Hours = Math.Truncate((double)item.SHOPTIME_AM);
                     Minutes = Math.Round(((double)item.SHOPTIME_AM - Hours) * 60);
-                    item.SHOPTIME_AM_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
+                    TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
+                    item.SHOPTIME_AM_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
                     Hours = Math.Truncate((double)item.SHOPTIME_PM);
                     Minutes = Math.Round(((double)item.SHOPTIME_PM - Hours) * 60);
-                    item.SHOPTIME_PM_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
+                    TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
+                    item.SHOPTIME_PM_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
 
                     
                 }

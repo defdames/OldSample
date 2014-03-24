@@ -113,7 +113,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 try
                 {
                     uxEditEmployeeDriveTimeHours.SetValue(Math.Truncate((double)Employee.DRIVE_TIME));
-                    uxEditEmployeeDriveTimeMinutes.SetValue(Math.Truncate(((double)Employee.DRIVE_TIME - Math.Truncate((double)Employee.DRIVE_TIME)) * 60));
+                    uxEditEmployeeDriveTimeMinutes.SetValue(Math.Round(((double)Employee.DRIVE_TIME - Math.Truncate((double)Employee.DRIVE_TIME)) * 60));
                 }
                 catch (Exception)
                 {
@@ -121,7 +121,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 try
                 {
                     uxEditEmployeeTravelTimeHours.SetValue(Math.Truncate((double)Employee.TRAVEL_TIME));
-                    uxEditEmployeeTravelTimeMinutes.SetValue(Math.Truncate(((double)Employee.TRAVEL_TIME - Math.Truncate((double)Employee.TRAVEL_TIME)) * 60));
+                    uxEditEmployeeTravelTimeMinutes.SetValue(Math.Round(((double)Employee.TRAVEL_TIME - Math.Truncate((double)Employee.TRAVEL_TIME)) * 60));
                 }
                 catch (Exception)
                 {
@@ -133,7 +133,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     try
                     {
                         uxEditEmployeeShopTimeAMHours.SetValue(Math.Truncate((double)Employee.SHOPTIME_AM));
-                        uxEditEmployeeShopTimeAMMinutes.SetValue(Math.Truncate(((double)Employee.SHOPTIME_AM - Math.Truncate((double)Employee.SHOPTIME_AM)) * 60));
+                        uxEditEmployeeShopTimeAMMinutes.SetValue(Math.Round(((double)Employee.SHOPTIME_AM - Math.Truncate((double)Employee.SHOPTIME_AM)) * 60));
                         
                     }
                     catch (Exception)
@@ -142,7 +142,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     try
                     {
                         uxEditEmployeeShopTimePMHours.SetValue(Math.Truncate((double)Employee.SHOPTIME_PM));
-                        uxEditEmployeeShopTimePMMinutes.SetValue(Math.Truncate(((double)Employee.SHOPTIME_PM - Math.Truncate((double)Employee.SHOPTIME_PM)) * 60));
+                        uxEditEmployeeShopTimePMMinutes.SetValue(Math.Round(((double)Employee.SHOPTIME_PM - Math.Truncate((double)Employee.SHOPTIME_PM)) * 60));
                     }
                     catch (Exception)
                     {

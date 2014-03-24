@@ -490,16 +490,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 {
                     double Hours = Math.Truncate((double)item.TRAVEL_TIME);
                     double Minutes = Math.Round(((double)item.TRAVEL_TIME - Hours) * 60);
-                    item.TRAVEL_TIME_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
+                    TimeSpan TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
+                    item.TRAVEL_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
                     Hours = Math.Truncate((double)item.DRIVE_TIME);
                     Minutes = Math.Round(((double)item.DRIVE_TIME - Hours) * 60);
-                    item.DRIVE_TIME_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
+                    item.DRIVE_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
                     Hours = Math.Truncate((double)item.SHOPTIME_AM);
                     Minutes = Math.Round(((double)item.SHOPTIME_AM - Hours) * 60);
-                    item.SHOPTIME_AM_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
+                    item.SHOPTIME_AM_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
                     Hours = Math.Truncate((double)item.SHOPTIME_PM);
                     Minutes = Math.Round(((double)item.SHOPTIME_PM - Hours) * 60);
-                    item.SHOPTIME_PM_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
+                    item.SHOPTIME_PM_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
                 }
                 return returnData;
             }
@@ -887,14 +888,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         {
                             License = string.Empty;
                         }
-                        TimeSpan TotalHours = DateTime.Parse(Data.TIME_OUT.ToString()).TimeOfDay - DateTime.Parse(Data.TIME_IN.ToString()).TimeOfDay;
+                        TimeSpan TotalHours = DateTime.Parse(Data.TIME_OUT.ToString()) - DateTime.Parse(Data.TIME_IN.ToString());
                         Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(EquipmentName , CellFont)),
                         new PdfPCell(new Phrase(Data.EMPLOYEE_NAME.ToString(), CellFont)),
                         new PdfPCell(new Phrase(License, CellFont)),
-                        new PdfPCell(new Phrase(Data.TIME_IN.TimeOfDay.ToString(), CellFont)),
-                        new PdfPCell(new Phrase(Data.TIME_OUT.TimeOfDay.ToString(), CellFont)),
-                        new PdfPCell(new Phrase(TotalHours.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.TIME_IN.ToString("hh\\:mm"), CellFont)),
+                        new PdfPCell(new Phrase(Data.TIME_OUT.ToString("hh\\:mm"), CellFont)),
+                        new PdfPCell(new Phrase(TotalHours.ToString("hh\\:mm"), CellFont)),
                         new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED, CellFont)),
                         new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED, CellFont)),
                         new PdfPCell(new Phrase(Data.SHOPTIME_AM_FORMATTED, CellFont)),

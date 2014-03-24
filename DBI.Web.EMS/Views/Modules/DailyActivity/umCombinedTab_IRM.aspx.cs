@@ -71,18 +71,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 {
                     double Hours = Math.Truncate((double)item.TRAVEL_TIME);
                     double Minutes = Math.Round(((double)item.TRAVEL_TIME - Hours) * 60);
-                    item.TRAVEL_TIME_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
+                    TimeSpan TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
+                    item.TRAVEL_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
                     Hours = Math.Truncate((double)item.DRIVE_TIME);
                     Minutes = Math.Round(((double)item.DRIVE_TIME - Hours) * 60);
-                    item.DRIVE_TIME_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
+                    item.DRIVE_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
                     Hours = Math.Truncate((double)item.SHOPTIME_AM);
                     Minutes = Math.Round(((double)item.SHOPTIME_AM - Hours) * 60);
-                    item.SHOPTIME_AM_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
+                    item.SHOPTIME_AM_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
                     Hours = Math.Truncate((double)item.SHOPTIME_PM);
                     Minutes = Math.Round(((double)item.SHOPTIME_PM - Hours) * 60);
-                    item.SHOPTIME_PM_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
-
-
+                    item.SHOPTIME_PM_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
                 }
                 uxEmployeeStore.DataSource = data;
                 uxEmployeeStore.DataBind();
