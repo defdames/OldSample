@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using DBI.Core;
 
 namespace DBI.Data
 {
@@ -132,6 +133,15 @@ namespace DBI.Data
             }
         }
 
+         public static long generatePayrollAuditSequence()
+        {
+            using (Entities _context = new Entities())
+            {
+                string sql = @"select XXDBI.XXDBI_PAYROLL_AUDIT_S.NEXTVAL from dual";
+                long query = _context.Database.SqlQuery<long>(sql).First();
+                return query;
+            }
+        }
 
 
         public static decimal payrollHoursCalculation(DateTime dateIn, DateTime dateOut, string lunchFlag, decimal? lunchAmount, decimal? orgID, decimal? travelTime)
@@ -381,59 +391,94 @@ namespace DBI.Data
                             records.Add(dtrecord);
                             GenericData.Insert<XXDBI_LABOR_HEADER_V>(dtrecord);
                         }
-                        ////Check if record is IRM and shop time added, then add Time Entry Wages for Shop Time AM
-                        //if (xxdbiDailyActivityHeader.ORG_ID == 123 && r.SHOPTIME_AM > 0)
-                        //{
-                        //    XXDBI_LABOR_HEADER_V dtrecord = new XXDBI_LABOR_HEADER_V();
-                        //    dtrecord.LABOR_HEADER_ID = DBI.Data.Interface.generateLaborHeaderSequence();
-                        //    dtrecord.DA_HEADER_ID = xxdbiDailyActivityHeader.DA_HEADER_ID;
-                        //    dtrecord.PROJECT_NUMBER = r.SEGMENT1;
-                        //    dtrecord.TASK_NUMBER = returnDailyActivityTaskNumber(dailyActivityHeaderId);
-                        //    dtrecord.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
-                        //    dtrecord.EMP_FULL_NAME = DBI.Data.EMPLOYEES_V.oracleEmployeeName(r.PERSON_ID);
-                        //    dtrecord.ROLE = null;
-                        //    dtrecord.STATE = xxdbiDailyActivityHeader.STATE;
-                        //    dtrecord.COUNTY = xxdbiDailyActivityHeader.COUNTY;
-                        //    dtrecord.LAB_HEADER_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE;
-                        //    dtrecord.QUANTITY = doubleShopCalc(r.SHOPTIME_AM);
-                        //    dtrecord.ELEMENT = "Travel Time Base";
-                        //    dtrecord.ADJUSTMENT = "N";
-                        //    dtrecord.STATUS = "UNPROCESSED";
-                        //    dtrecord.ORG_ID = (decimal)r.ORG_ID;
-                        //    dtrecord.CREATED_BY = postedByUserId;
-                        //    dtrecord.CREATION_DATE = DateTime.Now;
-                        //    dtrecord.LAST_UPDATE_DATE = DateTime.Now;
-                        //    dtrecord.LAST_UPDATED_BY = postedByUserId;
-                        //    records.Add(dtrecord);
-                        //    GenericData.Insert<XXDBI_LABOR_HEADER_V>(dtrecord);
-                        //}
-                        ////Check if record is IRM and shop time added, then add Time Entry Wages for Shop Time PM
-                        //if (xxdbiDailyActivityHeader.ORG_ID == 123 && r.SHOPTIME_PM > 0)
-                        //{
-                        //    XXDBI_LABOR_HEADER_V dtrecord = new XXDBI_LABOR_HEADER_V();
-                        //    dtrecord.LABOR_HEADER_ID = DBI.Data.Interface.generateLaborHeaderSequence();
-                        //    dtrecord.DA_HEADER_ID = xxdbiDailyActivityHeader.DA_HEADER_ID;
-                        //    dtrecord.PROJECT_NUMBER = r.SEGMENT1;
-                        //    dtrecord.TASK_NUMBER = returnDailyActivityTaskNumber(dailyActivityHeaderId);
-                        //    dtrecord.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
-                        //    dtrecord.EMP_FULL_NAME = DBI.Data.EMPLOYEES_V.oracleEmployeeName(r.PERSON_ID);
-                        //    dtrecord.ROLE = null;
-                        //    dtrecord.STATE = xxdbiDailyActivityHeader.STATE;
-                        //    dtrecord.COUNTY = xxdbiDailyActivityHeader.COUNTY;
-                        //    dtrecord.LAB_HEADER_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE;
-                        //    dtrecord.QUANTITY = doubleShopCalc(r.SHOPTIME_PM);
-                        //    dtrecord.ELEMENT = "Travel Time Base";
-                        //    dtrecord.ADJUSTMENT = "N";
-                        //    dtrecord.STATUS = "UNPROCESSED";
-                        //    dtrecord.ORG_ID = (decimal)r.ORG_ID;
-                        //    dtrecord.CREATED_BY = postedByUserId;
-                        //    dtrecord.CREATION_DATE = DateTime.Now;
-                        //    dtrecord.LAST_UPDATE_DATE = DateTime.Now;
-                        //    dtrecord.LAST_UPDATED_BY = postedByUserId;
-                        //    records.Add(dtrecord);
-                        //    GenericData.Insert<XXDBI_LABOR_HEADER_V>(dtrecord);
-                        //}
 
+                        //Check if record is IRM and Shop Time was added
+                        if (xxdbiDailyActivityHeader.ORG_ID == 123 && (r.SHOPTIME_AM > 0 || r.SHOPTIME_PM > 0))
+                        {
+
+                            XXDBI_PAYROLL_AUDIT dtrecord = new XXDBI_PAYROLL_AUDIT();
+                            dtrecord.PAYROLL_AUDIT_ID = generatePayrollAuditSequence();
+                            dtrecord.DA_HEADER_ID = xxdbiDailyActivityHeader.DA_HEADER_ID;
+                            dtrecord.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
+                            dtrecord.EMPLOYEE_NAME =  DBI.Data.EMPLOYEES_V.oracleEmployeeName(r.PERSON_ID);
+                            dtrecord.ELEMENT = "Time Entry Wages";
+                            dtrecord.STATE = xxdbiDailyActivityHeader.STATE;
+                            dtrecord.COUNTY = xxdbiDailyActivityHeader.COUNTY;
+                            dtrecord.PROJECT_NUMBER = r.SEGMENT1;
+                            dtrecord.TASK_NUMBER = returnDailyActivityTaskNumber(dailyActivityHeaderId);
+                            dtrecord.EXPENDITURE_TYPE = "REGULAR TIME";
+                            dtrecord.STATUS = "UNPROCESSED";
+                            dtrecord.OVERTIME_STATUS = "UNPROCESSED";
+                            dtrecord.FRINGE_STATUS = "UNPROCESSED";
+                            dtrecord.PROJECT_STATUS = "UNPROCESSED";
+                            dtrecord.ORG_ID = (decimal)r.ORG_ID;
+                            dtrecord.CREATED_BY = postedByUserId;
+                            dtrecord.CREATION_DATE = DateTime.Now;
+                            dtrecord.LAST_UPDATE_DATE = DateTime.Now;
+                            dtrecord.LAST_UPDATED_BY = postedByUserId;
+                            dtrecord.SLIDING_SCALE_FLAG = "N";
+                            dtrecord.DAILY_OVERTIME_FLAG = "N";
+                            dtrecord.WAGE_SOURCE = "Regular";
+                            dtrecord.ADJUSTMENT = "N";
+                            dtrecord.FRINGE_RATE = 0;
+
+                            //Get the total hours (Time Entry Wages)
+                            TimeSpan span = new TimeSpan();
+
+                            double hoursValue = (double)Math.Truncate((decimal)r.SHOPTIME_AM) + (double)Math.Truncate((decimal)r.SHOPTIME_PM);
+                            double minsValue = ((double)r.SHOPTIME_AM + (double)r.SHOPTIME_PM)  - hoursValue;
+                
+                            if (minsValue > 0) {
+                                minsValue = ((minsValue * 60) * 100);
+                                               }
+
+                            //Get new timespan for time
+                            span = span.Add(TimeSpan.FromHours((hoursValue * -1)));
+                            span = span.Add(TimeSpan.FromMinutes((minsValue * -1)));
+   
+                            double calc = (span.Minutes > 0 && span.Minutes <= 8) ? 0
+                                            : (span.Minutes > 8 && span.Minutes <= 23) ? .25
+                                            : (span.Minutes > 23 && span.Minutes <= 38) ? .50
+                                            : (span.Minutes > 38 && span.Minutes <= 53) ? .75
+                                            : (span.Minutes > 53 && span.Minutes <= 60) ? 1
+                                            : 0;
+                            dtrecord.TOTAL_HOURS = span.Hours + (decimal)calc;
+
+                            //Get day of the week and add time
+                            switch((int)xxdbiDailyActivityHeader.ACTIVITY_DATE.DayOfWeek)
+                            {
+                                case 0:
+                                    dtrecord.SUNDAY = dtrecord.TOTAL_HOURS;
+                                    break;
+                                case 1:
+                                    dtrecord.MONDAY = dtrecord.TOTAL_HOURS;
+                                    break;
+                                case 2:
+                                    dtrecord.TUESDAY = dtrecord.TOTAL_HOURS;
+                                    break;
+                                case 3:
+                                    dtrecord.WEDNESDAY = dtrecord.TOTAL_HOURS;
+                                    break;
+                                case 4:
+                                    dtrecord.THURSDAY = dtrecord.TOTAL_HOURS;
+                                    break;
+                                case 5:
+                                    dtrecord.FRIDAY = dtrecord.TOTAL_HOURS;
+                                    break;
+                                case 6:
+                                    dtrecord.SATURDAY = dtrecord.TOTAL_HOURS;
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            DateTime current = DateTime.Now;
+
+                            dtrecord.PREVAILING_WAGE_RATE = null;
+                            dtrecord.EFFECTIVE_START_DATE = current.GetFirstDayOfWeek();
+                            dtrecord.EFFECTIVE_END_DATE = current.GetLastDayOfWeek();
+                            GenericData.Insert<XXDBI_PAYROLL_AUDIT>(dtrecord);
+                        }
                     }
 
 

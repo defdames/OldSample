@@ -89,6 +89,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             return DAILY_ACTIVITY_EMPLOYEE.employeesWithShopTimeByDailyActivityID(headerID);
         }
 
+        public static List<SupportEmployeeData> employeesWithUnassignedShopTime(long headerID)
+        {
+            using (Entities _context = new Entities())
+            {
+                List<SupportEmployeeData> employees = (from e in _context.DAILY_ACTIVITY_EMPLOYEE
+                                                       join p in _context.EMPLOYEES_V on e.PERSON_ID equals p.PERSON_ID
+                                                       where e.HEADER_ID == headerID && (e.SHOPTIME_AM.HasValue || e.SHOPTIME_PM.HasValue) && (!e.SUPPORT_PROJ_ID.HasValue)
+                                                       select new SupportEmployeeData { EMPLOYEE_ID = e.EMPLOYEE_ID, EMPLOYEE_NAME = p.EMPLOYEE_NAME }).ToList();
+
+                return employees;
+            }
+        }
+
         public static List<long> employeeTimeOverlapCheck()
         {
             using (Entities _context = new Entities())
@@ -312,6 +325,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public DateTime? DA_DATE {get; set;}
         public long PERSON_ID { get; set; }
         public int LUNCH_LENGTH { get; set; }
+    }
+
+    public class SupportEmployeeData
+    {
+        public long EMPLOYEE_ID { get; set; }
+        public string EMPLOYEE_NAME { get; set; }
     }
 
     public class HeaderData
