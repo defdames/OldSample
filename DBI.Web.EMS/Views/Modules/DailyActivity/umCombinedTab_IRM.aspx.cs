@@ -22,6 +22,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 GetHeaderData();
                 GetEmployeeData();
+                GetEquipmentData();
                 GetIRMProductionData();
                 GetWeatherData();
                 GetInventory();
@@ -83,6 +84,21 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
 
                 }
+                uxEmployeeStore.DataSource = data;
+                uxEmployeeStore.DataBind();
+            }
+        }
+
+        protected void GetEquipmentData()
+        {
+
+            using (Entities _context = new Entities())
+            {
+                long HeaderId = long.Parse(Request.QueryString["headerId"]);
+                var data = (from e in _context.DAILY_ACTIVITY_EQUIPMENT
+                            join p in _context.CLASS_CODES_V on e.PROJECT_ID equals p.PROJECT_ID
+                            where e.HEADER_ID == HeaderId
+                            select new { p.CLASS_CODE, p.ORGANIZATION_NAME, e.ODOMETER_START, e.ODOMETER_END, e.PROJECT_ID, e.EQUIPMENT_ID, p.NAME, e.HEADER_ID }).ToList();
                 uxEquipmentStore.DataSource = data;
                 uxEquipmentStore.DataBind();
             }
