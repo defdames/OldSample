@@ -85,7 +85,7 @@
 								</ext:GridPanel>
 							</Component>
 						</ext:DropDownField>
-						<ext:TextField runat="server"
+						<ext:TextArea runat="server"
 							ID="uxAddProductionWorkArea"
 							FieldLabel="Spray/Work Area"
 							AllowBlank="false" />
@@ -183,7 +183,7 @@
 								</ext:GridPanel>
 							</Component>
 						</ext:DropDownField>
-						<ext:TextField runat="server"
+						<ext:TextArea runat="server"
 							ID="uxEditProductionWorkArea"
 							FieldLabel="Spray/Work Area"
 							AllowBlank="false" />

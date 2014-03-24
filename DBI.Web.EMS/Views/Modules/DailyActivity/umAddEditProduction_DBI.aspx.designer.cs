@@ -136,7 +136,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxAddProductionWorkArea;
+        protected global::Ext.Net.TextArea uxAddProductionWorkArea;
         
         /// <summary>
         /// uxAddProductionPoleFrom control.
@@ -289,7 +289,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxEditProductionWorkArea;
+        protected global::Ext.Net.TextArea uxEditProductionWorkArea;
         
         /// <summary>
         /// uxEditProductionPoleFrom control.

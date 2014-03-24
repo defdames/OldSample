@@ -88,6 +88,9 @@
 						DataIndex="PROJECT_ID"
 						Text="Project ID" />
 					<ext:Column runat="server"
+						DataIndex="NAME"
+						Text="Name" />
+					<ext:Column runat="server"
 						DataIndex="CLASS_CODE" 
 						Text="Class Code"/>
 					<ext:Column runat="server"
