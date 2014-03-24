@@ -324,6 +324,17 @@
 							<Listeners>
 								<Activate Handler="#{uxProductionTab}.reload()" />
 							</Listeners>
+						</ext:Panel>
+						<ext:Panel runat="server"
+							Title="Footer"
+							ID="uxFooterTab"
+							Disabled="true" Layout="FitLayout">
+							<Loader ID="uxFooterLoader" runat="server" Mode="Frame" AutoLoad="false" ReloadOnEvent="true">
+								<LoadMask ShowMask="true" />
+							</Loader>   
+							<Listeners>
+								<Activate Handler="#{uxFooterTab}.reload()" />
+							</Listeners>
 						</ext:Panel>                        
 					</Items>
 					<TopBar>

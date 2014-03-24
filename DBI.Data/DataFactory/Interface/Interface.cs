@@ -202,7 +202,7 @@ namespace DBI.Data
         {
             decimal returnValue = 0;
 
-            if (laborRecords.Count > 1)
+            if (laborRecords.Count > 0)
             {
                 var r = from records in laborRecords
                         group records by records.EMPLOYEE_NUMBER into g
