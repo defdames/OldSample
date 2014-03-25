@@ -37,6 +37,34 @@ namespace DBI.Data
             }
         }
 
+        public static List<WEB_PROJECTS_V> supportProjectList(int OrganizationId = 0)
+        {
+            using (Entities _context = new Entities())
+            {
+                var data = from p in _context.PROJECTS_V
+                           where p.PROJECT_TYPE == "SUPPORT OVERHEAD" && p.TEMPLATE_FLAG == "N" && p.PROJECT_STATUS_CODE == "APPROVED"
+                           select p;
+                if (OrganizationId != 0)
+                {
+                    data = data.Where(p => p.CARRYING_OUT_ORGANIZATION_ID == OrganizationId);
+                }
+
+                var dataList = data.ToList();
+
+                List<WEB_PROJECTS_V> returnList = new List<WEB_PROJECTS_V>();
+                foreach (PROJECTS_V item in dataList)
+                {
+                    WEB_PROJECTS_V rItem = new WEB_PROJECTS_V();
+                    rItem.LONG_NAME = item.LONG_NAME;
+                    rItem.ORGANIZATION_NAME = item.ORGANIZATION_NAME;
+                    rItem.SEGMENT1 = item.SEGMENT1;
+                    rItem.PROJECT_ID = item.PROJECT_ID;
+                    returnList.Add(rItem);
+                }
+                return returnList;
+            }
+        }
+
         /// <summary>
         /// Returns a list of project information from oracle that will be used in lookups for comboboxes
         /// </summary>

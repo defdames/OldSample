@@ -16,6 +16,14 @@ namespace DBI.Data
             }
         }
 
+        public static bool employeesWithShopTimeByDailyActivityID(long dailyActivityID)
+        {
+            using (Entities _context = new Entities())
+            {
+                return _context.DAILY_ACTIVITY_EMPLOYEE.Where(e => e.HEADER_ID == dailyActivityID && (e.SHOPTIME_AM.HasValue || e.SHOPTIME_PM.HasValue) && (!e.SUPPORT_PROJ_ID.HasValue)).ToList().Count > 0 ? true : false;
+            }
+        }
+
 
     }
 }

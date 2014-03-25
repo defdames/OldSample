@@ -329,6 +329,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     uxPlaceholderWindow.Show();
                 }
             }
+
+            if (OrgId == 123)
+            {
+                if (ValidationChecks.employeeWithShopTimeCheck(HeaderId))
+                {
+                    uxPlaceholderWindow.LoadContent(string.Format("umChooseSupportProject.aspx?HeaderId={0}", HeaderId));
+                    uxPlaceholderWindow.Show();
+                }
+            }
+
             if (EmployeeOverLap.Count > 0)
             {
                 using (Entities _context = new Entities())
