@@ -12,7 +12,7 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class XXDBI_PAYROLL_AUDIT
+    public partial class XXDBI_PAYROLL_AUDIT_V
     {
         public decimal PAYROLL_AUDIT_ID { get; set; }
         public Nullable<decimal> DA_HEADER_ID { get; set; }

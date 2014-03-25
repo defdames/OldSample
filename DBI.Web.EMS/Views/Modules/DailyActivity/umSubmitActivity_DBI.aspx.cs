@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using DBI.Core.Web;
 using DBI.Data;
+using DBI.Data.DataFactory;
 using Ext.Net;
 
 namespace DBI.Web.EMS.Views.Modules.DailyActivity
@@ -20,9 +21,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 X.Redirect("~/Views/uxDefault.aspx");
             }
-            
-            GetFooterData();
-
+            if (!X.IsAjaxRequest && !IsPostBack)
+            {
+                GetFooterData();
+                uxStateList.Data = StaticLists.StateList;
+            }
         }
 
         /// <summary>
@@ -117,21 +120,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             //Set HeaderId
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-            try
-            {
-                using (Entities _context = new Entities())
-                {
-                    //Check if footer record exists
-                    data = (from d in _context.DAILY_ACTIVITY_FOOTER
-                            where d.HEADER_ID == HeaderId
-                            select d).Single();
-                }
-            }
-            catch (InvalidOperationException)
-            {
-                data = null;
-            }
 
+            using (Entities _context = new Entities())
+            {
+                //Check if footer record exists
+                data = (from d in _context.DAILY_ACTIVITY_FOOTER
+                        where d.HEADER_ID == HeaderId
+                        select d).SingleOrDefault();
+            }
+            
             if (data != null)
             {
                 //Check for empty values
@@ -310,10 +307,21 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 data.CREATE_DATE = DateTime.Now;
                 data.MODIFY_DATE = DateTime.Now;
 
-                GenericData.Insert<DAILY_ACTIVITY_FOOTER>(data);
 
-                uxSubmitActivityForm.Reset();
+                GenericData.Insert<DAILY_ACTIVITY_FOOTER>(data);
             }
+
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Footer Added Successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
         }
 
         /// <summary>
@@ -328,118 +336,5 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             ImageArray = b.ReadBytes(ImageFile.ContentLength);
             return ImageArray;
         }
-
-        /// <summary>
-        /// Updates Status
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deStoreFooterAndSubmit(object sender, DirectEventArgs e)
-        {
-            //Set HeaderId
-            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-
-            //Store Footer to DB
-            deStoreFooter(sender, e);
-
-            List<EmployeeData> HoursOver14 = ValidationChecks.checkEmployeeTime(14);
-            List<long> BusinessUnitEquipment = ValidationChecks.EquipmentBusinessUnitCheck();
-            List<long> BusinessUnitEmployees = ValidationChecks.EmployeeBusinessUnitCheck();
-            bool HasWarnings = false;
-            string MessageBoxMessage = string.Empty;
-            if (HoursOver14.Count > 0)
-            {
-                if (HoursOver14.Exists(x => x.HEADER_ID == HeaderId))
-                {
-                    List<EmployeeData> EmployeeList = HoursOver14.FindAll(x => x.HEADER_ID == HeaderId);
-                    foreach (EmployeeData Employee in EmployeeList)
-                    {
-                        MessageBoxMessage += string.Format("{0} has 14 or more hours logged on {1:MM-dd-yy}. <br />", Employee.EMPLOYEE_NAME, Employee.DA_DATE);
-                    }
-                    HasWarnings = true;
-                }
-            }
-
-            if (BusinessUnitEquipment.Count > 0)
-            {
-                if (BusinessUnitEquipment.Exists(x => x == HeaderId))
-                {
-                    MessageBoxMessage += "This activity contains Equipment outside of the project's business unit. <br />";
-                    HasWarnings = true;
-                }
-            }
-
-            if (BusinessUnitEmployees.Count > 0)
-            {
-                if (BusinessUnitEmployees.Exists(x => x == HeaderId))
-                {
-                    MessageBoxMessage += "This activity contans Employees outside of the project's business unit. <br />";
-                    HasWarnings = true;
-                }
-            }
-            if (ValidationChecks.AreMetersMissing(HeaderId))
-            {
-                MessageBoxMessage += "There are equipment entries without meter entries. ";
-                HasWarnings = true;
-            }
-
-            if (HasWarnings)
-            {
-                X.MessageBox.Confirm("Meters Missing", MessageBoxMessage + "Continue?", new MessageBoxButtonsConfig()
-                {
-                    Yes = new MessageBoxButtonConfig
-                    {
-                        Text = "Yes",
-                        Handler = "App.direct.dmSubmitForApproval()"
-                    },
-                    No = new MessageBoxButtonConfig
-                    {
-                        Text = "No"
-                    }
-                }).Show();
-            }
-            else
-            {
-                dmSubmitForApproval();
-            }
-            
-        }
-
-        /// <summary>
-        /// Submits header for approval
-        /// </summary>
-        [DirectMethod]
-        public void dmSubmitForApproval()
-        {
-            long HeaderId = long.Parse(Request.QueryString["HeaderId"].ToString());
-
-            //Get header
-            DAILY_ACTIVITY_HEADER HeaderData;
-            DAILY_ACTIVITY_FOOTER FooterData;
-            using (Entities _context = new Entities())
-            {
-                HeaderData = (from d in _context.DAILY_ACTIVITY_HEADER
-                              where d.HEADER_ID == HeaderId
-                              select d).Single();
-
-                FooterData = (from d in _context.DAILY_ACTIVITY_FOOTER
-                              where d.HEADER_ID == HeaderId
-                              select d).Single();
-            }
-
-            if (FooterData.FOREMAN_SIGNATURE.Length > 0)
-            {
-                //Update status to Requires approval
-                HeaderData.STATUS = 2;
-                GenericData.Update<DAILY_ACTIVITY_HEADER>(HeaderData);
-                X.Js.Call("parent.App.direct.dmHideWindowUpdateGrid()");
-            }
-            else
-            {
-                X.Js.Call("parent.App.direct.dmSubmitNotification()");
-
-            }
-        }     
-        
     }
 }

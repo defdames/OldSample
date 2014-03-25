@@ -84,9 +84,9 @@ namespace DBI.Data
         public DbSet<JOB_TITLE_V> JOB_TITLE_V { get; set; }
         public DbSet<CROSSING_RELATIONSHIP> CROSSING_RELATIONSHIP { get; set; }
         public DbSet<SYS_PERMISSIONS> SYS_PERMISSIONS { get; set; }
-        public DbSet<XXDBI_PAYROLL_AUDIT> XXDBI_PAYROLL_AUDIT { get; set; }
         public DbSet<DAILY_ACTIVITY_EMPLOYEE> DAILY_ACTIVITY_EMPLOYEE { get; set; }
         public DbSet<ORG_HIER_V> ORG_HIER_V { get; set; }
         public DbSet<SYS_USER_ORGS> SYS_USER_ORGS { get; set; }
+        public DbSet<XXDBI_PAYROLL_AUDIT_V> XXDBI_PAYROLL_AUDIT_V { get; set; }
     }
 }

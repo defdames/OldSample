@@ -16,5 +16,23 @@ namespace DBI.Core
             return DateTime.Parse(dt.ToString("d", InvC));
         }
 
+        public static DateTime GetFirstDayOfWeek(this DateTime sourceDateTime)
+        {
+            var daysAhead = (DayOfWeek.Sunday - (int)sourceDateTime.DayOfWeek);
+
+            sourceDateTime = sourceDateTime.AddDays((int)daysAhead);
+
+            return sourceDateTime;
+        }
+
+        public static DateTime GetLastDayOfWeek(this DateTime sourceDateTime)
+        {
+            var daysAhead = DayOfWeek.Saturday - (int)sourceDateTime.DayOfWeek;
+
+            sourceDateTime = sourceDateTime.AddDays((int)daysAhead);
+
+            return sourceDateTime;
+        }
+
     }
 }
