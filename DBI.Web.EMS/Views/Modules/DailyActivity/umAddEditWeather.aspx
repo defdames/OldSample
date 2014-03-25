@@ -29,7 +29,7 @@
 									AllowBlank="false" />
 							</Items>                            
 						</ext:FieldContainer>
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxAddWeatherTemp"
 							FieldLabel="Temperature"
 							AllowBlank="false" />
@@ -59,11 +59,11 @@
 								</ext:Store>
 							</Store>                            
 						</ext:ComboBox>
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxAddWeatherWindVelocity"
 							FieldLabel="Wind Velocity"
 							AllowBlank="false" />
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxAddWeatherHumidity"
 							FieldLabel="Humidity"
 							AllowBlank="false" />
@@ -115,7 +115,7 @@
 									AllowBlank="false" />
 							</Items>                            
 						</ext:FieldContainer>
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxEditWeatherTemp"
 							FieldLabel="Temperature"
 							AllowBlank="false" />
@@ -145,11 +145,11 @@
 								</ext:Store>
 							</Store>                            
 						</ext:ComboBox>
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxEditWeatherWindVelocity"
 							FieldLabel="Wind Velocity"
 							AllowBlank="false" />
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxEditWeatherHumidity"
 							FieldLabel="Humidity"
 							AllowBlank="false" />

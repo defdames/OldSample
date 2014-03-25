@@ -18,19 +18,6 @@
 			App.uxEditChemicalAcresSprayed.setValue(parseInt(App.uxEditChemicalGallonUsed.value) / parseInt(App.uxEditChemicalGallonAcre.value));
 		};
 
-		var doMath = function () {
-			var models = App.uxCurrentChemicalStore.getRange();
-			var count = App.uxCurrentChemicalGrid.getStore().getCount();
-			for (var i = 0; i < count; i++) {
-				var total = App.uxCurrentChemicalStore.getAt(i).data.GALLON_STARTING + App.uxCurrentChemicalStore.getAt(i).data.GALLON_MIXED;
-				models[i].set("GALLON_TOTAL", total);
-				var used = total - App.uxCurrentChemicalStore.getAt(i).data.GALLON_REMAINING;
-				models[i].set("GALLON_USED", used);
-				var sprayed = used / App.uxCurrentChemicalStore.getAt(i).data.GALLON_ACRE;
-				models[i].set("ACRES_SPRAYED", sprayed);
-
-			}
-		};
 	</script>
 </head>
 <body>
@@ -47,41 +34,41 @@
 							ID="uxAddChemicalTargetAre"
 							FieldLabel="Target"
 							AllowBlank="false" />
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxAddChemicalGallonAcre"
 							FieldLabel="Gallons / Acre"
 							AllowBlank="false" />
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxAddChemicalGallonStart"
 							FieldLabel="Gallons Start"
 							AllowBlank="false">
 							<Listeners>
 								<Change Fn="updateAddTotalAndUsed" />
 							</Listeners>
-						</ext:TextField>
-						<ext:TextField runat="server"
+						</ext:NumberField>
+						<ext:NumberField runat="server"
 							ID="uxAddChemicalGallonMixed"
 							FieldLabel="Gallons Mixed"
 							AllowBlank="false">
 							<Listeners>
 								<Change Fn="updateAddTotalAndUsed" />
 							</Listeners>
-						</ext:TextField>
-						<ext:TextField runat="server"
+						</ext:NumberField>
+						<ext:NumberField runat="server"
 							ID="uxAddChemicalGallonTotal"
 							FieldLabel="Gallons Total" Disabled="true" />
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxAddChemicalGallonRemain"
 							FieldLabel="Gallons Remaining"
 							AllowBlank="false">
 							<Listeners>
 								<Change Fn="updateAddTotalAndUsed" />
 							</Listeners>
-						</ext:TextField>
-						<ext:TextField runat="server"
+						</ext:NumberField>
+						<ext:NumberField runat="server"
 							ID="uxAddChemicalGallonUsed"
 							FieldLabel="Gallons Used" Disabled="true" />
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxAddChemicalAcresSprayed"
 							FieldLabel="Acres Sprayed" Disabled="true" />
 						<ext:ComboBox runat="server"
@@ -146,41 +133,45 @@
 							ID="uxEditChemicalTargetAre"
 							FieldLabel="Target"
 							AllowBlank="false" />
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxEditChemicalGallonAcre"
 							FieldLabel="Gallons / Acre"
-							AllowBlank="false" />
-						<ext:TextField runat="server"
+							AllowBlank="false">
+                            <Listeners>
+								<Change Fn="updateEditTotalAndUsed" />
+							</Listeners>
+						</ext:NumberField>
+						<ext:NumberField runat="server"
 							ID="uxEditChemicalGallonStart"
 							FieldLabel="Gallons Start"
 							AllowBlank="false">
 							<Listeners>
 								<Change Fn="updateEditTotalAndUsed" />
 							</Listeners>
-						</ext:TextField>
-						<ext:TextField runat="server"
+						</ext:NumberField>
+						<ext:NumberField runat="server"
 							ID="uxEditChemicalGallonMixed"
 							FieldLabel="Gallons Mixed"
 							AllowBlank="false">
 							<Listeners>
 								<Change Fn="updateEditTotalAndUsed" />
 							</Listeners>
-						</ext:TextField>
-						<ext:TextField runat="server"
+						</ext:NumberField>
+						<ext:NumberField runat="server"
 							ID="uxEditChemicalGallonTotal"
 							FieldLabel="Gallons Total" Disabled="true" />
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxEditChemicalGallonRemain"
 							FieldLabel="Gallons Remaining"
 							AllowBlank="false">
 							<Listeners>
 								<Change Fn="updateEditTotalAndUsed" />
 							</Listeners>
-						</ext:TextField>
-						<ext:TextField runat="server"
+						</ext:NumberField>
+						<ext:NumberField runat="server"
 							ID="uxEditChemicalGallonUsed"
 							FieldLabel="Gallons Used" Disabled="true" />
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxEditChemicalAcresSprayed"
 							FieldLabel="Acres Sprayed" Disabled="true" />
 						<ext:ComboBox runat="server"

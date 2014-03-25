@@ -304,6 +304,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 {
                     if (validateComponentSecurity("SYS.DailyActivity.View"))
                     {
+                        uxPlaceholderWindow.ClearContent();
                         uxPlaceholderWindow.LoadContent(string.Format("umChooseLunchHeader.aspx?HeaderId={0}", HeaderId));
                         uxPlaceholderWindow.Show();
                     }
@@ -325,6 +326,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 
                 if (validateComponentSecurity("SYS.DailyActivity.View"))
                 {
+                    uxPlaceholderWindow.ClearContent();
                     uxPlaceholderWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&PersonId={1}", DuplicatePerDiems.HEADER_ID, DuplicatePerDiems.PERSON_ID));
                     uxPlaceholderWindow.Show();
                 }
@@ -334,6 +336,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 if (ValidationChecks.employeeWithShopTimeCheck(HeaderId))
                 {
+                    uxPlaceholderWindow.ClearContent();
                     uxPlaceholderWindow.LoadContent(string.Format("umChooseSupportProject.aspx?HeaderId={0}", HeaderId));
                     uxPlaceholderWindow.Show();
                 }

@@ -260,14 +260,14 @@
 								</Change>
 							</DirectEvents>
 						</ext:DropDownField>
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxAddInventoryRate"
 							FieldLabel="Rate"
 							AllowBlank="false">
 							<Listeners>
 								<Change Fn="doAddMath" />
 							</Listeners>
-						</ext:TextField>
+						</ext:NumberField>
 						<ext:ComboBox runat="server"
 							ID="uxAddInventoryMeasure"
 							FieldLabel="Unit of Measure"
@@ -293,7 +293,7 @@
 								</ext:Store>
 							</Store>
 						</ext:ComboBox>
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxAddInventoryTotal"
 							FieldLabel="Total" />
 						<ext:TextField runat="server"
@@ -443,14 +443,14 @@
 								</Change>
 							</DirectEvents>
 						</ext:DropDownField>
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxEditInventoryRate"
 							FieldLabel="Rate"
 							AllowBlank="false">
 							<DirectEvents>
 								<Change OnEvent="deEditMath" />
 							</DirectEvents>
-						</ext:TextField>
+						</ext:NumberField>
 						<ext:ComboBox runat="server"
 							ID="uxEditInventoryMeasure"
 							FieldLabel="Unit of Measure"
@@ -476,7 +476,7 @@
 								</ext:Store>
 							</Store>
 						</ext:ComboBox>
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxEditInventoryTotal"
 							FieldLabel="Total" />
 						<ext:TextField runat="server"
