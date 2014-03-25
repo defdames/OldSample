@@ -22,6 +22,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 GetHeaderData();
                 GetEmployeeData();
+                GetEquipmentData();
                 GetDBIProductionData();
                 GetWeatherData();
                 GetChemicalMixData();
@@ -42,9 +43,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                             join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
                             where d.HEADER_ID == HeaderId
-                            select new {d.HEADER_ID, d.PROJECT_ID, p.LONG_NAME, d.DA_DATE, d.SUBDIVISION, d.CONTRACTOR, d.PERSON_ID, e.EMPLOYEE_NAME, d.LICENSE, d.STATE, d.APPLICATION_TYPE, d.DENSITY, d.DA_HEADER_ID }).ToList();
-                uxHeaderStore.DataSource = data;
-                uxHeaderStore.DataBind();
+                            select new {d.HEADER_ID, d.PROJECT_ID, p.LONG_NAME, d.DA_DATE, d.SUBDIVISION, d.CONTRACTOR, d.PERSON_ID, e.EMPLOYEE_NAME, d.LICENSE, d.STATE, d.APPLICATION_TYPE, d.DENSITY, d.DA_HEADER_ID }).Single();
+                DateTime Da_date = DateTime.Parse(data.DA_DATE.ToString());
+                uxProjectField.Value = data.LONG_NAME;
+                uxDateField.Value = Da_date.ToString("MM-dd-yyyy");
+                uxDensityField.Value = data.DENSITY;
+                uxSubDivisionField.Value = data.SUBDIVISION;
+                uxLicenseField.Value = data.LICENSE;
+                uxStateField.Value = data.STATE;
+                uxSupervisorField.Value = data.EMPLOYEE_NAME;
+                uxTypeField.Value = data.APPLICATION_TYPE;
+                uxHeaderField.Value = data.HEADER_ID.ToString();
+                uxOracleField.Value = data.DA_HEADER_ID.ToString();
             }
         }
 
@@ -69,12 +79,29 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 {
                     double Hours = Math.Truncate((double)item.TRAVEL_TIME);
                     double Minutes = Math.Round(((double)item.TRAVEL_TIME - Hours) * 60);
-                    item.TRAVEL_TIME_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
+                    TimeSpan TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
+                    item.TRAVEL_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
                     Hours = Math.Truncate((double)item.DRIVE_TIME);
                     Minutes = Math.Round(((double)item.DRIVE_TIME - Hours) * 60);
-                    item.DRIVE_TIME_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
+                    TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
+                    item.DRIVE_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
                 }
 
+                uxEmployeeStore.DataSource = data;
+                uxEmployeeStore.DataBind();
+            }
+        }
+
+        protected void GetEquipmentData()
+        {
+            
+            using (Entities _context = new Entities())
+            {
+                long HeaderId = long.Parse(Request.QueryString["headerId"]);
+                var data = (from e in _context.DAILY_ACTIVITY_EQUIPMENT
+                            join p in _context.CLASS_CODES_V on e.PROJECT_ID equals p.PROJECT_ID
+                            where e.HEADER_ID == HeaderId
+                            select new {p.CLASS_CODE, p.ORGANIZATION_NAME, e.ODOMETER_START, e.ODOMETER_END, e.PROJECT_ID, e.EQUIPMENT_ID, p.NAME, e.HEADER_ID }).ToList();
                 uxEquipmentStore.DataSource = data;
                 uxEquipmentStore.DataBind();
             }
@@ -166,11 +193,40 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
                 var data = (from d in _context.DAILY_ACTIVITY_FOOTER
                             where d.HEADER_ID == HeaderId
-                            select new { d.HOTEL_CITY, d.HOTEL_NAME, d.HOTEL_PHONE, d.HOTEL_STATE, d.COMMENTS, d.FOREMAN_SIGNATURE, d.CONTRACT_REP }).ToList();
-                var processedData = (from d in data
-                                    select new {d.HOTEL_CITY, d.HOTEL_NAME, d.HOTEL_PHONE, d.HOTEL_STATE, d.COMMENTS, FOREMAN_SIGNATURE = d.FOREMAN_SIGNATURE.Length > 0 ? true : false, CONTRACT_REP = d.CONTRACT_REP.Length > 0 ? true : false}).ToList();
-                uxFooterStore.DataSource = processedData;
-                uxFooterStore.DataBind();
+                            select d).SingleOrDefault();
+                if (data != null)
+                {
+                    uxReasonForNoWorkField.Value = data.COMMENTS;
+                    uxHotelField.Value = data.HOTEL_NAME;
+                    uxCityField.Value = data.HOTEL_CITY;
+                    uxFooterStateField.Value = data.HOTEL_STATE;
+                    uxPhoneField.Value = data.HOTEL_PHONE;
+                    uxContractNameField.Value = data.CONTRACT_REP_NAME;
+                    try
+                    {
+                        byte[] ForemanImage = data.FOREMAN_SIGNATURE.ToArray();
+                        if (ForemanImage.Length > 0)
+                        {
+                            uxForemanImage.ImageUrl = string.Format("ImageLoader/ImageLoader.aspx?headerId={0}&type=foreman", HeaderId);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        uxForemanImage.ImageUrl = "../../../Resources/Images/1pixel.jpg";
+                    }
+                    try
+                    {
+                        byte[] ContractImage = data.CONTRACT_REP.ToArray();
+                        if (ContractImage.Length > 0)
+                        {
+                            uxContractImage.ImageUrl = string.Format("ImageLoader/ImageLoader.aspx?headerId={0}&type=contract", HeaderId);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        uxContractImage.ImageUrl = "../../../Resources/Images/1pixel.jpg";
+                    }
+                }
             }
         }
     }

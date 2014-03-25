@@ -16,6 +16,7 @@ using DBI.Data;
 using Ext.Net;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using System.Text;
 
 
 namespace DBI.Web.EMS.Views.Modules.DailyActivity
@@ -499,16 +500,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 {
                     double Hours = Math.Truncate((double)item.TRAVEL_TIME);
                     double Minutes = Math.Round(((double)item.TRAVEL_TIME - Hours) * 60);
-                    item.TRAVEL_TIME_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
+                    TimeSpan TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
+                    item.TRAVEL_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
                     Hours = Math.Truncate((double)item.DRIVE_TIME);
                     Minutes = Math.Round(((double)item.DRIVE_TIME - Hours) * 60);
-                    item.DRIVE_TIME_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
+                    item.DRIVE_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
                     Hours = Math.Truncate((double)item.SHOPTIME_AM);
                     Minutes = Math.Round(((double)item.SHOPTIME_AM - Hours) * 60);
-                    item.SHOPTIME_AM_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
+                    item.SHOPTIME_AM_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
                     Hours = Math.Truncate((double)item.SHOPTIME_PM);
                     Minutes = Math.Round(((double)item.SHOPTIME_PM - Hours) * 60);
-                    item.SHOPTIME_PM_FORMATTED = Hours.ToString() + ":" + Minutes.ToString();
+                    item.SHOPTIME_PM_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
                 }
                 return returnData;
             }
@@ -528,7 +530,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                   join t in _context.PA_TASKS_V on d.TASK_ID equals t.TASK_ID
                                   join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                   where d.HEADER_ID == HeaderId
-                                  select new { t.DESCRIPTION, d.TIME_IN, d.TIME_OUT, d.WORK_AREA, d.POLE_FROM, d.POLE_TO, d.ACRES_MILE, d.QUANTITY }).ToList<object>();
+                                  select new { t.TASK_NUMBER, t.DESCRIPTION, d.TIME_IN, d.TIME_OUT, d.WORK_AREA, d.POLE_FROM, d.POLE_TO, d.ACRES_MILE, d.QUANTITY }).ToList<object>();
                 return returnData;
             }
         }
@@ -542,7 +544,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                   join t in _context.PA_TASKS_V on d.TASK_ID equals t.TASK_ID
                                   join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                   where d.HEADER_ID == HeaderId
-                                  select new { t.DESCRIPTION, d.WORK_AREA, d.STATION, d.EXPENDITURE_TYPE, d.COMMENTS, d.QUANTITY }).ToList<object>();
+                                  select new {t.TASK_NUMBER, t.DESCRIPTION, d.WORK_AREA, d.STATION, d.EXPENDITURE_TYPE, d.COMMENTS, d.QUANTITY }).ToList<object>();
                 return returnData;
             }
         }
@@ -655,9 +657,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             Response.ClearContent();
             Response.ClearHeaders();
             Response.ContentType = "application/pdf";
-            Response.AppendHeader("Content-Disposition", string.Format("attachment;filename={0}{1}-export.pdf", HeaderId.ToString(), ProjectName));
+            Response.AppendHeader("Content-Disposition", string.Format("attachment;filename={0}{1}-export.pdf", HeaderId.ToString(), RemoveSpecialCharacters(ProjectName)));
             Response.BinaryWrite(PdfStream.ToArray());
             Response.End();
+        }
+
+        protected static string RemoveSpecialCharacters(string str)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in str)
+            {
+                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.' || c == '_')
+                {
+                    sb.Append(c);
+                }
+            }
+            return sb.ToString();
         }
 
         protected void deSendPDF(object sender, DirectEventArgs e)
@@ -883,14 +898,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         {
                             License = string.Empty;
                         }
-                        TimeSpan TotalHours = DateTime.Parse(Data.TIME_OUT.ToString()).TimeOfDay - DateTime.Parse(Data.TIME_IN.ToString()).TimeOfDay;
+                        TimeSpan TotalHours = DateTime.Parse(Data.TIME_OUT.ToString()) - DateTime.Parse(Data.TIME_IN.ToString());
                         Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(EquipmentName , CellFont)),
                         new PdfPCell(new Phrase(Data.EMPLOYEE_NAME.ToString(), CellFont)),
                         new PdfPCell(new Phrase(License, CellFont)),
-                        new PdfPCell(new Phrase(Data.TIME_IN.TimeOfDay.ToString(), CellFont)),
-                        new PdfPCell(new Phrase(Data.TIME_OUT.TimeOfDay.ToString(), CellFont)),
-                        new PdfPCell(new Phrase(TotalHours.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.TIME_IN.ToString("hh\\:mm"), CellFont)),
+                        new PdfPCell(new Phrase(Data.TIME_OUT.ToString("hh\\:mm"), CellFont)),
+                        new PdfPCell(new Phrase(TotalHours.ToString("hh\\:mm"), CellFont)),
                         new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED, CellFont)),
                         new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED, CellFont)),
                         new PdfPCell(new Phrase(Data.SHOPTIME_AM_FORMATTED, CellFont)),
@@ -915,14 +930,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     {
                         string WorkArea;
                         var ProductionData = GetProductionDBI(HeaderId);
-                        PdfPTable ProductionTable = new PdfPTable(5);
+                        PdfPTable ProductionTable = new PdfPTable(7);
 
                         Cells = new PdfPCell[]{
-                    new PdfPCell(new Phrase("Spray/Work Area", HeaderFont)),
-                    new PdfPCell(new Phrase("Pole/MP\nFrom", HeaderFont)),
-                    new PdfPCell(new Phrase("Pole/MP\nTo", HeaderFont)),
-                    new PdfPCell(new Phrase("Acres/Mile", HeaderFont)),
-                    new PdfPCell(new Phrase("Gallons", HeaderFont))};
+                            new PdfPCell(new Phrase("Task Number", HeaderFont)),
+                            new PdfPCell(new Phrase("Task Name", HeaderFont)),
+                            new PdfPCell(new Phrase("Spray/Work Area", HeaderFont)),
+                            new PdfPCell(new Phrase("Pole/MP\nFrom", HeaderFont)),
+                            new PdfPCell(new Phrase("Pole/MP\nTo", HeaderFont)),
+                            new PdfPCell(new Phrase("Acres/Mile", HeaderFont)),
+                            new PdfPCell(new Phrase("Gallons", HeaderFont))
+                        };
 
                         Row = new PdfPRow(Cells);
                         ProductionTable.Rows.Add(Row);
@@ -956,12 +974,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                 PoleTo = String.Empty;
                             }
                             Cells = new PdfPCell[]{
-                        new PdfPCell(new Phrase(WorkArea, CellFont)),
-                        new PdfPCell(new Phrase(PoleFrom, CellFont)),
-                        new PdfPCell(new Phrase(PoleTo, CellFont)),
-                        new PdfPCell(new Phrase(Data.ACRES_MILE.ToString(), CellFont)),
-                        new PdfPCell(new Phrase(Data.QUANTITY.ToString(), CellFont))
-                    };
+                                new PdfPCell(new Phrase(Data.TASK_NUMBER, CellFont)),
+                                new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
+                                new PdfPCell(new Phrase(WorkArea, CellFont)),
+                                new PdfPCell(new Phrase(PoleFrom, CellFont)),
+                                new PdfPCell(new Phrase(PoleTo, CellFont)),
+                                new PdfPCell(new Phrase(Data.ACRES_MILE.ToString(), CellFont)),
+                                new PdfPCell(new Phrase(Data.QUANTITY.ToString(), CellFont))
+                            };
 
                             Row = new PdfPRow(Cells);
                             ProductionTable.Rows.Add(Row);
@@ -975,12 +995,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
 
                         Cells = new PdfPCell[]{
-                    new PdfPCell(new Phrase("Task", HeaderFont)),
-                    new PdfPCell(new Phrase("Spray/Work Area", HeaderFont)),
-                    new PdfPCell(new Phrase("Quantity", HeaderFont)),
-                    new PdfPCell(new Phrase("Station", HeaderFont)),
-                    new PdfPCell(new Phrase("Expenditure Type", HeaderFont)),
-                    new PdfPCell(new Phrase("Comments", HeaderFont))};
+                            new PdfPCell(new Phrase("Task Number", HeaderFont)),
+                            new PdfPCell(new Phrase("Task Name", HeaderFont)),
+                            new PdfPCell(new Phrase("Quantity", HeaderFont)),
+                            new PdfPCell(new Phrase("Station", HeaderFont)),
+                            new PdfPCell(new Phrase("Expenditure Type", HeaderFont)),
+                            new PdfPCell(new Phrase("Comments", HeaderFont))
+                        };
 
                         Row = new PdfPRow(Cells);
                         ProductionTable.Rows.Add(Row);
@@ -988,13 +1009,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         foreach (dynamic Data in ProductionData)
                         {
                             Cells = new PdfPCell[]{
-                        new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
-                        new PdfPCell(new Phrase(Data.WORK_AREA, CellFont)),
-                        new PdfPCell(new Phrase(Data.QUANTITY.ToString(), CellFont)),
-                        new PdfPCell(new Phrase(Data.STATION, CellFont)),
-                        new PdfPCell(new Phrase(Data.EXPENDITURE_TYPE.ToString(), CellFont)),
-                        new PdfPCell(new Phrase(Data.COMMENTS.ToString(), CellFont))
-                    };
+                                new PdfPCell(new Phrase(Data.TASK_NUMBER, CellFont)),
+                                new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
+                                new PdfPCell(new Phrase(Data.QUANTITY.ToString(), CellFont)),
+                                new PdfPCell(new Phrase(Data.STATION, CellFont)),
+                                new PdfPCell(new Phrase(Data.EXPENDITURE_TYPE.ToString(), CellFont)),
+                                new PdfPCell(new Phrase(Data.COMMENTS.ToString(), CellFont))
+                            };
 
                             Row = new PdfPRow(Cells);
                             ProductionTable.Rows.Add(Row);
