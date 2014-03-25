@@ -193,8 +193,8 @@ namespace DBI.Data
                 minsValue = ((minsValue * 60) * 100);
             }
 
-            TimeSpan travelHours = TimeSpan.FromHours((hoursValue * -1));
-            TimeSpan travelMins = TimeSpan.FromMinutes((minsValue * - 1));
+            TimeSpan travelHours = TimeSpan.FromHours((hoursValue));
+            TimeSpan travelMins = TimeSpan.FromMinutes((minsValue));
 
             double calc = (travelMins.Minutes > 0 && travelMins.Minutes <= 8) ? 0
                          : (travelMins.Minutes > 8 && travelMins.Minutes <= 23) ? .25
@@ -310,7 +310,7 @@ namespace DBI.Data
                                 join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                 join l in _context.PA_LOCATIONS_V on p.LOCATION_ID equals (long)l.LOCATION_ID
                                 where d.HEADER_ID == dailyActivityHeaderId
-                                select new { d.SHOPTIME_AM, d.SHOPTIME_PM, d.TRAVEL_TIME, d.DRIVE_TIME, p.SEGMENT1, e.PERSON_ID, e.EMPLOYEE_NUMBER, e.EMPLOYEE_NAME, d.ROLE_TYPE, d.STATE, l.REGION, d.COUNTY, p.ORG_ID, d.TIME_IN, d.TIME_OUT, d.LUNCH, d.LUNCH_LENGTH }).ToList();
+                                select new { d.SUPPORT_PROJ_ID, d.SHOPTIME_AM, d.SHOPTIME_PM, d.TRAVEL_TIME, d.DRIVE_TIME, p.SEGMENT1, e.PERSON_ID, e.EMPLOYEE_NUMBER, e.EMPLOYEE_NAME, d.ROLE_TYPE, d.STATE, l.REGION, d.COUNTY, p.ORG_ID, d.TIME_IN, d.TIME_OUT, d.LUNCH, d.LUNCH_LENGTH }).ToList();
 
                     //Add Time Entry Wages
                     foreach (var r in data)
@@ -395,17 +395,22 @@ namespace DBI.Data
                         //Check if record is IRM and Shop Time was added
                         if (xxdbiDailyActivityHeader.ORG_ID == 123 && (r.SHOPTIME_AM > 0 || r.SHOPTIME_PM > 0))
                         {
+                            //Get the support project information
+                            var dataSupport = (from p in _context.PROJECTS_V
+                                        join l in _context.PA_LOCATIONS_V on p.LOCATION_ID equals (long)l.LOCATION_ID
+                                        where p.PROJECT_ID == r.SUPPORT_PROJ_ID
+                                        select new {p.SEGMENT1,l.REGION}).SingleOrDefault();
 
-                            XXDBI_PAYROLL_AUDIT dtrecord = new XXDBI_PAYROLL_AUDIT();
+                            XXDBI_PAYROLL_AUDIT_V dtrecord = new XXDBI_PAYROLL_AUDIT_V();
                             dtrecord.PAYROLL_AUDIT_ID = generatePayrollAuditSequence();
                             dtrecord.DA_HEADER_ID = xxdbiDailyActivityHeader.DA_HEADER_ID;
                             dtrecord.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
                             dtrecord.EMPLOYEE_NAME =  DBI.Data.EMPLOYEES_V.oracleEmployeeName(r.PERSON_ID);
                             dtrecord.ELEMENT = "Time Entry Wages";
-                            dtrecord.STATE = xxdbiDailyActivityHeader.STATE;
-                            dtrecord.COUNTY = xxdbiDailyActivityHeader.COUNTY;
-                            dtrecord.PROJECT_NUMBER = r.SEGMENT1;
-                            dtrecord.TASK_NUMBER = returnDailyActivityTaskNumber(dailyActivityHeaderId);
+                            dtrecord.STATE = dataSupport.REGION;
+                            dtrecord.COUNTY = r.COUNTY;
+                            dtrecord.PROJECT_NUMBER = dataSupport.SEGMENT1;
+                            dtrecord.TASK_NUMBER = "9999";
                             dtrecord.EXPENDITURE_TYPE = "REGULAR TIME";
                             dtrecord.STATUS = "UNPROCESSED";
                             dtrecord.OVERTIME_STATUS = "UNPROCESSED";
@@ -426,15 +431,17 @@ namespace DBI.Data
                             TimeSpan span = new TimeSpan();
 
                             double hoursValue = (double)Math.Truncate((decimal)r.SHOPTIME_AM) + (double)Math.Truncate((decimal)r.SHOPTIME_PM);
-                            double minsValue = ((double)r.SHOPTIME_AM + (double)r.SHOPTIME_PM)  - hoursValue;
+                            double total = ((double)r.SHOPTIME_AM + (double)r.SHOPTIME_PM);
+                            double minsValue = total  - hoursValue;
                 
                             if (minsValue > 0) {
-                                minsValue = ((minsValue * 60) * 100);
+                                minsValue = (minsValue * 60);
                                                }
 
                             //Get new timespan for time
-                            span = span.Add(TimeSpan.FromHours((hoursValue * -1)));
-                            span = span.Add(TimeSpan.FromMinutes((minsValue * -1)));
+                            //Remove traveltime before you round
+                            span = span.Add(TimeSpan.FromHours((hoursValue)));
+                            span = span.Add(TimeSpan.FromMinutes((minsValue)));
    
                             double calc = (span.Minutes > 0 && span.Minutes <= 8) ? 0
                                             : (span.Minutes > 8 && span.Minutes <= 23) ? .25
@@ -477,7 +484,7 @@ namespace DBI.Data
                             dtrecord.PREVAILING_WAGE_RATE = null;
                             dtrecord.EFFECTIVE_START_DATE = current.GetFirstDayOfWeek();
                             dtrecord.EFFECTIVE_END_DATE = current.GetLastDayOfWeek();
-                            GenericData.Insert<XXDBI_PAYROLL_AUDIT>(dtrecord);
+                            GenericData.Insert<XXDBI_PAYROLL_AUDIT_V>(dtrecord);
                         }
                     }
 
