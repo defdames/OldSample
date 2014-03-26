@@ -317,6 +317,34 @@
       "EXPENDITURE_TYPE_V"."EXPENDITURE_DESCRIPTION" AS "EXPENDITURE_DESCRIPTION"
       FROM "XXEMS"."EXPENDITURE_TYPE_V" "EXPENDITURE_TYPE_V"</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="GL_ACCOUNTS_V" EntityType="OracleModel.Store.GL_ACCOUNTS_V" store:Type="Views" store:Schema="XXEMS" store:Name="GL_ACCOUNTS_V">
+            <DefiningQuery>SELECT 
+      "GL_ACCOUNTS_V"."CODE_COMBINATION_V" AS "CODE_COMBINATION_V", 
+      "GL_ACCOUNTS_V"."CHART_OF_ACCOUNTS_ID" AS "CHART_OF_ACCOUNTS_ID", 
+      "GL_ACCOUNTS_V"."ENABLED_FLAG" AS "ENABLED_FLAG", 
+      "GL_ACCOUNTS_V"."ACCOUNT_TYPE" AS "ACCOUNT_TYPE", 
+      "GL_ACCOUNTS_V"."SEGMENT1" AS "SEGMENT1", 
+      "GL_ACCOUNTS_V"."SEGMENT1_DESC" AS "SEGMENT1_DESC", 
+      "GL_ACCOUNTS_V"."SEGMENT2" AS "SEGMENT2", 
+      "GL_ACCOUNTS_V"."SEGMENT2_DESC" AS "SEGMENT2_DESC", 
+      "GL_ACCOUNTS_V"."SEGMENT3" AS "SEGMENT3", 
+      "GL_ACCOUNTS_V"."SEGMENT3_DESC" AS "SEGMENT3_DESC", 
+      "GL_ACCOUNTS_V"."SEGMENT4" AS "SEGMENT4", 
+      "GL_ACCOUNTS_V"."SEGMENT4_DESC" AS "SEGMENT4_DESC", 
+      "GL_ACCOUNTS_V"."SEGMENT5" AS "SEGMENT5", 
+      "GL_ACCOUNTS_V"."SEGMENT5_DESC" AS "SEGMENT5_DESC", 
+      "GL_ACCOUNTS_V"."SEGMENT6" AS "SEGMENT6", 
+      "GL_ACCOUNTS_V"."SEGMENT6_DESC" AS "SEGMENT6_DESC", 
+      "GL_ACCOUNTS_V"."SEGMENT7" AS "SEGMENT7", 
+      "GL_ACCOUNTS_V"."SEGMENT7_DESC" AS "SEGMENT7_DESC"
+      FROM "XXEMS"."GL_ACCOUNTS_V" "GL_ACCOUNTS_V"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="HIERARCHY_ID_V" EntityType="OracleModel.Store.HIERARCHY_ID_V" store:Type="Views" store:Schema="XXEMS" store:Name="HIERARCHY_ID_V">
+            <DefiningQuery>SELECT 
+      "HIERARCHY_ID_V"."HIERARCHY_ID" AS "HIERARCHY_ID", 
+      "HIERARCHY_ID_V"."NAME" AS "NAME"
+      FROM "XXEMS"."HIERARCHY_ID_V" "HIERARCHY_ID_V"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="INVENTORY_V" EntityType="OracleModel.Store.INVENTORY_V" store:Type="Views" store:Schema="XXEMS" store:Name="INVENTORY_V">
             <DefiningQuery>SELECT 
       "INVENTORY_V"."ITEM_ID" AS "ITEM_ID", 
@@ -348,7 +376,8 @@
       "ORG_HIER_V"."ORG_ID_PARENT" AS "ORG_ID_PARENT", 
       "ORG_HIER_V"."ORG_ID_CHILD" AS "ORG_ID_CHILD", 
       "ORG_HIER_V"."ORG_HIER" AS "ORG_HIER", 
-      "ORG_HIER_V"."LEVEL" AS "LEVEL", 
+      "ORG_HIER_V"."HIERARCHY_ID" AS "HIERARCHY_ID", 
+      "ORG_HIER_V"."LEVEL_SORT" AS "LEVEL_SORT", 
       "ORG_HIER_V"."ORG_ID" AS "ORG_ID", 
       "ORG_HIER_V"."TYPE" AS "TYPE", 
       "ORG_HIER_V"."BU_ORG" AS "BU_ORG"
@@ -1713,6 +1742,46 @@
           <Property Name="EXPENDITURE_DESCRIPTION" Type="varchar2" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXEMS.GL_ACCOUNTS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="GL_ACCOUNTS_V">
+          <Key>
+            <PropertyRef Name="CODE_COMBINATION_V" />
+            <PropertyRef Name="CHART_OF_ACCOUNTS_ID" />
+            <PropertyRef Name="ENABLED_FLAG" />
+            <PropertyRef Name="ACCOUNT_TYPE" />
+          </Key>
+          <Property Name="CODE_COMBINATION_V" Type="number" Nullable="false" Precision="15" />
+          <Property Name="CHART_OF_ACCOUNTS_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="ENABLED_FLAG" Type="varchar2" Nullable="false" MaxLength="1" />
+          <Property Name="ACCOUNT_TYPE" Type="varchar2" Nullable="false" MaxLength="1" />
+          <Property Name="SEGMENT1" Type="varchar2" MaxLength="25" />
+          <Property Name="SEGMENT1_DESC" Type="varchar2" />
+          <Property Name="SEGMENT2" Type="varchar2" MaxLength="25" />
+          <Property Name="SEGMENT2_DESC" Type="varchar2" />
+          <Property Name="SEGMENT3" Type="varchar2" MaxLength="25" />
+          <Property Name="SEGMENT3_DESC" Type="varchar2" />
+          <Property Name="SEGMENT4" Type="varchar2" MaxLength="25" />
+          <Property Name="SEGMENT4_DESC" Type="varchar2" />
+          <Property Name="SEGMENT5" Type="varchar2" MaxLength="25" />
+          <Property Name="SEGMENT5_DESC" Type="varchar2" />
+          <Property Name="SEGMENT6" Type="varchar2" MaxLength="25" />
+          <Property Name="SEGMENT6_DESC" Type="varchar2" />
+          <Property Name="SEGMENT7" Type="varchar2" MaxLength="25" />
+          <Property Name="SEGMENT7_DESC" Type="varchar2" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXEMS.HIERARCHY_ID_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="HIERARCHY_ID_V">
+          <Key>
+            <PropertyRef Name="HIERARCHY_ID" />
+            <PropertyRef Name="NAME" />
+          </Key>
+          <Property Name="HIERARCHY_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="NAME" Type="varchar2" Nullable="false" MaxLength="30" />
+        </EntityType>
+        <!--Errors Found During Generation:
       warning 6002: The table/view 'XXEMS.INVENTORY_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="INVENTORY_V">
@@ -2062,13 +2131,16 @@
           <Key>
             <PropertyRef Name="ORG_ID_PARENT" />
             <PropertyRef Name="ORG_ID_CHILD" />
+            <PropertyRef Name="ORG_HIER" />
+            <PropertyRef Name="HIERARCHY_ID" />
             <PropertyRef Name="ORG_ID" />
           </Key>
           <Property Name="PARENT_ORG" Type="varchar2" MaxLength="240" />
           <Property Name="ORG_ID_PARENT" Type="number" Nullable="false" Precision="15" />
           <Property Name="ORG_ID_CHILD" Type="number" Nullable="false" Precision="15" />
-          <Property Name="ORG_HIER" Type="varchar2" />
-          <Property Name="LEVEL" Type="number" />
+          <Property Name="ORG_HIER" Type="varchar2" Nullable="false" MaxLength="240" />
+          <Property Name="HIERARCHY_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="LEVEL_SORT" Type="number" />
           <Property Name="ORG_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="TYPE" Type="varchar2" MaxLength="30" />
           <Property Name="BU_ORG" Type="varchar2" MaxLength="10" />
@@ -3153,13 +3225,15 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_EMPLOYEE" EntitySet="DAILY_ACTIVITY_EMPLOYEE" />
           </AssociationSet>
-          <EntitySet Name="ORG_HIER_V" EntityType="OracleModel.ORG_HIER_V" />
           <EntitySet Name="SYS_USER_ORGS" EntityType="OracleModel.SYS_USER_ORGS" />
           <AssociationSet Name="FK_ORGS_USER_ID" Association="OracleModel.FK_ORGS_USER_ID">
             <End Role="SYS_USERS" EntitySet="SYS_USERS" />
             <End Role="SYS_USER_ORGS" EntitySet="SYS_USER_ORGS" />
           </AssociationSet>
           <EntitySet Name="XXDBI_PAYROLL_AUDIT_V" EntityType="OracleModel.XXDBI_PAYROLL_AUDIT_V" />
+          <EntitySet Name="ORG_HIER_V" EntityType="OracleModel.ORG_HIER_V" />
+          <EntitySet Name="HIERARCHY_ID_V" EntityType="OracleModel.HIERARCHY_ID_V" />
+          <EntitySet Name="GL_ACCOUNTS_V" EntityType="OracleModel.GL_ACCOUNTS_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -5493,21 +5567,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="ORG_HIER_V">
-          <Key>
-            <PropertyRef Name="ORG_ID_PARENT" />
-            <PropertyRef Name="ORG_ID_CHILD" />
-            <PropertyRef Name="ORG_ID" />
-          </Key>
-          <Property Type="String" Name="PARENT_ORG" MaxLength="240" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="ORG_ID_PARENT" Nullable="false" />
-          <Property Type="Int64" Name="ORG_ID_CHILD" Nullable="false" />
-          <Property Type="String" Name="ORG_HIER" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="LEVEL" Precision="38" Scale="0" />
-          <Property Type="Int64" Name="ORG_ID" Nullable="false" />
-          <Property Type="String" Name="TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="BU_ORG" MaxLength="10" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="SYS_USER_ORGS">
           <Key>
             <PropertyRef Name="SYS_ORG_ID" />
@@ -5573,6 +5632,58 @@
           <Property Type="Decimal" Name="PARENT_PAYROLL_ID" Precision="38" Scale="0" />
           <Property Type="String" Name="SLIDING_SCALE_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="DAILY_OVERTIME_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ORG_HIER_V">
+          <Key>
+            <PropertyRef Name="ORG_ID_PARENT" />
+            <PropertyRef Name="ORG_ID_CHILD" />
+            <PropertyRef Name="ORG_HIER" />
+            <PropertyRef Name="HIERARCHY_ID" />
+            <PropertyRef Name="ORG_ID" />
+          </Key>
+          <Property Type="String" Name="PARENT_ORG" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="ORG_ID_PARENT" Nullable="false" />
+          <Property Type="Int64" Name="ORG_ID_CHILD" Nullable="false" />
+          <Property Type="String" Name="ORG_HIER" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="HIERARCHY_ID" Nullable="false" />
+          <Property Type="Decimal" Name="LEVEL_SORT" Precision="38" Scale="0" />
+          <Property Type="Int64" Name="ORG_ID" Nullable="false" />
+          <Property Type="String" Name="TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="BU_ORG" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="HIERARCHY_ID_V">
+          <Key>
+            <PropertyRef Name="HIERARCHY_ID" />
+            <PropertyRef Name="NAME" />
+          </Key>
+          <Property Type="Int64" Name="HIERARCHY_ID" Nullable="false" />
+          <Property Type="String" Name="NAME" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="GL_ACCOUNTS_V">
+          <Key>
+            <PropertyRef Name="CODE_COMBINATION_V" />
+            <PropertyRef Name="CHART_OF_ACCOUNTS_ID" />
+            <PropertyRef Name="ENABLED_FLAG" />
+            <PropertyRef Name="ACCOUNT_TYPE" />
+          </Key>
+          <Property Type="Int64" Name="CODE_COMBINATION_V" Nullable="false" />
+          <Property Type="Int64" Name="CHART_OF_ACCOUNTS_ID" Nullable="false" />
+          <Property Type="String" Name="ENABLED_FLAG" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ACCOUNT_TYPE" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT1" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT1_DESC" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT2" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT2_DESC" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT3" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT3_DESC" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT4" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT4_DESC" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT5" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT5_DESC" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT6" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT6_DESC" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT7" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT7_DESC" MaxLength="4000" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -7354,20 +7465,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ORG_HIER_V">
-            <EntityTypeMapping TypeName="OracleModel.ORG_HIER_V">
-              <MappingFragment StoreEntitySet="ORG_HIER_V">
-                <ScalarProperty Name="BU_ORG" ColumnName="BU_ORG" />
-                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
-                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
-                <ScalarProperty Name="LEVEL" ColumnName="LEVEL" />
-                <ScalarProperty Name="ORG_HIER" ColumnName="ORG_HIER" />
-                <ScalarProperty Name="ORG_ID_CHILD" ColumnName="ORG_ID_CHILD" />
-                <ScalarProperty Name="ORG_ID_PARENT" ColumnName="ORG_ID_PARENT" />
-                <ScalarProperty Name="PARENT_ORG" ColumnName="PARENT_ORG" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="SYS_USER_ORGS">
             <EntityTypeMapping TypeName="OracleModel.SYS_USER_ORGS">
               <MappingFragment StoreEntitySet="SYS_USER_ORGS">
@@ -7420,6 +7517,53 @@
                 <ScalarProperty Name="EMPLOYEE_NUMBER" ColumnName="EMPLOYEE_NUMBER" />
                 <ScalarProperty Name="DA_HEADER_ID" ColumnName="DA_HEADER_ID" />
                 <ScalarProperty Name="PAYROLL_AUDIT_ID" ColumnName="PAYROLL_AUDIT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ORG_HIER_V">
+            <EntityTypeMapping TypeName="OracleModel.ORG_HIER_V">
+              <MappingFragment StoreEntitySet="ORG_HIER_V">
+                <ScalarProperty Name="BU_ORG" ColumnName="BU_ORG" />
+                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="LEVEL_SORT" ColumnName="LEVEL_SORT" />
+                <ScalarProperty Name="HIERARCHY_ID" ColumnName="HIERARCHY_ID" />
+                <ScalarProperty Name="ORG_HIER" ColumnName="ORG_HIER" />
+                <ScalarProperty Name="ORG_ID_CHILD" ColumnName="ORG_ID_CHILD" />
+                <ScalarProperty Name="ORG_ID_PARENT" ColumnName="ORG_ID_PARENT" />
+                <ScalarProperty Name="PARENT_ORG" ColumnName="PARENT_ORG" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HIERARCHY_ID_V">
+            <EntityTypeMapping TypeName="OracleModel.HIERARCHY_ID_V">
+              <MappingFragment StoreEntitySet="HIERARCHY_ID_V">
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="HIERARCHY_ID" ColumnName="HIERARCHY_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GL_ACCOUNTS_V">
+            <EntityTypeMapping TypeName="OracleModel.GL_ACCOUNTS_V">
+              <MappingFragment StoreEntitySet="GL_ACCOUNTS_V">
+                <ScalarProperty Name="SEGMENT7_DESC" ColumnName="SEGMENT7_DESC" />
+                <ScalarProperty Name="SEGMENT7" ColumnName="SEGMENT7" />
+                <ScalarProperty Name="SEGMENT6_DESC" ColumnName="SEGMENT6_DESC" />
+                <ScalarProperty Name="SEGMENT6" ColumnName="SEGMENT6" />
+                <ScalarProperty Name="SEGMENT5_DESC" ColumnName="SEGMENT5_DESC" />
+                <ScalarProperty Name="SEGMENT5" ColumnName="SEGMENT5" />
+                <ScalarProperty Name="SEGMENT4_DESC" ColumnName="SEGMENT4_DESC" />
+                <ScalarProperty Name="SEGMENT4" ColumnName="SEGMENT4" />
+                <ScalarProperty Name="SEGMENT3_DESC" ColumnName="SEGMENT3_DESC" />
+                <ScalarProperty Name="SEGMENT3" ColumnName="SEGMENT3" />
+                <ScalarProperty Name="SEGMENT2_DESC" ColumnName="SEGMENT2_DESC" />
+                <ScalarProperty Name="SEGMENT2" ColumnName="SEGMENT2" />
+                <ScalarProperty Name="SEGMENT1_DESC" ColumnName="SEGMENT1_DESC" />
+                <ScalarProperty Name="SEGMENT1" ColumnName="SEGMENT1" />
+                <ScalarProperty Name="ACCOUNT_TYPE" ColumnName="ACCOUNT_TYPE" />
+                <ScalarProperty Name="ENABLED_FLAG" ColumnName="ENABLED_FLAG" />
+                <ScalarProperty Name="CHART_OF_ACCOUNTS_ID" ColumnName="CHART_OF_ACCOUNTS_ID" />
+                <ScalarProperty Name="CODE_COMBINATION_V" ColumnName="CODE_COMBINATION_V" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
