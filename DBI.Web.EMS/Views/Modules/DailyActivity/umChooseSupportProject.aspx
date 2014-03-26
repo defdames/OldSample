@@ -4,24 +4,26 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+	<title></title>
 </head>
 <body>
-    <form id="form1" runat="server">
-    <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
-        <ext:Panel runat="server" Layout="FitLayout">
-            <Items>
-                <ext:FormPanel runat="server" ID="uxChooseSupportProject" Layout="FormLayout" Region="Center" BodyPadding="5">
-                    <Buttons>
-                        <ext:Button ID="Button1" runat="server" Text="Submit">
-                            <DirectEvents>
-                                <Click OnEvent="deSupportProjectChoice" />
-                            </DirectEvents>
-                        </ext:Button>
-                    </Buttons>
-                </ext:FormPanel>
-            </Items>
-            <Listeners>
+	<form id="form1" runat="server">
+	<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
+		<ext:Panel runat="server" Layout="FitLayout">
+			<Items>
+				<ext:FormPanel runat="server" ID="uxChooseSupportProject" Layout="FormLayout" Region="Center" BodyPadding="5">
+					<Buttons>
+						<ext:Button ID="Button1" runat="server" Text="Submit">
+							<DirectEvents>
+								<Click OnEvent="deSupportProjectChoice">
+									<EventMask ShowMask="true" />
+								</Click>
+							</DirectEvents>
+						</ext:Button>
+					</Buttons>
+				</ext:FormPanel>
+			</Items>
+			<Listeners>
 				<AfterRender
 					Handler="var win = parentAutoLoadControl.target || parentAutoLoadControl, //you can use just 'parentAutoLoadControl' after update to Ext.NET v2 beta.
 									size = this.getSize();
@@ -31,7 +33,7 @@
 								win.setSize(size);"
 					Delay="100" />
 			</Listeners>
-        </ext:Panel>
-    </form>
+		</ext:Panel>
+	</form>
 </body>
 </html>

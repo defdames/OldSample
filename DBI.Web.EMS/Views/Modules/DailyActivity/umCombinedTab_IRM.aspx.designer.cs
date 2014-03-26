@@ -58,15 +58,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.FormPanel uxHeaderPanel;
         
         /// <summary>
-        /// FieldContainer1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer1;
-        
-        /// <summary>
         /// uxDateField control.
         /// </summary>
         /// <remarks>
@@ -94,24 +85,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.TextField uxOracleField;
         
         /// <summary>
-        /// Component1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Component Component1;
-        
-        /// <summary>
-        /// FieldContainer2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer2;
-        
-        /// <summary>
         /// uxProjectField control.
         /// </summary>
         /// <remarks>
@@ -130,22 +103,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.TextField uxSubDivisionField;
         
         /// <summary>
-        /// Component2 control.
+        /// uxSupervisorField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Component Component2;
-        
-        /// <summary>
-        /// FieldContainer3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer3;
+        protected global::Ext.Net.TextField uxSupervisorField;
         
         /// <summary>
         /// uxLicenseField control.
@@ -166,24 +130,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.TextField uxStateField;
         
         /// <summary>
-        /// uxSupervisorField control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxSupervisorField;
-        
-        /// <summary>
-        /// FieldContainer4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer4;
-        
-        /// <summary>
         /// uxTypeField control.
         /// </summary>
         /// <remarks>
@@ -200,15 +146,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.TextField uxDensityField;
-        
-        /// <summary>
-        /// Component3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Component Component3;
         
         /// <summary>
         /// uxEmployeeGrid control.
@@ -481,15 +418,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.FormPanel uxFooterPanel;
         
         /// <summary>
-        /// FieldContainer5 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer5;
-        
-        /// <summary>
         /// uxReasonForNoWorkField control.
         /// </summary>
         /// <remarks>
@@ -497,24 +425,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.TextField uxReasonForNoWorkField;
-        
-        /// <summary>
-        /// Component4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Component Component4;
-        
-        /// <summary>
-        /// FieldContainer6 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer6;
         
         /// <summary>
         /// uxHotelField control.
@@ -553,22 +463,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.TextField uxPhoneField;
         
         /// <summary>
-        /// FieldContainer7 control.
+        /// FieldContainer1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer7;
+        protected global::Ext.Net.FieldContainer FieldContainer1;
         
         /// <summary>
-        /// Component5 control.
+        /// uxForemanImage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Component Component5;
+        protected global::Ext.Net.Image uxForemanImage;
         
         /// <summary>
         /// uxContractNameField control.
@@ -580,22 +490,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.TextField uxContractNameField;
         
         /// <summary>
-        /// FieldContainer8 control.
+        /// FieldContainer2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer8;
-        
-        /// <summary>
-        /// uxForemanImage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Image uxForemanImage;
+        protected global::Ext.Net.FieldContainer FieldContainer2;
         
         /// <summary>
         /// uxContractImage control.

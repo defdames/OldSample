@@ -44,7 +44,7 @@
 							Mode="ValueText"
 							FieldLabel="Employee"
 							AllowBlank="false"
-                            AllowOnlyWhitespace="true">
+							AllowOnlyWhitespace="true">
 							<Component>
 								<ext:GridPanel runat="server"
 									ID="uxAddEmployeeEmpGrid"
@@ -185,26 +185,26 @@
 								<ext:DateField runat="server"
 									ID="uxAddEmployeeTimeInDate"
 									EnableKeyEvents="true"
-                                    IsRemoteValidation="true"
+									IsRemoteValidation="true"
 									AllowBlank="false">
-                                    <RemoteValidation OnValidation="ValidateDateTime">
-                                        <ExtraParams>
-                                            <ext:Parameter Name="Type" Value="Add" />
-                                        </ExtraParams>
-                                    </RemoteValidation>
+									<RemoteValidation OnValidation="ValidateDateTime">
+										<ExtraParams>
+											<ext:Parameter Name="Type" Value="Add" />
+										</ExtraParams>
+									</RemoteValidation>
 								</ext:DateField>
 								<ext:TimeField runat="server"
 									ID="uxAddEmployeeTimeInTime"
-                                    IsRemoteValidation="true"
+									IsRemoteValidation="true"
 									EnableKeyEvents="true"
 									Increment="30" 
 									SelectedTime="09:00" 
 									AllowBlank="false">
 									<RemoteValidation OnValidation="ValidateDateTime">
-                                        <ExtraParams>
-                                            <ext:Parameter Name="Type" Value="Add" />
-                                        </ExtraParams>
-                                    </RemoteValidation>
+										<ExtraParams>
+											<ext:Parameter Name="Type" Value="Add" />
+										</ExtraParams>
+									</RemoteValidation>
 								</ext:TimeField>
 							</Items>
 							<Defaults>
@@ -223,26 +223,26 @@
 								<ext:DateField runat="server"
 									ID="uxAddEmployeeTimeOutDate"
 									EnableKeyEvents="true"
-                                    IsRemoteValidation="true"
+									IsRemoteValidation="true"
 									AllowBlank="false">
 									<RemoteValidation OnValidation="ValidateDateTime">
-                                        <ExtraParams>
-                                            <ext:Parameter Name="Type" Value="Add" />
-                                        </ExtraParams>
-                                    </RemoteValidation>
+										<ExtraParams>
+											<ext:Parameter Name="Type" Value="Add" />
+										</ExtraParams>
+									</RemoteValidation>
 								</ext:DateField>
 								<ext:TimeField runat="server"
 									ID="uxAddEmployeeTimeOutTime"
 									Increment="30" 
-                                    IsRemoteValidation="true"
+									IsRemoteValidation="true"
 									SelectedTime="09:00" 
 									EnableKeyEvents="true"
 									AllowBlank="false">
 									<RemoteValidation OnValidation="ValidateDateTime">
-                                        <ExtraParams>
-                                            <ext:Parameter Name="Type" Value="Add" />
-                                        </ExtraParams>
-                                    </RemoteValidation>
+										<ExtraParams>
+											<ext:Parameter Name="Type" Value="Add" />
+										</ExtraParams>
+									</RemoteValidation>
 								</ext:TimeField>
 							</Items>
 						</ext:FieldContainer>
@@ -369,7 +369,9 @@
 							Text="Submit"
 							Disabled="true">
 							<DirectEvents>
-								<Click OnEvent="deAddEmployee" />
+								<Click OnEvent="deAddEmployee">
+									<EventMask ShowMask="true" />
+								</Click>
 							</DirectEvents>
 						</ext:Button>
 						<ext:Button runat="server"
@@ -540,12 +542,12 @@
 									ID="uxEditEmployeeTimeInDate"
 									EnableKeyEvents="true"
 									AllowBlank="false"
-                                    IsRemoteValidation="true">
+									IsRemoteValidation="true">
 									<RemoteValidation OnValidation="ValidateDateTime">
-                                        <ExtraParams>
-                                            <ext:Parameter Name="Type" Value="Edit" />
-                                        </ExtraParams>
-                                    </RemoteValidation>
+										<ExtraParams>
+											<ext:Parameter Name="Type" Value="Edit" />
+										</ExtraParams>
+									</RemoteValidation>
 								</ext:DateField>
 								<ext:TimeField runat="server"
 									ID="uxEditEmployeeTimeInTime"
@@ -554,10 +556,10 @@
 									Increment="30" 
 									AllowBlank="false">
 									<RemoteValidation OnValidation="ValidateDateTime">
-                                        <ExtraParams>
-                                            <ext:Parameter Name="Type" Value="Edit" />
-                                        </ExtraParams>
-                                    </RemoteValidation>
+										<ExtraParams>
+											<ext:Parameter Name="Type" Value="Edit" />
+										</ExtraParams>
+									</RemoteValidation>
 								</ext:TimeField>
 							</Items>
 							<Defaults>
@@ -579,10 +581,10 @@
 									EnableKeyEvents="true"
 									AllowBlank="false">
 									<RemoteValidation OnValidation="ValidateDateTime">
-                                        <ExtraParams>
-                                            <ext:Parameter Name="Type" Value="Edit" />
-                                        </ExtraParams>
-                                    </RemoteValidation>
+										<ExtraParams>
+											<ext:Parameter Name="Type" Value="Edit" />
+										</ExtraParams>
+									</RemoteValidation>
 								</ext:DateField>
 								<ext:TimeField runat="server"
 									ID="uxEditEmployeeTimeOutTime"
@@ -591,10 +593,10 @@
 									EnableKeyEvents="true"
 									AllowBlank="false">
 									<RemoteValidation OnValidation="ValidateDateTime">
-                                        <ExtraParams>
-                                            <ext:Parameter Name="Type" Value="Edit" />
-                                        </ExtraParams>
-                                    </RemoteValidation>
+										<ExtraParams>
+											<ext:Parameter Name="Type" Value="Edit" />
+										</ExtraParams>
+									</RemoteValidation>
 								</ext:TimeField>
 							</Items>
 						</ext:FieldContainer>
@@ -723,7 +725,9 @@
 							Text="Submit"
 							Disabled="true">
 							<DirectEvents>
-								<Click OnEvent="deEditEmployee" />
+								<Click OnEvent="deEditEmployee">
+									<EventMask ShowMask="true" />
+								</Click>
 							</DirectEvents>
 						</ext:Button>
 						<ext:Button runat="server"

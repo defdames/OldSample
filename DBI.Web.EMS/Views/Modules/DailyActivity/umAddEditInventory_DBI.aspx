@@ -312,6 +312,7 @@
 									<ExtraParams>
 										<ext:Parameter Name="SecondaryInvName" Value="#{uxAddInventorySub}.getRawValue()" Mode="Raw" />
 									</ExtraParams>
+									<EventMask ShowMask="true" />
 								</Click>
 							</DirectEvents>
 						</ext:Button>
@@ -494,6 +495,7 @@
 									<ExtraParams>
 										<ext:Parameter Name="SecondaryInvName" Value="#{uxEditInventorySub}.getRawValue()" Mode="Raw" />
 									</ExtraParams>
+									<EventMask ShowMask="true" />
 								</Click>
 							</DirectEvents>
 						</ext:Button>

@@ -189,7 +189,9 @@
 							Icon="Add"
 							Disabled="true">
 							<DirectEvents>
-								<Click OnEvent="deAddProduction" />
+								<Click OnEvent="deAddProduction">
+									<EventMask ShowMask="true" />
+								</Click>
 							</DirectEvents>
 						</ext:Button>
 						<ext:Button runat="server"
@@ -372,7 +374,9 @@
 							Icon="Add"
 							Disabled="true">
 							<DirectEvents>
-								<Click OnEvent="deEditProduction" />
+								<Click OnEvent="deEditProduction">
+									<EventMask ShowMask="true" />
+								</Click>
 							</DirectEvents>
 						</ext:Button>
 						<ext:Button runat="server"

@@ -13,37 +13,18 @@
 		<ext:Panel runat="server" ID="uxMainContainer" Layout="AutoLayout">
 			<Items>
 				<ext:FormPanel runat="server"
-					ID="uxHeaderPanel" Padding="10" BodyPadding="5" MaxWidth="1000">
+					ID="uxHeaderPanel" Padding="10" BodyPadding="5" MaxWidth="1000" Layout="FormLayout">
 					<Items>
-						<ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout" AnchorHorizontal="100%">
-							<Items>
-								<ext:TextField runat="server" ID="uxDateField" FieldLabel="Date" Flex="25" ReadOnly="true" />
-								<ext:TextField runat="server" ID="uxHeaderField" FieldLabel="DRS Id" Flex="25" ReadOnly="true" />
-								<ext:TextField runat="server" ID="uxOracleField" FieldLabel="Oracle DRS Id" Flex="25" ReadOnly="true" />
-								<ext:Component ID="Component1" runat="server" Flex="25" />
-							</Items>
-						</ext:FieldContainer>
-						<ext:FieldContainer ID="FieldContainer2" runat="server" Layout="HBoxLayout" AnchorHorizontal="100%">
-							<Items>
-								<ext:TextField runat="server" ID="uxProjectField" FieldLabel="Project" Flex="50" LabelPad="2" ReadOnly="true"  />
-								<ext:TextField runat="server" ID="uxSubDivisionField" FieldLabel="Sub-Division" Flex="25" ReadOnly="true" />
-								<ext:Component ID="Component2" runat="server" Flex="25" />
-							</Items>
-						</ext:FieldContainer>
-						<ext:FieldContainer ID="FieldContainer3" runat="server" Layout="HBoxLayout" AnchorHorizontal="100%">
-							<Items>
-								<ext:TextField runat="server" ID="uxLicenseField" FieldLabel="State License #" Flex="25" ReadOnly="true" />
-								<ext:TextField runat="server" ID="uxStateField" LabelWidth="50" FieldLabel="State" Flex="15" ReadOnly="true" />
-								<ext:TextField runat="server" ID="uxSupervisorField" FieldLabel="Supervisor/Area Manager" LabelWidth="150" Flex="60" MaxLength="50" ReadOnly="true" />
-							</Items>
-						</ext:FieldContainer>
-						<ext:FieldContainer ID="FieldContainer4" runat="server" Layout="HBoxLayout" AnchorHorizontal="100%">
-							<Items>
-								<ext:TextField runat="server" ID="uxTypeField" FieldLabel="Type of Work" Flex="20" ReadOnly="true" />
-								<ext:TextField runat="server" ID="uxDensityField" FieldLabel="Density" Flex="25"  ReadOnly="true"/>
-								<ext:Component ID="Component3" runat="server" Flex="65" />
-							</Items>
-						</ext:FieldContainer>
+						<ext:TextField runat="server" ID="uxDateField" FieldLabel="Date" Width="200"  ReadOnly="true" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxHeaderField" FieldLabel="DRS Id" Width="200" ReadOnly="true" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxOracleField" FieldLabel="Oracle DRS Id" Width="200" ReadOnly="true" />
+						<ext:TextField runat="server" ID="uxProjectField" FieldLabel="Project" Width="600" ReadOnly="true" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxSubDivisionField" FieldLabel="Sub-Division" Width="300" ReadOnly="true" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxSupervisorField" FieldLabel="Supervisor/Area Manager" Width="500" ReadOnly="true" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxLicenseField" FieldLabel="State License #" Width="250" ReadOnly="true" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxStateField" FieldLabel="State" Width="250" ReadOnly="true" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxTypeField" FieldLabel="Type of Work" Width="250" ReadOnly="true" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxDensityField" FieldLabel="Density" Width="200" ReadOnly="true" LabelWidth="100" />
 					</Items>
 				</ext:FormPanel>                    
 				<ext:GridPanel runat="server"
@@ -227,40 +208,30 @@
 						</Columns>
 					</ColumnModel>
 				</ext:GridPanel>
-                <ext:FormPanel runat="server" ID="uxFooterPanel" Padding="10" BodyPadding="5" MaxWidth="1000">
+				<ext:FormPanel runat="server" ID="uxFooterPanel" Padding="10" BodyPadding="5" MaxWidth="1000">
 					<Items>
-						<ext:FieldContainer ID="FieldContainer5" runat="server" Layout="HBoxLayout" AnchorHorizontal="100%">
+						<ext:TextField runat="server" ID="uxReasonForNoWorkField" FieldLabel="Reason for no work" Width="700" ReadOnly="true" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxHotelField" FieldLabel="Hotel" ReadOnly="true" LabelWidth="100" Width="400" />
+						<ext:TextField runat="server" ID="uxCityField" FieldLabel="City" ReadOnly="true" LabelWidth="100" Width="300" />
+						<ext:TextField runat="server" ID="uxFooterStateField" FieldLabel="State" ReadOnly="true" LabelWidth="100" Width="300" />
+						<ext:TextField runat="server" ID="uxPhoneField" FieldLabel="Phone" ReadOnly="true" LabelWidth="100" Width="300" />
+						<ext:FieldContainer ID="FieldContainer1" runat="server" FieldLabel="Foreman Signature" LabelWidth="100">
 							<Items>
-								<ext:TextField runat="server" ID="uxReasonForNoWorkField" FieldLabel="Reason for no work" Flex="75" ReadOnly="true" />
-								<ext:Component ID="Component4" runat="server" Flex="25" />
+								<ext:Image runat="server" Height="214" ID="uxForemanImage" Width="320" />
 							</Items>
 						</ext:FieldContainer>
-						<ext:FieldContainer ID="FieldContainer6" runat="server" Layout="HBoxLayout" AnchorHorizontal="100%">
+						<ext:TextField runat="server" ID="uxContractNameField" FieldLabel="Contract Rep Name" Width="500" ReadOnly="true" LabelWidth="100" />
+						<ext:FieldContainer ID="FieldContainer2" runat="server" FieldLabel="Contract Rep Signature" LabelWidth="100">
 							<Items>
-								<ext:TextField runat="server" ID="uxHotelField" FieldLabel="Hotel" Flex="25" ReadOnly="true" LabelWidth="50" />
-								<ext:TextField runat="server" ID="uxCityField" FieldLabel="City" Flex="25" ReadOnly="true" LabelWidth="50" />
-								<ext:TextField runat="server" ID="uxFooterStateField" FieldLabel="State" Flex="25" ReadOnly="true" LabelWidth="50" />
-								<ext:TextField runat="server" ID="uxPhoneField" FieldLabel="Phone" Flex="25" ReadOnly="true" LabelWidth="50" />
+								<ext:Image runat="server" Height="214" ID="uxContractImage" Width="320" />
 							</Items>
 						</ext:FieldContainer>
-						<ext:FieldContainer ID="FieldContainer7" runat="server" Layout="HBoxLayout" AnchorHorizontal="100%">
+						<ext:TextField runat="server" ID="uxDOTRep" ReadOnly="true" FieldLabel="DOT Rep Name" LabelWidth="100" Width="500" />
+						<ext:FieldContainer runat="server" FieldLabel="DOT Rep Signature" LabelWidth="100">
 							<Items>
-								<ext:Component ID="Component5" runat="server" Flex="50" />
-								<ext:TextField runat="server" ID="uxContractNameField" FieldLabel="Contract Rep Name" Flex="50" ReadOnly="true" />
+								<ext:Image runat="server" Height="214" ID="uxDOTImage" Width="320" />
 							</Items>
 						</ext:FieldContainer>
-						<ext:FieldContainer ID="FieldContainer8" runat="server" Layout="HBoxLayout" AnchorHorizontal="100%">
-							<Items>
-								<ext:Image runat="server" Height="240" ID="uxForemanImage" Flex="50" />
-								<ext:Image runat="server" Height="240" ID="uxContractImage" Flex="50" />
-							</Items>
-						</ext:FieldContainer>
-                        <ext:FieldContainer runat="server" Layout="HBoxLayout" AnchorHorizontal="100%">
-                            <Items>
-                                <ext:TextField runat="server" Flex="50" ID="uxDOTRep" ReadOnly="true" FieldLabel="DOT Rep Name" />
-                                <ext:Image runat="server" Height="240" ID="uxDOTImage" Flex="50" />
-                            </Items>
-                        </ext:FieldContainer>
 					 </Items>
 				</ext:FormPanel>
 			</Items>

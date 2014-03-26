@@ -108,7 +108,9 @@
 							Text="Submit"
 							Disabled="true">
 							<DirectEvents>
-								<Click OnEvent="deAddChemical" />
+								<Click OnEvent="deAddChemical">
+									<EventMask ShowMask="true" />
+								</Click>
 							</DirectEvents>
 						</ext:Button>
 						<ext:Button runat="server"
@@ -137,7 +139,7 @@
 							ID="uxEditChemicalGallonAcre"
 							FieldLabel="Gallons / Acre"
 							AllowBlank="false">
-                            <Listeners>
+							<Listeners>
 								<Change Fn="updateEditTotalAndUsed" />
 							</Listeners>
 						</ext:NumberField>
@@ -211,7 +213,9 @@
 							Text="Submit"
 							Disabled="true">
 							<DirectEvents>
-								<Click OnEvent="deEditChemical" />
+								<Click OnEvent="deEditChemical">
+									<EventMask ShowMask="true" />
+								</Click>
 							</DirectEvents>
 						</ext:Button>
 						<ext:Button runat="server"

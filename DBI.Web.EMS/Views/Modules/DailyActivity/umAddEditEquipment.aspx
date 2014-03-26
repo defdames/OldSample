@@ -164,7 +164,9 @@
 							Icon="Add"
 							Disabled="true">
 							<DirectEvents>
-								<Click OnEvent="deAddEquipment" />                                    
+								<Click OnEvent="deAddEquipment">
+									<EventMask ShowMask="true" />
+								</Click>
 							</DirectEvents>
 						</ext:Button>
 						<ext:Button runat="server"
@@ -303,7 +305,9 @@
 							Text="Submit"
 							Disabled="true">
 							<DirectEvents>
-								<Click OnEvent="deEditEquipment" />
+								<Click OnEvent="deEditEquipment">
+									<EventMask ShowMask="true" />
+								</Click>
 							</DirectEvents>
 						</ext:Button>
 						<ext:Button runat="server"

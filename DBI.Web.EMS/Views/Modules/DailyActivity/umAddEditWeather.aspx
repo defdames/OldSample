@@ -79,7 +79,9 @@
 							Icon="Add"
 							Disabled="true">
 							<DirectEvents>
-								<Click OnEvent="deAddWeather" />
+								<Click OnEvent="deAddWeather">
+									<EventMask ShowMask="true" />
+								</Click>
 							</DirectEvents>
 						</ext:Button>
 						<ext:Button runat="server"
@@ -165,7 +167,9 @@
 							 Icon="Add"
 							 Disabled="true">
 							 <DirectEvents>
-								 <Click OnEvent="deEditWeather" />
+								 <Click OnEvent="deEditWeather">
+									 <EventMask ShowMask="true" />
+								 </Click>
 							 </DirectEvents>
 						 </ext:Button>
 						 <ext:Button runat="server"

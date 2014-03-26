@@ -91,7 +91,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(EmployeeToUpdate);
             }
 
-            X.Js.Call(string.Format("parent.App.direct.dmRefreshShowSubmit_IRM('{0}')", Request.QueryString["HeaderId"]));
+            X.Js.Call("parent.App.uxPlaceholderWindow.hide()");
         }
     }
 }
