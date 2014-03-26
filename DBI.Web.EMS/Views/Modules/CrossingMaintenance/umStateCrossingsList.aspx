@@ -92,6 +92,7 @@
             <Plugins>
                 <ext:FilterHeader ID="FilterHeader2" runat="server" />
             </Plugins>
+           
             <TopBar>
                 <ext:Toolbar ID="Toolbar2" runat="server">
                     <Items>

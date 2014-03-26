@@ -17,7 +17,7 @@
 
                     <ext:TabPanel ID="uxReportsTab" runat="server" Region="Center">
                         <Items>
-                            <ext:Panel runat="server"
+                            <ext:Panel runat="server" 
                                 Title="State Crossing List"
                                 ID="uxStateCrossingsList"
                                 Disabled="false">

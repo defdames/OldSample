@@ -105,7 +105,7 @@
                     <Model>
                         <ext:Model ID="Model1" runat="server">
                             <Fields>
-                                <%--        <ext:ModelField Name="COMPLETED_DATE" Type="Date" />--%>
+                               
 
                                 <ext:ModelField Name="CROSSING_ID" />
                                 <ext:ModelField Name="SUPPLEMENTAL_ID" />
@@ -150,7 +150,7 @@
             Layout="FormLayout"
             Hidden="true"
             Title="Add New Supplemental"
-            Width="800">
+            Width="800" Modal="true">
             <Items>
                 <ext:FormPanel ID="uxAddSupplementalForm" runat="server" Layout="FormLayout">
                     <Items>

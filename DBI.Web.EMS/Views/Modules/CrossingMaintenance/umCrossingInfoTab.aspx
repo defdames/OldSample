@@ -248,7 +248,7 @@
                 Layout="FormLayout"
                 Hidden="true"
                 Title="Add New Crossing"
-                Width="850" Closable="false">
+                Width="850" Closable="false" Modal="true">
                 <Items>
                     <ext:FormPanel runat="server" ID="uxAddCrossingForm" Layout="FormLayout">
                         <Items>
@@ -564,7 +564,7 @@
                 Layout="FormLayout"
                 Hidden="true"
                 Title="Edit Crossing"
-                Width="850" Closable="false">
+                Width="850" Closable="false" Modal="true">
                 <Items>
                     <ext:FormPanel ID="uxEditCrossingForm" runat="server" Layout="FormLayout">
                         <Items>
@@ -878,7 +878,7 @@
                 Hidden="true"
                 Title="Add Incident"
                 Width="550"
-                Closable="false">
+                Closable="false" Modal="true">
                 <Items>
              <ext:FormPanel runat="server" ID="uxIncidentFormPanel" Layout="FormLayout">
                 <Items>

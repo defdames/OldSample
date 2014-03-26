@@ -149,7 +149,7 @@
                 Layout="FormLayout"
                 Hidden="true"
                 Title="Add New Contact"
-                Width="250" Closable="false">
+                Width="250" Closable="false" Modal="true">
                 <Items>
                     <ext:FormPanel runat="server" ID="uxAddContactForm" Layout="FormLayout">
                         <Items>
@@ -232,7 +232,7 @@
                 Layout="FormLayout"
                 Hidden="true"
                 Title="Edit Existing Contact"
-                Width="250" Closable="false">
+                Width="250" Closable="false" Modal="true">
                 <Items>
                     <ext:FormPanel ID="uxEditContactForm" runat="server" Layout="FormLayout">
                         <Items>
@@ -320,7 +320,7 @@
                 ID="uxAssignCrossingWindow"
                 Layout="FormLayout"
                 Hidden="true"
-                Title="Assign Crossing to Manager" Width="950">
+                Title="Assign Crossing to Manager" Width="950" Modal="true">
                 <Items>
                     <ext:Panel ID="uxAssignContactPanel" runat="server" Width="940" Height="330">
                         <LayoutConfig>
@@ -449,7 +449,7 @@
                 Layout="FormLayout"
                 Hidden="true"
                 Title="Update Crossings To New Manager"
-                Width="550" Height="120" Closable="false">
+                Width="550" Height="120" Closable="false" Modal="true">
                 <Items>
                     <ext:FormPanel ID="uxUpdateContactForm" runat="server" Layout="FormLayout">
                         <Items>
@@ -586,7 +586,7 @@
                 Hidden="true"
                 BodyPadding="5"
                 BodyBorder="0"
-                Title="Drag and Drop Crossing That Are To Be Updated">
+                Title="Drag and Drop Crossing That Are To Be Updated" Modal="true">
                 <Items>
                     <ext:Panel ID="uxTransferCrossingPanel" runat="server" Width="700" Height="553">
                         <LayoutConfig>

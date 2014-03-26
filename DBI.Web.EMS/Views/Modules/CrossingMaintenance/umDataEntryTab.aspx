@@ -137,7 +137,7 @@
             Layout="FormLayout"
             Hidden="true"
             Title="Add Application Entry"
-            Width="650">
+            Width="650" Modal="true">
             <Items>
                 <ext:FormPanel ID="uxAddApplicationForm" runat="server" Layout="FormLayout">
                     <Items>

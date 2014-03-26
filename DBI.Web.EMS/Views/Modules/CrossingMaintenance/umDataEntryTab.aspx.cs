@@ -73,7 +73,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string AppRequested = uxAddAppReqeusted.Value.ToString();
             string TruckNumber = uxAddApplicationTruckComboBox.Value.ToString();
             string Spray = uxAddEntrySprayBox.Value.ToString();
-            //DateTime FiscalYear = uxAddFiscalYear.Value.ToString();
             string Cut = uxAddEntryCutBox.Value.ToString();
             string Inspect = uxAddEntryInspectBox.Value.ToString();
             
@@ -108,10 +107,18 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             List<CrossingForApplicationDetails> crossingList = JSON.Deserialize<List<CrossingForApplicationDetails>>(json);
             foreach (CrossingForApplicationDetails crossing in crossingList)
             {
-                //check for if application requested has been duplicated in the same fiscal year.
-               
+                ////check for if application requested has been duplicated in the same fiscal year.
+                //if (Date.Exists(x => (x.APPLICATION_REQUESTED == AppRequested))
+                //{
+                //    MessageBox.Show(new MessageBoxConfig
+                //    {
+                //    Title = "Error",
+                //    Message="The same application requested exists in this fiscal year."
 
-
+                //    });
+                
+                //else
+                //{
 
                 //Add to Db
                 using (Entities _context = new Entities())
@@ -122,7 +129,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                         data.APPLICATION_REQUESTED = AppRequested;
                         data.TRUCK_NUMBER = TruckNumber;
                         data.SPRAY = Spray;
-                        //data.FISCAL_YEAR = FiscalYear;
                         data.CUT = Cut;
                         data.INSPECT = Inspect;                       
                         data.CROSSING_ID = crossing.CROSSING_ID;
@@ -155,7 +161,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                         TargetAnchor = AnchorPoint.Center
                     }
                 });
-            }
+                }
+            
         }
         //protected void deEditApplicationForm(object sender, DirectEventArgs e)
         //{
