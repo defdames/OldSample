@@ -11,7 +11,7 @@
 	<ext:ResourceManager ID="ResourceManager1" runat="server"  IsDynamic="False" RethrowAjaxExceptions="true">
 	</ext:ResourceManager>
 	<form id="form1" runat="server">
-		<ext:FormPanel ID="uxFormPanel" runat="server" Layout="FormLayout" BodyPadding="5">
+		<ext:FormPanel ID="uxFormPanel" runat="server" Layout="FormLayout" BodyPadding="5" MaxWidth="1000">
 			<Items>
 				<ext:DropDownField runat="server"
 					ID="uxFormProject"

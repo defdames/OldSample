@@ -12,7 +12,7 @@
 	<form id="form1" runat="server">
 		<ext:FormPanel runat="server"
 			ID="uxEditHeaderForm"
-			Layout="FormLayout">
+			Layout="FormLayout" MaxWidth="1000">
 			<Items>
 				<ext:DropDownField runat="server"
 					ID="uxFormProject"

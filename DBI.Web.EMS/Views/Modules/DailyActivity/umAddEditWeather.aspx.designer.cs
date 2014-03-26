@@ -82,7 +82,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxAddWeatherTemp;
+        protected global::Ext.Net.NumberField uxAddWeatherTemp;
         
         /// <summary>
         /// uxAddWeatherWindDirection control.
@@ -118,7 +118,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxAddWeatherWindVelocity;
+        protected global::Ext.Net.NumberField uxAddWeatherWindVelocity;
         
         /// <summary>
         /// uxAddWeatherHumidity control.
@@ -127,7 +127,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxAddWeatherHumidity;
+        protected global::Ext.Net.NumberField uxAddWeatherHumidity;
         
         /// <summary>
         /// uxAddWeatherComments control.
@@ -199,7 +199,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxEditWeatherTemp;
+        protected global::Ext.Net.NumberField uxEditWeatherTemp;
         
         /// <summary>
         /// uxEditWeatherWindDirection control.
@@ -235,7 +235,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxEditWeatherWindVelocity;
+        protected global::Ext.Net.NumberField uxEditWeatherWindVelocity;
         
         /// <summary>
         /// uxEditWeatherHumidity control.
@@ -244,7 +244,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxEditWeatherHumidity;
+        protected global::Ext.Net.NumberField uxEditWeatherHumidity;
         
         /// <summary>
         /// uxEditWeatherComments control.

@@ -183,11 +183,11 @@
 								</Change>
 							</DirectEvents>                            
 						</ext:DropDownField>
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxAddInventoryRate"
 							FieldLabel="Quantity"
 							AllowBlank="false">
-						</ext:TextField>
+						</ext:NumberField>
 						<ext:ComboBox runat="server"
 							ID="uxAddInventoryMeasure"
 							FieldLabel="Unit of Measure"
@@ -343,7 +343,7 @@
 								</ext:GridPanel>
 							</Component>
 						</ext:DropDownField>
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxEditInventoryRate"
 							FieldLabel="Quantity"
 							AllowBlank="false" />

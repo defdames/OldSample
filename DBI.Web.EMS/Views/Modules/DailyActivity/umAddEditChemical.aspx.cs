@@ -137,11 +137,26 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 try
                 {
+                    uxEditChemicalGallonTotal.Value = int.Parse(data.GALLON_MIXED.ToString()) + int.Parse(data.GALLON_STARTING.ToString());
+                }
+                catch { }
+                try
+                {
                     uxEditChemicalGallonRemain.SetValue(data.GALLON_REMAINING.ToString());
                 }
                 catch
                 {
                 }
+                try
+                {
+                    uxEditChemicalGallonUsed.Value = int.Parse(data.GALLON_MIXED.ToString()) + int.Parse(data.GALLON_STARTING.ToString()) - int.Parse(data.GALLON_REMAINING.ToString());
+                }
+                catch { }
+                try
+                {
+                    uxEditChemicalAcresSprayed.Value = int.Parse(uxEditChemicalGallonUsed.Value.ToString()) * decimal.Parse(uxEditChemicalGallonAcre.Value.ToString());
+                }
+                catch { }
                 try
                 {
                     uxEditChemicalAcresSprayed.SetValue(data.ACRES_SPRAYED.ToString());

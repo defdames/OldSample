@@ -289,7 +289,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxAddInventoryRate;
+        protected global::Ext.Net.NumberField uxAddInventoryRate;
         
         /// <summary>
         /// uxAddInventoryMeasure control.
@@ -325,7 +325,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxAddInventoryTotal;
+        protected global::Ext.Net.NumberField uxAddInventoryTotal;
         
         /// <summary>
         /// uxAddInventoryEPA control.
@@ -496,7 +496,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxEditInventoryRate;
+        protected global::Ext.Net.NumberField uxEditInventoryRate;
         
         /// <summary>
         /// uxEditInventoryMeasure control.
@@ -532,7 +532,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxEditInventoryTotal;
+        protected global::Ext.Net.NumberField uxEditInventoryTotal;
         
         /// <summary>
         /// uxEditInventoryEPA control.

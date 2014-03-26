@@ -9,7 +9,7 @@
 <body>
     <form id="form1" runat="server">
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
-        <ext:Viewport runat="server" Layout="FitLayout">
+        <ext:Panel runat="server" Layout="FitLayout" AutoScroll="true">
             <Items>
                 <ext:FormPanel runat="server" ID="uxChooseLunchForm" Layout="FormLayout">
                     <Buttons>
@@ -21,7 +21,17 @@
                     </Buttons>
                 </ext:FormPanel>
             </Items>
-        </ext:Viewport>
+            <Listeners>
+				<AfterRender
+					Handler="var win = parentAutoLoadControl.target || parentAutoLoadControl, //you can use just 'parentAutoLoadControl' after update to Ext.NET v2 beta.
+									size = this.getSize();
+ 
+								size.height += 250;
+								size.width += 12;
+								win.setSize(size);"
+					Delay="100" />
+			</Listeners>
+        </ext:Panel>
     </form>
 </body>
 </html>
