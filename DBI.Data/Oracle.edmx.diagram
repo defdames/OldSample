@@ -96,10 +96,10 @@
         <AssociationConnector Association="OracleModel.FK_USER_PERMS_PERM_ID" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="0.5" PointY="15.125" />
         <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
-        <EntityTypeShape EntityType="OracleModel.ORG_HIER_V" Width="1.5" PointX="13.75" PointY="18" />
         <EntityTypeShape EntityType="OracleModel.SYS_USER_ORGS" Width="1.5" PointX="14.125" PointY="0.625" />
         <AssociationConnector Association="OracleModel.FK_ORGS_USER_ID" />
         <EntityTypeShape EntityType="OracleModel.XXDBI_PAYROLL_AUDIT_V" Width="1.5" PointX="18.375" PointY="4" />
+        <EntityTypeShape EntityType="OracleModel.ORG_HIER_V" Width="1.5" PointX="13.75" PointY="18" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

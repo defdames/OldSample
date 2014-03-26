@@ -348,7 +348,8 @@
       "ORG_HIER_V"."ORG_ID_PARENT" AS "ORG_ID_PARENT", 
       "ORG_HIER_V"."ORG_ID_CHILD" AS "ORG_ID_CHILD", 
       "ORG_HIER_V"."ORG_HIER" AS "ORG_HIER", 
-      "ORG_HIER_V"."LEVEL" AS "LEVEL", 
+      "ORG_HIER_V"."HIERARCHY_ID" AS "HIERARCHY_ID", 
+      "ORG_HIER_V"."LEVEL_SORT" AS "LEVEL_SORT", 
       "ORG_HIER_V"."ORG_ID" AS "ORG_ID", 
       "ORG_HIER_V"."TYPE" AS "TYPE", 
       "ORG_HIER_V"."BU_ORG" AS "BU_ORG"
@@ -2062,13 +2063,16 @@
           <Key>
             <PropertyRef Name="ORG_ID_PARENT" />
             <PropertyRef Name="ORG_ID_CHILD" />
+            <PropertyRef Name="ORG_HIER" />
+            <PropertyRef Name="HIERARCHY_ID" />
             <PropertyRef Name="ORG_ID" />
           </Key>
           <Property Name="PARENT_ORG" Type="varchar2" MaxLength="240" />
           <Property Name="ORG_ID_PARENT" Type="number" Nullable="false" Precision="15" />
           <Property Name="ORG_ID_CHILD" Type="number" Nullable="false" Precision="15" />
-          <Property Name="ORG_HIER" Type="varchar2" />
-          <Property Name="LEVEL" Type="number" />
+          <Property Name="ORG_HIER" Type="varchar2" Nullable="false" MaxLength="240" />
+          <Property Name="HIERARCHY_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="LEVEL_SORT" Type="number" />
           <Property Name="ORG_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="TYPE" Type="varchar2" MaxLength="30" />
           <Property Name="BU_ORG" Type="varchar2" MaxLength="10" />
@@ -3153,13 +3157,13 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_EMPLOYEE" EntitySet="DAILY_ACTIVITY_EMPLOYEE" />
           </AssociationSet>
-          <EntitySet Name="ORG_HIER_V" EntityType="OracleModel.ORG_HIER_V" />
           <EntitySet Name="SYS_USER_ORGS" EntityType="OracleModel.SYS_USER_ORGS" />
           <AssociationSet Name="FK_ORGS_USER_ID" Association="OracleModel.FK_ORGS_USER_ID">
             <End Role="SYS_USERS" EntitySet="SYS_USERS" />
             <End Role="SYS_USER_ORGS" EntitySet="SYS_USER_ORGS" />
           </AssociationSet>
           <EntitySet Name="XXDBI_PAYROLL_AUDIT_V" EntityType="OracleModel.XXDBI_PAYROLL_AUDIT_V" />
+          <EntitySet Name="ORG_HIER_V" EntityType="OracleModel.ORG_HIER_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -5493,21 +5497,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="ORG_HIER_V">
-          <Key>
-            <PropertyRef Name="ORG_ID_PARENT" />
-            <PropertyRef Name="ORG_ID_CHILD" />
-            <PropertyRef Name="ORG_ID" />
-          </Key>
-          <Property Type="String" Name="PARENT_ORG" MaxLength="240" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="ORG_ID_PARENT" Nullable="false" />
-          <Property Type="Int64" Name="ORG_ID_CHILD" Nullable="false" />
-          <Property Type="String" Name="ORG_HIER" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="LEVEL" Precision="38" Scale="0" />
-          <Property Type="Int64" Name="ORG_ID" Nullable="false" />
-          <Property Type="String" Name="TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="BU_ORG" MaxLength="10" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="SYS_USER_ORGS">
           <Key>
             <PropertyRef Name="SYS_ORG_ID" />
@@ -5573,6 +5562,24 @@
           <Property Type="Decimal" Name="PARENT_PAYROLL_ID" Precision="38" Scale="0" />
           <Property Type="String" Name="SLIDING_SCALE_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="DAILY_OVERTIME_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ORG_HIER_V">
+          <Key>
+            <PropertyRef Name="ORG_ID_PARENT" />
+            <PropertyRef Name="ORG_ID_CHILD" />
+            <PropertyRef Name="ORG_HIER" />
+            <PropertyRef Name="HIERARCHY_ID" />
+            <PropertyRef Name="ORG_ID" />
+          </Key>
+          <Property Type="String" Name="PARENT_ORG" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="ORG_ID_PARENT" Nullable="false" />
+          <Property Type="Int64" Name="ORG_ID_CHILD" Nullable="false" />
+          <Property Type="String" Name="ORG_HIER" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="HIERARCHY_ID" Nullable="false" />
+          <Property Type="Decimal" Name="LEVEL_SORT" Precision="38" Scale="0" />
+          <Property Type="Int64" Name="ORG_ID" Nullable="false" />
+          <Property Type="String" Name="TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="BU_ORG" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -7354,20 +7361,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ORG_HIER_V">
-            <EntityTypeMapping TypeName="OracleModel.ORG_HIER_V">
-              <MappingFragment StoreEntitySet="ORG_HIER_V">
-                <ScalarProperty Name="BU_ORG" ColumnName="BU_ORG" />
-                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
-                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
-                <ScalarProperty Name="LEVEL" ColumnName="LEVEL" />
-                <ScalarProperty Name="ORG_HIER" ColumnName="ORG_HIER" />
-                <ScalarProperty Name="ORG_ID_CHILD" ColumnName="ORG_ID_CHILD" />
-                <ScalarProperty Name="ORG_ID_PARENT" ColumnName="ORG_ID_PARENT" />
-                <ScalarProperty Name="PARENT_ORG" ColumnName="PARENT_ORG" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="SYS_USER_ORGS">
             <EntityTypeMapping TypeName="OracleModel.SYS_USER_ORGS">
               <MappingFragment StoreEntitySet="SYS_USER_ORGS">
@@ -7420,6 +7413,21 @@
                 <ScalarProperty Name="EMPLOYEE_NUMBER" ColumnName="EMPLOYEE_NUMBER" />
                 <ScalarProperty Name="DA_HEADER_ID" ColumnName="DA_HEADER_ID" />
                 <ScalarProperty Name="PAYROLL_AUDIT_ID" ColumnName="PAYROLL_AUDIT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ORG_HIER_V">
+            <EntityTypeMapping TypeName="OracleModel.ORG_HIER_V">
+              <MappingFragment StoreEntitySet="ORG_HIER_V">
+                <ScalarProperty Name="BU_ORG" ColumnName="BU_ORG" />
+                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="LEVEL_SORT" ColumnName="LEVEL_SORT" />
+                <ScalarProperty Name="HIERARCHY_ID" ColumnName="HIERARCHY_ID" />
+                <ScalarProperty Name="ORG_HIER" ColumnName="ORG_HIER" />
+                <ScalarProperty Name="ORG_ID_CHILD" ColumnName="ORG_ID_CHILD" />
+                <ScalarProperty Name="ORG_ID_PARENT" ColumnName="ORG_ID_PARENT" />
+                <ScalarProperty Name="PARENT_ORG" ColumnName="PARENT_ORG" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

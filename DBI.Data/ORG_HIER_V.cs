@@ -18,7 +18,8 @@ namespace DBI.Data
         public long ORG_ID_PARENT { get; set; }
         public long ORG_ID_CHILD { get; set; }
         public string ORG_HIER { get; set; }
-        public Nullable<decimal> LEVEL { get; set; }
+        public long HIERARCHY_ID { get; set; }
+        public Nullable<decimal> LEVEL_SORT { get; set; }
         public long ORG_ID { get; set; }
         public string TYPE { get; set; }
         public string BU_ORG { get; set; }
