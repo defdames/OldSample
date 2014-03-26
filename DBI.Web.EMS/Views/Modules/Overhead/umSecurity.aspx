@@ -16,13 +16,19 @@
                     <Store>
                         <ext:Store runat="server"
                             ID="uxOrganizationSecurityStore"
-                            PageSize="10"
-                            AutoDataBind="true" WarningOnDirty="false">
+                            AutoDataBind="true" OnReadData="deReadOrganizations" PageSize="10" RemoteSort="true">
                             <Model>
                                 <ext:Model ID="Model2" runat="server">
                                     <Fields>
+                                        <ext:ModelField Name="PARENT_ORG" />
+                                        <ext:ModelField Name="ORG_ID_PARENT" />
+                                        <ext:ModelField Name="ORG_ID_CHILD" />
+                                        <ext:ModelField Name="ORG_HIER" />
+                                        <ext:ModelField Name="HIERARCHY_ID" />
+                                        <ext:ModelField Name="LEVEL_SORT" />
                                         <ext:ModelField Name="ORG_ID" />
-                                        <ext:ModelField Name="ORGANIZATION_NAME" />
+                                        <ext:ModelField Name="TYPE" />
+                                        <ext:ModelField Name="BU_ORG" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -33,14 +39,14 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column1" runat="server" DataIndex="ORGANIZATION_NAME" Text="Organization Name" Flex="1" />
+                            <ext:Column ID="Column1" runat="server" DataIndex="ORG_HIER" Text="Organization Name" Flex="1" />
                           </Columns>
                     </ColumnModel>
                     <Plugins>
                         <ext:FilterHeader ID="FilterHeader2" runat="server" Remote="true" />
                     </Plugins>
                     <SelectionModel>
-                        <ext:RowSelectionModel ID="project" runat="server" Mode="Single" AllowDeselect="true" />
+                        <ext:CheckboxSelectionModel runat="server" Mode="Multi"></ext:CheckboxSelectionModel>
                     </SelectionModel>
                     <BottomBar>
                         <ext:PagingToolbar ID="PagingToolbar2" runat="server" />
@@ -67,7 +73,7 @@
                                         <TriggerClick Handler="this.clearValue();" />
                                     </Listeners>
                                     <DirectEvents>
-                                        <Select OnEvent="deHierarchySelect"><EventMask ShowMask="true"></EventMask></Select>
+                                        <Select OnEvent="deLoadOrganizationsForHierarchy"><EventMask ShowMask="true"></EventMask></Select>
                                     </DirectEvents>
                                 </ext:ComboBox>
                                 <ext:Button runat="server" ID="uxAddOrganizationButton" Text="Add" Icon="Add" Padding="5"></ext:Button>

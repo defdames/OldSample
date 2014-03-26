@@ -94,15 +94,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.FilterHeader FilterHeader2;
         
         /// <summary>
-        /// project control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.RowSelectionModel project;
-        
-        /// <summary>
         /// PagingToolbar2 control.
         /// </summary>
         /// <remarks>
