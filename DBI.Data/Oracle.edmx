@@ -317,6 +317,12 @@
       "EXPENDITURE_TYPE_V"."EXPENDITURE_DESCRIPTION" AS "EXPENDITURE_DESCRIPTION"
       FROM "XXEMS"."EXPENDITURE_TYPE_V" "EXPENDITURE_TYPE_V"</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="HIERARCHY_ID_V" EntityType="OracleModel.Store.HIERARCHY_ID_V" store:Type="Views" store:Schema="XXEMS" store:Name="HIERARCHY_ID_V">
+            <DefiningQuery>SELECT 
+      "HIERARCHY_ID_V"."HIERARCHY_ID" AS "HIERARCHY_ID", 
+      "HIERARCHY_ID_V"."NAME" AS "NAME"
+      FROM "XXEMS"."HIERARCHY_ID_V" "HIERARCHY_ID_V"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="INVENTORY_V" EntityType="OracleModel.Store.INVENTORY_V" store:Type="Views" store:Schema="XXEMS" store:Name="INVENTORY_V">
             <DefiningQuery>SELECT 
       "INVENTORY_V"."ITEM_ID" AS "ITEM_ID", 
@@ -1712,6 +1718,17 @@
           <Property Name="RATE_CURRENCY_CODE" Type="varchar2" MaxLength="15" />
           <Property Name="LAST_UPDATE_DATE" Type="date" Nullable="false" />
           <Property Name="EXPENDITURE_DESCRIPTION" Type="varchar2" MaxLength="250" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXEMS.HIERARCHY_ID_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="HIERARCHY_ID_V">
+          <Key>
+            <PropertyRef Name="HIERARCHY_ID" />
+            <PropertyRef Name="NAME" />
+          </Key>
+          <Property Name="HIERARCHY_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="NAME" Type="varchar2" Nullable="false" MaxLength="30" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'XXEMS.INVENTORY_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -3164,6 +3181,7 @@
           </AssociationSet>
           <EntitySet Name="XXDBI_PAYROLL_AUDIT_V" EntityType="OracleModel.XXDBI_PAYROLL_AUDIT_V" />
           <EntitySet Name="ORG_HIER_V" EntityType="OracleModel.ORG_HIER_V" />
+          <EntitySet Name="HIERARCHY_ID_V" EntityType="OracleModel.HIERARCHY_ID_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -5581,6 +5599,14 @@
           <Property Type="String" Name="TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="BU_ORG" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="HIERARCHY_ID_V">
+          <Key>
+            <PropertyRef Name="HIERARCHY_ID" />
+            <PropertyRef Name="NAME" />
+          </Key>
+          <Property Type="Int64" Name="HIERARCHY_ID" Nullable="false" />
+          <Property Type="String" Name="NAME" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7428,6 +7454,14 @@
                 <ScalarProperty Name="ORG_ID_CHILD" ColumnName="ORG_ID_CHILD" />
                 <ScalarProperty Name="ORG_ID_PARENT" ColumnName="ORG_ID_PARENT" />
                 <ScalarProperty Name="PARENT_ORG" ColumnName="PARENT_ORG" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HIERARCHY_ID_V">
+            <EntityTypeMapping TypeName="OracleModel.HIERARCHY_ID_V">
+              <MappingFragment StoreEntitySet="HIERARCHY_ID_V">
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="HIERARCHY_ID" ColumnName="HIERARCHY_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
