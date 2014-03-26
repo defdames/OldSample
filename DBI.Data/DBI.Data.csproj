@@ -212,6 +212,9 @@
     <Compile Include="EXPENDITURE_TYPE_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="GL_ACCOUNTS_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="HIERARCHY_ID_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
