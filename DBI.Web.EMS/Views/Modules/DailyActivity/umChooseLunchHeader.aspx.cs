@@ -45,7 +45,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         QueryMode = DataLoadMode.Local,
                         ValueField = "PROJECT_ID",
                         ForceSelection=true,
-                        DisplayField = "LONG_NAME"
+                        DisplayField = "LONG_NAME",
+                        LabelWidth=100,
+                        Width=500
                     };
 
                     var ProjectList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
