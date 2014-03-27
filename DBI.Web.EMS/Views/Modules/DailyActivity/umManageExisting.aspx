@@ -65,6 +65,7 @@
 			<Items>
 				
 				<ext:GridPanel runat="server" ID="uxManageGrid" Layout="FitLayout" Title="Headers" SelectionMemoryEvents="false" SelectionMemory="true">
+                    
 					<SelectionModel>
 						<ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
 					</SelectionModel>
@@ -416,12 +417,21 @@
 					<Buttons>
 						<ext:Button runat="server" Icon="ArrowLeft" Text="Previous">
 							<DirectEvents>
-								<Click OnEvent="deLoadPreviousActivity" />
+								<Click OnEvent="deLoadPreviousActivity">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="CurrentPage" Value="#{uxManageGridPaging}.getPageData().currentPage" Mode="Raw" />
+                                    </ExtraParams>
+								</Click>
 							</DirectEvents>
 						</ext:Button>
 						<ext:Button runat="server" Icon="ArrowRight" IconAlign="Right" Text="Next">
 							<DirectEvents>
-								<Click OnEvent="deLoadNextActivity" />
+								<Click OnEvent="deLoadNextActivity">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="FromRecord" Value="#{uxManageGridPaging}.getPageData().fromRecord" Mode="Raw" />
+                                        <ext:Parameter Name="ToRecord" Value="#{uxManageGridPaging}.getPageData().toRecord" Mode="Raw" />
+                                    </ExtraParams>
+								</Click>
 							</DirectEvents>
 						</ext:Button>
 					</Buttons>
@@ -431,7 +441,7 @@
 					ID="uxPlaceholderWindow"
 					Hidden="true"
 					Width="650"
-                    Height="300"
+					Height="300"
 					Y="50"
 					Modal="true">
 					<Loader runat="server"

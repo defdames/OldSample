@@ -24,7 +24,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
     public partial class umManageExisting : BasePage
     {
 
-
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!validateComponentSecurity("SYS.DailyActivity.View") && !validateComponentSecurity("SYS.DailyActivity.EmployeeView"))
@@ -378,19 +377,40 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
             var Index = GridModel.SelectedIndex;
-            GridModel.SelectedRow.RowIndex = GridModel.SelectedIndex + 1;
-            GridModel.Select(GridModel.SelectedIndex);
-            GridModel.UpdateSelection();
-            
+            int LastRecord = int.Parse(e.ExtraParams["ToRecord"].ToString()) -int.Parse(e.ExtraParams["FromRecord"].ToString());
+            if (Index < LastRecord)
+            {
+                    GridModel.SelectedRow.RowIndex = GridModel.SelectedIndex + 1;
+                    GridModel.Select(GridModel.SelectedIndex);
+                    GridModel.UpdateSelection();
+            }
+            else if (LastRecord == 19)
+            {
+
+                uxManageGridStore.NextPage(new
+                {
+                    callback = JRawValue.From("function() {App.uxManageGrid.getSelectionModel().select(0)}")
+                });
+                
+            }
         }
 
         protected void deLoadPreviousActivity(object sender, DirectEventArgs e)
         {
             RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
             var Index = GridModel.SelectedIndex;
-            GridModel.SelectedRow.RowIndex = GridModel.SelectedIndex - 1;
-            GridModel.Select(GridModel.SelectedIndex);
-            GridModel.UpdateSelection();
+            
+            if (Index > 0)
+            {
+                GridModel.SelectedRow.RowIndex = GridModel.SelectedIndex - 1;
+                GridModel.Select(GridModel.SelectedIndex);
+                GridModel.UpdateSelection();
+            }
+            else if(int.Parse(e.ExtraParams["CurrentPage"].ToString()) != 1)
+            {
+                X.Js.Call("App.uxManageGridStore.previousPage({callback: function(){App.uxManageGrid.getSelectionModel().select(19)}})");
+
+            }
         }
 
         /// <summary>
