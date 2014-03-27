@@ -91,5 +91,6 @@ namespace DBI.Data
         public DbSet<HIERARCHY_ID_V> HIERARCHY_ID_V { get; set; }
         public DbSet<GL_ACCOUNTS_V> GL_ACCOUNTS_V { get; set; }
         public DbSet<OVERHEAD_ORG> OVERHEAD_ORG { get; set; }
+        public DbSet<OVERHEAD_GL_ACCOUNT> OVERHEAD_GL_ACCOUNT { get; set; }
     }
 }
