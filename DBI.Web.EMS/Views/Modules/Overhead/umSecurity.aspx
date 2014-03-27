@@ -16,19 +16,14 @@
                     <Store>
                         <ext:Store runat="server"
                             ID="uxOrganizationSecurityStore"
-                            AutoDataBind="true" OnReadData="deReadOrganizations" PageSize="10" RemoteSort="true">
+                            AutoDataBind="true" PageSize="10" RemoteSort="true">
                             <Model>
                                 <ext:Model ID="Model2" runat="server">
                                     <Fields>
-                                        <ext:ModelField Name="PARENT_ORG" />
-                                        <ext:ModelField Name="ORG_ID_PARENT" />
-                                        <ext:ModelField Name="ORG_ID_CHILD" />
-                                        <ext:ModelField Name="ORG_HIER" />
-                                        <ext:ModelField Name="HIERARCHY_ID" />
-                                        <ext:ModelField Name="LEVEL_SORT" />
-                                        <ext:ModelField Name="ORG_ID" />
-                                        <ext:ModelField Name="TYPE" />
-                                        <ext:ModelField Name="BU_ORG" />
+                                        <ext:ModelField Name="OVERHEAD_ORG_ID" />
+                                        <ext:ModelField Name="ORGANIZATION_ID" />
+                                        <ext:ModelField Name="HIERARCHY_NAME" />
+                                        <ext:ModelField Name="ORGANIZATION_NAME" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -39,7 +34,8 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column1" runat="server" DataIndex="ORG_HIER" Text="Organization Name" Flex="1" />
+                             <ext:Column ID="Column8" runat="server" DataIndex="HIERARCHY_NAME" Text="Hierarchy Name" Flex="1" />
+                            <ext:Column ID="Column1" runat="server" DataIndex="ORGANIZATION_NAME" Text="Organization Name" Flex="1" />
                           </Columns>
                     </ColumnModel>
                     <Plugins>
@@ -54,30 +50,12 @@
                     <TopBar>
                         <ext:Toolbar runat="server">
                             <Items>
-                                <ext:ComboBox
-                                    ID="uxHierarchyComboBox"
-                                    runat="server"
-                                    Editable="false"
-                                    QueryMode="Local"
-                                    TriggerAction="All"
-                                    MatchFieldWidth="True"
-                                    FieldLabel="Hierarchy Selection"
-                                    Padding="5">
-                                    <Items>
-                                        <ext:ListItem Text="DBI USA" Value="61" />
-                                    </Items>
-                                    <Triggers>
-                                        <ext:FieldTrigger Icon="Clear" Qtip="Remove selected" />
-                                    </Triggers>
-                                    <Listeners>
-                                        <TriggerClick Handler="this.clearValue();" />
-                                    </Listeners>
+                                <ext:Button runat="server" ID="uxAddOrganizationButton" Text="Add" Icon="Add">
                                     <DirectEvents>
-                                        <Select OnEvent="deLoadOrganizationsForHierarchy"><EventMask ShowMask="true"></EventMask></Select>
+                                        <Click OnEvent="deShowOrganizationList"><EventMask ShowMask="true"></EventMask></Click>
                                     </DirectEvents>
-                                </ext:ComboBox>
-                                <ext:Button runat="server" ID="uxAddOrganizationButton" Text="Add" Icon="Add" Padding="5"></ext:Button>
-                                 <ext:Button runat="server" ID="uxDeleteOrganizationButton" Text="Delete" Icon="Delete" Padding="5"></ext:Button>
+                                </ext:Button>
+                                <ext:Button runat="server" ID="uxDeleteOrganizationButton" Text="Delete" Icon="Delete"></ext:Button>
                             </Items>
                         </ext:Toolbar>
 
@@ -144,6 +122,8 @@
 
             </Items>
         </ext:Viewport>
+
+
     </form>
 </body>
 </html>
