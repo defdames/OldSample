@@ -33,7 +33,7 @@
 			Layout="FormLayout"
 			Hidden="true">
 			<Items>
-				<ext:DropDownField runat="server"
+				<ext:DropDownField runat="server" Editable="false"
 					ID="uxAddProductionTask"
 					Mode="ValueText"
 					AllowBlank="false"
@@ -133,7 +133,7 @@
 			Layout="FormLayout"
 			Hidden="true">
 			<Items>
-				<ext:DropDownField runat="server"
+				<ext:DropDownField runat="server" Editable="false"
 					ID="uxEditProductionTask"
 					Mode="ValueText"
 					AllowBlank="false"
