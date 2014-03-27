@@ -102,6 +102,7 @@
         <EntityTypeShape EntityType="OracleModel.ORG_HIER_V" Width="1.5" PointX="13.75" PointY="18" />
         <EntityTypeShape EntityType="OracleModel.HIERARCHY_ID_V" Width="1.5" PointX="15.875" PointY="17.125" />
         <EntityTypeShape EntityType="OracleModel.GL_ACCOUNTS_V" Width="1.5" PointX="18.125" PointY="17.125" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_ORG" Width="1.5" PointX="1.2859079434005114" PointY="17.866202258442623" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

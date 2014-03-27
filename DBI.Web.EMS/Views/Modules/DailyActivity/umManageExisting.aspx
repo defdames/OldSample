@@ -431,6 +431,7 @@
 					ID="uxPlaceholderWindow"
 					Hidden="true"
 					Width="650"
+                    Height="300"
 					Y="50"
 					Modal="true">
 					<Loader runat="server"

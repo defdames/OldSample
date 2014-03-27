@@ -73,14 +73,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(Record);
             }
 
-            if (OrgId == 121)
-            {
-                X.Js.Call(string.Format("parent.App.direct.dmRefreshShowSubmit_DBI('{0}')", Request.QueryString["HeaderId"])); 
-            }
-            else
-            {
-                X.Js.Call(string.Format("parent.App.direct.dmRefreshShowSubmit_IRM('{0}')", Request.QueryString["HeaderId"]));
-            }
+            X.Js.Call("parent.App.uxPlaceholderWindow.hide()");
 
         }
     }

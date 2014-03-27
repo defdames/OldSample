@@ -67,15 +67,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Model uxEditInventoryItemModel;
         
         /// <summary>
-        /// uxAddEditPanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxAddEditPanel;
-        
-        /// <summary>
         /// uxAddInventoryForm control.
         /// </summary>
         /// <remarks>

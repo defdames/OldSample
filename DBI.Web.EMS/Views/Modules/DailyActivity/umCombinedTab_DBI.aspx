@@ -12,81 +12,19 @@
 	<form id="form1" runat="server">
 		<ext:Panel runat="server" ID="uxMainContainer" Layout="AutoLayout">
 			<Items>
-				<%--<ext:GridPanel runat="server"
-					ID="uxHeaderGrid"
-					Title="Header"
-					TitleAlign="Center"
-					Padding="10">
-					<Store>
-						<ext:Store runat="server"
-							ID="uxHeaderStore">
-							<Model>
-								<ext:Model ID="Model1" runat="server">
-									<Fields>
-										<ext:ModelField Name="HEADER_ID" />
-										<ext:ModelField Name="LONG_NAME" />
-										<ext:ModelField Name="DA_DATE" />
-										<ext:ModelField Name="SUBDIVISION" />
-										<ext:ModelField Name="CONTRACTOR" />
-										<ext:ModelField Name="EMPLOYEE_NAME" />
-										<ext:ModelField Name="LICENSE" />
-										<ext:ModelField Name="STATE" />
-										<ext:ModelField Name="APPLICATION_TYPE" />
-										<ext:ModelField Name="DENSITY" />
-										<ext:ModelField Name="DA_HEADER_ID" />
-									</Fields>
-								</ext:Model>
-							</Model>
-						</ext:Store>
-					</Store>
-					<ColumnModel>
-						<Columns>
-							<ext:Column runat="server" DataIndex="HEADER_ID" Text="DRS Number" Flex="3" />
-							<ext:Column ID="Column1" runat="server" DataIndex="LONG_NAME" Text="Project Name" Flex="8" />
-							<ext:DateColumn ID="DateColumn1" runat="server" DataIndex="DA_DATE" Text="Date" Flex="3" />
-							<ext:Column ID="Column2" runat="server" DataIndex="SUBDIVISION" Text="Sub-Division" Flex="6" />
-							<ext:Column ID="Column3" runat="server" DataIndex="CONTRACTOR" Text="Contractor" Flex="6" />
-							<ext:Column ID="Column4" runat="server" DataIndex="EMPLOYEE_NAME" Text="Supervisor / Area Manager" Flex="6" />
-							<ext:Column ID="Column5" runat="server" DataIndex="LICENSE" Text="License" Flex="4" />
-							<ext:Column ID="Column6" runat="server" DataIndex="STATE" Text="State" Flex="2" />
-							<ext:Column ID="Column7" runat="server" DataIndex="APPLICATION_TYPE" Text="Application/Type of Work" Flex="6" />
-							<ext:Column ID="Column8" runat="server" DataIndex="DENSITY" Text="Density" Flex="3" />
-							<ext:Column runat="server" DataIndex="DA_HEADER_ID" Text="Oracle Header ID" Flex="3" />
-						</Columns>
-					</ColumnModel>
-				</ext:GridPanel>--%>
 				<ext:FormPanel runat="server"
-					ID="uxHeaderPanel" Padding="10" BodyPadding="5" MaxWidth="1000">
+					ID="uxHeaderPanel" Padding="10" BodyPadding="5" MaxWidth="1000" Layout="FormLayout">
 					<Items>
-						<ext:FieldContainer runat="server" Layout="HBoxLayout" AnchorHorizontal="100%">
-							<Items>
-								<ext:TextField runat="server" ID="uxDateField" FieldLabel="Date" Flex="25" ReadOnly="true" />
-								<ext:TextField runat="server" ID="uxHeaderField" FieldLabel="DRS Id" Flex="25" ReadOnly="true" />
-								<ext:TextField runat="server" ID="uxOracleField" FieldLabel="Oracle DRS Id" Flex="25" ReadOnly="true" />
-								<ext:Component runat="server" Flex="25" />
-							</Items>
-						</ext:FieldContainer>
-						<ext:FieldContainer runat="server" Layout="HBoxLayout" AnchorHorizontal="100%">
-							<Items>
-								<ext:TextField runat="server" ID="uxProjectField" FieldLabel="Project" Flex="50" LabelPad="2" ReadOnly="true"  />
-								<ext:TextField runat="server" ID="uxSubDivisionField" FieldLabel="Sub-Division" Flex="25" ReadOnly="true" />
-								<ext:Component runat="server" Flex="25" />
-							</Items>
-						</ext:FieldContainer>
-						<ext:FieldContainer runat="server" Layout="HBoxLayout" AnchorHorizontal="100%">
-							<Items>
-								<ext:TextField runat="server" ID="uxLicenseField" FieldLabel="State License #" Flex="25" ReadOnly="true" />
-								<ext:TextField runat="server" ID="uxStateField" LabelWidth="50" FieldLabel="State" Flex="15" ReadOnly="true" />
-								<ext:TextField runat="server" ID="uxSupervisorField" FieldLabel="Supervisor/Area Manager" LabelWidth="150" Flex="60" MaxLength="50" ReadOnly="true" />
-							</Items>
-						</ext:FieldContainer>
-						<ext:FieldContainer runat="server" Layout="HBoxLayout" AnchorHorizontal="100%">
-							<Items>
-								<ext:TextField runat="server" ID="uxTypeField" FieldLabel="Type of Work" Flex="20" ReadOnly="true" />
-								<ext:TextField runat="server" ID="uxDensityField" FieldLabel="Density" Flex="25"  ReadOnly="true"/>
-								<ext:Component runat="server" Flex="65" />
-							</Items>
-						</ext:FieldContainer>
+						<ext:TextField runat="server" ID="uxDateField" FieldLabel="Date" Width="200"  ReadOnly="true" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxHeaderField" FieldLabel="DRS Id" Width="200" ReadOnly="true" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxOracleField" FieldLabel="Oracle DRS Id" Width="200" ReadOnly="true" />
+						<ext:TextField runat="server" ID="uxProjectField" FieldLabel="Project" Width="600" ReadOnly="true" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxSubDivisionField" FieldLabel="Sub-Division" Width="300" ReadOnly="true" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxSupervisorField" FieldLabel="Supervisor/Area Manager" Width="500" ReadOnly="true" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxLicenseField" FieldLabel="State License #" Width="250" ReadOnly="true" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxStateField" FieldLabel="State" Width="250" ReadOnly="true" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxTypeField" FieldLabel="Type of Work" Width="250" ReadOnly="true" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxDensityField" FieldLabel="Density" Width="200" ReadOnly="true" LabelWidth="100" />
 					</Items>
 				</ext:FormPanel>                    
 				<ext:GridPanel runat="server"
@@ -316,69 +254,24 @@
 				</ext:GridPanel>
 				<ext:FormPanel runat="server" ID="uxFooterPanel" Padding="10" BodyPadding="5" MaxWidth="1000">
 					<Items>
-						<ext:FieldContainer runat="server" Layout="HBoxLayout" AnchorHorizontal="100%">
+						<ext:TextField runat="server" ID="uxReasonForNoWorkField" FieldLabel="Reason for no work" Width="700" ReadOnly="true" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxHotelField" FieldLabel="Hotel" ReadOnly="true" LabelWidth="100" Width="400" />
+						<ext:TextField runat="server" ID="uxCityField" FieldLabel="City" ReadOnly="true" LabelWidth="100" Width="300" />
+						<ext:TextField runat="server" ID="uxFooterStateField" FieldLabel="State" ReadOnly="true" LabelWidth="100" Width="300" />
+						<ext:TextField runat="server" ID="uxPhoneField" FieldLabel="Phone" ReadOnly="true" LabelWidth="100" Width="300" />
+						<ext:FieldContainer runat="server" FieldLabel="Foreman Signature" LabelWidth="100">
 							<Items>
-								<ext:TextField runat="server" ID="uxReasonForNoWorkField" FieldLabel="Reason for no work" Flex="75" ReadOnly="true" />
-								<ext:Component runat="server" Flex="25" />
+								<ext:Image runat="server" Height="214" ID="uxForemanImage" Width="320" />
 							</Items>
 						</ext:FieldContainer>
-						<ext:FieldContainer runat="server" Layout="HBoxLayout" AnchorHorizontal="100%">
+						<ext:TextField runat="server" ID="uxContractNameField" FieldLabel="Contract Rep Name" Width="500" ReadOnly="true" LabelWidth="100" />
+						<ext:FieldContainer runat="server" FieldLabel="Contract Rep Signature" LabelWidth="100">
 							<Items>
-								<ext:TextField runat="server" ID="uxHotelField" FieldLabel="Hotel" Flex="25" ReadOnly="true" LabelWidth="50" />
-								<ext:TextField runat="server" ID="uxCityField" FieldLabel="City" Flex="25" ReadOnly="true" LabelWidth="50" />
-								<ext:TextField runat="server" ID="uxFooterStateField" FieldLabel="State" Flex="25" ReadOnly="true" LabelWidth="50" />
-								<ext:TextField runat="server" ID="uxPhoneField" FieldLabel="Phone" Flex="25" ReadOnly="true" LabelWidth="50" />
-							</Items>
-						</ext:FieldContainer>
-						<ext:FieldContainer runat="server" Layout="HBoxLayout" AnchorHorizontal="100%">
-							<Items>
-								<ext:Component runat="server" Flex="50" />
-								<ext:TextField runat="server" ID="uxContractNameField" FieldLabel="Contract Rep Name" Flex="50" ReadOnly="true" />
-							</Items>
-						</ext:FieldContainer>
-						<ext:FieldContainer runat="server" Layout="HBoxLayout" AnchorHorizontal="100%">
-							<Items>
-								<ext:Image runat="server" Height="240" ID="uxForemanImage" Flex="50" />
-								<ext:Image runat="server" Height="240" ID="uxContractImage" Flex="50" />
+								<ext:Image runat="server" Height="214" ID="uxContractImage" Width="320" />
 							</Items>
 						</ext:FieldContainer>
 					 </Items>
 				</ext:FormPanel>
-				<%--<ext:GridPanel runat="server"
-					ID="uxFooterGrid"
-					Title="Footer"
-					Padding="10"
-					MaxWidth="1000">
-					<Store>
-						<ext:Store runat="server"
-							ID="uxFooterStore">
-							<Model>
-								<ext:Model ID="Model7" runat="server">
-									<Fields>
-										<ext:ModelField Name="COMMENTS" />
-										<ext:ModelField Name="HOTEL_NAME" />
-										<ext:ModelField Name="HOTEL_CITY" />
-										<ext:ModelField Name="HOTEL_STATE" />
-										<ext:ModelField Name="HOTEL_PHONE" />
-										<ext:ModelField Name="FOREMAN_SIGNATURE" Type="Boolean" />
-										<ext:ModelField Name="CONTRACT_REP" Type="Boolean" />
-									</Fields>
-								</ext:Model>
-							</Model>
-						</ext:Store>
-					</Store>
-					<ColumnModel>
-						<Columns>
-							<ext:Column ID="Column42" runat="server" DataIndex="COMMENTS" Text="Reason for no Work" Flex="1" />
-							<ext:Column ID="Column43" runat="server" DataIndex="HOTEL_NAME" Text="Hotel Name" Flex="1" />
-							<ext:Column ID="Column44" runat="server" DataIndex="HOTEL_CITY" Text="Hotel City" Flex="1" />
-							<ext:Column ID="Column45" runat="server" DataIndex="HOTEL_STATE" Text="Hotel State" Flex="1" />
-							<ext:Column ID="Column46" runat="server" DataIndex="HOTEL_PHONE" Text="Hotel Phone" Flex="1" />
-							<ext:BooleanColumn ID="BooleanColumn1" runat="server" DataIndex="FOREMAN_SIGNATURE" Text="Foreman Signature Submitted" Flex="1" />
-							<ext:BooleanColumn ID="BooleanColumn2" runat="server" DataIndex="CONTRACT_REP" Text="Contract Rep Signature Submitted" Flex="1" />
-						</Columns>
-					</ColumnModel>
-				</ext:GridPanel>--%>
 			</Items>
 		</ext:Panel>
 	</form>

@@ -218,7 +218,10 @@
 			<Buttons>
 				<ext:Button runat="server" ID="uxFormSubmit" Text="Submit" Disabled="true" Icon="Add">
 					<DirectEvents>
-						<Click OnEvent="deStoreHeader" />
+						<Click OnEvent="deStoreHeader">
+							<EventMask ShowMask="true" />
+						</Click>
+						
 					</DirectEvents>    
 				</ext:Button>
 				<ext:Button runat="server" ID="uxFormClear" Text="Clear" Icon="Delete">
