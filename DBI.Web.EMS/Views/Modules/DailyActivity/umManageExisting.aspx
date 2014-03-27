@@ -65,11 +65,7 @@
 			<Items>
 				
 				<ext:GridPanel runat="server" ID="uxManageGrid" Layout="FitLayout" Title="Headers" SelectionMemoryEvents="false" SelectionMemory="true">
-<<<<<<< HEAD
 					
-=======
-                    
->>>>>>> EV-15 #time 6h Update to fix bug in page changing.
 					<SelectionModel>
 						<ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
 					</SelectionModel>
@@ -422,32 +418,19 @@
 						<ext:Button runat="server" Icon="ArrowLeft" Text="Previous">
 							<DirectEvents>
 								<Click OnEvent="deLoadPreviousActivity">
-<<<<<<< HEAD
 									<ExtraParams>
 										<ext:Parameter Name="CurrentPage" Value="#{uxManageGridPaging}.getPageData().currentPage" Mode="Raw" />
 									</ExtraParams>
-=======
-                                    <ExtraParams>
-                                        <ext:Parameter Name="CurrentPage" Value="#{uxManageGridPaging}.getPageData().currentPage" Mode="Raw" />
-                                    </ExtraParams>
->>>>>>> EV-15 #time 6h Update to fix bug in page changing.
 								</Click>
 							</DirectEvents>
 						</ext:Button>
 						<ext:Button runat="server" Icon="ArrowRight" IconAlign="Right" Text="Next">
 							<DirectEvents>
 								<Click OnEvent="deLoadNextActivity">
-<<<<<<< HEAD
 									<ExtraParams>
 										<ext:Parameter Name="FromRecord" Value="#{uxManageGridPaging}.getPageData().fromRecord" Mode="Raw" />
 										<ext:Parameter Name="ToRecord" Value="#{uxManageGridPaging}.getPageData().toRecord" Mode="Raw" />
 									</ExtraParams>
-=======
-                                    <ExtraParams>
-                                        <ext:Parameter Name="FromRecord" Value="#{uxManageGridPaging}.getPageData().fromRecord" Mode="Raw" />
-                                        <ext:Parameter Name="ToRecord" Value="#{uxManageGridPaging}.getPageData().toRecord" Mode="Raw" />
-                                    </ExtraParams>
->>>>>>> EV-15 #time 6h Update to fix bug in page changing.
 								</Click>
 							</DirectEvents>
 						</ext:Button>
