@@ -44,7 +44,7 @@
 			Layout="FormLayout"
 			Hidden="true">
 			<Items>
-				<ext:DropDownField runat="server"
+				<ext:DropDownField runat="server" Editable="false"
 					ID="uxAddEquipmentDropDown"
 					FieldLabel="Choose Equipment"
 					Mode="ValueText"
@@ -186,7 +186,7 @@
 			Layout="FormLayout"
 			Hidden="true">
 			<Items>
-				<ext:DropDownField runat="server"
+				<ext:DropDownField runat="server" Editable="false"
 					ID="uxEditEquipmentProject"
 					FieldLabel="Choose Equipment"
 					Mode="ValueText"

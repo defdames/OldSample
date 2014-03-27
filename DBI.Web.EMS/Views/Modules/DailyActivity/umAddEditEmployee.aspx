@@ -39,7 +39,7 @@
 					Mode="ValueText"
 					FieldLabel="Employee"
 					AllowBlank="false"
-					AllowOnlyWhitespace="true" Width="500">
+					Editable="false" Width="500">
 					<Component>
 						<ext:GridPanel runat="server"
 							ID="uxAddEmployeeEmpGrid"
@@ -120,7 +120,7 @@
 						</ext:GridPanel>
 					</Component>
 				</ext:DropDownField>
-				<ext:DropDownField runat="server"
+				<ext:DropDownField runat="server" Editable="false"
 					ID="uxAddEmployeeEqDropDown"
 					Mode="ValueText"
 					FieldLabel="Equipment"
@@ -300,7 +300,7 @@
 					ID="uxAddEmployeeComments" Width="500"
 					AllowBlank="true" />
 				<ext:DropDownField runat="server"
-					ID="uxAddEmployeeRole"
+					ID="uxAddEmployeeRole" Editable="false"
 					Mode="ValueText"
 					FieldLabel="Role"
 					AllowBlank="true"
@@ -388,7 +388,7 @@
 			Layout="FormLayout"
 			Hidden="true">
 			<Items>
-				<ext:DropDownField runat="server"
+				<ext:DropDownField runat="server" Editable="false"
 					ID="uxEditEmployeeEmpDropDown"
 					Mode="ValueText"
 					FieldLabel="Employee"
@@ -476,7 +476,7 @@
 						<Show Handler="#{uxEditEmployeeEmpDropDown}.focus()" />
 					</Listeners>
 				</ext:DropDownField>
-				<ext:DropDownField runat="server"
+				<ext:DropDownField runat="server" Editable="false"
 					ID="uxEditEmployeeEqDropDown"
 					Mode="ValueText"
 					FieldLabel="Equipment"
@@ -655,7 +655,7 @@
 					FieldLabel="Comments"
 					ID="uxEditEmployeeComments"
 					AllowBlank="true" Width="500" />
-				<ext:DropDownField runat="server"
+				<ext:DropDownField runat="server" Editable="false"
 					ID="uxEditEmployeeRole"
 					FieldLabel="Role"
 					Mode="ValueText"

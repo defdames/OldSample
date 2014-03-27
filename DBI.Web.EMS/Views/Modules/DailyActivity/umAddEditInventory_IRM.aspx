@@ -131,7 +131,7 @@
 						</ext:Store>
 					</Store>
 				</ext:ComboBox>
-				<ext:DropDownField runat="server"
+				<ext:DropDownField runat="server" Editable="false"
 					ID="uxAddInventoryItem"
 					FieldLabel="Select Item"
 					Mode="ValueText"
@@ -302,7 +302,7 @@
 						</ext:Store>
 					</Store>
 				</ext:ComboBox>
-				<ext:DropDownField runat="server"
+				<ext:DropDownField runat="server" Editable="false"
 					ID="uxEditInventoryItem"
 					FieldLabel="Select Item"
 					Mode="ValueText"
