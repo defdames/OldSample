@@ -342,6 +342,9 @@
     <Compile Include="SYS_USER_PERMS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="TIME_CLOCK.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="UNIT_OF_MEASURE_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>

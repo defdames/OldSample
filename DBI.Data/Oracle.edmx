@@ -85,6 +85,7 @@
           <EntitySet Name="SYS_USER_ORGS" EntityType="OracleModel.Store.SYS_USER_ORGS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USER_PERMS" EntityType="OracleModel.Store.SYS_USER_PERMS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USERS" EntityType="OracleModel.Store.SYS_USERS" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="TIME_CLOCK" EntityType="OracleModel.Store.TIME_CLOCK" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="PA_LOCATIONS_V" EntityType="OracleModel.Store.PA_LOCATIONS_V" store:Type="Views" store:Schema="APPS" store:Name="PA_LOCATIONS_V">
             <DefiningQuery>SELECT 
       "PA_LOCATIONS_V"."ROW_ID" AS "ROW_ID", 
@@ -1492,6 +1493,15 @@
           </Key>
           <Property Name="USER_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="LAST_ACTIVITY_DATE" Type="date" />
+        </EntityType>
+        <EntityType Name="TIME_CLOCK">
+          <Key>
+            <PropertyRef Name="TIME_CLOCK_ID" />
+          </Key>
+          <Property Name="TIME_CLOCK_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PERSON_ID" Type="number" Nullable="false" />
+          <Property Name="TIME_IN" Type="date" />
+          <Property Name="TIME_OUT" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'APPS.PA_LOCATIONS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -3282,6 +3292,7 @@
             <End Role="OVERHEAD_ORG" EntitySet="OVERHEAD_ORG" />
             <End Role="OVERHEAD_GL_ACCOUNT" EntitySet="OVERHEAD_GL_ACCOUNT" />
           </AssociationSet>
+          <EntitySet Name="TIME_CLOCK" EntityType="OracleModel.TIME_CLOCK" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -5771,6 +5782,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="TIME_CLOCK">
+          <Key>
+            <PropertyRef Name="TIME_CLOCK_ID" />
+          </Key>
+          <Property Type="Decimal" Name="TIME_CLOCK_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="PERSON_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="TIME_IN" />
+          <Property Type="DateTime" Name="TIME_OUT" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7676,6 +7696,16 @@
                 <ScalarProperty Name="CODE_COMBO_ID" ColumnName="CODE_COMBO_ID" />
                 <ScalarProperty Name="OVERHEAD_ORG_ID" ColumnName="OVERHEAD_ORG_ID" />
                 <ScalarProperty Name="OVERHEAD_GL_ID" ColumnName="OVERHEAD_GL_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TIME_CLOCK">
+            <EntityTypeMapping TypeName="OracleModel.TIME_CLOCK">
+              <MappingFragment StoreEntitySet="TIME_CLOCK">
+                <ScalarProperty Name="TIME_OUT" ColumnName="TIME_OUT" />
+                <ScalarProperty Name="TIME_IN" ColumnName="TIME_IN" />
+                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
+                <ScalarProperty Name="TIME_CLOCK_ID" ColumnName="TIME_CLOCK_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
