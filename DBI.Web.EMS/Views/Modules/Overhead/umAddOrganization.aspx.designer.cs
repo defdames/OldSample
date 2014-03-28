@@ -85,15 +85,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.FilterHeader FilterHeader2;
         
         /// <summary>
-        /// CheckboxSelectionModel1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.CheckboxSelectionModel CheckboxSelectionModel1;
-        
-        /// <summary>
         /// PagingToolbar2 control.
         /// </summary>
         /// <remarks>
@@ -112,21 +103,12 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Toolbar Toolbar1;
         
         /// <summary>
-        /// uxAddOrganizationButton control.
+        /// Button1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxAddOrganizationButton;
-        
-        /// <summary>
-        /// uxDeleteOrganizationButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxDeleteOrganizationButton;
+        protected global::Ext.Net.Button Button1;
     }
 }

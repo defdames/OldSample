@@ -8,8 +8,10 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
-         <ext:GridPanel ID="uxOrganizationsGrid" runat="server" Title="Organization Security By Hierarchy" Padding="5" Layout="FitLayout">
+    <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />         
+        <ext:Viewport runat="server" Layout="FitLayout">
+            <Items>
+            <ext:GridPanel ID="uxOrganizationsGrid" runat="server" Flex="1" SimpleSelect="true" Title="Organization Security By Hierarchy" Padding="5" Region="Center">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxOrganizationSecurityStore"
@@ -39,21 +41,18 @@
                         <ext:FilterHeader ID="FilterHeader2" runat="server" Remote="true" />
                     </Plugins>
                     <SelectionModel>
-                        <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi"></ext:CheckboxSelectionModel>
+                        <ext:CheckboxSelectionModel runat="server" Mode="Multi"></ext:CheckboxSelectionModel>
                     </SelectionModel>
                     <BottomBar>
                         <ext:PagingToolbar ID="PagingToolbar2" runat="server" />
                     </BottomBar>
-                    <TopBar>
-                        <ext:Toolbar ID="Toolbar1" runat="server">
-                            <Items>
-                                <ext:Button runat="server" ID="uxAddOrganizationButton" Text="Add" Icon="Add"></ext:Button>
-                                <ext:Button runat="server" ID="uxDeleteOrganizationButton" Text="Delete" Icon="Delete"></ext:Button>
-                            </Items>
-                        </ext:Toolbar>
-
-                    </TopBar>
+                <TopBar>
+                   <ext:Toolbar ID="Toolbar1" runat="server"><Items> <ext:Button ID="Button1" runat="server" Text="Add Selected" Icon="Add"></ext:Button></Items></ext:Toolbar>
+                </TopBar>
                 </ext:GridPanel>
+                </Items>
+        </ext:Viewport>
+   
     </form>
 </body>
 </html>

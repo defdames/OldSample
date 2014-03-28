@@ -16,53 +16,63 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         }
 
-        protected void deShowOrganizationList(object sender, DirectEventArgs e)
-         {
+        protected void LoadHierarchyTree(object sender, NodeLoadEventArgs e)
+        {
 
+            long[] ids = {64,63, 3065,6066, 8066,61,10066};
+            Entities _context = new Entities();
+            List<HIERARCHY_ID_V> _list = _context.HIERARCHY_ID_V.Where(h => ids.Contains(h.HIERARCHY_ID)).ToList();
 
-            Window win = new Window
-            {
-                ID = "uxOrganizationList",
-                Title = "Organization List Security",
-                Modal = true,
-                Height= 450,
-                Width = 500,
-                Resizable = false,
-                CloseAction = CloseAction.Destroy,
-                Layout = "FitLayout",
-                Loader = new ComponentLoader
-                 {
-                Url = "/Views/Modules/Overhead/umAddOrganization.aspx",
-                Mode = LoadMode.Frame,
-                LoadMask =
-                    {
-                    ShowMask = true
-                    }
+                foreach (HIERARCHY_ID_V hier in _list)
+                {
+                    Node treeNode = new Node();
+                    treeNode.Text = hier.NAME;
+                    treeNode.NodeID = hier.HIERARCHY_ID.ToString();
+                    treeNode.Leaf = true;
+                    treeNode.Icon = Icon.Database;
+                    e.Nodes.Add(treeNode);
                 }
-            };
-            win.Render(this.Form);
-            win.Show();
         }
 
-        //protected void deReadOrganizations(object sender,  StoreReadDataEventArgs e)
-        //{
-        //    long HierarchyID;
-        //    if (long.TryParse(uxHierarchyComboBox.SelectedItem.Value, out HierarchyID))
-        //    {
-        //        Entities _context = new Entities();
-        //        var data = _context.ORG_HIER_V.Where(h => h.HIERARCHY_ID == HierarchyID).ToList();
-        //        int count;
-        //        uxOrganizationSecurityStore.DataSource = GenericData.EnumerableFilterHeader<ORG_HIER_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-        //        e.Total = count;
-        //    }
-        //}
+        protected void deReadOrganizations(object sender, StoreReadDataEventArgs e)
+        {
+            long HierarchyID;
 
+            TreeSelectionModel hierarchyTreeSelectionModel = uxHierarchyTreeSelectionModel;
+            Boolean check = long.TryParse(hierarchyTreeSelectionModel.SelectedRecordID, out HierarchyID);
 
-        //protected void deLoadOrganizationsForHierarchy(object sender, DirectEventArgs e)
-        //{
-        //    uxOrganizationSecurityStore.Reload(); 
-        //}
+            if (check)
+            {
+                Entities _context = new Entities();
+                var data = (from ov in _context.ORG_HIER_V.Where(c => c.HIERARCHY_ID == HierarchyID)
+                            select new ORGANIZATION_VIEW { ORGANIZATION_ID = ov.ORG_ID_CHILD, ORGANIZATION_NAME = ov.ORG_HIER }).ToList();
 
+                int count;
+                uxOrganizationSecurityStore.DataSource = GenericData.EnumerableFilterHeader<ORGANIZATION_VIEW>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                e.Total = count;
+            }
+                
+        }
 
+        protected void deShowOrganizationsByHierarchy(object sender, DirectEventArgs e)
+        {
+            long HierarchyID;
+
+            TreeSelectionModel hierarchyTreeSelectionModel = uxHierarchyTreeSelectionModel;
+            Boolean check = long.TryParse(hierarchyTreeSelectionModel.SelectedRecordID, out HierarchyID);
+
+            Entities _context = new Entities();
+            var data = (from ov in _context.ORG_HIER_V.Where(c => c.HIERARCHY_ID == HierarchyID)
+                        select new ORGANIZATION_VIEW { ORGANIZATION_ID = ov.ORG_ID_CHILD, ORGANIZATION_NAME = ov.ORG_HIER }).ToList();
+
+            uxOrganizationSecurityStore.DataSource = data;
+            uxOrganizationSecurityStore.DataBind();
+        }
+
+        public class ORGANIZATION_VIEW
+        {
+            public long ORGANIZATION_ID { get; set; }
+            public string ORGANIZATION_NAME { get; set; }
+        }
     }
 }

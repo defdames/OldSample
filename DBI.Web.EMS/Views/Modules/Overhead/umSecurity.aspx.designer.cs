@@ -31,15 +31,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// uxDeactivate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Hidden uxDeactivate;
-        
-        /// <summary>
         /// uxViewPort control.
         /// </summary>
         /// <remarks>
@@ -47,6 +38,24 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Viewport uxViewPort;
+        
+        /// <summary>
+        /// uxHierarchyTree control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TreePanel uxHierarchyTree;
+        
+        /// <summary>
+        /// uxHierarchyTreeSelectionModel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TreeSelectionModel uxHierarchyTreeSelectionModel;
         
         /// <summary>
         /// uxOrganizationsGrid control.
@@ -76,15 +85,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Model Model2;
         
         /// <summary>
-        /// Column8 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column Column8;
-        
-        /// <summary>
         /// Column1 control.
         /// </summary>
         /// <remarks>
@@ -103,31 +103,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.FilterHeader FilterHeader2;
         
         /// <summary>
-        /// PagingToolbar2 control.
+        /// uxOrganizationGridPageBar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.PagingToolbar PagingToolbar2;
-        
-        /// <summary>
-        /// uxAddOrganizationButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxAddOrganizationButton;
-        
-        /// <summary>
-        /// uxDeleteOrganizationButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxDeleteOrganizationButton;
+        protected global::Ext.Net.PagingToolbar uxOrganizationGridPageBar;
         
         /// <summary>
         /// GridPanel1 control.
