@@ -9,7 +9,8 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <ext:ResourceManager runat="server" />
+        <ext:ResourceManager runat="server" Namespace="" />
+
         <ext:Viewport runat="server" ID="uxOrgsViewport" Layout="BorderLayout">
             <Items>
                 <ext:GridPanel runat="server" ID="uxUsersGrid" Region="North" Layout="HBoxLayout">
@@ -55,92 +56,122 @@
                         <ext:Toolbar runat="server">
                             <Items>
                                 <ext:Button runat="server" Text="Edit User Orgs" Icon="ApplicationEdit">
-                                    <DirectEvents>
-                                        <Click OnEvent="deLoadUpdateOrgWindow" />
-                                    </DirectEvents>
                                 </ext:Button>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
+                    <DirectEvents>
+                        <Select OnEvent="deLoadUpdateOrgWindow">
+                            <ExtraParams>
+                                <ext:Parameter Name="UserId"  Value="#{uxUsersGrid}.getSelectionModel().getSelection()[0].data.USER_ID" Mode="Raw" />
+                            </ExtraParams>
+                        </Select>                    
+                    </DirectEvents>
                 </ext:GridPanel>
-                <ext:Panel runat="server" ID="uxTwoGridPanel" Region="Center" Layout="HBoxLayout">
+            </Items>
+        </ext:Viewport>
+        <ext:Window runat="server" ID="uxTwoGridWindow" Layout="HBoxLayout" Width="700" Height="600" Hidden="true">
+                    <LayoutConfig>
+                        <ext:HBoxLayoutConfig Align="Stretch" />
+                    </LayoutConfig>
                     <Items>
-                        <ext:GridPanel runat="server" ID="uxAvailableOrgsGrid" Layout="HBoxLayout" Title="Available Orgs">
+                        <ext:GridPanel runat="server" ID="uxAvailableOrgsGrid" Title="Available Orgs" Flex="1">
                             <Store>
                                 <ext:Store runat="server" ID="uxAvailableOrgsStore">
                                     <Model>
-                                        <ext:Model runat="server">
+                                        <ext:Model ID="Model1" runat="server">
                                             <Fields>
-                                                
+                                                <ext:ModelField Name="ORG_HIER" />
+                                                <ext:ModelField Name="BU_ORG" />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
                                 </ext:Store>
                             </Store>
-                            <ColumnModel>
+                            <ColumnModel ID="ColumnModel1" runat="server">
                                 <Columns>
-                                    
+                                    <ext:RowNumbererColumn ID="RowNumbererColumn1" 
+                                        runat="server" 
+                                        Width="40" 
+                                        Sortable="false" />
+                                    <ext:Column ID="Column1" runat="server" Text="Name" DataIndex="ORG_HIER" Flex="1" />
+                                    <ext:Column ID="Column2" runat="server" Text="Business Unit" DataIndex="BU_ORG" Flex="1" />
                                 </Columns>
                             </ColumnModel>
+                            <Plugins>
+                                <ext:BufferedRenderer runat="server" />
+                                <ext:FilterHeader runat="server" />
+                            </Plugins>
+                            <View>
+                                <ext:GridView ID="GridView1" runat="server" TrackOver="false" />
+                            </View>
+                            <SelectionModel>
+                                <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" PruneRemoved="false" Mode="Multi" />
+                            </SelectionModel>
                         </ext:GridPanel>
+                        
                         <ext:Panel runat="server" ID="uxButtonsPanel" Layout="VBoxLayout">
                             <Items>
-                                <ext:Button runat="server" Icon="ResultsetNext" StyleSpec="margin-bottom:2px;">
+                                <ext:Button ID="Button2" runat="server" Icon="ResultsetNext" StyleSpec="margin-bottom:2px;">
                             <Listeners>
                                 <Click Handler="TwoGridSelector.add(uxAvailableOrgsGrid, uxSelectedOrgsGrid);" />
                             </Listeners>
                             <ToolTips>
-                                <ext:ToolTip runat="server" Title="Add" Html="Add Selected Rows" />
+                                <ext:ToolTip ID="ToolTip1" runat="server" Title="Add" Html="Add Selected Rows" />
                             </ToolTips>
                         </ext:Button>
-                        <ext:Button runat="server" Icon="ResultsetLast" StyleSpec="margin-bottom:2px;">
+                        <ext:Button ID="Button3" runat="server" Icon="ResultsetLast" StyleSpec="margin-bottom:2px;">
                             <Listeners>
                                 <Click Handler="TwoGridSelector.addAll(uxAvailableOrgsGrid, uxSelectedOrgsGrid);" />
                             </Listeners>
                             <ToolTips>
-                                <ext:ToolTip runat="server" Title="Add all" Html="Add All Rows" />
+                                <ext:ToolTip ID="ToolTip2" runat="server" Title="Add all" Html="Add All Rows" />
                             </ToolTips>
                         </ext:Button>
-                        <ext:Button runat="server" Icon="ResultsetPrevious" StyleSpec="margin-bottom:2px;">
+                        <ext:Button ID="Button4" runat="server" Icon="ResultsetPrevious" StyleSpec="margin-bottom:2px;">
                             <Listeners>
                                 <Click Handler="TwoGridSelector.remove(uxAvailableOrgsGrid, uxSelectedOrgsGrid);" />
                             </Listeners>
                             <ToolTips>
-                                <ext:ToolTip runat="server" Title="Remove" Html="Remove Selected Rows" />
+                                <ext:ToolTip ID="ToolTip3" runat="server" Title="Remove" Html="Remove Selected Rows" />
                             </ToolTips>
                         </ext:Button>
-                        <ext:Button runat="server" Icon="ResultsetFirst" StyleSpec="margin-bottom:2px;">
+                        <ext:Button ID="Button5" runat="server" Icon="ResultsetFirst" StyleSpec="margin-bottom:2px;">
                             <Listeners>
                                 <Click Handler="TwoGridSelector.removeAll(uxAvailableOrgsGrid, uxSelectedOrgsGrid);" />
                             </Listeners>
                             <ToolTips>
-                                <ext:ToolTip runat="server" Title="Remove all" Html="Remove All Rows" />
+                                <ext:ToolTip ID="ToolTip4" runat="server" Title="Remove all" Html="Remove All Rows" />
                             </ToolTips>
                         </ext:Button>
                             </Items>
                         </ext:Panel>
-                        <ext:GridPanel runat="server" ID="uxSelectedOrgsGrid" Layout="HBoxLayout" Title="Available Orgs">
+                        <ext:GridPanel runat="server" ID="uxSelectedOrgsGrid" Title="Selected Orgs" Flex="1" AutoScroll="true">
                             <Store>
-                                <ext:Store runat="server">
+                                <ext:Store runat="server" ID="uxSelectedOrgsStore">
                                     <Model>
-                                        <ext:Model runat="server">
+                                        <ext:Model ID="Model2" runat="server">
                                             <Fields>
-                                                
+                                                <ext:ModelField Name="ORG_HIER" />
+                                                <ext:ModelField Name="BU_ORG" />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
                                 </ext:Store>
                             </Store>
-                            <ColumnModel>
+                            <Plugins>
+                                <ext:BufferedRenderer runat="server" />
+                                <ext:FilterHeader runat="server" />
+                            </Plugins>
+                            <ColumnModel runat="server">
                                 <Columns>
-                                    
+                                    <ext:Column ID="Column3" runat="server" Text="Name" DataIndex="ORG_HIER" Flex="1" />
+                                    <ext:Column ID="Column4" runat="server" Text="Business Unit" DataIndex="BU_ORG" Flex="1" />
                                 </Columns>
                             </ColumnModel>
                         </ext:GridPanel>
                     </Items>
-                </ext:Panel>
-            </Items>
-        </ext:Viewport>
+                </ext:Window>
     </form>
 </body>
 </html>
