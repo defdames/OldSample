@@ -40,7 +40,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         QueryMode = DataLoadMode.Local,
                         ValueField = "PROJECT_ID",
                         ForceSelection=true,
-                        DisplayField = "LONG_NAME"
+                        DisplayField = "LONG_NAME",
+                        Width=500,
+                        LabelWidth=100
                     };
 
                     var ProjectList =( from p in _context.PROJECTS_V
@@ -91,7 +93,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(EmployeeToUpdate);
             }
 
-            X.Js.Call(string.Format("parent.App.direct.dmRefreshShowSubmit_IRM('{0}')", Request.QueryString["HeaderId"]));
+            X.Js.Call("parent.App.uxPlaceholderWindow.hide()");
         }
     }
 }

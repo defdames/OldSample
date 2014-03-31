@@ -31,15 +31,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.ResourceManager ResourceManager1;
         
         /// <summary>
-        /// uxSubmitActivityPanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Viewport uxSubmitActivityPanel;
-        
-        /// <summary>
         /// uxSubmitActivityForm control.
         /// </summary>
         /// <remarks>

@@ -15,7 +15,6 @@ namespace DBI.Web.EMS.Views.Modules.Security
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
         }
 
         protected void deReadUsers(object sender, StoreReadDataEventArgs e)
@@ -31,6 +30,29 @@ namespace DBI.Web.EMS.Views.Modules.Security
         protected void deLoadUpdateOrgWindow(object sender, DirectEventArgs e)
         {
 
+            using (Entities _context = new Entities())
+            {
+                List<ORG_HIER_V> AllOrgs = _context.ORG_HIER_V.ToList();
+                long UserId = long.Parse(e.ExtraParams["UserId"]);
+                
+                List<ORG_HIER_V> SelectedOrgs = (from s in _context.SYS_USER_ORGS
+                                                 join o in _context.ORG_HIER_V on s.ORG_ID equals o.ORG_ID
+                                                 where s.USER_ID == UserId
+                                                 select o).ToList();
+
+                foreach (ORG_HIER_V SelectedOrg in SelectedOrgs)
+                {
+                    AllOrgs.RemoveAt(AllOrgs.FindIndex(x => x.ORG_ID == SelectedOrg.ORG_ID));
+                }
+
+
+                this.uxAvailableOrgsStore.DataSource = AllOrgs;
+                this.uxAvailableOrgsStore.DataBind();
+                uxSelectedOrgsStore.DataSource = SelectedOrgs;
+                uxSelectedOrgsStore.DataBind();
+
+                uxTwoGridWindow.Show();
+            }
         }
     }
 }

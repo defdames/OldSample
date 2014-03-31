@@ -4,24 +4,23 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+	<title></title>
 </head>
 <body>
-    <form id="form1" runat="server">
-    <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
-        <ext:Viewport ID="Viewport1" runat="server" Layout="FitLayout">
-            <Items>
-                <ext:FormPanel runat="server" ID="uxChooseSupportProject" Layout="FormLayout" Region="Center" BodyPadding="5">
-                    <Buttons>
-                        <ext:Button ID="Button1" runat="server" Text="Submit">
-                            <DirectEvents>
-                                <Click OnEvent="deSupportProjectChoice" />
-                            </DirectEvents>
-                        </ext:Button>
-                    </Buttons>
-                </ext:FormPanel>
-            </Items>
-        </ext:Viewport>
-    </form>
+	<form id="form1" runat="server">
+	<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
+		
+				<ext:FormPanel runat="server" ID="uxChooseSupportProject" Layout="FormLayout" Region="Center" BodyPadding="5">
+					<Buttons>
+						<ext:Button ID="Button1" runat="server" Text="Submit">
+							<DirectEvents>
+								<Click OnEvent="deSupportProjectChoice">
+									<EventMask ShowMask="true" />
+								</Click>
+							</DirectEvents>
+						</ext:Button>
+					</Buttons>
+				</ext:FormPanel>
+	</form>
 </body>
 </html>

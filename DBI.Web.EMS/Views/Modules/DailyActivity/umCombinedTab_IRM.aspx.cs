@@ -43,9 +43,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                             join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
                             where d.HEADER_ID == HeaderId
-                            select new {d.HEADER_ID, d.PROJECT_ID, p.LONG_NAME, d.DA_DATE, d.SUBDIVISION, d.CONTRACTOR, d.PERSON_ID, e.EMPLOYEE_NAME, d.LICENSE, d.STATE, d.APPLICATION_TYPE, d.DENSITY, d.DA_HEADER_ID }).ToList();
-                uxHeaderStore.DataSource = data;
-                uxHeaderStore.DataBind();
+                            select new {d.HEADER_ID, d.PROJECT_ID, p.LONG_NAME, d.DA_DATE, d.SUBDIVISION, d.CONTRACTOR, d.PERSON_ID, e.EMPLOYEE_NAME, d.LICENSE, d.STATE, d.APPLICATION_TYPE, d.DENSITY, d.DA_HEADER_ID }).Single();
+                DateTime Da_date = DateTime.Parse(data.DA_DATE.ToString());
+                uxProjectField.Value = data.LONG_NAME;
+                uxDateField.Value = Da_date.ToString("MM-dd-yyyy");
+                uxDensityField.Value = data.DENSITY;
+                uxSubDivisionField.Value = data.SUBDIVISION;
+                uxLicenseField.Value = data.LICENSE;
+                uxStateField.Value = data.STATE;
+                uxSupervisorField.Value = data.EMPLOYEE_NAME;
+                uxTypeField.Value = data.APPLICATION_TYPE;
+                uxHeaderField.Value = data.HEADER_ID.ToString();
+                uxOracleField.Value = data.DA_HEADER_ID.ToString();
             }
         }
 
@@ -169,12 +178,57 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
                 var data = (from d in _context.DAILY_ACTIVITY_FOOTER
+                            join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                            join e in _context.EMPLOYEES_V on h.PERSON_ID equals e.PERSON_ID
                             where d.HEADER_ID == HeaderId
-                            select new { d.HOTEL_CITY, d.HOTEL_NAME, d.HOTEL_PHONE, d.HOTEL_STATE, d.COMMENTS, d.FOREMAN_SIGNATURE, d.CONTRACT_REP, d.DOT_REP, d.DOT_REP_NAME }).ToList();
-                var processedData = (from d in data
-                                     select new { d.HOTEL_CITY, d.HOTEL_NAME, d.HOTEL_PHONE, d.HOTEL_STATE, d.COMMENTS, FOREMAN_SIGNATURE = d.FOREMAN_SIGNATURE.Length > 0 ? true : false, CONTRACT_REP = d.CONTRACT_REP.Length > 0 ? true : false, DOT_REP = d.DOT_REP.Length > 0 ? true : false, d.DOT_REP_NAME}).ToList();
-                uxFooterStore.DataSource = processedData;
-                uxFooterStore.DataBind();
+                            select new { d, e.EMPLOYEE_NAME }).SingleOrDefault();
+                if (data != null)
+                {
+                    uxReasonForNoWorkField.Value = data.d.COMMENTS;
+                    uxHotelField.Value = data.d.HOTEL_NAME;
+                    uxCityField.Value = data.d.HOTEL_CITY;
+                    uxFooterStateField.Value = data.d.HOTEL_STATE;
+                    uxPhoneField.Value = data.d.HOTEL_PHONE;
+                    uxContractNameField.Value = data.d.CONTRACT_REP_NAME;
+                    uxDOTRep.Value = data.d.DOT_REP_NAME;
+                    uxForemanNameField.Value = data.EMPLOYEE_NAME;
+                    try
+                    {
+                        byte[] ForemanImage = data.d.FOREMAN_SIGNATURE.ToArray();
+                        if (ForemanImage.Length > 0)
+                        {
+                            uxForemanImage.ImageUrl = string.Format("ImageLoader/ImageLoader.aspx?headerId={0}&type=foreman", HeaderId);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        uxForemanImage.ImageUrl = "../../../Resources/Images/1pixel.jpg";
+                    }
+                    try
+                    {
+                        byte[] ContractImage = data.d.CONTRACT_REP.ToArray();
+                        if (ContractImage.Length > 0)
+                        {
+                            uxContractImage.ImageUrl = string.Format("ImageLoader/ImageLoader.aspx?headerId={0}&type=contract", HeaderId);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        uxContractImage.ImageUrl = "../../../Resources/Images/1pixel.jpg";
+                    }
+                    try
+                    {
+                        byte[] DOTImage = data.d.DOT_REP.ToArray();
+                        if (DOTImage.Length > 0)
+                        {
+                            uxDOTImage.ImageUrl = string.Format("ImageLoader/ImageLoader.aspx?headerId={0}&type=dot", HeaderId);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        uxDOTImage.ImageUrl = "../../../Resources/Images/1pixel.jpg";
+                    }
+                }
             }
         }
     }

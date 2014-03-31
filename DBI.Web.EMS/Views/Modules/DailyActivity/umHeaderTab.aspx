@@ -12,13 +12,13 @@
 	<form id="form1" runat="server">
 		<ext:FormPanel runat="server"
 			ID="uxEditHeaderForm"
-			Layout="FormLayout">
+			Layout="FormLayout" MaxWidth="1000">
 			<Items>
 				<ext:DropDownField runat="server"
 					ID="uxFormProject"
 					FieldLabel="Select a Project"
 					Mode="ValueText"
-					AllowBlank="false">
+					AllowBlank="false" Editable="false">
 					<Component>
 						<ext:GridPanel runat="server" 
 							ID="uxFormProjectGrid"
@@ -108,7 +108,7 @@
 					ID="uxFormEmployee" 
 					FieldLabel="Supervisor/Area Manager"
 					Mode="ValueText" 
-					AllowBlank="false">
+					AllowBlank="false" Editable="false">
 					<Component>
 						<ext:GridPanel runat="server" 
 							ID="uxFormEmployeeGrid"
@@ -181,7 +181,7 @@
 						</ext:GridPanel>
 					</Component>
 				</ext:DropDownField>
-				<ext:TextField runat="server" ID="uxFormLicense" FieldLabel="License #" AllowBlank="false" />
+				<ext:TextField runat="server" ID="uxFormLicense" FieldLabel="Business License" AllowBlank="false" />
 				<ext:ComboBox runat="server"
 					ID="uxFormState"
 					FieldLabel="State"

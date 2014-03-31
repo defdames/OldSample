@@ -83,18 +83,16 @@
 				<ext:StoreParameter Name="Type" Value="Edit" />
 			</Parameters>
 		</ext:Store>
-		<ext:Panel runat="server" ID="uxAddEditPanel" Layout="FitLayout">
-			<Items>
 				<ext:FormPanel runat="server"
 					ID="uxAddInventoryForm"
 					Layout="FormLayout"
 					Hidden="true">
 					<Items>
-						<ext:DropDownField runat="server"
+						<ext:DropDownField runat="server" Editable="false"
 							ID="uxAddInventoryMix"
 							Mode="ValueText"
 							FieldLabel="Select Mix"
-							AllowBlank="false">
+							AllowBlank="false" Width="500">
 							<Component>
 								<ext:GridPanel runat="server"
 									ID="uxAddInventoryMixGrid"
@@ -162,7 +160,7 @@
 							QueryMode="Local"
 							TypeAhead="true"
 							AllowBlank="false"
-							ForceSelection="true">
+							ForceSelection="true" Width="500">
 							<Store>
 								<ext:Store runat="server"
 									ID="uxAddInventoryRegionStore">
@@ -195,7 +193,7 @@
 							QueryMode="Local"
 							TypeAhead="true"
 							AllowBlank="false"
-							ForceSelection="true">
+							ForceSelection="true" Width="500">
 							<Store>
 								<ext:Store runat="server"
 									ID="uxAddInventorySubStore">
@@ -210,11 +208,11 @@
 								</ext:Store>
 							</Store>
 						</ext:ComboBox>
-						<ext:DropDownField runat="server"
+						<ext:DropDownField runat="server" Editable="false"
 							ID="uxAddInventoryItem"
 							FieldLabel="Select Item"
 							Mode="ValueText"
-							AllowBlank="false">
+							AllowBlank="false" Width="500">
 							<Component>
 								<ext:GridPanel runat="server"
 									ID="uxAddInventoryItemGrid" StoreID="uxAddInventoryItemStore">
@@ -260,14 +258,14 @@
 								</Change>
 							</DirectEvents>
 						</ext:DropDownField>
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxAddInventoryRate"
 							FieldLabel="Rate"
-							AllowBlank="false">
+							AllowBlank="false" Width="500">
 							<Listeners>
 								<Change Fn="doAddMath" />
 							</Listeners>
-						</ext:TextField>
+						</ext:NumberField>
 						<ext:ComboBox runat="server"
 							ID="uxAddInventoryMeasure"
 							FieldLabel="Unit of Measure"
@@ -276,7 +274,7 @@
 							QueryMode="Local"
 							TypeAhead="true"
 							AllowBlank="false"
-							ForceSelection="true">
+							ForceSelection="true" Width="500">
 							<Store>
 								<ext:Store runat="server"
 									ID="uxAddInventoryMeasureStore">
@@ -293,13 +291,13 @@
 								</ext:Store>
 							</Store>
 						</ext:ComboBox>
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxAddInventoryTotal"
-							FieldLabel="Total" />
+							FieldLabel="Total" Width="500" />
 						<ext:TextField runat="server"
 							ID="uxAddInventoryEPA"
 							FieldLabel="EPA Number"
-							AllowBlank="false" />
+							AllowBlank="false" Width="500" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
@@ -312,6 +310,7 @@
 									<ExtraParams>
 										<ext:Parameter Name="SecondaryInvName" Value="#{uxAddInventorySub}.getRawValue()" Mode="Raw" />
 									</ExtraParams>
+									<EventMask ShowMask="true" />
 								</Click>
 							</DirectEvents>
 						</ext:Button>
@@ -338,7 +337,7 @@
 							ID="uxEditInventoryMix"
 							Disabled="true"
 							FieldLabel="Mix Number"
-							AllowBlank="false" />
+							AllowBlank="false" Width="500" />
 						<ext:ComboBox runat="server"
 							ID="uxEditInventoryRegion"
 							FieldLabel="Select Region"
@@ -347,7 +346,7 @@
 							QueryMode="Local"
 							TypeAhead="true"
 							AllowBlank="false"
-							ForceSelection="true">
+							ForceSelection="true" Width="500">
 							<Store>
 								<ext:Store runat="server"
 									ID="uxEditInventoryRegionStore">
@@ -380,7 +379,7 @@
 							QueryMode="Local"
 							TypeAhead="true"
 							AllowBlank="false"
-							ForceSelection="true">
+							ForceSelection="true" Width="500">
 							<Store>
 								<ext:Store runat="server"
 									ID="uxEditInventorySubStore">
@@ -395,11 +394,11 @@
 								</ext:Store>
 							</Store>
 						</ext:ComboBox>
-						<ext:DropDownField runat="server"
+						<ext:DropDownField runat="server" Editable="false"
 							ID="uxEditInventoryItem"
 							FieldLabel="Select Item"
 							Mode="ValueText"
-							AllowBlank="false">
+							AllowBlank="false" Width="500">
 							<Component>
 								<ext:GridPanel runat="server"
 									ID="uxEditInventoryItemGrid"
@@ -443,14 +442,14 @@
 								</Change>
 							</DirectEvents>
 						</ext:DropDownField>
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxEditInventoryRate"
 							FieldLabel="Rate"
-							AllowBlank="false">
+							AllowBlank="false" Width="500">
 							<DirectEvents>
 								<Change OnEvent="deEditMath" />
 							</DirectEvents>
-						</ext:TextField>
+						</ext:NumberField>
 						<ext:ComboBox runat="server"
 							ID="uxEditInventoryMeasure"
 							FieldLabel="Unit of Measure"
@@ -459,7 +458,7 @@
 							QueryMode="Local"
 							TypeAhead="true"
 							AllowBlank="false"
-							ForceSelection="true">
+							ForceSelection="true" Width="500">
 							<Store>
 								<ext:Store runat="server"
 									ID="uxEditInventoryMeasureStore">
@@ -476,13 +475,13 @@
 								</ext:Store>
 							</Store>
 						</ext:ComboBox>
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxEditInventoryTotal"
-							FieldLabel="Total" />
+							FieldLabel="Total" Width="500" />
 						<ext:TextField runat="server"
 							ID="uxEditInventoryEPA"
 							FieldLabel="EPA Number"
-							AllowBlank="false" />
+							AllowBlank="false" Width="500" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
@@ -494,6 +493,7 @@
 									<ExtraParams>
 										<ext:Parameter Name="SecondaryInvName" Value="#{uxEditInventorySub}.getRawValue()" Mode="Raw" />
 									</ExtraParams>
+									<EventMask ShowMask="true" />
 								</Click>
 							</DirectEvents>
 						</ext:Button>
@@ -511,8 +511,7 @@
 						<ValidityChange Handler="#{uxEditEmployeeSubmit}.setDisabled(!valid);" />
 					</Listeners>
 				</ext:FormPanel>
-			</Items>
-			<Listeners>
+			<%--<Listeners>
 				<AfterRender
 					Handler="var win = parentAutoLoadControl.target || parentAutoLoadControl, //you can use just 'parentAutoLoadControl' after update to Ext.NET v2 beta.
 									size = this.getSize();
@@ -521,8 +520,7 @@
 								size.width += 12;
 								win.setSize(size);"
 					Delay="100" />
-			</Listeners>
-		</ext:Panel>
+			</Listeners>--%>
 	</form>
 </body>
 </html>

@@ -81,7 +81,8 @@
                         <ext:Hidden runat="server" ID="uxPermissionId" />
                         <ext:TextField runat="server" ID="uxPermissionName" FieldLabel="Permission Name" />
                         <ext:TextField runat="server" ID="uxPermissionDescription" FieldLabel="Description" />
-                        <ext:ComboBox runat="server" ID="uxParentPermissionName" DisplayField="PERMISSION_NAME" ValueField="PERMISSION_ID" QueryMode="Local" TypeAhead="true" FieldLabel="Parent Permission">
+                        <ext:ComboBox runat="server" ID="uxParentPermissionName" DisplayField="PERMISSION_NAME" 
+                            ValueField="PERMISSION_ID" QueryMode="Local" TypeAhead="true" FieldLabel="Parent Permission" ForceSelection="true">
                             <Store>
                                 <ext:Store runat="server" ID="uxParentPermissionStore" OnReadData="deReadParents" AutoDataBind="true">
                                     <Model>

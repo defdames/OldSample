@@ -137,11 +137,26 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 try
                 {
+                    uxEditChemicalGallonTotal.Value = int.Parse(data.GALLON_MIXED.ToString()) + int.Parse(data.GALLON_STARTING.ToString());
+                }
+                catch { }
+                try
+                {
                     uxEditChemicalGallonRemain.SetValue(data.GALLON_REMAINING.ToString());
                 }
                 catch
                 {
                 }
+                try
+                {
+                    uxEditChemicalGallonUsed.Value = int.Parse(data.GALLON_MIXED.ToString()) + int.Parse(data.GALLON_STARTING.ToString()) - int.Parse(data.GALLON_REMAINING.ToString());
+                }
+                catch { }
+                try
+                {
+                    uxEditChemicalAcresSprayed.Value = int.Parse(uxEditChemicalGallonUsed.Value.ToString()) * decimal.Parse(uxEditChemicalGallonAcre.Value.ToString());
+                }
+                catch { }
                 try
                 {
                     uxEditChemicalAcresSprayed.SetValue(data.ACRES_SPRAYED.ToString());
@@ -180,6 +195,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             decimal GallonRemain = decimal.Parse(uxEditChemicalGallonRemain.Value.ToString());
             decimal AcresSprayed = decimal.Parse(uxEditChemicalAcresSprayed.Value.ToString());
             DAILY_ACTIVITY_CHEMICAL_MIX data;
+            List<DAILY_ACTIVITY_INVENTORY> inventoryData;
 
             //Get record to update
             using (Entities _context = new Entities())
@@ -187,6 +203,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 data = (from d in _context.DAILY_ACTIVITY_CHEMICAL_MIX
                         where d.CHEMICAL_MIX_ID == ChemicalId
                         select d).Single();
+
+                inventoryData = (from i in _context.DAILY_ACTIVITY_INVENTORY
+                                 where i.CHEMICAL_MIX_ID == ChemicalId
+                                 select i).ToList();
             }
 
             data.TARGET_AREA = uxEditChemicalTargetAre.Value.ToString();
@@ -200,10 +220,30 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.MODIFIED_BY = User.Identity.Name;
             data.MODIFY_DATE = DateTime.Now;
 
+            foreach (DAILY_ACTIVITY_INVENTORY inventoryItem in inventoryData)
+            {
+                inventoryItem.TOTAL = inventoryItem.RATE * AcresSprayed;
+                GenericData.Update<DAILY_ACTIVITY_INVENTORY>(inventoryItem);
+            }
+
             //Set update to database
             GenericData.Update<DAILY_ACTIVITY_CHEMICAL_MIX>(data);
+            
 
-            X.Js.Call("parent.App.uxPlaceholderWindow.hide(); parent.App.uxChemicalTab.reload()");
+            X.MessageBox.Confirm("Inventory Updated", "The associated Inventory item totals have been updated.  Go to the Inventory tab?", new MessageBoxButtonsConfig
+            {
+                Yes = new MessageBoxButtonConfig
+                {
+                    Handler = "parent.App.uxTabPanel.setActiveTab(parent.App.uxInventoryTab); parent.App.uxPlaceholderWindow.hide();",
+                    Text = "Yes"
+                },
+                No = new MessageBoxButtonConfig
+                {
+                    Handler = "parent.App.uxPlaceholderWindow.hide(); parent.App.uxChemicalTab.reload()",
+                    Text = "No"
+                }
+            }).Show();
+            
 
             Notification.Show(new NotificationConfig()
             {

@@ -77,7 +77,7 @@
         <EntityTypeShape EntityType="OracleModel.SYS_GROUPS_PERMS" Width="1.5" PointX="34" PointY="30" />
         <EntityTypeShape EntityType="OracleModel.SYS_MODULES" Width="1.5" PointX="29.375" PointY="29.75" />
         <EntityTypeShape EntityType="OracleModel.SYS_MOBILE_DEVICES" Width="1.5" PointX="3.5" PointY="31.125" />
-        <EntityTypeShape EntityType="OracleModel.SYS_MOBILE_NOTIFICATIONS" Width="1.5" PointX="4.9436277285887051" PointY="25.826942113147556" />
+        <EntityTypeShape EntityType="OracleModel.SYS_MOBILE_NOTIFICATIONS" Width="1.5" PointX="5.5" PointY="27.25" />
         <EntityTypeShape EntityType="OracleModel.SYS_USER_PERMS" Width="1.5" PointX="32.625" PointY="19.875" />
         <EntityTypeShape EntityType="OracleModel.SYS_MENU" Width="1.5" PointX="30.25" PointY="23.25" />
         <AssociationConnector Association="OracleModel.FK_MENU_MODULE_ID" />
@@ -96,10 +96,15 @@
         <AssociationConnector Association="OracleModel.FK_USER_PERMS_PERM_ID" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="0.5" PointY="15.125" />
         <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
-        <EntityTypeShape EntityType="OracleModel.ORG_HIER_V" Width="1.5" PointX="13.75" PointY="18" />
-        <EntityTypeShape EntityType="OracleModel.SYS_USER_ORGS" Width="1.5" PointX="14.125" PointY="0.625" />
-        <AssociationConnector Association="OracleModel.FK_ORGS_USER_ID" />
         <EntityTypeShape EntityType="OracleModel.XXDBI_PAYROLL_AUDIT_V" Width="1.5" PointX="18.375" PointY="4" />
+        <EntityTypeShape EntityType="OracleModel.ORG_HIER_V" Width="1.5" PointX="13.75" PointY="18" />
+        <EntityTypeShape EntityType="OracleModel.HIERARCHY_ID_V" Width="1.5" PointX="15.875" PointY="17.125" />
+        <EntityTypeShape EntityType="OracleModel.GL_ACCOUNTS_V" Width="1.5" PointX="18.125" PointY="17.125" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_ORG" Width="1.5" PointX="0.5" PointY="42.375" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="1.5" PointX="3.75" PointY="42.375" />
+        <AssociationConnector Association="OracleModel.FK_GL_ORG_ID" />
+        <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="5.5" PointY="5.75" />
+        <EntityTypeShape EntityType="OracleModel.SYS_USER_ORGS" Width="1.5" PointX="13.375" PointY="0.5" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

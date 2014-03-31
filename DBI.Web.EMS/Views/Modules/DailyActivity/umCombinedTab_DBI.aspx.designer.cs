@@ -94,6 +94,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.TextField uxSubDivisionField;
         
         /// <summary>
+        /// uxSupervisorField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxSupervisorField;
+        
+        /// <summary>
         /// uxLicenseField control.
         /// </summary>
         /// <remarks>
@@ -110,15 +119,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.TextField uxStateField;
-        
-        /// <summary>
-        /// uxSupervisorField control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxSupervisorField;
         
         /// <summary>
         /// uxTypeField control.
@@ -724,13 +724,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.TextField uxPhoneField;
         
         /// <summary>
-        /// uxContractNameField control.
+        /// uxForemanNameField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxContractNameField;
+        protected global::Ext.Net.TextField uxForemanNameField;
         
         /// <summary>
         /// uxForemanImage control.
@@ -740,6 +740,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Image uxForemanImage;
+        
+        /// <summary>
+        /// uxContractNameField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxContractNameField;
         
         /// <summary>
         /// uxContractImage control.

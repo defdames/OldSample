@@ -29,6 +29,7 @@ namespace DBI.Data
         public long CURRENT_ORG_ID { get; set; }
         public string LOCATION_NAME { get; set; }
         public long JOB_ID { get; set; }
+        public int PERSON_ID { get; set; }
     
         public virtual SYS_USERS SYS_USERS { get; set; }
     }
