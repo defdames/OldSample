@@ -295,6 +295,7 @@ namespace DBI.Data
             }
         }
 
+
         public static void createLaborRecords(long dailyActivityHeaderId, long postedByUserId, XXDBI_DAILY_ACTIVITY_HEADER_V xxdbiDailyActivityHeader, out List<XXDBI_LABOR_HEADER_V> xxdbiLaborHeaderRecords)
         {
             try
@@ -599,6 +600,17 @@ namespace DBI.Data
                                          where i.HEADER_ID == HeaderId
                                          select new { i, iv, p.ORG_ID, h.PROJECT_ID }).ToList();
 
+
+
+                    var TaskId = (from t in _context.DAILY_ACTIVITY_PRODUCTION
+                                    
+                                    where t.HEADER_ID == HeaderId
+                                    select t.TASK_ID ).Distinct().SingleOrDefault();
+                    
+                    if (TaskId == null)
+                    { TaskId = 9999; }
+
+
                     int InventoryCount = 1;
                     foreach (var InventoryItem in InventoryList)
                     {
@@ -632,9 +644,12 @@ namespace DBI.Data
                             TRANSACTION_DATE = (DateTime)InventoryItem.i.DAILY_ACTIVITY_HEADER.DA_DATE,
                             TRANSACTION_TYPE_ID = TransactionType,
                             TRANSACTION_SOURCE_NAME = "EMS",
+                            EXPENDITURE_TYPE = "EMS DAILY ACTIVITY",
                             DISTRIBUTION_ACCOUNT_ID = GlCode,
                             LOCK_FLAG = 2,
                             VALIDATION_REQUIRED = 1,
+                            SOURCE_PROJECT_ID = InventoryItem.PROJECT_ID,
+                            SOURCE_TASK_ID = TaskId,
                             LAST_UPDATE_DATE = DateTime.Now,
                             LAST_UPDATED_BY = postedByUserId,
                             CREATED_BY = postedByUserId,
@@ -674,14 +689,18 @@ namespace DBI.Data
 
                     PROJECTS_V projectDetails = _context.PROJECTS_V.Where(p => p.PROJECT_ID == headerDetails.PROJECT_ID).SingleOrDefault();
 
-                    if (importDetails != null || importDetails.DEVICE_ID != "0001")
+                    if (importDetails != null )
+
                     {
-                        SYS_MOBILE_NOTIFICATIONS notification = new SYS_MOBILE_NOTIFICATIONS();
-                        notification.DEVICE_ID = importDetails.DEVICE_ID;
-                        notification.CREATE_DATE = DateTime.Now;
-                        notification.MESSAGE = string.Format("Daily activity for {0} completed on {1} has been posted by {2}", projectDetails.LONG_NAME, DateTime.Parse(headerDetails.DA_DATE.ToString()).ToShortDateString(), postedByUser);
-                        notification.SOUND = "alert.caf";
-                        GenericData.Insert<SYS_MOBILE_NOTIFICATIONS>(notification);
+                        if (importDetails.DEVICE_ID != "0001")
+                        {
+                            SYS_MOBILE_NOTIFICATIONS notification = new SYS_MOBILE_NOTIFICATIONS();
+                            notification.DEVICE_ID = importDetails.DEVICE_ID;
+                            notification.CREATE_DATE = DateTime.Now;
+                            notification.MESSAGE = string.Format("Daily activity for {0} completed on {1} has been posted by {2}", projectDetails.LONG_NAME, DateTime.Parse(headerDetails.DA_DATE.ToString()).ToShortDateString(), postedByUser);
+                            notification.SOUND = "alert.caf";
+                            GenericData.Insert<SYS_MOBILE_NOTIFICATIONS>(notification);
+                        }
                     }
                 }
 
