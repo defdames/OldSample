@@ -33,7 +33,7 @@
 			Layout="FormLayout"
 			Hidden="true">
 			<Items>
-				<ext:DropDownField runat="server"
+				<ext:DropDownField runat="server" Editable="false"
 					ID="uxAddProductionTask"
 					Mode="ValueText"
 					AllowBlank="false"
@@ -83,7 +83,7 @@
 						</ext:GridPanel>
 					</Component>
 				</ext:DropDownField>
-				<ext:DropDownField runat="server"
+				<ext:DropDownField runat="server" Editable="false"
 					ID="uxAddProductionExpenditureType"
 					Mode="ValueText"
 					AllowBlank="false"
@@ -212,7 +212,7 @@
 			Hidden="true">
 			<Items>
 				<ext:DropDownField runat="server"
-					ID="uxEditProductionTask"
+					ID="uxEditProductionTask" Editable="false"
 					Mode="ValueText"
 					AllowBlank="false"
 					FieldLabel="Select Task" Width="500">
@@ -262,7 +262,7 @@
 					</Component>
 				</ext:DropDownField>
 				<ext:DropDownField runat="server"
-					ID="uxEditProductionExpenditureType"
+					ID="uxEditProductionExpenditureType" Editable="false"
 					Mode="ValueText"
 					AllowBlank="false"
 					FieldLabel="Expenditure Type" Width="500" >

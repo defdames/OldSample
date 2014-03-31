@@ -157,7 +157,7 @@ namespace DBI.Data
                 double minsValue = (double)travelTime - hoursValue;
                 
                     if (minsValue > 0) {
-                        minsValue = ((minsValue * 60) * 100);
+                        minsValue = ((minsValue * .60) * 100);
                     }
 
                 //Remove traveltime before you round
@@ -190,7 +190,7 @@ namespace DBI.Data
 
             if (minsValue > 0)
             {
-                minsValue = ((minsValue * 60) * 100);
+                minsValue = ((minsValue * .60) * 100);
             }
 
             TimeSpan travelHours = TimeSpan.FromHours((hoursValue));
@@ -485,6 +485,7 @@ namespace DBI.Data
                             dtrecord.EFFECTIVE_START_DATE = current.GetFirstDayOfWeek();
                             dtrecord.EFFECTIVE_END_DATE = current.GetLastDayOfWeek();
                             GenericData.Insert<XXDBI_PAYROLL_AUDIT_V>(dtrecord);
+
                         }
                     }
 

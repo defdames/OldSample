@@ -231,5 +231,27 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GenericData.Insert<DAILY_ACTIVITY_HEADER>(ToStore);
             X.Js.Call("parent.App.direct.dmHideAddWindow()");
         }
+
+        protected void ValidateProject(object sender, RemoteValidationEventArgs e)
+        {
+            DropDownField ProjectField = (DropDownField)sender;
+
+            long ProjectId = long.Parse(ProjectField.Value.ToString());
+            using (Entities _context = new Entities())
+            {
+                var ProjectExists = (from p in _context.PROJECTS_V
+                                     where p.PROJECT_ID == ProjectId
+                                     select p).SingleOrDefault();
+                if (ProjectExists != null)
+                {
+                    e.Success = true;
+                }
+                else
+                {
+                    e.Success = false;
+                    e.ErrorMessage = "Please select a valid project";
+                }
+            }
+        }
     }
 }

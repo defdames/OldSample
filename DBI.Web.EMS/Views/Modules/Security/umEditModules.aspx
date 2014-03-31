@@ -147,7 +147,7 @@
                 <ext:FormPanel runat="server" ID="uxModulesForm" Layout="FormLayout">
                     <Items>
                         <ext:TextField runat="server" ID="uxModuleName" FieldLabel="Module Name" />
-                        <ext:ComboBox runat="server" ID="uxModulePermission" FieldLabel="Required Permission" DisplayField="PERMISSION_NAME" ValueField="PERMISSION_ID">
+                        <ext:ComboBox runat="server" ID="uxModulePermission" FieldLabel="Required Permission" DisplayField="PERMISSION_NAME" ValueField="PERMISSION_ID" TypeAhead="true" ForceSelection="true">
                             <Store>
                                 <ext:Store runat="server" ID="uxModulePermissionStore" AutoDataBind="true">
                                     <Model>
@@ -199,7 +199,7 @@
                                 </ext:Store>
                             </Store>
                         </ext:ComboBox>
-                        <ext:ComboBox runat="server" ID="uxMenuItemPermission" FieldLabel="Required Permission" DisplayField="PERMISSION_NAME" ValueField="PERMISSION_ID">
+                        <ext:ComboBox runat="server" ID="uxMenuItemPermission" FieldLabel="Required Permission" DisplayField="PERMISSION_NAME" ValueField="PERMISSION_ID" TypeAhead="true" ForceSelection="true">
                             <Store>
                                 <ext:Store runat="server" ID="uxMenuItemPermissionStore" AutoDataBind="true">
                                     <Model>
@@ -213,7 +213,7 @@
                                 </ext:Store>
                             </Store>
                         </ext:ComboBox>
-                        <ext:ComboBox runat="server" ID="uxMenuItemIcon" FieldLabel="Choose an Icon">
+                        <ext:ComboBox runat="server" ID="uxMenuItemIcon" FieldLabel="Choose an Icon" ForceSelection="true" TypeAhead="true">
                         </ext:ComboBox>
                     </Items>
                     <Buttons>

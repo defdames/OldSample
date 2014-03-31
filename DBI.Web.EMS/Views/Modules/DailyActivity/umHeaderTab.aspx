@@ -18,7 +18,7 @@
 					ID="uxFormProject"
 					FieldLabel="Select a Project"
 					Mode="ValueText"
-					AllowBlank="false">
+					AllowBlank="false" Editable="false">
 					<Component>
 						<ext:GridPanel runat="server" 
 							ID="uxFormProjectGrid"
@@ -108,7 +108,7 @@
 					ID="uxFormEmployee" 
 					FieldLabel="Supervisor/Area Manager"
 					Mode="ValueText" 
-					AllowBlank="false">
+					AllowBlank="false" Editable="false">
 					<Component>
 						<ext:GridPanel runat="server" 
 							ID="uxFormEmployeeGrid"

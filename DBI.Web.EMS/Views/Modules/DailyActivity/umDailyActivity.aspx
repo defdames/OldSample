@@ -13,7 +13,7 @@
 	<form id="form1" runat="server">
 		<ext:FormPanel ID="uxFormPanel" runat="server" Layout="FormLayout" BodyPadding="5" MaxWidth="1000">
 			<Items>
-				<ext:DropDownField runat="server"
+				<ext:DropDownField runat="server" Editable="false" 
 					ID="uxFormProject"
 					FieldLabel="Select a Project"
 					Mode="ValueText"
@@ -107,7 +107,7 @@
 					ID="uxFormEmployee" 
 					FieldLabel="Supervisor/Area Manager"
 					Mode="ValueText"
-					AllowBlank="false" >
+					AllowBlank="false" Editable="false" >
 					<Component>
 						<ext:GridPanel runat="server" 
 							ID="uxFormEmployeeGrid"

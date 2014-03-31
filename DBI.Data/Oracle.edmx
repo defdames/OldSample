@@ -70,6 +70,7 @@
           <EntitySet Name="DAILY_ACTIVITY_PRODUCTION" EntityType="OracleModel.Store.DAILY_ACTIVITY_PRODUCTION" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_STATUS" EntityType="OracleModel.Store.DAILY_ACTIVITY_STATUS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_WEATHER" EntityType="OracleModel.Store.DAILY_ACTIVITY_WEATHER" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="OVERHEAD_GL_ACCOUNT" EntityType="OracleModel.Store.OVERHEAD_GL_ACCOUNT" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="OVERHEAD_ORG" EntityType="OracleModel.Store.OVERHEAD_ORG" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_ACTIVITY" EntityType="OracleModel.Store.SYS_ACTIVITY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_GROUPS" EntityType="OracleModel.Store.SYS_GROUPS" store:Type="Tables" Schema="XXEMS" />
@@ -84,6 +85,7 @@
           <EntitySet Name="SYS_USER_ORGS" EntityType="OracleModel.Store.SYS_USER_ORGS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USER_PERMS" EntityType="OracleModel.Store.SYS_USER_PERMS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USERS" EntityType="OracleModel.Store.SYS_USERS" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="TIME_CLOCK" EntityType="OracleModel.Store.TIME_CLOCK" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="PA_LOCATIONS_V" EntityType="OracleModel.Store.PA_LOCATIONS_V" store:Type="Views" store:Schema="APPS" store:Name="PA_LOCATIONS_V">
             <DefiningQuery>SELECT 
       "PA_LOCATIONS_V"."ROW_ID" AS "ROW_ID", 
@@ -674,6 +676,10 @@
           <AssociationSet Name="FK_FORMS_COMP_FORM_ID" Association="OracleModel.Store.FK_FORMS_COMP_FORM_ID">
             <End Role="CUSTOMER_SURVEY_FORMS" EntitySet="CUSTOMER_SURVEY_FORMS" />
             <End Role="CUSTOMER_SURVEY_FORMS_COMP" EntitySet="CUSTOMER_SURVEY_FORMS_COMP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GL_ORG_ID" Association="OracleModel.Store.FK_GL_ORG_ID">
+            <End Role="OVERHEAD_ORG" EntitySet="OVERHEAD_ORG" />
+            <End Role="OVERHEAD_GL_ACCOUNT" EntitySet="OVERHEAD_GL_ACCOUNT" />
           </AssociationSet>
           <AssociationSet Name="FK_GRP_PERMS_GROUP_ID" Association="OracleModel.Store.FK_GRP_PERMS_GROUP_ID">
             <End Role="SYS_GROUPS" EntitySet="SYS_GROUPS" />
@@ -1330,6 +1336,18 @@
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
+        <EntityType Name="OVERHEAD_GL_ACCOUNT">
+          <Key>
+            <PropertyRef Name="OVERHEAD_GL_ID" />
+          </Key>
+          <Property Name="OVERHEAD_GL_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="OVERHEAD_ORG_ID" Type="number" Nullable="false" />
+          <Property Name="CODE_COMBO_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+        </EntityType>
         <EntityType Name="OVERHEAD_ORG">
           <Key>
             <PropertyRef Name="OVERHEAD_ORG_ID" />
@@ -1475,6 +1493,15 @@
           </Key>
           <Property Name="USER_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="LAST_ACTIVITY_DATE" Type="date" />
+        </EntityType>
+        <EntityType Name="TIME_CLOCK">
+          <Key>
+            <PropertyRef Name="TIME_CLOCK_ID" />
+          </Key>
+          <Property Name="TIME_CLOCK_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PERSON_ID" Type="number" Nullable="false" />
+          <Property Name="TIME_IN" Type="date" />
+          <Property Name="TIME_OUT" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'APPS.PA_LOCATIONS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -2833,6 +2860,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_GL_ORG_ID">
+          <End Role="OVERHEAD_ORG" Type="OracleModel.Store.OVERHEAD_ORG" Multiplicity="1" />
+          <End Role="OVERHEAD_GL_ACCOUNT" Type="OracleModel.Store.OVERHEAD_GL_ACCOUNT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OVERHEAD_ORG">
+              <PropertyRef Name="OVERHEAD_ORG_ID" />
+            </Principal>
+            <Dependent Role="OVERHEAD_GL_ACCOUNT">
+              <PropertyRef Name="OVERHEAD_ORG_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_GRP_PERMS_GROUP_ID">
           <End Role="SYS_GROUPS" Type="OracleModel.Store.SYS_GROUPS" Multiplicity="1" />
           <End Role="SYS_GROUPS_PERMS" Type="OracleModel.Store.SYS_GROUPS_PERMS" Multiplicity="*" />
@@ -3248,6 +3287,12 @@
           <EntitySet Name="HIERARCHY_ID_V" EntityType="OracleModel.HIERARCHY_ID_V" />
           <EntitySet Name="GL_ACCOUNTS_V" EntityType="OracleModel.GL_ACCOUNTS_V" />
           <EntitySet Name="OVERHEAD_ORG" EntityType="OracleModel.OVERHEAD_ORG" />
+          <EntitySet Name="OVERHEAD_GL_ACCOUNT" EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" />
+          <AssociationSet Name="FK_GL_ORG_ID" Association="OracleModel.FK_GL_ORG_ID">
+            <End Role="OVERHEAD_ORG" EntitySet="OVERHEAD_ORG" />
+            <End Role="OVERHEAD_GL_ACCOUNT" EntitySet="OVERHEAD_GL_ACCOUNT" />
+          </AssociationSet>
+          <EntitySet Name="TIME_CLOCK" EntityType="OracleModel.TIME_CLOCK" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -5710,6 +5755,41 @@
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="OVERHEAD_GL_ACCOUNT" Relationship="OracleModel.FK_GL_ORG_ID" FromRole="OVERHEAD_ORG" ToRole="OVERHEAD_GL_ACCOUNT" />
+        </EntityType>
+        <EntityType Name="OVERHEAD_GL_ACCOUNT">
+          <Key>
+            <PropertyRef Name="OVERHEAD_GL_ID" />
+          </Key>
+          <Property Type="Decimal" Name="OVERHEAD_GL_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="OVERHEAD_ORG_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Int64" Name="CODE_COMBO_ID" Nullable="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="OVERHEAD_ORG" Relationship="OracleModel.FK_GL_ORG_ID" FromRole="OVERHEAD_GL_ACCOUNT" ToRole="OVERHEAD_ORG" />
+        </EntityType>
+        <Association Name="FK_GL_ORG_ID">
+          <End Type="OracleModel.OVERHEAD_ORG" Role="OVERHEAD_ORG" Multiplicity="1" />
+          <End Type="OracleModel.OVERHEAD_GL_ACCOUNT" Role="OVERHEAD_GL_ACCOUNT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OVERHEAD_ORG">
+              <PropertyRef Name="OVERHEAD_ORG_ID" />
+            </Principal>
+            <Dependent Role="OVERHEAD_GL_ACCOUNT">
+              <PropertyRef Name="OVERHEAD_ORG_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="TIME_CLOCK">
+          <Key>
+            <PropertyRef Name="TIME_CLOCK_ID" />
+          </Key>
+          <Property Type="Decimal" Name="TIME_CLOCK_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="PERSON_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="TIME_IN" />
+          <Property Type="DateTime" Name="TIME_OUT" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -7603,6 +7683,29 @@
                 <ScalarProperty Name="ORGANIZATION_ID" ColumnName="ORGANIZATION_ID" />
                 <ScalarProperty Name="ENABLE_FLAG" ColumnName="ENABLE_FLAG" />
                 <ScalarProperty Name="OVERHEAD_ORG_ID" ColumnName="OVERHEAD_ORG_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OVERHEAD_GL_ACCOUNT">
+            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_GL_ACCOUNT">
+              <MappingFragment StoreEntitySet="OVERHEAD_GL_ACCOUNT">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="CODE_COMBO_ID" ColumnName="CODE_COMBO_ID" />
+                <ScalarProperty Name="OVERHEAD_ORG_ID" ColumnName="OVERHEAD_ORG_ID" />
+                <ScalarProperty Name="OVERHEAD_GL_ID" ColumnName="OVERHEAD_GL_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TIME_CLOCK">
+            <EntityTypeMapping TypeName="OracleModel.TIME_CLOCK">
+              <MappingFragment StoreEntitySet="TIME_CLOCK">
+                <ScalarProperty Name="TIME_OUT" ColumnName="TIME_OUT" />
+                <ScalarProperty Name="TIME_IN" ColumnName="TIME_IN" />
+                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
+                <ScalarProperty Name="TIME_CLOCK_ID" ColumnName="TIME_CLOCK_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

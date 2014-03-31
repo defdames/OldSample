@@ -12,21 +12,16 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class OVERHEAD_ORG
+    public partial class OVERHEAD_GL_ACCOUNT
     {
-        public OVERHEAD_ORG()
-        {
-            this.OVERHEAD_GL_ACCOUNT = new HashSet<OVERHEAD_GL_ACCOUNT>();
-        }
-    
+        public decimal OVERHEAD_GL_ID { get; set; }
         public decimal OVERHEAD_ORG_ID { get; set; }
-        public string ENABLE_FLAG { get; set; }
-        public long ORGANIZATION_ID { get; set; }
+        public long CODE_COMBO_ID { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
     
-        public virtual ICollection<OVERHEAD_GL_ACCOUNT> OVERHEAD_GL_ACCOUNT { get; set; }
+        public virtual OVERHEAD_ORG OVERHEAD_ORG { get; set; }
     }
 }

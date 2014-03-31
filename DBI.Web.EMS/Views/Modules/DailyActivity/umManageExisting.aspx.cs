@@ -24,7 +24,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
     public partial class umManageExisting : BasePage
     {
 
-
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!validateComponentSecurity("SYS.DailyActivity.View") && !validateComponentSecurity("SYS.DailyActivity.EmployeeView"))
@@ -378,19 +377,40 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
             var Index = GridModel.SelectedIndex;
-            GridModel.SelectedRow.RowIndex = GridModel.SelectedIndex + 1;
-            GridModel.Select(GridModel.SelectedIndex);
-            GridModel.UpdateSelection();
-            
+            int LastRecord = int.Parse(e.ExtraParams["ToRecord"].ToString()) -int.Parse(e.ExtraParams["FromRecord"].ToString());
+            if (Index < LastRecord)
+            {
+                    GridModel.SelectedRow.RowIndex = GridModel.SelectedIndex + 1;
+                    GridModel.Select(GridModel.SelectedIndex);
+                    GridModel.UpdateSelection();
+            }
+            else if (LastRecord == 19)
+            {
+
+                uxManageGridStore.NextPage(new
+                {
+                    callback = JRawValue.From("function() {App.uxManageGrid.getSelectionModel().select(0)}")
+                });
+                
+            }
         }
 
         protected void deLoadPreviousActivity(object sender, DirectEventArgs e)
         {
             RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
             var Index = GridModel.SelectedIndex;
-            GridModel.SelectedRow.RowIndex = GridModel.SelectedIndex - 1;
-            GridModel.Select(GridModel.SelectedIndex);
-            GridModel.UpdateSelection();
+            
+            if (Index > 0)
+            {
+                GridModel.SelectedRow.RowIndex = GridModel.SelectedIndex - 1;
+                GridModel.Select(GridModel.SelectedIndex);
+                GridModel.UpdateSelection();
+            }
+            else if(int.Parse(e.ExtraParams["CurrentPage"].ToString()) != 1)
+            {
+                X.Js.Call("App.uxManageGridStore.previousPage({callback: function(){App.uxManageGrid.getSelectionModel().select(19)}})");
+
+            }
         }
 
         /// <summary>
@@ -843,66 +863,67 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 {
                     //Get Equipment/Employee Data
                     var EmployeeData = GetEmployee(HeaderId);
-
-                    PdfPTable EmployeeTable = new PdfPTable(12);
-
-                    Cells = new PdfPCell[]{
-                    new PdfPCell(new Phrase("Truck/Equipment \n Name", HeaderFont)),
-                    new PdfPCell(new Phrase("Operator(s)", HeaderFont)),
-                    new PdfPCell(new Phrase("License #", HeaderFont)),
-                    new PdfPCell(new Phrase("Time\nIn", HeaderFont)),
-                    new PdfPCell(new Phrase("Time\nOut", HeaderFont)),
-                    new PdfPCell(new Phrase("Total\nHours", HeaderFont)),
-                    new PdfPCell(new Phrase("Travel\nTime", HeaderFont)),
-                    new PdfPCell(new Phrase("Drive\nTime", HeaderFont)),
-                    new PdfPCell(new Phrase("ShopTime\nAM", HeaderFont)),
-                    new PdfPCell(new Phrase("ShopTime\nPM", HeaderFont)),
-                    new PdfPCell(new Phrase("Per\nDiem", HeaderFont)),
-                    new PdfPCell(new Phrase("Comments", HeaderFont))};
-
-                    Row = new PdfPRow(Cells);
-                    EmployeeTable.Rows.Add(Row);
-
-                    foreach (var Data in EmployeeData)
+                    if (OrgId == 123)
                     {
-                        string TravelTime;
-                        try
-                        {
-                            TravelTime = Data.TRAVEL_TIME_FORMATTED.ToString();
-                        }
-                        catch (Exception)
-                        {
-                            TravelTime = string.Empty;
-                        }
-                        string EquipmentName;
-                        try
-                        {
-                            EquipmentName = Data.NAME.ToString();
-                        }
-                        catch (Exception)
-                        {
-                            EquipmentName = String.Empty;
-                        }
-                        string Comments;
-                        try
-                        {
-                            Comments = Data.COMMENTS.ToString();
-                        }
-                        catch (Exception)
-                        {
-                            Comments = String.Empty;
-                        }
-                        string License;
-                        try
-                        {
-                            License = Data.FOREMAN_LICENSE;
-                        }
-                        catch (Exception)
-                        {
-                            License = string.Empty;
-                        }
-                        TimeSpan TotalHours = DateTime.Parse(Data.TIME_OUT.ToString()) - DateTime.Parse(Data.TIME_IN.ToString());
+                        PdfPTable EmployeeTable = new PdfPTable(12);
+
                         Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase("Truck/Equipment \n Name", HeaderFont)),
+                        new PdfPCell(new Phrase("Operator(s)", HeaderFont)),
+                        new PdfPCell(new Phrase("License #", HeaderFont)),
+                        new PdfPCell(new Phrase("Time\nIn", HeaderFont)),
+                        new PdfPCell(new Phrase("Time\nOut", HeaderFont)),
+                        new PdfPCell(new Phrase("Total\nHours", HeaderFont)),
+                        new PdfPCell(new Phrase("Travel\nTime", HeaderFont)),
+                        new PdfPCell(new Phrase("Drive\nTime", HeaderFont)),
+                        new PdfPCell(new Phrase("ShopTime\nAM", HeaderFont)),
+                        new PdfPCell(new Phrase("ShopTime\nPM", HeaderFont)),
+                        new PdfPCell(new Phrase("Per\nDiem", HeaderFont)),
+                        new PdfPCell(new Phrase("Comments", HeaderFont))};
+
+                        Row = new PdfPRow(Cells);
+                        EmployeeTable.Rows.Add(Row);
+
+                        foreach (var Data in EmployeeData)
+                        {
+                            string TravelTime;
+                            try
+                            {
+                                TravelTime = Data.TRAVEL_TIME_FORMATTED.ToString();
+                            }
+                            catch (Exception)
+                            {
+                                TravelTime = string.Empty;
+                            }
+                            string EquipmentName;
+                            try
+                            {
+                                EquipmentName = Data.NAME.ToString();
+                            }
+                            catch (Exception)
+                            {
+                                EquipmentName = String.Empty;
+                            }
+                            string Comments;
+                            try
+                            {
+                                Comments = Data.COMMENTS.ToString();
+                            }
+                            catch (Exception)
+                            {
+                                Comments = String.Empty;
+                            }
+                            string License;
+                            try
+                            {
+                                License = Data.FOREMAN_LICENSE;
+                            }
+                            catch (Exception)
+                            {
+                                License = string.Empty;
+                            }
+                            TimeSpan TotalHours = DateTime.Parse(Data.TIME_OUT.ToString()) - DateTime.Parse(Data.TIME_IN.ToString());
+                            Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(EquipmentName , CellFont)),
                         new PdfPCell(new Phrase(Data.EMPLOYEE_NAME.ToString(), CellFont)),
                         new PdfPCell(new Phrase(License, CellFont)),
@@ -916,11 +937,86 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Comments, CellFont))
                     };
+                            Row = new PdfPRow(Cells);
+                            EmployeeTable.Rows.Add(Row);
+                        }
+                        ExportedPDF.Add(EmployeeTable);
+                        ExportedPDF.Add(NewLine);
+                    }
+                    else
+                    {
+                        PdfPTable EmployeeTable = new PdfPTable(9);
+
+                        Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase("Truck/Equipment \n Name", HeaderFont)),
+                        new PdfPCell(new Phrase("Operator(s)", HeaderFont)),
+                        new PdfPCell(new Phrase("License #", HeaderFont)),
+                        new PdfPCell(new Phrase("Time\nIn", HeaderFont)),
+                        new PdfPCell(new Phrase("Time\nOut", HeaderFont)),
+                        new PdfPCell(new Phrase("Total\nHours", HeaderFont)),
+                        new PdfPCell(new Phrase("Travel\nTime", HeaderFont)),
+                        new PdfPCell(new Phrase("Per\nDiem", HeaderFont)),
+                        new PdfPCell(new Phrase("Comments", HeaderFont))};
+
                         Row = new PdfPRow(Cells);
                         EmployeeTable.Rows.Add(Row);
+
+                        foreach (var Data in EmployeeData)
+                        {
+                            string TravelTime;
+                            try
+                            {
+                                TravelTime = Data.TRAVEL_TIME_FORMATTED.ToString();
+                            }
+                            catch (Exception)
+                            {
+                                TravelTime = string.Empty;
+                            }
+                            string EquipmentName;
+                            try
+                            {
+                                EquipmentName = Data.NAME.ToString();
+                            }
+                            catch (Exception)
+                            {
+                                EquipmentName = String.Empty;
+                            }
+                            string Comments;
+                            try
+                            {
+                                Comments = Data.COMMENTS.ToString();
+                            }
+                            catch (Exception)
+                            {
+                                Comments = String.Empty;
+                            }
+                            string License;
+                            try
+                            {
+                                License = Data.FOREMAN_LICENSE;
+                            }
+                            catch (Exception)
+                            {
+                                License = string.Empty;
+                            }
+                            TimeSpan TotalHours = DateTime.Parse(Data.TIME_OUT.ToString()) - DateTime.Parse(Data.TIME_IN.ToString());
+                            Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase(EquipmentName , CellFont)),
+                        new PdfPCell(new Phrase(Data.EMPLOYEE_NAME.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(License, CellFont)),
+                        new PdfPCell(new Phrase(Data.TIME_IN.ToString("hh\\:mm"), CellFont)),
+                        new PdfPCell(new Phrase(Data.TIME_OUT.ToString("hh\\:mm"), CellFont)),
+                        new PdfPCell(new Phrase(TotalHours.ToString("hh\\:mm"), CellFont)),
+                        new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED, CellFont)),
+                        new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Comments, CellFont))
+                    };
+                            Row = new PdfPRow(Cells);
+                            EmployeeTable.Rows.Add(Row);
+                        }
+                        ExportedPDF.Add(EmployeeTable);
+                        ExportedPDF.Add(NewLine);
                     }
-                    ExportedPDF.Add(EmployeeTable);
-                    ExportedPDF.Add(NewLine);
                 }
                 catch (Exception)
                 {
