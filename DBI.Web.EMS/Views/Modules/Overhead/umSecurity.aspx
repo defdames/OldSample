@@ -36,7 +36,6 @@
                                     <ExtraParams>
                                         <ext:Parameter Name="id" Value="record.data.id" Mode="Raw" />
                                     </ExtraParams>
-                                    <EventMask ShowMask="true"></EventMask>
                                 </ItemClick>
                             </DirectEvents>
                             </ext:TreePanel>
@@ -44,7 +43,7 @@
                             <Store>
                                 <ext:Store runat="server"
                                     ID="uxOrganizationSecurityStore"
-                                    PageSize="10">
+                                     AutoDataBind="true" RemoteSort="true" PageSize="10" OnReadData="deReadOrganizationsByHierarchy">
                                     <Model>
                                         <ext:Model ID="Model2" runat="server">
                                             <Fields>
@@ -64,28 +63,36 @@
                                 </Columns>
                             </ColumnModel>
                             <Plugins>
-                                <ext:FilterHeader ID="FilterHeader2" runat="server" Remote="false" />
+                                <ext:FilterHeader ID="FilterHeader2" runat="server" Remote="true" />
                             </Plugins>
                             <SelectionModel>
-                                <ext:CheckboxSelectionModel runat="server" Mode="Multi" ShowHeaderCheckbox="false"></ext:CheckboxSelectionModel>
+                               <ext:RowSelectionModel runat="server" Mode="Single" ID="uxOrganizationSelectionModel">
+                                   <DirectEvents>
+                                       <Select OnEvent="deOrganizationSelect"></Select>
+                                   </DirectEvents>
+                               </ext:RowSelectionModel>
                             </SelectionModel>
                             <BottomBar>
                                 <ext:PagingToolbar ID="uxOrganizationGridPageBar" runat="server" />
                             </BottomBar>                          
                         </ext:GridPanel>
-                <ext:GridPanel ID="GridPanel1" runat="server" Flex="1" Title="General Ledger Accounts" Padding="5" Region="South">
+                <ext:GridPanel ID="uxGlAccountSecurityGrid" runat="server" Flex="1" Title="General Ledger Accounts" Padding="5" Region="South">
                     <TopBar>
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
-                                <ext:Button runat="server" ID="Button1" Text="Add" Icon="Add"></ext:Button>
-                                <ext:Button runat="server" ID="Button2" Text="Delete" Icon="Delete"></ext:Button>
+                                <ext:Button runat="server" ID="uxShowGLAccoutsWindow" Text="Add" Icon="Add">
+                                    <DirectEvents>
+                                        <Click OnEvent="deShowGLAccounts"></Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:Button runat="server" ID="uxGlAccountDelete" Text="Delete" Icon="Delete"></ext:Button>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
                     <Store>
                         <ext:Store runat="server"
-                            ID="Store1"
-                            PageSize="10" WarningOnDirty="false">
+                            ID="uxGlAccountSecurityStore"
+                            AutoDataBind="true" RemoteSort="true" OnReadData="deReadGLSecurityByOrganization">
                             <Model>
                                 <ext:Model ID="Model1" runat="server">
                                     <Fields>
@@ -132,8 +139,6 @@
                 </ext:GridPanel>
             </Items>
         </ext:Viewport>
-
-
     </form>
 </body>
 </html>

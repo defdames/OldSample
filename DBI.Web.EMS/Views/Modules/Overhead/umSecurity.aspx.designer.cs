@@ -103,6 +103,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.FilterHeader FilterHeader2;
         
         /// <summary>
+        /// uxOrganizationSelectionModel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxOrganizationSelectionModel;
+        
+        /// <summary>
         /// uxOrganizationGridPageBar control.
         /// </summary>
         /// <remarks>
@@ -112,13 +121,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.PagingToolbar uxOrganizationGridPageBar;
         
         /// <summary>
-        /// GridPanel1 control.
+        /// uxGlAccountSecurityGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel GridPanel1;
+        protected global::Ext.Net.GridPanel uxGlAccountSecurityGrid;
         
         /// <summary>
         /// Toolbar1 control.
@@ -130,31 +139,31 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Toolbar Toolbar1;
         
         /// <summary>
-        /// Button1 control.
+        /// uxShowGLAccoutsWindow control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button1;
+        protected global::Ext.Net.Button uxShowGLAccoutsWindow;
         
         /// <summary>
-        /// Button2 control.
+        /// uxGlAccountDelete control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button2;
+        protected global::Ext.Net.Button uxGlAccountDelete;
         
         /// <summary>
-        /// Store1 control.
+        /// uxGlAccountSecurityStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store Store1;
+        protected global::Ext.Net.Store uxGlAccountSecurityStore;
         
         /// <summary>
         /// Model1 control.
