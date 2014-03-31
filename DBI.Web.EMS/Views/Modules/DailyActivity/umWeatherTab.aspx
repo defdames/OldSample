@@ -46,7 +46,7 @@
 			<ColumnModel>
 				<Columns>
 					<ext:DateColumn runat="server"
-						Text="Date" Format="M/d/yyyy h:mm tt" DataIndex="WEATHER_DATE_TIME" />
+						Text="Date/Time" Format="M/d/yyyy h:mm tt" DataIndex="WEATHER_DATE_TIME" />
 					<ext:Column runat="server"
 						Text="Temperature" DataIndex="TEMP" />
 					<ext:Column runat="server"

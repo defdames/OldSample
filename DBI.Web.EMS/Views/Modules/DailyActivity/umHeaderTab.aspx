@@ -181,7 +181,7 @@
 						</ext:GridPanel>
 					</Component>
 				</ext:DropDownField>
-				<ext:TextField runat="server" ID="uxFormLicense" FieldLabel="License #" AllowBlank="false" />
+				<ext:TextField runat="server" ID="uxFormLicense" FieldLabel="Business License" AllowBlank="false" />
 				<ext:ComboBox runat="server"
 					ID="uxFormState"
 					FieldLabel="State"

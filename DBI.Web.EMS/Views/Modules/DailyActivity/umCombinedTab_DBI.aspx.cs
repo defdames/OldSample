@@ -192,19 +192,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
                 var data = (from d in _context.DAILY_ACTIVITY_FOOTER
+                            join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                            join e in _context.EMPLOYEES_V on h.PERSON_ID equals e.PERSON_ID
                             where d.HEADER_ID == HeaderId
-                            select d).SingleOrDefault();
+                            select new { d, e.EMPLOYEE_NAME }).SingleOrDefault();
                 if (data != null)
                 {
-                    uxReasonForNoWorkField.Value = data.COMMENTS;
-                    uxHotelField.Value = data.HOTEL_NAME;
-                    uxCityField.Value = data.HOTEL_CITY;
-                    uxFooterStateField.Value = data.HOTEL_STATE;
-                    uxPhoneField.Value = data.HOTEL_PHONE;
-                    uxContractNameField.Value = data.CONTRACT_REP_NAME;
+                    uxReasonForNoWorkField.Value = data.d.COMMENTS;
+                    uxHotelField.Value = data.d.HOTEL_NAME;
+                    uxCityField.Value = data.d.HOTEL_CITY;
+                    uxFooterStateField.Value = data.d.HOTEL_STATE;
+                    uxPhoneField.Value = data.d.HOTEL_PHONE;
+                    uxContractNameField.Value = data.d.CONTRACT_REP_NAME;
+                    uxForemanNameField.Value = data.EMPLOYEE_NAME;
                     try
                     {
-                        byte[] ForemanImage = data.FOREMAN_SIGNATURE.ToArray();
+                        byte[] ForemanImage = data.d.FOREMAN_SIGNATURE.ToArray();
                         if (ForemanImage.Length > 0)
                         {
                             uxForemanImage.ImageUrl = string.Format("ImageLoader/ImageLoader.aspx?headerId={0}&type=foreman", HeaderId);
@@ -216,7 +219,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     }
                     try
                     {
-                        byte[] ContractImage = data.CONTRACT_REP.ToArray();
+                        byte[] ContractImage = data.d.CONTRACT_REP.ToArray();
                         if (ContractImage.Length > 0)
                         {
                             uxContractImage.ImageUrl = string.Format("ImageLoader/ImageLoader.aspx?headerId={0}&type=contract", HeaderId);

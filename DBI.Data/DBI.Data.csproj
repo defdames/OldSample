@@ -201,6 +201,7 @@
     <Compile Include="DataFactory\Security\Modules.cs" />
     <Compile Include="DataFactory\Security\Permissions.cs" />
     <Compile Include="DataFactory\Security\UserActivity.cs" />
+    <Compile Include="DataFactory\Security\UserOrganizations.cs" />
     <Compile Include="DataFactory\Security\UserPermissions.cs" />
     <Compile Include="DataFactory\StaticLists.cs" />
     <Compile Include="DataFactory\Security\UserInformation.cs" />

@@ -85,7 +85,6 @@ namespace DBI.Data
         public DbSet<CROSSING_RELATIONSHIP> CROSSING_RELATIONSHIP { get; set; }
         public DbSet<SYS_PERMISSIONS> SYS_PERMISSIONS { get; set; }
         public DbSet<DAILY_ACTIVITY_EMPLOYEE> DAILY_ACTIVITY_EMPLOYEE { get; set; }
-        public DbSet<SYS_USER_ORGS> SYS_USER_ORGS { get; set; }
         public DbSet<XXDBI_PAYROLL_AUDIT_V> XXDBI_PAYROLL_AUDIT_V { get; set; }
         public DbSet<ORG_HIER_V> ORG_HIER_V { get; set; }
         public DbSet<HIERARCHY_ID_V> HIERARCHY_ID_V { get; set; }
@@ -93,5 +92,6 @@ namespace DBI.Data
         public DbSet<OVERHEAD_ORG> OVERHEAD_ORG { get; set; }
         public DbSet<OVERHEAD_GL_ACCOUNT> OVERHEAD_GL_ACCOUNT { get; set; }
         public DbSet<TIME_CLOCK> TIME_CLOCK { get; set; }
+        public DbSet<SYS_USER_ORGS> SYS_USER_ORGS { get; set; }
     }
 }
