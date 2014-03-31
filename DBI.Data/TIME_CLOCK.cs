@@ -18,5 +18,6 @@ namespace DBI.Data
         public decimal PERSON_ID { get; set; }
         public Nullable<System.DateTime> TIME_IN { get; set; }
         public Nullable<System.DateTime> TIME_OUT { get; set; }
+        public string SUBMITTED { get; set; }
     }
 }

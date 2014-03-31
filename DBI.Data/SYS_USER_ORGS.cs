@@ -17,7 +17,5 @@ namespace DBI.Data
         public decimal SYS_ORG_ID { get; set; }
         public long USER_ID { get; set; }
         public long ORG_ID { get; set; }
-    
-        public virtual SYS_USERS SYS_USERS { get; set; }
     }
 }
