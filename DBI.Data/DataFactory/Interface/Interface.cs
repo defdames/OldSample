@@ -608,8 +608,17 @@ namespace DBI.Data
                                     where t.HEADER_ID == HeaderId
                                     select t.TASK_ID ).Distinct().SingleOrDefault();
                     
+                    
                     if (TaskId == null)
                     { TaskId = 9999; }
+
+
+                    var CarryOrg = (from p in _context.PROJECTS_V
+                                    join h in _context.DAILY_ACTIVITY_HEADER on p.PROJECT_ID equals h.PROJECT_ID
+                                    where h.HEADER_ID == HeaderId
+                                    select p.CARRYING_OUT_ORGANIZATION_ID).Single();
+                    
+                
 
 
                     int InventoryCount = 1;
@@ -645,7 +654,8 @@ namespace DBI.Data
                             TRANSACTION_DATE = (DateTime)InventoryItem.i.DAILY_ACTIVITY_HEADER.DA_DATE,
                             TRANSACTION_TYPE_ID = TransactionType,
                             TRANSACTION_SOURCE_NAME = "EMS",
-                            EXPENDITURE_TYPE = "EMS DAILY ACTIVITY",
+                            EXPENDITURE_TYPE = "MATERIAL USAGE",
+                            PA_EXPENDITURE_ORG_ID = CarryOrg,
                             DISTRIBUTION_ACCOUNT_ID = GlCode,
                             LOCK_FLAG = 2,
                             VALIDATION_REQUIRED = 1,

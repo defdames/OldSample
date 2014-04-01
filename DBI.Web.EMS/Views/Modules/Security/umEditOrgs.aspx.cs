@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using System.Security.Claims;
 using DBI.Core.Web;
 using DBI.Data;
 using Ext.Net;
@@ -32,15 +32,15 @@ namespace DBI.Web.EMS.Views.Modules.Security
 
             using (Entities _context = new Entities())
             {
-                List<ORG_HIER_V> AllOrgs = _context.ORG_HIER_V.ToList();
+                var AllOrgs = _context.ORG_HIER_V.Select(x => new { x.ORG_HIER, x.ORG_ID }).Distinct().ToList();
                 long UserId = long.Parse(e.ExtraParams["UserId"]);
-                
-                List<ORG_HIER_V> SelectedOrgs = (from s in _context.SYS_USER_ORGS
+
+                var SelectedOrgs = (from s in _context.SYS_USER_ORGS
                                                  join o in _context.ORG_HIER_V on s.ORG_ID equals o.ORG_ID
                                                  where s.USER_ID == UserId
-                                                 select o).ToList();
+                                                 select new { o.ORG_ID, o.ORG_HIER }).Distinct().ToList();
 
-                foreach (ORG_HIER_V SelectedOrg in SelectedOrgs)
+                foreach (var SelectedOrg in SelectedOrgs)
                 {
                     AllOrgs.RemoveAt(AllOrgs.FindIndex(x => x.ORG_ID == SelectedOrg.ORG_ID));
                 }
@@ -53,6 +53,62 @@ namespace DBI.Web.EMS.Views.Modules.Security
 
                 uxTwoGridWindow.Show();
             }
+        }
+
+        protected void deSaveUserOrgs(object sender, DirectEventArgs e)
+        {
+            List<ORG_HIER_V> NotSelectedOrgs = JSON.Deserialize<List<ORG_HIER_V>>(e.ExtraParams["NotSelectedOrgs"]);
+            List<ORG_HIER_V> SelectedOrgs = JSON.Deserialize<List<ORG_HIER_V>>(e.ExtraParams["SelectedOrgs"]);
+            List<SYS_USER_ORGS> UserOrgs;
+            long UserId = long.Parse(e.ExtraParams["UserId"]);
+
+            using (Entities _context = new Entities())
+            {
+                 UserOrgs = _context.SYS_USER_ORGS.Where(x => x.USER_ID == UserId).ToList();
+            }
+            if (SelectedOrgs.Count > 0)
+            {
+                foreach (ORG_HIER_V SelectedOrg in SelectedOrgs)
+                {
+                    if (!UserOrgs.Exists(x => x.ORG_ID == SelectedOrg.ORG_ID))
+                    {
+                        SYS_USER_ORGS NewUserOrg = new SYS_USER_ORGS
+                        {
+                            ORG_ID = SelectedOrg.ORG_ID,
+                            USER_ID = UserId
+                        };
+                        GenericData.Insert<SYS_USER_ORGS>(NewUserOrg);
+                    }
+                }
+            }
+            if (NotSelectedOrgs.Count > 0)
+            {
+                foreach (ORG_HIER_V NotSelectedOrg in NotSelectedOrgs)
+                {
+                    if (UserOrgs.Exists(x => x.ORG_ID == NotSelectedOrg.ORG_ID))
+                    {
+                        SYS_USER_ORGS ToBeDeleted;
+                        using (Entities _context = new Entities())
+                        {
+                            ToBeDeleted = _context.SYS_USER_ORGS.Where(x => (x.ORG_ID == NotSelectedOrg.ORG_ID) && (x.USER_ID == UserId)).Single();
+                        }
+                        GenericData.Delete<SYS_USER_ORGS>(ToBeDeleted);
+                    }
+                }
+            }
+
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "User organizations updated successfully.",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
+            uxTwoGridWindow.Hide();
         }
     }
 }
