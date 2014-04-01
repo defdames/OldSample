@@ -143,15 +143,19 @@
                         </ext:ComboBox>
                     </Items>
                     <Buttons>
-                        <ext:Button runat="server" ID="uxFilterAccounts" Text="Filter"></ext:Button>
+                        <ext:Button runat="server" ID="uxFilterAccounts" Text="Filter">
+                            <DirectEvents>
+                                <Click OnEvent="deFilterEvents"><EventMask ShowMask="true"></EventMask></Click>
+                            </DirectEvents>
+                        </ext:Button>
                         <ext:Button runat="server" ID="uxClearFilterAccounts" Text="Clear Filter"></ext:Button>
                     </Buttons>
                 </ext:FormPanel>
-                <ext:GridPanel ID="uxOrganizationsGrid" runat="server" Flex="1" SimpleSelect="true" Title="Organization Security By Hierarchy" Padding="5" Region="Center" Height="400">
+                <ext:GridPanel ID="uxOrganizationsGrid" runat="server" Flex="1" SimpleSelect="true" Title="GL Accounts By Filter" Padding="5" Region="Center" Height="400">
                    <Store>
                         <ext:Store runat="server"
                             ID="uxGlAccountSecurityStore"
-                            AutoDataBind="true" RemoteSort="true" PageSize="10">
+                            AutoDataBind="true" OnReadData="deReadGLSecurityCodes" RemoteSort="true" PageSize="10">
                             <Model>
                                 <ext:Model ID="Model1" runat="server">
                                     <Fields>

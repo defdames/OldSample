@@ -25,22 +25,39 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         {
 
             using (Entities _context = new Entities())
-                {
-                    return _context.GL_ACCOUNTS_V.Select(a => a.SEGMENT1).Distinct().ToList();
-                }
+            {
+                return _context.GL_ACCOUNTS_V.Select(a => a.SEGMENT1).Distinct().ToList();
+            }
         }
 
-      
+
+        protected void deFilterEvents(object sender, DirectEventArgs e)
+        {
+            uxGlAccountSecurityStore.RemoveAll();
+            uxGlAccountSecurityStore.ClearFilter();
+            uxGlAccountSecurityStore.Reload();
+        }
+
+
         protected void deReadGLSecurityCodes(object sender, StoreReadDataEventArgs e)
         {
+            string segment1 = uxSegment1.SelectedItem.Value.ToString();
+            string segment2 = uxSegment2.SelectedItem.Value.ToString();
+            string segment3 = uxSegment3.SelectedItem.Value.ToString();
+            string segment4 = uxSegment4.SelectedItem.Value.ToString();
 
-            using (Entities _context = new Entities())
+            if (segment4.Length > 0)
+            {
+                using (Entities _context = new Entities())
                 {
-                    var data = _context.GL_ACCOUNTS_V.AsNoTracking().ToList<GL_ACCOUNTS_V>();
+                    var data = _context.GL_ACCOUNTS_V.AsNoTracking().Where(a => a.SEGMENT1 == segment1).Where(a => a.SEGMENT2 == segment2).Where(a => a.SEGMENT3 == segment3).Where(a => a.SEGMENT4 == segment4).ToList<GL_ACCOUNTS_V>();
                     int count;
                     uxGlAccountSecurityStore.DataSource = GenericData.EnumerableFilterHeader<GL_ACCOUNTS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                     e.Total = data.Count();
                 }
             }
+
         }
+
+    }
 }
