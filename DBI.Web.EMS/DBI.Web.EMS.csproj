@@ -525,6 +525,18 @@
       <DependentUpon>umWeatherTab.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\ValidationChecks.cs" />
+    <Compile Include="Views\Modules\Overhead\GLBranchCodes.ashx.cs">
+      <DependentUpon>GLBranchCodes.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\GLDivisionCodes.ashx.cs">
+      <DependentUpon>GLDivisionCodes.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\GLLocationCodes.ashx.cs">
+      <DependentUpon>GLLocationCodes.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\GLCompanyCodes.ashx.cs">
+      <DependentUpon>GLCompanyCodes.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\Overhead\umAddGLAccount.aspx.cs">
       <DependentUpon>umAddGLAccount.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -614,6 +626,10 @@
     <Content Include="Resources\Scripts\jquery-2.0.1.min.map" />
     <Content Include="Views\Handlers\SystemUsers.ashx" />
     <Content Include="Views\Handlers\WebProjects.ashx" />
+    <Content Include="Views\Modules\Overhead\GLCompanyCodes.ashx" />
+    <Content Include="Views\Modules\Overhead\GLLocationCodes.ashx" />
+    <Content Include="Views\Modules\Overhead\GLDivisionCodes.ashx" />
+    <Content Include="Views\Modules\Overhead\GLBranchCodes.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

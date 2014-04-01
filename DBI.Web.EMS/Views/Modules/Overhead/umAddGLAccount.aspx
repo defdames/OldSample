@@ -11,167 +11,147 @@
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />         
         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
             <Items>
-                <ext:FormPanel runat="server" Title="Account Filters" Layout="FormLayout" Padding="5" Region="North" Height="250">
+                <ext:FormPanel runat="server" Title="Account Filters" BodyPadding="10"
+                    Margins="5 5 5 0" Region="North" Height="175">
                     <Items>
-                        <ext:ComboBox
-                            ID="ComboBox1"
-                            runat="server"
-                            Editable="false"
-                            QueryMode="Local"
-                            TriggerAction="All"
-                            EmptyText="Select a Company">
-                            <Items>
-                                <ext:ListItem Text="Belgium" Value="BE" />
-                                <ext:ListItem Text="Brazil" Value="BR" />
-                                <ext:ListItem Text="Bulgaria" Value="BG" />
-                                <ext:ListItem Text="Canada" Value="CA" />
-                                <ext:ListItem Text="Chile" Value="CL" />
-                                <ext:ListItem Text="Cyprus" Value="CY" />
-                                <ext:ListItem Text="Finland" Value="FI" />
-                                <ext:ListItem Text="France" Value="FR" />
-                                <ext:ListItem Text="Germany" Value="DE" />
-                                <ext:ListItem Text="Hungary" Value="HU" />
-                                <ext:ListItem Text="Ireland" Value="IE" />
-                                <ext:ListItem Text="Israel" Value="IL" />
-                                <ext:ListItem Text="Italy" Value="IT" />
-                                <ext:ListItem Text="Lithuania" Value="LT" />
-                                <ext:ListItem Text="Mexico" Value="MX" />
-                                <ext:ListItem Text="Netherlands" Value="NL" />
-                                <ext:ListItem Text="New Zealand" Value="NZ" />
-                                <ext:ListItem Text="Norway" Value="NO" />
-                                <ext:ListItem Text="Pakistan" Value="PK" />
-                                <ext:ListItem Text="Poland" Value="PL" />
-                                <ext:ListItem Text="Romania" Value="RO" />
-                                <ext:ListItem Text="Slovakia" Value="SK" />
-                                <ext:ListItem Text="Slovenia" Value="SI" />
-                                <ext:ListItem Text="Spain" Value="ES" />
-                                <ext:ListItem Text="Sweden" Value="SE" />
-                                <ext:ListItem Text="Switzerland" Value="CH" />
-                                <ext:ListItem Text="United Kingdom" Value="GB" />
-                            </Items>
+                        <ext:ComboBox runat="server" ID="uxSegment1" Editable="true" TypeAhead="false"
+                            FieldLabel="Company" AnchorHorizontal="45%" DisplayField="Name" LoadingText="Searching..."
+                            ValueField="ID" ForceSelection="true" PageSize="10" HideTrigger="false"
+                            MinChars="1" TabIndex="0">
+                            <Store>
+                                <ext:Store runat="server" AutoLoad="false">
+                                    <Proxy>
+                                        <ext:AjaxProxy Url="GLCompanyCodes.ashx">
+                                            <ActionMethods Read="POST" />
+                                            <Reader>
+                                                <ext:JsonReader Root="glcodes" TotalProperty="total" />
+                                            </Reader>
+                                        </ext:AjaxProxy>
+                                    </Proxy>
+                                    <Model>
+                                        <ext:Model runat="server">
+                                            <Fields>
+                                                <ext:ModelField Name="ID" />
+                                                <ext:ModelField Name="Name" />
+                                            </Fields>
+                                        </ext:Model>
+                                    </Model>
+                                </ext:Store>
+                            </Store>
+                            <Listeners>
+                                <Select Handler="#{uxSegment2}.clearValue(); #{uxSegment2Store}.reload();#{uxSegment3}.clearValue(); #{uxSegment3Store}.reload();#{uxSegment4}.clearValue(); #{uxSegment4Store}.reload();"></Select>
+                            </Listeners>   
                         </ext:ComboBox>
-                         <ext:ComboBox
-                            ID="ComboBox2"
-                            runat="server"
-                            Editable="false"
-                            QueryMode="Local"
-                            TriggerAction="All"
-                            EmptyText="Select a Location">
-                            <Items>
-                                <ext:ListItem Text="Belgium" Value="BE" />
-                                <ext:ListItem Text="Brazil" Value="BR" />
-                                <ext:ListItem Text="Bulgaria" Value="BG" />
-                                <ext:ListItem Text="Canada" Value="CA" />
-                                <ext:ListItem Text="Chile" Value="CL" />
-                                <ext:ListItem Text="Cyprus" Value="CY" />
-                                <ext:ListItem Text="Finland" Value="FI" />
-                                <ext:ListItem Text="France" Value="FR" />
-                                <ext:ListItem Text="Germany" Value="DE" />
-                                <ext:ListItem Text="Hungary" Value="HU" />
-                                <ext:ListItem Text="Ireland" Value="IE" />
-                                <ext:ListItem Text="Israel" Value="IL" />
-                                <ext:ListItem Text="Italy" Value="IT" />
-                                <ext:ListItem Text="Lithuania" Value="LT" />
-                                <ext:ListItem Text="Mexico" Value="MX" />
-                                <ext:ListItem Text="Netherlands" Value="NL" />
-                                <ext:ListItem Text="New Zealand" Value="NZ" />
-                                <ext:ListItem Text="Norway" Value="NO" />
-                                <ext:ListItem Text="Pakistan" Value="PK" />
-                                <ext:ListItem Text="Poland" Value="PL" />
-                                <ext:ListItem Text="Romania" Value="RO" />
-                                <ext:ListItem Text="Slovakia" Value="SK" />
-                                <ext:ListItem Text="Slovenia" Value="SI" />
-                                <ext:ListItem Text="Spain" Value="ES" />
-                                <ext:ListItem Text="Sweden" Value="SE" />
-                                <ext:ListItem Text="Switzerland" Value="CH" />
-                                <ext:ListItem Text="United Kingdom" Value="GB" />
-                            </Items>
+                         <ext:ComboBox runat="server" ID="uxSegment2" Editable="true" TypeAhead="false"
+                            FieldLabel="Location" AnchorHorizontal="45%" DisplayField="Name" LoadingText="Searching..."
+                            ValueField="ID" ForceSelection="true" PageSize="10" HideTrigger="false"
+                            MinChars="1" TabIndex="0">
+                            <Store>
+                                <ext:Store ID="uxSegment2Store" runat="server" AutoLoad="false">
+                                    <Proxy>
+                                        <ext:AjaxProxy Url="GLLocationCodes.ashx">
+                                            <ActionMethods Read="POST" />
+                                            <Reader>
+                                                <ext:JsonReader Root="glcodes" TotalProperty="total" />
+                                            </Reader>
+                                        </ext:AjaxProxy>
+                                    </Proxy>
+                                    <Model>
+                                        <ext:Model ID="Model2" runat="server">
+                                            <Fields>
+                                                <ext:ModelField Name="ID" />
+                                                <ext:ModelField Name="Name" />
+                                            </Fields>
+                                        </ext:Model>
+                                    </Model>
+                                    <Parameters>                                       
+                                        <ext:StoreParameter Name="SEGMENT1" Value="#{uxSegment1}.getValue()" Mode="Raw">
+                                                </ext:StoreParameter>
+                                    </Parameters>
+                                </ext:Store>
+                            </Store>
+                              <Listeners>
+                                <Select Handler="#{uxSegment3}.clearValue(); #{uxSegment3Store}.reload();#{uxSegment4}.clearValue(); #{uxSegment4Store}.reload();"></Select>
+                            </Listeners> 
                         </ext:ComboBox>
-                         <ext:ComboBox
-                            ID="ComboBox3"
-                            runat="server"
-                            Editable="false"
-                            QueryMode="Local"
-                            TriggerAction="All"
-                            EmptyText="Select a Division">
-                            <Items>
-                                <ext:ListItem Text="Belgium" Value="BE" />
-                                <ext:ListItem Text="Brazil" Value="BR" />
-                                <ext:ListItem Text="Bulgaria" Value="BG" />
-                                <ext:ListItem Text="Canada" Value="CA" />
-                                <ext:ListItem Text="Chile" Value="CL" />
-                                <ext:ListItem Text="Cyprus" Value="CY" />
-                                <ext:ListItem Text="Finland" Value="FI" />
-                                <ext:ListItem Text="France" Value="FR" />
-                                <ext:ListItem Text="Germany" Value="DE" />
-                                <ext:ListItem Text="Hungary" Value="HU" />
-                                <ext:ListItem Text="Ireland" Value="IE" />
-                                <ext:ListItem Text="Israel" Value="IL" />
-                                <ext:ListItem Text="Italy" Value="IT" />
-                                <ext:ListItem Text="Lithuania" Value="LT" />
-                                <ext:ListItem Text="Mexico" Value="MX" />
-                                <ext:ListItem Text="Netherlands" Value="NL" />
-                                <ext:ListItem Text="New Zealand" Value="NZ" />
-                                <ext:ListItem Text="Norway" Value="NO" />
-                                <ext:ListItem Text="Pakistan" Value="PK" />
-                                <ext:ListItem Text="Poland" Value="PL" />
-                                <ext:ListItem Text="Romania" Value="RO" />
-                                <ext:ListItem Text="Slovakia" Value="SK" />
-                                <ext:ListItem Text="Slovenia" Value="SI" />
-                                <ext:ListItem Text="Spain" Value="ES" />
-                                <ext:ListItem Text="Sweden" Value="SE" />
-                                <ext:ListItem Text="Switzerland" Value="CH" />
-                                <ext:ListItem Text="United Kingdom" Value="GB" />
-                            </Items>
+                         <ext:ComboBox runat="server" ID="uxSegment3" Editable="true" TypeAhead="false"
+                            FieldLabel="Division" AnchorHorizontal="45%" DisplayField="Name" LoadingText="Searching..."
+                            ValueField="ID" ForceSelection="true" PageSize="10" HideTrigger="false"
+                            MinChars="1" TabIndex="0">
+                            <Store>
+                                <ext:Store ID="Store1" runat="server" AutoLoad="false">
+                                    <Proxy>
+                                        <ext:AjaxProxy Url="GLDivisionCodes.ashx">
+                                            <ActionMethods Read="POST" />
+                                            <Reader>
+                                                <ext:JsonReader Root="glcodes" TotalProperty="total" />
+                                            </Reader>
+                                        </ext:AjaxProxy>
+                                    </Proxy>
+                                    <Model>
+                                        <ext:Model ID="Model3" runat="server">
+                                            <Fields>
+                                                <ext:ModelField Name="ID" />
+                                                <ext:ModelField Name="Name" />
+                                            </Fields>
+                                        </ext:Model>
+                                    </Model>
+                                    <Parameters>                                       
+                                        <ext:StoreParameter Name="SEGMENT1" Value="#{uxSegment1}.getValue()" Mode="Raw">
+                                                </ext:StoreParameter>
+                                        <ext:StoreParameter Name="SEGMENT2" Value="#{uxSegment2}.getValue()" Mode="Raw">
+                                                </ext:StoreParameter>
+                                    </Parameters>
+                                </ext:Store>
+                            </Store>
+                              <Listeners>
+                                <Select Handler="#{uxSegment4}.clearValue(); #{uxSegment4Store}.reload();"></Select>
+                            </Listeners> 
                         </ext:ComboBox>
-                         <ext:ComboBox
-                            ID="ComboBox4"
-                            runat="server"
-                            Editable="false"
-                            QueryMode="Local"
-                            TriggerAction="All"
-                            EmptyText="Select a Branch">
-                            <Items>
-                                <ext:ListItem Text="Belgium" Value="BE" />
-                                <ext:ListItem Text="Brazil" Value="BR" />
-                                <ext:ListItem Text="Bulgaria" Value="BG" />
-                                <ext:ListItem Text="Canada" Value="CA" />
-                                <ext:ListItem Text="Chile" Value="CL" />
-                                <ext:ListItem Text="Cyprus" Value="CY" />
-                                <ext:ListItem Text="Finland" Value="FI" />
-                                <ext:ListItem Text="France" Value="FR" />
-                                <ext:ListItem Text="Germany" Value="DE" />
-                                <ext:ListItem Text="Hungary" Value="HU" />
-                                <ext:ListItem Text="Ireland" Value="IE" />
-                                <ext:ListItem Text="Israel" Value="IL" />
-                                <ext:ListItem Text="Italy" Value="IT" />
-                                <ext:ListItem Text="Lithuania" Value="LT" />
-                                <ext:ListItem Text="Mexico" Value="MX" />
-                                <ext:ListItem Text="Netherlands" Value="NL" />
-                                <ext:ListItem Text="New Zealand" Value="NZ" />
-                                <ext:ListItem Text="Norway" Value="NO" />
-                                <ext:ListItem Text="Pakistan" Value="PK" />
-                                <ext:ListItem Text="Poland" Value="PL" />
-                                <ext:ListItem Text="Romania" Value="RO" />
-                                <ext:ListItem Text="Slovakia" Value="SK" />
-                                <ext:ListItem Text="Slovenia" Value="SI" />
-                                <ext:ListItem Text="Spain" Value="ES" />
-                                <ext:ListItem Text="Sweden" Value="SE" />
-                                <ext:ListItem Text="Switzerland" Value="CH" />
-                                <ext:ListItem Text="United Kingdom" Value="GB" />
-                            </Items>
+                         <ext:ComboBox runat="server" ID="uxSegment4" Editable="true" TypeAhead="false"
+                            FieldLabel="Branch" AnchorHorizontal="45%" DisplayField="Name" LoadingText="Searching..."
+                            ValueField="ID" ForceSelection="true" PageSize="10" HideTrigger="false"
+                            MinChars="1" TabIndex="0">
+                            <Store>
+                                <ext:Store ID="Store2" runat="server" AutoLoad="false">
+                                    <Proxy>
+                                        <ext:AjaxProxy Url="GLBranchCodes.ashx">
+                                            <ActionMethods Read="POST" />
+                                            <Reader>
+                                                <ext:JsonReader Root="glcodes" TotalProperty="total" />
+                                            </Reader>
+                                        </ext:AjaxProxy>
+                                    </Proxy>
+                                    <Model>
+                                        <ext:Model ID="Model4" runat="server">
+                                            <Fields>
+                                                <ext:ModelField Name="ID" />
+                                                <ext:ModelField Name="Name" />
+                                            </Fields>
+                                        </ext:Model>
+                                    </Model>
+                                    <Parameters>                                       
+                                         <ext:StoreParameter Name="SEGMENT1" Value="#{uxSegment1}.getValue()" Mode="Raw">
+                                                </ext:StoreParameter>
+                                        <ext:StoreParameter Name="SEGMENT2" Value="#{uxSegment2}.getValue()" Mode="Raw">
+                                                </ext:StoreParameter>
+                                         <ext:StoreParameter Name="SEGMENT3" Value="#{uxSegment3}.getValue()" Mode="Raw">
+                                                </ext:StoreParameter>
+                                    </Parameters>
+                                </ext:Store>
+                            </Store>
                         </ext:ComboBox>
                     </Items>
                     <Buttons>
-                        <ext:Button ID="uxFilterAccounts" Text="Filter"></ext:Button>
-                        <ext:Button ID="uxClearFilterAccounts" Text="Clear Filter"></ext:Button>
+                        <ext:Button runat="server" ID="uxFilterAccounts" Text="Filter"></ext:Button>
+                        <ext:Button runat="server" ID="uxClearFilterAccounts" Text="Clear Filter"></ext:Button>
                     </Buttons>
                 </ext:FormPanel>
                 <ext:GridPanel ID="uxOrganizationsGrid" runat="server" Flex="1" SimpleSelect="true" Title="Organization Security By Hierarchy" Padding="5" Region="Center" Height="400">
                    <Store>
                         <ext:Store runat="server"
                             ID="uxGlAccountSecurityStore"
-                            AutoDataBind="true" RemoteSort="true" OnReadData="deReadGLSecurityCodes" PageSize="10">
+                            AutoDataBind="true" RemoteSort="true" PageSize="10">
                             <Model>
                                 <ext:Model ID="Model1" runat="server">
                                     <Fields>
@@ -192,10 +172,6 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column4" runat="server" DataIndex="SEGMENT1" Text="Company" Flex="1" />
-                            <ext:Column ID="Column3" runat="server" DataIndex="SEGMENT2" Text="Location" Flex="1" />
-                            <ext:Column ID="Column5" runat="server" DataIndex="SEGMENT3" Text="Division" Flex="1" />
-                            <ext:Column ID="Column6" runat="server" DataIndex="SEGMENT4" Text="Branch" Flex="1" />
                             <ext:Column ID="Column10" runat="server" DataIndex="SEGMENT5" Text="Account" Flex="1" />
                             <ext:Column ID="Column11" runat="server" DataIndex="SEGMENT6" Text="Type" Flex="1" />
                             <ext:Column ID="Column12" runat="server" DataIndex="SEGMENT7" Text="Future" Flex="1" />

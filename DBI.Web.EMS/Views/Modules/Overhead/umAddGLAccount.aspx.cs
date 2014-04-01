@@ -8,6 +8,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using DBI.Data;
 using Ext.Net;
+using System.Data.Entity;
+using System.Collections;
 
 namespace DBI.Web.EMS.Views.Modules.Overhead
 {
@@ -18,14 +20,23 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         }
 
+
+        public List<string> distinctGLBySegment(string segment)
+        {
+
+            using (Entities _context = new Entities())
+                {
+                    return _context.GL_ACCOUNTS_V.Select(a => a.SEGMENT1).Distinct().ToList();
+                }
+        }
+
       
         protected void deReadGLSecurityCodes(object sender, StoreReadDataEventArgs e)
         {
 
             using (Entities _context = new Entities())
                 {
-                    var data = _context.GL_ACCOUNTS_V.ToList<GL_ACCOUNTS_V>();
-
+                    var data = _context.GL_ACCOUNTS_V.AsNoTracking().ToList<GL_ACCOUNTS_V>();
                     int count;
                     uxGlAccountSecurityStore.DataSource = GenericData.EnumerableFilterHeader<GL_ACCOUNTS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                     e.Total = data.Count();
