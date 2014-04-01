@@ -22,15 +22,6 @@ namespace DBI.Web.EMS.Views.Modules.Security {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// uxOrgsViewport control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Viewport uxOrgsViewport;
-        
-        /// <summary>
         /// uxUsersGrid control.
         /// </summary>
         /// <remarks>
@@ -47,6 +38,15 @@ namespace DBI.Web.EMS.Views.Modules.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Store uxUsersStore;
+        
+        /// <summary>
+        /// uxEditOrgsButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxEditOrgsButton;
         
         /// <summary>
         /// uxTwoGridWindow control.
@@ -254,5 +254,23 @@ namespace DBI.Web.EMS.Views.Modules.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Column Column4;
+        
+        /// <summary>
+        /// uxSaveOrgsButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxSaveOrgsButton;
+        
+        /// <summary>
+        /// uxCancelOrgsButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxCancelOrgsButton;
     }
 }
