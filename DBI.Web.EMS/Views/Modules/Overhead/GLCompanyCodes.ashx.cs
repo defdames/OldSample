@@ -68,8 +68,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             using (Entities _context = new Entities())
             {
                 List<ComboList> glCodes = (from accounts in _context.GL_ACCOUNTS_V
-                                           group accounts by new { accounts.SEGMENT1, accounts.SEGMENT1_DESC } into grp
-                                           select new ComboList { ID = grp.Key.SEGMENT1, Name = grp.Key.SEGMENT1, Description = grp.Key.SEGMENT1_DESC }).OrderBy(o => o.ID).ToList();
+                                           group accounts by new { accounts.SEGMENT1} into grp
+                                           select new ComboList { ID = grp.Key.SEGMENT1, Name = grp.Key.SEGMENT1}).OrderBy(o => o.ID).ToList();
                 return glCodes;
             }
         }

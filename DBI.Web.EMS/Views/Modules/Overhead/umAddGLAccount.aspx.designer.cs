@@ -238,6 +238,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Button uxClearFilterAccounts;
         
         /// <summary>
+        /// uxCloseButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxCloseButton;
+        
+        /// <summary>
         /// uxGlAccountSecurityGrid control.
         /// </summary>
         /// <remarks>
@@ -352,7 +361,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.CheckboxSelectionModel uxGlAccountSecurityGridSelectionModel;
+        protected global::Ext.Net.RowSelectionModel uxGlAccountSecurityGridSelectionModel;
         
         /// <summary>
         /// PagingToolbar2 control.
@@ -373,12 +382,12 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Toolbar Toolbar1;
         
         /// <summary>
-        /// Button1 control.
+        /// uxAddGLCodeButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button1;
+        protected global::Ext.Net.Button uxAddGLCodeButton;
     }
 }

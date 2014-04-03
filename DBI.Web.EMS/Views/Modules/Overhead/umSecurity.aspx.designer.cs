@@ -94,13 +94,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Column Column1;
         
         /// <summary>
-        /// FilterHeader2 control.
+        /// uxOrganizationsGridFilter control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FilterHeader FilterHeader2;
+        protected global::Ext.Net.FilterHeader uxOrganizationsGridFilter;
         
         /// <summary>
         /// uxOrganizationSelectionModel control.
@@ -175,15 +175,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Model Model1;
         
         /// <summary>
-        /// Column2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column Column2;
-        
-        /// <summary>
         /// Column4 control.
         /// </summary>
         /// <remarks>
@@ -256,22 +247,22 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Column Column12;
         
         /// <summary>
-        /// FilterHeader1 control.
+        /// uxGlAccountSecurityGridFilter control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FilterHeader FilterHeader1;
+        protected global::Ext.Net.FilterHeader uxGlAccountSecurityGridFilter;
         
         /// <summary>
-        /// CheckboxSelectionModel1 control.
+        /// uxGlAccountSecurityGridSelectionModel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.CheckboxSelectionModel CheckboxSelectionModel1;
+        protected global::Ext.Net.RowSelectionModel uxGlAccountSecurityGridSelectionModel;
         
         /// <summary>
         /// PagingToolbar1 control.

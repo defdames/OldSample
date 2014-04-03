@@ -66,7 +66,7 @@
                                 </Columns>
                             </ColumnModel>
                             <Plugins>
-                                <ext:FilterHeader ID="FilterHeader2" runat="server" Remote="true" />
+                                <ext:FilterHeader ID="uxOrganizationsGridFilter" runat="server" Remote="true" />
                             </Plugins>
                             <SelectionModel>
                                <ext:RowSelectionModel runat="server" Mode="Single" ID="uxOrganizationSelectionModel">
@@ -83,7 +83,7 @@
                                 <ext:PagingToolbar ID="uxOrganizationGridPageBar" runat="server" />
                             </BottomBar>                          
                         </ext:GridPanel>
-                <ext:GridPanel ID="uxGlAccountSecurityGrid" runat="server" Flex="1" Title="General Ledger Accounts" Padding="5" Region="South">
+                <ext:GridPanel ID="uxGlAccountSecurityGrid" runat="server" Flex="1" Title="General Ledger Accounts" Padding="5" Region="South" >
                     <TopBar>
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
@@ -92,7 +92,11 @@
                                         <Click OnEvent="deShowGLAccounts"></Click>
                                     </DirectEvents>
                                 </ext:Button>
-                                <ext:Button runat="server" ID="uxGlAccountDelete" Text="Delete" Icon="Delete" Disabled="true"></ext:Button>
+                                <ext:Button runat="server" ID="uxGlAccountDelete" Text="Delete" Icon="Delete" Disabled="true">
+                                     <DirectEvents>
+                                        <Click OnEvent="deDeleteGLAccounts"><Confirmation Message="Are you sure you want to unassign these general ledger accounts for this organization?" Title="Unassign GL Accounts" ConfirmRequest="true"></Confirmation></Click>
+                                    </DirectEvents>
+                                </ext:Button>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
@@ -101,10 +105,10 @@
                             ID="uxGlAccountSecurityStore"
                             AutoDataBind="true" RemoteSort="true" OnReadData="deReadGLSecurityByOrganization"  AutoLoad="false">
                             <Model>
-                                <ext:Model ID="Model1" runat="server">
+                                <ext:Model ID="Model1" runat="server" IDProperty="OVERHEAD_GL_ID">
                                     <Fields>
+                                        <ext:ModelField Name="OVERHEAD_GL_ID" />
                                         <ext:ModelField Name="CODE_COMBINATION_ID" />
-                                        <ext:ModelField Name="TYPE" />
                                         <ext:ModelField Name="SEGMENT1" />
                                         <ext:ModelField Name="SEGMENT2" />
                                         <ext:ModelField Name="SEGMENT3" />
@@ -119,14 +123,11 @@
                             <Proxy>
                                 <ext:PageProxy />
                             </Proxy>
-                            <Listeners>
-                                <Load Handler="if(#{uxGlAccountSecurityStore}.getCount() > 0){#{uxGlAccountDelete}.enable();}"></Load>
-                            </Listeners>
+                            <Listeners><Load Handler="#{uxGlAccountDelete}.disable();"></Load></Listeners>
                         </ext:Store>
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column2" runat="server" DataIndex="TYPE" Text="Include / Exclude" Flex="1" />
                             <ext:Column ID="Column4" runat="server" DataIndex="SEGMENT1" Text="Company" Flex="1" />
                             <ext:Column ID="Column3" runat="server" DataIndex="SEGMENT2" Text="Location" Flex="1" />
                             <ext:Column ID="Column5" runat="server" DataIndex="SEGMENT3" Text="Division" Flex="1" />
@@ -138,12 +139,14 @@
                         </Columns>
                     </ColumnModel>
                     <Plugins>
-                        <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true" />
+                        <ext:FilterHeader ID="uxGlAccountSecurityGridFilter" runat="server" Remote="true" />
                     </Plugins>
                     <SelectionModel>
-                        <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi">
-                           
-                        </ext:CheckboxSelectionModel>
+                        <ext:RowSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Simple">
+                            <Listeners>
+                                <Select Handler="if(#{uxGlAccountSecurityGridSelectionModel}.getCount() > 0){#{uxGlAccountDelete}.enable();}"></Select>
+                            </Listeners>
+                        </ext:RowSelectionModel>
                     </SelectionModel>
                     <BottomBar>
                         <ext:PagingToolbar ID="PagingToolbar1" runat="server" />

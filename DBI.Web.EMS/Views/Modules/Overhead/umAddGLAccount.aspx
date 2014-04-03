@@ -20,10 +20,10 @@
                         LabelStyle="font-weight:bold;padding:0;"
                         Layout="HBoxLayout">
                         <Items>
-                            <ext:ComboBox runat="server" ID="uxSegment1" Editable="false" TypeAhead="true"
+                            <ext:ComboBox runat="server" ID="uxSegment1" Editable="true" TypeAhead="true"
                             FieldLabel="Company" AnchorHorizontal="45%" DisplayField="Name" LoadingText="Searching..."
                             ValueField="ID" ForceSelection="true" HideTrigger="false"
-                            MinChars="1" TabIndex="0" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1">
+                            MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1">
                             <Store>
                                 <ext:Store runat="server" ID="uxSegment1Store" AutoLoad="false">
                                     <Proxy>
@@ -43,10 +43,6 @@
                                             </Fields>
                                         </ext:Model>
                                     </Model>
-                                      <Parameters>                                       
-                                        <ext:StoreParameter Name="HIERARCHYID" Value="#{uxSelectedHierarchyID}.getValue()" Mode="Raw">
-                                                </ext:StoreParameter>
-                                    </Parameters>
                                 </ext:Store>
                             </Store>
                             <Listeners>
@@ -62,10 +58,10 @@
                         LabelStyle="font-weight:bold;padding:0;"
                         Layout="HBoxLayout">
                         <Items>
-                         <ext:ComboBox runat="server" ID="uxSegment2" Editable="false" TypeAhead="true"
+                         <ext:ComboBox runat="server" ID="uxSegment2" Editable="true" TypeAhead="true"
                             FieldLabel="Location" AnchorHorizontal="45%" DisplayField="Name" LoadingText="Searching..."
                             ValueField="ID" ForceSelection="true" HideTrigger="false"
-                            MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1">
+                            MinChars="1" TabIndex="2" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1">
                             <Store>
                                 <ext:Store ID="uxSegment2Store" runat="server" AutoLoad="false">
                                     <Proxy>
@@ -104,10 +100,10 @@
                         LabelStyle="font-weight:bold;padding:0;"
                         Layout="HBoxLayout">
                         <Items>
-                         <ext:ComboBox runat="server" ID="uxSegment3" Editable="false" TypeAhead="true"
+                         <ext:ComboBox runat="server" ID="uxSegment3" Editable="true" TypeAhead="true"
                             FieldLabel="Division" AnchorHorizontal="45%" DisplayField="Name" LoadingText="Searching..."
                             ValueField="ID" ForceSelection="true" HideTrigger="false"
-                            MinChars="1" TabIndex="2" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1">
+                            MinChars="1" TabIndex="3" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1">
                             <Store>
                                 <ext:Store ID="uxSegment3Store" runat="server" AutoLoad="false">
                                     <Proxy>
@@ -148,10 +144,10 @@
                         LabelStyle="font-weight:bold;padding:0;"
                         Layout="HBoxLayout">
                         <Items>
-                         <ext:ComboBox runat="server" ID="uxSegment4" Editable="false" TypeAhead="true"
+                         <ext:ComboBox runat="server" ID="uxSegment4" Editable="true" TypeAhead="true"
                             FieldLabel="Branch" AnchorHorizontal="45%" DisplayField="Name" LoadingText="Searching..."
                             ValueField="ID" ForceSelection="true" HideTrigger="false"
-                            MinChars="1" TabIndex="3" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1">
+                            MinChars="1" TabIndex="4" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1">
                             <Store>
                                 <ext:Store ID="uxSegment4Store" runat="server" AutoLoad="false">
                                     <Proxy>
@@ -191,7 +187,7 @@
 
                     </Items>
                     <Buttons>
-                        <ext:Button runat="server" ID="uxFilterAccounts" Text="Filter" Disabled="true">
+                        <ext:Button runat="server" ID="uxFilterAccounts" Text="Filter" Disabled="true" Icon="Zoom">
                             <DirectEvents>
                                 <Click OnEvent="deFilterEvents">
                                 </Click>
@@ -202,6 +198,7 @@
                                 <Click Handler="#{uxFilterAccounts}.disable();#{uxSegment1}.clearValue(); #{uxSegment1Store}.reload();#{uxSegment2}.clearValue(); #{uxSegment2Store}.reload();#{uxSegment3}.clearValue(); #{uxSegment3Store}.reload();#{uxSegment4}.clearValue(); #{uxSegment4Store}.reload();#{uxGlAccountSecurityStore}.reload();#{uxGlAccountSecurityGrid}.getView().refresh();#{uxGlAccountSecurityGridFilter}.clearFilter();#{uxSegment1Description}.setText('');#{uxSegment2Description}.setText('');#{uxSegment3Description}.setText('');#{uxSegment4Description}.setText('');"></Click>
                             </Listeners>
                         </ext:Button>
+                        <ext:Button ID="uxCloseButton" runat="server" Text="Close Form"><Listeners><Click Handler="parent.Ext.getCmp('uxGlAccounts').close();"></Click></Listeners></ext:Button>
                     </Buttons>
                 </ext:FormPanel>
                 <ext:GridPanel ID="uxGlAccountSecurityGrid" runat="server" Flex="1" SimpleSelect="true" Title="GL Accounts By Filter" Padding="5" Region="Center" Height="400">
@@ -237,6 +234,7 @@
                                 <ext:StoreParameter Name="SEGMENT4" Value="#{uxSegment4}.getValue()" Mode="Raw">
                                 </ext:StoreParameter>
                             </Parameters>
+                             <Listeners><Load Handler="#{uxAddGLCodeButton}.disable();"></Load></Listeners>
                         </ext:Store>
                    </Store>
                     <ColumnModel>
@@ -255,8 +253,11 @@
                         <ext:FilterHeader ID="uxGlAccountSecurityGridFilter" runat="server" Remote="true" />
                     </Plugins>
                     <SelectionModel>
-                        <ext:CheckboxSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Multi"> 
-                        </ext:CheckboxSelectionModel>
+                               <ext:RowSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Simple">
+                                   <Listeners>
+                                <Select Handler="if(#{uxGlAccountSecurityGridSelectionModel}.getCount() > 0){#{uxAddGLCodeButton}.enable();}"></Select>
+                            </Listeners>
+                               </ext:RowSelectionModel>
                     </SelectionModel>
                     <BottomBar>
                         <ext:PagingToolbar ID="PagingToolbar2" runat="server" />
@@ -264,13 +265,14 @@
                     <TopBar>
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
-                                <ext:Button ID="Button1" runat="server" Text="Add Selected" Icon="Add">
+                                <ext:Button ID="uxAddGLCodeButton" runat="server" Text="Add Selected" Icon="Add" Disabled="true">
                                     <DirectEvents>
                                         <Click OnEvent="deAddSelectedGlCodes">
                                             <EventMask ShowMask="true"></EventMask>
                                         </Click>
                                     </DirectEvents>
                                 </ext:Button>
+                                
                             </Items>
                         </ext:Toolbar>
                     </TopBar>

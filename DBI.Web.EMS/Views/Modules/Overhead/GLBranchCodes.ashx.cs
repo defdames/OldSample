@@ -85,7 +85,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             using (Entities _context = new Entities())
             {
                 List<ComboList> glCodes = (from accounts in _context.GL_ACCOUNTS_V.Where(a => a.SEGMENT1 == segment1).Where(a => a.SEGMENT2 == segment2).Where(a => a.SEGMENT3 == segment3)
-                                           select new ComboList { ID = accounts.SEGMENT4, Name = accounts.SEGMENT4, Description = accounts.SEGMENT4_DESC }).Distinct().ToList();
+                                           select new ComboList { ID = accounts.SEGMENT4, Name = accounts.SEGMENT4}).Distinct().ToList();
                 return glCodes.OrderBy(a => a.ID).ToList();
             }
         }

@@ -38,7 +38,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         protected void deShowOrganizationsByHierarchy(object sender, DirectEventArgs e)
         {
             uxOrganizationSecurityStore.RemoveAll();
-            uxOrganizationSecurityStore.ClearFilter();
+            uxOrganizationsGridFilter.ClearFilter();
             uxOrganizationSecurityStore.Reload();
         }
 
@@ -71,11 +71,11 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 using (Entities _context = new Entities())
                 {
                     var data = (from gl in _context.OVERHEAD_GL_ACCOUNT.Where(c => c.OVERHEAD_ORG_ID == OrganizationID)
-                                join gla in _context.GL_ACCOUNTS_V on gl.CODE_COMBO_ID equals gla.CHART_OF_ACCOUNTS_ID
+                                join gla in _context.GL_ACCOUNTS_V on gl.CODE_COMBO_ID equals gla.CODE_COMBINATION_ID
                                 select new GL_ACCOUNT_VIEW
                                 {
-                                    OVERHEAD_GL_ID = gla.CHART_OF_ACCOUNTS_ID,
-                                    CODE_COMBINATION_ID = gl.CODE_COMBO_ID,
+                                    OVERHEAD_GL_ID = (long)gl.OVERHEAD_GL_ID,
+                                    CODE_COMBINATION_ID = gla.CODE_COMBINATION_ID,
                                     SEGMENT1 = gla.SEGMENT1,
                                     SEGMENT2 = gla.SEGMENT2,
                                     SEGMENT3 = gla.SEGMENT3,
@@ -86,7 +86,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                                     SEGMENT5DESC = gla.SEGMENT5_DESC
                                 }).ToList();
                     int count;
-                    uxOrganizationSecurityStore.DataSource = GenericData.EnumerableFilterHeader<GL_ACCOUNT_VIEW>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                    uxGlAccountSecurityStore.DataSource = GenericData.EnumerableFilterHeader<GL_ACCOUNT_VIEW>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                     e.Total = count;
                 }
             }
@@ -95,7 +95,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         protected void deOrganizationSelect(object sender, DirectEventArgs e)
         {
             uxGlAccountSecurityStore.RemoveAll();
-            uxGlAccountSecurityStore.ClearFilter();
+            uxGlAccountSecurityGridFilter.ClearFilter();
             uxGlAccountSecurityStore.Reload();
         }
 
@@ -131,6 +131,30 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             win.Render(this.Form);
             win.Show();
+        }
+
+        protected void deDeleteGLAccounts(object sender, DirectEventArgs e)
+        {
+            long OrganizationID;
+
+            RowSelectionModel selection = uxOrganizationSelectionModel;
+            Boolean checkOrganization = long.TryParse(selection.SelectedRecordID, out OrganizationID);
+
+            RowSelectionModel model = uxGlAccountSecurityGridSelectionModel;
+
+            Entities _context = new Entities();
+
+            foreach (SelectedRow row in model.SelectedRows)
+            {
+                long recordID = long.Parse(row.RecordID);
+
+                OVERHEAD_GL_ACCOUNT account = _context.OVERHEAD_GL_ACCOUNT.Where(a => a.OVERHEAD_GL_ID == recordID).SingleOrDefault();
+                GenericData.Delete<OVERHEAD_GL_ACCOUNT>(account);
+            }
+
+            uxGlAccountSecurityStore.RemoveAll();
+            uxGlAccountSecurityStore.ClearFilter();
+            uxGlAccountSecurityStore.Reload();
         }
 
         public class ORGANIZATION_VIEW

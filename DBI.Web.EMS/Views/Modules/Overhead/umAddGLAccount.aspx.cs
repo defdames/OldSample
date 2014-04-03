@@ -41,6 +41,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         protected void deReadGLSecurityCodes(object sender, StoreReadDataEventArgs e)
         {
+            long organizationID = long.Parse(Request.QueryString["OrgID"]);
+
             string segment1 = e.Parameters["SEGMENT1"].ToString();
             string segment2 = e.Parameters["SEGMENT2"].ToString();
             string segment3 = e.Parameters["SEGMENT3"].ToString();
@@ -52,6 +54,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                         data = data.Where(a => a.SEGMENT2 == segment2);
                         data = data.Where(a => a.SEGMENT3 == segment3);
                         data = data.Where(a => a.SEGMENT4 == segment4);
+
+                        data = (from dups in data
+                                where !_context.OVERHEAD_GL_ACCOUNT.Where(ac =>ac.OVERHEAD_ORG_ID == organizationID).Any(c =>c.CODE_COMBO_ID == dups.CODE_COMBINATION_ID)
+                                select dups);
 
                     var dataFilter = data.ToList<GL_ACCOUNTS_V>();
                     int count;
@@ -74,10 +80,14 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 account.OVERHEAD_ORG_ID = organizationID;
                 account.CREATE_DATE = DateTime.Now;
                 account.MODIFY_DATE = DateTime.Now;
-                account.CREATED_BY = HttpContext.Current.User.Identity.ToString();
-                account.MODIFIED_BY = HttpContext.Current.User.Identity.ToString();
+                account.CREATED_BY = HttpContext.Current.User.Identity.Name.ToString();
+                account.MODIFIED_BY = HttpContext.Current.User.Identity.Name.ToString();
                 GenericData.Insert<OVERHEAD_GL_ACCOUNT>(account);
             }
+
+            uxGlAccountSecurityStore.RemoveAll();
+            uxGlAccountSecurityStore.ClearFilter();
+            uxGlAccountSecurityStore.Reload();
 
         }
 
