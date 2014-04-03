@@ -44,7 +44,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         TypeAhead = true,
                         QueryMode = DataLoadMode.Local,
                         ValueField = "PROJECT_ID",
-                        DisplayField = "LONG_NAME"
+                        ForceSelection=true,
+                        DisplayField = "LONG_NAME",
+                        LabelWidth=100,
+                        Width=500
                     };
 
                     var ProjectList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
@@ -134,22 +137,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(EmployeeToUpdate);
             }
-            using (Entities _context = new Entities())
-            {
-                OrgId = (from d in _context.DAILY_ACTIVITY_HEADER
-                         join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
-                         where d.HEADER_ID == HeaderId
-                         select p.ORG_ID).Single();
-            }
-
-            if (OrgId == 121)
-            {
-                X.Js.Call(string.Format("parent.App.direct.dmRefreshShowSubmit_DBI('{0}')", Request.QueryString["HeaderId"]));
-            }
-            else
-            {
-                X.Js.Call(string.Format("parent.App.direct.dmRefreshShowSubmit_IRM('{0}')", Request.QueryString["HeaderId"]));
-            }
+            X.Js.Call("parent.App.uxPlaceholderWindow.hide()");
         }
     }
 }

@@ -9,19 +9,17 @@
 <body>
     <form id="form1" runat="server">
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
-        <ext:Viewport runat="server" Layout="FitLayout">
-            <Items>
                 <ext:FormPanel runat="server" ID="uxChooseLunchForm" Layout="FormLayout">
                     <Buttons>
                         <ext:Button runat="server" Text="Submit">
                             <DirectEvents>
-                                <Click OnEvent="deStoreLunchChoice" />
+                                <Click OnEvent="deStoreLunchChoice">
+                                    <EventMask ShowMask="true" />
+                                </Click>
                             </DirectEvents>
                         </ext:Button>
                     </Buttons>
                 </ext:FormPanel>
-            </Items>
-        </ext:Viewport>
     </form>
 </body>
 </html>

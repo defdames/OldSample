@@ -60,9 +60,12 @@
 <body>
 	<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
 	<form id="form1" runat="server">
+		<ext:Hidden ID="uxDeactivate" runat="server" />
 		<ext:Viewport runat="server" ID="uxViewPort" Layout="AccordionLayout" IDMode="Explicit" Namespace="App" RenderXType="True">
 			<Items>
+				
 				<ext:GridPanel runat="server" ID="uxManageGrid" Layout="FitLayout" Title="Headers" SelectionMemoryEvents="false" SelectionMemory="true">
+					
 					<SelectionModel>
 						<ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
 					</SelectionModel>
@@ -191,7 +194,8 @@
 								<ext:ToolbarSpacer ID="ToolbarSpacer5" runat="server" />
 								<ext:Button ID="uxPostMultipleButton" runat="server"
 									Text="Post Multiple Headers"
-									Icon="ApplicationGet">
+									Icon="ApplicationGet"
+									Disabled="true">
 									<DirectEvents>
 										<Click OnEvent="deOpenPostMultipleWindow" />
 									</DirectEvents>
@@ -321,6 +325,17 @@
 							<Listeners>
 								<Activate Handler="#{uxProductionTab}.reload()" />
 							</Listeners>
+						</ext:Panel>
+						<ext:Panel runat="server"
+							Title="Footer"
+							ID="uxFooterTab"
+							Disabled="true" Layout="FitLayout">
+							<Loader ID="uxFooterLoader" runat="server" Mode="Frame" AutoLoad="false" ReloadOnEvent="true">
+								<LoadMask ShowMask="true" />
+							</Loader>   
+							<Listeners>
+								<Activate Handler="#{uxFooterTab}.reload()" />
+							</Listeners>
 						</ext:Panel>                        
 					</Items>
 					<TopBar>
@@ -402,12 +417,21 @@
 					<Buttons>
 						<ext:Button runat="server" Icon="ArrowLeft" Text="Previous">
 							<DirectEvents>
-								<Click OnEvent="deLoadPreviousActivity" />
+								<Click OnEvent="deLoadPreviousActivity">
+									<ExtraParams>
+										<ext:Parameter Name="CurrentPage" Value="#{uxManageGridPaging}.getPageData().currentPage" Mode="Raw" />
+									</ExtraParams>
+								</Click>
 							</DirectEvents>
 						</ext:Button>
 						<ext:Button runat="server" Icon="ArrowRight" IconAlign="Right" Text="Next">
 							<DirectEvents>
-								<Click OnEvent="deLoadNextActivity" />
+								<Click OnEvent="deLoadNextActivity">
+									<ExtraParams>
+										<ext:Parameter Name="FromRecord" Value="#{uxManageGridPaging}.getPageData().fromRecord" Mode="Raw" />
+										<ext:Parameter Name="ToRecord" Value="#{uxManageGridPaging}.getPageData().toRecord" Mode="Raw" />
+									</ExtraParams>
+								</Click>
 							</DirectEvents>
 						</ext:Button>
 					</Buttons>
@@ -417,6 +441,7 @@
 					ID="uxPlaceholderWindow"
 					Hidden="true"
 					Width="650"
+					Height="300"
 					Y="50"
 					Modal="true">
 					<Loader runat="server"

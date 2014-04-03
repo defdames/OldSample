@@ -69,7 +69,6 @@ namespace DBI.Data
         public DbSet<CROSSING_SUPPLEMENTAL> CROSSING_SUPPLEMENTAL { get; set; }
         public DbSet<CUSTOMER_SURVEY_OPTIONS> CUSTOMER_SURVEY_OPTIONS { get; set; }
         public DbSet<DAILY_ACTIVITY_FOOTER> DAILY_ACTIVITY_FOOTER { get; set; }
-        public DbSet<DAILY_ACTIVITY_EMPLOYEE> DAILY_ACTIVITY_EMPLOYEE { get; set; }
         public DbSet<PA_ROLES_V> PA_ROLES_V { get; set; }
         public DbSet<DAILY_ACTIVITY_STATUS> DAILY_ACTIVITY_STATUS { get; set; }
         public DbSet<SYS_GROUPS_PERMS> SYS_GROUPS_PERMS { get; set; }
@@ -85,5 +84,14 @@ namespace DBI.Data
         public DbSet<JOB_TITLE_V> JOB_TITLE_V { get; set; }
         public DbSet<CROSSING_RELATIONSHIP> CROSSING_RELATIONSHIP { get; set; }
         public DbSet<SYS_PERMISSIONS> SYS_PERMISSIONS { get; set; }
+        public DbSet<DAILY_ACTIVITY_EMPLOYEE> DAILY_ACTIVITY_EMPLOYEE { get; set; }
+        public DbSet<XXDBI_PAYROLL_AUDIT_V> XXDBI_PAYROLL_AUDIT_V { get; set; }
+        public DbSet<ORG_HIER_V> ORG_HIER_V { get; set; }
+        public DbSet<HIERARCHY_ID_V> HIERARCHY_ID_V { get; set; }
+        public DbSet<GL_ACCOUNTS_V> GL_ACCOUNTS_V { get; set; }
+        public DbSet<OVERHEAD_ORG> OVERHEAD_ORG { get; set; }
+        public DbSet<OVERHEAD_GL_ACCOUNT> OVERHEAD_GL_ACCOUNT { get; set; }
+        public DbSet<TIME_CLOCK> TIME_CLOCK { get; set; }
+        public DbSet<SYS_USER_ORGS> SYS_USER_ORGS { get; set; }
     }
 }

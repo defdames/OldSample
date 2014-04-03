@@ -19,7 +19,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!validateComponentSecurity("SYS.DailyActivity.View"))
+            if (!validateComponentSecurity("SYS.DailyActivity.View") && !validateComponentSecurity("SYS.DailyActivity.EmployeeView"))
             {
                 X.Redirect("~/Views/uxDefault.aspx");
             }
@@ -230,6 +230,28 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Write to the DB
             GenericData.Insert<DAILY_ACTIVITY_HEADER>(ToStore);
             X.Js.Call("parent.App.direct.dmHideAddWindow()");
+        }
+
+        protected void ValidateProject(object sender, RemoteValidationEventArgs e)
+        {
+            DropDownField ProjectField = (DropDownField)sender;
+
+            long ProjectId = long.Parse(ProjectField.Value.ToString());
+            using (Entities _context = new Entities())
+            {
+                var ProjectExists = (from p in _context.PROJECTS_V
+                                     where p.PROJECT_ID == ProjectId
+                                     select p).SingleOrDefault();
+                if (ProjectExists != null)
+                {
+                    e.Success = true;
+                }
+                else
+                {
+                    e.Success = false;
+                    e.ErrorMessage = "Please select a valid project";
+                }
+            }
         }
     }
 }

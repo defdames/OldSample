@@ -81,7 +81,20 @@ namespace DBI.Web.EMS.Views.Modules.Security
             {
                 Group = (from g in _context.SYS_GROUPS
                          where g.JOB_ID == JobId
-                         select g).Single();
+                         select g).SingleOrDefault();
+                if (Group == null)
+                {
+                    JOB_TITLE_V JobTitle = (from j in _context.JOB_TITLE_V
+                                            where j.JOB_ID == JobId
+                                            select j).Single();
+                    Group = new SYS_GROUPS
+                    {
+                        JOB_ID = JobId,
+                        GROUP_NAME = JobTitle.NAME
+                    };
+                    _context.Set<SYS_GROUPS>().Add(Group);
+                    _context.SaveChanges();
+                }
                 GroupPerms = _context.SYS_GROUPS_PERMS.Where(x => x.GROUP_ID == Group.GROUP_ID).ToList();
             }
             foreach (SYS_PERMISSIONS Permission in ChosenPermissions)

@@ -31,15 +31,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// uxAddEditPanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxAddEditPanel;
-        
-        /// <summary>
         /// uxAddProductionForm control.
         /// </summary>
         /// <remarks>
@@ -136,7 +127,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxAddProductionWorkArea;
+        protected global::Ext.Net.TextArea uxAddProductionWorkArea;
         
         /// <summary>
         /// uxAddProductionPoleFrom control.
@@ -289,7 +280,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxEditProductionWorkArea;
+        protected global::Ext.Net.TextArea uxEditProductionWorkArea;
         
         /// <summary>
         /// uxEditProductionPoleFrom control.

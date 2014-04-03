@@ -28,7 +28,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisIgnoreGeneratedCode>false</CodeAnalysisIgnoreGeneratedCode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -65,9 +66,11 @@
     <Reference Include="Oracle.ManagedDataAccess, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\odp.net.managed.121.1.1\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccessDTC">
       <HintPath>..\..\My Received Files\Oracle.ManagedDataAccessDTC.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Linq" />
@@ -145,6 +148,7 @@
     <Content Include="Views\Modules\DailyActivity\umChemicalTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umChooseLunchHeader.aspx" />
     <Content Include="Views\Modules\DailyActivity\umChoosePerDiem.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umChooseSupportProject.aspx" />
     <Content Include="Views\Modules\DailyActivity\umCombinedTab_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umCombinedTab_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umDailyActivity.aspx" />
@@ -163,11 +167,13 @@
     <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
     <Content Include="Views\Modules\Security\umEditGroups.aspx" />
     <Content Include="Views\Modules\Security\umEditModules.aspx" />
+    <Content Include="Views\Modules\Security\umEditOrgs.aspx" />
     <Content Include="Views\Modules\Security\umEditPermissions.aspx" />
     <Content Include="Views\Modules\Security\umEditUsers.aspx" />
     <Content Include="Views\Modules\Security\umSecurityLogList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityActivityList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityUsersList.aspx" />
+    <Content Include="Views\Modules\TimeClock\umEmployeeClock.aspx" />
     <Content Include="Views\uxDefault.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -397,6 +403,13 @@
     <Compile Include="Views\Modules\DailyActivity\umChoosePerDiem.aspx.designer.cs">
       <DependentUpon>umChoosePerDiem.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umChooseSupportProject.aspx.cs">
+      <DependentUpon>umChooseSupportProject.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umChooseSupportProject.aspx.designer.cs">
+      <DependentUpon>umChooseSupportProject.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\DailyActivity\umCombinedTab_DBI.aspx.cs">
       <DependentUpon>umCombinedTab_DBI.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -524,6 +537,13 @@
     <Compile Include="Views\Modules\Security\umEditModules.aspx.designer.cs">
       <DependentUpon>umEditModules.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\Security\umEditOrgs.aspx.cs">
+      <DependentUpon>umEditOrgs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Security\umEditOrgs.aspx.designer.cs">
+      <DependentUpon>umEditOrgs.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\Security\umEditPermissions.aspx.cs">
       <DependentUpon>umEditPermissions.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -558,6 +578,13 @@
     </Compile>
     <Compile Include="Views\Modules\Security\umSecurityUsersList.aspx.designer.cs">
       <DependentUpon>umSecurityUsersList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\TimeClock\umEmployeeClock.aspx.cs">
+      <DependentUpon>umEmployeeClock.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\TimeClock\umEmployeeClock.aspx.designer.cs">
+      <DependentUpon>umEmployeeClock.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\uxDefault.aspx.cs">
       <DependentUpon>uxDefault.aspx</DependentUpon>

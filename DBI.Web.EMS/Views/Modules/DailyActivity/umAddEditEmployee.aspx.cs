@@ -22,19 +22,33 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 if (Request.QueryString["type"] == "Add")
                 {
                     uxAddEmployeeForm.Show();
-                    uxAddEmployeeRole.Show();
+                    if (roleNeeded())
+                    {
+                        uxAddEmployeeRole.Show();
+                    }
+                    uxAddEmployeeDriveTimeHours.Value = "0";
+                    uxAddEmployeeDriveTimeMinutes.Value = "0";
+                    uxAddEmployeeTravelTimeHours.Value = "0";
+                    uxAddEmployeeTravelTimeMinutes.Value = "0";
                     if (GetOrgId(HeaderId) == 123)
                     {
                         uxAddEmployeeShopTimeAMHours.Show();
                         uxAddEmployeeShopTimeAMMinutes.Show();
                         uxAddEmployeeShopTimePMHours.Show();
                         uxAddEmployeeShopTimePMMinutes.Show();
+                        uxAddEmployeeShopTimeAMHours.Value = "0";
+                        uxAddEmployeeShopTimeAMMinutes.Value = "0";
+                        uxAddEmployeeShopTimePMHours.Value = "0";
+                        uxAddEmployeeShopTimePMMinutes.Value = "0";
                     }
                 }
                 else
                 {
                     uxEditEmployeeForm.Show();
-                    uxEditEmployeeRole.Show();
+                    if (roleNeeded())
+                    {
+                        uxEditEmployeeRole.Show();
+                    }
                     LoadEditEmployeeForm();
                     if (GetOrgId(HeaderId) == 123)
                     {
@@ -99,7 +113,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 try
                 {
                     uxEditEmployeeDriveTimeHours.SetValue(Math.Truncate((double)Employee.DRIVE_TIME));
-                    uxEditEmployeeDriveTimeMinutes.SetValue(Math.Truncate(((double)Employee.DRIVE_TIME - Math.Truncate((double)Employee.DRIVE_TIME)) * 60));
+                    uxEditEmployeeDriveTimeMinutes.SetValue(Math.Round(((double)Employee.DRIVE_TIME - Math.Truncate((double)Employee.DRIVE_TIME)) * 60));
                 }
                 catch (Exception)
                 {
@@ -107,7 +121,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 try
                 {
                     uxEditEmployeeTravelTimeHours.SetValue(Math.Truncate((double)Employee.TRAVEL_TIME));
-                    uxEditEmployeeTravelTimeMinutes.SetValue(Math.Truncate(((double)Employee.TRAVEL_TIME - Math.Truncate((double)Employee.TRAVEL_TIME)) * 60));
+                    uxEditEmployeeTravelTimeMinutes.SetValue(Math.Round(((double)Employee.TRAVEL_TIME - Math.Truncate((double)Employee.TRAVEL_TIME)) * 60));
                 }
                 catch (Exception)
                 {
@@ -119,7 +133,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     try
                     {
                         uxEditEmployeeShopTimeAMHours.SetValue(Math.Truncate((double)Employee.SHOPTIME_AM));
-                        uxEditEmployeeShopTimeAMMinutes.SetValue(Math.Truncate(((double)Employee.SHOPTIME_AM - Math.Truncate((double)Employee.SHOPTIME_AM)) * 60));
+                        uxEditEmployeeShopTimeAMMinutes.SetValue(Math.Round(((double)Employee.SHOPTIME_AM - Math.Truncate((double)Employee.SHOPTIME_AM)) * 60));
                         
                     }
                     catch (Exception)
@@ -128,7 +142,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     try
                     {
                         uxEditEmployeeShopTimePMHours.SetValue(Math.Truncate((double)Employee.SHOPTIME_PM));
-                        uxEditEmployeeShopTimePMMinutes.SetValue(Math.Truncate(((double)Employee.SHOPTIME_PM - Math.Truncate((double)Employee.SHOPTIME_PM)) * 60));
+                        uxEditEmployeeShopTimePMMinutes.SetValue(Math.Round(((double)Employee.SHOPTIME_PM - Math.Truncate((double)Employee.SHOPTIME_PM)) * 60));
                     }
                     catch (Exception)
                     {
@@ -345,8 +359,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             if (GetOrgId(HeaderId) == 123)
             {
-                decimal ShoptimeAM = decimal.Parse(uxAddEmployeeShopTimeAMHours.Value.ToString()) + (decimal.Parse(uxAddEmployeeShopTimeAMMinutes.Value.ToString()) / 60);
-                decimal ShoptimePM = decimal.Parse(uxAddEmployeeShopTimePMHours.Value.ToString()) + (decimal.Parse(uxAddEmployeeShopTimePMMinutes.Value.ToString()) / 60);
+                decimal Hours = 0;
+                decimal Minutes = 0;
+                decimal.TryParse(uxAddEmployeeShopTimeAMHours.Value.ToString(), out Hours);
+                decimal.TryParse(uxAddEmployeeShopTimeAMMinutes.Value.ToString(), out Minutes);
+                decimal ShoptimeAM = Hours + (Minutes / 60);
+                Hours = 0;
+                Minutes = 0;
+                decimal.TryParse(uxAddEmployeeShopTimePMHours.Value.ToString(), out Hours);
+                decimal.TryParse(uxAddEmployeeShopTimePMMinutes.Value.ToString(), out Minutes);
+                decimal ShoptimePM = Hours + (Minutes / 60);
                 data.SHOPTIME_AM = ShoptimeAM;
                 data.SHOPTIME_PM = ShoptimePM;
             }
@@ -358,7 +380,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Check for travel time
             try
             {
-                decimal TravelTime = decimal.Parse(uxAddEmployeeTravelTimeHours.Value.ToString()) + (decimal.Parse(uxAddEmployeeTravelTimeMinutes.Value.ToString()) /60);
+                decimal Hours = 0;
+                decimal Minutes = 0;
+                decimal.TryParse(uxAddEmployeeTravelTimeHours.Value.ToString(), out Hours);
+                decimal.TryParse(uxAddEmployeeTravelTimeMinutes.Value.ToString(), out Minutes);
+                decimal TravelTime = Hours + (Minutes /60);
                 data.TRAVEL_TIME = TravelTime;
             }
             catch (NullReferenceException)
@@ -369,7 +395,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Check for drive time
             try
             {
-                decimal DriveTime = decimal.Parse(uxAddEmployeeDriveTimeHours.Value.ToString()) + (decimal.Parse(uxAddEmployeeDriveTimeMinutes.Value.ToString()) /60);
+                decimal Hours = 0;
+                decimal Minutes = 0;
+                decimal.TryParse(uxAddEmployeeDriveTimeHours.Value.ToString(), out Hours);
+                decimal.TryParse(uxAddEmployeeDriveTimeMinutes.Value.ToString(), out Minutes);
+                decimal DriveTime = Hours + (Minutes / 60);
                 data.DRIVE_TIME = DriveTime;
             }
             catch (NullReferenceException)
@@ -671,6 +701,72 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEditEmployeeRole.SetValue(e.ExtraParams["Meaning"], e.ExtraParams["Meaning"]);
                 uxEditEmployeeState.SetValue(e.ExtraParams["State"]);
                 uxEditEmployeeCounty.SetValue(e.ExtraParams["County"]);
+            }
+        }
+
+        protected void ValidateDateTime(object sender, RemoteValidationEventArgs e)
+        {
+            if (e.ExtraParams["Type"] == "Add")
+            {
+                DateTime StartDate = DateTime.Parse(uxAddEmployeeTimeInDate.Value.ToString());
+                DateTime StartTime = DateTime.Parse(uxAddEmployeeTimeInTime.Value.ToString());
+                DateTime EndDate = DateTime.Parse(uxAddEmployeeTimeOutDate.Value.ToString());
+                DateTime EndTime = DateTime.Parse(uxAddEmployeeTimeOutTime.Value.ToString());
+
+                DateTime CombinedStart = StartDate.Date + StartTime.TimeOfDay;
+                DateTime CombinedEnd = EndDate.Date + EndTime.TimeOfDay;
+                if (CombinedStart > CombinedEnd)
+                {
+                    e.Success = false;
+                    e.ErrorMessage = "End Date and Time must be later than Start Date and Time";
+                    uxAddEmployeeTimeInDate.MarkInvalid();
+                    uxAddEmployeeTimeOutDate.MarkInvalid();
+                    uxAddEmployeeTimeInTime.MarkInvalid();
+                    uxAddEmployeeTimeOutTime.MarkInvalid();
+                }
+                else
+                {
+                    e.Success = true;
+                    uxAddEmployeeTimeInDate.ClearInvalid();
+                    uxAddEmployeeTimeInDate.MarkAsValid();
+                    uxAddEmployeeTimeOutDate.ClearInvalid();
+                    uxAddEmployeeTimeOutDate.MarkAsValid();
+                    uxAddEmployeeTimeInTime.ClearInvalid();
+                    uxAddEmployeeTimeInTime.MarkAsValid();
+                    uxAddEmployeeTimeOutTime.ClearInvalid();
+                    uxAddEmployeeTimeOutTime.MarkAsValid();
+                }
+            }
+            else
+            {
+                DateTime StartDate = DateTime.Parse(uxEditEmployeeTimeInDate.Value.ToString());
+                DateTime StartTime = DateTime.Parse(uxEditEmployeeTimeInTime.Value.ToString());
+                DateTime EndDate = DateTime.Parse(uxEditEmployeeTimeOutDate.Value.ToString());
+                DateTime EndTime = DateTime.Parse(uxEditEmployeeTimeOutTime.Value.ToString());
+
+                DateTime CombinedStart = StartDate.Date + StartTime.TimeOfDay;
+                DateTime CombinedEnd = EndDate.Date + EndTime.TimeOfDay;
+                if (CombinedStart > CombinedEnd)
+                {
+                    e.Success = false;
+                    e.ErrorMessage = "End Date and Time must be later than Start Date and Time";
+                    uxEditEmployeeTimeInDate.MarkInvalid();
+                    uxEditEmployeeTimeOutDate.MarkInvalid();
+                    uxEditEmployeeTimeInTime.MarkInvalid();
+                    uxEditEmployeeTimeOutTime.MarkInvalid();
+                }
+                else
+                {
+                    e.Success = true;
+                    uxEditEmployeeTimeInDate.ClearInvalid();
+                    uxEditEmployeeTimeInDate.MarkAsValid();
+                    uxEditEmployeeTimeOutDate.ClearInvalid();
+                    uxEditEmployeeTimeOutDate.MarkAsValid();
+                    uxEditEmployeeTimeInTime.ClearInvalid();
+                    uxEditEmployeeTimeInTime.MarkAsValid();
+                    uxEditEmployeeTimeOutTime.ClearInvalid();
+                    uxEditEmployeeTimeOutTime.MarkAsValid();
+                }
             }
         }
     }

@@ -11,9 +11,9 @@
 	<ext:ResourceManager ID="ResourceManager1" runat="server"  IsDynamic="False" RethrowAjaxExceptions="true">
 	</ext:ResourceManager>
 	<form id="form1" runat="server">
-		<ext:FormPanel ID="uxFormPanel" runat="server" Layout="FormLayout" BodyPadding="5">
+		<ext:FormPanel ID="uxFormPanel" runat="server" Layout="FormLayout" BodyPadding="5" MaxWidth="1000">
 			<Items>
-				<ext:DropDownField runat="server"
+				<ext:DropDownField runat="server" Editable="false" 
 					ID="uxFormProject"
 					FieldLabel="Select a Project"
 					Mode="ValueText"
@@ -107,7 +107,7 @@
 					ID="uxFormEmployee" 
 					FieldLabel="Supervisor/Area Manager"
 					Mode="ValueText"
-					AllowBlank="false" >
+					AllowBlank="false" Editable="false" >
 					<Component>
 						<ext:GridPanel runat="server" 
 							ID="uxFormEmployeeGrid"
@@ -180,7 +180,7 @@
 						</ext:GridPanel>
 					</Component>
 				</ext:DropDownField>
-				<ext:TextField runat="server" ID="uxFormLicense" FieldLabel="License #" AllowBlank="false" />
+				<ext:TextField runat="server" ID="uxFormLicense" FieldLabel=" Business License" AllowBlank="false" />
 				<ext:ComboBox runat="server"
 					ID="uxFormState"
 					FieldLabel="State"
@@ -188,7 +188,8 @@
 					ValueField="name"
 					QueryMode="Local"
 					TypeAhead="true"
-					AllowBlank="false">
+					AllowBlank="false"
+					ForceSelection="true">
 					<Store>
 						<ext:Store ID="uxStateList" runat="server" AutoDataBind="true">
 							<Model>
@@ -206,7 +207,7 @@
 					</Store>
 				</ext:ComboBox>
 				<ext:TextField runat="server" ID="uxFormType" FieldLabel="Type" AllowBlank="true" />
-				<ext:ComboBox runat="server" ID="uxFormDensity" FieldLabel="Density" AllowBlank="true">
+				<ext:ComboBox runat="server" ID="uxFormDensity" FieldLabel="Density" AllowBlank="true" ForceSelection="true">
 					<Items>
 						<ext:ListItem Text="Low" Value="LOW" />
 						<ext:ListItem Text="Medium" Value="MEDIUM" />
@@ -217,7 +218,10 @@
 			<Buttons>
 				<ext:Button runat="server" ID="uxFormSubmit" Text="Submit" Disabled="true" Icon="Add">
 					<DirectEvents>
-						<Click OnEvent="deStoreHeader" />
+						<Click OnEvent="deStoreHeader">
+							<EventMask ShowMask="true" />
+						</Click>
+						
 					</DirectEvents>    
 				</ext:Button>
 				<ext:Button runat="server" ID="uxFormClear" Text="Clear" Icon="Delete">

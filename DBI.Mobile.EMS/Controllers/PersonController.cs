@@ -33,7 +33,7 @@ namespace DBI.Mobile.EMS.Controllers
             return pl;
         }
 
-        [Authorize]
+        //[Authorize]
         public List<SYS_USER_INFORMATION> Get()
         {
             Entities _context = new Entities();

@@ -16,6 +16,7 @@ using DBI.Data;
 using Ext.Net;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using System.Text;
 
 
 namespace DBI.Web.EMS.Views.Modules.DailyActivity
@@ -23,10 +24,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
     public partial class umManageExisting : BasePage
     {
 
-
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!validateComponentSecurity("SYS.DailyActivity.View"))
+            if (!validateComponentSecurity("SYS.DailyActivity.View") && !validateComponentSecurity("SYS.DailyActivity.EmployeeView"))
             {
                 X.Redirect("~/Views/uxDefault.aspx");
 
@@ -63,7 +63,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 List<object> rawData;
 
 
-                if (validateComponentSecurity("SYS.DailyActivity.ViewAll"))
+                if (validateComponentSecurity("SYS.DailyActivity.View"))
                 {
                     //Get List of all new headers
                     rawData = (from d in _context.DAILY_ACTIVITY_HEADER
@@ -83,7 +83,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                join s in _context.DAILY_ACTIVITY_STATUS on h.STATUS equals s.STATUS
                                where d.PERSON_ID == PersonId
-                               select new { d.HEADER_ID, h.PROJECT_ID, h.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE }).ToList<object>();
+                               select new { d.HEADER_ID, h.PROJECT_ID, h.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, h.DA_HEADER_ID, h.STATUS }).ToList<object>();
 
                     uxCreateActivityButton.Disabled = true;
 
@@ -202,7 +202,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxCombinedTab.Disabled = false;
             uxCombinedTab.LoadContent(homeUrl);
 
-            if (validateComponentSecurity("SYS.DailyActivity.ViewAll"))
+            if (validateComponentSecurity("SYS.DailyActivity.View"))
             {
                 string prodUrl = string.Empty;
                 string headerUrl = string.Format("umHeaderTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
@@ -211,6 +211,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 string chemUrl = string.Format("umChemicalTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                 string weatherUrl = string.Format("umWeatherTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                 string invUrl = string.Empty;
+                string footerURL = string.Empty;
 
                 uxHeaderTab.Disabled = false;
                 uxEquipmentTab.Disabled = false;
@@ -218,6 +219,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEmployeeTab.Disabled = false;
                 uxWeatherTab.Disabled = false;
                 uxInventoryTab.Disabled = false;
+                uxFooterTab.Disabled = false;
 
                 uxHeaderTab.LoadContent(headerUrl);
                 uxEquipmentTab.LoadContent(equipUrl);
@@ -228,6 +230,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 {
                     prodUrl = string.Format("umProductionTab_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                     invUrl = string.Format("umInventoryTab_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                    footerURL = string.Format("umSubmitActivity_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                     uxChemicalTab.Disabled = false;
                     uxTabPanel.ShowTab(uxChemicalTab);
                     uxChemicalTab.LoadContent(chemUrl);
@@ -237,11 +240,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     uxTabPanel.HideTab(uxChemicalTab);
                     prodUrl = string.Format("umProductionTab_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                     invUrl = string.Format("umInventoryTab_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                    footerURL = string.Format("umSubmitActivity_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                     //uxChemicalTab.Close();
 
                 }
                 uxProductionTab.LoadContent(prodUrl);
                 uxInventoryTab.LoadContent(invUrl);
+                uxFooterTab.LoadContent(footerURL);
             }
 
             switch(e.ExtraParams["Status"]){
@@ -250,13 +255,43 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     uxTabApproveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
                     uxPostActivityButton.Disabled = true;
                     uxTabPostButton.Disabled = true;
+                    uxPostMultipleButton.Disabled = true;
+                    uxTabSetInactiveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
+                    uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
+                    uxDeactivate.Value = "Deactivate";
+                    uxTabSetInactiveButton.Text = "Set Inactive";
+                    uxInactiveActivityButton.Text = "Set Inactive";
                     break;
                 case "APPROVED":
+                    uxTabSetInactiveButton.Text = "Set Inactive";
+                    uxInactiveActivityButton.Text = "Set Inactive";
                     uxPostActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
                     uxTabPostButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
+                    uxPostMultipleButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
                     uxApproveActivityButton.Disabled = true;
                     uxTabApproveButton.Disabled = true;
+                    uxTabSetInactiveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
+                    uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
+                    uxDeactivate.Value = "Deactivate";
+                    
                     break;
+                case "POSTED":
+                    uxTabSetInactiveButton.Disabled = true;
+                    uxInactiveActivityButton.Disabled = true;
+                    break;
+                case "INACTIVE":
+                    uxApproveActivityButton.Disabled = true;
+                    uxTabApproveButton.Disabled = true;
+                    uxPostActivityButton.Disabled = true;
+                    uxTabPostButton.Disabled = true;
+                    uxPostMultipleButton.Disabled = true;
+                    uxTabSetInactiveButton.Text = "Activate";
+                    uxInactiveActivityButton.Text = "Activate";
+                    uxTabSetInactiveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
+                    uxDeactivate.Value = "Activate";
+                    uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
+                    break;
+
             }
 
             List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
@@ -266,8 +301,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 List<EmployeeData> RequiredLunches = ValidationChecks.LunchCheck(HeaderId);
                 if (RequiredLunches.Count > 0)
                 {
-                    uxPlaceholderWindow.LoadContent(string.Format("umChooseLunchHeader.aspx?HeaderId={0}", HeaderId));
-                    uxPlaceholderWindow.Show();
+                    if (validateComponentSecurity("SYS.DailyActivity.View"))
+                    {
+                        uxPlaceholderWindow.ClearContent();
+                        uxPlaceholderWindow.LoadContent(string.Format("umChooseLunchHeader.aspx?HeaderId={0}", HeaderId));
+                        uxPlaceholderWindow.Show();
+                    }
                 }
             }
 
@@ -283,10 +322,25 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             if (DuplicatePerDiems != null)
             {
-                BadHeader = true;
-                uxPlaceholderWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&PersonId={1}", DuplicatePerDiems.HEADER_ID, DuplicatePerDiems.PERSON_ID));
-                uxPlaceholderWindow.Show();
+                
+                if (validateComponentSecurity("SYS.DailyActivity.View"))
+                {
+                    uxPlaceholderWindow.ClearContent();
+                    uxPlaceholderWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&PersonId={1}", DuplicatePerDiems.HEADER_ID, DuplicatePerDiems.PERSON_ID));
+                    uxPlaceholderWindow.Show();
+                }
             }
+
+            if (OrgId == 123)
+            {
+                if (ValidationChecks.employeeWithShopTimeCheck(HeaderId))
+                {
+                    uxPlaceholderWindow.ClearContent();
+                    uxPlaceholderWindow.LoadContent(string.Format("umChooseSupportProject.aspx?HeaderId={0}", HeaderId));
+                    uxPlaceholderWindow.Show();
+                }
+            }
+
             if (EmployeeOverLap.Count > 0)
             {
                 using (Entities _context = new Entities())
@@ -309,7 +363,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxPostActivityButton.Disabled = true;
                 uxTabPostButton.Disabled = true;
             }
-            uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.ViewAll");
+            
             
             uxExportToPDF.Disabled = false;
             uxTabExportButton.Disabled = false;
@@ -323,18 +377,40 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
             var Index = GridModel.SelectedIndex;
-            GridModel.SelectedRow.RowIndex = GridModel.SelectedIndex + 1;
-            GridModel.Select(GridModel.SelectedIndex);
-            GridModel.UpdateSelection();
-            
+            int LastRecord = int.Parse(e.ExtraParams["ToRecord"].ToString()) -int.Parse(e.ExtraParams["FromRecord"].ToString());
+            if (Index < LastRecord)
+            {
+                    GridModel.SelectedRow.RowIndex = GridModel.SelectedIndex + 1;
+                    GridModel.Select(GridModel.SelectedIndex);
+                    GridModel.UpdateSelection();
+            }
+            else if (LastRecord == 19)
+            {
+
+                uxManageGridStore.NextPage(new
+                {
+                    callback = JRawValue.From("function() {App.uxManageGrid.getSelectionModel().select(0)}")
+                });
+                
+            }
         }
+
         protected void deLoadPreviousActivity(object sender, DirectEventArgs e)
         {
             RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
             var Index = GridModel.SelectedIndex;
-            GridModel.SelectedRow.RowIndex = GridModel.SelectedIndex - 1;
-            GridModel.Select(GridModel.SelectedIndex);
-            GridModel.UpdateSelection();
+            
+            if (Index > 0)
+            {
+                GridModel.SelectedRow.RowIndex = GridModel.SelectedIndex - 1;
+                GridModel.Select(GridModel.SelectedIndex);
+                GridModel.UpdateSelection();
+            }
+            else if(int.Parse(e.ExtraParams["CurrentPage"].ToString()) != 1)
+            {
+                X.Js.Call("App.uxManageGridStore.previousPage({callback: function(){App.uxManageGrid.getSelectionModel().select(19)}})");
+
+            }
         }
 
         /// <summary>
@@ -346,19 +422,33 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
             DAILY_ACTIVITY_HEADER data;
-
             //Get Record to be updated
             using (Entities _context = new Entities())
             {
                 data = (from d in _context.DAILY_ACTIVITY_HEADER
                         where d.HEADER_ID == HeaderId
                         select d).Single();
+            }
+            Ext.Net.Button MyButton = sender as Ext.Net.Button;
+            if (uxDeactivate.Value.ToString() == "Deactivate")
+            {
                 data.STATUS = 5;
+                
+            }
+            else
+            {
+                data.STATUS = 2;
             }
             //Update record in DB
             GenericData.Update<DAILY_ACTIVITY_HEADER>(data);
+            RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
+            var Index = GridModel.SelectedIndex;
 
-            uxManageGridStore.Reload();
+
+            uxManageGridStore.Reload(new
+            {
+                callback = JRawValue.From("function() {App.uxManageGrid.getSelectionModel().select(" + Index + ")}")
+            });
 
         }
 
@@ -407,7 +497,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 var returnData = (from d in _context.DAILY_ACTIVITY_HEADER
                                   join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                                   where d.HEADER_ID == HeaderId
-                                  select new { d.APPLICATION_TYPE, d.CONTRACTOR, d.DA_DATE, d.DENSITY, d.LICENSE, d.STATE, d.STATUS, d.SUBDIVISION, p.SEGMENT1, p.LONG_NAME }).ToList<object>();
+                                  select new { d.APPLICATION_TYPE, d.CONTRACTOR, d.DA_DATE, d.DENSITY, d.LICENSE, d.STATE, d.STATUS, d.SUBDIVISION, p.SEGMENT1, p.LONG_NAME, d.DA_HEADER_ID }).ToList<object>();
                 return returnData;
             }
         }
@@ -417,7 +507,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         /// <param name="HeaderId"></param>
         /// <returns></returns>
-        protected List<object> GetEmployee(long HeaderId)
+        protected List<EmployeeDetails> GetEmployee(long HeaderId)
         {
             using (Entities _context = new Entities())
             {
@@ -428,7 +518,23 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                   join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
                                   from projects in proj.DefaultIfEmpty()
                                   where d.HEADER_ID == HeaderId
-                                  select new { e.EMPLOYEE_NAME, projects.NAME, d.TIME_IN, d.TIME_OUT, d.FOREMAN_LICENSE, d.TRAVEL_TIME, d.DRIVE_TIME, d.PER_DIEM, d.COMMENTS }).ToList<object>();
+                                  select new EmployeeDetails {EMPLOYEE_NAME = e.EMPLOYEE_NAME, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, FOREMAN_LICENSE = d.FOREMAN_LICENSE, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), SHOPTIME_AM = (d.SHOPTIME_AM == null ? 0 : d.SHOPTIME_AM), SHOPTIME_PM = (d.SHOPTIME_PM == null ? 0 : d.SHOPTIME_PM), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS }).ToList();
+                foreach (var item in returnData)
+                {
+                    double Hours = Math.Truncate((double)item.TRAVEL_TIME);
+                    double Minutes = Math.Round(((double)item.TRAVEL_TIME - Hours) * 60);
+                    TimeSpan TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
+                    item.TRAVEL_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
+                    Hours = Math.Truncate((double)item.DRIVE_TIME);
+                    Minutes = Math.Round(((double)item.DRIVE_TIME - Hours) * 60);
+                    item.DRIVE_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
+                    Hours = Math.Truncate((double)item.SHOPTIME_AM);
+                    Minutes = Math.Round(((double)item.SHOPTIME_AM - Hours) * 60);
+                    item.SHOPTIME_AM_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
+                    Hours = Math.Truncate((double)item.SHOPTIME_PM);
+                    Minutes = Math.Round(((double)item.SHOPTIME_PM - Hours) * 60);
+                    item.SHOPTIME_PM_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
+                }
                 return returnData;
             }
         }
@@ -447,7 +553,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                   join t in _context.PA_TASKS_V on d.TASK_ID equals t.TASK_ID
                                   join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                   where d.HEADER_ID == HeaderId
-                                  select new { t.DESCRIPTION, d.TIME_IN, d.TIME_OUT, d.WORK_AREA, d.POLE_FROM, d.POLE_TO, d.ACRES_MILE, d.QUANTITY }).ToList<object>();
+                                  select new { t.TASK_NUMBER, t.DESCRIPTION, d.TIME_IN, d.TIME_OUT, d.WORK_AREA, d.POLE_FROM, d.POLE_TO, d.ACRES_MILE, d.QUANTITY }).ToList<object>();
                 return returnData;
             }
         }
@@ -461,7 +567,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                   join t in _context.PA_TASKS_V on d.TASK_ID equals t.TASK_ID
                                   join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                   where d.HEADER_ID == HeaderId
-                                  select new { t.DESCRIPTION, d.WORK_AREA, d.STATION, d.EXPENDITURE_TYPE, d.COMMENTS, d.QUANTITY }).ToList<object>();
+                                  select new {t.TASK_NUMBER, t.DESCRIPTION, d.WORK_AREA, d.STATION, d.EXPENDITURE_TYPE, d.COMMENTS, d.QUANTITY }).ToList<object>();
                 return returnData;
             }
         }
@@ -574,9 +680,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             Response.ClearContent();
             Response.ClearHeaders();
             Response.ContentType = "application/pdf";
-            Response.AppendHeader("Content-Disposition", string.Format("attachment;filename={0}{1}-export.pdf", HeaderId.ToString(), ProjectName));
+            Response.AppendHeader("Content-Disposition", string.Format("attachment;filename={0}{1}-export.pdf", HeaderId.ToString(), RemoveSpecialCharacters(ProjectName)));
             Response.BinaryWrite(PdfStream.ToArray());
             Response.End();
+        }
+
+        protected static string RemoveSpecialCharacters(string str)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in str)
+            {
+                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.' || c == '_')
+                {
+                    sb.Append(c);
+                }
+            }
+            return sb.ToString();
         }
 
         protected void deSendPDF(object sender, DirectEventArgs e)
@@ -671,11 +790,21 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     Title.Alignment = 1;
                     ExportedPDF.Add(Title);
                     ExportedPDF.Add(NewLine);
+
+                    string OracleHeader;
+                    try
+                    {
+                        OracleHeader = Data.DA_HEADER_ID.ToString();
+                    }
+                    catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                    {
+                        OracleHeader = "0";
+                    }
                     Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase("DRS Id", HeadFootTitleFont )),
                         new PdfPCell(new Phrase(HeaderId.ToString(), HeadFootCellFont)),
-                        new PdfPCell(),
-                        new PdfPCell()
+                        new PdfPCell(new Phrase("Oracle Header Id", HeadFootTitleFont)),
+                        new PdfPCell(new Phrase(OracleHeader, HeadFootCellFont))
                     };
                     foreach(PdfPCell Cell in Cells)
                     {
@@ -734,78 +863,160 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 {
                     //Get Equipment/Employee Data
                     var EmployeeData = GetEmployee(HeaderId);
-
-                    PdfPTable EmployeeTable = new PdfPTable(9);
-
-                    Cells = new PdfPCell[]{
-                    new PdfPCell(new Phrase("Truck/Equipment \n Name", HeaderFont)),
-                    new PdfPCell(new Phrase("Operator(s)", HeaderFont)),
-                    new PdfPCell(new Phrase("License #", HeaderFont)),
-                    new PdfPCell(new Phrase("Time\nIn", HeaderFont)),
-                    new PdfPCell(new Phrase("Time\nOut", HeaderFont)),
-                    new PdfPCell(new Phrase("Total\nHours", HeaderFont)),
-                    new PdfPCell(new Phrase("Travel\nTime", HeaderFont)),
-                    new PdfPCell(new Phrase("Per\nDiem", HeaderFont)),
-                    new PdfPCell(new Phrase("Comments", HeaderFont))};
-
-                    Row = new PdfPRow(Cells);
-                    EmployeeTable.Rows.Add(Row);
-
-                    foreach (dynamic Data in EmployeeData)
+                    if (OrgId == 123)
                     {
-                        string TravelTime;
-                        try
-                        {
-                            TravelTime = Data.TRAVEL_TIME.ToString();
-                        }
-                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
-                        {
-                            TravelTime = string.Empty;
-                        }
-                        string EquipmentName;
-                        try
-                        {
-                            EquipmentName = Data.NAME.ToString();
-                        }
-                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
-                        {
-                            EquipmentName = String.Empty;
-                        }
-                        string Comments;
-                        try
-                        {
-                            Comments = Data.COMMENTS.ToString();
-                        }
-                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
-                        {
-                            Comments = String.Empty;
-                        }
-                        string License;
-                        try
-                        {
-                            License = Data.FOREMAN_LICENSE;
-                        }
-                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
-                        {
-                            License = string.Empty;
-                        }
-                        TimeSpan TotalHours = DateTime.Parse(Data.TIME_OUT.ToString()).TimeOfDay - DateTime.Parse(Data.TIME_IN.ToString()).TimeOfDay;
+                        PdfPTable EmployeeTable = new PdfPTable(12);
+
                         Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase("Truck/Equipment \n Name", HeaderFont)),
+                        new PdfPCell(new Phrase("Operator(s)", HeaderFont)),
+                        new PdfPCell(new Phrase("License #", HeaderFont)),
+                        new PdfPCell(new Phrase("Time\nIn", HeaderFont)),
+                        new PdfPCell(new Phrase("Time\nOut", HeaderFont)),
+                        new PdfPCell(new Phrase("Total\nHours", HeaderFont)),
+                        new PdfPCell(new Phrase("Travel\nTime", HeaderFont)),
+                        new PdfPCell(new Phrase("Drive\nTime", HeaderFont)),
+                        new PdfPCell(new Phrase("ShopTime\nAM", HeaderFont)),
+                        new PdfPCell(new Phrase("ShopTime\nPM", HeaderFont)),
+                        new PdfPCell(new Phrase("Per\nDiem", HeaderFont)),
+                        new PdfPCell(new Phrase("Comments", HeaderFont))};
+
+                        Row = new PdfPRow(Cells);
+                        EmployeeTable.Rows.Add(Row);
+
+                        foreach (var Data in EmployeeData)
+                        {
+                            string TravelTime;
+                            try
+                            {
+                                TravelTime = Data.TRAVEL_TIME_FORMATTED.ToString();
+                            }
+                            catch (Exception)
+                            {
+                                TravelTime = string.Empty;
+                            }
+                            string EquipmentName;
+                            try
+                            {
+                                EquipmentName = Data.NAME.ToString();
+                            }
+                            catch (Exception)
+                            {
+                                EquipmentName = String.Empty;
+                            }
+                            string Comments;
+                            try
+                            {
+                                Comments = Data.COMMENTS.ToString();
+                            }
+                            catch (Exception)
+                            {
+                                Comments = String.Empty;
+                            }
+                            string License;
+                            try
+                            {
+                                License = Data.FOREMAN_LICENSE;
+                            }
+                            catch (Exception)
+                            {
+                                License = string.Empty;
+                            }
+                            TimeSpan TotalHours = DateTime.Parse(Data.TIME_OUT.ToString()) - DateTime.Parse(Data.TIME_IN.ToString());
+                            Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(EquipmentName , CellFont)),
                         new PdfPCell(new Phrase(Data.EMPLOYEE_NAME.ToString(), CellFont)),
                         new PdfPCell(new Phrase(License, CellFont)),
-                        new PdfPCell(new Phrase(Data.TIME_IN.TimeOfDay.ToString(), CellFont)),
-                        new PdfPCell(new Phrase(Data.TIME_OUT.TimeOfDay.ToString(), CellFont)),
-                        new PdfPCell(new Phrase(TotalHours.ToString(), CellFont)),
-                        new PdfPCell(new Phrase(TravelTime, CellFont)),
+                        new PdfPCell(new Phrase(Data.TIME_IN.ToString("hh\\:mm"), CellFont)),
+                        new PdfPCell(new Phrase(Data.TIME_OUT.ToString("hh\\:mm"), CellFont)),
+                        new PdfPCell(new Phrase(TotalHours.ToString("hh\\:mm"), CellFont)),
+                        new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED, CellFont)),
+                        new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED, CellFont)),
+                        new PdfPCell(new Phrase(Data.SHOPTIME_AM_FORMATTED, CellFont)),
+                        new PdfPCell(new Phrase(Data.SHOPTIME_PM_FORMATTED, CellFont)),
                         new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Comments, CellFont))
                     };
+                            Row = new PdfPRow(Cells);
+                            EmployeeTable.Rows.Add(Row);
+                        }
+                        ExportedPDF.Add(EmployeeTable);
+                        ExportedPDF.Add(NewLine);
+                    }
+                    else
+                    {
+                        PdfPTable EmployeeTable = new PdfPTable(9);
+
+                        Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase("Truck/Equipment \n Name", HeaderFont)),
+                        new PdfPCell(new Phrase("Operator(s)", HeaderFont)),
+                        new PdfPCell(new Phrase("Business License", HeaderFont)),
+                        new PdfPCell(new Phrase("Time\nIn", HeaderFont)),
+                        new PdfPCell(new Phrase("Time\nOut", HeaderFont)),
+                        new PdfPCell(new Phrase("Total\nHours", HeaderFont)),
+                        new PdfPCell(new Phrase("Travel\nTime", HeaderFont)),
+                        new PdfPCell(new Phrase("Per\nDiem", HeaderFont)),
+                        new PdfPCell(new Phrase("Comments", HeaderFont))};
+
                         Row = new PdfPRow(Cells);
                         EmployeeTable.Rows.Add(Row);
+
+                        foreach (var Data in EmployeeData)
+                        {
+                            string TravelTime;
+                            try
+                            {
+                                TravelTime = Data.TRAVEL_TIME_FORMATTED.ToString();
+                            }
+                            catch (Exception)
+                            {
+                                TravelTime = string.Empty;
+                            }
+                            string EquipmentName;
+                            try
+                            {
+                                EquipmentName = Data.NAME.ToString();
+                            }
+                            catch (Exception)
+                            {
+                                EquipmentName = String.Empty;
+                            }
+                            string Comments;
+                            try
+                            {
+                                Comments = Data.COMMENTS.ToString();
+                            }
+                            catch (Exception)
+                            {
+                                Comments = String.Empty;
+                            }
+                            string License;
+                            try
+                            {
+                                License = Data.FOREMAN_LICENSE;
+                            }
+                            catch (Exception)
+                            {
+                                License = string.Empty;
+                            }
+                            TimeSpan TotalHours = DateTime.Parse(Data.TIME_OUT.ToString()) - DateTime.Parse(Data.TIME_IN.ToString());
+                            Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase(EquipmentName , CellFont)),
+                        new PdfPCell(new Phrase(Data.EMPLOYEE_NAME.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(License, CellFont)),
+                        new PdfPCell(new Phrase(Data.TIME_IN.ToString("hh\\:mm tt"), CellFont)),
+                        new PdfPCell(new Phrase(Data.TIME_OUT.ToString("hh\\:mm tt"), CellFont)),
+                        new PdfPCell(new Phrase(TotalHours.ToString("hh\\:mm"), CellFont)),
+                        new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED, CellFont)),
+                        new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Comments, CellFont))
+                    };
+                            Row = new PdfPRow(Cells);
+                            EmployeeTable.Rows.Add(Row);
+                        }
+                        ExportedPDF.Add(EmployeeTable);
+                        ExportedPDF.Add(NewLine);
                     }
-                    ExportedPDF.Add(EmployeeTable);
-                    ExportedPDF.Add(NewLine);
                 }
                 catch (Exception)
                 {
@@ -818,14 +1029,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     {
                         string WorkArea;
                         var ProductionData = GetProductionDBI(HeaderId);
-                        PdfPTable ProductionTable = new PdfPTable(5);
+                        PdfPTable ProductionTable = new PdfPTable(7);
 
                         Cells = new PdfPCell[]{
-                    new PdfPCell(new Phrase("Spray/Work Area", HeaderFont)),
-                    new PdfPCell(new Phrase("Pole/MP\nFrom", HeaderFont)),
-                    new PdfPCell(new Phrase("Pole/MP\nTo", HeaderFont)),
-                    new PdfPCell(new Phrase("Acres/Mile", HeaderFont)),
-                    new PdfPCell(new Phrase("Gallons", HeaderFont))};
+                            new PdfPCell(new Phrase("Task Number", HeaderFont)),
+                            new PdfPCell(new Phrase("Task Name", HeaderFont)),
+                            new PdfPCell(new Phrase("Spray/Work Area", HeaderFont)),
+                            new PdfPCell(new Phrase("Pole/MP\nFrom", HeaderFont)),
+                            new PdfPCell(new Phrase("Pole/MP\nTo", HeaderFont)),
+                            new PdfPCell(new Phrase("Acres/Mile", HeaderFont)),
+                            new PdfPCell(new Phrase("Gallons", HeaderFont))
+                        };
 
                         Row = new PdfPRow(Cells);
                         ProductionTable.Rows.Add(Row);
@@ -859,12 +1073,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                 PoleTo = String.Empty;
                             }
                             Cells = new PdfPCell[]{
-                        new PdfPCell(new Phrase(WorkArea, CellFont)),
-                        new PdfPCell(new Phrase(PoleFrom, CellFont)),
-                        new PdfPCell(new Phrase(PoleTo, CellFont)),
-                        new PdfPCell(new Phrase(Data.ACRES_MILE.ToString(), CellFont)),
-                        new PdfPCell(new Phrase(Data.QUANTITY.ToString(), CellFont))
-                    };
+                                new PdfPCell(new Phrase(Data.TASK_NUMBER, CellFont)),
+                                new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
+                                new PdfPCell(new Phrase(WorkArea, CellFont)),
+                                new PdfPCell(new Phrase(PoleFrom, CellFont)),
+                                new PdfPCell(new Phrase(PoleTo, CellFont)),
+                                new PdfPCell(new Phrase(Data.ACRES_MILE.ToString(), CellFont)),
+                                new PdfPCell(new Phrase(Data.QUANTITY.ToString(), CellFont))
+                            };
 
                             Row = new PdfPRow(Cells);
                             ProductionTable.Rows.Add(Row);
@@ -878,12 +1094,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
 
                         Cells = new PdfPCell[]{
-                    new PdfPCell(new Phrase("Task", HeaderFont)),
-                    new PdfPCell(new Phrase("Spray/Work Area", HeaderFont)),
-                    new PdfPCell(new Phrase("Quantity", HeaderFont)),
-                    new PdfPCell(new Phrase("Station", HeaderFont)),
-                    new PdfPCell(new Phrase("Expenditure Type", HeaderFont)),
-                    new PdfPCell(new Phrase("Comments", HeaderFont))};
+                            new PdfPCell(new Phrase("Task Number", HeaderFont)),
+                            new PdfPCell(new Phrase("Task Name", HeaderFont)),
+                            new PdfPCell(new Phrase("Quantity", HeaderFont)),
+                            new PdfPCell(new Phrase("Station", HeaderFont)),
+                            new PdfPCell(new Phrase("Expenditure Type", HeaderFont)),
+                            new PdfPCell(new Phrase("Comments", HeaderFont))
+                        };
 
                         Row = new PdfPRow(Cells);
                         ProductionTable.Rows.Add(Row);
@@ -891,13 +1108,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         foreach (dynamic Data in ProductionData)
                         {
                             Cells = new PdfPCell[]{
-                        new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
-                        new PdfPCell(new Phrase(Data.WORK_AREA, CellFont)),
-                        new PdfPCell(new Phrase(Data.QUANTITY.ToString(), CellFont)),
-                        new PdfPCell(new Phrase(Data.STATION, CellFont)),
-                        new PdfPCell(new Phrase(Data.EXPENDITURE_TYPE.ToString(), CellFont)),
-                        new PdfPCell(new Phrase(Data.COMMENTS.ToString(), CellFont))
-                    };
+                                new PdfPCell(new Phrase(Data.TASK_NUMBER, CellFont)),
+                                new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
+                                new PdfPCell(new Phrase(Data.QUANTITY.ToString(), CellFont)),
+                                new PdfPCell(new Phrase(Data.STATION, CellFont)),
+                                new PdfPCell(new Phrase(Data.EXPENDITURE_TYPE.ToString(), CellFont)),
+                                new PdfPCell(new Phrase(Data.COMMENTS.ToString(), CellFont))
+                            };
 
                             Row = new PdfPRow(Cells);
                             ProductionTable.Rows.Add(Row);
@@ -1269,21 +1486,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             var GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
             var GridIndex = GridModel.SelectedIndex;
             uxManageGridStore.Reload();
-        }
-
-        [DirectMethod]
-        public void dmRefreshShowSubmit_DBI(string HeaderId)
-        {
-            uxPlaceholderWindow.ClearContent();
-            uxPlaceholderWindow.Hide();
-            uxManageGrid.Reload();
-        }
-
-        [DirectMethod]
-        public void dmRefreshShowSubmit_IRM(string HeaderId)
-        {
-            uxPlaceholderWindow.ClearContent();
-            uxPlaceholderWindow.LoadContent(string.Format("umSubmitActivity_IRM.aspx?HeaderId={0}", HeaderId));
         }
 
         /// <summary>
