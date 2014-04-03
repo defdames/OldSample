@@ -41,7 +41,7 @@ namespace DBI.Web.EMS.Views
                
                 // Get Impersonating Info/Details
                 string user = Authentication.GetClaimValue("ImpersonatedUser", User as ClaimsPrincipal);
-                string byuser = Authentication.GetClaimValue("EmployeeName", User as ClaimsPrincipal);
+                string byuser = Authentication.GetClaimValue("ImpersonatorName", User as ClaimsPrincipal);
 
                 uxWelcomeTime.Text = string.Format("Today is {0}", DateTime.Now.ToString("D"));
 
@@ -55,7 +55,7 @@ namespace DBI.Web.EMS.Views
                 else
                 {
                     //Display Welcome message to user
-                    uxWelcomeName.Text = string.Format("Welcome {0}", byuser);
+                    uxWelcomeName.Text = string.Format("Welcome {0}", Authentication.GetClaimValue("EmployeeName", User as ClaimsPrincipal));
                     uxWelcomeName.CtCls = "header-actions-button-orange";
                     uxWelcomeName.Disabled = true;
                 }

@@ -63,6 +63,16 @@
                                         </Click>
                                     </DirectEvents>
                                 </ext:Button>
+                                <ext:Button runat="server" ID="uxImpersonateButton" Text="Impersonate User">
+                                    <DirectEvents>
+                                        <Click OnEvent="deImpersonate">
+                                            <Confirmation ConfirmRequest="true" Message="Are you sure you want to Impersonate this user?" />
+                                            <ExtraParams>
+                                                <ext:Parameter Value="#{uxUsersGrid}.getSelectionModel().getSelection()[0].data.USER_ID" Mode="Raw" Name="UserId" />
+                                            </ExtraParams>
+                                        </Click>
+                                    </DirectEvents>
+                                </ext:Button>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
