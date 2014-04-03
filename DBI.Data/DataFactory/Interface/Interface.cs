@@ -643,7 +643,7 @@ namespace DBI.Data
                             SOURCE_CODE = "EMS",
                             SOURCE_HEADER_ID = InventoryItem.i.HEADER_ID,
                             SOURCE_LINE_ID = InventoryCount,
-                            PROCESS_FLAG = 2,
+                            PROCESS_FLAG = 1,
                             TRANSACTION_MODE = 3,
                             INVENTORY_ITEM_ID = InventoryItem.i.ITEM_ID,
                             ORGANIZATION_ID = (decimal)InventoryItem.i.SUB_INVENTORY_ORG_ID,
