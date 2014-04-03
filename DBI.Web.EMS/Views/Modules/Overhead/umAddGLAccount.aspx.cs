@@ -49,27 +49,35 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 using (Entities _context = new Entities())
                 {
                     var data = _context.GL_ACCOUNTS_V.AsNoTracking().Where(a => a.SEGMENT1 == segment1);
-
-                    //if(segment2 != "null")
-                    //{
                         data = data.Where(a => a.SEGMENT2 == segment2);
-                    //}
-
-                    //if (segment3 != "null")
-                    //{
                         data = data.Where(a => a.SEGMENT3 == segment3);
-                    //}
-
-                    //if (segment4 != "null")
-                    //{
                         data = data.Where(a => a.SEGMENT4 == segment4);
-                    //}
 
                     var dataFilter = data.ToList<GL_ACCOUNTS_V>();
                     int count;
                     uxGlAccountSecurityStore.DataSource = GenericData.EnumerableFilterHeader<GL_ACCOUNTS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataFilter, out count);
                     e.Total = data.Count();
                 }
+
+        }
+
+        protected void deAddSelectedGlCodes(object sender, DirectEventArgs e)
+        {
+            long organizationID = long.Parse(Request.QueryString["OrgID"]);
+
+            CheckboxSelectionModel model = uxGlAccountSecurityGridSelectionModel;
+
+            foreach(SelectedRow row in model.SelectedRows)
+            {
+               OVERHEAD_GL_ACCOUNT account = new OVERHEAD_GL_ACCOUNT();
+                account.CODE_COMBO_ID = long.Parse(row.RecordID);
+                account.OVERHEAD_ORG_ID = organizationID;
+                account.CREATE_DATE = DateTime.Now;
+                account.MODIFY_DATE = DateTime.Now;
+                account.CREATED_BY = HttpContext.Current.User.Identity.ToString();
+                account.MODIFIED_BY = HttpContext.Current.User.Identity.ToString();
+                GenericData.Insert<OVERHEAD_GL_ACCOUNT>(account);
+            }
 
         }
 

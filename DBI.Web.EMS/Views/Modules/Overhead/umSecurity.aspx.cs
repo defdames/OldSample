@@ -101,6 +101,11 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         protected void deShowGLAccounts(object sender, DirectEventArgs e)
         {
+            long OrganizationID;
+
+            RowSelectionModel selection = uxOrganizationSelectionModel;
+            Boolean check = long.TryParse(selection.SelectedRecordID, out OrganizationID);
+
             Window win = new Window
             {
                 ID = "uxGlAccounts",
@@ -113,7 +118,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 {
                     Mode = LoadMode.Frame,
                     DisableCaching = true,
-                    Url = "/Views/Modules/Overhead/umAddGlAccount.aspx",
+                    Url = "/Views/Modules/Overhead/umAddGlAccount.aspx?orgID=" + OrganizationID,
                     AutoLoad = true,
                     LoadMask =
                     {

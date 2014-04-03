@@ -48,7 +48,7 @@
                                     ID="uxOrganizationSecurityStore"
                                      AutoDataBind="true" RemoteSort="true" PageSize="10" OnReadData="deReadOrganizationsByHierarchy" AutoLoad="false">
                                     <Model>
-                                        <ext:Model ID="Model2" runat="server">
+                                        <ext:Model ID="Model2" runat="server" IDProperty="ORGANIZATION_ID">
                                             <Fields>
                                                 <ext:ModelField Name="ORGANIZATION_ID" />
                                                 <ext:ModelField Name="ORGANIZATION_NAME" />
@@ -71,9 +71,10 @@
                             <SelectionModel>
                                <ext:RowSelectionModel runat="server" Mode="Single" ID="uxOrganizationSelectionModel">
                                    <DirectEvents>
-                                       <Select OnEvent="deOrganizationSelect"></Select>
+                                       <Select OnEvent="deOrganizationSelect">
+                                       </Select>
                                    </DirectEvents>
-                                    <Listeners>
+                                   <Listeners>
                                         <Select Handler="#{uxShowGLAccoutsWindow}.enable();"></Select>
                                     </Listeners>
                                </ext:RowSelectionModel>

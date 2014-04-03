@@ -205,7 +205,7 @@
                             ID="uxGlAccountSecurityStore"
                             AutoDataBind="true" OnReadData="deReadGLSecurityCodes" RemoteSort="true" PageSize="10" AutoLoad="false">
                             <Model>
-                                <ext:Model ID="Model1" runat="server">
+                                <ext:Model ID="Model1" runat="server" IDProperty="CODE_COMBINATION_ID">
                                     <Fields>
                                         <ext:ModelField Name="CODE_COMBINATION_ID" />
                                         <ext:ModelField Name="SEGMENT1" />
@@ -250,16 +250,27 @@
                         <ext:FilterHeader ID="uxGlAccountSecurityGridFilter" runat="server" Remote="true" />
                     </Plugins>
                     <SelectionModel>
-                        <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi"></ext:CheckboxSelectionModel>
+                        <ext:CheckboxSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Multi"> 
+                        </ext:CheckboxSelectionModel>
                     </SelectionModel>
                     <BottomBar>
                         <ext:PagingToolbar ID="PagingToolbar2" runat="server" />
                     </BottomBar>
-                <TopBar>
-                   <ext:Toolbar ID="Toolbar1" runat="server"><Items> <ext:Button ID="Button1" runat="server" Text="Add Selected" Icon="Add"></ext:Button></Items></ext:Toolbar>
-                </TopBar>
+                    <TopBar>
+                        <ext:Toolbar ID="Toolbar1" runat="server">
+                            <Items>
+                                <ext:Button ID="Button1" runat="server" Text="Add Selected" Icon="Add">
+                                    <DirectEvents>
+                                        <Click OnEvent="deAddSelectedGlCodes">
+                                            <EventMask ShowMask="true"></EventMask>
+                                        </Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                            </Items>
+                        </ext:Toolbar>
+                    </TopBar>
                 </ext:GridPanel>
-                </Items>
+            </Items>
         </ext:Viewport>
    </form>
 </body>
