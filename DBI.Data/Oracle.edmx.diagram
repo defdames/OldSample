@@ -100,11 +100,9 @@
         <EntityTypeShape EntityType="OracleModel.ORG_HIER_V" Width="1.5" PointX="13.75" PointY="18" />
         <EntityTypeShape EntityType="OracleModel.HIERARCHY_ID_V" Width="1.5" PointX="15.875" PointY="17.125" />
         <EntityTypeShape EntityType="OracleModel.GL_ACCOUNTS_V" Width="1.5" PointX="18.125" PointY="17.125" />
-        <EntityTypeShape EntityType="OracleModel.OVERHEAD_ORG" Width="1.5" PointX="0.5" PointY="42.375" />
-        <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="1.5" PointX="3.75" PointY="42.375" />
-        <AssociationConnector Association="OracleModel.FK_GL_ORG_ID" />
         <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="5.5" PointY="5.75" />
         <EntityTypeShape EntityType="OracleModel.SYS_USER_ORGS" Width="1.5" PointX="13.375" PointY="0.5" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="1.5" PointX="4.9811924514273151" PointY="20.386633658961689" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

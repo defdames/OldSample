@@ -19,5 +19,7 @@ namespace DBI.Data
         public Nullable<System.DateTime> TIME_IN { get; set; }
         public Nullable<System.DateTime> TIME_OUT { get; set; }
         public string SUBMITTED { get; set; }
+        public string APPROVED { get; set; }
+        public string COMPLETED { get; set; }
     }
 }
