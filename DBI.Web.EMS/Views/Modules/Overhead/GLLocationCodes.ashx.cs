@@ -18,7 +18,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             context.Response.ContentType = "text/json";
 
             int start = 0;
-            int limit = 10;
+            int limit = 1000;
             string sort = string.Empty;
             string dir = string.Empty;
             string query = string.Empty;
@@ -72,15 +72,12 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         {
             using (Entities _context = new Entities())
             {
-                List<string> glCodes = _context.GL_ACCOUNTS_V.Where(a => a.SEGMENT1 == segment1).Select(a => a.SEGMENT2).Distinct().ToList();
-                List<ComboList> comboListBox = new List<ComboList>();
-                foreach (string code in glCodes)
-                {
-                    comboListBox.Add(new ComboList(code,code));
-                }
-                return comboListBox;
+                List<ComboList> glCodes = (from accounts in _context.GL_ACCOUNTS_V.Where(a => a.SEGMENT1 == segment1)
+                                           select new ComboList { ID = accounts.SEGMENT2, Name = accounts.SEGMENT2, Description = accounts.SEGMENT2_DESC }).Distinct().ToList();
+                return glCodes.OrderBy(a => a.ID).ToList();
             }
         }
+
 
         public class ComboList
         {
@@ -88,10 +85,11 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
             }
 
-            public ComboList(string ID, string Name)
+            public ComboList(string ID, string Name, string Description)
             {
                 _ID = ID;
                 _Name = Name;
+                _Description = Description;
             }
 
             private string _ID { get; set; }
@@ -106,6 +104,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
                 get { return _Name; }
                 set { _Name = value; }
+            }
+
+            private string _Description { get; set; }
+            public string Description
+            {
+                get { return _Description; }
+                set { _Description = value; }
             }
         }
 

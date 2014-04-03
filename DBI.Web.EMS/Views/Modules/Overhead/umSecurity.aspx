@@ -38,12 +38,15 @@
                                     </ExtraParams>
                                 </ItemClick>
                             </DirectEvents>
+                             <Listeners>
+                                      <Select Handler="#{uxShowGLAccoutsWindow}.disable();"></Select>
+                                   </Listeners>
                             </ext:TreePanel>
                         <ext:GridPanel ID="uxOrganizationsGrid" runat="server" Flex="1" SimpleSelect="true" Title="Organization Security By Hierarchy" Padding="5" Region="Center">
                             <Store>
                                 <ext:Store runat="server"
                                     ID="uxOrganizationSecurityStore"
-                                     AutoDataBind="true" RemoteSort="true" PageSize="10" OnReadData="deReadOrganizationsByHierarchy">
+                                     AutoDataBind="true" RemoteSort="true" PageSize="10" OnReadData="deReadOrganizationsByHierarchy" AutoLoad="false">
                                     <Model>
                                         <ext:Model ID="Model2" runat="server">
                                             <Fields>
@@ -70,6 +73,9 @@
                                    <DirectEvents>
                                        <Select OnEvent="deOrganizationSelect"></Select>
                                    </DirectEvents>
+                                    <Listeners>
+                                        <Select Handler="#{uxShowGLAccoutsWindow}.enable();"></Select>
+                                    </Listeners>
                                </ext:RowSelectionModel>
                             </SelectionModel>
                             <BottomBar>
@@ -80,19 +86,19 @@
                     <TopBar>
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
-                                <ext:Button runat="server" ID="uxShowGLAccoutsWindow" Text="Add" Icon="Add">
+                                <ext:Button runat="server" ID="uxShowGLAccoutsWindow" Text="Add" Icon="Add" Disabled="true">
                                     <DirectEvents>
                                         <Click OnEvent="deShowGLAccounts"></Click>
                                     </DirectEvents>
                                 </ext:Button>
-                                <ext:Button runat="server" ID="uxGlAccountDelete" Text="Delete" Icon="Delete"></ext:Button>
+                                <ext:Button runat="server" ID="uxGlAccountDelete" Text="Delete" Icon="Delete" Disabled="true"></ext:Button>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
                     <Store>
                         <ext:Store runat="server"
                             ID="uxGlAccountSecurityStore"
-                            AutoDataBind="true" RemoteSort="true" OnReadData="deReadGLSecurityByOrganization">
+                            AutoDataBind="true" RemoteSort="true" OnReadData="deReadGLSecurityByOrganization"  AutoLoad="false">
                             <Model>
                                 <ext:Model ID="Model1" runat="server">
                                     <Fields>
@@ -112,6 +118,9 @@
                             <Proxy>
                                 <ext:PageProxy />
                             </Proxy>
+                            <Listeners>
+                                <Load Handler="if(#{uxGlAccountSecurityStore}.getCount() > 0){#{uxGlAccountDelete}.enable();}"></Load>
+                            </Listeners>
                         </ext:Store>
                     </Store>
                     <ColumnModel>
@@ -131,7 +140,9 @@
                         <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true" />
                     </Plugins>
                     <SelectionModel>
-                        <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi"></ext:CheckboxSelectionModel>
+                        <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi">
+                           
+                        </ext:CheckboxSelectionModel>
                     </SelectionModel>
                     <BottomBar>
                         <ext:PagingToolbar ID="PagingToolbar1" runat="server" />

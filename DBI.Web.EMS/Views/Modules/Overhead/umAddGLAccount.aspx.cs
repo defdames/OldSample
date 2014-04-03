@@ -41,21 +41,35 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         protected void deReadGLSecurityCodes(object sender, StoreReadDataEventArgs e)
         {
-            string segment1 = uxSegment1.SelectedItem.Value.ToString();
-            string segment2 = uxSegment2.SelectedItem.Value.ToString();
-            string segment3 = uxSegment3.SelectedItem.Value.ToString();
-            string segment4 = uxSegment4.SelectedItem.Value.ToString();
+            string segment1 = e.Parameters["SEGMENT1"].ToString();
+            string segment2 = e.Parameters["SEGMENT2"].ToString();
+            string segment3 = e.Parameters["SEGMENT3"].ToString();
+            string segment4 = e.Parameters["SEGMENT4"].ToString();
 
-            if (segment4.Length > 0)
-            {
                 using (Entities _context = new Entities())
                 {
-                    var data = _context.GL_ACCOUNTS_V.AsNoTracking().Where(a => a.SEGMENT1 == segment1).Where(a => a.SEGMENT2 == segment2).Where(a => a.SEGMENT3 == segment3).Where(a => a.SEGMENT4 == segment4).ToList<GL_ACCOUNTS_V>();
+                    var data = _context.GL_ACCOUNTS_V.AsNoTracking().Where(a => a.SEGMENT1 == segment1);
+
+                    //if(segment2 != "null")
+                    //{
+                        data = data.Where(a => a.SEGMENT2 == segment2);
+                    //}
+
+                    //if (segment3 != "null")
+                    //{
+                        data = data.Where(a => a.SEGMENT3 == segment3);
+                    //}
+
+                    //if (segment4 != "null")
+                    //{
+                        data = data.Where(a => a.SEGMENT4 == segment4);
+                    //}
+
+                    var dataFilter = data.ToList<GL_ACCOUNTS_V>();
                     int count;
-                    uxGlAccountSecurityStore.DataSource = GenericData.EnumerableFilterHeader<GL_ACCOUNTS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                    uxGlAccountSecurityStore.DataSource = GenericData.EnumerableFilterHeader<GL_ACCOUNTS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataFilter, out count);
                     e.Total = data.Count();
                 }
-            }
 
         }
 

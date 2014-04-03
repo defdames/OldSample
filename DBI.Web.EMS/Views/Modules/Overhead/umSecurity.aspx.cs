@@ -49,8 +49,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             TreeSelectionModel hierarchyTreeSelectionModel = uxHierarchyTreeSelectionModel;
             Boolean check = long.TryParse(hierarchyTreeSelectionModel.SelectedRecordID, out HierarchyID);
 
-            if (HierarchyID > 0)
-            {
                 using (Entities _context = new Entities())
                 {
                     var data = (from ov in _context.ORG_HIER_V.Where(c => c.HIERARCHY_ID == HierarchyID)
@@ -59,7 +57,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     uxOrganizationSecurityStore.DataSource = GenericData.EnumerableFilterHeader<ORGANIZATION_VIEW>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                     e.Total = count;
                 }
-            }
         }
 
         protected void deReadGLSecurityByOrganization(object sender, StoreReadDataEventArgs e)
@@ -109,7 +106,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 ID = "uxGlAccounts",
                 Title = "GL Accounts",
                 Height = 650,
-                Width = 700,
+                Width = 750,
                 Modal = true,
                 CloseAction = CloseAction.Destroy,
                 Loader = new ComponentLoader
