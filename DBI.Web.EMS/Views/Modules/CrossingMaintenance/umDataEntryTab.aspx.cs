@@ -11,6 +11,7 @@ using Ext.Net;
 using DBI.Data.GMS;
 using DBI.Data.DataFactory;
 
+
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
     public partial class umDataEntryTab : System.Web.UI.Page
@@ -107,16 +108,40 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             List<CrossingForApplicationDetails> crossingList = JSON.Deserialize<List<CrossingForApplicationDetails>>(json);
             foreach (CrossingForApplicationDetails crossing in crossingList)
             {
-                ////check for if application requested has been duplicated in the same fiscal year.
-                //if (Date.Exists(x => (x.APPLICATION_REQUESTED == AppRequested))
+                //check for if application requested has been duplicated in the same fiscal year.
+                //CROSSING_APPLICATION appdatedata;
+                //DateTime appDate = Date;
+                //DateTime Start = new DateTime(2014, 11, 1); //this pulls in november 1st of year for fiscal yr
+                //DateTime End = new DateTime(2015, 10, 31); //this pulls in oct 31st of next year for fiscal yr
+                //if (appDate >= Start && appDate <= End)
                 //{
-                //    MessageBox.Show(new MessageBoxConfig
+                //    using (Entities _context = new Entities())
                 //    {
-                //    Title = "Error",
-                //    Message="The same application requested exists in this fiscal year."
-
+                //        data = (from a in _context.CROSSING_APPLICATION
+                //                where a.APPLICATION_REQUESTED == AppRequested && AppRequested.Contains(a.APPLICATION_REQUESTED)
+                //                select a).Single();
+                //    }
+                   
+                //    //MessageBox.Show(new MessageBoxConfig()
+                //    //{
+                //    //    Title = "Warning",
+                //    //    Message = "Application already contains this number for this fiscal year",
+                //    //    Buttons = MessageBox.Button.OK,
+                //    //    Icon = MessageBox.Icon.WARNING,
+                //    //});
+                //    Notification.Show(new NotificationConfig()
+                //    {
+                //        Title = "Success",
+                //        Html = "Application Added Successfully",
+                //        Closable = true,
+                //        AlignCfg = new NotificationAlignConfig
+                //        {
+                //            ElementAnchor = AnchorPoint.Center,
+                //            TargetAnchor = AnchorPoint.Center
+                //        }
                 //    });
-                
+                                   
+                //}
                 //else
                 //{
 
@@ -152,7 +177,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                 Notification.Show(new NotificationConfig()
                 {
-                    Title = "Success",
+                    Title = "Success",                  
                     Html = "Application Added Successfully",
                     HideDelay = 1000,
                     AlignCfg = new NotificationAlignConfig
@@ -162,8 +187,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     }
                 });
                 }
+                
             
-        }
+          }
         //protected void deEditApplicationForm(object sender, DirectEventArgs e)
         //{
         //    string json = e.ExtraParams["ApplicationInfo"];

@@ -39,10 +39,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
               List<object> data;
             using (Entities _context = new Entities())
             {
-               
-
-                //Get List of all new headers
-
                 data = (from d in _context.CROSSINGS
                         where !(from r in _context.CROSSING_RELATIONSHIP 
                                 where d.CROSSING_ID == r.CROSSING_ID && r.PROJECT_ID == ProjectId

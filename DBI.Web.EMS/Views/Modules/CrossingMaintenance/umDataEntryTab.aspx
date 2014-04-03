@@ -25,7 +25,6 @@
                                 <ext:ModelField Name="CONTACT_ID" />
                                 <ext:ModelField Name="CROSSING_NUMBER" Type="String" />
                                 <ext:ModelField Name="PROJECT_ID" />
-                                <ext:ModelField Name="LONG_NAME" />
                                 <ext:ModelField Name="SERVICE_UNIT" />
                                 <ext:ModelField Name="SUB_DIVISION" />
                                 <ext:ModelField Name="CONTACT_NAME" />
@@ -42,7 +41,6 @@
                 <Columns>
 
                     <ext:Column ID="uxMainCrossing" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing #" Flex="1" />
-                    <ext:Column ID="Column8" runat="server" DataIndex="LONG_NAME" Text="Project Name" Flex="2" />
                     <ext:Column ID="Column12" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
                     <ext:Column ID="uxSubDiv" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
                     <ext:Column ID="uxMTM" runat="server" DataIndex="CONTACT_NAME" Text="Manager" Flex="1" />
@@ -57,7 +55,7 @@
             </SelectionModel>
             <Listeners>
                 <Select Handler="#{uxAddAppButton}.enable();" />
-                <Deselect Handler="#{uxAddAppButton}.disable();" />
+               
             </Listeners>
 
             <%-- <DirectEvents>
@@ -152,7 +150,7 @@
                                     DisplayField="type"
                                     ValueField="type"
                                     QueryMode="Local"
-                                    TypeAhead="true" Width="300" AllowBlank="false">
+                                    TypeAhead="true" Width="300" AllowBlank="false" ForceSelection="true" TabIndex="1">
                                     <Store>
                                         <ext:Store runat="server"
                                             ID="uxAddAppRequestedStore" AutoDataBind="true">
@@ -170,15 +168,15 @@
                                     </Store>
                                 </ext:ComboBox>
 
-                                <ext:Checkbox ID="uxAddEntrySprayBox" runat="server" FieldLabel="Spray" LabelAlign="Right" Width="250" />
+                                <ext:Checkbox ID="uxAddEntrySprayBox" runat="server" FieldLabel="Spray" LabelAlign="Right" Width="250" TabIndex="4" />
                             </Items>
                         </ext:FieldContainer>
 
                         <ext:FieldContainer ID="FieldContainer0" runat="server" Layout="HBoxLayout">
                             <Items>
-                                <ext:DateField ID="uxAddEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" Width="300" AllowBlank="false" />
+                                <ext:DateField ID="uxAddEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" Width="300" AllowBlank="false" Editable="false" TabIndex="2" />
 
-                                <ext:Checkbox ID="uxAddEntryCutBox" runat="server" FieldLabel="Cut" LabelAlign="Right" />
+                                <ext:Checkbox ID="uxAddEntryCutBox" runat="server" FieldLabel="Cut" LabelAlign="Right" TabIndex="5" />
 
                             </Items>
                         </ext:FieldContainer>
@@ -193,7 +191,7 @@
                                     DisplayField="NAME"
                                     ValueField="NAME"
                                     QueryMode="Local"
-                                    TypeAhead="true" Width="300" AllowBlank="false">
+                                    TypeAhead="true" Width="300" AllowBlank="false" ForceSelection="true" TabIndex="3">
                                     <Store>
                                         <ext:Store runat="server"
                                             ID="uxAddApplicationTruckStore" AutoDataBind="true">
@@ -209,12 +207,12 @@
                                     </Store>
                                 </ext:ComboBox>
 
-                                <ext:Checkbox ID="uxAddEntryInspectBox" runat="server" FieldLabel="Inspect" LabelAlign="Right" Width="250" />
+                                <ext:Checkbox ID="uxAddEntryInspectBox" runat="server" FieldLabel="Inspect" LabelAlign="Right" Width="250" TabIndex="6" />
                             </Items>
                         </ext:FieldContainer>
 
-                        <ext:TextField ID="uxAddFiscalYear" runat="server" FieldLabel="Fiscal Year" LabelAlign="Right" Width="300" AllowBlank="false" />
-                        <ext:TextArea ID="uxAddEntryRemarks" FieldLabel="Remarks" runat="server" LabelAlign="Right" />
+                       
+                        <ext:TextArea ID="uxAddEntryRemarks" FieldLabel="Remarks" runat="server" LabelAlign="Right" TabIndex="7"/>
                     </Items>
                     <Buttons>
                         <ext:Button ID="uxAddApplicationEntryButton" runat="server" Text="Add" Icon="Add">

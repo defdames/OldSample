@@ -156,7 +156,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string Route = uxAddRouteCI.Value.ToString();
             string DotNum = uxAddDotCI.Value.ToString();
             string Street = uxAddStreetCI.Value.ToString();
-            decimal MP = Convert.ToDecimal(uxAddMPCI.Value);
+            decimal MP = Convert.ToDecimal(uxAddMPCINumberField.Value);
             string State = uxAddStateComboBox.Value.ToString();
             string City = uxAddCityCI.Value.ToString();
             string Sub_divisions = uxAddSubDivCI.Value.ToString();
@@ -235,7 +235,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
             try
             {
-                decimal Latitude = Convert.ToDecimal(uxAddLatCI.Value);
+                decimal Latitude = Convert.ToDecimal(uxAddLatCINumberField.Value);
                 data.LATITUDE = Latitude;
             }
             catch (FormatException)
@@ -244,7 +244,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
             try
             {
-                decimal Longitude = Convert.ToDecimal(uxAddLongCI.Value);
+                decimal Longitude = Convert.ToDecimal(uxAddLongCINumberField.Value);
                 data.LONGITUDE = Longitude;
             }               
                            
@@ -254,7 +254,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
             try
             {
-                decimal NE = Convert.ToDecimal(uxAddNECI.Value);
+                decimal NE = Convert.ToDecimal(uxAddNECINumberField.Value);
                 data.ROWNE = NE;
             }
             catch (FormatException)
@@ -263,7 +263,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
             try
             {
-               decimal NEext = Convert.ToDecimal(uxAddNEextCI.Value);
+                decimal NEext = Convert.ToDecimal(uxAddNEextCINumberField.Value);
                data.EXTNE = NEext;
             }
             catch (FormatException)
@@ -281,7 +281,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
             try
             {
-                 decimal NW = Convert.ToDecimal(uxAddNWCI.Value);
+                decimal NW = Convert.ToDecimal(uxAddNWCINumberField.Value);
                 data.ROWNW = NW;
             }
             catch (Exception)
@@ -290,7 +290,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
               try
             {
-                 decimal NWext = Convert.ToDecimal(uxAddNWextCI.Value);
+                decimal NWext = Convert.ToDecimal(uxAddNWextCINumberField.Value);
                  data.EXTNW = NWext;
             }
             catch (Exception)
@@ -308,7 +308,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
               try
             {
-                 decimal SE = Convert.ToDecimal(uxAddSECI.Value);
+                decimal SE = Convert.ToDecimal(uxAddSECINumberField.Value);
                       data.ROWSE = SE;
             }
             catch (Exception)
@@ -317,7 +317,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
               try
             {
-               decimal SEext = Convert.ToDecimal(uxAddSEextCI.Value);
+                decimal SEext = Convert.ToDecimal(uxAddSEextCINumberField.Value);
                 data.EXTSE = SEext;
             }
             catch (Exception)
@@ -335,7 +335,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
             try
             {
-                decimal SW = Convert.ToDecimal(uxAddSWCI.Value);
+                decimal SW = Convert.ToDecimal(uxAddSWCINumberField.Value);
                     data.ROWSW = SW;
             }
             catch (Exception)
@@ -344,7 +344,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
             try
             {
-                 decimal SWext = Convert.ToDecimal(uxAddSWextCI.Value);
+                decimal SWext = Convert.ToDecimal(uxAddSWextCINumberField.Value);
                     data.EXTSW = SWext;
             }
             catch (Exception)
@@ -362,7 +362,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
             try
             {
-                 long MainTracks = Convert.ToInt64(uxAddMainTracksCI.Value);    
+                 long MainTracks = Convert.ToInt64(uxAddMainTracksCINumberField.Value);    
                      data.MAIN_TRACKS = MainTracks;
             }
             catch (Exception)
@@ -371,7 +371,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
             try
             {
-                  long OtherTracks = Convert.ToInt64(uxAddOtherTracksCI.Value);  
+                  long OtherTracks = Convert.ToInt64(uxAddOtherTracksCINumberField.Value);  
                   data.OTHER_TRACKS = OtherTracks;
             }
             catch (Exception)
@@ -455,27 +455,26 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxEditRouteCI.SetValue(data.d.ROUTE);
                 uxEditDotCI.SetValue(data.d.DOT);
                 uxEditStreetCI.SetValue(data.d.STREET);
-                uxEditMPCI.SetValue(data.d.MILE_POST);
+                uxEditMPCINumberField.SetValue(data.d.MILE_POST);
                 uxEditStateComboBox.SetValue(data.d.STATE);
                 uxEditCityCI.SetValue(data.d.CITY);
-                uxEditLatCI.SetValue(data.d.LATITUDE);
-                uxEditSubDivCIBox.SetValueAndFireSelect(data.d.SUB_DIVISION);
+                uxEditLatCINumberField.SetValue(data.d.LATITUDE);
                 uxEditCountyCI.SetValue(data.d.COUNTY);
-                uxEditLongCI.SetValue(data.d.LONGITUDE);
-                uxEditNECI.SetValue(data.d.ROWNE);
-                uxEditNEextCI.SetValue(data.d.EXTNE);
+                uxEditLongCINumberField.SetValue(data.d.LONGITUDE);
+                uxEditNECINumberField.SetValue(data.d.ROWNE);
+                uxEditNEextCINumberField.SetValue(data.d.EXTNE);
                 uxEditRowWidthCI.SetValue(data.d.ROW_WIDTH);
-                uxEditNWCI.SetValue(data.d.ROWNW);
-                uxEditNWextCI.SetValue(data.d.EXTNW);
+                uxEditNWCINumberField.SetValue(data.d.ROWNW);
+                uxEditNWextCINumberField.SetValue(data.d.EXTNW);
                 uxEditPropertyTypeCI.SetValue(data.d.PROPERTY_TYPE);
-                uxEditSECI.SetValue(data.d.ROWSE);
-                uxEditSEextCI.SetValue(data.d.EXTSE);
+                uxEditSECINumberField.SetValue(data.d.ROWSE);
+                uxEditSEextCINumberField.SetValue(data.d.EXTSE);
                 uxEditSurfaceCI.SetValue(data.d.SURFACE);
-                uxEditSWCI.SetValue(data.d.ROWSW);
-                uxEditSWextCI.SetValue(data.d.EXTSW);
+                uxEditSWCINumberField.SetValue(data.d.ROWSW);
+                uxEditSWextCINumberField.SetValue(data.d.EXTSW);
                 uxEditWarningDeviceCI.SetValue(data.d.WARNING_DEVICE);
-                uxEditMainTracksCI.SetValue(data.d.MAIN_TRACKS);
-                uxEditOtherTracksCI.SetValue(data.d.OTHER_TRACKS);
+                uxEditMainTracksCINumberField.SetValue(data.d.MAIN_TRACKS);
+                uxEditOtherTracksCINumberField.SetValue(data.d.OTHER_TRACKS);
                 uxEditMaxSpeedCINumberField.SetValue(data.d.MAX_SPEED);
                 uxEditSpecialInstructCI.SetValue(data.d.SPECIAL_INSTRUCTIONS);
                 uxEditSubConCI.SetValue(data.d.SUB_CONTRACTED);
@@ -484,6 +483,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxEditOnSpurCI.SetValue(data.d.ON_SPUR);
                 uxEditRRCI.SetValueAndFireSelect(data.d.RAILROAD);
                 uxEditServiceUnitCI.SetValueAndFireSelect(data.d.SERVICE_UNIT);
+                uxEditSubDivCIBox.SetValueAndFireSelect(data.d.SUB_DIVISION);
 
                 if (data.d.SUB_CONTRACTED == "Y")
                 {
@@ -519,7 +519,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string Route = uxEditRouteCI.Value.ToString();
             string DotNum = uxEditDotCI.Value.ToString();
             string Street = uxEditStreetCI.Value.ToString();
-            decimal MP = Convert.ToDecimal(uxEditMPCI.Value);
+            decimal MP = Convert.ToDecimal(uxEditMPCINumberField.Value);
             string State = uxEditStateComboBox.Value.ToString();
             string City = uxEditCityCI.Value.ToString();
             string County = uxEditCountyCI.Value.ToString();
@@ -602,7 +602,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 data.SERVICE_UNIT = ServiceUnit;
                 try
                 {
-                    decimal Latitude = decimal.Parse(uxEditLatCI.Value.ToString());
+                    decimal Latitude = decimal.Parse(uxEditLatCINumberField.Value.ToString());
                     data.LATITUDE = Latitude;
                 }
                 catch (Exception)
@@ -611,7 +611,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
                 try
                 {
-                    decimal Longitude = Convert.ToDecimal(uxEditLongCI.Value);
+                    decimal Longitude = Convert.ToDecimal(uxEditLongCINumberField.Value);
                     data.LONGITUDE = Longitude;
                 }
                 catch (Exception)
@@ -620,7 +620,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
                 try
                 {
-                decimal NE = Convert.ToDecimal(uxEditNECI.Value);
+                    decimal NE = Convert.ToDecimal(uxEditNECINumberField.Value);
                 data.ROWNE = NE;
                 }
              catch (Exception)
@@ -629,7 +629,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
              try
                 {
-                decimal NEext = Convert.ToDecimal(uxEditNEextCI.Value);
+                    decimal NEext = Convert.ToDecimal(uxEditNEextCINumberField.Value);
                 data.EXTNE = NEext;
                 }
              catch (Exception)
@@ -647,7 +647,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
              try
                 {
-                decimal NW = Convert.ToDecimal(uxEditNWCI.Value);
+                    decimal NW = Convert.ToDecimal(uxEditNWCINumberField.Value);
                 data.ROWNW = NW;
                 }
                 catch (Exception)
@@ -656,7 +656,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
              try
                 {
-                decimal NWext = Convert.ToDecimal(uxEditNWextCI.Value);
+                    decimal NWext = Convert.ToDecimal(uxEditNWextCINumberField.Value);
                 data.EXTNW = NWext;
                 }
                 catch (Exception)
@@ -674,7 +674,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
              try
                 {
-                decimal SE = Convert.ToDecimal(uxEditSECI.Value);
+                    decimal SE = Convert.ToDecimal(uxEditSECINumberField.Value);
                 data.ROWSE = SE;
                 }
                 catch (Exception)
@@ -683,7 +683,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
              try
                 {
-                decimal SEext = Convert.ToDecimal(uxEditSEextCI.Value);
+                    decimal SEext = Convert.ToDecimal(uxEditSEextCINumberField.Value);
                 data.EXTSE = SEext;
                 }
                 catch (Exception)
@@ -701,7 +701,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
              try
                 {
-                decimal SW = Convert.ToDecimal(uxEditSWCI.Value);
+                    decimal SW = Convert.ToDecimal(uxEditSWCINumberField.Value);
                 data.ROWSW = SW;
                 }
                  catch (Exception)
@@ -710,7 +710,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
              try
                 {
-                decimal SWext = Convert.ToDecimal(uxEditSWextCI.Value);
+                    decimal SWext = Convert.ToDecimal(uxEditSWextCINumberField.Value);
                 data.EXTSW = SWext;
                 }
                  catch (Exception)
@@ -728,7 +728,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
              try
                 {
-                long MainTracks = Convert.ToInt64(uxEditMainTracksCI.Value);
+                    long MainTracks = Convert.ToInt64(uxEditMainTracksCINumberField.Value);
                 data.MAIN_TRACKS = MainTracks;
                 }
                  catch (Exception)
@@ -737,7 +737,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
              try
                 {
-                long OtherTracks = Convert.ToInt64(uxEditOtherTracksCI.Value);
+                    long OtherTracks = Convert.ToInt64(uxEditOtherTracksCINumberField.Value);
                 data.OTHER_TRACKS = OtherTracks;
                 }
                  catch (Exception)
@@ -827,6 +827,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 uxEditRRStore.DataSource = types;
                 uxEditRRStore.DataBind();
+                
             }
                 
         }
@@ -839,6 +840,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                uxAddSubDivCI.Clear();
                uxAddServiceUnitStore.DataSource = units;
                uxAddServiceUnitStore.DataBind();
+              
            }
            else
            {
@@ -982,6 +984,22 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     TargetAnchor = AnchorPoint.Center
                 }
             });
+        }
+        protected void deGetProjectList(object sender, DirectEventArgs e)
+        {
+            long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+            List<object> data;
+            using (Entities _context = new Entities())
+            {
+                data = (from r in _context.CROSSING_RELATIONSHIP
+                        join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID
+                        where r.CROSSING_ID == CrossingId
+                        select new { r.PROJECT_ID, p.LONG_NAME, p.SEGMENT1, p.ORGANIZATION_NAME }).ToList<object>();
+                uxProjectListStore.DataSource = data;
+                uxProjectListStore.DataBind();
+
+
+            }
         }
     }
 }

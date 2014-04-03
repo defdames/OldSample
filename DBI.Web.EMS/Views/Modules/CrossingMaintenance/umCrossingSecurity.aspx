@@ -134,10 +134,6 @@
             </Listeners>
         </ext:GridPanel>
 
-
-
-
-
          <ext:Window runat="server" ID="uxAssignCrossingWindow" Hidden="true" Width="650" Modal="true">
             <Items>
                 <ext:FormPanel runat="server" ID="uxAssignCrossingForm">
@@ -174,7 +170,7 @@
                 </Columns>
             </ColumnModel>
             <Plugins>
-                <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true" />
+                <ext:FilterHeader ID="FilterHeader1" runat="server"  />
             </Plugins>
             <SelectionModel>
                 <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi"  />

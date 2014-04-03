@@ -5,6 +5,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+     <style type="text/css">
+        
+       .x-grid-group-title {
+        color: #000000;
+        font: bold 11px/13px tahoma,arial,verdana,sans-serif;
+        }
+       .x-grid-group-hd {
+        border-width: 0 0 1px 0;
+        border-style: solid;
+        border-color: #000000;
+        padding: 10px 4px 4px 4px;
+        background: white;
+        cursor: pointer;
+        }
+          
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -74,7 +90,7 @@
                     runat="server"
                     HideGroupedHeader="true"
                     Collapsible="false"
-                    BodyStyle="background-color: Lightgrey;" />
+                    Cls="x-grid-group-title; x-grid-group-hd" />
             </Features>
 
             <Plugins>
