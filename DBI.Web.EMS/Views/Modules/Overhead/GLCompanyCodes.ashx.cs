@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.Linq;
 using System.Web;
 using DBI.Data;
@@ -64,16 +65,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         public static List<ComboList> companyGlCodes()
         {
+
             using (Entities _context = new Entities())
             {
-               List<ComboList> glCodes = (from distinct in _context.GL_ACCOUNTS_V
-                                          select new { distinct.SEGMENT1,
-                   
-                   
-                   
-                   
-                   (from accounts in _context.GL_ACCOUNTS_V
-                                          group accounts by new { accounts.SEGMENT1, accounts.SEGMENT1_DESC } into grp
+                IEnumerable<ComboList> codes = _context.Database.SqlQuery
+
+
+
+                List<ComboList> glCodes = (from accounts in _context.GL_ACCOUNTS_V
+                                           group accounts by new { accounts.SEGMENT1, accounts.SEGMENT1_DESC } into grp
                                            select new ComboList { ID = grp.Key.SEGMENT1, Name = grp.Key.SEGMENT1, Description = grp.Key.SEGMENT1_DESC }).OrderBy(o => o.ID).ToList();
                 return glCodes;
             }
