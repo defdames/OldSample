@@ -321,7 +321,7 @@
           </EntitySet>
           <EntitySet Name="GL_ACCOUNTS_V" EntityType="OracleModel.Store.GL_ACCOUNTS_V" store:Type="Views" store:Schema="XXEMS" store:Name="GL_ACCOUNTS_V">
             <DefiningQuery>SELECT 
-      "GL_ACCOUNTS_V"."CODE_COMBINATION_V" AS "CODE_COMBINATION_V", 
+      "GL_ACCOUNTS_V"."CODE_COMBINATION_ID" AS "CODE_COMBINATION_ID", 
       "GL_ACCOUNTS_V"."CHART_OF_ACCOUNTS_ID" AS "CHART_OF_ACCOUNTS_ID", 
       "GL_ACCOUNTS_V"."ENABLED_FLAG" AS "ENABLED_FLAG", 
       "GL_ACCOUNTS_V"."ACCOUNT_TYPE" AS "ACCOUNT_TYPE", 
@@ -1769,12 +1769,12 @@
       -->
         <EntityType Name="GL_ACCOUNTS_V">
           <Key>
-            <PropertyRef Name="CODE_COMBINATION_V" />
+            <PropertyRef Name="CODE_COMBINATION_ID" />
             <PropertyRef Name="CHART_OF_ACCOUNTS_ID" />
             <PropertyRef Name="ENABLED_FLAG" />
             <PropertyRef Name="ACCOUNT_TYPE" />
           </Key>
-          <Property Name="CODE_COMBINATION_V" Type="number" Nullable="false" Precision="15" />
+          <Property Name="CODE_COMBINATION_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="CHART_OF_ACCOUNTS_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="ENABLED_FLAG" Type="varchar2" Nullable="false" MaxLength="1" />
           <Property Name="ACCOUNT_TYPE" Type="varchar2" Nullable="false" MaxLength="1" />
@@ -3241,10 +3241,10 @@
           <EntitySet Name="XXDBI_PAYROLL_AUDIT_V" EntityType="OracleModel.XXDBI_PAYROLL_AUDIT_V" />
           <EntitySet Name="ORG_HIER_V" EntityType="OracleModel.ORG_HIER_V" />
           <EntitySet Name="HIERARCHY_ID_V" EntityType="OracleModel.HIERARCHY_ID_V" />
-          <EntitySet Name="GL_ACCOUNTS_V" EntityType="OracleModel.GL_ACCOUNTS_V" />
           <EntitySet Name="TIME_CLOCK" EntityType="OracleModel.TIME_CLOCK" />
           <EntitySet Name="SYS_USER_ORGS" EntityType="OracleModel.SYS_USER_ORGS" />
           <EntitySet Name="OVERHEAD_GL_ACCOUNT" EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" />
+          <EntitySet Name="GL_ACCOUNTS_V" EntityType="OracleModel.GL_ACCOUNTS_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -5650,32 +5650,6 @@
           <Property Type="Int64" Name="HIERARCHY_ID" Nullable="false" />
           <Property Type="String" Name="NAME" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="GL_ACCOUNTS_V">
-          <Key>
-            <PropertyRef Name="CODE_COMBINATION_V" />
-            <PropertyRef Name="CHART_OF_ACCOUNTS_ID" />
-            <PropertyRef Name="ENABLED_FLAG" />
-            <PropertyRef Name="ACCOUNT_TYPE" />
-          </Key>
-          <Property Type="Int64" Name="CODE_COMBINATION_V" Nullable="false" />
-          <Property Type="Int64" Name="CHART_OF_ACCOUNTS_ID" Nullable="false" />
-          <Property Type="String" Name="ENABLED_FLAG" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ACCOUNT_TYPE" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT1" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT1_DESC" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT2" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT2_DESC" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT3" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT3_DESC" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT4" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT4_DESC" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT5" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT5_DESC" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT6" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT6_DESC" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT7" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT7_DESC" MaxLength="4000" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="TIME_CLOCK">
           <Key>
             <PropertyRef Name="TIME_CLOCK_ID" />
@@ -5707,6 +5681,32 @@
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="GL_ACCOUNTS_V">
+          <Key>
+            <PropertyRef Name="CODE_COMBINATION_ID" />
+            <PropertyRef Name="CHART_OF_ACCOUNTS_ID" />
+            <PropertyRef Name="ENABLED_FLAG" />
+            <PropertyRef Name="ACCOUNT_TYPE" />
+          </Key>
+          <Property Type="Int64" Name="CODE_COMBINATION_ID" Nullable="false" />
+          <Property Type="Int64" Name="CHART_OF_ACCOUNTS_ID" Nullable="false" />
+          <Property Type="String" Name="ENABLED_FLAG" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ACCOUNT_TYPE" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT1" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT1_DESC" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT2" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT2_DESC" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT3" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT3_DESC" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT4" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT4_DESC" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT5" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT5_DESC" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT6" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT6_DESC" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT7" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT7_DESC" MaxLength="4000" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -7558,30 +7558,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="GL_ACCOUNTS_V">
-            <EntityTypeMapping TypeName="OracleModel.GL_ACCOUNTS_V">
-              <MappingFragment StoreEntitySet="GL_ACCOUNTS_V">
-                <ScalarProperty Name="SEGMENT7_DESC" ColumnName="SEGMENT7_DESC" />
-                <ScalarProperty Name="SEGMENT7" ColumnName="SEGMENT7" />
-                <ScalarProperty Name="SEGMENT6_DESC" ColumnName="SEGMENT6_DESC" />
-                <ScalarProperty Name="SEGMENT6" ColumnName="SEGMENT6" />
-                <ScalarProperty Name="SEGMENT5_DESC" ColumnName="SEGMENT5_DESC" />
-                <ScalarProperty Name="SEGMENT5" ColumnName="SEGMENT5" />
-                <ScalarProperty Name="SEGMENT4_DESC" ColumnName="SEGMENT4_DESC" />
-                <ScalarProperty Name="SEGMENT4" ColumnName="SEGMENT4" />
-                <ScalarProperty Name="SEGMENT3_DESC" ColumnName="SEGMENT3_DESC" />
-                <ScalarProperty Name="SEGMENT3" ColumnName="SEGMENT3" />
-                <ScalarProperty Name="SEGMENT2_DESC" ColumnName="SEGMENT2_DESC" />
-                <ScalarProperty Name="SEGMENT2" ColumnName="SEGMENT2" />
-                <ScalarProperty Name="SEGMENT1_DESC" ColumnName="SEGMENT1_DESC" />
-                <ScalarProperty Name="SEGMENT1" ColumnName="SEGMENT1" />
-                <ScalarProperty Name="ACCOUNT_TYPE" ColumnName="ACCOUNT_TYPE" />
-                <ScalarProperty Name="ENABLED_FLAG" ColumnName="ENABLED_FLAG" />
-                <ScalarProperty Name="CHART_OF_ACCOUNTS_ID" ColumnName="CHART_OF_ACCOUNTS_ID" />
-                <ScalarProperty Name="CODE_COMBINATION_V" ColumnName="CODE_COMBINATION_V" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TIME_CLOCK">
             <EntityTypeMapping TypeName="OracleModel.TIME_CLOCK">
               <MappingFragment StoreEntitySet="TIME_CLOCK">
@@ -7614,6 +7590,30 @@
                 <ScalarProperty Name="CODE_COMBO_ID" ColumnName="CODE_COMBO_ID" />
                 <ScalarProperty Name="OVERHEAD_ORG_ID" ColumnName="OVERHEAD_ORG_ID" />
                 <ScalarProperty Name="OVERHEAD_GL_ID" ColumnName="OVERHEAD_GL_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GL_ACCOUNTS_V">
+            <EntityTypeMapping TypeName="OracleModel.GL_ACCOUNTS_V">
+              <MappingFragment StoreEntitySet="GL_ACCOUNTS_V">
+                <ScalarProperty Name="SEGMENT7_DESC" ColumnName="SEGMENT7_DESC" />
+                <ScalarProperty Name="SEGMENT7" ColumnName="SEGMENT7" />
+                <ScalarProperty Name="SEGMENT6_DESC" ColumnName="SEGMENT6_DESC" />
+                <ScalarProperty Name="SEGMENT6" ColumnName="SEGMENT6" />
+                <ScalarProperty Name="SEGMENT5_DESC" ColumnName="SEGMENT5_DESC" />
+                <ScalarProperty Name="SEGMENT5" ColumnName="SEGMENT5" />
+                <ScalarProperty Name="SEGMENT4_DESC" ColumnName="SEGMENT4_DESC" />
+                <ScalarProperty Name="SEGMENT4" ColumnName="SEGMENT4" />
+                <ScalarProperty Name="SEGMENT3_DESC" ColumnName="SEGMENT3_DESC" />
+                <ScalarProperty Name="SEGMENT3" ColumnName="SEGMENT3" />
+                <ScalarProperty Name="SEGMENT2_DESC" ColumnName="SEGMENT2_DESC" />
+                <ScalarProperty Name="SEGMENT2" ColumnName="SEGMENT2" />
+                <ScalarProperty Name="SEGMENT1_DESC" ColumnName="SEGMENT1_DESC" />
+                <ScalarProperty Name="SEGMENT1" ColumnName="SEGMENT1" />
+                <ScalarProperty Name="ACCOUNT_TYPE" ColumnName="ACCOUNT_TYPE" />
+                <ScalarProperty Name="ENABLED_FLAG" ColumnName="ENABLED_FLAG" />
+                <ScalarProperty Name="CHART_OF_ACCOUNTS_ID" ColumnName="CHART_OF_ACCOUNTS_ID" />
+                <ScalarProperty Name="CODE_COMBINATION_ID" ColumnName="CODE_COMBINATION_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

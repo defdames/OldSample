@@ -88,9 +88,9 @@ namespace DBI.Data
         public DbSet<XXDBI_PAYROLL_AUDIT_V> XXDBI_PAYROLL_AUDIT_V { get; set; }
         public DbSet<ORG_HIER_V> ORG_HIER_V { get; set; }
         public DbSet<HIERARCHY_ID_V> HIERARCHY_ID_V { get; set; }
-        public DbSet<GL_ACCOUNTS_V> GL_ACCOUNTS_V { get; set; }
         public DbSet<TIME_CLOCK> TIME_CLOCK { get; set; }
         public DbSet<SYS_USER_ORGS> SYS_USER_ORGS { get; set; }
         public DbSet<OVERHEAD_GL_ACCOUNT> OVERHEAD_GL_ACCOUNT { get; set; }
+        public DbSet<GL_ACCOUNTS_V> GL_ACCOUNTS_V { get; set; }
     }
 }
