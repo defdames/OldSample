@@ -65,7 +65,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         {
             long organizationID = long.Parse(Request.QueryString["OrgID"]);
 
-            CheckboxSelectionModel model = uxGlAccountSecurityGridSelectionModel;
+            RowSelectionModel model = uxGlAccountSecurityGridSelectionModel;
 
             foreach(SelectedRow row in model.SelectedRows)
             {

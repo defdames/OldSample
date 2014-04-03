@@ -19,7 +19,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         protected void LoadHierarchyTree(object sender, NodeLoadEventArgs e)
         {
 
-            long[] ids = {64,63, 3065,6066, 8066,61,10066};
+            long[] ids = {64,63,3065,6066,8066,61,10066};
             Entities _context = new Entities();
             List<HIERARCHY_ID_V> _list = _context.HIERARCHY_ID_V.Where(h => ids.Contains(h.HIERARCHY_ID)).ToList();
 
@@ -104,7 +104,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             long OrganizationID;
 
             RowSelectionModel selection = uxOrganizationSelectionModel;
-            Boolean check = long.TryParse(selection.SelectedRecordID, out OrganizationID);
+            Boolean checkOrganization = long.TryParse(selection.SelectedRecordID, out OrganizationID);
 
             Window win = new Window
             {

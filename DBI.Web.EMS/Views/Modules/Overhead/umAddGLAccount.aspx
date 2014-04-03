@@ -11,6 +11,7 @@
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False"  />         
         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
             <Items>
+
                 <ext:FormPanel runat="server" Title="Account Filters" BodyPadding="10"
                     Margins="5 5 5 0" Region="North" Height="175">
                     <Items>
@@ -42,6 +43,10 @@
                                             </Fields>
                                         </ext:Model>
                                     </Model>
+                                      <Parameters>                                       
+                                        <ext:StoreParameter Name="HIERARCHYID" Value="#{uxSelectedHierarchyID}.getValue()" Mode="Raw">
+                                                </ext:StoreParameter>
+                                    </Parameters>
                                 </ext:Store>
                             </Store>
                             <Listeners>
@@ -223,23 +228,23 @@
                                 <ext:PageProxy />
                             </Proxy>
                             <Parameters>
-                                         <ext:StoreParameter Name="SEGMENT1" Value="#{uxSegment1}.getValue()" Mode="Raw">
-                                                </ext:StoreParameter>
-                                        <ext:StoreParameter Name="SEGMENT2" Value="#{uxSegment2}.getValue()" Mode="Raw">
-                                                 </ext:StoreParameter>
-                                         <ext:StoreParameter Name="SEGMENT3" Value="#{uxSegment3}.getValue()" Mode="Raw">
-                                                 </ext:StoreParameter>
-                                         <ext:StoreParameter Name="SEGMENT4" Value="#{uxSegment4}.getValue()" Mode="Raw">
-                                                 </ext:StoreParameter>
+                                <ext:StoreParameter Name="SEGMENT1" Value="#{uxSegment1}.getValue()" Mode="Raw">
+                                </ext:StoreParameter>
+                                <ext:StoreParameter Name="SEGMENT2" Value="#{uxSegment2}.getValue()" Mode="Raw">
+                                </ext:StoreParameter>
+                                <ext:StoreParameter Name="SEGMENT3" Value="#{uxSegment3}.getValue()" Mode="Raw">
+                                </ext:StoreParameter>
+                                <ext:StoreParameter Name="SEGMENT4" Value="#{uxSegment4}.getValue()" Mode="Raw">
+                                </ext:StoreParameter>
                             </Parameters>
                         </ext:Store>
-                    </Store>
+                   </Store>
                     <ColumnModel>
                         <Columns>
-                             <ext:Column ID="Column2" runat="server" DataIndex="SEGMENT1" Text="Company" Flex="1" />
-                             <ext:Column ID="Column3" runat="server" DataIndex="SEGMENT2" Text="Location" Flex="1" />
-                             <ext:Column ID="Column4" runat="server" DataIndex="SEGMENT3" Text="Division" Flex="1" />
-                             <ext:Column ID="Column5" runat="server" DataIndex="SEGMENT4" Text="Branch" Flex="1" />
+                            <ext:Column ID="Column2" runat="server" DataIndex="SEGMENT1" Text="Company" Flex="1" />
+                            <ext:Column ID="Column3" runat="server" DataIndex="SEGMENT2" Text="Location" Flex="1" />
+                            <ext:Column ID="Column4" runat="server" DataIndex="SEGMENT3" Text="Division" Flex="1" />
+                            <ext:Column ID="Column5" runat="server" DataIndex="SEGMENT4" Text="Branch" Flex="1" />
                             <ext:Column ID="Column1" runat="server" DataIndex="SEGMENT5_DESC" Text="Account Description" Flex="2" />
                             <ext:Column ID="Column10" runat="server" DataIndex="SEGMENT5" Text="Account" Flex="1" />
                             <ext:Column ID="Column11" runat="server" DataIndex="SEGMENT6" Text="Type" Flex="1" />

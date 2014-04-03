@@ -65,7 +65,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         public static List<ComboList> companyGlCodes()
         {
-
             using (Entities _context = new Entities())
             {
                 List<ComboList> glCodes = (from accounts in _context.GL_ACCOUNTS_V
