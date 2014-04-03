@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.IdentityModel.Tokens;
+using System.IdentityModel.Services;
 using System.Security.Claims;
 using DBI.Core.Web;
 using DBI.Core.Security;
@@ -113,6 +115,48 @@ namespace DBI.Web.EMS.Views.Modules.Security
                 }
             }
             uxEditUserWindow.Hide();
+        }
+
+        public void deImpersonate(object sender, DirectEventArgs e)
+        {
+            //Get the user information
+            //Get the selected user id
+            long userID = long.Parse(e.ExtraParams["UserId"]);
+
+            SYS_USER_INFORMATION userDetails = SYS_USER_INFORMATION.UserByID(userID);
+
+            if (userDetails != null)
+            {
+
+                List<Claim> claims = SYS_PERMISSIONS.Claims(userDetails.USER_NAME);
+
+                int cnt = claims.Count;
+                // Always add the username, this is always required
+                claims.Add(new Claim(ClaimTypes.Name, userDetails.USER_NAME));
+
+                // Add a claim to say they were impersonated and by who impersonated them
+                claims.Add(new Claim("ImpersonatedUser", userDetails.EMPLOYEE_NAME));
+
+                if (Authentication.GetClaimValue("ImpersonatorUsername", User as ClaimsPrincipal) == string.Empty)
+                {
+                    claims.Add(new Claim("ImpersonatorUsername", HttpContext.Current.User.Identity.Name));
+                }
+                if (Authentication.GetClaimValue("ImpersonatorName", User as ClaimsPrincipal) == string.Empty)
+                {
+                    claims.Add(new Claim("ImpersonatorName", Authentication.GetClaimValue("EmployeeName", User as ClaimsPrincipal)));
+                }
+               
+
+                var id = new ClaimsIdentity(claims, "Forms");
+                var cp = new ClaimsPrincipal(id);
+
+                var token = new SessionSecurityToken(cp);
+                var sam = FederatedAuthentication.SessionAuthenticationModule;
+                sam.WriteSessionTokenToCookie(token);
+
+                // Break out of frames and redirect user.
+                ResourceManager.GetInstance().AddScript("parent.window.location = '{0}';", "../../uxDefault.aspx");
+            }
         }
     }
 }

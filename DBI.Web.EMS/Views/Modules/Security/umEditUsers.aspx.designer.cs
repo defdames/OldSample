@@ -67,6 +67,15 @@ namespace DBI.Web.EMS.Views.Modules.Security {
         protected global::Ext.Net.Button uxEditUserButton;
         
         /// <summary>
+        /// uxImpersonateButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxImpersonateButton;
+        
+        /// <summary>
         /// uxEditUserWindow control.
         /// </summary>
         /// <remarks>

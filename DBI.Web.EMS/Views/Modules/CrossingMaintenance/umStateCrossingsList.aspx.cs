@@ -23,7 +23,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            
         }
         protected void deStateCrossingListGrid(object sender, StoreReadDataEventArgs e)
         {
@@ -58,7 +58,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                 int count;
                 uxStateCrossingListStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                e.Total = count;
             }
+
         }
         protected List<object> GetCrossingData(long CrossingId)
         {
@@ -88,6 +90,23 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 return returnData;
             }
         }
+
+        protected void GetAdditionalData(object sender, DirectEventArgs e)
+        {
+            List<object> data;
+
+
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.CROSSINGS
+
+                        select new { d.SPECIAL_INSTRUCTIONS }).ToList<object>();
+            }
+
+        }
+
+
+
         protected void deExportToPDF(object sender, DirectEventArgs e)
         {
             //Set crossing Id
