@@ -5,7 +5,41 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-
+     <style type="text/css">
+         .rowBodyCls .x-grid-cell-rowbody {
+            border-style: solid;
+            border-width: 0px 0px 1px;
+            border-color: black;
+        }
+        
+       .x-grid-group-title {
+        color: #000000;
+        font: bold 11px/13px tahoma,arial,verdana,sans-serif;
+        }
+       .x-grid-group-hd {
+        border-width: 0 0 1px 0;
+        border-style: solid;
+        border-color: #000000;
+        padding: 10px 4px 4px 4px;
+        background: white;
+        cursor: pointer;
+        }
+          
+    </style>
+     <script type="text/javascript">
+      
+         var GetAdditionalData = function(data, rowIndex, record, orig) {
+             var headerCt = this.view.headerCt,
+             colspan  = headerCt.getColumnCount();
+             return {
+                 rowBody: data.SPECIAL_INSTRUCTIONS,
+                 rowBodyCls: this.rowBodyCls,
+                 rowBodyColspan: colspan,
+                 
+                 
+             };
+         };
+    </script>    
 </head>
 <body>
     <form id="form1" runat="server">
@@ -20,13 +54,13 @@
             Icon="Report"
             Frame="false"
             Resizable="false"
-            Collapsible="false">
+            Collapsible="false" Cls="my.grouped-header" >
 
 
             <Store>
                 <ext:Store ID="uxStateCrossingListStore"
                     runat="server"
-                    GroupField="SUB_DIVISION" OnReadData="deStateCrossingListGrid" RemoteSort="true">
+                    GroupField="SUB_DIVISION" OnReadData="deStateCrossingListGrid" PageSize="5" RemoteSort="true">
                     <Model>
                         <ext:Model ID="Model1" runat="server">
                             <Fields>
@@ -70,28 +104,51 @@
                     <ext:Column ID="Column1" runat="server" Text="MP" Flex="1" DataIndex="MILE_POST" />
                     <ext:Column ID="Column3" runat="server" Text="DOT" Flex="1" DataIndex="DOT" />
                     <ext:Column ID="Column2" runat="server" Text="State" Flex="1" DataIndex="STATE" />
-                    <ext:Column ID="Column11" runat="server" Text="County" Flex="1" DataIndex="COUNTY" />
                     <ext:Column ID="Column4" runat="server" Text="City" Flex="1" DataIndex="CITY" />
                     <ext:Column ID="Column5" runat="server" Text="Street" Flex="1" DataIndex="STREET" />
-                    <ext:Column ID="Column6" runat="server" Text="NE" Flex="1" DataIndex="ROWNE" />
+                     <ext:TemplateColumn ID="TemplateColumn1" runat="server" DataIndex="" MenuDisabled="true" Header="NE / NW / SE / SW" Flex="1">
+                        <Template ID="Template1" runat="server">
+                            <Html>
+						        <tpl for=".">
+							        {ROWNE}  -
+								    {ROWNW}  -
+								    {ROWSE}  -
+                                    {ROWSW} 
+						        </tpl>
+					        </Html>
+                        </Template>
+                    </ext:TemplateColumn>
+                <%--    <ext:Column ID="Column6" runat="server" Text="NE" Flex="1" DataIndex="ROWNE" />
                     <ext:Column ID="Column7" runat="server" Text="NW" Flex="1" DataIndex="ROWNW" />
                     <ext:Column ID="Column9" runat="server" Text="SE" Flex="1" DataIndex="ROWSE" />
-                    <ext:Column ID="Column10" runat="server" Text="SW" Flex="1" DataIndex="ROWSW" />
+                    <ext:Column ID="Column10" runat="server" Text="SW" Flex="1" DataIndex="ROWSW" />--%>
                     <ext:Column ID="Column13" runat="server" Text="Subcontracted" Flex="1" DataIndex="SUB_CONTRACTED" />
                     <ext:Column ID="Column14" runat="server" Text="Latitude" Flex="1" DataIndex="LATITUDE" />
-                    <ext:Column ID="Column15" runat="server" Text="Longitude" Flex="1" DataIndex="LONGITUDE" />
-                    <ext:Column ID="Column8" runat="server" DataIndex="SPECIAL_INSTRUCTIONS" Text="Spec. Instructions" Flex="2" />
+                    <ext:Column ID="Column15"  runat="server" Text="Longitude" Flex="1" DataIndex="LONGITUDE" />
+                   
+                 
                 </Columns>
             </ColumnModel>
+              <Features>
+            <ext:RowBody ID="RowBody1" runat="server" RowBodyCls="rowBodyCls" >
+                
+                <GetAdditionalData Fn="GetAdditionalData"  />
+                   
+                
+            </ext:RowBody>
+        </Features>
             <Features>
                 <ext:Grouping ID="Grouping1"
                     runat="server"
-                    HideGroupedHeader="true" />
+                    HideGroupedHeader="true"  Collapsible="false"  Cls="x-grid-group-title; x-grid-group-hd"
+                    />
+                
             </Features>
-
+       
             <Plugins>
-                <ext:FilterHeader ID="FilterHeader2" runat="server" />
+                <ext:FilterHeader ID="FilterHeader2" runat="server" Remote="true" />
             </Plugins>
+           
             <TopBar>
                 <ext:Toolbar ID="Toolbar2" runat="server">
                     <Items>
@@ -153,6 +210,7 @@
             <BottomBar>
                 <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
             </BottomBar>
+          
         </ext:GridPanel>
 
     </form>
