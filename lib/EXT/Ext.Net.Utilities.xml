@@ -4,31 +4,17 @@
         <name>Ext.Net.Utilities</name>
     </assembly>
     <members>
-        <member name="M:Ext.Net.Utilities.CompressionUtils.Send(System.Byte[],System.String,System.Boolean)">
-            <summary>
-            
-            </summary>
-            <param name="instance"></param>
-            <param name="responseType"></param>
-        </member>
-        <member name="T:Ext.Net.Utilities.HtmlUtils">
+        <member name="T:Ext.Net.Utilities.JsonUtils">
             <summary>
             
             </summary>
         </member>
-        <member name="M:Ext.Net.Utilities.HtmlUtils.StripWhitespaceChars(System.String)">
+        <member name="M:Ext.Net.Utilities.JsonUtils.Enquote(System.String)">
             <summary>
-            
+            Produce a string in double quotes with backslash sequences in all the right places.
             </summary>
-            <param name="html"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.HtmlUtils.StripExtraSpaces(System.String)">
-            <summary>
-            
-            </summary>
-            <param name="html"></param>
-            <returns></returns>
+            <param name="s">A String</param>
+            <returns>A String correctly formatted for insertion in a JSON message.</returns>
         </member>
         <member name="T:Ext.Net.Utilities.ReflectionUtils">
             <summary>
@@ -114,51 +100,6 @@
             <param name="control"></param>
             <param name="typeFullName"></param>
             <returns></returns>
-        </member>
-        <member name="T:Ext.Net.Utilities.Inflatr.Options">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Options.Clone">
-            <summary>
-            
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="P:Ext.Net.Utilities.Inflatr.Options.Wrap">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:Ext.Net.Utilities.Inflatr.Options.Indent">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:Ext.Net.Utilities.Inflatr.Options.Level">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="T:Ext.Net.Utilities.Verify">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Ext.Net.Utilities.Verify.IsNotNull(System.Object,System.String)">
-            <summary>
-            Checks if parameter is not null. Throws ArgumentNullException with name of parameter if null
-            </summary>
-            <param name="parameter">The parameter value to check.</param>
-            <param name="parameterName">The name of the parameter.</param>
-        </member>
-        <member name="M:Ext.Net.Utilities.Verify.IsString(System.Object,System.String)">
-            <summary>
-            Checks if the value is a type of String object. Throws ArgumentException if value is not a String type object.  
-            </summary>
-            <param name="value">The object to check.</param>
-            <param name="paramterName">The name of the parameter.</param>
         </member>
         <member name="T:Ext.Net.Utilities.ObjectUtils">
             <summary>
@@ -262,6 +203,176 @@
             <param name="path"></param>
             <param name="value"></param>
         </member>
+        <member name="T:Ext.Net.Utilities.HtmlUtils">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Ext.Net.Utilities.HtmlUtils.StripWhitespaceChars(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="html"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.HtmlUtils.StripExtraSpaces(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="html"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.CompressionUtils.Send(System.Byte[],System.String,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="instance"></param>
+            <param name="responseType"></param>
+        </member>
+        <member name="T:Ext.Net.Utilities.Inflatr.Base">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Ext.Net.Utilities.Inflatr.Base.index">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Ext.Net.Utilities.Inflatr.Base.input">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Ext.Net.Utilities.Inflatr.Base.c">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Ext.Net.Utilities.Inflatr.Base.r">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Base.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Base.#ctor(Ext.Net.Utilities.Inflatr.Options)">
+            <summary>
+            
+            </summary>
+            <param name="options"></param>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Base.Inflate(System.String)">
+            <summary>
+            Inflate the string
+            </summary>
+            <param name="input">compressed string</param>
+            <returns>Inflated string</returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Base.Escape(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="pattern"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Base.Indent">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Base.LastIndexOf(System.Text.RegularExpressions.Regex)">
+            <summary>
+            
+            </summary>
+            <param name="pattern"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Base.LastIndexOf(System.Text.RegularExpressions.Regex,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="pattern"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Base.After(System.Text.RegularExpressions.Regex,System.Text.RegularExpressions.Regex)">
+            <summary>
+            
+            </summary>
+            <param name="pattern"></param>
+            <param name="start"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Base.Append(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="strings"></param>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Base.Peek(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="pat"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Base.Scan(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="pat"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Base.NextChar">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Base.WhiteSpace">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Base.NewLine">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Base.ScanUntil(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="pat"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Base.Between(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="start"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Base.Between(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="start"></param>
+            <param name="finish"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Ext.Net.Utilities.Inflatr.Base.Options">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:Ext.Net.Utilities.EnumerableUtils">
             <summary>
             
@@ -285,17 +396,138 @@
             <param name="action"></param>
             <returns></returns>
         </member>
-        <member name="T:Ext.Net.Utilities.JsonUtils">
+        <member name="T:Ext.Net.Utilities.Verify">
             <summary>
             
             </summary>
         </member>
-        <member name="M:Ext.Net.Utilities.JsonUtils.Enquote(System.String)">
+        <member name="M:Ext.Net.Utilities.Verify.IsNotNull(System.Object,System.String)">
             <summary>
-            Produce a string in double quotes with backslash sequences in all the right places.
+            Checks if parameter is not null. Throws ArgumentNullException with name of parameter if null
             </summary>
-            <param name="s">A String</param>
-            <returns>A String correctly formatted for insertion in a JSON message.</returns>
+            <param name="parameter">The parameter value to check.</param>
+            <param name="parameterName">The name of the parameter.</param>
+        </member>
+        <member name="M:Ext.Net.Utilities.Verify.IsString(System.Object,System.String)">
+            <summary>
+            Checks if the value is a type of String object. Throws ArgumentException if value is not a String type object.  
+            </summary>
+            <param name="value">The object to check.</param>
+            <param name="paramterName">The name of the parameter.</param>
+        </member>
+        <member name="T:Ext.Net.Utilities.Inflatr.Javascript">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Ext.Net.Utilities.Inflatr.Javascript.KEYWORDS">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Ext.Net.Utilities.Inflatr.Javascript.OPERATORS">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.Inflate(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.Comment">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.String">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.Regex">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.Operator">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.Keyword">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.OpenBlock">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.CloseBlock">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.Comma">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.Parens">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.Eos">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.Eol">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Ext.Net.Utilities.Inflatr.Options">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Ext.Net.Utilities.Inflatr.Options.Clone">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Ext.Net.Utilities.Inflatr.Options.Wrap">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Ext.Net.Utilities.Inflatr.Options.Indent">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Ext.Net.Utilities.Inflatr.Options.Level">
+            <summary>
+            
+            </summary>
         </member>
         <member name="T:Ext.Net.Utilities.StringUtils">
             <summary>
@@ -739,240 +971,8 @@
             <param name="chars"></param>
             <returns></returns>
         </member>
-        <member name="T:Ext.Net.Utilities.Inflatr.Javascript">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="T:Ext.Net.Utilities.Inflatr.Base">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Ext.Net.Utilities.Inflatr.Base.index">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Ext.Net.Utilities.Inflatr.Base.input">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Ext.Net.Utilities.Inflatr.Base.c">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Ext.Net.Utilities.Inflatr.Base.r">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Base.#ctor">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Base.#ctor(Ext.Net.Utilities.Inflatr.Options)">
-            <summary>
-            
-            </summary>
-            <param name="options"></param>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Base.Inflate(System.String)">
-            <summary>
-            Inflate the string
-            </summary>
-            <param name="input">compressed string</param>
-            <returns>Inflated string</returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Base.Escape(System.String)">
-            <summary>
-            
-            </summary>
-            <param name="pattern"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Base.Indent">
-            <summary>
-            
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Base.LastIndexOf(System.Text.RegularExpressions.Regex)">
-            <summary>
-            
-            </summary>
-            <param name="pattern"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Base.LastIndexOf(System.Text.RegularExpressions.Regex,System.String)">
-            <summary>
-            
-            </summary>
-            <param name="pattern"></param>
-            <param name="input"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Base.After(System.Text.RegularExpressions.Regex,System.Text.RegularExpressions.Regex)">
-            <summary>
-            
-            </summary>
-            <param name="pattern"></param>
-            <param name="start"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Base.Append(System.String[])">
-            <summary>
-            
-            </summary>
-            <param name="strings"></param>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Base.Peek(System.String)">
-            <summary>
-            
-            </summary>
-            <param name="pat"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Base.Scan(System.String)">
-            <summary>
-            
-            </summary>
-            <param name="pat"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Base.NextChar">
-            <summary>
-            
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Base.WhiteSpace">
-            <summary>
-            
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Base.NewLine">
-            <summary>
-            
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Base.ScanUntil(System.String)">
-            <summary>
-            
-            </summary>
-            <param name="pat"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Base.Between(System.String)">
-            <summary>
-            
-            </summary>
-            <param name="start"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Base.Between(System.String,System.String)">
-            <summary>
-            
-            </summary>
-            <param name="start"></param>
-            <param name="finish"></param>
-            <returns></returns>
-        </member>
-        <member name="P:Ext.Net.Utilities.Inflatr.Base.Options">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Ext.Net.Utilities.Inflatr.Javascript.KEYWORDS">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Ext.Net.Utilities.Inflatr.Javascript.OPERATORS">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.Inflate(System.String)">
-            <summary>
-            
-            </summary>
-            <param name="input"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.Comment">
-            <summary>
-            
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.String">
-            <summary>
-            
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.Regex">
-            <summary>
-            
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.Operator">
-            <summary>
-            
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.Keyword">
-            <summary>
-            
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.OpenBlock">
-            <summary>
-            
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.CloseBlock">
-            <summary>
-            
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.Comma">
-            <summary>
-            
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.Parens">
-            <summary>
-            
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.Eos">
-            <summary>
-            
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Ext.Net.Utilities.Inflatr.Javascript.Eol">
-            <summary>
-            
-            </summary>
-            <returns></returns>
-        </member>
         <member name="T:Ext.Net.Utilities.DateTimeUtils">
-            <summary>ssssssssssssssssssssssssssss
+            <summary>
             
             </summary>
         </member>
