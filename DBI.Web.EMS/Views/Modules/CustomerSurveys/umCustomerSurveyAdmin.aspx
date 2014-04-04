@@ -5,47 +5,141 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    <script type="text/javascript">
+        var OrgRenderer = function (value) {
+            var r = App.uxAddFormOrgStore.getById(value);
+            if (Ext.isEmpty(r)) {
+                return "";
+            }
+            return r.data.ORG_HIER;
+        };
+    </script>
 </head>
 <body>
     <form id="form1" runat="server">
         <ext:ResourceManager runat="server" IsDynamic="false" />
-        <ext:Viewport ID="uxAdminViewPort" runat="server" Layout="BorderLayout">
+        <ext:Viewport ID="uxAdminViewPort" runat="server" Layout="BorderLayout"> 
             <Items>
-                <ext:GridPanel runat="server" ID="uxFormsGrid" Region="North" Title="Forms">
-                    <Store>
-                        <ext:Store runat="server" ID="uxFormsStore" AutoDataBind="true" OnReadData="deReadForms" RemoteSort="true" PageSize="10">
-                            <Model>
-                                <ext:Model runat="server">
-                                    <Fields>
-                                        <ext:ModelField Name="FORM_ID" Type="Int" />
-                                        <ext:ModelField Name="FORMS_NAME" Type="String" />
-                                        <ext:ModelField Name="ORGANIZATION" Type="String" />
-                                        <ext:ModelField Name="NUM_QUESTIONS" Type="Int" />
-                                    </Fields>
-                                </ext:Model>
-                            </Model>
-                            <Proxy>
-                                <ext:PageProxy />
-                            </Proxy>
-                        </ext:Store>
-                    </Store>
-                    <ColumnModel runat="server">
-                        <Columns>
-                            <ext:Column runat="server" DataIndex="FORMS_NAME" Text="Form Name" />
-                            <ext:Column runat="server" DataIndex="ORGANIZATION" Text="Organization Name" />
-                            <ext:Column runat="server" DataIndex="NUM_QUESTIONS" Text="Number of Questions"  />
-                        </Columns>
-                    </ColumnModel>
-                    <Plugins>
-                        <ext:FilterHeader runat="server" Remote="true" />
-                    </Plugins>
-                    <BottomBar>
-                        <ext:PagingToolbar runat="server" />
-                    </BottomBar>
-                </ext:GridPanel>
+                <ext:Panel runat="server" Layout="HBoxLayout" Region="North">
+                    <Items>
+                        <ext:GridPanel runat="server" ID="uxFormsGrid"  Title="Forms" Flex="1" Layout="FitLayout">
+                            <Store>
+                                <ext:Store runat="server" ID="uxFormsStore" AutoDataBind="true" OnReadData="deReadForms" RemoteSort="true" PageSize="5" >
+                                    <Model>
+                                        <ext:Model runat="server" Name="Form" IDProperty="FORM_ID">
+                                            <Fields>
+                                                <ext:ModelField Name="FORM_ID" Type="Int" />
+                                                <ext:ModelField Name="FORMS_NAME" Type="String" />
+                                                <ext:ModelField Name="ORG_ID" />
+                                                <ext:ModelField Name="NUM_QUESTIONS" Type="Int" DefaultValue="0" />
+                                            </Fields>
+                                        </ext:Model>
+                                    </Model>
+                                    <Proxy>
+                                        <ext:PageProxy />
+                                    </Proxy>
+                                </ext:Store>
+                            </Store>
+                            <ColumnModel runat="server">
+                                <Columns>
+                                    <ext:Column runat="server" DataIndex="FORMS_NAME" Text="Form Name">
+                                        <Editor>
+                                            <ext:TextField runat="server" />
+                                        </Editor>
+                                    </ext:Column>
+                                    <ext:Column runat="server" DataIndex="ORG_ID" Text="Organization Name">
+                                        <Renderer Fn="OrgRenderer" />
+                                        <Editor>
+                                            <ext:ComboBox runat="server" ForceSelection="true" TypeAhead="true" QueryMode="Local" ValueField="ORG_ID" DisplayField="ORG_HIER" Editable="false">
+                                                <Store>
+                                                    <ext:Store runat="server" ID="uxAddFormOrgStore" OnReadData="deReadOrgs" AutoDataBind="true">
+                                                        <Model>
+                                                            <ext:Model runat="server" IDProperty="ORG_ID">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="ORG_ID" />
+                                                                    <ext:ModelField Name="ORG_HIER" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                        <Proxy>
+                                                            <ext:PageProxy />
+                                                        </Proxy>
+                                                    </ext:Store>
+                                                </Store>
+                                            </ext:ComboBox>
+                                        </Editor>
+                                    </ext:Column>
+                                    <ext:Column runat="server" DataIndex="NUM_QUESTIONS" Text="Number of Questions" />
+                                </Columns>
+                            </ColumnModel>
+                            <Plugins>
+                                <ext:FilterHeader runat="server" Remote="true" />
+                                <ext:CellEditing runat="server" />
+                            </Plugins>
+                            <TopBar>
+                                <ext:Toolbar runat="server">
+                                    <Items>
+                                        <ext:Button runat="server" Text="Add Form" ID="uxAddFormButton" Icon="ApplicationAdd">
+                                            <Listeners>
+                                                <Click Handler="#{uxFormsStore}.insert(0, new Form());" />
+                                            </Listeners>
+                                        </ext:Button>
+                                        <ext:Button ID="Button1" runat="server" Text="Save" Icon="Add">
+                                            <DirectEvents>
+                                                <Click OnEvent="deSaveForms" Before="#{uxFormsStore}.isDirty()">
+                                                    <ExtraParams>
+                                                        <ext:Parameter Name="data" Value="#{uxFormsStore}.getChangedData()" Mode="Raw" Encode="true" />
+                                                    </ExtraParams>
+                                                </Click>
+                                            </DirectEvents>
+                                        </ext:Button>
+                                    </Items>
+                                </ext:Toolbar>
+                            </TopBar>
+                            <BottomBar>
+                                <ext:PagingToolbar runat="server" />
+                            </BottomBar>
+                            <Listeners>
+                                <Select Handler="#{uxQuestionsStore}.reload(); #{uxFieldsetsStore}.reload();" />
+                            </Listeners>
+                        </ext:GridPanel>
+                        <ext:GridPanel runat="server" Flex="1" Title="Fieldsets" ID="uxFieldsetsGrid" Layout="FitLayout">
+                            <Store>
+                                <ext:Store runat="server" ID="uxFieldsetsStore" AutoDataBind="true" AutoLoad="false" PageSize="5" RemoteSort="true" OnReadData="deReadFieldsets">
+                                    <Model>
+                                        <ext:Model ID="Model1" runat="server">
+                                            <Fields>
+                                                <ext:ModelField Name="TITLE" Type="String" />
+                                                <ext:ModelField Name="SORT_ORDER" Type="Int" />
+                                            </Fields>
+                                        </ext:Model>
+                                    </Model>
+                                    <Proxy>
+                                        <ext:PageProxy />
+                                    </Proxy>
+                                    <Parameters>
+                                        <ext:StoreParameter Name="FormId" Value="#{uxFormsGrid}.getSelectionModel().getSelection()[0].data.FORM_ID" Mode="Raw" />
+                                    </Parameters>
+                                </ext:Store>
+                            </Store>
+                            <ColumnModel ID="ColumnModel1" runat="server">
+                                <Columns>
+                                    <ext:Column ID="Column1" runat="server" DataIndex="TITLE" Text="Fieldset Name" />
+                                    <ext:Column ID="Column2" runat="server" DataIndex="SORT_ORDER" Text="Sort Order" />
+                                </Columns>
+                            </ColumnModel>
+                            <Plugins>
+                                <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true" />
+                            </Plugins>
+                            <BottomBar>
+                                <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
+                            </BottomBar>
+                        </ext:GridPanel>
+                        </Items>
+                    </ext:Panel>
                 <ext:GridPanel runat="server" ID="uxQuestionsGrid" Region="Center" Title="Form Questions">
                     <Store>
-                        <ext:Store runat="server" ID="uxQuestionsStore" RemoteSort="true" PageSize="10" AutoDataBind="true" OnReadData="deReadQuestions">
+                        <ext:Store runat="server" ID="uxQuestionsStore" RemoteSort="true" PageSize="10" AutoDataBind="true" AutoLoad="false" OnReadData="deReadQuestions">
                             <Model>
                                 <ext:Model runat="server" Name="Question" IDProperty="QUESTION_ID">
                                     <Fields>
@@ -81,12 +175,13 @@
                     <BottomBar>
                         <ext:PagingToolbar runat="server" />
                     </BottomBar>
+                    <Listeners>
+                        <Select Handler="#{uxOptionsStore}.reload()" />
+                    </Listeners>
                 </ext:GridPanel>
-                <ext:Panel runat="server" Layout="HBoxLayout" Region="South">
-                    <Items>
-                        <ext:GridPanel runat="server" Flex="1" Title="Question Options" ID="uxOptionsGrid">
+                        <ext:GridPanel runat="server" Title="Question Options" ID="uxOptionsGrid" Region="South">
                             <Store>
-                                <ext:Store runat="server" ID="uxOptionsStore" AutoDataBind="true" PageSize="10" RemoteSort="true" OnReadData="deReadOptions">
+                                <ext:Store runat="server" ID="uxOptionsStore" AutoDataBind="true" AutoLoad="false" PageSize="5" RemoteSort="true" OnReadData="deReadOptions">
                                     <Model>
                                         <ext:Model runat="server">
                                             <Fields>
@@ -117,40 +212,6 @@
                                 <ext:PagingToolbar runat="server" />
                             </BottomBar>
                         </ext:GridPanel>
-                        <ext:GridPanel runat="server" Flex="1" Title="Fieldsets" ID="uxFieldsetsGrid">
-                            <Store>
-                                <ext:Store runat="server" ID="uxFieldsetsStore" AutoDataBind="true" PageSize="10" RemoteSort="true" OnReadData="deReadFieldsets">
-                                    <Model>
-                                        <ext:Model runat="server">
-                                            <Fields>
-                                                <ext:ModelField Name="TITLE" Type="String" />
-                                                <ext:ModelField Name="SORT_ORDER" Type="Int" />
-                                            </Fields>
-                                        </ext:Model>
-                                    </Model>
-                                    <Proxy>
-                                        <ext:PageProxy />
-                                    </Proxy>
-                                    <Parameters>
-                                        <ext:StoreParameter Name="FormId" Value="#{uxFormsGrid}.getSelectionModel().getSelection()[0].data.FORM_ID" Mode="Raw" />
-                                    </Parameters>
-                                </ext:Store>
-                            </Store>
-                            <ColumnModel runat="server">
-                                <Columns>
-                                    <ext:Column runat="server" DataIndex="TITLE" Text="Fieldset Name" />
-                                    <ext:Column runat="server" DataInde="SORT_ORDER" Text="Sort Order" />
-                                </Columns>
-                            </ColumnModel>
-                            <Plugins>
-                                <ext:FilterHeader runat="server" Remote="true" />
-                            </Plugins>
-                            <BottomBar>
-                                <ext:PagingToolbar runat="server" />
-                            </BottomBar>
-                        </ext:GridPanel>
-                    </Items>
-                </ext:Panel>
             </Items>
         </ext:Viewport>
     </form>
