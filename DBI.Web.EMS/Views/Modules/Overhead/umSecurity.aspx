@@ -5,24 +5,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-    	<script type="text/javascript">
-    	    var getRowClass = function (record, rowIndex, rowParams, store) {
-    	        if (record.data.GL_ASSIGNED == "Y") {
-    	            return "green-row";
-    	        };
-    	    }
-	</script>
+    	
 	<style type="text/css">
-		.red-warning .x-grid-cell, .green-row .x-grid-rowwrap-div {
-			background-color: green !important;
+		.blue-row .x-grid-cell, .blue-row .x-grid-rowwrap-div .blue-row .myBoldClass.x-grid3-row td  {
+            color: #0042A3 !important;
 		}
+
 
 	</style>
 </head>
 <body>
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
     <form id="form1" runat="server">
-
+        <script type="text/javascript">
+            var getRowClass = function (record, rowIndex, rowParams, store) {
+                if (record.data.GL_ASSIGNED == "Active") {
+                    return "blue-row";
+                };
+            }
+        </script>
 
         <ext:Viewport runat="server" ID="uxViewPort" Layout="BorderLayout" IDMode="Explicit" Namespace="App" RenderXType="True">
             <Items>
@@ -31,7 +32,7 @@
                             Title="Hierarchy List"
                             Width="300"
                             padding="5"
-                            RootVisible="false"
+                            RootVisible="true"
                             Lines="true"
                             UseArrows="false"
                             Region="West" >
@@ -39,7 +40,7 @@
                                 <ext:TreeStore runat="server" OnReadData="LoadHierarchyTree"></ext:TreeStore>
                             </Store>
                             <Root>
-                                <ext:Node NodeID="0" Text="Root" />
+                                <ext:Node NodeID="0" Text="All Hierarchies" />
                             </Root>
                             <SelectionModel>
                                 <ext:TreeSelectionModel ID="uxHierarchyTreeSelectionModel" runat="server" Mode="Single"></ext:TreeSelectionModel>
@@ -56,11 +57,6 @@
                                    </Listeners>
                             </ext:TreePanel>
                 <ext:GridPanel ID="uxOrganizationsGrid" runat="server" Flex="1" SimpleSelect="true" Title="Organization Security By Hierarchy" Padding="5" Region="Center">
-                    <View>
-                        <ext:GridView ID="uxOrganizationsGridView" runat="server">
-                            <GetRowClass Fn="getRowClass" />
-                        </ext:GridView>
-                    </View>
                     <Store>
                         <ext:Store runat="server"
                             ID="uxOrganizationSecurityStore"
@@ -68,9 +64,9 @@
                             <Model>
                                         <ext:Model ID="Model2" runat="server" IDProperty="ORGANIZATION_ID">
                                             <Fields>
-                                                <ext:ModelField Name="GL_ASSIGNED" />
+                                                <ext:ModelField Name="GL_ASSIGNED" Type="String" />
                                                 <ext:ModelField Name="ORGANIZATION_ID" />
-                                                <ext:ModelField Name="ORGANIZATION_NAME" />
+                                                <ext:ModelField Name="ORGANIZATION_NAME" Type="String" />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
@@ -81,7 +77,8 @@
                             </Store>
                             <ColumnModel>
                                 <Columns>
-                                    <ext:Column ID="Column1" runat="server" DataIndex="ORGANIZATION_NAME" Text="Organization Name" Flex="1" />
+                                    <ext:Column ID="Column2" runat="server" DataIndex="ORGANIZATION_NAME" Text="Organization Name" Flex="4" />
+                                    <ext:Column ID="Column1" runat="server" DataIndex="GL_ASSIGNED" Text="Organization Status" Flex="1" />
                                 </Columns>
                             </ColumnModel>
                             <Plugins>
@@ -100,7 +97,12 @@
                             </SelectionModel>
                             <BottomBar>
                                 <ext:PagingToolbar ID="uxOrganizationGridPageBar" runat="server" />
-                            </BottomBar>                          
+                            </BottomBar>   
+                    <View>
+                        <ext:GridView ID="uxOrganizationsGridView" StripeRows="true" runat="server">
+                            <GetRowClass Fn="getRowClass" />
+                        </ext:GridView>
+                    </View>                       
                         </ext:GridPanel>
                 <ext:GridPanel ID="uxGlAccountSecurityGrid" runat="server" Flex="1" Title="General Ledger Accounts" Padding="5" Region="South" >
                     <TopBar>
@@ -170,6 +172,10 @@
                     <BottomBar>
                         <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
                     </BottomBar>
+                     <View>
+                        <ext:GridView ID="GridView1" StripeRows="true" runat="server">
+                        </ext:GridView>
+                    </View> 
                 </ext:GridPanel>
             </Items>
         </ext:Viewport>
