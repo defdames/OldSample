@@ -22,7 +22,7 @@ namespace DBI.Web.EMS.Views
     {
         protected void Page_Load(object sender, EventArgs e)
         {   
-            if (!X.IsAjaxRequest)
+            if (!X.IsAjaxRequest && !IsPostBack)
             {
                 // Look for cookie information for language support
                 if (Request.Cookies["UserSettings"] != null)
@@ -61,7 +61,6 @@ namespace DBI.Web.EMS.Views
                 }
             }
             GenerateMenuItems(User as ClaimsPrincipal);
-
         }
 
         /// <summary>
@@ -109,7 +108,6 @@ namespace DBI.Web.EMS.Views
         /// </summary>
         public void GenerateMenuItems(ClaimsPrincipal icp)
         {
-
             long UserId = long.Parse(Authentication.GetClaimValue("UserId", icp));
 
             List<SYS_PERMISSIONS> Permissions = SYS_PERMISSIONS.GetPermissions(UserId);
@@ -180,9 +178,10 @@ namespace DBI.Web.EMS.Views
                                             AppMenuItem.Icon = (MenuItem.ICON == null ? Icon.None : (Icon)Enum.Parse(typeof(Icon), MenuItem.ICON));
                                             AppPanel.Menu.Items.Add(AppMenuItem);
                                         }
-                                        uxWest.Items.Add(AppPanel);
+                                        
                                     }
                                 }
+                                uxWest.Items.Add(AppPanel);
                             }
                         }
                     
