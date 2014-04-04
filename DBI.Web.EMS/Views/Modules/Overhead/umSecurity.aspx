@@ -5,6 +5,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    	<script type="text/javascript">
+    	    var getRowClass = function (record, rowIndex, rowParams, store) {
+    	        if (record.data.GL_ASSIGNED == "Y") {
+    	            return "green-row";
+    	        };
+    	    }
+	</script>
+	<style type="text/css">
+		.red-warning .x-grid-cell, .green-row .x-grid-rowwrap-div {
+			background-color: green !important;
+		}
+
+	</style>
 </head>
 <body>
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
@@ -42,14 +55,20 @@
                                       <Select Handler="#{uxShowGLAccoutsWindow}.disable();"></Select>
                                    </Listeners>
                             </ext:TreePanel>
-                        <ext:GridPanel ID="uxOrganizationsGrid" runat="server" Flex="1" SimpleSelect="true" Title="Organization Security By Hierarchy" Padding="5" Region="Center">
-                            <Store>
-                                <ext:Store runat="server"
-                                    ID="uxOrganizationSecurityStore"
-                                     AutoDataBind="true" RemoteSort="true" PageSize="10" OnReadData="deReadOrganizationsByHierarchy" AutoLoad="false">
-                                    <Model>
+                <ext:GridPanel ID="uxOrganizationsGrid" runat="server" Flex="1" SimpleSelect="true" Title="Organization Security By Hierarchy" Padding="5" Region="Center">
+                    <View>
+                        <ext:GridView ID="uxOrganizationsGridView" runat="server">
+                            <GetRowClass Fn="getRowClass" />
+                        </ext:GridView>
+                    </View>
+                    <Store>
+                        <ext:Store runat="server"
+                            ID="uxOrganizationSecurityStore"
+                            AutoDataBind="true" RemoteSort="true" PageSize="10" OnReadData="deReadOrganizationsByHierarchy" AutoLoad="false">
+                            <Model>
                                         <ext:Model ID="Model2" runat="server" IDProperty="ORGANIZATION_ID">
                                             <Fields>
+                                                <ext:ModelField Name="GL_ASSIGNED" />
                                                 <ext:ModelField Name="ORGANIZATION_ID" />
                                                 <ext:ModelField Name="ORGANIZATION_NAME" />
                                             </Fields>
