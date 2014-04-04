@@ -40,48 +40,48 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         protected global::Ext.Net.Viewport ViewPort1;
         
         /// <summary>
-        /// txtTime_In control.
+        /// uxTime_InTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField txtTime_In;
+        protected global::Ext.Net.TextField uxTime_InTextBox;
         
         /// <summary>
-        /// txtTime_Out control.
+        /// uxTime_OutTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField txtTime_Out;
+        protected global::Ext.Net.TextField uxTime_OutTextBox;
         
         /// <summary>
-        /// txtUser_Name control.
+        /// uxUser_NameTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField txtUser_Name;
+        protected global::Ext.Net.TextField uxUser_NameTextBox;
         
         /// <summary>
-        /// btnTimeIn control.
+        /// uxTimeInButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button btnTimeIn;
+        protected global::Ext.Net.Button uxTimeInButton;
         
         /// <summary>
-        /// btnTimeOut control.
+        /// uxTimeOutButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button btnTimeOut;
+        protected global::Ext.Net.Button uxTimeOutButton;
     }
 }
