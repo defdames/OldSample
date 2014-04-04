@@ -28,7 +28,6 @@
                                 <ext:ModelField Name="CONTACT_ID" />
                                 <ext:ModelField Name="CROSSING_NUMBER" Type="String" />
                                 <ext:ModelField Name="PROJECT_ID" />
-                                <ext:ModelField Name="LONG_NAME" />
                                 <ext:ModelField Name="SERVICE_UNIT" />
                                 <ext:ModelField Name="SUB_DIVISION" />
                                 <ext:ModelField Name="CONTACT_NAME" />
@@ -45,7 +44,6 @@
                 <Columns>
 
                     <ext:Column ID="uxMainCrossing" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing #" Flex="1" />
-                    <ext:Column ID="Column8" runat="server" DataIndex="LONG_NAME" Text="Project Name" Flex="2" />
                     <ext:Column ID="Column12" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
                     <ext:Column ID="uxSubDiv" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
                     <ext:Column ID="uxMTM" runat="server" DataIndex="CONTACT_NAME" Text="Manager" Flex="1" />
@@ -105,7 +103,7 @@
                     <Model>
                         <ext:Model ID="Model1" runat="server">
                             <Fields>
-                                <%--        <ext:ModelField Name="COMPLETED_DATE" Type="Date" />--%>
+                               
 
                                 <ext:ModelField Name="CROSSING_ID" />
                                 <ext:ModelField Name="SUPPLEMENTAL_ID" />
@@ -129,7 +127,7 @@
                     <ext:Column ID="Column1" runat="server" DataIndex="SQUARE_FEET" Text="Square Feet" Flex="1" />
                     <ext:Column ID="Column13" runat="server" DataIndex="RECURRING" Text="Recurring" Flex="1" />
                     <ext:Column ID="Column5" runat="server" DataIndex="REMARKS" Text="Remarks" Flex="3" />
-                    <%--    <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="COMPLETED_DATE" Text="Completed Date" Flex="1" Format="MM/dd/yyyy" />--%>
+                   
                 </Columns>
             </ColumnModel>
             <SelectionModel>
@@ -150,13 +148,13 @@
             Layout="FormLayout"
             Hidden="true"
             Title="Add New Supplemental"
-            Width="800">
+            Width="800" Modal="true">
             <Items>
                 <ext:FormPanel ID="uxAddSupplementalForm" runat="server" Layout="FormLayout">
                     <Items>
                         <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                             <Items>
-                                <ext:DateField ID="uxAddApprovedDateField" runat="server" FieldLabel="Approved Date" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false"/>
+                                <ext:DateField ID="uxAddApprovedDateField" runat="server" FieldLabel="Approved Date" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" Editable="false"/>
 
                                 <ext:ComboBox ID="uxAddServiceType"
                                     runat="server"
@@ -165,7 +163,7 @@
                                     DisplayField="type"
                                     ValueField="type"
                                     QueryMode="Local"
-                                    TypeAhead="true" TabIndex="2" Width="300" AllowBlank="false">
+                                    TypeAhead="true" TabIndex="2" Width="300" AllowBlank="false" ForceSelection="true">
                                     <Store>
                                         <ext:Store runat="server"
                                             ID="uxAddServiceTypeStore" AutoDataBind="true">
@@ -199,7 +197,7 @@
                                     DisplayField="NAME"
                                     ValueField="PROJECT_ID"
                                     QueryMode="Local"
-                                    TypeAhead="true" Width="300" AllowBlank="false">
+                                    TypeAhead="true" Width="300" AllowBlank="false" ForceSelection="true">
                                     <Store>
                                         <ext:Store runat="server"
                                             ID="uxAddTruckStore" AutoDataBind="true">

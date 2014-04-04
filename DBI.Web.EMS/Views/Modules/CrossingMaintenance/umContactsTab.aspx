@@ -131,16 +131,16 @@
             
             <ext:FormPanel runat="server" ID="uxContactFormPanel" Layout="FormLayout">
                 <Items>
-                    <ext:TextField ID="uxContactManagerName" runat="server" FieldLabel="Manager Name" AnchorHorizontal="100%" LabelAlign="Right"  />
-                    <ext:TextField ID="uxContactRR" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right"  />
-                    <ext:TextField ID="uxContactAddress1" runat="server" FieldLabel="Address 1" AnchorHorizontal="100%" LabelAlign="Right"  />
-                    <ext:TextField ID="uxContactAddress2" runat="server" FieldLabel="Address 2" AnchorHorizontal="100%" LabelAlign="Right" />
-                    <ext:TextField ID="uxContactCity" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />
-                    <ext:TextField ID="uxContactState" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />
+                    <ext:TextField ID="uxContactManagerName" runat="server" FieldLabel="Manager Name" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
+                    <ext:TextField ID="uxContactRR" runat="server" FieldLabel="RR" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true"  />
+                    <ext:TextField ID="uxContactAddress1" runat="server" FieldLabel="Address 1" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true"  />
+                    <ext:TextField ID="uxContactAddress2" runat="server" FieldLabel="Address 2" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
+                    <ext:TextField ID="uxContactCity" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
+                    <ext:TextField ID="uxContactState" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
 
-                    <ext:TextField ID="uxContactZip" runat="server" FieldLabel="Zip" AnchorHorizontal="100%" LabelAlign="Right" />
-                    <ext:TextField ID="uxContactCell" runat="server" FieldLabel="Cell #" AnchorHorizontal="100%" LabelAlign="Right" />
-                    <ext:TextField ID="uxContactOffice" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right" />
+                    <ext:TextField ID="uxContactZip" runat="server" FieldLabel="Zip" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
+                    <ext:TextField ID="uxContactCell" runat="server" FieldLabel="Cell #" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
+                    <ext:TextField ID="uxContactOffice" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
                 </Items>
             </ext:FormPanel>
             <%-------------------------------------Hidden Windows-------------------------------------------------%>
@@ -149,7 +149,7 @@
                 Layout="FormLayout"
                 Hidden="true"
                 Title="Add New Contact"
-                Width="250" Closable="false">
+                Width="250" Closable="false" Modal="true">
                 <Items>
                     <ext:FormPanel runat="server" ID="uxAddContactForm" Layout="FormLayout">
                         <Items>
@@ -159,7 +159,7 @@
                                                 DisplayField="project"
                                                 ValueField="project"
                                                 QueryMode="Local"
-                                                TypeAhead="true" TabIndex="2" AllowBlank="false">
+                                                TypeAhead="true" AllowBlank="false" ForceSelection="true">
                                                 <Store>
                                                     <ext:Store runat="server"
                                                         ID="uxAddContactRRStore">
@@ -186,7 +186,7 @@
                                 ValueField="name"
                                 QueryMode="Local"
                                 TypeAhead="true"
-                                AllowBlank="false">
+                                AllowBlank="false" ForceSelection="true">
                                 <Store>
                                     <ext:Store ID="uxAddStateList" runat="server" AutoDataBind="true">
                                         <Model>
@@ -232,7 +232,7 @@
                 Layout="FormLayout"
                 Hidden="true"
                 Title="Edit Existing Contact"
-                Width="250" Closable="false">
+                Width="250" Closable="false" Modal="true">
                 <Items>
                     <ext:FormPanel ID="uxEditContactForm" runat="server" Layout="FormLayout">
                         <Items>
@@ -242,7 +242,7 @@
                                                 DisplayField="project"
                                                 ValueField="project"
                                                 QueryMode="Local"
-                                                TypeAhead="true" TabIndex="2" AllowBlank="false">
+                                                TypeAhead="true" AllowBlank="false" ForceSelection="true">
                                                 <Store>
                                                     <ext:Store runat="server"
                                                         ID="uxEditContactRRStore">
@@ -262,7 +262,7 @@
                             <ext:TextField ID="uxEditContactAdd1" runat="server" FieldLabel="Address 1" AnchorHorizontal="100%" LabelAlign="Right" />
                             <ext:TextField ID="uxEditContactAdd2" runat="server" FieldLabel="Address 2" AnchorHorizontal="100%" LabelAlign="Right" />
                             <ext:TextField ID="uxEditContactCity" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />
-                            <%-- <ext:TextField ID="uxEditContactStateTextField" runat="server" FieldLabel="State" AnchorHorizontal="100%" LabelAlign="Right" />--%>
+                           
                             <ext:ComboBox runat="server"
                                 ID="uxEditContactState"
                                 FieldLabel="State"
@@ -271,7 +271,7 @@
                                 ValueField="name"
                                 QueryMode="Local"
                                 TypeAhead="true"
-                                AllowBlank="false">
+                                AllowBlank="false" ForceSelection="true">
                                 <Store>
                                     <ext:Store ID="uxEditStateList" runat="server" AutoDataBind="true">
                                         <Model>
@@ -320,7 +320,7 @@
                 ID="uxAssignCrossingWindow"
                 Layout="FormLayout"
                 Hidden="true"
-                Title="Assign Crossing to Manager" Width="950">
+                Title="Assign Crossing to Manager" Width="950" Modal="true">
                 <Items>
                     <ext:Panel ID="uxAssignContactPanel" runat="server" Width="940" Height="330">
                         <LayoutConfig>
@@ -369,10 +369,15 @@
                                 <BottomBar>
                                     <ext:PagingToolbar ID="PagingToolbar2" runat="server" />
                                 </BottomBar>
+                                  <Listeners>
+				                    <Select Handler="#{uxAssignCrossingGrid}.enable(); " /> 
+                                    <Deselect Handler="#{uxAssignCrossingGrid}.disable(); #{uxApplyButtonCON}.disable()"/>
+                                     
+			                    </Listeners>
 
                             </ext:GridPanel>
                             <%-----------------------------------------------------------------------------------------------------------------------%>
-                            <ext:GridPanel ID="uxAssignCrossingGrid" runat="server" Flex="1" Title="Crossings" Margins="0 2 0 0">
+                            <ext:GridPanel ID="uxAssignCrossingGrid" runat="server" Flex="1" Title="Crossings" Margins="0 2 0 0" Disabled="true">
                                 <Store>
                                     <ext:Store runat="server"
                                         ID="uxAssignContactCrossingStore"
@@ -412,6 +417,10 @@
                                 <BottomBar>
                                     <ext:PagingToolbar ID="PagingToolbar4" runat="server" />
                                 </BottomBar>
+                                  <Listeners>
+				                    <Select Handler="#{uxApplyButtonCON}.enable();" /> 
+                                    
+			                      </Listeners>
                             </ext:GridPanel>
 
                         </Items>
@@ -420,7 +429,7 @@
                         <Items>
                             <ext:ToolbarFill ID="ToolbarFill2" runat="server" />
 
-                            <ext:Button ID="uxApplyButtonCON" runat="server" Text="Associate" Icon="ArrowJoin">
+                            <ext:Button ID="uxApplyButtonCON" runat="server" Text="Associate" Icon="ArrowJoin" Disabled="true">
                                 <DirectEvents>
                                     <Click OnEvent="deAssignCrossingtoContact">
                                         <Confirmation ConfirmRequest="true" Title="Associate?" Message="Are you sure you want to associate the selected crossings with the selected contact?" />
@@ -449,11 +458,11 @@
                 Layout="FormLayout"
                 Hidden="true"
                 Title="Update Crossings To New Manager"
-                Width="550" Height="120" Closable="false">
+                Width="550" Height="120" Closable="false" Modal="true">
                 <Items>
                     <ext:FormPanel ID="uxUpdateContactForm" runat="server" Layout="FormLayout">
                         <Items>
-                            <ext:DropDownField ID="uxUpdateContactCurrentManager" runat="server" FieldLabel="Current Manager" AnchorHorizontal="100%" LabelAlign="Right" Mode="ValueText" AllowBlank="false">
+                            <ext:DropDownField ID="uxUpdateContactCurrentManager" runat="server" FieldLabel="Current Manager" AnchorHorizontal="100%" LabelAlign="Right" Mode="ValueText" AllowBlank="false" Editable="false">
                                 <Component>
                                     <ext:GridPanel runat="server"
                                         ID="uxAddCurrentManager"
@@ -503,7 +512,7 @@
                                     </ext:GridPanel>
                                 </Component>
                             </ext:DropDownField>
-                            <ext:DropDownField ID="uxUpdateContactNewManager" runat="server" FieldLabel="New Manager" AnchorHorizontal="100%" LabelAlign="Right" Mode="ValueText" AllowBlank="false">
+                            <ext:DropDownField ID="uxUpdateContactNewManager" runat="server" FieldLabel="New Manager" AnchorHorizontal="100%" LabelAlign="Right" Mode="ValueText" AllowBlank="false" Editable="false">
                                 <Component>
                                     <ext:GridPanel runat="server"
                                         ID="uxNewManagerMainGrid"
@@ -586,7 +595,7 @@
                 Hidden="true"
                 BodyPadding="5"
                 BodyBorder="0"
-                Title="Drag and Drop Crossing That Are To Be Updated">
+                Title="Drag and Drop Crossing That Are To Be Updated" Modal="true">
                 <Items>
                     <ext:Panel ID="uxTransferCrossingPanel" runat="server" Width="700" Height="553">
                         <LayoutConfig>

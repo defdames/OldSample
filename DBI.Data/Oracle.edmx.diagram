@@ -99,12 +99,10 @@
         <EntityTypeShape EntityType="OracleModel.XXDBI_PAYROLL_AUDIT_V" Width="1.5" PointX="18.375" PointY="4" />
         <EntityTypeShape EntityType="OracleModel.ORG_HIER_V" Width="1.5" PointX="13.75" PointY="18" />
         <EntityTypeShape EntityType="OracleModel.HIERARCHY_ID_V" Width="1.5" PointX="15.875" PointY="17.125" />
-        <EntityTypeShape EntityType="OracleModel.GL_ACCOUNTS_V" Width="1.5" PointX="18.125" PointY="17.125" />
-        <EntityTypeShape EntityType="OracleModel.OVERHEAD_ORG" Width="1.5" PointX="0.5" PointY="42.375" />
-        <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="1.5" PointX="3.75" PointY="42.375" />
-        <AssociationConnector Association="OracleModel.FK_GL_ORG_ID" />
         <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="5.5" PointY="5.75" />
         <EntityTypeShape EntityType="OracleModel.SYS_USER_ORGS" Width="1.5" PointX="13.375" PointY="0.5" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="1.5" PointX="17.875" PointY="23" />
+        <EntityTypeShape EntityType="OracleModel.GL_ACCOUNTS_V" Width="1.5" PointX="16.5" PointY="9.625" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

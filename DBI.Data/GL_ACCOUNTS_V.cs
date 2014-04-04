@@ -14,7 +14,7 @@ namespace DBI.Data
     
     public partial class GL_ACCOUNTS_V
     {
-        public long CODE_COMBINATION_V { get; set; }
+        public long CODE_COMBINATION_ID { get; set; }
         public long CHART_OF_ACCOUNTS_ID { get; set; }
         public string ENABLED_FLAG { get; set; }
         public string ACCOUNT_TYPE { get; set; }

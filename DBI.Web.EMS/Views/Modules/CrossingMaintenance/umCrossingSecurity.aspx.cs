@@ -32,57 +32,103 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             uxCurrentSecurityProjectStore.DataBind();
             }
         }
-        protected void deSecurityCrossingGridData(object sender, StoreReadDataEventArgs e)
+     
+        protected void deSecurityCrossingGridData(object sender, DirectEventArgs e)
         {
-
+              long ProjectId = long.Parse(e.ExtraParams["ProjectId"]);
+              List<object> data;
             using (Entities _context = new Entities())
             {
-                List<object> data;
-
-                //Get List of all new headers
-
                 data = (from d in _context.CROSSINGS
-                        join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID into pn
-                        from projects in pn.DefaultIfEmpty()
-                        select new { d.CROSSING_ID, d.CROSSING_NUMBER, d.RAILROAD, d.SERVICE_UNIT, d.PROJECT_ID, d.SUB_DIVISION, projects.LONG_NAME}).ToList<object>();
-                
+                        where !(from r in _context.CROSSING_RELATIONSHIP 
+                                where d.CROSSING_ID == r.CROSSING_ID && r.PROJECT_ID == ProjectId
+                                 select r.CROSSING_ID)
+                                 .Contains(d.CROSSING_ID)
+                     select new { d.CROSSING_ID, d.CROSSING_NUMBER, d.RAILROAD, d.SERVICE_UNIT, d.PROJECT_ID, d.SUB_DIVISION }).ToList<object>();
+            uxCurrentSecurityCrossingStore.DataSource = data;
+            uxCurrentSecurityCrossingStore.DataBind();
 
-                int count;
-                uxCurrentSecurityCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+              
+            }
+        }
+        protected void GetCrossingsGridData(object sender, DirectEventArgs e)
+        {
+            
+            using (Entities _context = new Entities())
+            {
+                long ProjectId = long.Parse(e.ExtraParams["ProjectId"]);
+                var data = (from r in _context.CROSSING_RELATIONSHIP
+                            join d in _context.CROSSINGS on r.CROSSING_ID equals d.CROSSING_ID
+                            where r.PROJECT_ID == ProjectId 
+
+                            select new { r.CROSSING_ID, r.PROJECT_ID, d.CROSSING_NUMBER, d.RAILROAD, d.SERVICE_UNIT, d.SUB_DIVISION }).ToList<object>();
+
+
+                uxAssignedCrossingGrid.Store.Primary.DataSource = data;
+                uxAssignedCrossingGrid.Store.Primary.DataBind();
+
+
             }
         }
         protected void deAssociateCrossings(object sender, DirectEventArgs e)
+        {       
+            long ProjectId = long.Parse(e.ExtraParams["projectId"]);
+
+            string json = (e.ExtraParams["selectedCrossings"]);
+            List<CrossingDetails> crossingList = JSON.Deserialize<List<CrossingDetails>>(json);
+            foreach (CrossingDetails crossing in crossingList)
             {
-                CROSSING data;
-
-                //do type conversions
-
-                RowSelectionModel project = uxProjectGrid.GetSelectionModel() as RowSelectionModel;
-                long ProjectId = long.Parse(e.ExtraParams["projectId"]);
-                             
-                string json = (e.ExtraParams["selectedCrossings"]);
-                List<ProjectDetails> projectList = JSON.Deserialize<List<ProjectDetails>>(json);
-                foreach (ProjectDetails crossing in projectList)
+                 CROSSING_RELATIONSHIP CrossingToAdd = new CROSSING_RELATIONSHIP
+                 {
+                  CROSSING_ID = crossing.CROSSING_ID,
+                  PROJECT_ID = ProjectId,
+                 };
+            
+                GenericData.Insert<CROSSING_RELATIONSHIP>(CrossingToAdd);
+            }
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Crossing to Project Updated Successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
                 {
-                    //Get record to be edited
-                    using (Entities _context = new Entities())
-                    {
-                        data = (from d in _context.CROSSINGS
-                                where d.CROSSING_ID == crossing.CROSSING_ID
-                                select d).Single();
-                        data.PROJECT_ID = ProjectId;
-                      
-                    }
-                    GenericData.Update<CROSSING>(data);
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
                 }
-             
-                uxCurrentSecurityCrossingStore.Reload();
+            });
+            uxAssignCrossingWindow.Close();
+            uxCurrentSecurityProjectStore.Reload();
+            uxCurrentSecurityCrossingStore.Reload();
+            uxAssignedCrossingStore.Reload();
+          
+           
+        }
+     
+        protected void deRemoveCrossingFromProject(object sender, DirectEventArgs e)
+        {
+
+           
+               long ProjectId = long.Parse(e.ExtraParams["projectId"]);
+            string json = e.ExtraParams["CrossingsAssigned"];
+
+            List<CrossingDetails> CrossingList = JSON.Deserialize<List<CrossingDetails>>(json);
+            foreach (CrossingDetails crossing in CrossingList)
+            {
+                CROSSING_RELATIONSHIP Delete;
+                        using (Entities _context = new Entities())
+                        {
+                            Delete = _context.CROSSING_RELATIONSHIP.Where(x => (x.CROSSING_ID == crossing.CROSSING_ID) && x.PROJECT_ID == ProjectId).First();
+                        }
+                        GenericData.Delete<CROSSING_RELATIONSHIP>(Delete);
+                    }
                 uxCurrentSecurityProjectStore.Reload();
-                
+                uxAssignedCrossingStore.Reload();
+
                 Notification.Show(new NotificationConfig()
                 {
                     Title = "Success",
-                    Html = "Crossing to Project Updated Successfully",
+                    Html = "Crossing Removed From Project Successfully",
                     HideDelay = 1000,
                     AlignCfg = new NotificationAlignConfig
                     {
@@ -91,19 +137,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     }
                 });
             }
-       //protected void ButtonValidityCheck(object sender, DirectEventArgs e)
-            //{
-                
-            //    if ()
-            //    {
-            //        uxApplyButtonCS.Enable();
-            //    }
-            //    else
-            //    {
-            //        uxApplyButtonCS.Disabled();
-            //    }
-            //}
-        public class ProjectDetails
+        }
+        public class CrossingDetails
             {
                 public long CROSSING_ID { get; set; }
                 public string CROSSING_NUMBER { get; set; }              
@@ -111,6 +146,25 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 public string SUB_DIVISION { get; set; }
                 public string CONTACT_ID { get; set; }
             }
+         public class ProjectDetails
+            {
+                public long PROJECT_ID { get; set; }
+                public string SEGMENT1 { get; set; }              
+                public string ORANGANIZATION_NAME { get; set; }
+                public string LONG_NAME { get; set; }
+                public string CROSSING_ID { get; set; }
+            }
+         public class GetSelectedCrossings
+         {
+             public long? PROJECT_ID { get; set; }
+             public long? CROSSING_ID { get; set; }
+             public decimal RELATIONSHIP_ID { get; set; }
+             public string CROSSING_NUMBER { get; set; }
+             public string SERVICE_UNIT { get; set; }
+             public string SUB_DIVISION { get; set; }
+             public long? CONTACT_ID { get; set; }
+         }
+
     }
          
-}
+
