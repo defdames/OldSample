@@ -552,9 +552,10 @@
                         </Items>
 
                         <Buttons>
-                            <ext:Button runat="server" ID="deAddCrossing" Text="Add" Icon="Add">
+                            <ext:Button runat="server" ID="deAddCrossing" Text="Add" Icon="Add" Disabled="true">
                                 <DirectEvents>
                                     <Click OnEvent="deAddCrossings" />
+                                     
                                 </DirectEvents>
                             </ext:Button>
                             <ext:Button runat="server" ID="CancelCrossing" Text="Cancel" Icon="Delete">
@@ -776,7 +777,7 @@
                                 <Items>
                                     <ext:FieldContainer ID="FieldContainer30" runat="server" Layout="HBoxLayout">
                                         <Items>
-                                            <ext:DropDownField ID="uxEditManagerCI" runat="server" FieldLabel="Manager" AnchorHorizontal="100%" LabelAlign="Right" Width="475" Mode="ValueText" TabIndex="25" Editable="false">
+                                            <ext:DropDownField ID="uxEditManagerCI" runat="server" FieldLabel="Manager" AnchorHorizontal="100%" LabelAlign="Right" Width="475" Mode="ValueText" TabIndex="25" >
                                                 <Component>
                                                     <ext:GridPanel runat="server"
                                                         ID="uxEditManager"

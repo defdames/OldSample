@@ -27,7 +27,7 @@
                                     <ext:ModelField Name="CONTACT_ID" />
                                     <ext:ModelField Name="CROSSING_NUMBER" Type="String" />
                                     <ext:ModelField Name="PROJECT_ID" />
-                                    <ext:ModelField Name="LONG_NAME" />
+                                   
                                     <ext:ModelField Name="RAILROAD" />
                                     <ext:ModelField Name="SERVICE_UNIT" />
                                     <ext:ModelField Name="SUB_DIVISION" />
@@ -46,7 +46,6 @@
                     <Columns>
 
                         <ext:Column ID="uxMainCrossingNum" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing #" Flex="1" />
-                        <ext:Column ID="Column8" runat="server" DataIndex="LONG_NAME" Text="Project Name" Flex="3" />
                         <ext:Column ID="Column1" runat="server" DataIndex="RAILROAD" Text="RailRoad" Flex="1" />
                         <ext:Column ID="Column12" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
                         <ext:Column ID="uxSubDiv" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
