@@ -22,18 +22,18 @@
                             Width="350">
 
                             <Items>
-                                <ext:TextField Id="txtTime_In" runat="server" FieldLabel="Time In" readonly="true"/>
-                                <ext:TextField ID="txtTime_Out" runat="server" FieldLabel="Time Out" readonly="true"/>
-                                <ext:TextField ID="txtUser_Name" runat="server" FieldLabel="Name"   readonly="true" />
+                                <ext:TextField Id="uxTime_InTextBox" runat="server" FieldLabel="Time In" readonly="true"/>
+                                <ext:TextField ID="uxTime_OutTextBox" runat="server" FieldLabel="Time Out" readonly="true"/>
+                                <ext:TextField ID="uxUser_NameTextBox" runat="server" FieldLabel="Name"   readonly="true" />
                             </Items>
                             <Buttons>
-                                <ext:Button runat="server" ID="btnTimeIn" Text="Time In">
+                                <ext:Button runat="server" ID="uxTimeInButton" Text="Time In">
                                     <DirectEvents>
                                         <Click OnEvent="deSetTimeIn"/>
                                     </DirectEvents>
                                 </ext:Button>
 
-                                <ext:Button runat="server" ID="btnTimeOut" Text="Time Out">
+                                <ext:Button runat="server" ID="uxTimeOutButton" Text="Time Out">
                                     <DirectEvents>
                                         <Click OnEvent="deSetTimeOut"/>
                                     </DirectEvents>
