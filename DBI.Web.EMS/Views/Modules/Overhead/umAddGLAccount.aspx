@@ -276,6 +276,10 @@
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
+                                         <View>
+                        <ext:GridView ID="GridView1" StripeRows="true" runat="server">
+                        </ext:GridView>
+                    </View> 
                 </ext:GridPanel>
             </Items>
         </ext:Viewport>

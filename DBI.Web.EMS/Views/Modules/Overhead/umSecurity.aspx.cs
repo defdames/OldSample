@@ -40,6 +40,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             uxOrganizationSecurityStore.RemoveAll();
             uxOrganizationsGridFilter.ClearFilter();
             uxOrganizationSecurityStore.Reload();
+
+            uxGlAccountSecurityStore.RemoveAll();
+            uxGlAccountSecurityGridFilter.ClearFilter();
+            uxGlAccountSecurityGrid.Refresh();
         }
 
         protected void deReadOrganizationsByHierarchy(object sender, StoreReadDataEventArgs e)
@@ -51,11 +55,37 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                 using (Entities _context = new Entities())
                 {
-                    var data = (from ov in _context.ORG_HIER_V.Where(c => c.HIERARCHY_ID == HierarchyID)
-                                select new ORGANIZATION_VIEW { ORGANIZATION_ID = ov.ORG_ID_CHILD, ORGANIZATION_NAME = ov.ORG_HIER }).ToList();
-                    int count;
-                    uxOrganizationSecurityStore.DataSource = GenericData.EnumerableFilterHeader<ORGANIZATION_VIEW>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-                    e.Total = count;
+
+                    if (HierarchyID == 0)
+                    {
+                        var data = (from ov in _context.ORG_HIER_V
+                                    select new ORGANIZATION_VIEW { ORGANIZATION_ID = ov.ORG_ID_CHILD, ORGANIZATION_NAME = ov.ORG_HIER }).OrderBy(o => o.ORGANIZATION_NAME).ToList();
+
+                        foreach (ORGANIZATION_VIEW view in data)
+                        {
+                            view.GL_ASSIGNED = (_context.OVERHEAD_GL_ACCOUNT.Where(a => a.OVERHEAD_ORG_ID == view.ORGANIZATION_ID).Count() > 0 ? "Active" : "No Accounts Found");
+                        }
+
+                        int count;
+                        uxOrganizationSecurityStore.DataSource = GenericData.EnumerableFilterHeader<ORGANIZATION_VIEW>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                        e.Total = count;
+                    }
+                    else
+                    {
+                        var data = (from ov in _context.ORG_HIER_V.Where(c => c.HIERARCHY_ID == HierarchyID)
+                                    select new ORGANIZATION_VIEW { ORGANIZATION_ID = ov.ORG_ID_CHILD, ORGANIZATION_NAME = ov.ORG_HIER }).ToList();
+
+                        foreach (ORGANIZATION_VIEW view in data)
+                        {
+                            view.GL_ASSIGNED = (_context.OVERHEAD_GL_ACCOUNT.Where(a => a.OVERHEAD_ORG_ID == view.ORGANIZATION_ID).Count() > 0 ? "Active" : "No Accounts Found");
+                        }
+
+                        int count;
+                        uxOrganizationSecurityStore.DataSource = GenericData.EnumerableFilterHeader<ORGANIZATION_VIEW>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                        e.Total = count;
+                    }
+
+                   
                 }
         }
 
@@ -159,6 +189,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         public class ORGANIZATION_VIEW
         {
+            public string GL_ASSIGNED { get; set; }
             public long ORGANIZATION_ID { get; set; }
             public string ORGANIZATION_NAME { get; set; }
         }
