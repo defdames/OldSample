@@ -829,7 +829,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                     //Second row
                     Cells = new PdfPCell[]{
-                    new PdfPCell(new Phrase("License Number", HeadFootTitleFont)),
+                    new PdfPCell(new Phrase("Business License #", HeadFootTitleFont)),
                     new PdfPCell(new Phrase(Data.LICENSE, HeadFootCellFont)),
                     new PdfPCell(new Phrase("State", HeadFootTitleFont)),
                     new PdfPCell(new Phrase(Data.STATE, HeadFootCellFont))};
@@ -950,7 +950,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase("Truck/Equipment \n Name", HeaderFont)),
                         new PdfPCell(new Phrase("Operator(s)", HeaderFont)),
-                        new PdfPCell(new Phrase("Business License", HeaderFont)),
+                        new PdfPCell(new Phrase("License #", HeaderFont)),
                         new PdfPCell(new Phrase("Time\nIn", HeaderFont)),
                         new PdfPCell(new Phrase("Time\nOut", HeaderFont)),
                         new PdfPCell(new Phrase("Total\nHours", HeaderFont)),
