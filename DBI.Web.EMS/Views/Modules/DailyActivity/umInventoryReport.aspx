@@ -27,6 +27,7 @@
                                         <ext:ModelField Name="ItemDescription" />
                                         <ext:ModelField Name="Total" />
                                         <ext:ModelField Name="Units" />
+                                        <ext:ModelField Name="Inventory" />
                                         <ext:ModelField Name="SubInventory" />
                                         <ext:ModelField Name="State" />
                                     </Fields>
@@ -49,6 +50,7 @@
                             <ext:Column runat="server" Text="Item Description" DataIndex="ItemDescription" />
                             <ext:Column runat="server" Text="UOM" DataIndex="Units" />
                             <ext:Column runat="server" Text="Quantity" DataIndex="Total" />
+                            <ext:Column runat="server" Text="Inventory" DataIndex="Inventory" />
                             <ext:Column runat="server" Text="Sub Inventory" DataIndex="SubInventory" />
                             <ext:Column runat="server" Text="State" DataIndex="State" />
                         </Columns>
