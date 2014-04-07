@@ -122,7 +122,17 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
             foreach (CustomerSurveyForms UpdatedForm in data.Updated)
             {
+                CUSTOMER_SURVEY_FORMS ToBeUpdated;
+                using (Entities _context = new Entities())
+                {
+                    ToBeUpdated = _context.CUSTOMER_SURVEY_FORMS.Where(x => x.FORM_ID == UpdatedForm.FORM_ID).Single();
+                }
+                ToBeUpdated.FORMS_NAME = UpdatedForm.FORMS_NAME;
+                ToBeUpdated.ORG_ID = UpdatedForm.FORM_ID;
+                ToBeUpdated.MODIFIED_BY = User.Identity.Name;
+                ToBeUpdated.MODIFY_DATE = DateTime.Now;
 
+                GenericData.Update<CUSTOMER_SURVEY_FORMS>(ToBeUpdated);
             }
 
             foreach (CustomerSurveyForms DeletedForm in data.Deleted)
@@ -130,6 +140,11 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
             }
             uxFormsStore.Reload();
+        }
+
+        protected void deSaveFieldsets(object sender, DirectEventArgs e)
+        {
+
         }
     }
 
