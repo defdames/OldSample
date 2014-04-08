@@ -10,82 +10,102 @@
 <body>
     <form id="form1" runat="server">
         <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="false" Namespace="" />
-        <ext:Panel Layout="AutoLayout" runat="server">
+        <ext:Panel runat="server" Width="1000">
             <Items>
                 <ext:Panel runat="server" ID="uxTopPanel" Flex="1">
                     <Items>
-                <ext:GridPanel runat="server" ID="uxCurrentFormsGrid" 
-                    Layout="HBoxLayout" Title="Select a Form">
-                    <Store>
-                        <ext:Store runat="server" ID="uxCurrentFormsStore" OnReadData="deReadCurrentForms" PageSize="10" RemoteSort="true">
-                            <Model>
-                                <ext:Model runat="server">
-                                    <Fields>
-                                        <ext:ModelField Name="FORM_ID" />
-                                        <ext:ModelField Name="FORMS_NAME" />
-                                        <ext:ModelField Name="ORGANIZATION" />
-                                        <ext:ModelField Name="NUM_QUESTIONS" />
-                                    </Fields>
-                                </ext:Model>
-                            </Model>
-                            <Proxy>
-                                <ext:PageProxy />
-                            </Proxy>
-                        </ext:Store>
-                    </Store>
-                    <ColumnModel>
-                        <Columns>
-                            <ext:Column runat="server" DataIndex="FORMS_NAME" Text="Form Name" />
-                            <ext:Column runat="server" DataIndex="ORGANIZATION" Text="Organization" />
-                            <ext:Column runat="server" DataIndex="NUM_QUESTIONS" Text="Number of Questions" />
-                        </Columns>
-                    </ColumnModel>
-                    <Plugins>
-                        <ext:FilterHeader runat="server" Remote="true" />
-                    </Plugins>
-                    <TopBar>
-                        <ext:Toolbar runat="server">
-                            <Items>
-                                <ext:Button runat="server" ID="uxAddFormButton" Text="Add Form" Icon="ApplicationAdd">
-                                    <Listeners>
-                                        <Click Handler="#{uxAddFormWindow}.show()" />
-                                    </Listeners>
-                                </ext:Button>
-                                <ext:Button runat="server" ID="uxEditFormButton" Text="Edit Form" Icon="ApplicationEdit">
+                        <ext:GridPanel runat="server" ID="uxCurrentFormsGrid" 
+                            Layout="HBoxLayout" Title="Select a Form">
+                            <Store>
+                                <ext:Store runat="server" ID="uxCurrentFormsStore" OnReadData="deReadCurrentForms" PageSize="10" RemoteSort="true">
+                                    <Model>
+                                        <ext:Model runat="server">
+                                            <Fields>
+                                                <ext:ModelField Name="FORM_ID" />
+                                                <ext:ModelField Name="FORMS_NAME" />
+                                                <ext:ModelField Name="ORGANIZATION" />
+                                                <ext:ModelField Name="NUM_QUESTIONS" />
+                                            </Fields>
+                                        </ext:Model>
+                                    </Model>
+                                    <Proxy>
+                                        <ext:PageProxy />
+                                    </Proxy>
+                                </ext:Store>
+                            </Store>
+                            <ColumnModel>
+                                <Columns>
+                                    <ext:Column runat="server" DataIndex="FORMS_NAME" Flex="1" Text="Form Name" />
+                                    <ext:Column runat="server" DataIndex="ORGANIZATION" Flex="1" Text="Organization" />
+                                    <ext:Column runat="server" DataIndex="NUM_QUESTIONS" Flex="1" Text="Number of Questions" />
+                                </Columns>
+                            </ColumnModel>
+                            <Plugins>
+                                <ext:FilterHeader runat="server" Remote="true" />
+                            </Plugins>
+                            <TopBar>
+                                <ext:Toolbar runat="server">
+                                    <Items>
+                                        <ext:Button runat="server" ID="uxAddFormButton" Text="Add Form" Icon="ApplicationAdd">
+                                            <Listeners>
+                                                <Click Handler="#{uxAddFormPanel}.show()" />
+                                            </Listeners>
+                                        </ext:Button>
+                                        <ext:Button runat="server" ID="uxEditFormButton" Text="Edit Form" Icon="ApplicationEdit">
 
-                                </ext:Button>
-                                <ext:ToolbarSeparator runat="server" />
-                                <ext:Button runat="server" ID="uxAddFieldSetButton" Text="Add FieldSet" Icon="ApplicationAdd">
-                                    <Listeners>
-                                        <Click Handler="#{uxAddFieldSetWindow}.show()" />
-                                    </Listeners>
-                                </ext:Button>
-                                <ext:Button runat="server" ID="uxEditFieldSetButton" Text="Edit FieldSet" Icon="ApplicationEdit">
+                                        </ext:Button>
+                                        <ext:ToolbarSeparator runat="server" />
+                                        <ext:Button runat="server" ID="uxAddFieldSetButton" Text="Add FieldSet" Icon="ApplicationAdd">
+                                            <Listeners>
+                                                <Click Handler="#{uxAddFieldSetPanel}.show()" />
+                                            </Listeners>
+                                        </ext:Button>
+                                        <ext:Button runat="server" ID="uxEditFieldSetButton" Text="Edit FieldSet" Icon="ApplicationEdit">
 
-                                </ext:Button>
-                                <ext:ToolbarSeparator runat="server" />
-                                <ext:Button runat="server" ID="uxPreviewFormButton" Text="Preview" Icon="PageWhiteGo">
+                                        </ext:Button>
+                                        <ext:ToolbarSeparator runat="server" />
+                                        <ext:Button runat="server" ID="uxPreviewFormButton" Text="Preview" Icon="PageWhiteGo">
 
-                                </ext:Button>
-                            </Items>
-                        </ext:Toolbar>
-                    </TopBar>
-                    <SelectionModel>
-                        <ext:RowSelectionModel runat="server" AllowDeselect="false" Mode="Single" />
-                    </SelectionModel>
-                    <BottomBar>
-                        <ext:PagingToolbar runat="server" />
-                    </BottomBar>
-                    <DirectEvents>
-                        <SelectionChange OnEvent="deLoadFieldSets">
-                            <ExtraParams>
-                                <ext:Parameter Name="FormId" Value="#{uxCurrentFormsGrid}.getSelectionModel().getSelection()[0].data.FORM_ID" Mode="Raw" />
-                            </ExtraParams>
-                        </SelectionChange>
-                    </DirectEvents>
-                </ext:GridPanel>
+                                        </ext:Button>
+                                    </Items>
+                                </ext:Toolbar>
+                            </TopBar>
+                            <SelectionModel>
+                                <ext:RowSelectionModel runat="server" AllowDeselect="false" Mode="Single" />
+                            </SelectionModel>
+                            <BottomBar>
+                                <ext:PagingToolbar runat="server" />
+                            </BottomBar>
+                            <DirectEvents>
+                                <SelectionChange OnEvent="deLoadFieldSets">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="FormId" Value="#{uxCurrentFormsGrid}.getSelectionModel().getSelection()[0].data.FORM_ID" Mode="Raw" />
+                                    </ExtraParams>
+                                </SelectionChange>
+                            </DirectEvents>
+                        </ext:GridPanel>
                     </Items>
                 </ext:Panel>
+                <ext:FormPanel runat="server" ID="uxAddFormPanel" Layout="FormLayout" BodyPadding="5" Title="Add/Edit Form" Hidden="true">
+                    <Items>
+                        <ext:TextField runat="server" ID="uxAddFormName" FieldLabel="Name" />                            
+                        <ext:ComboBox runat="server" ID="uxAddFormOrg" FieldLabel="Organization" QueryMode="Local" TypeAhead="true">
+                            
+                        </ext:ComboBox>
+                    </Items>
+                    <Buttons>
+                        <ext:Button runat="server" ID="uxAddFormSubmit" Text="Submit" Icon="Add">
+                            <DirectEvents>
+                                <Click OnEvent="deAddForm" />
+                            </DirectEvents>
+                        </ext:Button>
+                        <ext:Button runat="server" ID="uxAddFormCancel" Text="Cancel" Icon="Delete">
+                            <Listeners>
+                                <Click Handler="#{uxAddFormPanel}.reset(); #{uxAddFormPanel}.hide()" />
+                            </Listeners>
+                        </ext:Button>
+                    </Buttons>
+                </ext:FormPanel>
                 <ext:Panel runat="server" ID="uxMiddlePanel" Flex="1" Title="Fieldsets - Drag and Drop to Add/Remove" Layout="HBoxLayout">
                     <LayoutConfig>
                         <ext:HBoxLayoutConfig Align="Stretch" />
@@ -204,6 +224,27 @@
                         </SelectionChange>
                     </DirectEvents>
                 </ext:GridPanel>
+                <ext:FormPanel runat="server" ID="uxAddFieldSetPanel" Layout="HBoxLayout" MaxWidth="1000" BodyPadding="5" Title="Add/Edit Fieldset" Hidden="true">
+                    <Items>
+                        <ext:TextField runat="server" ID="uxAddFieldSetTitle" FieldLabel="Title" Flex="1" />
+                    </Items>
+                    <Buttons>
+                        <ext:Button runat="server" ID="uxAddFieldSetSubmit" Text="Submit" Icon="Add">
+                            <DirectEvents>
+                                <Click OnEvent="deAddFieldSet">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="FormId" Value="#{uxCurrentFormsGrid}.getSelectionModel().getSelection()[0].data.FORM_ID" Mode="Raw" />
+                                    </ExtraParams>
+                                </Click>
+                            </DirectEvents>
+                        </ext:Button>
+                        <ext:Button runat="server" ID="uxAddFieldSetCancel" Text="Cancel" Icon="Delete">
+                            <Listeners>
+                                <Click Handler="#{uxAddFieldSetPanel}.reset(); #{uxAddFieldSetPanel}.hide()" />
+                            </Listeners>
+                        </ext:Button>
+                    </Buttons>
+                </ext:FormPanel>
                 <ext:Panel runat="server" ID="uxBottomPanel" Flex="1" Title="Questions - Drag and Drop to Add/Remove" Layout="HBoxLayout">
                     <LayoutConfig>
                         <ext:HBoxLayoutConfig Align="Stretch" />
@@ -297,26 +338,7 @@
             Y="50"
             Modal="true" >
             <Items> 
-                <ext:FormPanel runat="server" ID="uxAddFormPanel" Layout="FormLayout">
-                    <Items>
-                        <ext:TextField runat="server" ID="uxAddFormName" FieldLabel="Name" />                            
-                        <ext:ComboBox runat="server" ID="uxAddFormOrg" FieldLabel="Organization" QueryMode="Local" TypeAhead="true">
-                            
-                        </ext:ComboBox>
-                    </Items>
-                    <Buttons>
-                        <ext:Button runat="server" ID="uxAddFormSubmit" Text="Submit" Icon="Add">
-                            <DirectEvents>
-                                <Click OnEvent="deAddForm" />
-                            </DirectEvents>
-                        </ext:Button>
-                        <ext:Button runat="server" ID="uxAddFormCancel" Text="Cancel" Icon="Delete">
-                            <Listeners>
-                                <Click Handler="#{uxAddFormPanel}.reset(); #{uxAddFormWindow}.hide()" />
-                            </Listeners>
-                        </ext:Button>
-                    </Buttons>
-                </ext:FormPanel>
+                
             </Items>
         </ext:Window>
         <ext:Window ID="uxAddFieldSetWindow" runat="server" 
@@ -326,27 +348,7 @@
             Y="50"
             Modal="true">
             <Items>
-                <ext:FormPanel runat="server" ID="uxAddFieldSetPanel" Layout="HBoxLayout">
-                    <Items>
-                        <ext:TextField runat="server" ID="uxAddFieldSetTitle" FieldLabel="Title" Flex="1" />
-                    </Items>
-                    <Buttons>
-                        <ext:Button runat="server" ID="uxAddFieldSetSubmit" Text="Submit" Icon="Add">
-                            <DirectEvents>
-                                <Click OnEvent="deAddFieldSet">
-                                    <ExtraParams>
-                                        <ext:Parameter Name="FormId" Value="#{uxCurrentFormsGrid}.getSelectionModel().getSelection()[0].data.FORM_ID" Mode="Raw" />
-                                    </ExtraParams>
-                                </Click>
-                            </DirectEvents>
-                        </ext:Button>
-                        <ext:Button runat="server" ID="uxAddFieldSetCancel" Text="Cancel" Icon="Delete">
-                            <Listeners>
-                                <Click Handler="#{uxAddFieldSetPanel}.reset(); #{uxAddFieldSetWindow}.hide()" />
-                            </Listeners>
-                        </ext:Button>
-                    </Buttons>
-                </ext:FormPanel>
+                
             </Items>
         </ext:Window>
     </form>
