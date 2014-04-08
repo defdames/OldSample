@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+<head id="Head1" runat="server">
     <title></title>
    
 
@@ -16,7 +16,7 @@
             <div>
                 <ext:Viewport ID="ViewPort1" runat="server" layout="BorderLayout">
                     <Items>
-                        <ext:FormPanel runat="server"
+                        <ext:FormPanel ID="FormPanel1" runat="server"
                             Title="Clock"
                             BodyPadding="5"
                             Width="350">
