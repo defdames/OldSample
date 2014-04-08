@@ -68,7 +68,7 @@ namespace DBI.Data
                     claims.Add(new Claim("EmployeeNumber", userInfo.EMPLOYEE_NUMBER.ToString()));
                     //Add current organization ID to claims
                     claims.Add(new Claim("CurrentOrgId", userInfo.CURRENT_ORG_ID.ToString()));
-
+                    claims.Add(new Claim("PersonID", userInfo.PERSON_ID.ToString()));
                     claims.Add(new Claim("UserId", userInfo.USER_ID.ToString()));
                 }
                 return claims;

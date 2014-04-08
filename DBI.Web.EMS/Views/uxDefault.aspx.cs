@@ -87,12 +87,14 @@ namespace DBI.Web.EMS.Views
 
                 SYS_USER_INFORMATION userDetails = SYS_USER_INFORMATION.UserByUserName(Authentication.GetClaimValue("ImpersonatorUsername", User as ClaimsPrincipal));
 
-                List<Claim> claims = DBI.Data.SYS_ACTIVITY.Claims(userDetails.USER_NAME);
+                List<Claim> claims = SYS_PERMISSIONS.Claims(userDetails.USER_NAME);
 
                 // Add full name of user to the claims 
                 claims.Add(new Claim("EmployeeName", Authentication.GetClaimValue("EmployeeName", User as ClaimsPrincipal)));
+                var id = new ClaimsIdentity(claims, "Forms");
+                var cp = new ClaimsPrincipal(id);
 
-                var token = Authentication.GenerateSessionSecurityToken(claims);
+                var token = new SessionSecurityToken(cp);
                 var sam = FederatedAuthentication.SessionAuthenticationModule;
                 sam.WriteSessionTokenToCookie(token);
 
