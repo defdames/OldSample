@@ -23,8 +23,8 @@
                         <ext:Model ID="Model1" runat="server">
                             <Fields>
                                 <ext:ModelField Name="EMPLOYEE_NAME"/>
-                                <ext:ModelField Name="TIME_IN"/>
-                                <ext:ModelField Name="TIME_OUT" />
+                                <ext:ModelField Name="TIME_IN" type="Date" />
+                                <ext:ModelField Name="TIME_OUT" type="Date"/>
                                 <ext:ModelField Name="TOTAL_HOURS" />
                             </Fields>
                         </ext:Model>
@@ -41,16 +41,18 @@
                         Locked="True"/>
                     <ext:Column ID="Column21" runat="server" Text="Sunday">
                         <Columns>
-                            <ext:Column ID="Column22"
+                            <ext:DateColumn ID="Column22"
                                 runat="server"
                                 Text="Time In"
+                                Format="M/d/yyyy h:mm tt"
                                 Dataindex="TIME_IN">
-                            </ext:Column>
-                            <ext:Column ID="Column23"
+                            </ext:DateColumn>
+                            <ext:DateColumn ID="Column23"
                                 runat="server"
                                 Text="Time Out"
+                                Format="M/d/yyyy h:mm tt"
                                 Dataindex="TIME_OUT">
-                            </ext:Column>
+                            </ext:DateColumn>
                              <ext:Column ID="Column24"
                                 runat="server"
                                 Text="Total Hours"
@@ -60,16 +62,18 @@
                     </ext:Column>
                     <ext:Column ID="Column2" runat="server" Text="Monday">
                         <Columns>
-                            <ext:Column ID="uxTimeInMonday"
+                            <ext:DateColumn ID="uxTimeInMonday"
                                 runat="server"
                                 Text="Time In"
+                                Format="M/d/yyyy h:mm tt"
                                 Dataindex="TIME_IN">
-                            </ext:Column>
-                            <ext:Column ID="uxTimeOutMonday"
+                            </ext:DateColumn>
+                            <ext:DateColumn ID="uxTimeOutMonday"
                                 runat="server"
                                 Text="Time Out"
+                                Format="M/d/yyyy h:mm tt"
                                 Dataindex="TIME_OUT">
-                            </ext:Column>
+                            </ext:DateColumn>
                              <ext:Column ID="uxTotalHoursMonday"
                                 runat="server"
                                 Text="Total Hours"
@@ -79,16 +83,18 @@
                     </ext:Column>
                     <ext:Column ID="Column3" runat="server" Text="Tuesday">
                         <Columns>
-                            <ext:Column ID="Column4"
+                            <ext:DateColumn ID="Column4"
                                 runat="server"
                                 Text="Time In"
+                                Format="M/d/yyyy h:mm tt"
                                 Dataindex="TIME_IN">
-                            </ext:Column>
-                            <ext:Column ID="Column5"
+                            </ext:DateColumn>
+                            <ext:DateColumn ID="Column5"
                                 runat="server"
                                 Text="Time Out"
+                                Format="M/d/yyyy h:mm tt"
                                 Dataindex="TIME_OUT">
-                            </ext:Column>
+                            </ext:DateColumn>
                              <ext:Column ID="Column6"
                                 runat="server"
                                 Text="Total Hours"
@@ -98,16 +104,18 @@
                     </ext:Column>
                     <ext:Column ID="Column7" runat="server" Text="Wednesday">
                         <Columns>
-                            <ext:Column ID="Column8"
+                            <ext:DateColumn ID="Column8"
                                 runat="server"
                                 Text="Time In"
+                                Format="M/d/yyyy h:mm tt"
                                 Dataindex="TIME_IN">
-                            </ext:Column>
-                            <ext:Column ID="Column9"
+                            </ext:DateColumn>
+                            <ext:DateColumn ID="Column9"
                                 runat="server"
                                 Text="Time Out"
+                                Format="M/d/yyyy h:mm tt"
                                 Dataindex="TIME_OUT">
-                            </ext:Column>
+                            </ext:DateColumn>
                              <ext:Column ID="Column10"
                                 runat="server"
                                 Text="Total Hours"
@@ -117,16 +125,18 @@
                     </ext:Column>
                     <ext:Column ID="Column11" runat="server" Text="Thursday">
                         <Columns>
-                            <ext:Column ID="Column12"
+                            <ext:DateColumn ID="Column12"
                                 runat="server"
                                 Text="Time In"
+                                Format="M/d/yyyy h:mm tt"
                                 Dataindex="TIME_IN">
-                            </ext:Column>
-                            <ext:Column ID="Column13"
+                            </ext:DateColumn>
+                            <ext:DateColumn ID="Column13"
                                 runat="server"
                                 Text="Time Out"
+                                Format="M/d/yyyy h:mm tt"
                                 Dataindex="TIME_OUT">
-                            </ext:Column>
+                            </ext:DateColumn>
                              <ext:Column ID="Column14"
                                 runat="server"
                                 Text="Total Hours"
@@ -136,16 +146,18 @@
                     </ext:Column>
                     <ext:Column ID="Column15" runat="server" Text="Friday">
                         <Columns>
-                            <ext:Column ID="Column16"
+                            <ext:DateColumn ID="Column16"
                                 runat="server"
                                 Text="Time In"
+                                Format="M/d/yyyy h:mm tt"
                                 Dataindex="TIME_IN">
-                            </ext:Column>
-                            <ext:Column ID="Column17"
+                            </ext:DateColumn>
+                            <ext:DateColumn ID="Column17"
                                 runat="server"
                                 Text="Time Out"
+                                Format="M/d/yyyy h:mm tt"
                                 Dataindex="TIME_OUT">
-                            </ext:Column>
+                            </ext:DateColumn>
                              <ext:Column ID="Column18"
                                 runat="server"
                                 Text="Total Hours"
@@ -155,16 +167,18 @@
                     </ext:Column>
                     <ext:Column ID="Column19" runat="server" Text="Saturday">
                         <Columns>
-                            <ext:Column ID="Column20"
+                            <ext:DateColumn ID="Column20"
                                 runat="server"
                                 Text="Time In"
+                                Format="M/d/yyyy h:mm tt"
                                 Dataindex="TIME_IN">
-                            </ext:Column>
-                            <ext:Column ID="Column25"
+                            </ext:DateColumn>
+                            <ext:DateColumn ID="Column25"
                                 runat="server"
                                 Text="Time Out"
+                                Format="M/d/yyyy h:mm tt"
                                 Dataindex="TIME_OUT">
-                            </ext:Column>
+                            </ext:DateColumn>
                              <ext:Column ID="Column26"
                                 runat="server"
                                 Text="Total Hours"

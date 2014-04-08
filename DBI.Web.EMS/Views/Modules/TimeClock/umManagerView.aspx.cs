@@ -33,9 +33,9 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                             select new EmployeeTime { TIME_IN = (DateTime)tc.TIME_IN, TIME_OUT = (DateTime)tc.TIME_OUT, EMPLOYEE_NAME = ev.EMPLOYEE_NAME }).ToList();
                 foreach (var item in data)
                 {
-                    TimeSpan ts = item.TIME_OUT.Subtract(item.TIME_IN);
+                    TimeSpan ts = item.TIME_OUT - item.TIME_IN;
                     DateTime dow = item.TIME_IN;
-                    item.TOTAL_HOURS = ts.ToString("hh\\:mm");
+                    item.TOTAL_HOURS = ts.ToString(@"dd\.hh\:mm");
                     item.DAY_OF_WEEK = dow.DayOfWeek.ToString();
                 }
                 uxEmployeeHoursStore.DataSource = data;
