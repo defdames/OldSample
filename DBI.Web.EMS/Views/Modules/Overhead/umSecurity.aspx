@@ -13,17 +13,27 @@
 
 
 	</style>
+
+      <script type="text/javascript">
+          var getRowClass = function (record, rowIndex, rowParams, store) {
+              if (record.data.GL_ASSIGNED == "Active") {
+                  return "blue-row";
+              };
+          }
+
+          var onShow = function (toolTip, grid) {
+              var view = grid.getView(),
+                  record = view.getRecord(toolTip.triggerElement),
+                  data = "General Ledger Description</br>" + record.data.SEGMENT1DESC + "." + record.data.SEGMENT2DESC + "." + record.data.SEGMENT3DESC + "." + record.data.SEGMENT4DESC + "." + record.data.SEGMENT5DESC + "." + record.data.SEGMENT6DESC + "." + record.data.SEGMENT7DESC;
+              toolTip.update(data);
+          };
+
+        </script>
 </head>
 <body>
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
     <form id="form1" runat="server">
-        <script type="text/javascript">
-            var getRowClass = function (record, rowIndex, rowParams, store) {
-                if (record.data.GL_ASSIGNED == "Active") {
-                    return "blue-row";
-                };
-            }
-        </script>
+      
 
         <ext:Viewport runat="server" ID="uxViewPort" Layout="BorderLayout" IDMode="Explicit" Namespace="App" RenderXType="True">
             <Items>
@@ -56,6 +66,7 @@
                                       <Select Handler="#{uxShowGLAccoutsWindow}.disable();"></Select>
                                    </Listeners>
                             </ext:TreePanel>
+               
                 <ext:GridPanel ID="uxOrganizationsGrid" runat="server" Flex="1" SimpleSelect="true" Title="Organization Security By Hierarchy" Padding="5" Region="Center">
                     <Store>
                         <ext:Store runat="server"
@@ -64,6 +75,7 @@
                             <Model>
                                         <ext:Model ID="Model2" runat="server" IDProperty="ORGANIZATION_ID">
                                             <Fields>
+                                                <ext:ModelField Name="HIER_LEVEL"  />
                                                 <ext:ModelField Name="GL_ASSIGNED" Type="String" />
                                                 <ext:ModelField Name="ORGANIZATION_ID" />
                                                 <ext:ModelField Name="ORGANIZATION_NAME" Type="String" />
@@ -77,6 +89,7 @@
                             </Store>
                             <ColumnModel>
                                 <Columns>
+                                    <ext:Column ID="Column8" runat="server" DataIndex="HIER_LEVEL" Text="Hierarchy Level Sort" Flex="1" />
                                     <ext:Column ID="Column2" runat="server" DataIndex="ORGANIZATION_NAME" Text="Organization Name" Flex="4" />
                                     <ext:Column ID="Column1" runat="server" DataIndex="GL_ASSIGNED" Text="Organization Status" Flex="1" />
                                 </Columns>
@@ -138,6 +151,12 @@
                                         <ext:ModelField Name="SEGMENT5DESC" />
                                         <ext:ModelField Name="SEGMENT6" />
                                         <ext:ModelField Name="SEGMENT7" />
+                                        <ext:ModelField Name="SEGMENT1DESC" />
+                                        <ext:ModelField Name="SEGMENT2DESC" />
+                                        <ext:ModelField Name="SEGMENT3DESC" />
+                                        <ext:ModelField Name="SEGMENT4DESC" />
+                                        <ext:ModelField Name="SEGMENT6DESC" />
+                                        <ext:ModelField Name="SEGMENT7DESC" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -147,6 +166,7 @@
                             <Listeners><Load Handler="#{uxGlAccountDelete}.disable();"></Load></Listeners>
                         </ext:Store>
                     </Store>
+                   
                     <ColumnModel>
                         <Columns>
                             <ext:Column ID="Column4" runat="server" DataIndex="SEGMENT1" Text="Company" Flex="1" />
@@ -166,6 +186,7 @@
                         <ext:RowSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Simple">
                             <Listeners>
                                 <Select Handler="if(#{uxGlAccountSecurityGridSelectionModel}.getCount() > 0){#{uxGlAccountDelete}.enable();}"></Select>
+                                <Deselect Handler="if(#{uxGlAccountSecurityGridSelectionModel}.getCount() > 0){#{uxGlAccountDelete}.enable();}"></Deselect>
                             </Listeners>
                         </ext:RowSelectionModel>
                     </SelectionModel>
@@ -173,9 +194,22 @@
                         <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
                     </BottomBar>
                      <View>
-                        <ext:GridView ID="GridView1" StripeRows="true" runat="server">
+                        <ext:GridView ID="GridView1" StripeRows="true" runat="server" TrackOver="true">
                         </ext:GridView>
                     </View> 
+                     <ToolTips>
+                        <ext:ToolTip ID="uxToolTip"
+            runat="server"
+            Target="uxGlAccountSecurityGrid"
+            Delegate=".x-grid-row"
+            TrackMouse="true"
+                            UI="Info"
+                           Width="300">
+            <Listeners>
+                <Show Handler="onShow(this, #{uxGlAccountSecurityGrid});" /> 
+            </Listeners>
+        </ext:ToolTip>  
+                    </ToolTips>
                 </ext:GridPanel>
             </Items>
         </ext:Viewport>

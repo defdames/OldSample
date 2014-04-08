@@ -127,7 +127,7 @@
 						</Select>
 					</DirectEvents>
 					<ToolTips>
-						<ext:ToolTip ID="uxWarningTooltip" 
+						<ext:ToolTip ID="uxWarningTool  " 
 							runat="server" 
 							Delegate="tr.x-grid-row"
 							TrackMouse="true">

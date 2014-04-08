@@ -18,10 +18,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         protected void LoadHierarchyTree(object sender, NodeLoadEventArgs e)
         {
-
-            long[] ids = {64,63,3065,6066,8066,61,10066};
             Entities _context = new Entities();
-            List<HIERARCHY_ID_V> _list = _context.HIERARCHY_ID_V.Where(h => ids.Contains(h.HIERARCHY_ID)).ToList();
+            List<HIERARCHY_ID_V> _list = _context.HIERARCHY_ID_V.ToList();
 
                 foreach (HIERARCHY_ID_V hier in _list)
                 {
@@ -33,7 +31,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     e.Nodes.Add(treeNode);
                 }
         }
-
 
         protected void deShowOrganizationsByHierarchy(object sender, DirectEventArgs e)
         {
@@ -59,7 +56,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     if (HierarchyID == 0)
                     {
                         var data = (from ov in _context.ORG_HIER_V
-                                    select new ORGANIZATION_VIEW { ORGANIZATION_ID = ov.ORG_ID_CHILD, ORGANIZATION_NAME = ov.ORG_HIER }).OrderBy(o => o.ORGANIZATION_NAME).ToList();
+                                    select new ORGANIZATION_VIEW { ORGANIZATION_ID = ov.ORG_ID_CHILD, ORGANIZATION_NAME = ov.ORG_HIER, HIER_LEVEL = (long)ov.LEVEL_SORT}).ToList();
 
                         foreach (ORGANIZATION_VIEW view in data)
                         {
@@ -73,7 +70,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     else
                     {
                         var data = (from ov in _context.ORG_HIER_V.Where(c => c.HIERARCHY_ID == HierarchyID)
-                                    select new ORGANIZATION_VIEW { ORGANIZATION_ID = ov.ORG_ID_CHILD, ORGANIZATION_NAME = ov.ORG_HIER }).ToList();
+                                    select new ORGANIZATION_VIEW { ORGANIZATION_ID = ov.ORG_ID_CHILD, ORGANIZATION_NAME = ov.ORG_HIER, HIER_LEVEL = (long)ov.LEVEL_SORT }).ToList();
 
                         foreach (ORGANIZATION_VIEW view in data)
                         {
@@ -113,7 +110,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                                     SEGMENT5 = gla.SEGMENT5,
                                     SEGMENT6 = gla.SEGMENT6,
                                     SEGMENT7 = gla.SEGMENT7,
-                                    SEGMENT5DESC = gla.SEGMENT5_DESC
+                                    SEGMENT5DESC = gla.SEGMENT5_DESC,
+                                    SEGMENT1DESC = gla.SEGMENT1_DESC,
+                                    SEGMENT2DESC = gla.SEGMENT2_DESC,
+                                    SEGMENT3DESC = gla.SEGMENT3_DESC,
+                                    SEGMENT4DESC = gla.SEGMENT4_DESC,
+                                    SEGMENT6DESC = gla.SEGMENT5_DESC,
+                                    SEGMENT7DESC = gla.SEGMENT7_DESC
                                 }).ToList();
                     int count;
                     uxGlAccountSecurityStore.DataSource = GenericData.EnumerableFilterHeader<GL_ACCOUNT_VIEW>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -189,6 +192,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         public class ORGANIZATION_VIEW
         {
+            public long HIER_LEVEL { get; set; }
             public string GL_ASSIGNED { get; set; }
             public long ORGANIZATION_ID { get; set; }
             public string ORGANIZATION_NAME { get; set; }
@@ -205,8 +209,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             public string SEGMENT5 {get; set;}
             public string SEGMENT6 {get; set;}
             public string SEGMENT7 {get; set;}
-            public string SEGMENT5DESC {get; set;}
-
+            public string SEGMENT1DESC {get; set;}
+            public string SEGMENT2DESC { get; set; }
+            public string SEGMENT3DESC { get; set; }
+            public string SEGMENT4DESC { get; set; }
+            public string SEGMENT5DESC { get; set; }
+            public string SEGMENT6DESC { get; set; }
+            public string SEGMENT7DESC { get; set; }
 
         }
 
