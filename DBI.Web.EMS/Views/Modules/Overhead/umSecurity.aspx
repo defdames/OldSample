@@ -39,18 +39,23 @@
             <Items>
                         <ext:TreePanel ID="uxHierarchyTree"
                             runat="server"
-                            Title="Hierarchy List"
+                            Title="Hierarchy List By Legal Entity"
                             Width="300"
-                            padding="5"
-                            RootVisible="true"
+                            Padding="5"
+                            RootVisible="false"
+                            SingleExpand="true"
                             Lines="true"
                             UseArrows="false"
-                            Region="West" >
+                            Region="West">
                             <Store>
-                                <ext:TreeStore runat="server" OnReadData="LoadHierarchyTree"></ext:TreeStore>
+                                <ext:TreeStore ID="TreeStore1" runat="server" OnReadData="LoadHierarchyTree">
+                                    <Proxy>
+                                        <ext:PageProxy></ext:PageProxy>
+                                    </Proxy>
+                                </ext:TreeStore>
                             </Store>
                             <Root>
-                                <ext:Node NodeID="0" Text="All Hierarchies" />
+                                <ext:Node NodeID="0" Text="Legal Entities" Expanded="true" />
                             </Root>
                             <SelectionModel>
                                 <ext:TreeSelectionModel ID="uxHierarchyTreeSelectionModel" runat="server" Mode="Single"></ext:TreeSelectionModel>
@@ -62,12 +67,12 @@
                                     </ExtraParams>
                                 </ItemClick>
                             </DirectEvents>
-                             <Listeners>
-                                      <Select Handler="#{uxShowGLAccoutsWindow}.disable();"></Select>
-                                   </Listeners>
-                            </ext:TreePanel>
+                            <Listeners>
+                                <Select Handler="#{uxShowGLAccoutsWindow}.disable();"></Select>
+                            </Listeners>
+                        </ext:TreePanel>
                
-                <ext:GridPanel ID="uxOrganizationsGrid" runat="server" Flex="1" SimpleSelect="true" Title="Organization Security By Hierarchy" Padding="5" Region="Center">
+                <ext:GridPanel ID="uxOrganizationsGrid" runat="server" Flex="1" SimpleSelect="true" Title="Organizations By Hierarchy" Padding="5" Region="Center">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxOrganizationSecurityStore"
