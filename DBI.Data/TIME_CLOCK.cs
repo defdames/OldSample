@@ -21,5 +21,8 @@ namespace DBI.Data
         public string SUBMITTED { get; set; }
         public string APPROVED { get; set; }
         public string COMPLETED { get; set; }
+        public Nullable<decimal> ACTUAL_HOURS { get; set; }
+        public Nullable<decimal> ADJUSTED_HOURS { get; set; }
+        public Nullable<int> SUPERVISOR_ID { get; set; }
     }
 }

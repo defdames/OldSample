@@ -1485,6 +1485,9 @@
           <Property Name="SUBMITTED" Type="char" Nullable="false" MaxLength="1" />
           <Property Name="APPROVED" Type="char" Nullable="false" MaxLength="1" />
           <Property Name="COMPLETED" Type="char" Nullable="false" MaxLength="1" />
+          <Property Name="ACTUAL_HOURS" Type="number" Precision="15" Scale="4" />
+          <Property Name="ADJUSTED_HOURS" Type="number" Precision="15" Scale="4" />
+          <Property Name="SUPERVISOR_ID" Type="number" Precision="10" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'APPS.PA_LOCATIONS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -3239,12 +3242,12 @@
             <End Role="DAILY_ACTIVITY_EMPLOYEE" EntitySet="DAILY_ACTIVITY_EMPLOYEE" />
           </AssociationSet>
           <EntitySet Name="XXDBI_PAYROLL_AUDIT_V" EntityType="OracleModel.XXDBI_PAYROLL_AUDIT_V" />
-          <EntitySet Name="ORG_HIER_V" EntityType="OracleModel.ORG_HIER_V" />
           <EntitySet Name="HIERARCHY_ID_V" EntityType="OracleModel.HIERARCHY_ID_V" />
           <EntitySet Name="TIME_CLOCK" EntityType="OracleModel.TIME_CLOCK" />
           <EntitySet Name="SYS_USER_ORGS" EntityType="OracleModel.SYS_USER_ORGS" />
           <EntitySet Name="OVERHEAD_GL_ACCOUNT" EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" />
           <EntitySet Name="GL_ACCOUNTS_V" EntityType="OracleModel.GL_ACCOUNTS_V" />
+          <EntitySet Name="ORG_HIER_V" EntityType="OracleModel.ORG_HIER_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -5624,24 +5627,6 @@
           <Property Type="String" Name="SLIDING_SCALE_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="DAILY_OVERTIME_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="ORG_HIER_V">
-          <Key>
-            <PropertyRef Name="ORG_ID_PARENT" />
-            <PropertyRef Name="ORG_ID_CHILD" />
-            <PropertyRef Name="ORG_HIER" />
-            <PropertyRef Name="HIERARCHY_ID" />
-            <PropertyRef Name="ORG_ID" />
-          </Key>
-          <Property Type="String" Name="PARENT_ORG" MaxLength="240" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="ORG_ID_PARENT" Nullable="false" />
-          <Property Type="Int64" Name="ORG_ID_CHILD" Nullable="false" />
-          <Property Type="String" Name="ORG_HIER" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="HIERARCHY_ID" Nullable="false" />
-          <Property Type="Decimal" Name="LEVEL_SORT" Precision="38" Scale="0" />
-          <Property Type="Int64" Name="ORG_ID" Nullable="false" />
-          <Property Type="String" Name="TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="BU_ORG" MaxLength="10" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="HIERARCHY_ID_V">
           <Key>
             <PropertyRef Name="HIERARCHY_ID" />
@@ -5661,6 +5646,9 @@
           <Property Type="String" Name="SUBMITTED" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Type="String" Name="APPROVED" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Type="String" Name="COMPLETED" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="Decimal" Name="ACTUAL_HOURS" Precision="15" Scale="4" />
+          <Property Type="Decimal" Name="ADJUSTED_HOURS" Precision="15" Scale="4" />
+          <Property Type="Int32" Name="SUPERVISOR_ID" />
         </EntityType>
         <EntityType Name="SYS_USER_ORGS">
           <Key>
@@ -5707,6 +5695,24 @@
           <Property Type="String" Name="SEGMENT6_DESC" MaxLength="4000" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="SEGMENT7" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="SEGMENT7_DESC" MaxLength="4000" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ORG_HIER_V">
+          <Key>
+            <PropertyRef Name="ORG_ID_PARENT" />
+            <PropertyRef Name="ORG_ID_CHILD" />
+            <PropertyRef Name="ORG_HIER" />
+            <PropertyRef Name="HIERARCHY_ID" />
+            <PropertyRef Name="ORG_ID" />
+          </Key>
+          <Property Type="String" Name="PARENT_ORG" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="ORG_ID_PARENT" Nullable="false" />
+          <Property Type="Int64" Name="ORG_ID_CHILD" Nullable="false" />
+          <Property Type="String" Name="ORG_HIER" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="HIERARCHY_ID" Nullable="false" />
+          <Property Type="Decimal" Name="LEVEL_SORT" Precision="38" Scale="0" />
+          <Property Type="Int64" Name="ORG_ID" Nullable="false" />
+          <Property Type="String" Name="TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="BU_ORG" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -7535,21 +7541,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ORG_HIER_V">
-            <EntityTypeMapping TypeName="OracleModel.ORG_HIER_V">
-              <MappingFragment StoreEntitySet="ORG_HIER_V">
-                <ScalarProperty Name="BU_ORG" ColumnName="BU_ORG" />
-                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
-                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
-                <ScalarProperty Name="LEVEL_SORT" ColumnName="LEVEL_SORT" />
-                <ScalarProperty Name="HIERARCHY_ID" ColumnName="HIERARCHY_ID" />
-                <ScalarProperty Name="ORG_HIER" ColumnName="ORG_HIER" />
-                <ScalarProperty Name="ORG_ID_CHILD" ColumnName="ORG_ID_CHILD" />
-                <ScalarProperty Name="ORG_ID_PARENT" ColumnName="ORG_ID_PARENT" />
-                <ScalarProperty Name="PARENT_ORG" ColumnName="PARENT_ORG" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="HIERARCHY_ID_V">
             <EntityTypeMapping TypeName="OracleModel.HIERARCHY_ID_V">
               <MappingFragment StoreEntitySet="HIERARCHY_ID_V">
@@ -7561,6 +7552,9 @@
           <EntitySetMapping Name="TIME_CLOCK">
             <EntityTypeMapping TypeName="OracleModel.TIME_CLOCK">
               <MappingFragment StoreEntitySet="TIME_CLOCK">
+                <ScalarProperty Name="SUPERVISOR_ID" ColumnName="SUPERVISOR_ID" />
+                <ScalarProperty Name="ADJUSTED_HOURS" ColumnName="ADJUSTED_HOURS" />
+                <ScalarProperty Name="ACTUAL_HOURS" ColumnName="ACTUAL_HOURS" />
                 <ScalarProperty Name="COMPLETED" ColumnName="COMPLETED" />
                 <ScalarProperty Name="APPROVED" ColumnName="APPROVED" />
                 <ScalarProperty Name="SUBMITTED" ColumnName="SUBMITTED" />
@@ -7614,6 +7608,21 @@
                 <ScalarProperty Name="ENABLED_FLAG" ColumnName="ENABLED_FLAG" />
                 <ScalarProperty Name="CHART_OF_ACCOUNTS_ID" ColumnName="CHART_OF_ACCOUNTS_ID" />
                 <ScalarProperty Name="CODE_COMBINATION_ID" ColumnName="CODE_COMBINATION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ORG_HIER_V">
+            <EntityTypeMapping TypeName="OracleModel.ORG_HIER_V">
+              <MappingFragment StoreEntitySet="ORG_HIER_V">
+                <ScalarProperty Name="BU_ORG" ColumnName="BU_ORG" />
+                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="LEVEL_SORT" ColumnName="LEVEL_SORT" />
+                <ScalarProperty Name="HIERARCHY_ID" ColumnName="HIERARCHY_ID" />
+                <ScalarProperty Name="ORG_HIER" ColumnName="ORG_HIER" />
+                <ScalarProperty Name="ORG_ID_CHILD" ColumnName="ORG_ID_CHILD" />
+                <ScalarProperty Name="ORG_ID_PARENT" ColumnName="ORG_ID_PARENT" />
+                <ScalarProperty Name="PARENT_ORG" ColumnName="PARENT_ORG" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
