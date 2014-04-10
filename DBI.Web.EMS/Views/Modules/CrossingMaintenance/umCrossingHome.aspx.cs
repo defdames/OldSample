@@ -39,5 +39,21 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 e.Total = count;
             }
         }
+        protected void deGetProjectList(object sender, DirectEventArgs e)
+        {
+            long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+            List<object> data;
+            using (Entities _context = new Entities())
+            {
+                data = (from r in _context.CROSSING_RELATIONSHIP
+                        join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID
+                        where r.CROSSING_ID == CrossingId
+                        select new { r.PROJECT_ID, p.LONG_NAME, p.SEGMENT1, p.ORGANIZATION_NAME }).ToList<object>();
+                uxProjectListStore.DataSource = data;
+                uxProjectListStore.DataBind();
+
+
+            }
+        }
     }
 }

@@ -58,7 +58,7 @@
                
             </Listeners>
 
-            <%-- <DirectEvents>
+           <%--  <DirectEvents>
                     <Select OnEvent="GetApplicationGridData">
                         <ExtraParams>
                             <ext:Parameter Name="CrossingId" Value="#{uxApplicationCrossingGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
@@ -81,7 +81,7 @@
                
             </Items>
         </ext:Toolbar>
-        <%--<ext:GridPanel ID="uxApplicationEntryGrid" Title="APPLICATION ENTRIES" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true" Hidden="true">
+      <%--  <ext:GridPanel ID="uxApplicationEntryGrid" Title="APPLICATION ENTRIES" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true" Hidden="true">
                 <SelectionModel>
                     <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" AllowDeselect="true" Mode="Single" />
                 </SelectionModel>
