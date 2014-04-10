@@ -47,7 +47,6 @@ namespace DBI.Data
         public DbSet<XXPJ_PREV_WAGE_RATES> XXPJ_PREV_WAGE_RATES { get; set; }
         public DbSet<DAILY_ACTIVITY_HEADER> DAILY_ACTIVITY_HEADER { get; set; }
         public DbSet<DAILY_ACTIVITY_AUDIT> DAILY_ACTIVITY_AUDIT { get; set; }
-        public DbSet<CROSSING> CROSSINGS { get; set; }
         public DbSet<PA_PERIODS_ALL> PA_PERIODS_ALL { get; set; }
         public DbSet<MTL_TRANSACTION_INT_V> MTL_TRANSACTION_INT_V { get; set; }
         public DbSet<XXDBI_DAILY_ACTIVITY_HEADER_V> XXDBI_DAILY_ACTIVITY_HEADER_V { get; set; }
@@ -92,5 +91,6 @@ namespace DBI.Data
         public DbSet<OVERHEAD_GL_ACCOUNT> OVERHEAD_GL_ACCOUNT { get; set; }
         public DbSet<GL_ACCOUNTS_V> GL_ACCOUNTS_V { get; set; }
         public DbSet<ORG_HIER_V> ORG_HIER_V { get; set; }
+        public DbSet<CROSSING> CROSSINGS { get; set; }
     }
 }

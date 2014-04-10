@@ -62,7 +62,7 @@
             </Listeners>
         </ext:GridPanel>
         <%--  ---------------------------------------------------------------------------------------------------------------------%>
-         <ext:GridPanel ID="uxAssignedCrossingGrid" runat="server" Flex="1" Margins="0 2 0 0" >
+         <ext:GridPanel ID="uxAssignedCrossingGrid" runat="server" Margins="0 2 0 0" >
             <Store>
                 <ext:Store runat="server"
                     ID="uxAssignedCrossingStore"
@@ -134,11 +134,11 @@
             </Listeners>
         </ext:GridPanel>
 
-         <ext:Window runat="server" ID="uxAssignCrossingWindow" Hidden="true" Width="650" Modal="true">
-            <Items>
-                <ext:FormPanel runat="server" ID="uxAssignCrossingForm">
+         <ext:Window runat="server" ID="uxAssignCrossingWindow" Hidden="true" Width="650" Height="450" Modal="true">
+           
+              
                     <Items>
-        <ext:GridPanel ID="uxCrossingGrid" runat="server" Flex="1" Title="Apply Selected Crossing to Project" Margins="0 2 0 0" SelectionMemory="true" >
+        <ext:GridPanel ID="uxCrossingGrid" runat="server" Title="Apply Selected Crossing to Project" Height="390" >
             <Store>
                 <ext:Store runat="server"
                     ID="uxCurrentSecurityCrossingStore"
@@ -173,7 +173,7 @@
                 <ext:FilterHeader ID="FilterHeader1" runat="server"  />
             </Plugins>
             <SelectionModel>
-                <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi"  />
+                <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi" />
             </SelectionModel>
              <Listeners>
                 <Select Handler="#{uxApplyButtonCS}.enable() " />
@@ -181,9 +181,11 @@
            
         </ext:GridPanel>
 
-        <ext:Toolbar ID="Toolbar1" runat="server">
+               
+                
+                 <ext:StatusBar ID="StatusBar1" runat="server">
             <Items>
-                <ext:ToolbarFill ID="ToolbarFill1" runat="server" />
+               <%-- <ext:ToolbarFill ID="ToolbarFill1" runat="server" />--%>
 
                 <ext:Button ID="uxApplyButtonCS" runat="server" Text="Associate" Icon="ArrowJoin" Disabled="true">
                     <DirectEvents>
@@ -207,9 +209,8 @@
                             </ext:Button>
                  
             </Items>
-        </ext:Toolbar>
-                        </Items>
-               </ext:FormPanel>
+        </ext:StatusBar>
+             
             </Items>
         </ext:Window>
 

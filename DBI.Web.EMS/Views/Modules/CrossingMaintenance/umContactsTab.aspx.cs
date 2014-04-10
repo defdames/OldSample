@@ -350,7 +350,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 //Get List of all new contacts
 
                 data = (from d in _context.CROSSING_CONTACTS
-                        select new { d.CONTACT_ID, d.CONTACT_NAME, d.CELL_NUMBER, d.WORK_NUMBER }).ToList<object>();
+                        select new { d.CONTACT_ID, d.CONTACT_NAME, d.CELL_NUMBER, d.WORK_NUMBER, d.RAILROAD }).ToList<object>();
 
                 int count;
                 uxAssignContactManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
