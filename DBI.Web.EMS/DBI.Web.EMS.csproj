@@ -167,6 +167,7 @@
     <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
     <Content Include="Views\Modules\Overhead\umAddGLAccount.aspx" />
     <Content Include="Views\Modules\Overhead\umSecurity.aspx" />
+    <Content Include="Views\Modules\Overhead\umViewBudgets.aspx" />
     <Content Include="Views\Modules\Security\umEditGroups.aspx" />
     <Content Include="Views\Modules\Security\umEditModules.aspx" />
     <Content Include="Views\Modules\Security\umEditOrgs.aspx" />
@@ -551,6 +552,13 @@
     </Compile>
     <Compile Include="Views\Modules\Overhead\umSecurity.aspx.designer.cs">
       <DependentUpon>umSecurity.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umViewBudgets.aspx.cs">
+      <DependentUpon>umViewBudgets.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umViewBudgets.aspx.designer.cs">
+      <DependentUpon>umViewBudgets.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\Security\umEditGroups.aspx.cs">
       <DependentUpon>umEditGroups.aspx</DependentUpon>
