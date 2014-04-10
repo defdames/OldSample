@@ -37,16 +37,17 @@
 
         <ext:Viewport runat="server" ID="uxViewPort" Layout="BorderLayout" IDMode="Explicit" Namespace="App" RenderXType="True">
             <Items>
-                        <ext:TreePanel ID="uxHierarchyTree"
+                <ext:TreePanel ID="uxHierarchyTree"
                             runat="server"
                             Title="Hierarchy List By Legal Entity"
                             Width="300"
-                            Padding="5"
                             RootVisible="false"
                             SingleExpand="true"
                             Lines="true"
+                  Padding="5"
                             UseArrows="false"
-                            Region="West">
+                      Region="West"
+                    Scroll="Vertical">
                             <Store>
                                 <ext:TreeStore ID="TreeStore1" runat="server" OnReadData="LoadHierarchyTree">
                                     <Proxy>
@@ -55,7 +56,7 @@
                                 </ext:TreeStore>
                             </Store>
                             <Root>
-                                <ext:Node NodeID="0" Text="Legal Entities" Expanded="true" />
+                                <ext:Node NodeID="0" Text="All Legal Entities" Expanded="true" />
                             </Root>
                             <SelectionModel>
                                 <ext:TreeSelectionModel ID="uxHierarchyTreeSelectionModel" runat="server" Mode="Single"></ext:TreeSelectionModel>
@@ -71,6 +72,9 @@
                                 <Select Handler="#{uxShowGLAccoutsWindow}.disable();"></Select>
                             </Listeners>
                         </ext:TreePanel>
+
+
+                        
                
                 <ext:GridPanel ID="uxOrganizationsGrid" runat="server" Flex="1" SimpleSelect="true" Title="Organizations By Hierarchy" Padding="5" Region="Center">
                     <Store>
@@ -168,18 +172,21 @@
                             <Proxy>
                                 <ext:PageProxy />
                             </Proxy>
+                            <Sorters>
+                                <ext:DataSorter Property="SEGMENT5DESC" Direction="ASC" />
+                            </Sorters>
                             <Listeners><Load Handler="#{uxGlAccountDelete}.disable();"></Load></Listeners>
                         </ext:Store>
                     </Store>
                    
                     <ColumnModel>
                         <Columns>
+                             <ext:Column ID="Column7" runat="server" DataIndex="SEGMENT5DESC" Text="Account Name" Flex="2" />
                             <ext:Column ID="Column4" runat="server" DataIndex="SEGMENT1" Text="Company" Flex="1" />
                             <ext:Column ID="Column3" runat="server" DataIndex="SEGMENT2" Text="Location" Flex="1" />
                             <ext:Column ID="Column5" runat="server" DataIndex="SEGMENT3" Text="Division" Flex="1" />
                             <ext:Column ID="Column6" runat="server" DataIndex="SEGMENT4" Text="Branch" Flex="1" />
                             <ext:Column ID="Column10" runat="server" DataIndex="SEGMENT5" Text="Account" Flex="1" />
-                            <ext:Column ID="Column7" runat="server" DataIndex="SEGMENT5DESC" Text="Account Name" Flex="1" />
                             <ext:Column ID="Column11" runat="server" DataIndex="SEGMENT6" Text="Type" Flex="1" />
                             <ext:Column ID="Column12" runat="server" DataIndex="SEGMENT7" Text="Future" Flex="1" />
                         </Columns>
@@ -190,8 +197,8 @@
                     <SelectionModel>
                         <ext:RowSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Simple">
                             <Listeners>
-                                <Select Handler="if(#{uxGlAccountSecurityGridSelectionModel}.getCount() > 0){#{uxGlAccountDelete}.enable();}"></Select>
-                                <Deselect Handler="if(#{uxGlAccountSecurityGridSelectionModel}.getCount() > 0){#{uxGlAccountDelete}.enable();}"></Deselect>
+                                <Select Handler="if(#{uxGlAccountSecurityGridSelectionModel}.getCount() > 0){#{uxGlAccountDelete}.enable();}else {#{uxGlAccountDelete}.disable();}"></Select>
+                                <Deselect Handler="if(#{uxGlAccountSecurityGridSelectionModel}.getCount() > 0){#{uxGlAccountDelete}.enable();} else {#{uxGlAccountDelete}.disable();}"></Deselect>
                             </Listeners>
                         </ext:RowSelectionModel>
                     </SelectionModel>

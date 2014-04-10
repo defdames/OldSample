@@ -194,7 +194,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 }
             };
 
-            win.Listeners.Close.Handler = "#{uxGlAccountSecurityGrid}.getStore().load();";
+            win.Listeners.Close.Handler = "#{uxGlAccountSecurityGrid}.getStore().load();#{uxOrganizationsGrid}.getStore().load();";
 
             win.Render(this.Form);
             win.Show();
