@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+<head id="Head1" runat="server">
     <title></title>
    
 
@@ -16,24 +16,24 @@
             <div>
                 <ext:Viewport ID="ViewPort1" runat="server" layout="BorderLayout">
                     <Items>
-                        <ext:FormPanel runat="server"
+                        <ext:FormPanel ID="FormPanel1" runat="server"
                             Title="Clock"
                             BodyPadding="5"
                             Width="350">
 
                             <Items>
-                                <ext:TextField Id="txtTime_In" runat="server" FieldLabel="Time In" readonly="true"/>
-                                <ext:TextField ID="txtTime_Out" runat="server" FieldLabel="Time Out" readonly="true"/>
-                                <ext:TextField ID="txtUser_Name" runat="server" FieldLabel="Name"   readonly="true" />
+                                <ext:TextField Id="uxTime_InTextBox" runat="server" FieldLabel="Time In" readonly="true"/>
+                                <ext:TextField ID="uxTime_OutTextBox" runat="server" FieldLabel="Time Out" readonly="true"/>
+                                <ext:TextField ID="uxUser_NameTextBox" runat="server" FieldLabel="Name"   readonly="true" />
                             </Items>
                             <Buttons>
-                                <ext:Button runat="server" ID="btnTimeIn" Text="Time In">
+                                <ext:Button runat="server" ID="uxTimeInButton" Text="Time In">
                                     <DirectEvents>
                                         <Click OnEvent="deSetTimeIn"/>
                                     </DirectEvents>
                                 </ext:Button>
 
-                                <ext:Button runat="server" ID="btnTimeOut" Text="Time Out">
+                                <ext:Button runat="server" ID="uxTimeOutButton" Text="Time Out">
                                     <DirectEvents>
                                         <Click OnEvent="deSetTimeOut"/>
                                     </DirectEvents>

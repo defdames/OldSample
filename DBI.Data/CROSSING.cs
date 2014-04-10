@@ -17,8 +17,8 @@ namespace DBI.Data
         public CROSSING()
         {
             this.CROSSING_DATA_ENTRY = new HashSet<CROSSING_DATA_ENTRY>();
-            this.CROSSING_SUPPLEMENTAL = new HashSet<CROSSING_SUPPLEMENTAL>();
             this.CROSSING_INCIDENT = new HashSet<CROSSING_INCIDENT>();
+            this.CROSSING_SUPPLEMENTAL = new HashSet<CROSSING_SUPPLEMENTAL>();
         }
     
         public long CROSSING_ID { get; set; }
@@ -33,7 +33,6 @@ namespace DBI.Data
         public string COUNTY { get; set; }
         public string RESTRICTED_COUNTY { get; set; }
         public string REMARKS { get; set; }
-        public string SPECIAL_INSTRUCTIONS { get; set; }
         public string ROUTE { get; set; }
         public string THIRD_APP_REQUIRED { get; set; }
         public string PRICE_CATEGORY { get; set; }
@@ -74,10 +73,11 @@ namespace DBI.Data
         public string RAILROAD { get; set; }
         public string SERVICE_UNIT { get; set; }
         public Nullable<long> PROJECT_ID { get; set; }
+        public string SPECIAL_INSTRUCTIONS { get; set; }
     
         public virtual CROSSING_CONTACTS CROSSING_CONTACTS { get; set; }
         public virtual ICollection<CROSSING_DATA_ENTRY> CROSSING_DATA_ENTRY { get; set; }
-        public virtual ICollection<CROSSING_SUPPLEMENTAL> CROSSING_SUPPLEMENTAL { get; set; }
         public virtual ICollection<CROSSING_INCIDENT> CROSSING_INCIDENT { get; set; }
+        public virtual ICollection<CROSSING_SUPPLEMENTAL> CROSSING_SUPPLEMENTAL { get; set; }
     }
 }

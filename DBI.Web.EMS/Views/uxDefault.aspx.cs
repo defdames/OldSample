@@ -22,7 +22,7 @@ namespace DBI.Web.EMS.Views
     {
         protected void Page_Load(object sender, EventArgs e)
         {   
-            if (!X.IsAjaxRequest)
+            if (!X.IsAjaxRequest && !IsPostBack)
             {
                 // Look for cookie information for language support
                 if (Request.Cookies["UserSettings"] != null)
@@ -61,7 +61,6 @@ namespace DBI.Web.EMS.Views
                 }
             }
             GenerateMenuItems(User as ClaimsPrincipal);
-
         }
 
         /// <summary>
@@ -87,12 +86,14 @@ namespace DBI.Web.EMS.Views
 
                 SYS_USER_INFORMATION userDetails = SYS_USER_INFORMATION.UserByUserName(Authentication.GetClaimValue("ImpersonatorUsername", User as ClaimsPrincipal));
 
-                List<Claim> claims = DBI.Data.SYS_ACTIVITY.Claims(userDetails.USER_NAME);
+                List<Claim> claims = SYS_PERMISSIONS.Claims(userDetails.USER_NAME);
 
                 // Add full name of user to the claims 
                 claims.Add(new Claim("EmployeeName", Authentication.GetClaimValue("EmployeeName", User as ClaimsPrincipal)));
+                var id = new ClaimsIdentity(claims, "Forms");
+                var cp = new ClaimsPrincipal(id);
 
-                var token = Authentication.GenerateSessionSecurityToken(claims);
+                var token = new SessionSecurityToken(cp);
                 var sam = FederatedAuthentication.SessionAuthenticationModule;
                 sam.WriteSessionTokenToCookie(token);
 
@@ -109,7 +110,6 @@ namespace DBI.Web.EMS.Views
         /// </summary>
         public void GenerateMenuItems(ClaimsPrincipal icp)
         {
-
             long UserId = long.Parse(Authentication.GetClaimValue("UserId", icp));
 
             List<SYS_PERMISSIONS> Permissions = SYS_PERMISSIONS.GetPermissions(UserId);
@@ -180,9 +180,10 @@ namespace DBI.Web.EMS.Views
                                             AppMenuItem.Icon = (MenuItem.ICON == null ? Icon.None : (Icon)Enum.Parse(typeof(Icon), MenuItem.ICON));
                                             AppPanel.Menu.Items.Add(AppMenuItem);
                                         }
-                                        uxWest.Items.Add(AppPanel);
+                                        
                                     }
                                 }
+                                uxWest.Items.Add(AppPanel);
                             }
                         }
                     

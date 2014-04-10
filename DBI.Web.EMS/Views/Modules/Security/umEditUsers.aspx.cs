@@ -92,7 +92,7 @@ namespace DBI.Web.EMS.Views.Modules.Security
             }
             foreach (SYS_PERMISSIONS NotSelectedPermission in AllPermissions)
             {
-                if (GroupPermissions.Exists(x => x.PERMISSION_ID == NotSelectedPermission.PERMISSION_ID))
+                if (GroupPermissions.Exists(x => x.PERMISSION_ID == NotSelectedPermission.PERMISSION_ID)  &&!UserPermissions.Exists(x => x.PERMISSION_ID == NotSelectedPermission.PERMISSION_ID))
                 {
                     //add deny
                     SYS_USER_PERMS ToDeny = new SYS_USER_PERMS
@@ -103,7 +103,7 @@ namespace DBI.Web.EMS.Views.Modules.Security
                     };
                     GenericData.Insert<SYS_USER_PERMS>(ToDeny);
                 }
-                else if (UserPermissions.Exists(x => x.PERMISSION_ID == NotSelectedPermission.PERMISSION_ID))
+                else if (UserPermissions.Exists(x => (x.PERMISSION_ID == NotSelectedPermission.PERMISSION_ID)&&(x.ALLOW_DENY == "A")))
                 {
                     //remove allow
                     SYS_USER_PERMS ToDelete;

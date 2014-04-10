@@ -976,7 +976,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             Notification.Show(new NotificationConfig()
             {
                 Title = "Success",
-                Html = "Supplemental Added Successfully",
+                Html = "Incident Added Successfully",
                 HideDelay = 1000,
                 AlignCfg = new NotificationAlignConfig
                 {

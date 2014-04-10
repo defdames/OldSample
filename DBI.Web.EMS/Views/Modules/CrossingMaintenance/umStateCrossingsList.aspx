@@ -60,7 +60,7 @@
             <Store>
                 <ext:Store ID="uxStateCrossingListStore"
                     runat="server"
-                    GroupField="SUB_DIVISION" OnReadData="deStateCrossingListGrid" PageSize="5" RemoteSort="true">
+                    GroupField="SUB_DIVISION" OnReadData="deStateCrossingListGrid" PageSize="7" RemoteSort="true">
                     <Model>
                         <ext:Model ID="Model1" runat="server">
                             <Fields>
@@ -110,9 +110,9 @@
                         <Template ID="Template1" runat="server">
                             <Html>
 						        <tpl for=".">
-							        {ROWNE}  -
-								    {ROWNW}  -
-								    {ROWSE}  -
+							        {ROWNE}  &nbsp&nbsp
+								    {ROWNW}  &nbsp&nbsp
+								    {ROWSE}  &nbsp&nbsp
                                     {ROWSW} 
 						        </tpl>
 					        </Html>
