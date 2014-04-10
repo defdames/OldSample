@@ -110,9 +110,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         protected void deExportToPDF(object sender, DirectEventArgs e)
         {
             //Set crossing Id
+            
+                long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
 
-            long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
-           
                 MemoryStream PdfStream = generatePDF(CrossingId);
 
                 Response.Clear();
@@ -144,6 +144,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         protected MemoryStream generatePDF(long CrossingId)
         {
+            CROSSING data = new CROSSING();
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.CROSSINGS
+                        where d.CROSSING_ID == CrossingId
+                        select d).Single();
+            }
            
             using (MemoryStream PdfStream = new MemoryStream())
             {
@@ -155,6 +162,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 Font HeadFootTitleFont = FontFactory.GetFont("Verdana", 7, Font.BOLD);
                 Font HeadFootCellFont = FontFactory.GetFont("Verdana", 7);
                 Font CellFont = FontFactory.GetFont("Verdana", 6);
+                
                 //Open Document
                 ExportedPDF.Open();
 
@@ -173,10 +181,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     {
 
                     var CrossingData = GetCrossingData(CrossingId);
-                    
-                    //PdfPTable CrossingTable = new PdfPTable(8);
+                   
 
                     Cells = new PdfPCell[]{
+                    
                     new PdfPCell(new Phrase("Sub-Division", HeaderFont)),
                     new PdfPCell(new Phrase("MP", HeaderFont)),
                     new PdfPCell(new Phrase("DOT #", HeaderFont)),
@@ -192,7 +200,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     new PdfPCell(new Phrase("Latitude", HeaderFont)),
                     new PdfPCell(new Phrase("Longitude", HeaderFont)),
                     new PdfPCell(new Phrase("Special\nInstructions", HeaderFont))};
-
+                
                     Row = new PdfPRow(Cells);
                     CrossingTable.Rows.Add(Row);
 
@@ -290,8 +298,24 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
                 catch (Exception)
                 { }
-
-
+                    ExportWriter.CloseStream = false;
+                    ExportedPDF.Close();
+                    return PdfStream;
+            }
+        }
+      
+        public class CrossingForApplicationDetails
+        {
+            public long CROSSING_ID { get; set; }
+            public string CROSSING_NUMBER { get; set; }
+            public string SERVICE_UNIT { get; set; }
+            public string SUB_DIVISION { get; set; }
+            public string DOT { get; set; }
+            public string MILE_POST { get; set; }
+            public string STATE { get; set; }
+            public string CONTACT_ID { get; set; }
+        }
+        
 
                 //Get Footer Data
                 //try
@@ -435,22 +459,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 //}
                 //Close Stream and start Download
 
-                ExportWriter.CloseStream = false;
-                ExportedPDF.Close();
-                return PdfStream;
-            }
-        }
-        public class CrossingForApplicationDetails
-        {
-            public long CROSSING_ID { get; set; }
-            public string CROSSING_NUMBER { get; set; }
-            public string SERVICE_UNIT { get; set; }
-            public string SUB_DIVISION { get; set; }
-            public string DOT { get; set; }
-            public string MILE_POST { get; set; }
-            public string STATE { get; set; }
-            public string CONTACT_ID { get; set; }
-        }
+              
     }
 }
         

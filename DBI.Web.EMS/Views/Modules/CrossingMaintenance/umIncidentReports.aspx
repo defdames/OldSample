@@ -6,7 +6,12 @@
 <head runat="server">
     <title></title>
       <style type="text/css">
-        
+
+        .rowBodyCls .x-grid-cell-rowbody {
+            border-style: solid;
+            border-width: 0px 0px 1px;
+            border-color: black;
+        }
        .x-grid-group-title {
         color: #000000;
         font: bold 11px/13px tahoma,arial,verdana,sans-serif;
@@ -21,6 +26,20 @@
         }
           
     </style>
+     <script type="text/javascript">
+
+         var GetAdditionalData = function (data, rowIndex, record, orig) {
+             var headerCt = this.view.headerCt,
+             colspan = headerCt.getColumnCount();
+             return {
+                 rowBody: data.REMARKS,
+                 rowBodyCls: this.rowBodyCls,
+                 rowBodyColspan: colspan,
+
+
+             };
+         };
+    </script>    
 </head>
 <body>
     <form id="form1" runat="server">
@@ -88,6 +107,14 @@
                      <ext:Column ID="Column5" runat="server" DataIndex="SLOW_ORDER" Text="Slow Order" Flex="1" />
                 </Columns>
             </ColumnModel>
+            <Features>
+            <ext:RowBody ID="RowBody1" runat="server" RowBodyCls="rowBodyCls" >
+                
+                <GetAdditionalData Fn="GetAdditionalData"  />
+                   
+                
+            </ext:RowBody>
+            </Features>
             <Features>
                 <ext:Grouping ID="Grouping1"
                     runat="server"

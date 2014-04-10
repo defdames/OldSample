@@ -610,7 +610,7 @@
                                 MultiSelect="true"
                                 Flex="1"
                                 Title="Current Managers Crossings"
-                                Margins="0 2 0 0">
+                                Margins="0 2 0 0" >
 
                                 <Store>
                                     <ext:Store ID="uxCurrentManagerCrossingStore" runat="server">
