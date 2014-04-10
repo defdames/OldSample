@@ -636,7 +636,7 @@ namespace DBI.Data
 
 
                         long GlCode = getGlCode((long)InventoryItem.PROJECT_ID);
-                        decimal Quantity = -Math.Abs((decimal)InventoryItem.i.RATE);
+                        decimal Quantity = -Math.Abs((decimal)InventoryItem.i.TOTAL);
                         //GL_CODE Account = GetProjectGLCode (InventoryItem.PROJECT_ID);
                         MTL_TRANSACTION_INT_V Record = new MTL_TRANSACTION_INT_V
                         {
