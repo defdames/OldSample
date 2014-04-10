@@ -208,7 +208,7 @@
                             <ext:TextField ID="uxAddNewContactOffice" runat="server" FieldLabel="Office #" AnchorHorizontal="100%" LabelAlign="Right" />
                         </Items>
                         <Buttons>
-                            <ext:Button runat="server" ID="deAddContacts" Text="Add" Icon="Add">
+                            <ext:Button runat="server" ID="deAddContacts" Text="Add" Icon="Add" Disabled="true">
                                 <DirectEvents>
                                     <Click OnEvent="deAddContact" />
                                 </DirectEvents>
@@ -333,13 +333,14 @@
                                     <ext:Store runat="server"
                                         ID="uxAssignContactManagerStore"
                                         OnReadData="deAssignContactManagerGrid"
-                                        PageSize="10"
+                                        
                                         AutoDataBind="true" WarningOnDirty="false">
                                         <Model>
                                             <ext:Model ID="Model4" runat="server" IDProperty="CONTACT_ID">
                                                 <Fields>
                                                     <ext:ModelField Name="CONTACT_ID" />
                                                     <ext:ModelField Name="CONTACT_NAME" />
+                                                    <ext:ModelField Name="RAILROAD" />
                                                     <ext:ModelField Name="WORK_NUMBER" />
                                                     <ext:ModelField Name="CELL_NUMBER" />
 
@@ -354,6 +355,7 @@
                                 <ColumnModel>
                                     <Columns>
                                         <ext:Column ID="Column2" runat="server" DataIndex="CONTACT_NAME" Text="Manager" Flex="2" />
+                                        <ext:Column ID="Column12" runat="server" DataIndex="RAILROAD" Text="Rail Road" Flex="1" />
                                         <ext:Column ID="Column10" runat="server" DataIndex="WORK_NUMBER" Text="Work Number" Flex="2" />
                                         <ext:Column ID="Column11" runat="server" DataIndex="CELL_NUMBER" Text="Cell Number" Flex="2" />
                                     </Columns>
@@ -366,9 +368,7 @@
                                     <ext:FilterHeader ID="FilterHeader2" runat="server" />
                                 </Plugins>
 
-                                <BottomBar>
-                                    <ext:PagingToolbar ID="PagingToolbar2" runat="server" />
-                                </BottomBar>
+                               
                                   <Listeners>
 				                    <Select Handler="#{uxAssignCrossingGrid}.enable(); " /> 
                                     <Deselect Handler="#{uxAssignCrossingGrid}.disable(); #{uxApplyButtonCON}.disable()"/>
@@ -381,8 +381,8 @@
                                 <Store>
                                     <ext:Store runat="server"
                                         ID="uxAssignContactCrossingStore"
-                                        OnReadData="deAssignContactCrossingGrid"
-                                        PageSize="10"
+                                        OnReadData="deAssignContactCrossingGrid" 
+                                        
                                         AutoDataBind="true" WarningOnDirty="false">
                                         <Model>
                                             <ext:Model ID="Model5" runat="server">
@@ -402,8 +402,8 @@
                                 </Store>
                                 <ColumnModel>
                                     <Columns>
-                                        <ext:Column ID="Column6" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing #" Flex="2" />
-                                        <ext:Column ID="Column7" runat="server" DataIndex="RAILROAD" Text="Rail Road" Flex="2" />
+                                        <ext:Column ID="Column6" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing #" Flex="1" />
+                                        <ext:Column ID="Column7" runat="server" DataIndex="RAILROAD" Text="Rail Road" Flex="1" />
                                         <ext:Column ID="Column8" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="2" />
                                         <ext:Column ID="Column9" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="2" />
                                     </Columns>
@@ -414,9 +414,9 @@
                                 <SelectionModel>
                                     <ext:CheckboxSelectionModel ID="cm" runat="server" Mode="Multi" />
                                 </SelectionModel>
-                                <BottomBar>
+                               <%-- <BottomBar>
                                     <ext:PagingToolbar ID="PagingToolbar4" runat="server" />
-                                </BottomBar>
+                                </BottomBar>--%>
                                   <Listeners>
 				                    <Select Handler="#{uxApplyButtonCON}.enable();" /> 
                                     
@@ -541,9 +541,9 @@
                                                 <ext:Column ID="Column5" runat="server" Text="Manager Name" DataIndex="CONTACT_NAME" Width="425" />
                                             </Columns>
                                         </ColumnModel>
-                                        <BottomBar>
+                                       <%-- <BottomBar>
                                             <ext:PagingToolbar ID="PagingToolbar5" runat="server" />
-                                        </BottomBar>
+                                        </BottomBar>--%>
                                         <SelectionModel>
                                             <ext:RowSelectionModel ID="RowSelectionModel4" runat="server" Mode="Single" />
                                         </SelectionModel>
@@ -564,7 +564,7 @@
                             </ext:DropDownField>
                         </Items>
                         <Buttons>
-                            <ext:Button runat="server" ID="uxSelectCrossingToUpdate" Text="Select Crossings to Update" Icon="Add">
+                            <ext:Button runat="server" ID="uxSelectCrossingToUpdate" Text="Select Crossings to Update" Icon="Add" Disabled="true">
 
                                 <DirectEvents>
                                     <Click OnEvent="deShowGrid">
@@ -610,7 +610,7 @@
                                 MultiSelect="true"
                                 Flex="1"
                                 Title="Current Managers Crossings"
-                                Margins="0 2 0 0">
+                                Margins="0 2 0 0" >
 
                                 <Store>
                                     <ext:Store ID="uxCurrentManagerCrossingStore" runat="server">

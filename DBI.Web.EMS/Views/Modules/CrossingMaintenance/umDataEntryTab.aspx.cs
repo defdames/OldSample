@@ -43,9 +43,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 e.Total = count;
             }
         }
-        //   protected void GetApplicationGridData(object sender, DirectEventArgs e)
+        //protected void GetApplicationGridData(object sender, DirectEventArgs e)
         //{
-        //    //Get Supplemental data and set datasource
+        //    //Get application data and set datasource
         //    using (Entities _context = new Entities())
         //    {
         //        long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
