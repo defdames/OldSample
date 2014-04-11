@@ -24,5 +24,6 @@ namespace DBI.Data
         public Nullable<decimal> ACTUAL_HOURS { get; set; }
         public Nullable<decimal> ADJUSTED_HOURS { get; set; }
         public Nullable<int> SUPERVISOR_ID { get; set; }
+        public string DAY_OF_WEEK { get; set; }
     }
 }
