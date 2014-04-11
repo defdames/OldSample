@@ -26,6 +26,7 @@
                                 <ext:ModelField Name="TIME_IN" type="Date" />
                                 <ext:ModelField Name="TIME_OUT" type="Date"/>
                                 <ext:ModelField Name="TOTAL_HOURS" />
+                                <ext:ModelField Name="DAY_OF_WEEK" />
                             </Fields>
                         </ext:Model>
                     </Model>
@@ -39,7 +40,7 @@
                         DataIndex="EMPLOYEE_NAME"
                         Sortable="true" 
                         Locked="True"/>
-                    <ext:Column ID="Column21" runat="server" Text="Sunday">
+                    <ext:Column ID="colSunday" runat="server" Dataindex="DAY_OF_WEEK" Text="Sunday">
                         <Columns>
                             <ext:DateColumn ID="Column22"
                                 runat="server"
@@ -60,7 +61,7 @@
                             </ext:Column>
                         </Columns>
                     </ext:Column>
-                    <ext:Column ID="Column2" runat="server" Text="Monday">
+                    <ext:Column ID="colMonday" runat="server" text="Monday">
                         <Columns>
                             <ext:DateColumn ID="uxTimeInMonday"
                                 runat="server"
@@ -81,7 +82,7 @@
                             </ext:Column>
                         </Columns>
                     </ext:Column>
-                    <ext:Column ID="Column3" runat="server" Text="Tuesday">
+                    <ext:Column ID="colTuesday" runat="server" Text="Tuesday">
                         <Columns>
                             <ext:DateColumn ID="Column4"
                                 runat="server"
@@ -102,7 +103,7 @@
                             </ext:Column>
                         </Columns>
                     </ext:Column>
-                    <ext:Column ID="Column7" runat="server" Text="Wednesday">
+                    <ext:Column ID="colWednesday" runat="server" Text="Wednesday">
                         <Columns>
                             <ext:DateColumn ID="Column8"
                                 runat="server"
@@ -123,7 +124,7 @@
                             </ext:Column>
                         </Columns>
                     </ext:Column>
-                    <ext:Column ID="Column11" runat="server" Text="Thursday">
+                    <ext:Column ID="colThursday" runat="server" Text="Thursday">
                         <Columns>
                             <ext:DateColumn ID="Column12"
                                 runat="server"
@@ -144,7 +145,7 @@
                             </ext:Column>
                         </Columns>
                     </ext:Column>
-                    <ext:Column ID="Column15" runat="server" Text="Friday">
+                    <ext:Column ID="colFriday" runat="server" Text="Friday">
                         <Columns>
                             <ext:DateColumn ID="Column16"
                                 runat="server"
@@ -165,7 +166,7 @@
                             </ext:Column>
                         </Columns>
                     </ext:Column>
-                    <ext:Column ID="Column19" runat="server" Text="Saturday">
+                    <ext:Column ID="colSaturday" runat="server" Text="Saturday">
                         <Columns>
                             <ext:DateColumn ID="Column20"
                                 runat="server"

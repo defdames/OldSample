@@ -18,6 +18,8 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
         protected void Page_Load(object sender, EventArgs e)
         {
             GetEmployeeHoursData();
+            
+            
         }
         protected void GetEmployeeHoursData()
         {
@@ -29,14 +31,16 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
             {
                 var data = (from tc in _context.TIME_CLOCK
                             join ev in _context.EMPLOYEES_V on tc.PERSON_ID equals ev.PERSON_ID
-                            where tc.SUPERVISOR_ID == person_id && tc.TIME_OUT != null
+                            where tc.SUPERVISOR_ID == person_id && tc.COMPLETED == "Y"                                                        
                             select new EmployeeTime { TIME_IN = (DateTime)tc.TIME_IN, TIME_OUT = (DateTime)tc.TIME_OUT, EMPLOYEE_NAME = ev.EMPLOYEE_NAME }).ToList();
+            
                 foreach (var item in data)
                 {
                     TimeSpan ts = item.TIME_OUT - item.TIME_IN;
                     DateTime dow = item.TIME_IN;
                     item.TOTAL_HOURS = ts.ToString(@"dd\.hh\:mm");
                     item.DAY_OF_WEEK = dow.DayOfWeek.ToString();
+                    
                 }
                 uxEmployeeHoursStore.DataSource = data;
             }

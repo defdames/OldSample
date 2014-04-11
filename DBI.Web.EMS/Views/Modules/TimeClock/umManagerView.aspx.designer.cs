@@ -85,13 +85,13 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         protected global::Ext.Net.Column Column1;
         
         /// <summary>
-        /// Column21 control.
+        /// colSunday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column21;
+        protected global::Ext.Net.Column colSunday;
         
         /// <summary>
         /// Column22 control.
@@ -121,13 +121,13 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         protected global::Ext.Net.Column Column24;
         
         /// <summary>
-        /// Column2 control.
+        /// colMonday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column2;
+        protected global::Ext.Net.Column colMonday;
         
         /// <summary>
         /// uxTimeInMonday control.
@@ -157,13 +157,13 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         protected global::Ext.Net.Column uxTotalHoursMonday;
         
         /// <summary>
-        /// Column3 control.
+        /// colTuesday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column3;
+        protected global::Ext.Net.Column colTuesday;
         
         /// <summary>
         /// Column4 control.
@@ -193,13 +193,13 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         protected global::Ext.Net.Column Column6;
         
         /// <summary>
-        /// Column7 control.
+        /// colWednesday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column7;
+        protected global::Ext.Net.Column colWednesday;
         
         /// <summary>
         /// Column8 control.
@@ -229,13 +229,13 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         protected global::Ext.Net.Column Column10;
         
         /// <summary>
-        /// Column11 control.
+        /// colThursday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column11;
+        protected global::Ext.Net.Column colThursday;
         
         /// <summary>
         /// Column12 control.
@@ -265,13 +265,13 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         protected global::Ext.Net.Column Column14;
         
         /// <summary>
-        /// Column15 control.
+        /// colFriday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column15;
+        protected global::Ext.Net.Column colFriday;
         
         /// <summary>
         /// Column16 control.
@@ -301,13 +301,13 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         protected global::Ext.Net.Column Column18;
         
         /// <summary>
-        /// Column19 control.
+        /// colSaturday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column19;
+        protected global::Ext.Net.Column colSaturday;
         
         /// <summary>
         /// Column20 control.
