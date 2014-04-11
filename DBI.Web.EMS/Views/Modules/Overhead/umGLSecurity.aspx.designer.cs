@@ -10,7 +10,7 @@
 namespace DBI.Web.EMS.Views.Modules.Overhead {
     
     
-    public partial class umSecurity {
+    public partial class umGLSecurity {
         
         /// <summary>
         /// ResourceManager1 control.

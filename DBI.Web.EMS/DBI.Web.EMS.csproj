@@ -166,7 +166,8 @@
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
     <Content Include="Views\Modules\Overhead\umAddGLAccount.aspx" />
-    <Content Include="Views\Modules\Overhead\umSecurity.aspx" />
+    <Content Include="Views\Modules\Overhead\umOrganizationBudgetSecurity.aspx" />
+    <Content Include="Views\Modules\Overhead\umGLSecurity.aspx" />
     <Content Include="Views\Modules\Overhead\umViewBudgets.aspx" />
     <Content Include="Views\Modules\Security\umEditGroups.aspx" />
     <Content Include="Views\Modules\Security\umEditModules.aspx" />
@@ -546,12 +547,19 @@
     <Compile Include="Views\Modules\Overhead\umAddGLAccount.aspx.designer.cs">
       <DependentUpon>umAddGLAccount.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\Overhead\umSecurity.aspx.cs">
-      <DependentUpon>umSecurity.aspx</DependentUpon>
+    <Compile Include="Views\Modules\Overhead\umOrganizationBudgetSecurity.aspx.cs">
+      <DependentUpon>umOrganizationBudgetSecurity.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\Overhead\umSecurity.aspx.designer.cs">
-      <DependentUpon>umSecurity.aspx</DependentUpon>
+    <Compile Include="Views\Modules\Overhead\umOrganizationBudgetSecurity.aspx.designer.cs">
+      <DependentUpon>umOrganizationBudgetSecurity.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umGLSecurity.aspx.cs">
+      <DependentUpon>umGLSecurity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umGLSecurity.aspx.designer.cs">
+      <DependentUpon>umGLSecurity.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\Overhead\umViewBudgets.aspx.cs">
       <DependentUpon>umViewBudgets.aspx</DependentUpon>

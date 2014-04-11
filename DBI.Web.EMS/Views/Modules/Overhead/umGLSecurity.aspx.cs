@@ -9,7 +9,7 @@ using Ext.Net;
 
 namespace DBI.Web.EMS.Views.Modules.Overhead
 {
-    public partial class umSecurity : System.Web.UI.Page
+    public partial class umGLSecurity : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

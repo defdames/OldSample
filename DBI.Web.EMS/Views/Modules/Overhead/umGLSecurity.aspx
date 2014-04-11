@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umSecurity.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.Overhead.umSecurity" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umGLSecurity.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.Overhead.umGLSecurity" %>
 
 <!DOCTYPE html>
 
