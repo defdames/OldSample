@@ -32,6 +32,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     uxAddEmployeeTravelTimeMinutes.Value = "0";
                     if (GetOrgId(HeaderId) == 123)
                     {
+                        uxAddEmployeeDriveTimeHours.Show();
+                        uxAddEmployeeDriveTimeMinutes.Show();
                         uxAddEmployeeShopTimeAMHours.Show();
                         uxAddEmployeeShopTimeAMMinutes.Show();
                         uxAddEmployeeShopTimePMHours.Show();
@@ -52,6 +54,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     LoadEditEmployeeForm();
                     if (GetOrgId(HeaderId) == 123)
                     {
+                        uxEditEmployeeDriveTimeHours.Show();
+                        uxEditEmployeeDriveTimeMinutes.Show();
                         uxEditEmployeeShopTimeAMHours.Show();
                         uxEditEmployeeShopTimeAMMinutes.Show();
                         uxEditEmployeeShopTimePMHours.Show();

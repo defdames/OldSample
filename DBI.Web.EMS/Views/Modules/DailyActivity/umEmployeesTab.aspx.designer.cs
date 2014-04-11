@@ -49,6 +49,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Store uxCurrentEmployeeStore;
         
         /// <summary>
+        /// uxDriveTimeColumn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column uxDriveTimeColumn;
+        
+        /// <summary>
         /// uxShopTimeAMColumn control.
         /// </summary>
         /// <remarks>

@@ -30,6 +30,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 uxShopTimeAMColumn.Show();
                 uxShopTimePMColumn.Show();
+                uxDriveTimeColumn.Show();
                 uxSupportProjectColumn.Show();
             }
         }
