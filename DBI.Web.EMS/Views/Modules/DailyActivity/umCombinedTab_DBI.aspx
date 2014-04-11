@@ -229,6 +229,7 @@
 								<ext:Model ID="Model6" runat="server">
 									<Fields>
 										<ext:ModelField Name="CHEMICAL_MIX_NUMBER" />
+                                        <ext:ModelField Name="INV_NAME" />
 										<ext:ModelField Name="SUB_INVENTORY_SECONDARY_NAME" />
 										<ext:ModelField Name="DESCRIPTION" />
 										<ext:ModelField Name="RATE" />
@@ -243,6 +244,7 @@
 					<ColumnModel>
 						<Columns>
 							<ext:Column ID="Column36" runat="server" DataIndex="CHEMICAL_MIX_NUMBER" Text="Mix Number" />
+                            <ext:Column runat="server" DataIndex="INV_NAME" Text="Inventory Org" />
 							<ext:Column ID="Column37" runat="server" DataIndex="SUB_INVENTORY_SECONDARY_NAME" Text="Sub-Inv Name" />
 							<ext:Column ID="Column38" runat="server" DataIndex="DESCRIPTION" Text="Item" />
 							<ext:Column ID="Column39" runat="server" DataIndex="RATE" Text="Rate" />

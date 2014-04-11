@@ -44,6 +44,7 @@
 								<ext:ModelField Name="DRIVE_TIME_FORMATTED" Type="String"  />
 								<ext:ModelField Name="SHOPTIME_AM_FORMATTED" Type="String"  />
 								<ext:ModelField Name="SHOPTIME_PM_FORMATTED" Type="String"  />
+								<ext:ModelField Name="SUPPORT_PROJECT" />
 								<ext:ModelField Name="PER_DIEM" Type="String"  />
 								<ext:ModelField Name="COMMENTS" Type="String"  />
 								<ext:ModelField Name="ROLE_TYPE" Type="String" />
@@ -92,6 +93,12 @@
 					<ext:Column ID="uxShopTimePMColumn" runat="server"
 						Text="Shop Time PM"
 						DataIndex="SHOPTIME_PM_FORMATTED"
+						Flex="1"
+						Hidden="true" />
+					<ext:Column runat="server"
+						ID="uxSupportProjectColumn"
+						Text="Support Project"
+						DataIndex="SUPPORT_PROJECT"
 						Flex="1"
 						Hidden="true" />
 					<ext:Column runat="server"

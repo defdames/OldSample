@@ -619,7 +619,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                            where d.HEADER_ID == HeaderId
                                            from j in joined
                                            where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
-                                           select new { c.CHEMICAL_MIX_NUMBER, d.SUB_INVENTORY_SECONDARY_NAME, j.DESCRIPTION, d.TOTAL, d.RATE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).ToList<object>();
+                                           select new { c.CHEMICAL_MIX_NUMBER, j.INV_NAME, d.SUB_INVENTORY_SECONDARY_NAME, j.DESCRIPTION, d.TOTAL, d.RATE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).ToList<object>();
 
                 return returnData;
             }
@@ -635,7 +635,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                            where d.HEADER_ID == HeaderId
                                            from j in joined
                                            where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
-                                           select new {d.SUB_INVENTORY_SECONDARY_NAME, j.DESCRIPTION, d.RATE, u.UNIT_OF_MEASURE}).ToList<object>();
+                                           select new {d.SUB_INVENTORY_SECONDARY_NAME, j.INV_NAME, j.DESCRIPTION, d.RATE, u.UNIT_OF_MEASURE}).ToList<object>();
 
                 return returnData;
             }
@@ -1228,10 +1228,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     if (OrgId == 121)
                     {
                         var InventoryData = GetInventoryDBI(HeaderId);
-                        PdfPTable InventoryTable = new PdfPTable(6);
+                        PdfPTable InventoryTable = new PdfPTable(7);
 
                         Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Mix #", HeaderFont)),
+                    new PdfPCell(new Phrase("Inventory Org", HeaderFont)),
                     new PdfPCell(new Phrase("Sub-Inventory", HeaderFont)),
                     new PdfPCell(new Phrase("Item Name", HeaderFont)),
                     new PdfPCell(new Phrase("Rate", HeaderFont)),
@@ -1254,6 +1255,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             }
                             Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(Data.CHEMICAL_MIX_NUMBER.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.INV_NAME, CellFont)),
                         new PdfPCell(new Phrase(Data.SUB_INVENTORY_SECONDARY_NAME, CellFont)),
                         new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
                         new PdfPCell(new Phrase(string.Format("{0} {1}", Data.RATE.ToString(), Data.UNIT_OF_MEASURE), CellFont)),
@@ -1270,12 +1272,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     if (OrgId == 123)
                     {
                         var InventoryData = GetInventoryIRM(HeaderId);
-                        PdfPTable InventoryTable = new PdfPTable(3);
+                        PdfPTable InventoryTable = new PdfPTable(4);
 
                         Cells = new PdfPCell[]{
-                        new PdfPCell(new Phrase("Sub-Inventory", HeaderFont)),
-                        new PdfPCell(new Phrase("Item Name", HeaderFont)),
-                        new PdfPCell(new Phrase("Quantity", HeaderFont)),
+                            new PdfPCell(new Phrase("Inventory Org", HeaderFont)),
+                            new PdfPCell(new Phrase("Sub-Inventory", HeaderFont)),
+                            new PdfPCell(new Phrase("Item Name", HeaderFont)),
+                            new PdfPCell(new Phrase("Quantity", HeaderFont)),
                      };
                         Row = new PdfPRow(Cells);
                         InventoryTable.Rows.Add(Row);
@@ -1283,9 +1286,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         foreach (dynamic Data in InventoryData)
                         {
                             Cells = new PdfPCell[]{
-                        new PdfPCell(new Phrase(Data.SUB_INVENTORY_SECONDARY_NAME, CellFont)),
-                        new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
-                        new PdfPCell(new Phrase(string.Format("{0} {1}", Data.RATE.ToString(), Data.UNIT_OF_MEASURE), CellFont)),
+                                new PdfPCell(new Phrase(Data.INV_NAME, CellFont)),
+                                new PdfPCell(new Phrase(Data.SUB_INVENTORY_SECONDARY_NAME, CellFont)),
+                                new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
+                                new PdfPCell(new Phrase(string.Format("{0} {1}", Data.RATE.ToString(), Data.UNIT_OF_MEASURE), CellFont)),
                     };
 
                             Row = new PdfPRow(Cells);
@@ -1304,6 +1308,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 try
                 {
                     var FooterData = GetFooter(HeaderId);
+                    string ForemanName;
+                    using (Entities _context = new Entities())
+                    {
+                        ForemanName = (from d in _context.DAILY_ACTIVITY_HEADER
+                                       join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
+                                       where d.HEADER_ID == HeaderId
+                                       select e.EMPLOYEE_NAME).Single();
+                                      
+                    }
 
                     PdfPTable FooterTable = new PdfPTable(4);
                     FooterTable.DefaultCell.Border = PdfPCell.NO_BORDER;
@@ -1366,6 +1379,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     new PdfPCell(new Phrase(string.Format("{0} {1} {2} {3}",Hotel, City, State, Phone ), HeadFootCellFont))
                 };
 
+                    foreach (PdfPCell Cell in Cells)
+                    {
+                        Cell.Border = PdfPCell.NO_BORDER;
+                    }
+                    Row = new PdfPRow(Cells);
+                    FooterTable.Rows.Add(Row);
+
+                    Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase("Foreman Name", HeadFootTitleFont)),
+                        new PdfPCell(new Phrase(ForemanName, HeadFootCellFont)),
+                        new PdfPCell(new Phrase("Contract Rep Name", HeadFootTitleFont)),
+                        new PdfPCell(new Phrase(FooterData.CONTRACT_REP_NAME, HeadFootCellFont))
+                    };
                     foreach (PdfPCell Cell in Cells)
                     {
                         Cell.Border = PdfPCell.NO_BORDER;
