@@ -23,7 +23,37 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 X.Redirect("~/Views/uxDefault.aspx");
             }
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            int Status = GetStatus(HeaderId);
 
+            if (Status == 4)
+            {
+                uxFormContractor.ReadOnly = true;
+                uxFormDate.ReadOnly = true;
+                uxFormDensity.ReadOnly = true;
+                uxFormEmployee.ReadOnly = true;
+                uxFormLicense.ReadOnly = true;
+                uxFormProject.ReadOnly = true;
+                uxFormState.ReadOnly = true;
+                uxFormSubDivision.ReadOnly = true;
+                uxFormType.ReadOnly = true;
+            }
+            else if (Status == 3 && !validateComponentSecurity("SYS.DailyActivity.Post"))
+            {
+                uxFormContractor.ReadOnly = true;
+                uxFormDate.ReadOnly = true;
+                uxFormDensity.ReadOnly = true;
+                uxFormEmployee.ReadOnly = true;
+                uxFormLicense.ReadOnly = true;
+                uxFormProject.ReadOnly = true;
+                uxFormState.ReadOnly = true;
+                uxFormSubDivision.ReadOnly = true;
+                uxFormType.ReadOnly = true;
+            }
+            else
+            {
+                
+            }
             if (!X.IsAjaxRequest)
             {
                 GetFormData();
@@ -31,6 +61,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+
+        protected int GetStatus(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
+                int Status = (from d in _context.DAILY_ACTIVITY_HEADER
+                              where d.HEADER_ID == HeaderId
+                              select (int)d.STATUS).Single();
+                return Status;
+            }
+        }
         /// <summary>
         /// Get Value of current Header to prepopulate fields
         /// </summary>

@@ -220,15 +220,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Window uxAssignCrossingWindow;
         
         /// <summary>
-        /// uxAssignCrossingForm control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FormPanel uxAssignCrossingForm;
-        
-        /// <summary>
         /// uxCrossingGrid control.
         /// </summary>
         /// <remarks>
@@ -310,22 +301,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.CheckboxSelectionModel CheckboxSelectionModel1;
         
         /// <summary>
-        /// Toolbar1 control.
+        /// StatusBar1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Toolbar Toolbar1;
-        
-        /// <summary>
-        /// ToolbarFill1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ToolbarFill ToolbarFill1;
+        protected global::Ext.Net.StatusBar StatusBar1;
         
         /// <summary>
         /// uxApplyButtonCS control.

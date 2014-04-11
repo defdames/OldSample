@@ -13,7 +13,7 @@
 		<ext:Panel runat="server" ID="uxMainContainer" Layout="AutoLayout">
 			<Items>
 				<ext:FormPanel runat="server"
-					ID="uxHeaderPanel" Padding="10" BodyPadding="5" MaxWidth="1000" Layout="FormLayout">
+					ID="uxHeaderPanel" Padding="10" BodyPadding="5" MaxWidth="1100" Layout="FormLayout">
 					<Items>
 						<ext:TextField runat="server" ID="uxDateField" FieldLabel="Date" Width="200"  ReadOnly="true" LabelWidth="100" />
 						<ext:TextField runat="server" ID="uxHeaderField" FieldLabel="DRS Id" Width="200" ReadOnly="true" LabelWidth="100" />
@@ -30,7 +30,7 @@
 				<ext:GridPanel runat="server"
 					ID="uxEmployeeGrid"
 					Title="Employees"
-					Padding="10" MaxWidth="1000">
+					Padding="10" MaxWidth="1100">
 					<Store>
 						<ext:Store runat="server"
 							ID="uxEmployeeStore">
@@ -45,6 +45,7 @@
 										<ext:ModelField Name="DRIVE_TIME_FORMATTED" />
 										<ext:ModelField Name="SHOPTIME_AM_FORMATTED" />
 										<ext:ModelField Name="SHOPTIME_PM_FORMATTED" />
+										<ext:ModelField Name="SUPPORT_PROJECT" />
 										<ext:ModelField Name="PER_DIEM" />
 										<ext:ModelField Name="COMMENTS" />
 									</Fields>
@@ -62,6 +63,7 @@
 							<ext:Column ID="Column12" runat="server" DataIndex="DRIVE_TIME_FORMATTED" Text="Drive Time" />
 							<ext:Column runat="server" DataIndex="SHOPTIME_AM_FORMATTED" Text="Shoptime AM" />
 							<ext:Column runat="server" DataIndex="SHOPTIME_PM_FORMATTED" Text="Shoptime PM" />
+							<ext:Column runat="server" DataIndex="SUPPORT_PROJECT" Text="Support Project" />
 							<ext:Column ID="Column13" runat="server" DataIndex="PER_DIEM" Text="Per Diem" />
 							<ext:Column ID="Column14" runat="server" DataIndex="COMMENTS" Text="Comments" />
 						</Columns>
@@ -69,7 +71,7 @@
 				</ext:GridPanel>
 				<ext:GridPanel runat="server" ID="uxEquipmentGrid"
 					Title="Equipment"
-					Padding="10" MaxWidth="1000">
+					Padding="10" MaxWidth="1100">
 					<Store>
 						<ext:Store runat="server"
 							ID="uxEquipmentStore">
@@ -115,7 +117,7 @@
 				<ext:GridPanel runat="server"
 					ID="uxProductionGrid"
 					Title="Production"
-					Padding="10" MaxWidth="1000">
+					Padding="10" MaxWidth="1100">
 					<Store>
 						<ext:Store runat="server"
 							ID="uxProductionStore">
@@ -153,7 +155,7 @@
 				<ext:GridPanel runat="server"
 					ID="uxWeatherGrid"
 					Title="Weather"
-					Padding="10" MaxWidth="1000">
+					Padding="10" MaxWidth="1100">
 					<Store>
 						<ext:Store runat="server"
 							ID="uxWeatherStore">
@@ -185,13 +187,14 @@
 				<ext:GridPanel runat="server"
 					ID="uxInventoryGrid"
 					Title="Inventory"
-					Padding="10" MaxWidth="1000">
+					Padding="10" MaxWidth="1100">
 					<Store>
 						<ext:Store runat="server"
 							ID="uxInventoryStore">
 							<Model>
 								<ext:Model ID="Model6" runat="server">
 									<Fields>
+										<ext:ModelField Name="INV_NAME" />
 										<ext:ModelField Name="SUB_INVENTORY_SECONDARY_NAME" />
 										<ext:ModelField Name="DESCRIPTION" />
 										<ext:ModelField Name="RATE" />
@@ -202,13 +205,14 @@
 					</Store>
 					<ColumnModel>
 						<Columns>
+							<ext:Column runat="server" DataIndex="INV_NAME" Text="Inventory Org" />
 							<ext:Column runat="server" DataIndex="SUB_INVENTORY_SECONDARY_NAME" Text="Sub-Inv Name" />
 							<ext:Column runat="server" DataIndex="DESCRIPTION" Text="Item" />
 							<ext:Column runat="server" DataIndex="RATE" Text="Quantity" />
 						</Columns>
 					</ColumnModel>
 				</ext:GridPanel>
-				<ext:FormPanel runat="server" ID="uxFooterPanel" Padding="10" BodyPadding="5" MaxWidth="1000">
+				<ext:FormPanel runat="server" ID="uxFooterPanel" Padding="10" BodyPadding="5" MaxWidth="1100">
 					<Items>
 						<ext:TextField runat="server" ID="uxReasonForNoWorkField" FieldLabel="Reason for no work" Width="700" ReadOnly="true" LabelWidth="100" />
 						<ext:TextField runat="server" ID="uxHotelField" FieldLabel="Hotel" ReadOnly="true" LabelWidth="100" Width="400" />

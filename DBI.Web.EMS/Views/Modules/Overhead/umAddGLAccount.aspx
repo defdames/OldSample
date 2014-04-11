@@ -5,6 +5,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    <script type="text/javascript">
+        var onShow = function (toolTip, grid) {
+            var view = grid.getView(),
+				record = view.getRecord(toolTip.triggerElement),
+				data = "General Ledger Description</br>" + record.data.SEGMENT1_DESC + "." + record.data.SEGMENT2_DESC + "." + record.data.SEGMENT3_DESC + "." + record.data.SEGMENT4_DESC + "." + record.data.SEGMENT5_DESC + "." + record.data.SEGMENT6_DESC + "." + record.data.SEGMENT7_DESC;
+            toolTip.update(data);
+        };
+    </script>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -218,6 +226,12 @@
                                         <ext:ModelField Name="SEGMENT5_DESC" />
                                         <ext:ModelField Name="SEGMENT6" />
                                         <ext:ModelField Name="SEGMENT7" />
+                                        <ext:ModelField Name="SEGMENT1_DESC" />
+                                        <ext:ModelField Name="SEGMENT2_DESC" />
+                                        <ext:ModelField Name="SEGMENT3_DESC" />
+                                        <ext:ModelField Name="SEGMENT4_DESC" />
+                                        <ext:ModelField Name="SEGMENT5_DESC" />
+                                        <ext:ModelField Name="SEGMENT6_DESC" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -235,15 +249,19 @@
                                 </ext:StoreParameter>
                             </Parameters>
                              <Listeners><Load Handler="#{uxAddGLCodeButton}.disable();"></Load></Listeners>
+                            <Sorters>
+                                <ext:DataSorter Direction="ASC" Property="SEGMENT5_DESC" />
+                            </Sorters>
+
                         </ext:Store>
                    </Store>
                     <ColumnModel>
                         <Columns>
+                            <ext:Column ID="Column1" runat="server" DataIndex="SEGMENT5_DESC" Text="Account Description" Flex="3" />
                             <ext:Column ID="Column2" runat="server" DataIndex="SEGMENT1" Text="Company" Flex="1" />
                             <ext:Column ID="Column3" runat="server" DataIndex="SEGMENT2" Text="Location" Flex="1" />
                             <ext:Column ID="Column4" runat="server" DataIndex="SEGMENT3" Text="Division" Flex="1" />
                             <ext:Column ID="Column5" runat="server" DataIndex="SEGMENT4" Text="Branch" Flex="1" />
-                            <ext:Column ID="Column1" runat="server" DataIndex="SEGMENT5_DESC" Text="Account Description" Flex="2" />
                             <ext:Column ID="Column10" runat="server" DataIndex="SEGMENT5" Text="Account" Flex="1" />
                             <ext:Column ID="Column11" runat="server" DataIndex="SEGMENT6" Text="Type" Flex="1" />
                             <ext:Column ID="Column12" runat="server" DataIndex="SEGMENT7" Text="Future" Flex="1" />
@@ -252,10 +270,11 @@
                     <Plugins>
                         <ext:FilterHeader ID="uxGlAccountSecurityGridFilter" runat="server" Remote="true" />
                     </Plugins>
-                    <SelectionModel>
+                      <SelectionModel>
                                <ext:RowSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Simple">
                                    <Listeners>
-                                <Select Handler="if(#{uxGlAccountSecurityGridSelectionModel}.getCount() > 0){#{uxAddGLCodeButton}.enable();}"></Select>
+                                <Select Handler="if(#{uxGlAccountSecurityGridSelectionModel}.getCount() > 0){#{uxAddGLCodeButton}.enable();}else {#{uxAddGLCodeButton}.disable();}"></Select>
+                                       <Deselect Handler="if(#{uxGlAccountSecurityGridSelectionModel}.getCount() > 0){#{uxAddGLCodeButton}.enable();}else {#{uxAddGLCodeButton}.disable();}"></Deselect>
                             </Listeners>
                                </ext:RowSelectionModel>
                     </SelectionModel>
@@ -277,9 +296,22 @@
                         </ext:Toolbar>
                     </TopBar>
                                          <View>
-                        <ext:GridView ID="GridView1" StripeRows="true" runat="server">
+                        <ext:GridView ID="GridView1" StripeRows="true" runat="server" TrackOver="true">
                         </ext:GridView>
                     </View> 
+                    <ToolTips>
+                        <ext:ToolTip ID="uxToolTip"
+            runat="server"
+            Target="uxGlAccountSecurityGrid"
+            Delegate=".x-grid-row"
+            TrackMouse="true"
+                            UI="Info"
+                           Width="300">
+            <Listeners>
+                <Show Handler="onShow(this, #{uxGlAccountSecurityGrid});" /> 
+            </Listeners>
+        </ext:ToolTip>  
+                    </ToolTips>
                 </ext:GridPanel>
             </Items>
         </ext:Viewport>
