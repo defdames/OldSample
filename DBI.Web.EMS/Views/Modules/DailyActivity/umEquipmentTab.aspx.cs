@@ -23,6 +23,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 X.Redirect("~/Views/uxDefault.aspx");
             }
             GetCurrentEquipment();
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            int Status = GetStatus(HeaderId);
+            if (Status == 4)
+            {
+                uxAddEquipmentButton.Disabled = true;
+            }
+            if (Status == 3 && !validateComponentSecurity("SYS.DailyActivity.Post"))
+            {
+                uxAddEquipmentButton.Disabled = true;
+            }
         }
         
         /// <summary>
@@ -39,6 +49,41 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             where e.HEADER_ID == HeaderId
                             select new {p.CLASS_CODE, p.ORGANIZATION_NAME, e.ODOMETER_START, e.ODOMETER_END, e.PROJECT_ID, e.EQUIPMENT_ID, p.NAME, e.HEADER_ID }).ToList();
                 uxCurrentEquipmentStore.DataSource = data;
+            }
+        }
+
+        protected void deEnableEdit(object sender, DirectEventArgs e)
+        {
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            int Status = GetStatus(HeaderId);
+
+            if (Status == 4)
+            {
+                uxEditEquipmentButton.Disabled = true;
+                uxRemoveEquipmentButton.Disabled = true;
+            }
+            else if (Status == 3 && !validateComponentSecurity("SYS.DailyActivity.Post"))
+            {
+                uxEditEquipmentButton.Disabled = true;
+                uxRemoveEquipmentButton.Disabled = true;
+            }
+            else
+            {
+                uxEditEquipmentButton.Disabled = false;
+                uxRemoveEquipmentButton.Disabled = false;
+            }
+        }
+
+
+
+        protected int GetStatus(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
+                int Status = (from d in _context.DAILY_ACTIVITY_HEADER
+                              where d.HEADER_ID == HeaderId
+                              select (int)d.STATUS).Single();
+                return Status;
             }
         }
 

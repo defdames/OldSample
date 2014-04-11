@@ -204,16 +204,17 @@
 					</Store>
 					<ColumnModel>
 						<Columns>
-							<ext:Column ID="Column26" runat="server" DataIndex="CHEMICAL_MIX_NUMBER" Text="Mix Number" />
-							<ext:Column ID="Column27" runat="server" DataIndex="TARGET_AREA" Text="Target Area" />
-							<ext:Column ID="Column28" runat="server" DataIndex="GALLON_ACRE" Text="Gallons/Acre" />
-							<ext:Column ID="Column29" runat="server" DataIndex="GALLON_STARTING" Text="Gallons Starting" />
-							<ext:Column ID="Column30" runat="server" DataIndex="GALLON_MIXED" Text="Gallon Mixed" />
-							<ext:Column ID="Column31" runat="server" DataIndex="TOTAL" Text="Total Gallons" />
-							<ext:Column ID="Column32" runat="server" DataIndex="USED" Text="Gallons Used" />
-							<ext:Column ID="Column33" runat="server" DataIndex="ACRES_SPRAYED" Text="Acres Sprayed" />
-							<ext:Column ID="Column34" runat="server" DataIndex="STATE" Text="State" />
-							<ext:Column ID="Column35" runat="server" DataIndex="COUNTY" Text="County" />
+							<ext:Column ID="Column26" runat="server" DataIndex="CHEMICAL_MIX_NUMBER" Text="Mix #" Flex="1" />
+							<ext:Column ID="Column27" runat="server" DataIndex="TARGET_AREA" Text="Target Area" Flex="1" />
+							<ext:Column ID="Column28" runat="server" DataIndex="GALLON_ACRE" Text="Gallons/Acre" Flex="1" />
+							<ext:Column ID="Column29" runat="server" DataIndex="GALLON_STARTING" Text="Gallons Starting" Flex="1" />
+							<ext:Column ID="Column30" runat="server" DataIndex="GALLON_MIXED" Text="Gallon Mixed" Flex="1" />
+                            <ext:Column runat="server" DataIndex="GALLON_REMAINING" Text="Gallon Remaining" Flex="1" />
+							<ext:Column ID="Column31" runat="server" DataIndex="TOTAL" Text="Total Gallons" Flex="1" />
+							<ext:Column ID="Column32" runat="server" DataIndex="USED" Text="Gallons Used" Flex="1" />
+							<ext:Column ID="Column33" runat="server" DataIndex="ACRES_SPRAYED" Text="Acres Sprayed" Flex="1" />
+							<ext:Column ID="Column34" runat="server" DataIndex="STATE" Text="State" Flex="1" />
+							<ext:Column ID="Column35" runat="server" DataIndex="COUNTY" Text="County" Flex="1" />
 						</Columns>
 					</ColumnModel>
 				</ext:GridPanel>
