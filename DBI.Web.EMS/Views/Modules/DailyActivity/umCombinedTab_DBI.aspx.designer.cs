@@ -139,6 +139,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.TextField uxDensityField;
         
         /// <summary>
+        /// uxWarningGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridPanel uxWarningGrid;
+        
+        /// <summary>
+        /// uxWarningStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxWarningStore;
+        
+        /// <summary>
         /// uxEmployeeGrid control.
         /// </summary>
         /// <remarks>

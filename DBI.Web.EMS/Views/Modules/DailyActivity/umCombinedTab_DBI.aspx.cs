@@ -12,6 +12,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 {
     public partial class umCombinedTab_DBI : BasePage
     {
+        protected List<WarningData>WarningList = new List<WarningData>();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!validateComponentSecurity("SYS.DailyActivity.View") && !validateComponentSecurity("SYS.DailyActivity.EmployeeView"))
@@ -28,6 +29,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 GetChemicalMixData();
                 GetInventory();
                 GetFooterData();
+                GetWarnings();
             }
         }
 
@@ -58,6 +60,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        protected void GetWarnings()
+        {
+            if (WarningList.Count > 0)
+            {
+                uxWarningStore.DataSource = WarningList;
+            }
+            else
+            {
+                uxWarningGrid.Hide();
+            }
+        }
+
         /// <summary>
         /// Get data for Employee/Equipment grid
         /// </summary>
@@ -74,7 +88,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
                             from projects in proj.DefaultIfEmpty()
                             where d.HEADER_ID == HeaderId
-                            select new EmployeeDetails {EMPLOYEE_NAME = e.EMPLOYEE_NAME, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS }).ToList();
+                            select new EmployeeDetails {EMPLOYEE_ID=d.EMPLOYEE_ID, PERSON_ID=e.PERSON_ID, EMPLOYEE_NAME = e.EMPLOYEE_NAME, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS }).ToList();
                 foreach (var item in data)
                 {
                     double Hours = Math.Truncate((double)item.TRAVEL_TIME);
@@ -85,6 +99,29 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     Minutes = Math.Round(((double)item.DRIVE_TIME - Hours) * 60);
                     TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
                     item.DRIVE_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
+                    List<WarningData>Overlaps = ValidationChecks.employeeTimeOverlapCheck(item.PERSON_ID, item.TIME_IN);
+                    if(Overlaps.Count > 0){
+                        WarningList.AddRange(Overlaps);
+                    }
+                    WarningData EmployeeBusinessUnitFailures = ValidationChecks.EmployeeBusinessUnitCheck(item.EMPLOYEE_ID);
+                    if (EmployeeBusinessUnitFailures != null)
+                    {
+                        WarningList.Add(EmployeeBusinessUnitFailures);
+                    }
+                    WarningData EmployeeOver24 = ValidationChecks.checkEmployeeTime(24, item.PERSON_ID, item.TIME_IN);
+                    if (EmployeeOver24 != null)
+                    {
+                        WarningList.Add(EmployeeOver24);
+                    }
+                    else
+                    {
+                        WarningData EmployeeOver12 = ValidationChecks.checkEmployeeTime(12, item.PERSON_ID, item.TIME_IN);
+                        if (EmployeeOver12 != null)
+                        {
+                            WarningList.Add(EmployeeOver12);
+                        }
+                    }
+                    
                 }
 
                 uxEmployeeStore.DataSource = data;
@@ -102,6 +139,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.CLASS_CODES_V on e.PROJECT_ID equals p.PROJECT_ID
                             where e.HEADER_ID == HeaderId
                             select new {p.CLASS_CODE, p.ORGANIZATION_NAME, e.ODOMETER_START, e.ODOMETER_END, e.PROJECT_ID, e.EQUIPMENT_ID, p.NAME, e.HEADER_ID }).ToList();
+                foreach (var item in data)
+                {
+                    WarningData BusinessUnitWarning = ValidationChecks.EquipmentBusinessUnitCheck(item.EQUIPMENT_ID);
+                    if (BusinessUnitWarning != null)
+                    {
+                        WarningList.Add(BusinessUnitWarning);
+                    }
+                    WarningData MeterWarning = ValidationChecks.MeterCheck(item.EQUIPMENT_ID);
+                    if (MeterWarning != null)
+                    {
+                        WarningList.Add(MeterWarning);
+                    }
+                }
                 uxEquipmentStore.DataSource = data;
                 uxEquipmentStore.DataBind();
             }

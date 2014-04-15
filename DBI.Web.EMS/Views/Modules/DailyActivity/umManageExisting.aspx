@@ -131,8 +131,8 @@
 							runat="server" 
 							Delegate="tr.x-grid-row"
 							TrackMouse="true"
-                            UI="Warning"
-                            Width="400">
+							UI="Warning"
+							Width="400">
 							<Listeners>
 								<BeforeShow Handler="return beforeShow(this, #{uxManageGrid});" />
 								<Show Handler="onShow(this, #{uxManageGrid});" />
