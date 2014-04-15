@@ -31,6 +31,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 GetFooterData();
                 GetWarnings();
             }
+
+            if (!X.IsAjaxRequest && !IsPostBack)
+            {
+                this.uxRedWarning.Value = ResourceManager.GetInstance().GetIconUrl(Icon.Exclamation);
+                this.uxYellowWarning.Value = ResourceManager.GetInstance().GetIconUrl(Icon.Error);
+            }
         }
 
         protected void GetWarnings()
