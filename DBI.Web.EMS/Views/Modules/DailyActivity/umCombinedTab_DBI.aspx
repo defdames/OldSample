@@ -19,6 +19,15 @@
 				return "";
 			}
 		};
+		var onShow = function (toolTip, grid) {
+		    var view = grid.getView(),
+				store = grid.getStore(),
+				record = view.getRecord(view.findItemByChild(toolTip.triggerElement)),
+				column = view.getHeaderByCell(toolTip.triggerElement),
+				data = record.get(column.dataIndex);
+
+		    toolTip.update(data);
+		};
 	</script>
 </head>
 <body>
@@ -74,6 +83,7 @@
 							<ext:Column runat="server" DataIndex="AdditionalInformation" Text=" Additional Information" Flex="50" />
 						</Columns>
 					</ColumnModel>
+                    
 				</ext:GridPanel>
 				<ext:GridPanel runat="server"
 					ID="uxEmployeeGrid"
@@ -324,6 +334,69 @@
 						</ext:FieldContainer>
 					</Items>
 				</ext:FormPanel>
+                <ext:ToolTip ID="ToolTip1" 
+			            runat="server" 
+			            Target="={#{uxWarningGrid}.getView().el}"
+			            Delegate=".x-grid-cell"
+			            TrackMouse="true">
+			            <Listeners>
+				            <Show Handler="onShow(this, #{uxWarningGrid});" /> 
+			            </Listeners>
+		        </ext:ToolTip>
+                <ext:ToolTip ID="ToolTip2" 
+			            runat="server" 
+			            Target="={#{uxEmployeeGrid}.getView().el}"
+			            Delegate=".x-grid-cell"
+			            TrackMouse="true">
+			            <Listeners>
+				            <Show Handler="onShow(this, #{uxEmployeeGrid});" /> 
+			            </Listeners>
+		        </ext:ToolTip>
+                <ext:ToolTip ID="ToolTip3" 
+			            runat="server" 
+			            Target="={#{uxEquipmentGrid}.getView().el}"
+			            Delegate=".x-grid-cell"
+			            TrackMouse="true">
+			            <Listeners>
+				            <Show Handler="onShow(this, #{uxEquipmentGrid});" /> 
+			            </Listeners>
+		        </ext:ToolTip>
+                <ext:ToolTip ID="ToolTip4" 
+			            runat="server" 
+			            Target="={#{uxInventoryGrid}.getView().el}"
+			            Delegate=".x-grid-cell"
+			            TrackMouse="true">
+			            <Listeners>
+				            <Show Handler="onShow(this, #{uxInventoryGrid});" /> 
+			            </Listeners>
+		        </ext:ToolTip>
+                <ext:ToolTip ID="ToolTip5" 
+			            runat="server" 
+			            Target="={#{uxWeatherGrid}.getView().el}"
+			            Delegate=".x-grid-cell"
+			            TrackMouse="true">
+			            <Listeners>
+				            <Show Handler="onShow(this, #{uxWeatherGrid});" /> 
+			            </Listeners>
+		        </ext:ToolTip>
+                <ext:ToolTip ID="ToolTip6" 
+			            runat="server" 
+			            Target="={#{uxProductionGrid}.getView().el}"
+			            Delegate=".x-grid-cell"
+			            TrackMouse="true">
+			            <Listeners>
+				            <Show Handler="onShow(this, #{uxProductionGrid});" /> 
+			            </Listeners>
+		        </ext:ToolTip>
+                <ext:ToolTip ID="ToolTip7" 
+			            runat="server" 
+			            Target="={#{uxChemicalGrid}.getView().el}"
+			            Delegate=".x-grid-cell"
+			            TrackMouse="true">
+			            <Listeners>
+				            <Show Handler="onShow(this, #{uxChemicalGrid});" /> 
+			            </Listeners>
+		        </ext:ToolTip>
 			</Items>
 		</ext:Panel>
 	</form>
