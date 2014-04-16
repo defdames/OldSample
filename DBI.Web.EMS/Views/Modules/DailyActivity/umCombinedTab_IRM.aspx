@@ -300,7 +300,9 @@
 						runat="server" 
 						Target="={#{uxWarningGrid}.getView().el}"
 						Delegate=".x-grid-cell"
-						TrackMouse="true">
+						TrackMouse="true"
+						UI="Warning"
+						Width="400">
 						<Listeners>
 							<Show Handler="onShow(this, #{uxWarningGrid});" /> 
 						</Listeners>
@@ -309,7 +311,9 @@
 						runat="server" 
 						Target="={#{uxEmployeeGrid}.getView().el}"
 						Delegate=".x-grid-cell"
-						TrackMouse="true">
+						TrackMouse="true"
+						UI="Warning"
+						Width="400">
 						<Listeners>
 							<Show Handler="onShow(this, #{uxEmployeeGrid});" /> 
 						</Listeners>
@@ -318,7 +322,9 @@
 						runat="server" 
 						Target="={#{uxEquipmentGrid}.getView().el}"
 						Delegate=".x-grid-cell"
-						TrackMouse="true">
+						TrackMouse="true"
+						UI="Warning"
+						Width="400">
 						<Listeners>
 							<Show Handler="onShow(this, #{uxEquipmentGrid});" /> 
 						</Listeners>
@@ -327,7 +333,9 @@
 						runat="server" 
 						Target="={#{uxInventoryGrid}.getView().el}"
 						Delegate=".x-grid-cell"
-						TrackMouse="true">
+						TrackMouse="true"
+						UI="Warning"
+						Width="400">
 						<Listeners>
 							<Show Handler="onShow(this, #{uxInventoryGrid});" /> 
 						</Listeners>
@@ -336,7 +344,9 @@
 						runat="server" 
 						Target="={#{uxWeatherGrid}.getView().el}"
 						Delegate=".x-grid-cell"
-						TrackMouse="true">
+						TrackMouse="true"
+						UI="Warning"
+						Width="400">
 						<Listeners>
 							<Show Handler="onShow(this, #{uxWeatherGrid});" /> 
 						</Listeners>
@@ -345,7 +355,9 @@
 						runat="server" 
 						Target="={#{uxProductionGrid}.getView().el}"
 						Delegate=".x-grid-cell"
-						TrackMouse="true">
+						TrackMouse="true"
+						UI="Warning"
+						Width="400">
 						<Listeners>
 							<Show Handler="onShow(this, #{uxProductionGrid});" /> 
 						</Listeners>

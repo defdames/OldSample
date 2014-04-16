@@ -63,7 +63,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 if (TotalMinutes / 60 > Hours)
                 {
                     string Name = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == PersonId).Select(x => x.EMPLOYEE_NAME).Single();
-                    if (Hours == 12)
+                    if (Hours == 14)
                     {
                         return new WarningData { WarningType = "Warning", RecordType = Name, AdditionalInformation = string.Format("More than {0} hours logged on {1}", Hours.ToString(), HeaderDate.ToString("MM-dd-yyyy")) };
                     }
@@ -277,7 +277,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 {
                     string Name = _context.PROJECTS_V.Where(x => x.PROJECT_ID == EquipmentData.PROJECT_ID).Select(x => x.NAME).Single();
                     string ClassCode = _context.CLASS_CODES_V.Where(x => x.PROJECT_ID == EquipmentData.PROJECT_ID).Select(x => x.CLASS_CODE).Single();
-                    return new WarningData { WarningType = "Warning", RecordType = string.Format("{0} - {1}", Name, ClassCode), AdditionalInformation = string.Format("Equipment has Org of {0}, Project has Org of {1}", EquipmentOrg.ToString(), ProjectOrgId.ToString()) };
+                    return new WarningData { WarningType = "Error", RecordType = string.Format("{0} - {1}", Name, ClassCode), AdditionalInformation = string.Format("Equipment has Org of {0}, Project has Org of {1}", EquipmentOrg.ToString(), ProjectOrgId.ToString()) };
                 }
                 return null;
             }
@@ -324,7 +324,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 if (ProjectOrg != EMPLOYEES_V.GetEmployeeBusinessUnit(EmployeeOrg))
                 {
                     string Name = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == Employee.PERSON_ID).Select(x => x.EMPLOYEE_NAME).Single();
-                    return new WarningData { WarningType = "Warning", RecordType = Name, AdditionalInformation = string.Format("Employee Org is {0}, Project Org is {1}", EmployeeOrg.ToString(), ProjectOrg.ToString()) };
+                    return new WarningData { WarningType = "Error", RecordType = Name, AdditionalInformation = string.Format("Employee Org is {0}, Project Org is {1}", EmployeeOrg.ToString(), ProjectOrg.ToString()) };
                 }
                 return null;
             }

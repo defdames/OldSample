@@ -115,7 +115,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     {
                         if (OffendingProject == record.HEADER_ID)
                         {
-                            Warning = "Warning";
+                            Warning = "Error";
                             WarningType += "Contains Equipment outside of Business Unit.<br />";
                             break;
                         }
@@ -125,7 +125,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     {
                         if (OffendingProject == record.HEADER_ID)
                         {
-                            Warning = "Warning";
+                            Warning = "Error";
                             WarningType += "Contains Employees outside of Business Unit.<br />";
                             break;
                         }

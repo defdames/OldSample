@@ -132,10 +132,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     }
                     else
                     {
-                        WarningData EmployeeOver12 = ValidationChecks.checkEmployeeTime(12, item.PERSON_ID, item.TIME_IN);
-                        if (EmployeeOver12 != null)
+                        WarningData EmployeeOver14 = ValidationChecks.checkEmployeeTime(14, item.PERSON_ID, item.TIME_IN);
+                        if (EmployeeOver14 != null)
                         {
-                            WarningList.Add(EmployeeOver12);
+                            WarningList.Add(EmployeeOver14);
                         }
                     }
                 }
