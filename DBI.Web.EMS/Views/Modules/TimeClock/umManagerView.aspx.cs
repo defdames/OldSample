@@ -32,31 +32,31 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                 var data = (from tc in _context.TIME_CLOCK
                             join ev in _context.EMPLOYEES_V on tc.PERSON_ID equals ev.PERSON_ID
                             where tc.SUPERVISOR_ID == person_id && tc.COMPLETED == "Y"                                                        
-                            select new EmployeeTime { TIME_IN = (DateTime)tc.TIME_IN, TIME_OUT = (DateTime)tc.TIME_OUT, EMPLOYEE_NAME = ev.EMPLOYEE_NAME }).ToList();
+                            select new EmployeeTime { TIME_IN = (DateTime)tc.TIME_IN, TIME_OUT = (DateTime)tc.TIME_OUT, EMPLOYEE_NAME = ev.EMPLOYEE_NAME, DAY_OF_WEEK = tc.DAY_OF_WEEK }).ToList();
             
                 foreach (var item in data)
                 {
                     TimeSpan ts = item.TIME_OUT - item.TIME_IN;
                     DateTime dow = item.TIME_IN;
                     item.TOTAL_HOURS = ts.ToString(@"dd\.hh\:mm");
-                    item.DAY_OF_WEEK = dow.DayOfWeek.ToString();
                     
                 }
                 uxEmployeeHoursStore.DataSource = data;
+                
+
             }
 
         }
+
+        
     }
 
     public class EmployeeTime
     {
-
         public string EMPLOYEE_NAME { get; set; }
         public DateTime TIME_IN { get; set; }
         public DateTime TIME_OUT { get; set; }
         public string TOTAL_HOURS { get; set; }
         public string DAY_OF_WEEK { get; set; }
-
-
     }
 }
