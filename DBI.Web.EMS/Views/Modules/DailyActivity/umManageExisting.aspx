@@ -228,6 +228,12 @@
 										</Click>
 									</DirectEvents>
 								</ext:Button>
+								<ext:ToolbarSpacer runat="server" />
+								<ext:Checkbox runat="server" ID="uxTogglePosted" FieldLabel="Show Posted">
+									<Listeners>
+										<Change Handler="#{uxManageGridStore}.reload()" />
+									</Listeners>
+								</ext:Checkbox>
 							</Items>
 						</ext:Toolbar>
 					</TopBar>
