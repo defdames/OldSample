@@ -17,68 +17,111 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            string person_name = Authentication.GetClaimValue("EmployeeName", User as ClaimsPrincipal);
             GetTimeRecord();
+            FillGridPanel();
+            uxUser_NameTextBox.Text = person_name;
 
         }
 
 
-        protected void deSetTimeIn(object sender, DirectEventArgs e)
+        protected void deSetTime(object sender, DirectEventArgs e)
         {
             //Insert person_id time_in and supervisor_id.  Also set some feilds to default values
 
 
             SYS_USER_INFORMATION data;
+            TIME_CLOCK time;
+
             decimal person_id = Convert.ToDecimal(Authentication.GetClaimValue("PersonId", User as ClaimsPrincipal));
-            uxTime_InTextBox.Text = DateTime.Now.ToString();
-            uxTimeInButton.Disabled = true;
-            uxTimeOutButton.Enabled = true;
-
-            using (Entities _context = new Entities())
-            {
-                data = (from su in _context.SYS_USER_INFORMATION
-                        where su.PERSON_ID == person_id
-                        select su).Single();
-
-            }
-
-            TIME_CLOCK Record = new TIME_CLOCK
-            {
-                PERSON_ID = person_id,
-                TIME_IN = Convert.ToDateTime(uxTime_InTextBox.Text),
-                APPROVED = "N",
-                COMPLETED = "N",
-                SUBMITTED = "N",
-                SUPERVISOR_ID = data.SUPERVISOR_ID,
-
-            };
-            GenericData.Insert<TIME_CLOCK>(Record);
-        }
-
-        protected void deSetTimeOut(object sender, DirectEventArgs e)
-        {   //Insert Time_out and set compelted flag to Y
-
-            TIME_CLOCK data;
-
-            uxTime_OutTextBox.Text = DateTime.Now.ToString();
-            uxTimeOutButton.Disabled = true;
-            decimal person_id = Convert.ToDecimal(Authentication.GetClaimValue("PersonId", User as ClaimsPrincipal));
-
             using (Entities _context = new Entities())
             {
 
-
-                data = (from tc in _context.TIME_CLOCK
+                time = (from tc in _context.TIME_CLOCK
                         where tc.PERSON_ID == person_id && tc.COMPLETED == "N"
                         select tc).SingleOrDefault();
+
             }
-            data.TIME_OUT = Convert.ToDateTime(uxTime_OutTextBox.Text);
-            data.COMPLETED = "Y";
 
-            GenericData.Update<TIME_CLOCK>(data);
+            if (time == null)
+            {
+                uxTime_InTextBox.Text = DateTime.Now.ToString();
+                //uxTimeInButton.Disabled = true;
+                //uxTimeOutButton.Enabled = true;
+                uxTimeButton.Text = "Clock In";
+                DateTime dow = Convert.ToDateTime(uxTime_InTextBox.Text);
 
+                using (Entities _context = new Entities())
+                {
+                    data = (from su in _context.SYS_USER_INFORMATION
+                            where su.PERSON_ID == person_id
+                            select su).Single();
+
+                }
+
+                TIME_CLOCK Record = new TIME_CLOCK
+                {
+                    PERSON_ID = person_id,
+                    TIME_IN = Convert.ToDateTime(uxTime_InTextBox.Text),
+                    APPROVED = "N",
+                    COMPLETED = "N",
+                    SUBMITTED = "N",
+                    DAY_OF_WEEK = dow.DayOfWeek.ToString(),
+                    SUPERVISOR_ID = data.SUPERVISOR_ID,
+
+                };
+                GenericData.Insert<TIME_CLOCK>(Record);
+                uxHoursStore.Reload();
+                uxTimeButton.Text = "Clock Out";
+            }
+
+
+            else
+            {
+                uxTime_OutTextBox.Text = DateTime.Now.ToString();
+                using (Entities _context = new Entities())
+                {
+
+
+                    time = (from tc in _context.TIME_CLOCK
+                            where tc.PERSON_ID == person_id && tc.COMPLETED == "N"
+                            select tc).SingleOrDefault();
+                }
+                time.TIME_OUT = Convert.ToDateTime(uxTime_OutTextBox.Text);
+                time.COMPLETED = "Y";
+
+                GenericData.Update<TIME_CLOCK>(time);
+                uxHoursStore.Reload();
+                uxTimeButton.Disable(true);
+            }
 
         }
+
+        //protected void deSetTimeOut(object sender, DirectEventArgs e)
+        //{   //Insert Time_out and set compelted flag to Y
+
+        //    TIME_CLOCK data;
+
+        //    uxTime_OutTextBox.Text = DateTime.Now.ToString();
+        //    uxTimeOutButton.Disabled = true;
+        //    decimal person_id = Convert.ToDecimal(Authentication.GetClaimValue("PersonId", User as ClaimsPrincipal));
+
+
+        //    using (Entities _context = new Entities())
+        //    {
+
+
+        //        data = (from tc in _context.TIME_CLOCK
+        //                where tc.PERSON_ID == person_id && tc.COMPLETED == "N"
+        //                select tc).SingleOrDefault();
+        //    }
+        //    data.TIME_OUT = Convert.ToDateTime(uxTime_OutTextBox.Text);
+        //    data.COMPLETED = "Y";
+
+        //    GenericData.Update<TIME_CLOCK>(data);
+
+
+        //}
 
 
         protected void deGetTimeRecord(object sender, DirectEventArgs e)
@@ -106,11 +149,45 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
             if (data != null)
             {
                 uxTime_InTextBox.Text = data.TIME_IN.ToString();
-                uxTimeInButton.Disabled = true;
+                uxTimeButton.Text = "Clock Out";
+            }
+            else
+            {
+                uxTimeButton.Text = "Clock In";
             }
 
 
+        }
+        protected void FillGridPanel()
+        {
+            decimal person_id = Convert.ToDecimal(Authentication.GetClaimValue("PersonId", User as ClaimsPrincipal));
+            using (Entities _context = new Entities())
+            {
+                var data = (from tc in _context.TIME_CLOCK
+                            where tc.PERSON_ID == person_id
+                            select new EmployeeTimeView { TIME_IN = (DateTime)tc.TIME_IN, TIME_OUT = tc.TIME_OUT}).ToList();
+                
+                foreach (var item in data)
+                {
+                    if (item.TIME_OUT != null)
+                    {
+                        TimeSpan ts = (DateTime)item.TIME_OUT - item.TIME_IN;
+                        item.TOTAL_HOURS = ts.ToString(@"dd\.hh\:mm");
+                    }
+
+                }
+
+
+                uxHoursStore.DataSource = data;
+            }
 
         }
     }
+    public class EmployeeTimeView
+    {
+        public DateTime TIME_IN { get; set; }
+        public DateTime? TIME_OUT { get; set; }
+        public string TOTAL_HOURS { get; set; }
+    }
+
 }
