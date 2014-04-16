@@ -1489,6 +1489,8 @@
           <Property Name="ADJUSTED_HOURS" Type="number" Precision="15" Scale="4" />
           <Property Name="SUPERVISOR_ID" Type="number" Precision="10" />
           <Property Name="DAY_OF_WEEK" Type="varchar2" MaxLength="20" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFY_DATE" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'APPS.PA_LOCATIONS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -5715,6 +5717,8 @@
           <Property Type="Decimal" Name="ADJUSTED_HOURS" Precision="15" Scale="4" />
           <Property Type="Int32" Name="SUPERVISOR_ID" />
           <Property Type="String" Name="DAY_OF_WEEK" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -7615,6 +7619,8 @@
           <EntitySetMapping Name="TIME_CLOCK">
             <EntityTypeMapping TypeName="OracleModel.TIME_CLOCK">
               <MappingFragment StoreEntitySet="TIME_CLOCK">
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
                 <ScalarProperty Name="DAY_OF_WEEK" ColumnName="DAY_OF_WEEK" />
                 <ScalarProperty Name="SUPERVISOR_ID" ColumnName="SUPERVISOR_ID" />
                 <ScalarProperty Name="ADJUSTED_HOURS" ColumnName="ADJUSTED_HOURS" />
