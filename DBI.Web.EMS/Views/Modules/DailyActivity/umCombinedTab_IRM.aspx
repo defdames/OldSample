@@ -6,16 +6,41 @@
 <head id="Head1" runat="server">
 	<title></title>
 	<link href="../../../Resources/StyleSheets/main.css" rel="stylesheet" />
+	<script type="text/javascript">
+		var setIcon = function (value, metadata, record) {
+			var tpl = "<img src='{0}' />";
+			if (value == "Error") {
+				return "<img src='" + App.uxRedWarning.getValue() + "' />";
+			}
+			else if (value == "Warning") {
+				return "<img src='" + App.uxYellowWarning.getValue() + "' />";
+			}
+			else {
+				return "";
+			}
+		};
+		var onShow = function (toolTip, grid) {
+			var view = grid.getView(),
+				store = grid.getStore(),
+				record = view.getRecord(view.findItemByChild(toolTip.triggerElement)),
+				column = view.getHeaderByCell(toolTip.triggerElement),
+				data = record.get(column.dataIndex);
+
+			toolTip.update(data);
+		};
+	</script>
 </head>
 <body>
 	<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
 	<form id="form1" runat="server">
 		<ext:Panel runat="server" ID="uxMainContainer" Layout="AutoLayout">
 			<Items>
+				<ext:Hidden ID="uxYellowWarning" runat="server" />
+				<ext:Hidden ID="uxRedWarning" runat="server" />
 				<ext:FormPanel runat="server"
 					ID="uxHeaderPanel" Padding="10" BodyPadding="5" MaxWidth="1100" Layout="FormLayout">
 					<Items>
-						<ext:TextField runat="server" ID="uxDateField" FieldLabel="Date" Width="200"  ReadOnly="true" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxDateField" FieldLabel="Date" Width="200" ReadOnly="true" LabelWidth="100" />
 						<ext:TextField runat="server" ID="uxHeaderField" FieldLabel="DRS Id" Width="200" ReadOnly="true" LabelWidth="100" />
 						<ext:TextField runat="server" ID="uxOracleField" FieldLabel="Oracle DRS Id" Width="200" ReadOnly="true" />
 						<ext:TextField runat="server" ID="uxProjectField" FieldLabel="Project" Width="600" ReadOnly="true" LabelWidth="100" />
@@ -26,7 +51,39 @@
 						<ext:TextField runat="server" ID="uxTypeField" FieldLabel="Type of Work" Width="250" ReadOnly="true" LabelWidth="100" />
 						<ext:TextField runat="server" ID="uxDensityField" FieldLabel="Density" Width="200" ReadOnly="true" LabelWidth="100" />
 					</Items>
-				</ext:FormPanel>                    
+				</ext:FormPanel>
+				<ext:GridPanel runat="server"
+					ID="uxWarningGrid"
+					Title="Warnings/Errors"
+					Padding="10"
+					MaxWidth="1000">
+					<Store>
+						<ext:Store runat="server" ID="uxWarningStore">
+							<Model>
+								<ext:Model ID="Model1" runat="server">
+									<Fields>
+										<ext:ModelField Name="WarningType" />
+										<ext:ModelField Name="RecordType" />
+										<ext:ModelField Name="AdditionalInformation" />
+									</Fields>
+								</ext:Model>
+							</Model>
+							<Sorters>
+								<ext:DataSorter Property="WarningType" Direction="ASC" />
+							</Sorters>
+						</ext:Store>
+					</Store>
+					<ColumnModel ID="ColumnModel1" runat="server">
+						<Columns>
+							<ext:Column runat="server" ID="uxWarningColumn" DataIndex="WarningType">
+								<Renderer Fn="setIcon" />
+							</ext:Column>
+							<ext:Column ID="Column1" runat="server" DataIndex="WarningType" Text="Warning Type" Flex="25" />
+							<ext:Column ID="Column2" runat="server" DataIndex="RecordType" Text="Record" Flex="25" />
+							<ext:Column ID="Column3" runat="server" DataIndex="AdditionalInformation" Text=" Additional Information" Flex="50" />
+						</Columns>
+					</ColumnModel>
+				</ext:GridPanel>
 				<ext:GridPanel runat="server"
 					ID="uxEmployeeGrid"
 					Title="Employees"
@@ -100,14 +157,14 @@
 								DataIndex="NAME"
 								Text="Name" />
 							<ext:Column ID="Column49" runat="server"
-								DataIndex="CLASS_CODE" 
-								Text="Class Code"/>
+								DataIndex="CLASS_CODE"
+								Text="Class Code" />
 							<ext:Column ID="Column50" runat="server"
-								DataIndex="ORGANIZATION_NAME" 
-								Text="Organization Name"/>
+								DataIndex="ORGANIZATION_NAME"
+								Text="Organization Name" />
 							<ext:Column ID="Column51" runat="server"
-								DataIndex="ODOMETER_START" 
-								Text="Meter Start"/>
+								DataIndex="ODOMETER_START"
+								Text="Meter Start" />
 							<ext:Column ID="Column52" runat="server"
 								DataIndex="ODOMETER_END"
 								Text="Meter End" />
@@ -237,8 +294,74 @@
 								<ext:Image runat="server" Height="214" ID="uxDOTImage" Width="320" />
 							</Items>
 						</ext:FieldContainer>
-					 </Items>
+					</Items>
 				</ext:FormPanel>
+				<ext:ToolTip ID="ToolTip1" 
+						runat="server" 
+						Target="={#{uxWarningGrid}.getView().el}"
+						Delegate=".x-grid-cell"
+						TrackMouse="true"
+						UI="Warning"
+						Width="400">
+						<Listeners>
+							<Show Handler="onShow(this, #{uxWarningGrid});" /> 
+						</Listeners>
+				</ext:ToolTip>
+				<ext:ToolTip ID="ToolTip2" 
+						runat="server" 
+						Target="={#{uxEmployeeGrid}.getView().el}"
+						Delegate=".x-grid-cell"
+						TrackMouse="true"
+						UI="Warning"
+						Width="400">
+						<Listeners>
+							<Show Handler="onShow(this, #{uxEmployeeGrid});" /> 
+						</Listeners>
+				</ext:ToolTip>
+				<ext:ToolTip ID="ToolTip3" 
+						runat="server" 
+						Target="={#{uxEquipmentGrid}.getView().el}"
+						Delegate=".x-grid-cell"
+						TrackMouse="true"
+						UI="Warning"
+						Width="400">
+						<Listeners>
+							<Show Handler="onShow(this, #{uxEquipmentGrid});" /> 
+						</Listeners>
+				</ext:ToolTip>
+				<ext:ToolTip ID="ToolTip4" 
+						runat="server" 
+						Target="={#{uxInventoryGrid}.getView().el}"
+						Delegate=".x-grid-cell"
+						TrackMouse="true"
+						UI="Warning"
+						Width="400">
+						<Listeners>
+							<Show Handler="onShow(this, #{uxInventoryGrid});" /> 
+						</Listeners>
+				</ext:ToolTip>
+				<ext:ToolTip ID="ToolTip5" 
+						runat="server" 
+						Target="={#{uxWeatherGrid}.getView().el}"
+						Delegate=".x-grid-cell"
+						TrackMouse="true"
+						UI="Warning"
+						Width="400">
+						<Listeners>
+							<Show Handler="onShow(this, #{uxWeatherGrid});" /> 
+						</Listeners>
+				</ext:ToolTip>
+				<ext:ToolTip ID="ToolTip6" 
+						runat="server" 
+						Target="={#{uxProductionGrid}.getView().el}"
+						Delegate=".x-grid-cell"
+						TrackMouse="true"
+						UI="Warning"
+						Width="400">
+						<Listeners>
+							<Show Handler="onShow(this, #{uxProductionGrid});" /> 
+						</Listeners>
+				</ext:ToolTip>
 			</Items>
 		</ext:Panel>
 	</form>

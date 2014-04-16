@@ -211,6 +211,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Button uxEmailPdf;
         
         /// <summary>
+        /// uxTogglePosted control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Checkbox uxTogglePosted;
+        
+        /// <summary>
         /// uxTabPanel control.
         /// </summary>
         /// <remarks>

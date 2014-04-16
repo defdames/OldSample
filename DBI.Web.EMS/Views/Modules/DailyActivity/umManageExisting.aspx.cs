@@ -57,7 +57,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deReadHeaderData(object sender, StoreReadDataEventArgs e)
         {
-
             using (Entities _context = new Entities())
             {
                 List<object> rawData;
@@ -65,11 +64,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 if (validateComponentSecurity("SYS.DailyActivity.View"))
                 {
-                    //Get List of all new headers
-                    rawData = (from d in _context.DAILY_ACTIVITY_HEADER
-                               join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
-                               join s in _context.DAILY_ACTIVITY_STATUS on d.STATUS equals s.STATUS
-                               select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS }).ToList<object>();
+                    if (uxTogglePosted.Checked)
+                    {
+                        //Get List of all new headers
+                        rawData = (from d in _context.DAILY_ACTIVITY_HEADER
+                                   join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                                   join s in _context.DAILY_ACTIVITY_STATUS on d.STATUS equals s.STATUS
+                                   select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS }).ToList<object>();
+                    }
+                    else
+                    {
+                        rawData = (from d in _context.DAILY_ACTIVITY_HEADER
+                                   join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                                   join s in _context.DAILY_ACTIVITY_STATUS on d.STATUS equals s.STATUS
+                                   where d.STATUS != 4
+                                   select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS }).ToList<object>();
+                    }
                 }
                 else
                 {
@@ -78,13 +88,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                      where d.EMPLOYEE_NAME == EmployeeName
                                      select d.PERSON_ID).Single();
 
-                    rawData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                               join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                               join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
-                               join s in _context.DAILY_ACTIVITY_STATUS on h.STATUS equals s.STATUS
-                               where d.PERSON_ID == PersonId
-                               select new { d.HEADER_ID, h.PROJECT_ID, h.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, h.DA_HEADER_ID, h.STATUS }).ToList<object>();
-
+                    if (uxTogglePosted.Checked)
+                    {
+                        rawData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                   join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                   join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
+                                   join s in _context.DAILY_ACTIVITY_STATUS on h.STATUS equals s.STATUS
+                                   where d.PERSON_ID == PersonId
+                                   select new { d.HEADER_ID, h.PROJECT_ID, h.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, h.DA_HEADER_ID, h.STATUS }).ToList<object>();
+                    }
+                    else
+                    {
+                        rawData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                   join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                   join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
+                                   join s in _context.DAILY_ACTIVITY_STATUS on h.STATUS equals s.STATUS
+                                   where d.PERSON_ID == PersonId && h.STATUS != 4
+                                   select new { d.HEADER_ID, h.PROJECT_ID, h.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, h.DA_HEADER_ID, h.STATUS }).ToList<object>();
+                    }
                     uxCreateActivityButton.Disabled = true;
 
                 }
@@ -115,7 +136,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     {
                         if (OffendingProject == record.HEADER_ID)
                         {
-                            Warning = "Warning";
+                            Warning = "Error";
                             WarningType += "Contains Equipment outside of Business Unit.<br />";
                             break;
                         }
@@ -125,7 +146,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     {
                         if (OffendingProject == record.HEADER_ID)
                         {
-                            Warning = "Warning";
+                            Warning = "Error";
                             WarningType += "Contains Employees outside of Business Unit.<br />";
                             break;
                         }

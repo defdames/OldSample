@@ -52,6 +52,29 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        public static WarningData checkEmployeeTime(int Hours, long PersonId, DateTime HeaderDate)
+        {
+            using (Entities _context = new Entities())
+            {
+                var TotalMinutes = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                      where d.DAILY_ACTIVITY_HEADER.STATUS != 4 && d.DAILY_ACTIVITY_HEADER.STATUS != 5 && d.PERSON_ID == PersonId && EntityFunctions.TruncateTime(d.TIME_IN) == EntityFunctions.TruncateTime(HeaderDate)
+                                      group d by new{d.PERSON_ID} into g
+                                      select g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value))).Single();
+                if (TotalMinutes / 60 > Hours)
+                {
+                    string Name = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == PersonId).Select(x => x.EMPLOYEE_NAME).Single();
+                    if (Hours == 14)
+                    {
+                        return new WarningData { WarningType = "Warning", RecordType = Name, AdditionalInformation = string.Format("More than {0} hours logged on {1}", Hours.ToString(), HeaderDate.ToString("MM-dd-yyyy")) };
+                    }
+                    else if (Hours == 24)
+                    {
+                        return new WarningData { WarningType = "Error", RecordType = Name, AdditionalInformation = string.Format("More than {0} hours logged on {1}", Hours.ToString(), HeaderDate.ToString("MM-dd-yyyy")) };
+                    }
+                }
+                return null;
+            }
+        }
         /// <summary>
         /// Validation check to see if equipment meter readings are missing
         /// </summary>
@@ -82,6 +105,32 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 return true;
             }
             return false;
+        }
+
+        public static WarningData MeterCheck(long EquipmentID)
+        {
+            using (Entities _context = new Entities())
+            {
+                DAILY_ACTIVITY_EQUIPMENT EquipmentRecord = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
+                                                            where d.EQUIPMENT_ID == EquipmentID
+                                                            select d).Single();
+                if (EquipmentRecord.ODOMETER_START == 0 || EquipmentRecord.ODOMETER_END == 0)
+                {
+                    string Name = (from e in _context.DAILY_ACTIVITY_EQUIPMENT
+                                   join p in _context.PROJECTS_V on e.PROJECT_ID equals p.PROJECT_ID
+                                   where e.EQUIPMENT_ID == EquipmentID
+                                   select p.NAME).Single();
+                    string ClassCode = (from e in _context.DAILY_ACTIVITY_EQUIPMENT
+                                        join c in _context.CLASS_CODES_V on e.PROJECT_ID equals c.PROJECT_ID
+                                        where e.EQUIPMENT_ID == EquipmentID
+                                        select c.CLASS_CODE).Single();
+                    return new WarningData { WarningType = "Warning", RecordType = string.Format("{0} - {1}", Name, ClassCode), AdditionalInformation = "Equipment Missing Meter Reading" };
+                }
+                else
+                {
+                    return null;
+                }
+            }
         }
 
         public static bool employeeWithShopTimeCheck(long headerID)
@@ -131,7 +180,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                         if (count > 0)
                         {
-                            if (CurrentTimeIn < PreviousTimeOut)
+                            if (CurrentTimeIn <= PreviousTimeOut)
                             {
                                 HeaderIdList.Add(PreviousHeaderId);
                                 HeaderIdList.Add(Header.DAILY_ACTIVITY_HEADER.HEADER_ID);
@@ -147,7 +196,43 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
-       public static List<long> EquipmentBusinessUnitCheck()
+        public static List<WarningData> employeeTimeOverlapCheck(long PersonId, DateTime HeaderDate)
+        {
+            using (Entities _context = new Entities())
+            {
+                List<DAILY_ACTIVITY_EMPLOYEE> EmployeeData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                                              join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                                              orderby d.TIME_IN ascending
+                                                              where d.PERSON_ID == PersonId && EntityFunctions.TruncateTime(d.TIME_IN) == EntityFunctions.TruncateTime(HeaderDate.Date) && h.STATUS != 5
+                                                              select d).ToList();
+                List<WarningData> HeaderIdList = new List<WarningData>();
+                DateTime PreviousTimeIn = DateTime.Parse("1/11/1955");
+                DateTime PreviousTimeOut = DateTime.Parse("1/11/1955");
+                long PreviousHeader = 0;
+                int count = 0;
+                foreach (DAILY_ACTIVITY_EMPLOYEE Employee in EmployeeData)
+                {
+                    DateTime CurrentTimeIn = (DateTime)Employee.TIME_IN;
+                    DateTime CurrentTimeOut = (DateTime)Employee.TIME_OUT;
+                    if (count > 0)
+                    {
+                        
+                        if (CurrentTimeIn < PreviousTimeOut)
+                        {
+                            string Name = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == PersonId).Select(x => x.EMPLOYEE_NAME).Single();
+                            HeaderIdList.Add(new WarningData { WarningType = "Error", RecordType = Name , AdditionalInformation = string.Format("Employee has time overlap on DRS Id:{0}", PreviousHeader.ToString()) });
+                        }
+                    }
+                    PreviousTimeIn = CurrentTimeIn;
+                    PreviousTimeOut = CurrentTimeOut;
+                    PreviousHeader = Employee.HEADER_ID;
+                    count++;
+                }
+                return HeaderIdList;
+            }
+        }
+
+        public static List<long> EquipmentBusinessUnitCheck()
         {
             List<long> OffendingHeaders = new List<long>();
             using (Entities _context = new Entities())
@@ -180,6 +265,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        public static WarningData EquipmentBusinessUnitCheck(long EquipmentId)
+        {
+            using (Entities _context = new Entities())
+            {
+                DAILY_ACTIVITY_EQUIPMENT EquipmentData = _context.DAILY_ACTIVITY_EQUIPMENT.Where(x => x.EQUIPMENT_ID == EquipmentId).Single();
+
+                long ProjectOrgId = _context.PROJECTS_V.Where(x => x.PROJECT_ID == EquipmentData.DAILY_ACTIVITY_HEADER.PROJECT_ID).Select(x => (long)x.ORG_ID).Single();
+                long EquipmentOrg = _context.PROJECTS_V.Where(x => x.PROJECT_ID == EquipmentData.PROJECT_ID).Select(x => (long)x.ORG_ID).Single();
+                if (ProjectOrgId != EquipmentOrg)
+                {
+                    string Name = _context.PROJECTS_V.Where(x => x.PROJECT_ID == EquipmentData.PROJECT_ID).Select(x => x.NAME).Single();
+                    string ClassCode = _context.CLASS_CODES_V.Where(x => x.PROJECT_ID == EquipmentData.PROJECT_ID).Select(x => x.CLASS_CODE).Single();
+                    return new WarningData { WarningType = "Error", RecordType = string.Format("{0} - {1}", Name, ClassCode), AdditionalInformation = string.Format("Equipment has Org of {0}, Project has Org of {1}", EquipmentOrg.ToString(), ProjectOrgId.ToString()) };
+                }
+                return null;
+            }
+        }
+        
         public static List<long> EmployeeBusinessUnitCheck(){
             using (Entities _context = new Entities()){
                 List<long>OffendingHeaders = new List<long>();
@@ -207,6 +310,23 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     }
                 }
                 return OffendingHeaders;
+            }
+        }
+
+        public static WarningData EmployeeBusinessUnitCheck(long EmployeeId)
+        {
+            using (Entities _context = new Entities())
+            {
+                DAILY_ACTIVITY_EMPLOYEE Employee = _context.DAILY_ACTIVITY_EMPLOYEE.Where(x => x.EMPLOYEE_ID == EmployeeId).Single();
+                long ProjectOrg = _context.PROJECTS_V.Where(x => x.PROJECT_ID == Employee.DAILY_ACTIVITY_HEADER.PROJECT_ID).Select(x => (long)x.ORG_ID).Single();
+                long EmployeeOrg = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == Employee.PERSON_ID).Select(x => (long)x.ORGANIZATION_ID).Single();
+
+                if (ProjectOrg != EMPLOYEES_V.GetEmployeeBusinessUnit(EmployeeOrg))
+                {
+                    string Name = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == Employee.PERSON_ID).Select(x => x.EMPLOYEE_NAME).Single();
+                    return new WarningData { WarningType = "Error", RecordType = Name, AdditionalInformation = string.Format("Employee Org is {0}, Project Org is {1}", EmployeeOrg.ToString(), ProjectOrg.ToString()) };
+                }
+                return null;
             }
         }
 
@@ -345,5 +465,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public string WARNING { get; set; }
         public string WARNING_TYPE { get; set; }
         public int STATUS { get; set; }
+    }
+
+    public class WarningData
+    {
+        public string WarningType { get; set; }
+        public string RecordType { get; set; }
+        public string AdditionalInformation { get; set; }
     }
 }

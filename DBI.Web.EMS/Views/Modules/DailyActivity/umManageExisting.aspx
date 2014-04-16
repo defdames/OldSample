@@ -63,9 +63,7 @@
 		<ext:Hidden ID="uxDeactivate" runat="server" />
 		<ext:Viewport runat="server" ID="uxViewPort" Layout="AccordionLayout" IDMode="Explicit" Namespace="App" RenderXType="True">
 			<Items>
-				
 				<ext:GridPanel runat="server" ID="uxManageGrid" Layout="FitLayout" Title="Headers" SelectionMemoryEvents="false" SelectionMemory="true">
-					
 					<SelectionModel>
 						<ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
 					</SelectionModel>
@@ -131,8 +129,8 @@
 							runat="server" 
 							Delegate="tr.x-grid-row"
 							TrackMouse="true"
-                            UI="Warning"
-                            Width="400">
+							UI="Warning"
+							Width="400">
 							<Listeners>
 								<BeforeShow Handler="return beforeShow(this, #{uxManageGrid});" />
 								<Show Handler="onShow(this, #{uxManageGrid});" />
@@ -230,6 +228,12 @@
 										</Click>
 									</DirectEvents>
 								</ext:Button>
+								<ext:ToolbarSpacer runat="server" />
+								<ext:Checkbox runat="server" ID="uxTogglePosted" FieldLabel="Show Posted">
+									<Listeners>
+										<Change Handler="#{uxManageGridStore}.reload()" />
+									</Listeners>
+								</ext:Checkbox>
 							</Items>
 						</ext:Toolbar>
 					</TopBar>
