@@ -59,7 +59,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 var TotalMinutes = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                       where d.DAILY_ACTIVITY_HEADER.STATUS != 4 && d.DAILY_ACTIVITY_HEADER.STATUS != 5 && d.PERSON_ID == PersonId && EntityFunctions.TruncateTime(d.TIME_IN) == EntityFunctions.TruncateTime(HeaderDate)
                                       group d by new{d.PERSON_ID} into g
-                                      select g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value))).Single();
+                                      select g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value))).SingleOrDefault();
                 if (TotalMinutes / 60 > Hours)
                 {
                     string Name = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == PersonId).Select(x => x.EMPLOYEE_NAME).Single();

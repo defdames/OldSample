@@ -56,7 +56,7 @@
 					ID="uxWarningGrid"
 					Title="Warnings/Errors"
 					Padding="10"
-					MaxWidth="1000">
+					MaxWidth="1100">
 					<Store>
 						<ext:Store runat="server" ID="uxWarningStore">
 							<Model>

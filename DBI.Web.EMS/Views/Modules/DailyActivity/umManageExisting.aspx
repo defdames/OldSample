@@ -191,6 +191,22 @@
 										</Click>
 									</DirectEvents>
 								</ext:Button>
+								<ext:ToolbarSpacer ID="ToolbarSpacer2" runat="server" />
+								<ext:Button runat="server"
+									ID="uxMarkAsPostedButton"
+									Text="Mark as Posted"
+									Icon="PencilGo"
+									Disabled="true">
+									<DirectEvents>
+										<Click OnEvent="deMarkAsPosted">
+											<ExtraParams>
+												<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
+											</ExtraParams>
+											<Confirmation Message="Mark DRS as posted." ConfirmRequest="true" />
+											<EventMask ShowMask="true" />
+										</Click>
+									</DirectEvents>
+								</ext:Button>
 								<ext:ToolbarSpacer ID="ToolbarSpacer5" runat="server" />
 								<ext:Button ID="uxPostMultipleButton" runat="server"
 									Text="Post Multiple Headers"
@@ -390,6 +406,22 @@
 									</DirectEvents>
 								</ext:Button>
 								<ext:ToolbarSpacer ID="ToolbarSpacer10" runat="server" />
+								<ext:Button runat="server"
+									ID="uxTabMarkButton"
+									Text="Mark as Posted"
+									Icon="PencilGo"
+									Disabled="true">
+									<DirectEvents>
+										<Click OnEvent="deMarkAsPosted">
+											<ExtraParams>
+												<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
+											</ExtraParams>
+											<Confirmation Message="Mark DRS as posted." ConfirmRequest="true" />
+											<EventMask ShowMask="true" />
+										</Click>
+									</DirectEvents>
+								</ext:Button>
+								<ext:ToolbarSpacer runat="server" />
 								<ext:Button runat="server"
 									ID="uxTabExportButton"
 									Text="Export to PDF"

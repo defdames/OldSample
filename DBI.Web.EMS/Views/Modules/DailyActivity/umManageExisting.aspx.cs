@@ -277,6 +277,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     uxPostActivityButton.Disabled = true;
                     uxTabPostButton.Disabled = true;
                     uxPostMultipleButton.Disabled = true;
+                    uxMarkAsPostedButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
+                    uxTabMarkButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
                     uxTabSetInactiveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
                     uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
                     uxDeactivate.Value = "Deactivate";
@@ -289,13 +291,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     uxPostActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
                     uxTabPostButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
                     uxPostMultipleButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
+                    uxMarkAsPostedButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
+                    uxTabMarkButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
                     uxApproveActivityButton.Disabled = true;
                     uxTabApproveButton.Disabled = true;
                     uxTabSetInactiveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
                     uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
                     uxDeactivate.Value = "Deactivate";
 
-                    if (!validateComponentSecurity("SYS.DailyActivity.Post"))
+                    if (!validateComponentSecurity("SYS.DailyActivity.Post") && !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted"))
                     {
                         uxChemicalTab.Disabled = true;
                         uxEmployeeTab.Disabled = true;
@@ -309,6 +313,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     
                     break;
                 case "POSTED":
+                    uxApproveActivityButton.Disabled = true;
+                    uxTabApproveButton.Disabled = true;
+                    uxPostActivityButton.Disabled = true;
+                    uxTabPostButton.Disabled = true;
+                    uxPostMultipleButton.Disabled = true;
+                    uxMarkAsPostedButton.Disabled = true;
+                    uxTabMarkButton.Disabled = true;
                     uxTabSetInactiveButton.Disabled = true;
                     uxInactiveActivityButton.Disabled = true;
                     uxChemicalTab.Disabled = true;
@@ -326,6 +337,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     uxPostActivityButton.Disabled = true;
                     uxTabPostButton.Disabled = true;
                     uxPostMultipleButton.Disabled = true;
+                    uxMarkAsPostedButton.Disabled = true;
+                    uxTabMarkButton.Disabled = true;
+
                     uxTabSetInactiveButton.Text = "Activate";
                     uxInactiveActivityButton.Text = "Activate";
                     uxTabSetInactiveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
@@ -781,6 +795,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     TargetAnchor = AnchorPoint.Center
                 }
             });
+            uxManageGridStore.Reload();
+        }
+
+        protected void deMarkAsPosted(object sender, DirectEventArgs e)
+        {
+            long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
+            DAILY_ACTIVITY_HEADER ToUpdate;
+            using (Entities _context = new Entities())
+            {
+                ToUpdate = _context.DAILY_ACTIVITY_HEADER.Where(x => x.HEADER_ID == HeaderId).Single();
+                ToUpdate.STATUS = 4;
+            }
+            GenericData.Update<DAILY_ACTIVITY_HEADER>(ToUpdate);
             uxManageGridStore.Reload();
         }
 

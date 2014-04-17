@@ -157,6 +157,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Button uxPostActivityButton;
         
         /// <summary>
+        /// ToolbarSpacer2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer2;
+        
+        /// <summary>
+        /// uxMarkAsPostedButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxMarkAsPostedButton;
+        
+        /// <summary>
         /// ToolbarSpacer5 control.
         /// </summary>
         /// <remarks>
@@ -389,6 +407,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.ToolbarSpacer ToolbarSpacer10;
+        
+        /// <summary>
+        /// uxTabMarkButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxTabMarkButton;
         
         /// <summary>
         /// uxTabExportButton control.
