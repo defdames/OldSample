@@ -20,6 +20,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
 
             GetGridData();
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            int Status = GetStatus(HeaderId);
+            if (Status == 4)
+            {
+                uxAddChemicalButton.Disabled = true;
+            }
+            if (Status == 3 && !validateComponentSecurity("SYS.DailyActivity.Post"))
+            {
+                uxAddChemicalButton.Disabled = true;
+            }
         }
 
         /// <summary>
@@ -41,7 +51,38 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        protected int GetStatus(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
+                int Status = (from d in _context.DAILY_ACTIVITY_HEADER
+                              where d.HEADER_ID == HeaderId
+                              select (int)d.STATUS).Single();
+                return Status;
+            }
+        }
 
+        protected void deEnableEdit(object sender, DirectEventArgs e)
+        {
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            int Status = GetStatus(HeaderId);
+
+            if (Status == 4)
+            {
+                uxEditChemicalButton.Disabled = true;
+                uxRemoveChemicalButton.Disabled = true;
+            }
+            else if (Status == 3 && !validateComponentSecurity("SYS.DailyActivity.Post"))
+            {
+                uxEditChemicalButton.Disabled = true;
+                uxRemoveChemicalButton.Disabled = true;
+            }
+            else
+            {
+                uxEditChemicalButton.Disabled = false;
+                uxRemoveChemicalButton.Disabled = false;
+            }
+        }
         /// <summary>
         /// Remove chemical entry from database
         /// </summary>

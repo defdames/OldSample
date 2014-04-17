@@ -40,6 +40,9 @@
 					<ext:Column ID="Column1" runat="server"
 						DataIndex="INVENTORY_ID"
 						Text="Inventory ID" />
+					<ext:Column ID="Column13" runat="server"
+						DataIndex="INV_NAME"
+						Text="Inventory Name" />
 					<ext:Column ID="Column4" runat="server"
 						DataIndex="SUB_INVENTORY_SECONDARY_NAME"
 						Text="Subinventory Name" />
@@ -64,9 +67,6 @@
 					<ext:Column ID="Column3" runat="server"
 						DataIndex="UNIT_OF_MEASURE"
 						Text="Unit" />
-					<ext:Column ID="Column13" runat="server"
-						DataIndex="INV_NAME"
-						Text="Inventory Name" Hidden="true" />
 				</Columns>
 			</ColumnModel>
 			<TopBar>

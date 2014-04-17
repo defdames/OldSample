@@ -258,13 +258,13 @@
 					FieldLabel="Drive Time Hours"
 					AllowBlank="true"
 					MinValue="0"
-					MaxValue="12" Width="500" />
+					MaxValue="12" Width="500" Hidden="true" />
 				<ext:NumberField runat="server"
 					ID="uxAddEmployeeDriveTimeMinutes"
 					FieldLabel="Drive Time Minutes"
 					AllowBlank="true"
 					MinValue="0"
-					MaxValue="59" Width="500" />
+					MaxValue="59" Width="500" Hidden="true" />
 				<ext:NumberField runat="server"
 					ID="uxAddEmployeeShopTimeAMHours"
 					FieldLabel="Shop Time AM Hours"
@@ -600,13 +600,13 @@
 					FieldLabel="Drive Time Hours"
 					AllowBlank="true"
 					MinValue="0"
-					MaxValue="12" Width="500" />
+					MaxValue="12" Width="500" Hidden="true" />
 				<ext:NumberField runat="server"
 					ID="uxEditEmployeeDriveTimeMinutes"
 					FieldLabel="Drive Time Minutes"
 					AllowBlank="true"
 					MinValue="0"
-					MaxValue="59" Width="500" />
+					MaxValue="59" Width="500" Hidden="true" />
 				<ext:NumberField runat="server"
 					ID="uxEditEmployeeTravelTimeHours"
 					FieldLabel="Travel Time Hours"
