@@ -12,8 +12,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 {
     public partial class umCombinedTab_IRM : BasePage
     {
-        protected List<WarningData> WarningList = new List<WarningData>();
-
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!validateComponentSecurity("SYS.DailyActivity.View") && !validateComponentSecurity("SYS.DailyActivity.EmployeeView"))
@@ -29,25 +27,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 GetWeatherData();
                 GetInventory();
                 GetFooterData();
-                GetWarnings();
-            }
-
-            if (!X.IsAjaxRequest && !IsPostBack)
-            {
-                this.uxRedWarning.Value = ResourceManager.GetInstance().GetIconUrl(Icon.Exclamation);
-                this.uxYellowWarning.Value = ResourceManager.GetInstance().GetIconUrl(Icon.Error);
-            }
-        }
-
-        protected void GetWarnings()
-        {
-            if (WarningList.Count > 0)
-            {
-                uxWarningStore.DataSource = WarningList;
-            }
-            else
-            {
-                uxWarningGrid.Hide();
             }
         }
 
@@ -90,14 +69,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
                 var data = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                             join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
-                            join pr in _context.PROJECTS_V on d.SUPPORT_PROJ_ID equals pr.PROJECT_ID into first
+                            join p in _context.PROJECTS_V on d.SUPPORT_PROJ_ID equals p.PROJECT_ID into first
                             from f in first.DefaultIfEmpty()
                             join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.EQUIPMENT_ID equals eq.EQUIPMENT_ID into equ
                             from equip in equ.DefaultIfEmpty()
                             join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
                             from projects in proj.DefaultIfEmpty()
                             where d.HEADER_ID == HeaderId
-                            select new EmployeeDetails{PERSON_ID = e.PERSON_ID, EMPLOYEE_ID = d.EMPLOYEE_ID, EMPLOYEE_NAME = e.EMPLOYEE_NAME, SUPPORT_PROJECT = f.NAME,  NAME = projects.NAME,TIME_IN =  (DateTime)d.TIME_IN, TIME_OUT =  (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), SHOPTIME_AM = (d.SHOPTIME_AM == null ? 0 : d.SHOPTIME_AM), SHOPTIME_PM = (d.SHOPTIME_PM == null ? 0 : d.SHOPTIME_PM), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS }).ToList();
+                            select new EmployeeDetails{EMPLOYEE_NAME = e.EMPLOYEE_NAME, SUPPORT_PROJECT = f.NAME,  NAME = projects.NAME,TIME_IN =  (DateTime)d.TIME_IN, TIME_OUT =  (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), SHOPTIME_AM = (d.SHOPTIME_AM == null ? 0 : d.SHOPTIME_AM), SHOPTIME_PM = (d.SHOPTIME_PM == null ? 0 : d.SHOPTIME_PM), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS }).ToList();
 
                 foreach (var item in data)
                 {
@@ -114,31 +93,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     Hours = Math.Truncate((double)item.SHOPTIME_PM);
                     Minutes = Math.Round(((double)item.SHOPTIME_PM - Hours) * 60);
                     item.SHOPTIME_PM_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
-
-                    List<WarningData> Overlaps = ValidationChecks.employeeTimeOverlapCheck(item.PERSON_ID, item.TIME_IN);
-                    if (Overlaps.Count > 0)
-                    {
-                        WarningList.AddRange(Overlaps);
-                    }
-                    WarningData EmployeeBusinessUnitFailures = ValidationChecks.EmployeeBusinessUnitCheck(item.EMPLOYEE_ID);
-                    if (EmployeeBusinessUnitFailures != null)
-                    {
-                        WarningList.Add(EmployeeBusinessUnitFailures);
-                        X.Js.Call("parent.App.uxTabPostButton.disable(); parent.App.uxPostActivityButton.disable(); parent.App.uxApproveActivityButton.disable(); parent.App.uxTabApproveButton.disable()");
-                    }
-                    WarningData EmployeeOver24 = ValidationChecks.checkEmployeeTime(24, item.PERSON_ID, item.TIME_IN);
-                    if (EmployeeOver24 != null)
-                    {
-                        WarningList.Add(EmployeeOver24);
-                    }
-                    else
-                    {
-                        WarningData EmployeeOver14 = ValidationChecks.checkEmployeeTime(14, item.PERSON_ID, item.TIME_IN);
-                        if (EmployeeOver14 != null)
-                        {
-                            WarningList.Add(EmployeeOver14);
-                        }
-                    }
                 }
                 uxEmployeeStore.DataSource = data;
                 uxEmployeeStore.DataBind();
@@ -155,20 +109,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.CLASS_CODES_V on e.PROJECT_ID equals p.PROJECT_ID
                             where e.HEADER_ID == HeaderId
                             select new { p.CLASS_CODE, p.ORGANIZATION_NAME, e.ODOMETER_START, e.ODOMETER_END, e.PROJECT_ID, e.EQUIPMENT_ID, p.NAME, e.HEADER_ID }).ToList();
-                foreach (var item in data)
-                {
-                    WarningData BusinessUnitWarning = ValidationChecks.EquipmentBusinessUnitCheck(item.EQUIPMENT_ID);
-                    if (BusinessUnitWarning != null)
-                    {
-                        WarningList.Add(BusinessUnitWarning);
-                        X.Js.Call("parent.App.uxTabPostButton.disable(); parent.App.uxPostActivityButton.disable(); parent.App.uxApproveActivityButton.disable(); parent.App.uxTabApproveButton.disable()");
-                    }
-                    WarningData MeterWarning = ValidationChecks.MeterCheck(item.EQUIPMENT_ID);
-                    if (MeterWarning != null)
-                    {
-                        WarningList.Add(MeterWarning);
-                    }
-                }
                 uxEquipmentStore.DataSource = data;
                 uxEquipmentStore.DataBind();
             }
