@@ -92,5 +92,6 @@ namespace DBI.Data
         public DbSet<ORG_HIER_V> ORG_HIER_V { get; set; }
         public DbSet<CROSSING> CROSSINGS { get; set; }
         public DbSet<TIME_CLOCK> TIME_CLOCK { get; set; }
+        public DbSet<CROSSING_RAILROAD> CROSSING_RAILROAD { get; set; }
     }
 }

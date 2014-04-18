@@ -102,7 +102,8 @@
         <AssociationConnector Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID" />
         <AssociationConnector Association="OracleModel.FK_INCIDENT_CROSSING_ID" />
         <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
-        <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="10.963505861798071" PointY="21.035524080058337" />
+        <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="18.25" PointY="26.375" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_RAILROAD" Width="1.5" PointX="0.89585163113467936" PointY="27.398434145095962" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
