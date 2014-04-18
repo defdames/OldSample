@@ -47,6 +47,8 @@
           <EntitySet Name="CROSSING_DATA_ENTRY" EntityType="OracleModel.Store.CROSSING_DATA_ENTRY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_INCIDENT" EntityType="OracleModel.Store.CROSSING_INCIDENT" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_INSPECTION" EntityType="OracleModel.Store.CROSSING_INSPECTION" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="CROSSING_PROJECT" EntityType="OracleModel.Store.CROSSING_PROJECT" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="CROSSING_RAILROAD" EntityType="OracleModel.Store.CROSSING_RAILROAD" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_RELATIONSHIP" EntityType="OracleModel.Store.CROSSING_RELATIONSHIP" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_SUB_DIVISION" EntityType="OracleModel.Store.CROSSING_SUB_DIVISION" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_SUPPLEMENTAL" EntityType="OracleModel.Store.CROSSING_SUPPLEMENTAL" store:Type="Tables" Schema="XXEMS" />
@@ -721,6 +723,10 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_PRODUCTION" EntitySet="DAILY_ACTIVITY_PRODUCTION" />
           </AssociationSet>
+          <AssociationSet Name="FK_PROJECT_RAILROAD_ID" Association="OracleModel.Store.FK_PROJECT_RAILROAD_ID">
+            <End Role="CROSSING_RAILROAD" EntitySet="CROSSING_RAILROAD" />
+            <End Role="CROSSING_PROJECT" EntitySet="CROSSING_PROJECT" />
+          </AssociationSet>
           <AssociationSet Name="FK_QUESTION_TYPE_ID" Association="OracleModel.Store.FK_QUESTION_TYPE_ID">
             <End Role="CUSTOMER_SURVEY_QUES_TYPES" EntitySet="CUSTOMER_SURVEY_QUES_TYPES" />
             <End Role="CUSTOMER_SURVEY_QUESTIONS" EntitySet="CUSTOMER_SURVEY_QUESTIONS" />
@@ -908,6 +914,22 @@
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
+        </EntityType>
+        <EntityType Name="CROSSING_PROJECT">
+          <Key>
+            <PropertyRef Name="PROJ_CORSSING_ID" />
+          </Key>
+          <Property Name="PROJ_CORSSING_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PROJECT_ID" Type="number" Precision="15" />
+          <Property Name="PROJECT_NAME" Type="varchar2" MaxLength="30" />
+          <Property Name="RAILROAD_ID" Type="number" />
+        </EntityType>
+        <EntityType Name="CROSSING_RAILROAD">
+          <Key>
+            <PropertyRef Name="RAILROAD_ID" />
+          </Key>
+          <Property Name="RAILROAD_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RAILROAD" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="CROSSING_RELATIONSHIP">
           <Key>
@@ -2983,6 +3005,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PROJECT_RAILROAD_ID">
+          <End Role="CROSSING_RAILROAD" Type="OracleModel.Store.CROSSING_RAILROAD" Multiplicity="0..1" />
+          <End Role="CROSSING_PROJECT" Type="OracleModel.Store.CROSSING_PROJECT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSING_RAILROAD">
+              <PropertyRef Name="RAILROAD_ID" />
+            </Principal>
+            <Dependent Role="CROSSING_PROJECT">
+              <PropertyRef Name="RAILROAD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_QUESTION_TYPE_ID">
           <End Role="CUSTOMER_SURVEY_QUES_TYPES" Type="OracleModel.Store.CUSTOMER_SURVEY_QUES_TYPES" Multiplicity="1" />
           <End Role="CUSTOMER_SURVEY_QUESTIONS" Type="OracleModel.Store.CUSTOMER_SURVEY_QUESTIONS" Multiplicity="*" />
@@ -3251,6 +3285,12 @@
             <End Role="CROSSING_SUPPLEMENTAL" EntitySet="CROSSING_SUPPLEMENTAL" />
           </AssociationSet>
           <EntitySet Name="TIME_CLOCK" EntityType="OracleModel.TIME_CLOCK" />
+          <EntitySet Name="CROSSING_RAILROAD" EntityType="OracleModel.CROSSING_RAILROAD" />
+          <EntitySet Name="CROSSING_PROJECT" EntityType="OracleModel.CROSSING_PROJECT" />
+          <AssociationSet Name="FK_PROJECT_RAILROAD_ID" Association="OracleModel.FK_PROJECT_RAILROAD_ID">
+            <End Role="CROSSING_RAILROAD" EntitySet="CROSSING_RAILROAD" />
+            <End Role="CROSSING_PROJECT" EntitySet="CROSSING_PROJECT" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -5720,6 +5760,36 @@
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="MODIFY_DATE" />
         </EntityType>
+        <EntityType Name="CROSSING_RAILROAD">
+          <Key>
+            <PropertyRef Name="RAILROAD_ID" />
+          </Key>
+          <Property Type="Decimal" Name="RAILROAD_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="RAILROAD" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CROSSING_PROJECT" Relationship="OracleModel.FK_PROJECT_RAILROAD_ID" FromRole="CROSSING_RAILROAD" ToRole="CROSSING_PROJECT" />
+        </EntityType>
+        <EntityType Name="CROSSING_PROJECT">
+          <Key>
+            <PropertyRef Name="PROJ_CORSSING_ID" />
+          </Key>
+          <Property Type="Decimal" Name="PROJ_CORSSING_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="PROJECT_ID" />
+          <Property Type="String" Name="PROJECT_NAME" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="RAILROAD_ID" Precision="38" Scale="0" />
+          <NavigationProperty Name="CROSSING_RAILROAD" Relationship="OracleModel.FK_PROJECT_RAILROAD_ID" FromRole="CROSSING_PROJECT" ToRole="CROSSING_RAILROAD" />
+        </EntityType>
+        <Association Name="FK_PROJECT_RAILROAD_ID">
+          <End Type="OracleModel.CROSSING_RAILROAD" Role="CROSSING_RAILROAD" Multiplicity="0..1" />
+          <End Type="OracleModel.CROSSING_PROJECT" Role="CROSSING_PROJECT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSING_RAILROAD">
+              <PropertyRef Name="RAILROAD_ID" />
+            </Principal>
+            <Dependent Role="CROSSING_PROJECT">
+              <PropertyRef Name="RAILROAD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7632,6 +7702,24 @@
                 <ScalarProperty Name="TIME_IN" ColumnName="TIME_IN" />
                 <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
                 <ScalarProperty Name="TIME_CLOCK_ID" ColumnName="TIME_CLOCK_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CROSSING_RAILROAD">
+            <EntityTypeMapping TypeName="OracleModel.CROSSING_RAILROAD">
+              <MappingFragment StoreEntitySet="CROSSING_RAILROAD">
+                <ScalarProperty Name="RAILROAD" ColumnName="RAILROAD" />
+                <ScalarProperty Name="RAILROAD_ID" ColumnName="RAILROAD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CROSSING_PROJECT">
+            <EntityTypeMapping TypeName="OracleModel.CROSSING_PROJECT">
+              <MappingFragment StoreEntitySet="CROSSING_PROJECT">
+                <ScalarProperty Name="RAILROAD_ID" ColumnName="RAILROAD_ID" />
+                <ScalarProperty Name="PROJECT_NAME" ColumnName="PROJECT_NAME" />
+                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
+                <ScalarProperty Name="PROJ_CORSSING_ID" ColumnName="PROJ_CORSSING_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
