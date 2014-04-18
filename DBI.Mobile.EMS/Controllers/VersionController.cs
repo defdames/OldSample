@@ -19,10 +19,10 @@ namespace DBI.Mobile.EMS.Controllers
             if (id == "production")
             {
                 Version ver = new Version();
-                ver.number = "1.0.B140331";
+                ver.number = "1.0.R140411";
                 ver.mandatory = false;
                 ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobile.dbiservices.com/iems/iEMS.plist";
-                ver.descriptionText = "Updated Weather Screen layout, Spelling Checks and Business License Details on Header Screen.";
+                ver.descriptionText = "";
 
                 RootObject root = new RootObject();
                 root.version = ver;

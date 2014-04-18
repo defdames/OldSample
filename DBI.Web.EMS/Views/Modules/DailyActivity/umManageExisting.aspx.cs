@@ -57,7 +57,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deReadHeaderData(object sender, StoreReadDataEventArgs e)
         {
-
             using (Entities _context = new Entities())
             {
                 List<object> rawData;
@@ -65,11 +64,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 if (validateComponentSecurity("SYS.DailyActivity.View"))
                 {
-                    //Get List of all new headers
-                    rawData = (from d in _context.DAILY_ACTIVITY_HEADER
-                               join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
-                               join s in _context.DAILY_ACTIVITY_STATUS on d.STATUS equals s.STATUS
-                               select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS }).ToList<object>();
+                    if (uxTogglePosted.Checked)
+                    {
+                        //Get List of all new headers
+                        rawData = (from d in _context.DAILY_ACTIVITY_HEADER
+                                   join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                                   join s in _context.DAILY_ACTIVITY_STATUS on d.STATUS equals s.STATUS
+                                   select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS }).ToList<object>();
+                    }
+                    else
+                    {
+                        rawData = (from d in _context.DAILY_ACTIVITY_HEADER
+                                   join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                                   join s in _context.DAILY_ACTIVITY_STATUS on d.STATUS equals s.STATUS
+                                   where d.STATUS != 4
+                                   select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS }).ToList<object>();
+                    }
                 }
                 else
                 {
@@ -78,13 +88,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                      where d.EMPLOYEE_NAME == EmployeeName
                                      select d.PERSON_ID).Single();
 
-                    rawData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                               join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                               join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
-                               join s in _context.DAILY_ACTIVITY_STATUS on h.STATUS equals s.STATUS
-                               where d.PERSON_ID == PersonId
-                               select new { d.HEADER_ID, h.PROJECT_ID, h.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, h.DA_HEADER_ID, h.STATUS }).ToList<object>();
-
+                    if (uxTogglePosted.Checked)
+                    {
+                        rawData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                   join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                   join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
+                                   join s in _context.DAILY_ACTIVITY_STATUS on h.STATUS equals s.STATUS
+                                   where d.PERSON_ID == PersonId
+                                   select new { d.HEADER_ID, h.PROJECT_ID, h.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, h.DA_HEADER_ID, h.STATUS }).ToList<object>();
+                    }
+                    else
+                    {
+                        rawData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                   join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                   join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
+                                   join s in _context.DAILY_ACTIVITY_STATUS on h.STATUS equals s.STATUS
+                                   where d.PERSON_ID == PersonId && h.STATUS != 4
+                                   select new { d.HEADER_ID, h.PROJECT_ID, h.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, h.DA_HEADER_ID, h.STATUS }).ToList<object>();
+                    }
                     uxCreateActivityButton.Disabled = true;
 
                 }
@@ -115,7 +136,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     {
                         if (OffendingProject == record.HEADER_ID)
                         {
-                            Warning = "Warning";
+                            Warning = "Error";
                             WarningType += "Contains Equipment outside of Business Unit.<br />";
                             break;
                         }
@@ -125,7 +146,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     {
                         if (OffendingProject == record.HEADER_ID)
                         {
-                            Warning = "Warning";
+                            Warning = "Error";
                             WarningType += "Contains Employees outside of Business Unit.<br />";
                             break;
                         }
@@ -256,6 +277,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     uxPostActivityButton.Disabled = true;
                     uxTabPostButton.Disabled = true;
                     uxPostMultipleButton.Disabled = true;
+                    uxMarkAsPostedButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
+                    uxTabMarkButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
                     uxTabSetInactiveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
                     uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
                     uxDeactivate.Value = "Deactivate";
@@ -268,16 +291,45 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     uxPostActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
                     uxTabPostButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
                     uxPostMultipleButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
+                    uxMarkAsPostedButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
+                    uxTabMarkButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
                     uxApproveActivityButton.Disabled = true;
                     uxTabApproveButton.Disabled = true;
                     uxTabSetInactiveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
                     uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
                     uxDeactivate.Value = "Deactivate";
+
+                    if (!validateComponentSecurity("SYS.DailyActivity.Post") && !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted"))
+                    {
+                        uxChemicalTab.Disabled = true;
+                        uxEmployeeTab.Disabled = true;
+                        uxEquipmentTab.Disabled = true;
+                        uxInventoryTab.Disabled = true;
+                        uxHeaderTab.Disabled = true;
+                        uxWeatherTab.Disabled = true;
+                        uxProductionTab.Disabled = true;
+                        uxFooterTab.Disabled = true;
+                    }
                     
                     break;
                 case "POSTED":
+                    uxApproveActivityButton.Disabled = true;
+                    uxTabApproveButton.Disabled = true;
+                    uxPostActivityButton.Disabled = true;
+                    uxTabPostButton.Disabled = true;
+                    uxPostMultipleButton.Disabled = true;
+                    uxMarkAsPostedButton.Disabled = true;
+                    uxTabMarkButton.Disabled = true;
                     uxTabSetInactiveButton.Disabled = true;
                     uxInactiveActivityButton.Disabled = true;
+                    uxChemicalTab.Disabled = true;
+                    uxEmployeeTab.Disabled = true;
+                    uxEquipmentTab.Disabled = true;
+                    uxInventoryTab.Disabled = true;
+                    uxHeaderTab.Disabled = true;
+                    uxWeatherTab.Disabled = true;
+                    uxProductionTab.Disabled = true;
+                    uxFooterTab.Disabled = true;
                     break;
                 case "INACTIVE":
                     uxApproveActivityButton.Disabled = true;
@@ -285,6 +337,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     uxPostActivityButton.Disabled = true;
                     uxTabPostButton.Disabled = true;
                     uxPostMultipleButton.Disabled = true;
+                    uxMarkAsPostedButton.Disabled = true;
+                    uxTabMarkButton.Disabled = true;
+
                     uxTabSetInactiveButton.Text = "Activate";
                     uxInactiveActivityButton.Text = "Activate";
                     uxTabSetInactiveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
@@ -619,7 +674,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                            where d.HEADER_ID == HeaderId
                                            from j in joined
                                            where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
-                                           select new { c.CHEMICAL_MIX_NUMBER, d.SUB_INVENTORY_SECONDARY_NAME, j.DESCRIPTION, d.TOTAL, d.RATE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).ToList<object>();
+                                           select new { c.CHEMICAL_MIX_NUMBER, j.INV_NAME, d.SUB_INVENTORY_SECONDARY_NAME, j.DESCRIPTION, d.TOTAL, d.RATE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).ToList<object>();
 
                 return returnData;
             }
@@ -635,7 +690,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                            where d.HEADER_ID == HeaderId
                                            from j in joined
                                            where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
-                                           select new {d.SUB_INVENTORY_SECONDARY_NAME, j.DESCRIPTION, d.RATE, u.UNIT_OF_MEASURE}).ToList<object>();
+                                           select new {d.SUB_INVENTORY_SECONDARY_NAME, j.INV_NAME, j.DESCRIPTION, d.RATE, u.UNIT_OF_MEASURE}).ToList<object>();
 
                 return returnData;
             }
@@ -740,6 +795,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     TargetAnchor = AnchorPoint.Center
                 }
             });
+            uxManageGridStore.Reload();
+        }
+
+        protected void deMarkAsPosted(object sender, DirectEventArgs e)
+        {
+            long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
+            DAILY_ACTIVITY_HEADER ToUpdate;
+            using (Entities _context = new Entities())
+            {
+                ToUpdate = _context.DAILY_ACTIVITY_HEADER.Where(x => x.HEADER_ID == HeaderId).Single();
+                ToUpdate.STATUS = 4;
+            }
+            GenericData.Update<DAILY_ACTIVITY_HEADER>(ToUpdate);
             uxManageGridStore.Reload();
         }
 
@@ -1228,10 +1296,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     if (OrgId == 121)
                     {
                         var InventoryData = GetInventoryDBI(HeaderId);
-                        PdfPTable InventoryTable = new PdfPTable(6);
+                        PdfPTable InventoryTable = new PdfPTable(7);
 
                         Cells = new PdfPCell[]{
                     new PdfPCell(new Phrase("Mix #", HeaderFont)),
+                    new PdfPCell(new Phrase("Inventory Org", HeaderFont)),
                     new PdfPCell(new Phrase("Sub-Inventory", HeaderFont)),
                     new PdfPCell(new Phrase("Item Name", HeaderFont)),
                     new PdfPCell(new Phrase("Rate", HeaderFont)),
@@ -1254,6 +1323,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             }
                             Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase(Data.CHEMICAL_MIX_NUMBER.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.INV_NAME, CellFont)),
                         new PdfPCell(new Phrase(Data.SUB_INVENTORY_SECONDARY_NAME, CellFont)),
                         new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
                         new PdfPCell(new Phrase(string.Format("{0} {1}", Data.RATE.ToString(), Data.UNIT_OF_MEASURE), CellFont)),
@@ -1270,12 +1340,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     if (OrgId == 123)
                     {
                         var InventoryData = GetInventoryIRM(HeaderId);
-                        PdfPTable InventoryTable = new PdfPTable(3);
+                        PdfPTable InventoryTable = new PdfPTable(4);
 
                         Cells = new PdfPCell[]{
-                        new PdfPCell(new Phrase("Sub-Inventory", HeaderFont)),
-                        new PdfPCell(new Phrase("Item Name", HeaderFont)),
-                        new PdfPCell(new Phrase("Quantity", HeaderFont)),
+                            new PdfPCell(new Phrase("Inventory Org", HeaderFont)),
+                            new PdfPCell(new Phrase("Sub-Inventory", HeaderFont)),
+                            new PdfPCell(new Phrase("Item Name", HeaderFont)),
+                            new PdfPCell(new Phrase("Quantity", HeaderFont)),
                      };
                         Row = new PdfPRow(Cells);
                         InventoryTable.Rows.Add(Row);
@@ -1283,9 +1354,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         foreach (dynamic Data in InventoryData)
                         {
                             Cells = new PdfPCell[]{
-                        new PdfPCell(new Phrase(Data.SUB_INVENTORY_SECONDARY_NAME, CellFont)),
-                        new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
-                        new PdfPCell(new Phrase(string.Format("{0} {1}", Data.RATE.ToString(), Data.UNIT_OF_MEASURE), CellFont)),
+                                new PdfPCell(new Phrase(Data.INV_NAME, CellFont)),
+                                new PdfPCell(new Phrase(Data.SUB_INVENTORY_SECONDARY_NAME, CellFont)),
+                                new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
+                                new PdfPCell(new Phrase(string.Format("{0} {1}", Data.RATE.ToString(), Data.UNIT_OF_MEASURE), CellFont)),
                     };
 
                             Row = new PdfPRow(Cells);
@@ -1304,6 +1376,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 try
                 {
                     var FooterData = GetFooter(HeaderId);
+                    string ForemanName;
+                    using (Entities _context = new Entities())
+                    {
+                        ForemanName = (from d in _context.DAILY_ACTIVITY_HEADER
+                                       join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
+                                       where d.HEADER_ID == HeaderId
+                                       select e.EMPLOYEE_NAME).Single();
+                                      
+                    }
 
                     PdfPTable FooterTable = new PdfPTable(4);
                     FooterTable.DefaultCell.Border = PdfPCell.NO_BORDER;
@@ -1366,6 +1447,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     new PdfPCell(new Phrase(string.Format("{0} {1} {2} {3}",Hotel, City, State, Phone ), HeadFootCellFont))
                 };
 
+                    foreach (PdfPCell Cell in Cells)
+                    {
+                        Cell.Border = PdfPCell.NO_BORDER;
+                    }
+                    Row = new PdfPRow(Cells);
+                    FooterTable.Rows.Add(Row);
+
+                    Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase("Foreman Name", HeadFootTitleFont)),
+                        new PdfPCell(new Phrase(ForemanName, HeadFootCellFont)),
+                        new PdfPCell(new Phrase("Contract Rep Name", HeadFootTitleFont)),
+                        new PdfPCell(new Phrase(FooterData.CONTRACT_REP_NAME, HeadFootCellFont))
+                    };
                     foreach (PdfPCell Cell in Cells)
                     {
                         Cell.Border = PdfPCell.NO_BORDER;

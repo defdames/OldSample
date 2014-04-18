@@ -51,6 +51,9 @@
 						DataIndex="CHEMICAL_MIX_NUMBER"
 						Text="Mix Number" />
 					<ext:Column runat="server"
+						DataIndex="INV_NAME"
+						Text="Inventory Org" />
+					<ext:Column runat="server"
 						DataIndex="SUB_INVENTORY_SECONDARY_NAME"
 						Text="Subinventory Name" />
 					<ext:Column runat="server"

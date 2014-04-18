@@ -44,6 +44,7 @@
 								<ext:ModelField Name="DRIVE_TIME_FORMATTED" Type="String"  />
 								<ext:ModelField Name="SHOPTIME_AM_FORMATTED" Type="String"  />
 								<ext:ModelField Name="SHOPTIME_PM_FORMATTED" Type="String"  />
+								<ext:ModelField Name="SUPPORT_PROJECT" />
 								<ext:ModelField Name="PER_DIEM" Type="String"  />
 								<ext:ModelField Name="COMMENTS" Type="String"  />
 								<ext:ModelField Name="ROLE_TYPE" Type="String" />
@@ -80,10 +81,10 @@
 						Text="Travel Time"
 						Dataindex="TRAVEL_TIME_FORMATTED"
 						Flex="1" />
-					<ext:Column runat="server"
+					<ext:Column runat="server" ID="uxDriveTimeColumn"
 						Text="Drive Time"
 						DataIndex="DRIVE_TIME_FORMATTED"
-						Flex="1" />
+						Flex="1" Hidden="true" />
 					<ext:Column ID="uxShopTimeAMColumn" runat="server"
 						Text="Shop Time AM"
 						DataIndex="SHOPTIME_AM_FORMATTED"
@@ -92,6 +93,12 @@
 					<ext:Column ID="uxShopTimePMColumn" runat="server"
 						Text="Shop Time PM"
 						DataIndex="SHOPTIME_PM_FORMATTED"
+						Flex="1"
+						Hidden="true" />
+					<ext:Column runat="server"
+						ID="uxSupportProjectColumn"
+						Text="Support Project"
+						DataIndex="SUPPORT_PROJECT"
 						Flex="1"
 						Hidden="true" />
 					<ext:Column runat="server"
@@ -159,9 +166,10 @@
 			<SelectionModel>
 				<ext:RowSelectionModel runat="server" AllowDeselect="true" Mode="Single" />
 			</SelectionModel>
+			<DirectEvents>
+				<Select OnEvent="deEnableEdit" />
+			</DirectEvents>
 			<Listeners>
-				<Select Handler="#{uxEditEmployee}.enable();
-					#{uxRemoveEmployee}.enable()" />
 				<Deselect Handler="#{uxEditEmployee}.disable();
 					#{uxRemoveEmployee}.disable()" />
 			</Listeners>

@@ -107,9 +107,10 @@
 			<SelectionModel>
 				<ext:RowSelectionModel runat="server" AllowDeselect="true" Mode="Single" />
 			</SelectionModel>
+			<DirectEvents>
+				<Select OnEvent="deEnableEdit" />
+			</DirectEvents>
 			<Listeners>
-				<Select Handler="#{uxEditEquipmentButton}.enable();
-					#{uxRemoveEquipmentButton}.enable()" />
 				<Deselect Handler="#{uxEditEquipmentButton}.disable();
 					#{uxRemoveEquipmentButton}.disable()" />
 			</Listeners>

@@ -63,9 +63,7 @@
 		<ext:Hidden ID="uxDeactivate" runat="server" />
 		<ext:Viewport runat="server" ID="uxViewPort" Layout="AccordionLayout" IDMode="Explicit" Namespace="App" RenderXType="True">
 			<Items>
-				
 				<ext:GridPanel runat="server" ID="uxManageGrid" Layout="FitLayout" Title="Headers" SelectionMemoryEvents="false" SelectionMemory="true">
-					
 					<SelectionModel>
 						<ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
 					</SelectionModel>
@@ -131,8 +129,8 @@
 							runat="server" 
 							Delegate="tr.x-grid-row"
 							TrackMouse="true"
-                            UI="Warning"
-                            Width="400">
+							UI="Warning"
+							Width="400">
 							<Listeners>
 								<BeforeShow Handler="return beforeShow(this, #{uxManageGrid});" />
 								<Show Handler="onShow(this, #{uxManageGrid});" />
@@ -193,6 +191,22 @@
 										</Click>
 									</DirectEvents>
 								</ext:Button>
+								<ext:ToolbarSpacer ID="ToolbarSpacer2" runat="server" />
+								<ext:Button runat="server"
+									ID="uxMarkAsPostedButton"
+									Text="Mark as Posted"
+									Icon="PencilGo"
+									Disabled="true">
+									<DirectEvents>
+										<Click OnEvent="deMarkAsPosted">
+											<ExtraParams>
+												<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
+											</ExtraParams>
+											<Confirmation Message="Mark DRS as posted." ConfirmRequest="true" />
+											<EventMask ShowMask="true" />
+										</Click>
+									</DirectEvents>
+								</ext:Button>
 								<ext:ToolbarSpacer ID="ToolbarSpacer5" runat="server" />
 								<ext:Button ID="uxPostMultipleButton" runat="server"
 									Text="Post Multiple Headers"
@@ -230,6 +244,12 @@
 										</Click>
 									</DirectEvents>
 								</ext:Button>
+								<ext:ToolbarSpacer runat="server" />
+								<ext:Checkbox runat="server" ID="uxTogglePosted" FieldLabel="Show Posted">
+									<Listeners>
+										<Change Handler="#{uxManageGridStore}.reload()" />
+									</Listeners>
+								</ext:Checkbox>
 							</Items>
 						</ext:Toolbar>
 					</TopBar>
@@ -386,6 +406,22 @@
 									</DirectEvents>
 								</ext:Button>
 								<ext:ToolbarSpacer ID="ToolbarSpacer10" runat="server" />
+								<ext:Button runat="server"
+									ID="uxTabMarkButton"
+									Text="Mark as Posted"
+									Icon="PencilGo"
+									Disabled="true">
+									<DirectEvents>
+										<Click OnEvent="deMarkAsPosted">
+											<ExtraParams>
+												<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
+											</ExtraParams>
+											<Confirmation Message="Mark DRS as posted." ConfirmRequest="true" />
+											<EventMask ShowMask="true" />
+										</Click>
+									</DirectEvents>
+								</ext:Button>
+								<ext:ToolbarSpacer runat="server" />
 								<ext:Button runat="server"
 									ID="uxTabExportButton"
 									Text="Export to PDF"

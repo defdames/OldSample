@@ -40,7 +40,7 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column runat="server" Text="Org Name" DataIndex="OrgName" />
+                            <ext:Column runat="server" Text="Project Org" DataIndex="OrgName" />
                             <ext:Column runat="server" Text="DRS Id" DataIndex="HeaderId" />
                             <ext:Column runat="server" Text="Project Number" DataIndex="ProjectId" />
                             <ext:Column runat="server" Text="Project Name" DataIndex="ProjectDescription" />
@@ -50,7 +50,7 @@
                             <ext:Column runat="server" Text="Item Description" DataIndex="ItemDescription" />
                             <ext:Column runat="server" Text="UOM" DataIndex="Units" />
                             <ext:Column runat="server" Text="Quantity" DataIndex="Total" />
-                            <ext:Column runat="server" Text="Inventory" DataIndex="Inventory" />
+                            <ext:Column runat="server" Text="Inventory Org" DataIndex="Inventory" />
                             <ext:Column runat="server" Text="Sub Inventory" DataIndex="SubInventory" />
                             <ext:Column runat="server" Text="State" DataIndex="State" />
                         </Columns>

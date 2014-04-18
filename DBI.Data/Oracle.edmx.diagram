@@ -93,16 +93,16 @@
         <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.XXDBI_PAYROLL_AUDIT_V" Width="1.5" PointX="18.375" PointY="4" />
         <EntityTypeShape EntityType="OracleModel.HIERARCHY_ID_V" Width="1.5" PointX="15.875" PointY="17.125" />
-        <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="5.5" PointY="5.75" />
         <EntityTypeShape EntityType="OracleModel.SYS_USER_ORGS" Width="1.5" PointX="13.375" PointY="0.5" />
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="1.5" PointX="17.875" PointY="23" />
         <EntityTypeShape EntityType="OracleModel.GL_ACCOUNTS_V" Width="1.5" PointX="16.5" PointY="9.625" />
-        <EntityTypeShape EntityType="OracleModel.ORG_HIER_V" Width="1.5" PointX="8.33479275011215" PointY="25.791150537222229" />
+        <EntityTypeShape EntityType="OracleModel.ORG_HIER_V" Width="1.5" PointX="3.625" PointY="27.25" />
         <EntityTypeShape EntityType="OracleModel.CROSSING" Width="1.5" PointX="27.5" PointY="0.625" />
         <AssociationConnector Association="OracleModel.FK_CROSSINGS_CONTACT_ID" />
         <AssociationConnector Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID" />
         <AssociationConnector Association="OracleModel.FK_INCIDENT_CROSSING_ID" />
         <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
+        <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="10.963505861798071" PointY="21.035524080058337" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

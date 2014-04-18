@@ -85,255 +85,255 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         protected global::Ext.Net.Column Column1;
         
         /// <summary>
-        /// Column21 control.
+        /// colSunday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column21;
+        protected global::Ext.Net.Column colSunday;
         
         /// <summary>
-        /// Column22 control.
+        /// TiSunday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateColumn Column22;
+        protected global::Ext.Net.DateColumn TiSunday;
         
         /// <summary>
-        /// Column23 control.
+        /// ToSunday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateColumn Column23;
+        protected global::Ext.Net.DateColumn ToSunday;
         
         /// <summary>
-        /// Column24 control.
+        /// TotSunday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column24;
+        protected global::Ext.Net.Column TotSunday;
         
         /// <summary>
-        /// Column2 control.
+        /// colMonday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column2;
+        protected global::Ext.Net.Column colMonday;
         
         /// <summary>
-        /// uxTimeInMonday control.
+        /// TiMonday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateColumn uxTimeInMonday;
+        protected global::Ext.Net.DateColumn TiMonday;
         
         /// <summary>
-        /// uxTimeOutMonday control.
+        /// ToMonday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateColumn uxTimeOutMonday;
+        protected global::Ext.Net.DateColumn ToMonday;
         
         /// <summary>
-        /// uxTotalHoursMonday control.
+        /// TotMonday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column uxTotalHoursMonday;
+        protected global::Ext.Net.Column TotMonday;
         
         /// <summary>
-        /// Column3 control.
+        /// colTuesday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column3;
+        protected global::Ext.Net.Column colTuesday;
         
         /// <summary>
-        /// Column4 control.
+        /// TiTuesday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateColumn Column4;
+        protected global::Ext.Net.DateColumn TiTuesday;
         
         /// <summary>
-        /// Column5 control.
+        /// ToTuesday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateColumn Column5;
+        protected global::Ext.Net.DateColumn ToTuesday;
         
         /// <summary>
-        /// Column6 control.
+        /// TotTuesday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column6;
+        protected global::Ext.Net.Column TotTuesday;
         
         /// <summary>
-        /// Column7 control.
+        /// colWednesday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column7;
+        protected global::Ext.Net.Column colWednesday;
         
         /// <summary>
-        /// Column8 control.
+        /// TiWednesday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateColumn Column8;
+        protected global::Ext.Net.DateColumn TiWednesday;
         
         /// <summary>
-        /// Column9 control.
+        /// ToWednesday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateColumn Column9;
+        protected global::Ext.Net.DateColumn ToWednesday;
         
         /// <summary>
-        /// Column10 control.
+        /// TotWednesday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column10;
+        protected global::Ext.Net.Column TotWednesday;
         
         /// <summary>
-        /// Column11 control.
+        /// colThursday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column11;
+        protected global::Ext.Net.Column colThursday;
         
         /// <summary>
-        /// Column12 control.
+        /// TiThursday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateColumn Column12;
+        protected global::Ext.Net.DateColumn TiThursday;
         
         /// <summary>
-        /// Column13 control.
+        /// ToThursday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateColumn Column13;
+        protected global::Ext.Net.DateColumn ToThursday;
         
         /// <summary>
-        /// Column14 control.
+        /// TotThursday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column14;
+        protected global::Ext.Net.Column TotThursday;
         
         /// <summary>
-        /// Column15 control.
+        /// colFriday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column15;
+        protected global::Ext.Net.Column colFriday;
         
         /// <summary>
-        /// Column16 control.
+        /// TiFriday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateColumn Column16;
+        protected global::Ext.Net.DateColumn TiFriday;
         
         /// <summary>
-        /// Column17 control.
+        /// ToFriday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateColumn Column17;
+        protected global::Ext.Net.DateColumn ToFriday;
         
         /// <summary>
-        /// Column18 control.
+        /// TotFriday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column18;
+        protected global::Ext.Net.Column TotFriday;
         
         /// <summary>
-        /// Column19 control.
+        /// colSaturday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column19;
+        protected global::Ext.Net.Column colSaturday;
         
         /// <summary>
-        /// Column20 control.
+        /// TiSaturday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateColumn Column20;
+        protected global::Ext.Net.DateColumn TiSaturday;
         
         /// <summary>
-        /// Column25 control.
+        /// ToSaturday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateColumn Column25;
+        protected global::Ext.Net.DateColumn ToSaturday;
         
         /// <summary>
-        /// Column26 control.
+        /// TotSaturday control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column26;
+        protected global::Ext.Net.Column TotSaturday;
     }
 }
