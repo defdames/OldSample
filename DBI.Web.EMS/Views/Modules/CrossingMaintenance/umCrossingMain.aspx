@@ -15,7 +15,6 @@
         <div>
             <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
                 <Items>
-
                     <ext:TabPanel ID="uxCrossingTab" runat="server" Region="Center">
                         <Items>
                             <ext:Panel runat="server"
