@@ -213,100 +213,124 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
             string homeUrl = string.Empty;
             long OrgId = GetOrgId(HeaderId);
+            long CoOrgId = GetCoOrgId(HeaderId);
             List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime(24);
             EmployeeData DuplicatePerDiems = ValidationChecks.checkPerDiem(HeaderId);
             bool BadHeader = false;
-
-            if (OrgId == 121)
-            {
-                homeUrl = string.Format("umCombinedTab_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-            }
-            else if (OrgId == 123)
-            {
-                homeUrl = string.Format("umCombinedTab_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-            }
-
-            uxCombinedTab.Disabled = false;
-            uxCombinedTab.LoadContent(homeUrl);
-
-            if (validateComponentSecurity("SYS.DailyActivity.View"))
-            {
-                string prodUrl = string.Empty;
-                string headerUrl = string.Format("umHeaderTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-                string equipUrl = string.Format("umEquipmentTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-                string emplUrl = string.Format("umEmployeesTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-                string chemUrl = string.Format("umChemicalTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-                string weatherUrl = string.Format("umWeatherTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-                string invUrl = string.Empty;
-                string footerURL = string.Empty;
-
-                uxHeaderTab.Disabled = false;
-                uxEquipmentTab.Disabled = false;
-                uxProductionTab.Disabled = false;
-                uxEmployeeTab.Disabled = false;
-                uxWeatherTab.Disabled = false;
-                uxInventoryTab.Disabled = false;
-                uxFooterTab.Disabled = false;
-
-                uxHeaderTab.LoadContent(headerUrl);
-                uxEquipmentTab.LoadContent(equipUrl);
-                uxEmployeeTab.LoadContent(emplUrl);
-                uxWeatherTab.LoadContent(weatherUrl);
-
+            
                 if (OrgId == 121)
                 {
-                    prodUrl = string.Format("umProductionTab_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-                    invUrl = string.Format("umInventoryTab_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-                    footerURL = string.Format("umSubmitActivity_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-                    uxChemicalTab.Disabled = false;
-                    uxTabPanel.ShowTab(uxChemicalTab);
-                    uxChemicalTab.LoadContent(chemUrl);
+                    homeUrl = string.Format("umCombinedTab_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                 }
                 else if (OrgId == 123)
                 {
-                    uxTabPanel.HideTab(uxChemicalTab);
-                    prodUrl = string.Format("umProductionTab_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-                    invUrl = string.Format("umInventoryTab_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-                    footerURL = string.Format("umSubmitActivity_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-                    //uxChemicalTab.Close();
-
+                    homeUrl = string.Format("umCombinedTab_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                 }
-                uxProductionTab.LoadContent(prodUrl);
-                uxInventoryTab.LoadContent(invUrl);
-                uxFooterTab.LoadContent(footerURL);
-            }
 
-            switch(e.ExtraParams["Status"]){
-                case "PENDING APPROVAL":
-                    uxApproveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
-                    uxTabApproveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
-                    uxPostActivityButton.Disabled = true;
-                    uxTabPostButton.Disabled = true;
-                    uxPostMultipleButton.Disabled = true;
-                    uxMarkAsPostedButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
-                    uxTabMarkButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
-                    uxTabSetInactiveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
-                    uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
-                    uxDeactivate.Value = "Deactivate";
-                    uxTabSetInactiveButton.Text = "Set Inactive";
-                    uxInactiveActivityButton.Text = "Set Inactive";
-                    break;
-                case "APPROVED":
-                    uxTabSetInactiveButton.Text = "Set Inactive";
-                    uxInactiveActivityButton.Text = "Set Inactive";
-                    uxPostActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
-                    uxTabPostButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
-                    uxPostMultipleButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
-                    uxMarkAsPostedButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
-                    uxTabMarkButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
-                    uxApproveActivityButton.Disabled = true;
-                    uxTabApproveButton.Disabled = true;
-                    uxTabSetInactiveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
-                    uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
-                    uxDeactivate.Value = "Deactivate";
+                uxCombinedTab.Disabled = false;
+                uxCombinedTab.LoadContent(homeUrl);
+                if (SYS_USER_ORGS.IsInOrg(SYS_USER_INFORMATION.UserID(User.Identity.Name), CoOrgId))
+                {
+                if (validateComponentSecurity("SYS.DailyActivity.View"))
+                {
+                    string prodUrl = string.Empty;
+                    string headerUrl = string.Format("umHeaderTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                    string equipUrl = string.Format("umEquipmentTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                    string emplUrl = string.Format("umEmployeesTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                    string chemUrl = string.Format("umChemicalTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                    string weatherUrl = string.Format("umWeatherTab.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                    string invUrl = string.Empty;
+                    string footerURL = string.Empty;
 
-                    if (!validateComponentSecurity("SYS.DailyActivity.Post") && !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted"))
+                    uxHeaderTab.Disabled = false;
+                    uxEquipmentTab.Disabled = false;
+                    uxProductionTab.Disabled = false;
+                    uxEmployeeTab.Disabled = false;
+                    uxWeatherTab.Disabled = false;
+                    uxInventoryTab.Disabled = false;
+                    uxFooterTab.Disabled = false;
+
+                    uxHeaderTab.LoadContent(headerUrl);
+                    uxEquipmentTab.LoadContent(equipUrl);
+                    uxEmployeeTab.LoadContent(emplUrl);
+                    uxWeatherTab.LoadContent(weatherUrl);
+
+                    if (OrgId == 121)
                     {
+                        prodUrl = string.Format("umProductionTab_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                        invUrl = string.Format("umInventoryTab_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                        footerURL = string.Format("umSubmitActivity_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                        uxChemicalTab.Disabled = false;
+                        uxTabPanel.ShowTab(uxChemicalTab);
+                        uxChemicalTab.LoadContent(chemUrl);
+                    }
+                    else if (OrgId == 123)
+                    {
+                        uxTabPanel.HideTab(uxChemicalTab);
+                        prodUrl = string.Format("umProductionTab_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                        invUrl = string.Format("umInventoryTab_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                        footerURL = string.Format("umSubmitActivity_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                        //uxChemicalTab.Close();
+
+                    }
+                    uxProductionTab.LoadContent(prodUrl);
+                    uxInventoryTab.LoadContent(invUrl);
+                    uxFooterTab.LoadContent(footerURL);
+                }
+
+                switch (e.ExtraParams["Status"])
+                {
+                    case "PENDING APPROVAL":
+                        uxApproveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
+                        uxTabApproveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
+                        uxPostActivityButton.Disabled = true;
+                        uxTabPostButton.Disabled = true;
+                        uxPostMultipleButton.Disabled = true;
+                        uxMarkAsPostedButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
+                        uxTabMarkButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
+                        uxTabSetInactiveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
+                        uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
+                        uxDeactivate.Value = "Deactivate";
+                        uxTabSetInactiveButton.Text = "Set Inactive";
+                        uxInactiveActivityButton.Text = "Set Inactive";
+                        break;
+                    case "APPROVED":
+                        uxTabSetInactiveButton.Text = "Set Inactive";
+                        uxInactiveActivityButton.Text = "Set Inactive";
+                        uxPostActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
+                        uxTabPostButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
+                        uxPostMultipleButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
+                        uxMarkAsPostedButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
+                        uxTabMarkButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
+                        uxApproveActivityButton.Disabled = true;
+                        uxTabApproveButton.Disabled = true;
+                        uxTabSetInactiveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
+                        uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
+                        uxDeactivate.Value = "Deactivate";
+
+                        if (!validateComponentSecurity("SYS.DailyActivity.Post") && !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted"))
+                        {
+                            uxChemicalTab.Disabled = true;
+                            uxEmployeeTab.Disabled = true;
+                            uxEquipmentTab.Disabled = true;
+                            uxInventoryTab.Disabled = true;
+                            uxHeaderTab.Disabled = true;
+                            uxWeatherTab.Disabled = true;
+                            uxProductionTab.Disabled = true;
+                            uxFooterTab.Disabled = true;
+                        }
+
+                        break;
+                    case "POSTED":
+                        uxApproveActivityButton.Disabled = true;
+                        uxTabApproveButton.Disabled = true;
+                        uxPostActivityButton.Disabled = true;
+                        uxTabPostButton.Disabled = true;
+                        uxPostMultipleButton.Disabled = true;
+                        uxMarkAsPostedButton.Disabled = true;
+                        uxTabMarkButton.Disabled = true;
+                        uxTabSetInactiveButton.Disabled = true;
+                        uxInactiveActivityButton.Disabled = true;
                         uxChemicalTab.Disabled = true;
                         uxEmployeeTab.Disabled = true;
                         uxEquipmentTab.Disabled = true;
@@ -315,116 +339,115 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         uxWeatherTab.Disabled = true;
                         uxProductionTab.Disabled = true;
                         uxFooterTab.Disabled = true;
-                    }
-                    
-                    break;
-                case "POSTED":
-                    uxApproveActivityButton.Disabled = true;
-                    uxTabApproveButton.Disabled = true;
-                    uxPostActivityButton.Disabled = true;
-                    uxTabPostButton.Disabled = true;
-                    uxPostMultipleButton.Disabled = true;
-                    uxMarkAsPostedButton.Disabled = true;
-                    uxTabMarkButton.Disabled = true;
-                    uxTabSetInactiveButton.Disabled = true;
-                    uxInactiveActivityButton.Disabled = true;
-                    uxChemicalTab.Disabled = true;
-                    uxEmployeeTab.Disabled = true;
-                    uxEquipmentTab.Disabled = true;
-                    uxInventoryTab.Disabled = true;
-                    uxHeaderTab.Disabled = true;
-                    uxWeatherTab.Disabled = true;
-                    uxProductionTab.Disabled = true;
-                    uxFooterTab.Disabled = true;
-                    break;
-                case "INACTIVE":
-                    uxApproveActivityButton.Disabled = true;
-                    uxTabApproveButton.Disabled = true;
-                    uxPostActivityButton.Disabled = true;
-                    uxTabPostButton.Disabled = true;
-                    uxPostMultipleButton.Disabled = true;
-                    uxMarkAsPostedButton.Disabled = true;
-                    uxTabMarkButton.Disabled = true;
+                        break;
+                    case "INACTIVE":
+                        uxApproveActivityButton.Disabled = true;
+                        uxTabApproveButton.Disabled = true;
+                        uxPostActivityButton.Disabled = true;
+                        uxTabPostButton.Disabled = true;
+                        uxPostMultipleButton.Disabled = true;
+                        uxMarkAsPostedButton.Disabled = true;
+                        uxTabMarkButton.Disabled = true;
 
-                    uxTabSetInactiveButton.Text = "Activate";
-                    uxInactiveActivityButton.Text = "Activate";
-                    uxTabSetInactiveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
-                    uxDeactivate.Value = "Activate";
-                    uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
-                    break;
+                        uxTabSetInactiveButton.Text = "Activate";
+                        uxInactiveActivityButton.Text = "Activate";
+                        uxTabSetInactiveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
+                        uxDeactivate.Value = "Activate";
+                        uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
+                        break;
 
-            }
+                }
 
-            List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
-            
-            if (OrgId != 123)
-            {
-                List<EmployeeData> RequiredLunches = ValidationChecks.LunchCheck(HeaderId);
-                if (RequiredLunches.Count > 0)
+                List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
+
+                if (OrgId != 123)
                 {
+                    List<EmployeeData> RequiredLunches = ValidationChecks.LunchCheck(HeaderId);
+                    if (RequiredLunches.Count > 0)
+                    {
+                        if (validateComponentSecurity("SYS.DailyActivity.View"))
+                        {
+                            uxPlaceholderWindow.ClearContent();
+                            uxPlaceholderWindow.LoadContent(string.Format("umChooseLunchHeader.aspx?HeaderId={0}", HeaderId));
+                            uxPlaceholderWindow.Show();
+                        }
+                    }
+                }
+
+                if (HoursOver24.Count > 0)
+                {
+                    if (HoursOver24.Exists(emp => emp.HEADER_ID == HeaderId))
+                    {
+                        EmployeeData HeaderData = HoursOver24.Find(emp => emp.HEADER_ID == HeaderId);
+                        BadHeader = true;
+                    }
+
+
+                }
+                if (DuplicatePerDiems != null)
+                {
+
                     if (validateComponentSecurity("SYS.DailyActivity.View"))
                     {
                         uxPlaceholderWindow.ClearContent();
-                        uxPlaceholderWindow.LoadContent(string.Format("umChooseLunchHeader.aspx?HeaderId={0}", HeaderId));
+                        uxPlaceholderWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&PersonId={1}", DuplicatePerDiems.HEADER_ID, DuplicatePerDiems.PERSON_ID));
                         uxPlaceholderWindow.Show();
                     }
                 }
-            }
 
-            if (HoursOver24.Count > 0)
-            {
-                if (HoursOver24.Exists(emp => emp.HEADER_ID == HeaderId))
+                if (OrgId == 123)
                 {
-                    EmployeeData HeaderData = HoursOver24.Find(emp => emp.HEADER_ID == HeaderId);
-                    BadHeader = true;
-                }
-
-
-            }
-            if (DuplicatePerDiems != null)
-            {
-                
-                if (validateComponentSecurity("SYS.DailyActivity.View"))
-                {
-                    uxPlaceholderWindow.ClearContent();
-                    uxPlaceholderWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&PersonId={1}", DuplicatePerDiems.HEADER_ID, DuplicatePerDiems.PERSON_ID));
-                    uxPlaceholderWindow.Show();
-                }
-            }
-
-            if (OrgId == 123)
-            {
-                if (ValidationChecks.employeeWithShopTimeCheck(HeaderId))
-                {
-                    uxPlaceholderWindow.ClearContent();
-                    uxPlaceholderWindow.LoadContent(string.Format("umChooseSupportProject.aspx?HeaderId={0}", HeaderId));
-                    uxPlaceholderWindow.Show();
-                }
-            }
-
-            if (EmployeeOverLap.Count > 0)
-            {
-                using (Entities _context = new Entities())
-                {
-                    if (EmployeeOverLap.Exists(x => x == HeaderId))
+                    if (ValidationChecks.employeeWithShopTimeCheck(HeaderId))
                     {
-                        var HeaderData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                                          join emp in _context.EMPLOYEES_V on d.PERSON_ID equals emp.PERSON_ID
-                                          where d.HEADER_ID == HeaderId
-                                          select new { d.DAILY_ACTIVITY_HEADER.DA_DATE, emp.EMPLOYEE_NAME }).First();
-                        BadHeader = true;
+                        uxPlaceholderWindow.ClearContent();
+                        uxPlaceholderWindow.LoadContent(string.Format("umChooseSupportProject.aspx?HeaderId={0}", HeaderId));
+                        uxPlaceholderWindow.Show();
                     }
                 }
-            }
 
-            if (BadHeader)
+                if (EmployeeOverLap.Count > 0)
+                {
+                    using (Entities _context = new Entities())
+                    {
+                        if (EmployeeOverLap.Exists(x => x == HeaderId))
+                        {
+                            var HeaderData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                              join emp in _context.EMPLOYEES_V on d.PERSON_ID equals emp.PERSON_ID
+                                              where d.HEADER_ID == HeaderId
+                                              select new { d.DAILY_ACTIVITY_HEADER.DA_DATE, emp.EMPLOYEE_NAME }).First();
+                            BadHeader = true;
+                        }
+                    }
+                }
+
+                if (BadHeader)
+                {
+                    uxApproveActivityButton.Disabled = true;
+                    uxTabApproveButton.Disabled = true;
+                    uxPostActivityButton.Disabled = true;
+                    uxTabPostButton.Disabled = true;
+                }
+            }
+            else
             {
                 uxApproveActivityButton.Disabled = true;
                 uxTabApproveButton.Disabled = true;
                 uxPostActivityButton.Disabled = true;
                 uxTabPostButton.Disabled = true;
+                uxPostMultipleButton.Disabled = true;
+                uxMarkAsPostedButton.Disabled = true;
+                uxTabMarkButton.Disabled = true;
+                uxTabSetInactiveButton.Disabled = true;
+                uxInactiveActivityButton.Disabled = true;
+                uxChemicalTab.Disabled = true;
+                uxEmployeeTab.Disabled = true;
+                uxEquipmentTab.Disabled = true;
+                uxInventoryTab.Disabled = true;
+                uxHeaderTab.Disabled = true;
+                uxWeatherTab.Disabled = true;
+                uxProductionTab.Disabled = true;
+                uxFooterTab.Disabled = true;
             }
-            
             
             uxExportToPDF.Disabled = false;
             uxTabExportButton.Disabled = false;
@@ -432,6 +455,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxTabEmailButton.Disabled = false;
             uxTabPanel.Expand();
             uxTabPanel.SetActiveTab(uxCombinedTab);
+        }
+
+        protected long GetCoOrgId(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
+                long CoOrgId = (from d in _context.DAILY_ACTIVITY_HEADER
+                                join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                                where d.HEADER_ID == HeaderId
+                                select p.CARRYING_OUT_ORGANIZATION_ID).Single();
+                return CoOrgId;
+            }
         }
 
         protected void deLoadNextActivity(object sender, DirectEventArgs e)
