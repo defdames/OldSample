@@ -12,16 +12,13 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class CROSSING_RAILROAD
+    public partial class CROSSING_PROJECT
     {
-        public CROSSING_RAILROAD()
-        {
-            this.CROSSING_PROJECT = new HashSet<CROSSING_PROJECT>();
-        }
+        public decimal PROJ_CORSSING_ID { get; set; }
+        public Nullable<long> PROJECT_ID { get; set; }
+        public string PROJECT_NAME { get; set; }
+        public Nullable<decimal> RAILROAD_ID { get; set; }
     
-        public decimal RAILROAD_ID { get; set; }
-        public string RAILROAD { get; set; }
-    
-        public virtual ICollection<CROSSING_PROJECT> CROSSING_PROJECT { get; set; }
+        public virtual CROSSING_RAILROAD CROSSING_RAILROAD { get; set; }
     }
 }
