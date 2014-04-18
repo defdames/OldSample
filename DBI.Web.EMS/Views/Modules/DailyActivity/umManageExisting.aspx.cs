@@ -50,6 +50,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
 
         }
+        
         /// <summary>
         /// Gets filterable list of header data
         /// </summary>
@@ -67,24 +68,35 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
                     if (uxTogglePosted.Checked)
                     {
-                        //Get List of all new headers
                         rawData = (from d in _context.DAILY_ACTIVITY_HEADER
-                                   join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
-                                   join s in _context.DAILY_ACTIVITY_STATUS on d.STATUS equals s.STATUS
-                                   join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.HEADER_ID equals eq.HEADER_ID into equ
-                                   from header in equ.DefaultIfEmpty()
-                                   join pr in _context.PROJECTS_V on  header.PROJECT_ID equals pr.PROJECT_ID into withequ
-                                   from headers in withequ.DefaultIfEmpty()
-                                   where OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains(headers.CARRYING_OUT_ORGANIZATION_ID)
-                                   select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS }).Distinct().ToList<object>();
+                                       join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                                       join s in _context.DAILY_ACTIVITY_STATUS on d.STATUS equals s.STATUS
+                                       join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.HEADER_ID equals eq.HEADER_ID into equ
+                                       from equip in equ.DefaultIfEmpty()
+                                       join pr in _context.PROJECTS_V on equip.PROJECT_ID equals pr.PROJECT_ID into pro
+                                       from proj in pro.DefaultIfEmpty()
+                                       join em in _context.DAILY_ACTIVITY_EMPLOYEE on d.HEADER_ID equals em.HEADER_ID into emp
+                                       from empl in emp.DefaultIfEmpty()
+                                       join empv in _context.EMPLOYEES_V on empl.PERSON_ID equals empv.PERSON_ID into emplv
+                                       from withempl in emplv.DefaultIfEmpty()
+                                       where OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains(proj.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains((long)withempl.ORGANIZATION_ID)
+                                       select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS }).Distinct().ToList<object>();
                     }
                     else
                     {
                         rawData = (from d in _context.DAILY_ACTIVITY_HEADER
                                    join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                                    join s in _context.DAILY_ACTIVITY_STATUS on d.STATUS equals s.STATUS
-                                   where d.STATUS != 4 && OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID)
-                                   select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS }).ToList<object>();
+                                   join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.HEADER_ID equals eq.HEADER_ID into equ
+                                   from equip in equ.DefaultIfEmpty()
+                                   join pr in _context.PROJECTS_V on equip.PROJECT_ID equals pr.PROJECT_ID into pro
+                                   from proj in pro.DefaultIfEmpty()
+                                   join em in _context.DAILY_ACTIVITY_EMPLOYEE on d.HEADER_ID equals em.HEADER_ID into emp
+                                   from empl in emp.DefaultIfEmpty()
+                                   join empv in _context.EMPLOYEES_V on empl.PERSON_ID equals empv.PERSON_ID into emplv
+                                   from withempl in emplv.DefaultIfEmpty()
+                                   where d.STATUS != 4 && (OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains(proj.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains((long)withempl.ORGANIZATION_ID))
+                                   select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS }).Distinct().ToList<object>();
                     }
                 }
                 else
