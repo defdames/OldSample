@@ -45,10 +45,10 @@
                     SingleExpand="true"
                     Lines="false"
                     FolderSort="true"
-                    Padding="5"
+                    Margin="5"
                     UseArrows="true"
                     Region="West"
-                    Scroll="Vertical" Collapsible="true">
+                    Scroll="Vertical" Collapsible="false">
                     <Store>
                         <ext:TreeStore ID="TreeStore1" runat="server" OnReadData="LoadHierarchyTree">
                             <Proxy>
@@ -77,11 +77,11 @@
                         </ext:TreeView>
                     </View>
                 </ext:TreePanel>
-                <ext:TreePanel ID="uxOrganizationTreeGrid" runat="server" Flex="1" Title="Organization Hierarchy View" Padding="5" Region="Center" UseArrows="true"
+                <ext:TreePanel ID="uxOrganizationTreeGrid" runat="server" Flex="1" Title="Organization Hierarchy View" Margin="5" Region="Center" UseArrows="true"
             RootVisible="false"
             MultiSelect="false"
             SingleExpand="true"
-            FolderSort="true" Collapsible="true">
+            FolderSort="true" Collapsible="false">
                     <Store>
                         <ext:TreeStore ID="uxOrganizationTreeGridStore" runat="server" OnReadData="LoadOrganizationTree" AutoLoad="false">
                             <Proxy>
@@ -100,13 +100,13 @@
                         runat="server"
                         Text="Orgnaization Name" 
                         Flex="4" 
-                        Sortable="true"
+                        Sortable="false"
                         DataIndex="ORGANIZATION_NAME" />
                      <ext:Column ID="TreeColumn2" 
                         runat="server"
                         Text="Organization Status" 
                         Flex="1" 
-                        Sortable="true"
+                        Sortable="false"
                         DataIndex="GL_ASSIGNED" />
                 </Columns>    
 
@@ -130,10 +130,9 @@
                             <GetRowClass Fn="getRowClass" />
                         </ext:TreeView>
                     </View>
-                   
                 </ext:TreePanel>
                                
-                <ext:GridPanel ID="uxGlAccountSecurityGrid" runat="server" Flex="1" Title="General Ledger Accounts" Padding="5" Region="South" >
+                <ext:GridPanel ID="uxGlAccountSecurityGrid" runat="server" Flex="1" Title="General Ledger Accounts" Margin="5" Region="South" >
                     <TopBar>
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
