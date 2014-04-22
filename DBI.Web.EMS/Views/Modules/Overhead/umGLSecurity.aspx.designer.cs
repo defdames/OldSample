@@ -10,7 +10,7 @@
 namespace DBI.Web.EMS.Views.Modules.Overhead {
     
     
-    public partial class umSecurity {
+    public partial class umGLSecurity {
         
         /// <summary>
         /// ResourceManager1 control.
@@ -67,94 +67,58 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.TreeSelectionModel uxHierarchyTreeSelectionModel;
         
         /// <summary>
-        /// uxOrganizationsGrid control.
+        /// TreeView1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxOrganizationsGrid;
+        protected global::Ext.Net.TreeView TreeView1;
         
         /// <summary>
-        /// uxOrganizationSecurityStore control.
+        /// uxOrganizationTreeGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxOrganizationSecurityStore;
+        protected global::Ext.Net.TreePanel uxOrganizationTreeGrid;
         
         /// <summary>
-        /// Model2 control.
+        /// uxOrganizationTreeGridStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Model Model2;
+        protected global::Ext.Net.TreeStore uxOrganizationTreeGridStore;
         
         /// <summary>
-        /// Column8 control.
+        /// TreeColumn1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column8;
+        protected global::Ext.Net.TreeColumn TreeColumn1;
         
         /// <summary>
-        /// Column2 control.
+        /// TreeColumn2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column2;
+        protected global::Ext.Net.Column TreeColumn2;
         
         /// <summary>
-        /// Column1 control.
+        /// TreeSelectionModel1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column1;
-        
-        /// <summary>
-        /// uxOrganizationsGridFilter control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FilterHeader uxOrganizationsGridFilter;
-        
-        /// <summary>
-        /// uxOrganizationSelectionModel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.RowSelectionModel uxOrganizationSelectionModel;
-        
-        /// <summary>
-        /// uxOrganizationGridPageBar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.PagingToolbar uxOrganizationGridPageBar;
-        
-        /// <summary>
-        /// uxOrganizationsGridView control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.GridView uxOrganizationsGridView;
+        protected global::Ext.Net.TreeSelectionModel TreeSelectionModel1;
         
         /// <summary>
         /// uxGlAccountSecurityGrid control.
