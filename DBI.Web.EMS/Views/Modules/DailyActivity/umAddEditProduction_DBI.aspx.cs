@@ -97,7 +97,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             //Do type conversions
             long TaskId = long.Parse(uxAddProductionTask.Value.ToString());
-            long AcresPerMile = long.Parse(uxAddProductionAcresPerMile.Value.ToString());
+            decimal AcresPerMile = decimal.Parse(uxAddProductionAcresPerMile.Value.ToString());
             long Gallons = long.Parse(uxAddProductionGallons.Value.ToString());
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
 
@@ -149,7 +149,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             //Do type conversions
             long TaskId = long.Parse(uxEditProductionTask.Value.ToString());
-            long AcresPerMile = long.Parse(uxEditProductionAcresPerMile.Value.ToString());
+            decimal AcresPerMile = decimal.Parse(uxEditProductionAcresPerMile.Value.ToString());
             long Gallons = long.Parse(uxEditProductionGallons.Value.ToString());
             long ProductionId = long.Parse(Request.QueryString["ProductionId"]);
 
