@@ -15,6 +15,7 @@
         <div>
             <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
                 <Items>
+
                     <ext:TabPanel ID="uxCrossingTab" runat="server" Region="Center">
                         <Items>
                             
@@ -35,15 +36,6 @@
                                 Disabled="false">
                                 <Loader runat="server"
                                     ID="Loader3" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umSupplemental.aspx">
-                                    <LoadMask ShowMask="true" />
-                                </Loader>
-                            </ext:Panel>
-                             <ext:Panel runat="server"
-                                Title="Incidents"
-                                ID="uxIncident"
-                                Disabled="false">
-                                <Loader runat="server"
-                                    ID="Loader1" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umIncident.aspx">
                                     <LoadMask ShowMask="true" />
                                 </Loader>
                             </ext:Panel>

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umDataEntryMain.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.CrossingMaintenance.umDataEntryMain" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umReportsMain.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.CrossingMaintenance.umReportsMain" %>
 
 <!DOCTYPE html>
 
@@ -9,51 +9,55 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <div></div>
-      <ext:ResourceManager ID="ResourceManager2" runat="server" />
+    <div>
+     <ext:ResourceManager ID="ResourceManager2" runat="server" />
 
         <div>
             <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
                 <Items>
-                    <ext:TabPanel ID="uxCrossingTab" runat="server" Region="Center">
+
+                    <ext:TabPanel ID="uxReportsTab" runat="server" Region="Center">
                         <Items>
-                            
-                           
+                            <ext:Panel runat="server" 
+                                Title="State Crossing List"
+                                ID="uxStateCrossingsList"
+                                Disabled="false">
+                                <Loader runat="server"
+                                    ID="Loader5" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umStateCrossingsList.aspx">
+                                    <LoadMask ShowMask="true" />
+                                </Loader>
+
+                            </ext:Panel>
+
                             <ext:Panel runat="server"
-                                Title="Application Entry"
-                                ID="uxDataEntryTab"
+                                Title="Application Date"
+                                ID="uxAppDate"
                                 Disabled="false">
                                 <Loader runat="server"
-                                    ID="Loader4" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umDataEntryTab.aspx">
+                                    ID="uxHeaderLoader" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umAppDate.aspx">
                                     <LoadMask ShowMask="true" />
                                 </Loader>
-                                </ext:Panel>
-                              
-                             <ext:Panel runat="server"
-                                Title="Supplemental"
-                                ID="uxSupplemental"
-                                Disabled="false">
-                                <Loader runat="server"
-                                    ID="Loader3" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umSupplemental.aspx">
-                                    <LoadMask ShowMask="true" />
-                                </Loader>
+
                             </ext:Panel>
                              <ext:Panel runat="server"
                                 Title="Incidents"
-                                ID="uxIncident"
+                                ID="uxIncidents"
                                 Disabled="false">
                                 <Loader runat="server"
-                                    ID="Loader1" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umIncident.aspx">
+                                    ID="Loader1" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umIncidentReports.aspx">
                                     <LoadMask ShowMask="true" />
                                 </Loader>
+
                             </ext:Panel>
+                           
 
                         </Items>
                     </ext:TabPanel>
 
                 </Items>
             </ext:Viewport>
-   </div>
+        </div>
+    </div>
     </form>
 </body>
 </html>

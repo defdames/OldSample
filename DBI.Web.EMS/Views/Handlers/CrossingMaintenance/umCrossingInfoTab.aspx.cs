@@ -456,7 +456,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxEditDotCI.SetValue(data.d.DOT);
                 uxEditStreetCI.SetValue(data.d.STREET);
                 uxEditMPCINumberField.SetValue(data.d.MILE_POST);
-                uxEditStateComboBox.SetValue(data.d.STATE);
+                uxEditStateComboBox.SetValueAndFireSelect(data.d.STATE);
                 uxEditCityCI.SetValue(data.d.CITY);
                 uxEditLatCINumberField.SetValue(data.d.LATITUDE);
                 uxEditCountyCI.SetValue(data.d.COUNTY);
@@ -923,7 +923,68 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             }
         }
-        
+        protected void deAddIncident(object sender, DirectEventArgs e)
+        {
+            CROSSING_INCIDENT data;
+
+            long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+
+            //do type conversions
+            long IncidentNumber = Convert.ToInt64(uxIncidentNumber.Value);
+            DateTime DateReported = (DateTime)uxIncidentDateReported.Value;
+            DateTime DateClosed = (DateTime)uxIncidentDateClosed.Value;           
+            string SlowOrder = uxIncidentSlowOrder.Value.ToString();
+
+            if (uxIncidentSlowOrder.Checked)
+            {
+                SlowOrder = "Y";
+            }
+            else
+            {
+                SlowOrder = "N";
+            }
+
+            //Add to Db
+            using (Entities _context = new Entities())
+            {
+                data = new CROSSING_INCIDENT()
+                {
+
+                    INCIDENT_NUMBER = IncidentNumber,
+                    DATE_REPORTED = DateReported,
+                    DATE_CLOSED = DateClosed,    
+                    SLOW_ORDER = SlowOrder,
+                    CROSSING_ID = CrossingId,
+                };
+            }
+            try
+            {
+                string Remarks = uxIncidentRemarks.Value.ToString();
+                data.REMARKS = Remarks;
+            }
+            catch (Exception)
+            {
+                data.REMARKS = null;
+            }
+
+            GenericData.Insert<CROSSING_INCIDENT>(data);
+
+            uxIncidentWindow.Hide();
+            uxIncidentFormPanel.Reset();
+            uxCurrentCrossingStore.Reload();
+
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Incident Added Successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
+        }
         protected void deGetProjectList(object sender, DirectEventArgs e)
         {
             long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
