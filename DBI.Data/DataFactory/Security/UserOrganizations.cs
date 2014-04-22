@@ -25,7 +25,7 @@ namespace DBI.Data
             }
         }
 
-        public List<SYS_USER_ORGS> GetUserOrgs(long UserId)
+        public static List<SYS_USER_ORGS> GetUserOrgs(long UserId)
         {
             using (Entities _context = new Entities())
             {

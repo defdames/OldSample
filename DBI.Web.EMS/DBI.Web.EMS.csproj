@@ -20,22 +20,22 @@
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'APPDEV|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;APPDEV</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisIgnoreGeneratedCode>false</CodeAnalysisIgnoreGeneratedCode>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'PROD|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;PROD</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\DBI.Web.EMS.XML</DocumentationFile>
@@ -167,7 +167,8 @@
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
     <Content Include="Views\Modules\Overhead\umAddGLAccount.aspx" />
-    <Content Include="Views\Modules\Overhead\umSecurity.aspx" />
+    <Content Include="Views\Modules\Overhead\umOrganizationBudgetSecurity.aspx" />
+    <Content Include="Views\Modules\Overhead\umGLSecurity.aspx" />
     <Content Include="Views\Modules\Overhead\umViewBudgets.aspx" />
     <Content Include="Views\Modules\Security\umEditGroups.aspx" />
     <Content Include="Views\Modules\Security\umEditModules.aspx" />
@@ -183,6 +184,15 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <None Include="Web.APPDEV.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.PCL05.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.PROD.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\DBI.AssemblyVersion\VersionInfo.cs">
@@ -554,12 +564,19 @@
     <Compile Include="Views\Modules\Overhead\umAddGLAccount.aspx.designer.cs">
       <DependentUpon>umAddGLAccount.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\Overhead\umSecurity.aspx.cs">
-      <DependentUpon>umSecurity.aspx</DependentUpon>
+    <Compile Include="Views\Modules\Overhead\umOrganizationBudgetSecurity.aspx.cs">
+      <DependentUpon>umOrganizationBudgetSecurity.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\Overhead\umSecurity.aspx.designer.cs">
-      <DependentUpon>umSecurity.aspx</DependentUpon>
+    <Compile Include="Views\Modules\Overhead\umOrganizationBudgetSecurity.aspx.designer.cs">
+      <DependentUpon>umOrganizationBudgetSecurity.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umGLSecurity.aspx.cs">
+      <DependentUpon>umGLSecurity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umGLSecurity.aspx.designer.cs">
+      <DependentUpon>umGLSecurity.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\Overhead\umViewBudgets.aspx.cs">
       <DependentUpon>umViewBudgets.aspx</DependentUpon>
@@ -654,15 +671,6 @@
     <Content Include="Views\Modules\Overhead\GLLocationCodes.ashx" />
     <Content Include="Views\Modules\Overhead\GLDivisionCodes.ashx" />
     <Content Include="Views\Modules\Overhead\GLBranchCodes.ashx" />
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.PCL03.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DBI.Core\DBI.Core.csproj">
@@ -697,10 +705,10 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PCL03|AnyCPU'">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'PCL05|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>CODE_ANALYSIS;DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;PCL05</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <RunCodeAnalysis>true</RunCodeAnalysis>
