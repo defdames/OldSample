@@ -163,10 +163,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 {
                     uxCloseSlowOrder.Checked = true;
                 }
-                if (data.DATE_CLOSED != null)
-                {
-                    uxCloseIncidentButton.Disable();
-                }
+               
 
             }
         }
@@ -224,8 +221,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             public long INCIDENT_NUMBER { get; set; }
             public DateTime DATE_REPORTED { get; set; }
             public string SLOW_ORDER { get; set; }
-
-       
 
         }
             
