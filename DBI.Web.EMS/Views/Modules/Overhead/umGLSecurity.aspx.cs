@@ -131,8 +131,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 string[] selectedID = selectedRecordID.Split(delimiterChars);
                 long hierarchyID = long.Parse(selectedID[1].ToString());
                 long organizationID = long.Parse(selectedID[0].ToString());
-
-
+                
                 uxOrganizationTreeGridStore.GetRootNode().Reload();
                 uxOrganizationTreeGrid.Refresh();
 
@@ -216,7 +215,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 }
             };
 
-            win.Listeners.Close.Handler = "#{uxGlAccountSecurityGrid}.getStore().load();#{uxOrganizationTreeGrid}.getRootNode().reload();";
+            win.Listeners.Close.Handler = "#{uxGlAccountSecurityGrid}.getStore().load();#{uxOrganizationTreeGrid}.reloadNode(" + OrganizationID + ");";
 
             win.Render(this.Form);
             win.Show();
@@ -239,6 +238,14 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                 OVERHEAD_GL_ACCOUNT account = _context.OVERHEAD_GL_ACCOUNT.Where(a => a.OVERHEAD_GL_ID == recordID).SingleOrDefault();
                 GenericData.Delete<OVERHEAD_GL_ACCOUNT>(account);
+            }
+
+            int recordCount = _context.OVERHEAD_GL_ACCOUNT.Where(a => a.OVERHEAD_ORG_ID == OrganizationID).Count();
+
+            if (recordCount == 0)
+            {
+                uxOrganizationTreeGridStore.GetRootNode().Reload();
+                uxOrganizationTreeGrid.Refresh();
             }
 
             uxGlAccountSecurityStore.RemoveAll();
