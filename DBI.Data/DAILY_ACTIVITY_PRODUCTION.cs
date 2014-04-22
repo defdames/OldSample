@@ -22,7 +22,7 @@ namespace DBI.Data
         public string WORK_AREA { get; set; }
         public string POLE_FROM { get; set; }
         public string POLE_TO { get; set; }
-        public Nullable<long> ACRES_MILE { get; set; }
+        public Nullable<decimal> ACRES_MILE { get; set; }
         public Nullable<decimal> QUANTITY { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
