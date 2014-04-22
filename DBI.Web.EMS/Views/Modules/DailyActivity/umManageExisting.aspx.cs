@@ -374,16 +374,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
 				if (OrgId != 123)
 				{
-					List<EmployeeData> RequiredLunches = ValidationChecks.LunchCheck(HeaderId);
-					if (RequiredLunches.Count > 0)
-					{
-						if (validateComponentSecurity("SYS.DailyActivity.View"))
-						{
-							uxPlaceholderWindow.ClearContent();
-							uxPlaceholderWindow.LoadContent(string.Format("umChooseLunchHeader.aspx?HeaderId={0}", HeaderId));
-							uxPlaceholderWindow.Show();
-						}
-					}
+					List<WarningData> RequiredLunches = ValidationChecks.LunchCheck(HeaderId);
+					//if (RequiredLunches.Count > 0)
+					//{
+					//    if (validateComponentSecurity("SYS.DailyActivity.View"))
+					//    {
+					//        uxPlaceholderWindow.ClearContent();
+					//        uxPlaceholderWindow.LoadContent(string.Format("umChooseLunchHeader.aspx?HeaderId={0}", HeaderId));
+					//        uxPlaceholderWindow.Show();
+					//    }
+					//}
 				}
 
 				if (HoursOver24.Count > 0)

@@ -129,6 +129,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             WarningList.Add(EmployeeOver14);
                         }
                     }
+                    WarningData LunchFailure = ValidationChecks.LunchCheck(item.PERSON_ID, item.TIME_IN);
+                    if (LunchFailure != null)
+                    {
+                        WarningList.Add(LunchFailure);
+                        X.Js.Call("parent.App.uxTabPostButton.disable(); parent.App.uxPostActivityButton.disable(); parent.App.uxApproveActivityButton.disable(); parent.App.uxTabApproveButton.disable()");
+                    }
                     
                 }
 

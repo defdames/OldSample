@@ -17,69 +17,69 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void Page_Load(object sender, EventArgs e)
         {
             long HeaderId = long.Parse(Request.QueryString["HeaderID"]);
-            GenerateForm(HeaderId);
+            //GenerateForm(HeaderId);
 
         }
 
-        protected void GenerateForm(long HeaderId)
-        {
-            using (Entities _context = new Entities())
-            {
-                List<EmployeeData> EmployeesNeedingLunch = ValidationChecks.LunchCheck(HeaderId);
-                var count = 1;
-                foreach (EmployeeData Employee in EmployeesNeedingLunch)
-                {
-                    Hidden LunchLength = new Hidden
-                    {
-                        ID = "Length" + Employee.PERSON_ID.ToString(),
-                        Value = Employee.LUNCH_LENGTH
-                    };
-                    uxChooseLunchForm.Items.Add(LunchLength);
+        //protected void GenerateForm(long HeaderId)
+        //{
+        //    using (Entities _context = new Entities())
+        //    {
+        //        List<EmployeeData> EmployeesNeedingLunch = ValidationChecks.LunchCheck(HeaderId);
+        //        var count = 1;
+        //        foreach (EmployeeData Employee in EmployeesNeedingLunch)
+        //        {
+        //            Hidden LunchLength = new Hidden
+        //            {
+        //                ID = "Length" + Employee.PERSON_ID.ToString(),
+        //                Value = Employee.LUNCH_LENGTH
+        //            };
+        //            uxChooseLunchForm.Items.Add(LunchLength);
 
-                    ComboBox AddLunchComboBox = new ComboBox()
-                    {
-                        ID = "Combo" + Employee.PERSON_ID.ToString(),
-                        FieldLabel = Employee.EMPLOYEE_NAME,
-                        EmptyText = "Select a Project to assign lunch to",
-                        TypeAhead = true,
-                        QueryMode = DataLoadMode.Local,
-                        ValueField = "PROJECT_ID",
-                        ForceSelection=true,
-                        DisplayField = "LONG_NAME",
-                        LabelWidth=100,
-                        Width=500
-                    };
+        //            ComboBox AddLunchComboBox = new ComboBox()
+        //            {
+        //                ID = "Combo" + Employee.PERSON_ID.ToString(),
+        //                FieldLabel = Employee.EMPLOYEE_NAME,
+        //                EmptyText = "Select a Project to assign lunch to",
+        //                TypeAhead = true,
+        //                QueryMode = DataLoadMode.Local,
+        //                ValueField = "PROJECT_ID",
+        //                ForceSelection=true,
+        //                DisplayField = "LONG_NAME",
+        //                LabelWidth=100,
+        //                Width=500
+        //            };
 
-                    var ProjectList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                                       join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                                       join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
-                                       where d.PERSON_ID == Employee.PERSON_ID && h.DA_DATE == Employee.DA_DATE && h.STATUS != 5
-                                       select new { p.PROJECT_ID, p.LONG_NAME }).ToList();
+        //            var ProjectList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+        //                               join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+        //                               join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
+        //                               where d.PERSON_ID == Employee.PERSON_ID && h.DA_DATE == Employee.DA_DATE && h.STATUS != 5
+        //                               select new { p.PROJECT_ID, p.LONG_NAME }).ToList();
 
-                    Store ComboStore = new Store()
-                    {
-                        ID = string.Format("Store{0}", Employee.PERSON_ID.ToString()),
-                        AutoDataBind = true,
-                        DataSource= ProjectList
-                    };
+        //            Store ComboStore = new Store()
+        //            {
+        //                ID = string.Format("Store{0}", Employee.PERSON_ID.ToString()),
+        //                AutoDataBind = true,
+        //                DataSource= ProjectList
+        //            };
 
-                    Model ComboModel = new Model();
-                    ComboModel.Fields.Add(new ModelField
-                    {
-                        Name = "PROJECT_ID"
-                    });
-                    ComboModel.Fields.Add(new ModelField
-                    {
-                        Name = "LONG_NAME"
-                    });
-                    ComboStore.Model.Add(ComboModel);
-                    AddLunchComboBox.Store.Add(ComboStore);
+        //            Model ComboModel = new Model();
+        //            ComboModel.Fields.Add(new ModelField
+        //            {
+        //                Name = "PROJECT_ID"
+        //            });
+        //            ComboModel.Fields.Add(new ModelField
+        //            {
+        //                Name = "LONG_NAME"
+        //            });
+        //            ComboStore.Model.Add(ComboModel);
+        //            AddLunchComboBox.Store.Add(ComboStore);
 
-                    uxChooseLunchForm.Items.Add(AddLunchComboBox);
-                    ComboBoxes.Add(Employee.PERSON_ID);
-                }
-            }
-        }
+        //            uxChooseLunchForm.Items.Add(AddLunchComboBox);
+        //            ComboBoxes.Add(Employee.PERSON_ID);
+        //        }
+        //    }
+        //}
 
         protected void deStoreLunchChoice(object sender, DirectEventArgs e)
         {
