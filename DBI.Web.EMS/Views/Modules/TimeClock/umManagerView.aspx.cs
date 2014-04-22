@@ -17,8 +17,8 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+
             GetEmployeeHoursData();
-            
             
         }
         protected void GetEmployeeHoursData()
@@ -38,7 +38,17 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                 {
                     TimeSpan ts = item.TIME_OUT - item.TIME_IN;
                     DateTime dow = item.TIME_IN;
-                    item.TOTAL_HOURS = ts.ToString(@"dd\.hh\:mm");
+                    
+                    //Calcualtion to round time to quarter increments
+                    double adjtime = (ts.Minutes > 0 && ts.Minutes <= 8) ? 0
+                         : (ts.Minutes > 8 && ts.Minutes <= 23) ? .25
+                         : (ts.Minutes > 23 && ts.Minutes <= 38) ? .50
+                         : (ts.Minutes > 38 && ts.Minutes <= 53) ? .75
+                         : (ts.Minutes > 53 && ts.Minutes <= 60) ? 1
+                         : 0; 
+                    
+                    decimal returnvalue = ts.Hours + (decimal)adjtime;
+                    item.TOTAL_HOURS = returnvalue.ToString("00:00");
                     
                 }
                 uxEmployeeHoursStore.DataSource = data;
@@ -48,7 +58,12 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
         }
 
-        
+        protected void deUpdateEmployeeGrid(object sender, StoreReadDataEventArgs e)
+        {
+           
+        }
+
+   
     }
 
     public class EmployeeTime
