@@ -77,60 +77,56 @@
                         </ext:TreeView>
                     </View>
                 </ext:TreePanel>
-                <ext:TreePanel ID="uxOrganizationTreeGrid" runat="server" Flex="1" Title="Organization Hierarchy View" Margin="5" Region="Center" UseArrows="true"
-            RootVisible="false"
-            MultiSelect="false"
-            SingleExpand="true"
-            FolderSort="true" Collapsible="false">
+     
+                <ext:GridPanel ID="uxOrganizationsGrid" runat="server" Flex="1" SimpleSelect="true" Title="Organizations By Hierarchy" Padding="5" Region="Center">
                     <Store>
-                        <ext:TreeStore ID="uxOrganizationTreeGridStore" runat="server" OnReadData="LoadOrganizationTree" AutoLoad="false">
-                            <Proxy>
-                                <ext:PageProxy></ext:PageProxy>
-                            </Proxy>
-                            <Fields>
-                                <ext:ModelField Name="GL_ASSIGNED" Type="String" />
-                                <ext:ModelField Name="ORGANIZATION_ID" />
-                                <ext:ModelField Name="ORGANIZATION_NAME" Type="String" />
-                            </Fields>
-                        </ext:TreeStore>
-                    </Store>
-                    <ColumnModel>
-                <Columns>
-                    <ext:TreeColumn ID="TreeColumn1" 
-                        runat="server"
-                        Text="Orgnaization Name" 
-                        Flex="4" 
-                        Sortable="false"
-                        DataIndex="ORGANIZATION_NAME" />
-                     <ext:Column ID="TreeColumn2" 
-                        runat="server"
-                        Text="Organization Status" 
-                        Flex="1" 
-                        Sortable="false"
-                        DataIndex="GL_ASSIGNED" />
-                </Columns>    
-
-            </ColumnModel>
-                    <Root>
-                        <ext:Node NodeID="0" Text="All Organizations" Expanded="true" />
-                    </Root>
-                    <SelectionModel>
-                        <ext:TreeSelectionModel ID="TreeSelectionModel1" runat="server" Mode="Single">
-                             <DirectEvents>
+                        <ext:Store runat="server"
+                            ID="uxOrganizationSecurityStore"
+                            AutoDataBind="true" RemoteSort="true" PageSize="10" OnReadData="deReadOrganizationsByHierarchy" AutoLoad="false">
+                            <Model>
+                                        <ext:Model ID="Model2" runat="server" IDProperty="ORGANIZATION_ID">
+                                            <Fields>
+                                                <ext:ModelField Name="HIER_LEVEL"  />
+                                                <ext:ModelField Name="GL_ASSIGNED" Type="String" />
+                                                <ext:ModelField Name="ORGANIZATION_ID" />
+                                                <ext:ModelField Name="ORGANIZATION_NAME" Type="String" />
+                                            </Fields>
+                                        </ext:Model>
+                                    </Model>
+                                    <Proxy>
+                                        <ext:PageProxy />
+                                    </Proxy>
+                                </ext:Store>
+                            </Store>
+                            <ColumnModel>
+                                <Columns>
+                                    <ext:Column ID="Column2" runat="server" DataIndex="ORGANIZATION_NAME" Text="Organization Name" Flex="4" />
+                                    <ext:Column ID="Column1" runat="server" DataIndex="GL_ASSIGNED" Text="Organization Status" Flex="1" />
+                                </Columns>
+                            </ColumnModel>
+                            <Plugins>
+                                <ext:FilterHeader ID="uxOrganizationsGridFilter" runat="server" Remote="true" />
+                            </Plugins>
+                            <SelectionModel>
+                               <ext:RowSelectionModel runat="server" Mode="Single" ID="uxOrganizationSelectionModel">
+                                   <DirectEvents>
                                        <Select OnEvent="deOrganizationSelect">
                                        </Select>
                                    </DirectEvents>
                                    <Listeners>
                                         <Select Handler="#{uxShowGLAccoutsWindow}.enable();"></Select>
                                     </Listeners>
-                        </ext:TreeSelectionModel>
-                    </SelectionModel>
+                               </ext:RowSelectionModel>
+                            </SelectionModel>
+                            <BottomBar>
+                                <ext:PagingToolbar ID="uxOrganizationGridPageBar" runat="server" />
+                            </BottomBar>   
                     <View>
-                        <ext:TreeView runat="server" LoadMask="true">
+                        <ext:GridView ID="uxOrganizationsGridView" StripeRows="true" runat="server">
                             <GetRowClass Fn="getRowClass" />
-                        </ext:TreeView>
-                    </View>
-                </ext:TreePanel>
+                        </ext:GridView>
+                    </View>                       
+                        </ext:GridPanel>
                                
                 <ext:GridPanel ID="uxGlAccountSecurityGrid" runat="server" Flex="1" Title="General Ledger Accounts" Margin="5" Region="South" >
                     <TopBar>

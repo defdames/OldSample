@@ -16,25 +16,19 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         }
 
-    
-        protected void LoadOrganizationTree(object sender, NodeLoadEventArgs e)
+
+        protected void deReadOrganizationsByHierarchy(object sender, StoreReadDataEventArgs e)
         {
-
-            Entities _context = new Entities();
-
+            using (Entities _context = new Entities())
+            {
                 string selectedRecordID = uxHierarchyTreeSelectionModel.SelectedRecordID;
 
-                if (selectedRecordID != "") 
+                if (selectedRecordID != "0")
                 {
                     char[] delimiterChars = { ':' };
                     string[] selectedID = selectedRecordID.Split(delimiterChars);
                     long hierarchyID = long.Parse(selectedID[1].ToString());
                     long organizationID = long.Parse(selectedID[0].ToString());
-
-                    if (e.NodeID != "0")
-                    {
-                        organizationID = long.Parse(e.NodeID);
-                    }
 
                     string sql = @"SELECT              c.organization_id_child ORGANIZATION_ID,
                         c.d_child_name ORGANIZATION_NAME,
@@ -44,8 +38,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                         INNER JOIN          per_org_structure_elements_v c on b.org_structure_version_id = c.org_structure_version_id
                         INNER JOIN          apps.hr_all_organization_units haou on haou.organization_id = c.organization_id_child
                         WHERE               SYSDATE BETWEEN b.date_from and nvl(b.date_to,'31-DEC-4712')
-                        AND                 level = 1
                         AND                 a.organization_structure_id = " + hierarchyID.ToString() + @"
+                        AND                 haou.type is not null
                         START WITH          c.organization_id_parent = " + organizationID.ToString() + @" AND a.organization_structure_id + 0 = " + hierarchyID.ToString() + @"
                         CONNECT BY PRIOR    c.organization_id_child = c.organization_id_parent AND a.organization_structure_id + 0 = " + hierarchyID.ToString() + @"
                         ORDER SIBLINGS BY   c.d_child_name";
@@ -58,19 +52,11 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                         view.GL_ASSIGNED = (_context.OVERHEAD_GL_ACCOUNT.Where(a => a.OVERHEAD_ORG_ID == view.ORGANIZATION_ID).Count() > 0 ? "Active" : "No Accounts Found");
                     }
 
-                        //Build the treepanel
-                        foreach (var view in data)
-                        {
-                            //Create the Hierarchy Levels
-                            Node node = new Node();
-                            //node.Text = view.ORGANIZATION_NAME;
-                            node.NodeID = view.ORGANIZATION_ID.ToString();
-                            node.CustomAttributes.Add(new ConfigItem { Name = "ORGANIZATION_NAME", Value = view.ORGANIZATION_NAME, Mode = ParameterMode.Value });
-                            node.CustomAttributes.Add(new ConfigItem { Name = "GL_ASSIGNED", Value = view.GL_ASSIGNED, Mode = ParameterMode.Value });
-                            e.Nodes.Add(node);
-                        }
-
+                    int count;
+                    uxOrganizationSecurityStore.DataSource = GenericData.EnumerableFilterHeader<ORGANIZATION_VIEW>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                    e.Total = count;
                 }
+            }
         }
 
 
@@ -131,9 +117,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 string[] selectedID = selectedRecordID.Split(delimiterChars);
                 long hierarchyID = long.Parse(selectedID[1].ToString());
                 long organizationID = long.Parse(selectedID[0].ToString());
-                
-                uxOrganizationTreeGridStore.GetRootNode().Reload();
-                uxOrganizationTreeGrid.Refresh();
+
+                uxOrganizationSecurityStore.RemoveAll();
+                uxOrganizationsGridFilter.ClearFilter();
+                uxOrganizationSecurityStore.Reload();
 
                 uxGlAccountSecurityStore.RemoveAll();
                 uxGlAccountSecurityGridFilter.ClearFilter();
@@ -145,7 +132,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         {
             long OrganizationID;
 
-            RowSelectionModel selection = TreeSelectionModel1;
+            RowSelectionModel selection = uxOrganizationSelectionModel;
             Boolean check = long.TryParse(selection.SelectedRecordID, out OrganizationID);
 
             if (OrganizationID > 0)
@@ -191,7 +178,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         {
             long OrganizationID;
 
-            RowSelectionModel selection = TreeSelectionModel1;
+            RowSelectionModel selection = uxOrganizationSelectionModel;
             Boolean checkOrganization = long.TryParse(selection.SelectedRecordID, out OrganizationID);
 
             Window win = new Window
@@ -215,7 +202,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 }
             };
 
-            win.Listeners.Close.Handler = "#{uxGlAccountSecurityGrid}.getStore().load();#{uxOrganizationTreeGrid}.reloadNode(" + OrganizationID + ");";
+            win.Listeners.Close.Handler = "#{uxGlAccountSecurityGrid}.getStore().load();#{uxOrganizationsGrid}.getStore().load();";
 
             win.Render(this.Form);
             win.Show();
@@ -225,7 +212,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         {
             long OrganizationID;
 
-            RowSelectionModel selection = TreeSelectionModel1;
+            RowSelectionModel selection = uxOrganizationSelectionModel;
             Boolean checkOrganization = long.TryParse(selection.SelectedRecordID, out OrganizationID);
 
             RowSelectionModel model = uxGlAccountSecurityGridSelectionModel;
@@ -244,8 +231,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             if (recordCount == 0)
             {
-                uxOrganizationTreeGridStore.GetRootNode().Reload();
-                uxOrganizationTreeGrid.Refresh();
+                uxOrganizationSecurityStore.Reload();
             }
 
             uxGlAccountSecurityStore.RemoveAll();

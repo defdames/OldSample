@@ -76,49 +76,85 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.TreeView TreeView1;
         
         /// <summary>
-        /// uxOrganizationTreeGrid control.
+        /// uxOrganizationsGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TreePanel uxOrganizationTreeGrid;
+        protected global::Ext.Net.GridPanel uxOrganizationsGrid;
         
         /// <summary>
-        /// uxOrganizationTreeGridStore control.
+        /// uxOrganizationSecurityStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TreeStore uxOrganizationTreeGridStore;
+        protected global::Ext.Net.Store uxOrganizationSecurityStore;
         
         /// <summary>
-        /// TreeColumn1 control.
+        /// Model2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TreeColumn TreeColumn1;
+        protected global::Ext.Net.Model Model2;
         
         /// <summary>
-        /// TreeColumn2 control.
+        /// Column2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column TreeColumn2;
+        protected global::Ext.Net.Column Column2;
         
         /// <summary>
-        /// TreeSelectionModel1 control.
+        /// Column1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TreeSelectionModel TreeSelectionModel1;
+        protected global::Ext.Net.Column Column1;
+        
+        /// <summary>
+        /// uxOrganizationsGridFilter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FilterHeader uxOrganizationsGridFilter;
+        
+        /// <summary>
+        /// uxOrganizationSelectionModel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxOrganizationSelectionModel;
+        
+        /// <summary>
+        /// uxOrganizationGridPageBar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.PagingToolbar uxOrganizationGridPageBar;
+        
+        /// <summary>
+        /// uxOrganizationsGridView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridView uxOrganizationsGridView;
         
         /// <summary>
         /// uxGlAccountSecurityGrid control.
