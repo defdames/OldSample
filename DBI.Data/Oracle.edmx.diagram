@@ -46,8 +46,6 @@
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_INVENTORY" Width="1.5" PointX="5.75" PointY="21.625" />
         <AssociationConnector Association="OracleModel.FK_INVENTORY_CHEMICAL_MIX_ID" />
         <AssociationConnector Association="OracleModel.FK_INVENTORY_HEADER_ID" />
-        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" Width="1.5" PointX="1.5" PointY="21" />
-        <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_FIELDSETS" Width="1.5" PointX="45.375" PointY="58.25" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_FORMS" Width="1.5" PointX="43.125" PointY="58.375" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_FORMS_ANS" Width="1.5" PointX="37.125" PointY="58.25" />
@@ -103,6 +101,8 @@
         <AssociationConnector Association="OracleModel.FK_INCIDENT_CROSSING_ID" />
         <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
         <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="1.1517493637053993" PointY="27.760841308050249" />
+        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" Width="1.5" PointX="1.375" PointY="21.5" />
+        <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
