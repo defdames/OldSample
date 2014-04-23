@@ -98,7 +98,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Do type conversions
             long TaskId = long.Parse(uxAddProductionTask.Value.ToString());
             decimal AcresPerMile = decimal.Parse(uxAddProductionAcresPerMile.Value.ToString());
-            long Gallons = long.Parse(uxAddProductionGallons.Value.ToString());
+            decimal Gallons = decimal.Parse(uxAddProductionGallons.Value.ToString());
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
 
             using (Entities _context = new Entities())
