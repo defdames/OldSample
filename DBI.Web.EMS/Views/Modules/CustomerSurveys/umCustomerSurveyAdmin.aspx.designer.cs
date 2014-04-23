@@ -175,6 +175,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Store uxQuestionTypeStore;
         
         /// <summary>
+        /// uxQuestionFieldsetStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxQuestionFieldsetStore;
+        
+        /// <summary>
         /// uxOptionsGrid control.
         /// </summary>
         /// <remarks>
@@ -191,5 +200,23 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Store uxOptionsStore;
+        
+        /// <summary>
+        /// uxAddOptionButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxAddOptionButton;
+        
+        /// <summary>
+        /// uxSaveOptionButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxSaveOptionButton;
     }
 }
