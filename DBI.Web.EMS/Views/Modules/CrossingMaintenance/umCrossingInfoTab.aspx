@@ -104,11 +104,7 @@
                                 </DirectEvents>
                             </ext:Button>
 
-                             <ext:Button ID="uxAddIncident" runat="server" Text="Add Incident" Icon="ApplicationAdd" Disabled="true">
-                                <Listeners>
-                                    <Click Handler="#{uxIncidentWindow}.show()" />
-                                </Listeners>
-                            </ext:Button>
+                          
                             <ext:Button ID="uxProjectListButton" runat="server" Text="Project List" Icon="ApplicationViewDetail" Disabled="true">
                                 <Listeners>
                                     <Click Handler="#{uxProjectListWindow}.show()" />
@@ -887,55 +883,7 @@
                 </Items>
             </ext:Window>
             <%-----------------------------------------------------------------------------------------------------------------------------------%>
-            <ext:Window runat="server"
-                ID="uxIncidentWindow"
-                Layout="FormLayout"
-                Hidden="true"
-                Title="Add Incident"
-                Width="550"
-                Closable="false" Modal="true">
-                <Items>
-             <ext:FormPanel runat="server" ID="uxIncidentFormPanel" Layout="FormLayout">
-                <Items>
-                    <ext:FieldContainer runat="server" Layout="HBoxLayout">
-                        <Items>
-                    <ext:TextField ID="uxIncidentNumber" runat="server" FieldLabel="Incident #" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" />
-                    <ext:CheckBox ID="uxIncidentSlowOrder" runat="server" FieldLabel="Slow Order" AnchorHorizontal="100%" LabelAlign="Right"  />
-                         </Items>
-                     </ext:FieldContainer>
-                    <ext:FieldContainer ID="FieldContainer37" runat="server" Layout="HBoxLayout">
-                    <Items>
-                    <ext:DateField ID="uxIncidentDateReported" runat="server" FieldLabel="Date Reported" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" />
-                    <ext:DateField ID="uxIncidentDateClosed" runat="server" FieldLabel="Date Closed" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false"  />
-                    </Items>
-                    </ext:FieldContainer>
-                    
-                    <ext:TextArea ID="uxIncidentRemarks" runat="server" FieldLabel="Remarks" AnchorHorizontal="100%" LabelAlign="Right" />
-                  
-                </Items>
-                  <Buttons>
-                            <ext:Button runat="server" ID="uxAddIncidentButton" Text="Add" Icon="Add" Disabled="true" >
-                                <DirectEvents>
-                                    <Click OnEvent="deAddIncident">
-                                        <ExtraParams>
-                                            <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                                        </ExtraParams>
-                                    </Click>
-                                </DirectEvents>
-                            </ext:Button>
-                            <ext:Button runat="server" ID="Button3" Text="Cancel" Icon="Delete">
-                                <Listeners>
-                                    <Click Handler="#{uxIncidentFormPanel}.reset();
-									#{uxIncidentWindow}.hide()" />
-                                </Listeners>
-                            </ext:Button>
-                        </Buttons>
-                 <Listeners>
-				    <ValidityChange Handler="#{uxAddIncidentButton}.setDisabled(!valid);" />
-				</Listeners>
-            </ext:FormPanel>
-            </Items>
-           </ext:Window>
+           
             <%--------------------------------------------------------------------------------------------------------------------------------------%>
              
              <ext:Window runat="server"

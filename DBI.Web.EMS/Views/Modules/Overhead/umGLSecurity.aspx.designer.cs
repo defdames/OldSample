@@ -10,7 +10,7 @@
 namespace DBI.Web.EMS.Views.Modules.Overhead {
     
     
-    public partial class umSecurity {
+    public partial class umGLSecurity {
         
         /// <summary>
         /// ResourceManager1 control.
@@ -67,6 +67,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.TreeSelectionModel uxHierarchyTreeSelectionModel;
         
         /// <summary>
+        /// TreeView1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TreeView TreeView1;
+        
+        /// <summary>
         /// uxOrganizationsGrid control.
         /// </summary>
         /// <remarks>
@@ -92,15 +101,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Model Model2;
-        
-        /// <summary>
-        /// Column8 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column Column8;
         
         /// <summary>
         /// Column2 control.

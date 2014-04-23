@@ -1,0 +1,251 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umIncident.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.CrossingMaintenance.umIncident" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <ext:ResourceManager ID="ResourceManager1" runat="server" />
+
+        <div>
+            <ext:GridPanel ID="uxCrossingIncidentGrid" Title="CROSSING INFORMATION" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true">
+                <SelectionModel>
+                    <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="false" Mode="Single" />
+                </SelectionModel>
+                <Store>
+                    <ext:Store runat="server"
+                        ID="uxCurrentCrossingStore"
+                        OnReadData="deCrossingGridData"
+                        PageSize="10"
+                        AutoDataBind="true" WarningOnDirty="false">
+                        <Model>
+                            <ext:Model ID="Model2" runat="server">
+                                <Fields>
+                                    <ext:ModelField Name="CROSSING_ID" />
+                                    <ext:ModelField Name="CONTACT_ID" />
+                                    <ext:ModelField Name="CROSSING_NUMBER" Type="String" />
+                                    <ext:ModelField Name="PROJECT_ID" />
+                                    <ext:ModelField Name="LONG_NAME" />
+                                    <ext:ModelField Name="SERVICE_UNIT" />
+                                    <ext:ModelField Name="SUB_DIVISION" />
+                                    <ext:ModelField Name="CONTACT_NAME" />
+
+                                </Fields>
+                            </ext:Model>
+                        </Model>
+                        <Proxy>
+                            <ext:PageProxy />
+                        </Proxy>
+                    </ext:Store>
+                </Store>
+                <ColumnModel>
+                    <Columns>
+
+                        <ext:Column ID="uxMainCrossingNum" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing #" Flex="1" />
+                        <ext:Column ID="Column12" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
+                        <ext:Column ID="uxSubDiv" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
+                        <ext:Column ID="uxMTM" runat="server" DataIndex="CONTACT_NAME" Text="Manager" Flex="1" />
+
+                    </Columns>
+                </ColumnModel>
+                <Plugins>
+                    <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true" />
+                </Plugins>
+
+
+
+                <%--    <Listeners>
+                    <Select Handler="#{uxIncidentStore}.reload()" />
+                </Listeners>--%>
+                <BottomBar>
+                    <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True">
+                    </ext:PagingToolbar>
+                </BottomBar>
+                <Listeners>
+                    <Select Handler="#{uxIncidentStore}.reload(); #{uxAddIncident}.enable(); #{uxCloseIncident}.disable()" />
+
+                </Listeners>
+            </ext:GridPanel>
+            <ext:Toolbar ID="Toolbar1" runat="server">
+                <Items>
+                    <ext:Button ID="uxAddIncident" runat="server" Text="Add Incident" Icon="ApplicationAdd" Disabled="true">
+                        <Listeners>
+                            <Click Handler="#{uxIncidentWindow}.show()" />
+                        </Listeners>
+                    </ext:Button>
+                    <ext:Button ID="uxCloseIncident" runat="server" Text="Close Incident" Icon="BinClosed" Disabled="true">
+                        <Listeners>
+                            <Click Handler="#{uxCloseIncidentWindow}.show()" />
+                        </Listeners>
+                    </ext:Button>
+                    <ext:Label runat="server" Icon="ImageLink" />
+                    <ext:Checkbox runat="server" ID="uxToggleClosed" FieldLabel="Include Closed Incidents">
+                        <Listeners>
+                            <Change Handler="#{uxIncidentStore}.reload()" />
+                        </Listeners>
+                    </ext:Checkbox>
+
+                </Items>
+            </ext:Toolbar>
+
+            <ext:GridPanel ID="uxIncidentGrid" Title="INCIDENT ENTRIES" runat="server" Layout="FitLayout">
+
+                <Store>
+                    <ext:Store runat="server"
+                        ID="uxIncidentStore" OnReadData="GetIncidentGridData" AutoDataBind="true" AutoLoad="false">
+                        <Parameters>
+                            <ext:StoreParameter Name="CrossingId" Value="#{uxCrossingIncidentGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                        </Parameters>
+                        <Model>
+                            <ext:Model ID="Model1" runat="server">
+                                <Fields>
+
+
+                                    <ext:ModelField Name="CROSSING_ID" />
+                                    <ext:ModelField Name="INCIDENT_ID" />
+                                    <ext:ModelField Name="DATE_REPORTED" Type="Date" />
+                                    <ext:ModelField Name="DATE_CLOSED" Type="Date" />
+                                    <ext:ModelField Name="INCIDENT_NUMBER" />
+                                    <ext:ModelField Name="SLOW_ORDER" />
+                                    <ext:ModelField Name="REMARKS" />
+                                </Fields>
+                            </ext:Model>
+                        </Model>
+
+                    </ext:Store>
+                </Store>
+                <ColumnModel>
+                    <Columns>
+                        <ext:Column ID="Column6" runat="server" DataIndex="INCIDENT_NUMBER" Text="Incident Number" Flex="1" />
+                        <ext:DateColumn ID="DateColumn1" runat="server" DataIndex="DATE_REPORTED" Text="Date Reported" Flex="1" Format="MM/dd/yyyy" />
+                        <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="DATE_CLOSED" Text="Date Closed" Flex="1" Format="MM/dd/yyyy" />
+                        <ext:Column ID="Column1" runat="server" DataIndex="SLOW_ORDER" Text="Slow Order" Flex="1" />
+                        <ext:Column ID="Column5" runat="server" DataIndex="REMARKS" Text="Remarks" Flex="3" />
+
+                    </Columns>
+                </ColumnModel>
+                <SelectionModel>
+                    <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" AllowDeselect="true" Mode="Single" />
+                </SelectionModel>
+                <DirectEvents>
+                    <Select OnEvent="deCloseIncident">
+                        <ExtraParams>
+                            <ext:Parameter Name="IncidentInfo" Value="Ext.encode(#{uxIncidentGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+                        </ExtraParams>
+                    </Select>
+                </DirectEvents>
+
+                <Listeners>
+                    <Select Handler="#{uxCloseIncident}.enable()" />
+                    <Deselect Handler="#{uxCloseIncident}.disable()" />
+                </Listeners>
+            </ext:GridPanel>
+
+            <ext:Window runat="server"
+                ID="uxIncidentWindow"
+                Layout="FormLayout"
+                Hidden="true"
+                Title="Add Incident"
+                Width="550"
+                Closable="false" Modal="true">
+                <Items>
+                    <ext:FormPanel runat="server" ID="uxIncidentFormPanel" Layout="FormLayout">
+                        <Items>
+                            <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
+                                <Items>
+                                    <ext:TextField ID="uxIncidentNumber" runat="server" FieldLabel="Incident #" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" />
+                                </Items>
+                            </ext:FieldContainer>
+                            <ext:FieldContainer ID="FieldContainer37" runat="server" Layout="HBoxLayout">
+                                <Items>
+                                    <ext:DateField ID="uxIncidentDateReported" runat="server" FieldLabel="Date Reported" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" />
+                                    <ext:Checkbox ID="uxIncidentSlowOrder" runat="server" FieldLabel="Slow Order" AnchorHorizontal="100%" LabelAlign="Right" />
+
+                                    <%-- <ext:DateField ID="uxIncidentDateClosed" runat="server" FieldLabel="Date Closed" AnchorHorizontal="100%" LabelAlign="Right"  />--%>
+                                </Items>
+                            </ext:FieldContainer>
+
+                            <ext:TextArea ID="uxIncidentRemarks" runat="server" FieldLabel="Remarks" AnchorHorizontal="100%" LabelAlign="Right" />
+
+                        </Items>
+                        <Buttons>
+                            <ext:Button runat="server" ID="uxAddIncidentButton" Text="Add" Icon="Add" Disabled="true">
+                                <DirectEvents>
+                                    <Click OnEvent="deAddIncident">
+                                        <ExtraParams>
+                                            <ext:Parameter Name="CrossingId" Value="#{uxCrossingIncidentGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                                        </ExtraParams>
+                                    </Click>
+                                </DirectEvents>
+                            </ext:Button>
+                            <ext:Button runat="server" ID="Button3" Text="Cancel" Icon="Delete">
+                                <Listeners>
+                                    <Click Handler="#{uxIncidentFormPanel}.reset();
+									#{uxIncidentWindow}.hide()" />
+                                </Listeners>
+                            </ext:Button>
+                        </Buttons>
+                        <Listeners>
+                            <ValidityChange Handler="#{uxAddIncidentButton}.setDisabled(!valid);" />
+                        </Listeners>
+                    </ext:FormPanel>
+                </Items>
+            </ext:Window>
+            <ext:Window runat="server"
+                ID="uxCloseIncidentWindow"
+                Layout="FormLayout"
+                Hidden="true"
+                Title="Close Incident"
+                Width="550"
+                Closable="false" Modal="true">
+                <Items>
+                    <ext:FormPanel runat="server" ID="FormPanel1" Layout="FormLayout">
+                        <Items>
+                            <ext:FieldContainer ID="FieldContainer2" runat="server" Layout="HBoxLayout">
+                                <Items>
+                                    <ext:TextField ID="uxCloseIncidentNum" runat="server" FieldLabel="Incident #" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
+                                    <ext:Checkbox ID="uxCloseSlowOrder" runat="server" FieldLabel="Slow Order" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
+
+                                </Items>
+                            </ext:FieldContainer>
+                            <ext:FieldContainer ID="FieldContainer3" runat="server" Layout="HBoxLayout">
+                                <Items>
+                                    <ext:DateField ID="uxCloseDateReported" runat="server" FieldLabel="Date Reported" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
+                                    <ext:DateField ID="uxCloseIncidentDateClosed" runat="server" FieldLabel="Date Closed" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" />
+
+                                </Items>
+                            </ext:FieldContainer>
+
+                            <ext:TextArea ID="uxCloseRemarks" runat="server" FieldLabel="Remarks" AnchorHorizontal="100%" LabelAlign="Right" />
+
+                        </Items>
+                        <Buttons>
+                            <ext:Button runat="server" ID="uxCloseIncidentButton" Text="Close" Icon="BinClosed" Disabled="true">
+                                <DirectEvents>
+                                    <Click OnEvent="deCloseIncidentForm">
+                                        <ExtraParams>
+                                            <ext:Parameter Name="IncidentInfo" Value="Ext.encode(#{uxIncidentGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+                                        </ExtraParams>
+                                    </Click>
+                                </DirectEvents>
+                            </ext:Button>
+                            <ext:Button runat="server" ID="Button2" Text="Cancel" Icon="Delete">
+                                <Listeners>
+                                    <Click Handler="#{FormPanel1}.reset();
+									#{uxCloseIncidentWindow}.hide()" />
+                                </Listeners>
+                            </ext:Button>
+                        </Buttons>
+                        <Listeners>
+                            <ValidityChange Handler="#{uxCloseIncidentButton}.setDisabled(!valid);" />
+                        </Listeners>
+                    </ext:FormPanel>
+                </Items>
+            </ext:Window>
+        </div>
+    </form>
+</body>
+</html>

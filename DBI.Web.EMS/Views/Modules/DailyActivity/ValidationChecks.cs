@@ -23,8 +23,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 var TotalHoursList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                       where d.DAILY_ACTIVITY_HEADER.STATUS != 4 && d.DAILY_ACTIVITY_HEADER.STATUS != 5
-                                     group d by new {d.DAILY_ACTIVITY_HEADER.DA_DATE, d.PERSON_ID } into g
-                                     select new { g.Key.PERSON_ID, g.Key.DA_DATE, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value))}).ToList();
+                                      group d by new { d.DAILY_ACTIVITY_HEADER.DA_DATE, d.PERSON_ID } into g
+                                      select new { g.Key.PERSON_ID, g.Key.DA_DATE, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value)) }).ToList();
 
                 List<EmployeeData> OffendingProjects = new List<EmployeeData>();
                 foreach (var TotalHour in TotalHoursList)
@@ -33,9 +33,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     if (TotalHour.TotalMinutes / 60 >= Hours)
                     {
                         var ProjectsWithEmployeeHoursOver24 = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                                                                join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
-                                                                where d.PERSON_ID == TotalHour.PERSON_ID && d.DAILY_ACTIVITY_HEADER.DA_DATE == TotalHour.DA_DATE && d.DAILY_ACTIVITY_HEADER.STATUS !=5
-                                                                select new EmployeeData{HEADER_ID = d.HEADER_ID, EMPLOYEE_NAME = e.EMPLOYEE_NAME, DA_DATE = d.DAILY_ACTIVITY_HEADER.DA_DATE}).ToList();
+                                                               join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
+                                                               where d.PERSON_ID == TotalHour.PERSON_ID && d.DAILY_ACTIVITY_HEADER.DA_DATE == TotalHour.DA_DATE && d.DAILY_ACTIVITY_HEADER.STATUS != 5
+                                                               select new EmployeeData { HEADER_ID = d.HEADER_ID, EMPLOYEE_NAME = e.EMPLOYEE_NAME, DA_DATE = d.DAILY_ACTIVITY_HEADER.DA_DATE }).ToList();
                         foreach (var Project in ProjectsWithEmployeeHoursOver24)
                         {
                             OffendingProjects.Add(new EmployeeData
@@ -57,9 +57,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 var TotalMinutes = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                                      where d.DAILY_ACTIVITY_HEADER.STATUS != 4 && d.DAILY_ACTIVITY_HEADER.STATUS != 5 && d.PERSON_ID == PersonId && EntityFunctions.TruncateTime(d.TIME_IN) == EntityFunctions.TruncateTime(HeaderDate)
-                                      group d by new{d.PERSON_ID} into g
-                                      select g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value))).SingleOrDefault();
+                                    where d.DAILY_ACTIVITY_HEADER.STATUS != 4 && d.DAILY_ACTIVITY_HEADER.STATUS != 5 && d.PERSON_ID == PersonId && EntityFunctions.TruncateTime(d.TIME_IN) == EntityFunctions.TruncateTime(HeaderDate)
+                                    group d by new { d.PERSON_ID } into g
+                                    select g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value))).SingleOrDefault();
                 if (TotalMinutes / 60 > Hours)
                 {
                     string Name = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == PersonId).Select(x => x.EMPLOYEE_NAME).Single();
@@ -157,7 +157,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 //Get List of Employees
                 var PersonIdList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                            select d.PERSON_ID).Distinct().ToList();
+                                    select d.PERSON_ID).Distinct().ToList();
 
                 List<long> HeaderIdList = new List<long>();
 
@@ -166,17 +166,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     //Get Headers for that employee
                     List<DAILY_ACTIVITY_EMPLOYEE> EmployeeHeaderList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                                                         join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                                                                 orderby d.TIME_IN ascending
-                                                                 where d.PERSON_ID == PersonId && h.STATUS != 5
-                                                                 select d).ToList<DAILY_ACTIVITY_EMPLOYEE>();
+                                                                        orderby d.TIME_IN ascending
+                                                                        where d.PERSON_ID == PersonId && h.STATUS != 5
+                                                                        select d).ToList<DAILY_ACTIVITY_EMPLOYEE>();
                     int count = 0;
                     DateTime PreviousTimeIn = DateTime.Parse("1/11/1955");
                     DateTime PreviousTimeOut = DateTime.Parse("1/11/1955");
                     long PreviousHeaderId = 0;
                     foreach (DAILY_ACTIVITY_EMPLOYEE Header in EmployeeHeaderList)
                     {
-                        DateTime CurrentTimeIn = (DateTime) Header.TIME_IN;
-                        DateTime CurrentTimeOut = (DateTime) Header.TIME_OUT;
+                        DateTime CurrentTimeIn = (DateTime)Header.TIME_IN;
+                        DateTime CurrentTimeOut = (DateTime)Header.TIME_OUT;
 
                         if (count > 0)
                         {
@@ -216,11 +216,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     DateTime CurrentTimeOut = (DateTime)Employee.TIME_OUT;
                     if (count > 0)
                     {
-                        
+
                         if (CurrentTimeIn < PreviousTimeOut)
                         {
                             string Name = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == PersonId).Select(x => x.EMPLOYEE_NAME).Single();
-                            HeaderIdList.Add(new WarningData { WarningType = "Error", RecordType = Name , AdditionalInformation = string.Format("Employee has time overlap on DRS Id:{0}", PreviousHeader.ToString()) });
+                            HeaderIdList.Add(new WarningData { WarningType = "Error", RecordType = Name, AdditionalInformation = string.Format("Employee has time overlap on DRS Id:{0}", PreviousHeader.ToString()) });
                         }
                     }
                     PreviousTimeIn = CurrentTimeIn;
@@ -252,8 +252,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     foreach (DAILY_ACTIVITY_EQUIPMENT Equipment in Header.DAILY_ACTIVITY_EQUIPMENT)
                     {
                         long? EquipmentBusinessUnit = (from p in _context.PROJECTS_V
-                                                        where p.PROJECT_ID == Equipment.PROJECT_ID
-                                                        select p.ORG_ID).Single();
+                                                       where p.PROJECT_ID == Equipment.PROJECT_ID
+                                                       select p.ORG_ID).Single();
                         if (EquipmentBusinessUnit != ProjectOrgId)
                         {
                             OffendingHeaders.Add(Header.HEADER_ID);
@@ -282,10 +282,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 return null;
             }
         }
-        
-        public static List<long> EmployeeBusinessUnitCheck(){
-            using (Entities _context = new Entities()){
-                List<long>OffendingHeaders = new List<long>();
+
+        public static List<long> EmployeeBusinessUnitCheck()
+        {
+            using (Entities _context = new Entities())
+            {
+                List<long> OffendingHeaders = new List<long>();
 
                 var HeaderList = (from d in _context.DAILY_ACTIVITY_HEADER
                                   where d.STATUS != 5
@@ -299,8 +301,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     foreach (DAILY_ACTIVITY_EMPLOYEE Employee in Header.DAILY_ACTIVITY_EMPLOYEE)
                     {
                         long? EmployeeOrgId = (from e in _context.EMPLOYEES_V
-                                                where e.PERSON_ID == Employee.PERSON_ID
-                                                select e.ORGANIZATION_ID).Single();
+                                               where e.PERSON_ID == Employee.PERSON_ID
+                                               select e.ORGANIZATION_ID).Single();
                         long EmployeeBusinessUnit = EMPLOYEES_V.GetEmployeeBusinessUnit((long)EmployeeOrgId);
                         if (EmployeeBusinessUnit != ProjectOrgId)
                         {
@@ -345,10 +347,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 foreach (var Employee in EmployeeList)
                 {
                     List<HeaderDetails> HeaderList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                                      join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                                      join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
-                                      where h.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID && d.PER_DIEM == "Y" && h.STATUS !=5
-                                      select new HeaderDetails { HEADER_ID = d.HEADER_ID, LONG_NAME = p.LONG_NAME, PERSON_ID = d.PERSON_ID }).ToList();
+                                                      join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                                      join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
+                                                      where h.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID && d.PER_DIEM == "Y" && h.STATUS != 5
+                                                      select new HeaderDetails { HEADER_ID = d.HEADER_ID, LONG_NAME = p.LONG_NAME, PERSON_ID = d.PERSON_ID }).ToList();
 
                     if (HeaderList.Count > 1)
                     {
@@ -379,25 +381,26 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                        join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                        join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
                                        where d.HEADER_ID == HeaderId && h.STATUS != 5
-                                       select new {d.PERSON_ID, e.EMPLOYEE_NAME, d.DAILY_ACTIVITY_HEADER.DA_DATE, d.TRAVEL_TIME, d.DRIVE_TIME, p.ORG_ID}).ToList();
+                                       select new { d.PERSON_ID, e.EMPLOYEE_NAME, d.DAILY_ACTIVITY_HEADER.DA_DATE, d.TRAVEL_TIME, d.DRIVE_TIME, p.ORG_ID }).ToList();
                 foreach (var Employee in HeaderEmployees)
                 {
                     var TotalMinutes = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                                        join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID    
+                                        join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
                                         where d.DAILY_ACTIVITY_HEADER.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID && h.STATUS != 5
-                                            group d by new {d.PERSON_ID} into g
-                                            select new{g.Key.PERSON_ID, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value))}).Single();
+                                        group d by new { d.PERSON_ID } into g
+                                        select new { g.Key.PERSON_ID, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value)) }).Single();
                     decimal totalTime = (decimal)TotalMinutes.TotalMinutes;
                     if (Employee.ORG_ID == 121)
                     {
                         try
                         {
-                            totalTime = totalTime - ((decimal)Employee.TRAVEL_TIME * 60) -((decimal)Employee.DRIVE_TIME * 60);
+                            totalTime = totalTime - ((decimal)Employee.TRAVEL_TIME * 60) - ((decimal)Employee.DRIVE_TIME * 60);
                         }
-                        catch(Exception e){
-                            
+                        catch (Exception e)
+                        {
+
                         }
-                        
+
                         if (totalTime >= 308 && totalTime < 728)
                         {
                             var LoggedLunches = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
@@ -441,8 +444,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
     {
         public long HEADER_ID { get; set; }
         public string LONG_NAME { get; set; }
-        public string EMPLOYEE_NAME {get; set;}
-        public DateTime? DA_DATE {get; set;}
+        public string EMPLOYEE_NAME { get; set; }
+        public DateTime? DA_DATE { get; set; }
         public long PERSON_ID { get; set; }
         public int LUNCH_LENGTH { get; set; }
     }

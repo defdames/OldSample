@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umSecurity.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.Overhead.umSecurity" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umGLSecurity.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.Overhead.umGLSecurity" %>
 
 <!DOCTYPE html>
 
@@ -38,44 +38,46 @@
         <ext:Viewport runat="server" ID="uxViewPort" Layout="BorderLayout" IDMode="Explicit" Namespace="App" RenderXType="True">
             <Items>
                 <ext:TreePanel ID="uxHierarchyTree"
-                            runat="server"
-                            Title="Hierarchy List By Legal Entity"
-                            Width="300"
-                            RootVisible="false"
-                            SingleExpand="true"
-                            Lines="true"
-                  Padding="5"
-                            UseArrows="false"
-                      Region="West"
-                    Scroll="Vertical">
-                            <Store>
-                                <ext:TreeStore ID="TreeStore1" runat="server" OnReadData="LoadHierarchyTree">
-                                    <Proxy>
-                                        <ext:PageProxy></ext:PageProxy>
-                                    </Proxy>
-                                </ext:TreeStore>
-                            </Store>
-                            <Root>
-                                <ext:Node NodeID="0" Text="All Legal Entities" Expanded="true" />
-                            </Root>
-                            <SelectionModel>
-                                <ext:TreeSelectionModel ID="uxHierarchyTreeSelectionModel" runat="server" Mode="Single"></ext:TreeSelectionModel>
-                            </SelectionModel>
-                            <DirectEvents>
-                                <ItemClick OnEvent="deShowOrganizationsByHierarchy">
-                                    <ExtraParams>
-                                        <ext:Parameter Name="id" Value="record.data.id" Mode="Raw" />
-                                    </ExtraParams>
-                                </ItemClick>
-                            </DirectEvents>
-                            <Listeners>
-                                <Select Handler="#{uxShowGLAccoutsWindow}.disable();"></Select>
-                            </Listeners>
-                        </ext:TreePanel>
-
-
-                        
-               
+                    runat="server"
+                    Title="Hierarchy List By Legal Entity"
+                    Width="300"
+                    RootVisible="false"
+                    SingleExpand="true"
+                    Lines="false"
+                    FolderSort="true"
+                    Margin="5"
+                    UseArrows="true"
+                    Region="West"
+                    Scroll="Vertical" Collapsible="false">
+                    <Store>
+                        <ext:TreeStore ID="TreeStore1" runat="server" OnReadData="LoadHierarchyTree">
+                            <Proxy>
+                                <ext:PageProxy></ext:PageProxy>
+                            </Proxy>
+                        </ext:TreeStore>
+                    </Store>
+                    <Root>
+                        <ext:Node NodeID="0" Text="All Legal Entities" Expanded="true" />
+                    </Root>
+                    <SelectionModel>
+                        <ext:TreeSelectionModel ID="uxHierarchyTreeSelectionModel" runat="server" Mode="Single"></ext:TreeSelectionModel>
+                    </SelectionModel>
+                    <DirectEvents>
+                        <ItemClick OnEvent="deShowOrganizationsByHierarchy">
+                            <ExtraParams>
+                                <ext:Parameter Name="id" Value="record.data.id" Mode="Raw" />
+                            </ExtraParams>
+                        </ItemClick>
+                    </DirectEvents>
+                    <Listeners>
+                        <Select Handler="#{uxShowGLAccoutsWindow}.disable();"></Select>
+                    </Listeners>
+                     <View>
+                        <ext:TreeView ID="TreeView1" runat="server" LoadMask="true">
+                        </ext:TreeView>
+                    </View>
+                </ext:TreePanel>
+     
                 <ext:GridPanel ID="uxOrganizationsGrid" runat="server" Flex="1" SimpleSelect="true" Title="Organizations By Hierarchy" Padding="5" Region="Center">
                     <Store>
                         <ext:Store runat="server"
@@ -98,7 +100,6 @@
                             </Store>
                             <ColumnModel>
                                 <Columns>
-                                    <ext:Column ID="Column8" runat="server" DataIndex="HIER_LEVEL" Text="Hierarchy Level Sort" Flex="1" />
                                     <ext:Column ID="Column2" runat="server" DataIndex="ORGANIZATION_NAME" Text="Organization Name" Flex="4" />
                                     <ext:Column ID="Column1" runat="server" DataIndex="GL_ASSIGNED" Text="Organization Status" Flex="1" />
                                 </Columns>
@@ -126,7 +127,8 @@
                         </ext:GridView>
                     </View>                       
                         </ext:GridPanel>
-                <ext:GridPanel ID="uxGlAccountSecurityGrid" runat="server" Flex="1" Title="General Ledger Accounts" Padding="5" Region="South" >
+                               
+                <ext:GridPanel ID="uxGlAccountSecurityGrid" runat="server" Flex="1" Title="General Ledger Accounts" Margin="5" Region="South" >
                     <TopBar>
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>

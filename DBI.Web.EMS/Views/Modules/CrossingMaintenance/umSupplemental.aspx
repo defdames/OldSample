@@ -106,7 +106,7 @@
                                
 
                                 <ext:ModelField Name="CROSSING_ID" />
-                                <ext:ModelField Name="SUPPLEMENTAL_ID" />
+                                <ext:ModelField Name="SUPPLEMENT_ID" />
                                 <ext:ModelField Name="APPROVED_DATE" Type="Date" />
                                 <ext:ModelField Name="SERVICE_TYPE" />
                                 <ext:ModelField Name="TRUCK_NUMBER" />
