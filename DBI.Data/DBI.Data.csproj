@@ -395,6 +395,7 @@
     </None>
     <None Include="Oracle.edmx.diagram">
       <DependentUpon>Oracle.edmx</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Oracle.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
