@@ -105,6 +105,7 @@
         <EntityTypeShape EntityType="OracleModel.CROSSING_PROJECT" Width="1.5" PointX="5.9175164820242285" PointY="9.5997673466800553" />
         <AssociationConnector Association="OracleModel.FK_PROJECT_RAILROAD_ID" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" Width="1.5" PointX="1.375" PointY="21.5" />
+        <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="1.1517493637053993" PointY="27.760841308050249" />
         <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" />
         </Diagram>
     </edmx:Diagrams>
