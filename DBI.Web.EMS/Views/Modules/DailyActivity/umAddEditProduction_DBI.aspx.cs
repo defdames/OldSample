@@ -108,8 +108,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     HEADER_ID = HeaderId,
                     TASK_ID = TaskId,
                     WORK_AREA = uxAddProductionWorkArea.Value.ToString(),
-                    POLE_FROM = uxAddProductionPoleFrom.Value.ToString(),
-                    POLE_TO = uxAddProductionPoleTo.Value.ToString(),
                     ACRES_MILE = AcresPerMile,
                     QUANTITY = Gallons,
                     CREATE_DATE = DateTime.Now,
@@ -117,6 +115,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     CREATED_BY = User.Identity.Name,
                     MODIFIED_BY = User.Identity.Name
                 };
+                try
+                {
+                    data.POLE_FROM = uxAddProductionPoleFrom.Value.ToString();
+                }
+                catch { }
+                try
+                {
+                    data.POLE_TO = uxAddProductionPoleTo.Value.ToString();
+                }
+                catch { }
             }
 
             //Write to DB
