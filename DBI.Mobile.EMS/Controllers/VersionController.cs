@@ -19,10 +19,10 @@ namespace DBI.Mobile.EMS.Controllers
             if (id == "production")
             {
                 Version ver = new Version();
-                ver.number = "1.0.R140411";
-                ver.mandatory = false;
+                ver.number = "1.0.R140423";
+                ver.mandatory = true;
                 ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobile.dbiservices.com/iems/iEMS.plist";
-                ver.descriptionText = "";
+                ver.descriptionText = "Updated production screen to allow for decimal places on quantity and gallons";
 
                 RootObject root = new RootObject();
                 root.version = ver;
