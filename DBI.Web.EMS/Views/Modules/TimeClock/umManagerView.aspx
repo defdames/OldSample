@@ -20,7 +20,7 @@
             Frame="true"
             Title="Employee Hours"
             Icon ="Table"
-            Width =" 800"
+            Width ="1200"
             Resizeable="true"
             Collapsable="true">
             <Store>
@@ -46,13 +46,14 @@
             </Store>
             <ColumnModel runat="server">
                 <Columns>
-                    <ext:Column runat="server" Text="Time In" DataIndex="TIME_IN"/>
-                    <ext:Column runat="server" Text="Time Out" DataIndex="TIME_OUT" />
-                    <ext:Column runat="server" Text="Total Hours" DataIndex="TOTAL_HOURS">
+                    <ext:DateColumn runat="server" Text="Time In" DataIndex="TIME_IN" Flex="1" Format="M/d/yyyy h:mm:ss A"/>
+                    <ext:DateColumn runat="server" Text="Time Out" DataIndex="TIME_OUT" Flex="1" Format="M/d/yyyy h:mm:ss A"/>
+                    <ext:Column runat="server" Text="Total Time" Flex="1" DataIndex="TOTAL_HOURS">
                         <Editor>
-                               <ext:TimeField runat="server" Increment="15" />
+                               <ext:TextField runat="server"/>
                         </Editor>
                     </ext:Column>
+                    
                 </Columns>
             </ColumnModel>
             <Features>

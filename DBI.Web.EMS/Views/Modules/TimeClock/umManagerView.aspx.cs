@@ -40,15 +40,15 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                     DateTime dow = item.TIME_IN;
                     
                     //Calcualtion to round time to quarter increments
-                    double adjtime = (ts.Minutes > 0 && ts.Minutes <= 8) ? 0
-                         : (ts.Minutes > 8 && ts.Minutes <= 23) ? .25
-                         : (ts.Minutes > 23 && ts.Minutes <= 38) ? .50
-                         : (ts.Minutes > 38 && ts.Minutes <= 53) ? .75
-                         : (ts.Minutes > 53 && ts.Minutes <= 60) ? 1
-                         : 0; 
+                    //double adjtime = (ts.Minutes > 0 && ts.Minutes <= 8) ? 0
+                    //     : (ts.Minutes > 8 && ts.Minutes <= 23) ? .15
+                    //     : (ts.Minutes > 23 && ts.Minutes <= 38) ? .30
+                    //     : (ts.Minutes > 38 && ts.Minutes <= 53) ? .45
+                    //     : (ts.Minutes > 53 && ts.Minutes <= 60) ? 1
+                    //     : 0; 
                     
-                    decimal returnvalue = ts.Hours + (decimal)adjtime;
-                    item.TOTAL_HOURS = returnvalue.ToString("00:00");
+                    TimeSpan returnvalue = new TimeSpan (Convert.ToInt32(ts.Hours), Convert.ToInt32(ts.Minutes), 0);
+                    item.TOTAL_HOURS = returnvalue.ToString("hh\\:mm");
                     
                 }
                 uxEmployeeHoursStore.DataSource = data;
