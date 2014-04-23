@@ -97,7 +97,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             //Do type conversions
             long TaskId = long.Parse(uxAddProductionTask.Value.ToString());
-            long AcresPerMile = long.Parse(uxAddProductionAcresPerMile.Value.ToString());
+            decimal AcresPerMile = decimal.Parse(uxAddProductionAcresPerMile.Value.ToString());
             long Gallons = long.Parse(uxAddProductionGallons.Value.ToString());
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
 
@@ -108,8 +108,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     HEADER_ID = HeaderId,
                     TASK_ID = TaskId,
                     WORK_AREA = uxAddProductionWorkArea.Value.ToString(),
-                    POLE_FROM = uxAddProductionPoleFrom.Value.ToString(),
-                    POLE_TO = uxAddProductionPoleTo.Value.ToString(),
                     ACRES_MILE = AcresPerMile,
                     QUANTITY = Gallons,
                     CREATE_DATE = DateTime.Now,
@@ -117,6 +115,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     CREATED_BY = User.Identity.Name,
                     MODIFIED_BY = User.Identity.Name
                 };
+                try
+                {
+                    data.POLE_FROM = uxAddProductionPoleFrom.Value.ToString();
+                }
+                catch { }
+                try
+                {
+                    data.POLE_TO = uxAddProductionPoleTo.Value.ToString();
+                }
+                catch { }
             }
 
             //Write to DB
@@ -149,7 +157,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             //Do type conversions
             long TaskId = long.Parse(uxEditProductionTask.Value.ToString());
-            long AcresPerMile = long.Parse(uxEditProductionAcresPerMile.Value.ToString());
+            decimal AcresPerMile = decimal.Parse(uxEditProductionAcresPerMile.Value.ToString());
             long Gallons = long.Parse(uxEditProductionGallons.Value.ToString());
             long ProductionId = long.Parse(Request.QueryString["ProductionId"]);
 

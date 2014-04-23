@@ -101,7 +101,7 @@
         <AssociationConnector Association="OracleModel.FK_INCIDENT_CROSSING_ID" />
         <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
         <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="1.1517493637053993" PointY="27.760841308050249" />
-        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" Width="1.5" PointX="1.375" PointY="21.5" />
+        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" Width="1.5" PointX="1" PointY="21.375" />
         <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" />
         </Diagram>
     </edmx:Diagrams>

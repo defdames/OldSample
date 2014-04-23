@@ -7612,7 +7612,6 @@
           <EntitySetMapping Name="DAILY_ACTIVITY_PRODUCTION">
             <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_PRODUCTION">
               <MappingFragment StoreEntitySet="DAILY_ACTIVITY_PRODUCTION">
-                <ScalarProperty Name="WORK_AREA" ColumnName="WORK_AREA" />
                 <ScalarProperty Name="SURFACE_TYPE" ColumnName="SURFACE_TYPE" />
                 <ScalarProperty Name="UNIT_OF_MEASURE" ColumnName="UNIT_OF_MEASURE" />
                 <ScalarProperty Name="BILL_RATE" ColumnName="BILL_RATE" />
@@ -7627,6 +7626,7 @@
                 <ScalarProperty Name="ACRES_MILE" ColumnName="ACRES_MILE" />
                 <ScalarProperty Name="POLE_TO" ColumnName="POLE_TO" />
                 <ScalarProperty Name="POLE_FROM" ColumnName="POLE_FROM" />
+                <ScalarProperty Name="WORK_AREA" ColumnName="WORK_AREA" />
                 <ScalarProperty Name="TASK_ID" ColumnName="TASK_ID" />
                 <ScalarProperty Name="TIME_OUT" ColumnName="TIME_OUT" />
                 <ScalarProperty Name="TIME_IN" ColumnName="TIME_IN" />
