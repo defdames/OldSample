@@ -25,5 +25,7 @@ namespace DBI.Data
         public Nullable<decimal> ADJUSTED_HOURS { get; set; }
         public Nullable<int> SUPERVISOR_ID { get; set; }
         public string DAY_OF_WEEK { get; set; }
+        public string MODIFIED_BY { get; set; }
+        public Nullable<System.DateTime> MODIFY_DATE { get; set; }
     }
 }
