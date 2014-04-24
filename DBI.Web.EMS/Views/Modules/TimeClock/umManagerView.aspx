@@ -32,6 +32,7 @@
                     <Model>
                         <ext:Model runat="server" IDProperty="EMP_HOURS">
                             <Fields>
+                                <ext:ModelField Name="TIME_CLOCK_ID" />
                                 <ext:ModelField Name="EMPLOYEE_NAME" />
                                 <ext:ModelField Name="TIME_IN" Type="Date" />
                                 <ext:ModelField Name="TIME_OUT" Type="Date"/>
@@ -40,7 +41,7 @@
                         </ext:Model>
                     </Model>
                     <Sorters>
-                        <ext:DataSorter Property="EMPLOYEE_NAME" Direction="ASC"/>
+                        <ext:DataSorter Property="TIME_IN" Direction="DESC"/>
                     </Sorters>
                 </ext:Store>
             </Store>
@@ -68,7 +69,20 @@
             </SelectionModel>
             <Plugins>
                 <ext:CellEditing runat="server" ClicksToEdit="2"/>
-            </Plugins>  
+            </Plugins> 
+            <Buttons>
+                <ext:Button runat="server" ID="uxApproveButton" Text="Submit">
+                    <DirectEvents>
+                        <Click OnEvent="deApproveTime">
+                            <EventMask ShowMask="true" />
+                            <ExtraParams>
+                                <ext:Parameter Name="TimeClockId" Value="#{uxEmployeeHoursGrid}.getSelectionModel().getSelection()[0].data.TIME_CLOCK_ID" Mode="Raw" />
+                                <ext:Parameter Name="ApprovedTime" Value="Ext.encode(#{uxEmployeeHoursGrid}.getRowsValues({selectedOnly : true}))" Mode="Raw" />
+                            </ExtraParams>
+                        </Click> 
+                    </DirectEvents>
+                </ext:Button>
+            </Buttons>
         </ext:GridPanel>
            </Items>
         </ext:viewport>
