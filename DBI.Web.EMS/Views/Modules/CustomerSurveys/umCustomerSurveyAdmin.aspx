@@ -41,11 +41,11 @@
 <body>
     <form id="form1" runat="server">
         <ext:ResourceManager runat="server" IsDynamic="false" />
-        <ext:Viewport ID="uxAdminViewPort" runat="server" Layout="AccordionLayout">
+        <ext:Viewport ID="uxAdminViewPort" runat="server" Layout="BorderLayout">
             <Items>
-                <ext:GridPanel runat="server" ID="uxFormsGrid" Title="Forms" Layout="FitLayout">
+                <ext:GridPanel runat="server" ID="uxFormsGrid" Title="Forms" Region="West" Width="400">
                     <Store>
-                        <ext:Store runat="server" ID="uxFormsStore" AutoDataBind="true" OnReadData="deReadForms" RemoteSort="true" PageSize="5">
+                        <ext:Store runat="server" ID="uxFormsStore" AutoDataBind="true" OnReadData="deReadForms" RemoteSort="true" PageSize="25">
                             <Model>
                                 <ext:Model runat="server" Name="Form" IDProperty="FORM_ID">
                                     <Fields>
@@ -63,12 +63,12 @@
                     </Store>
                     <ColumnModel runat="server">
                         <Columns>
-                            <ext:Column runat="server" DataIndex="FORMS_NAME" Text="Form Name" Width="300">
+                            <ext:Column runat="server" DataIndex="FORMS_NAME" Text="Form Name" Flex="1">
                                 <Editor>
                                     <ext:TextField runat="server" />
                                 </Editor>
                             </ext:Column>
-                            <ext:Column runat="server" DataIndex="ORG_ID" Text="Organization Name" Width="300">
+                            <ext:Column runat="server" DataIndex="ORG_ID" Text="Organization Name" Flex="1">
                                 <Renderer Fn="OrgRenderer" />
                                 <Editor>
                                     <ext:ComboBox runat="server" ForceSelection="true" TypeAhead="true" QueryMode="Local" ValueField="ORG_ID" DisplayField="ORG_HIER">
@@ -90,7 +90,7 @@
                                     </ext:ComboBox>
                                 </Editor>
                             </ext:Column>
-                            <ext:Column runat="server" DataIndex="NUM_QUESTIONS" Text="Number of Questions" Width="150" />
+                            <%--<ext:Column runat="server" DataIndex="NUM_QUESTIONS" Text="Number of Questions" />--%>
                         </Columns>
                     </ColumnModel>
                     <Plugins>
@@ -120,11 +120,11 @@
                     <BottomBar>
                         <ext:PagingToolbar runat="server" />
                     </BottomBar>
-                    <Listeners>
-                        <Select Handler="#{uxQuestionsStore}.reload(); #{uxFieldsetsStore}.reload(); #{uxQuestionFieldsetStore}.reload()" />
-                    </Listeners>
+                    <DirectEvents>
+                        <Select OnEvent="deLoadFormDetails" />
+                    </DirectEvents>
                 </ext:GridPanel>
-                <ext:Panel runat="server" Layout="AutoLayout" Title="Form Information" ID="uxBottomPanel">
+                <ext:Panel runat="server" Title="Form Information" ID="uxBottomPanel" Region="Center" Layout="AutoLayout">
                     <Items>
                         <ext:GridPanel runat="server" Title="Fieldsets" ID="uxFieldsetsGrid" MaxWidth="1000" Margin="5">
                             <Store>
@@ -170,12 +170,12 @@
                             <TopBar>
                                 <ext:Toolbar runat="server">
                                     <Items>
-                                        <ext:Button runat="server" Icon="ApplicationAdd" Text="Add Fieldset">
+                                        <ext:Button runat="server" ID="uxAddFieldsetButton" Icon="ApplicationAdd" Text="Add Fieldset" Disabled="true">
                                             <Listeners>
                                                 <Click Handler="#{uxFieldSetsStore}.insert(0, new Fieldset());" />
                                             </Listeners>
                                         </ext:Button>
-                                        <ext:Button runat="server" Icon="Add" Text="Save">
+                                        <ext:Button runat="server" ID="uxSaveFieldsetButton" Icon="Add" Text="Save" Disabled="true">
                                             <DirectEvents>
                                                 <Click OnEvent="deSaveFieldsets" Before="#{uxFieldsetsStore}.isDirty()">
                                                     <ExtraParams>
@@ -216,12 +216,12 @@
                             </Store>
                             <ColumnModel runat="server">
                                 <Columns>
-                                    <ext:Column runat="server" DataIndex="TEXT" Text="Question Name" Flex="1">
+                                    <ext:Column runat="server" DataIndex="TEXT" Text="Question Name" Flex="40">
                                         <Editor>
                                             <ext:TextField runat="server" />
                                         </Editor>
                                     </ext:Column>
-                                    <ext:Column runat="server" DataIndex="TYPE_ID" Text="Question Type" Flex="1">
+                                    <ext:Column runat="server" DataIndex="TYPE_ID" Text="Question Type" Flex="20">
                                         <Renderer Fn="TypeRenderer" />
                                         <Editor>
                                             <ext:ComboBox runat="server" ForceSelection="true" TypeAhead="true" QueryMode="Local" DisplayField="QUESTION_TYPE_NAME" ValueField="TYPE_ID">
@@ -243,7 +243,7 @@
                                             </ext:ComboBox>
                                         </Editor>
                                     </ext:Column>
-                                    <ext:Column runat="server" DataIndex="FIELDSET_ID" Text="Fieldset" Flex="1">
+                                    <ext:Column runat="server" DataIndex="FIELDSET_ID" Text="Fieldset" Flex="20">
                                         <Renderer Fn="FieldsetRenderer" />
                                         <Editor>
                                             <ext:ComboBox runat="server" ForceSelection="true" TypeAhead="true" QueryMode="Local" DisplayField="TITLE" ValueField="FIELDSET_ID">
@@ -268,8 +268,8 @@
                                             </ext:ComboBox>
                                         </Editor>
                                     </ext:Column>
-                                    <ext:CheckColumn runat="server" DataIndex="IS_REQUIRED" Text="Required" Editable="true" Flex="1" />
-                                    <ext:Column runat="server" DataIndex="SORT_ORDER" Text="Sort Order" Flex="1">
+                                    <ext:CheckColumn runat="server" DataIndex="IS_REQUIRED" Text="Required" Editable="true" Flex="10" />
+                                    <ext:Column runat="server" DataIndex="SORT_ORDER" Text="Sort Order" Flex="10">
                                         <Editor>
                                             <ext:NumberField runat="server" />
                                         </Editor>
@@ -293,12 +293,12 @@
                             <TopBar>
                                 <ext:Toolbar runat="server">
                                     <Items>
-                                        <ext:Button runat="server" Icon="ApplicationAdd" Text="Add Question">
+                                        <ext:Button runat="server" ID="uxAddQuestionButton" Icon="ApplicationAdd" Text="Add Question" Disabled="true">
                                              <Listeners>
                                                 <Click Handler="#{uxQuestionsStore}.insert(0, new Question());" />
                                             </Listeners>
                                         </ext:Button>
-                                        <ext:Button runat="server" Icon="Add" Text="Save">
+                                        <ext:Button runat="server" ID="uxSaveQuestionButton" Icon="Add" Text="Save" Disabled="true">
                                             <DirectEvents>
                                                 <Click OnEvent="deSaveQuestions" Before="#{uxQuestionsStore}.isDirty()">
                                                     <EventMask ShowMask="true" />
@@ -328,24 +328,24 @@
                                         </ext:Model>
                                     </Model>
                                     <Parameters>
-                                        <ext:StoreParameter Name="QuestionId" Value="#{uxQuestionsGrid}.getSelectionModel().getSelection()[0].data.QUESTION_ID" Mode="Raw" />
+                                        <ext:StoreParameter Name="QuestionId" Value="0" ApplyMode="IfNotExists" />
                                     </Parameters>
                                 </ext:Store>
                             </Store>
                             <ColumnModel runat="server">
                                 <Columns>
-                                    <ext:Column runat="server" DataIndex="TEXT" Text="Question" Flex="1" />
-                                    <ext:Column runat="server" DataIndex="OPTION_NAME" Text="Option Name" Flex="1">
+                                    <ext:Column runat="server" DataIndex="TEXT" Text="Question" Flex="40" />
+                                    <ext:Column runat="server" DataIndex="OPTION_NAME" Text="Option Name" Flex="30">
                                         <Editor>
                                             <ext:TextField runat="server" />
                                         </Editor>
                                     </ext:Column>
-                                    <ext:Column runat="server" DataIndex="SORT_ORDER" Text="Sort Order" Flex="1">
+                                    <ext:Column runat="server" DataIndex="SORT_ORDER" Text="Sort Order" Flex="20">
                                         <Editor>
                                             <ext:NumberField runat="server" />
                                         </Editor>
                                     </ext:Column>
-                                    <ext:CheckColumn runat="server" DataIndex="IS_ACTIVE" Text="Active" Editable="true" Flex="1" />
+                                    <ext:CheckColumn runat="server" DataIndex="IS_ACTIVE" Text="Active" Editable="true" Flex="10" />
                                 </Columns>
                             </ColumnModel>
                             <Plugins>

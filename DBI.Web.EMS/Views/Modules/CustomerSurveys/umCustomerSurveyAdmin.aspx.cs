@@ -73,7 +73,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         {
             using (Entities _context = new Entities())
             {
-                long QuestionId = long.Parse(e.Parameters["QuestionId"]);
+                decimal QuestionId = decimal.Parse(e.Parameters["QuestionId"]);
                 List<CustomerSurveyOptions> data = (from o in _context.CUSTOMER_SURVEY_OPTIONS
                                                     join q in _context.CUSTOMER_SURVEY_QUESTIONS on o.QUESTION_ID equals q.QUESTION_ID
                                                     where q.QUESTION_ID == QuestionId
@@ -185,6 +185,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
 
             uxFieldsetsStore.Reload();
+            uxQuestionFieldsetStore.Reload();
         }
 
         protected void deSaveQuestions(object sender, DirectEventArgs e)
@@ -212,6 +213,12 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 FieldsetToAdd.MODIFY_DATE = DateTime.Now;
                 FieldsetToAdd.CREATE_DATE = DateTime.Now;
                 GenericData.Insert<CUSTOMER_SURVEY_RELATION>(FieldsetToAdd);
+
+                if(ToBeAdded.TYPE_ID == 5 || ToBeAdded.TYPE_ID == 6 || ToBeAdded.TYPE_ID == 7)
+                {
+                    uxAddOptionButton.Disabled = false;
+                    uxSaveOptionButton.Disabled = false;
+                }
             }
 
             foreach (CustomerSurveyQuestions UpdatedQuestion in data.Updated)
@@ -235,6 +242,12 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 }
                 GenericData.Update<CUSTOMER_SURVEY_QUESTIONS>(ToBeUpdated);
                 GenericData.Update<CUSTOMER_SURVEY_RELATION>(FieldsetToUpdate);
+
+                if (ToBeUpdated.TYPE_ID == 5 || ToBeUpdated.TYPE_ID == 6 || ToBeUpdated.TYPE_ID == 7)
+                {
+                    uxAddOptionButton.Disabled = false;
+                    uxAddOptionButton.Disabled = false;
+                }
             }
 
             uxQuestionsStore.Reload();
@@ -284,7 +297,26 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 uxAddOptionButton.Disabled = true;
                 uxSaveOptionButton.Disabled = true;
             }
-            uxOptionsStore.Reload();
+            
+            uxOptionsStore.Reload(new Ext.Net.ParameterCollection(){
+                new Ext.Net.Parameter
+            {
+                Name = "QuestionId",
+                Value = "App.uxQuestionsGrid.getSelectionModel().getSelection()[0].data.QUESTION_ID",
+                Mode = ParameterMode.Raw
+            }});
+        }
+
+        protected void deLoadFormDetails(object sender, DirectEventArgs e)
+        {
+            uxQuestionFieldsetStore.Reload();
+            uxQuestionsStore.Reload();
+            uxFieldsetsStore.Reload();
+            uxAddFieldsetButton.Disabled = false;
+            uxAddQuestionButton.Disabled = false;
+            uxSaveFieldsetButton.Disabled = false;
+            uxSaveQuestionButton.Disabled = false;
+            uxOptionsStore.RemoveAll();
         }
     }
 
