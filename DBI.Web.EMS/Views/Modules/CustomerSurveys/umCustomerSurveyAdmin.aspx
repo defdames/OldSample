@@ -45,7 +45,7 @@
             <Items>
                 <ext:GridPanel runat="server" ID="uxFormsGrid" Title="Forms" Region="West" Width="400">
                     <Store>
-                        <ext:Store runat="server" ID="uxFormsStore" AutoDataBind="true" OnReadData="deReadForms" RemoteSort="true" PageSize="25">
+                        <ext:Store runat="server" ID="uxFormsStore" AutoDataBind="true" OnReadData="deReadForms" RemoteSort="true" PageSize="25" WarningOnDirty="true">
                             <Model>
                                 <ext:Model runat="server" Name="Form" IDProperty="FORM_ID">
                                     <Fields>
@@ -128,7 +128,7 @@
                     <Items>
                         <ext:GridPanel runat="server" Title="Fieldsets" ID="uxFieldsetsGrid" MaxWidth="1000" Margin="5">
                             <Store>
-                                <ext:Store runat="server" ID="uxFieldsetsStore" AutoDataBind="true" AutoLoad="false" PageSize="5" RemoteSort="true" OnReadData="deReadFieldsets">
+                                <ext:Store runat="server" ID="uxFieldsetsStore" AutoDataBind="true" AutoLoad="false" PageSize="5" RemoteSort="true" OnReadData="deReadFieldsets" WarningOnDirty="true">
                                     <Model>
                                         <ext:Model ID="Model1" runat="server" Name="Fieldset" IDProperty="FIELDSET_ID">
                                             <Fields>
@@ -191,7 +191,7 @@
                         </ext:GridPanel>
                         <ext:GridPanel runat="server" ID="uxQuestionsGrid" Title="Form Questions" MaxWidth="1000" Margin="5">
                             <Store>
-                                <ext:Store runat="server" ID="uxQuestionsStore" RemoteSort="true" PageSize="10" AutoDataBind="true" AutoLoad="false" OnReadData="deReadQuestions">
+                                <ext:Store runat="server" ID="uxQuestionsStore" RemoteSort="true" PageSize="10" AutoDataBind="true" AutoLoad="false" OnReadData="deReadQuestions" WarningOnDirty="true">
                                     <Model>
                                         <ext:Model runat="server" Name="Question" IDProperty="QUESTION_ID">
                                             <Fields>
@@ -314,7 +314,7 @@
                         </ext:GridPanel>
                         <ext:GridPanel runat="server" Title="Question Options" ID="uxOptionsGrid" MaxWidth="1000" Margin="5">
                             <Store>
-                                <ext:Store runat="server" ID="uxOptionsStore" AutoDataBind="true" AutoLoad="false" PageSize="5" OnReadData="deReadOptions" RemoteSort="true">
+                                <ext:Store runat="server" ID="uxOptionsStore" AutoDataBind="true" AutoLoad="false" PageSize="5" OnReadData="deReadOptions" RemoteSort="true" WarningOnDirty="true">
                                     <Model>
                                         <ext:Model runat="server" Name="QuestionOption" IDProperty="OPTION_ID">
                                             <Fields>
