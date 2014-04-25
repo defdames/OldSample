@@ -64,7 +64,6 @@ namespace DBI.Data
         public DbSet<CUSTOMER_SURVEY_RELATION> CUSTOMER_SURVEY_RELATION { get; set; }
         public DbSet<CROSSING_INSPECTION> CROSSING_INSPECTION { get; set; }
         public DbSet<CROSSING_SUPPLEMENTAL> CROSSING_SUPPLEMENTAL { get; set; }
-        public DbSet<CUSTOMER_SURVEY_OPTIONS> CUSTOMER_SURVEY_OPTIONS { get; set; }
         public DbSet<DAILY_ACTIVITY_FOOTER> DAILY_ACTIVITY_FOOTER { get; set; }
         public DbSet<PA_ROLES_V> PA_ROLES_V { get; set; }
         public DbSet<DAILY_ACTIVITY_STATUS> DAILY_ACTIVITY_STATUS { get; set; }
@@ -94,5 +93,6 @@ namespace DBI.Data
         public DbSet<CROSSING_PROJECT> CROSSING_PROJECT { get; set; }
         public DbSet<DAILY_ACTIVITY_PRODUCTION> DAILY_ACTIVITY_PRODUCTION { get; set; }
         public DbSet<CUSTOMER_SURVEY_FIELDSETS> CUSTOMER_SURVEY_FIELDSETS { get; set; }
+        public DbSet<CUSTOMER_SURVEY_OPTIONS> CUSTOMER_SURVEY_OPTIONS { get; set; }
     }
 }

@@ -3195,11 +3195,6 @@
           </AssociationSet>
           <EntitySet Name="CROSSING_INSPECTION" EntityType="OracleModel.CROSSING_INSPECTION" />
           <EntitySet Name="CROSSING_SUPPLEMENTAL" EntityType="OracleModel.CROSSING_SUPPLEMENTAL" />
-          <EntitySet Name="CUSTOMER_SURVEY_OPTIONS" EntityType="OracleModel.CUSTOMER_SURVEY_OPTIONS" />
-          <AssociationSet Name="FK_OPTION_QUES_ID" Association="OracleModel.FK_OPTION_QUES_ID">
-            <End Role="CUSTOMER_SURVEY_QUESTIONS" EntitySet="CUSTOMER_SURVEY_QUESTIONS" />
-            <End Role="CUSTOMER_SURVEY_OPTIONS" EntitySet="CUSTOMER_SURVEY_OPTIONS" />
-          </AssociationSet>
           <EntitySet Name="DAILY_ACTIVITY_FOOTER" EntityType="OracleModel.DAILY_ACTIVITY_FOOTER" />
           <AssociationSet Name="FK_FOOTER_HEADER_ID" Association="OracleModel.FK_FOOTER_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
@@ -3292,6 +3287,11 @@
           <AssociationSet Name="FK_RELATION_FIELDSET_ID" Association="OracleModel.FK_RELATION_FIELDSET_ID">
             <End Role="CUSTOMER_SURVEY_FIELDSETS" EntitySet="CUSTOMER_SURVEY_FIELDSETS" />
             <End Role="CUSTOMER_SURVEY_RELATION" EntitySet="CUSTOMER_SURVEY_RELATION" />
+          </AssociationSet>
+          <EntitySet Name="CUSTOMER_SURVEY_OPTIONS" EntityType="OracleModel.CUSTOMER_SURVEY_OPTIONS" />
+          <AssociationSet Name="FK_OPTION_QUES_ID" Association="OracleModel.FK_OPTION_QUES_ID">
+            <End Role="CUSTOMER_SURVEY_QUESTIONS" EntitySet="CUSTOMER_SURVEY_QUESTIONS" />
+            <End Role="CUSTOMER_SURVEY_OPTIONS" EntitySet="CUSTOMER_SURVEY_OPTIONS" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="SYS_USERS">
@@ -5084,33 +5084,6 @@
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <NavigationProperty Name="CROSSING" Relationship="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" FromRole="CROSSING_SUPPLEMENTAL" ToRole="CROSSING" />
         </EntityType>
-        <EntityType Name="CUSTOMER_SURVEY_OPTIONS">
-          <Key>
-            <PropertyRef Name="OPTION_ID" />
-          </Key>
-          <Property Type="Decimal" Name="OPTION_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Decimal" Name="QUESTION_ID" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="String" Name="OPTION_NAME" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="SORT_ORDER" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <NavigationProperty Name="CUSTOMER_SURVEY_QUESTIONS" Relationship="OracleModel.FK_OPTION_QUES_ID" FromRole="CUSTOMER_SURVEY_OPTIONS" ToRole="CUSTOMER_SURVEY_QUESTIONS" />
-          <Property Type="String" Name="IS_ACTIVE" MaxLength="1" FixedLength="true" Unicode="false" />
-        </EntityType>
-        <Association Name="FK_OPTION_QUES_ID">
-          <End Type="OracleModel.CUSTOMER_SURVEY_QUESTIONS" Role="CUSTOMER_SURVEY_QUESTIONS" Multiplicity="1" />
-          <End Type="OracleModel.CUSTOMER_SURVEY_OPTIONS" Role="CUSTOMER_SURVEY_OPTIONS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CUSTOMER_SURVEY_QUESTIONS">
-              <PropertyRef Name="QUESTION_ID" />
-            </Principal>
-            <Dependent Role="CUSTOMER_SURVEY_OPTIONS">
-              <PropertyRef Name="QUESTION_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="DAILY_ACTIVITY_FOOTER">
           <Key>
             <PropertyRef Name="FOOTER_ID" />
@@ -5791,6 +5764,33 @@
             </Principal>
             <Dependent Role="CUSTOMER_SURVEY_RELATION">
               <PropertyRef Name="FIELDSET_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CUSTOMER_SURVEY_OPTIONS">
+          <Key>
+            <PropertyRef Name="OPTION_ID" />
+          </Key>
+          <Property Type="Decimal" Name="OPTION_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="QUESTION_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="OPTION_NAME" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="SORT_ORDER" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="IS_ACTIVE" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="CUSTOMER_SURVEY_QUESTIONS" Relationship="OracleModel.FK_OPTION_QUES_ID" FromRole="CUSTOMER_SURVEY_OPTIONS" ToRole="CUSTOMER_SURVEY_QUESTIONS" />
+        </EntityType>
+        <Association Name="FK_OPTION_QUES_ID">
+          <End Type="OracleModel.CUSTOMER_SURVEY_QUESTIONS" Role="CUSTOMER_SURVEY_QUESTIONS" Multiplicity="1" />
+          <End Type="OracleModel.CUSTOMER_SURVEY_OPTIONS" Role="CUSTOMER_SURVEY_OPTIONS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CUSTOMER_SURVEY_QUESTIONS">
+              <PropertyRef Name="QUESTION_ID" />
+            </Principal>
+            <Dependent Role="CUSTOMER_SURVEY_OPTIONS">
+              <PropertyRef Name="QUESTION_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7228,21 +7228,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CUSTOMER_SURVEY_OPTIONS">
-            <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_OPTIONS">
-              <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_OPTIONS">
-                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="SORT_ORDER" ColumnName="SORT_ORDER" />
-                <ScalarProperty Name="OPTION_NAME" ColumnName="OPTION_NAME" />
-                <ScalarProperty Name="QUESTION_ID" ColumnName="QUESTION_ID" />
-                <ScalarProperty Name="OPTION_ID" ColumnName="OPTION_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="DAILY_ACTIVITY_FOOTER">
             <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_FOOTER">
               <MappingFragment StoreEntitySet="DAILY_ACTIVITY_FOOTER">
@@ -7726,6 +7711,21 @@
                 <ScalarProperty Name="TITLE" ColumnName="TITLE" />
                 <ScalarProperty Name="FORM_ID" ColumnName="FORM_ID" />
                 <ScalarProperty Name="FIELDSET_ID" ColumnName="FIELDSET_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CUSTOMER_SURVEY_OPTIONS">
+            <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_OPTIONS">
+              <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_OPTIONS">
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="SORT_ORDER" ColumnName="SORT_ORDER" />
+                <ScalarProperty Name="OPTION_NAME" ColumnName="OPTION_NAME" />
+                <ScalarProperty Name="QUESTION_ID" ColumnName="QUESTION_ID" />
+                <ScalarProperty Name="OPTION_ID" ColumnName="OPTION_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
