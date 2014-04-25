@@ -1056,6 +1056,7 @@
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="IS_ACTIVE" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_FORMS">
           <Key>
@@ -1107,6 +1108,7 @@
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="IS_ACTIVE" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_QUES_TYPES">
           <Key>
@@ -3165,21 +3167,12 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_INVENTORY" EntitySet="DAILY_ACTIVITY_INVENTORY" />
           </AssociationSet>
-          <EntitySet Name="CUSTOMER_SURVEY_FIELDSETS" EntityType="OracleModel.CUSTOMER_SURVEY_FIELDSETS" />
           <EntitySet Name="CUSTOMER_SURVEY_FORMS" EntityType="OracleModel.CUSTOMER_SURVEY_FORMS" />
           <EntitySet Name="CUSTOMER_SURVEY_FORMS_ANS" EntityType="OracleModel.CUSTOMER_SURVEY_FORMS_ANS" />
           <EntitySet Name="CUSTOMER_SURVEY_FORMS_COMP" EntityType="OracleModel.CUSTOMER_SURVEY_FORMS_COMP" />
           <EntitySet Name="CUSTOMER_SURVEY_QUES_TYPES" EntityType="OracleModel.CUSTOMER_SURVEY_QUES_TYPES" />
           <EntitySet Name="CUSTOMER_SURVEY_QUESTIONS" EntityType="OracleModel.CUSTOMER_SURVEY_QUESTIONS" />
           <EntitySet Name="CUSTOMER_SURVEY_RELATION" EntityType="OracleModel.CUSTOMER_SURVEY_RELATION" />
-          <AssociationSet Name="FK_FIELDSETS_FORM_ID" Association="OracleModel.FK_FIELDSETS_FORM_ID">
-            <End Role="CUSTOMER_SURVEY_FORMS" EntitySet="CUSTOMER_SURVEY_FORMS" />
-            <End Role="CUSTOMER_SURVEY_FIELDSETS" EntitySet="CUSTOMER_SURVEY_FIELDSETS" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RELATION_FIELDSET_ID" Association="OracleModel.FK_RELATION_FIELDSET_ID">
-            <End Role="CUSTOMER_SURVEY_FIELDSETS" EntitySet="CUSTOMER_SURVEY_FIELDSETS" />
-            <End Role="CUSTOMER_SURVEY_RELATION" EntitySet="CUSTOMER_SURVEY_RELATION" />
-          </AssociationSet>
           <AssociationSet Name="FK_FORMS_COMP_FORM_ID" Association="OracleModel.FK_FORMS_COMP_FORM_ID">
             <End Role="CUSTOMER_SURVEY_FORMS" EntitySet="CUSTOMER_SURVEY_FORMS" />
             <End Role="CUSTOMER_SURVEY_FORMS_COMP" EntitySet="CUSTOMER_SURVEY_FORMS_COMP" />
@@ -3290,6 +3283,15 @@
           <AssociationSet Name="FK_PRODUCTION_HEADER_ID" Association="OracleModel.FK_PRODUCTION_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_PRODUCTION" EntitySet="DAILY_ACTIVITY_PRODUCTION" />
+          </AssociationSet>
+          <EntitySet Name="CUSTOMER_SURVEY_FIELDSETS" EntityType="OracleModel.CUSTOMER_SURVEY_FIELDSETS" />
+          <AssociationSet Name="FK_FIELDSETS_FORM_ID" Association="OracleModel.FK_FIELDSETS_FORM_ID">
+            <End Role="CUSTOMER_SURVEY_FORMS" EntitySet="CUSTOMER_SURVEY_FORMS" />
+            <End Role="CUSTOMER_SURVEY_FIELDSETS" EntitySet="CUSTOMER_SURVEY_FIELDSETS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RELATION_FIELDSET_ID" Association="OracleModel.FK_RELATION_FIELDSET_ID">
+            <End Role="CUSTOMER_SURVEY_FIELDSETS" EntitySet="CUSTOMER_SURVEY_FIELDSETS" />
+            <End Role="CUSTOMER_SURVEY_RELATION" EntitySet="CUSTOMER_SURVEY_RELATION" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="SYS_USERS">
@@ -4883,21 +4885,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="CUSTOMER_SURVEY_FIELDSETS">
-          <Key>
-            <PropertyRef Name="FIELDSET_ID" />
-          </Key>
-          <Property Type="Decimal" Name="FIELDSET_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Decimal" Name="FORM_ID" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="String" Name="TITLE" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="SORT_ORDER" Precision="38" Scale="0" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <NavigationProperty Name="CUSTOMER_SURVEY_FORMS" Relationship="OracleModel.FK_FIELDSETS_FORM_ID" FromRole="CUSTOMER_SURVEY_FIELDSETS" ToRole="CUSTOMER_SURVEY_FORMS" />
-          <NavigationProperty Name="CUSTOMER_SURVEY_RELATION" Relationship="OracleModel.FK_RELATION_FIELDSET_ID" FromRole="CUSTOMER_SURVEY_FIELDSETS" ToRole="CUSTOMER_SURVEY_RELATION" />
-        </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_FORMS">
           <Key>
             <PropertyRef Name="FORM_ID" />
@@ -4909,8 +4896,8 @@
           <Property Type="DateTime" Name="CREATE_DATE" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="MODIFY_DATE" />
-          <NavigationProperty Name="CUSTOMER_SURVEY_FIELDSETS" Relationship="OracleModel.FK_FIELDSETS_FORM_ID" FromRole="CUSTOMER_SURVEY_FORMS" ToRole="CUSTOMER_SURVEY_FIELDSETS" />
           <NavigationProperty Name="CUSTOMER_SURVEY_FORMS_COMP" Relationship="OracleModel.FK_FORMS_COMP_FORM_ID" FromRole="CUSTOMER_SURVEY_FORMS" ToRole="CUSTOMER_SURVEY_FORMS_COMP" />
+          <NavigationProperty Name="CUSTOMER_SURVEY_FIELDSETS" Relationship="OracleModel.FK_FIELDSETS_FORM_ID" FromRole="CUSTOMER_SURVEY_FORMS" ToRole="CUSTOMER_SURVEY_FIELDSETS" />
         </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_FORMS_ANS">
           <Key>
@@ -4984,33 +4971,9 @@
           <Property Type="DateTime" Name="CREATE_DATE" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="MODIFY_DATE" />
-          <NavigationProperty Name="CUSTOMER_SURVEY_FIELDSETS" Relationship="OracleModel.FK_RELATION_FIELDSET_ID" FromRole="CUSTOMER_SURVEY_RELATION" ToRole="CUSTOMER_SURVEY_FIELDSETS" />
           <NavigationProperty Name="CUSTOMER_SURVEY_QUESTIONS" Relationship="OracleModel.FK_RELATION_QUESTION_ID" FromRole="CUSTOMER_SURVEY_RELATION" ToRole="CUSTOMER_SURVEY_QUESTIONS" />
+          <NavigationProperty Name="CUSTOMER_SURVEY_FIELDSETS" Relationship="OracleModel.FK_RELATION_FIELDSET_ID" FromRole="CUSTOMER_SURVEY_RELATION" ToRole="CUSTOMER_SURVEY_FIELDSETS" />
         </EntityType>
-        <Association Name="FK_FIELDSETS_FORM_ID">
-          <End Type="OracleModel.CUSTOMER_SURVEY_FORMS" Role="CUSTOMER_SURVEY_FORMS" Multiplicity="1" />
-          <End Type="OracleModel.CUSTOMER_SURVEY_FIELDSETS" Role="CUSTOMER_SURVEY_FIELDSETS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CUSTOMER_SURVEY_FORMS">
-              <PropertyRef Name="FORM_ID" />
-            </Principal>
-            <Dependent Role="CUSTOMER_SURVEY_FIELDSETS">
-              <PropertyRef Name="FORM_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_RELATION_FIELDSET_ID">
-          <End Type="OracleModel.CUSTOMER_SURVEY_FIELDSETS" Role="CUSTOMER_SURVEY_FIELDSETS" Multiplicity="1" />
-          <End Type="OracleModel.CUSTOMER_SURVEY_RELATION" Role="CUSTOMER_SURVEY_RELATION" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CUSTOMER_SURVEY_FIELDSETS">
-              <PropertyRef Name="FIELDSET_ID" />
-            </Principal>
-            <Dependent Role="CUSTOMER_SURVEY_RELATION">
-              <PropertyRef Name="FIELDSET_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_FORMS_COMP_FORM_ID">
           <End Type="OracleModel.CUSTOMER_SURVEY_FORMS" Role="CUSTOMER_SURVEY_FORMS" Multiplicity="1" />
           <End Type="OracleModel.CUSTOMER_SURVEY_FORMS_COMP" Role="CUSTOMER_SURVEY_FORMS_COMP" Multiplicity="*" />
@@ -5134,6 +5097,7 @@
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <NavigationProperty Name="CUSTOMER_SURVEY_QUESTIONS" Relationship="OracleModel.FK_OPTION_QUES_ID" FromRole="CUSTOMER_SURVEY_OPTIONS" ToRole="CUSTOMER_SURVEY_QUESTIONS" />
+          <Property Type="String" Name="IS_ACTIVE" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
         <Association Name="FK_OPTION_QUES_ID">
           <End Type="OracleModel.CUSTOMER_SURVEY_QUESTIONS" Role="CUSTOMER_SURVEY_QUESTIONS" Multiplicity="1" />
@@ -5787,6 +5751,46 @@
             </Principal>
             <Dependent Role="DAILY_ACTIVITY_PRODUCTION">
               <PropertyRef Name="HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CUSTOMER_SURVEY_FIELDSETS">
+          <Key>
+            <PropertyRef Name="FIELDSET_ID" />
+          </Key>
+          <Property Type="Decimal" Name="FIELDSET_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="FORM_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="TITLE" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="SORT_ORDER" Precision="38" Scale="0" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="IS_ACTIVE" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="CUSTOMER_SURVEY_FORMS" Relationship="OracleModel.FK_FIELDSETS_FORM_ID" FromRole="CUSTOMER_SURVEY_FIELDSETS" ToRole="CUSTOMER_SURVEY_FORMS" />
+          <NavigationProperty Name="CUSTOMER_SURVEY_RELATION" Relationship="OracleModel.FK_RELATION_FIELDSET_ID" FromRole="CUSTOMER_SURVEY_FIELDSETS" ToRole="CUSTOMER_SURVEY_RELATION" />
+        </EntityType>
+        <Association Name="FK_FIELDSETS_FORM_ID">
+          <End Type="OracleModel.CUSTOMER_SURVEY_FORMS" Role="CUSTOMER_SURVEY_FORMS" Multiplicity="1" />
+          <End Type="OracleModel.CUSTOMER_SURVEY_FIELDSETS" Role="CUSTOMER_SURVEY_FIELDSETS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CUSTOMER_SURVEY_FORMS">
+              <PropertyRef Name="FORM_ID" />
+            </Principal>
+            <Dependent Role="CUSTOMER_SURVEY_FIELDSETS">
+              <PropertyRef Name="FORM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RELATION_FIELDSET_ID">
+          <End Type="OracleModel.CUSTOMER_SURVEY_FIELDSETS" Role="CUSTOMER_SURVEY_FIELDSETS" Multiplicity="1" />
+          <End Type="OracleModel.CUSTOMER_SURVEY_RELATION" Role="CUSTOMER_SURVEY_RELATION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CUSTOMER_SURVEY_FIELDSETS">
+              <PropertyRef Name="FIELDSET_ID" />
+            </Principal>
+            <Dependent Role="CUSTOMER_SURVEY_RELATION">
+              <PropertyRef Name="FIELDSET_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7091,20 +7095,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CUSTOMER_SURVEY_FIELDSETS">
-            <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_FIELDSETS">
-              <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_FIELDSETS">
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="SORT_ORDER" ColumnName="SORT_ORDER" />
-                <ScalarProperty Name="TITLE" ColumnName="TITLE" />
-                <ScalarProperty Name="FORM_ID" ColumnName="FORM_ID" />
-                <ScalarProperty Name="FIELDSET_ID" ColumnName="FIELDSET_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CUSTOMER_SURVEY_FORMS">
             <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_FORMS">
               <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_FORMS">
@@ -7241,6 +7231,7 @@
           <EntitySetMapping Name="CUSTOMER_SURVEY_OPTIONS">
             <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_OPTIONS">
               <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_OPTIONS">
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
                 <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
@@ -7720,6 +7711,21 @@
                 <ScalarProperty Name="TIME_IN" ColumnName="TIME_IN" />
                 <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
                 <ScalarProperty Name="PRODUCTION_ID" ColumnName="PRODUCTION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CUSTOMER_SURVEY_FIELDSETS">
+            <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_FIELDSETS">
+              <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_FIELDSETS">
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="SORT_ORDER" ColumnName="SORT_ORDER" />
+                <ScalarProperty Name="TITLE" ColumnName="TITLE" />
+                <ScalarProperty Name="FORM_ID" ColumnName="FORM_ID" />
+                <ScalarProperty Name="FIELDSET_ID" ColumnName="FIELDSET_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

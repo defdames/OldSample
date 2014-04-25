@@ -16,8 +16,8 @@ namespace DBI.Data
     {
         public CUSTOMER_SURVEY_FORMS()
         {
-            this.CUSTOMER_SURVEY_FIELDSETS = new HashSet<CUSTOMER_SURVEY_FIELDSETS>();
             this.CUSTOMER_SURVEY_FORMS_COMP = new HashSet<CUSTOMER_SURVEY_FORMS_COMP>();
+            this.CUSTOMER_SURVEY_FIELDSETS = new HashSet<CUSTOMER_SURVEY_FIELDSETS>();
         }
     
         public decimal FORM_ID { get; set; }
@@ -28,7 +28,7 @@ namespace DBI.Data
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
     
-        public virtual ICollection<CUSTOMER_SURVEY_FIELDSETS> CUSTOMER_SURVEY_FIELDSETS { get; set; }
         public virtual ICollection<CUSTOMER_SURVEY_FORMS_COMP> CUSTOMER_SURVEY_FORMS_COMP { get; set; }
+        public virtual ICollection<CUSTOMER_SURVEY_FIELDSETS> CUSTOMER_SURVEY_FIELDSETS { get; set; }
     }
 }
