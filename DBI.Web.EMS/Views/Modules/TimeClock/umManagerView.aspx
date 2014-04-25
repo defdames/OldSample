@@ -37,6 +37,8 @@
                                 <ext:ModelField Name="TIME_IN" Type="Date" />
                                 <ext:ModelField Name="TIME_OUT" Type="Date"/>
                                 <ext:ModelField Name="TOTAL_HOURS" />
+                                <ext:ModelField Name="ACTUAL_HOURS" />
+                                <ext:ModelField Name="ACTUAL_HOURS_GRID" />
                             </Fields>
                         </ext:Model>
                     </Model>
@@ -49,7 +51,9 @@
                 <Columns>
                     <ext:DateColumn runat="server" Text="Time In" DataIndex="TIME_IN" Flex="1" Format="M/d/yyyy h:mm:ss A"/>
                     <ext:DateColumn runat="server" Text="Time Out" DataIndex="TIME_OUT" Flex="1" Format="M/d/yyyy h:mm:ss A"/>
-                    <ext:Column runat="server" Text="Total Time" Flex="1" DataIndex="TOTAL_HOURS">
+                    <ext:Column ID="Column1" runat="server" Text="Actual Time" Flex="1" DataIndex="ACTUAL_HOURS_GRID"/>
+                    <ext:Column runat="server" Text="Adjusted Time" Flex="1" DataIndex="TOTAL_HOURS">
+                    
                         <Editor>
                                <ext:TextField runat="server"/>
                         </Editor>
