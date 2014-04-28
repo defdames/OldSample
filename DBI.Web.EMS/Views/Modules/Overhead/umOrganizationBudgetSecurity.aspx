@@ -17,7 +17,7 @@
                      <TopBar>
                         <ext:Toolbar ID="Toolbar2" runat="server">
                             <Items>
-                                 <ext:Button ID="Button2" runat="server" Text="Modify Budget Draft" Icon="DatabaseGear">
+                                 <ext:Button ID="Button2" runat="server" Text="Forecast Maintenace" Icon="ApplicationEdit">
                                  </ext:Button>
                             </Items>
                         </ext:Toolbar>
@@ -27,7 +27,7 @@
                             ID="uxBudgetVersionByOrganizationStore"
                             AutoDataBind="true" RemoteSort="true"  AutoLoad="false">
                             <Model>
-                                <ext:Model ID="Model1" runat="server" IDProperty="OVERHEAD_GL_ID">
+                                <ext:Model ID="Model1" runat="server" IDProperty="ORGID">
                                     <Fields>
                                     </Fields>
                                 </ext:Model>
@@ -41,7 +41,7 @@
                    
                     <ColumnModel>
                        <Columns>
-                            <ext:Column ID="Column17" runat="server" DataIndex="SEGMENT1" Text="Organization Name" Flex="1" />
+                            <ext:Column ID="Column17" runat="server" DataIndex="SEGMENT1" Text="Name" Flex="1" />
                         </Columns>
                     </ColumnModel>
                     <Plugins>
@@ -56,11 +56,19 @@
                         </ext:GridView>
                     </View> 
                      <SelectionModel>
-                         <ext:CheckboxSelectionModel runat="server"></ext:CheckboxSelectionModel>
+                         <ext:RowSelectionModel runat="server" Mode="Simple"></ext:RowSelectionModel>
                      </SelectionModel>
                 </ext:GridPanel>
 
-                <ext:GridPanel ID="GridPanel1" runat="server" Flex="1" Title="Budget Version By Organization" Padding="5" Region="South" >
+                <ext:GridPanel ID="GridPanel1" runat="server" Flex="1" Title="Version By Organization" Padding="5" Region="South" >
+                     <TopBar>
+                        <ext:Toolbar ID="Toolbar1" runat="server">
+                            <Items>
+                                 <ext:Button ID="Button1" runat="server" Text="Edit Status" Icon="ApplicationEdit">
+                                 </ext:Button>
+                            </Items>
+                        </ext:Toolbar>
+                    </TopBar>
                     <Store>
                         <ext:Store runat="server"
                             ID="Store1"
