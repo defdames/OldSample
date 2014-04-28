@@ -49,6 +49,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TabPanel uxCrossingTab;
         
         /// <summary>
+        /// uxRRProject control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Panel uxRRProject;
+        
+        /// <summary>
         /// uxCrossingSecurity control.
         /// </summary>
         /// <remarks>

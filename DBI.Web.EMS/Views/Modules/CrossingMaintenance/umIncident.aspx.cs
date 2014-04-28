@@ -144,17 +144,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                             select d).Single();
 
                 }
-            //using (Entities _context = new Entities())
-            //{
-            //    long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
-            //    var data = (from d in _context.CROSSING_INCIDENT
-
-            //                where d.CROSSING_ID == CrossingId
-            //                select new
-            //                {
-            //                    d
-
-            //                }).SingleOrDefault();
+      
                 uxCloseIncidentNum.SetValue(data.INCIDENT_NUMBER);
                 uxCloseDateReported.SetValue(data.DATE_REPORTED);
                 uxCloseSlowOrder.SetValue(data.SLOW_ORDER);

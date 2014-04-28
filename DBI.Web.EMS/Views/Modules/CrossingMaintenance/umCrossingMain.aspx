@@ -17,6 +17,16 @@
                 <Items>
                     <ext:TabPanel ID="uxCrossingTab" runat="server" Region="Center">
                         <Items>
+                             <ext:Panel runat="server"
+                                Title="Railroad & Project"
+                                ID="uxRRProject"
+                                Disabled="false">
+                                <Loader runat="server"
+                                    ID="Loader2" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umRailRoadProject.aspx">
+                                    <LoadMask ShowMask="true" />
+                                </Loader>
+
+                            </ext:Panel>
                             <ext:Panel runat="server"
                                 Title="Crossing Security"
                                 ID="uxCrossingSecurity"
@@ -48,34 +58,9 @@
                                 </Loader>
 
                             </ext:Panel>
+                          
                            
-                          <%--  <ext:Panel runat="server"
-                                Title="Application Entry"
-                                ID="uxDataEntryTab"
-                                Disabled="false">
-                                <Loader runat="server"
-                                    ID="Loader4" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umDataEntryTab.aspx">
-                                    <LoadMask ShowMask="true" />
-                                </Loader>
-                                </ext:Panel>
-                                 <ext:Panel runat="server"
-                                Title="Inspection Entry"
-                                ID="uxInspectionEntryTab"
-                                Disabled="false">
-                                <Loader runat="server"
-                                    ID="Loader2" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umInspectionEntry.aspx">
-                                    <LoadMask ShowMask="true" />
-                                </Loader>
-                            </ext:Panel>
-                             <ext:Panel runat="server"
-                                Title="Supplemental"
-                                ID="uxSupplemental"
-                                Disabled="false">
-                                <Loader runat="server"
-                                    ID="Loader3" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umSupplemental.aspx">
-                                    <LoadMask ShowMask="true" />
-                                </Loader>
-                            </ext:Panel>--%>
+                      
 
                         </Items>
                     </ext:TabPanel>
