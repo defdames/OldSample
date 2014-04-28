@@ -112,15 +112,6 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Model Model1;
         
         /// <summary>
-        /// ColumnModel1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ColumnModel1;
-        
-        /// <summary>
         /// Column1 control.
         /// </summary>
         /// <remarks>
