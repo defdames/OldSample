@@ -20,6 +20,16 @@
 							</DirectEvents>
 						</ext:Button>
 					</Buttons>
+					<Listeners>
+										<AfterRender
+					Handler="var win = parentAutoLoadControl.target || parentAutoLoadControl, //you can use just 'parentAutoLoadControl' after update to Ext.NET v2 beta.
+									size = this.getSize();
+ 
+								size.height += 250;
+								size.width += 12;
+								win.setSize(size);"
+					Delay="100" />
+					</Listeners>
 				</ext:FormPanel>
 	</form>
 </body>

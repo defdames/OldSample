@@ -39,10 +39,12 @@
 <body>
 	<form id="form1" runat="server">
 	<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
+        <ext:Panel runat="server">
+            <Items>
 		<ext:FormPanel runat="server"
 			ID="uxAddEquipmentForm"
 			Layout="FormLayout"
-			Hidden="true">
+			Hidden="false" Width="600">
 			<Items>
 				<ext:DropDownField runat="server" Editable="false"
 					ID="uxAddEquipmentDropDown"
@@ -179,12 +181,13 @@
 			</Buttons>
 			<Listeners>
 				<ValidityChange Handler="#{uxAddEquipmentSubmit}.setDisabled(!valid);" />
+				
 			</Listeners>
 		</ext:FormPanel>
 		<ext:FormPanel runat="server"
 			ID="uxEditEquipmentForm"
 			Layout="FormLayout"
-			Hidden="true">
+			Hidden="true" Width="600">
 			<Items>
 				<ext:DropDownField runat="server" Editable="false"
 					ID="uxEditEquipmentProject"
@@ -322,6 +325,18 @@
 				<ValidityChange Handler="#{uxEditEquipmentSubmit}.setDisabled(!valid);" />
 			</Listeners>
 		</ext:FormPanel>		 
+            </Items>
+            <Listeners>
+                <AfterRender
+					Handler="var win = parentAutoLoadControl.target || parentAutoLoadControl, //you can use just 'parentAutoLoadControl' after update to Ext.NET v2 beta.
+									size = this.getSize();
+ 
+								size.height += 250;
+								size.width += 12;
+								win.setSize(size);"
+					Delay="100" />
+            </Listeners>
+        </ext:Panel>
 	</form>
 </body>
 </html>
