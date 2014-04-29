@@ -64,13 +64,13 @@
                             <ext:DateColumn ID="colTimeIn"
                                 runat="server" 
                                 Text="Time In"
-                                Format="M/d/yyyy h:mm tt" 
+                                Format="MM/dd/yyyy hh:mm tt" 
                                 DataIndex="TIME_IN"
                                 Flex="1"/>
                             <ext:DateColumn ID="colTimeOut" 
                                 runat="server" 
                                 Text="Time Out"
-                                Format="M/d/yyyy h:mm tt" 
+                                Format="MM/dd/yyyy hh:mm tt" 
                                 DataIndex="TIME_OUT" 
                                 Flex="1"/>
                             <ext:Column ID="colTotalHours"
