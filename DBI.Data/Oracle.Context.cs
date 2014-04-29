@@ -95,5 +95,6 @@ namespace DBI.Data
         public DbSet<CUSTOMER_SURVEY_OPTIONS> CUSTOMER_SURVEY_OPTIONS { get; set; }
         public DbSet<CROSSING> CROSSINGS { get; set; }
         public DbSet<OVERHEAD_BUDGET_VERSION> OVERHEAD_BUDGET_VERSION { get; set; }
+        public DbSet<OVERHEAD_BUDGET_TYPE> OVERHEAD_BUDGET_TYPE { get; set; }
     }
 }

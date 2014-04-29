@@ -273,6 +273,9 @@
     <Compile Include="ORG_HIER_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="OVERHEAD_BUDGET_TYPE.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="OVERHEAD_BUDGET_VERSION.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>

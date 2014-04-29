@@ -107,6 +107,7 @@
         <AssociationConnector Association="OracleModel.FK_INCIDENT_CROSSING_ID" />
         <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_VERSION" Width="1.5" PointX="1.875" PointY="38.625" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" Width="1.5" PointX="3.75" PointY="38.625" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
