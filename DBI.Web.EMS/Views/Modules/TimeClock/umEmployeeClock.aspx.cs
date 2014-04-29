@@ -45,7 +45,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
             if (time == null)
             {
-                uxTime_InTextBox.Text = DateTime.Now.ToString();
+                uxTime_InTextBox.Text = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt");
                 uxTimeButton.Text = "Clock In";
                 DateTime dow = Convert.ToDateTime(uxTime_InTextBox.Text);
 
@@ -76,7 +76,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
             else
             {
-                uxTime_OutTextBox.Text = DateTime.Now.ToString();
+                uxTime_OutTextBox.Text = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt");
                 using (Entities _context = new Entities())
                 {
 
@@ -91,6 +91,9 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                 time.COMPLETED = "Y";
                 TimeSpan ts = (DateTime)time.TIME_OUT - (DateTime)time.TIME_IN;
                 time.ACTUAL_HOURS = (decimal)ts.TotalHours;
+                decimal adjts = GetAdjustedHours((TimeSpan)ts);
+                time.ADJUSTED_HOURS = adjts;
+
 
                 GenericData.Update<TIME_CLOCK>(time);
                 uxHoursStore.Reload();
@@ -104,8 +107,8 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
         protected void deGetTimeRecord(object sender, DirectEventArgs e)
         {
             GetTimeRecord();
-
         }
+
 
         protected void GetTimeRecord()
         {       //Check for an get exsisting record so user can clock out
@@ -157,6 +160,20 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
                 uxHoursStore.DataSource = data;
             }
+
+        }
+
+        protected static decimal GetAdjustedHours(TimeSpan adjts)
+        {
+            double adjtime = (adjts.Minutes > 0 && adjts.Minutes <= 8) ? 0
+                         : (adjts.Minutes > 8 && adjts.Minutes <= 23) ? .25
+                         : (adjts.Minutes > 23 && adjts.Minutes <= 38) ? .50
+                         : (adjts.Minutes > 38 && adjts.Minutes <= 53) ? .75
+                         : (adjts.Minutes > 53 && adjts.Minutes <= 60) ? 1
+                         : 0;
+
+            decimal fixedtime = adjts.Hours + (decimal)adjtime;
+            return fixedtime;
 
         }
     }
