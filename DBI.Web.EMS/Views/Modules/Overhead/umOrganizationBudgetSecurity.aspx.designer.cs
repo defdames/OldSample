@@ -40,40 +40,22 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Viewport uxViewPort;
         
         /// <summary>
-        /// uxGlAccountSecurityGrid control.
+        /// uxOrganizationsGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxGlAccountSecurityGrid;
+        protected global::Ext.Net.GridPanel uxOrganizationsGrid;
         
         /// <summary>
-        /// Toolbar2 control.
+        /// uxOrganizationSecurityStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Toolbar Toolbar2;
-        
-        /// <summary>
-        /// Button2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button Button2;
-        
-        /// <summary>
-        /// uxBudgetVersionByOrganizationStore control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Store uxBudgetVersionByOrganizationStore;
+        protected global::Ext.Net.Store uxOrganizationSecurityStore;
         
         /// <summary>
         /// Model1 control.
@@ -85,40 +67,49 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Model Model1;
         
         /// <summary>
-        /// Column17 control.
+        /// Column1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column17;
+        protected global::Ext.Net.Column Column1;
         
         /// <summary>
-        /// uxGlAccountSecurityGridFilter control.
+        /// uxOrganizationsGridFilter control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FilterHeader uxGlAccountSecurityGridFilter;
+        protected global::Ext.Net.FilterHeader uxOrganizationsGridFilter;
         
         /// <summary>
-        /// PagingToolbar1 control.
+        /// uxOrganizationSelectionModel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.PagingToolbar PagingToolbar1;
+        protected global::Ext.Net.RowSelectionModel uxOrganizationSelectionModel;
         
         /// <summary>
-        /// GridView1 control.
+        /// uxOrganizationGridPageBar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridView GridView1;
+        protected global::Ext.Net.PagingToolbar uxOrganizationGridPageBar;
+        
+        /// <summary>
+        /// uxOrganizationsGridView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridView uxOrganizationsGridView;
         
         /// <summary>
         /// GridPanel1 control.
