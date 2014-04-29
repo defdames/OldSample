@@ -27,7 +27,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
         protected void deSetTime(object sender, DirectEventArgs e)
         {
-            //Insert person_id time_in and supervisor_id.  Also set some feilds to default values
+            //Insert person_id time_in and supervisor_id.  Also set some fields to default values
 
 
             SYS_USER_INFORMATION data;
@@ -46,8 +46,6 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
             if (time == null)
             {
                 uxTime_InTextBox.Text = DateTime.Now.ToString();
-                //uxTimeInButton.Disabled = true;
-                //uxTimeOutButton.Enabled = true;
                 uxTimeButton.Text = "Clock In";
                 DateTime dow = Convert.ToDateTime(uxTime_InTextBox.Text);
 
@@ -87,8 +85,12 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                             where tc.PERSON_ID == person_id && tc.COMPLETED == "N"
                             select tc).SingleOrDefault();
                 }
+
+
                 time.TIME_OUT = Convert.ToDateTime(uxTime_OutTextBox.Text);
                 time.COMPLETED = "Y";
+                TimeSpan ts = (DateTime)time.TIME_OUT - (DateTime)time.TIME_IN;
+                time.ACTUAL_HOURS = (decimal)ts.TotalHours;
 
                 GenericData.Update<TIME_CLOCK>(time);
                 uxHoursStore.Reload();
@@ -97,32 +99,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
         }
 
-        //protected void deSetTimeOut(object sender, DirectEventArgs e)
-        //{   //Insert Time_out and set compelted flag to Y
-
-        //    TIME_CLOCK data;
-
-        //    uxTime_OutTextBox.Text = DateTime.Now.ToString();
-        //    uxTimeOutButton.Disabled = true;
-        //    decimal person_id = Convert.ToDecimal(Authentication.GetClaimValue("PersonId", User as ClaimsPrincipal));
-
-
-        //    using (Entities _context = new Entities())
-        //    {
-
-
-        //        data = (from tc in _context.TIME_CLOCK
-        //                where tc.PERSON_ID == person_id && tc.COMPLETED == "N"
-        //                select tc).SingleOrDefault();
-        //    }
-        //    data.TIME_OUT = Convert.ToDateTime(uxTime_OutTextBox.Text);
-        //    data.COMPLETED = "Y";
-
-        //    GenericData.Update<TIME_CLOCK>(data);
-
-
-        //}
-
+      
 
         protected void deGetTimeRecord(object sender, DirectEventArgs e)
         {

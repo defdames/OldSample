@@ -16,15 +16,15 @@
            
                <ext:Panel
                    runat="server"
-                   Width="800"
-                   BodyPadding="5">
+                   BodyPadding="5"
+                   Width="1200">
                     <Items>
-                        <ext:Formpanel runat="server"
+                        <ext:Formpanel runat="server" 
+                            ButtonAlign="Left"
                             Title="Clock"
                             BodyPadding="5"
-                            Width="350"
-                            region="North"
-                            layout="FormLayout">
+                            Region="North"
+                            Layout="FormLayout">
                             <Items>
                                 <ext:TextField Id="uxTime_InTextBox" runat="server" FieldLabel="Time In" readonly="true"/>
                                 <ext:TextField ID="uxTime_OutTextBox" runat="server" FieldLabel="Time Out" readonly="true"/>
@@ -32,7 +32,7 @@
                             </Items>
                         
                          <Buttons>
-                                <ext:Button runat="server" ID="uxTimeButton" Text="Clock In">
+                                <ext:Button runat="server" ID="uxTimeButton" Text="Clock In" >
                                     <DirectEvents>
                                         <Click OnEvent="deSetTime"/>
                                     </DirectEvents>
@@ -42,9 +42,9 @@
                             </ext:Formpanel>
                     
 
-                <ext:GridPanel ID="uxEmployeeHoursList" runat="server" Layout="FitLayout" Region="Center" AutoDataBind="true">
+                <ext:GridPanel ID="uxEmployeeHoursList" runat="server" Layout="FitLayout" Region="Center" AutoDataBind="true" >
                     <Store>
-                        <ext:Store ID="uxHoursStore" runat="server">
+                        <ext:Store ID="uxHoursStore" runat="server" PageSize="25">
                             <Model>
                                 <ext:Model runat="server" ID="Model1">
                                     <Fields>
@@ -54,6 +54,9 @@
                                     </Fields>
                                 </ext:Model>
                             </Model>
+                            <Sorters>
+                                <ext:DataSorter Property="TIME_IN" Direction="DESC"/>
+                            </Sorters>
                         </ext:Store>
                     </Store>
                     <ColumnModel runat="server">
@@ -62,18 +65,24 @@
                                 runat="server" 
                                 Text="Time In"
                                 Format="M/d/yyyy h:mm tt" 
-                                DataIndex="TIME_IN"/>
+                                DataIndex="TIME_IN"
+                                Flex="1"/>
                             <ext:DateColumn ID="colTimeOut" 
                                 runat="server" 
                                 Text="Time Out"
                                 Format="M/d/yyyy h:mm tt" 
-                                DataIndex="TIME_OUT" />
+                                DataIndex="TIME_OUT" 
+                                Flex="1"/>
                             <ext:Column ID="colTotalHours"
                                 runat="server"
-                                Text="Total Hours" 
-                                DataIndex="TOTAL_HOURS"/>
+                                Text="Total Time" 
+                                DataIndex="TOTAL_HOURS"
+                                Flex="1"/>
                         </Columns>
                     </ColumnModel>
+                    <BottomBar>
+                        <ext:PagingToolbar runat="server" DisplayInfo="true" DisplayMsg="Records {0} - {1} of {2}"/>
+                    </BottomBar>
                 </ext:GridPanel>
 
             </Items>
