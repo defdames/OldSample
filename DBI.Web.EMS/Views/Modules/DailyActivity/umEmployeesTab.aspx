@@ -48,6 +48,7 @@
 								<ext:ModelField Name="PER_DIEM" Type="String"  />
 								<ext:ModelField Name="COMMENTS" Type="String"  />
 								<ext:ModelField Name="ROLE_TYPE" Type="String" />
+								<ext:ModelField Name="LUNCH_LENGTH" />
 							</Fields>
 						</ext:Model>
 					</Model>
@@ -55,10 +56,6 @@
 			</Store>
 			<ColumnModel>
 				<Columns>
-					<ext:Column runat="server"
-						Text="Employee ID"
-						DataIndex="EMPLOYEE_ID"
-						Flex="1" />
 					<ext:Column runat="server"
 						Text="Name"
 						DataIndex="EMPLOYEE_NAME"
@@ -113,6 +110,10 @@
 						Text="Role Type"
 						DataIndex="ROLE_TYPE"
 						Flex="1" />
+					<ext:Column runat="server"
+						Text="Lunch Length"
+						DataIndex="LUNCH_LENGTH"
+						Flex="1" />
 				</Columns>
 			</ColumnModel>
 			<TopBar>
@@ -160,6 +161,20 @@
 								</Click>
 							</DirectEvents>
 						</ext:Button>
+						<ext:ToolbarSpacer runat="server" />
+						<ext:Button runat="server"
+							ID="uxChooseLunchHeader"
+							Text="Choose Lunch Header"
+							Icon="Link"
+							Disabled="true">
+							<DirectEvents>
+								<Click OnEvent="deChooseLunchHeader">
+									<ExtraParams>
+										<ext:Parameter Name="EmployeeId" Value="#{uxCurrentEmployeeGrid}.getSelectionModel().getSelection()[0].data.EMPLOYEE_ID" Mode="Raw" />
+									</ExtraParams>
+								</Click>
+							</DirectEvents>
+						</ext:Button>
 					</Items>
 				</ext:Toolbar>
 			</TopBar>
@@ -171,7 +186,7 @@
 			</DirectEvents>
 			<Listeners>
 				<Deselect Handler="#{uxEditEmployee}.disable();
-					#{uxRemoveEmployee}.disable()" />
+					#{uxRemoveEmployee}.disable(); #{uxChooseLunchHeader}.disable()" />
 			</Listeners>
 		</ext:GridPanel>
 		<ext:ToolTip ID="ToolTip1" 

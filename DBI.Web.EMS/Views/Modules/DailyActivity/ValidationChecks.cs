@@ -381,20 +381,21 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                     join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                     join em in _context.EMPLOYEES_V on e.PERSON_ID equals em.PERSON_ID
                                     where e.HEADER_ID == HeaderId
-                                    select new { e.PERSON_ID, em.EMPLOYEE_NAME, e.DAILY_ACTIVITY_HEADER.DA_DATE, e.TRAVEL_TIME, e.DRIVE_TIME, p.ORG_ID }).ToList();
+                                    select new {e.EMPLOYEE_ID, e.PERSON_ID, em.EMPLOYEE_NAME, e.DAILY_ACTIVITY_HEADER.DA_DATE, e.TRAVEL_TIME, e.DRIVE_TIME, p.ORG_ID }).ToList();
                 foreach (var Employee in EmployeeList)
                 {
                     var TotalMinutes = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                         join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
                                         where h.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID && h.STATUS != 5
                                         group d by new { d.PERSON_ID } into g
-                                        select new { g.Key.PERSON_ID, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value)) }).Single();
-                    decimal TotalTime = (decimal)TotalMinutes.TotalMinutes;
-                    if (Employee.ORG_ID == 121) 
+                                        select new { g.Key.PERSON_ID, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value)) }).SingleOrDefault();
+                    
+                    if (Employee.ORG_ID == 121 && TotalMinutes != null) 
                     {
+                        decimal TotalTime = (decimal)TotalMinutes.TotalMinutes;
                         try
                         {
-                            TotalTime = TotalTime - ((decimal)Employee.TRAVEL_TIME * 60) - ((decimal)Employee.DRIVE_TIME * 60);
+                            TotalTime = TotalTime - (decimal)((Employee.TRAVEL_TIME == null ?0:Employee.TRAVEL_TIME * 60) - (Employee.DRIVE_TIME == null ?0:Employee.DRIVE_TIME * 60));
                         }
                         catch { }
                         if (TotalTime >= 308)

@@ -10,6 +10,26 @@
     <form id="form1" runat="server">
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
                 <ext:FormPanel runat="server" ID="uxChooseLunchForm" Layout="FormLayout">
+                    <Items>
+                        <ext:ComboBox runat="server" ID="uxLunchHeader" DisplayField="ProjectTask" 
+                            ValueField="HeaderId" QueryMode="Local" ForceSelection="true" TypeAhead="true" EmptyText="Choose a project/task" FieldLabel="Choose Lunch Project">
+                            <Store>
+                                <ext:Store runat="server" ID="uxLunchHeaderStore" OnReadData="deReadLunchHeaders" AutoDataBind="true">
+                                    <Model>
+                                        <ext:Model runat="server">
+                                            <Fields>
+                                                <ext:ModelField Name="ProjectTask" Type="String" />
+                                                <ext:ModelField Name="HeaderId" Type="Int" />
+                                            </Fields>
+                                        </ext:Model>
+                                    </Model>
+                                    <Proxy>
+                                        <ext:PageProxy />
+                                    </Proxy>
+                                </ext:Store>
+                            </Store>
+                        </ext:ComboBox>
+                    </Items>
                     <Buttons>
                         <ext:Button runat="server" Text="Submit">
                             <DirectEvents>
@@ -18,6 +38,14 @@
                                 </Click>
                             </DirectEvents>
                         </ext:Button>
+                        <ext:Button runat="server" Text="Cancel" Icon="Delete">
+                            <Listeners>
+                                <Click Handler="#{uxChooseLunchForm}.reset();
+                                    parentAutoLoadControl.hide()" />
+                            </Listeners>
+                        </ext:Button>
+
+                            
                     </Buttons>
                 </ext:FormPanel>
     </form>

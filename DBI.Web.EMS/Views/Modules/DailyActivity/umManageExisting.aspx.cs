@@ -190,6 +190,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						}
 					}
 
+					List<WarningData> LunchList = ValidationChecks.LunchCheck(record.HEADER_ID);
+					if (LunchList.Count > 0)
+					{
+						Warning = "Error";
+						WarningType += "An employee is missing a lunch entry.";
+					}
 
 					data.Add(new HeaderData
 					{
@@ -626,7 +632,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 								  join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
 								  from projects in proj.DefaultIfEmpty()
 								  where d.HEADER_ID == HeaderId
-								  select new EmployeeDetails { EMPLOYEE_NAME = e.EMPLOYEE_NAME, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, FOREMAN_LICENSE = d.FOREMAN_LICENSE, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), SHOPTIME_AM = (d.SHOPTIME_AM == null ? 0 : d.SHOPTIME_AM), SHOPTIME_PM = (d.SHOPTIME_PM == null ? 0 : d.SHOPTIME_PM), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS }).ToList();
+								  select new EmployeeDetails { EMPLOYEE_NAME = e.EMPLOYEE_NAME, NAME = projects.NAME, LUNCH = d.LUNCH, LUNCH_LENGTH = d.LUNCH_LENGTH, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, FOREMAN_LICENSE = d.FOREMAN_LICENSE, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), SHOPTIME_AM = (d.SHOPTIME_AM == null ? 0 : d.SHOPTIME_AM), SHOPTIME_PM = (d.SHOPTIME_PM == null ? 0 : d.SHOPTIME_PM), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS }).ToList();
 				foreach (var item in returnData)
 				{
 					double Hours = Math.Truncate((double)item.TRAVEL_TIME);
@@ -1714,6 +1720,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 		{
 			uxPlaceholderWindow.ClearContent();
 			uxPlaceholderWindow.LoadContent(string.Format("umAddEditWeather.aspx?HeaderId={0}&Type={1}&WeatherId={2}", HeaderId, WindowType, WeatherId));
+			uxPlaceholderWindow.Show();
+		}
+
+		[DirectMethod]
+		public void dmLoadLunchWindow(string HeaderId, string EmployeeId)
+		{
+			uxPlaceholderWindow.ClearContent();
+			uxPlaceholderWindow.LoadContent(string.Format("umChooseLunchHeader.aspx?HeaderId={0}&EmployeeId={1}", HeaderId, EmployeeId));
 			uxPlaceholderWindow.Show();
 		}
 	}
