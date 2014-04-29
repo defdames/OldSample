@@ -180,6 +180,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             X.Js.Call(string.Format("parent.App.direct.dmLoadLunchWindow('{0}', '{1}')", HeaderId.ToString(), e.ExtraParams["EmployeeId"]));
         }
+
+        protected void deChoosePerDiem(object sender, DirectEventArgs e)
+        {
+
+        }
     }
 
     public class EmployeeDetails

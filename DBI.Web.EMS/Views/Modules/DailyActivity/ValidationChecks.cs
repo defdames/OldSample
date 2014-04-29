@@ -371,6 +371,34 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        public static List<WarningData> checkPerDiem(long EmployeeId, long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
+                //Get Person Id
+                DAILY_ACTIVITY_EMPLOYEE EmployeeInfo = _context.DAILY_ACTIVITY_EMPLOYEE.Where(x => x.EMPLOYEE_ID == EmployeeId).Single();
+                List<DAILY_ACTIVITY_EMPLOYEE> HeaderList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                                            join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                                            where d.PERSON_ID == EmployeeInfo.PERSON_ID && h.DA_DATE == EmployeeInfo.DAILY_ACTIVITY_HEADER.DA_DATE && d.PER_DIEM == "Y" && h.HEADER_ID != EmployeeInfo.HEADER_ID && h.STATUS != 5
+                                                            select d).ToList();
+                List<WarningData> Warnings = new List<WarningData>();
+                if (HeaderList.Count > 0)
+                {
+                    foreach (DAILY_ACTIVITY_EMPLOYEE Header in HeaderList)
+                    {
+                        string EmployeeName = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == Header.PERSON_ID).Select(x => x.EMPLOYEE_NAME).Single();
+                        Warnings.Add(new WarningData
+                        {
+                            WarningType = "Error",
+                            RecordType = "Per Diem",
+                            AdditionalInformation = string.Format("{0} has an overlapping per diem on DRS# {1}", EmployeeName, Header.HEADER_ID.ToString())
+                        });
+                    }
+                }
+                return Warnings;
+            }
+        }
+
         public static List<WarningData> LunchCheck(long HeaderId)
         {
             using (Entities _context = new Entities())

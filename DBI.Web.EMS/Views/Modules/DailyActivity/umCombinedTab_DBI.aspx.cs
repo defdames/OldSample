@@ -120,6 +120,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     if (EmployeeOver24 != null)
                     {
                         WarningList.Add(EmployeeOver24);
+                        X.Js.Call("parent.App.uxTabPostButton.disable(); parent.App.uxPostActivityButton.disable(); parent.App.uxApproveActivityButton.disable(); parent.App.uxTabApproveButton.disable()");
                     }
                     else
                     {
@@ -127,12 +128,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         if (EmployeeOver14 != null)
                         {
                             WarningList.Add(EmployeeOver14);
+                            
                         }
                     }
                     WarningData LunchFailure = ValidationChecks.LunchCheck(item.PERSON_ID, item.TIME_IN);
                     if (LunchFailure != null)
                     {
                         WarningList.Add(LunchFailure);
+                        X.Js.Call("parent.App.uxTabPostButton.disable(); parent.App.uxPostActivityButton.disable(); parent.App.uxApproveActivityButton.disable(); parent.App.uxTabApproveButton.disable()");
+                    }
+                    List<WarningData> DuplicatePerDiems = ValidationChecks.checkPerDiem(item.EMPLOYEE_ID, item.HEADER_ID);
+                    if (DuplicatePerDiems.Count > 0)
+                    {
+                        WarningList.AddRange(DuplicatePerDiems);
                         X.Js.Call("parent.App.uxTabPostButton.disable(); parent.App.uxPostActivityButton.disable(); parent.App.uxApproveActivityButton.disable(); parent.App.uxTabApproveButton.disable()");
                     }
                     

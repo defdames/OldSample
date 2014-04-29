@@ -139,6 +139,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             WarningList.Add(EmployeeOver14);
                         }
                     }
+                    List<WarningData> DuplicatePerDiems = ValidationChecks.checkPerDiem(item.EMPLOYEE_ID, item.HEADER_ID);
+                    if (DuplicatePerDiems.Count > 0)
+                    {
+                        WarningList.AddRange(DuplicatePerDiems);
+                        X.Js.Call("parent.App.uxTabPostButton.disable(); parent.App.uxPostActivityButton.disable(); parent.App.uxApproveActivityButton.disable(); parent.App.uxTabApproveButton.disable()");
+                    }
                 }
                 uxEmployeeStore.DataSource = data;
                 uxEmployeeStore.DataBind();

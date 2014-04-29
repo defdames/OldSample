@@ -139,6 +139,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Button uxChooseLunchHeader;
         
         /// <summary>
+        /// uxChoosePerDiem control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxChoosePerDiem;
+        
+        /// <summary>
         /// ToolTip1 control.
         /// </summary>
         /// <remarks>

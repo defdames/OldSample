@@ -34,25 +34,25 @@
 							<Fields>
 								<ext:ModelField Name="EMPLOYEE_ID" />
 								<ext:ModelField Name="PERSON_ID" />
-								<ext:ModelField Name="EMPLOYEE_NAME" Type="String"/>
+								<ext:ModelField Name="EMPLOYEE_NAME" Type="String" />
 								<ext:ModelField Name="HEADER_ID" Type="Int" />
 								<ext:ModelField Name="EQUIPMENT_ID" Type="Int" />
-								<ext:ModelField Name="NAME" Type="String"  />
+								<ext:ModelField Name="NAME" Type="String" />
 								<ext:ModelField Name="TIME_IN" Type="Date" />
 								<ext:ModelField Name="TIME_OUT" Type="Date" />
 								<ext:ModelField Name="TRAVEL_TIME_FORMATTED" Type="String" />
-								<ext:ModelField Name="DRIVE_TIME_FORMATTED" Type="String"  />
-								<ext:ModelField Name="SHOPTIME_AM_FORMATTED" Type="String"  />
-								<ext:ModelField Name="SHOPTIME_PM_FORMATTED" Type="String"  />
+								<ext:ModelField Name="DRIVE_TIME_FORMATTED" Type="String" />
+								<ext:ModelField Name="SHOPTIME_AM_FORMATTED" Type="String" />
+								<ext:ModelField Name="SHOPTIME_PM_FORMATTED" Type="String" />
 								<ext:ModelField Name="SUPPORT_PROJECT" />
-								<ext:ModelField Name="PER_DIEM" Type="String"  />
-								<ext:ModelField Name="COMMENTS" Type="String"  />
+								<ext:ModelField Name="PER_DIEM" Type="String" />
+								<ext:ModelField Name="COMMENTS" Type="String" />
 								<ext:ModelField Name="ROLE_TYPE" Type="String" />
 								<ext:ModelField Name="LUNCH_LENGTH" />
 							</Fields>
 						</ext:Model>
 					</Model>
-				</ext:Store>                
+				</ext:Store>
 			</Store>
 			<ColumnModel>
 				<Columns>
@@ -76,7 +76,7 @@
 						Flex="1" />
 					<ext:Column runat="server"
 						Text="Travel Time"
-						Dataindex="TRAVEL_TIME_FORMATTED"
+						DataIndex="TRAVEL_TIME_FORMATTED"
 						Flex="1" />
 					<ext:Column runat="server" ID="uxDriveTimeColumn"
 						Text="Drive Time"
@@ -164,11 +164,24 @@
 						<ext:ToolbarSpacer runat="server" />
 						<ext:Button runat="server"
 							ID="uxChooseLunchHeader"
-							Text="Choose Lunch Header"
+							Text="Choose Lunch Project"
 							Icon="Link"
 							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deChooseLunchHeader">
+									<ExtraParams>
+										<ext:Parameter Name="EmployeeId" Value="#{uxCurrentEmployeeGrid}.getSelectionModel().getSelection()[0].data.EMPLOYEE_ID" Mode="Raw" />
+									</ExtraParams>
+								</Click>
+							</DirectEvents>
+						</ext:Button>
+						<ext:Button runat="server"
+							ID="uxChoosePerDiem"
+							Text="Choose Per Diem"
+							Icon="LinkAdd"
+							Disabled="true">
+							<DirectEvents>
+								<Click OnEvent="deChoosePerDiem">
 									<ExtraParams>
 										<ext:Parameter Name="EmployeeId" Value="#{uxCurrentEmployeeGrid}.getSelectionModel().getSelection()[0].data.EMPLOYEE_ID" Mode="Raw" />
 									</ExtraParams>
@@ -189,13 +202,13 @@
 					#{uxRemoveEmployee}.disable(); #{uxChooseLunchHeader}.disable()" />
 			</Listeners>
 		</ext:GridPanel>
-		<ext:ToolTip ID="ToolTip1" 
-			runat="server" 
+		<ext:ToolTip ID="ToolTip1"
+			runat="server"
 			Target="={#{uxCurrentEmployeeGrid}.getView().el}"
 			Delegate=".x-grid-cell"
 			TrackMouse="true">
 			<Listeners>
-				<Show Handler="onShow(this, #{uxCurrentEmployeeGrid});" /> 
+				<Show Handler="onShow(this, #{uxCurrentEmployeeGrid});" />
 			</Listeners>
 		</ext:ToolTip>
 	</form>
