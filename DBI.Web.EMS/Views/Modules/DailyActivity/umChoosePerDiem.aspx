@@ -13,14 +13,14 @@
 			<Items>
 				<ext:FormPanel runat="server" ID="uxChoosePerDiemFormPanel" Layout="FormLayout">
 					<Items>
-						<ext:ComboBox runat="server" ID="uxChoosePerDiemHeaderId" DisplayField="LONG_NAME" ValueField="HEADER_ID" FieldLabel="Per Diem" EmptyText="Choose Project for Per Diem" ForceSelection="true" LabelWidth="100" Width="500">
+						<ext:ComboBox runat="server" ID="uxChoosePerDiemHeaderId" DisplayField="ProjectTask" ValueField="HeaderId" FieldLabel="Project" EmptyText="Choose Project for Per Diem" ForceSelection="true" LabelWidth="100" Width="500">
 							<Store>
 								<ext:Store runat="server" ID="uxChoosePerDiemHeaderIdStore">
 									<Model>
 										<ext:Model runat="server">
 											<Fields>
-												<ext:ModelField Name="HEADER_ID" />
-												<ext:ModelField Name="LONG_NAME" />
+												<ext:ModelField Name="HeaderId" />
+												<ext:ModelField Name="ProjectTask" />
 											</Fields>
 										</ext:Model>
 									</Model>

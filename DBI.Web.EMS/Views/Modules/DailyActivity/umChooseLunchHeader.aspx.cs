@@ -14,13 +14,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 {
     public partial class umChooseLunchHeader : BasePage
     {
-        private List<long> ComboBoxes = new List<long>();
-
         protected void Page_Load(object sender, EventArgs e)
         {
             long HeaderId = long.Parse(Request.QueryString["HeaderID"]);
-            //GenerateForm(HeaderId);
-
         }
 
         protected void deReadLunchHeaders(object sender, StoreReadDataEventArgs e)

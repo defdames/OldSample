@@ -57,18 +57,21 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEditEmployee.Disabled = true;
                 uxRemoveEmployee.Disabled = true;
                 uxChooseLunchHeader.Disabled = true;
+                uxChoosePerDiem.Disabled = true;
             }
             else if (Status == 3 && !validateComponentSecurity("SYS.DailyActivity.Post"))
             {
                 uxEditEmployee.Disabled = true;
                 uxRemoveEmployee.Disabled = true;
                 uxChooseLunchHeader.Disabled = true;
+                uxChoosePerDiem.Disabled = true;
             }
             else
             {
                 uxEditEmployee.Disabled = false;
                 uxRemoveEmployee.Disabled = false;
                 uxChooseLunchHeader.Disabled = false;
+                uxChoosePerDiem.Disabled = false;
             }
         }
         
@@ -183,7 +186,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void deChoosePerDiem(object sender, DirectEventArgs e)
         {
-
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            X.Js.Call(string.Format("parent.App.direct.dmLoadPerDiemWindow('{0}', '{1}')", HeaderId.ToString(), e.ExtraParams["EmployeeId"]));
         }
     }
 

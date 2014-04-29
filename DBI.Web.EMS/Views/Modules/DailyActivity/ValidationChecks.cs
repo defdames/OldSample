@@ -332,7 +332,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
-        public static EmployeeData checkPerDiem(long HeaderId)
+        public static WarningData checkPerDiem(long HeaderId)
         {
             using (Entities _context = new Entities())
             {
@@ -354,20 +354,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                     if (HeaderList.Count > 1)
                     {
-                        HeaderDetails ThisHeader = HeaderList.Find(h => h.HEADER_ID == HeaderId);
-                        BadHeaders = new EmployeeData
-                        {
-                            HEADER_ID = HeaderId,
-                            EMPLOYEE_NAME = Employee.EMPLOYEE_NAME,
-                            LONG_NAME = ThisHeader.LONG_NAME,
-                            DA_DATE = Employee.DA_DATE,
-                            PERSON_ID = ThisHeader.PERSON_ID
-                        };
-
+                        return new WarningData { WarningType = "Error", RecordType = "Per Diem", AdditionalInformation = "An employee has a duplicate per diem" };
                     }
 
                 }
-                return BadHeaders;
+                return null;
             }
         }
 

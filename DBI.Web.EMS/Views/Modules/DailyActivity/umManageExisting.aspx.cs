@@ -134,7 +134,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 				List<long> OverlapProjects = ValidationChecks.employeeTimeOverlapCheck();
 				List<long> BusinessUnitProjects = ValidationChecks.EquipmentBusinessUnitCheck();
 				List<long> BusinessUnitEmployees = ValidationChecks.EmployeeBusinessUnitCheck();
-
+				
 				foreach (dynamic record in rawData)
 				{
 					string Warning = "Zero";
@@ -197,6 +197,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						WarningType += "An employee is missing a lunch entry.";
 					}
 
+					WarningData PerDiems = ValidationChecks.checkPerDiem(record.HEADER_ID);
+					if (PerDiems != null)
+					{
+						Warning = PerDiems.WarningType;
+						WarningType += PerDiems.AdditionalInformation;
+					}
+
 					data.Add(new HeaderData
 					{
 						HEADER_ID = record.HEADER_ID,
@@ -233,7 +240,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 			long OrgId = GetOrgId(HeaderId);
 			long CoOrgId = GetCoOrgId(HeaderId);
 			List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime(24);
-			EmployeeData DuplicatePerDiems = ValidationChecks.checkPerDiem(HeaderId);
 			bool BadHeader = false;
 
 			if (OrgId == 121)
@@ -378,20 +384,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
 				List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
 
-				if (OrgId != 123)
-				{
-					List<WarningData> RequiredLunches = ValidationChecks.LunchCheck(HeaderId);
-					//if (RequiredLunches.Count > 0)
-					//{
-					//    if (validateComponentSecurity("SYS.DailyActivity.View"))
-					//    {
-					//        uxPlaceholderWindow.ClearContent();
-					//        uxPlaceholderWindow.LoadContent(string.Format("umChooseLunchHeader.aspx?HeaderId={0}", HeaderId));
-					//        uxPlaceholderWindow.Show();
-					//    }
-					//}
-				}
-
 				if (HoursOver24.Count > 0)
 				{
 					if (HoursOver24.Exists(emp => emp.HEADER_ID == HeaderId))
@@ -401,16 +393,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 					}
 
 
-				}
-				if (DuplicatePerDiems != null)
-				{
-
-					if (validateComponentSecurity("SYS.DailyActivity.View"))
-					{
-						uxPlaceholderWindow.ClearContent();
-						uxPlaceholderWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&PersonId={1}", DuplicatePerDiems.HEADER_ID, DuplicatePerDiems.PERSON_ID));
-						uxPlaceholderWindow.Show();
-					}
 				}
 
 				if (OrgId == 123)
@@ -1728,6 +1710,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 		{
 			uxPlaceholderWindow.ClearContent();
 			uxPlaceholderWindow.LoadContent(string.Format("umChooseLunchHeader.aspx?HeaderId={0}&EmployeeId={1}", HeaderId, EmployeeId));
+			uxPlaceholderWindow.Show();
+		}
+
+		[DirectMethod]
+		public void dmLoadPerDiemWindow(string HeaderId, string EmployeeId)
+		{
+			uxPlaceholderWindow.ClearContent();
+			uxPlaceholderWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&EmployeeId={1}", HeaderId, EmployeeId));
 			uxPlaceholderWindow.Show();
 		}
 	}
