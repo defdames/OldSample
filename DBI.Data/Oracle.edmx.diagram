@@ -91,8 +91,8 @@
         <EntityTypeShape EntityType="OracleModel.GL_ACCOUNTS_V" Width="1.5" PointX="16.5" PointY="9.625" />
         <EntityTypeShape EntityType="OracleModel.ORG_HIER_V" Width="1.5" PointX="3.625" PointY="27.25" />
         <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="18.25" PointY="26.375" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING_RAILROAD" Width="1.5" PointX="0.89585163113467936" PointY="27.398434145095962" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING_PROJECT" Width="1.5" PointX="5.9175164820242285" PointY="9.5997673466800553" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_RAILROAD" Width="1.5" PointX="31" PointY="3.5" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_PROJECT" Width="1.5" PointX="31" PointY="0.5" />
         <AssociationConnector Association="OracleModel.FK_PROJECT_RAILROAD_ID" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" Width="1.5" PointX="1.375" PointY="21.5" />
         <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" />
@@ -106,6 +106,7 @@
         <AssociationConnector Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID" />
         <AssociationConnector Association="OracleModel.FK_INCIDENT_CROSSING_ID" />
         <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_VERSION" Width="1.5" PointX="1.875" PointY="38.625" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
