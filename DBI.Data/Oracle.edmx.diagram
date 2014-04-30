@@ -82,8 +82,6 @@
         <AssociationConnector Association="OracleModel.FK_MENU_PERM_ID" />
         <AssociationConnector Association="OracleModel.FK_MODULE_PERM_ID" />
         <AssociationConnector Association="OracleModel.FK_USER_PERMS_PERM_ID" />
-        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="0.5" PointY="15.125" />
-        <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.XXDBI_PAYROLL_AUDIT_V" Width="1.5" PointX="18.375" PointY="4" />
         <EntityTypeShape EntityType="OracleModel.HIERARCHY_ID_V" Width="1.5" PointX="15.875" PointY="17.125" />
         <EntityTypeShape EntityType="OracleModel.SYS_USER_ORGS" Width="1.5" PointX="13.375" PointY="0.5" />
@@ -108,6 +106,8 @@
         <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_VERSION" Width="1.5" PointX="1.875" PointY="38.625" />
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" Width="1.5" PointX="3.75" PointY="38.625" />
+        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="0.875" PointY="15.125" />
+        <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

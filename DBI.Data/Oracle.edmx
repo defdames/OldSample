@@ -1209,6 +1209,8 @@
           <Property Name="SHOPTIME_AM" Type="number" Precision="15" Scale="4" />
           <Property Name="SHOPTIME_PM" Type="number" Precision="15" Scale="4" />
           <Property Name="SUPPORT_PROJ_ID" Type="number" Precision="15" />
+          <Property Name="LUNCH_TASK_ID" Type="number" Precision="15" />
+          <Property Name="PER_DIEM_TASK_ID" Type="number" Precision="15" />
         </EntityType>
         <EntityType Name="DAILY_ACTIVITY_EQUIPMENT">
           <Key>
@@ -3271,11 +3273,6 @@
             <End Role="SYS_PERMISSIONS" EntitySet="SYS_PERMISSIONS" />
             <End Role="SYS_USER_PERMS" EntitySet="SYS_USER_PERMS" />
           </AssociationSet>
-          <EntitySet Name="DAILY_ACTIVITY_EMPLOYEE" EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" />
-          <AssociationSet Name="FK_EMPLOYEE_HEADER_ID" Association="OracleModel.FK_EMPLOYEE_HEADER_ID">
-            <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
-            <End Role="DAILY_ACTIVITY_EMPLOYEE" EntitySet="DAILY_ACTIVITY_EMPLOYEE" />
-          </AssociationSet>
           <EntitySet Name="XXDBI_PAYROLL_AUDIT_V" EntityType="OracleModel.XXDBI_PAYROLL_AUDIT_V" />
           <EntitySet Name="HIERARCHY_ID_V" EntityType="OracleModel.HIERARCHY_ID_V" />
           <EntitySet Name="SYS_USER_ORGS" EntityType="OracleModel.SYS_USER_ORGS" />
@@ -3327,6 +3324,11 @@
           </AssociationSet>
           <EntitySet Name="OVERHEAD_BUDGET_VERSION" EntityType="OracleModel.OVERHEAD_BUDGET_VERSION" />
           <EntitySet Name="OVERHEAD_BUDGET_TYPE" EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" />
+          <EntitySet Name="DAILY_ACTIVITY_EMPLOYEE" EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" />
+          <AssociationSet Name="FK_EMPLOYEE_HEADER_ID" Association="OracleModel.FK_EMPLOYEE_HEADER_ID">
+            <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
+            <End Role="DAILY_ACTIVITY_EMPLOYEE" EntitySet="DAILY_ACTIVITY_EMPLOYEE" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -4262,8 +4264,8 @@
           <NavigationProperty Name="DAILY_ACTIVITY_AUDIT" Relationship="OracleModel.FK_AUDIT_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_AUDIT" />
           <NavigationProperty Name="DAILY_ACTIVITY_INVENTORY" Relationship="OracleModel.FK_INVENTORY_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_INVENTORY" />
           <NavigationProperty Name="DAILY_ACTIVITY_FOOTER" Relationship="OracleModel.FK_FOOTER_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_FOOTER" />
-          <NavigationProperty Name="DAILY_ACTIVITY_EMPLOYEE" Relationship="OracleModel.FK_EMPLOYEE_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_EMPLOYEE" />
           <NavigationProperty Name="DAILY_ACTIVITY_PRODUCTION" Relationship="OracleModel.FK_PRODUCTION_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_PRODUCTION" />
+          <NavigationProperty Name="DAILY_ACTIVITY_EMPLOYEE" Relationship="OracleModel.FK_EMPLOYEE_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_EMPLOYEE" />
         </EntityType>
         <Association Name="FK_CHEMICAL_HEADER_ID">
           <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
@@ -5407,47 +5409,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="DAILY_ACTIVITY_EMPLOYEE">
-          <Key>
-            <PropertyRef Name="EMPLOYEE_ID" />
-          </Key>
-          <Property Type="Int64" Name="EMPLOYEE_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
-          <Property Type="Int32" Name="PERSON_ID" Nullable="false" />
-          <Property Type="Int64" Name="EQUIPMENT_ID" />
-          <Property Type="DateTime" Name="TIME_IN" />
-          <Property Type="DateTime" Name="TIME_OUT" />
-          <Property Type="Decimal" Name="TRAVEL_TIME" Precision="15" Scale="4" />
-          <Property Type="Decimal" Name="DRIVE_TIME" Precision="15" Scale="4" />
-          <Property Type="String" Name="PER_DIEM" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="COMMENTS" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="FOREMAN_LICENSE" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ROLE_TYPE" MaxLength="80" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STATE" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="COUNTY" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="LUNCH" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="Decimal" Name="LUNCH_LENGTH" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="SHOPTIME_AM" Precision="15" Scale="4" />
-          <Property Type="Decimal" Name="SHOPTIME_PM" Precision="15" Scale="4" />
-          <Property Type="Int64" Name="SUPPORT_PROJ_ID" />
-          <NavigationProperty Name="DAILY_ACTIVITY_HEADER" Relationship="OracleModel.FK_EMPLOYEE_HEADER_ID" FromRole="DAILY_ACTIVITY_EMPLOYEE" ToRole="DAILY_ACTIVITY_HEADER" />
-        </EntityType>
-        <Association Name="FK_EMPLOYEE_HEADER_ID">
-          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
-          <End Type="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Role="DAILY_ACTIVITY_EMPLOYEE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DAILY_ACTIVITY_HEADER">
-              <PropertyRef Name="HEADER_ID" />
-            </Principal>
-            <Dependent Role="DAILY_ACTIVITY_EMPLOYEE">
-              <PropertyRef Name="HEADER_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="XXDBI_PAYROLL_AUDIT_V">
           <Key>
             <PropertyRef Name="PAYROLL_AUDIT_ID" />
@@ -5858,6 +5819,49 @@
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="DAILY_ACTIVITY_EMPLOYEE">
+          <Key>
+            <PropertyRef Name="EMPLOYEE_ID" />
+          </Key>
+          <Property Type="Int64" Name="EMPLOYEE_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
+          <Property Type="Int32" Name="PERSON_ID" Nullable="false" />
+          <Property Type="Int64" Name="EQUIPMENT_ID" />
+          <Property Type="DateTime" Name="TIME_IN" />
+          <Property Type="DateTime" Name="TIME_OUT" />
+          <Property Type="Decimal" Name="TRAVEL_TIME" Precision="15" Scale="4" />
+          <Property Type="Decimal" Name="DRIVE_TIME" Precision="15" Scale="4" />
+          <Property Type="String" Name="PER_DIEM" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="COMMENTS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="FOREMAN_LICENSE" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ROLE_TYPE" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STATE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="COUNTY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="LUNCH" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="Decimal" Name="LUNCH_LENGTH" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="SHOPTIME_AM" Precision="15" Scale="4" />
+          <Property Type="Decimal" Name="SHOPTIME_PM" Precision="15" Scale="4" />
+          <Property Type="Int64" Name="SUPPORT_PROJ_ID" />
+          <Property Type="Int64" Name="LUNCH_TASK_ID" />
+          <Property Type="Int64" Name="PER_DIEM_TASK_ID" />
+          <NavigationProperty Name="DAILY_ACTIVITY_HEADER" Relationship="OracleModel.FK_EMPLOYEE_HEADER_ID" FromRole="DAILY_ACTIVITY_EMPLOYEE" ToRole="DAILY_ACTIVITY_HEADER" />
+        </EntityType>
+        <Association Name="FK_EMPLOYEE_HEADER_ID">
+          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
+          <End Type="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Role="DAILY_ACTIVITY_EMPLOYEE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_HEADER">
+              <PropertyRef Name="HEADER_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_EMPLOYEE">
+              <PropertyRef Name="HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7497,35 +7501,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DAILY_ACTIVITY_EMPLOYEE">
-            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_EMPLOYEE">
-              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_EMPLOYEE">
-                <ScalarProperty Name="SUPPORT_PROJ_ID" ColumnName="SUPPORT_PROJ_ID" />
-                <ScalarProperty Name="SHOPTIME_PM" ColumnName="SHOPTIME_PM" />
-                <ScalarProperty Name="SHOPTIME_AM" ColumnName="SHOPTIME_AM" />
-                <ScalarProperty Name="LUNCH_LENGTH" ColumnName="LUNCH_LENGTH" />
-                <ScalarProperty Name="LUNCH" ColumnName="LUNCH" />
-                <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
-                <ScalarProperty Name="STATE" ColumnName="STATE" />
-                <ScalarProperty Name="ROLE_TYPE" ColumnName="ROLE_TYPE" />
-                <ScalarProperty Name="FOREMAN_LICENSE" ColumnName="FOREMAN_LICENSE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
-                <ScalarProperty Name="PER_DIEM" ColumnName="PER_DIEM" />
-                <ScalarProperty Name="DRIVE_TIME" ColumnName="DRIVE_TIME" />
-                <ScalarProperty Name="TRAVEL_TIME" ColumnName="TRAVEL_TIME" />
-                <ScalarProperty Name="TIME_OUT" ColumnName="TIME_OUT" />
-                <ScalarProperty Name="TIME_IN" ColumnName="TIME_IN" />
-                <ScalarProperty Name="EQUIPMENT_ID" ColumnName="EQUIPMENT_ID" />
-                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
-                <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
-                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="XXDBI_PAYROLL_AUDIT_V">
             <EntityTypeMapping TypeName="OracleModel.XXDBI_PAYROLL_AUDIT_V">
               <MappingFragment StoreEntitySet="XXDBI_PAYROLL_AUDIT_V">
@@ -7822,6 +7797,37 @@
                 <ScalarProperty Name="BUDGET_NAME" ColumnName="BUDGET_NAME" />
                 <ScalarProperty Name="PARENT_BUDGET_TYPE_ID" ColumnName="PARENT_BUDGET_TYPE_ID" />
                 <ScalarProperty Name="OVERHEAD_BUDGET_TYPE_ID" ColumnName="OVERHEAD_BUDGET_TYPE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DAILY_ACTIVITY_EMPLOYEE">
+            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_EMPLOYEE">
+              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_EMPLOYEE">
+                <ScalarProperty Name="PER_DIEM_TASK_ID" ColumnName="PER_DIEM_TASK_ID" />
+                <ScalarProperty Name="LUNCH_TASK_ID" ColumnName="LUNCH_TASK_ID" />
+                <ScalarProperty Name="SUPPORT_PROJ_ID" ColumnName="SUPPORT_PROJ_ID" />
+                <ScalarProperty Name="SHOPTIME_PM" ColumnName="SHOPTIME_PM" />
+                <ScalarProperty Name="SHOPTIME_AM" ColumnName="SHOPTIME_AM" />
+                <ScalarProperty Name="LUNCH_LENGTH" ColumnName="LUNCH_LENGTH" />
+                <ScalarProperty Name="LUNCH" ColumnName="LUNCH" />
+                <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+                <ScalarProperty Name="ROLE_TYPE" ColumnName="ROLE_TYPE" />
+                <ScalarProperty Name="FOREMAN_LICENSE" ColumnName="FOREMAN_LICENSE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
+                <ScalarProperty Name="PER_DIEM" ColumnName="PER_DIEM" />
+                <ScalarProperty Name="DRIVE_TIME" ColumnName="DRIVE_TIME" />
+                <ScalarProperty Name="TRAVEL_TIME" ColumnName="TRAVEL_TIME" />
+                <ScalarProperty Name="TIME_OUT" ColumnName="TIME_OUT" />
+                <ScalarProperty Name="TIME_IN" ColumnName="TIME_IN" />
+                <ScalarProperty Name="EQUIPMENT_ID" ColumnName="EQUIPMENT_ID" />
+                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
+                <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
