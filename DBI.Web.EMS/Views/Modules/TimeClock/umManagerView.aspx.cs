@@ -53,16 +53,6 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
                     item.ACTUAL_HOURS = ts.ToString("hh\\:mm");
                    
-                    //Convert actual hours time so it can be displayed in the gripanel
-                    //double achours = Math.Truncate((double)item.ACTUAL_HOURS);
-                    //double acminutes = Math.Round(((double)item.ACTUAL_HOURS - Math.Truncate((double)item.ACTUAL_HOURS)) * 60);
-                    //decimal ActualHoursGrid = decimal.Parse(achours.ToString()) + (decimal.Parse(acminutes.ToString()) / 60);
-                    //decimal AcutalTime = ts.Hours + (decimal)acminutes;
-                    //TimeSpan ActualTime2 = TimeSpan.FromHours(decimal.ToDouble(ActualHoursGrid));
-                    
-
-                    
-                    
                     
                 }
                 uxEmployeeHoursStore.DataSource = data;

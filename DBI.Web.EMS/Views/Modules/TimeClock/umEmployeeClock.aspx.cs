@@ -16,7 +16,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
     public partial class WebForm1 : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
-        {
+        {   //Load loggeed in user info as well check for unfinisehd records and load the users gridpanel with exsisting records and user name
             string person_name = Authentication.GetClaimValue("EmployeeName", User as ClaimsPrincipal);
             GetTimeRecord();
             FillGridPanel();
@@ -36,14 +36,14 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
             decimal person_id = Convert.ToDecimal(Authentication.GetClaimValue("PersonId", User as ClaimsPrincipal));
             using (Entities _context = new Entities())
             {
-
+                //Check if this is a new record
                 time = (from tc in _context.TIME_CLOCK
                         where tc.PERSON_ID == person_id && tc.COMPLETED == "N"
                         select tc).SingleOrDefault();
 
             }
 
-            if (time == null)
+            if (time == null)  //If it is a new record do the following
             {
                 uxTime_InTextBox.Text = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt");
                 uxTimeButton.Text = "Clock In";
@@ -74,7 +74,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
             }
 
 
-            else
+            else  //If it isnt a new record due the following
             {
                 uxTime_OutTextBox.Text = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt");
                 using (Entities _context = new Entities())
@@ -111,7 +111,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
 
         protected void GetTimeRecord()
-        {       //Check for an get exsisting record so user can clock out
+        {       //Check for and get exsisting record so user can clock out
 
 
             decimal person_id = Decimal.Parse(Authentication.GetClaimValue("PersonId", User as ClaimsPrincipal));
@@ -138,8 +138,8 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
 
         }
-        protected void FillGridPanel()
-        {
+        protected void FillGridPanel() 
+        {   //Fill the Users Gridpanel so they can see their exsisting time
             decimal person_id = Convert.ToDecimal(Authentication.GetClaimValue("PersonId", User as ClaimsPrincipal));
             using (Entities _context = new Entities())
             {
@@ -152,7 +152,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                     if (item.TIME_OUT != null)
                     {
                         TimeSpan ts = (DateTime)item.TIME_OUT - item.TIME_IN;
-                        item.TOTAL_HOURS = ts.ToString(@"dd\.hh\:mm");
+                        item.TOTAL_HOURS = ts.ToString("hh\\:mm");
                     }
 
                 }
@@ -164,7 +164,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
         }
 
         protected static decimal GetAdjustedHours(TimeSpan adjts)
-        {
+        {   //Adjust time to nearest quarter of hour and store in table
             double adjtime = (adjts.Minutes > 0 && adjts.Minutes <= 8) ? 0
                          : (adjts.Minutes > 8 && adjts.Minutes <= 23) ? .25
                          : (adjts.Minutes > 23 && adjts.Minutes <= 38) ? .50
