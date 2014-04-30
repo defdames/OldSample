@@ -37,6 +37,8 @@ namespace DBI.Data
         public Nullable<decimal> SHOPTIME_AM { get; set; }
         public Nullable<decimal> SHOPTIME_PM { get; set; }
         public Nullable<long> SUPPORT_PROJ_ID { get; set; }
+        public Nullable<long> LUNCH_TASK_ID { get; set; }
+        public Nullable<long> PER_DIEM_TASK_ID { get; set; }
     
         public virtual DAILY_ACTIVITY_HEADER DAILY_ACTIVITY_HEADER { get; set; }
     }

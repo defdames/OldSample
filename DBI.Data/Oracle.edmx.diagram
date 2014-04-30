@@ -82,22 +82,15 @@
         <AssociationConnector Association="OracleModel.FK_MENU_PERM_ID" />
         <AssociationConnector Association="OracleModel.FK_MODULE_PERM_ID" />
         <AssociationConnector Association="OracleModel.FK_USER_PERMS_PERM_ID" />
-        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="0.5" PointY="15.125" />
-        <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.XXDBI_PAYROLL_AUDIT_V" Width="1.5" PointX="18.375" PointY="4" />
         <EntityTypeShape EntityType="OracleModel.HIERARCHY_ID_V" Width="1.5" PointX="15.875" PointY="17.125" />
         <EntityTypeShape EntityType="OracleModel.SYS_USER_ORGS" Width="1.5" PointX="13.375" PointY="0.5" />
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="1.5" PointX="17.875" PointY="23" />
         <EntityTypeShape EntityType="OracleModel.GL_ACCOUNTS_V" Width="1.5" PointX="16.5" PointY="9.625" />
         <EntityTypeShape EntityType="OracleModel.ORG_HIER_V" Width="1.5" PointX="3.625" PointY="27.25" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING" Width="1.5" PointX="27.5" PointY="0.625" />
-        <AssociationConnector Association="OracleModel.FK_CROSSINGS_CONTACT_ID" />
-        <AssociationConnector Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID" />
-        <AssociationConnector Association="OracleModel.FK_INCIDENT_CROSSING_ID" />
-        <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
         <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="18.25" PointY="26.375" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING_RAILROAD" Width="1.5" PointX="0.89585163113467936" PointY="27.398434145095962" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING_PROJECT" Width="1.5" PointX="5.9175164820242285" PointY="9.5997673466800553" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_RAILROAD" Width="1.5" PointX="31" PointY="3.5" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_PROJECT" Width="1.5" PointX="31" PointY="0.5" />
         <AssociationConnector Association="OracleModel.FK_PROJECT_RAILROAD_ID" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" Width="1.5" PointX="1.375" PointY="21.5" />
         <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" />
@@ -106,6 +99,15 @@
         <AssociationConnector Association="OracleModel.FK_RELATION_FIELDSET_ID" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_OPTIONS" Width="1.5" PointX="39.5" PointY="67.75" />
         <AssociationConnector Association="OracleModel.FK_OPTION_QUES_ID" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING" Width="1.5" PointX="26.375" PointY="0.5" />
+        <AssociationConnector Association="OracleModel.FK_CROSSINGS_CONTACT_ID" />
+        <AssociationConnector Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID" />
+        <AssociationConnector Association="OracleModel.FK_INCIDENT_CROSSING_ID" />
+        <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_VERSION" Width="1.5" PointX="1.875" PointY="38.625" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" Width="1.5" PointX="3.75" PointY="38.625" />
+        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_EMPLOYEE" Width="1.5" PointX="0.875" PointY="15.125" />
+        <AssociationConnector Association="OracleModel.FK_EMPLOYEE_HEADER_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
