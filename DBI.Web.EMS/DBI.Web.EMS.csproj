@@ -170,6 +170,7 @@
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
     <Content Include="Views\Modules\Overhead\umAddGLAccount.aspx" />
+    <Content Include="Views\Modules\Overhead\umBudgetTypes.aspx" />
     <Content Include="Views\Modules\Overhead\umOrganizationBudgetSecurity.aspx" />
     <Content Include="Views\Modules\Overhead\umGLSecurity.aspx" />
     <Content Include="Views\Modules\Overhead\umViewBudgets.aspx" />
@@ -183,6 +184,7 @@
     <Content Include="Views\Modules\Security\umSecurityUsersList.aspx" />
     <Content Include="Views\Modules\TimeClock\umEmployeeClock.aspx" />
     <Content Include="Views\Modules\TimeClock\umManagerView.aspx" />
+    <Content Include="Views\Modules\TimeClock\umPayrollView.aspx" />
     <Content Include="Views\uxDefault.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -588,6 +590,13 @@
     <Compile Include="Views\Modules\Overhead\umAddGLAccount.aspx.designer.cs">
       <DependentUpon>umAddGLAccount.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\Overhead\umBudgetTypes.aspx.cs">
+      <DependentUpon>umBudgetTypes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umBudgetTypes.aspx.designer.cs">
+      <DependentUpon>umBudgetTypes.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\Overhead\umOrganizationBudgetSecurity.aspx.cs">
       <DependentUpon>umOrganizationBudgetSecurity.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -678,6 +687,13 @@
     </Compile>
     <Compile Include="Views\Modules\TimeClock\umManagerView.aspx.designer.cs">
       <DependentUpon>umManagerView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\TimeClock\umPayrollView.aspx.cs">
+      <DependentUpon>umPayrollView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\TimeClock\umPayrollView.aspx.designer.cs">
+      <DependentUpon>umPayrollView.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\uxDefault.aspx.cs">
       <DependentUpon>uxDefault.aspx</DependentUpon>
