@@ -119,6 +119,9 @@
     <Content Include="Resources\Images\wwbnight.png" />
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
+    <Content Include="Views\Modules\BudgetBidding\umBlankBudget.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\umBudgetBiddingMain.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\umYearBudget.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umAppDate.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingHome.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umDataEntryMain.aspx" />
@@ -214,6 +217,27 @@
     </Compile>
     <Compile Include="Views\Handlers\SystemUsers.ashx.cs">
       <DependentUpon>SystemUsers.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umBlankBudget.aspx.cs">
+      <DependentUpon>umBlankBudget.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umBlankBudget.aspx.designer.cs">
+      <DependentUpon>umBlankBudget.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umBudgetBiddingMain.aspx.cs">
+      <DependentUpon>umBudgetBiddingMain.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umBudgetBiddingMain.aspx.designer.cs">
+      <DependentUpon>umBudgetBiddingMain.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umYearBudget.aspx.cs">
+      <DependentUpon>umYearBudget.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umYearBudget.aspx.designer.cs">
+      <DependentUpon>umYearBudget.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umAppDate.aspx.cs">
       <DependentUpon>umAppDate.aspx</DependentUpon>
