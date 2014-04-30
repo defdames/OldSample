@@ -58,6 +58,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxRemoveEmployee.Disabled = true;
                 uxChooseLunchHeader.Disabled = true;
                 uxChoosePerDiem.Disabled = true;
+                uxChooseSupportProject.Disabled = true;
             }
             else if (Status == 3 && !validateComponentSecurity("SYS.DailyActivity.Post"))
             {
@@ -65,6 +66,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxRemoveEmployee.Disabled = true;
                 uxChooseLunchHeader.Disabled = true;
                 uxChoosePerDiem.Disabled = true;
+                uxChooseSupportProject.Disabled = true;
             }
             else
             {
@@ -72,6 +74,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxRemoveEmployee.Disabled = false;
                 uxChooseLunchHeader.Disabled = false;
                 uxChoosePerDiem.Disabled = false;
+                uxChooseSupportProject.Disabled = false;
             }
         }
         
@@ -188,6 +191,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             X.Js.Call(string.Format("parent.App.direct.dmLoadPerDiemWindow('{0}', '{1}')", HeaderId.ToString(), e.ExtraParams["EmployeeId"]));
+        }
+
+        protected void deChooseSupportProject(object sender, DirectEventArgs e)
+        {
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            X.Js.Call(string.Format("parent.App.direct.dmLoadSupportProjectWindow('{0}', '{1}')", HeaderId.ToString(), e.ExtraParams["EmployeeId"]));
         }
     }
 

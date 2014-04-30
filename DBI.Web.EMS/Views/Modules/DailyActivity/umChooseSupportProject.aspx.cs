@@ -17,60 +17,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            long HeaderId = long.Parse(Request.QueryString["HeaderID"]);
-            GenerateForm(HeaderId);
+            
         }
 
-        protected void GenerateForm(long HeaderId)
+        protected void deReadSupportProjects(object sender, StoreReadDataEventArgs e)
         {
             using (Entities _context = new Entities())
             {
-                List<SupportEmployeeData> EmployeesNeedingSupportProject = ValidationChecks.employeesWithUnassignedShopTime(HeaderId);
-                var count = 0;
-
-                foreach (SupportEmployeeData Employee in EmployeesNeedingSupportProject)
-                {
-
-                    ComboBox AddSupportListComboBox = new ComboBox()
-                    {
-                        ID = "Combo" + Employee.EMPLOYEE_ID.ToString(),
-                        FieldLabel = Employee.EMPLOYEE_NAME,
-                        EmptyText = "Select a support project to assign shop time",
-                        TypeAhead = true,
-                        QueryMode = DataLoadMode.Local,
-                        ValueField = "PROJECT_ID",
-                        ForceSelection=true,
-                        DisplayField = "LONG_NAME",
-                        Width=500,
-                        LabelWidth=100
-                    };
-
-                    var ProjectList =( from p in _context.PROJECTS_V
-                                      where p.PROJECT_TYPE == "SUPPORT OVERHEAD" && p.TEMPLATE_FLAG == "N" && p.PROJECT_STATUS_CODE == "APPROVED"
-                                     select new {p.PROJECT_ID, p.LONG_NAME }).ToList();
-
-                    Store ComboStore = new Store()
-                    {
-                        ID = string.Format("Store{0}", Employee.EMPLOYEE_ID.ToString()),
-                        AutoDataBind = true,
-                        DataSource= ProjectList
-                    };
-
-                    Model ComboModel = new Model();
-                    ComboModel.Fields.Add(new ModelField
-                    {
-                        Name = "PROJECT_ID"
-                    });
-                    ComboModel.Fields.Add(new ModelField
-                    {
-                        Name = "LONG_NAME"
-                    });
-                    ComboStore.Model.Add(ComboModel);
-                    AddSupportListComboBox.Store.Add(ComboStore);
-
-                    uxChooseSupportProject.Items.Add(AddSupportListComboBox);
-                    ComboBoxes.Add(Employee.EMPLOYEE_ID);
-                }
+                var ProjectList = (from p in _context.PROJECTS_V
+                                   where p.PROJECT_TYPE == "SUPPORT OVERHEAD" && p.TEMPLATE_FLAG == "N" && p.PROJECT_STATUS_CODE == "APPROVED"
+                                   select new { p.PROJECT_ID, p.LONG_NAME }).ToList();
+                uxSupportProjectStore.DataSource = ProjectList;
             }
         }
 

@@ -28,6 +28,27 @@
 									</Proxy>
 								</ext:Store>
 							</Store>
+							<Listeners>
+								<Select Handler="#{uxLunchTaskStore}.reload()" />
+							</Listeners>
+						</ext:ComboBox>
+						<ext:ComboBox runat="server" ID="uxLunchTask" DisplayField="DESCRIPTION" ValueField="TASK_ID"
+							TypeAhead="true" QueryMode="Local" ForceSelection="true" EmptyText="Choose a task" FieldLabel="Task" AutoLoad="false">
+							<Store>
+								<ext:Store runat="server" ID="uxLunchTaskStore" OnReadData="deReadLunchTasks" AutoDataBind="true">
+									<Model>
+										<ext:Model runat="server">
+											<Fields>
+												<ext:ModelField Name="DESCRIPTION" />
+												<ext:ModelField Name="TASK_ID" />
+											</Fields>
+										</ext:Model>
+									</Model>
+									<Parameters>
+										<ext:StoreParameter Name="HeaderId" Value="#{uxLunchHeader}.value" Mode="Raw" />
+									</Parameters>
+								</ext:Store>
+							</Store>
 						</ext:ComboBox>
 					</Items>
 					<Buttons>
@@ -44,18 +65,15 @@
 									parentAutoLoadControl.hide()" />
 							</Listeners>
 						</ext:Button>
-
-							
 					</Buttons>
 					<Listeners>
-										<AfterRender
-					Handler="var win = parentAutoLoadControl.target || parentAutoLoadControl, //you can use just 'parentAutoLoadControl' after update to Ext.NET v2 beta.
-									size = this.getSize();
- 
-								size.height += 250;
-								size.width += 12;
-								win.setSize(size);"
-					Delay="100" />
+						<AfterRender
+							Handler="var win = parentAutoLoadControl.target || parentAutoLoadControl, //you can use just 'parentAutoLoadControl' after update to Ext.NET v2 beta.
+							size = this.getSize();
+							size.height += 250;
+							size.width += 12;
+							win.setSize(size);"
+						Delay="100" />
 					</Listeners>
 				</ext:FormPanel>
 	</form>

@@ -38,31 +38,25 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 foreach (DAILY_ACTIVITY_HEADER Header in HeaderComboStore)
                 {
                     PROJECTS_V ProjectName = _context.PROJECTS_V.Where(x => x.PROJECT_ID == Header.PROJECT_ID).Single();
-                    if (ProjectName.ORG_ID == 121 || ProjectName.ORG_ID == 123)
+                    ComboList.Add(new LunchInfo
                     {
-                        if (Header.DAILY_ACTIVITY_PRODUCTION.Count > 0)
-                        {
-                            foreach (DAILY_ACTIVITY_PRODUCTION ProductionEntry in Header.DAILY_ACTIVITY_PRODUCTION)
-                            {
-                                PA_TASKS_V TaskInfo = _context.PA_TASKS_V.Where(x => x.TASK_ID == ProductionEntry.TASK_ID && x.PROJECT_ID == Header.PROJECT_ID).Single();
-                                ComboList.Add(new LunchInfo
-                                {
-                                    HeaderId = Header.HEADER_ID,
-                                    ProjectTask = string.Format("{0} (Task: {1} - {2})", ProjectName.LONG_NAME, TaskInfo.TASK_NUMBER, TaskInfo.DESCRIPTION)
-                                });
-                            }
-                        }
-                        else
-                        {
-                            ComboList.Add(new LunchInfo
-                            {
-                                HeaderId = Header.HEADER_ID,
-                                ProjectTask = string.Format("{0} (Task: 9999 - Production)", ProjectName.LONG_NAME)
-                            });
-                        }
-                    }
+                        HeaderId = Header.HEADER_ID,
+                        ProjectTask = string.Format("{0} (DRS: {1})", ProjectName.LONG_NAME, HeaderId.ToString())
+                        });
                 }
                 uxChoosePerDiemHeaderIdStore.DataSource = ComboList;
+            }
+        }
+
+        protected void deReadTasks(object sender, StoreReadDataEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                long HeaderId = long.Parse(e.Parameters["HeaderId"]);
+                long ProjectId = _context.DAILY_ACTIVITY_HEADER.Where(x => x.HEADER_ID == HeaderId).Select(x => (long)x.PROJECT_ID).Single();
+
+                List<PA_TASKS_V> TaskList = _context.PA_TASKS_V.Where(x => x.PROJECT_ID == ProjectId).ToList();
+                uxChoosePerDiemTaskStore.DataSource = TaskList;
             }
         }
 

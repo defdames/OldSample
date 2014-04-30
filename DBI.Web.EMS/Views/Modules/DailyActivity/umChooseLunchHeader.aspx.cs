@@ -38,28 +38,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     string ProjectName = (from p in _context.PROJECTS_V
                                           where p.PROJECT_ID == Header.PROJECT_ID
                                           select p.LONG_NAME).Single();
-                    if (Header.DAILY_ACTIVITY_PRODUCTION.Count != 0)
+                    LunchList.Add(new LunchInfo
                     {
-                        foreach (DAILY_ACTIVITY_PRODUCTION ProductionEntry in Header.DAILY_ACTIVITY_PRODUCTION)
-                        {
-                            string TaskName = (from t in _context.PA_TASKS_V
-                                               where t.PROJECT_ID == Header.PROJECT_ID && t.TASK_ID == ProductionEntry.TASK_ID
-                                               select t.DESCRIPTION).Single();
-                            LunchList.Add(new LunchInfo
-                            {
-                                HeaderId = Header.HEADER_ID,
-                                ProjectTask = string.Format("{0} (Task:{1}-{2})", ProjectName, ProductionEntry.TASK_ID, TaskName)
-                            });
-                        }
-                    }
-                    else
-                    {
-                        LunchList.Add(new LunchInfo
-                        {
-                            HeaderId = Header.HEADER_ID,
-                            ProjectTask = string.Format("{0} (Task: 9999 - Production", ProjectName)
-                        });
-                    }
+                        HeaderId = Header.HEADER_ID,
+                        ProjectTask = string.Format("{0} (DRS Id: {1})", ProjectName, Header.HEADER_ID.ToString())
+                    });
+                
                 }
                 
                 uxLunchHeaderStore.DataSource = LunchList;
@@ -67,65 +51,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
-        //protected void GenerateForm(long HeaderId)
-        //{
-        //    using (Entities _context = new Entities())
-        //    {
-        //        List<EmployeeData> EmployeesNeedingLunch = ValidationChecks.LunchCheck(HeaderId);
-        //        var count = 1;
-        //        foreach (EmployeeData Employee in EmployeesNeedingLunch)
-        //        {
-        //            Hidden LunchLength = new Hidden
-        //            {
-        //                ID = "Length" + Employee.PERSON_ID.ToString(),
-        //                Value = Employee.LUNCH_LENGTH
-        //            };
-        //            uxChooseLunchForm.Items.Add(LunchLength);
+        protected void deReadLunchTasks(object sender, StoreReadDataEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                long HeaderId = long.Parse(e.Parameters["HeaderId"]);
+                long ProjectId = _context.DAILY_ACTIVITY_HEADER.Where(x => x.HEADER_ID == HeaderId).Select(x => (long)x.PROJECT_ID).Single();
 
-        //            ComboBox AddLunchComboBox = new ComboBox()
-        //            {
-        //                ID = "Combo" + Employee.PERSON_ID.ToString(),
-        //                FieldLabel = Employee.EMPLOYEE_NAME,
-        //                EmptyText = "Select a Project to assign lunch to",
-        //                TypeAhead = true,
-        //                QueryMode = DataLoadMode.Local,
-        //                ValueField = "PROJECT_ID",
-        //                ForceSelection=true,
-        //                DisplayField = "LONG_NAME",
-        //                LabelWidth=100,
-        //                Width=500
-        //            };
-
-        //            var ProjectList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-        //                               join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-        //                               join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
-        //                               where d.PERSON_ID == Employee.PERSON_ID && h.DA_DATE == Employee.DA_DATE && h.STATUS != 5
-        //                               select new { p.PROJECT_ID, p.LONG_NAME }).ToList();
-
-        //            Store ComboStore = new Store()
-        //            {
-        //                ID = string.Format("Store{0}", Employee.PERSON_ID.ToString()),
-        //                AutoDataBind = true,
-        //                DataSource= ProjectList
-        //            };
-
-        //            Model ComboModel = new Model();
-        //            ComboModel.Fields.Add(new ModelField
-        //            {
-        //                Name = "PROJECT_ID"
-        //            });
-        //            ComboModel.Fields.Add(new ModelField
-        //            {
-        //                Name = "LONG_NAME"
-        //            });
-        //            ComboStore.Model.Add(ComboModel);
-        //            AddLunchComboBox.Store.Add(ComboStore);
-
-        //            uxChooseLunchForm.Items.Add(AddLunchComboBox);
-        //            ComboBoxes.Add(Employee.PERSON_ID);
-        //        }
-        //    }
-        //}
+                List<PA_TASKS_V> TaskList = _context.PA_TASKS_V.Where(x => x.PROJECT_ID == ProjectId).ToList();
+                uxLunchTaskStore.DataSource = TaskList;
+            }
+        }
 
         protected void deStoreLunchChoice(object sender, DirectEventArgs e)
         {

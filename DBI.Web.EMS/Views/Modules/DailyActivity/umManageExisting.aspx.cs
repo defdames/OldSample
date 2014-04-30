@@ -80,7 +80,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 								   join empv in _context.EMPLOYEES_V on empl.PERSON_ID equals empv.PERSON_ID into emplv
 								   from withempl in emplv.DefaultIfEmpty()
 								   where OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains(proj.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains((long)withempl.ORGANIZATION_ID)
-								   select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS }).Distinct().ToList<object>();
+								   select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS, p.ORG_ID }).Distinct().ToList<object>();
 					}
 					else
 					{
@@ -96,7 +96,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 								   join empv in _context.EMPLOYEES_V on empl.PERSON_ID equals empv.PERSON_ID into emplv
 								   from withempl in emplv.DefaultIfEmpty()
 								   where d.STATUS != 4 && (OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains(proj.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains((long)withempl.ORGANIZATION_ID))
-								   select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS }).Distinct().ToList<object>();
+								   select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS, p.ORG_ID }).Distinct().ToList<object>();
 					}
 				}
 				else
@@ -185,16 +185,26 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						if (OffendingProject == record.HEADER_ID)
 						{
 							Warning = "Error";
-							WarningType += "An employee has overlapping time with another project.";
+							WarningType += "An employee has overlapping time with another project.<br />";
 							break;
 						}
 					}
-
-					List<WarningData> LunchList = ValidationChecks.LunchCheck(record.HEADER_ID);
-					if (LunchList.Count > 0)
+					if (record.ORG_ID == 121)
 					{
-						Warning = "Error";
-						WarningType += "An employee is missing a lunch entry.";
+						List<WarningData> LunchList = ValidationChecks.LunchCheck(record.HEADER_ID);
+						if (LunchList.Count > 0)
+						{
+							Warning = "Error";
+							WarningType += "An employee is missing a lunch entry.<br />";
+						}
+					}
+					if (record.ORG_ID == 123)
+					{
+						if (ValidationChecks.employeeWithShopTimeCheck(record.HEADER_ID))
+						{
+							Warning = "Error";
+							WarningType += "An employee is missing shop time.";
+						}
 					}
 
 					WarningData PerDiems = ValidationChecks.checkPerDiem(record.HEADER_ID);
@@ -393,16 +403,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 					}
 
 
-				}
-
-				if (OrgId == 123)
-				{
-					if (ValidationChecks.employeeWithShopTimeCheck(HeaderId))
-					{
-						uxPlaceholderWindow.ClearContent();
-						uxPlaceholderWindow.LoadContent(string.Format("umChooseSupportProject.aspx?HeaderId={0}", HeaderId));
-						uxPlaceholderWindow.Show();
-					}
 				}
 
 				if (EmployeeOverLap.Count > 0)
@@ -1718,6 +1718,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 		{
 			uxPlaceholderWindow.ClearContent();
 			uxPlaceholderWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&EmployeeId={1}", HeaderId, EmployeeId));
+			uxPlaceholderWindow.Show();
+		}
+
+		[DirectMethod]
+		public void dmLoadSupportProjectWindow(string HeaderId, string EmployeeId)
+		{
+			uxPlaceholderWindow.ClearContent();
+			uxPlaceholderWindow.LoadContent(string.Format("umChooseSupportProject.aspx?HeaderId={0}&EmployeeId={1}", HeaderId, EmployeeId));
 			uxPlaceholderWindow.Show();
 		}
 	}

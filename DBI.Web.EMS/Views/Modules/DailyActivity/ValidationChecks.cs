@@ -138,7 +138,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             return DAILY_ACTIVITY_EMPLOYEE.employeesWithShopTimeByDailyActivityID(headerID);
         }
 
-        public static List<SupportEmployeeData> employeesWithUnassignedShopTime(long headerID)
+        public static List<WarningData> employeesWithUnassignedShopTime(long headerID)
         {
             using (Entities _context = new Entities())
             {
@@ -146,8 +146,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                                        join p in _context.EMPLOYEES_V on e.PERSON_ID equals p.PERSON_ID
                                                        where e.HEADER_ID == headerID && (e.SHOPTIME_AM.HasValue || e.SHOPTIME_PM.HasValue) && (!e.SUPPORT_PROJ_ID.HasValue)
                                                        select new SupportEmployeeData { EMPLOYEE_ID = e.EMPLOYEE_ID, EMPLOYEE_NAME = p.EMPLOYEE_NAME }).ToList();
+                List<WarningData> Warnings = new List<WarningData>();
 
-                return employees;
+                foreach (SupportEmployeeData employee in employees)
+                {
+                    Warnings.Add(new WarningData
+                    {
+                        WarningType = "Error",
+                        RecordType = "Support Project Check",
+                        AdditionalInformation = string.Format("{0} is missing a Support Project entry", employee.EMPLOYEE_NAME)
+                    });
+                }
+                return Warnings;
             }
         }
 

@@ -175,6 +175,7 @@
 								</Click>
 							</DirectEvents>
 						</ext:Button>
+						<ext:ToolbarSpacer ID="ToolbarSpacer3" runat="server" />
 						<ext:Button runat="server"
 							ID="uxChoosePerDiem"
 							Text="Choose Per Diem"
@@ -182,6 +183,20 @@
 							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deChoosePerDiem">
+									<ExtraParams>
+										<ext:Parameter Name="EmployeeId" Value="#{uxCurrentEmployeeGrid}.getSelectionModel().getSelection()[0].data.EMPLOYEE_ID" Mode="Raw" />
+									</ExtraParams>
+								</Click>
+							</DirectEvents>
+						</ext:Button>
+						<ext:ToolbarSpacer ID="ToolbarSpacer4" runat="server" />
+						<ext:Button runat="server"
+							ID="uxChooseSupportProject"
+							Text="Choose Support Project"
+							Icon="LinkGo"
+							Disabled="true">
+							<DirectEvents>
+								<Click OnEvent="deChooseSupportProject">
 									<ExtraParams>
 										<ext:Parameter Name="EmployeeId" Value="#{uxCurrentEmployeeGrid}.getSelectionModel().getSelection()[0].data.EMPLOYEE_ID" Mode="Raw" />
 									</ExtraParams>

@@ -120,6 +120,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     {
                         WarningList.AddRange(Overlaps);
                     }
+
+                    List<WarningData> SupportProjects = ValidationChecks.employeesWithUnassignedShopTime(item.HEADER_ID);
+                    if (SupportProjects.Count > 0)
+                    {
+                        WarningList.AddRange(SupportProjects);
+                    }
                     WarningData EmployeeBusinessUnitFailures = ValidationChecks.EmployeeBusinessUnitCheck(item.EMPLOYEE_ID);
                     if (EmployeeBusinessUnitFailures != null)
                     {
