@@ -25,7 +25,7 @@
                     Region="West"
                     Scroll="Vertical" Collapsible="false">
                     <Store>
-                        <ext:TreeStore ID="TreeStore1" runat="server" OnReadData="LoadLegalEntitiesTreePanel">
+                        <ext:TreeStore ID="uxLegalEntityGridStore" runat="server" OnReadData="LoadLegalEntitiesTreePanel">
                             <Proxy>
                                 <ext:PageProxy></ext:PageProxy>
                             </Proxy>
@@ -39,16 +39,17 @@
                     </SelectionModel>
                 </ext:TreePanel>
      
-                <ext:GridPanel ID="uxBudgetTypeGridPanel" runat="server" Flex="1" SimpleSelect="true" Title="Budget Types by Legal Entity" Padding="5" Region="Center">
+                <ext:GridPanel ID="uxBudgetTypeGridPanel" runat="server" Flex="1" SimpleSelect="true" Title="Budget Types" Padding="5" Region="Center">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxBudgetTypeStore"
-                            AutoDataBind="true" RemoteSort="true" PageSize="10" OnReadData="deReadBudgetTypesByLegalEntity" AutoLoad="false">
+                            AutoDataBind="true" RemoteSort="true" PageSize="10" OnReadData="deReadBudgetTypesByOrganization" AutoLoad="false">
                             <Model>
                                         <ext:Model ID="Model2" runat="server" IDProperty="OVERHEAD_BUDGET_TYPE_ID">
                                             <Fields>
                                                 <ext:ModelField Name="OVERHEAD_BUDGET_TYPE_ID"  />
                                                 <ext:ModelField Name="PARENT_BUDGET_TYPE_ID"  />
+                                                <ext:ModelField Name="PARENT_BUDGET_DESCRIPTION"  />
                                                 <ext:ModelField Name="BUDGET_NAME" />
                                                 <ext:ModelField Name="BUDGET_DESCRIPTION" />
                                                 <ext:ModelField Name="LE_ORG_ID" />
@@ -62,8 +63,9 @@
                             </Store>
                             <ColumnModel>
                                 <Columns>
-                                    <ext:Column ID="Column2" runat="server" DataIndex="BUDGET_NAME" Text="Budget Name" Flex="1" />
+                                    <ext:Column ID="Column2" runat="server" DataIndex="BUDGET_NAME" Text="Budget Type" Flex="1" />
                                     <ext:Column ID="Column1" runat="server" DataIndex="BUDGET_DESCRIPTION" Text="Description" Flex="1" />
+                                    <ext:Column ID="Column3" runat="server" DataIndex="PARENT_BUDGET_DESCRIPTION" Text="Parent" Flex="1" />
                                 </Columns>
                             </ColumnModel>
                             <Plugins>
