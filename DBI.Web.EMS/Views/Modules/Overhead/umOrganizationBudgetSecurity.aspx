@@ -14,6 +14,8 @@
         <ext:Viewport runat="server" ID="uxViewPort" Layout="BorderLayout" IDMode="Explicit" Namespace="App" RenderXType="True"> 
             <Items>
                <ext:GridPanel ID="uxOrganizationsGrid" runat="server" Flex="1" SimpleSelect="true" Title="Budget Organizations" Padding="5" Region="Center">
+                   <TopBar>
+                   </TopBar>
                     <Store>
                         <ext:Store runat="server"
                             ID="uxOrganizationSecurityStore"
