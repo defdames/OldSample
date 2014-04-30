@@ -83,7 +83,7 @@
 							<ext:Column runat="server" DataIndex="AdditionalInformation" Text=" Additional Information" Flex="50" />
 						</Columns>
 					</ColumnModel>
-					
+
 				</ext:GridPanel>
 				<ext:GridPanel runat="server"
 					ID="uxEmployeeGrid"
@@ -104,6 +104,7 @@
 										<ext:ModelField Name="DRIVE_TIME_FORMATTED" />
 										<ext:ModelField Name="PER_DIEM" />
 										<ext:ModelField Name="COMMENTS" />
+										<ext:ModelField Name="LUNCH_LENGTH" />
 									</Fields>
 								</ext:Model>
 							</Model>
@@ -111,14 +112,15 @@
 					</Store>
 					<ColumnModel>
 						<Columns>
-							<ext:Column ID="Column9" runat="server" DataIndex="EMPLOYEE_NAME" Text="Employee Name" Flex="8" />
-							<ext:Column ID="Column10" runat="server" DataIndex="NAME" Text="Equipment Name" Flex="9" />
-							<ext:DateColumn ID="DateColumn2" runat="server" DataIndex="TIME_IN" Text="Time In" Flex="6" Format="M/d/yyyy h:mm tt" />
-							<ext:DateColumn ID="DateColumn3" runat="server" DataIndex="TIME_OUT" Text="Time Out" Flex="6" Format="M/d/yyyy h:mm tt" />
-							<ext:Column ID="Column11" runat="server" DataIndex="TRAVEL_TIME_FORMATTED" Text="Travel Time" Flex="6" />
-							<ext:Column ID="Column12" runat="server" DataIndex="DRIVE_TIME_FORMATTED" Text="Drive Time" Flex="6" />
-							<ext:Column ID="Column13" runat="server" DataIndex="PER_DIEM" Text="Per Diem" Flex="5" />
-							<ext:Column ID="Column14" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="9" />
+							<ext:Column ID="Column9" runat="server" DataIndex="EMPLOYEE_NAME" Text="Employee Name" Flex="10" />
+							<ext:Column ID="Column10" runat="server" DataIndex="NAME" Text="Equipment Name" Flex="10" />
+							<ext:DateColumn ID="DateColumn2" runat="server" DataIndex="TIME_IN" Text="Time In" Flex="15" Format="M/d/yyyy h:mm tt" />
+							<ext:DateColumn ID="DateColumn3" runat="server" DataIndex="TIME_OUT" Text="Time Out" Flex="15" Format="M/d/yyyy h:mm tt" />
+							<ext:Column ID="Column11" runat="server" DataIndex="TRAVEL_TIME_FORMATTED" Text="Travel Time" Flex="10" />
+							<ext:Column ID="Column12" runat="server" DataIndex="DRIVE_TIME_FORMATTED" Text="Drive Time" Flex="10" />
+							<ext:Column ID="Column13" runat="server" DataIndex="PER_DIEM" Text="Per Diem" Flex="10" />
+							<ext:Column ID="Column1" runat="server" DataIndex="LUNCH_LENGTH" Text="Lunch Length" Flex="10" />
+							<ext:Column ID="Column14" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="10" />
 						</Columns>
 					</ColumnModel>
 				</ext:GridPanel>
@@ -334,82 +336,82 @@
 						</ext:FieldContainer>
 					</Items>
 				</ext:FormPanel>
-				<ext:ToolTip ID="ToolTip1" 
-						runat="server" 
-						Target="={#{uxWarningGrid}.getView().el}"
-						Delegate=".x-grid-cell"
-						TrackMouse="true"
-						UI="Warning"
-						Width="400">
-						<Listeners>
-							<Show Handler="onShow(this, #{uxWarningGrid});" /> 
-						</Listeners>
+				<ext:ToolTip ID="ToolTip1"
+					runat="server"
+					Target="={#{uxWarningGrid}.getView().el}"
+					Delegate=".x-grid-cell"
+					TrackMouse="true"
+					UI="Warning"
+					Width="400">
+					<Listeners>
+						<Show Handler="onShow(this, #{uxWarningGrid});" />
+					</Listeners>
 				</ext:ToolTip>
-				<ext:ToolTip ID="ToolTip2" 
-						runat="server" 
-						Target="={#{uxEmployeeGrid}.getView().el}"
-						Delegate=".x-grid-cell"
-						TrackMouse="true"
-						UI="Warning"
-						Width="400">
-						<Listeners>
-							<Show Handler="onShow(this, #{uxEmployeeGrid});" /> 
-						</Listeners>
+				<ext:ToolTip ID="ToolTip2"
+					runat="server"
+					Target="={#{uxEmployeeGrid}.getView().el}"
+					Delegate=".x-grid-cell"
+					TrackMouse="true"
+					UI="Warning"
+					Width="400">
+					<Listeners>
+						<Show Handler="onShow(this, #{uxEmployeeGrid});" />
+					</Listeners>
 				</ext:ToolTip>
-				<ext:ToolTip ID="ToolTip3" 
-						runat="server" 
-						Target="={#{uxEquipmentGrid}.getView().el}"
-						Delegate=".x-grid-cell"
-						TrackMouse="true"
-						UI="Warning"
-						Width="400">
-						<Listeners>
-							<Show Handler="onShow(this, #{uxEquipmentGrid});" /> 
-						</Listeners>
+				<ext:ToolTip ID="ToolTip3"
+					runat="server"
+					Target="={#{uxEquipmentGrid}.getView().el}"
+					Delegate=".x-grid-cell"
+					TrackMouse="true"
+					UI="Warning"
+					Width="400">
+					<Listeners>
+						<Show Handler="onShow(this, #{uxEquipmentGrid});" />
+					</Listeners>
 				</ext:ToolTip>
-				<ext:ToolTip ID="ToolTip4" 
-						runat="server" 
-						Target="={#{uxInventoryGrid}.getView().el}"
-						Delegate=".x-grid-cell"
-						TrackMouse="true"
-						UI="Warning"
-						Width="400">
-						<Listeners>
-							<Show Handler="onShow(this, #{uxInventoryGrid});" /> 
-						</Listeners>
+				<ext:ToolTip ID="ToolTip4"
+					runat="server"
+					Target="={#{uxInventoryGrid}.getView().el}"
+					Delegate=".x-grid-cell"
+					TrackMouse="true"
+					UI="Warning"
+					Width="400">
+					<Listeners>
+						<Show Handler="onShow(this, #{uxInventoryGrid});" />
+					</Listeners>
 				</ext:ToolTip>
-				<ext:ToolTip ID="ToolTip5" 
-						runat="server" 
-						Target="={#{uxWeatherGrid}.getView().el}"
-						Delegate=".x-grid-cell"
-						TrackMouse="true"
-						UI="Warning"
-						Width="400">
-						<Listeners>
-							<Show Handler="onShow(this, #{uxWeatherGrid});" /> 
-						</Listeners>
+				<ext:ToolTip ID="ToolTip5"
+					runat="server"
+					Target="={#{uxWeatherGrid}.getView().el}"
+					Delegate=".x-grid-cell"
+					TrackMouse="true"
+					UI="Warning"
+					Width="400">
+					<Listeners>
+						<Show Handler="onShow(this, #{uxWeatherGrid});" />
+					</Listeners>
 				</ext:ToolTip>
-				<ext:ToolTip ID="ToolTip6" 
-						runat="server" 
-						Target="={#{uxProductionGrid}.getView().el}"
-						Delegate=".x-grid-cell"
-						TrackMouse="true"
-						UI="Warning"
-						Width="400">
-						<Listeners>
-							<Show Handler="onShow(this, #{uxProductionGrid});" /> 
-						</Listeners>
+				<ext:ToolTip ID="ToolTip6"
+					runat="server"
+					Target="={#{uxProductionGrid}.getView().el}"
+					Delegate=".x-grid-cell"
+					TrackMouse="true"
+					UI="Warning"
+					Width="400">
+					<Listeners>
+						<Show Handler="onShow(this, #{uxProductionGrid});" />
+					</Listeners>
 				</ext:ToolTip>
-				<ext:ToolTip ID="ToolTip7" 
-						runat="server" 
-						Target="={#{uxChemicalGrid}.getView().el}"
-						Delegate=".x-grid-cell"
-						TrackMouse="true"
-						UI="Warning"
-						Width="400">
-						<Listeners>
-							<Show Handler="onShow(this, #{uxChemicalGrid});" /> 
-						</Listeners>
+				<ext:ToolTip ID="ToolTip7"
+					runat="server"
+					Target="={#{uxChemicalGrid}.getView().el}"
+					Delegate=".x-grid-cell"
+					TrackMouse="true"
+					UI="Warning"
+					Width="400">
+					<Listeners>
+						<Show Handler="onShow(this, #{uxChemicalGrid});" />
+					</Listeners>
 				</ext:ToolTip>
 			</Items>
 		</ext:Panel>

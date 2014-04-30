@@ -24,6 +24,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 else
                 {
+                    uxAddEquipmentForm.Hide();
                     uxEditEquipmentForm.Show();
                     LoadEditEquipmentForm();
                 }

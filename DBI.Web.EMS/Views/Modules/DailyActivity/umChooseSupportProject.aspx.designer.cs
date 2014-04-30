@@ -40,6 +40,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.FormPanel uxChooseSupportProject;
         
         /// <summary>
+        /// uxSupportProject control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ComboBox uxSupportProject;
+        
+        /// <summary>
+        /// uxSupportProjectStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxSupportProjectStore;
+        
+        /// <summary>
         /// Button1 control.
         /// </summary>
         /// <remarks>

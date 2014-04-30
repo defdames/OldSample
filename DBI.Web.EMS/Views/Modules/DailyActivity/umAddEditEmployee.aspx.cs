@@ -21,7 +21,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
                 if (Request.QueryString["type"] == "Add")
                 {
-                    uxAddEmployeeForm.Show();
                     if (roleNeeded())
                     {
                         uxAddEmployeeRole.Show();
@@ -46,6 +45,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 else
                 {
+                    uxAddEmployeeForm.Hide();
                     uxEditEmployeeForm.Show();
                     if (roleNeeded())
                     {

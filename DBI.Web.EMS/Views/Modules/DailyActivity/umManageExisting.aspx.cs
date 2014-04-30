@@ -80,7 +80,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 								   join empv in _context.EMPLOYEES_V on empl.PERSON_ID equals empv.PERSON_ID into emplv
 								   from withempl in emplv.DefaultIfEmpty()
 								   where OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains(proj.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains((long)withempl.ORGANIZATION_ID)
-								   select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS }).Distinct().ToList<object>();
+								   select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS, p.ORG_ID }).Distinct().ToList<object>();
 					}
 					else
 					{
@@ -96,7 +96,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 								   join empv in _context.EMPLOYEES_V on empl.PERSON_ID equals empv.PERSON_ID into emplv
 								   from withempl in emplv.DefaultIfEmpty()
 								   where d.STATUS != 4 && (OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains(proj.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains((long)withempl.ORGANIZATION_ID))
-								   select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS }).Distinct().ToList<object>();
+								   select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS, p.ORG_ID }).Distinct().ToList<object>();
 					}
 				}
 				else
@@ -134,7 +134,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 				List<long> OverlapProjects = ValidationChecks.employeeTimeOverlapCheck();
 				List<long> BusinessUnitProjects = ValidationChecks.EquipmentBusinessUnitCheck();
 				List<long> BusinessUnitEmployees = ValidationChecks.EmployeeBusinessUnitCheck();
-
+				
 				foreach (dynamic record in rawData)
 				{
 					string Warning = "Zero";
@@ -185,11 +185,34 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						if (OffendingProject == record.HEADER_ID)
 						{
 							Warning = "Error";
-							WarningType += "An employee has overlapping time with another project.";
+							WarningType += "An employee has overlapping time with another project.<br />";
 							break;
 						}
 					}
+					if (record.ORG_ID == 121)
+					{
+						List<WarningData> LunchList = ValidationChecks.LunchCheck(record.HEADER_ID);
+						if (LunchList.Count > 0)
+						{
+							Warning = "Error";
+							WarningType += "An employee is missing a lunch entry.<br />";
+						}
+					}
+					if (record.ORG_ID == 123)
+					{
+						if (ValidationChecks.employeeWithShopTimeCheck(record.HEADER_ID))
+						{
+							Warning = "Error";
+							WarningType += "An employee is missing shop time.";
+						}
+					}
 
+					WarningData PerDiems = ValidationChecks.checkPerDiem(record.HEADER_ID);
+					if (PerDiems != null)
+					{
+						Warning = PerDiems.WarningType;
+						WarningType += PerDiems.AdditionalInformation;
+					}
 
 					data.Add(new HeaderData
 					{
@@ -227,7 +250,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 			long OrgId = GetOrgId(HeaderId);
 			long CoOrgId = GetCoOrgId(HeaderId);
 			List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime(24);
-			EmployeeData DuplicatePerDiems = ValidationChecks.checkPerDiem(HeaderId);
 			bool BadHeader = false;
 
 			if (OrgId == 121)
@@ -372,20 +394,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
 				List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
 
-				if (OrgId != 123)
-				{
-					List<EmployeeData> RequiredLunches = ValidationChecks.LunchCheck(HeaderId);
-					if (RequiredLunches.Count > 0)
-					{
-						if (validateComponentSecurity("SYS.DailyActivity.View"))
-						{
-							uxPlaceholderWindow.ClearContent();
-							uxPlaceholderWindow.LoadContent(string.Format("umChooseLunchHeader.aspx?HeaderId={0}", HeaderId));
-							uxPlaceholderWindow.Show();
-						}
-					}
-				}
-
 				if (HoursOver24.Count > 0)
 				{
 					if (HoursOver24.Exists(emp => emp.HEADER_ID == HeaderId))
@@ -395,26 +403,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 					}
 
 
-				}
-				if (DuplicatePerDiems != null)
-				{
-
-					if (validateComponentSecurity("SYS.DailyActivity.View"))
-					{
-						uxPlaceholderWindow.ClearContent();
-						uxPlaceholderWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&PersonId={1}", DuplicatePerDiems.HEADER_ID, DuplicatePerDiems.PERSON_ID));
-						uxPlaceholderWindow.Show();
-					}
-				}
-
-				if (OrgId == 123)
-				{
-					if (ValidationChecks.employeeWithShopTimeCheck(HeaderId))
-					{
-						uxPlaceholderWindow.ClearContent();
-						uxPlaceholderWindow.LoadContent(string.Format("umChooseSupportProject.aspx?HeaderId={0}", HeaderId));
-						uxPlaceholderWindow.Show();
-					}
 				}
 
 				if (EmployeeOverLap.Count > 0)
@@ -626,7 +614,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 								  join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
 								  from projects in proj.DefaultIfEmpty()
 								  where d.HEADER_ID == HeaderId
-								  select new EmployeeDetails { EMPLOYEE_NAME = e.EMPLOYEE_NAME, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, FOREMAN_LICENSE = d.FOREMAN_LICENSE, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), SHOPTIME_AM = (d.SHOPTIME_AM == null ? 0 : d.SHOPTIME_AM), SHOPTIME_PM = (d.SHOPTIME_PM == null ? 0 : d.SHOPTIME_PM), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS }).ToList();
+								  select new EmployeeDetails { EMPLOYEE_NAME = e.EMPLOYEE_NAME, NAME = projects.NAME, LUNCH = d.LUNCH, LUNCH_LENGTH = d.LUNCH_LENGTH, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, FOREMAN_LICENSE = d.FOREMAN_LICENSE, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), SHOPTIME_AM = (d.SHOPTIME_AM == null ? 0 : d.SHOPTIME_AM), SHOPTIME_PM = (d.SHOPTIME_PM == null ? 0 : d.SHOPTIME_PM), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS }).ToList();
 				foreach (var item in returnData)
 				{
 					double Hours = Math.Truncate((double)item.TRAVEL_TIME);
@@ -1714,6 +1702,30 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 		{
 			uxPlaceholderWindow.ClearContent();
 			uxPlaceholderWindow.LoadContent(string.Format("umAddEditWeather.aspx?HeaderId={0}&Type={1}&WeatherId={2}", HeaderId, WindowType, WeatherId));
+			uxPlaceholderWindow.Show();
+		}
+
+		[DirectMethod]
+		public void dmLoadLunchWindow(string HeaderId, string EmployeeId)
+		{
+			uxPlaceholderWindow.ClearContent();
+			uxPlaceholderWindow.LoadContent(string.Format("umChooseLunchHeader.aspx?HeaderId={0}&EmployeeId={1}", HeaderId, EmployeeId));
+			uxPlaceholderWindow.Show();
+		}
+
+		[DirectMethod]
+		public void dmLoadPerDiemWindow(string HeaderId, string EmployeeId)
+		{
+			uxPlaceholderWindow.ClearContent();
+			uxPlaceholderWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&EmployeeId={1}", HeaderId, EmployeeId));
+			uxPlaceholderWindow.Show();
+		}
+
+		[DirectMethod]
+		public void dmLoadSupportProjectWindow(string HeaderId, string EmployeeId)
+		{
+			uxPlaceholderWindow.ClearContent();
+			uxPlaceholderWindow.LoadContent(string.Format("umChooseSupportProject.aspx?HeaderId={0}&EmployeeId={1}", HeaderId, EmployeeId));
 			uxPlaceholderWindow.Show();
 		}
 	}

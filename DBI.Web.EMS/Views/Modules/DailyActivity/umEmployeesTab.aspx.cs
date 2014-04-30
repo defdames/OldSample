@@ -56,18 +56,28 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 uxEditEmployee.Disabled = true;
                 uxRemoveEmployee.Disabled = true;
+                uxChooseLunchHeader.Disabled = true;
+                uxChoosePerDiem.Disabled = true;
+                uxChooseSupportProject.Disabled = true;
             }
             else if (Status == 3 && !validateComponentSecurity("SYS.DailyActivity.Post"))
             {
                 uxEditEmployee.Disabled = true;
                 uxRemoveEmployee.Disabled = true;
+                uxChooseLunchHeader.Disabled = true;
+                uxChoosePerDiem.Disabled = true;
+                uxChooseSupportProject.Disabled = true;
             }
             else
             {
                 uxEditEmployee.Disabled = false;
                 uxRemoveEmployee.Disabled = false;
+                uxChooseLunchHeader.Disabled = false;
+                uxChoosePerDiem.Disabled = false;
+                uxChooseSupportProject.Disabled = false;
             }
         }
+        
         protected int GetStatus(long HeaderId)
         {
             using (Entities _context = new Entities())
@@ -110,7 +120,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
                             from projects in proj.DefaultIfEmpty()
                             where d.HEADER_ID == HeaderId
-                            select new EmployeeDetails{EMPLOYEE_ID = d.EMPLOYEE_ID, SUPPORT_PROJECT = f.NAME, HEADER_ID = d.HEADER_ID, PERSON_ID =  d.PERSON_ID, EMPLOYEE_NAME = e.EMPLOYEE_NAME, EQUIPMENT_ID = d.EQUIPMENT_ID, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null? 0 : d.TRAVEL_TIME), SHOPTIME_AM = (d.SHOPTIME_AM == null ? 0 : d.SHOPTIME_AM), SHOPTIME_PM = (d.SHOPTIME_PM == null ? 0 : d.SHOPTIME_PM), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS, ROLE_TYPE = d.ROLE_TYPE }).ToList();
+                            select new EmployeeDetails { EMPLOYEE_ID = d.EMPLOYEE_ID, SUPPORT_PROJECT = f.NAME, HEADER_ID = d.HEADER_ID, LUNCH = d.LUNCH, LUNCH_LENGTH = d.LUNCH_LENGTH, PERSON_ID = d.PERSON_ID, EMPLOYEE_NAME = e.EMPLOYEE_NAME, EQUIPMENT_ID = d.EQUIPMENT_ID, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), SHOPTIME_AM = (d.SHOPTIME_AM == null ? 0 : d.SHOPTIME_AM), SHOPTIME_PM = (d.SHOPTIME_PM == null ? 0 : d.SHOPTIME_PM), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS, ROLE_TYPE = d.ROLE_TYPE }).ToList();
                 foreach (var item in data)
                 {
                     
@@ -170,6 +180,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 X.Js.Call(string.Format("parent.App.direct.dmLoadEmployeeWindow('{0}', '{1}', '{2}')", "Edit", HeaderId.ToString(), e.ExtraParams["EmployeeId"]));
             }
         }
+
+        protected void deChooseLunchHeader(object sender, DirectEventArgs e)
+        {
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            X.Js.Call(string.Format("parent.App.direct.dmLoadLunchWindow('{0}', '{1}')", HeaderId.ToString(), e.ExtraParams["EmployeeId"]));
+        }
+
+        protected void deChoosePerDiem(object sender, DirectEventArgs e)
+        {
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            X.Js.Call(string.Format("parent.App.direct.dmLoadPerDiemWindow('{0}', '{1}')", HeaderId.ToString(), e.ExtraParams["EmployeeId"]));
+        }
+
+        protected void deChooseSupportProject(object sender, DirectEventArgs e)
+        {
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            X.Js.Call(string.Format("parent.App.direct.dmLoadSupportProjectWindow('{0}', '{1}')", HeaderId.ToString(), e.ExtraParams["EmployeeId"]));
+        }
     }
 
     public class EmployeeDetails
@@ -195,6 +223,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public string COMMENTS { get; set; }
         public string ROLE_TYPE { get; set; }
         public string FOREMAN_LICENSE { get; set; }
+        public string LUNCH { get; set; }
+        public decimal? LUNCH_LENGTH { get; set; }
 
     }
 }

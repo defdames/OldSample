@@ -138,7 +138,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             return DAILY_ACTIVITY_EMPLOYEE.employeesWithShopTimeByDailyActivityID(headerID);
         }
 
-        public static List<SupportEmployeeData> employeesWithUnassignedShopTime(long headerID)
+        public static List<WarningData> employeesWithUnassignedShopTime(long headerID)
         {
             using (Entities _context = new Entities())
             {
@@ -146,8 +146,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                                        join p in _context.EMPLOYEES_V on e.PERSON_ID equals p.PERSON_ID
                                                        where e.HEADER_ID == headerID && (e.SHOPTIME_AM.HasValue || e.SHOPTIME_PM.HasValue) && (!e.SUPPORT_PROJ_ID.HasValue)
                                                        select new SupportEmployeeData { EMPLOYEE_ID = e.EMPLOYEE_ID, EMPLOYEE_NAME = p.EMPLOYEE_NAME }).ToList();
+                List<WarningData> Warnings = new List<WarningData>();
 
-                return employees;
+                foreach (SupportEmployeeData employee in employees)
+                {
+                    Warnings.Add(new WarningData
+                    {
+                        WarningType = "Error",
+                        RecordType = "Support Project Check",
+                        AdditionalInformation = string.Format("{0} is missing a Support Project entry", employee.EMPLOYEE_NAME)
+                    });
+                }
+                return Warnings;
             }
         }
 
@@ -332,7 +342,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
-        public static EmployeeData checkPerDiem(long HeaderId)
+        public static WarningData checkPerDiem(long HeaderId)
         {
             using (Entities _context = new Entities())
             {
@@ -354,90 +364,259 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                     if (HeaderList.Count > 1)
                     {
-                        HeaderDetails ThisHeader = HeaderList.Find(h => h.HEADER_ID == HeaderId);
-                        BadHeaders = new EmployeeData
-                        {
-                            HEADER_ID = HeaderId,
-                            EMPLOYEE_NAME = Employee.EMPLOYEE_NAME,
-                            LONG_NAME = ThisHeader.LONG_NAME,
-                            DA_DATE = Employee.DA_DATE,
-                            PERSON_ID = ThisHeader.PERSON_ID
-                        };
-
+                        return new WarningData { WarningType = "Error", RecordType = "Per Diem", AdditionalInformation = "An employee has a duplicate per diem" };
                     }
 
                 }
-                return BadHeaders;
+                return null;
             }
         }
 
-        public static List<EmployeeData> LunchCheck(long HeaderId)
+        public static List<WarningData> checkPerDiem(long EmployeeId, long HeaderId)
         {
             using (Entities _context = new Entities())
             {
-                List<EmployeeData> EmployeeList = new List<EmployeeData>();
-                var HeaderEmployees = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                                       join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                                       join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
-                                       join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
-                                       where d.HEADER_ID == HeaderId && h.STATUS != 5
-                                       select new { d.PERSON_ID, e.EMPLOYEE_NAME, d.DAILY_ACTIVITY_HEADER.DA_DATE, d.TRAVEL_TIME, d.DRIVE_TIME, p.ORG_ID }).ToList();
-                foreach (var Employee in HeaderEmployees)
+                //Get Person Id
+                DAILY_ACTIVITY_EMPLOYEE EmployeeInfo = _context.DAILY_ACTIVITY_EMPLOYEE.Where(x => x.EMPLOYEE_ID == EmployeeId).Single();
+                List<DAILY_ACTIVITY_EMPLOYEE> HeaderList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                                            join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                                            where d.PERSON_ID == EmployeeInfo.PERSON_ID && h.DA_DATE == EmployeeInfo.DAILY_ACTIVITY_HEADER.DA_DATE && d.PER_DIEM == "Y" && h.HEADER_ID != EmployeeInfo.HEADER_ID && h.STATUS != 5
+                                                            select d).ToList();
+                List<WarningData> Warnings = new List<WarningData>();
+                if (HeaderList.Count > 0)
+                {
+                    foreach (DAILY_ACTIVITY_EMPLOYEE Header in HeaderList)
+                    {
+                        string EmployeeName = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == Header.PERSON_ID).Select(x => x.EMPLOYEE_NAME).Single();
+                        Warnings.Add(new WarningData
+                        {
+                            WarningType = "Error",
+                            RecordType = "Per Diem",
+                            AdditionalInformation = string.Format("{0} has an overlapping per diem on DRS# {1}", EmployeeName, Header.HEADER_ID.ToString())
+                        });
+                    }
+                }
+                return Warnings;
+            }
+        }
+
+        public static List<WarningData> LunchCheck(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
+                List<WarningData> WarningList = new List<WarningData>();
+                var EmployeeList = (from e in _context.DAILY_ACTIVITY_EMPLOYEE
+                                    join h in _context.DAILY_ACTIVITY_HEADER on e.HEADER_ID equals h.HEADER_ID
+                                    join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
+                                    join em in _context.EMPLOYEES_V on e.PERSON_ID equals em.PERSON_ID
+                                    where e.HEADER_ID == HeaderId
+                                    select new {e.EMPLOYEE_ID, e.PERSON_ID, em.EMPLOYEE_NAME, e.DAILY_ACTIVITY_HEADER.DA_DATE, e.TRAVEL_TIME, e.DRIVE_TIME, p.ORG_ID }).ToList();
+                foreach (var Employee in EmployeeList)
                 {
                     var TotalMinutes = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                         join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                                        where d.DAILY_ACTIVITY_HEADER.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID && h.STATUS != 5
+                                        where h.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID && h.STATUS != 5
                                         group d by new { d.PERSON_ID } into g
-                                        select new { g.Key.PERSON_ID, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value)) }).Single();
-                    decimal totalTime = (decimal)TotalMinutes.TotalMinutes;
-                    if (Employee.ORG_ID == 121)
+                                        select new { g.Key.PERSON_ID, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value)) }).SingleOrDefault();
+                    
+                    if (Employee.ORG_ID == 121 && TotalMinutes != null) 
                     {
+                        decimal TotalTime = (decimal)TotalMinutes.TotalMinutes;
                         try
                         {
-                            totalTime = totalTime - ((decimal)Employee.TRAVEL_TIME * 60) - ((decimal)Employee.DRIVE_TIME * 60);
+                            TotalTime = TotalTime - (decimal)((Employee.TRAVEL_TIME == null ?0:Employee.TRAVEL_TIME * 60) - (Employee.DRIVE_TIME == null ?0:Employee.DRIVE_TIME * 60));
                         }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        if (totalTime >= 308 && totalTime < 728)
+                        catch { }
+                        if (TotalTime >= 308)
                         {
                             var LoggedLunches = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                                                 where d.DAILY_ACTIVITY_HEADER.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID && d.LUNCH == "Y"
+                                                 join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                                 where h.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID && d.LUNCH == "Y"
                                                  select d.LUNCH).Count();
                             if (LoggedLunches == 0)
                             {
-                                EmployeeList.Add(new EmployeeData
+                                WarningList.Add(new WarningData
                                 {
-                                    PERSON_ID = Employee.PERSON_ID,
-                                    EMPLOYEE_NAME = Employee.EMPLOYEE_NAME,
-                                    LUNCH_LENGTH = 30,
-                                    DA_DATE = Employee.DA_DATE
+                                    WarningType = "Error",
+                                    RecordType = "Lunch Check",
+                                    AdditionalInformation = string.Format("{0} has no lunch entered on {1}", Employee.EMPLOYEE_NAME, Employee.DA_DATE)
                                 });
                             }
-                        }
-                        else if (totalTime >= 728)
-                        {
-                            var LoggedLunches = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                                                 where d.DAILY_ACTIVITY_HEADER.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID && d.LUNCH == "Y" && d.LUNCH_LENGTH == 60
-                                                 select d.LUNCH).Count();
-                            if (LoggedLunches == 0)
+                            else
                             {
-                                EmployeeList.Add(new EmployeeData
+                                var LunchLength = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                                   join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                                   where h.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID && d.LUNCH == "Y"
+                                                   select d.LUNCH_LENGTH).Single();
+                                if (TotalTime >= 308 && TotalTime < 728)
                                 {
-                                    PERSON_ID = Employee.PERSON_ID,
-                                    LUNCH_LENGTH = 60,
-                                    EMPLOYEE_NAME = Employee.EMPLOYEE_NAME,
-                                    DA_DATE = Employee.DA_DATE
-                                });
+                                    if (LunchLength == 60)
+                                    {
+                                        WarningList.Add(new WarningData
+                                        {
+                                            WarningType = "Error",
+                                            RecordType = "Lunch Length",
+                                            AdditionalInformation = string.Format("{0} has an incorrect lunch length", Employee.EMPLOYEE_NAME)
+                                        });
+                                    }
+                                }
+                                else
+                                {
+                                    if (LunchLength == 30)
+                                    {
+                                        WarningList.Add(new WarningData
+                                        {
+                                            WarningType = "Error",
+                                            RecordType = "Lunch Length",
+                                            AdditionalInformation = string.Format("{0} has an incorrect lunch length", Employee.EMPLOYEE_NAME)
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+                return WarningList;
+            }
+        }
+
+        public static WarningData LunchCheck(long PersonId, DateTime HeaderDate)
+        {
+            using (Entities _context = new Entities())
+            {
+                var TotalMinutes = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                    join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                    where EntityFunctions.TruncateTime(h.DA_DATE) == EntityFunctions.TruncateTime(HeaderDate) && d.PERSON_ID == PersonId && h.STATUS != 5
+                                    group d by new { d.PERSON_ID } into g
+                                    select new { g.Key.PERSON_ID, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value)), TravelTime = g.Sum(d => d.TRAVEL_TIME), DriveTime = g.Sum(d => d.DRIVE_TIME) }).Single();
+                var Employee = (from e in _context.EMPLOYEES_V
+                                where e.PERSON_ID == PersonId
+                                select e.EMPLOYEE_NAME).Single();
+                decimal TotalTime = (decimal)TotalMinutes.TotalMinutes;
+                try
+                {
+                    TotalTime = TotalTime - ((decimal)TotalMinutes.TravelTime * 60) - ((decimal)TotalMinutes.DriveTime * 60);
+                }
+                catch { }
+                if (TotalTime >= 308)
+                {
+                    var LoggedLunches = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                         join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                         where EntityFunctions.TruncateTime(h.DA_DATE) == EntityFunctions.TruncateTime(HeaderDate) && d.PERSON_ID == PersonId && d.LUNCH == "Y"
+                                         select d.LUNCH).Count();
+                    if (LoggedLunches == 0)
+                    {
+                        
+                        return new WarningData
+                        {
+                            WarningType = "Error",
+                            RecordType = "Lunch Check",
+                            AdditionalInformation = string.Format("{0} has no lunch entered on {1}", Employee, HeaderDate.ToString("MM-dd-yyyy"))
+                        };
+                    }
+                    else
+                    {
+                        var LunchLength = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                           join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                           where EntityFunctions.TruncateTime(h.DA_DATE) == EntityFunctions.TruncateTime(HeaderDate) && d.PERSON_ID == PersonId && d.LUNCH == "Y"
+                                           select d.LUNCH_LENGTH).Single();
+                        if (TotalTime >= 308 && TotalTime < 728)
+                        {
+                            if (LunchLength == 60)
+                            {
+                                return new WarningData
+                                {
+                                    WarningType = "Error",
+                                    RecordType = "Lunch Length",
+                                    AdditionalInformation = string.Format("{0} has an incorrect lunch length", Employee)
+                                };
+                            }
+                        }
+                        else
+                        {
+                            if (LunchLength == 30)
+                            {
+                                return new WarningData
+                                {
+                                    WarningType = "Error",
+                                    RecordType = "Lunch Length",
+                                    AdditionalInformation = string.Format("{0} has an incorrect lunch length", Employee)
+                                };
                             }
                         }
                     }
                 }
-                return EmployeeList;
             }
+            return null;
         }
+        //public static List<EmployeeData> LunchCheck(long HeaderId)
+        //{
+        //    using (Entities _context = new Entities())
+        //    {
+        //        List<EmployeeData> EmployeeList = new List<EmployeeData>();
+        //        var HeaderEmployees = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+        //                               join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+        //                               join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
+        //                               join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
+        //                               where d.HEADER_ID == HeaderId && h.STATUS != 5
+        //                               select new { d.PERSON_ID, e.EMPLOYEE_NAME, d.DAILY_ACTIVITY_HEADER.DA_DATE, d.TRAVEL_TIME, d.DRIVE_TIME, p.ORG_ID }).ToList();
+        //        foreach (var Employee in HeaderEmployees)
+        //        {
+        //            var TotalMinutes = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+        //                                join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+        //                                where d.DAILY_ACTIVITY_HEADER.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID && h.STATUS != 5
+        //                                group d by new { d.PERSON_ID } into g
+        //                                select new { g.Key.PERSON_ID, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value)) }).Single();
+        //            decimal totalTime = (decimal)TotalMinutes.TotalMinutes;
+        //            if (Employee.ORG_ID == 121)
+        //            {
+        //                try
+        //                {
+        //                    totalTime = totalTime - ((decimal)Employee.TRAVEL_TIME * 60) - ((decimal)Employee.DRIVE_TIME * 60);
+        //                }
+        //                catch (Exception e)
+        //                {
+
+        //                }
+
+        //                if (totalTime >= 308 && totalTime < 728)
+        //                {
+        //                    var LoggedLunches = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+        //                                         where d.DAILY_ACTIVITY_HEADER.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID && d.LUNCH == "Y"
+        //                                         select d.LUNCH).Count();
+        //                    if (LoggedLunches == 0)
+        //                    {
+        //                        EmployeeList.Add(new EmployeeData
+        //                        {
+        //                            PERSON_ID = Employee.PERSON_ID,
+        //                            EMPLOYEE_NAME = Employee.EMPLOYEE_NAME,
+        //                            LUNCH_LENGTH = 30,
+        //                            DA_DATE = Employee.DA_DATE
+        //                        });
+        //                    }
+        //                }
+        //                else if (totalTime >= 728)
+        //                {
+        //                    var LoggedLunches = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+        //                                         where d.DAILY_ACTIVITY_HEADER.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID && d.LUNCH == "Y" && d.LUNCH_LENGTH == 60
+        //                                         select d.LUNCH).Count();
+        //                    if (LoggedLunches == 0)
+        //                    {
+        //                        EmployeeList.Add(new EmployeeData
+        //                        {
+        //                            PERSON_ID = Employee.PERSON_ID,
+        //                            LUNCH_LENGTH = 60,
+        //                            EMPLOYEE_NAME = Employee.EMPLOYEE_NAME,
+        //                            DA_DATE = Employee.DA_DATE
+        //                        });
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        return EmployeeList;
+        //    }
+        //}
     }
 
     public class EmployeeData
