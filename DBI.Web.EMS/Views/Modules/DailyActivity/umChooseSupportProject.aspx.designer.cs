@@ -58,12 +58,21 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Store uxSupportProjectStore;
         
         /// <summary>
-        /// Button1 control.
+        /// uxSupportProjectButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button1;
+        protected global::Ext.Net.Button uxSupportProjectButton;
+        
+        /// <summary>
+        /// uxSupportProjectCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxSupportProjectCancel;
     }
 }

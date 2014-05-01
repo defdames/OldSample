@@ -51,30 +51,49 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             int Status = GetStatus(HeaderId);
+            long OrgId = GetOrgId(HeaderId);
 
             if (Status == 4)
             {
                 uxEditEmployee.Disabled = true;
                 uxRemoveEmployee.Disabled = true;
-                uxChooseLunchHeader.Disabled = true;
                 uxChoosePerDiem.Disabled = true;
-                uxChooseSupportProject.Disabled = true;
+                if (OrgId == 121)
+                {
+                    uxChooseLunchHeader.Disabled = true;
+                }
+                if (OrgId == 123)
+                {
+                    uxChooseSupportProject.Disabled = true;
+                }
             }
             else if (Status == 3 && !validateComponentSecurity("SYS.DailyActivity.Post"))
             {
                 uxEditEmployee.Disabled = true;
                 uxRemoveEmployee.Disabled = true;
-                uxChooseLunchHeader.Disabled = true;
                 uxChoosePerDiem.Disabled = true;
-                uxChooseSupportProject.Disabled = true;
+                if (OrgId == 121)
+                {
+                    uxChooseLunchHeader.Disabled = true;
+                }
+                if (OrgId == 123)
+                {
+                    uxChooseSupportProject.Disabled = true;
+                }
             }
             else
             {
                 uxEditEmployee.Disabled = false;
                 uxRemoveEmployee.Disabled = false;
-                uxChooseLunchHeader.Disabled = false;
                 uxChoosePerDiem.Disabled = false;
-                uxChooseSupportProject.Disabled = false;
+                if (OrgId == 121)
+                {
+                    uxChooseLunchHeader.Disabled = false;
+                }
+                if (OrgId == 123)
+                {
+                    uxChooseSupportProject.Disabled = false;
+                }
             }
         }
         

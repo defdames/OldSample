@@ -50,7 +50,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(EmployeeToUpdate);
             }
 
-            X.Js.Call("parent.App.uxPlaceholderWindow.hide()");
+            X.Js.Call("parent.App.uxPlaceholderWindow.hide(); parent.App.uxEmployeeTab.reload()");
         }
     }
 }

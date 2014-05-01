@@ -31,7 +31,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 List<DAILY_ACTIVITY_HEADER> HeaderComboStore = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                                        join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                                                       where h.DA_DATE == HeaderDate && d.PERSON_ID == PersonId && d.PER_DIEM == "Y"
+                                                       where h.DA_DATE == HeaderDate && d.PERSON_ID == PersonId
                                                        select h).ToList();
                 
                 List<LunchInfo> ComboList = new List<LunchInfo>();
@@ -41,7 +41,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     ComboList.Add(new LunchInfo
                     {
                         HeaderId = Header.HEADER_ID,
-                        ProjectTask = string.Format("{0} (DRS: {1})", ProjectName.LONG_NAME, HeaderId.ToString())
+                        ProjectTask = string.Format("{0} (DRS: {1})", ProjectName.LONG_NAME, Header.HEADER_ID.ToString())
                         });
                 }
                 uxChoosePerDiemHeaderIdStore.DataSource = ComboList;
@@ -76,7 +76,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 RecordsToUpdate = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                    join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                                   where h.DA_DATE == HeaderDate && d.PERSON_ID == PersonId && d.PER_DIEM == "Y"
+                                   where h.DA_DATE == HeaderDate && d.PERSON_ID == PersonId
                                    select d).ToList();
                 OrgId = (from d in _context.DAILY_ACTIVITY_HEADER
                          join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
@@ -90,15 +90,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 if (Record.HEADER_ID == ChosenHeaderId)
                 {
                     Record.PER_DIEM = "Y";
+                    Record.PER_DIEM_TASK_ID = long.Parse(uxChoosePerDiemTask.Value.ToString());
                 }
                 else
                 {
                     Record.PER_DIEM = "N";
+                    Record.PER_DIEM_TASK_ID = null;
                 }
                 GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(Record);
             }
 
-            X.Js.Call("parent.App.uxPlaceholderWindow.hide()");
+            X.Js.Call("parent.App.uxPlaceholderWindow.hide(); parent.App.uxEmployeeTab.reload()");
 
         }
     }
