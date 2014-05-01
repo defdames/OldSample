@@ -11,7 +11,79 @@
     <ext:ResourceManager ID="ResourceManager1" runat="server" />
 
     <ext:Viewport ID="ViewPort1" runat="server" Layout="Fit">
+        <Items>
+            <ext:GridPanel
+                ID="uxPayrollAuditGrid"
+                runat="server"
+                Frame="true"
+                Title="Payroll Audit" 
+                Width ="1200"
+                Resizeable="true"
+                Collapsable="true">
+                <Store>
+                    <ext:Store ID="uxPayrollAuditStore" runat="server" GroupField="EMPLOYEE_NAME">
+                        <Model>
+                            <ext:Model runat="server">
+                                <Fields>
+                                    <ext:ModelField Name="TIME_CLOCK_ID" />
+                                    <ext:ModelField Name="EMPLOYEE_NAME" />
+                                    <ext:ModelField Name="TIME_IN" Type="Date" />
+                                    <ext:ModelField Name="TIME_OUT" Type="Date"/>
+                                    <ext:ModelField Name="ADJUSTED_HOURS" />
+                                    <ext:ModelField Name="ADJUSTED_HOURS_GRID" />
+                                    <ext:ModelField Name="ACTUAL_HOURS" />
+                                    <ext:ModelField Name="ACTUAL_HOURS_GRID" />
+                                </Fields>
+                            </ext:Model>
+                        </Model>
+                        <Sorters>
+                            <ext:DataSorter Property="TIME_IN" Direction="DESC"/>
+                        </Sorters>
+                    </ext:Store>
+                </Store>
+                <ColumnModel>
+                    <Columns>
+                        <ext:DateColumn ID="DateColumn1" runat="server" Text="Time In" DataIndex="TIME_IN" Flex="1" Format="M/d/yyyy h:mm tt"/>
+                        <ext:DateColumn ID="DateColumn2" runat="server" Text="Time Out" DataIndex="TIME_OUT" Flex="1" Format="M/d/yyyy h:mm tt"/>
+                        <ext:Column ID="Column1" runat="server" Text="Actual Time" Flex="1" DataIndex="ACTUAL_HOURS_GRID"/>
+                        <ext:Column ID="Column2" runat="server" Text="Adjusted Time" Flex="1" DataIndex="ADJUSTED_HOURS_GRID">
+                            <Editor>
+                                   <ext:TextField ID="TextField1" runat="server"/>
+                            </Editor>
+                        </ext:Column>
+                    </Columns>
+                </ColumnModel>
+                <Features>
+                <ext:Grouping ID="Grouping1"
+                    runat="server"
+                    HideGroupHeader="true"
+                    GroupHeaderTplString="Employee: {name}"
+                    StartCollapsed="true"/>                               
+                </Features>
+                <SelectionModel>
+                    <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi" />
+                </SelectionModel>
+                <Plugins>
+                    <ext:CellEditing ID="CellEditing1" runat="server" ClicksToEdit="2"/>
+                </Plugins> 
+                <Buttons>
+                    <ext:Button runat="server" ID="uxApproveButton" Text="Approve">
+                        <DirectEvents>
+                            <Click OnEvent="deApproveTime">
+                                <EventMask ShowMask="true" />
+                                <ExtraParams>
+                                    <ext:Parameter Name="TimeClockId" Value="#{uxEmployeeHoursGrid}.getSelectionModel().getSelection()[0].data.TIME_CLOCK_ID" Mode="Raw" />
+                                    <ext:Parameter Name="ApprovedTime" Value="Ext.encode(#{uxEmployeeHoursGrid}.getRowsValues({selectedOnly : true}))" Mode="Raw" />
+                                </ExtraParams>
+                            </Click> 
+                        </DirectEvents>
+                    </ext:Button>
+                </Buttons>
 
+
+            </ext:GridPanel>
+            
+        </Items>
 
     </ext:Viewport>
 

@@ -13,7 +13,7 @@ using DBI.Data.DataFactory;
 
 namespace DBI.Web.EMS.Views.Modules.TimeClock
 {
-    public partial class WebForm1 : System.Web.UI.Page
+    public partial class WebForm1 : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {   //Load loggeed in user info as well check for unfinisehd records and load the users gridpanel with exsisting records and user name
