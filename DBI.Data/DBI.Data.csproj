@@ -190,6 +190,8 @@
     <Compile Include="DataFactory\Employees\Employees.cs" />
     <Compile Include="DataFactory\Employees\WebEmployee.cs" />
     <Compile Include="DataFactory\Equipment\Equipment.cs" />
+    <Compile Include="DataFactory\Modules\Overhead\OverheadBudgetType.cs" />
+    <Compile Include="DataFactory\Organizations\Organizations.cs" />
     <Compile Include="DataFactory\Interface\Interface.cs" />
     <Compile Include="DataFactory\GMS\Data.cs" />
     <Compile Include="DataFactory\Inventory\Inventory.cs" />
