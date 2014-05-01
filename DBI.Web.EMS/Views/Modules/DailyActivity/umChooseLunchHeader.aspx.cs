@@ -94,11 +94,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                     select d).Single();
                 EmployeeToUpdate.LUNCH = "Y";
                 EmployeeToUpdate.LUNCH_LENGTH = GetLunchLength(PersonId, HeaderDate);
+                EmployeeToUpdate.LUNCH_TASK_ID = long.Parse(uxLunchTask.Value.ToString());
             }
-            GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(ExistingLunch);
-            GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(EmployeeToUpdate);
 
-            X.Js.Call("parent.App.uxPlaceholderWindow.hide()");
+            if (ExistingLunch != null)
+            {
+                GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(ExistingLunch);
+            }
+            GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(EmployeeToUpdate);
+            X.Js.Call("parent.App.uxPlaceholderWindow.hide(); parent.App.uxEmployeeTab.reload()");
         }
 
         protected int GetLunchLength(long PersonId, DateTime HeaderDate)

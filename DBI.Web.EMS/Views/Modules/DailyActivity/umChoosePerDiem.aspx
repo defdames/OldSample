@@ -13,7 +13,8 @@
 			<Items>
 				<ext:FormPanel runat="server" ID="uxChoosePerDiemFormPanel" Layout="FormLayout">
 					<Items>
-						<ext:ComboBox runat="server" ID="uxChoosePerDiemHeaderId" DisplayField="ProjectTask" ValueField="HeaderId" FieldLabel="Project" EmptyText="Choose Project for Per Diem" ForceSelection="true" LabelWidth="100" Width="500">
+						<ext:ComboBox runat="server" ID="uxChoosePerDiemHeaderId" DisplayField="ProjectTask" ValueField="HeaderId" AllowBlank="false" 
+							FieldLabel="Project" EmptyText="Choose Project for Per Diem" ForceSelection="true" LabelWidth="100" Width="500">
 							<Store>
 								<ext:Store runat="server" ID="uxChoosePerDiemHeaderIdStore">
 									<Model>
@@ -30,7 +31,8 @@
 								<Select Handler="#{uxChoosePerDiemTaskStore}.reload()" />
 							</Listeners>
 						</ext:ComboBox>
-						<ext:ComboBox runat="server" ID="uxChoosePerDiemTask" DisplayField="DESCRIPTION" ValueField="TASK_ID" FieldLabel="Task" EmptyText="Choose Task for Per Diem" ForceSelection="true" QueryMode="Local" TypeAhead="true">
+						<ext:ComboBox runat="server" ID="uxChoosePerDiemTask" DisplayField="DESCRIPTION" ValueField="TASK_ID" FieldLabel="Task" AllowBlank="false" 
+							EmptyText="Choose Task for Per Diem" ForceSelection="true" QueryMode="Local" TypeAhead="true">
 							<Store>
 								<ext:Store runat="server" ID="uxChoosePerDiemTaskStore" AutoDataBind="true" AutoLoad="false" OnReadData="deReadTasks">
 									<Model>
@@ -49,7 +51,7 @@
 						</ext:ComboBox>
 					</Items>
 					<Buttons>
-						<ext:Button runat="server" Id="uxChoosePerDiemSubmitButton" Text="Submit">
+						<ext:Button runat="server" Id="uxChoosePerDiemSubmitButton" Text="Submit" Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deUpdatePerDiem">
 									<EventMask ShowMask="true" />
@@ -63,6 +65,9 @@
 							</Listeners>
 						</ext:Button>
 					</Buttons>
+					<Listeners>
+						<ValidityChange Handler="#{uxChoosePerDiemSubmitButton}.setDisabled(!valid)" />
+					</Listeners>
 				</ext:FormPanel>
 			</Items>
 			<Listeners>

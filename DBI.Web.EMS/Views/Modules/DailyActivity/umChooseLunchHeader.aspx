@@ -11,7 +11,7 @@
 	<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
 				<ext:FormPanel runat="server" ID="uxChooseLunchForm" Layout="FormLayout">
 					<Items>
-						<ext:ComboBox runat="server" ID="uxLunchHeader" DisplayField="ProjectTask" 
+						<ext:ComboBox runat="server" ID="uxLunchHeader" DisplayField="ProjectTask" AllowBlank="false" 
 							ValueField="HeaderId" QueryMode="Local" ForceSelection="true" TypeAhead="true" EmptyText="Choose a project/task" FieldLabel="Choose Lunch Project">
 							<Store>
 								<ext:Store runat="server" ID="uxLunchHeaderStore" OnReadData="deReadLunchHeaders" AutoDataBind="true">
@@ -32,7 +32,7 @@
 								<Select Handler="#{uxLunchTaskStore}.reload()" />
 							</Listeners>
 						</ext:ComboBox>
-						<ext:ComboBox runat="server" ID="uxLunchTask" DisplayField="DESCRIPTION" ValueField="TASK_ID"
+						<ext:ComboBox runat="server" ID="uxLunchTask" DisplayField="DESCRIPTION" ValueField="TASK_ID" AllowBlank="false"
 							TypeAhead="true" QueryMode="Local" ForceSelection="true" EmptyText="Choose a task" FieldLabel="Task" AutoLoad="false">
 							<Store>
 								<ext:Store runat="server" ID="uxLunchTaskStore" OnReadData="deReadLunchTasks" AutoDataBind="true">
@@ -52,7 +52,7 @@
 						</ext:ComboBox>
 					</Items>
 					<Buttons>
-						<ext:Button runat="server" Text="Submit">
+						<ext:Button runat="server" Text="Submit" ID="uxStoreLunchButton" Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deStoreLunchChoice">
 									<EventMask ShowMask="true" />
@@ -74,6 +74,7 @@
 							size.width += 12;
 							win.setSize(size);"
 						Delay="100" />
+						<ValidityChange Handler="#{uxStoreLunchButton}.setDisabled(!valid)" />
 					</Listeners>
 				</ext:FormPanel>
 	</form>
