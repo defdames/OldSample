@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBI.Data
+namespace DBI.Data.Oracle.HR
 {
-    public class ORGANIZATIONS
+    public class Organizations
     {
         /// <summary>
         /// Returns a list of legal entities from oracle, only selects what legal entities are current and active.
@@ -18,6 +18,31 @@ namespace DBI.Data
             {
                 string sql = @"select organization_id,name as organization_name from apps.hr_all_organization_units where type = 'LE' and ((sysdate between date_from and date_to) or (date_to is null)) order by 2";
                 List<ORGANIZATION> _returnList = _context.Database.SqlQuery<ORGANIZATION>(sql).ToList();
+                return _returnList;
+            }
+        }
+
+        /// <summary>
+        /// Returns a list of legal entities from oracle that can have a budget because there is a budget type assigned to that businessunit
+        /// </summary>
+        /// <returns></returns>
+        public static List<ORGANIZATION> legalEntitiesWithActiveBudgetTypes()
+        {
+            using (Entities _context = new Entities())
+            {
+                string sql = @"select organization_id,name as organization_name from apps.hr_all_organization_units where type = 'LE' and ((sysdate between date_from and date_to) or (date_to is null)) order by 2";
+                List<ORGANIZATION> _data = _context.Database.SqlQuery<ORGANIZATION>(sql).ToList();
+                List<ORGANIZATION> _returnList = new List<ORGANIZATION>();
+                
+                foreach (ORGANIZATION var in _data)
+                {
+                    int count = DBI.Data.Oracle.GL.Budgets.activeBudgetTypesByBusinessUnit(var.ORGANIZATION_ID).Count();
+                    if (count > 0)
+                    {
+                        _returnList.Add(var);
+                    }
+                }
+
                 return _returnList;
             }
         }
@@ -51,6 +76,23 @@ namespace DBI.Data
             }
 
         }
+
+        public static List<HIERARCHY> hierarchiesByBusinessUnit()
+        {
+            using (Entities _context = new Entities())
+            {
+                string sql = @"select distinct a.organization_id_parent as organization_id,C.ORGANIZATION_STRUCTURE_ID,c.name as hierarchy_name, d.name as organization_name  from per_org_structure_elements_v a
+                inner join per_org_structure_versions_v b on B.ORG_STRUCTURE_VERSION_ID = a.org_structure_version_id
+                inner join per_organization_structures_v c on C.ORGANIZATION_STRUCTURE_ID = B.ORGANIZATION_STRUCTURE_ID
+                inner join apps.hr_all_organization_units d on d.organization_id = a.organization_id_parent
+                where a.organization_id_parent in (select organization_id from apps.hr_all_organization_units where type = 'LE' and ((sysdate between date_from and date_to) or (date_to is null)))
+                order by 4,3";
+
+                var data = _context.Database.SqlQuery<HIERARCHY>(sql).ToList();
+                return data;
+            }
+
+        }
  
         public class ORGANIZATION
         {
@@ -63,6 +105,12 @@ namespace DBI.Data
             public long HIER_LEVEL { get; set; }
             public string GL_ASSIGNED { get; set; }
         }
-    
+
+        public class HIERARCHY : ORGANIZATION
+        {
+            public string HIERARCHY_NAME { get; set; }
+            public long ORGANIZATION_STRUCTURE_ID { get; set; }
+        }
+
     }
 }
