@@ -27,8 +27,7 @@
                 <ext:Store 
                     ID="uxEmployeeHoursStore"
                     runat="server"
-                    GroupField="EMPLOYEE_NAME"
-                    OnReadData="deUpdateEmployeeGrid">
+                    GroupField="EMPLOYEE_NAME">
                     <Model>
                         <ext:Model runat="server" IDProperty="EMP_HOURS">
                             <Fields>
@@ -36,7 +35,8 @@
                                 <ext:ModelField Name="EMPLOYEE_NAME" />
                                 <ext:ModelField Name="TIME_IN" Type="Date" />
                                 <ext:ModelField Name="TIME_OUT" Type="Date"/>
-                                <ext:ModelField Name="TOTAL_HOURS" />
+                                <ext:ModelField Name="ADJUSTED_HOURS" />
+                                <ext:ModelField Name="ADJUSTED_HOURS_GRID" />
                                 <ext:ModelField Name="ACTUAL_HOURS" />
                                 <ext:ModelField Name="ACTUAL_HOURS_GRID" />
                             </Fields>
@@ -52,8 +52,7 @@
                     <ext:DateColumn runat="server" Text="Time In" DataIndex="TIME_IN" Flex="1" Format="M/d/yyyy h:mm tt"/>
                     <ext:DateColumn runat="server" Text="Time Out" DataIndex="TIME_OUT" Flex="1" Format="M/d/yyyy h:mm tt"/>
                     <ext:Column ID="Column1" runat="server" Text="Actual Time" Flex="1" DataIndex="ACTUAL_HOURS_GRID"/>
-                    <ext:Column runat="server" Text="Adjusted Time" Flex="1" DataIndex="TOTAL_HOURS">
-                    
+                    <ext:Column runat="server" Text="Adjusted Time" Flex="1" DataIndex="ADJUSTED_HOURS_GRID">
                         <Editor>
                                <ext:TextField runat="server"/>
                         </Editor>
@@ -75,7 +74,7 @@
                 <ext:CellEditing runat="server" ClicksToEdit="2"/>
             </Plugins> 
             <Buttons>
-                <ext:Button runat="server" ID="uxApproveButton" Text="Submit">
+                <ext:Button runat="server" ID="uxApproveButton" Text="Approve">
                     <DirectEvents>
                         <Click OnEvent="deApproveTime">
                             <EventMask ShowMask="true" />
