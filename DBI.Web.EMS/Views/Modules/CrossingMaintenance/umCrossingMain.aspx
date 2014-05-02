@@ -13,8 +13,47 @@
         <ext:ResourceManager ID="ResourceManager2" runat="server" />
 
         <div>
+          
             <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
                 <Items>
+                       <ext:Toolbar ID="Toolbar1" runat="server" Region="North">
+                        <Items>
+                             <ext:ComboBox ID="uxRailRoadCI"
+                                                runat="server"
+                                                FieldLabel="Rail Road"
+                                                LabelAlign="Right"
+                                                DisplayField="RAILROAD"
+                                                ValueField="RAILROAD_ID"
+                                                QueryMode="Local"
+                                                TypeAhead="true" Editable="false" ForceSelection="true">
+                                                <Store>
+                                                    <ext:Store runat="server"
+                                                        ID="uxSelectRailRoadStore">
+                                                        <Model>
+                                                            <ext:Model ID="Model4" runat="server">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="RAILROAD_ID" />
+                                                                    <ext:ModelField Name="RAILROAD" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                    </ext:Store>
+                                                </Store>
+                                               <%-- <DirectEvents>
+                                                    <Select OnEvent="deLoadUnit">
+                                                        <ExtraParams>
+                                                            <ext:Parameter Name="Type" Value="Add" />
+                                                        </ExtraParams>
+                                                    </Select>
+                                                </DirectEvents>
+                                                <Listeners>
+                                                    <Select Handler="#{uxAddServiceUnitStore}.load()" />
+                                                </Listeners>--%>
+                                            </ext:ComboBox>
+                            
+                        </Items>
+                    </ext:Toolbar>
+                   
                     <ext:TabPanel ID="uxCrossingTab" runat="server" Region="Center">
                         <Items>
                              <ext:Panel runat="server"

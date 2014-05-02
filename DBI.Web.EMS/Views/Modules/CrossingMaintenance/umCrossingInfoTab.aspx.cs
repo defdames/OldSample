@@ -10,13 +10,21 @@ using DBI.Data;
 using Ext.Net;
 using DBI.Data.GMS;
 using DBI.Data.DataFactory;
+using DBI.Core.Security;
+using System.Security.Claims;
+using System.IO;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
-    public partial class umCrossings : System.Web.UI.Page
+    public partial class umCrossings : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!validateComponentSecurity("SYS.CrossingMaintenance.InformationView"))
+            {
+                X.Redirect("~/Views/uxDefault.aspx");
+
+            }
             if (!X.IsAjaxRequest)
             {
                 
@@ -32,22 +40,28 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
         protected void deCrossingGridData(object sender, StoreReadDataEventArgs e)
         {
-           
+
             using (Entities _context = new Entities())
             {
                 List<object> data;
 
-                //GeList of all new crossings
-                
-                    data = (from d in _context.CROSSINGS
-                            join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID into pn
-                            from proj in pn.DefaultIfEmpty()
-                            select new { d.CONTACT_ID, d.REMARKS, d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.SUB_DIVISION, d.CROSSING_CONTACTS.CONTACT_NAME, d.PROJECT_ID, proj.LONG_NAME}).ToList<object>();
-              
+                //Get List of all new crossings
 
-                int count;
-                uxCurrentCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-                e.Total = count;
+                //if (validateComponentSecurity("SYS.CrossingMaintenance.InformationView"))
+                //{
+                //    List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
+                    data = (from d in _context.CROSSINGS
+                            //join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
+                            //join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID 
+                          
+                            //where p.PROJECT_TYPE == "CUSTOMER BILLING" && p.TEMPLATE_FLAG == "N" && p.PROJECT_STATUS_CODE == "APPROVED" && OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID)
+                            select new { d.CONTACT_ID, d.REMARKS, d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.SUB_DIVISION, d.CROSSING_CONTACTS.CONTACT_NAME }).ToList<object>();
+
+
+                    int count;
+                    uxCurrentCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                    e.Total = count;
+            
             }
         }
 

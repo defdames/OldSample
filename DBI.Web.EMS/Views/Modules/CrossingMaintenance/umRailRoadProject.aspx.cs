@@ -11,45 +11,37 @@ using Ext.Net;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
-    public partial class umRailRoadProject : System.Web.UI.Page
+    public partial class umRailRoadProject : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!validateComponentSecurity("SYS.CrossingMaintenance.InformationView"))
+            {
+                X.Redirect("~/Views/uxDefault.aspx");
 
+            }
         }
-        //protected void deSecurityProjectGrid(object sender, StoreReadDataEventArgs e)
-        //{
-        //    {
-        //        List<WEB_PROJECTS_V> dataIn;
-
-        //        dataIn = WEB_PROJECTS_V.ProjectList();
-
-        //        int count;
-        //        //Get paged, filterable list of data
-        //        List<WEB_PROJECTS_V> data = GenericData.EnumerableFilterHeader<WEB_PROJECTS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
-
-        //        e.Total = count;
-        //        uxCurrentSecurityProjectStore.DataSource = data;
-        //        uxCurrentSecurityProjectStore.DataBind();
-        //    }
-        //}
+      
         protected void deSecurityProjectGrid(object sender, StoreReadDataEventArgs e)
         {
             using (Entities _context = new Entities())
             {
-                long RailRoadId = long.Parse(e.Parameters["RailroadId"]);
-                var data = (from v in _context.PROJECTS_V
-                            where !(from p in _context.CROSSING_PROJECT
-                                    where v.PROJECT_ID == p.PROJECT_ID && p.RAILROAD_ID == RailRoadId
-                                    select p.PROJECT_ID)
-                                .Contains(v.PROJECT_ID)
-                            where v.PROJECT_TYPE == "CUSTOMER BILLING" && v.TEMPLATE_FLAG == "N" && v.PROJECT_STATUS_CODE == "APPROVED"
-                            select new { v.PROJECT_ID, v.LONG_NAME, v.ORGANIZATION_NAME, v.SEGMENT1 }).ToList<object>();
+                if (validateComponentSecurity("SYS.CrossingMaintenance.InformationView"))
+                {
+                    List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
+                    long RailRoadId = long.Parse(e.Parameters["RailroadId"]);
+                    var data = (from v in _context.PROJECTS_V
+                                where !(from p in _context.CROSSING_PROJECT
+                                        where v.PROJECT_ID == p.PROJECT_ID && p.RAILROAD_ID == RailRoadId
+                                        select p.PROJECT_ID)
+                                    .Contains(v.PROJECT_ID)
+                                where v.PROJECT_TYPE == "CUSTOMER BILLING" && v.TEMPLATE_FLAG == "N" && v.PROJECT_STATUS_CODE == "APPROVED" && v.ORGANIZATION_NAME.Contains(" RR") && OrgsList.Contains(v.CARRYING_OUT_ORGANIZATION_ID)
+                                select new { v.PROJECT_ID, v.LONG_NAME, v.ORGANIZATION_NAME, v.SEGMENT1 }).ToList<object>();
 
 
-                uxProjectGrid.Store.Primary.DataSource = data;
+                    uxProjectGrid.Store.Primary.DataSource = data;
+                }
             }
-               
         }
         protected void deReadRailRoad(object sender, StoreReadDataEventArgs e)
         {

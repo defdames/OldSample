@@ -145,9 +145,7 @@
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
-                    <BottomBar>
-                        <ext:PagingToolbar ID="PagingToolbar2" runat="server" />
-                    </BottomBar>
+                   
                     <Listeners>
                         <Select Handler="#{uxAddProjectButton}.enable()" />
                     </Listeners>

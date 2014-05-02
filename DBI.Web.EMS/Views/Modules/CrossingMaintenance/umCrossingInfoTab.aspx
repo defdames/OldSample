@@ -61,7 +61,7 @@
                     <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true"/>
                 </Plugins>
                 <DirectEvents>
-                    <Select OnEvent="GetFormData">
+                    <Select OnEvent="GetFormData" >
                         <ExtraParams>
                             <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
                         </ExtraParams>

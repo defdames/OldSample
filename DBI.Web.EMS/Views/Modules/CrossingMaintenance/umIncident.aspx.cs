@@ -13,11 +13,15 @@ using DBI.Data.DataFactory;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
-    public partial class umIncident : System.Web.UI.Page
+    public partial class umIncident : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!validateComponentSecurity("SYS.CrossingMaintenance.DataEntryView"))
+            {
+                X.Redirect("~/Views/uxDefault.aspx");
 
+            }
         }
         protected void deCrossingGridData(object sender, StoreReadDataEventArgs e)
         {
