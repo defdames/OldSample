@@ -10,13 +10,21 @@ using DBI.Data;
 using Ext.Net;
 using DBI.Data.GMS;
 using DBI.Data.DataFactory;
+using DBI.Core.Security;
+using System.Security.Claims;
+using System.IO;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
-    public partial class umCrossings : System.Web.UI.Page
+    public partial class umCrossings : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!validateComponentSecurity("SYS.CrossingMaintenance.InformationView"))
+            {
+                X.Redirect("~/Views/uxDefault.aspx");
+
+            }
             if (!X.IsAjaxRequest)
             {
                 
@@ -24,28 +32,36 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 deLoadType("Edit");
                 uxAddStateList.Data = StaticLists.StateList;
                 uxEditStateList.Data = StaticLists.StateList;
+                uxAddPropertyType.Data = StaticLists.PropertyType;
+                uxEditPropertyType.Data = StaticLists.PropertyType;
             }
           
         }
 
         protected void deCrossingGridData(object sender, StoreReadDataEventArgs e)
         {
-           
+
             using (Entities _context = new Entities())
             {
                 List<object> data;
 
-                //GeList of all new crossings
-                
-                    data = (from d in _context.CROSSINGS
-                            join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID into pn
-                            from proj in pn.DefaultIfEmpty()
-                            select new { d.CONTACT_ID, d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.SUB_DIVISION, d.CROSSING_CONTACTS.CONTACT_NAME, d.PROJECT_ID, proj.LONG_NAME}).ToList<object>();
-              
+                //Get List of all new crossings
 
-                int count;
-                uxCurrentCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-                e.Total = count;
+                //if (validateComponentSecurity("SYS.CrossingMaintenance.InformationView"))
+                //{
+                //    List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
+                    data = (from d in _context.CROSSINGS
+                            //join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
+                            //join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID 
+                          
+                            //where p.PROJECT_TYPE == "CUSTOMER BILLING" && p.TEMPLATE_FLAG == "N" && p.PROJECT_STATUS_CODE == "APPROVED" && OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID)
+                            select new { d.CONTACT_ID, d.REMARKS, d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.SUB_DIVISION, d.CROSSING_CONTACTS.CONTACT_NAME }).ToList<object>();
+
+
+                    int count;
+                    uxCurrentCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                    e.Total = count;
+            
             }
         }
 
@@ -299,7 +315,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
               try
             {
-                string PropertyType = uxAddPropertyTypeCI.Value.ToString();
+                string PropertyType = uxAddPropertyTypeComboBox.Value.ToString();
                 data.PROPERTY_TYPE = PropertyType;
             }
             catch (Exception)
@@ -396,7 +412,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 data.SPECIAL_INSTRUCTIONS = null;
             }
-                           
+            if (data.REMARKS == null)
+            {
+                data.REMARKS = "ACTIVE";
+            }             
 
             //Write to DB
             GenericData.Insert<CROSSING>(data);
@@ -466,7 +485,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxEditRowWidthCI.SetValue(data.d.ROW_WIDTH);
                 uxEditNWCINumberField.SetValue(data.d.ROWNW);
                 uxEditNWextCINumberField.SetValue(data.d.EXTNW);
-                uxEditPropertyTypeCI.SetValue(data.d.PROPERTY_TYPE);
+                uxEditPropertyTypeComboBox.SetValue(data.d.PROPERTY_TYPE);
                 uxEditSECINumberField.SetValue(data.d.ROWSE);
                 uxEditSEextCINumberField.SetValue(data.d.EXTSE);
                 uxEditSurfaceCI.SetValue(data.d.SURFACE);
@@ -665,7 +684,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
              try
                 {
-                string PropertyType = uxEditPropertyTypeCI.Value.ToString();
+                string PropertyType = uxEditPropertyTypeComboBox.Value.ToString();
                 data.PROPERTY_TYPE = PropertyType;
                 }
                   catch (Exception)
@@ -763,7 +782,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
              {
                  data.SPECIAL_INSTRUCTIONS = null;
              }
-           
+            
                
                 //Write to DB
                 GenericData.Update<CROSSING>(data);
@@ -784,36 +803,67 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     }
                 });
             }
+
+
+        protected void deDeleteCrossing(object sender, DirectEventArgs e)
+        {
+            CROSSING data;
+            long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.CROSSINGS
+                        where d.CROSSING_ID == CrossingId
+                        select d).Single();
+
+                data.REMARKS = "DELETED";
+            }
+            GenericData.Update<CROSSING>(data);
+           
+            uxCrossingForm.Reset();
+            uxCurrentCrossingStore.Reload();
+
+             Notification.Show(new NotificationConfig()
+                {
+                    Title = "Success",
+                    Html = "Crossing Deleted Successfully",
+                    HideDelay = 1000,
+                    AlignCfg = new NotificationAlignConfig
+                    {
+                        ElementAnchor = AnchorPoint.Center,
+                        TargetAnchor = AnchorPoint.Center
+                    }
+                });
+            }
         
-      
-        //protected void deRemoveCrossing(object sender, DirectEventArgs e)
-        //{
-        //    long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
-        //    CROSSING data;
-        //    using (Entities _context = new Entities())
-        //    {
-        //        data = (from d in _context.CROSSINGS
-        //                where d.CROSSING_ID == CrossingId
-        //                select d).Single();
-        //    }
-        //    GenericData.Delete<CROSSING>(data);
+        protected void deReactivateCrossing(object sender, DirectEventArgs e)
+        {
+            CROSSING data;
+            long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.CROSSINGS
+                        where d.CROSSING_ID == CrossingId
+                        select d).Single();
 
-        //    uxCurrentCrossingStore.Reload();
-        //    uxCrossingForm.Reset();
+                data.REMARKS = "ACTIVE";
+            }
+            GenericData.Update<CROSSING>(data);
+           
+            uxCrossingForm.Reset();
+            uxCurrentCrossingStore.Reload();
 
-        //    Notification.Show(new NotificationConfig()
-        //    {
-        //        Title = "Success",
-        //        Html = "Crossing Removed Successfully",
-        //        HideDelay = 1000,
-        //        AlignCfg = new NotificationAlignConfig
-        //        {
-        //            ElementAnchor = AnchorPoint.Center,
-        //            TargetAnchor = AnchorPoint.Center
-        //        }
-        //    });
-        //}
-
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Crossing Reactivated Successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
+        }
         protected void deLoadType(string rrType)
         {
             

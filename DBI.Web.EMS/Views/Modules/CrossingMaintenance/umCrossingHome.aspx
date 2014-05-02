@@ -10,6 +10,34 @@
     <form id="form1" runat="server">
         <ext:ResourceManager ID="ResourceManager1" runat="server" />
         <div>
+              <ext:Toolbar ID="Toolbar2" runat="server" Region="North" >
+                        <Items>
+                             <ext:ComboBox ID="uxRailRoadCI"
+                                                runat="server"
+                                                FieldLabel="Rail Road"
+                                                LabelAlign="Right"
+                                                DisplayField="RAILROAD"
+                                                ValueField="RAILROAD_ID"
+                                                QueryMode="Local"
+                                                TypeAhead="true" Editable="false" ForceSelection="true">
+                                                <Store>
+                                                    <ext:Store runat="server"
+                                                        ID="uxAddRailRoadStore">
+                                                        <Model>
+                                                            <ext:Model ID="Model4" runat="server">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="RAILROAD_ID" />
+                                                                    <ext:ModelField Name="RAILROAD" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                    </ext:Store>
+                                                </Store>
+                                            
+                                            </ext:ComboBox>
+                            
+                        </Items>
+                    </ext:Toolbar>
             <ext:GridPanel ID="uxCrossingHomeGrid" Title="CROSSING LIST" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true">
                 <SelectionModel>
                     <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />

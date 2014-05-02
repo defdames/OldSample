@@ -34,6 +34,8 @@
                                     <ext:ModelField Name="SERVICE_UNIT" />
                                     <ext:ModelField Name="SUB_DIVISION" />
                                     <ext:ModelField Name="CONTACT_NAME" />
+                                    <ext:ModelField Name="REMARKS" />
+
 
                                 </Fields>
                             </ext:Model>
@@ -50,6 +52,8 @@
                         <ext:Column ID="Column12" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
                         <ext:Column ID="uxSubDiv" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
                         <ext:Column ID="uxMTM" runat="server" DataIndex="CONTACT_NAME" Text="Manager" Flex="1" />
+                        <ext:Column ID="Column10" runat="server" DataIndex="REMARKS" Text="Status" Flex="1" />
+
 
                     </Columns>
                 </ColumnModel>
@@ -57,7 +61,7 @@
                     <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true"/>
                 </Plugins>
                 <DirectEvents>
-                    <Select OnEvent="GetFormData">
+                    <Select OnEvent="GetFormData" >
                         <ExtraParams>
                             <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
                         </ExtraParams>
@@ -76,7 +80,7 @@
                     </ext:PagingToolbar>
                 </BottomBar>
                  <Listeners>
-				<Select Handler="#{uxEditCrossingsButton}.enable(); #{uxProjectListButton}.enable();  #{uxAddIncident}.enable();" /> 
+				<Select Handler="#{uxEditCrossingsButton}.enable(); #{uxProjectListButton}.enable(); #{uxDeleteCrossingButton}.enable(); #{uxReactivateCrossingButton}.enable()" /> 
                             
 			</Listeners>
             </ext:GridPanel>
@@ -103,8 +107,28 @@
                                     </Click>
                                 </DirectEvents>
                             </ext:Button>
+                             <ext:Button ID="uxDeleteCrossingButton" runat="server" Text="Delete Crossing" Icon="ApplicationDelete" Disabled="true">
+                                <DirectEvents>
+                                    <Click OnEvent="deDeleteCrossing">
+                                         <Confirmation ConfirmRequest="true" Title="Delete?" Message="Are you sure you want to delete the selected crossing?" />
 
-                          
+                                        <ExtraParams>
+                                            <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                                        </ExtraParams>
+                                    </Click>
+                                </DirectEvents>
+                            </ext:Button>
+                           <ext:Button ID="uxReactivateCrossingButton" runat="server" Text="Reactivate Crossing" Icon="Add" Disabled="true">
+                                <DirectEvents>
+                                    <Click OnEvent="deReactivateCrossing">
+                                         <Confirmation ConfirmRequest="true" Title="Reactivate?" Message="Are you sure you want to reactivate the selected crossing?" />
+
+                                        <ExtraParams>
+                                            <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                                        </ExtraParams>
+                                    </Click>
+                                </DirectEvents>
+                            </ext:Button>
                             <ext:Button ID="uxProjectListButton" runat="server" Text="Project List" Icon="ApplicationViewDetail" Disabled="true">
                                 <Listeners>
                                     <Click Handler="#{uxProjectListWindow}.show()" />
@@ -189,7 +213,8 @@
                                 <Items>
                                     <ext:TextField ID="uxNWCI" runat="server" FieldLabel="NW" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
                                     <ext:TextField ID="uxNWextCI" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
-                                    <ext:TextField ID="uxPropertyTypeCI" runat="server" FieldLabel="Property Type" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
+                                    <ext:TextField ID="uxSurfaceCI" runat="server" FieldLabel="Surface" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
+
                                 </Items>
                             </ext:FieldContainer>
 
@@ -197,7 +222,8 @@
                                 <Items>
                                     <ext:TextField ID="uxSECI" runat="server" FieldLabel="SE" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
                                     <ext:TextField ID="uxSEextCI" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
-                                    <ext:TextField ID="uxSurfaceCI" runat="server" FieldLabel="Surface" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
+                                    <ext:TextField ID="uxCrossingWarningDevice" runat="server" FieldLabel="Warning Device" LabelAlign="Right" ReadOnly="true" />
+
                                 </Items>
                             </ext:FieldContainer>
 
@@ -205,7 +231,8 @@
                                 <Items>
                                     <ext:TextField ID="uxSWCI" runat="server" FieldLabel="SW" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
                                     <ext:TextField ID="uxSWextCI" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
-                                    <ext:TextField ID="uxCrossingWarningDevice" runat="server" FieldLabel="Warning Device" LabelAlign="Right" ReadOnly="true" />
+                                    <ext:TextField ID="uxPropertyTypeCI" runat="server" FieldLabel="Property Type" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
+
                                 </Items>
                             </ext:FieldContainer>
                         </Items>
@@ -435,15 +462,18 @@
                                         <Items>
                                             <ext:NumberField ID="uxAddNWCINumberField" runat="server" FieldLabel="NW" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="15" />
                                             <ext:NumberField ID="uxAddNWextCINumberField" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="19" />
-                                            <ext:TextField ID="uxAddPropertyTypeCI" runat="server" FieldLabel="Property Type" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="23" />
-                                        </Items>
+                                            <ext:TextField ID="uxAddSurfaceCI" runat="server" FieldLabel="Surface" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="24" />
+                                         
+                                            
+                                             </Items>
                                     </ext:FieldContainer>
 
                                     <ext:FieldContainer ID="FieldContainer16" runat="server" Layout="HBoxLayout">
                                         <Items>
                                             <ext:NumberField ID="uxAddSECINumberField" runat="server" FieldLabel="SE" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="16" />
                                             <ext:NumberField ID="uxAddSEextCINumberField" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="20" />
-                                            <ext:TextField ID="uxAddSurfaceCI" runat="server" FieldLabel="Surface" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="24" />
+                                            <ext:TextField ID="uxAddWarningDeviceCI" runat="server" FieldLabel="Warning Device" LabelAlign="Right" TabIndex="25" />
+
                                         </Items>
                                     </ext:FieldContainer>
 
@@ -451,7 +481,31 @@
                                         <Items>
                                             <ext:NumberField ID="uxAddSWCINumberField" runat="server" FieldLabel="SW" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="17" />
                                             <ext:NumberField ID="uxAddSWextCINumberField" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="21" />
-                                            <ext:TextField ID="uxAddWarningDeviceCI" runat="server" FieldLabel="Warning Device" LabelAlign="Right" TabIndex="25" />
+                                             <ext:ComboBox runat="server"
+                                                ID="uxAddPropertyTypeComboBox"
+                                                FieldLabel="Property Type"
+                                                LabelAlign="Right"
+                                                DisplayField="name"
+                                                ValueField="name"
+                                                QueryMode="Local"
+                                                TypeAhead="true"
+                                                ForceSelection="true" TabIndex="5">
+                                                <Store>
+                                                    <ext:Store ID="uxAddPropertyType" runat="server" AutoDataBind="true">
+                                                        <Model>
+                                                            <ext:Model ID="Model13" runat="server">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="abbr" />
+                                                                    <ext:ModelField Name="name" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                        <Reader>
+                                                            <ext:ArrayReader />
+                                                        </Reader>
+                                                    </ext:Store>
+                                                </Store>
+                                            </ext:ComboBox>
                                         </Items>
                                     </ext:FieldContainer>
                                 </Items>
@@ -747,7 +801,8 @@
                                         <Items>
                                             <ext:NumberField ID="uxEditNWCINumberField" runat="server" FieldLabel="NW" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="14" />
                                             <ext:NumberField ID="uxEditNWextCINumberField" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="18" />
-                                            <ext:TextField ID="uxEditPropertyTypeCI" runat="server" FieldLabel="Property Type" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="22" />
+                                            <ext:TextField ID="uxEditSurfaceCI" runat="server" FieldLabel="Surface" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="23" />
+
                                         </Items>
                                     </ext:FieldContainer>
 
@@ -755,7 +810,8 @@
                                         <Items>
                                             <ext:NumberField ID="uxEditSECINumberField" runat="server" FieldLabel="SE" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="15" />
                                             <ext:NumberField ID="uxEditSEextCINumberField" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="19" />
-                                            <ext:TextField ID="uxEditSurfaceCI" runat="server" FieldLabel="Surface" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="23" />
+                                            <ext:TextField ID="uxEditWarningDeviceCI" runat="server" FieldLabel="Warning Device" LabelAlign="Right" TabIndex="24" />
+
                                         </Items>
                                     </ext:FieldContainer>
 
@@ -763,7 +819,31 @@
                                         <Items>
                                             <ext:NumberField ID="uxEditSWCINumberField" runat="server" FieldLabel="SW" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="16" />
                                             <ext:NumberField ID="uxEditSWextCINumberField" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="20" />
-                                            <ext:TextField ID="uxEditWarningDeviceCI" runat="server" FieldLabel="Warning Device" LabelAlign="Right" TabIndex="24" />
+                                            <ext:ComboBox runat="server"
+                                                ID="uxEditPropertyTypeComboBox"
+                                                FieldLabel="Property Type"
+                                                LabelAlign="Right"
+                                                DisplayField="name"
+                                                ValueField="name"
+                                                QueryMode="Local"
+                                                TypeAhead="true"
+                                                ForceSelection="true" TabIndex="5">
+                                                <Store>
+                                                    <ext:Store ID="uxEditPropertyType" runat="server" AutoDataBind="true">
+                                                        <Model>
+                                                            <ext:Model ID="Model14" runat="server">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="abbr" />
+                                                                    <ext:ModelField Name="name" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                        <Reader>
+                                                            <ext:ArrayReader />
+                                                        </Reader>
+                                                    </ext:Store>
+                                                </Store>
+                                            </ext:ComboBox>
                                         </Items>
                                     </ext:FieldContainer>
                                 </Items>

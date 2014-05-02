@@ -43,7 +43,6 @@ namespace DBI.Data
         public DbSet<PA_TASKS_V> PA_TASKS_V { get; set; }
         public DbSet<PA_LOCATIONS_V> PA_LOCATIONS_V { get; set; }
         public DbSet<EXPENDITURE_TYPE_V> EXPENDITURE_TYPE_V { get; set; }
-        public DbSet<CROSSING_CONTACTS> CROSSING_CONTACTS { get; set; }
         public DbSet<XXPJ_PREV_WAGE_RATES> XXPJ_PREV_WAGE_RATES { get; set; }
         public DbSet<DAILY_ACTIVITY_HEADER> DAILY_ACTIVITY_HEADER { get; set; }
         public DbSet<DAILY_ACTIVITY_AUDIT> DAILY_ACTIVITY_AUDIT { get; set; }
@@ -92,9 +91,10 @@ namespace DBI.Data
         public DbSet<DAILY_ACTIVITY_PRODUCTION> DAILY_ACTIVITY_PRODUCTION { get; set; }
         public DbSet<CUSTOMER_SURVEY_FIELDSETS> CUSTOMER_SURVEY_FIELDSETS { get; set; }
         public DbSet<CUSTOMER_SURVEY_OPTIONS> CUSTOMER_SURVEY_OPTIONS { get; set; }
-        public DbSet<CROSSING> CROSSINGS { get; set; }
         public DbSet<OVERHEAD_BUDGET_VERSION> OVERHEAD_BUDGET_VERSION { get; set; }
         public DbSet<OVERHEAD_BUDGET_TYPE> OVERHEAD_BUDGET_TYPE { get; set; }
         public DbSet<DAILY_ACTIVITY_EMPLOYEE> DAILY_ACTIVITY_EMPLOYEE { get; set; }
+        public DbSet<CROSSING_CONTACTS> CROSSING_CONTACTS { get; set; }
+        public DbSet<CROSSING> CROSSINGS { get; set; }
     }
 }

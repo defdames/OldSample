@@ -58,6 +58,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Store uxChoosePerDiemHeaderIdStore;
         
         /// <summary>
+        /// uxChoosePerDiemTask control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ComboBox uxChoosePerDiemTask;
+        
+        /// <summary>
+        /// uxChoosePerDiemTaskStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxChoosePerDiemTaskStore;
+        
+        /// <summary>
         /// uxChoosePerDiemSubmitButton control.
         /// </summary>
         /// <remarks>
@@ -65,5 +83,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxChoosePerDiemSubmitButton;
+        
+        /// <summary>
+        /// uxChoosePerDiemCancelButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxChoosePerDiemCancelButton;
     }
 }

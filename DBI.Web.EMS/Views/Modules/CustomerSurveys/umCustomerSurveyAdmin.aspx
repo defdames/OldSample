@@ -21,6 +21,14 @@
             }
             return r.data.QUESTION_TYPE_NAME;
         };
+
+        var FieldsetRenderer = function (value) {
+            var r = App.uxQuestionFieldSetStore.getById(value);
+            if (Ext.isEmpty(r)) {
+                return "";
+            }
+            return r.data.TITLE;
+        };
     </script>
 </head>
 <body>
@@ -106,7 +114,7 @@
                         <ext:PagingToolbar runat="server" />
                     </BottomBar>
                     <Listeners>
-                        <Select Handler="#{uxQuestionsStore}.reload(); #{uxFieldsetsStore}.reload();" />
+                        <Select Handler="#{uxQuestionsStore}.reload(); #{uxFieldsetsStore}.reload(); #{uxQuestionFieldSetStore}.reload()" />
                     </Listeners>
                 </ext:GridPanel>
                 <ext:Panel runat="server" Layout="AutoLayout" Title="Form Information" ID="uxBottomPanel">
@@ -184,6 +192,7 @@
                                                 <ext:ModelField Name="TEXT" Type="String" />
                                                 <ext:ModelField Name="QUESTION_TYPE_NAME" Type="String" />
                                                 <ext:ModelField Name="TYPE_ID" Type="Int" />
+                                                <ext:ModelField Name="FIELDSET_ID" Type="Int" />
                                                 <ext:ModelField Name="TITLE" Type="String" />
                                                 <ext:ModelField Name="IS_REQUIRED" Type="Boolean" />
                                                 <ext:ModelField Name="SORT_ORDER" Type="Int" />
@@ -212,7 +221,7 @@
                                                 <Store>
                                                     <ext:Store runat="server" ID="uxQuestionTypeStore" OnReadData="deReadQuestionTypes" AutoDataBind="true">
                                                         <Model>
-                                                            <ext:Model runat="server" IDProperty="TYPE_ID">
+                                                            <ext:Model runat="server" Name="Question" IDProperty="TYPE_ID">
                                                                 <Fields>
                                                                     <ext:ModelField Name="QUESTION_TYPE_NAME" />
                                                                     <ext:ModelField Name="TYPE_ID" />
@@ -227,8 +236,32 @@
                                             </ext:ComboBox>
                                         </Editor>
                                     </ext:Column>
-                                    <ext:Column runat="server" DataIndex="TITLE" Text="Fieldset" />
-                                    <ext:BooleanColumn runat="server" DataIndex="IS_REQUIRED" TrueText="Yes" FalseText="No" Text="Required" />
+                                    <ext:Column runat="server" DataIndex="FIELDSET_ID" Text="Fieldset">
+                                        <Renderer Fn="FieldsetRenderer" />
+                                        <Editor>
+                                            <ext:ComboBox runat="server" ForceSelection="true" TypeAhead="true" QueryMode="Local" DisplayField="TITLE" ValueField="FIELDSET_ID">
+                                                <Store>
+                                                    <ext:Store runat="server" ID="uxQuestionFieldSetStore" OnReadData="deReadQuestionFieldSets" AutoDataBind="true">
+                                                        <Model>
+                                                            <ext:Model runat="server" Name="Fieldset" IDProperty="FIELDSET_ID">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="TITLE" />
+                                                                    <ext:ModelField Name="FIELDSET_ID" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                        <Proxy>
+                                                            <ext:PageProxy />
+                                                        </Proxy>
+                                                        <%--<Parameters>
+                                                            <ext:StoreParameter Name="FormId" Value="#{uxFormsGrid}.getSelectionModel().getSelection()[0].data.FORM_ID" Mode="Raw" />
+                                                        </Parameters>--%>
+                                                    </ext:Store>
+                                                </Store>
+                                            </ext:ComboBox>
+                                        </Editor>
+                                    </ext:Column>
+                                    <ext:CheckColumn runat="server" DataIndex="IS_REQUIRED" Text="Required" Editable="true" />
                                     <ext:Column runat="server" DataIndex="SORT_ORDER" Text="Sort Order">
                                         <Editor>
                                             <ext:NumberField runat="server" />
@@ -250,10 +283,19 @@
                                 <ext:Toolbar runat="server">
                                     <Items>
                                         <ext:Button runat="server" Icon="ApplicationAdd" Text="Add Question">
-
+                                            <Listeners>
+                                                <Click Handler="#{uxQuestionsStore}.insert(0, new Question())" />
+                                            </Listeners>
                                         </ext:Button>
                                         <ext:Button runat="server" Icon="Add" Text="Save">
-
+                                            <DirectEvents>
+                                                <Click OnEvent="deSaveQuestions">
+                                                    <EventMask ShowMask="true" />
+                                                    <ExtraParams>
+                                                        <ext:Parameter Name="data" Value="#{uxQuestionsStore}.getChangedData()" Mode="Raw" Encode="true" />
+                                                    </ExtraParams>
+                                                </Click>
+                                            </DirectEvents>
                                         </ext:Button>
                                     </Items>
                                 </ext:Toolbar>
