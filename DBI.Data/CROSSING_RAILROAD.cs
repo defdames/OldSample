@@ -17,11 +17,15 @@ namespace DBI.Data
         public CROSSING_RAILROAD()
         {
             this.CROSSING_PROJECT = new HashSet<CROSSING_PROJECT>();
+            this.CROSSING_CONTACTS = new HashSet<CROSSING_CONTACTS>();
+            this.CROSSINGS = new HashSet<CROSSING>();
         }
     
         public decimal RAILROAD_ID { get; set; }
         public string RAILROAD { get; set; }
     
         public virtual ICollection<CROSSING_PROJECT> CROSSING_PROJECT { get; set; }
+        public virtual ICollection<CROSSING_CONTACTS> CROSSING_CONTACTS { get; set; }
+        public virtual ICollection<CROSSING> CROSSINGS { get; set; }
     }
 }
