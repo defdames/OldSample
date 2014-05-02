@@ -17,7 +17,14 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-           
+            if (!validateComponentSecurity("SYS.TimeClock.Payroll"))
+            {
+                GetEnployeesHourData();
+            }
+            else
+            {
+                X.Redirect("~/Views/uxDefault.aspx");
+            }
         }
 
         protected void GetEnployeesHourData()
