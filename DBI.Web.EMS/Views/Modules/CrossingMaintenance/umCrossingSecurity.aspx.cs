@@ -10,26 +10,47 @@ using Ext.Net;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
-    public partial class umCrossingSecurity : System.Web.UI.Page
+    public partial class umCrossingSecurity : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!validateComponentSecurity("SYS.CrossingMaintenance.InformationView"))
+            {
+                X.Redirect("~/Views/uxDefault.aspx");
 
+            }
         }
         protected void deSecurityProjectGrid(object sender, StoreReadDataEventArgs e)
         {
             {
-            List<WEB_PROJECTS_V> dataIn;
-           
-                dataIn = WEB_PROJECTS_V.ProjectList();
-            
-            int count;
-            //Get paged, filterable list of data
-            List<WEB_PROJECTS_V> data = GenericData.EnumerableFilterHeader<WEB_PROJECTS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
+                if (validateComponentSecurity("SYS.CrossingMaintenance.InformationView"))
+                {
+                    List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
+                    using (Entities _context = new Entities())
+                    {                        
+                        var data = (from v in _context.PROJECTS_V
+                                    where v.PROJECT_TYPE == "CUSTOMER BILLING" && v.TEMPLATE_FLAG == "N" && v.PROJECT_STATUS_CODE == "APPROVED" && OrgsList.Contains(v.CARRYING_OUT_ORGANIZATION_ID) && v.ORGANIZATION_NAME.Contains(" RR")
+                                    select new { v.PROJECT_ID, v.LONG_NAME, v.ORGANIZATION_NAME, v.SEGMENT1 }).ToList<object>();
 
-            e.Total = count;
-            uxCurrentSecurityProjectStore.DataSource = data;
-            uxCurrentSecurityProjectStore.DataBind();
+
+                        //uxProjectGrid.Store.Primary.DataSource = data;
+                        int count;
+                        uxCurrentSecurityProjectStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                        e.Total = count;
+                        
+                    }
+                    //List<WEB_PROJECTS_V> dataIn;
+
+                    //dataIn = WEB_PROJECTS_V.ProjectList();
+
+                    //int count;
+                    ////Get paged, filterable list of data
+                    //List<WEB_PROJECTS_V> data = GenericData.EnumerableFilterHeader<WEB_PROJECTS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
+
+                    //e.Total = count;
+                    //uxCurrentSecurityProjectStore.DataSource = data;
+                    //uxCurrentSecurityProjectStore.DataBind();
+                }
             }
         }
      
@@ -121,9 +142,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                             Delete = _context.CROSSING_RELATIONSHIP.Where(x => (x.CROSSING_ID == crossing.CROSSING_ID) && x.PROJECT_ID == ProjectId).First();
                         }
                         GenericData.Delete<CROSSING_RELATIONSHIP>(Delete);
+                        uxAssignedCrossingStore.Reload();
                     }
-                uxCurrentSecurityProjectStore.Reload();
-                uxAssignedCrossingStore.Reload();
+               
+               
 
                 Notification.Show(new NotificationConfig()
                 {

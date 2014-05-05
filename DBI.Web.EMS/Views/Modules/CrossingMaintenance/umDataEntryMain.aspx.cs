@@ -14,7 +14,34 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            LoadSelectRailroad();
 
         }
+
+
+        protected void LoadSelectRailroad()
+        {
+            List<object> data;
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.CROSSING_RAILROAD
+
+                        select new { d.RAILROAD, d.RAILROAD_ID }).ToList<object>();
+            }
+            uxRailRoadCI.Store.Primary.DataSource = data;
+        }
+
+
+        //protected void deSaveRRSelection(object sender, DirectEventArgs e)
+        //{
+        //    long RailroadId = long.Parse(Request.QueryString["RailroadId"]);
+        //    List<object> data;
+        //    using (Entities _context = new Entities())
+        //    {
+        //        data = (from d in _context.CROSSING_RAILROAD
+        //                where d.RAILROAD_ID == RailroadId
+        //                select new { d.RAILROAD, d.RAILROAD_ID }).ToList<object>();
+        //    }
+        //}
     }
 }
