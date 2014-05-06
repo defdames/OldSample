@@ -128,7 +128,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
             if (data != null)
             {
-                uxTime_InTextBox.Text = data.TIME_IN.ToString();
+                uxTime_InTextBox.Text = Convert.ToDateTime(data.TIME_IN).ToString("MM/dd/yyyy hh:mm tt");
                 uxTimeButton.Text = "Clock Out";
             }
             else
