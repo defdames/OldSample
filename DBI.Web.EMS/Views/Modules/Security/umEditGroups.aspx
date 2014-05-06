@@ -34,14 +34,14 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column runat="server" Text="Job Title" DataIndex="NAME" />
-                            <ext:Column runat="server" Text="Location" DataIndex="LOCATION" />
+                            <ext:Column runat="server" Text="Job Title" DataIndex="NAME" Flex="1" />
+                            <ext:Column runat="server" Text="Location" DataIndex="LOCATION" Flex="1" />
                         </Columns>
                     </ColumnModel>
                     <TopBar>
                         <ext:Toolbar runat="server">
                             <Items>
-                                <ext:Button runat="server" ID="uxManageGroupsButton" Text="Edit Group Permissions" Icon="ApplicationEdit">
+                                <ext:Button runat="server" ID="uxManageGroupsButton" Text="Edit Job Title Permissions" Icon="ApplicationEdit">
                                     <DirectEvents>
                                         <Click OnEvent="deLoadPermissionsWindow">
                                             <EventMask ShowMask="true" />
@@ -60,17 +60,13 @@
                     <Plugins>
                         <ext:FilterHeader runat="server" Remote="true" />
                     </Plugins>
-                    <DirectEvents>
-                        <SelectionChange OnEvent="deLoadPermissions">
-                            <ExtraParams>
-                                <ext:Parameter Name="JobId" Value="#{uxGroupsGrid}.getSelectionModel().getSelection()[0].data.JOB_ID" Mode="Raw" />
-                            </ExtraParams>
-                        </SelectionChange>
-                    </DirectEvents>
+                    <Listeners>
+                        <Select Handler="#{uxPermissionsStore}.reload()" />
+                    </Listeners>
                 </ext:GridPanel>
                 <ext:GridPanel runat="server" ID="uxPermissionsGrid" Region="Center">
                     <Store>
-                        <ext:Store runat="server" ID="uxPermissionsStore" AutoDataBind="true" RemoteSort="true" PageSize="10" OnReadData="deReadPermissions">
+                        <ext:Store runat="server" ID="uxPermissionsStore" AutoDataBind="true" RemoteSort="true" AutoLoad="false" PageSize="10" OnReadData="deReadPermissions">
                             <Model>
                                 <ext:Model runat="server">
                                     <Fields>
@@ -87,12 +83,15 @@
                             <Sorters>
                                 <ext:DataSorter Property="PERMISSION_NAME" Direction="ASC" />
                             </Sorters>
+                            <Parameters>
+                                <ext:StoreParameter Name="JobId" Value="#{uxGroupsGrid}.getSelectionModel().getSelection()[0].data.JOB_ID" Mode="Raw" />
+                            </Parameters>
                         </ext:Store>
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column runat="server" Text="Permission" DataIndex="PERMISSION_NAME" />
-                            <ext:Column runat="server" Text="Description" DataIndex="DESCRIPTION" />
+                            <ext:Column runat="server" Text="Permission" DataIndex="PERMISSION_NAME" Flex="1" />
+                            <ext:Column runat="server" Text="Description" DataIndex="DESCRIPTION" Flex="1" />
                         </Columns>
                     </ColumnModel>
                     <BottomBar>
@@ -194,6 +193,11 @@
                             </ExtraParams>
                         </Click>
                     </DirectEvents>
+                </ext:Button>
+                <ext:Button runat="server" Text="Cancel" Icon="Delete">
+                    <Listeners>
+                        <Click Handler="TwoGridSelector.removeAll(uxAvailablePermissions, uxSelectedPermissionsGrid); uxUpdateGroupPermissionWindow.hide()" />
+                    </Listeners>
                 </ext:Button>
             </Buttons>
         </ext:Window>

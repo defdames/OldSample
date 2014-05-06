@@ -95,7 +95,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
                             from projects in proj.DefaultIfEmpty()
                             where d.HEADER_ID == HeaderId
-                            select new EmployeeDetails {EMPLOYEE_ID=d.EMPLOYEE_ID, PERSON_ID=e.PERSON_ID, EMPLOYEE_NAME = e.EMPLOYEE_NAME, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS }).ToList();
+                            select new EmployeeDetails { EMPLOYEE_ID = d.EMPLOYEE_ID, PERSON_ID = e.PERSON_ID, EMPLOYEE_NAME = e.EMPLOYEE_NAME, LUNCH = d.LUNCH, LUNCH_LENGTH = d.LUNCH_LENGTH, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS }).ToList();
                 foreach (var item in data)
                 {
                     double Hours = Math.Truncate((double)item.TRAVEL_TIME);
@@ -120,6 +120,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     if (EmployeeOver24 != null)
                     {
                         WarningList.Add(EmployeeOver24);
+                        X.Js.Call("parent.App.uxTabPostButton.disable(); parent.App.uxPostActivityButton.disable(); parent.App.uxApproveActivityButton.disable(); parent.App.uxTabApproveButton.disable()");
                     }
                     else
                     {
@@ -127,7 +128,20 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         if (EmployeeOver14 != null)
                         {
                             WarningList.Add(EmployeeOver14);
+                            
                         }
+                    }
+                    WarningData LunchFailure = ValidationChecks.LunchCheck(item.PERSON_ID, item.TIME_IN);
+                    if (LunchFailure != null)
+                    {
+                        WarningList.Add(LunchFailure);
+                        X.Js.Call("parent.App.uxTabPostButton.disable(); parent.App.uxPostActivityButton.disable(); parent.App.uxApproveActivityButton.disable(); parent.App.uxTabApproveButton.disable()");
+                    }
+                    List<WarningData> DuplicatePerDiems = ValidationChecks.checkPerDiem(item.EMPLOYEE_ID, item.HEADER_ID);
+                    if (DuplicatePerDiems.Count > 0)
+                    {
+                        WarningList.AddRange(DuplicatePerDiems);
+                        X.Js.Call("parent.App.uxTabPostButton.disable(); parent.App.uxPostActivityButton.disable(); parent.App.uxApproveActivityButton.disable(); parent.App.uxTabApproveButton.disable()");
                     }
                     
                 }

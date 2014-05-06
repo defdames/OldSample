@@ -13,7 +13,7 @@ using DBI.Data.DataFactory;
 
 namespace DBI.Web.EMS.Views.Modules.TimeClock
 {
-    public partial class WebForm2 : System.Web.UI.Page
+    public partial class WebForm2 : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -21,42 +21,72 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
             GetEmployeeHoursData();
             
         }
+
         protected void GetEmployeeHoursData()
         {
 
             decimal person_id = Convert.ToDecimal(Authentication.GetClaimValue("PersonId", User as ClaimsPrincipal));
-
+            
+            
 
             using (Entities _context = new Entities())
-            {
-                var data = (from tc in _context.TIME_CLOCK
-                            join ev in _context.EMPLOYEES_V on tc.PERSON_ID equals ev.PERSON_ID
-                            where tc.SUPERVISOR_ID == person_id && tc.COMPLETED == "Y"                                                        
-                            select new EmployeeTime { TIME_IN = (DateTime)tc.TIME_IN, TIME_OUT = (DateTime)tc.TIME_OUT, EMPLOYEE_NAME = ev.EMPLOYEE_NAME, DAY_OF_WEEK = tc.DAY_OF_WEEK, TIME_CLOCK_ID = tc.TIME_CLOCK_ID}).ToList();
-               
-                foreach (var item in data)
+            {   //Manager Query
+                if (!validateComponentSecurity("SYS.TimeClock.Manager"))
                 {
-                    TimeSpan ts = item.TIME_OUT - item.TIME_IN;
-                    DateTime dow = item.TIME_IN;
-                    
-                    //Calcualtion to round time to quarter increments and display the adjusted hours
-                    double adjtime = (ts.Minutes > 0 && ts.Minutes <= 8) ? 0
-                         : (ts.Minutes > 8 && ts.Minutes <= 23) ? .25
-                         : (ts.Minutes > 23 && ts.Minutes <= 38) ? .50
-                         : (ts.Minutes > 38 && ts.Minutes <= 53) ? .75
-                         : (ts.Minutes > 53 && ts.Minutes <= 60) ? 1
-                         : 0;
-                 
-                    decimal fixedtime = ts.Hours + (decimal)adjtime;
-                    TimeSpan fixedtime2 = TimeSpan.FromHours(decimal.ToDouble(fixedtime));
-                    item.TOTAL_HOURS = fixedtime2.ToString("hh\\:mm");
+                    var data = (from tc in _context.TIME_CLOCK
+                                join ev in _context.EMPLOYEES_V on tc.PERSON_ID equals ev.PERSON_ID
+                                where tc.SUPERVISOR_ID == person_id && tc.COMPLETED == "Y"
+                                select new EmployeeTime { TIME_IN = (DateTime)tc.TIME_IN, TIME_OUT = (DateTime)tc.TIME_OUT, EMPLOYEE_NAME = ev.EMPLOYEE_NAME, DAY_OF_WEEK = tc.DAY_OF_WEEK, TIME_CLOCK_ID = tc.TIME_CLOCK_ID, ADJUSTED_HOURS = tc.ADJUSTED_HOURS, ACTUAL_HOURS = tc.ACTUAL_HOURS }).ToList();
 
-                    item.ACTUAL_HOURS = ts.ToString("hh\\:mm");
-                   
-                    
+
+                    foreach (var item in data)
+                    {
+                        TimeSpan ts = item.TIME_OUT - item.TIME_IN;
+                        DateTime dow = item.TIME_IN;
+
+
+
+
+                        TimeSpan adjustedhours = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_HOURS.Value));
+                        item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("hh\\:mm");
+
+
+                        TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
+                        item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");
+
+
+                    }
+                    uxEmployeeHoursStore.DataSource = data;
+
                 }
-                uxEmployeeHoursStore.DataSource = data;
-                
+
+                else if (!validateComponentSecurity("SYS.TimeClock.Payroll"))
+                {   //Payroll query
+                     var data = (from tc in _context.TIME_CLOCK
+                                join ev in _context.EMPLOYEES_V on tc.PERSON_ID equals ev.PERSON_ID
+                                where tc.COMPLETED == "Y"
+                                select new EmployeeTime { TIME_IN = (DateTime)tc.TIME_IN, TIME_OUT = (DateTime)tc.TIME_OUT, EMPLOYEE_NAME = ev.EMPLOYEE_NAME, DAY_OF_WEEK = tc.DAY_OF_WEEK, TIME_CLOCK_ID = tc.TIME_CLOCK_ID, ADJUSTED_HOURS = tc.ADJUSTED_HOURS, ACTUAL_HOURS = tc.ACTUAL_HOURS }).ToList();
+
+
+                    foreach (var item in data)
+                    {
+                        TimeSpan ts = item.TIME_OUT - item.TIME_IN;
+                        DateTime dow = item.TIME_IN;
+
+
+
+
+                        TimeSpan adjustedhours = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_HOURS.Value));
+                        item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("hh\\:mm");
+
+
+                        TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
+                        item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");
+
+
+                    }
+                    uxEmployeeHoursStore.DataSource = data;
+                }
 
             }
 
@@ -74,7 +104,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
             {
                  data = (from tc in _context.TIME_CLOCK
                             join ev in _context.EMPLOYEES_V on tc.PERSON_ID equals ev.PERSON_ID
-                            where tc.SUPERVISOR_ID == person_id && tc.COMPLETED == "Y" && tc.TIME_CLOCK_ID  == Approved.TIME_CLOCK_ID
+                            where tc.COMPLETED == "Y" && tc.TIME_CLOCK_ID == Approved.TIME_CLOCK_ID  //Took out tc.SUPERVISOR_ID == person_id
                             select tc).SingleOrDefault();
             }
                 data.APPROVED = "Y";
@@ -82,11 +112,6 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
             }
         }
       
-
-        protected void deUpdateEmployeeGrid(object sender, StoreReadDataEventArgs e)
-        {
-
-        }
 
    
     }
@@ -97,9 +122,11 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
         public string EMPLOYEE_NAME { get; set; }
         public DateTime TIME_IN { get; set; }
         public DateTime TIME_OUT { get; set; }
-        public string TOTAL_HOURS { get; set; }
+        public string ADJUSTED_HOURS_GRID { get; set; }
         public string DAY_OF_WEEK { get; set; }
-        public string ACTUAL_HOURS { get; set; }
+        public string ACTUAL_HOURS_GRID { get; set; }
+        public decimal? ACTUAL_HOURS { get; set; }
+        public decimal? ADJUSTED_HOURS { get; set; }
         
     }
 }

@@ -1,4 +1,17 @@
-﻿var TwoGridSelector = {
+﻿Ext.net.FilterHeader.behaviour.string[0].match = function (recordValue, matchValue) {
+    return (Ext.net.FilterHeader.behaviour.getStrValue(recordValue) || "").indexOf(matchValue) > -1;
+};
+
+
+Ext.net.FilterHeader.behaviour.string[0].serialize = function (value) {
+    return {
+        type: "string",
+        op: "*",
+        value: value
+    };
+};
+
+var TwoGridSelector = {
     add: function (source, destination) {
         if (source.selModel.hasSelection()) {
             var records = source.selModel.getSelection();

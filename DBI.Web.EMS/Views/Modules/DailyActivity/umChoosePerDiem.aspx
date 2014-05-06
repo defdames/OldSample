@@ -13,37 +13,67 @@
 			<Items>
 				<ext:FormPanel runat="server" ID="uxChoosePerDiemFormPanel" Layout="FormLayout">
 					<Items>
-						<ext:ComboBox runat="server" ID="uxChoosePerDiemHeaderId" DisplayField="LONG_NAME" ValueField="HEADER_ID" FieldLabel="Per Diem" EmptyText="Choose Project for Per Diem" ForceSelection="true" LabelWidth="100" Width="500">
+						<ext:ComboBox runat="server" ID="uxChoosePerDiemHeaderId" DisplayField="ProjectTask" ValueField="HeaderId" AllowBlank="false" 
+							FieldLabel="Project" EmptyText="Choose Project for Per Diem" ForceSelection="true" LabelWidth="100" Width="500">
 							<Store>
 								<ext:Store runat="server" ID="uxChoosePerDiemHeaderIdStore">
 									<Model>
 										<ext:Model runat="server">
 											<Fields>
-												<ext:ModelField Name="HEADER_ID" />
-												<ext:ModelField Name="LONG_NAME" />
+												<ext:ModelField Name="HeaderId" />
+												<ext:ModelField Name="ProjectTask" />
 											</Fields>
 										</ext:Model>
 									</Model>
 								</ext:Store>
 							</Store>
+							<Listeners>
+								<Select Handler="#{uxChoosePerDiemTaskStore}.reload()" />
+							</Listeners>
+						</ext:ComboBox>
+						<ext:ComboBox runat="server" ID="uxChoosePerDiemTask" DisplayField="DESCRIPTION" ValueField="TASK_ID" FieldLabel="Task" AllowBlank="false" 
+							EmptyText="Choose Task for Per Diem" ForceSelection="true" QueryMode="Local" TypeAhead="true">
+							<Store>
+								<ext:Store runat="server" ID="uxChoosePerDiemTaskStore" AutoDataBind="true" AutoLoad="false" OnReadData="deReadTasks">
+									<Model>
+										<ext:Model runat="server">
+											<Fields>
+												<ext:ModelField Name="DESCRIPTION" />
+												<ext:ModelField Name="TASK_ID" />
+											</Fields>
+										</ext:Model>
+									</Model>
+									<Parameters>
+										<ext:StoreParameter Name="HeaderId" Value="#{uxChoosePerDiemHeaderId}.value" Mode="Raw" />
+									</Parameters>
+								</ext:Store>
+							</Store>
 						</ext:ComboBox>
 					</Items>
 					<Buttons>
-						<ext:Button runat="server" Id="uxChoosePerDiemSubmitButton" Text="Submit">
+						<ext:Button runat="server" Id="uxChoosePerDiemSubmitButton" Text="Submit" Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deUpdatePerDiem">
 									<EventMask ShowMask="true" />
 								</Click>
 							</DirectEvents>
 						</ext:Button>
+						<ext:Button ID="uxChoosePerDiemCancelButton" runat="server" Text="Cancel" Icon="Delete">
+							<Listeners>
+								<Click Handler="#{uxChoosePerDiemFormPanel}.reset();
+									parentAutoLoadControl.hide()" />
+							</Listeners>
+						</ext:Button>
 					</Buttons>
+					<Listeners>
+						<ValidityChange Handler="#{uxChoosePerDiemSubmitButton}.setDisabled(!valid)" />
+					</Listeners>
 				</ext:FormPanel>
 			</Items>
 			<Listeners>
 				<AfterRender
 					Handler="var win = parentAutoLoadControl.target || parentAutoLoadControl, //you can use just 'parentAutoLoadControl' after update to Ext.NET v2 beta.
-									size = this.getSize();
- 
+								size = this.getSize();
 								size.height += 250;
 								size.width += 12;
 								win.setSize(size);"

@@ -83,6 +83,10 @@
 				<ext:StoreParameter Name="Type" Value="Edit" />
 			</Parameters>
 		</ext:Store>
+		<ext:Panel runat="server">
+			<Items>
+
+
 				<ext:FormPanel runat="server"
 					ID="uxAddInventoryForm"
 					Layout="FormLayout"
@@ -511,7 +515,8 @@
 						<ValidityChange Handler="#{uxEditEmployeeSubmit}.setDisabled(!valid);" />
 					</Listeners>
 				</ext:FormPanel>
-			<%--<Listeners>
+			</Items>
+			<Listeners>
 				<AfterRender
 					Handler="var win = parentAutoLoadControl.target || parentAutoLoadControl, //you can use just 'parentAutoLoadControl' after update to Ext.NET v2 beta.
 									size = this.getSize();
@@ -520,7 +525,9 @@
 								size.width += 12;
 								win.setSize(size);"
 					Delay="100" />
-			</Listeners>--%>
+			</Listeners>
+		</ext:Panel>
+
 	</form>
 </body>
 </html>

@@ -22,6 +22,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             using (Entities _context = new Entities())
             {
+                List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
                 List<ReportFields> data = (from d in _context.DAILY_ACTIVITY_INVENTORY
                                            join i in _context.INVENTORY_V on d.ITEM_ID equals i.ITEM_ID into joined
                                            join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
@@ -31,7 +32,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                            join u in _context.UNIT_OF_MEASURE_V on d.UNIT_OF_MEASURE equals u.UOM_CODE
                                            where d.DAILY_ACTIVITY_HEADER.STATUS == 3
                                            from j in joined
-                                           where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
+                                           where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID && OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID)
                                            select new ReportFields { HeaderId = d.HEADER_ID, ProjectId = p.SEGMENT1, ProjectDescription = p.LONG_NAME, OrgName = p.ORGANIZATION_NAME, TaskNumber = t.TASK_NUMBER, ActivityDate = h.DA_DATE, ItemNumber = j.SEGMENT1, ItemDescription = j.DESCRIPTION, Total = d.TOTAL, Units = u.UOM_CODE, Inventory = j.INV_NAME, SubInventory = d.SUB_INVENTORY_SECONDARY_NAME, State = h.STATE }).ToList<ReportFields>();
                 int count;
                 uxReportStore.DataSource = GenericData.EnumerableFilterHeader<ReportFields>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
