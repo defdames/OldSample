@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+<head id="Head1" runat="server">
     <title></title>
 </head>
 <body>
@@ -13,85 +13,40 @@
             <Items>
 
 
-                <%-------------------------------------------------- Org panel --------------------------------------------------%>
+                <%-------------------------------------------------- Company and org panels --------------------------------------------------%>
                 <ext:TreePanel
                     ID="uxOrgPanel"
                     runat="server"
+                    Title="Organizations"
+                    BodyPadding="6"
                     Region="West"
                     Weight="100"
-                    Title="Organizations"
-                    Collapsible="true"
-                    Width="225"
-                    BodyPadding="6"
-                    AutoScroll="true">
-                    <TopBar>
-                        <ext:Toolbar ID="uxOrgToolbar" runat="server">
-                            <Items>
-                                <ext:Button ID="uxExpandAll" runat="server" Text="Expand All" Icon="BulletToggleMinus">
-                                    <Listeners>
-                                        <Click Handler="#{uxOrgPanel}.expandAll();" />
-                                    </Listeners>
-                                </ext:Button>
-                                <ext:Button ID="uxCollapseAll" runat="server" Text="Collapse All" Icon="BulletTogglePlus">
-                                    <Listeners>
-                                        <Click Handler="#{uxOrgPanel}.collapseAll();" />
-                                    </Listeners>
-                                </ext:Button>
-                            </Items>
-                        </ext:Toolbar>
-                    </TopBar>
-
-                    <%-- NEW --%>
+                    Width="300"
+                    AutoScroll="true"
+                    RootVisible="true"
+                    SingleExpand="true"
+                    Lines="false"
+                    FolderSort="true"
+                    UseArrows="true">
                     <Store>
-                        <ext:TreeStore ID="TreeStore1" runat="server" OnReadData="LoadHierarchyTree">
+                        <ext:TreeStore ID="TreeStore1" runat="server" OnReadData="LoadOrgTree">
                             <Proxy>
                                 <ext:PageProxy></ext:PageProxy>
                             </Proxy>
                         </ext:TreeStore>
                     </Store>
                     <Root>
-                        <ext:Node NodeID="0" Text="All Legal Entities" Expanded="true" />
+                        <ext:Node NodeID="0" Text="All Companies" Expanded="true" />
                     </Root>
                     <SelectionModel>
-                        <ext:TreeSelectionModel ID="uxHierarchyTreeSelectionModel" runat="server" Mode="Single"></ext:TreeSelectionModel>
+                        <ext:TreeSelectionModel ID="uxCompanySelectionModel" runat="server" Mode="Single"></ext:TreeSelectionModel>
                     </SelectionModel>
-                    <%-- NEW --%>
-
-
-                    <%--<Root>
-                        <ext:Node Text="DBI" Expanded="true" Icon="BulletBlack">
-                            <Children>
-                                <ext:Node Text="Region 1" Icon="BulletGreen">
-                                    <Children>
-                                        <ext:Node Text="Butler Branch" Icon="BulletBlue">
-                                            <Children>
-                                                <ext:Node Text="Butler DOT" Icon="BulletPurple" Leaf="true" />
-                                                <ext:Node Text="Butler IVM" Icon="BulletPurple" Leaf="true" />
-                                                <ext:Node Text="Butler SW" Icon="BulletPurple" Leaf="true" />
-                                            </Children>
-                                        </ext:Node>
-                                        <ext:Node Text="Lewistown Branch" Icon="BulletBlue">
-                                            <Children>
-                                                <ext:Node Text="Lewistown DOT" Icon="BulletPurple" Leaf="true" />
-                                                <ext:Node Text="Lewistown IVM" Icon="BulletPurple" Leaf="true" />
-                                                <ext:Node Text="Lewistown SW" Icon="BulletPurple" Leaf="true" />
-                                            </Children>
-                                        </ext:Node>
-                                        <ext:Node Text="Hazleton IVM" Icon="BulletRed" Leaf="true">
-                                        </ext:Node>
-                                        <ext:Node Text="Hazleton DOT" Icon="BulletRed" Leaf="true">
-                                            <Children>
-                                            </Children>
-                                        </ext:Node>
-                                    </Children>
-                                </ext:Node>
-                                <ext:Node Text="Region 2" Icon="BulletGreen" Leaf="true">
-                                </ext:Node>
-                            </Children>
-                        </ext:Node>
-                    </Root>--%>
                     <DirectEvents>
-                        <Select OnEvent="deLoadCorrectBudgetType" />
+                        <ItemClick OnEvent="deLoadCorrectBudgetType">
+                            <ExtraParams>
+                                <ext:Parameter Name="id" Value="record.data.id" Mode="Raw" />
+                            </ExtraParams>
+                        </ItemClick>
                     </DirectEvents>
                 </ext:TreePanel>
 
@@ -104,36 +59,6 @@
                 <ext:Toolbar ID="uxMainToolbar" runat="server" Region="North">
                     <Items>
                         <ext:ComboBox ID="uxFiscalYear"
-                            runat="server"
-                            DisplayField="ORG_HIER"
-                            ValueField="ORG_HIER"
-                            Width="120"
-                            EmptyText="-- Year --"
-                            Editable="false">
-                            <Store>
-                                <ext:Store ID="uxFiscalYearStore" runat="server" OnReadData="Test" AutoLoad="false">
-                                    <Model>
-                                        <ext:Model ID="Model1" runat="server">
-                                            <Fields>
-                                                <ext:ModelField Name="ORG_HIER" />
-                                            </Fields>
-                                        </ext:Model>
-                                    </Model>
-                                    <Proxy>
-                                        <ext:PageProxy />
-                                    </Proxy>
-                                </ext:Store>
-                            </Store>
-                            <Listeners>
-                                <Activate Handler="#{uxFiscalYearStore}.store.reload();" />
-                            </Listeners>
-<%--                            <DirectEvents>
-                                <Select OnEvent="deLoadCorrectBudgetType">
-                                </Select>
-                            </DirectEvents>--%>
-                        </ext:ComboBox>
-
-                        <%--                        <ext:ComboBox ID="uxFiscalYear"
                             runat="server"
                             DisplayField="END_DATE"
                             ValueField="END_DATE"
@@ -161,7 +86,7 @@
                                 <Select OnEvent="deLoadCorrectBudgetType">
                                 </Select>
                             </DirectEvents>
-                        </ext:ComboBox>--%>
+                        </ext:ComboBox>
 
                         <ext:Label ID="uxSpace1" runat="server" Width="10" />
 

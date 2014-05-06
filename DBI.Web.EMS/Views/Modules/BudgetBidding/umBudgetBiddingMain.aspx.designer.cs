@@ -13,6 +13,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
     public partial class umBudgetBiddingMain {
         
         /// <summary>
+        /// Head1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlHead Head1;
+        
+        /// <summary>
         /// form1 control.
         /// </summary>
         /// <remarks>
@@ -49,33 +58,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.TreePanel uxOrgPanel;
         
         /// <summary>
-        /// uxOrgToolbar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Toolbar uxOrgToolbar;
-        
-        /// <summary>
-        /// uxExpandAll control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxExpandAll;
-        
-        /// <summary>
-        /// uxCollapseAll control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxCollapseAll;
-        
-        /// <summary>
         /// TreeStore1 control.
         /// </summary>
         /// <remarks>
@@ -85,13 +67,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.TreeStore TreeStore1;
         
         /// <summary>
-        /// uxHierarchyTreeSelectionModel control.
+        /// uxCompanySelectionModel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TreeSelectionModel uxHierarchyTreeSelectionModel;
+        protected global::Ext.Net.TreeSelectionModel uxCompanySelectionModel;
         
         /// <summary>
         /// uxSpacerBar control.
