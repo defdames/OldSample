@@ -170,8 +170,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             data.TASK_ID = TaskId;
             data.WORK_AREA = uxEditProductionWorkArea.Value.ToString();
-            data.POLE_FROM = uxEditProductionPoleFrom.Value.ToString();
-            data.POLE_TO = uxEditProductionPoleTo.Value.ToString();
+            try
+            {
+                data.POLE_FROM = uxEditProductionPoleFrom.Value.ToString();
+            }
+            catch
+            {
+                data.POLE_FROM = null;
+            }
+            try
+            {
+                data.POLE_TO = uxEditProductionPoleTo.Value.ToString();
+            }
+            catch
+            {
+                data.POLE_TO = null;
+            }
             data.ACRES_MILE = AcresPerMile;
             data.QUANTITY = Gallons;
             data.MODIFY_DATE = DateTime.Now;
