@@ -60,7 +60,6 @@ namespace DBI.Data.Oracle.HR
                         INNER JOIN          apps.hr_all_organization_units haou on haou.organization_id = c.organization_id_child
                         WHERE               SYSDATE BETWEEN b.date_from and nvl(b.date_to,'31-DEC-4712')
                         AND                 a.organization_structure_id = " + hierarchyID.ToString() + @"
-                        AND                 haou.type is not null
                         START WITH          c.organization_id_parent = " + organizationID.ToString() + @" AND a.organization_structure_id + 0 = " + hierarchyID.ToString() + @"
                         CONNECT BY PRIOR    c.organization_id_child = c.organization_id_parent AND a.organization_structure_id + 0 = " + hierarchyID.ToString() + @"
                         ORDER SIBLINGS BY   c.d_child_name";

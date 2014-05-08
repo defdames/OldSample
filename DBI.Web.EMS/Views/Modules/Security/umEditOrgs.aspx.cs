@@ -9,6 +9,7 @@ using DBI.Core.Web;
 using DBI.Core.Security;
 using DBI.Data;
 using Ext.Net;
+using DBI.Data.Oracle.HR;
 
 namespace DBI.Web.EMS.Views.Modules.Security
 {
@@ -31,7 +32,7 @@ namespace DBI.Web.EMS.Views.Modules.Security
                     long _hierarchyID = long.Parse(_selectedID[1].ToString());
                     long _organizationID = long.Parse(_selectedID[0].ToString());
 
-                    var data = ORGANIZATIONS.organizationsByHierarchy(_hierarchyID, _organizationID);
+                    var data = Organizations.organizationsByHierarchy(_hierarchyID, _organizationID);
 
                     uxOrganizationSecurityStore.DataSource = data;
                 }
