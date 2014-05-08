@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Ext.Net;
 using DBI.Data;
+using DBI.Data.Oracle.HR;
 
 using System.Security.Claims;
 
@@ -111,7 +112,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
                 if (e.NodeID == "0")
                 {
-                    var data = ORGANIZATIONS.legalEntities();
+                    var data = Organizations.legalEntities(); //legalEntitiesWithActiveBudgetTypes();
                     foreach (var view in data)
                     {
                         Node node = new Node();
@@ -124,7 +125,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 else
                 {
                     long nodeID = long.Parse(e.NodeID);
-                    var data = _context.Database.SqlQuery<HIERARCHY_TREEVIEW>(sql).Where(a => a.ORGANIZATION_ID == nodeID).ToList();
+                    var data = Organizations.hierarchiesByBusinessUnit();// _context.Database.SqlQuery<HIERARCHY_TREEVIEW>(sql).Where(a => a.ORGANIZATION_ID == nodeID).ToList();
                     foreach (var view in data)
                     {
                         Node node = new Node();
@@ -141,7 +142,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 string[] _selectedID = e.NodeID.Split(_delimiterChars);
                 long _hierarchyID = long.Parse(_selectedID[1].ToString());
                 long _organizationID = long.Parse(_selectedID[0].ToString());
-                var data = ORGANIZATIONS.organizationsByHierarchy(_hierarchyID, _organizationID);
+                var data = Organizations.organizationsByHierarchy(_hierarchyID, _organizationID);
 
                 foreach (var view in data)
                 {
@@ -152,7 +153,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                         node.NodeID = string.Format("{0}:{1}", view.ORGANIZATION_ID.ToString(), _hierarchyID.ToString());
 
                         // Is it a leaf org?
-                        var data1 = ORGANIZATIONS.organizationsByHierarchy(_hierarchyID, view.ORGANIZATION_ID);
+                        var data1 = Organizations.organizationsByHierarchy(_hierarchyID, view.ORGANIZATION_ID);
                         node.Leaf = true;
                         foreach (var view1 in data1)
                         {
