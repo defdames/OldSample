@@ -635,6 +635,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 			}
 		}
 
+        protected List<EquipmentDetails> GetEquipment(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
+                var data = (from e in _context.DAILY_ACTIVITY_EQUIPMENT
+                            join p in _context.CLASS_CODES_V on e.PROJECT_ID equals p.PROJECT_ID
+                            where e.HEADER_ID == HeaderId
+                            select new EquipmentDetails { CLASS_CODE = p.CLASS_CODE, ORGANIZATION_NAME = p.ORGANIZATION_NAME, ODOMETER_START = e.ODOMETER_START, ODOMETER_END = e.ODOMETER_END, PROJECT_ID = e.PROJECT_ID, EQUIPMENT_ID = e.EQUIPMENT_ID, NAME = p.NAME, HEADER_ID = e.HEADER_ID }).ToList();
+                return data;
+            }
+        }
 		/// <summary>
 		/// Get Production information
 		/// </summary>
@@ -1131,6 +1142,74 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 				{
 
 				}
+
+                try
+                {
+                    //Get Equipment Data
+                    var EquipmentData = GetEquipment(HeaderId);
+                    PdfPTable EquipmentTable = new PdfPTable(6);
+
+                    Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase("Project ID", HeaderFont)),
+                        new PdfPCell(new Phrase("Name", HeaderFont)),
+                        new PdfPCell(new Phrase("Class Code", HeaderFont)),
+                        new PdfPCell(new Phrase("Organization Name", HeaderFont)),
+                        new PdfPCell(new Phrase("Odometer Start", HeaderFont)),
+                        new PdfPCell(new Phrase("Odometer End", HeaderFont))
+                    };
+
+                    Row = new PdfPRow(Cells);
+                    EquipmentTable.Rows.Add(Row);
+
+                    foreach (EquipmentDetails Equipment in EquipmentData)
+                    {
+                        string OdometerStart;
+                        string OdometerEnd;
+                        string ProjectId;
+                        try
+                        {
+                            OdometerStart = Equipment.ODOMETER_START.ToString();
+                        }
+                        catch (Exception)
+                        {
+                            OdometerStart = string.Empty;
+                        }
+                        try
+                        {
+                            OdometerEnd = Equipment.ODOMETER_END.ToString();
+                        }
+                        catch (Exception)
+                        {
+                            OdometerEnd = string.Empty;
+                        }
+                        try
+                        {
+                            ProjectId = Equipment.PROJECT_ID.ToString();
+                        }
+                        catch (Exception)
+                        {
+                            ProjectId = string.Empty;
+                        }
+
+                        Cells = new PdfPCell[]{
+                            new PdfPCell(new Phrase(ProjectId, CellFont)),
+                            new PdfPCell(new Phrase(Equipment.NAME, CellFont)),
+                            new PdfPCell(new Phrase(Equipment.CLASS_CODE, CellFont)),
+                            new PdfPCell(new Phrase(Equipment.ORGANIZATION_NAME, CellFont)),
+                            new PdfPCell(new Phrase(OdometerStart, CellFont)),
+                            new PdfPCell(new Phrase(OdometerEnd, CellFont))
+                        };
+
+                        Row = new PdfPRow(Cells);
+                        EquipmentTable.Rows.Add(Row);
+                    }
+                    ExportedPDF.Add(EquipmentTable);
+                    ExportedPDF.Add(NewLine);
+                }
+                catch (Exception)
+                {
+
+                }
 				try
 				{
 					//Get Production Data
@@ -1728,5 +1807,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 			uxPlaceholderWindow.LoadContent(string.Format("umChooseSupportProject.aspx?HeaderId={0}&EmployeeId={1}", HeaderId, EmployeeId));
 			uxPlaceholderWindow.Show();
 		}
+		
 	}
+
+    public class EquipmentDetails
+    {
+        public string CLASS_CODE { get; set; }
+        public string ORGANIZATION_NAME { get; set; }
+        public long? ODOMETER_START { get; set; }
+        public long? ODOMETER_END { get; set; }
+        public long? PROJECT_ID { get; set; }
+        public long EQUIPMENT_ID { get; set; }
+        public string NAME { get; set; }
+        public long HEADER_ID { get; set; }
+    }
+
 }

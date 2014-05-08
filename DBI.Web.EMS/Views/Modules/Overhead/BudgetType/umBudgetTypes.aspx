@@ -14,7 +14,7 @@
             <Items>
                 <ext:TreePanel ID="uxLegalEntityTreePanel"
                     runat="server"
-                    Title="Legal Entities"
+                    Title="Business Units"
                     Width="300"
                     RootVisible="false"
                     SingleExpand="true"
@@ -35,11 +35,42 @@
                         <ext:Node NodeID="0" Text="All Legal Entities" Expanded="true" />
                     </Root>
                     <SelectionModel>
-                        <ext:TreeSelectionModel ID="uxLegalEntityTreeSelectionModel" runat="server" Mode="Single"></ext:TreeSelectionModel>
+                        <ext:TreeSelectionModel ID="uxLegalEntityTreeSelectionModel" runat="server" Mode="Single">
+                        </ext:TreeSelectionModel>
                     </SelectionModel>
+                    <DirectEvents>
+                        <ItemClick OnEvent="deShowBudgetTypesByBusinessUnit">
+                            <ExtraParams>
+                                <ext:Parameter Name="id" Value="record.data.id" Mode="Raw" />
+                            </ExtraParams>
+                        </ItemClick>
+                    </DirectEvents>
+                    <Listeners>
+                        <Select Handler="#{uxEditBudgetType}.disable();"></Select>
+                    </Listeners>
                 </ext:TreePanel>
      
-                <ext:GridPanel ID="uxBudgetTypeGridPanel" runat="server" Flex="1" SimpleSelect="true" Title="Budget Types" Padding="5" Region="Center">
+                <ext:GridPanel ID="uxBudgetTypeGridPanel" runat="server" Flex="1" SimpleSelect="true" Title="Budget Types By Business Unit" Padding="5" Region="Center">
+                    <TopBar>
+                        <ext:Toolbar runat="server">
+                            <Items>
+                                <ext:Button runat="server" ID="uxAddBudgetType" Icon="ApplicationAdd" Text="Add">
+                                    <DirectEvents>
+                                        <Click OnEvent="deAddEditBudgetType" />
+                                    </DirectEvents>
+                                </ext:Button>
+                                 <ext:Button runat="server" ID="uxEditBudgetType" Icon="ApplicationEdit" Text="Edit">
+                                      <DirectEvents>
+                                        <Click OnEvent="deAddEditBudgetType" >
+                                            <ExtraParams>
+                                                <ext:Parameter Name="Edit" Value="True"></ext:Parameter>
+                                            </ExtraParams>
+                                        </Click>
+                                    </DirectEvents>
+                                 </ext:Button>
+                            </Items>
+                        </ext:Toolbar>
+                    </TopBar>
                     <Store>
                         <ext:Store runat="server"
                             ID="uxBudgetTypeStore"
@@ -69,11 +100,15 @@
                                 </Columns>
                             </ColumnModel>
                             <Plugins>
-                                <ext:FilterHeader ID="uxOrganizationsGridFilter" runat="server" Remote="true" />
+                                <ext:FilterHeader ID="uxBudgetTypeGridFilter" runat="server" Remote="true" />
                             </Plugins>
                             <SelectionModel>
-                               <ext:RowSelectionModel runat="server" Mode="Single" ID="uxOrganizationSelectionModel">
-                               </ext:RowSelectionModel>
+                                <ext:RowSelectionModel runat="server" Mode="Single" ID="uxBudgetTypeSelectionModel">
+                                    <Listeners>
+                                        <Select Handler="if(#{uxBudgetTypeSelectionModel}.getCount() > 0){#{uxEditBudgetType}.enable();}else {#{uxEditBudgetType}.disable();}"></Select>
+                                        <Deselect Handler="if(#{uxBudgetTypeSelectionModel}.getCount() > 0){#{uxEditBudgetType}.enable();} else {#{uxEditBudgetType}.disable();}"></Deselect>
+                                    </Listeners>
+                                </ext:RowSelectionModel>
                             </SelectionModel>
                             <BottomBar>
                                 <ext:PagingToolbar ID="uxOrganizationGridPageBar" runat="server" />

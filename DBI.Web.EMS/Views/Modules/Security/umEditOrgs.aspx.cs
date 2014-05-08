@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Security.Claims;
 using DBI.Core.Web;
+using DBI.Core.Security;
 using DBI.Data;
 using Ext.Net;
 
@@ -96,6 +97,20 @@ namespace DBI.Web.EMS.Views.Modules.Security
                     e.Nodes.Add(node);
                 }
 
+            }
+        }
+
+        protected void deLoadOrgs(object sender, StoreReadDataEventArgs e)
+        {
+            //long UserId = long.Parse(Request.QueryString["SelectedUser"]);
+            long UserId = long.Parse(Authentication.GetClaimValue("UserId", User as ClaimsPrincipal));
+            using (Entities _context = new Entities())
+            {
+                List<HIERARCHY_TREEVIEW> OrgsList = (from h in _context.SYS_USER_ORGS
+                                                     join o in _context.ORG_HIER_V on h.ORG_ID equals o.ORG_ID
+                                                     where h.USER_ID == UserId
+                                                     select new HIERARCHY_TREEVIEW { ORGANIZATION_NAME = o.ORG_HIER, ORGANIZATION_ID = h.ORG_ID }).ToList();
+                uxAssignedOrgsStore.DataSource = OrgsList;
             }
         }
     }

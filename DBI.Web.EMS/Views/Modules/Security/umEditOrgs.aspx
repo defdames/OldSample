@@ -113,7 +113,7 @@
                     <Store>
                         <ext:Store runat="server"
                             ID="uxAssignedOrgsStore"
-                            AutoDataBind="true" RemoteSort="true" AutoLoad="false">
+                            AutoDataBind="true" RemoteSort="true" OnReadData="deLoadOrgs">
                             <Model>
                                 <ext:Model ID="Model1" runat="server" IDProperty="ORGANIZATION_ID" Name="HIERARCHY_TREEVIEW">
                                     <Fields>
