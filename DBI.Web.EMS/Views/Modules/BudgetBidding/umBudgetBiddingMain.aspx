@@ -44,8 +44,9 @@
                     <DirectEvents>
                         <ItemClick OnEvent="deLoadCorrectBudgetType">
                             <ExtraParams>
-                                <ext:Parameter Name="id" Value="record.data.id" Mode="Raw" />
+                                <ext:Parameter Name="treeNode" Value="node.id" Mode="Raw" />
                             </ExtraParams>
+
                         </ItemClick>
                     </DirectEvents>
                 </ext:TreePanel>

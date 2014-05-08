@@ -64,6 +64,9 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void deLoadCorrectBudgetType(object sender, DirectEventArgs e)
         {
+            //string treeNode1 = e.ExtraParams["treeNode"];
+            //X.Msg.Alert("Test", treeNode1).Show();
+
             if (uxOrgPanel.SelectedNodes != null)
             {
                 if (!string.IsNullOrEmpty(uxFiscalYear.SelectedItem.Value))
@@ -84,7 +87,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxBudgetPanel.Loader.DisableCaching = true;
             uxBudgetPanel.LoadContent();
         }
-       
+
         public class HIERARCHY_TREEVIEW
         {
             public string ORGANIZATION_NAME { get; set; }
@@ -92,9 +95,10 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             public long ORGANIZATION_STRUCTURE_ID { get; set; }
             public long ORGANIZATION_ID { get; set; }
         }
-        
+
         protected void LoadOrgTree(object sender, NodeLoadEventArgs e)
         {
+            //X.Msg.Alert("Node", e.NodeID).Show();
             if (e.NodeID.Contains(":") == false)
             {
                 Entities _context = new Entities();
@@ -107,7 +111,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
                 if (e.NodeID == "0")
                 {
-                    var data = _context.Database.SqlQuery<HIERARCHY_TREEVIEW>(sql).Select(a => new { a.ORGANIZATION_ID, a.ORGANIZATION_NAME }).Distinct().ToList();
+                    var data = ORGANIZATIONS.legalEntities();
                     foreach (var view in data)
                     {
                         Node node = new Node();
@@ -155,27 +159,20 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                             node.Leaf = false;
                             break;
                         }
-                        
-                        // Allowed org based on security?
 
-
-                        node.Icon = Icon.StopRed;
-
-
-
-
-
+                        // Allowed org based on security?            
+                        List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
+                        node.Icon = Icon.BorderNone;
+                        if (OrgsList.Contains(view.ORGANIZATION_ID))
+                        {
+                            node.Icon = Icon.StopGreen;
+                        }
 
                         e.Nodes.Add(node);
                     }
                 }
             }
         }
-
-
-
-
-
 
 
     }
