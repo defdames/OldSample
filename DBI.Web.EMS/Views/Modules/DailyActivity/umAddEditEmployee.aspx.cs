@@ -130,7 +130,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 catch (Exception)
                 {
                 }
-                uxEditEmployeeRole.SetValue(Employee.ROLE_TYPE);
+                uxEditEmployeeRole.SetValue(Employee.ROLE_TYPE, Employee.ROLE_TYPE);
                 uxEditEmployeeLicense.SetValue(Employee.FOREMAN_LICENSE);
                 if (GetOrgId(Employee.HEADER_ID) == 123)
                 {
