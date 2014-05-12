@@ -543,7 +543,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 data.COMMENTS = null;
             }
-
+            try
+            {
+                data.FOREMAN_LICENSE = uxEditEmployeeLicense.Value.ToString();
+            }
+            catch (NullReferenceException)
+            {
+                data.FOREMAN_LICENSE = null;
+            }
 
             data.TIME_IN = TimeIn;
             data.TIME_OUT = TimeOut;
