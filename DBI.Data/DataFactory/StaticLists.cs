@@ -148,6 +148,17 @@ namespace DBI.Data.DataFactory
                 };
                  }
              }
+             public static object PropertyType
+             {
+                 get
+                 {
+                     return new object[]{
+                    new object[]{"Public", "Public"},
+                    new object[]{"Private", "Private"},
+                 
+                };
+                 }
+             }
 
     }
 }

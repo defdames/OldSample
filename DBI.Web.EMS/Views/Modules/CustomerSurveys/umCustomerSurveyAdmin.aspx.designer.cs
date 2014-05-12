@@ -148,6 +148,24 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.PagingToolbar PagingToolbar1;
         
         /// <summary>
+        /// uxAddFieldsetButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxAddFieldsetButton;
+        
+        /// <summary>
+        /// uxSaveFieldsetButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxSaveFieldsetButton;
+        
+        /// <summary>
         /// uxQuestionsGrid control.
         /// </summary>
         /// <remarks>
@@ -175,13 +193,31 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Store uxQuestionTypeStore;
         
         /// <summary>
-        /// uxQuestionFieldSetStore control.
+        /// uxQuestionFieldsetStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxQuestionFieldSetStore;
+        protected global::Ext.Net.Store uxQuestionFieldsetStore;
+        
+        /// <summary>
+        /// uxAddQuestionButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxAddQuestionButton;
+        
+        /// <summary>
+        /// uxSaveQuestionButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxSaveQuestionButton;
         
         /// <summary>
         /// uxOptionsGrid control.
@@ -200,5 +236,23 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Store uxOptionsStore;
+        
+        /// <summary>
+        /// uxAddOptionButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxAddOptionButton;
+        
+        /// <summary>
+        /// uxSaveOptionButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxSaveOptionButton;
     }
 }

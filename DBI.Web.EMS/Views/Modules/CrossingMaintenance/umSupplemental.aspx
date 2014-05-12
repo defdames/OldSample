@@ -13,7 +13,7 @@
         <%-- <Service Units Tab>--%>
         <ext:GridPanel ID="uxSupplementalCrossingGrid" Title="CROSSING LIST FOR SUPPLEMENTAL ENTRY" runat="server" Layout="HBoxLayout" Collapsible="true">
             <SelectionModel>
-                <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="false" Mode="Single" />
+                <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
             </SelectionModel>
             <Store>
                 <ext:Store runat="server"
@@ -88,6 +88,9 @@
                             <ExtraParams>
                                 <ext:Parameter Name="SupplementalInfo" Value="Ext.encode(#{uxSupplementalGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
                             </ExtraParams>
+                          <%--    <ExtraParams>
+                                    <ext:Parameter Name="SupplementalId" Value="#{uxSupplementalCrossingGrid}.getSelectionModel().getSelection()[0].data.SUPPLEMENTAL_ID" Mode="Raw" />
+                                </ExtraParams>--%>
                         </Click>
                     </DirectEvents>
 
@@ -106,7 +109,7 @@
                                
 
                                 <ext:ModelField Name="CROSSING_ID" />
-                                <ext:ModelField Name="SUPPLEMENT_ID" />
+                                <ext:ModelField Name="SUPPLEMENTAL_ID" />
                                 <ext:ModelField Name="APPROVED_DATE" Type="Date" />
                                 <ext:ModelField Name="SERVICE_TYPE" />
                                 <ext:ModelField Name="TRUCK_NUMBER" />

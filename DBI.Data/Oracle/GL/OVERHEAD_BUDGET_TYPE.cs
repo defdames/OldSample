@@ -23,5 +23,19 @@ namespace DBI.Data
             }
         }
 
+        /// <summary>
+        /// Returns a budget type for a record_id
+        /// </summary>
+        /// <param name="orgID"></param>
+        /// <returns></returns>
+        public static OVERHEAD_BUDGET_TYPE budgetTypeById(long recordId)
+        {
+            using (Entities _context = new Entities())
+            {
+                OVERHEAD_BUDGET_TYPE _returnData = _context.OVERHEAD_BUDGET_TYPE.Where(c => c.OVERHEAD_BUDGET_TYPE_ID == recordId).SingleOrDefault();
+                return _returnData;
+            }
+        }
+
     }
 }

@@ -39,7 +39,7 @@
             <Items>
                 <ext:TreePanel ID="uxHierarchyTree"
                     runat="server"
-                    Title="Hierarchy List By Legal Entity"
+                    Title="Hierarchies By Business Unit"
                     Width="300"
                     RootVisible="false"
                     SingleExpand="true"

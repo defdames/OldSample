@@ -119,6 +119,9 @@
     <Content Include="Resources\Images\wwbnight.png" />
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
+    <Content Include="Views\Modules\BudgetBidding\umBlankBudget.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\umBudgetBiddingMain.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\umYearBudget.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umAppDate.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingHome.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umDataEntryMain.aspx" />
@@ -130,6 +133,7 @@
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingInfoTab.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingSecurity.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umRailRoadProject.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umReportsMain.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umStateCrossingsList.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umSupplemental.aspx" />
@@ -166,10 +170,11 @@
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
-    <Content Include="Views\Modules\Overhead\umAddGLAccount.aspx" />
-    <Content Include="Views\Modules\Overhead\umBudgetTypes.aspx" />
+    <Content Include="Views\Modules\Overhead\BudgetType\AddEdit\umAddEditBudgetType.aspx" />
+    <Content Include="Views\Modules\Overhead\GLSecurity\Add\umAddGLAccount.aspx" />
+    <Content Include="Views\Modules\Overhead\BudgetType\umBudgetTypes.aspx" />
     <Content Include="Views\Modules\Overhead\umOrganizationBudgetSecurity.aspx" />
-    <Content Include="Views\Modules\Overhead\umGLSecurity.aspx" />
+    <Content Include="Views\Modules\Overhead\GLSecurity\umGLSecurity.aspx" />
     <Content Include="Views\Modules\Overhead\umViewBudgets.aspx" />
     <Content Include="Views\Modules\Security\umEditGroups.aspx" />
     <Content Include="Views\Modules\Security\umEditModules.aspx" />
@@ -186,6 +191,8 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Views\Modules\Overhead\GenericHandlers\ghBudgetCodes.ashx" />
+    <Content Include="Views\Modules\Overhead\GenericHandlers\ghBudgetParentCodes.ashx" />
     <None Include="Web.APPDEV.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -216,6 +223,27 @@
     </Compile>
     <Compile Include="Views\Handlers\SystemUsers.ashx.cs">
       <DependentUpon>SystemUsers.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umBlankBudget.aspx.cs">
+      <DependentUpon>umBlankBudget.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umBlankBudget.aspx.designer.cs">
+      <DependentUpon>umBlankBudget.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umBudgetBiddingMain.aspx.cs">
+      <DependentUpon>umBudgetBiddingMain.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umBudgetBiddingMain.aspx.designer.cs">
+      <DependentUpon>umBudgetBiddingMain.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umYearBudget.aspx.cs">
+      <DependentUpon>umYearBudget.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umYearBudget.aspx.designer.cs">
+      <DependentUpon>umYearBudget.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umAppDate.aspx.cs">
       <DependentUpon>umAppDate.aspx</DependentUpon>
@@ -293,6 +321,13 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx.designer.cs">
       <DependentUpon>umDataEntryTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umRailRoadProject.aspx.cs">
+      <DependentUpon>umRailRoadProject.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umRailRoadProject.aspx.designer.cs">
+      <DependentUpon>umRailRoadProject.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umReportsMain.aspx.cs">
       <DependentUpon>umReportsMain.aspx</DependentUpon>
@@ -547,30 +582,43 @@
       <DependentUpon>umWeatherTab.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\ValidationChecks.cs" />
-    <Compile Include="Views\Modules\Overhead\GLBranchCodes.ashx.cs">
+    <Compile Include="Views\Modules\Overhead\BudgetType\AddEdit\umAddEditBudgetType.aspx.cs">
+      <DependentUpon>umAddEditBudgetType.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\BudgetType\AddEdit\umAddEditBudgetType.aspx.designer.cs">
+      <DependentUpon>umAddEditBudgetType.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\GenericHandlers\ghBudgetParentCodes.ashx.cs">
+      <DependentUpon>ghBudgetParentCodes.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\GenericHandlers\ghBudgetCodes.ashx.cs">
+      <DependentUpon>ghBudgetCodes.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\GenericHandlers\GLBranchCodes.ashx.cs">
       <DependentUpon>GLBranchCodes.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\Overhead\GLDivisionCodes.ashx.cs">
+    <Compile Include="Views\Modules\Overhead\GenericHandlers\GLDivisionCodes.ashx.cs">
       <DependentUpon>GLDivisionCodes.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\Overhead\GLLocationCodes.ashx.cs">
+    <Compile Include="Views\Modules\Overhead\GenericHandlers\GLLocationCodes.ashx.cs">
       <DependentUpon>GLLocationCodes.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\Overhead\GLCompanyCodes.ashx.cs">
+    <Compile Include="Views\Modules\Overhead\GenericHandlers\GLCompanyCodes.ashx.cs">
       <DependentUpon>GLCompanyCodes.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\Overhead\umAddGLAccount.aspx.cs">
+    <Compile Include="Views\Modules\Overhead\GLSecurity\Add\umAddGLAccount.aspx.cs">
       <DependentUpon>umAddGLAccount.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\Overhead\umAddGLAccount.aspx.designer.cs">
+    <Compile Include="Views\Modules\Overhead\GLSecurity\Add\umAddGLAccount.aspx.designer.cs">
       <DependentUpon>umAddGLAccount.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\Overhead\umBudgetTypes.aspx.cs">
+    <Compile Include="Views\Modules\Overhead\BudgetType\umBudgetTypes.aspx.cs">
       <DependentUpon>umBudgetTypes.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\Overhead\umBudgetTypes.aspx.designer.cs">
+    <Compile Include="Views\Modules\Overhead\BudgetType\umBudgetTypes.aspx.designer.cs">
       <DependentUpon>umBudgetTypes.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\Overhead\umOrganizationBudgetSecurity.aspx.cs">
@@ -580,11 +628,11 @@
     <Compile Include="Views\Modules\Overhead\umOrganizationBudgetSecurity.aspx.designer.cs">
       <DependentUpon>umOrganizationBudgetSecurity.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\Overhead\umGLSecurity.aspx.cs">
+    <Compile Include="Views\Modules\Overhead\GLSecurity\umGLSecurity.aspx.cs">
       <DependentUpon>umGLSecurity.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\Overhead\umGLSecurity.aspx.designer.cs">
+    <Compile Include="Views\Modules\Overhead\GLSecurity\umGLSecurity.aspx.designer.cs">
       <DependentUpon>umGLSecurity.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\Overhead\umViewBudgets.aspx.cs">
@@ -683,10 +731,10 @@
     <Content Include="Resources\Scripts\jquery-2.0.1.min.map" />
     <Content Include="Views\Handlers\SystemUsers.ashx" />
     <Content Include="Views\Handlers\WebProjects.ashx" />
-    <Content Include="Views\Modules\Overhead\GLCompanyCodes.ashx" />
-    <Content Include="Views\Modules\Overhead\GLLocationCodes.ashx" />
-    <Content Include="Views\Modules\Overhead\GLDivisionCodes.ashx" />
-    <Content Include="Views\Modules\Overhead\GLBranchCodes.ashx" />
+    <Content Include="Views\Modules\Overhead\GenericHandlers\GLCompanyCodes.ashx" />
+    <Content Include="Views\Modules\Overhead\GenericHandlers\GLLocationCodes.ashx" />
+    <Content Include="Views\Modules\Overhead\GenericHandlers\GLDivisionCodes.ashx" />
+    <Content Include="Views\Modules\Overhead\GenericHandlers\GLBranchCodes.ashx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DBI.Core\DBI.Core.csproj">

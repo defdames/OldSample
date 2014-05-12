@@ -45,7 +45,138 @@
     <form id="form1" runat="server">
     <div>
      <ext:ResourceManager ID="ResourceManager1" runat="server" />
+         <ext:FormPanel ID="FormPanel1" runat="server" Margin="5" Title="Filter Incident Report">
+                <Items>
+                    <ext:FieldSet ID="FieldSet1" runat="server" Title="Filter">
+                        <Items>
 
+                            <ext:DateField ID="uxAddEntryDate" runat="server" AnchorHorizontal="20%" FieldLabel="Start Date" LabelAlign="Right" AllowBlank="false" Editable="false" TabIndex="2" />
+                            <ext:DateField ID="DateField1" runat="server" AnchorHorizontal="20%" FieldLabel="End Date" LabelAlign="Right" AllowBlank="false" Editable="false" TabIndex="2" />
+
+                            <ext:ComboBox ID="uxAddServiceUnitCI"
+                                runat="server" FieldLabel="Service Unit"
+                                LabelAlign="Right"
+                                AnchorHorizontal="20%"
+                                DisplayField="service_unit"
+                                ValueField="service_unit"
+                                QueryMode="Local" TypeAhead="true" TabIndex="3" AllowBlank="false" ForceSelection="true">
+                                <Store>
+                                    <ext:Store runat="server"
+                                        ID="uxAddServiceUnitStore">
+                                        <Model>
+                                            <ext:Model ID="Model5" runat="server">
+                                                <Fields>
+                                                    <ext:ModelField Name="service_unit" />
+                                                    <ext:ModelField Name="service_unit" />
+                                                </Fields>
+                                            </ext:Model>
+                                        </Model>
+                                    </ext:Store>
+                                </Store>
+                                <%--  <DirectEvents>
+                                                    <Select OnEvent="deLoadSubDiv">
+                                                        <ExtraParams>
+                                                            <ext:Parameter Name="Type" Value="Add" />
+                                                        </ExtraParams>
+                                                    </Select>
+                                                </DirectEvents>
+                                                <Listeners>
+                                                    <Select Handler="#{uxAddSubDivStore}.load()" />
+                                                </Listeners>--%>
+                            </ext:ComboBox>
+                            <ext:ComboBox ID="uxAddSubDivCI"
+                                runat="server"
+                                FieldLabel="Sub-Division"
+                                LabelAlign="Right"
+                                AnchorHorizontal="20%"
+                                DisplayField="sub_division"
+                                ValueField="sub_division"
+                                TypeAhead="true" TabIndex="5" AllowBlank="false" ForceSelection="true">
+                                <Store>
+                                    <ext:Store runat="server"
+                                        ID="uxAddSubDivStore">
+                                        <Model>
+                                            <ext:Model ID="Model7" runat="server">
+                                                <Fields>
+                                                    <ext:ModelField Name="sub_division" />
+                                                    <ext:ModelField Name="sub_division" />
+                                                </Fields>
+                                            </ext:Model>
+                                        </Model>
+                                    </ext:Store>
+                                </Store>
+
+                            </ext:ComboBox>
+                            <ext:ComboBox runat="server"
+                                ID="uxAddStateComboBox"
+                                FieldLabel="State"
+                                LabelAlign="Right"
+                                AnchorHorizontal="20%"
+                                DisplayField="name"
+                                ValueField="name"
+                                QueryMode="Local"
+                                TypeAhead="true"
+                                AllowBlank="false"
+                                ForceSelection="true" TabIndex="4">
+                                <Store>
+                                    <ext:Store ID="uxAddStateList" runat="server" AutoDataBind="true">
+                                        <Model>
+                                            <ext:Model ID="Model10" runat="server">
+                                                <Fields>
+                                                    <ext:ModelField Name="abbr" />
+                                                    <ext:ModelField Name="name" />
+                                                </Fields>
+                                            </ext:Model>
+                                        </Model>
+                                        <Reader>
+                                            <ext:ArrayReader />
+                                        </Reader>
+                                    </ext:Store>
+                                </Store>
+                            </ext:ComboBox>
+                             <ext:RadioGroup ID="RadioGroup1" runat="server" AnchorHorizontal="15%" >
+                        <Items>
+                            <ext:Radio runat="server" ID="uxOpenIncident" FieldLabel="Open" LabelAlign="Right" /> 
+                            <ext:Radio runat="server" ID="uxClosedIncident" FieldLabel="Closed" LabelAlign="Right" />                
+                        </Items>
+           </ext:RadioGroup>
+                        </Items>
+                    </ext:FieldSet>
+                </Items>
+                <BottomBar>
+                    <ext:Toolbar ID="Toolbar1" runat="server">
+                        <Items>
+                            <ext:Button runat="server"
+                                ID="Button4"
+                                Text="Run"
+                                Icon="PlayGreen">
+                                <%-- <DirectEvents>
+                        <Click OnEvent="deExportToPDF" IsUpload="true">
+                            <ExtraParams>
+                                <ext:Parameter Name="CrossingId" Value="#{GridPanel1}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                               <ext:Parameter Name="selectedCrossings" Value="Ext.encode(#{GridPanel1}.getRowsValues())" Mode="Raw" />
+                            </ExtraParams>
+                        </Click>
+                    </DirectEvents>--%>
+                            </ext:Button>
+                            <ext:Button runat="server"
+                                ID="Button3"
+                                Text="Cancel"
+                                Icon="StopRed">
+                                <%-- <DirectEvents>
+                        <Click OnEvent="deExportToPDF" IsUpload="true">
+                            <ExtraParams>
+                                <ext:Parameter Name="CrossingId" Value="#{GridPanel1}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                               <ext:Parameter Name="selectedCrossings" Value="Ext.encode(#{GridPanel1}.getRowsValues())" Mode="Raw" />
+                            </ExtraParams>
+                        </Click>
+                    </DirectEvents>--%>
+                            </ext:Button>
+                        </Items>
+                    </ext:Toolbar>
+                </BottomBar>
+            </ext:FormPanel>
+          
        
         <ext:GridPanel
             ID="uxIncidentGrid"
@@ -60,7 +191,7 @@
             <Store>
                 <ext:Store ID="uxIncidentStore"
                     runat="server"
-                    GroupField="SUB_DIVISION" OnReadData="deIncidentGrid" RemoteSort="true">
+                    GroupField="SUB_DIVISION" OnReadData="deIncidentGrid" AutoLoad="false">
                     <Model>
                         <ext:Model ID="Model1" runat="server">
                             <Fields>
@@ -121,9 +252,7 @@
                     HideGroupedHeader="true" Collapsible="false"  Cls="x-grid-group-title; x-grid-group-hd" />
             </Features>
 
-            <Plugins>
-                <ext:FilterHeader ID="FilterHeader2" runat="server" Remote="true"/>
-            </Plugins>
+            
             
           
             <TopBar>

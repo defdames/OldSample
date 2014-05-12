@@ -13,9 +13,11 @@ using System.Threading;
 using DBI.Core.Security;
 using DBI.Core.Web;
 using DBI.Data;
+using DBI.Data.GMS;
 using Ext.Net;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using DBI.Data.DataFactory;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
@@ -23,7 +25,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            if (!X.IsAjaxRequest)
+            {
+               uxAddStateList.Data = StaticLists.StateList;
+               uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
+            //   deLoadUnit("Add");
+            }
         }
         protected void deStateCrossingListGrid(object sender, StoreReadDataEventArgs e)
         {
@@ -35,6 +42,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 //Get List of all new crossings
 
                 data = (from d in _context.CROSSINGS
+                        join a in _context.CROSSING_APPLICATION on d.CROSSING_ID equals a.CROSSING_ID
                         select new
                         {
                             d.CROSSING_ID,
@@ -53,7 +61,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                             d.SUB_CONTRACTED,
                             d.LONGITUDE,
                             d.LATITUDE,
-                            d.SPECIAL_INSTRUCTIONS
+                            d.SPECIAL_INSTRUCTIONS,
+                            a.SPRAY,
+                            a.CUT,
+                            a.INSPECT
                         }).ToList<object>();
 
                 int count;
@@ -105,8 +116,31 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
         }
 
+        //protected void deLoadUnit(string serviceunitType)
+        //{
+        //    if (serviceunitType == "Add")
+        //    {
+        //        List<ServiceUnitResponse> units = ServiceUnitData.ServiceUnitUnits().ToList();
+        //        uxAddServiceUnitStore.DataSource = units;
+        //        uxAddServiceUnitStore.DataBind();
+
+        //    }
 
 
+        //}
+        //protected void deLoadSubDiv(object sender, DirectEventArgs e)
+        //{
+
+        //    if (e.ExtraParams["Type"] == "Add")
+        //    {
+        //        List<ServiceUnitResponse> divisions = ServiceUnitData.ServiceUnitDivisions(uxAddServiceUnitCI.SelectedItem.Value).ToList();
+        //        uxAddSubDivCI.Clear();
+        //        uxAddSubDivStore.DataSource = divisions;
+        //        uxAddSubDivStore.DataBind();
+        //    }
+
+
+        //}
         protected void deExportToPDF(object sender, DirectEventArgs e)
         {
             //Set crossing Id
