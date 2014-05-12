@@ -128,5 +128,14 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Column colTotalHours;
+        
+        /// <summary>
+        /// uxWarningColumn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column uxWarningColumn;
     }
 }

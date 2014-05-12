@@ -145,7 +145,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
             {
                 var data = (from tc in _context.TIME_CLOCK
                             where tc.PERSON_ID == person_id
-                            select new EmployeeTimeView { TIME_IN = (DateTime)tc.TIME_IN, TIME_OUT = tc.TIME_OUT}).ToList();
+                            select new EmployeeTimeView {TIME_IN = (DateTime)tc.TIME_IN, TIME_OUT = tc.TIME_OUT, MODIFIED_BY = tc.MODIFIED_BY}).ToList();
                 
                 foreach (var item in data)
                 {
@@ -153,8 +153,10 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                     {
                         TimeSpan ts = (DateTime)item.TIME_OUT - item.TIME_IN;
                         item.TOTAL_HOURS = ts.ToString("hh\\:mm");
-                    }
+                        
 
+                    }
+                    
                 }
 
 
@@ -182,6 +184,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
         public DateTime TIME_IN { get; set; }
         public DateTime? TIME_OUT { get; set; }
         public string TOTAL_HOURS { get; set; }
+        public string MODIFIED_BY { get; set; }
     }
 
 }
