@@ -19,10 +19,10 @@ namespace DBI.Mobile.EMS.Controllers
             if (id == "production")
             {
                 Version ver = new Version();
-                ver.number = "1.0.R140507";
+                ver.number = "1.0.R140512";
                 ver.mandatory = true;
                 ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobile.dbiservices.com/iems/iEMS.plist";
-                ver.descriptionText = "Updated inventory update process. To perform this update you are required to perform a full delete and reinstall of the iEMS!";
+                ver.descriptionText = "Updated DAR screen to show task information, corrected order of DARs.";
 
                 RootObject root = new RootObject();
                 root.version = ver;
