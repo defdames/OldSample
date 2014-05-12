@@ -15,7 +15,7 @@ namespace DBI.Web.EMS
     public class Global : System.Web.HttpApplication
     {
         // Used to set the default instance of the connection String Values
-        public const string serverInstance = "Production";
+        public const string serverInstance = "PCL05";
 
         protected void Application_Start(object sender, EventArgs e)
         {
