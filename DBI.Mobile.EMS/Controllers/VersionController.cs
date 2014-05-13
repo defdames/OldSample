@@ -20,7 +20,7 @@ namespace DBI.Mobile.EMS.Controllers
             {
                 Version ver = new Version();
                 ver.number = "1.0.R140512";
-                ver.mandatory = true;
+                ver.mandatory = false;
                 ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobile.dbiservices.com/iems/iEMS.plist";
                 ver.descriptionText = "Updated DAR screen to show task information, corrected order of DARs.";
 
