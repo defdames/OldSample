@@ -52,7 +52,7 @@
                     <ext:DateColumn runat="server" Text="Time In" DataIndex="TIME_IN" Flex="1" Format="M/d/yyyy h:mm tt"/>
                     <ext:DateColumn runat="server" Text="Time Out" DataIndex="TIME_OUT" Flex="1" Format="M/d/yyyy h:mm tt"/>
                     <ext:Column ID="Column1" runat="server" Text="Actual Time" Flex="1" DataIndex="ACTUAL_HOURS_GRID"/>
-                    <ext:Column runat="server" Text="Adjusted Time" Flex="1" DataIndex="ADJUSTED_HOURS_GRID">
+                    <ext:Column ID="AdjustedTime" runat="server" Text="Adjusted Time" Flex="1" DataIndex="ADJUSTED_HOURS_GRID">
                         <Editor>
                                <ext:TextField runat="server"/>
                         </Editor>
@@ -80,7 +80,9 @@
                             <EventMask ShowMask="true" />
                             <ExtraParams>
                                 <ext:Parameter Name="TimeClockId" Value="#{uxEmployeeHoursGrid}.getSelectionModel().getSelection()[0].data.TIME_CLOCK_ID" Mode="Raw" />
+                                <ext:Parameter Name="AdjustedHoursGrid" Value="#{uxEmployeeHoursGrid}.getSelectionModel().getSelection()[0].data.ADJUSTED_HOURS_GRID" Mode="Raw" />
                                 <ext:Parameter Name="ApprovedTime" Value="Ext.encode(#{uxEmployeeHoursGrid}.getRowsValues({selectedOnly : true}))" Mode="Raw" />
+                                <ext:Parameter Name="NewTime" Value="#{uxEmployeeHoursStore}.getChangedData()" Mode="Raw" Encode="true" />
                             </ExtraParams>
                         </Click> 
                     </DirectEvents>
