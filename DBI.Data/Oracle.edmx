@@ -47,6 +47,8 @@
           <EntitySet Name="CROSSING_DATA_ENTRY" EntityType="OracleModel.Store.CROSSING_DATA_ENTRY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_INCIDENT" EntityType="OracleModel.Store.CROSSING_INCIDENT" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_INSPECTION" EntityType="OracleModel.Store.CROSSING_INSPECTION" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="CROSSING_PROJECT" EntityType="OracleModel.Store.CROSSING_PROJECT" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="CROSSING_RAILROAD" EntityType="OracleModel.Store.CROSSING_RAILROAD" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_RELATIONSHIP" EntityType="OracleModel.Store.CROSSING_RELATIONSHIP" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_SUB_DIVISION" EntityType="OracleModel.Store.CROSSING_SUB_DIVISION" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_SUPPLEMENTAL" EntityType="OracleModel.Store.CROSSING_SUPPLEMENTAL" store:Type="Tables" Schema="XXEMS" />
@@ -70,6 +72,9 @@
           <EntitySet Name="DAILY_ACTIVITY_PRODUCTION" EntityType="OracleModel.Store.DAILY_ACTIVITY_PRODUCTION" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_STATUS" EntityType="OracleModel.Store.DAILY_ACTIVITY_STATUS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_WEATHER" EntityType="OracleModel.Store.DAILY_ACTIVITY_WEATHER" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="JOB_COST_CLASSES" EntityType="OracleModel.Store.JOB_COST_CLASSES" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="OVERHEAD_BUDGET_TYPE" EntityType="OracleModel.Store.OVERHEAD_BUDGET_TYPE" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="OVERHEAD_BUDGET_VERSION" EntityType="OracleModel.Store.OVERHEAD_BUDGET_VERSION" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="OVERHEAD_GL_ACCOUNT" EntityType="OracleModel.Store.OVERHEAD_GL_ACCOUNT" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_ACTIVITY" EntityType="OracleModel.Store.SYS_ACTIVITY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_GROUPS" EntityType="OracleModel.Store.SYS_GROUPS" store:Type="Tables" Schema="XXEMS" />
@@ -645,8 +650,16 @@
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_CHEMICAL_MIX" EntitySet="DAILY_ACTIVITY_CHEMICAL_MIX" />
           </AssociationSet>
+          <AssociationSet Name="FK_CONTACTS_RAILROAD_ID" Association="OracleModel.Store.FK_CONTACTS_RAILROAD_ID">
+            <End Role="CROSSING_RAILROAD" EntitySet="CROSSING_RAILROAD" />
+            <End Role="CROSSING_CONTACTS" EntitySet="CROSSING_CONTACTS" />
+          </AssociationSet>
           <AssociationSet Name="FK_CROSSINGS_CONTACT_ID" Association="OracleModel.Store.FK_CROSSINGS_CONTACT_ID">
             <End Role="CROSSING_CONTACTS" EntitySet="CROSSING_CONTACTS" />
+            <End Role="CROSSINGS" EntitySet="CROSSINGS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CROSSINGS_RAILROAD_ID" Association="OracleModel.Store.FK_CROSSINGS_RAILROAD_ID">
+            <End Role="CROSSING_RAILROAD" EntitySet="CROSSING_RAILROAD" />
             <End Role="CROSSINGS" EntitySet="CROSSINGS" />
           </AssociationSet>
           <AssociationSet Name="FK_DATA_ENTRY_CROSSING_ID" Association="OracleModel.Store.FK_DATA_ENTRY_CROSSING_ID">
@@ -720,6 +733,10 @@
           <AssociationSet Name="FK_PRODUCTION_HEADER_ID" Association="OracleModel.Store.FK_PRODUCTION_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_PRODUCTION" EntitySet="DAILY_ACTIVITY_PRODUCTION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PROJECT_RAILROAD_ID" Association="OracleModel.Store.FK_PROJECT_RAILROAD_ID">
+            <End Role="CROSSING_RAILROAD" EntitySet="CROSSING_RAILROAD" />
+            <End Role="CROSSING_PROJECT" EntitySet="CROSSING_PROJECT" />
           </AssociationSet>
           <AssociationSet Name="FK_QUESTION_TYPE_ID" Association="OracleModel.Store.FK_QUESTION_TYPE_ID">
             <End Role="CUSTOMER_SURVEY_QUES_TYPES" EntitySet="CUSTOMER_SURVEY_QUES_TYPES" />
@@ -852,6 +869,7 @@
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="RAILROAD_ID" Type="number" />
         </EntityType>
         <EntityType Name="CROSSING_DATA_ENTRY">
           <Key>
@@ -908,6 +926,22 @@
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
+        </EntityType>
+        <EntityType Name="CROSSING_PROJECT">
+          <Key>
+            <PropertyRef Name="PROJ_CORSSING_ID" />
+          </Key>
+          <Property Name="PROJ_CORSSING_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PROJECT_ID" Type="number" Precision="15" />
+          <Property Name="PROJECT_NAME" Type="varchar2" MaxLength="30" />
+          <Property Name="RAILROAD_ID" Type="number" />
+        </EntityType>
+        <EntityType Name="CROSSING_RAILROAD">
+          <Key>
+            <PropertyRef Name="RAILROAD_ID" />
+          </Key>
+          <Property Name="RAILROAD_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RAILROAD" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="CROSSING_RELATIONSHIP">
           <Key>
@@ -1021,6 +1055,8 @@
           <Property Name="SERVICE_UNIT" Type="varchar2" MaxLength="100" />
           <Property Name="PROJECT_ID" Type="number" Precision="15" />
           <Property Name="SPECIAL_INSTRUCTIONS" Type="clob" />
+          <Property Name="STATUS" Type="varchar2" MaxLength="30" />
+          <Property Name="RAILROAD_ID" Type="number" />
         </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_FIELDSETS">
           <Key>
@@ -1034,6 +1070,7 @@
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="IS_ACTIVE" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_FORMS">
           <Key>
@@ -1085,6 +1122,7 @@
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="IS_ACTIVE" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_QUES_TYPES">
           <Key>
@@ -1182,6 +1220,8 @@
           <Property Name="SHOPTIME_AM" Type="number" Precision="15" Scale="4" />
           <Property Name="SHOPTIME_PM" Type="number" Precision="15" Scale="4" />
           <Property Name="SUPPORT_PROJ_ID" Type="number" Precision="15" />
+          <Property Name="LUNCH_TASK_ID" Type="number" Precision="15" />
+          <Property Name="PER_DIEM_TASK_ID" Type="number" Precision="15" />
         </EntityType>
         <EntityType Name="DAILY_ACTIVITY_EQUIPMENT">
           <Key>
@@ -1277,6 +1317,7 @@
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="HEADER_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="TOTAL" Type="number" Precision="15" Scale="4" />
+          <Property Name="CONTRACTOR_SUPPLIED" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="DAILY_ACTIVITY_PRODUCTION">
           <Key>
@@ -1323,6 +1364,46 @@
           <Property Name="WIND_VELOCITY" Type="varchar2" MaxLength="10" />
           <Property Name="HUMIDITY" Type="varchar2" MaxLength="10" />
           <Property Name="COMMENTS" Type="varchar2" MaxLength="500" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="JOB_COST_CLASSES">
+          <Key>
+            <PropertyRef Name="JOB_COST_CLASSES_ID" />
+          </Key>
+          <Property Name="JOB_COST_CLASSES_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PROJECT_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="CLASS_CATEGORY" Type="varchar2" MaxLength="30" />
+          <Property Name="CLASS_CODE" Type="varchar2" MaxLength="30" />
+          <Property Name="JOB_COST_DATE" Type="date" />
+          <Property Name="BUID" Type="number" Precision="15" />
+        </EntityType>
+        <EntityType Name="OVERHEAD_BUDGET_TYPE">
+          <Key>
+            <PropertyRef Name="OVERHEAD_BUDGET_TYPE_ID" />
+          </Key>
+          <Property Name="OVERHEAD_BUDGET_TYPE_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
+          <Property Name="PARENT_BUDGET_TYPE_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="BUDGET_NAME" Type="varchar2" Nullable="false" MaxLength="250" />
+          <Property Name="BUDGET_DESCRIPTION" Type="varchar2" Nullable="false" MaxLength="250" />
+          <Property Name="LE_ORD_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="OVERHEAD_BUDGET_VERSION">
+          <Key>
+            <PropertyRef Name="OVERHEAD_BUDGET_VER_ID" />
+          </Key>
+          <Property Name="OVERHEAD_BUDGET_VER_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
+          <Property Name="OVERHEAD_ORG_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="PARENT_BUDGET_VER_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="OVERHEAD_BUDGET_TYPE_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="FISCAL_YEAR" Type="number" Nullable="false" Precision="4" />
+          <Property Name="STATUS" Type="char" Nullable="false" MaxLength="1" />
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
@@ -2755,6 +2836,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CONTACTS_RAILROAD_ID">
+          <End Role="CROSSING_RAILROAD" Type="OracleModel.Store.CROSSING_RAILROAD" Multiplicity="0..1" />
+          <End Role="CROSSING_CONTACTS" Type="OracleModel.Store.CROSSING_CONTACTS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSING_RAILROAD">
+              <PropertyRef Name="RAILROAD_ID" />
+            </Principal>
+            <Dependent Role="CROSSING_CONTACTS">
+              <PropertyRef Name="RAILROAD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CROSSINGS_CONTACT_ID">
           <End Role="CROSSING_CONTACTS" Type="OracleModel.Store.CROSSING_CONTACTS" Multiplicity="0..1" />
           <End Role="CROSSINGS" Type="OracleModel.Store.CROSSINGS" Multiplicity="*" />
@@ -2764,6 +2857,18 @@
             </Principal>
             <Dependent Role="CROSSINGS">
               <PropertyRef Name="CONTACT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CROSSINGS_RAILROAD_ID">
+          <End Role="CROSSING_RAILROAD" Type="OracleModel.Store.CROSSING_RAILROAD" Multiplicity="0..1" />
+          <End Role="CROSSINGS" Type="OracleModel.Store.CROSSINGS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSING_RAILROAD">
+              <PropertyRef Name="RAILROAD_ID" />
+            </Principal>
+            <Dependent Role="CROSSINGS">
+              <PropertyRef Name="RAILROAD_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2983,6 +3088,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PROJECT_RAILROAD_ID">
+          <End Role="CROSSING_RAILROAD" Type="OracleModel.Store.CROSSING_RAILROAD" Multiplicity="0..1" />
+          <End Role="CROSSING_PROJECT" Type="OracleModel.Store.CROSSING_PROJECT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSING_RAILROAD">
+              <PropertyRef Name="RAILROAD_ID" />
+            </Principal>
+            <Dependent Role="CROSSING_PROJECT">
+              <PropertyRef Name="RAILROAD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_QUESTION_TYPE_ID">
           <End Role="CUSTOMER_SURVEY_QUES_TYPES" Type="OracleModel.Store.CUSTOMER_SURVEY_QUES_TYPES" Multiplicity="1" />
           <End Role="CUSTOMER_SURVEY_QUESTIONS" Type="OracleModel.Store.CUSTOMER_SURVEY_QUESTIONS" Multiplicity="*" />
@@ -3122,15 +3239,6 @@
           <EntitySet Name="XXDBI_TRUCK_EQUIP_USAGE_V" EntityType="OracleModel.XXDBI_TRUCK_EQUIP_USAGE_V" />
           <EntitySet Name="PA_TRANSACTION_INT_V" EntityType="OracleModel.PA_TRANSACTION_INT_V" />
           <EntitySet Name="DAILY_ACTIVITY_IMPORT" EntityType="OracleModel.DAILY_ACTIVITY_IMPORT" />
-          <EntitySet Name="DAILY_ACTIVITY_INVENTORY" EntityType="OracleModel.DAILY_ACTIVITY_INVENTORY" />
-          <AssociationSet Name="FK_INVENTORY_CHEMICAL_MIX_ID" Association="OracleModel.FK_INVENTORY_CHEMICAL_MIX_ID">
-            <End Role="DAILY_ACTIVITY_CHEMICAL_MIX" EntitySet="DAILY_ACTIVITY_CHEMICAL_MIX" />
-            <End Role="DAILY_ACTIVITY_INVENTORY" EntitySet="DAILY_ACTIVITY_INVENTORY" />
-          </AssociationSet>
-          <AssociationSet Name="FK_INVENTORY_HEADER_ID" Association="OracleModel.FK_INVENTORY_HEADER_ID">
-            <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
-            <End Role="DAILY_ACTIVITY_INVENTORY" EntitySet="DAILY_ACTIVITY_INVENTORY" />
-          </AssociationSet>
           <EntitySet Name="CUSTOMER_SURVEY_FIELDSETS" EntityType="OracleModel.CUSTOMER_SURVEY_FIELDSETS" />
           <EntitySet Name="CUSTOMER_SURVEY_FORMS" EntityType="OracleModel.CUSTOMER_SURVEY_FORMS" />
           <EntitySet Name="CUSTOMER_SURVEY_FORMS_ANS" EntityType="OracleModel.CUSTOMER_SURVEY_FORMS_ANS" />
@@ -3250,6 +3358,32 @@
           <AssociationSet Name="FK_PRODUCTION_HEADER_ID" Association="OracleModel.FK_PRODUCTION_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_PRODUCTION" EntitySet="DAILY_ACTIVITY_PRODUCTION" />
+          </AssociationSet>
+          <EntitySet Name="CROSSING_PROJECT" EntityType="OracleModel.CROSSING_PROJECT" />
+          <EntitySet Name="CROSSING_RAILROAD" EntityType="OracleModel.CROSSING_RAILROAD" />
+          <EntitySet Name="DAILY_ACTIVITY_INVENTORY" EntityType="OracleModel.DAILY_ACTIVITY_INVENTORY" />
+          <EntitySet Name="JOB_COST_CLASSES" EntityType="OracleModel.JOB_COST_CLASSES" />
+          <EntitySet Name="OVERHEAD_BUDGET_TYPE" EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" />
+          <EntitySet Name="OVERHEAD_BUDGET_VERSION" EntityType="OracleModel.OVERHEAD_BUDGET_VERSION" />
+          <AssociationSet Name="FK_CONTACTS_RAILROAD_ID" Association="OracleModel.FK_CONTACTS_RAILROAD_ID">
+            <End Role="CROSSING_RAILROAD" EntitySet="CROSSING_RAILROAD" />
+            <End Role="CROSSING_CONTACTS" EntitySet="CROSSING_CONTACTS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PROJECT_RAILROAD_ID" Association="OracleModel.FK_PROJECT_RAILROAD_ID">
+            <End Role="CROSSING_RAILROAD" EntitySet="CROSSING_RAILROAD" />
+            <End Role="CROSSING_PROJECT" EntitySet="CROSSING_PROJECT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CROSSINGS_RAILROAD_ID" Association="OracleModel.FK_CROSSINGS_RAILROAD_ID">
+            <End Role="CROSSING_RAILROAD" EntitySet="CROSSING_RAILROAD" />
+            <End Role="CROSSING" EntitySet="CROSSINGS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_INVENTORY_CHEMICAL_MIX_ID" Association="OracleModel.FK_INVENTORY_CHEMICAL_MIX_ID">
+            <End Role="DAILY_ACTIVITY_CHEMICAL_MIX" EntitySet="DAILY_ACTIVITY_CHEMICAL_MIX" />
+            <End Role="DAILY_ACTIVITY_INVENTORY" EntitySet="DAILY_ACTIVITY_INVENTORY" />
+          </AssociationSet>
+          <AssociationSet Name="FK_INVENTORY_HEADER_ID" Association="OracleModel.FK_INVENTORY_HEADER_ID">
+            <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
+            <End Role="DAILY_ACTIVITY_INVENTORY" EntitySet="DAILY_ACTIVITY_INVENTORY" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
@@ -4125,6 +4259,8 @@
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CROSSINGS" Relationship="OracleModel.FK_CROSSINGS_CONTACT_ID" FromRole="CROSSING_CONTACTS" ToRole="CROSSING" />
+          <Property Type="Decimal" Name="RAILROAD_ID" Precision="38" Scale="0" />
+          <NavigationProperty Name="CROSSING_RAILROAD" Relationship="OracleModel.FK_CONTACTS_RAILROAD_ID" FromRole="CROSSING_CONTACTS" ToRole="CROSSING_RAILROAD" />
         </EntityType>
         <EntityType Name="XXPJ_PREV_WAGE_RATES">
           <Key>
@@ -4184,10 +4320,10 @@
           <NavigationProperty Name="DAILY_ACTIVITY_EQUIPMENT" Relationship="OracleModel.FK_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_EQUIPMENT" />
           <NavigationProperty Name="DAILY_ACTIVITY_WEATHER" Relationship="OracleModel.FK_WEATHER_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_WEATHER" />
           <NavigationProperty Name="DAILY_ACTIVITY_AUDIT" Relationship="OracleModel.FK_AUDIT_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_AUDIT" />
-          <NavigationProperty Name="DAILY_ACTIVITY_INVENTORY" Relationship="OracleModel.FK_INVENTORY_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_INVENTORY" />
           <NavigationProperty Name="DAILY_ACTIVITY_FOOTER" Relationship="OracleModel.FK_FOOTER_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_FOOTER" />
           <NavigationProperty Name="DAILY_ACTIVITY_EMPLOYEE" Relationship="OracleModel.FK_EMPLOYEE_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_EMPLOYEE" />
           <NavigationProperty Name="DAILY_ACTIVITY_PRODUCTION" Relationship="OracleModel.FK_PRODUCTION_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_PRODUCTION" />
+          <NavigationProperty Name="DAILY_ACTIVITY_INVENTORY" Relationship="OracleModel.FK_INVENTORY_HEADER_ID" FromRole="DAILY_ACTIVITY_HEADER" ToRole="DAILY_ACTIVITY_INVENTORY" />
         </EntityType>
         <Association Name="FK_CHEMICAL_HEADER_ID">
           <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
@@ -4798,51 +4934,6 @@
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="Int64" Name="HEADER_ID" />
         </EntityType>
-        <EntityType Name="DAILY_ACTIVITY_INVENTORY">
-          <Key>
-            <PropertyRef Name="INVENTORY_ID" />
-          </Key>
-          <Property Type="Int64" Name="INVENTORY_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int64" Name="CHEMICAL_MIX_ID" />
-          <Property Type="String" Name="SUB_INVENTORY_SECONDARY_NAME" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="SUB_INVENTORY_ORG_ID" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="ITEM_ID" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="RATE" Precision="15" Scale="4" />
-          <Property Type="String" Name="UNIT_OF_MEASURE" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="EPA_NUMBER" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
-          <Property Type="Decimal" Name="TOTAL" Precision="15" Scale="4" />
-          <NavigationProperty Name="DAILY_ACTIVITY_CHEMICAL_MIX" Relationship="OracleModel.FK_INVENTORY_CHEMICAL_MIX_ID" FromRole="DAILY_ACTIVITY_INVENTORY" ToRole="DAILY_ACTIVITY_CHEMICAL_MIX" />
-          <NavigationProperty Name="DAILY_ACTIVITY_HEADER" Relationship="OracleModel.FK_INVENTORY_HEADER_ID" FromRole="DAILY_ACTIVITY_INVENTORY" ToRole="DAILY_ACTIVITY_HEADER" />
-        </EntityType>
-        <Association Name="FK_INVENTORY_CHEMICAL_MIX_ID">
-          <End Type="OracleModel.DAILY_ACTIVITY_CHEMICAL_MIX" Role="DAILY_ACTIVITY_CHEMICAL_MIX" Multiplicity="0..1" />
-          <End Type="OracleModel.DAILY_ACTIVITY_INVENTORY" Role="DAILY_ACTIVITY_INVENTORY" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DAILY_ACTIVITY_CHEMICAL_MIX">
-              <PropertyRef Name="CHEMICAL_MIX_ID" />
-            </Principal>
-            <Dependent Role="DAILY_ACTIVITY_INVENTORY">
-              <PropertyRef Name="CHEMICAL_MIX_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_INVENTORY_HEADER_ID">
-          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
-          <End Type="OracleModel.DAILY_ACTIVITY_INVENTORY" Role="DAILY_ACTIVITY_INVENTORY" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DAILY_ACTIVITY_HEADER">
-              <PropertyRef Name="HEADER_ID" />
-            </Principal>
-            <Dependent Role="DAILY_ACTIVITY_INVENTORY">
-              <PropertyRef Name="HEADER_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="CUSTOMER_SURVEY_FIELDSETS">
           <Key>
             <PropertyRef Name="FIELDSET_ID" />
@@ -4857,6 +4948,7 @@
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <NavigationProperty Name="CUSTOMER_SURVEY_FORMS" Relationship="OracleModel.FK_FIELDSETS_FORM_ID" FromRole="CUSTOMER_SURVEY_FIELDSETS" ToRole="CUSTOMER_SURVEY_FORMS" />
           <NavigationProperty Name="CUSTOMER_SURVEY_RELATION" Relationship="OracleModel.FK_RELATION_FIELDSET_ID" FromRole="CUSTOMER_SURVEY_FIELDSETS" ToRole="CUSTOMER_SURVEY_RELATION" />
+          <Property Type="String" Name="IS_ACTIVE" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_FORMS">
           <Key>
@@ -5094,6 +5186,7 @@
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <NavigationProperty Name="CUSTOMER_SURVEY_QUESTIONS" Relationship="OracleModel.FK_OPTION_QUES_ID" FromRole="CUSTOMER_SURVEY_OPTIONS" ToRole="CUSTOMER_SURVEY_QUESTIONS" />
+          <Property Type="String" Name="IS_ACTIVE" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
         <Association Name="FK_OPTION_QUES_ID">
           <End Type="OracleModel.CUSTOMER_SURVEY_QUESTIONS" Role="CUSTOMER_SURVEY_QUESTIONS" Multiplicity="1" />
@@ -5424,6 +5517,8 @@
           <Property Type="Decimal" Name="SHOPTIME_PM" Precision="15" Scale="4" />
           <Property Type="Int64" Name="SUPPORT_PROJ_ID" />
           <NavigationProperty Name="DAILY_ACTIVITY_HEADER" Relationship="OracleModel.FK_EMPLOYEE_HEADER_ID" FromRole="DAILY_ACTIVITY_EMPLOYEE" ToRole="DAILY_ACTIVITY_HEADER" />
+          <Property Type="Int64" Name="LUNCH_TASK_ID" />
+          <Property Type="Int64" Name="PER_DIEM_TASK_ID" />
         </EntityType>
         <Association Name="FK_EMPLOYEE_HEADER_ID">
           <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
@@ -5615,6 +5710,9 @@
           <NavigationProperty Name="CROSSING_DATA_ENTRY" Relationship="OracleModel.FK_DATA_ENTRY_CROSSING_ID" FromRole="CROSSING" ToRole="CROSSING_DATA_ENTRY" />
           <NavigationProperty Name="CROSSING_INCIDENT" Relationship="OracleModel.FK_INCIDENT_CROSSING_ID" FromRole="CROSSING" ToRole="CROSSING_INCIDENT" />
           <NavigationProperty Name="CROSSING_SUPPLEMENTAL" Relationship="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" FromRole="CROSSING" ToRole="CROSSING_SUPPLEMENTAL" />
+          <Property Type="String" Name="STATUS" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="RAILROAD_ID" Precision="38" Scale="0" />
+          <NavigationProperty Name="CROSSING_RAILROAD" Relationship="OracleModel.FK_CROSSINGS_RAILROAD_ID" FromRole="CROSSING" ToRole="CROSSING_RAILROAD" />
         </EntityType>
         <Association Name="FK_CROSSINGS_CONTACT_ID">
           <End Type="OracleModel.CROSSING_CONTACTS" Role="CROSSING_CONTACTS" Multiplicity="0..1" />
@@ -5716,6 +5814,148 @@
               <PropertyRef Name="HEADER_ID" />
             </Principal>
             <Dependent Role="DAILY_ACTIVITY_PRODUCTION">
+              <PropertyRef Name="HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CROSSING_PROJECT">
+          <Key>
+            <PropertyRef Name="PROJ_CORSSING_ID" />
+          </Key>
+          <Property Type="Decimal" Name="PROJ_CORSSING_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="PROJECT_ID" />
+          <Property Type="String" Name="PROJECT_NAME" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="RAILROAD_ID" Precision="38" Scale="0" />
+          <NavigationProperty Name="CROSSING_RAILROAD" Relationship="OracleModel.FK_PROJECT_RAILROAD_ID" FromRole="CROSSING_PROJECT" ToRole="CROSSING_RAILROAD" />
+        </EntityType>
+        <EntityType Name="CROSSING_RAILROAD">
+          <Key>
+            <PropertyRef Name="RAILROAD_ID" />
+          </Key>
+          <Property Type="Decimal" Name="RAILROAD_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="RAILROAD" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CROSSING_CONTACTS" Relationship="OracleModel.FK_CONTACTS_RAILROAD_ID" FromRole="CROSSING_RAILROAD" ToRole="CROSSING_CONTACTS" />
+          <NavigationProperty Name="CROSSING_PROJECT" Relationship="OracleModel.FK_PROJECT_RAILROAD_ID" FromRole="CROSSING_RAILROAD" ToRole="CROSSING_PROJECT" />
+          <NavigationProperty Name="CROSSINGS" Relationship="OracleModel.FK_CROSSINGS_RAILROAD_ID" FromRole="CROSSING_RAILROAD" ToRole="CROSSING" />
+        </EntityType>
+        <EntityType Name="DAILY_ACTIVITY_INVENTORY">
+          <Key>
+            <PropertyRef Name="INVENTORY_ID" />
+          </Key>
+          <Property Type="Int64" Name="INVENTORY_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="CHEMICAL_MIX_ID" />
+          <Property Type="String" Name="SUB_INVENTORY_SECONDARY_NAME" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="SUB_INVENTORY_ORG_ID" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="ITEM_ID" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="RATE" Precision="15" Scale="4" />
+          <Property Type="String" Name="UNIT_OF_MEASURE" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EPA_NUMBER" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="HEADER_ID" Nullable="false" />
+          <Property Type="Decimal" Name="TOTAL" Precision="15" Scale="4" />
+          <Property Type="String" Name="CONTRACTOR_SUPPLIED" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="DAILY_ACTIVITY_CHEMICAL_MIX" Relationship="OracleModel.FK_INVENTORY_CHEMICAL_MIX_ID" FromRole="DAILY_ACTIVITY_INVENTORY" ToRole="DAILY_ACTIVITY_CHEMICAL_MIX" />
+          <NavigationProperty Name="DAILY_ACTIVITY_HEADER" Relationship="OracleModel.FK_INVENTORY_HEADER_ID" FromRole="DAILY_ACTIVITY_INVENTORY" ToRole="DAILY_ACTIVITY_HEADER" />
+        </EntityType>
+        <EntityType Name="JOB_COST_CLASSES">
+          <Key>
+            <PropertyRef Name="JOB_COST_CLASSES_ID" />
+          </Key>
+          <Property Type="Decimal" Name="JOB_COST_CLASSES_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
+          <Property Type="String" Name="CLASS_CATEGORY" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CLASS_CODE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="JOB_COST_DATE" />
+          <Property Type="Int64" Name="BUID" />
+        </EntityType>
+        <EntityType Name="OVERHEAD_BUDGET_TYPE">
+          <Key>
+            <PropertyRef Name="OVERHEAD_BUDGET_TYPE_ID" />
+          </Key>
+          <Property Type="Int64" Name="OVERHEAD_BUDGET_TYPE_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="PARENT_BUDGET_TYPE_ID" Nullable="false" />
+          <Property Type="String" Name="BUDGET_NAME" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="BUDGET_DESCRIPTION" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="LE_ORD_ID" Nullable="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="OVERHEAD_BUDGET_VERSION">
+          <Key>
+            <PropertyRef Name="OVERHEAD_BUDGET_VER_ID" />
+          </Key>
+          <Property Type="Int64" Name="OVERHEAD_BUDGET_VER_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="OVERHEAD_ORG_ID" Nullable="false" />
+          <Property Type="Int64" Name="PARENT_BUDGET_VER_ID" Nullable="false" />
+          <Property Type="Int64" Name="OVERHEAD_BUDGET_TYPE_ID" Nullable="false" />
+          <Property Type="Int16" Name="FISCAL_YEAR" Nullable="false" />
+          <Property Type="String" Name="STATUS" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_CONTACTS_RAILROAD_ID">
+          <End Type="OracleModel.CROSSING_RAILROAD" Role="CROSSING_RAILROAD" Multiplicity="0..1" />
+          <End Type="OracleModel.CROSSING_CONTACTS" Role="CROSSING_CONTACTS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSING_RAILROAD">
+              <PropertyRef Name="RAILROAD_ID" />
+            </Principal>
+            <Dependent Role="CROSSING_CONTACTS">
+              <PropertyRef Name="RAILROAD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PROJECT_RAILROAD_ID">
+          <End Type="OracleModel.CROSSING_RAILROAD" Role="CROSSING_RAILROAD" Multiplicity="0..1" />
+          <End Type="OracleModel.CROSSING_PROJECT" Role="CROSSING_PROJECT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSING_RAILROAD">
+              <PropertyRef Name="RAILROAD_ID" />
+            </Principal>
+            <Dependent Role="CROSSING_PROJECT">
+              <PropertyRef Name="RAILROAD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CROSSINGS_RAILROAD_ID">
+          <End Type="OracleModel.CROSSING_RAILROAD" Role="CROSSING_RAILROAD" Multiplicity="0..1" />
+          <End Type="OracleModel.CROSSING" Role="CROSSING" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSING_RAILROAD">
+              <PropertyRef Name="RAILROAD_ID" />
+            </Principal>
+            <Dependent Role="CROSSING">
+              <PropertyRef Name="RAILROAD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_INVENTORY_CHEMICAL_MIX_ID">
+          <End Type="OracleModel.DAILY_ACTIVITY_CHEMICAL_MIX" Role="DAILY_ACTIVITY_CHEMICAL_MIX" Multiplicity="0..1" />
+          <End Type="OracleModel.DAILY_ACTIVITY_INVENTORY" Role="DAILY_ACTIVITY_INVENTORY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_CHEMICAL_MIX">
+              <PropertyRef Name="CHEMICAL_MIX_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_INVENTORY">
+              <PropertyRef Name="CHEMICAL_MIX_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_INVENTORY_HEADER_ID">
+          <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
+          <End Type="OracleModel.DAILY_ACTIVITY_INVENTORY" Role="DAILY_ACTIVITY_INVENTORY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DAILY_ACTIVITY_HEADER">
+              <PropertyRef Name="HEADER_ID" />
+            </Principal>
+            <Dependent Role="DAILY_ACTIVITY_INVENTORY">
               <PropertyRef Name="HEADER_ID" />
             </Dependent>
           </ReferentialConstraint>
@@ -6380,6 +6620,7 @@
           <EntitySetMapping Name="CROSSING_CONTACTS">
             <EntityTypeMapping TypeName="OracleModel.CROSSING_CONTACTS">
               <MappingFragment StoreEntitySet="CROSSING_CONTACTS">
+                <ScalarProperty Name="RAILROAD_ID" ColumnName="RAILROAD_ID" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
                 <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
                 <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
@@ -7001,29 +7242,10 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DAILY_ACTIVITY_INVENTORY">
-            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_INVENTORY">
-              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_INVENTORY">
-                <ScalarProperty Name="TOTAL" ColumnName="TOTAL" />
-                <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="EPA_NUMBER" ColumnName="EPA_NUMBER" />
-                <ScalarProperty Name="UNIT_OF_MEASURE" ColumnName="UNIT_OF_MEASURE" />
-                <ScalarProperty Name="RATE" ColumnName="RATE" />
-                <ScalarProperty Name="ITEM_ID" ColumnName="ITEM_ID" />
-                <ScalarProperty Name="SUB_INVENTORY_ORG_ID" ColumnName="SUB_INVENTORY_ORG_ID" />
-                <ScalarProperty Name="SUB_INVENTORY_SECONDARY_NAME" ColumnName="SUB_INVENTORY_SECONDARY_NAME" />
-                <ScalarProperty Name="CHEMICAL_MIX_ID" ColumnName="CHEMICAL_MIX_ID" />
-                <ScalarProperty Name="INVENTORY_ID" ColumnName="INVENTORY_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CUSTOMER_SURVEY_FIELDSETS">
             <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_FIELDSETS">
               <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_FIELDSETS">
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
                 <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
@@ -7171,6 +7393,7 @@
           <EntitySetMapping Name="CUSTOMER_SURVEY_OPTIONS">
             <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_OPTIONS">
               <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_OPTIONS">
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
                 <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
@@ -7390,6 +7613,8 @@
           <EntitySetMapping Name="DAILY_ACTIVITY_EMPLOYEE">
             <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_EMPLOYEE">
               <MappingFragment StoreEntitySet="DAILY_ACTIVITY_EMPLOYEE">
+                <ScalarProperty Name="PER_DIEM_TASK_ID" ColumnName="PER_DIEM_TASK_ID" />
+                <ScalarProperty Name="LUNCH_TASK_ID" ColumnName="LUNCH_TASK_ID" />
                 <ScalarProperty Name="SUPPORT_PROJ_ID" ColumnName="SUPPORT_PROJ_ID" />
                 <ScalarProperty Name="SHOPTIME_PM" ColumnName="SHOPTIME_PM" />
                 <ScalarProperty Name="SHOPTIME_AM" ColumnName="SHOPTIME_AM" />
@@ -7534,6 +7759,8 @@
           <EntitySetMapping Name="CROSSINGS">
             <EntityTypeMapping TypeName="OracleModel.CROSSING">
               <MappingFragment StoreEntitySet="CROSSINGS">
+                <ScalarProperty Name="RAILROAD_ID" ColumnName="RAILROAD_ID" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
                 <ScalarProperty Name="SPECIAL_INSTRUCTIONS" ColumnName="SPECIAL_INSTRUCTIONS" />
                 <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
                 <ScalarProperty Name="SERVICE_UNIT" ColumnName="SERVICE_UNIT" />
@@ -7632,6 +7859,88 @@
                 <ScalarProperty Name="TIME_IN" ColumnName="TIME_IN" />
                 <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
                 <ScalarProperty Name="PRODUCTION_ID" ColumnName="PRODUCTION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CROSSING_PROJECT">
+            <EntityTypeMapping TypeName="OracleModel.CROSSING_PROJECT">
+              <MappingFragment StoreEntitySet="CROSSING_PROJECT">
+                <ScalarProperty Name="RAILROAD_ID" ColumnName="RAILROAD_ID" />
+                <ScalarProperty Name="PROJECT_NAME" ColumnName="PROJECT_NAME" />
+                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
+                <ScalarProperty Name="PROJ_CORSSING_ID" ColumnName="PROJ_CORSSING_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CROSSING_RAILROAD">
+            <EntityTypeMapping TypeName="OracleModel.CROSSING_RAILROAD">
+              <MappingFragment StoreEntitySet="CROSSING_RAILROAD">
+                <ScalarProperty Name="RAILROAD" ColumnName="RAILROAD" />
+                <ScalarProperty Name="RAILROAD_ID" ColumnName="RAILROAD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DAILY_ACTIVITY_INVENTORY">
+            <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_INVENTORY">
+              <MappingFragment StoreEntitySet="DAILY_ACTIVITY_INVENTORY">
+                <ScalarProperty Name="CONTRACTOR_SUPPLIED" ColumnName="CONTRACTOR_SUPPLIED" />
+                <ScalarProperty Name="TOTAL" ColumnName="TOTAL" />
+                <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="EPA_NUMBER" ColumnName="EPA_NUMBER" />
+                <ScalarProperty Name="UNIT_OF_MEASURE" ColumnName="UNIT_OF_MEASURE" />
+                <ScalarProperty Name="RATE" ColumnName="RATE" />
+                <ScalarProperty Name="ITEM_ID" ColumnName="ITEM_ID" />
+                <ScalarProperty Name="SUB_INVENTORY_ORG_ID" ColumnName="SUB_INVENTORY_ORG_ID" />
+                <ScalarProperty Name="SUB_INVENTORY_SECONDARY_NAME" ColumnName="SUB_INVENTORY_SECONDARY_NAME" />
+                <ScalarProperty Name="CHEMICAL_MIX_ID" ColumnName="CHEMICAL_MIX_ID" />
+                <ScalarProperty Name="INVENTORY_ID" ColumnName="INVENTORY_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JOB_COST_CLASSES">
+            <EntityTypeMapping TypeName="OracleModel.JOB_COST_CLASSES">
+              <MappingFragment StoreEntitySet="JOB_COST_CLASSES">
+                <ScalarProperty Name="BUID" ColumnName="BUID" />
+                <ScalarProperty Name="JOB_COST_DATE" ColumnName="JOB_COST_DATE" />
+                <ScalarProperty Name="CLASS_CODE" ColumnName="CLASS_CODE" />
+                <ScalarProperty Name="CLASS_CATEGORY" ColumnName="CLASS_CATEGORY" />
+                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
+                <ScalarProperty Name="JOB_COST_CLASSES_ID" ColumnName="JOB_COST_CLASSES_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OVERHEAD_BUDGET_TYPE">
+            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_BUDGET_TYPE">
+              <MappingFragment StoreEntitySet="OVERHEAD_BUDGET_TYPE">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="LE_ORD_ID" ColumnName="LE_ORD_ID" />
+                <ScalarProperty Name="BUDGET_DESCRIPTION" ColumnName="BUDGET_DESCRIPTION" />
+                <ScalarProperty Name="BUDGET_NAME" ColumnName="BUDGET_NAME" />
+                <ScalarProperty Name="PARENT_BUDGET_TYPE_ID" ColumnName="PARENT_BUDGET_TYPE_ID" />
+                <ScalarProperty Name="OVERHEAD_BUDGET_TYPE_ID" ColumnName="OVERHEAD_BUDGET_TYPE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OVERHEAD_BUDGET_VERSION">
+            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_BUDGET_VERSION">
+              <MappingFragment StoreEntitySet="OVERHEAD_BUDGET_VERSION">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="FISCAL_YEAR" ColumnName="FISCAL_YEAR" />
+                <ScalarProperty Name="OVERHEAD_BUDGET_TYPE_ID" ColumnName="OVERHEAD_BUDGET_TYPE_ID" />
+                <ScalarProperty Name="PARENT_BUDGET_VER_ID" ColumnName="PARENT_BUDGET_VER_ID" />
+                <ScalarProperty Name="OVERHEAD_ORG_ID" ColumnName="OVERHEAD_ORG_ID" />
+                <ScalarProperty Name="OVERHEAD_BUDGET_VER_ID" ColumnName="OVERHEAD_BUDGET_VER_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -43,9 +43,6 @@
         <EntityTypeShape EntityType="OracleModel.XXDBI_TRUCK_EQUIP_USAGE_V" Width="1.5" PointX="13.75" PointY="24.75" />
         <EntityTypeShape EntityType="OracleModel.PA_TRANSACTION_INT_V" Width="1.5" PointX="7.875" PointY="25.625" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_IMPORT" Width="1.5" PointX="8" PointY="20.125" />
-        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_INVENTORY" Width="1.5" PointX="5.75" PointY="21.625" />
-        <AssociationConnector Association="OracleModel.FK_INVENTORY_CHEMICAL_MIX_ID" />
-        <AssociationConnector Association="OracleModel.FK_INVENTORY_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_FIELDSETS" Width="1.5" PointX="45.375" PointY="58.25" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_FORMS" Width="1.5" PointX="43.125" PointY="58.375" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_FORMS_ANS" Width="1.5" PointX="37.125" PointY="58.25" />
@@ -100,9 +97,20 @@
         <AssociationConnector Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID" />
         <AssociationConnector Association="OracleModel.FK_INCIDENT_CROSSING_ID" />
         <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
-        <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="1.1517493637053993" PointY="27.760841308050249" />
+        <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="1.25" PointY="31.25" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" Width="1.5" PointX="1" PointY="21.375" />
         <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_PROJECT" Width="1.5" PointX="21.625" PointY="11.5" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_RAILROAD" Width="1.5" PointX="24.625" PointY="13" />
+        <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_INVENTORY" Width="1.5" PointX="5.625" PointY="21.375" />
+        <EntityTypeShape EntityType="OracleModel.JOB_COST_CLASSES" Width="1.5" PointX="6.6409545664866245" PointY="15.271937302906038" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" Width="1.5" PointX="11.893317460964116" PointY="31.957565411905556" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_VERSION" Width="1.5" PointX="4.7130729931933217" PointY="22.547942231664408" />
+        <AssociationConnector Association="OracleModel.FK_CONTACTS_RAILROAD_ID" />
+        <AssociationConnector Association="OracleModel.FK_PROJECT_RAILROAD_ID" />
+        <AssociationConnector Association="OracleModel.FK_CROSSINGS_RAILROAD_ID" />
+        <AssociationConnector Association="OracleModel.FK_INVENTORY_CHEMICAL_MIX_ID" />
+        <AssociationConnector Association="OracleModel.FK_INVENTORY_HEADER_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -23,7 +23,7 @@ namespace DBI.Data
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
     
-        public virtual CUSTOMER_SURVEY_QUESTIONS CUSTOMER_SURVEY_QUESTIONS { get; set; }
         public virtual CUSTOMER_SURVEY_FIELDSETS CUSTOMER_SURVEY_FIELDSETS { get; set; }
+        public virtual CUSTOMER_SURVEY_QUESTIONS CUSTOMER_SURVEY_QUESTIONS { get; set; }
     }
 }
