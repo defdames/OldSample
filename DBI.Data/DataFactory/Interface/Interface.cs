@@ -367,7 +367,7 @@ namespace DBI.Data
                         }
 
                         //Check if record is IRM and Travel time added, then add Travel Time Base
-                        if (xxdbiDailyActivityHeader.ORG_ID == 123 && r.DRIVE_TIME > 0)
+                        if (xxdbiDailyActivityHeader.ORG_ID == 123 && r.TRAVEL_TIME > 0)
                         {
                             XXDBI_LABOR_HEADER_V dtrecord = new XXDBI_LABOR_HEADER_V();
                             dtrecord.LABOR_HEADER_ID = DBI.Data.Interface.generateLaborHeaderSequence();
@@ -404,7 +404,7 @@ namespace DBI.Data
 
                             XXDBI_PAYROLL_AUDIT_V dtrecord = new XXDBI_PAYROLL_AUDIT_V();
                             dtrecord.PAYROLL_AUDIT_ID = generatePayrollAuditSequence();
-                            dtrecord.DA_HEADER_ID = xxdbiDailyActivityHeader.DA_HEADER_ID;
+                            //dtrecord.DA_HEADER_ID = xxdbiDailyActivityHeader.DA_HEADER_ID;
                             dtrecord.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
                             dtrecord.EMPLOYEE_NAME =  DBI.Data.EMPLOYEES_V.oracleEmployeeName(r.PERSON_ID);
                             dtrecord.ELEMENT = "Time Entry Wages";
@@ -483,8 +483,8 @@ namespace DBI.Data
                             DateTime current = DateTime.Now;
 
                             dtrecord.PREVAILING_WAGE_RATE = null;
-                            dtrecord.EFFECTIVE_START_DATE = current.GetFirstDayOfWeek();
-                            dtrecord.EFFECTIVE_END_DATE = current.GetLastDayOfWeek();
+                            dtrecord.EFFECTIVE_START_DATE = current.GetFirstDayOfWeek().Date;
+                            dtrecord.EFFECTIVE_END_DATE = current.GetLastDayOfWeek().Date;
                             GenericData.Insert<XXDBI_PAYROLL_AUDIT_V>(dtrecord);
 
                         }
