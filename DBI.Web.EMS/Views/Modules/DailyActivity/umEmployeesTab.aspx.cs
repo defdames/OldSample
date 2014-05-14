@@ -45,6 +45,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxSupportProjectColumn.Show();
             }
 
+            if (roleNeeded())
+            {
+                uxRoleTypeColumn.Show();
+            }
+
         }
 
         protected void deEnableEdit(object sender, DirectEventArgs e)
@@ -168,6 +173,27 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             else
             {
                 X.Js.Call(string.Format("parent.App.direct.dmLoadEmployeeWindow('{0}', '{1}', '{2}')", "Edit", HeaderId.ToString(), e.ExtraParams["EmployeeId"]));
+            }
+        }
+
+        protected bool roleNeeded()
+        {
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+
+            using (Entities _context = new Entities())
+            {
+                string PrevailingWage = (from d in _context.DAILY_ACTIVITY_HEADER
+                                         join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                                         where d.HEADER_ID == HeaderId
+                                         select p.ATTRIBUTE3).Single();
+                if (PrevailingWage == "Y")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
     }
