@@ -49,10 +49,6 @@
 			<ColumnModel>
 				<Columns>
 					<ext:Column runat="server"
-						DataIndex="PROJECT_ID"
-						Text="Project Id"
-						Flex="1" />
-					<ext:Column runat="server"
 						DataIndex="LONG_NAME"
 						Text="Project Name"
 						Flex="2" />
