@@ -19,7 +19,7 @@
                         <Items>
                              <ext:ComboBox ID="uxRailRoadCI"
                                                 runat="server"
-                                                FieldLabel="Rail Road"
+                                                FieldLabel="Railroad"
                                                 LabelAlign="Right"
                                                 DisplayField="RAILROAD"
                                                 ValueField="RAILROAD_ID"

@@ -27,15 +27,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
             if (!X.IsAjaxRequest)
             {
-                
-                deLoadType("Add");
-                deLoadType("Edit");
+                //deLoadUnit();
+                //deLoadType("Edit");
                 uxAddStateList.Data = StaticLists.StateList;
                 uxEditStateList.Data = StaticLists.StateList;
                 uxAddPropertyType.Data = StaticLists.PropertyType;
                 uxEditPropertyType.Data = StaticLists.PropertyType;
             }
-          
+            //X.Msg.Alert("test", Session["rrType"].ToString()).Show();
         }
 
         protected void deCrossingGridData(object sender, StoreReadDataEventArgs e)
@@ -44,19 +43,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             using (Entities _context = new Entities())
             {
                 List<object> data;
-
+                long RailroadId = long.Parse(Session["rrType"].ToString());
                 //Get List of all new crossings
 
-                //if (validateComponentSecurity("SYS.CrossingMaintenance.InformationView"))
-                //{
-                //    List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
                     data = (from d in _context.CROSSINGS
-                            //join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
-                            //join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID 
-                          
-                            //where p.PROJECT_TYPE == "CUSTOMER BILLING" && p.TEMPLATE_FLAG == "N" && p.PROJECT_STATUS_CODE == "APPROVED" && OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID)
-                            select new { d.CONTACT_ID, d.REMARKS, d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.SUB_DIVISION, d.CROSSING_CONTACTS.CONTACT_NAME }).ToList<object>();
-
+                            where d.RAILROAD_ID == RailroadId
+                            select new { d.RAILROAD_ID, d.RAILROAD, d.CONTACT_ID, d.STATUS, d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.SUB_DIVISION, d.CROSSING_CONTACTS.CONTACT_NAME }).ToList<object>();
 
                     int count;
                     uxCurrentCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -74,15 +66,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             using (Entities _context = new Entities())
             {
+               
                 long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
                 var data = (from d in _context.CROSSINGS
-
+                            join r in _context.CROSSING_RAILROAD on d.RAILROAD_ID equals r.RAILROAD_ID
                             where d.CROSSING_ID == CrossingId
-
-                            select new
-                            {
-                                d
-                            }).SingleOrDefault();
+                            select new {  d, r }).SingleOrDefault();
                 try
                 {
                     long ContactId = long.Parse(data.d.CONTACT_ID.ToString());
@@ -99,12 +88,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     uxAddManagerCI.Value = string.Empty;
                    
 
-                }
-              
-
+                }                
                 uxServiceUnitCI.SetValue(data.d.SERVICE_UNIT);
                 uxSubDivCI.SetValue(data.d.SUB_DIVISION);
-                uxRRCI.SetValue(data.d.RAILROAD);
+                uxRRCI.SetValue(data.r.RAILROAD);
                 uxCrossingNumCI.SetValue(data.d.CROSSING_NUMBER);
                 uxRouteCI.SetValue(data.d.ROUTE);
                 uxDOTCI.SetValue(data.d.DOT);
@@ -158,7 +145,37 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }  
             
         }
+        protected void deGetRRType(object sender, DirectEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                long RailroadId = long.Parse(Session["rrType"].ToString());
+                var RRdata = (from r in _context.CROSSING_RAILROAD
+                              where r.RAILROAD_ID == RailroadId
+                              select new
+                              {
+                                  r
 
+                              }).Single();
+
+
+                uxAddRailRoadCITextField.SetValue(RRdata.r.RAILROAD);
+                string rrType = RRdata.r.RAILROAD;
+               
+                List<ServiceUnitResponse> units = ServiceUnitData.ServiceUnitUnits(rrType).ToList();
+                uxAddServiceUnitCI.Clear();
+                uxAddSubDivCI.Clear();
+                uxAddServiceUnitStore.DataSource = units;
+                uxAddServiceUnitStore.DataBind();
+                uxEditServiceUnitCI.Clear();
+                uxEditSubDivCIBox.Clear();
+                uxEditServiceUnitStore.DataSource = units;
+                uxEditServiceUnitStore.DataBind();
+                
+                
+            }
+        }
+        
         /// <summary>
         /// Add Crossing to Database
         /// </summary>
@@ -166,6 +183,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         /// <param name="e"></param>
         protected void deAddCrossings(object sender, DirectEventArgs e)
         {
+           
+           
 
             //Do type conversions
             string CrossingNum = uxAddCrossingNumCI.Value.ToString();
@@ -181,9 +200,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string Restricted = uxAddRestrictedCI.Value.ToString();
             string FenceEncroach = uxAddFenceEnchroachCI.Value.ToString();
             string OnSpur = uxAddOnSpurCI.Value.ToString();
-            string RailRoad = uxAddRailRoadCI.Value.ToString();
+            string RailRoad = uxAddRailRoadCITextField.Value.ToString();
             string ServiceUnit = uxAddServiceUnitCI.Value.ToString();
             string SubDiv = uxAddSubDivCI.Value.ToString();
+            long RailroadId = long.Parse(Session["rrType"].ToString());
 
             if (uxAddSubConCI.Checked)
             {
@@ -221,14 +241,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             CROSSING data = new CROSSING()
             {
-
+                
                 CROSSING_NUMBER = CrossingNum,
                 MILE_POST = MP,
                 CITY = City,
                 STREET = Street,
                 STATE = State,
                 COUNTY = County,
-                ROUTE = Route,   
+                ROUTE = Route,
                 DOT = DotNum,
                 SUB_CONTRACTED = Sub_contracted,
                 RESTRICTED_COUNTY = Restricted,
@@ -237,7 +257,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 RAILROAD = RailRoad,
                 SERVICE_UNIT = ServiceUnit,
                 SUB_DIVISION = SubDiv,
-                
+                RAILROAD_ID = RailroadId,
+
             };
 
             try
@@ -412,11 +433,16 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 data.SPECIAL_INSTRUCTIONS = null;
             }
-            if (data.REMARKS == null)
+            
+         
+            if (data.STATUS == null)
             {
-                data.REMARKS = "ACTIVE";
-            }             
-
+                data.STATUS = "ACTIVE";
+            }
+            if (Session["rrType"] != null)
+            {
+                Session["rrType"] = data.RAILROAD_ID;
+            }
             //Write to DB
             GenericData.Insert<CROSSING>(data);
 
@@ -449,11 +475,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
                 var data = (from d in _context.CROSSINGS
-                            
+                            join r in _context.CROSSING_RAILROAD on d.RAILROAD_ID equals r.RAILROAD_ID
                             where d.CROSSING_ID == CrossingId
                             select new
                             {
-                                 d
+                                 d, r
                               
                             }).SingleOrDefault();
                 try
@@ -500,7 +526,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxEditRestrictedCI.SetValue(data.d.RESTRICTED_COUNTY);
                 uxEditFenceEnchroachCI.SetValue(data.d.FENCE_ENCROACHMENT);
                 uxEditOnSpurCI.SetValue(data.d.ON_SPUR);
-                uxEditRRCI.SetValueAndFireSelect(data.d.RAILROAD);
+                uxEditRRCI.SetValue(data.r.RAILROAD);
                 uxEditServiceUnitCI.SetValueAndFireSelect(data.d.SERVICE_UNIT);
                 uxEditSubDivCIBox.SetValueAndFireSelect(data.d.SUB_DIVISION);
 
@@ -549,6 +575,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string OnSpur = uxEditSubConCI.Value.ToString();
             string RailRoad = uxEditRRCI.Value.ToString();
             string ServiceUnit = uxEditServiceUnitCI.Value.ToString();
+            long RailroadId = long.Parse(Session["rrType"].ToString());
 
             if (uxEditSubConCI.Checked)
             {
@@ -617,7 +644,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 data.RESTRICTED_COUNTY = Restricted;
                 data.FENCE_ENCROACHMENT = FenceEncroach;
                 data.ON_SPUR = OnSpur;
-                data.RAILROAD = RailRoad;
+                data.RAILROAD_ID = RailroadId;
                 data.SERVICE_UNIT = ServiceUnit;
                 try
                 {
@@ -782,7 +809,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
              {
                  data.SPECIAL_INSTRUCTIONS = null;
              }
-            
+             if (Session["rrType"] != null)
+             {
+                 Session["rrType"] = data.RAILROAD_ID;
+             }
                
                 //Write to DB
                 GenericData.Update<CROSSING>(data);
@@ -815,7 +845,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                         where d.CROSSING_ID == CrossingId
                         select d).Single();
 
-                data.REMARKS = "DELETED";
+                data.STATUS = "DELETED";
             }
             GenericData.Update<CROSSING>(data);
            
@@ -845,7 +875,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                         where d.CROSSING_ID == CrossingId
                         select d).Single();
 
-                data.REMARKS = "ACTIVE";
+                data.STATUS = "ACTIVE";
             }
             GenericData.Update<CROSSING>(data);
            
@@ -864,43 +894,45 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             });
         }
-        protected void deLoadType(string rrType)
-        {
-            
-            List<ServiceUnitResponse> types = ServiceUnitData.ServiceUnitTypes().ToList();
-            if (rrType == "Add")
-            {
-                uxAddRailRoadStore.DataSource = types;
-                uxAddRailRoadStore.DataBind();
-            }
-            else
-            {
-                uxEditRRStore.DataSource = types;
-                uxEditRRStore.DataBind();
-                
-            }
-                
-        }
-        protected void deLoadUnit(object sender, DirectEventArgs e)
-       {
-           if (e.ExtraParams["Type"] == "Add")
-           {
-               List<ServiceUnitResponse> units = ServiceUnitData.ServiceUnitUnits(uxAddRailRoadCI.SelectedItem.Value).ToList();
-               uxAddServiceUnitCI.Clear();
-               uxAddSubDivCI.Clear();
-               uxAddServiceUnitStore.DataSource = units;
-               uxAddServiceUnitStore.DataBind();
-              
-           }
-           else
-           {
-               List<ServiceUnitResponse> units = ServiceUnitData.ServiceUnitUnits(uxEditRRCI.SelectedItem.Value).ToList();
-               uxEditServiceUnitStore.DataSource = units;
-               uxEditServiceUnitStore.DataBind();
+        //protected void deLoadType(string rrType)
+        //{
+        //    List<ServiceUnitResponse> types = ServiceUnitData.ServiceUnitTypes().ToList();
+        //    if (rrType == "Add")
+        //    {
 
-           }
-           
-       }
+        //        //uxAddRailRoadStore.DataSource = types;
+        //        //uxAddRailRoadStore.DataBind();
+        //    }
+        //    //else
+        //    //{
+        //    //    uxEditRRStore.DataSource = types;
+        //    //    uxEditRRStore.DataBind();
+
+        //    //}
+
+        //}
+        //protected void deLoadUnit(object sender, DirectEventArgs e)
+        //{
+        //    //if (e.ExtraParams["Type"] == "Add")
+        //    //{
+        //    string rrType = Session["rrType"].ToString();
+               
+        //        List<ServiceUnitResponse> units = ServiceUnitData.ServiceUnitUnits(rrType).ToList();
+        //        uxAddServiceUnitCI.Clear();
+        //        uxAddSubDivCI.Clear();
+        //        uxAddServiceUnitStore.DataSource = units;
+        //        uxAddServiceUnitStore.DataBind();
+
+        //    //}
+        //    //else
+        //    //{
+        //    //    List<ServiceUnitResponse> units = ServiceUnitData.ServiceUnitUnits(uxEditRRCI.Value.ToString()).ToList();
+        //    //    uxEditServiceUnitStore.DataSource = units;
+        //    //    uxEditServiceUnitStore.DataBind();
+
+        //    //}
+
+        //}
         protected void deLoadSubDiv(object sender, DirectEventArgs e)
        {
           
