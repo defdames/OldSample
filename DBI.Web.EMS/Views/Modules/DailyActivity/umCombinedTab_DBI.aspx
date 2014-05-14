@@ -46,6 +46,7 @@
 										<ext:ModelField Name="TRAVEL_TIME_FORMATTED" />
 										<ext:ModelField Name="DRIVE_TIME_FORMATTED" />
 										<ext:ModelField Name="PER_DIEM" />
+										<ext:ModelField Name="FOREMAN_LICENSE" />
 										<ext:ModelField Name="COMMENTS" />
 									</Fields>
 								</ext:Model>
@@ -61,6 +62,7 @@
 							<ext:Column ID="Column11" runat="server" DataIndex="TRAVEL_TIME_FORMATTED" Text="Travel Time" Flex="6" />
 							<ext:Column ID="Column12" runat="server" DataIndex="DRIVE_TIME_FORMATTED" Text="Drive Time" Flex="6" />
 							<ext:Column ID="Column13" runat="server" DataIndex="PER_DIEM" Text="Per Diem" Flex="5" />
+							<ext:Column runat="server" DataIndex="FOREMAN_LICENSE" Text="License" Flex="5" />
 							<ext:Column ID="Column14" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="9" />
 						</Columns>
 					</ColumnModel>

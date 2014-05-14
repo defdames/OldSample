@@ -48,6 +48,7 @@
 										<ext:ModelField Name="SHOPTIME_PM_FORMATTED" />
 										<ext:ModelField Name="SUPPORT_PROJECT" />
 										<ext:ModelField Name="PER_DIEM" />
+										<ext:ModelField Name="FOREMAN_LICENSE" />
 										<ext:ModelField Name="COMMENTS" />
 									</Fields>
 								</ext:Model>
@@ -66,6 +67,7 @@
 							<ext:Column runat="server" DataIndex="SHOPTIME_PM_FORMATTED" Text="Shoptime PM" />
 							<ext:Column runat="server" DataIndex="SUPPORT_PROJECT" Text="Support Project" />
 							<ext:Column ID="Column13" runat="server" DataIndex="PER_DIEM" Text="Per Diem" />
+							<ext:Column ID="Column1" runat="server" DataIndex="FOREMAN_LICENSE" Text="License" Flex="5" />
 							<ext:Column ID="Column14" runat="server" DataIndex="COMMENTS" Text="Comments" />
 						</Columns>
 					</ColumnModel>
