@@ -86,6 +86,7 @@
 										<ext:ModelField Name="PROJECT_ID" />
 										<ext:ModelField Name="NAME" />
 										<ext:ModelField Name="HEADER_ID" />
+										<ext:ModelField Name="SEGMENT1" />
 									</Fields>
 								</ext:Model>
 							</Model>
@@ -94,8 +95,8 @@
 					<ColumnModel>
 						<Columns>
 							<ext:Column ID="Column47" runat="server"
-								DataIndex="PROJECT_ID"
-								Text="Project ID" />
+								DataIndex="SEGMENT1"
+								Text="Project Number" />
 							<ext:Column ID="Column48" runat="server"
 								DataIndex="NAME"
 								Text="Name" />

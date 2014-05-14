@@ -81,6 +81,7 @@
 										<ext:ModelField Name="PROJECT_ID" />
 										<ext:ModelField Name="NAME" />
 										<ext:ModelField Name="HEADER_ID" />
+										<ext:ModelField Name="SEGMENT1" />
 									</Fields>
 								</ext:Model>
 							</Model>
@@ -89,8 +90,8 @@
 					<ColumnModel>
 						<Columns>
 							<ext:Column ID="Column47" runat="server"
-								DataIndex="PROJECT_ID"
-								Text="Project ID" />
+								DataIndex="SEGMENT1"
+								Text="Project Number" />
 							<ext:Column ID="Column48" runat="server"
 								DataIndex="NAME"
 								Text="Name" />
@@ -102,10 +103,10 @@
 								Text="Organization Name"/>
 							<ext:Column ID="Column51" runat="server"
 								DataIndex="ODOMETER_START" 
-								Text="Meter Start"/>
+								Text="Starting Units"/>
 							<ext:Column ID="Column52" runat="server"
 								DataIndex="ODOMETER_END"
-								Text="Meter End" />
+								Text="Ending Units" />
 						</Columns>
 					</ColumnModel>
 				</ext:GridPanel>
@@ -209,7 +210,7 @@
 							<ext:Column ID="Column28" runat="server" DataIndex="GALLON_ACRE" Text="Gallons/Acre" Flex="1" />
 							<ext:Column ID="Column29" runat="server" DataIndex="GALLON_STARTING" Text="Gallons Starting" Flex="1" />
 							<ext:Column ID="Column30" runat="server" DataIndex="GALLON_MIXED" Text="Gallon Mixed" Flex="1" />
-                            <ext:Column runat="server" DataIndex="GALLON_REMAINING" Text="Gallon Remaining" Flex="1" />
+							<ext:Column runat="server" DataIndex="GALLON_REMAINING" Text="Gallon Remaining" Flex="1" />
 							<ext:Column ID="Column31" runat="server" DataIndex="TOTAL" Text="Total Gallons" Flex="1" />
 							<ext:Column ID="Column32" runat="server" DataIndex="USED" Text="Gallons Used" Flex="1" />
 							<ext:Column ID="Column33" runat="server" DataIndex="ACRES_SPRAYED" Text="Acres Sprayed" Flex="1" />
@@ -230,7 +231,7 @@
 								<ext:Model ID="Model6" runat="server">
 									<Fields>
 										<ext:ModelField Name="CHEMICAL_MIX_NUMBER" />
-                                        <ext:ModelField Name="INV_NAME" />
+										<ext:ModelField Name="INV_NAME" />
 										<ext:ModelField Name="SUB_INVENTORY_SECONDARY_NAME" />
 										<ext:ModelField Name="DESCRIPTION" />
 										<ext:ModelField Name="RATE" />
@@ -245,7 +246,7 @@
 					<ColumnModel>
 						<Columns>
 							<ext:Column ID="Column36" runat="server" DataIndex="CHEMICAL_MIX_NUMBER" Text="Mix Number" />
-                            <ext:Column runat="server" DataIndex="INV_NAME" Text="Inventory Org" />
+							<ext:Column runat="server" DataIndex="INV_NAME" Text="Inventory Org" />
 							<ext:Column ID="Column37" runat="server" DataIndex="SUB_INVENTORY_SECONDARY_NAME" Text="Sub-Inv Name" />
 							<ext:Column ID="Column38" runat="server" DataIndex="DESCRIPTION" Text="Item" />
 							<ext:Column ID="Column39" runat="server" DataIndex="RATE" Text="Rate" />
