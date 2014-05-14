@@ -94,6 +94,33 @@
     <Compile Include="..\DBI.AssemblyVersion\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="BUD_BID_ADJUSTMENT.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BUD_BID_BUDGET_NUM.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BUD_BID_DETAIL_SHEET.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BUD_BID_DETAIL_TASK.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BUD_BID_LINES.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BUD_BID_LOCKED.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BUD_BID_ORGS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BUD_BID_PROJECTS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BUD_BID_STATUS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="CLASS_CODES_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
