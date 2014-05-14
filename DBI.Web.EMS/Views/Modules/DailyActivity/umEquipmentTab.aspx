@@ -77,6 +77,7 @@
 								<ext:ModelField Name="PROJECT_ID" />
 								<ext:ModelField Name="NAME" />
 								<ext:ModelField Name="HEADER_ID" />
+								<ext:ModelField Name="SEGMENT1" />
 							</Fields>
 						</ext:Model>
 					</Model>                    
@@ -85,8 +86,8 @@
 			<ColumnModel>
 				<Columns>
 					<ext:Column runat="server"
-						DataIndex="PROJECT_ID"
-						Text="Project ID" />
+						DataIndex="SEGMENT1"
+						Text="Project Number" />
 					<ext:Column runat="server"
 						DataIndex="NAME"
 						Text="Name" />
@@ -98,10 +99,10 @@
 						Text="Organization Name"/>
 					<ext:Column runat="server"
 						DataIndex="ODOMETER_START" 
-						Text="Meter Start"/>
+						Text="Starting Units"/>
 					<ext:Column runat="server"
 						DataIndex="ODOMETER_END"
-						Text="Meter End" />
+						Text="Ending Units" />
 				</Columns>
 			</ColumnModel>
 			<SelectionModel>
