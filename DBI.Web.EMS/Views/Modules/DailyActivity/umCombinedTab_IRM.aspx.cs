@@ -166,7 +166,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             where d.HEADER_ID == HeaderId
                             from j in joined
                             where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
-                            select new {j.INV_NAME, d.SUB_INVENTORY_SECONDARY_NAME, j.DESCRIPTION, d.RATE }).ToList();
+                            select new {j.INV_NAME, j.SEGMENT1, d.SUB_INVENTORY_SECONDARY_NAME, j.DESCRIPTION, d.RATE }).ToList();
                 uxInventoryStore.DataSource = data;
                 uxInventoryStore.DataBind();
             }

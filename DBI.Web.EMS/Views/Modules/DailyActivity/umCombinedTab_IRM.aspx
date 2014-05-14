@@ -200,6 +200,7 @@
 									<Fields>
 										<ext:ModelField Name="INV_NAME" />
 										<ext:ModelField Name="SUB_INVENTORY_SECONDARY_NAME" />
+										<ext:ModelField Name="SEGMENT1" />
 										<ext:ModelField Name="DESCRIPTION" />
 										<ext:ModelField Name="RATE" />
 									</Fields>
@@ -211,6 +212,7 @@
 						<Columns>
 							<ext:Column runat="server" DataIndex="INV_NAME" Text="Inventory Org" />
 							<ext:Column runat="server" DataIndex="SUB_INVENTORY_SECONDARY_NAME" Text="Sub-Inv Name" />
+							<ext:Column runat="server" DataIndex="SEGMENT1" Text="Item ID" />
 							<ext:Column runat="server" DataIndex="DESCRIPTION" Text="Item" />
 							<ext:Column runat="server" DataIndex="RATE" Text="Quantity" />
 						</Columns>
