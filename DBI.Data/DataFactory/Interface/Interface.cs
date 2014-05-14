@@ -652,6 +652,7 @@ namespace DBI.Data
                             SOURCE_LINE_ID = InventoryCount,
                             PROCESS_FLAG = 1,
                             TRANSACTION_MODE = 3,
+                            TRANSACTION_REFERENCE = InventoryItem.i.INVENTORY_ID.ToString(),
                             INVENTORY_ITEM_ID = InventoryItem.i.ITEM_ID,
                             ORGANIZATION_ID = (decimal)InventoryItem.i.SUB_INVENTORY_ORG_ID,
                             SUBINVENTORY_CODE = InventoryItem.i.SUB_INVENTORY_SECONDARY_NAME,
