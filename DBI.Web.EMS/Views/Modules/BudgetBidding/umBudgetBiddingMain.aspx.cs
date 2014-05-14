@@ -22,7 +22,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             }
         }
 
-        protected void deReadFiscalYears(object sender, StoreReadDataEventArgs e)
+        protected void deLoadFiscalYears(object sender, StoreReadDataEventArgs e)
         {
             using (Entities _context = new Entities())
             {
@@ -35,7 +35,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             }
         }
 
-        protected void deReadBudgetVersions(object sender, StoreReadDataEventArgs e)
+        protected void deLoadBudgetVersions(object sender, StoreReadDataEventArgs e)
         {
             List<BudVerStruct> list = new List<BudVerStruct> 
                 {
@@ -65,16 +65,44 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void deLoadCorrectBudgetType(object sender, DirectEventArgs e)
         {
-            //string treeNode1 = e.ExtraParams["treeNode"];
-            //X.Msg.Alert("Test", treeNode1).Show();
-
-            if (uxOrgPanel.SelectedNodes != null)
+            // Is an org selected?
+            string nodeID = null;
+            try
             {
-                if (!string.IsNullOrEmpty(uxFiscalYear.SelectedItem.Value))
+                nodeID = uxOrgPanel.SelectedNodes[0].NodeID;                
+            }
+            catch (NullReferenceException)
+            {
+                return;
+            }
+
+            // Is the org an org and not just a legal entity or hierarchy?
+            long orgID;
+            try
+            {
+                char[] delimChars = { ':' };
+                string[] selID = nodeID.Split(delimChars);
+                long hierarchyID = long.Parse(selID[0].ToString());
+                orgID = long.Parse(selID[1].ToString());
+            }
+            catch (IndexOutOfRangeException)
+            {
+                return;
+            }
+
+            // Is an org, year and version selected?
+            string fiscalYear = uxFiscalYear.SelectedItem.Value;
+            string version = uxVersion.SelectedItem.Value;
+
+            if (SYS_USER_ORGS.IsInOrg(SYS_USER_INFORMATION.UserID(User.Identity.Name), orgID) == true)
+            {
+                if (!string.IsNullOrEmpty(fiscalYear))
                 {
-                    if (!string.IsNullOrEmpty(uxVersion.SelectedItem.Value))
+                    if (!string.IsNullOrEmpty(version))
                     {
-                        LoadBudget("umYearBudget.aspx");
+                        LoadBudget("umYearBudget.aspx?orgID=" + orgID + "&fiscalYear=" + fiscalYear + "&version=" + version);
+                        string nodeName = uxOrgPanel.SelectedNodes[0].Text;
+                        uxSpacerBar.Title = nodeName;
                     }
                 }
             }
@@ -89,30 +117,14 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxBudgetPanel.LoadContent();
         }
 
-        public class HIERARCHY_TREEVIEW
+        protected void deLoadOrgTree(object sender, NodeLoadEventArgs e)
         {
-            public string ORGANIZATION_NAME { get; set; }
-            public string HIERARCHY_NAME { get; set; }
-            public long ORGANIZATION_STRUCTURE_ID { get; set; }
-            public long ORGANIZATION_ID { get; set; }
-        }
-
-        protected void LoadOrgTree(object sender, NodeLoadEventArgs e)
-        {
-            //X.Msg.Alert("Node", e.NodeID).Show();
+            // User clicked on legal entity or hierarchy
             if (e.NodeID.Contains(":") == false)
             {
-                Entities _context = new Entities();
-                string sql = @"select distinct a.organization_id_parent as organization_id,C.ORGANIZATION_STRUCTURE_ID,c.name as hierarchy_name, d.name as organization_name  from per_org_structure_elements_v a
-                    inner join per_org_structure_versions_v b on B.ORG_STRUCTURE_VERSION_ID = a.org_structure_version_id
-                    inner join per_organization_structures_v c on C.ORGANIZATION_STRUCTURE_ID = B.ORGANIZATION_STRUCTURE_ID
-                    inner join apps.hr_all_organization_units d on d.organization_id = a.organization_id_parent
-                    where a.organization_id_parent in (select organization_id from apps.hr_all_organization_units where type = 'LE' and ((sysdate between date_from and date_to) or (date_to is null)))
-                    order by 4,3";
-
                 if (e.NodeID == "0")
                 {
-                    var data = Organizations.legalEntities(); //legalEntitiesWithActiveBudgetTypes();
+                    var data = Organizations.legalEntitiesWithActiveBudgetTypes();
                     foreach (var view in data)
                     {
                         Node node = new Node();
@@ -125,56 +137,76 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 else
                 {
                     long nodeID = long.Parse(e.NodeID);
-                    var data = Organizations.hierarchiesByBusinessUnit();// _context.Database.SqlQuery<HIERARCHY_TREEVIEW>(sql).Where(a => a.ORGANIZATION_ID == nodeID).ToList();
+                    var data = Organizations.hierarchiesByBusinessUnit().Where(a => a.ORGANIZATION_ID == nodeID);
                     foreach (var view in data)
                     {
                         Node node = new Node();
                         node.Text = view.HIERARCHY_NAME;
-                        node.NodeID = string.Format("{0}:{1}", view.ORGANIZATION_ID.ToString(), view.ORGANIZATION_STRUCTURE_ID.ToString());
+                        node.NodeID = string.Format("{0}:{1}", view.ORGANIZATION_STRUCTURE_ID.ToString(), view.ORGANIZATION_ID.ToString());
                         e.Nodes.Add(node);
                     }
                 }
             }
 
+            // User clicked on org
             else
             {
-                char[] _delimiterChars = { ':' };
-                string[] _selectedID = e.NodeID.Split(_delimiterChars);
-                long _hierarchyID = long.Parse(_selectedID[1].ToString());
-                long _organizationID = long.Parse(_selectedID[0].ToString());
-                var data = Organizations.organizationsByHierarchy(_hierarchyID, _organizationID);
+                char[] delimChars = { ':' };
+                string[] selID = e.NodeID.Split(delimChars);
+                long hierarchyID = long.Parse(selID[0].ToString());
+                long orgID = long.Parse(selID[1].ToString());
+                var data = Organizations.organizationsByHierarchy(hierarchyID, orgID);
+                var OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID);
+                bool addNode;
+                bool leafNode;
+                bool colorNode;
 
                 foreach (var view in data)
                 {
                     if (view.HIER_LEVEL == 1)
                     {
-                        Node node = new Node();
-                        node.Text = view.ORGANIZATION_NAME;
-                        node.NodeID = string.Format("{0}:{1}", view.ORGANIZATION_ID.ToString(), _hierarchyID.ToString());
+                        addNode = false;
+                        leafNode = true;
+                        colorNode = false;
+                        var nextData = Organizations.organizationsByHierarchy(hierarchyID, view.ORGANIZATION_ID);
 
-                        // Is it a leaf org?
-                        var data1 = Organizations.organizationsByHierarchy(_hierarchyID, view.ORGANIZATION_ID);
-                        node.Leaf = true;
-                        foreach (var view1 in data1)
+                        // In this org?
+                        if (SYS_USER_ORGS.IsInOrg(SYS_USER_INFORMATION.UserID(User.Identity.Name), view.ORGANIZATION_ID) == true)
                         {
-                            node.Leaf = false;
-                            break;
+                            addNode = true;
+                            colorNode = true;
                         }
 
-                        // Allowed org based on security?            
-                        List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
-                        node.Icon = Icon.BorderNone;
-                        if (OrgsList.Contains(view.ORGANIZATION_ID))
+                        // In next org?
+                        foreach (long allowedOrgs in OrgsList)
                         {
-                            node.Icon = Icon.StopGreen;
+                            if (nextData.Select(x => x.ORGANIZATION_ID).Contains(allowedOrgs))
+                            {
+                                addNode = true;
+                                leafNode = false;
+                                break;
+                            }
                         }
 
-                        e.Nodes.Add(node);
+                        if (addNode == true)
+                        {
+                            Node node = new Node();
+                            node.NodeID = string.Format("{0}:{1}", hierarchyID.ToString(), view.ORGANIZATION_ID.ToString());
+                            node.Text = view.ORGANIZATION_NAME;
+                            node.Leaf = leafNode;
+                            if (colorNode == true)
+                            {
+                                node.Icon = Icon.Tick;
+                            }
+                            else
+                            {
+                                node.Icon = Icon.FolderGo;
+                            }
+                            e.Nodes.Add(node);
+                        }
                     }
-                }
+                }          
             }
         }
-
-
     }
 }
