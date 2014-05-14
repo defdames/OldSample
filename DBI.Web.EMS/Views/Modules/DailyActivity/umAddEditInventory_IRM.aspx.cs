@@ -161,7 +161,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     uxEditInventoryRegion.SetValueAndFireSelect(Inventory.SUB_INVENTORY_ORG_ID);
                     uxEditInventoryRegion.SelectedItems.Add(new Ext.Net.ListItem(Inventory.INV_NAME, Inventory.SUB_INVENTORY_ORG_ID));
                     uxEditInventoryRegion.UpdateSelectedItems();
+                    GetSubInventory((decimal)OrgId, "Edit");
+                    uxEditInventorySub.SelectedItems.Clear();
                     uxEditInventorySub.SetValueAndFireSelect(SubData.DESCRIPTION);
+                    uxEditInventorySub.SelectedItems.Add(new Ext.Net.ListItem(SubData.SECONDARY_INV_NAME, SubData.DESCRIPTION));
+                    uxEditInventorySub.UpdateSelectedItems();
                     GetUnitOfMeasure("Edit", Inventory.UOM_CODE);
                     uxEditInventoryMeasure.SelectedItems.Clear();
                     uxEditInventoryMeasure.SelectedItems.Add(new Ext.Net.ListItem(Inventory.UNIT_OF_MEASURE, Inventory.UOM_CODE));
@@ -233,12 +237,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             if (e.ExtraParams["Type"] == "Add")
             {
                 OrgId = decimal.Parse(uxAddInventoryRegion.Value.ToString());
+                GetSubInventory(OrgId, "Add");
             }
             else
             {
                 OrgId = decimal.Parse(uxEditInventoryRegion.Value.ToString());
+                GetSubInventory(OrgId, "Edit");
             }
 
+            
+        }
+
+        protected void GetSubInventory(decimal OrgId, string FormType)
+        {
             //Get list of subinventories
             using (Entities _context = new Entities())
             {
@@ -248,7 +259,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             select s).ToList();
 
                 //Set datasource for add/edit
-                if (e.ExtraParams["Type"] == "Add")
+                if (FormType == "Add")
                 {
                     uxAddInventorySub.Clear();
                     uxAddInventoryItem.Clear();
@@ -263,7 +274,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
             }
         }
-
         /// <summary>
         /// Get List of Inventory Items for OrgId
         /// </summary>
