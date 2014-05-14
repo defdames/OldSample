@@ -17,6 +17,7 @@ namespace DBI.Data
         public SYS_MODULES()
         {
             this.SYS_MENU = new HashSet<SYS_MENU>();
+            this.SYS_MODULE_PROFILE_OPTIONS = new HashSet<SYS_MODULE_PROFILE_OPTIONS>();
         }
     
         public decimal MODULE_ID { get; set; }
@@ -25,5 +26,6 @@ namespace DBI.Data
     
         public virtual ICollection<SYS_MENU> SYS_MENU { get; set; }
         public virtual SYS_PERMISSIONS SYS_PERMISSIONS { get; set; }
+        public virtual ICollection<SYS_MODULE_PROFILE_OPTIONS> SYS_MODULE_PROFILE_OPTIONS { get; set; }
     }
 }

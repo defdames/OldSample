@@ -92,6 +92,7 @@
           <EntitySet Name="SYS_MENU" EntityType="OracleModel.Store.SYS_MENU" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_MOBILE_DEVICES" EntityType="OracleModel.Store.SYS_MOBILE_DEVICES" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_MOBILE_NOTIFICATIONS" EntityType="OracleModel.Store.SYS_MOBILE_NOTIFICATIONS" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="SYS_MODULE_PROFILE_OPTIONS" EntityType="OracleModel.Store.SYS_MODULE_PROFILE_OPTIONS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_MODULES" EntityType="OracleModel.Store.SYS_MODULES" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_PERMISSIONS" EntityType="OracleModel.Store.SYS_PERMISSIONS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USER_ACTIVITY" EntityType="OracleModel.Store.SYS_USER_ACTIVITY" store:Type="Tables" Schema="XXEMS" />
@@ -754,6 +755,10 @@
           <AssociationSet Name="FK_PRODUCTION_HEADER_ID" Association="OracleModel.Store.FK_PRODUCTION_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_PRODUCTION" EntitySet="DAILY_ACTIVITY_PRODUCTION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PROFILE_MODULE_ID" Association="OracleModel.Store.FK_PROFILE_MODULE_ID">
+            <End Role="SYS_MODULES" EntitySet="SYS_MODULES" />
+            <End Role="SYS_MODULE_PROFILE_OPTIONS" EntitySet="SYS_MODULE_PROFILE_OPTIONS" />
           </AssociationSet>
           <AssociationSet Name="FK_PROJECT_RAILROAD_ID" Association="OracleModel.Store.FK_PROJECT_RAILROAD_ID">
             <End Role="CROSSING_RAILROAD" EntitySet="CROSSING_RAILROAD" />
@@ -1690,6 +1695,21 @@
           <Property Name="PROCESSED_DATE" Type="date" />
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="PROCESSING_ERROR" Type="clob" />
+        </EntityType>
+        <EntityType Name="SYS_MODULE_PROFILE_OPTIONS">
+          <Key>
+            <PropertyRef Name="PROFILE_OPTION_ID" />
+          </Key>
+          <Property Name="PROFILE_OPTION_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="MODULE_ID" Type="number" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="2000" />
+          <Property Name="PROFILE_KEY" Type="varchar2" MaxLength="250" />
+          <Property Name="PROFILE_VALUE" Type="varchar2" MaxLength="2000" />
+          <Property Name="PROFILE_TYPE" Type="char" MaxLength="1" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="SYS_MODULES">
           <Key>
@@ -3313,6 +3333,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PROFILE_MODULE_ID">
+          <End Role="SYS_MODULES" Type="OracleModel.Store.SYS_MODULES" Multiplicity="1" />
+          <End Role="SYS_MODULE_PROFILE_OPTIONS" Type="OracleModel.Store.SYS_MODULE_PROFILE_OPTIONS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SYS_MODULES">
+              <PropertyRef Name="MODULE_ID" />
+            </Principal>
+            <Dependent Role="SYS_MODULE_PROFILE_OPTIONS">
+              <PropertyRef Name="MODULE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PROJECT_RAILROAD_ID">
           <End Role="CROSSING_RAILROAD" Type="OracleModel.Store.CROSSING_RAILROAD" Multiplicity="0..1" />
           <End Role="CROSSING_PROJECT" Type="OracleModel.Store.CROSSING_PROJECT" Multiplicity="*" />
@@ -3694,6 +3726,11 @@
           <AssociationSet Name="FK_PROJECTS_STATUS_ID" Association="OracleModel.FK_PROJECTS_STATUS_ID">
             <End Role="BUD_BID_STATUS" EntitySet="BUD_BID_STATUS" />
             <End Role="BUD_BID_PROJECTS" EntitySet="BUD_BID_PROJECTS" />
+          </AssociationSet>
+          <EntitySet Name="SYS_MODULE_PROFILE_OPTIONS" EntityType="OracleModel.SYS_MODULE_PROFILE_OPTIONS" />
+          <AssociationSet Name="FK_PROFILE_MODULE_ID" Association="OracleModel.FK_PROFILE_MODULE_ID">
+            <End Role="SYS_MODULES" EntitySet="SYS_MODULES" />
+            <End Role="SYS_MODULE_PROFILE_OPTIONS" EntitySet="SYS_MODULE_PROFILE_OPTIONS" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
@@ -5588,6 +5625,7 @@
           <Property Type="Decimal" Name="PERMISSION_ID" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="SYS_MENU" Relationship="OracleModel.FK_MENU_MODULE_ID" FromRole="SYS_MODULES" ToRole="SYS_MENU" />
           <NavigationProperty Name="SYS_PERMISSIONS" Relationship="OracleModel.FK_MODULE_PERM_ID" FromRole="SYS_MODULES" ToRole="SYS_PERMISSIONS" />
+          <NavigationProperty Name="SYS_MODULE_PROFILE_OPTIONS" Relationship="OracleModel.FK_PROFILE_MODULE_ID" FromRole="SYS_MODULES" ToRole="SYS_MODULE_PROFILE_OPTIONS" />
         </EntityType>
         <EntityType Name="SYS_MOBILE_DEVICES">
           <Key>
@@ -6517,6 +6555,34 @@
             </Principal>
             <Dependent Role="BUD_BID_PROJECTS">
               <PropertyRef Name="STATUS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="SYS_MODULE_PROFILE_OPTIONS">
+          <Key>
+            <PropertyRef Name="PROFILE_OPTION_ID" />
+          </Key>
+          <Property Type="Decimal" Name="PROFILE_OPTION_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="MODULE_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="DESCRIPTION" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROFILE_KEY" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROFILE_VALUE" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROFILE_TYPE" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SYS_MODULES" Relationship="OracleModel.FK_PROFILE_MODULE_ID" FromRole="SYS_MODULE_PROFILE_OPTIONS" ToRole="SYS_MODULES" />
+        </EntityType>
+        <Association Name="FK_PROFILE_MODULE_ID">
+          <End Type="OracleModel.SYS_MODULES" Role="SYS_MODULES" Multiplicity="1" />
+          <End Type="OracleModel.SYS_MODULE_PROFILE_OPTIONS" Role="SYS_MODULE_PROFILE_OPTIONS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SYS_MODULES">
+              <PropertyRef Name="MODULE_ID" />
+            </Principal>
+            <Dependent Role="SYS_MODULE_PROFILE_OPTIONS">
+              <PropertyRef Name="MODULE_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8662,6 +8728,22 @@
                 <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
                 <ScalarProperty Name="STATUS_ID" ColumnName="STATUS_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_MODULE_PROFILE_OPTIONS">
+            <EntityTypeMapping TypeName="OracleModel.SYS_MODULE_PROFILE_OPTIONS">
+              <MappingFragment StoreEntitySet="SYS_MODULE_PROFILE_OPTIONS">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="PROFILE_TYPE" ColumnName="PROFILE_TYPE" />
+                <ScalarProperty Name="PROFILE_VALUE" ColumnName="PROFILE_VALUE" />
+                <ScalarProperty Name="PROFILE_KEY" ColumnName="PROFILE_KEY" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="MODULE_ID" ColumnName="MODULE_ID" />
+                <ScalarProperty Name="PROFILE_OPTION_ID" ColumnName="PROFILE_OPTION_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

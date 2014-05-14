@@ -106,5 +106,6 @@ namespace DBI.Data
         public DbSet<BUD_BID_ORGS> BUD_BID_ORGS { get; set; }
         public DbSet<BUD_BID_PROJECTS> BUD_BID_PROJECTS { get; set; }
         public DbSet<BUD_BID_STATUS> BUD_BID_STATUS { get; set; }
+        public DbSet<SYS_MODULE_PROFILE_OPTIONS> SYS_MODULE_PROFILE_OPTIONS { get; set; }
     }
 }

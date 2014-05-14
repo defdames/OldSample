@@ -127,6 +127,8 @@
         <AssociationConnector Association="OracleModel.FK_DETAIL_DETAIL_SHEET_ID" />
         <AssociationConnector Association="OracleModel.FK_PROJECTS_DT_ID" />
         <AssociationConnector Association="OracleModel.FK_PROJECTS_STATUS_ID" />
+        <EntityTypeShape EntityType="OracleModel.SYS_MODULE_PROFILE_OPTIONS" Width="1.5" PointX="26.625" PointY="29.625" />
+        <AssociationConnector Association="OracleModel.FK_PROFILE_MODULE_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
