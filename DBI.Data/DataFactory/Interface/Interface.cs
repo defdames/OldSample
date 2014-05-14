@@ -637,6 +637,13 @@ namespace DBI.Data
 
                         long GlCode = getGlCode((long)InventoryItem.PROJECT_ID);
                         decimal Quantity = -Math.Abs((decimal)InventoryItem.i.TOTAL);
+
+                        //Change inventory to use the rate/quantity field HOTFIX
+                        if (InventoryItem.ORG_ID == 123)
+                        {
+                            Quantity = -Math.Abs((decimal)InventoryItem.i.RATE);
+                        }
+
                         //GL_CODE Account = GetProjectGLCode (InventoryItem.PROJECT_ID);
                         MTL_TRANSACTION_INT_V Record = new MTL_TRANSACTION_INT_V
                         {
