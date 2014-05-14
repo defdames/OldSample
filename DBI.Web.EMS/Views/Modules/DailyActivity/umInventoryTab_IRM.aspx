@@ -61,7 +61,7 @@
 						Text="Item" />
 					<ext:Column ID="Column9" runat="server"
 						DataIndex="RATE"
-						Text="Rate" />
+						Text="Quantity" />
 					<ext:Column ID="Column2" runat="server"
 						DataIndex="UOM_CODE"
 						Text="Unit of Measure Code" Hidden="true" />
