@@ -120,9 +120,11 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         public void Test(object sender, DirectEventArgs e)
         {
-            X.MessageBox.Alert("Title", e.ExtraParams["SheetName"]).Show();
+            long orgID = long.Parse(Request.QueryString["OrgID"]);
+            long version = long.Parse(Request.QueryString["version"]);
+            X.MessageBox.Alert("Title", orgID + " " + version + " " + e.ExtraParams["SheetName"]).Show();
         }
-        
+
 
     }
 }

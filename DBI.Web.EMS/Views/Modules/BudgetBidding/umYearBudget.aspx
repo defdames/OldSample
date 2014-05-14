@@ -5,6 +5,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    <style type="text/css">
+        .activeBackground .x-form-item-body {
+            background-color:  darkgreen;
+        }
+
+        .activeForeground .x-form-display-field {
+            font-weight: bold;
+            color: whitesmoke;
+        }
+
+        .inactiveForeground .x-form-display-field {
+            font-weight: bold;
+            color: whitesmoke;
+        }
+
+        .inactiveBackground .x-form-item-body {
+            background-color:  black;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -69,21 +88,38 @@
                         </Select>
                     </DirectEvents>
                     <DockedItems>
-                        <ext:FieldContainer ID="Container1" runat="server" Layout="HBoxLayout" Dock="Bottom">
+                        <ext:FieldContainer ID="Container1" runat="server" Layout="HBoxLayout" Dock="Bottom" Cls="inactiveBackground">
                             <Items>
                                 <ext:DisplayField ID="DisplayField1" runat="server" Width="10" />
-                                <ext:DisplayField ID="DisplayField2" runat="server" Text="Total Active" Flex="6" />
+                                <ext:DisplayField ID="DisplayField2" runat="server" Text="Total Inactive" Flex="6" Cls="inactiveForeground" />
                                 <ext:DisplayField ID="DisplayField3" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField4" runat="server" Text="" Flex="1" />
                                 <ext:DisplayField ID="DisplayField5" runat="server" Text="" Flex="1" />
-                                <ext:DisplayField ID="DisplayField6" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" />
-                                <ext:DisplayField ID="DisplayField7" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" />
-                                <ext:DisplayField ID="DisplayField8" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" />
-                                <ext:DisplayField ID="DisplayField9" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" />
-                                <ext:DisplayField ID="DisplayField10" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" />
-                                <ext:DisplayField ID="DisplayField11" runat="server" Text="10.5%" Flex="2" FieldStyle="text-align:right" />
-                                <ext:DisplayField ID="DisplayField12" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" />
+                                <ext:DisplayField ID="DisplayField6" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
+                                <ext:DisplayField ID="DisplayField7" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
+                                <ext:DisplayField ID="DisplayField8" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
+                                <ext:DisplayField ID="DisplayField9" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
+                                <ext:DisplayField ID="DisplayField10" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
+                                <ext:DisplayField ID="DisplayField11" runat="server" Text="10.5%" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
+                                <ext:DisplayField ID="DisplayField12" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
                                 <ext:DisplayField ID="DisplayField13" runat="server" Width="20" />
+                            </Items>
+                        </ext:FieldContainer>
+                        <ext:FieldContainer ID="FieldContainer15" runat="server" Layout="HBoxLayout" Dock="Bottom" Cls="activeBackground">
+                            <Items>
+                                <ext:DisplayField ID="DisplayField14" runat="server" Width="10" />
+                                <ext:DisplayField ID="DisplayField15" runat="server" Text="Total Active" Flex="6" Cls="activeForeground" />
+                                <ext:DisplayField ID="DisplayField16" runat="server" Text="" Flex="2" />
+                                <ext:DisplayField ID="DisplayField17" runat="server" Text="" Flex="1" />
+                                <ext:DisplayField ID="DisplayField18" runat="server" Text="" Flex="1" />
+                                <ext:DisplayField ID="DisplayField19" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
+                                <ext:DisplayField ID="DisplayField20" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
+                                <ext:DisplayField ID="DisplayField21" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
+                                <ext:DisplayField ID="DisplayField22" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
+                                <ext:DisplayField ID="DisplayField23" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
+                                <ext:DisplayField ID="DisplayField24" runat="server" Text="10.5%" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
+                                <ext:DisplayField ID="DisplayField25" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
+                                <ext:DisplayField ID="DisplayField26" runat="server" Width="20" />
                             </Items>
                         </ext:FieldContainer>
                     </DockedItems>

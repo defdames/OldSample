@@ -26,10 +26,9 @@
                     RootVisible="true"
                     SingleExpand="true"
                     Lines="false"
-                    FolderSort="true"
                     UseArrows="true">
                     <Store>
-                        <ext:TreeStore ID="TreeStore1" runat="server" OnReadData="LoadOrgTree">
+                        <ext:TreeStore ID="TreeStore1" runat="server" OnReadData="deLoadOrgTree">
                             <Proxy>
                                 <ext:PageProxy></ext:PageProxy>
                             </Proxy>
@@ -44,9 +43,8 @@
                     <DirectEvents>
                         <ItemClick OnEvent="deLoadCorrectBudgetType">
                             <ExtraParams>
-                                <ext:Parameter Name="treeNode" Value="node.id" Mode="Raw" />
+                                <ext:Parameter Name="node" Value="record.data.id" Mode="Raw" />
                             </ExtraParams>
-
                         </ItemClick>
                     </DirectEvents>
                 </ext:TreePanel>
@@ -67,7 +65,7 @@
                             EmptyText="-- Year --"
                             Editable="false">
                             <Store>
-                                <ext:Store ID="uxFiscalYearStore" runat="server" OnReadData="deReadFiscalYears" AutoLoad="false">
+                                <ext:Store ID="uxFiscalYearStore" runat="server" OnReadData="deLoadFiscalYears" AutoLoad="false">
                                     <Model>
                                         <ext:Model ID="Model1" runat="server">
                                             <Fields>
@@ -99,7 +97,7 @@
                             EmptyText="-- Versions --"
                             Editable="false">
                             <Store>
-                                <ext:Store ID="uxVersionStore" runat="server" OnReadData="deReadBudgetVersions" AutoLoad="false">
+                                <ext:Store ID="uxVersionStore" runat="server" OnReadData="deLoadBudgetVersions" AutoLoad="false">
                                     <Model>
                                         <ext:Model ID="Model2" runat="server">
                                             <Fields>
