@@ -52,6 +52,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxLicenseField.Value = data.LICENSE;
                 uxStateField.Value = data.STATE;
                 uxSupervisorField.Value = data.EMPLOYEE_NAME;
+                uxContractorField.Value = data.CONTRACTOR;
                 uxTypeField.Value = data.APPLICATION_TYPE;
                 uxHeaderField.Value = data.HEADER_ID.ToString();
                 uxOracleField.Value = data.DA_HEADER_ID.ToString();
