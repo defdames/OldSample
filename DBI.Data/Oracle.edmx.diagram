@@ -104,13 +104,29 @@
         <EntityTypeShape EntityType="OracleModel.CROSSING_RAILROAD" Width="1.5" PointX="24.625" PointY="13" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_INVENTORY" Width="1.5" PointX="5.625" PointY="21.375" />
         <EntityTypeShape EntityType="OracleModel.JOB_COST_CLASSES" Width="1.5" PointX="6.6409545664866245" PointY="15.271937302906038" />
-        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" Width="1.5" PointX="11.893317460964116" PointY="31.957565411905556" />
-        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_VERSION" Width="1.5" PointX="4.7130729931933217" PointY="22.547942231664408" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" Width="1.5" PointX="5.5" PointY="31.375" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_VERSION" Width="1.5" PointX="18" PointY="25.875" />
         <AssociationConnector Association="OracleModel.FK_CONTACTS_RAILROAD_ID" />
         <AssociationConnector Association="OracleModel.FK_PROJECT_RAILROAD_ID" />
         <AssociationConnector Association="OracleModel.FK_CROSSINGS_RAILROAD_ID" />
         <AssociationConnector Association="OracleModel.FK_INVENTORY_CHEMICAL_MIX_ID" />
         <AssociationConnector Association="OracleModel.FK_INVENTORY_HEADER_ID" />
+        <EntityTypeShape EntityType="OracleModel.BUD_BID_ADJUSTMENT" Width="1.5" PointX="24" PointY="82" />
+        <EntityTypeShape EntityType="OracleModel.BUD_BID_BUDGET_NUM" Width="1.5" PointX="23.875" PointY="92.375" />
+        <EntityTypeShape EntityType="OracleModel.BUD_BID_DETAIL_SHEET" Width="1.5" PointX="26.625" PointY="82.125" />
+        <EntityTypeShape EntityType="OracleModel.BUD_BID_DETAIL_TASK" Width="1.5" PointX="23.875" PointY="85.5" />
+        <EntityTypeShape EntityType="OracleModel.BUD_BID_LINES" Width="1.5" PointX="23.875" PointY="89.375" />
+        <EntityTypeShape EntityType="OracleModel.BUD_BID_LOCKED" Width="1.5" PointX="26.75" PointY="86.875" />
+        <EntityTypeShape EntityType="OracleModel.BUD_BID_ORGS" Width="1.5" PointX="21.875" PointY="89" />
+        <EntityTypeShape EntityType="OracleModel.BUD_BID_PROJECTS" Width="1.5" PointX="21.625" PointY="79.75" />
+        <EntityTypeShape EntityType="OracleModel.BUD_BID_STATUS" Width="1.5" PointX="21.875" PointY="86.125" />
+        <AssociationConnector Association="OracleModel.FK_PROJECTS_ADJ_ID" />
+        <AssociationConnector Association="OracleModel.FK_BUDGET_NUM_DETAIL_TASK_ID" />
+        <AssociationConnector Association="OracleModel.FK_BUDGET_NUM_LINES_ID" />
+        <AssociationConnector Association="OracleModel.FK_PROJECTS_BUD_NUM_ID" />
+        <AssociationConnector Association="OracleModel.FK_DETAIL_DETAIL_SHEET_ID" />
+        <AssociationConnector Association="OracleModel.FK_PROJECTS_DT_ID" />
+        <AssociationConnector Association="OracleModel.FK_PROJECTS_STATUS_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
