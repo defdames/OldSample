@@ -1717,6 +1717,7 @@
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="PROFILE_VALUE" Type="varchar2" MaxLength="2000" />
         </EntityType>
         <EntityType Name="SYS_MODULES">
           <Key>
@@ -1742,7 +1743,6 @@
           <Property Name="PROFILE_OPTION_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIPTION" Type="varchar2" MaxLength="2000" />
           <Property Name="PROFILE_KEY" Type="varchar2" MaxLength="250" />
-          <Property Name="PROFILE_VALUE" Type="varchar2" MaxLength="2000" />
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
@@ -1788,6 +1788,7 @@
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="PROFILE_VALUE" Type="varchar2" MaxLength="2000" />
         </EntityType>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -6635,6 +6636,7 @@
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROFILE_VALUE" MaxLength="2000" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="SYS_PROFILE_OPTIONS" Relationship="OracleModel.FK_MODULE_PROFILE_ID" FromRole="SYS_MODULE_PROFILE_OPTIONS" ToRole="SYS_PROFILE_OPTIONS" />
           <NavigationProperty Name="SYS_MODULES" Relationship="OracleModel.FK_PROFILE_MODULE_ID" FromRole="SYS_MODULE_PROFILE_OPTIONS" ToRole="SYS_MODULES" />
         </EntityType>
@@ -6645,7 +6647,6 @@
           <Property Type="Decimal" Name="PROFILE_OPTION_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="DESCRIPTION" MaxLength="2000" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="PROFILE_KEY" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="PROFILE_VALUE" MaxLength="2000" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="CREATE_DATE" />
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="MODIFY_DATE" />
@@ -6664,6 +6665,7 @@
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROFILE_VALUE" MaxLength="2000" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="SYS_PROFILE_OPTIONS" Relationship="OracleModel.FK_PROFILE_OPTION_ID" FromRole="SYS_USER_PROFILE_OPTIONS" ToRole="SYS_PROFILE_OPTIONS" />
         </EntityType>
         <Association Name="FK_MODULE_PROFILE_ID">
@@ -6702,7 +6704,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -8850,6 +8852,7 @@
           <EntitySetMapping Name="SYS_MODULE_PROFILE_OPTIONS">
             <EntityTypeMapping TypeName="OracleModel.SYS_MODULE_PROFILE_OPTIONS">
               <MappingFragment StoreEntitySet="SYS_MODULE_PROFILE_OPTIONS">
+                <ScalarProperty Name="PROFILE_VALUE" ColumnName="PROFILE_VALUE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
                 <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
                 <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
@@ -8867,7 +8870,6 @@
                 <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
                 <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
                 <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="PROFILE_VALUE" ColumnName="PROFILE_VALUE" />
                 <ScalarProperty Name="PROFILE_KEY" ColumnName="PROFILE_KEY" />
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
                 <ScalarProperty Name="PROFILE_OPTION_ID" ColumnName="PROFILE_OPTION_ID" />
@@ -8877,6 +8879,7 @@
           <EntitySetMapping Name="SYS_USER_PROFILE_OPTIONS">
             <EntityTypeMapping TypeName="OracleModel.SYS_USER_PROFILE_OPTIONS">
               <MappingFragment StoreEntitySet="SYS_USER_PROFILE_OPTIONS">
+                <ScalarProperty Name="PROFILE_VALUE" ColumnName="PROFILE_VALUE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
                 <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
                 <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />

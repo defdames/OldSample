@@ -23,7 +23,6 @@ namespace DBI.Data
         public decimal PROFILE_OPTION_ID { get; set; }
         public string DESCRIPTION { get; set; }
         public string PROFILE_KEY { get; set; }
-        public string PROFILE_VALUE { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }

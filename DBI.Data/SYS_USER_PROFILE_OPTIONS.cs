@@ -21,6 +21,7 @@ namespace DBI.Data
         public string CREATED_BY { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string MODIFIED_BY { get; set; }
+        public string PROFILE_VALUE { get; set; }
     
         public virtual SYS_PROFILE_OPTIONS SYS_PROFILE_OPTIONS { get; set; }
     }

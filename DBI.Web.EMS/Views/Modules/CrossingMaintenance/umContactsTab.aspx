@@ -93,6 +93,11 @@
                         <Listeners>
                             <Click Handler="#{uxAddContactWindow}.show()" />
                         </Listeners>
+                         <DirectEvents>
+                                    <Click OnEvent="deGetRRType">
+                                     
+                                    </Click>
+                                </DirectEvents>
                     </ext:Button>
                     <ext:Button ID="uxEditContactButton" runat="server" Text="Edit Contact" Icon="ApplicationEdit" Disabled="true">
                         <Listeners>
@@ -154,8 +159,9 @@
                     <ext:FormPanel runat="server" ID="uxAddContactForm" Layout="FormLayout">
                         <Items>
                             <ext:TextField ID="uxAddNewManagerName" runat="server" FieldLabel="Manager Name" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" />
-                     
-                              <ext:ComboBox ID="uxAddRRType" runat="server" FieldLabel="Rail Road" AnchorHorizontal="100%" LabelAlign="Right"
+                            <ext:TextField runat="server" ID="uxAddRailRoadCITextField" LabelAlign="Right" FieldLabel="Railroad" AnchorHorizontal="100%" />
+                            
+                            <%--  <ext:ComboBox ID="uxAddRRType" runat="server" FieldLabel="Rail Road" AnchorHorizontal="100%" LabelAlign="Right"
                                                 DisplayField="project"
                                                 ValueField="project"
                                                 QueryMode="Local"
@@ -173,7 +179,7 @@
                                                         </Model>
                                                     </ext:Store>
                                                 </Store>                                               
-                                            </ext:ComboBox>
+                                            </ext:ComboBox>--%>
                             <ext:TextField ID="uxAddNewAddress1" runat="server" FieldLabel="Address 1" AnchorHorizontal="100%" LabelAlign="Right" />
                             <ext:TextField ID="uxAddNewAddress2" runat="server" FieldLabel="Address 2" AnchorHorizontal="100%" LabelAlign="Right" />
                             <ext:TextField ID="uxAddNewContactCityTextField" runat="server" FieldLabel="City" AnchorHorizontal="100%" LabelAlign="Right" />

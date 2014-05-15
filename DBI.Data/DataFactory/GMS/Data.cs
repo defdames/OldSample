@@ -16,12 +16,27 @@ namespace DBI.Data.GMS
             return results;
         }
 
+        /// <summary>
+        /// returns all service units
+        /// </summary>
+        /// <returns></returns>
         public static List<ServiceUnitResponse> ServiceUnitTypes()
         {
-            List<ServiceUnitResponse> results = (from s in ServiceUnits()  group s by s.project into x select  x.First()).ToList();
-         
+            List<ServiceUnitResponse> results = (from s in ServiceUnits()  group s by s.project into x select  x.First()).ToList();     
             return results;
         }
+
+        /// <summary>
+        /// Returns all service units by rail road type.
+        /// </summary>
+        /// <param name="rrType"></param>
+        /// <returns></returns>
+        public static List<ServiceUnitResponse> ServiceUnitTypes(string rrType)
+        {
+            List<ServiceUnitResponse> results = (from s in ServiceUnits().Where(a => a.project == rrType) group s by s.project into x select x.First()).ToList();
+            return results;
+        }
+
         public static List<ServiceUnitResponse> ServiceUnitUnits(string proj)
         {          
             List<ServiceUnitResponse> results = (from s in ServiceUnits() group s by s.service_unit into x select x.First()).Where(a => a.project == proj).ToList();

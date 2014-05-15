@@ -77,6 +77,11 @@
                     <Listeners>
                         <Click Handler="#{uxAddNewApplicationEntryWindow}.show()" />
                     </Listeners>
+                    <%--  <DirectEvents>
+                                    <Click OnEvent="deGetRRType">
+                                     
+                                    </Click>
+                                </DirectEvents>--%>
                 </ext:Button>
                
             </Items>

@@ -724,31 +724,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FieldContainer FieldContainer9;
         
         /// <summary>
-        /// uxAddRailRoadCI control.
+        /// uxAddRailRoadCITextField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ComboBox uxAddRailRoadCI;
-        
-        /// <summary>
-        /// uxAddRailRoadStore control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Store uxAddRailRoadStore;
-        
-        /// <summary>
-        /// Model4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Model Model4;
+        protected global::Ext.Net.TextField uxAddRailRoadCITextField;
         
         /// <summary>
         /// uxAddRouteCI control.
@@ -1405,25 +1387,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ComboBox uxEditRRCI;
-        
-        /// <summary>
-        /// uxEditRRStore control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Store uxEditRRStore;
-        
-        /// <summary>
-        /// Model3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Model Model3;
+        protected global::Ext.Net.TextField uxEditRRCI;
         
         /// <summary>
         /// uxEditRouteCI control.

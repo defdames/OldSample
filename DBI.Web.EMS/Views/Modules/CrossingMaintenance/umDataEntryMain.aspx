@@ -19,12 +19,12 @@
                         <Items>
                              <ext:ComboBox ID="uxRailRoadCI"
                                                 runat="server"
-                                                FieldLabel="Rail Road"
+                                                FieldLabel="Railroad"
                                                 LabelAlign="Right"
                                                 DisplayField="RAILROAD"
                                                 ValueField="RAILROAD_ID"
                                                 QueryMode="Local"
-                                                TypeAhead="true" ForceSelection="true" Editable="false">
+                                                TypeAhead="true" Editable="false">
                                                 <Store>
                                                     <ext:Store runat="server"
                                                         ID="uxAddRailRoadStore">
@@ -39,12 +39,61 @@
                                                     </ext:Store>
                                                 </Store>
                                            <DirectEvents>
-                                               
+                                               <Select OnEvent="deLoadUnit" />
                                            </DirectEvents>
                                             </ext:ComboBox>
                             
                         </Items>
                     </ext:Toolbar>
+                      <ext:Window
+                        runat="server"
+                        ID="uxChangeDataEntryWindow"
+                        Hidden="true"
+                        Width="350"
+                        Height="350"
+                        Modal="true" Closable="false">
+                        <Items>
+
+                            <ext:GridPanel ID="uxRailroadGrid" runat="server" Title="Select Railroad" Height="325" Closable="false">
+                              
+                                <Store>
+                                    <ext:Store runat="server"
+                                        ID="uxRailRoadStore" OnReadData="deReadRRTypes" AutoDataBind="true"
+                                        WarningOnDirty="false">
+                                        <Model>
+                                            <ext:Model ID="Model1" runat="server" IDProperty="RAILROAD_ID">
+                                                <Fields>
+                                                    <ext:ModelField Name="RAILROAD_ID" />
+                                                    <ext:ModelField Name="RAILROAD" />
+                                                </Fields>
+                                            </ext:Model>
+                                        </Model>
+                                        <Proxy>
+                                            <ext:PageProxy />
+                                        </Proxy>
+                                    </ext:Store>
+                                </Store>
+                                <ColumnModel>
+                                    <Columns>
+                                        <ext:Column ID="Column7" runat="server" DataIndex="RAILROAD" Text="Railroad" Flex="1" />
+                                    </Columns>
+                                </ColumnModel>
+                               <DirectEvents>
+                                   <Select OnEvent="deLoadRR" />
+                               </DirectEvents>
+                                    <SelectionModel>
+                                    <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" />
+                                </SelectionModel>
+                            </ext:GridPanel>
+                        </Items>
+                    </ext:Window>
+
+                    <%--<ext:Panel runat="server" ID="rrToolbar" Region="North" >
+                        <Loader runat="server"
+                          ID="Loader5" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umRailroadToolbar.aspx">
+                        <LoadMask ShowMask="true" />
+                         </Loader>
+                    </ext:Panel>--%>
                     <ext:TabPanel ID="uxCrossingTab" runat="server" Region="Center">
                         <Items>                       
                             <ext:Panel runat="server"
