@@ -134,6 +134,7 @@
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingSecurity.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umRailRoadProject.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umRailroadToolbar.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umReportsMain.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umStateCrossingsList.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umSupplemental.aspx" />
@@ -328,6 +329,13 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umRailRoadProject.aspx.designer.cs">
       <DependentUpon>umRailRoadProject.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umRailroadToolbar.aspx.cs">
+      <DependentUpon>umRailroadToolbar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umRailroadToolbar.aspx.designer.cs">
+      <DependentUpon>umRailroadToolbar.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umReportsMain.aspx.cs">
       <DependentUpon>umReportsMain.aspx</DependentUpon>

@@ -37,11 +37,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 List<object> data;
                 if (validateComponentSecurity("SYS.CrossingMaintenance.DataEntryView"))
                 {
+                    long RailroadId = long.Parse(Session["rrType"].ToString());
                     List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
                     data = (from d in _context.CROSSINGS
                             join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
                             join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID
-                            where p.PROJECT_TYPE == "CUSTOMER BILLING" && p.TEMPLATE_FLAG == "N" && p.PROJECT_STATUS_CODE == "APPROVED" && OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID)
+                            where p.PROJECT_TYPE == "CUSTOMER BILLING" && p.TEMPLATE_FLAG == "N" && p.PROJECT_STATUS_CODE == "APPROVED" && OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID) && d.RAILROAD_ID == RailroadId
                             select new { d.CONTACT_ID, d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.SUB_DIVISION, d.CROSSING_CONTACTS.CONTACT_NAME, p.PROJECT_ID, p.LONG_NAME }).ToList<object>();
 
 
