@@ -26,7 +26,7 @@
 
                         <ext:FieldContainer ID="uxFieldContainer2"
                             runat="server"
-                            LabelStyle="font-weight:bold;padding:0;"
+                            LabelStyle="font-weight:bold;padding:0;"  
                             Layout="HBoxLayout">
                             <Items>
                                 <ext:TextField runat="server" ID="uxProfileKey" FieldLabel="Key / Name" AnchorHorizontal="55%" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" MaxLengthText="250" />
