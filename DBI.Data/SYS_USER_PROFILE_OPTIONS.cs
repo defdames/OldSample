@@ -12,10 +12,10 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class SYS_MODULE_PROFILE_OPTIONS
+    public partial class SYS_USER_PROFILE_OPTIONS
     {
-        public decimal MODULE_PROFILE_OPTION_ID { get; set; }
-        public decimal MODULE_ID { get; set; }
+        public decimal USER_PROFILE_OPTION_ID { get; set; }
+        public long USER_ID { get; set; }
         public decimal PROFILE_OPTION_ID { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public string CREATED_BY { get; set; }
@@ -23,6 +23,5 @@ namespace DBI.Data
         public string MODIFIED_BY { get; set; }
     
         public virtual SYS_PROFILE_OPTIONS SYS_PROFILE_OPTIONS { get; set; }
-        public virtual SYS_MODULES SYS_MODULES { get; set; }
     }
 }

@@ -371,6 +371,9 @@
     <Compile Include="SYS_PERMISSIONS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="SYS_PROFILE_OPTIONS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="SYS_USERS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
@@ -387,6 +390,9 @@
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="SYS_USER_PERMS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SYS_USER_PROFILE_OPTIONS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="TIME_CLOCK.cs">

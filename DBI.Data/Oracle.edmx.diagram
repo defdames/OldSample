@@ -127,8 +127,12 @@
         <AssociationConnector Association="OracleModel.FK_DETAIL_DETAIL_SHEET_ID" />
         <AssociationConnector Association="OracleModel.FK_PROJECTS_DT_ID" />
         <AssociationConnector Association="OracleModel.FK_PROJECTS_STATUS_ID" />
-        <EntityTypeShape EntityType="OracleModel.SYS_MODULE_PROFILE_OPTIONS" Width="1.5" PointX="26.625" PointY="29.625" />
+        <EntityTypeShape EntityType="OracleModel.SYS_MODULE_PROFILE_OPTIONS" Width="1.5" PointX="26.875" PointY="31.375" />
+        <EntityTypeShape EntityType="OracleModel.SYS_PROFILE_OPTIONS" Width="1.5" PointX="24.25" PointY="33" />
+        <EntityTypeShape EntityType="OracleModel.SYS_USER_PROFILE_OPTIONS" Width="1.5" PointX="29.25" PointY="33.375" />
+        <AssociationConnector Association="OracleModel.FK_MODULE_PROFILE_ID" />
         <AssociationConnector Association="OracleModel.FK_PROFILE_MODULE_ID" />
+        <AssociationConnector Association="OracleModel.FK_PROFILE_OPTION_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
