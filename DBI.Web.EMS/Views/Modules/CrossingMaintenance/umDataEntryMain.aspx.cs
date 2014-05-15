@@ -14,11 +14,103 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            LoadSelectRailroad();
 
+             
+                LoadSelectRailroad();
+                if (!X.IsAjaxRequest)
+                {
+                    if (Session["rrType"] != null)
+                    {
+                        using (Entities _context = new Entities())
+                        {
+                            long RailroadId = long.Parse(Session["rrType"].ToString());
+                            var RRdata = (from r in _context.CROSSING_RAILROAD
+                                          where r.RAILROAD_ID == RailroadId
+                                          select new
+                                          {
+                                              r
+
+                                          }).Single();
+
+
+                            uxRailRoadCI.SetValue(RRdata.r.RAILROAD); 
+
+                        }
+
+                    }
+                    else if (Session["rrType"] == null)
+                    {
+                        uxChangeDataEntryWindow.Show();
+                    }
+
+                }
+            
         }
+        protected void deLoadUnit(object sender, DirectEventArgs e)
+        {
+
+            Session.Add("rrType", uxRailRoadCI.SelectedItem.Value);
+
+            uxDataEntryTab.Reload();
+            uxIncident.Reload();
+            uxSupplemental.Reload();
+        }
+          protected void deReadRRTypes(object sender, StoreReadDataEventArgs e)
+        {
+
+            using (Entities _context = new Entities())
+            {
+                List<object> RRdata;
+
+                RRdata = (from r in _context.CROSSING_RAILROAD
+                          select new
+                          {
+                              r.RAILROAD_ID,
+                              r.RAILROAD
+
+                          }).ToList<object>();
 
 
+                int count;
+                uxRailRoadStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], RRdata, out count);
+                e.Total = count;
+            }
+              
+            }
+        protected void deLoadRR(object sender, DirectEventArgs e)
+        {
+
+
+            RowSelectionModel rrSelection = RowSelectionModel1;
+
+
+            Session.Add("rrType", rrSelection.SelectedRecordID.ToString());
+
+            using (Entities _context = new Entities())
+            {
+                long RailroadId = long.Parse(Session["rrType"].ToString());
+                var RRdata = (from r in _context.CROSSING_RAILROAD
+                              where r.RAILROAD_ID == RailroadId
+                              select new
+                              {
+                                  r
+
+                              }).Single();
+
+
+                uxRailRoadCI.SetValue(RRdata.r.RAILROAD);
+
+            }
+
+
+            uxChangeDataEntryWindow.Close();
+            uxDataEntryTab.Reload();
+            uxIncident.Reload();
+            uxSupplemental.Reload();
+        }
+        
+
+        
         protected void LoadSelectRailroad()
         {
             List<object> data;

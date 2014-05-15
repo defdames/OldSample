@@ -34,7 +34,9 @@
                                     <ext:ModelField Name="SERVICE_UNIT" />
                                     <ext:ModelField Name="SUB_DIVISION" />
                                     <ext:ModelField Name="CONTACT_NAME" />
-                                    <ext:ModelField Name="REMARKS" />
+                                    <ext:ModelField Name="STATUS" />
+                                    <ext:ModelField Name="RAILROAD" />
+                                    <ext:ModelField Name="RAILROAD_ID" />
 
 
                                 </Fields>
@@ -52,7 +54,7 @@
                         <ext:Column ID="Column12" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
                         <ext:Column ID="uxSubDiv" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
                         <ext:Column ID="uxMTM" runat="server" DataIndex="CONTACT_NAME" Text="Manager" Flex="1" />
-                        <ext:Column ID="Column10" runat="server" DataIndex="REMARKS" Text="Status" Flex="1" />
+                        <ext:Column ID="Column10" runat="server" DataIndex="STATUS" Text="Status" Flex="1" />
 
 
                     </Columns>
@@ -91,6 +93,11 @@
                     <ext:Toolbar ID="Toolbar1" runat="server">
                         <Items>
                             <ext:Button ID="uxAddCrossingButton" runat="server" Text="Add New Crossing" Icon="ApplicationAdd">
+                                 <DirectEvents>
+                                    <Click OnEvent="deGetRRType">
+                                     
+                                    </Click>
+                                </DirectEvents>
                                 <Listeners>
                                     <Click Handler="#{uxAddCrossingWindow}.show()" />
                                 </Listeners>
@@ -99,6 +106,11 @@
                                 <Listeners>
                                     <Click Handler="#{uxEditCrossingWindow}.show()" />
                                 </Listeners>
+                                <DirectEvents>
+                                    <Click OnEvent="deGetRRType">
+                                     
+                                    </Click>
+                                </DirectEvents>
                                 <DirectEvents>
                                     <Click OnEvent="deEditCrossingForm">
                                         <ExtraParams>
@@ -155,7 +167,7 @@
                                  </ext:FieldContainer>
                                  <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                                 <Items>
-                                    <ext:TextField ID="uxRRCI" runat="server" FieldLabel="Rail Road" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true"/>
+                                    <ext:TextField ID="uxRRCI" runat="server" FieldLabel="Railroad" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true"/>
                                     <ext:TextField ID="uxRouteCI" runat="server" FieldLabel="Route" AnchorHorizontal="100%" LabelAlign="Right"  ReadOnly="true"/>
                                     <ext:TextField ID="uxDOTCI" runat="server" FieldLabel="DOT #" AnchorHorizontal="100%" LabelAlign="Right"  ReadOnly="true"/>
                                     
@@ -296,38 +308,10 @@
                                          </ext:FieldContainer>
                                     <ext:FieldContainer ID="FieldContainer9" runat="server" Layout="HBoxLayout">
                                         <Items>
-                                            <ext:ComboBox ID="uxAddRailRoadCI"
-                                                runat="server"
-                                                FieldLabel="Rail Road"
-                                                LabelAlign="Right"
-                                                DisplayField="project"
-                                                ValueField="project"
-                                                QueryMode="Local"
-                                                TypeAhead="true" TabIndex="2" AllowBlank="false" ForceSelection="true">
-                                                <Store>
-                                                    <ext:Store runat="server"
-                                                        ID="uxAddRailRoadStore">
-                                                        <Model>
-                                                            <ext:Model ID="Model4" runat="server">
-                                                                <Fields>
-                                                                    <ext:ModelField Name="project" />
-                                                                    <ext:ModelField Name="project" />
-                                                                </Fields>
-                                                            </ext:Model>
-                                                        </Model>
-                                                    </ext:Store>
-                                                </Store>
-                                                <DirectEvents>
-                                                    <Select OnEvent="deLoadUnit">
-                                                        <ExtraParams>
-                                                            <ext:Parameter Name="Type" Value="Add" />
-                                                        </ExtraParams>
-                                                    </Select>
-                                                </DirectEvents>
-                                                <Listeners>
-                                                    <Select Handler="#{uxAddServiceUnitStore}.load()" />
-                                                </Listeners>
-                                            </ext:ComboBox>
+                                            <ext:TextField runat="server" ID="uxAddRailRoadCITextField" LabelAlign="Right" FieldLabel="Railroad" AnchorHorizontal="100%" />
+                                       
+                                           
+                                        
                                            <ext:TextField ID="uxAddRouteCI" runat="server" FieldLabel="Route" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="6" AllowBlank="false" />
                                            <ext:TextField ID="uxAddDotCI" runat="server" FieldLabel="DOT #" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="10" AllowBlank="false" />
 
@@ -341,10 +325,10 @@
                                                 LabelAlign="Right"
                                                 DisplayField="service_unit"
                                                 ValueField="service_unit"
-                                                QueryMode="Local" TypeAhead="true" TabIndex="3" AllowBlank="false" ForceSelection="true">
+                                                QueryMode="Local" TypeAhead="true" TabIndex="3" AllowBlank="false" >
                                                 <Store>
                                                     <ext:Store runat="server"
-                                                        ID="uxAddServiceUnitStore">
+                                                        ID="uxAddServiceUnitStore" AutoLoad="false">
                                                         <Model>
                                                             <ext:Model ID="Model5" runat="server">
                                                                 <Fields>
@@ -382,7 +366,7 @@
                                                 AnchorHorizontal="100%"
                                                 DisplayField="sub_division"
                                                 ValueField="sub_division"
-                                                TypeAhead="true" TabIndex="4" AllowBlank="false" ForceSelection="true">
+                                                TypeAhead="true" TabIndex="4" AllowBlank="false" >
                                                 <Store>
                                                     <ext:Store runat="server"
                                                         ID="uxAddSubDivStore">
@@ -613,6 +597,7 @@
                                     <Click Handler="#{uxAddCrossingForm}.reset();
 									#{uxAddCrossingWindow}.hide()" />
                                 </Listeners>
+                              
                             </ext:Button>
                         </Buttons>
                         <Listeners>
@@ -641,11 +626,15 @@
                                              </ext:FieldContainer>
                                     <ext:FieldContainer ID="FieldContainer21" runat="server" Layout="HBoxLayout">
                                         <Items>
-                                              <ext:ComboBox ID="uxEditRRCI" runat="server" FieldLabel="Rail Road" AnchorHorizontal="100%" LabelAlign="Right"
+                                            <ext:TextField ID="uxEditRRCI" runat="server" FieldLabel="Railroad" LabelAlign="Right" AnchorHorizontal="100%" TabIndex="2" />
+                                            <%-- <ext:ComboBox ID="uxEditRRComboBox"
+                                                runat="server"
+                                                FieldLabel="Railroad"
+                                                LabelAlign="Right"
                                                 DisplayField="project"
                                                 ValueField="project"
                                                 QueryMode="Local"
-                                                TypeAhead="true" TabIndex="2" AllowBlank="false">
+                                                TypeAhead="true" TabIndex="2" AllowBlank="false" >
                                                 <Store>
                                                     <ext:Store runat="server"
                                                         ID="uxEditRRStore">
@@ -669,7 +658,7 @@
                                                 <Listeners>
                                                     <Select Handler="#{uxEditServiceUnitStore}.load()" />
                                                 </Listeners>
-                                            </ext:ComboBox>
+                                            </ext:ComboBox>--%>
                                             <ext:TextField ID="uxEditRouteCI" runat="server" FieldLabel="Route" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="6" AllowBlank="false" />
                                             <ext:TextField ID="uxEditDotCI" runat="server" FieldLabel="DOT #" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="10" AllowBlank="false" />
                                            

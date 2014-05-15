@@ -25,11 +25,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 if (validateComponentSecurity("SYS.CrossingMaintenance.InformationView"))
                 {
+                    long RailroadId = long.Parse(Session["rrType"].ToString());
                     List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
                     using (Entities _context = new Entities())
                     {                        
                         var data = (from v in _context.PROJECTS_V
-                                    where v.PROJECT_TYPE == "CUSTOMER BILLING" && v.TEMPLATE_FLAG == "N" && v.PROJECT_STATUS_CODE == "APPROVED" && OrgsList.Contains(v.CARRYING_OUT_ORGANIZATION_ID) && v.ORGANIZATION_NAME.Contains(" RR")
+                                    where v.PROJECT_TYPE == "CUSTOMER BILLING" && v.TEMPLATE_FLAG == "N" && v.PROJECT_STATUS_CODE == "APPROVED" && OrgsList.Contains(v.CARRYING_OUT_ORGANIZATION_ID) && v.ORGANIZATION_NAME.Contains(" RR") && RailroadId != null
                                     select new { v.PROJECT_ID, v.LONG_NAME, v.ORGANIZATION_NAME, v.SEGMENT1 }).ToList<object>();
 
 
@@ -56,16 +57,19 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
      
         protected void deSecurityCrossingGridData(object sender, DirectEventArgs e)
         {
+                long RailroadId = long.Parse(Session["rrType"].ToString());
               long ProjectId = long.Parse(e.ExtraParams["ProjectId"]);
               List<object> data;
             using (Entities _context = new Entities())
             {
                 data = (from d in _context.CROSSINGS
+                        join i in _context.CROSSING_RAILROAD on d.RAILROAD_ID equals i.RAILROAD_ID
                         where !(from r in _context.CROSSING_RELATIONSHIP 
                                 where d.CROSSING_ID == r.CROSSING_ID && r.PROJECT_ID == ProjectId
                                  select r.CROSSING_ID)
                                  .Contains(d.CROSSING_ID)
-                     select new { d.CROSSING_ID, d.CROSSING_NUMBER, d.RAILROAD, d.SERVICE_UNIT, d.PROJECT_ID, d.SUB_DIVISION }).ToList<object>();
+                                 where d.RAILROAD_ID == RailroadId
+                     select new { d.CROSSING_ID, d.CROSSING_NUMBER, i.RAILROAD, d.SERVICE_UNIT, d.PROJECT_ID, d.SUB_DIVISION }).ToList<object>();
             uxCurrentSecurityCrossingStore.DataSource = data;
             uxCurrentSecurityCrossingStore.DataBind();
 
@@ -77,12 +81,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             
             using (Entities _context = new Entities())
             {
+                long RailroadId = long.Parse(Session["rrType"].ToString());
                 long ProjectId = long.Parse(e.ExtraParams["ProjectId"]);
                 var data = (from r in _context.CROSSING_RELATIONSHIP
                             join d in _context.CROSSINGS on r.CROSSING_ID equals d.CROSSING_ID
-                            where r.PROJECT_ID == ProjectId 
+                            join i in _context.CROSSING_RAILROAD on d.RAILROAD_ID equals i.RAILROAD_ID
+                            where r.PROJECT_ID == ProjectId && d.RAILROAD_ID == RailroadId 
 
-                            select new { r.CROSSING_ID, r.PROJECT_ID, d.CROSSING_NUMBER, d.RAILROAD, d.SERVICE_UNIT, d.SUB_DIVISION }).ToList<object>();
+                            select new { r.CROSSING_ID, r.PROJECT_ID, d.CROSSING_NUMBER, i.RAILROAD, d.SERVICE_UNIT, d.SUB_DIVISION }).ToList<object>();
 
 
                 uxAssignedCrossingGrid.Store.Primary.DataSource = data;
