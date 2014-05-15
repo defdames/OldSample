@@ -125,6 +125,21 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             X.MessageBox.Alert("Title", orgID + " " + version + " " + e.ExtraParams["SheetName"]).Show();
         }
 
+        public void CheckFormat(object sender, DirectEventArgs e)
+        {
+            decimal moneyvalue;
+            try
+            {
+                moneyvalue = Convert.ToDecimal(TextField4.Text);
+            }
+            catch
+            {
+                moneyvalue = 0;
+            }
+                        
+            string converted = String.Format("{0:C}", moneyvalue);
+            TextField4.Text = converted;
+        }
 
     }
 }

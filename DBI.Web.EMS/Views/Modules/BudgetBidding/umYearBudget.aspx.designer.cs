@@ -175,13 +175,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Column Column11;
         
         /// <summary>
-        /// Container1 control.
+        /// FieldContainer1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer Container1;
+        protected global::Ext.Net.FieldContainer FieldContainer1;
         
         /// <summary>
         /// DisplayField1 control.
@@ -301,13 +301,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.DisplayField DisplayField13;
         
         /// <summary>
-        /// FieldContainer15 control.
+        /// FieldContainer2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer15;
+        protected global::Ext.Net.FieldContainer FieldContainer2;
         
         /// <summary>
         /// DisplayField14 control.
@@ -427,22 +427,22 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.DisplayField DisplayField26;
         
         /// <summary>
-        /// FormPanel1 control.
+        /// uxProjectDetail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FormPanel FormPanel1;
+        protected global::Ext.Net.FormPanel uxProjectDetail;
         
         /// <summary>
-        /// FieldContainer12 control.
+        /// FieldContainer3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer12;
+        protected global::Ext.Net.FieldContainer FieldContainer3;
         
         /// <summary>
         /// Label1 control.
@@ -526,13 +526,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label3;
         
         /// <summary>
-        /// FieldContainer1 control.
+        /// FieldContainer4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer1;
+        protected global::Ext.Net.FieldContainer FieldContainer4;
         
         /// <summary>
         /// Label7 control.
@@ -616,13 +616,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label12;
         
         /// <summary>
-        /// FieldContainer2 control.
+        /// FieldContainer5 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer2;
+        protected global::Ext.Net.FieldContainer FieldContainer5;
         
         /// <summary>
         /// Label13 control.
@@ -679,13 +679,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label16;
         
         /// <summary>
-        /// FieldContainer3 control.
+        /// FieldContainer6 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer3;
+        protected global::Ext.Net.FieldContainer FieldContainer6;
         
         /// <summary>
         /// Label18 control.
@@ -715,22 +715,22 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label20;
         
         /// <summary>
-        /// FieldContainer13 control.
+        /// FieldContainer7 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer13;
+        protected global::Ext.Net.FieldContainer FieldContainer7;
         
         /// <summary>
-        /// FieldContainer4 control.
+        /// FieldContainer8 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer4;
+        protected global::Ext.Net.FieldContainer FieldContainer8;
         
         /// <summary>
         /// Label17 control.
@@ -751,13 +751,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.TextField TextField3;
         
         /// <summary>
-        /// FieldContainer14 control.
+        /// FieldContainer9 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer14;
+        protected global::Ext.Net.FieldContainer FieldContainer9;
         
         /// <summary>
         /// Label23 control.
@@ -778,13 +778,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.TextField TextField5;
         
         /// <summary>
-        /// FieldContainer6 control.
+        /// FieldContainer10 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer6;
+        protected global::Ext.Net.FieldContainer FieldContainer10;
         
         /// <summary>
         /// Label33 control.
@@ -796,13 +796,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label33;
         
         /// <summary>
-        /// FieldContainer10 control.
+        /// FieldContainer11 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer10;
+        protected global::Ext.Net.FieldContainer FieldContainer11;
         
         /// <summary>
         /// Label36 control.
@@ -814,13 +814,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label36;
         
         /// <summary>
-        /// FieldContainer5 control.
+        /// FieldContainer12 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer5;
+        protected global::Ext.Net.FieldContainer FieldContainer12;
         
         /// <summary>
         /// Label25 control.
@@ -886,13 +886,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label31;
         
         /// <summary>
-        /// FieldContainer7 control.
+        /// FieldContainer13 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer7;
+        protected global::Ext.Net.FieldContainer FieldContainer13;
         
         /// <summary>
         /// DateField2 control.
@@ -994,13 +994,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Model Model3;
         
         /// <summary>
-        /// FieldContainer9 control.
+        /// FieldContainer14 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer9;
+        protected global::Ext.Net.FieldContainer FieldContainer14;
         
         /// <summary>
         /// GridPanel1 control.
@@ -1093,13 +1093,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Column Column20;
         
         /// <summary>
-        /// FieldContainer8 control.
+        /// FieldContainer15 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer8;
+        protected global::Ext.Net.FieldContainer FieldContainer15;
         
         /// <summary>
         /// Label32 control.
@@ -1156,13 +1156,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.TextField TextField14;
         
         /// <summary>
-        /// FieldContainer11 control.
+        /// FieldContainer16 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer11;
+        protected global::Ext.Net.FieldContainer FieldContainer16;
         
         /// <summary>
         /// Label37 control.

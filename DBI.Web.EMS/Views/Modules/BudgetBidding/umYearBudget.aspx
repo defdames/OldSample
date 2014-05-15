@@ -6,22 +6,39 @@
 <head runat="server">
     <title></title>
     <style type="text/css">
-        .activeBackground .x-form-item-body {
-            background-color:  darkgreen;
+        .activeBackground {
+            background-color: darkgreen;
+        }
+
+        .inactiveBackground {
+            background-color: black;
         }
 
         .activeForeground .x-form-display-field {
             font-weight: bold;
-            color: whitesmoke;
+            color: white;
         }
 
         .inactiveForeground .x-form-display-field {
             font-weight: bold;
-            color: whitesmoke;
+            color: white;
         }
 
-        .inactiveBackground .x-form-item-body {
-            background-color:  black;
+        .detailBackground {
+            background-color: lightgray;
+        }
+
+        .detailForeground {
+            font-weight: bold;
+        }
+
+        .detailForegroundCenter {
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .detailForegroundFormat .x-form-text-field {
+            text-align: right;
         }
     </style>
 </head>
@@ -88,7 +105,7 @@
                         </Select>
                     </DirectEvents>
                     <DockedItems>
-                        <ext:FieldContainer ID="Container1" runat="server" Layout="HBoxLayout" Dock="Bottom" Cls="inactiveBackground">
+                        <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout" Dock="Bottom" Cls="inactiveBackground">
                             <Items>
                                 <ext:DisplayField ID="DisplayField1" runat="server" Width="10" />
                                 <ext:DisplayField ID="DisplayField2" runat="server" Text="Total Inactive" Flex="6" Cls="inactiveForeground" />
@@ -105,7 +122,7 @@
                                 <ext:DisplayField ID="DisplayField13" runat="server" Width="20" />
                             </Items>
                         </ext:FieldContainer>
-                        <ext:FieldContainer ID="FieldContainer15" runat="server" Layout="HBoxLayout" Dock="Bottom" Cls="activeBackground">
+                        <ext:FieldContainer ID="FieldContainer2" runat="server" Layout="HBoxLayout" Dock="Bottom" Cls="activeBackground">
                             <Items>
                                 <ext:DisplayField ID="DisplayField14" runat="server" Width="10" />
                                 <ext:DisplayField ID="DisplayField15" runat="server" Text="Total Active" Flex="6" Cls="activeForeground" />
@@ -127,13 +144,13 @@
 
 
                 <%-------------------------------------------------- Bottom panel --------------------------------------------------%>
-                <ext:FormPanel ID="FormPanel1"
+                <ext:FormPanel ID="uxProjectDetail"
                     runat="server"
                     Region="Center"
                     Flex="4"
                     BodyPadding="20">
                     <Items>
-                        <ext:FieldContainer ID="FieldContainer12"
+                        <ext:FieldContainer ID="FieldContainer3"
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
@@ -151,7 +168,7 @@
                             </Items>
                         </ext:FieldContainer>
 
-                        <ext:FieldContainer ID="FieldContainer1"
+                        <ext:FieldContainer ID="FieldContainer4"
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
@@ -169,7 +186,7 @@
                             </Items>
                         </ext:FieldContainer>
 
-                        <ext:FieldContainer ID="FieldContainer2"
+                        <ext:FieldContainer ID="FieldContainer5"
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
@@ -184,7 +201,7 @@
                             </Items>
                         </ext:FieldContainer>
 
-                        <ext:FieldContainer ID="FieldContainer3"
+                        <ext:FieldContainer ID="FieldContainer6"
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
@@ -192,11 +209,11 @@
                                 <ext:TextArea ID="TextArea1" runat="server" Width="550" />
                                 <ext:Label ID="Label20" runat="server" Width="60" Text="" />
 
-                                <ext:FieldContainer ID="FieldContainer13"
+                                <ext:FieldContainer ID="FieldContainer7"
                                     runat="server"
                                     Layout="VBoxLayout">
                                     <Items>
-                                        <ext:FieldContainer ID="FieldContainer4"
+                                        <ext:FieldContainer ID="FieldContainer8"
                                             runat="server"
                                             Layout="HBoxLayout">
                                             <Items>
@@ -204,7 +221,7 @@
                                                 <ext:TextField ID="TextField3" runat="server" Width="100" />
                                             </Items>
                                         </ext:FieldContainer>
-                                        <ext:FieldContainer ID="FieldContainer14"
+                                        <ext:FieldContainer ID="FieldContainer9"
                                             runat="server"
                                             Layout="HBoxLayout">
                                             <Items>
@@ -212,19 +229,8 @@
                                                 <ext:TextField ID="TextField5" runat="server" Width="100" />
                                             </Items>
                                         </ext:FieldContainer>
-
-
-
                                     </Items>
                                 </ext:FieldContainer>
-                            </Items>
-                        </ext:FieldContainer>
-
-                        <ext:FieldContainer ID="FieldContainer6"
-                            runat="server"
-                            Layout="HBoxLayout">
-                            <Items>
-                                <ext:Label ID="Label33" runat="server" Width="60" />
                             </Items>
                         </ext:FieldContainer>
 
@@ -232,43 +238,55 @@
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
+                                <ext:Label ID="Label33" runat="server" Width="60" />
+                            </Items>
+                        </ext:FieldContainer>
+
+                        <ext:FieldContainer ID="FieldContainer11"
+                            runat="server"
+                            Layout="HBoxLayout">
+                            <Items>
                                 <ext:Label ID="Label36" runat="server" Width="60" />
                             </Items>
                         </ext:FieldContainer>
 
-                        <ext:FieldSet runat="server" Width="895" Padding="10">
+                        <%-- Detail Section --%>
+                        <ext:FieldSet runat="server" Width="930" Padding="10" Cls="detailBackground">
                             <Items>
-
-
-
-
-
-                                <ext:FieldContainer ID="FieldContainer5"
+                                <ext:FieldContainer ID="FieldContainer12"
                                     runat="server"
                                     Layout="HBoxLayout">
                                     <Items>
-                                        <ext:Label ID="Label25" runat="server" Width="100" Text="Actuals Through" />
-                                        <ext:Label ID="Label29" runat="server" Width="60" />
-                                        <ext:Label ID="Label26" runat="server" Width="100" Text="Gross Receipts" />
-                                        <ext:Label ID="Label27" runat="server" Width="100" Text="Material Usage" />
-                                        <ext:Label ID="Label30" runat="server" Width="100" Text="Gross Revenue" />
-                                        <ext:Label ID="Label28" runat="server" Width="100" Text="Direct Expenses" />
-                                        <ext:Label ID="Label31" runat="server" Width="100" Text="OP" />
+                                        <ext:Label ID="Label25" runat="server" Width="150" Text="Actuals Through" Cls="detailForeground" />
+                                        <ext:Label ID="Label29" runat="server" Width="10" />
+                                        <ext:Label ID="Label26" runat="server" Width="110" Text="Gross Receipts " Cls="detailForegroundCenter" />
+                                        <ext:Label ID="Label27" runat="server" Width="110" Text="Material Usage " Cls="detailForegroundCenter" />
+                                        <ext:Label ID="Label30" runat="server" Width="110" Text="Gross Revenue " Cls="detailForegroundCenter" />
+                                        <ext:Label ID="Label28" runat="server" Width="110" Text="Direct Expenses " Cls="detailForegroundCenter" />
+                                        <ext:Label ID="Label31" runat="server" Width="110" Text="OP " Cls="detailForegroundCenter" />
                                     </Items>
                                 </ext:FieldContainer>
 
-                                <ext:FieldContainer ID="FieldContainer7"
+                                <ext:FieldContainer ID="FieldContainer13"
                                     runat="server"
                                     Layout="HBoxLayout">
                                     <Items>
                                         <ext:DateField ID="DateField2" runat="server" Width="100" />
                                         <ext:Label ID="Label34" runat="server" Width="60" />
-                                        <ext:TextField ID="TextField4" runat="server" Width="100" ReadOnly="true" />
-                                        <ext:TextField ID="TextField6" runat="server" Width="100" />
-                                        <ext:TextField ID="TextField7" runat="server" Width="100" />
-                                        <ext:TextField ID="TextField8" runat="server" Width="100" />
-                                        <ext:TextField ID="TextField9" runat="server" Width="100" />
-                                        <ext:Label ID="Label35" runat="server" Width="60" />
+                                        <ext:TextField ID="TextField4" runat="server" Width="110" ReadOnly="false" MaskRe="/[0-9\.]/">
+                                            <Listeners>
+                                                <Focus Handler="this.setValue(this.getValue().replace(/[$\,]/g, ''));" />
+                                            </Listeners>
+                                            <DirectEvents>
+                                                <Blur OnEvent="CheckFormat">
+                                                </Blur>
+                                            </DirectEvents>
+                                        </ext:TextField>
+                                        <ext:TextField ID="TextField6" runat="server" Width="110" Cls="detailForegroundRight" />
+                                        <ext:TextField ID="TextField7" runat="server" Width="110" Cls="detailForegroundRight" />
+                                        <ext:TextField ID="TextField8" runat="server" Width="110" Cls="detailForegroundRight" />
+                                        <ext:TextField ID="TextField9" runat="server" Width="110" Cls="detailForegroundRight" />
+                                        <ext:Label ID="Label35" runat="server" Width="40" />
                                         <ext:ComboBox ID="uxSummaryActions"
                                             runat="server"
                                             DisplayField="name"
@@ -296,11 +314,11 @@
                                     </Items>
                                 </ext:FieldContainer>
 
-                                <ext:FieldContainer ID="FieldContainer9"
+                                <ext:FieldContainer ID="FieldContainer14"
                                     runat="server"
                                     Layout="HBoxLayout">
                                     <Items>
-                                        <ext:GridPanel ID="GridPanel1" runat="server" Width="680" HideHeaders="true" Height="70">
+                                        <ext:GridPanel ID="GridPanel1" runat="server" Width="730" HideHeaders="true" Height="70">
                                             <SelectionModel>
                                                 <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" AllowDeselect="false" Mode="Single" />
                                             </SelectionModel>
@@ -330,11 +348,11 @@
                                             <ColumnModel>
                                                 <Columns>
                                                     <ext:Column ID="Column12" runat="server" DataIndex="SHEET_NAME" Text="Detail Sheet" Width="160" />
-                                                    <ext:Column ID="Column16" runat="server" DataIndex="GROSS_REC" Text="Gross Receipts" Width="100" Align="Right" />
-                                                    <ext:Column ID="Column17" runat="server" DataIndex="MAT_USAGE" Text="Material Usage" Width="100" Align="Right" />
-                                                    <ext:Column ID="Column18" runat="server" DataIndex="GROSS_REV" Text="Gross Revenue" Width="100" Align="Right" />
-                                                    <ext:Column ID="Column19" runat="server" DataIndex="DIR_EXP" Text="Direct Expenses" Width="100" Align="Right" />
-                                                    <ext:Column ID="Column20" runat="server" DataIndex="OP" Text="OP" Width="100" Align="Right" />
+                                                    <ext:Column ID="Column16" runat="server" DataIndex="GROSS_REC" Text="Gross Receipts" Width="110" Align="Right" />
+                                                    <ext:Column ID="Column17" runat="server" DataIndex="MAT_USAGE" Text="Material Usage" Width="110" Align="Right" />
+                                                    <ext:Column ID="Column18" runat="server" DataIndex="GROSS_REV" Text="Gross Revenue" Width="110" Align="Right" />
+                                                    <ext:Column ID="Column19" runat="server" DataIndex="DIR_EXP" Text="Direct Expenses" Width="110" Align="Right" />
+                                                    <ext:Column ID="Column20" runat="server" DataIndex="OP" Text="OP" Width="110" Align="Right" />
                                                 </Columns>
                                             </ColumnModel>
                                             <DirectEvents>
@@ -349,29 +367,27 @@
                                     </Items>
                                 </ext:FieldContainer>
 
-                                <ext:FieldContainer ID="FieldContainer8"
+                                <ext:FieldContainer ID="FieldContainer15"
                                     runat="server"
                                     Layout="HBoxLayout">
                                     <Items>
                                         <ext:Label ID="Label32" runat="server" Width="160" />
-                                        <ext:TextField ID="TextField10" runat="server" Width="100" />
-                                        <ext:TextField ID="TextField11" runat="server" Width="100" />
-                                        <ext:TextField ID="TextField12" runat="server" Width="100" />
-                                        <ext:TextField ID="TextField13" runat="server" Width="100" />
-                                        <ext:TextField ID="TextField14" runat="server" Width="100" />
+                                        <ext:TextField ID="TextField10" runat="server" Width="110" Cls="detailForegroundRight" />
+                                        <ext:TextField ID="TextField11" runat="server" Width="110" Cls="detailForegroundRight" />
+                                        <ext:TextField ID="TextField12" runat="server" Width="110" Cls="detailForegroundRight" />
+                                        <ext:TextField ID="TextField13" runat="server" Width="110" Cls="detailForegroundRight" />
+                                        <ext:TextField ID="TextField14" runat="server" Width="110" Cls="detailForegroundRight" />
                                     </Items>
                                 </ext:FieldContainer>
-                                <ext:FieldContainer ID="FieldContainer11"
+                                <ext:FieldContainer ID="FieldContainer16"
                                     runat="server"
                                     Layout="HBoxLayout">
                                     <Items>
                                         <ext:Label ID="Label37" runat="server" Width="60" />
                                     </Items>
                                 </ext:FieldContainer>
-
                             </Items>
                         </ext:FieldSet>
-
                     </Items>
                 </ext:FormPanel>
             </Items>
