@@ -1710,7 +1710,7 @@
           <Key>
             <PropertyRef Name="MODULE_PROFILE_OPTION_ID" />
           </Key>
-          <Property Name="MODULE_PROFILE_OPTION_ID" Type="number" Nullable="false" />
+          <Property Name="MODULE_PROFILE_OPTION_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="MODULE_ID" Type="number" Nullable="false" />
           <Property Name="PROFILE_OPTION_ID" Type="number" Nullable="false" />
           <Property Name="CREATE_DATE" Type="date" />
@@ -1739,7 +1739,7 @@
           <Key>
             <PropertyRef Name="PROFILE_OPTION_ID" />
           </Key>
-          <Property Name="PROFILE_OPTION_ID" Type="number" Nullable="false" />
+          <Property Name="PROFILE_OPTION_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIPTION" Type="varchar2" MaxLength="2000" />
           <Property Name="PROFILE_KEY" Type="varchar2" MaxLength="250" />
           <Property Name="PROFILE_VALUE" Type="varchar2" MaxLength="2000" />
@@ -1781,7 +1781,7 @@
           <Key>
             <PropertyRef Name="USER_PROFILE_OPTION_ID" />
           </Key>
-          <Property Name="USER_PROFILE_OPTION_ID" Type="number" Nullable="false" />
+          <Property Name="USER_PROFILE_OPTION_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="USER_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="PROFILE_OPTION_ID" Type="number" Nullable="false" />
           <Property Name="CREATE_DATE" Type="date" />
@@ -6628,7 +6628,7 @@
           <Key>
             <PropertyRef Name="MODULE_PROFILE_OPTION_ID" />
           </Key>
-          <Property Type="Decimal" Name="MODULE_PROFILE_OPTION_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="MODULE_PROFILE_OPTION_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Decimal" Name="MODULE_ID" Nullable="false" Precision="38" Scale="0" />
           <Property Type="Decimal" Name="PROFILE_OPTION_ID" Nullable="false" Precision="38" Scale="0" />
           <Property Type="DateTime" Name="CREATE_DATE" />
@@ -6642,7 +6642,7 @@
           <Key>
             <PropertyRef Name="PROFILE_OPTION_ID" />
           </Key>
-          <Property Type="Decimal" Name="PROFILE_OPTION_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="PROFILE_OPTION_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="DESCRIPTION" MaxLength="2000" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="PROFILE_KEY" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="PROFILE_VALUE" MaxLength="2000" FixedLength="false" Unicode="false" />
@@ -6657,7 +6657,7 @@
           <Key>
             <PropertyRef Name="USER_PROFILE_OPTION_ID" />
           </Key>
-          <Property Type="Decimal" Name="USER_PROFILE_OPTION_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="USER_PROFILE_OPTION_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int64" Name="USER_ID" Nullable="false" />
           <Property Type="Decimal" Name="PROFILE_OPTION_ID" Nullable="false" Precision="38" Scale="0" />
           <Property Type="DateTime" Name="CREATE_DATE" />
