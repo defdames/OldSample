@@ -24,13 +24,12 @@
                     <Store>
                         <ext:Store runat="server"
                             ID="uxProfileOptionStore"
-                            AutoDataBind="true" RemoteSort="true" PageSize="25" OnReadData="deReadProfileOptions" AutoLoad="false">
+                            AutoDataBind="true" RemoteSort="true" PageSize="25" OnReadData="deReadProfileOptions" AutoLoad="true">
                             <Model>
                                         <ext:Model ID="uxProfileOptionModel" runat="server" IDProperty="PROFILE_OPTION_ID">
                                             <Fields>
                                                 <ext:ModelField Name="DESCRIPTION" Type="String" />
                                                 <ext:ModelField Name="PROFILE_KEY" Type="String" />
-                                                <ext:ModelField Name="PROFILE_VALUE" Type="String" />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
@@ -43,7 +42,6 @@
                                 <Columns>
                                     <ext:Column ID="uxColumn1" runat="server" DataIndex="DESCRIPTION" Text="Description" Flex="1" />
                                     <ext:Column ID="uxColumn2" runat="server" DataIndex="PROFILE_KEY" Text="Key" Flex="1" />
-                                    <ext:Column ID="uxColumn3" runat="server" DataIndex="PROFILE_VALUE" Text="Value" Flex="1" />
                                 </Columns>
                             </ColumnModel>
                             <Plugins>

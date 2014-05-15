@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DBI.Web.EMS.Views.Modules.Security.Options {
+namespace DBI.Web.EMS.Views.Modules.Security.Options.AddEdit {
     
     
-    public partial class umProfileOptions {
+    public partial class umAddEditProfileOptions {
         
         /// <summary>
         /// form1 control.
@@ -40,102 +40,75 @@ namespace DBI.Web.EMS.Views.Modules.Security.Options {
         protected global::Ext.Net.Viewport Viewport1;
         
         /// <summary>
-        /// uxProfileOptionGridPanel control.
+        /// uxFormPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxProfileOptionGridPanel;
+        protected global::Ext.Net.FormPanel uxFormPanel;
         
         /// <summary>
-        /// uxAddButton control.
+        /// uxFieldContainer1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxAddButton;
+        protected global::Ext.Net.FieldContainer uxFieldContainer1;
         
         /// <summary>
-        /// uxEditButton control.
+        /// uxProfileDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxEditButton;
+        protected global::Ext.Net.TextField uxProfileDescription;
         
         /// <summary>
-        /// uxDeleteButton control.
+        /// uxFieldContainer2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxDeleteButton;
+        protected global::Ext.Net.FieldContainer uxFieldContainer2;
         
         /// <summary>
-        /// uxProfileOptionStore control.
+        /// uxProfileKey control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxProfileOptionStore;
+        protected global::Ext.Net.TextField uxProfileKey;
         
         /// <summary>
-        /// uxProfileOptionModel control.
+        /// uxAddProfileOptionButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Model uxProfileOptionModel;
+        protected global::Ext.Net.Button uxAddProfileOptionButton;
         
         /// <summary>
-        /// uxColumn1 control.
+        /// uxDeleteProfileOption control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column uxColumn1;
+        protected global::Ext.Net.Button uxDeleteProfileOption;
         
         /// <summary>
-        /// uxColumn2 control.
+        /// uxCloseButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column uxColumn2;
-        
-        /// <summary>
-        /// uxProfileOptionFilterHeader control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FilterHeader uxProfileOptionFilterHeader;
-        
-        /// <summary>
-        /// uxProfileOptionPagingToolbar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.PagingToolbar uxProfileOptionPagingToolbar;
-        
-        /// <summary>
-        /// uxProfileOptionGridView control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.GridView uxProfileOptionGridView;
+        protected global::Ext.Net.Button uxCloseButton;
     }
 }

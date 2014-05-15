@@ -7,8 +7,9 @@ using System.Web.UI.WebControls;
 
 using DBI.Core.Web;
 using Ext.Net;
+using DBI.Data;
 
-namespace DBI.Web.EMS.Views.Modules.Security.Options 
+namespace DBI.Web.EMS.Views.Modules.Security.Options
 {
     public partial class umProfileOptions : BasePage
     {
@@ -19,7 +20,7 @@ namespace DBI.Web.EMS.Views.Modules.Security.Options
 
         protected void deReadProfileOptions(object sender, StoreReadDataEventArgs e)
         {
-          
+            uxProfileOptionStore.DataSource = SYS_PROFILE_OPTIONS.systemProfileOptions();
         }
 
     }
