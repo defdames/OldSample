@@ -124,6 +124,7 @@
 							<Model>
 								<ext:Model ID="Model3" runat="server">
 									<Fields>
+										<ext:ModelField Name="TASK_NUMBER" />
 										<ext:ModelField Name="DESCRIPTION" />
 										<ext:ModelField Name="WORK_AREA" />
 										<ext:ModelField Name="POLE_FROM" />
@@ -137,10 +138,11 @@
 					</Store>
 					<ColumnModel>
 						<Columns>
+							<ext:Column runat="server" DataIndex="TASK_NUMBER" Text="Task Number" />
 							<ext:Column ID="Column15" runat="server" DataIndex="DESCRIPTION" Text="Task Name" />
 							<ext:Column ID="Column16" runat="server" DataIndex="WORK_AREA" Text="Spray/Work Area" />
-							<ext:Column ID="Column17" runat="server" DataIndex="POLE_FROM" Text="Pole From" />
-							<ext:Column ID="Column18" runat="server" DataIndex="POLE_TO" Text="Pole To" />
+							<ext:Column ID="Column17" runat="server" DataIndex="POLE_FROM" Text="Pole/MP From" />
+							<ext:Column ID="Column18" runat="server" DataIndex="POLE_TO" Text="Pole/MP To" />
 							<ext:Column ID="Column19" runat="server" DataIndex="ACRES_MILE" Text="Acres/Mile" />
 							<ext:Column ID="Column20" runat="server" DataIndex="QUANTITY" Text="Gallons" />
 						</Columns>

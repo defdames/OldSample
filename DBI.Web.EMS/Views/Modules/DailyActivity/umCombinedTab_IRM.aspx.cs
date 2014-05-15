@@ -129,7 +129,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join t in _context.PA_TASKS_V on d.TASK_ID equals t.TASK_ID
                             join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                             where d.HEADER_ID == HeaderId
-                            select new {d.PRODUCTION_ID, h.PROJECT_ID, p.LONG_NAME, t.TASK_ID, t.DESCRIPTION, d.SURFACE_TYPE, d.WORK_AREA, d.QUANTITY, d.STATION, d.EXPENDITURE_TYPE, d.BILL_RATE, d.UNIT_OF_MEASURE, d.COMMENTS }).ToList();
+                            select new {d.PRODUCTION_ID, h.PROJECT_ID, p.LONG_NAME, t.TASK_ID, t.TASK_NUMBER, t.DESCRIPTION, d.SURFACE_TYPE, d.WORK_AREA, d.QUANTITY, d.STATION, d.EXPENDITURE_TYPE, d.BILL_RATE, d.UNIT_OF_MEASURE, d.COMMENTS }).ToList();
                 uxProductionStore.DataSource = data;
                 uxProductionStore.DataBind();
             }

@@ -128,6 +128,7 @@
 							<Model>
 								<ext:Model ID="Model3" runat="server">
 									<Fields>
+										<ext:ModelField Name="TASK_NUMBER" />
 										<ext:ModelField Name="DESCRIPTION" />
 										<ext:ModelField Name="WORK_AREA" />
 										<ext:ModelField Name="QUANTITY" />
@@ -144,6 +145,7 @@
 					</Store>
 					<ColumnModel>
 						<Columns>
+							<ext:Column runat="server" DataIndex="TASK_NUMBER" Text="Task Number" />
 							<ext:Column runat="server" DataIndex="DESCRIPTION" Text="Task Name" />
 							<ext:Column runat="server" DataIndex="WORK_AREA" Text="Spray/Work Area" />
 							<ext:Column runat="server" DataIndex="QUANTITY" Text="Quantity" />

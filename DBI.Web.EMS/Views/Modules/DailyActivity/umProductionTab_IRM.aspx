@@ -31,6 +31,7 @@
 					<Model>
 						<ext:Model ID="Model1" runat="server">
 							<Fields>
+								<ext:ModelField Name="TASK_NUMBER" />
 								<ext:ModelField Name="PRODUCTION_ID" />
 								<ext:ModelField Name="PROJECT_ID" />
 								<ext:ModelField Name="LONG_NAME" />
@@ -50,6 +51,7 @@
 			</Store>
 			<ColumnModel>
 				<Columns>
+					<ext:Column runat="server" DataIndex="TASK_NUMBER" Text="Task Number" Flex="1" />
 					<ext:Column runat="server"
 						DataIndex="LONG_NAME"
 						Text="Project Name"
