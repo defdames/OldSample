@@ -367,7 +367,7 @@ namespace DBI.Data
                         }
 
                         //Check if record is IRM and Travel time added, then add Travel Time Base
-                        if (xxdbiDailyActivityHeader.ORG_ID == 123 && r.DRIVE_TIME > 0)
+                        if (xxdbiDailyActivityHeader.ORG_ID == 123 && r.TRAVEL_TIME > 0)
                         {
                             XXDBI_LABOR_HEADER_V dtrecord = new XXDBI_LABOR_HEADER_V();
                             dtrecord.LABOR_HEADER_ID = DBI.Data.Interface.generateLaborHeaderSequence();
@@ -404,7 +404,7 @@ namespace DBI.Data
 
                             XXDBI_PAYROLL_AUDIT_V dtrecord = new XXDBI_PAYROLL_AUDIT_V();
                             dtrecord.PAYROLL_AUDIT_ID = generatePayrollAuditSequence();
-                            dtrecord.DA_HEADER_ID = xxdbiDailyActivityHeader.DA_HEADER_ID;
+                            //dtrecord.DA_HEADER_ID = xxdbiDailyActivityHeader.DA_HEADER_ID;
                             dtrecord.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
                             dtrecord.EMPLOYEE_NAME =  DBI.Data.EMPLOYEES_V.oracleEmployeeName(r.PERSON_ID);
                             dtrecord.ELEMENT = "Time Entry Wages";
@@ -483,8 +483,8 @@ namespace DBI.Data
                             DateTime current = DateTime.Now;
 
                             dtrecord.PREVAILING_WAGE_RATE = null;
-                            dtrecord.EFFECTIVE_START_DATE = current.GetFirstDayOfWeek();
-                            dtrecord.EFFECTIVE_END_DATE = current.GetLastDayOfWeek();
+                            dtrecord.EFFECTIVE_START_DATE = current.GetFirstDayOfWeek().Date;
+                            dtrecord.EFFECTIVE_END_DATE = current.GetLastDayOfWeek().Date;
                             GenericData.Insert<XXDBI_PAYROLL_AUDIT_V>(dtrecord);
 
                         }
@@ -637,6 +637,13 @@ namespace DBI.Data
 
                         long GlCode = getGlCode((long)InventoryItem.PROJECT_ID);
                         decimal Quantity = -Math.Abs((decimal)InventoryItem.i.TOTAL);
+
+                        //Change inventory to use the rate/quantity field HOTFIX
+                        if (InventoryItem.ORG_ID == 123)
+                        {
+                            Quantity = -Math.Abs((decimal)InventoryItem.i.RATE);
+                        }
+
                         //GL_CODE Account = GetProjectGLCode (InventoryItem.PROJECT_ID);
                         MTL_TRANSACTION_INT_V Record = new MTL_TRANSACTION_INT_V
                         {
@@ -645,6 +652,7 @@ namespace DBI.Data
                             SOURCE_LINE_ID = InventoryCount,
                             PROCESS_FLAG = 1,
                             TRANSACTION_MODE = 3,
+                            TRANSACTION_REFERENCE = InventoryItem.i.INVENTORY_ID.ToString(),
                             INVENTORY_ITEM_ID = InventoryItem.i.ITEM_ID,
                             ORGANIZATION_ID = (decimal)InventoryItem.i.SUB_INVENTORY_ORG_ID,
                             SUBINVENTORY_CODE = InventoryItem.i.SUB_INVENTORY_SECONDARY_NAME,

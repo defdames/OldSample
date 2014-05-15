@@ -94,6 +94,33 @@
     <Compile Include="..\DBI.AssemblyVersion\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="BUD_BID_ADJUSTMENT.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BUD_BID_BUDGET_NUM.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BUD_BID_DETAIL_SHEET.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BUD_BID_DETAIL_TASK.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BUD_BID_LINES.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BUD_BID_LOCKED.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BUD_BID_ORGS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BUD_BID_PROJECTS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BUD_BID_STATUS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="CLASS_CODES_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
@@ -190,33 +217,6 @@
     <Compile Include="DataFactory\Employees\Employees.cs" />
     <Compile Include="DataFactory\Employees\WebEmployee.cs" />
     <Compile Include="DataFactory\Equipment\Equipment.cs" />
-    <Compile Include="Oracle\GL\OVERHEAD_BUDGET_TYPE.cs" />
-    <Compile Include="Oracle\GL\Budgets.cs" />
-    <Compile Include="Oracle\GL\OVERHEAD_GL_ACCOUNT.cs" />
-    <Compile Include="Oracle\HR\Organizations.cs" />
-    <Compile Include="DataFactory\Interface\Interface.cs" />
-    <Compile Include="DataFactory\GMS\Data.cs" />
-    <Compile Include="DataFactory\Inventory\Inventory.cs" />
-    <Compile Include="DataFactory\Messages\Resource.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resource.resx</DependentUpon>
-    </Compile>
-    <Compile Include="DataFactory\Notifications\Notifications.cs" />
-    <Compile Include="DataFactory\Projects\WebProjects.cs" />
-    <Compile Include="DataFactory\Projects\Projects.cs" />
-    <Compile Include="DataFactory\Security\Activity.cs" />
-    <Compile Include="DataFactory\Security\Logger.cs" />
-    <Compile Include="DataFactory\Security\MenuItems.cs" />
-    <Compile Include="DataFactory\Security\Modules.cs" />
-    <Compile Include="DataFactory\Security\Permissions.cs" />
-    <Compile Include="DataFactory\Security\UserActivity.cs" />
-    <Compile Include="DataFactory\Security\UserOrganizations.cs" />
-    <Compile Include="DataFactory\Security\UserPermissions.cs" />
-    <Compile Include="DataFactory\StaticLists.cs" />
-    <Compile Include="DataFactory\Security\UserInformation.cs" />
-    <Compile Include="DataFactory\Utilities\GenericData.cs" />
-    <Compile Include="DataFactory\Equipment\WebEquipment.cs" />
     <Compile Include="EMPLOYEES_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
@@ -230,6 +230,9 @@
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="INVENTORY_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="JOB_COST_CLASSES.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="JOB_TITLE_V.cs">
@@ -259,6 +262,33 @@
     <Compile Include="MTL_TRANSACTION_INT_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="Oracle\GL\OVERHEAD_BUDGET_TYPE.cs" />
+    <Compile Include="Oracle\GL\Budgets.cs" />
+    <Compile Include="Oracle\GL\OVERHEAD_GL_ACCOUNT.cs" />
+    <Compile Include="Oracle\HR\Organizations.cs" />
+    <Compile Include="DataFactory\Interface\Interface.cs" />
+    <Compile Include="DataFactory\GMS\Data.cs" />
+    <Compile Include="DataFactory\Inventory\Inventory.cs" />
+    <Compile Include="DataFactory\Messages\Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="DataFactory\Notifications\Notifications.cs" />
+    <Compile Include="DataFactory\Projects\WebProjects.cs" />
+    <Compile Include="DataFactory\Projects\Projects.cs" />
+    <Compile Include="DataFactory\Security\Activity.cs" />
+    <Compile Include="DataFactory\Security\Logger.cs" />
+    <Compile Include="DataFactory\Security\MenuItems.cs" />
+    <Compile Include="DataFactory\Security\Modules.cs" />
+    <Compile Include="DataFactory\Security\Permissions.cs" />
+    <Compile Include="DataFactory\Security\UserActivity.cs" />
+    <Compile Include="DataFactory\Security\UserOrganizations.cs" />
+    <Compile Include="DataFactory\Security\UserPermissions.cs" />
+    <Compile Include="DataFactory\StaticLists.cs" />
+    <Compile Include="DataFactory\Security\UserInformation.cs" />
+    <Compile Include="DataFactory\Utilities\GenericData.cs" />
+    <Compile Include="DataFactory\Equipment\WebEquipment.cs" />
     <Compile Include="Oracle.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -333,6 +363,9 @@
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="SYS_MODULES.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SYS_MODULE_PROFILE_OPTIONS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="SYS_PERMISSIONS.cs">

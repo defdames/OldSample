@@ -200,6 +200,7 @@ namespace DBI.Mobile.EMS.Controllers
                         e.MODIFY_DATE = DateTime.Now;
                         e.CREATED_BY = h.CREATED_BY;
                         e.MODIFIED_BY = h.CREATED_BY;
+                        e.CONTRACTOR_SUPPLIED = j.contractorSupplied;
                         e.TOTAL = j.total;
 
                         if (j.chemical_mix_id > 0)

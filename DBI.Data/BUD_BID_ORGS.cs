@@ -12,18 +12,15 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class CUSTOMER_SURVEY_RELATION
+    public partial class BUD_BID_ORGS
     {
-        public decimal RELATION_ID { get; set; }
-        public decimal FIELDSET_ID { get; set; }
-        public decimal QUESTION_ID { get; set; }
-        public Nullable<decimal> SORT_ORDER { get; set; }
-        public string CREATED_BY { get; set; }
+        public decimal BUD_ORG_ID { get; set; }
+        public Nullable<long> ORG_ID { get; set; }
+        public string SETTING { get; set; }
+        public string ORG_VALUE { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
-        public string MODIFIED_BY { get; set; }
+        public string CREATED_BY { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
-    
-        public virtual CUSTOMER_SURVEY_FIELDSETS CUSTOMER_SURVEY_FIELDSETS { get; set; }
-        public virtual CUSTOMER_SURVEY_QUESTIONS CUSTOMER_SURVEY_QUESTIONS { get; set; }
+        public string MODIFIED_BY { get; set; }
     }
 }

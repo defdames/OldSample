@@ -31,6 +31,7 @@ namespace DBI.Mobile.EMS.Models
             public int chemical_mix_id { get; set; }
             public string sub_inventory_secondary_name { get; set; }
             public decimal total { get; set; }
+            public string contractorSupplied { get; set; }
         }
 
         public class DailyActivityFooter

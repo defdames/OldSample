@@ -17,7 +17,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!validateComponentSecurity("SYS.TimeClock.Payroll"))
+            if (validateComponentSecurity("SYS.TimeClock.Payroll"))
             {
                 GetEnployeesHourData();
             }
