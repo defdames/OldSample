@@ -181,6 +181,7 @@
     <Content Include="Views\Modules\Security\umEditOrgs.aspx" />
     <Content Include="Views\Modules\Security\umEditPermissions.aspx" />
     <Content Include="Views\Modules\Security\umEditUsers.aspx" />
+    <Content Include="Views\Modules\Security\Options\umProfileOptions.aspx" />
     <Content Include="Views\Modules\Security\umSecurityLogList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityActivityList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityUsersList.aspx" />
@@ -676,6 +677,13 @@
     </Compile>
     <Compile Include="Views\Modules\Security\umEditUsers.aspx.designer.cs">
       <DependentUpon>umEditUsers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Security\Options\umProfileOptions.aspx.cs">
+      <DependentUpon>umProfileOptions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Security\Options\umProfileOptions.aspx.designer.cs">
+      <DependentUpon>umProfileOptions.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\Security\umSecurityLogList.aspx.cs">
       <DependentUpon>umSecurityLogList.aspx</DependentUpon>
