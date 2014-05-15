@@ -43,15 +43,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                             join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
                             where d.HEADER_ID == HeaderId
-                            select new {d.HEADER_ID, d.PROJECT_ID, p.LONG_NAME, d.DA_DATE, d.SUBDIVISION, d.CONTRACTOR, d.PERSON_ID, e.EMPLOYEE_NAME, d.LICENSE, d.STATE, d.APPLICATION_TYPE, d.DENSITY, d.DA_HEADER_ID }).Single();
+                            select new {d.HEADER_ID, d.PROJECT_ID, p.SEGMENT1, p.LONG_NAME, d.DA_DATE, d.SUBDIVISION, d.CONTRACTOR, d.PERSON_ID, e.EMPLOYEE_NAME, d.LICENSE, d.STATE, d.APPLICATION_TYPE, d.DENSITY, d.DA_HEADER_ID }).Single();
                 DateTime Da_date = DateTime.Parse(data.DA_DATE.ToString());
-                uxProjectField.Value = data.LONG_NAME;
+                uxProjectField.Value = string.Format("{0} ({1})", data.LONG_NAME, data.SEGMENT1);
                 uxDateField.Value = Da_date.ToString("MM-dd-yyyy");
                 uxDensityField.Value = data.DENSITY;
                 uxSubDivisionField.Value = data.SUBDIVISION;
                 uxLicenseField.Value = data.LICENSE;
                 uxStateField.Value = data.STATE;
                 uxSupervisorField.Value = data.EMPLOYEE_NAME;
+                uxContractorField.Value = data.CONTRACTOR;
                 uxTypeField.Value = data.APPLICATION_TYPE;
                 uxHeaderField.Value = data.HEADER_ID.ToString();
                 uxOracleField.Value = data.DA_HEADER_ID.ToString();
@@ -74,7 +75,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
                             from projects in proj.DefaultIfEmpty()
                             where d.HEADER_ID == HeaderId
-                            select new EmployeeDetails {EMPLOYEE_NAME = e.EMPLOYEE_NAME, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS }).ToList();
+                            select new EmployeeDetails {EMPLOYEE_NAME = e.EMPLOYEE_NAME, FOREMAN_LICENSE = d.FOREMAN_LICENSE, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS }).ToList();
                 foreach (var item in data)
                 {
                     double Hours = Math.Truncate((double)item.TRAVEL_TIME);
@@ -101,7 +102,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 var data = (from e in _context.DAILY_ACTIVITY_EQUIPMENT
                             join p in _context.CLASS_CODES_V on e.PROJECT_ID equals p.PROJECT_ID
                             where e.HEADER_ID == HeaderId
-                            select new {p.CLASS_CODE, p.ORGANIZATION_NAME, e.ODOMETER_START, e.ODOMETER_END, e.PROJECT_ID, e.EQUIPMENT_ID, p.NAME, e.HEADER_ID }).ToList();
+                            select new {p.CLASS_CODE, p.SEGMENT1, p.ORGANIZATION_NAME, e.ODOMETER_START, e.ODOMETER_END, e.PROJECT_ID, e.EQUIPMENT_ID, p.NAME, e.HEADER_ID }).ToList();
                 uxEquipmentStore.DataSource = data;
                 uxEquipmentStore.DataBind();
             }
@@ -121,7 +122,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join t in _context.PA_TASKS_V on d.TASK_ID equals t.TASK_ID
                             join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                             where d.HEADER_ID == HeaderId
-                            select new { d.PRODUCTION_ID, h.PROJECT_ID, p.LONG_NAME, t.TASK_ID, t.DESCRIPTION, d.TIME_IN, d.TIME_OUT, d.WORK_AREA, d.POLE_FROM, d.POLE_TO, d.ACRES_MILE, d.QUANTITY }).ToList();
+                            select new { d.PRODUCTION_ID, h.PROJECT_ID, p.LONG_NAME, t.TASK_NUMBER, t.TASK_ID, t.DESCRIPTION, d.TIME_IN, d.TIME_OUT, d.WORK_AREA, d.POLE_FROM, d.POLE_TO, d.ACRES_MILE, d.QUANTITY }).ToList();
                 uxProductionStore.DataSource = data;
                 uxProductionStore.DataBind();
             }
@@ -177,7 +178,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             where d.HEADER_ID == HeaderId
                             from j in joined
                             where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
-                            select new {c.CHEMICAL_MIX_NUMBER, d.SUB_INVENTORY_SECONDARY_NAME, d.TOTAL, j.INV_NAME, j.DESCRIPTION, d.RATE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).ToList();
+                            select new {c.CHEMICAL_MIX_NUMBER, d.SUB_INVENTORY_SECONDARY_NAME, d.TOTAL, j.SEGMENT1, j.INV_NAME, j.DESCRIPTION, d.RATE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).ToList();
                 uxInventoryStore.DataSource = data;
                 uxInventoryStore.DataBind();
             }

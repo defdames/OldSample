@@ -1058,15 +1058,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 {
                     //Get Equipment Data
                     var EquipmentData = GetEquipment(HeaderId);
-                    PdfPTable EquipmentTable = new PdfPTable(6);
+                    PdfPTable EquipmentTable = new PdfPTable(5);
 
                     Cells = new PdfPCell[]{
-                        new PdfPCell(new Phrase("Project ID", HeaderFont)),
-                        new PdfPCell(new Phrase("Name", HeaderFont)),
+                        new PdfPCell(new Phrase("Equipment Name", HeaderFont)),
                         new PdfPCell(new Phrase("Class Code", HeaderFont)),
                         new PdfPCell(new Phrase("Organization Name", HeaderFont)),
-                        new PdfPCell(new Phrase("Odometer Start", HeaderFont)),
-                        new PdfPCell(new Phrase("Odometer End", HeaderFont))
+                        new PdfPCell(new Phrase("Starting Units", HeaderFont)),
+                        new PdfPCell(new Phrase("Ending Units", HeaderFont))
                     };
 
                     Row = new PdfPRow(Cells);
@@ -1093,17 +1092,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         {
                             OdometerEnd = string.Empty;
                         }
-                        try
-                        {
-                            ProjectId = Equipment.PROJECT_ID.ToString();
-                        }
-                        catch (Exception)
-                        {
-                            ProjectId = string.Empty;
-                        }
 
                         Cells = new PdfPCell[]{
-                            new PdfPCell(new Phrase(ProjectId, CellFont)),
                             new PdfPCell(new Phrase(Equipment.NAME, CellFont)),
                             new PdfPCell(new Phrase(Equipment.CLASS_CODE, CellFont)),
                             new PdfPCell(new Phrase(Equipment.ORGANIZATION_NAME, CellFont)),
@@ -1498,12 +1488,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     Row = new PdfPRow(Cells);
                     FooterTable.Rows.Add(Row);
 
+                    
+                    ExportedPDF.Add(FooterTable);
+
+                    PdfPTable SignatureTable = new PdfPTable(2);
                     iTextSharp.text.Image ForemanImage;
                     iTextSharp.text.Image ContractImage;
                     try
                     {
                         ForemanImage = iTextSharp.text.Image.GetInstance(FooterData.FOREMAN_SIGNATURE.ToArray());
-                        ForemanImage.ScaleAbsolute(75f, 25f);
+                        ForemanImage.ScaleAbsolute(250f, 82f);
                     }
                     catch (Exception)
                     {
@@ -1513,7 +1507,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     try
                     {
                         ContractImage = iTextSharp.text.Image.GetInstance(FooterData.CONTRACT_REP.ToArray());
-                        ContractImage.ScaleAbsolute(75f, 25f);
+                        ContractImage.ScaleAbsolute(250f, 82f);
                     }
                     catch (Exception)
                     {
@@ -1522,24 +1516,34 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
 
                     Cells = new PdfPCell[]{
-                    new PdfPCell(new Phrase("Foreman Signature", HeadFootTitleFont)),
+                    //new PdfPCell(new Phrase("Foreman Signature", HeadFootTitleFont)),
                     new PdfPCell(ForemanImage),
-                    new PdfPCell(new Phrase("Contract Representative", HeadFootTitleFont)),
-                    new PdfPCell(ContractImage),
+                    new PdfPCell(ContractImage)
+                    
                 };
                     foreach (PdfPCell Cell in Cells)
                     {
                         Cell.Border = PdfPCell.NO_BORDER;
                     }
                     Row = new PdfPRow(Cells);
-                    FooterTable.Rows.Add(Row);
+                    SignatureTable.Rows.Add(Row);
+                    //Cells = new PdfPCell[]{
+                    //    new PdfPCell(new Phrase("Contract Representative", HeadFootTitleFont)),
+                    //    new PdfPCell(ContractImage)
+                    //};
+                    //foreach (PdfPCell Cell in Cells)
+                    //{
+                    //    Cell.Border = PdfPCell.NO_BORDER;
+                    //}
+                    //Row = new PdfPRow(Cells);
+                    //SignatureTable.Rows.Add(Row);
                     if (OrgId == 123)
                     {
                         iTextSharp.text.Image DotRepImage;
                         try
                         {
                             DotRepImage = iTextSharp.text.Image.GetInstance(FooterData.DOT_REP.ToArray());
-                            DotRepImage.ScaleAbsolute(75f, 25f);
+                            DotRepImage.ScaleAbsolute(300f, 100f);
                         }
                         catch (Exception)
                         {
@@ -1547,8 +1551,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         }
 
                         Cells = new PdfPCell[]{
-                    new PdfPCell(new Phrase("DOT Representative", HeadFootTitleFont)),
-                    new PdfPCell(DotRepImage),
+                    
                     new PdfPCell(new Phrase("Name", HeadFootTitleFont)),
                     new PdfPCell(new Phrase(FooterData.DOT_REP_NAME, HeadFootCellFont))
                     };
@@ -1557,9 +1560,20 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             Cell.Border = PdfPCell.NO_BORDER;
                         }
                         Row = new PdfPRow(Cells);
-                        FooterTable.Rows.Add(Row);
+                        Cells = new PdfPCell[]{
+                            new PdfPCell(new Phrase("DOT Representative", HeadFootTitleFont)),
+                            new PdfPCell(DotRepImage)
+                        };
+                        foreach (PdfPCell Cell in Cells)
+                        {
+                            Cell.Border = PdfPCell.NO_BORDER;
+                        }
+                        Row = new PdfPRow(Cells);
+                        SignatureTable.Rows.Add(Row);
+                        
                     }
-                    ExportedPDF.Add(FooterTable);
+                    ExportedPDF.Add(SignatureTable);
+
                 }
                 catch (Exception)
                 {

@@ -21,6 +21,7 @@
 						<ext:TextField runat="server" ID="uxProjectField" FieldLabel="Project" Width="600" ReadOnly="true" LabelWidth="100" />
 						<ext:TextField runat="server" ID="uxSubDivisionField" FieldLabel="Sub-Division" Width="300" ReadOnly="true" LabelWidth="100" />
 						<ext:TextField runat="server" ID="uxSupervisorField" FieldLabel="Supervisor/Area Manager" Width="500" ReadOnly="true" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxContractorField" FieldLabel="Contractor" Width="500" ReadOnly="true" LabelWidth="100" />
 						<ext:TextField runat="server" ID="uxLicenseField" FieldLabel="Business License" Width="250" ReadOnly="true" LabelWidth="100" />
 						<ext:TextField runat="server" ID="uxStateField" FieldLabel="State" Width="250" ReadOnly="true" LabelWidth="100" />
 						<ext:TextField runat="server" ID="uxTypeField" FieldLabel="Type of Work" Width="250" ReadOnly="true" LabelWidth="100" />
@@ -45,6 +46,7 @@
 										<ext:ModelField Name="TRAVEL_TIME_FORMATTED" />
 										<ext:ModelField Name="DRIVE_TIME_FORMATTED" />
 										<ext:ModelField Name="PER_DIEM" />
+										<ext:ModelField Name="FOREMAN_LICENSE" />
 										<ext:ModelField Name="COMMENTS" />
 									</Fields>
 								</ext:Model>
@@ -60,6 +62,7 @@
 							<ext:Column ID="Column11" runat="server" DataIndex="TRAVEL_TIME_FORMATTED" Text="Travel Time" Flex="6" />
 							<ext:Column ID="Column12" runat="server" DataIndex="DRIVE_TIME_FORMATTED" Text="Drive Time" Flex="6" />
 							<ext:Column ID="Column13" runat="server" DataIndex="PER_DIEM" Text="Per Diem" Flex="5" />
+							<ext:Column runat="server" DataIndex="FOREMAN_LICENSE" Text="License" Flex="5" />
 							<ext:Column ID="Column14" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="9" />
 						</Columns>
 					</ColumnModel>
@@ -81,6 +84,7 @@
 										<ext:ModelField Name="PROJECT_ID" />
 										<ext:ModelField Name="NAME" />
 										<ext:ModelField Name="HEADER_ID" />
+										<ext:ModelField Name="SEGMENT1" />
 									</Fields>
 								</ext:Model>
 							</Model>
@@ -89,8 +93,8 @@
 					<ColumnModel>
 						<Columns>
 							<ext:Column ID="Column47" runat="server"
-								DataIndex="PROJECT_ID"
-								Text="Project ID" />
+								DataIndex="SEGMENT1"
+								Text="Project Number" />
 							<ext:Column ID="Column48" runat="server"
 								DataIndex="NAME"
 								Text="Name" />
@@ -102,10 +106,10 @@
 								Text="Organization Name"/>
 							<ext:Column ID="Column51" runat="server"
 								DataIndex="ODOMETER_START" 
-								Text="Meter Start"/>
+								Text="Starting Units"/>
 							<ext:Column ID="Column52" runat="server"
 								DataIndex="ODOMETER_END"
-								Text="Meter End" />
+								Text="Ending Units" />
 						</Columns>
 					</ColumnModel>
 				</ext:GridPanel>
@@ -120,6 +124,7 @@
 							<Model>
 								<ext:Model ID="Model3" runat="server">
 									<Fields>
+										<ext:ModelField Name="TASK_NUMBER" />
 										<ext:ModelField Name="DESCRIPTION" />
 										<ext:ModelField Name="WORK_AREA" />
 										<ext:ModelField Name="POLE_FROM" />
@@ -133,10 +138,11 @@
 					</Store>
 					<ColumnModel>
 						<Columns>
+							<ext:Column runat="server" DataIndex="TASK_NUMBER" Text="Task Number" />
 							<ext:Column ID="Column15" runat="server" DataIndex="DESCRIPTION" Text="Task Name" />
 							<ext:Column ID="Column16" runat="server" DataIndex="WORK_AREA" Text="Spray/Work Area" />
-							<ext:Column ID="Column17" runat="server" DataIndex="POLE_FROM" Text="Pole From" />
-							<ext:Column ID="Column18" runat="server" DataIndex="POLE_TO" Text="Pole To" />
+							<ext:Column ID="Column17" runat="server" DataIndex="POLE_FROM" Text="Pole/MP From" />
+							<ext:Column ID="Column18" runat="server" DataIndex="POLE_TO" Text="Pole/MP To" />
 							<ext:Column ID="Column19" runat="server" DataIndex="ACRES_MILE" Text="Acres/Mile" />
 							<ext:Column ID="Column20" runat="server" DataIndex="QUANTITY" Text="Gallons" />
 						</Columns>
@@ -209,7 +215,7 @@
 							<ext:Column ID="Column28" runat="server" DataIndex="GALLON_ACRE" Text="Gallons/Acre" Flex="1" />
 							<ext:Column ID="Column29" runat="server" DataIndex="GALLON_STARTING" Text="Gallons Starting" Flex="1" />
 							<ext:Column ID="Column30" runat="server" DataIndex="GALLON_MIXED" Text="Gallon Mixed" Flex="1" />
-                            <ext:Column runat="server" DataIndex="GALLON_REMAINING" Text="Gallon Remaining" Flex="1" />
+							<ext:Column runat="server" DataIndex="GALLON_REMAINING" Text="Gallon Remaining" Flex="1" />
 							<ext:Column ID="Column31" runat="server" DataIndex="TOTAL" Text="Total Gallons" Flex="1" />
 							<ext:Column ID="Column32" runat="server" DataIndex="USED" Text="Gallons Used" Flex="1" />
 							<ext:Column ID="Column33" runat="server" DataIndex="ACRES_SPRAYED" Text="Acres Sprayed" Flex="1" />
@@ -230,7 +236,8 @@
 								<ext:Model ID="Model6" runat="server">
 									<Fields>
 										<ext:ModelField Name="CHEMICAL_MIX_NUMBER" />
-                                        <ext:ModelField Name="INV_NAME" />
+										<ext:ModelField Name="SEGMENT1" />
+										<ext:ModelField Name="INV_NAME" />
 										<ext:ModelField Name="SUB_INVENTORY_SECONDARY_NAME" />
 										<ext:ModelField Name="DESCRIPTION" />
 										<ext:ModelField Name="RATE" />
@@ -245,8 +252,9 @@
 					<ColumnModel>
 						<Columns>
 							<ext:Column ID="Column36" runat="server" DataIndex="CHEMICAL_MIX_NUMBER" Text="Mix Number" />
-                            <ext:Column runat="server" DataIndex="INV_NAME" Text="Inventory Org" />
+							<ext:Column runat="server" DataIndex="INV_NAME" Text="Inventory Org" />
 							<ext:Column ID="Column37" runat="server" DataIndex="SUB_INVENTORY_SECONDARY_NAME" Text="Sub-Inv Name" />
+							<ext:Column runat="server" DataIndex="SEGMENT1" Text="Item ID" />
 							<ext:Column ID="Column38" runat="server" DataIndex="DESCRIPTION" Text="Item" />
 							<ext:Column ID="Column39" runat="server" DataIndex="RATE" Text="Rate" />
 							<ext:Column runat="server" DataIndex="TOTAL" Text="Total" />

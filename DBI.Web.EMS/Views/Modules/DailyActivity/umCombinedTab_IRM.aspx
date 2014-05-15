@@ -20,6 +20,7 @@
 						<ext:TextField runat="server" ID="uxOracleField" FieldLabel="Oracle DRS Id" Width="200" ReadOnly="true" />
 						<ext:TextField runat="server" ID="uxProjectField" FieldLabel="Project" Width="600" ReadOnly="true" LabelWidth="100" />
 						<ext:TextField runat="server" ID="uxSubDivisionField" FieldLabel="Sub-Division" Width="300" ReadOnly="true" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxContractorField" FieldLabel="Contractor" Width="500" ReadOnly="true" LabelWidth="100" />
 						<ext:TextField runat="server" ID="uxSupervisorField" FieldLabel="Supervisor/Area Manager" Width="500" ReadOnly="true" LabelWidth="100" />
 						<ext:TextField runat="server" ID="uxLicenseField" FieldLabel="Business License" Width="250" ReadOnly="true" LabelWidth="100" />
 						<ext:TextField runat="server" ID="uxStateField" FieldLabel="State" Width="250" ReadOnly="true" LabelWidth="100" />
@@ -47,6 +48,7 @@
 										<ext:ModelField Name="SHOPTIME_PM_FORMATTED" />
 										<ext:ModelField Name="SUPPORT_PROJECT" />
 										<ext:ModelField Name="PER_DIEM" />
+										<ext:ModelField Name="FOREMAN_LICENSE" />
 										<ext:ModelField Name="COMMENTS" />
 									</Fields>
 								</ext:Model>
@@ -65,6 +67,7 @@
 							<ext:Column runat="server" DataIndex="SHOPTIME_PM_FORMATTED" Text="Shoptime PM" />
 							<ext:Column runat="server" DataIndex="SUPPORT_PROJECT" Text="Support Project" />
 							<ext:Column ID="Column13" runat="server" DataIndex="PER_DIEM" Text="Per Diem" />
+							<ext:Column ID="Column1" runat="server" DataIndex="FOREMAN_LICENSE" Text="License" Flex="5" />
 							<ext:Column ID="Column14" runat="server" DataIndex="COMMENTS" Text="Comments" />
 						</Columns>
 					</ColumnModel>
@@ -86,6 +89,7 @@
 										<ext:ModelField Name="PROJECT_ID" />
 										<ext:ModelField Name="NAME" />
 										<ext:ModelField Name="HEADER_ID" />
+										<ext:ModelField Name="SEGMENT1" />
 									</Fields>
 								</ext:Model>
 							</Model>
@@ -94,8 +98,8 @@
 					<ColumnModel>
 						<Columns>
 							<ext:Column ID="Column47" runat="server"
-								DataIndex="PROJECT_ID"
-								Text="Project ID" />
+								DataIndex="SEGMENT1"
+								Text="Project Number" />
 							<ext:Column ID="Column48" runat="server"
 								DataIndex="NAME"
 								Text="Name" />
@@ -124,6 +128,7 @@
 							<Model>
 								<ext:Model ID="Model3" runat="server">
 									<Fields>
+										<ext:ModelField Name="TASK_NUMBER" />
 										<ext:ModelField Name="DESCRIPTION" />
 										<ext:ModelField Name="WORK_AREA" />
 										<ext:ModelField Name="QUANTITY" />
@@ -140,6 +145,7 @@
 					</Store>
 					<ColumnModel>
 						<Columns>
+							<ext:Column runat="server" DataIndex="TASK_NUMBER" Text="Task Number" />
 							<ext:Column runat="server" DataIndex="DESCRIPTION" Text="Task Name" />
 							<ext:Column runat="server" DataIndex="WORK_AREA" Text="Spray/Work Area" />
 							<ext:Column runat="server" DataIndex="QUANTITY" Text="Quantity" />
@@ -196,6 +202,7 @@
 									<Fields>
 										<ext:ModelField Name="INV_NAME" />
 										<ext:ModelField Name="SUB_INVENTORY_SECONDARY_NAME" />
+										<ext:ModelField Name="SEGMENT1" />
 										<ext:ModelField Name="DESCRIPTION" />
 										<ext:ModelField Name="RATE" />
 									</Fields>
@@ -207,6 +214,7 @@
 						<Columns>
 							<ext:Column runat="server" DataIndex="INV_NAME" Text="Inventory Org" />
 							<ext:Column runat="server" DataIndex="SUB_INVENTORY_SECONDARY_NAME" Text="Sub-Inv Name" />
+							<ext:Column runat="server" DataIndex="SEGMENT1" Text="Item ID" />
 							<ext:Column runat="server" DataIndex="DESCRIPTION" Text="Item" />
 							<ext:Column runat="server" DataIndex="RATE" Text="Quantity" />
 						</Columns>
