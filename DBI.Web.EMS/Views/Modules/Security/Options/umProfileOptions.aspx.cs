@@ -23,5 +23,51 @@ namespace DBI.Web.EMS.Views.Modules.Security.Options
             uxProfileOptionStore.DataSource = SYS_PROFILE_OPTIONS.systemProfileOptions();
         }
 
+        protected void deShowAddEditWindow(object sender, DirectEventArgs e)
+        {
+            long recordID;
+            RowSelectionModel selection = uxProfileOptionSelectionModel;
+            Boolean tryParse = long.TryParse(selection.SelectedRecordID, out recordID);
+
+            string URL = string.Empty;
+
+            if (recordID == 0)
+                {
+                    URL = "/Views/Modules/Security/Options/AddEdit/umAddEditProfileOptions.aspx";
+                }
+                else
+                {
+                    URL = "/Views/Modules/Security/Options/AddEdit/umAddEditProfileOptions.aspx?recordID=" + recordID;
+                }
+
+            Window win = new Window
+            {
+                ID = "uxAddEditProfileOptionWindow",
+                Title = "Add / Edit Profile Option",
+                Height = 250,
+                Width = 500,
+                Modal = true,
+                CloseAction = CloseAction.Destroy,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = URL,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
+
+            win.Listeners.Close.Handler = "#{uxProfileOptionGridPanel}.getStore().load();";
+
+            win.Render(this.Form);
+            win.Show();
+
+
+        }
+
     }
 }

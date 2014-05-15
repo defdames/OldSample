@@ -94,15 +94,6 @@ namespace DBI.Web.EMS.Views.Modules.Security.Options {
         protected global::Ext.Net.Model uxProfileOptionModel;
         
         /// <summary>
-        /// uxColumn1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column uxColumn1;
-        
-        /// <summary>
         /// uxColumn2 control.
         /// </summary>
         /// <remarks>
@@ -110,6 +101,15 @@ namespace DBI.Web.EMS.Views.Modules.Security.Options {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Column uxColumn2;
+        
+        /// <summary>
+        /// uxColumn1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column uxColumn1;
         
         /// <summary>
         /// uxProfileOptionFilterHeader control.
@@ -137,5 +137,14 @@ namespace DBI.Web.EMS.Views.Modules.Security.Options {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.GridView uxProfileOptionGridView;
+        
+        /// <summary>
+        /// uxProfileOptionSelectionModel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxProfileOptionSelectionModel;
     }
 }

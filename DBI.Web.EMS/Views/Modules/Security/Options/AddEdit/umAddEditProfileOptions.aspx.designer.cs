@@ -49,24 +49,6 @@ namespace DBI.Web.EMS.Views.Modules.Security.Options.AddEdit {
         protected global::Ext.Net.FormPanel uxFormPanel;
         
         /// <summary>
-        /// uxFieldContainer1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FieldContainer uxFieldContainer1;
-        
-        /// <summary>
-        /// uxProfileDescription control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxProfileDescription;
-        
-        /// <summary>
         /// uxFieldContainer2 control.
         /// </summary>
         /// <remarks>
@@ -83,6 +65,24 @@ namespace DBI.Web.EMS.Views.Modules.Security.Options.AddEdit {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.TextField uxProfileKey;
+        
+        /// <summary>
+        /// uxFieldContainer1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer uxFieldContainer1;
+        
+        /// <summary>
+        /// uxProfileDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextArea uxProfileDescription;
         
         /// <summary>
         /// uxAddProfileOptionButton control.

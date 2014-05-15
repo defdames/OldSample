@@ -15,33 +15,41 @@
                 <ext:FormPanel ID="uxFormPanel" runat="server" Header="false" BodyPadding="10"
                     Margins="5 5 5 5" Region="Center">
                     <Items>
+                        <ext:FieldContainer ID="uxFieldContainer2"
+                            runat="server"
+                            LabelStyle="font-weight:bold;padding:0;"
+                            Layout="HBoxLayout">
+                             <Defaults>
+                                <ext:Parameter Name="AllowBlank" Value="false" Mode="Raw" />
+                                <ext:Parameter Name="MsgTarget" />
+                            </Defaults>
+                            <Items>
+                                <ext:TextField runat="server" ID="uxProfileKey" FieldLabel="Name" AnchorHorizontal="55%" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" MaxLengthText="250" >
+                                </ext:TextField>
+                            </Items>
+                        </ext:FieldContainer>
                         <ext:FieldContainer ID="uxFieldContainer1"
                             runat="server"
                             LabelStyle="font-weight:bold;padding:0;"
                             Layout="HBoxLayout">
+                             <Defaults>
+                                <ext:Parameter Name="AllowBlank" Value="false" Mode="Raw" />
+                                <ext:Parameter Name="MsgTarget"/>
+                            </Defaults>
                             <Items>
-                                <ext:TextField runat="server" ID="uxProfileDescription" FieldLabel="Description" AnchorHorizontal="55%" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" MaxLengthText="2000" />
+                               <ext:TextArea runat="server" ID="uxProfileDescription" FieldLabel="Description" AnchorHorizontal="55%" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" MaxLengthText="2000"  />
                             </Items>
-                        </ext:FieldContainer>
-
-                        <ext:FieldContainer ID="uxFieldContainer2"
-                            runat="server"
-                            LabelStyle="font-weight:bold;padding:0;"  
-                            Layout="HBoxLayout">
-                            <Items>
-                                <ext:TextField runat="server" ID="uxProfileKey" FieldLabel="Key / Name" AnchorHorizontal="55%" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" MaxLengthText="250" />
-                            </Items>
-                        </ext:FieldContainer>
+                        </ext:FieldContainer> 
                     </Items>
                     <Buttons>
-                        <ext:Button runat="server" ID="uxAddProfileOptionButton" Text="Save" Disabled="true" Icon="ApplicationAdd">
+                        <ext:Button runat="server" ID="uxAddProfileOptionButton" Text="Save" Disabled="true" FormBind="true" Icon="ApplicationAdd">
                             <DirectEvents>
                                 <Click OnEvent="deSaveProfileOption" Success="parent.Ext.getCmp('uxAddEditProfileOptionWindow').close();">
                                     <EventMask ShowMask="true"></EventMask>
                                 </Click>
                             </DirectEvents>
                         </ext:Button>
-                        <ext:Button runat="server" ID="uxDeleteProfileOption" Text="Delete" Icon="ApplicationDelete" Disabled="true">
+                        <ext:Button runat="server" ID="uxDeleteProfileOption" Text="Delete" Icon="ApplicationDelete" Disabled="true" FormBind="false">
                             <DirectEvents>
                                 <Click OnEvent="deDeleteProfileOption" Success="parent.Ext.getCmp('uxAddEditProfileOptionWindow').close();">
                                     <Confirmation ConfirmRequest="true" Message="Are you sure you want to delete this profile option?"></Confirmation>
