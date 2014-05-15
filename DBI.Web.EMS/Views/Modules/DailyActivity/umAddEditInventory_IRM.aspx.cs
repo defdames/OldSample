@@ -283,14 +283,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             long OrgId;
             List<INVENTORY_V> dataIn;
-            if (e.Parameters["Type"] == "Add")
-            {
-                OrgId = long.Parse(uxAddInventoryRegion.Value.ToString());
-            }
-            else
-            {
-                OrgId = long.Parse(uxEditInventoryRegion.Value.ToString());
-            }
+            OrgId = long.Parse(e.Parameters["OrgId"]);
+
             dataIn = INVENTORY_V.GetActiveInventory(OrgId);
 
             int count;

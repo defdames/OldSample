@@ -183,6 +183,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 GetInventory("Edit");
                 uxEditInventoryRegion.SelectedItems.Clear();
+                uxEditInventoryRegion.SetRawValue(Inventory.SUB_INVENTORY_ORG_ID);
                 uxEditInventoryRegion.SetValueAndFireSelect(Inventory.SUB_INVENTORY_ORG_ID);
                 uxEditInventoryRegion.SelectedItems.Add(new Ext.Net.ListItem(Inventory.INV_NAME, Inventory.SUB_INVENTORY_ORG_ID));
                 uxEditInventoryRegion.UpdateSelectedItems();
@@ -337,14 +338,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             long OrgId;
             List<INVENTORY_V> dataIn;
-            if (e.Parameters["Type"] == "Add")
-            {
-                OrgId = long.Parse(uxAddInventoryRegion.Value.ToString());
-            }
-            else
-            {
-                OrgId = long.Parse(uxEditInventoryRegion.Value.ToString());
-            }
+            OrgId = long.Parse(e.Parameters["OrgId"]);
             dataIn = INVENTORY_V.GetActiveInventory(OrgId);
 
             int count;
