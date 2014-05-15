@@ -262,8 +262,9 @@
                             <ext:FieldContainer ID="FieldContainer35" runat="server" Layout="HBoxLayout">
                                 <Items>
                                     <ext:TextField ID="uxMainTracksCI" runat="server" FieldLabel="Main Tracks" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
-                                    <ext:Checkbox ID="uxSubConCI" runat="server" FieldLabel="Subcontracted" LabelAlign="Right" Width="110" ReadOnly="true" />
-                                    <ext:Checkbox ID="uxRestrictedBoxCI" runat="server" FieldLabel="Restricted" LabelAlign="Right" Width="550" ReadOnly="true" />
+                                      <ext:Label ID="Label10" runat="server" Text="" Width="25" />
+                                    <ext:Checkbox ID="uxSubConCI" runat="server" BoxLabel="Subcontracted" BoxLabelAlign="After" Width="110" ReadOnly="true" />
+                                    <ext:Checkbox ID="uxRestrictedBoxCI" runat="server" BoxLabel="Restricted" BoxLabelAlign="After" ReadOnly="true" />
 
                                 </Items>
                             </ext:FieldContainer>
@@ -271,8 +272,9 @@
                             <ext:FieldContainer ID="FieldContainer36" runat="server" Layout="HBoxLayout">
                                 <Items>
                                     <ext:TextField ID="uxOtherTracksCI" runat="server" FieldLabel="Other Tracks" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
-                                    <ext:Checkbox ID="uxFenceEncroachCI" runat="server" FieldLabel="Encroachment" LabelAlign="Right" Width="110" ReadOnly="true" />
-                                    <ext:Checkbox ID="uxOnSpurCI" runat="server" FieldLabel="On Spur" LabelAlign="Right" Width="110" ReadOnly="true" />
+                                      <ext:Label ID="Label11" runat="server" Text="" Width="25" />
+                                    <ext:Checkbox ID="uxFenceEncroachCI" runat="server" BoxLabel="Encroachment" BoxLabelAlign="After" Width="110" ReadOnly="true" />
+                                    <ext:Checkbox ID="uxOnSpurCI" runat="server" BoxLabelAlign="After" BoxLabel="On Spur" Width="110" ReadOnly="true" />
                                 </Items>
                             </ext:FieldContainer>
                             <ext:FieldContainer runat="server" Layout="HBoxLayout">
@@ -562,16 +564,18 @@
                                     <ext:FieldContainer ID="FieldContainer19" runat="server" Layout="HBoxLayout">
                                         <Items>
                                             <ext:NumberField ID="uxAddMainTracksCINumberField" runat="server" FieldLabel="Main Tracks" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="27" />
-                                            <ext:Checkbox ID="uxAddSubConCI" runat="server" FieldLabel="Subcontracted" LabelAlign="Right" Width="110" TabIndex="30" />
-                                            <ext:Checkbox ID="uxAddRestrictedCI" runat="server" FieldLabel="Restricted" LabelAlign="Right" Width="550" TabIndex="31" />
+                                              <ext:Label ID="Label13" runat="server" Text="" Width="25" />
+                                            <ext:Checkbox ID="uxAddSubConCI" runat="server" BoxLabel="Subcontracted" BoxLabelAlign="After" Width="110" TabIndex="30" />
+                                            <ext:Checkbox ID="uxAddRestrictedCI" runat="server" BoxLabel="Restricted" BoxLabelAlign="After" Width="550" TabIndex="31" />
                                         </Items>
                                     </ext:FieldContainer>
 
                                     <ext:FieldContainer ID="FieldContainer20" runat="server" Layout="HBoxLayout">
                                         <Items>
                                             <ext:NumberField ID="uxAddOtherTracksCINumberField" runat="server" FieldLabel="Other Tracks" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="28" />
-                                            <ext:Checkbox ID="uxAddFenceEnchroachCI" runat="server" FieldLabel="Encroachment" LabelAlign="Right" Width="110" TabIndex="32" />
-                                            <ext:Checkbox ID="uxAddOnSpurCI" runat="server" FieldLabel="On Spur" LabelAlign="Right" Width="110" TabIndex="33" />
+                                              <ext:Label ID="Label12" runat="server" Text="" Width="25" />
+                                            <ext:Checkbox ID="uxAddFenceEnchroachCI" runat="server" BoxLabel="Encroachment" BoxLabelAlign="After" Width="110" TabIndex="32" />
+                                            <ext:Checkbox ID="uxAddOnSpurCI" runat="server" BoxLabel="On Spur" BoxLabelAlign="After" Width="110" TabIndex="33" />
                                         </Items>
                                     </ext:FieldContainer>
                                     <ext:FieldContainer runat="server" Layout="HBoxLayout">
@@ -902,8 +906,9 @@
                                     <ext:FieldContainer ID="FieldContainer31" runat="server" Layout="HBoxLayout">
                                         <Items>
                                             <ext:NumberField ID="uxEditMainTracksCINumberField" runat="server" FieldLabel="Main Tracks" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="26" />
-                                            <ext:Checkbox ID="uxEditSubConCI" runat="server" FieldLabel="Subcontracted" LabelAlign="Right" Width="110" TabIndex="30" />
-                                            <ext:Checkbox ID="uxEditRestrictedCI" runat="server" FieldLabel="Restricted" LabelAlign="Right" Width="550" TabIndex="31" />
+                                              <ext:Label ID="Label14" runat="server" Text="" Width="25" />
+                                            <ext:Checkbox ID="uxEditSubConCI" runat="server" BoxLabel="Subcontracted" BoxLabelAlign="After" Width="110" TabIndex="30" />
+                                            <ext:Checkbox ID="uxEditRestrictedCI" runat="server" BoxLabel="Restricted" BoxLabelAlign="After" Width="550" TabIndex="31" />
 
 
                                         </Items>
@@ -912,8 +917,9 @@
                                     <ext:FieldContainer ID="FieldContainer32" runat="server" Layout="HBoxLayout">
                                         <Items>
                                             <ext:NumberField ID="uxEditOtherTracksCINumberField" runat="server" FieldLabel="Other Tracks" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="27" />
-                                            <ext:Checkbox ID="uxEditFenceEnchroachCI" runat="server" FieldLabel="Encroachment" LabelAlign="Right" Width="110" TabIndex="32" />
-                                            <ext:Checkbox ID="uxEditOnSpurCI" runat="server" FieldLabel="On Spur" LabelAlign="Right" Width="110" TabIndex="33" />
+                                              <ext:Label ID="Label15" runat="server" Text="" Width="25" />
+                                            <ext:Checkbox ID="uxEditFenceEnchroachCI" runat="server" BoxLabel="Encroachment" BoxLabelAlign="After" Width="110" TabIndex="32" />
+                                            <ext:Checkbox ID="uxEditOnSpurCI" runat="server" BoxLabel="On Spur" BoxLabelAlign="After" Width="110" TabIndex="33" />
 
                                         </Items>
                                     </ext:FieldContainer>
