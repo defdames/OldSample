@@ -24,7 +24,7 @@
                                                 DisplayField="RAILROAD"
                                                 ValueField="RAILROAD_ID"
                                                 QueryMode="Local"
-                                                TypeAhead="true" Editable="false" ForceSelection="true">
+                                                TypeAhead="true" Editable="false">
                                                 <Store>
                                                     <ext:Store runat="server"
                                                         ID="uxAddRailRoadStore">
@@ -43,6 +43,48 @@
                             
                         </Items>
                     </ext:Toolbar>
+                      <ext:Window
+                        runat="server"
+                        ID="uxChangeRailroadWindow"
+                        Hidden="true"
+                        Width="350"
+                        Height="350"
+                        Modal="true" Closable="false">
+                        <Items>
+
+                            <ext:GridPanel ID="uxRailroadGrid" runat="server" Title="Select Railroad" Height="325">
+                              
+                                <Store>
+                                    <ext:Store runat="server"
+                                        ID="uxRailRoadStore" OnReadData="deReadRRTypes" AutoDataBind="true"
+                                        WarningOnDirty="false">
+                                        <Model>
+                                            <ext:Model ID="Model1" runat="server" IDProperty="RAILROAD_ID">
+                                                <Fields>
+                                                    <ext:ModelField Name="RAILROAD_ID" />
+                                                    <ext:ModelField Name="RAILROAD" />
+                                                </Fields>
+                                            </ext:Model>
+                                        </Model>
+                                        <Proxy>
+                                            <ext:PageProxy />
+                                        </Proxy>
+                                    </ext:Store>
+                                </Store>
+                                <ColumnModel>
+                                    <Columns>
+                                        <ext:Column ID="Column7" runat="server" DataIndex="RAILROAD" Text="Railroad" Flex="1" />
+                                    </Columns>
+                                </ColumnModel>
+                               <DirectEvents>
+                                   <Select OnEvent="deLoadRR" />
+                               </DirectEvents>
+                                    <SelectionModel>
+                                    <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" />
+                                </SelectionModel>
+                            </ext:GridPanel>
+                        </Items>
+                    </ext:Window>
                     <ext:TabPanel ID="uxReportsTab" runat="server" Region="Center">
                         <Items>
                             <ext:Panel runat="server" 
