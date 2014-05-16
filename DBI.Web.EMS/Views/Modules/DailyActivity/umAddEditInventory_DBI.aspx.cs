@@ -183,6 +183,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 GetInventory("Edit");
                 uxEditInventoryRegion.SelectedItems.Clear();
+                uxEditInventoryRegion.SetRawValue(Inventory.SUB_INVENTORY_ORG_ID);
                 uxEditInventoryRegion.SetValueAndFireSelect(Inventory.SUB_INVENTORY_ORG_ID);
                 uxEditInventoryRegion.SelectedItems.Add(new Ext.Net.ListItem(Inventory.INV_NAME, Inventory.SUB_INVENTORY_ORG_ID));
                 uxEditInventoryRegion.UpdateSelectedItems();
@@ -234,7 +235,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long OrgId = long.Parse(uxEditInventoryRegion.Value.ToString());
             decimal ItemId = decimal.Parse(uxEditInventoryItem.Value.ToString());
             decimal Rate = decimal.Parse(uxEditInventoryRate.Value.ToString());
-            decimal Total = decimal.Parse(uxEditInventoryTotal.Value.ToString());
+            
 
             //Get record to be updated
             using (Entities _context = new Entities())
@@ -252,7 +253,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.EPA_NUMBER = uxEditInventoryEPA.Value.ToString();
             data.MODIFIED_BY = User.Identity.Name;
             data.MODIFY_DATE = DateTime.Now;
-            data.TOTAL = Total;
+            try
+            {
+                data.TOTAL = decimal.Parse(uxEditInventoryTotal.Value.ToString()); 
+            }
+            catch (NullReferenceException)
+            {
+                data.TOTAL = null;
+            }
 
             //Write to DB
             GenericData.Update<DAILY_ACTIVITY_INVENTORY>(data);
@@ -330,14 +338,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             long OrgId;
             List<INVENTORY_V> dataIn;
-            if (e.Parameters["Type"] == "Add")
-            {
-                OrgId = long.Parse(uxAddInventoryRegion.Value.ToString());
-            }
-            else
-            {
-                OrgId = long.Parse(uxEditInventoryRegion.Value.ToString());
-            }
+            OrgId = long.Parse(e.Parameters["OrgId"]);
             dataIn = INVENTORY_V.GetActiveInventory(OrgId);
 
             int count;

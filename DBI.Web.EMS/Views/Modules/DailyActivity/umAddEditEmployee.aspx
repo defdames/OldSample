@@ -242,106 +242,126 @@
 								</ext:TimeField>
 							</Items>
 						</ext:FieldContainer>
-						<ext:NumberField runat="server"
-							ID="uxAddEmployeeTravelTimeHours"
-							FieldLabel="Travel Time Hours"
-							AllowBlank="true"
-							MinValue="0"
-							MaxValue="12" Width="500" />
-						<ext:NumberField runat="server"
-							ID="uxAddEmployeeTravelTimeMinutes"
-							FieldLabel="Travel Time Minutes"
-							AllowBlank="true"
-							MinValue="0"
-							MaxValue="59" Width="500" />
-						<ext:NumberField runat="server"
-							ID="uxAddEmployeeDriveTimeHours"
-							FieldLabel="Drive Time Hours"
-							AllowBlank="true"
-							MinValue="0"
-							MaxValue="12" Width="500" Hidden="true" />
-						<ext:NumberField runat="server"
-							ID="uxAddEmployeeDriveTimeMinutes"
-							FieldLabel="Drive Time Minutes"
-							AllowBlank="true"
-							MinValue="0"
-							MaxValue="59" Width="500" Hidden="true" />
-						<ext:NumberField runat="server"
-							ID="uxAddEmployeeShopTimeAMHours"
-							FieldLabel="Shop Time AM Hours"
-							Hidden="true"
-							MinValue="0"
-							MaxValue="12" Width="500" />
-						<ext:NumberField runat="server"
-							ID="uxAddEmployeeShopTimeAMMinutes"
-							FieldLabel="Shop Time AM Minutes"
-							Hidden="true"
-							MinValue="0"
-							MaxValue="59" Width="500" />
-						<ext:NumberField runat="server"
-							ID="uxAddEmployeeShopTimePMHours"
-							FieldLabel="Shop Time PM Hours"
-							Hidden="true"
-							MinValue="0"
-							MaxValue="12" Width="500" />
-						<ext:NumberField runat="server"
-							ID="uxAddEmployeeShopTimePMMinutes"
-							FieldLabel="Shop Time PM Minutes"
-							Hidden="true"
-							MinValue="0"
-							MaxValue="59" Width="500" />
-						<ext:Checkbox runat="server"
-							ID="uxAddEmployeePerDiem"
-							FieldLabel="Per Diem" />
-						<ext:TextField runat="server"
-							FieldLabel="License"
-							ID="uxAddEmployeeLicense" Width="500" />
-						<ext:TextArea runat="server"
-							FieldLabel="Comments"
-							ID="uxAddEmployeeComments" Width="500"
-							AllowBlank="true" />
-						<ext:DropDownField runat="server"
-							ID="uxAddEmployeeRole" Editable="false"
-							Mode="ValueText"
-							FieldLabel="Role"
-							AllowBlank="true"
-							Hidden="true" Width="500">
-							<Component>
-								<ext:GridPanel runat="server"
-									ID="uxAddEmployeeRoleGrid"
-									Layout="HBoxLayout">
-									<Store>
-										<ext:Store runat="server"
-											ID="uxAddEmployeeRoleStore"
-											OnReadData="deReadRoleData"
-											AutoDataBind="true">
-											<Model>
-												<ext:Model ID="Model5" runat="server">
-													<Fields>
-														<ext:ModelField Name="MEANING" />
-														<ext:ModelField Name="COUNTY" Type="String" />
-														<ext:ModelField Name="STATE" />
-													</Fields>
-												</ext:Model>
-											</Model>
-											<Parameters>
-												<ext:StoreParameter Name="Form" Value="Add" />
-											</Parameters>
-											<Proxy>
-												<ext:PageProxy />
-											</Proxy>
-										</ext:Store>
-									</Store>
-									<ColumnModel>
-										<Columns>
-											<ext:Column ID="Column13" runat="server" Text="Role Name" DataIndex="MEANING" />
-											<ext:Column ID="Column14" runat="server" Text="County" DataIndex="COUNTY" />
-											<ext:Column ID="Column15" runat="server" Text="State" DataIndex="STATE" />
-										</Columns>
-									</ColumnModel>
-									<SelectionModel>
-										<ext:RowSelectionModel Mode="Single" />
-									</SelectionModel>
+				<ext:NumberField runat="server"
+					ID="uxAddEmployeeTravelTimeHours"
+					FieldLabel="Travel Time Hours"
+					AllowBlank="false"
+					ConstrainEmptyValue="true"
+					Text="0"
+					MinValue="0"
+					MaxValue="12" Width="500" />
+				<ext:NumberField runat="server"
+					ID="uxAddEmployeeTravelTimeMinutes"
+					FieldLabel="Travel Time Minutes"
+					AllowBlank="false"
+					ConstrainEmptyValue="true"
+					Text="0"
+					MinValue="0"
+					MaxValue="59" Width="500" />
+				<ext:NumberField runat="server"
+					ID="uxAddEmployeeDriveTimeHours"
+					FieldLabel="Drive Time Hours"
+					AllowBlank="false"
+					ConstrainEmptyValue="true"
+					Text="0"
+					MinValue="0"
+					MaxValue="12" Width="500" Hidden="true" />
+				<ext:NumberField runat="server"
+					ID="uxAddEmployeeDriveTimeMinutes"
+					FieldLabel="Drive Time Minutes"
+					AllowBlank="false"
+					ConstrainEmptyValue="true"
+					Text="0"
+					MinValue="0"
+					MaxValue="59" Width="500" Hidden="true" />
+				<ext:NumberField runat="server"
+					ID="uxAddEmployeeShopTimeAMHours"
+					FieldLabel="Shop Time AM Hours"
+					Hidden="true"
+					AllowBlank="false"
+					ConstrainEmptyValue="true"
+					Text="0"
+					MinValue="0"
+					MaxValue="12" Width="500" />
+				<ext:NumberField runat="server"
+					ID="uxAddEmployeeShopTimeAMMinutes"
+					FieldLabel="Shop Time AM Minutes"
+					Hidden="true"
+					AllowBlank="false"
+					ConstrainEmptyValue="true"
+					Text="0"
+					MinValue="0"
+					MaxValue="59" Width="500" />
+				<ext:NumberField runat="server"
+					ID="uxAddEmployeeShopTimePMHours"
+					FieldLabel="Shop Time PM Hours"
+					Hidden="true"
+					AllowBlank="false"
+					ConstrainEmptyValue="true"
+					Text="0"
+					MinValue="0"
+					MaxValue="12" Width="500" />
+				<ext:NumberField runat="server"
+					ID="uxAddEmployeeShopTimePMMinutes"
+					FieldLabel="Shop Time PM Minutes"
+					Hidden="true"
+					AllowBlank="false"
+					ConstrainEmptyValue="true"
+					Text="0"
+					MinValue="0"
+					MaxValue="59" Width="500" />
+				<ext:Checkbox runat="server"
+					ID="uxAddEmployeePerDiem"
+					FieldLabel="Per Diem" />
+				<ext:TextField runat="server"
+					FieldLabel="License"
+					ID="uxAddEmployeeLicense" Width="500" />
+				<ext:TextArea runat="server"
+					FieldLabel="Comments"
+					ID="uxAddEmployeeComments" Width="500"
+					AllowBlank="true" />
+				<ext:DropDownField runat="server"
+					ID="uxAddEmployeeRole" Editable="false"
+					Mode="ValueText"
+					FieldLabel="Role"
+					AllowBlank="true"
+					Hidden="true" Width="500">
+					<Component>
+						<ext:GridPanel runat="server"
+							ID="uxAddEmployeeRoleGrid"
+							Layout="HBoxLayout">
+							<Store>
+								<ext:Store runat="server"
+									ID="uxAddEmployeeRoleStore"
+									OnReadData="deReadRoleData"
+									AutoDataBind="true">
+									<Model>
+										<ext:Model ID="Model5" runat="server">
+											<Fields>
+												<ext:ModelField Name="MEANING" />
+												<ext:ModelField Name="COUNTY" Type="String" />
+												<ext:ModelField Name="STATE"  />
+											</Fields>
+										</ext:Model>
+									</Model>
+									<Parameters>
+										<ext:StoreParameter Name="Form" Value="Add" />
+									</Parameters>
+									<Proxy>
+										<ext:PageProxy />
+									</Proxy>
+								</ext:Store>
+							</Store>
+							<ColumnModel>
+								<Columns>
+									<ext:Column ID="Column13" runat="server" Text="Role Name" DataIndex="MEANING" />
+									<ext:Column ID="Column14" runat="server" Text="County" DataIndex="COUNTY" />
+									<ext:Column ID="Column15" runat="server" Text="State" DataIndex="STATE" />
+								</Columns>
+							</ColumnModel>
+							<SelectionModel>
+								<ext:RowSelectionModel Mode="Single" />
+							</SelectionModel>
 									<DirectEvents>
 										<SelectionChange OnEvent="deStoreRoleGridValue">
 											<ExtraParams>
@@ -559,145 +579,165 @@
 								</ext:TimeField>
 							</Items>
 							<Defaults>
-								<ext:Parameter Name="Flex" Value="1" Mode="Raw" />
-								<ext:Parameter Name="HideLabel" Value="true" Mode="Raw" />
-							</Defaults>
-						</ext:FieldContainer>
-						<ext:FieldContainer ID="FieldContainer4" runat="server"
-							FieldLabel="Time Out"
-							MsgTarget="Side" Width="500">
-							<Defaults>
-								<ext:Parameter Name="Flex" Value="1" Mode="Raw" />
-								<ext:Parameter Name="HideLabel" Value="true" Mode="Raw" />
-							</Defaults>
-							<Items>
-								<ext:DateField runat="server"
-									ID="uxEditEmployeeTimeOutDate"
-									IsRemoteValidation="true"
-									EnableKeyEvents="true"
-									AllowBlank="false">
-									<RemoteValidation OnValidation="ValidateDateTime">
-										<ExtraParams>
-											<ext:Parameter Name="Type" Value="Edit" />
-										</ExtraParams>
-									</RemoteValidation>
-								</ext:DateField>
-								<ext:TimeField runat="server"
-									ID="uxEditEmployeeTimeOutTime"
-									Increment="30"
-									IsRemoteValidation="true"
-									EnableKeyEvents="true"
-									AllowBlank="false">
-									<RemoteValidation OnValidation="ValidateDateTime">
-										<ExtraParams>
-											<ext:Parameter Name="Type" Value="Edit" />
-										</ExtraParams>
-									</RemoteValidation>
-								</ext:TimeField>
-							</Items>
-						</ext:FieldContainer>
-						<ext:NumberField runat="server"
-							ID="uxEditEmployeeDriveTimeHours"
-							FieldLabel="Drive Time Hours"
-							AllowBlank="true"
-							MinValue="0"
-							MaxValue="12" Width="500" Hidden="true" />
-						<ext:NumberField runat="server"
-							ID="uxEditEmployeeDriveTimeMinutes"
-							FieldLabel="Drive Time Minutes"
-							AllowBlank="true"
-							MinValue="0"
-							MaxValue="59" Width="500" Hidden="true" />
-						<ext:NumberField runat="server"
-							ID="uxEditEmployeeTravelTimeHours"
-							FieldLabel="Travel Time Hours"
-							AllowBlank="true"
-							MinValue="0"
-							MaxValue="12" Width="500" />
-						<ext:NumberField runat="server"
-							ID="uxEditEmployeeTravelTimeMinutes"
-							FieldLabel="Travel Time Minutes"
-							AllowBlank="true"
-							MinValue="0"
-							MaxValue="59" Width="500" />
-						<ext:NumberField runat="server"
-							ID="uxEditEmployeeShopTimeAMHours"
-							FieldLabel="Shop Time AM Hours"
-							Hidden="true"
-							MinValue="0"
-							MaxValue="12" Width="500" />
-						<ext:NumberField runat="server"
-							ID="uxEditEmployeeShopTimeAMMinutes"
-							FieldLabel="Shop Time AM Minutes"
-							Hidden="true"
-							MinValue="0"
-							MaxValue="59" Width="500" />
-						<ext:NumberField runat="server"
-							ID="uxEditEmployeeShopTimePMHours"
-							FieldLabel="Shop Time PM Hours"
-							Hidden="true"
-							MinValue="0"
-							MaxValue="12" Width="500" />
-						<ext:NumberField runat="server"
-							ID="uxEditEmployeeShopTimePMMinutes"
-							FieldLabel="Shop Time PM Minutes"
-							Hidden="true"
-							MinValue="0"
-							MaxValue="59" Width="500" />
-						<ext:Checkbox runat="server"
-							ID="uxEditEmployeePerDiem"
-							FieldLabel="Per Diem"
-							AllowBlank="true" Width="500" />
-						<ext:TextField runat="server"
-							ID="uxEditEmployeeLicense"
-							FieldLabel="License"
-							AllowBlank="true" Width="500" />
-						<ext:TextArea runat="server"
-							FieldLabel="Comments"
-							ID="uxEditEmployeeComments"
-							AllowBlank="true" Width="500" />
-						<ext:DropDownField runat="server" Editable="false"
-							ID="uxEditEmployeeRole"
-							FieldLabel="Role"
-							Mode="ValueText"
-							AllowBlank="true"
-							Hidden="true" Width="500">
-							<Component>
-								<ext:GridPanel runat="server"
-									ID="uxEditEmployeeRoleGrid"
-									Layout="HBoxLayout">
-									<Store>
-										<ext:Store runat="server"
-											ID="uxEditEmployeeRoleStore"
-											OnReadData="deReadRoleData"
-											AutoDataBind="true">
-											<Model>
-												<ext:Model ID="Model6" runat="server">
-													<Fields>
-														<ext:ModelField Name="MEANING" Type="String" />
-														<ext:ModelField Name="COUNTY" Type="String" />
-														<ext:ModelField Name="STATE" Type="String" />
-													</Fields>
-												</ext:Model>
-											</Model>
-											<Parameters>
-												<ext:StoreParameter Name="Form" Value="Edit" />
-											</Parameters>
-											<Proxy>
-												<ext:PageProxy />
-											</Proxy>
-										</ext:Store>
-									</Store>
-									<ColumnModel>
-										<Columns>
-											<ext:Column ID="Column16" runat="server" Text="Role Name" DataIndex="MEANING" />
-											<ext:Column ID="Column17" runat="server" Text="County" DataIndex="COUNTY" />
-											<ext:Column ID="Column18" runat="server" Text="State" DataIndex="STATE" />
-										</Columns>
-									</ColumnModel>
-									<SelectionModel>
-										<ext:RowSelectionModel Mode="Single" />
-									</SelectionModel>
+						<ext:Parameter Name="Flex" Value="1" Mode="Raw" />
+						<ext:Parameter Name="HideLabel" Value="true" Mode="Raw" />
+					</Defaults>
+				</ext:FieldContainer>
+				<ext:FieldContainer ID="FieldContainer4" runat="server"
+					FieldLabel="Time Out"
+					MsgTarget="Side" Width="500" >
+					<Defaults>
+						<ext:Parameter Name="Flex" Value="1" Mode="Raw" />
+						<ext:Parameter Name="HideLabel" Value="true" Mode="Raw" />
+					</Defaults>
+					<Items>
+						<ext:DateField runat="server"
+							ID="uxEditEmployeeTimeOutDate"
+								IsRemoteValidation="true"
+							EnableKeyEvents="true"
+							AllowBlank="false">
+							<RemoteValidation OnValidation="ValidateDateTime">
+								<ExtraParams>
+									<ext:Parameter Name="Type" Value="Edit" />
+								</ExtraParams>
+							</RemoteValidation>
+						</ext:DateField>
+						<ext:TimeField runat="server"
+							ID="uxEditEmployeeTimeOutTime"
+							Increment="30" 
+							IsRemoteValidation="true"
+							EnableKeyEvents="true"
+							AllowBlank="false">
+							<RemoteValidation OnValidation="ValidateDateTime">
+								<ExtraParams>
+									<ext:Parameter Name="Type" Value="Edit" />
+								</ExtraParams>
+							</RemoteValidation>
+						</ext:TimeField>
+					</Items>
+				</ext:FieldContainer>
+				<ext:NumberField runat="server"
+					ID="uxEditEmployeeDriveTimeHours"
+					FieldLabel="Drive Time Hours"
+					AllowBlank="false"
+					ConstrainEmptyValue="true"
+					Text="0"
+					MinValue="0"
+					MaxValue="12" Width="500" Hidden="true" />
+				<ext:NumberField runat="server"
+					ID="uxEditEmployeeDriveTimeMinutes"
+					FieldLabel="Drive Time Minutes"
+					AllowBlank="false"
+					ConstrainEmptyValue="true"
+					Text="0"
+					MinValue="0"
+					MaxValue="59" Width="500" Hidden="true" />
+				<ext:NumberField runat="server"
+					ID="uxEditEmployeeTravelTimeHours"
+					FieldLabel="Travel Time Hours"
+					AllowBlank="false"
+					ConstrainEmptyValue="true"
+					Text="0"
+					MinValue="0"
+					MaxValue="12" Width="500" />
+				<ext:NumberField runat="server"
+					ID="uxEditEmployeeTravelTimeMinutes"
+					FieldLabel="Travel Time Minutes"
+					AllowBlank="false"
+					ConstrainEmptyValue="true"
+					Text="0"
+					MinValue="0"
+					MaxValue="59" Width="500" />
+				<ext:NumberField runat="server"
+					ID="uxEditEmployeeShopTimeAMHours"
+					FieldLabel="Shop Time AM Hours"
+					Hidden="true"
+					AllowBlank="false"
+					ConstrainEmptyValue="true"
+					Text="0"
+					MinValue="0"
+					MaxValue="12" Width="500" />
+				<ext:NumberField runat="server"
+					ID="uxEditEmployeeShopTimeAMMinutes"
+					FieldLabel="Shop Time AM Minutes"
+					Hidden="true"
+					AllowBlank="false"
+					ConstrainEmptyValue="true"
+					Text="0"
+					MinValue="0"
+					MaxValue="59" Width="500" />
+				<ext:NumberField runat="server"
+					ID="uxEditEmployeeShopTimePMHours"
+					FieldLabel="Shop Time PM Hours"
+					Hidden="true"
+					AllowBlank="false"
+					ConstrainEmptyValue="true"
+					Text="0"
+					MinValue="0"
+					MaxValue="12" Width="500" />                            
+				<ext:NumberField runat="server"
+					ID="uxEditEmployeeShopTimePMMinutes"
+					FieldLabel="Shop Time PM Minutes"
+					Hidden="true"
+					AllowBlank="false"
+					ConstrainEmptyValue="true"
+					Text="0"
+					MinValue="0"
+					MaxValue="59" Width="500" />                   
+				<ext:Checkbox runat="server"
+					ID="uxEditEmployeePerDiem"
+					FieldLabel="Per Diem"
+					AllowBlank="true" Width="500" />
+				<ext:TextField runat="server"
+					ID="uxEditEmployeeLicense"
+					FieldLabel="License"
+					AllowBlank="true" Width="500" />
+				<ext:TextArea runat="server"
+					FieldLabel="Comments"
+					ID="uxEditEmployeeComments"
+					AllowBlank="true" Width="500" />
+				<ext:DropDownField runat="server" Editable="false"
+					ID="uxEditEmployeeRole"
+					FieldLabel="Role"
+					Mode="ValueText"
+					AllowBlank="true"
+					Hidden="true" Width="500">
+					<Component>
+						<ext:GridPanel runat="server"
+							ID="uxEditEmployeeRoleGrid"
+							Layout="HBoxLayout">
+							<Store>
+								<ext:Store runat="server"
+									ID="uxEditEmployeeRoleStore"
+									OnReadData="deReadRoleData"
+									AutoDataBind="true">
+									<Model>
+										<ext:Model ID="Model6" runat="server">
+											<Fields>
+												<ext:ModelField Name="MEANING" Type="String" />
+												<ext:ModelField Name="COUNTY" Type="String" />
+												<ext:ModelField Name="STATE" Type="String" />
+											</Fields>
+										</ext:Model>
+									</Model>
+									<Parameters>
+										<ext:StoreParameter Name="Form" Value="Edit" />
+									</Parameters>
+									<Proxy>
+										<ext:PageProxy />
+									</Proxy>
+								</ext:Store>
+							</Store>
+							<ColumnModel>
+								<Columns>
+									<ext:Column ID="Column16" runat="server" Text="Role Name" DataIndex="MEANING" />
+									<ext:Column ID="Column17" runat="server" Text="County" DataIndex="COUNTY" />
+									<ext:Column ID="Column18" runat="server" Text="State" DataIndex="STATE" />
+								</Columns>
+							</ColumnModel>
+							<SelectionModel>
+								<ext:RowSelectionModel Mode="Single" />
+							</SelectionModel>
 									<DirectEvents>
 										<SelectionChange OnEvent="deStoreRoleGridValue">
 											<ExtraParams>

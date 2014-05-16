@@ -42,8 +42,8 @@
 			<ColumnModel>
 				<Columns>
 					<ext:Column runat="server"
-						DataIndex="INVENTORY_ID"
-						Text="Inventory ID" />
+						DataIndex="SEGMENT1"
+						Text="Item ID" />
 					<ext:Column runat="server"
 						DataIndex="CHEMICAL_MIX_ID"
 						Text="Mix Id" Hidden="true" />
