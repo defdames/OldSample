@@ -328,6 +328,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.TextField uxAddInventoryEPA;
         
         /// <summary>
+        /// uxAddInventoryContractor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Checkbox uxAddInventoryContractor;
+        
+        /// <summary>
         /// uxAddInventorySubmit control.
         /// </summary>
         /// <remarks>
@@ -533,6 +542,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.TextField uxEditInventoryEPA;
+        
+        /// <summary>
+        /// uxEditInventoryContractor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Checkbox uxEditInventoryContractor;
         
         /// <summary>
         /// uxEditInventorySubmit control.
