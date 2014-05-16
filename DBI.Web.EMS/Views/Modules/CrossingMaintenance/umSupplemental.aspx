@@ -215,7 +215,8 @@
                                         </ext:Store>
                                     </Store>
                                 </ext:ComboBox>
-                                <ext:Checkbox ID="uxAddRecurringBox" runat="server" FieldLabel="Recurring" LabelAlign="Right" AllowBlank="false" />
+                                  <ext:Label ID="Label2" runat="server" Text="" Width="25" />
+                                <ext:Checkbox ID="uxAddRecurringBox" runat="server" BoxLabel="Recurring" BoxLabelAlign="After" AllowBlank="false" />
 
                             </Items>
                         </ext:FieldContainer>
