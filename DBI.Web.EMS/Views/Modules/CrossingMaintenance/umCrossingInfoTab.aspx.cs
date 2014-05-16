@@ -147,6 +147,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         protected void deGetRRType(object sender, DirectEventArgs e)
         {
+            CROSSING data = new CROSSING();
             using (Entities _context = new Entities())
             {
                 long RailroadId = long.Parse(Session["rrType"].ToString());
@@ -161,16 +162,23 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                 uxAddRailRoadCITextField.SetValue(RRdata.r.RAILROAD);
                 string rrType = RRdata.r.RAILROAD;
-               
-                List<ServiceUnitResponse> units = ServiceUnitData.ServiceUnitUnits(rrType).ToList();
-                uxAddServiceUnitCI.Clear();
-                uxAddSubDivCI.Clear();
-                uxAddServiceUnitStore.DataSource = units;
-                uxAddServiceUnitStore.DataBind();
-                uxEditServiceUnitCI.Clear();
-                uxEditSubDivCIBox.Clear();
-                uxEditServiceUnitStore.DataSource = units;
-                uxEditServiceUnitStore.DataBind();
+                if (e.ExtraParams["Type"] == "Add")
+                {
+                    List<ServiceUnitResponse> units = ServiceUnitData.ServiceUnitUnits(rrType).ToList();
+                    uxAddServiceUnitCI.Clear();
+                    uxAddSubDivCI.Clear();
+                    uxAddServiceUnitStore.DataSource = units;
+                    uxAddServiceUnitStore.DataBind();
+                }
+                else
+                {
+                    List<ServiceUnitResponse> units = ServiceUnitData.ServiceUnitUnits(rrType).ToList();
+                   
+                    //uxEditSubDivCIBox.Items.Clear();
+                    uxEditServiceUnitStore.DataSource = units;
+                    uxEditServiceUnitStore.DataBind();
+                   
+                }
                 
                 
             }
@@ -529,6 +537,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxEditRRCI.SetValue(data.r.RAILROAD);
                 uxEditServiceUnitCI.SetValueAndFireSelect(data.d.SERVICE_UNIT);
                 uxEditSubDivCIBox.SetValueAndFireSelect(data.d.SUB_DIVISION);
+               
 
                 if (data.d.SUB_CONTRACTED == "Y")
                 {
@@ -934,7 +943,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
         //}
         protected void deLoadSubDiv(object sender, DirectEventArgs e)
-       {
+       {    
+            
           
            if (e.ExtraParams["Type"] == "Add")
            {
@@ -946,8 +956,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
            else
            {
                  List<ServiceUnitResponse> divisions = ServiceUnitData.ServiceUnitDivisions(uxEditServiceUnitCI.SelectedItem.Value).ToList();
-               uxEditSubDivStore.DataSource = divisions;
-               uxEditSubDivStore.DataBind();
+                
+                 uxEditSubDivStore.DataSource = divisions;
+                 uxEditSubDivStore.DataBind();
            }
           
        }

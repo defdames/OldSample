@@ -95,7 +95,9 @@
                             <ext:Button ID="uxAddCrossingButton" runat="server" Text="Add New Crossing" Icon="ApplicationAdd">
                                  <DirectEvents>
                                     <Click OnEvent="deGetRRType">
-                                     
+                                       <ExtraParams>
+                                       <ext:Parameter Name="Type" Value="Add" />
+                                       </ExtraParams>
                                     </Click>
                                 </DirectEvents>
                                 <Listeners>
@@ -108,9 +110,12 @@
                                 </Listeners>
                                 <DirectEvents>
                                     <Click OnEvent="deGetRRType">
-                                     
+                                     <ExtraParams>
+                                       <ext:Parameter Name="Type" Value="Edit" />
+                                       </ExtraParams>
                                     </Click>
                                 </DirectEvents>
+                                
                                 <DirectEvents>
                                     <Click OnEvent="deEditCrossingForm">
                                         <ExtraParams>
@@ -698,9 +703,11 @@
                                                         </ExtraParams>
                                                     </Select>
                                                 </DirectEvents>
+                                              
                                                 <Listeners>
                                                     <Select Handler="#{uxEditSubDivStore}.load()" />
                                                 </Listeners>
+                                             
                                             </ext:ComboBox>
                                             <ext:TextField ID="uxEditStreetCI" runat="server" FieldLabel="Street" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="7" AllowBlank="false" />
 
