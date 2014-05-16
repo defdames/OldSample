@@ -89,8 +89,6 @@
 		</ext:Store>
 		<ext:Panel runat="server">
 			<Items>
-
-
 				<ext:FormPanel runat="server"
 					ID="uxAddInventoryForm"
 					Layout="FormLayout"
@@ -306,6 +304,7 @@
 							ID="uxAddInventoryEPA"
 							FieldLabel="EPA Number"
 							AllowBlank="false" Width="500" />
+						<ext:Checkbox runat="server" FieldLabel="Contracter Supplied" ID="uxAddInventoryContractor" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
@@ -490,6 +489,7 @@
 							ID="uxEditInventoryEPA"
 							FieldLabel="EPA Number"
 							AllowBlank="false" Width="500" />
+						<ext:Checkbox runat="server" FieldLabel="Contracter Supplied" ID="uxEditInventoryContractor" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
