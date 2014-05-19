@@ -20,7 +20,12 @@ namespace DBI.Web.EMS.Views.Modules.Security.Options
 
         protected void deReadProfileOptions(object sender, StoreReadDataEventArgs e)
         {
-            uxProfileOptionStore.DataSource = SYS_PROFILE_OPTIONS.systemProfileOptions();
+            var data = SYS_PROFILE_OPTIONS.systemProfileOptions();
+
+            int count;
+            uxProfileOptionStore.DataSource = GenericData.EnumerableFilterHeader<SYS_PROFILE_OPTIONS>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+            e.Total = count;
+
         }
 
         protected void deShowAddEditWindow(object sender, DirectEventArgs e)
@@ -65,9 +70,20 @@ namespace DBI.Web.EMS.Views.Modules.Security.Options
 
             win.Render(this.Form);
             win.Show();
-
-
         }
+
+        protected void deDeleteProfileOption(object sender, DirectEventArgs e)
+        {
+            RowSelectionModel _model = uxProfileOptionSelectionModel;
+            long _recordID = long.Parse(_model.SelectedRecordID);
+            SYS_PROFILE_OPTIONS.deleteProfileOptionByRecordID(_recordID);
+
+            uxProfileOptionStore.RemoveAll();
+            uxProfileOptionStore.ClearFilter();
+            uxProfileOptionStore.Reload();
+        }
+
+
 
     }
 }

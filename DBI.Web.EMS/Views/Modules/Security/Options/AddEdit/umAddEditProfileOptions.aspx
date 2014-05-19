@@ -49,14 +49,6 @@
                                 </Click>
                             </DirectEvents>
                         </ext:Button>
-                        <ext:Button runat="server" ID="uxDeleteProfileOption" Text="Delete" Icon="ApplicationDelete" Disabled="true" FormBind="false">
-                            <DirectEvents>
-                                <Click OnEvent="deDeleteProfileOption" Success="parent.Ext.getCmp('uxAddEditProfileOptionWindow').close();">
-                                    <Confirmation ConfirmRequest="true" Message="Are you sure you want to delete this profile option?"></Confirmation>
-                                    <EventMask ShowMask="true"></EventMask>
-                                </Click>
-                            </DirectEvents>
-                        </ext:Button>
                         <ext:Button ID="uxCloseButton" runat="server" Text="Close Form">
                             <Listeners>
                                 <Click Handler="parent.Ext.getCmp('uxAddEditProfileOptionWindow').close();"></Click>

@@ -11,7 +11,7 @@
     <ext:ResourceManager ID="ResourceManager1" runat="server" />   
     <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
         <Items>
-            <ext:GridPanel ID="uxProfileOptionGridPanel" runat="server" Flex="1" SimpleSelect="true" Title="Profile Options" Margins="5" Region="Center">
+            <ext:GridPanel ID="uxProfileOptionGridPanel" runat="server" Flex="1" Title="Profile Options" Margins="5" Region="Center" SelectionMemory="false">
                 <TopBar>
                     <ext:Toolbar runat="server">
                         <Items>
@@ -20,15 +20,23 @@
                                         <Click OnEvent="deShowAddEditWindow"></Click>
                                    </DirectEvents>
                             </ext:Button>
-                            <ext:Button ID="uxEditButton" runat="server" Text="Edit" Icon="ApplicationEdit" Disabled="true"></ext:Button>
-                            <ext:Button ID="uxDeleteButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true"></ext:Button>
+                            <ext:Button ID="uxEditButton" runat="server" Text="Edit" Icon="ApplicationEdit" Disabled="true">
+                                 <DirectEvents>
+                                        <Click OnEvent="deShowAddEditWindow">
+                                        </Click>
+                                    </DirectEvents>
+                            </ext:Button>
+                            <ext:Button ID="uxDeleteButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
+                                 <DirectEvents>
+                                        <Click OnEvent="deDeleteProfileOption"><Confirmation Message="Are you sure you want to delete the following profile option(s)?" Title="Delete profile option(s)" ConfirmRequest="true"></Confirmation></Click>
+                                    </DirectEvents>
+                            </ext:Button>
                         </Items>
                     </ext:Toolbar>
                 </TopBar>
                 <Store>
                     <ext:Store runat="server"
-                        ID="uxProfileOptionStore"
-                        AutoDataBind="true" RemoteSort="true" PageSize="25" OnReadData="deReadProfileOptions" AutoLoad="true">
+                        ID="uxProfileOptionStore" RemoteSort="true" PageSize="25" OnReadData="deReadProfileOptions" AutoLoad="true">
                         <Model>
                             <ext:Model ID="uxProfileOptionModel" runat="server" IDProperty="PROFILE_OPTION_ID">
                                 <Fields>
@@ -40,12 +48,13 @@
                         <Proxy>
                             <ext:PageProxy />
                         </Proxy>
+                            <Listeners><Load Handler="#{uxDeleteButton}.disable();#{uxEditButton}.disable();"></Load></Listeners>
                     </ext:Store>
                 </Store>
                 <ColumnModel>
                     <Columns>
-                        <ext:Column ID="uxColumn2" runat="server" DataIndex="PROFILE_KEY" Text="Key" Flex="1" />
-                        <ext:Column ID="uxColumn1" runat="server" DataIndex="DESCRIPTION" Text="Description" Flex="1" />
+                        <ext:Column ID="uxColumn2" runat="server" DataIndex="PROFILE_KEY" Text="Name" Flex="1" />
+                        <ext:Column ID="uxColumn1" runat="server" DataIndex="DESCRIPTION" Text="Description" Flex="3" />
                     </Columns>
                 </ColumnModel>
                 <Plugins>
@@ -59,10 +68,10 @@
                     </ext:GridView>
                 </View>
                  <SelectionModel>
-                        <ext:RowSelectionModel ID="uxProfileOptionSelectionModel" runat="server" Mode="Simple">
+                        <ext:RowSelectionModel ID="uxProfileOptionSelectionModel" runat="server" Mode="Single" AllowDeselect="true">
                             <Listeners>
                                 <Select Handler="if(#{uxProfileOptionSelectionModel}.getCount() > 0){#{uxEditButton}.enable(); #{uxDeleteButton}.enable();}else {#{uxEditButton}.disable(); #{uxDeleteButton}.disable();}"></Select>
-                                <Deselect Handler="if(#{uxProfileOptionSelectionModel}.getCount() > 0){#{uxEditButton}.enable(); #{uxDeleteButton}.enable();}"></Deselect>
+                                <Deselect Handler="if(#{uxProfileOptionSelectionModel}.getCount() > 0){#{uxEditButton}.enable(); #{uxDeleteButton}.enable();}else {#{uxEditButton}.disable(); #{uxDeleteButton}.disable();}"></Deselect>
                             </Listeners>
                         </ext:RowSelectionModel>
                     </SelectionModel>

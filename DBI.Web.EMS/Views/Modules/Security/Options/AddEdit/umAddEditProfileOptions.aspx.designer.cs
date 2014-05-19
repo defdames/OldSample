@@ -94,15 +94,6 @@ namespace DBI.Web.EMS.Views.Modules.Security.Options.AddEdit {
         protected global::Ext.Net.Button uxAddProfileOptionButton;
         
         /// <summary>
-        /// uxDeleteProfileOption control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxDeleteProfileOption;
-        
-        /// <summary>
         /// uxCloseButton control.
         /// </summary>
         /// <remarks>
