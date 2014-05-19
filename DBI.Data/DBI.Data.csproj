@@ -374,6 +374,9 @@
     <Compile Include="SYS_PROFILE_OPTIONS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="SYS_SECURITY_AUDIT.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="SYS_USERS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>

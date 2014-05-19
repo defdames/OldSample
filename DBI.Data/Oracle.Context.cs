@@ -109,5 +109,6 @@ namespace DBI.Data
         public DbSet<SYS_MODULE_PROFILE_OPTIONS> SYS_MODULE_PROFILE_OPTIONS { get; set; }
         public DbSet<SYS_PROFILE_OPTIONS> SYS_PROFILE_OPTIONS { get; set; }
         public DbSet<SYS_USER_PROFILE_OPTIONS> SYS_USER_PROFILE_OPTIONS { get; set; }
+        public DbSet<SYS_SECURITY_AUDIT> SYS_SECURITY_AUDIT { get; set; }
     }
 }

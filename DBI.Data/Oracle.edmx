@@ -96,6 +96,7 @@
           <EntitySet Name="SYS_MODULES" EntityType="OracleModel.Store.SYS_MODULES" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_PERMISSIONS" EntityType="OracleModel.Store.SYS_PERMISSIONS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_PROFILE_OPTIONS" EntityType="OracleModel.Store.SYS_PROFILE_OPTIONS" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="SYS_SECURITY_AUDIT" EntityType="OracleModel.Store.SYS_SECURITY_AUDIT" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USER_ACTIVITY" EntityType="OracleModel.Store.SYS_USER_ACTIVITY" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USER_ORGS" EntityType="OracleModel.Store.SYS_USER_ORGS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_USER_PERMS" EntityType="OracleModel.Store.SYS_USER_PERMS" store:Type="Tables" Schema="XXEMS" />
@@ -1747,6 +1748,17 @@
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="SYS_SECURITY_AUDIT">
+          <Key>
+            <PropertyRef Name="SEC_AUDIT_ID" />
+          </Key>
+          <Property Name="SEC_AUDIT_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="MODULE" Type="varchar2" Nullable="false" MaxLength="100" />
+          <Property Name="RECORD_NUMBER" Type="number" Nullable="false" />
+          <Property Name="COMMENTS" Type="clob" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_DATE" Type="date" />
         </EntityType>
         <EntityType Name="SYS_USER_ACTIVITY">
           <Key>
@@ -3799,6 +3811,7 @@
             <End Role="SYS_PROFILE_OPTIONS" EntitySet="SYS_PROFILE_OPTIONS" />
             <End Role="SYS_USER_PROFILE_OPTIONS" EntitySet="SYS_USER_PROFILE_OPTIONS" />
           </AssociationSet>
+          <EntitySet Name="SYS_SECURITY_AUDIT" EntityType="OracleModel.SYS_SECURITY_AUDIT" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -6704,6 +6717,17 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="SYS_SECURITY_AUDIT">
+          <Key>
+            <PropertyRef Name="SEC_AUDIT_ID" />
+          </Key>
+          <Property Type="Decimal" Name="SEC_AUDIT_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="MODULE" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="RECORD_NUMBER" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="COMMENTS" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFIED_DATE" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8887,6 +8911,18 @@
                 <ScalarProperty Name="PROFILE_OPTION_ID" ColumnName="PROFILE_OPTION_ID" />
                 <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
                 <ScalarProperty Name="USER_PROFILE_OPTION_ID" ColumnName="USER_PROFILE_OPTION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_SECURITY_AUDIT">
+            <EntityTypeMapping TypeName="OracleModel.SYS_SECURITY_AUDIT">
+              <MappingFragment StoreEntitySet="SYS_SECURITY_AUDIT">
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
+                <ScalarProperty Name="RECORD_NUMBER" ColumnName="RECORD_NUMBER" />
+                <ScalarProperty Name="MODULE" ColumnName="MODULE" />
+                <ScalarProperty Name="SEC_AUDIT_ID" ColumnName="SEC_AUDIT_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

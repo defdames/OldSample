@@ -133,6 +133,7 @@
         <AssociationConnector Association="OracleModel.FK_MODULE_PROFILE_ID" />
         <AssociationConnector Association="OracleModel.FK_PROFILE_MODULE_ID" />
         <AssociationConnector Association="OracleModel.FK_PROFILE_OPTION_ID" />
+        <EntityTypeShape EntityType="OracleModel.SYS_SECURITY_AUDIT" Width="1.5" PointX="3.375" PointY="34.125" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
