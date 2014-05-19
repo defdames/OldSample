@@ -91,14 +91,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
                 var data = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                             join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
-                            join pr in _context.PROJECTS_V on d.SUPPORT_PROJ_ID equals pr.PROJECT_ID into first
-                            from f in first.DefaultIfEmpty()
                             join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.EQUIPMENT_ID equals eq.EQUIPMENT_ID into equ
                             from equip in equ.DefaultIfEmpty()
                             join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
                             from projects in proj.DefaultIfEmpty()
                             where d.HEADER_ID == HeaderId
-                            select new EmployeeDetails{PERSON_ID = e.PERSON_ID, EMPLOYEE_ID = d.EMPLOYEE_ID,EMPLOYEE_NAME = e.EMPLOYEE_NAME, FOREMAN_LICENSE = d.FOREMAN_LICENSE, SUPPORT_PROJECT = f.NAME,  NAME = projects.NAME,TIME_IN =  (DateTime)d.TIME_IN, TIME_OUT =  (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), SHOPTIME_AM = (d.SHOPTIME_AM == null ? 0 : d.SHOPTIME_AM), SHOPTIME_PM = (d.SHOPTIME_PM == null ? 0 : d.SHOPTIME_PM), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS }).ToList();
+                            select new EmployeeDetails{PERSON_ID = e.PERSON_ID, EMPLOYEE_ID = d.EMPLOYEE_ID,EMPLOYEE_NAME = e.EMPLOYEE_NAME, FOREMAN_LICENSE = d.FOREMAN_LICENSE, NAME = projects.NAME,TIME_IN =  (DateTime)d.TIME_IN, TIME_OUT =  (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), SHOPTIME_AM = (d.SHOPTIME_AM == null ? 0 : d.SHOPTIME_AM), SHOPTIME_PM = (d.SHOPTIME_PM == null ? 0 : d.SHOPTIME_PM), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS }).ToList();
 
                 foreach (var item in data)
                 {
@@ -121,12 +119,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     {
                         WarningList.AddRange(Overlaps);
                     }
-
-                    List<WarningData> SupportProjects = ValidationChecks.employeesWithUnassignedShopTime(item.HEADER_ID);
-                    if (SupportProjects.Count > 0)
-                    {
-                        WarningList.AddRange(SupportProjects);
-                    }
+                    
                     WarningData EmployeeBusinessUnitFailures = ValidationChecks.EmployeeBusinessUnitCheck(item.EMPLOYEE_ID);
                     if (EmployeeBusinessUnitFailures != null)
                     {

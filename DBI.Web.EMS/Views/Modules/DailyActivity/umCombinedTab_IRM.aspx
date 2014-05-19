@@ -103,7 +103,6 @@
 										<ext:ModelField Name="DRIVE_TIME_FORMATTED" />
 										<ext:ModelField Name="SHOPTIME_AM_FORMATTED" />
 										<ext:ModelField Name="SHOPTIME_PM_FORMATTED" />
-										<ext:ModelField Name="SUPPORT_PROJECT" />
 										<ext:ModelField Name="PER_DIEM" />
 										<ext:ModelField Name="FOREMAN_LICENSE" />
 										<ext:ModelField Name="COMMENTS" />
@@ -123,7 +122,6 @@
 							<ext:Column ID="Column12" runat="server" DataIndex="DRIVE_TIME_FORMATTED" Text="Drive Time" />
 							<ext:Column runat="server" DataIndex="SHOPTIME_AM_FORMATTED" Text="Shoptime AM" />
 							<ext:Column runat="server" DataIndex="SHOPTIME_PM_FORMATTED" Text="Shoptime PM" />
-							<ext:Column runat="server" DataIndex="SUPPORT_PROJECT" Text="Support Project" />
 							<ext:Column ID="Column13" runat="server" DataIndex="PER_DIEM" Text="Per Diem" />
 							<ext:Column runat="server" DataIndex="LUNCH_LENGTH" Text="Lunch Length" />
 							<ext:Column runat="server" DataIndex="FOREMAN_LICENSE" Text="License" Flex="5" />
