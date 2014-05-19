@@ -342,17 +342,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
 						uxDeactivate.Value = "Deactivate";
 
-						if (!validateComponentSecurity("SYS.DailyActivity.Post") && !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted"))
-						{
-							uxChemicalTab.Disabled = true;
-							uxEmployeeTab.Disabled = true;
-							uxEquipmentTab.Disabled = true;
-							uxInventoryTab.Disabled = true;
-							uxHeaderTab.Disabled = true;
-							uxWeatherTab.Disabled = true;
-							uxProductionTab.Disabled = true;
-							uxFooterTab.Disabled = true;
-						}
+						uxChemicalTab.Disabled = true;
+						uxEmployeeTab.Disabled = true;
+						uxEquipmentTab.Disabled = true;
+						uxInventoryTab.Disabled = true;
+						uxHeaderTab.Disabled = true;
+						uxWeatherTab.Disabled = true;
+						uxProductionTab.Disabled = true;
+						uxFooterTab.Disabled = true;
 
 						break;
 					case "POSTED":
