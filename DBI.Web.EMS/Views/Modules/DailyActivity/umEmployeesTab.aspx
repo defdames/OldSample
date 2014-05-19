@@ -45,8 +45,9 @@
 								<ext:ModelField Name="SHOPTIME_AM_FORMATTED" Type="String" />
 								<ext:ModelField Name="SHOPTIME_PM_FORMATTED" Type="String" />
 								<ext:ModelField Name="SUPPORT_PROJECT" />
-								<ext:ModelField Name="PER_DIEM" Type="String" />
-								<ext:ModelField Name="COMMENTS" Type="String" />
+								<ext:ModelField Name="PER_DIEM" Type="String"  />
+								<ext:ModelField Name="FOREMAN_LICENSE" />
+								<ext:ModelField Name="COMMENTS" Type="String"  />
 								<ext:ModelField Name="ROLE_TYPE" Type="String" />
 								<ext:ModelField Name="LUNCH_LENGTH" />
 							</Fields>
@@ -103,10 +104,15 @@
 						DataIndex="PER_DIEM"
 						Flex="1" />
 					<ext:Column runat="server"
+						Text="License"
+						DataIndex="FOREMAN_LICENSE"
+						Flex="1" />
+					<ext:Column runat="server"
 						Text="Comments"
 						DataIndex="COMMENTS"
 						Flex="1" />
 					<ext:Column runat="server"
+						ID="uxRoleTypeColumn"
 						Text="Role Type"
 						DataIndex="ROLE_TYPE"
 						Flex="1" />

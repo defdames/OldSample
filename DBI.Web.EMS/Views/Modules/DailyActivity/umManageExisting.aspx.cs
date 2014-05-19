@@ -635,17 +635,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 			}
 		}
 
-        protected List<EquipmentDetails> GetEquipment(long HeaderId)
-        {
-            using (Entities _context = new Entities())
-            {
-                var data = (from e in _context.DAILY_ACTIVITY_EQUIPMENT
-                            join p in _context.CLASS_CODES_V on e.PROJECT_ID equals p.PROJECT_ID
-                            where e.HEADER_ID == HeaderId
-                            select new EquipmentDetails { CLASS_CODE = p.CLASS_CODE, ORGANIZATION_NAME = p.ORGANIZATION_NAME, ODOMETER_START = e.ODOMETER_START, ODOMETER_END = e.ODOMETER_END, PROJECT_ID = e.PROJECT_ID, EQUIPMENT_ID = e.EQUIPMENT_ID, NAME = p.NAME, HEADER_ID = e.HEADER_ID }).ToList();
-                return data;
-            }
-        }
+		protected List<EquipmentDetails> GetEquipment(long HeaderId)
+		{
+			using (Entities _context = new Entities())
+			{
+				var data = (from e in _context.DAILY_ACTIVITY_EQUIPMENT
+							join p in _context.CLASS_CODES_V on e.PROJECT_ID equals p.PROJECT_ID
+							where e.HEADER_ID == HeaderId
+							select new EquipmentDetails { CLASS_CODE = p.CLASS_CODE, ORGANIZATION_NAME = p.ORGANIZATION_NAME, ODOMETER_START = e.ODOMETER_START, ODOMETER_END = e.ODOMETER_END, PROJECT_ID = e.PROJECT_ID, EQUIPMENT_ID = e.EQUIPMENT_ID, NAME = p.NAME, HEADER_ID = e.HEADER_ID }).ToList();
+				return data;
+			}
+		}
 		/// <summary>
 		/// Get Production information
 		/// </summary>
@@ -1143,73 +1143,63 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
 				}
 
-                try
-                {
-                    //Get Equipment Data
-                    var EquipmentData = GetEquipment(HeaderId);
-                    PdfPTable EquipmentTable = new PdfPTable(6);
+				try
+				{
+					//Get Equipment Data
+					var EquipmentData = GetEquipment(HeaderId);
+					PdfPTable EquipmentTable = new PdfPTable(5);
 
-                    Cells = new PdfPCell[]{
-                        new PdfPCell(new Phrase("Project ID", HeaderFont)),
-                        new PdfPCell(new Phrase("Name", HeaderFont)),
-                        new PdfPCell(new Phrase("Class Code", HeaderFont)),
-                        new PdfPCell(new Phrase("Organization Name", HeaderFont)),
-                        new PdfPCell(new Phrase("Odometer Start", HeaderFont)),
-                        new PdfPCell(new Phrase("Odometer End", HeaderFont))
-                    };
+					Cells = new PdfPCell[]{
+						new PdfPCell(new Phrase("Equipment Name", HeaderFont)),
+						new PdfPCell(new Phrase("Class Code", HeaderFont)),
+						new PdfPCell(new Phrase("Organization Name", HeaderFont)),
+						new PdfPCell(new Phrase("Starting Units", HeaderFont)),
+						new PdfPCell(new Phrase("Ending Units", HeaderFont))
+					};
 
-                    Row = new PdfPRow(Cells);
-                    EquipmentTable.Rows.Add(Row);
+					Row = new PdfPRow(Cells);
+					EquipmentTable.Rows.Add(Row);
 
-                    foreach (EquipmentDetails Equipment in EquipmentData)
-                    {
-                        string OdometerStart;
-                        string OdometerEnd;
-                        string ProjectId;
-                        try
-                        {
-                            OdometerStart = Equipment.ODOMETER_START.ToString();
-                        }
-                        catch (Exception)
-                        {
-                            OdometerStart = string.Empty;
-                        }
-                        try
-                        {
-                            OdometerEnd = Equipment.ODOMETER_END.ToString();
-                        }
-                        catch (Exception)
-                        {
-                            OdometerEnd = string.Empty;
-                        }
-                        try
-                        {
-                            ProjectId = Equipment.PROJECT_ID.ToString();
-                        }
-                        catch (Exception)
-                        {
-                            ProjectId = string.Empty;
-                        }
+					foreach (EquipmentDetails Equipment in EquipmentData)
+					{
+						string OdometerStart;
+						string OdometerEnd;
+						string ProjectId;
+						try
+						{
+							OdometerStart = Equipment.ODOMETER_START.ToString();
+						}
+						catch (Exception)
+						{
+							OdometerStart = string.Empty;
+						}
+						try
+						{
+							OdometerEnd = Equipment.ODOMETER_END.ToString();
+						}
+						catch (Exception)
+						{
+							OdometerEnd = string.Empty;
+						}
 
-                        Cells = new PdfPCell[]{
-                            new PdfPCell(new Phrase(ProjectId, CellFont)),
-                            new PdfPCell(new Phrase(Equipment.NAME, CellFont)),
-                            new PdfPCell(new Phrase(Equipment.CLASS_CODE, CellFont)),
-                            new PdfPCell(new Phrase(Equipment.ORGANIZATION_NAME, CellFont)),
-                            new PdfPCell(new Phrase(OdometerStart, CellFont)),
-                            new PdfPCell(new Phrase(OdometerEnd, CellFont))
-                        };
+						Cells = new PdfPCell[]{
+							new PdfPCell(new Phrase(Equipment.NAME, CellFont)),
+							new PdfPCell(new Phrase(Equipment.CLASS_CODE, CellFont)),
+							new PdfPCell(new Phrase(Equipment.ORGANIZATION_NAME, CellFont)),
+							new PdfPCell(new Phrase(OdometerStart, CellFont)),
+							new PdfPCell(new Phrase(OdometerEnd, CellFont))
+						};
 
-                        Row = new PdfPRow(Cells);
-                        EquipmentTable.Rows.Add(Row);
-                    }
-                    ExportedPDF.Add(EquipmentTable);
-                    ExportedPDF.Add(NewLine);
-                }
-                catch (Exception)
-                {
+						Row = new PdfPRow(Cells);
+						EquipmentTable.Rows.Add(Row);
+					}
+					ExportedPDF.Add(EquipmentTable);
+					ExportedPDF.Add(NewLine);
+				}
+				catch (Exception)
+				{
 
-                }
+				}
 				try
 				{
 					//Get Production Data
@@ -1503,7 +1493,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 									   join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
 									   where d.HEADER_ID == HeaderId
 									   select e.EMPLOYEE_NAME).Single();
-
+									  
 					}
 
 					PdfPTable FooterTable = new PdfPTable(4);
@@ -1587,12 +1577,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 					Row = new PdfPRow(Cells);
 					FooterTable.Rows.Add(Row);
 
+					
+					ExportedPDF.Add(FooterTable);
+
+					PdfPTable SignatureTable = new PdfPTable(2);
 					iTextSharp.text.Image ForemanImage;
 					iTextSharp.text.Image ContractImage;
 					try
 					{
 						ForemanImage = iTextSharp.text.Image.GetInstance(FooterData.FOREMAN_SIGNATURE.ToArray());
-						ForemanImage.ScaleAbsolute(75f, 25f);
+						ForemanImage.ScaleAbsolute(250f, 82f);
 					}
 					catch (Exception)
 					{
@@ -1602,7 +1596,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 					try
 					{
 						ContractImage = iTextSharp.text.Image.GetInstance(FooterData.CONTRACT_REP.ToArray());
-						ContractImage.ScaleAbsolute(75f, 25f);
+						ContractImage.ScaleAbsolute(250f, 82f);
 					}
 					catch (Exception)
 					{
@@ -1611,24 +1605,34 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
 
 					Cells = new PdfPCell[]{
-					new PdfPCell(new Phrase("Foreman Signature", HeadFootTitleFont)),
+					//new PdfPCell(new Phrase("Foreman Signature", HeadFootTitleFont)),
 					new PdfPCell(ForemanImage),
-					new PdfPCell(new Phrase("Contract Representative", HeadFootTitleFont)),
-					new PdfPCell(ContractImage),
+					new PdfPCell(ContractImage)
+					
 				};
 					foreach (PdfPCell Cell in Cells)
 					{
 						Cell.Border = PdfPCell.NO_BORDER;
 					}
 					Row = new PdfPRow(Cells);
-					FooterTable.Rows.Add(Row);
+					SignatureTable.Rows.Add(Row);
+					//Cells = new PdfPCell[]{
+					//    new PdfPCell(new Phrase("Contract Representative", HeadFootTitleFont)),
+					//    new PdfPCell(ContractImage)
+					//};
+					//foreach (PdfPCell Cell in Cells)
+					//{
+					//    Cell.Border = PdfPCell.NO_BORDER;
+					//}
+					//Row = new PdfPRow(Cells);
+					//SignatureTable.Rows.Add(Row);
 					if (OrgId == 123)
 					{
 						iTextSharp.text.Image DotRepImage;
 						try
 						{
 							DotRepImage = iTextSharp.text.Image.GetInstance(FooterData.DOT_REP.ToArray());
-							DotRepImage.ScaleAbsolute(75f, 25f);
+							DotRepImage.ScaleAbsolute(300f, 100f);
 						}
 						catch (Exception)
 						{
@@ -1636,8 +1640,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						}
 
 						Cells = new PdfPCell[]{
-					new PdfPCell(new Phrase("DOT Representative", HeadFootTitleFont)),
-					new PdfPCell(DotRepImage),
+					
 					new PdfPCell(new Phrase("Name", HeadFootTitleFont)),
 					new PdfPCell(new Phrase(FooterData.DOT_REP_NAME, HeadFootCellFont))
 					};
@@ -1646,9 +1649,20 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 							Cell.Border = PdfPCell.NO_BORDER;
 						}
 						Row = new PdfPRow(Cells);
-						FooterTable.Rows.Add(Row);
+						Cells = new PdfPCell[]{
+							new PdfPCell(new Phrase("DOT Representative", HeadFootTitleFont)),
+							new PdfPCell(DotRepImage)
+						};
+						foreach (PdfPCell Cell in Cells)
+						{
+							Cell.Border = PdfPCell.NO_BORDER;
+						}
+						Row = new PdfPRow(Cells);
+						SignatureTable.Rows.Add(Row);
+						
 					}
-					ExportedPDF.Add(FooterTable);
+					ExportedPDF.Add(SignatureTable);
+
 				}
 				catch (Exception)
 				{
@@ -1660,6 +1674,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 				return PdfStream;
 			}
 		}
+				
 
 		/// <summary>
 		/// DirectMethod accessed from umSubmitActivity.aspx when signature is missing on SubmitActivity form
@@ -1810,16 +1825,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 		
 	}
 
-    public class EquipmentDetails
-    {
-        public string CLASS_CODE { get; set; }
-        public string ORGANIZATION_NAME { get; set; }
-        public long? ODOMETER_START { get; set; }
-        public long? ODOMETER_END { get; set; }
-        public long? PROJECT_ID { get; set; }
-        public long EQUIPMENT_ID { get; set; }
-        public string NAME { get; set; }
-        public long HEADER_ID { get; set; }
-    }
+	public class EquipmentDetails
+	{
+		public string SEGMENT1 { get; set; }
+		public string CLASS_CODE { get; set; }
+		public string ORGANIZATION_NAME { get; set; }
+		public long? ODOMETER_START { get; set; }
+		public long? ODOMETER_END { get; set; }
+		public long? PROJECT_ID { get; set; }
+		public long EQUIPMENT_ID { get; set; }
+		public string NAME { get; set; }
+		public long HEADER_ID { get; set; }
+	}
 
 }

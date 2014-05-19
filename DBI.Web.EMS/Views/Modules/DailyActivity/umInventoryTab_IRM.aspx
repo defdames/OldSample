@@ -30,6 +30,7 @@
 								<ext:ModelField Name="INV_NAME" Type="String" />
 								<ext:ModelField Name="UOM_CODE" Type="String" />
 								<ext:ModelField Name="UNIT_OF_MEASURE" Type="String" />
+								<ext:ModelField Name="SEGMENT1" />
 							</Fields>
 						</ext:Model>
 					</Model>
@@ -38,8 +39,8 @@
 			<ColumnModel>
 				<Columns>
 					<ext:Column ID="Column1" runat="server"
-						DataIndex="INVENTORY_ID"
-						Text="Inventory ID" />
+						DataIndex="SEGMENT1"
+						Text="Item ID" />
 					<ext:Column ID="Column13" runat="server"
 						DataIndex="INV_NAME"
 						Text="Inventory Name" />
@@ -60,7 +61,7 @@
 						Text="Item" />
 					<ext:Column ID="Column9" runat="server"
 						DataIndex="RATE"
-						Text="Rate" />
+						Text="Quantity" />
 					<ext:Column ID="Column2" runat="server"
 						DataIndex="UOM_CODE"
 						Text="Unit of Measure Code" Hidden="true" />
