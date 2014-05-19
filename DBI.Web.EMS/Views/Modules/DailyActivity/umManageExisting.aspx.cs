@@ -198,14 +198,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 							WarningType += "An employee is missing a lunch entry.<br />";
 						}
 					}
-					if (record.ORG_ID == 123)
-					{
-						if (ValidationChecks.employeeWithShopTimeCheck(record.HEADER_ID))
-						{
-							Warning = "Error";
-							WarningType += "An employee is missing shop time.";
-						}
-					}
 
 					WarningData PerDiems = ValidationChecks.checkPerDiem(record.HEADER_ID);
 					if (PerDiems != null)
@@ -1812,14 +1804,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 			uxPlaceholderWindow.Show();
 		}
 
-		[DirectMethod]
-		public void dmLoadSupportProjectWindow(string HeaderId, string EmployeeId)
-		{
-			uxPlaceholderWindow.ClearContent();
-			uxPlaceholderWindow.LoadContent(string.Format("umChooseSupportProject.aspx?HeaderId={0}&EmployeeId={1}", HeaderId, EmployeeId));
-			uxPlaceholderWindow.Show();
-		}
-		
 	}
 
 	public class EquipmentDetails
