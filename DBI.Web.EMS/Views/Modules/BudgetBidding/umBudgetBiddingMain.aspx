@@ -5,6 +5,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title></title>
+    <style type="text/css">
+        .budgetTitle .x-form-display-field {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -48,10 +53,6 @@
                         </ItemClick>
                     </DirectEvents>
                 </ext:TreePanel>
-
-
-                <%-------------------------------------------------- Top Spacer --------------------------------------------------%>
-                <ext:Panel ID="uxSpacerBar" runat="server" Region="North" Title="Budget" />
 
 
                 <%-------------------------------------------------- Toolbar --------------------------------------------------%>
@@ -122,61 +123,10 @@
 
                         <ext:Label ID="uxSpace2" runat="server" Width="10" />
 
-                        <ext:ComboBox ID="uxSummaryActions"
-                            runat="server"
-                            DisplayField="name"
-                            Width="150"
-                            EmptyText="-- Actions --"
-                            QueryMode="Local"
-                            TypeAhead="true">
-                            <Store>
-                                <ext:Store ID="uxSummaryActionsStore" runat="server" AutoDataBind="true">
-                                    <Model>
-                                        <ext:Model ID="Model3" runat="server">
-                                            <Fields>
-                                                <ext:ModelField Name="abbr" />
-                                                <ext:ModelField Name="name" />
-                                                <ext:ModelField Name="slogan" />
-                                            </Fields>
-                                        </ext:Model>
-                                    </Model>
-                                    <Reader>
-                                        <ext:ArrayReader />
-                                    </Reader>
-                                </ext:Store>
-                            </Store>
-                        </ext:ComboBox>
+                        <ext:DisplayField ID="uxYearVersionTitle" runat="server" Text=" " Cls="budgetTitle" />
 
                         <ext:ToolbarFill />
 
-                        <ext:ComboBox ID="uxSummaryReports"
-                            runat="server"
-                            DisplayField="name"
-                            Width="200"
-                            EmptyText="-- Reports/Export --"
-                            QueryMode="Local"
-                            TypeAhead="true">
-                            <Store>
-                                <ext:Store ID="uxSummaryReportsStore" runat="server" AutoDataBind="true">
-                                    <Model>
-                                        <ext:Model ID="Model4" runat="server">
-                                            <Fields>
-                                                <ext:ModelField Name="abbr" />
-                                                <ext:ModelField Name="name" />
-                                                <ext:ModelField Name="slogan" />
-                                            </Fields>
-                                        </ext:Model>
-                                    </Model>
-                                    <Reader>
-                                        <ext:ArrayReader />
-                                    </Reader>
-                                </ext:Store>
-                            </Store>
-                        </ext:ComboBox>
-
-                        <ext:Label ID="uxSpace3" runat="server" Width="5" />
-
-                        <ext:Button ID="uxUpdateAllActuals" runat="server" Text="Update All Actuals" Icon="BookEdit" />
                         <ext:Button ID="uxOrgSettings" runat="server" Text="Org Settings" Icon="Cog">
                             <DirectEvents>
                             </DirectEvents>

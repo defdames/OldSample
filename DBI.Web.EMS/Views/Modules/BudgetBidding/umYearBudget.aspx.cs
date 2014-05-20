@@ -113,33 +113,119 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             }
         }
 
-        public void GetFormData(object sender, DirectEventArgs e)
+        protected void deGetFormData(object sender, DirectEventArgs e)
         {
             uxProjectNum.SetValue("2001517");//e.ExtraParams["CrossingId"]);
         }
 
-        public void Test(object sender, DirectEventArgs e)
+        protected void Test(object sender, DirectEventArgs e)
         {
             long orgID = long.Parse(Request.QueryString["OrgID"]);
             long version = long.Parse(Request.QueryString["version"]);
             X.MessageBox.Alert("Title", orgID + " " + version + " " + e.ExtraParams["SheetName"]).Show();
         }
 
-        public void CheckFormat(object sender, DirectEventArgs e)
+        protected void deFormatNumber(object sender, DirectEventArgs e)
         {
-            decimal moneyvalue;
+            Ext.Net.TextField myTextField = sender as Ext.Net.TextField;
+            decimal amount;
+
             try
             {
-                moneyvalue = Convert.ToDecimal(TextField4.Text);
+                amount = Convert.ToDecimal(myTextField.Text);
             }
+
             catch
             {
-                moneyvalue = 0;
+                amount = 0;
             }
-                        
-            string converted = String.Format("{0:C}", moneyvalue);
-            TextField4.Text = converted;
+
+            string converted = String.Format("{0:N2}", amount);
+            myTextField.Text = converted;
         }
+
+        protected void deLiabilityCheck(object sender, DirectEventArgs e)
+        {
+            if (uxLiabilityCheckbox.Checked == true)
+            {
+                uxLiabilityAmount.Enable();
+            }
+
+            else
+            {
+                uxLiabilityAmount.Disable();
+                uxLiabilityAmount.Text = "0.00";
+            }
+        }
+
+        protected void deLoadActions(object sender, StoreReadDataEventArgs e)
+        {
+            List<ActionsStruct> list = new List<ActionsStruct> 
+                {
+                    new ActionsStruct(1, "Add a New Project"),
+                    new ActionsStruct(2, "Delete Selected Project")
+                };
+            uxActionsStore.DataSource = list;
+        }
+
+        class ActionsStruct  // DELETE WHEN GETTING DATA FROM CORRECT SOURCE
+        {
+            public long ACTION_ID { get; set; }
+            public string ACTION_NAME { get; set; }
+
+            public ActionsStruct(long id, string actName)
+            {
+                ACTION_ID = id;
+                ACTION_NAME = actName;
+            }
+        }
+
+        protected void deChooseAction(object sender, DirectEventArgs e)
+        {
+            string selectedAction = uxActions.Text;
+            uxActions.Text = null;
+
+            if (selectedAction == "Add a New Project")
+            {
+                uxGridRowModel.ClearSelection();
+                uxProjectDetail.Reset();
+                uxProjectDetail.Enable();              
+            }
+        }
+        
+        protected void deCancel(object sender, DirectEventArgs e)
+        {
+            uxProjectDetail.Reset();
+            uxProjectDetail.Disable();
+        }
+
+        protected void deSave(object sender, DirectEventArgs e)
+        {
+            long projectNum = 30000; //Convert.ToInt64(uxProjectNum.Text);
+
+            BUD_BID_PROJECTS data = new BUD_BID_PROJECTS()
+            {
+                PROJECT_ID = projectNum
+            };
+
+            GenericData.Insert<BUD_BID_PROJECTS>(data);
+
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Project Added Successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
+
+
+
+        }
+        
 
     }
 }

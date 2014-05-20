@@ -40,6 +40,96 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Viewport Viewport1;
         
         /// <summary>
+        /// uxMainToolbar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Toolbar uxMainToolbar;
+        
+        /// <summary>
+        /// uxActions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ComboBox uxActions;
+        
+        /// <summary>
+        /// uxActionsStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxActionsStore;
+        
+        /// <summary>
+        /// Model4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model Model4;
+        
+        /// <summary>
+        /// uxSpace1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Label uxSpace1;
+        
+        /// <summary>
+        /// uxSummaryReports control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ComboBox uxSummaryReports;
+        
+        /// <summary>
+        /// uxSummaryReportsStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxSummaryReportsStore;
+        
+        /// <summary>
+        /// Model5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model Model5;
+        
+        /// <summary>
+        /// uxSpace2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Label uxSpace2;
+        
+        /// <summary>
+        /// uxUpdateAllActuals control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxUpdateAllActuals;
+        
+        /// <summary>
         /// uxSummaryGrid control.
         /// </summary>
         /// <remarks>
@@ -49,13 +139,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.GridPanel uxSummaryGrid;
         
         /// <summary>
-        /// RowSelectionModel1 control.
+        /// uxGridRowModel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.RowSelectionModel RowSelectionModel1;
+        protected global::Ext.Net.RowSelectionModel uxGridRowModel;
         
         /// <summary>
         /// uxSummaryGridStore control.
@@ -481,13 +571,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label2;
         
         /// <summary>
-        /// ComboBox1 control.
+        /// uxCompareProject control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ComboBox ComboBox1;
+        protected global::Ext.Net.ComboBox uxCompareProject;
         
         /// <summary>
         /// Label6 control.
@@ -508,22 +598,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label4;
         
         /// <summary>
-        /// TextField33 control.
+        /// uxAcres control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField TextField33;
-        
-        /// <summary>
-        /// Label3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label Label3;
+        protected global::Ext.Net.TextField uxAcres;
         
         /// <summary>
         /// FieldContainer4 control.
@@ -544,13 +625,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label7;
         
         /// <summary>
-        /// TextField34 control.
+        /// uxProjectName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField TextField34;
+        protected global::Ext.Net.TextField uxProjectName;
         
         /// <summary>
         /// Label8 control.
@@ -571,13 +652,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label9;
         
         /// <summary>
-        /// TextField2 control.
+        /// uxCompareOP control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField TextField2;
+        protected global::Ext.Net.TextField uxCompareOP;
         
         /// <summary>
         /// Label10 control.
@@ -598,22 +679,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label11;
         
         /// <summary>
-        /// TextField1 control.
+        /// txtDays control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField TextField1;
-        
-        /// <summary>
-        /// Label12 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label Label12;
+        protected global::Ext.Net.TextField txtDays;
         
         /// <summary>
         /// FieldContainer5 control.
@@ -634,13 +706,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label13;
         
         /// <summary>
-        /// ComboBox3 control.
+        /// uxStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ComboBox ComboBox3;
+        protected global::Ext.Net.ComboBox uxStatus;
         
         /// <summary>
         /// Label14 control.
@@ -661,22 +733,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label15;
         
         /// <summary>
-        /// Label19 control.
+        /// uxCompareVar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Label Label19;
-        
-        /// <summary>
-        /// Label16 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label Label16;
+        protected global::Ext.Net.Label uxCompareVar;
         
         /// <summary>
         /// FieldContainer6 control.
@@ -697,13 +760,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label18;
         
         /// <summary>
-        /// TextArea1 control.
+        /// uxComments control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextArea TextArea1;
+        protected global::Ext.Net.TextArea uxComments;
         
         /// <summary>
         /// Label20 control.
@@ -724,6 +787,42 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.FieldContainer FieldContainer7;
         
         /// <summary>
+        /// FieldContainer10 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer FieldContainer10;
+        
+        /// <summary>
+        /// uxLiabilityCheckbox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Checkbox uxLiabilityCheckbox;
+        
+        /// <summary>
+        /// Label21 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Label Label21;
+        
+        /// <summary>
+        /// uxLiabilityAmount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxLiabilityAmount;
+        
+        /// <summary>
         /// FieldContainer8 control.
         /// </summary>
         /// <remarks>
@@ -742,13 +841,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label17;
         
         /// <summary>
-        /// TextField3 control.
+        /// uxAppType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField TextField3;
+        protected global::Ext.Net.TextField uxAppType;
         
         /// <summary>
         /// FieldContainer9 control.
@@ -769,31 +868,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label23;
         
         /// <summary>
-        /// TextField5 control.
+        /// uxChemMix control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField TextField5;
-        
-        /// <summary>
-        /// FieldContainer10 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer10;
-        
-        /// <summary>
-        /// Label33 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label Label33;
+        protected global::Ext.Net.TextField uxChemMix;
         
         /// <summary>
         /// FieldContainer11 control.
@@ -913,49 +994,49 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label34;
         
         /// <summary>
-        /// TextField4 control.
+        /// uxSGrossRec control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField TextField4;
+        protected global::Ext.Net.TextField uxSGrossRec;
         
         /// <summary>
-        /// TextField6 control.
+        /// uxSMatUsage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField TextField6;
+        protected global::Ext.Net.TextField uxSMatUsage;
         
         /// <summary>
-        /// TextField7 control.
+        /// uxSGrossRev control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField TextField7;
+        protected global::Ext.Net.TextField uxSGrossRev;
         
         /// <summary>
-        /// TextField8 control.
+        /// uxSDirects control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField TextField8;
+        protected global::Ext.Net.TextField uxSDirects;
         
         /// <summary>
-        /// TextField9 control.
+        /// uxSOP control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField TextField9;
+        protected global::Ext.Net.TextField uxSOP;
         
         /// <summary>
         /// Label35 control.
@@ -1003,13 +1084,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.FieldContainer FieldContainer14;
         
         /// <summary>
-        /// GridPanel1 control.
+        /// uxDetailSheets control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel GridPanel1;
+        protected global::Ext.Net.GridPanel uxDetailSheets;
         
         /// <summary>
         /// RowSelectionModel2 control.
@@ -1111,49 +1192,49 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label32;
         
         /// <summary>
-        /// TextField10 control.
+        /// uxEGrossRec control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField TextField10;
+        protected global::Ext.Net.TextField uxEGrossRec;
         
         /// <summary>
-        /// TextField11 control.
+        /// uxEMatUsage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField TextField11;
+        protected global::Ext.Net.TextField uxEMatUsage;
         
         /// <summary>
-        /// TextField12 control.
+        /// uxEGrossRev control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField TextField12;
+        protected global::Ext.Net.TextField uxEGrossRev;
         
         /// <summary>
-        /// TextField13 control.
+        /// uxEDirects control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField TextField13;
+        protected global::Ext.Net.TextField uxEDirects;
         
         /// <summary>
-        /// TextField14 control.
+        /// uxEOP control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField TextField14;
+        protected global::Ext.Net.TextField uxEOP;
         
         /// <summary>
         /// FieldContainer16 control.
@@ -1172,5 +1253,68 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Label Label37;
+        
+        /// <summary>
+        /// FieldContainer18 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer FieldContainer18;
+        
+        /// <summary>
+        /// Label12 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Label Label12;
+        
+        /// <summary>
+        /// FieldContainer17 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer FieldContainer17;
+        
+        /// <summary>
+        /// Label3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Label Label3;
+        
+        /// <summary>
+        /// uxSave control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxSave;
+        
+        /// <summary>
+        /// Label16 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Label Label16;
+        
+        /// <summary>
+        /// uxCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxCancel;
     }
 }

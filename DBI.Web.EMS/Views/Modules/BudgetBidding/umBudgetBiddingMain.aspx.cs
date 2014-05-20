@@ -8,8 +8,6 @@ using Ext.Net;
 using DBI.Data;
 using DBI.Data.Oracle.HR;
 
-using System.Security.Claims;
-
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 {
     public partial class umBudgetBiddingMain : System.Web.UI.Page
@@ -24,10 +22,10 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void deLoadFiscalYears(object sender, StoreReadDataEventArgs e)
         {
-            using (Entities _context = new Entities())
+            using (Entities context = new Entities())
             {
                 List<object> dataSource;
-                dataSource = (from d in _context.PA_PERIODS_ALL
+                dataSource = (from d in context.PA_PERIODS_ALL
                               select new { END_DATE = d.END_DATE.Year }).Distinct().OrderBy(d => d.END_DATE).ToList<object>();
                 int count;
                 uxFiscalYearStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataSource, out count);
@@ -54,8 +52,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         {
             public long VER_ID { get; set; }
             public string BUD_VERSION { get; set; }
-
-
+            
             public BudVerStruct(long id, string budName)
             {
                 VER_ID = id;
@@ -64,27 +61,24 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         }
 
         protected void deLoadCorrectBudgetType(object sender, DirectEventArgs e)
-        {
-            // Is an org selected?
-            string nodeID = null;
-            try
-            {
-                nodeID = uxOrgPanel.SelectedNodes[0].NodeID;                
-            }
-            catch (NullReferenceException)
-            {
-                return;
-            }
-
-            // Is the org an org and not just a legal entity or hierarchy?
+        {              
             long orgID;
+
+            // Is an org selected, and is the org an org and not just a legal entity or hierarchy?
             try
             {
+                string nodeID = uxOrgPanel.SelectedNodes[0].NodeID;
                 char[] delimChars = { ':' };
                 string[] selID = nodeID.Split(delimChars);
                 long hierarchyID = long.Parse(selID[0].ToString());
                 orgID = long.Parse(selID[1].ToString());
             }
+            
+            catch (NullReferenceException)
+            {
+                return;
+            }
+
             catch (IndexOutOfRangeException)
             {
                 return;
@@ -102,7 +96,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     {
                         LoadBudget("umYearBudget.aspx?orgID=" + orgID + "&fiscalYear=" + fiscalYear + "&version=" + version);
                         string nodeName = uxOrgPanel.SelectedNodes[0].Text;
-                        uxSpacerBar.Title = nodeName;
+                        uxYearVersionTitle.Text = nodeName;
                     }
                 }
             }
@@ -208,5 +202,9 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 }          
             }
         }
+        
+
+
+
     }
 }
