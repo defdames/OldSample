@@ -81,8 +81,7 @@
                             <Click Handler="#{uxCloseIncidentWindow}.show()" />
                         </Listeners>
                     </ext:Button>
-                    <ext:Label runat="server" Icon="ImageLink" />
-                    <ext:Checkbox runat="server" ID="uxToggleClosed" FieldLabel="Include Closed Incidents">
+                    <ext:Checkbox runat="server" ID="uxToggleClosed" BoxLabel="Include Closed Incidents" BoxLabelAlign="After">
                         <Listeners>
                             <Change Handler="#{uxIncidentStore}.reload()" />
                         </Listeners>
@@ -162,7 +161,8 @@
                             <ext:FieldContainer ID="FieldContainer37" runat="server" Layout="HBoxLayout">
                                 <Items>
                                     <ext:DateField ID="uxIncidentDateReported" runat="server" FieldLabel="Date Reported" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" />
-                                    <ext:Checkbox ID="uxIncidentSlowOrder" runat="server" FieldLabel="Slow Order" AnchorHorizontal="100%" LabelAlign="Right" />
+                                     <ext:Label ID="Label2" runat="server" Text="" Width="25" />
+                                    <ext:Checkbox ID="uxIncidentSlowOrder" runat="server" BoxLabel="Slow Order" BoxLabelAlign="After" AnchorHorizontal="100%" />
 
                                     <%-- <ext:DateField ID="uxIncidentDateClosed" runat="server" FieldLabel="Date Closed" AnchorHorizontal="100%" LabelAlign="Right"  />--%>
                                 </Items>

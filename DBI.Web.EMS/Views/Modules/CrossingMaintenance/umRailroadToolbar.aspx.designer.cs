@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DBI.Web.EMS.Views.Modules.DailyActivity {
+namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
     
     
-    public partial class umChooseSupportProject {
+    public partial class umRailroadToolbar {
         
         /// <summary>
         /// form1 control.
@@ -22,57 +22,48 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// ResourceManager1 control.
+        /// ResourceManager2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ResourceManager ResourceManager1;
+        protected global::Ext.Net.ResourceManager ResourceManager2;
         
         /// <summary>
-        /// uxChooseSupportProject control.
+        /// Viewport1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FormPanel uxChooseSupportProject;
+        protected global::Ext.Net.Viewport Viewport1;
         
         /// <summary>
-        /// uxSupportProject control.
+        /// Toolbar1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ComboBox uxSupportProject;
+        protected global::Ext.Net.Toolbar Toolbar1;
         
         /// <summary>
-        /// uxSupportProjectStore control.
+        /// uxChangeRailroad control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxSupportProjectStore;
+        protected global::Ext.Net.Button uxChangeRailroad;
         
         /// <summary>
-        /// uxSupportProjectButton control.
+        /// uxRailRoadCITextField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxSupportProjectButton;
-        
-        /// <summary>
-        /// uxSupportProjectCancel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxSupportProjectCancel;
+        protected global::Ext.Net.TextField uxRailRoadCITextField;
     }
 }

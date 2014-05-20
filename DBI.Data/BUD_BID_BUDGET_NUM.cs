@@ -14,11 +14,6 @@ namespace DBI.Data
     
     public partial class BUD_BID_BUDGET_NUM
     {
-        public BUD_BID_BUDGET_NUM()
-        {
-            this.BUD_BID_PROJECTS = new HashSet<BUD_BID_PROJECTS>();
-        }
-    
         public decimal BUDGET_NUM_ID { get; set; }
         public long PROJECT_ID { get; set; }
         public decimal DETAIL_TASK_ID { get; set; }
@@ -42,6 +37,5 @@ namespace DBI.Data
     
         public virtual BUD_BID_DETAIL_TASK BUD_BID_DETAIL_TASK { get; set; }
         public virtual BUD_BID_LINES BUD_BID_LINES { get; set; }
-        public virtual ICollection<BUD_BID_PROJECTS> BUD_BID_PROJECTS { get; set; }
     }
 }

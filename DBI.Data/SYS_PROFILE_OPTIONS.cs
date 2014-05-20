@@ -12,25 +12,23 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class BUD_BID_DETAIL_TASK
+    public partial class SYS_PROFILE_OPTIONS
     {
-        public BUD_BID_DETAIL_TASK()
+        public SYS_PROFILE_OPTIONS()
         {
-            this.BUD_BID_BUDGET_NUM = new HashSet<BUD_BID_BUDGET_NUM>();
+            this.SYS_MODULE_PROFILE_OPTIONS = new HashSet<SYS_MODULE_PROFILE_OPTIONS>();
+            this.SYS_USER_PROFILE_OPTIONS = new HashSet<SYS_USER_PROFILE_OPTIONS>();
         }
     
-        public decimal DETAIL_TASK_ID { get; set; }
-        public long PROJECT_ID { get; set; }
-        public string DETAIL_NAME { get; set; }
-        public Nullable<decimal> SHEET_ORDER { get; set; }
-        public string COMMENTS { get; set; }
+        public decimal PROFILE_OPTION_ID { get; set; }
+        public string DESCRIPTION { get; set; }
+        public string PROFILE_KEY { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string MODIFIED_BY { get; set; }
-        public decimal DETAIL_SHEET_ID { get; set; }
     
-        public virtual ICollection<BUD_BID_BUDGET_NUM> BUD_BID_BUDGET_NUM { get; set; }
-        public virtual BUD_BID_DETAIL_SHEET BUD_BID_DETAIL_SHEET { get; set; }
+        public virtual ICollection<SYS_MODULE_PROFILE_OPTIONS> SYS_MODULE_PROFILE_OPTIONS { get; set; }
+        public virtual ICollection<SYS_USER_PROFILE_OPTIONS> SYS_USER_PROFILE_OPTIONS { get; set; }
     }
 }

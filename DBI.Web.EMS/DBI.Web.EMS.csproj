@@ -134,6 +134,7 @@
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingSecurity.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umRailRoadProject.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umRailroadToolbar.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umReportsMain.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umStateCrossingsList.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umSupplemental.aspx" />
@@ -153,7 +154,6 @@
     <Content Include="Views\Modules\DailyActivity\umChemicalTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umChooseLunchHeader.aspx" />
     <Content Include="Views\Modules\DailyActivity\umChoosePerDiem.aspx" />
-    <Content Include="Views\Modules\DailyActivity\umChooseSupportProject.aspx" />
     <Content Include="Views\Modules\DailyActivity\umCombinedTab_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umCombinedTab_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umDailyActivity.aspx" />
@@ -329,6 +329,13 @@
     <Compile Include="Views\Modules\CrossingMaintenance\umRailRoadProject.aspx.designer.cs">
       <DependentUpon>umRailRoadProject.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umRailroadToolbar.aspx.cs">
+      <DependentUpon>umRailroadToolbar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umRailroadToolbar.aspx.designer.cs">
+      <DependentUpon>umRailroadToolbar.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umReportsMain.aspx.cs">
       <DependentUpon>umReportsMain.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -461,13 +468,6 @@
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umChoosePerDiem.aspx.designer.cs">
       <DependentUpon>umChoosePerDiem.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umChooseSupportProject.aspx.cs">
-      <DependentUpon>umChooseSupportProject.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umChooseSupportProject.aspx.designer.cs">
-      <DependentUpon>umChooseSupportProject.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umCombinedTab_DBI.aspx.cs">
       <DependentUpon>umCombinedTab_DBI.aspx</DependentUpon>

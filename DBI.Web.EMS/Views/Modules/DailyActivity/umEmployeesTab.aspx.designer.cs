@@ -76,13 +76,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Column uxShopTimePMColumn;
         
         /// <summary>
-        /// uxSupportProjectColumn control.
+        /// uxRoleTypeColumn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column uxSupportProjectColumn;
+        protected global::Ext.Net.Column uxRoleTypeColumn;
         
         /// <summary>
         /// uxAddEmployee control.
@@ -164,15 +164,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.ToolbarSpacer ToolbarSpacer4;
-        
-        /// <summary>
-        /// uxChooseSupportProject control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxChooseSupportProject;
         
         /// <summary>
         /// ToolTip1 control.

@@ -130,7 +130,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 catch (Exception)
                 {
                 }
-                uxEditEmployeeRole.SetValue(Employee.ROLE_TYPE);
+                uxEditEmployeeRole.SetValue(Employee.ROLE_TYPE, Employee.ROLE_TYPE);
                 uxEditEmployeeLicense.SetValue(Employee.FOREMAN_LICENSE);
                 if (GetOrgId(Employee.HEADER_ID) == 123)
                 {
@@ -379,6 +379,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             if (roleNeeded())
             {
                 data.ROLE_TYPE = uxAddEmployeeRole.Value.ToString();
+                try
+                {
+                    data.STATE = uxAddEmployeeState.Value.ToString();
+                }
+                catch (NullReferenceException)
+                {
+                    data.STATE = null;
+                }
+                try
+                {
+                    data.COUNTY = uxAddEmployeeCounty.Value.ToString();
+                }
+                catch (NullReferenceException)
+                {
+                    data.COUNTY = null;
+                }
             }
 
             //Check for travel time

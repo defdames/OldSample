@@ -77,6 +77,11 @@
                     <Listeners>
                         <Click Handler="#{uxAddNewApplicationEntryWindow}.show()" />
                     </Listeners>
+                    <%--  <DirectEvents>
+                                    <Click OnEvent="deGetRRType">
+                                     
+                                    </Click>
+                                </DirectEvents>--%>
                 </ext:Button>
                
             </Items>
@@ -167,16 +172,16 @@
                                         </ext:Store>
                                     </Store>
                                 </ext:ComboBox>
-
-                                <ext:Checkbox ID="uxAddEntrySprayBox" runat="server" FieldLabel="Spray" LabelAlign="Right" Width="250" TabIndex="4" />
+                                  <ext:Label ID="Label3" runat="server" Text="" Width="25" />
+                                <ext:Checkbox ID="uxAddEntrySprayBox" runat="server" BoxLabel="Spray" BoxLabelAlign="After" Width="250" TabIndex="4" />
                             </Items>
                         </ext:FieldContainer>
 
                         <ext:FieldContainer ID="FieldContainer0" runat="server" Layout="HBoxLayout">
                             <Items>
                                 <ext:DateField ID="uxAddEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" Width="300" AllowBlank="false" Editable="false" TabIndex="2" />
-
-                                <ext:Checkbox ID="uxAddEntryCutBox" runat="server" FieldLabel="Cut" LabelAlign="Right" TabIndex="5" />
+                                  <ext:Label ID="Label1" runat="server" Text="" Width="25" />
+                                <ext:Checkbox ID="uxAddEntryCutBox" runat="server" BoxLabel="Cut" BoxLabelAlign="After" TabIndex="5" />
 
                             </Items>
                         </ext:FieldContainer>
@@ -206,8 +211,8 @@
                                         </ext:Store>
                                     </Store>
                                 </ext:ComboBox>
-
-                                <ext:Checkbox ID="uxAddEntryInspectBox" runat="server" FieldLabel="Inspect" LabelAlign="Right" Width="250" TabIndex="6" />
+                                  <ext:Label ID="Label2" runat="server" Text="" Width="25" />
+                                <ext:Checkbox ID="uxAddEntryInspectBox" runat="server" BoxLabel="Inspect" BoxLabelAlign="After" Width="250" TabIndex="6" />
                             </Items>
                         </ext:FieldContainer>
 

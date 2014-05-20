@@ -26,7 +26,8 @@
 			ID="uxAddInventoryItemStore"
 			RemoteSort="true"
 			OnReadData="deReadItems"
-			PageSize="10">
+			PageSize="10"
+			AutoLoad="false">
 			<Model>
 				<ext:Model ID="uxAddInventoryItemModel" runat="server">
 					<Fields>
@@ -51,12 +52,14 @@
 			</Proxy>
 			<Parameters>
 				<ext:StoreParameter Name="Type" Value="Add" />
+				<ext:StoreParameter Name="OrgId" Value="#{uxAddInventoryRegion}.value" Mode="Raw" />
 			</Parameters>
 		</ext:Store>
 		<ext:Store runat="server"
 			ID="uxEditInventoryItemStore"
 			RemoteSort="true"
 			OnReadData="deReadItems"
+			AutoLoad="false"
 			PageSize="10">
 			<Model>
 				<ext:Model ID="uxEditInventoryItemModel" runat="server">
@@ -81,12 +84,11 @@
 			</Proxy>
 			<Parameters>
 				<ext:StoreParameter Name="Type" Value="Edit" />
+				<ext:StoreParameter Name="OrgId" Value="#{uxEditInventoryRegion}.value" Mode="Raw" />
 			</Parameters>
 		</ext:Store>
 		<ext:Panel runat="server">
 			<Items>
-
-
 				<ext:FormPanel runat="server"
 					ID="uxAddInventoryForm"
 					Layout="FormLayout"
@@ -184,10 +186,7 @@
 										<ext:Parameter Name="Type" Value="Add" />
 									</ExtraParams>
 								</Select>
-							</DirectEvents>
-							<Listeners>
-								<Select Handler="#{uxAddInventoryItemStore}.load()" />
-							</Listeners>
+							</DirectEvents>							
 						</ext:ComboBox>
 						<ext:ComboBox runat="server"
 							ID="uxAddInventorySub"
@@ -261,6 +260,9 @@
 									</ExtraParams>
 								</Change>
 							</DirectEvents>
+							<Listeners>
+								<Expand Handler="#{uxAddInventoryItemStore}.reload()" />
+							</Listeners>
 						</ext:DropDownField>
 						<ext:NumberField runat="server"
 							ID="uxAddInventoryRate"
@@ -302,6 +304,7 @@
 							ID="uxAddInventoryEPA"
 							FieldLabel="EPA Number"
 							AllowBlank="false" Width="500" />
+						<ext:Checkbox runat="server" FieldLabel="Contracter Supplied" ID="uxAddInventoryContractor" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
@@ -371,9 +374,6 @@
 									</ExtraParams>
 								</Select>
 							</DirectEvents>
-							<Listeners>
-								<Select Handler="#{uxEditInventoryItemStore}.load()" />
-							</Listeners>
 						</ext:ComboBox>
 						<ext:ComboBox runat="server"
 							ID="uxEditInventorySub"
@@ -437,6 +437,9 @@
 									</DirectEvents>
 								</ext:GridPanel>
 							</Component>
+							<Listeners>
+								<Expand Handler="#{uxEditInventoryItemStore}.reload()" />
+							</Listeners>
 							<DirectEvents>
 								<Change OnEvent="deGetUnitOfMeasure">
 									<ExtraParams>
@@ -486,6 +489,7 @@
 							ID="uxEditInventoryEPA"
 							FieldLabel="EPA Number"
 							AllowBlank="false" Width="500" />
+						<ext:Checkbox runat="server" FieldLabel="Contracter Supplied" ID="uxEditInventoryContractor" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"

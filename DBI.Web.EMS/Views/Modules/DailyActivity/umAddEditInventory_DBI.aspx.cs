@@ -110,7 +110,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long Rate = long.Parse(uxAddInventoryRate.Value.ToString());
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             decimal Total = decimal.Parse(uxAddInventoryTotal.Value.ToString());
-
+            string ContractorSupplied;
+            if (uxAddInventoryContractor.Checked)
+            {
+                ContractorSupplied = "Y";
+            }
+            else
+            {
+                ContractorSupplied = "N";
+            }
             //Add to Db
             using (Entities _context = new Entities())
             {
@@ -128,7 +136,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     CREATED_BY = User.Identity.Name,
                     MODIFIED_BY = User.Identity.Name,
                     HEADER_ID = HeaderId,
-                    TOTAL = Total
+                    TOTAL = Total,
+                    CONTRACTOR_SUPPLIED = ContractorSupplied
                 };
             }
 
@@ -170,7 +179,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             where d.INVENTORY_ID == InventoryId
                             from j in joined
                             where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
-                            select new { j.ENABLED_FLAG, j.ITEM_ID, j.ACTIVE, j.LE, j.LAST_UPDATE_DATE, j.ATTRIBUTE2, j.INV_LOCATION, d.TOTAL, j.INV_NAME, d.INVENTORY_ID, d.CHEMICAL_MIX_ID, c.CHEMICAL_MIX_NUMBER, d.SUB_INVENTORY_SECONDARY_NAME, d.SUB_INVENTORY_ORG_ID, j.SEGMENT1, j.DESCRIPTION, d.RATE, u.UOM_CODE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).Single();
+                            select new { j.ENABLED_FLAG, j.ITEM_ID, j.ACTIVE, j.LE, j.LAST_UPDATE_DATE, j.ATTRIBUTE2, j.INV_LOCATION, d.CONTRACTOR_SUPPLIED, d.TOTAL, j.INV_NAME, d.INVENTORY_ID, d.CHEMICAL_MIX_ID, c.CHEMICAL_MIX_NUMBER, d.SUB_INVENTORY_SECONDARY_NAME, d.SUB_INVENTORY_ORG_ID, j.SEGMENT1, j.DESCRIPTION, d.RATE, u.UOM_CODE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).Single();
                 SUBINVENTORY_V SubData;
                 var OrgId = Inventory.SUB_INVENTORY_ORG_ID;
                 var InvName = Inventory.SUB_INVENTORY_SECONDARY_NAME;
@@ -183,6 +192,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 GetInventory("Edit");
                 uxEditInventoryRegion.SelectedItems.Clear();
+                uxEditInventoryRegion.SetRawValue(Inventory.SUB_INVENTORY_ORG_ID);
                 uxEditInventoryRegion.SetValueAndFireSelect(Inventory.SUB_INVENTORY_ORG_ID);
                 uxEditInventoryRegion.SelectedItems.Add(new Ext.Net.ListItem(Inventory.INV_NAME, Inventory.SUB_INVENTORY_ORG_ID));
                 uxEditInventoryRegion.UpdateSelectedItems();
@@ -201,6 +211,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEditInventoryEPA.SetValue(Inventory.EPA_NUMBER);
                 uxEditInventoryRate.SetValue(Inventory.RATE);
                 uxEditInventoryTotal.SetValue(Inventory.TOTAL.ToString());
+
+                if (Inventory.CONTRACTOR_SUPPLIED == "Y")
+                {
+                    uxEditInventoryContractor.Checked = true;
+                }
+                else
+                {
+                    uxEditInventoryContractor.Checked = false;
+                }
             }
 
 
@@ -234,7 +253,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long OrgId = long.Parse(uxEditInventoryRegion.Value.ToString());
             decimal ItemId = decimal.Parse(uxEditInventoryItem.Value.ToString());
             decimal Rate = decimal.Parse(uxEditInventoryRate.Value.ToString());
-            decimal Total = decimal.Parse(uxEditInventoryTotal.Value.ToString());
+            string ContractorSupplied;
+            if (uxEditInventoryContractor.Checked)
+            {
+                ContractorSupplied = "Y";
+            }
+            else
+            {
+                ContractorSupplied = "N";
+            }
 
             //Get record to be updated
             using (Entities _context = new Entities())
@@ -243,7 +270,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         where d.INVENTORY_ID == InventoryId
                         select d).Single();
             }
-            
+
+            data.CONTRACTOR_SUPPLIED = ContractorSupplied;
             data.SUB_INVENTORY_SECONDARY_NAME = e.ExtraParams["SecondaryInvName"];
             data.SUB_INVENTORY_ORG_ID = OrgId;
             data.ITEM_ID = ItemId;
@@ -252,7 +280,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.EPA_NUMBER = uxEditInventoryEPA.Value.ToString();
             data.MODIFIED_BY = User.Identity.Name;
             data.MODIFY_DATE = DateTime.Now;
-            data.TOTAL = Total;
+            try
+            {
+                data.TOTAL = decimal.Parse(uxEditInventoryTotal.Value.ToString()); 
+            }
+            catch (NullReferenceException)
+            {
+                data.TOTAL = null;
+            }
 
             //Write to DB
             GenericData.Update<DAILY_ACTIVITY_INVENTORY>(data);
@@ -330,14 +365,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             long OrgId;
             List<INVENTORY_V> dataIn;
-            if (e.Parameters["Type"] == "Add")
-            {
-                OrgId = long.Parse(uxAddInventoryRegion.Value.ToString());
-            }
-            else
-            {
-                OrgId = long.Parse(uxEditInventoryRegion.Value.ToString());
-            }
+            OrgId = long.Parse(e.Parameters["OrgId"]);
             dataIn = INVENTORY_V.GetActiveInventory(OrgId);
 
             int count;
