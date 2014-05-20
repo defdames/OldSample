@@ -209,7 +209,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
 
 
-                var SortedData = data.OrderBy(x => x.DA_DATE).ThenBy(x => x.STATUS).ToList<HeaderData>();
+                var SortedData = data.OrderByDescending(x => x.DA_DATE).ThenBy(x => x.STATUS).ToList<HeaderData>();
                 uxManageGridStore.DataSource = SortedData;
 				e.Total = count;
 
