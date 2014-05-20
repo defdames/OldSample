@@ -144,7 +144,7 @@ namespace DBI.Data
         }
 
 
-        public static decimal payrollHoursCalculation(DateTime dateIn, DateTime dateOut, string lunchFlag, decimal? lunchAmount, decimal? orgID, decimal? travelTime, decimal? shopTimeAM, decimal? shopTimePM)
+        public static decimal payrollHoursCalculation(DateTime dateIn, DateTime dateOut, string lunchFlag, decimal? lunchAmount, decimal? orgID, decimal? travelTime)
         {
             //Get the total hours (Time Entry Wages)
             TimeSpan span = dateOut.Subtract(dateIn);
@@ -164,26 +164,6 @@ namespace DBI.Data
                 span = span.Add(TimeSpan.FromHours((hoursValue * -1)));
                 span = span.Add(TimeSpan.FromMinutes((minsValue * -1)));
             }
-
-            //Figure out any shop time calulations
-            if(orgID == 123)
-            {
-              double hoursValue = (double)Math.Truncate((decimal)shopTimeAM) + (double)Math.Truncate((decimal)shopTimePM);
-              double total = ((double)shopTimeAM + (double)shopTimePM);
-              double minsValue = total  - hoursValue;
-                
-              if (minsValue > 0) 
-              {
-                  minsValue = (minsValue * 60);
-              }
-
-              //Get new timespan for time
-              //Remove traveltime before you round
-             span = span.Add(TimeSpan.FromHours((hoursValue)));
-             span = span.Add(TimeSpan.FromMinutes((minsValue)));
-
-            }
-
 
             double calc = (span.Minutes > 0 && span.Minutes <= 8) ? 0
                          : (span.Minutes > 8 && span.Minutes <= 23) ? .25
@@ -347,7 +327,7 @@ namespace DBI.Data
                         record.STATE = (r.STATE == null) ? r.REGION : r.STATE;
                         record.COUNTY = r.COUNTY;
                         record.LAB_HEADER_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE;
-                        record.QUANTITY = payrollHoursCalculation((DateTime)r.TIME_IN, (DateTime)r.TIME_OUT, r.LUNCH, r.LUNCH_LENGTH, r.ORG_ID, r.TRAVEL_TIME, r.SHOPTIME_AM, r.SHOPTIME_PM);
+                        record.QUANTITY = payrollHoursCalculation((DateTime)r.TIME_IN, (DateTime)r.TIME_OUT, r.LUNCH, r.LUNCH_LENGTH, r.ORG_ID, r.TRAVEL_TIME);
                         record.ELEMENT = "Time Entry Wages";
                         record.ADJUSTMENT = "N";
                         record.STATUS = "UNPROCESSED";
@@ -413,9 +393,59 @@ namespace DBI.Data
                             GenericData.Insert<XXDBI_LABOR_HEADER_V>(dtrecord);
                         }
 
-                        //    //Check if record is IRM and Shop Time was added
-                        //    if (xxdbiDailyActivityHeader.ORG_ID == 123 && (r.SHOPTIME_AM > 0 || r.SHOPTIME_PM > 0))
-                        //    {
+                        //Check if record is IRM and Shop Time was added
+                        if (xxdbiDailyActivityHeader.ORG_ID == 123 && (r.SHOPTIME_AM > 0 || r.SHOPTIME_PM > 0))
+                        {
+                            XXDBI_LABOR_HEADER_V dtrecord = new XXDBI_LABOR_HEADER_V();
+                            dtrecord.LABOR_HEADER_ID = DBI.Data.Interface.generateLaborHeaderSequence();
+                            dtrecord.DA_HEADER_ID = xxdbiDailyActivityHeader.DA_HEADER_ID;
+                            dtrecord.PROJECT_NUMBER = r.SEGMENT1;
+                            dtrecord.TASK_NUMBER = returnDailyActivityTaskNumber(dailyActivityHeaderId);
+                            dtrecord.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
+                            dtrecord.EMP_FULL_NAME = DBI.Data.EMPLOYEES_V.oracleEmployeeName(r.PERSON_ID);
+                            dtrecord.ROLE = null;
+                            dtrecord.STATE = null;
+                            dtrecord.COUNTY = null;
+                            dtrecord.LAB_HEADER_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE;
+
+                            TimeSpan span = new TimeSpan();
+
+                            double hoursValue = (double)Math.Truncate((decimal)r.SHOPTIME_AM) + (double)Math.Truncate((decimal)r.SHOPTIME_PM);
+                            double total = ((double)r.SHOPTIME_AM + (double)r.SHOPTIME_PM);
+                            double minsValue = total  - hoursValue;
+
+                            if (minsValue > 0) {
+                               minsValue = (minsValue * 60);
+                               }
+
+                            //Get new timespan for time
+                            //Remove traveltime before you round
+                            span = span.Add(TimeSpan.FromHours((hoursValue)));
+                            span = span.Add(TimeSpan.FromMinutes((minsValue)));
+
+                            double calc = (span.Minutes > 0 && span.Minutes <= 8) ? 0
+                            : (span.Minutes > 8 && span.Minutes <= 23) ? .25
+                            : (span.Minutes > 23 && span.Minutes <= 38) ? .50
+                            : (span.Minutes > 38 && span.Minutes <= 53) ? .75
+                            : (span.Minutes > 53 && span.Minutes <= 60) ? 1
+                            : 0;
+
+                            dtrecord.QUANTITY = span.Hours + (decimal)calc;
+                            dtrecord.ELEMENT = "Time Entry Wages";
+                            dtrecord.ADJUSTMENT = "N";
+                            dtrecord.STATUS = "UNPROCESSED";
+                            dtrecord.ORG_ID = (decimal)r.ORG_ID;
+                            dtrecord.CREATED_BY = postedByUserId;
+                            dtrecord.CREATION_DATE = DateTime.Now;
+                            dtrecord.LAST_UPDATE_DATE = DateTime.Now;
+                            dtrecord.LAST_UPDATED_BY = postedByUserId;
+                            records.Add(dtrecord);
+                            GenericData.Insert<XXDBI_LABOR_HEADER_V>(dtrecord);
+                        }
+
+
+
+
                         //        //Get the support project information
                         //        var dataSupport = (from p in _context.PROJECTS_V
                         //                    join l in _context.PA_LOCATIONS_V on p.LOCATION_ID equals (long)l.LOCATION_ID
