@@ -52,7 +52,7 @@ namespace DBI.Data
 
                     Interface.postNotificationMessage(userInformation.EMPLOYEE_NAME, HeaderRecord);
 
-                    transaction.Complete();
+                    //transaction.Complete();
                 }
             }
             catch (Exception)
@@ -404,8 +404,8 @@ namespace DBI.Data
                             dtrecord.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
                             dtrecord.EMP_FULL_NAME = DBI.Data.EMPLOYEES_V.oracleEmployeeName(r.PERSON_ID);
                             dtrecord.ROLE = null;
-                            dtrecord.STATE = null;
-                            dtrecord.COUNTY = null;
+                            record.STATE = (r.STATE == null) ? r.REGION : r.STATE;
+                            record.COUNTY = r.COUNTY;
                             dtrecord.LAB_HEADER_DATE = xxdbiDailyActivityHeader.ACTIVITY_DATE;
 
                             TimeSpan span = new TimeSpan();
