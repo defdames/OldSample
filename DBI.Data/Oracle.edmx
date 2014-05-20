@@ -775,18 +775,6 @@
             <End Role="CROSSING_RAILROAD" EntitySet="CROSSING_RAILROAD" />
             <End Role="CROSSING_PROJECT" EntitySet="CROSSING_PROJECT" />
           </AssociationSet>
-          <AssociationSet Name="FK_PROJECTS_ADJ_ID" Association="OracleModel.Store.FK_PROJECTS_ADJ_ID">
-            <End Role="BUD_BID_ADJUSTMENT" EntitySet="BUD_BID_ADJUSTMENT" />
-            <End Role="BUD_BID_PROJECTS" EntitySet="BUD_BID_PROJECTS" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PROJECTS_BUD_NUM_ID" Association="OracleModel.Store.FK_PROJECTS_BUD_NUM_ID">
-            <End Role="BUD_BID_BUDGET_NUM" EntitySet="BUD_BID_BUDGET_NUM" />
-            <End Role="BUD_BID_PROJECTS" EntitySet="BUD_BID_PROJECTS" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PROJECTS_DT_ID" Association="OracleModel.Store.FK_PROJECTS_DT_ID">
-            <End Role="BUD_BID_DETAIL_TASK" EntitySet="BUD_BID_DETAIL_TASK" />
-            <End Role="BUD_BID_PROJECTS" EntitySet="BUD_BID_PROJECTS" />
-          </AssociationSet>
           <AssociationSet Name="FK_PROJECTS_STATUS_ID" Association="OracleModel.Store.FK_PROJECTS_STATUS_ID">
             <End Role="BUD_BID_STATUS" EntitySet="BUD_BID_STATUS" />
             <End Role="BUD_BID_PROJECTS" EntitySet="BUD_BID_PROJECTS" />
@@ -1018,9 +1006,6 @@
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
-          <Property Name="ADJ_ID" Type="number" Nullable="false" />
-          <Property Name="DETAIL_TASK_ID" Type="number" Nullable="false" />
-          <Property Name="BUDGET_NUM_ID" Type="number" Nullable="false" />
         </EntityType>
         <EntityType Name="BUD_BID_STATUS">
           <Key>
@@ -1593,7 +1578,7 @@
           <Property Name="PARENT_BUDGET_TYPE_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="BUDGET_NAME" Type="varchar2" Nullable="false" MaxLength="250" />
           <Property Name="BUDGET_DESCRIPTION" Type="varchar2" Nullable="false" MaxLength="250" />
-          <Property Name="LE_ORD_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="LE_ORG_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
@@ -3426,42 +3411,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PROJECTS_ADJ_ID">
-          <End Role="BUD_BID_ADJUSTMENT" Type="OracleModel.Store.BUD_BID_ADJUSTMENT" Multiplicity="1" />
-          <End Role="BUD_BID_PROJECTS" Type="OracleModel.Store.BUD_BID_PROJECTS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BUD_BID_ADJUSTMENT">
-              <PropertyRef Name="ADJ_ID" />
-            </Principal>
-            <Dependent Role="BUD_BID_PROJECTS">
-              <PropertyRef Name="ADJ_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PROJECTS_BUD_NUM_ID">
-          <End Role="BUD_BID_BUDGET_NUM" Type="OracleModel.Store.BUD_BID_BUDGET_NUM" Multiplicity="1" />
-          <End Role="BUD_BID_PROJECTS" Type="OracleModel.Store.BUD_BID_PROJECTS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BUD_BID_BUDGET_NUM">
-              <PropertyRef Name="BUDGET_NUM_ID" />
-            </Principal>
-            <Dependent Role="BUD_BID_PROJECTS">
-              <PropertyRef Name="BUDGET_NUM_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PROJECTS_DT_ID">
-          <End Role="BUD_BID_DETAIL_TASK" Type="OracleModel.Store.BUD_BID_DETAIL_TASK" Multiplicity="1" />
-          <End Role="BUD_BID_PROJECTS" Type="OracleModel.Store.BUD_BID_PROJECTS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BUD_BID_DETAIL_TASK">
-              <PropertyRef Name="DETAIL_TASK_ID" />
-            </Principal>
-            <Dependent Role="BUD_BID_PROJECTS">
-              <PropertyRef Name="DETAIL_TASK_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_PROJECTS_STATUS_ID">
           <End Role="BUD_BID_STATUS" Type="OracleModel.Store.BUD_BID_STATUS" Multiplicity="0..1" />
           <End Role="BUD_BID_PROJECTS" Type="OracleModel.Store.BUD_BID_PROJECTS" Multiplicity="*" />
@@ -3737,7 +3686,6 @@
           <EntitySet Name="CROSSING_RAILROAD" EntityType="OracleModel.CROSSING_RAILROAD" />
           <EntitySet Name="DAILY_ACTIVITY_INVENTORY" EntityType="OracleModel.DAILY_ACTIVITY_INVENTORY" />
           <EntitySet Name="JOB_COST_CLASSES" EntityType="OracleModel.JOB_COST_CLASSES" />
-          <EntitySet Name="OVERHEAD_BUDGET_TYPE" EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" />
           <EntitySet Name="OVERHEAD_BUDGET_VERSION" EntityType="OracleModel.OVERHEAD_BUDGET_VERSION" />
           <AssociationSet Name="FK_CONTACTS_RAILROAD_ID" Association="OracleModel.FK_CONTACTS_RAILROAD_ID">
             <End Role="CROSSING_RAILROAD" EntitySet="CROSSING_RAILROAD" />
@@ -3766,12 +3714,7 @@
           <EntitySet Name="BUD_BID_LINES" EntityType="OracleModel.BUD_BID_LINES" />
           <EntitySet Name="BUD_BID_LOCKED" EntityType="OracleModel.BUD_BID_LOCKED" />
           <EntitySet Name="BUD_BID_ORGS" EntityType="OracleModel.BUD_BID_ORGS" />
-          <EntitySet Name="BUD_BID_PROJECTS" EntityType="OracleModel.BUD_BID_PROJECTS" />
           <EntitySet Name="BUD_BID_STATUS" EntityType="OracleModel.BUD_BID_STATUS" />
-          <AssociationSet Name="FK_PROJECTS_ADJ_ID" Association="OracleModel.FK_PROJECTS_ADJ_ID">
-            <End Role="BUD_BID_ADJUSTMENT" EntitySet="BUD_BID_ADJUSTMENT" />
-            <End Role="BUD_BID_PROJECTS" EntitySet="BUD_BID_PROJECTS" />
-          </AssociationSet>
           <AssociationSet Name="FK_BUDGET_NUM_DETAIL_TASK_ID" Association="OracleModel.FK_BUDGET_NUM_DETAIL_TASK_ID">
             <End Role="BUD_BID_DETAIL_TASK" EntitySet="BUD_BID_DETAIL_TASK" />
             <End Role="BUD_BID_BUDGET_NUM" EntitySet="BUD_BID_BUDGET_NUM" />
@@ -3780,21 +3723,9 @@
             <End Role="BUD_BID_LINES" EntitySet="BUD_BID_LINES" />
             <End Role="BUD_BID_BUDGET_NUM" EntitySet="BUD_BID_BUDGET_NUM" />
           </AssociationSet>
-          <AssociationSet Name="FK_PROJECTS_BUD_NUM_ID" Association="OracleModel.FK_PROJECTS_BUD_NUM_ID">
-            <End Role="BUD_BID_BUDGET_NUM" EntitySet="BUD_BID_BUDGET_NUM" />
-            <End Role="BUD_BID_PROJECTS" EntitySet="BUD_BID_PROJECTS" />
-          </AssociationSet>
           <AssociationSet Name="FK_DETAIL_DETAIL_SHEET_ID" Association="OracleModel.FK_DETAIL_DETAIL_SHEET_ID">
             <End Role="BUD_BID_DETAIL_SHEET" EntitySet="BUD_BID_DETAIL_SHEET" />
             <End Role="BUD_BID_DETAIL_TASK" EntitySet="BUD_BID_DETAIL_TASK" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PROJECTS_DT_ID" Association="OracleModel.FK_PROJECTS_DT_ID">
-            <End Role="BUD_BID_DETAIL_TASK" EntitySet="BUD_BID_DETAIL_TASK" />
-            <End Role="BUD_BID_PROJECTS" EntitySet="BUD_BID_PROJECTS" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PROJECTS_STATUS_ID" Association="OracleModel.FK_PROJECTS_STATUS_ID">
-            <End Role="BUD_BID_STATUS" EntitySet="BUD_BID_STATUS" />
-            <End Role="BUD_BID_PROJECTS" EntitySet="BUD_BID_PROJECTS" />
           </AssociationSet>
           <EntitySet Name="SYS_MODULE_PROFILE_OPTIONS" EntityType="OracleModel.SYS_MODULE_PROFILE_OPTIONS" />
           <EntitySet Name="SYS_PROFILE_OPTIONS" EntityType="OracleModel.SYS_PROFILE_OPTIONS" />
@@ -3812,6 +3743,12 @@
             <End Role="SYS_USER_PROFILE_OPTIONS" EntitySet="SYS_USER_PROFILE_OPTIONS" />
           </AssociationSet>
           <EntitySet Name="SYS_SECURITY_AUDIT" EntityType="OracleModel.SYS_SECURITY_AUDIT" />
+          <EntitySet Name="BUD_BID_PROJECTS" EntityType="OracleModel.BUD_BID_PROJECTS" />
+          <EntitySet Name="OVERHEAD_BUDGET_TYPE" EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" />
+          <AssociationSet Name="FK_PROJECTS_STATUS_ID" Association="OracleModel.FK_PROJECTS_STATUS_ID">
+            <End Role="BUD_BID_STATUS" EntitySet="BUD_BID_STATUS" />
+            <End Role="BUD_BID_PROJECTS" EntitySet="BUD_BID_PROJECTS" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -6299,20 +6236,6 @@
           <Property Type="DateTime" Name="JOB_COST_DATE" />
           <Property Type="Int64" Name="BUID" />
         </EntityType>
-        <EntityType Name="OVERHEAD_BUDGET_TYPE">
-          <Key>
-            <PropertyRef Name="OVERHEAD_BUDGET_TYPE_ID" />
-          </Key>
-          <Property Type="Int64" Name="OVERHEAD_BUDGET_TYPE_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int64" Name="PARENT_BUDGET_TYPE_ID" Nullable="false" />
-          <Property Type="String" Name="BUDGET_NAME" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="BUDGET_DESCRIPTION" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="LE_ORD_ID" Nullable="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="OVERHEAD_BUDGET_VERSION">
           <Key>
             <PropertyRef Name="OVERHEAD_BUDGET_VER_ID" />
@@ -6401,7 +6324,6 @@
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="BUD_BID_PROJECTS" Relationship="OracleModel.FK_PROJECTS_ADJ_ID" FromRole="BUD_BID_ADJUSTMENT" ToRole="BUD_BID_PROJECTS" />
         </EntityType>
         <EntityType Name="BUD_BID_BUDGET_NUM">
           <Key>
@@ -6429,7 +6351,6 @@
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="BUD_BID_DETAIL_TASK" Relationship="OracleModel.FK_BUDGET_NUM_DETAIL_TASK_ID" FromRole="BUD_BID_BUDGET_NUM" ToRole="BUD_BID_DETAIL_TASK" />
           <NavigationProperty Name="BUD_BID_LINES" Relationship="OracleModel.FK_BUDGET_NUM_LINES_ID" FromRole="BUD_BID_BUDGET_NUM" ToRole="BUD_BID_LINES" />
-          <NavigationProperty Name="BUD_BID_PROJECTS" Relationship="OracleModel.FK_PROJECTS_BUD_NUM_ID" FromRole="BUD_BID_BUDGET_NUM" ToRole="BUD_BID_PROJECTS" />
         </EntityType>
         <EntityType Name="BUD_BID_DETAIL_SHEET">
           <Key>
@@ -6469,7 +6390,6 @@
           <Property Type="Decimal" Name="DETAIL_SHEET_ID" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="BUD_BID_BUDGET_NUM" Relationship="OracleModel.FK_BUDGET_NUM_DETAIL_TASK_ID" FromRole="BUD_BID_DETAIL_TASK" ToRole="BUD_BID_BUDGET_NUM" />
           <NavigationProperty Name="BUD_BID_DETAIL_SHEET" Relationship="OracleModel.FK_DETAIL_DETAIL_SHEET_ID" FromRole="BUD_BID_DETAIL_TASK" ToRole="BUD_BID_DETAIL_SHEET" />
-          <NavigationProperty Name="BUD_BID_PROJECTS" Relationship="OracleModel.FK_PROJECTS_DT_ID" FromRole="BUD_BID_DETAIL_TASK" ToRole="BUD_BID_PROJECTS" />
         </EntityType>
         <EntityType Name="BUD_BID_LINES">
           <Key>
@@ -6511,37 +6431,6 @@
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="BUD_BID_PROJECTS">
-          <Key>
-            <PropertyRef Name="BUD_BID_PROJECTS_ID" />
-          </Key>
-          <Property Type="Decimal" Name="BUD_BID_PROJECTS_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
-          <Property Type="String" Name="OVERRIDE_PROJ_NAME" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="ORG_ID" />
-          <Property Type="Decimal" Name="YEAR_ID" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="VER_ID" Precision="38" Scale="0" />
-          <Property Type="Int64" Name="COMPARE_PROJ_NUM" />
-          <Property Type="Decimal" Name="STATUS_ID" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="ACRES" Precision="15" Scale="4" />
-          <Property Type="Decimal" Name="DAYS" Precision="15" Scale="4" />
-          <Property Type="Decimal" Name="OH_ID" Precision="38" Scale="0" />
-          <Property Type="String" Name="APP_TYPE" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CHEMICAL_MIX" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="COMMENTS" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="WE_DATE" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="ADJ_ID" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="DETAIL_TASK_ID" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="BUDGET_NUM_ID" Nullable="false" Precision="38" Scale="0" />
-          <NavigationProperty Name="BUD_BID_ADJUSTMENT" Relationship="OracleModel.FK_PROJECTS_ADJ_ID" FromRole="BUD_BID_PROJECTS" ToRole="BUD_BID_ADJUSTMENT" />
-          <NavigationProperty Name="BUD_BID_BUDGET_NUM" Relationship="OracleModel.FK_PROJECTS_BUD_NUM_ID" FromRole="BUD_BID_PROJECTS" ToRole="BUD_BID_BUDGET_NUM" />
-          <NavigationProperty Name="BUD_BID_DETAIL_TASK" Relationship="OracleModel.FK_PROJECTS_DT_ID" FromRole="BUD_BID_PROJECTS" ToRole="BUD_BID_DETAIL_TASK" />
-          <NavigationProperty Name="BUD_BID_STATUS" Relationship="OracleModel.FK_PROJECTS_STATUS_ID" FromRole="BUD_BID_PROJECTS" ToRole="BUD_BID_STATUS" />
-        </EntityType>
         <EntityType Name="BUD_BID_STATUS">
           <Key>
             <PropertyRef Name="STATUS_ID" />
@@ -6554,18 +6443,6 @@
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="BUD_BID_PROJECTS" Relationship="OracleModel.FK_PROJECTS_STATUS_ID" FromRole="BUD_BID_STATUS" ToRole="BUD_BID_PROJECTS" />
         </EntityType>
-        <Association Name="FK_PROJECTS_ADJ_ID">
-          <End Type="OracleModel.BUD_BID_ADJUSTMENT" Role="BUD_BID_ADJUSTMENT" Multiplicity="1" />
-          <End Type="OracleModel.BUD_BID_PROJECTS" Role="BUD_BID_PROJECTS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BUD_BID_ADJUSTMENT">
-              <PropertyRef Name="ADJ_ID" />
-            </Principal>
-            <Dependent Role="BUD_BID_PROJECTS">
-              <PropertyRef Name="ADJ_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_BUDGET_NUM_DETAIL_TASK_ID">
           <End Type="OracleModel.BUD_BID_DETAIL_TASK" Role="BUD_BID_DETAIL_TASK" Multiplicity="1" />
           <End Type="OracleModel.BUD_BID_BUDGET_NUM" Role="BUD_BID_BUDGET_NUM" Multiplicity="*" />
@@ -6590,18 +6467,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PROJECTS_BUD_NUM_ID">
-          <End Type="OracleModel.BUD_BID_BUDGET_NUM" Role="BUD_BID_BUDGET_NUM" Multiplicity="1" />
-          <End Type="OracleModel.BUD_BID_PROJECTS" Role="BUD_BID_PROJECTS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BUD_BID_BUDGET_NUM">
-              <PropertyRef Name="BUDGET_NUM_ID" />
-            </Principal>
-            <Dependent Role="BUD_BID_PROJECTS">
-              <PropertyRef Name="BUDGET_NUM_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_DETAIL_DETAIL_SHEET_ID">
           <End Type="OracleModel.BUD_BID_DETAIL_SHEET" Role="BUD_BID_DETAIL_SHEET" Multiplicity="1" />
           <End Type="OracleModel.BUD_BID_DETAIL_TASK" Role="BUD_BID_DETAIL_TASK" Multiplicity="*" />
@@ -6611,30 +6476,6 @@
             </Principal>
             <Dependent Role="BUD_BID_DETAIL_TASK">
               <PropertyRef Name="DETAIL_SHEET_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PROJECTS_DT_ID">
-          <End Type="OracleModel.BUD_BID_DETAIL_TASK" Role="BUD_BID_DETAIL_TASK" Multiplicity="1" />
-          <End Type="OracleModel.BUD_BID_PROJECTS" Role="BUD_BID_PROJECTS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BUD_BID_DETAIL_TASK">
-              <PropertyRef Name="DETAIL_TASK_ID" />
-            </Principal>
-            <Dependent Role="BUD_BID_PROJECTS">
-              <PropertyRef Name="DETAIL_TASK_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PROJECTS_STATUS_ID">
-          <End Type="OracleModel.BUD_BID_STATUS" Role="BUD_BID_STATUS" Multiplicity="0..1" />
-          <End Type="OracleModel.BUD_BID_PROJECTS" Role="BUD_BID_PROJECTS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BUD_BID_STATUS">
-              <PropertyRef Name="STATUS_ID" />
-            </Principal>
-            <Dependent Role="BUD_BID_PROJECTS">
-              <PropertyRef Name="STATUS_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6728,6 +6569,57 @@
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="MODIFIED_DATE" />
         </EntityType>
+        <EntityType Name="BUD_BID_PROJECTS">
+          <Key>
+            <PropertyRef Name="BUD_BID_PROJECTS_ID" />
+          </Key>
+          <Property Type="Decimal" Name="BUD_BID_PROJECTS_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
+          <Property Type="String" Name="OVERRIDE_PROJ_NAME" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="ORG_ID" />
+          <Property Type="Decimal" Name="YEAR_ID" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="VER_ID" Precision="38" Scale="0" />
+          <Property Type="Int64" Name="COMPARE_PROJ_NUM" />
+          <Property Type="Decimal" Name="STATUS_ID" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="ACRES" Precision="15" Scale="4" />
+          <Property Type="Decimal" Name="DAYS" Precision="15" Scale="4" />
+          <Property Type="Decimal" Name="OH_ID" Precision="38" Scale="0" />
+          <Property Type="String" Name="APP_TYPE" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CHEMICAL_MIX" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="COMMENTS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="WE_DATE" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="BUD_BID_STATUS" Relationship="OracleModel.FK_PROJECTS_STATUS_ID" FromRole="BUD_BID_PROJECTS" ToRole="BUD_BID_STATUS" />
+        </EntityType>
+        <EntityType Name="OVERHEAD_BUDGET_TYPE">
+          <Key>
+            <PropertyRef Name="OVERHEAD_BUDGET_TYPE_ID" />
+          </Key>
+          <Property Type="Int64" Name="OVERHEAD_BUDGET_TYPE_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="PARENT_BUDGET_TYPE_ID" Nullable="false" />
+          <Property Type="String" Name="BUDGET_NAME" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="BUDGET_DESCRIPTION" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="LE_ORG_ID" Nullable="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_PROJECTS_STATUS_ID">
+          <End Type="OracleModel.BUD_BID_STATUS" Role="BUD_BID_STATUS" Multiplicity="0..1" />
+          <End Type="OracleModel.BUD_BID_PROJECTS" Role="BUD_BID_PROJECTS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BUD_BID_STATUS">
+              <PropertyRef Name="STATUS_ID" />
+            </Principal>
+            <Dependent Role="BUD_BID_PROJECTS">
+              <PropertyRef Name="STATUS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8681,21 +8573,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="OVERHEAD_BUDGET_TYPE">
-            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_BUDGET_TYPE">
-              <MappingFragment StoreEntitySet="OVERHEAD_BUDGET_TYPE">
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="LE_ORD_ID" ColumnName="LE_ORD_ID" />
-                <ScalarProperty Name="BUDGET_DESCRIPTION" ColumnName="BUDGET_DESCRIPTION" />
-                <ScalarProperty Name="BUDGET_NAME" ColumnName="BUDGET_NAME" />
-                <ScalarProperty Name="PARENT_BUDGET_TYPE_ID" ColumnName="PARENT_BUDGET_TYPE_ID" />
-                <ScalarProperty Name="OVERHEAD_BUDGET_TYPE_ID" ColumnName="OVERHEAD_BUDGET_TYPE_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="OVERHEAD_BUDGET_VERSION">
             <EntityTypeMapping TypeName="OracleModel.OVERHEAD_BUDGET_VERSION">
               <MappingFragment StoreEntitySet="OVERHEAD_BUDGET_VERSION">
@@ -8833,34 +8710,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="BUD_BID_PROJECTS">
-            <EntityTypeMapping TypeName="OracleModel.BUD_BID_PROJECTS">
-              <MappingFragment StoreEntitySet="BUD_BID_PROJECTS">
-                <ScalarProperty Name="BUDGET_NUM_ID" ColumnName="BUDGET_NUM_ID" />
-                <ScalarProperty Name="DETAIL_TASK_ID" ColumnName="DETAIL_TASK_ID" />
-                <ScalarProperty Name="ADJ_ID" ColumnName="ADJ_ID" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="WE_DATE" ColumnName="WE_DATE" />
-                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
-                <ScalarProperty Name="CHEMICAL_MIX" ColumnName="CHEMICAL_MIX" />
-                <ScalarProperty Name="APP_TYPE" ColumnName="APP_TYPE" />
-                <ScalarProperty Name="OH_ID" ColumnName="OH_ID" />
-                <ScalarProperty Name="DAYS" ColumnName="DAYS" />
-                <ScalarProperty Name="ACRES" ColumnName="ACRES" />
-                <ScalarProperty Name="STATUS_ID" ColumnName="STATUS_ID" />
-                <ScalarProperty Name="COMPARE_PROJ_NUM" ColumnName="COMPARE_PROJ_NUM" />
-                <ScalarProperty Name="VER_ID" ColumnName="VER_ID" />
-                <ScalarProperty Name="YEAR_ID" ColumnName="YEAR_ID" />
-                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
-                <ScalarProperty Name="OVERRIDE_PROJ_NAME" ColumnName="OVERRIDE_PROJ_NAME" />
-                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
-                <ScalarProperty Name="BUD_BID_PROJECTS_ID" ColumnName="BUD_BID_PROJECTS_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="BUD_BID_STATUS">
             <EntityTypeMapping TypeName="OracleModel.BUD_BID_STATUS">
               <MappingFragment StoreEntitySet="BUD_BID_STATUS">
@@ -8923,6 +8772,46 @@
                 <ScalarProperty Name="RECORD_NUMBER" ColumnName="RECORD_NUMBER" />
                 <ScalarProperty Name="MODULE" ColumnName="MODULE" />
                 <ScalarProperty Name="SEC_AUDIT_ID" ColumnName="SEC_AUDIT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BUD_BID_PROJECTS">
+            <EntityTypeMapping TypeName="OracleModel.BUD_BID_PROJECTS">
+              <MappingFragment StoreEntitySet="BUD_BID_PROJECTS">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="WE_DATE" ColumnName="WE_DATE" />
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
+                <ScalarProperty Name="CHEMICAL_MIX" ColumnName="CHEMICAL_MIX" />
+                <ScalarProperty Name="APP_TYPE" ColumnName="APP_TYPE" />
+                <ScalarProperty Name="OH_ID" ColumnName="OH_ID" />
+                <ScalarProperty Name="DAYS" ColumnName="DAYS" />
+                <ScalarProperty Name="ACRES" ColumnName="ACRES" />
+                <ScalarProperty Name="STATUS_ID" ColumnName="STATUS_ID" />
+                <ScalarProperty Name="COMPARE_PROJ_NUM" ColumnName="COMPARE_PROJ_NUM" />
+                <ScalarProperty Name="VER_ID" ColumnName="VER_ID" />
+                <ScalarProperty Name="YEAR_ID" ColumnName="YEAR_ID" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="OVERRIDE_PROJ_NAME" ColumnName="OVERRIDE_PROJ_NAME" />
+                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
+                <ScalarProperty Name="BUD_BID_PROJECTS_ID" ColumnName="BUD_BID_PROJECTS_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OVERHEAD_BUDGET_TYPE">
+            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_BUDGET_TYPE">
+              <MappingFragment StoreEntitySet="OVERHEAD_BUDGET_TYPE">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="LE_ORG_ID" ColumnName="LE_ORG_ID" />
+                <ScalarProperty Name="BUDGET_DESCRIPTION" ColumnName="BUDGET_DESCRIPTION" />
+                <ScalarProperty Name="BUDGET_NAME" ColumnName="BUDGET_NAME" />
+                <ScalarProperty Name="PARENT_BUDGET_TYPE_ID" ColumnName="PARENT_BUDGET_TYPE_ID" />
+                <ScalarProperty Name="OVERHEAD_BUDGET_TYPE_ID" ColumnName="OVERHEAD_BUDGET_TYPE_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -104,7 +104,6 @@
         <EntityTypeShape EntityType="OracleModel.CROSSING_RAILROAD" Width="1.5" PointX="24.625" PointY="13" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_INVENTORY" Width="1.5" PointX="5.625" PointY="21.375" />
         <EntityTypeShape EntityType="OracleModel.JOB_COST_CLASSES" Width="1.5" PointX="6.6409545664866245" PointY="15.271937302906038" />
-        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" Width="1.5" PointX="5.5" PointY="31.375" />
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_VERSION" Width="1.5" PointX="18" PointY="25.875" />
         <AssociationConnector Association="OracleModel.FK_CONTACTS_RAILROAD_ID" />
         <AssociationConnector Association="OracleModel.FK_PROJECT_RAILROAD_ID" />
@@ -118,15 +117,10 @@
         <EntityTypeShape EntityType="OracleModel.BUD_BID_LINES" Width="1.5" PointX="23.875" PointY="89.375" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_LOCKED" Width="1.5" PointX="26.75" PointY="86.875" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_ORGS" Width="1.5" PointX="21.875" PointY="89" />
-        <EntityTypeShape EntityType="OracleModel.BUD_BID_PROJECTS" Width="1.5" PointX="21.625" PointY="79.75" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_STATUS" Width="1.5" PointX="21.875" PointY="86.125" />
-        <AssociationConnector Association="OracleModel.FK_PROJECTS_ADJ_ID" />
         <AssociationConnector Association="OracleModel.FK_BUDGET_NUM_DETAIL_TASK_ID" />
         <AssociationConnector Association="OracleModel.FK_BUDGET_NUM_LINES_ID" />
-        <AssociationConnector Association="OracleModel.FK_PROJECTS_BUD_NUM_ID" />
         <AssociationConnector Association="OracleModel.FK_DETAIL_DETAIL_SHEET_ID" />
-        <AssociationConnector Association="OracleModel.FK_PROJECTS_DT_ID" />
-        <AssociationConnector Association="OracleModel.FK_PROJECTS_STATUS_ID" />
         <EntityTypeShape EntityType="OracleModel.SYS_MODULE_PROFILE_OPTIONS" Width="1.5" PointX="29.375" PointY="32.75" />
         <EntityTypeShape EntityType="OracleModel.SYS_PROFILE_OPTIONS" Width="1.5" PointX="31.875" PointY="34.25" />
         <EntityTypeShape EntityType="OracleModel.SYS_USER_PROFILE_OPTIONS" Width="1.5" PointX="34.875" PointY="35.75" />
@@ -134,6 +128,9 @@
         <AssociationConnector Association="OracleModel.FK_PROFILE_MODULE_ID" />
         <AssociationConnector Association="OracleModel.FK_PROFILE_OPTION_ID" />
         <EntityTypeShape EntityType="OracleModel.SYS_SECURITY_AUDIT" Width="1.5" PointX="3.375" PointY="34.125" />
+        <EntityTypeShape EntityType="OracleModel.BUD_BID_PROJECTS" Width="1.5" PointX="19.25" PointY="86.25" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" Width="1.5" PointX="10.75" PointY="83.125" />
+        <AssociationConnector Association="OracleModel.FK_PROJECTS_STATUS_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
