@@ -154,7 +154,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxAddProductionAcresPerMile;
+        protected global::Ext.Net.NumberField uxAddProductionAcresPerMile;
         
         /// <summary>
         /// uxAddProductionGallons control.
@@ -163,7 +163,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxAddProductionGallons;
+        protected global::Ext.Net.NumberField uxAddProductionGallons;
         
         /// <summary>
         /// uxAddProductionSubmit control.
@@ -307,7 +307,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxEditProductionAcresPerMile;
+        protected global::Ext.Net.NumberField uxEditProductionAcresPerMile;
         
         /// <summary>
         /// uxEditProductionGallons control.
@@ -316,7 +316,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxEditProductionGallons;
+        protected global::Ext.Net.NumberField uxEditProductionGallons;
         
         /// <summary>
         /// uxEditProductionSubmit control.
