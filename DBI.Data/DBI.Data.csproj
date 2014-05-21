@@ -151,7 +151,7 @@
     <Compile Include="CROSSING_RELATIONSHIP.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
-    <Compile Include="CROSSING_SUB_DIVISION.cs">
+    <Compile Include="CROSSING_SERVICE_SUB_DIV.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="CROSSING_SUPPLEMENTAL.cs">
