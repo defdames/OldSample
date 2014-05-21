@@ -557,7 +557,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 var TotalMinutes = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                     join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                                    where EntityFunctions.TruncateTime(d.TIME_IN) == EntityFunctions.TruncateTime(HeaderDate) && d.PERSON_ID == PersonId && h.STATUS != 5
+                                    where EntityFunctions.TruncateTime(h.DA_DATE) == EntityFunctions.TruncateTime(HeaderDate) && d.PERSON_ID == PersonId && h.STATUS != 5
                                     group d by new { d.PERSON_ID } into g
                                     select new { g.Key.PERSON_ID, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value)), TravelTime = g.Sum(d => d.TRAVEL_TIME), DriveTime = g.Sum(d => d.DRIVE_TIME) }).Single();
                 var Employee = (from e in _context.EMPLOYEES_V
