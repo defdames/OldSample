@@ -59,7 +59,7 @@
           <EntitySet Name="CROSSING_PROJECT" EntityType="OracleModel.Store.CROSSING_PROJECT" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_RAILROAD" EntityType="OracleModel.Store.CROSSING_RAILROAD" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_RELATIONSHIP" EntityType="OracleModel.Store.CROSSING_RELATIONSHIP" store:Type="Tables" Schema="XXEMS" />
-          <EntitySet Name="CROSSING_SUB_DIVISION" EntityType="OracleModel.Store.CROSSING_SUB_DIVISION" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="CROSSING_SERVICE_SUB_DIV" EntityType="OracleModel.Store.CROSSING_SERVICE_SUB_DIV" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_SUPPLEMENTAL" EntityType="OracleModel.Store.CROSSING_SUPPLEMENTAL" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSINGS" EntityType="OracleModel.Store.CROSSINGS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CUSTOMER_SURVEY_FIELDSETS" EntityType="OracleModel.Store.CUSTOMER_SURVEY_FIELDSETS" store:Type="Tables" Schema="XXEMS" />
@@ -1141,25 +1141,17 @@
           <Property Name="PROJECT_ID" Type="number" Precision="15" />
           <Property Name="CROSSING_ID" Type="number" Precision="15" />
         </EntityType>
-        <EntityType Name="CROSSING_SUB_DIVISION">
+        <EntityType Name="CROSSING_SERVICE_SUB_DIV">
           <Key>
-            <PropertyRef Name="SUB_DIVISION_ID" />
+            <PropertyRef Name="SERVICE_SUB_ID" />
           </Key>
-          <Property Name="SUB_DIVISION_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
-          <Property Name="STATE" Type="varchar2" MaxLength="100" />
-          <Property Name="CITY" Type="varchar2" MaxLength="100" />
-          <Property Name="COUNTY" Type="varchar2" MaxLength="100" />
-          <Property Name="STREET" Type="varchar2" MaxLength="100" />
-          <Property Name="ROUTE" Type="varchar2" MaxLength="100" />
-          <Property Name="DOT" Type="varchar2" MaxLength="30" />
-          <Property Name="MILE_POST" Type="number" Precision="15" Scale="2" />
-          <Property Name="SERVICE_TYPE" Type="varchar2" MaxLength="100" />
-          <Property Name="REMARKS" Type="varchar2" MaxLength="500" />
-          <Property Name="CREATE_DATE" Type="date" />
-          <Property Name="MODIFY_DATE" Type="date" />
-          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
-          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
-          <Property Name="SUB_DIVISION_NAME" Type="varchar2" Nullable="false" MaxLength="100" />
+          <Property Name="SERVICE_SUB_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RR_ID" Type="number" />
+          <Property Name="RR_NAME" Type="varchar2" MaxLength="200" />
+          <Property Name="SERVICE_UNIT_ID" Type="number" />
+          <Property Name="SERVICE_UNIT_NAME" Type="varchar2" MaxLength="200" />
+          <Property Name="SUB_DIVISION_ID" Type="number" />
+          <Property Name="SUB_DIVISION_NAME" Type="varchar2" MaxLength="200" />
         </EntityType>
         <EntityType Name="CROSSING_SUPPLEMENTAL">
           <Key>
@@ -3530,7 +3522,6 @@
             <End Role="SYS_ACTIVITY" EntitySet="SYS_ACTIVITY" />
           </AssociationSet>
           <EntitySet Name="CROSSING_DATA_ENTRY" EntityType="OracleModel.CROSSING_DATA_ENTRY" />
-          <EntitySet Name="CROSSING_SUB_DIVISION" EntityType="OracleModel.CROSSING_SUB_DIVISION" />
           <EntitySet Name="PA_TASKS_V" EntityType="OracleModel.PA_TASKS_V" />
           <EntitySet Name="PA_LOCATIONS_V" EntityType="OracleModel.PA_LOCATIONS_V" />
           <EntitySet Name="EXPENDITURE_TYPE_V" EntityType="OracleModel.EXPENDITURE_TYPE_V" />
@@ -3749,6 +3740,7 @@
             <End Role="BUD_BID_STATUS" EntitySet="BUD_BID_STATUS" />
             <End Role="BUD_BID_PROJECTS" EntitySet="BUD_BID_PROJECTS" />
           </AssociationSet>
+          <EntitySet Name="CROSSING_SERVICE_SUB_DIV" EntityType="OracleModel.CROSSING_SERVICE_SUB_DIV" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -4534,26 +4526,6 @@
           <Property Type="String" Name="SUB_DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CROSSING" Relationship="OracleModel.FK_DATA_ENTRY_CROSSING_ID" FromRole="CROSSING_DATA_ENTRY" ToRole="CROSSING" />
-        </EntityType>
-        <EntityType Name="CROSSING_SUB_DIVISION">
-          <Key>
-            <PropertyRef Name="SUB_DIVISION_ID" />
-          </Key>
-          <Property Type="Int64" Name="SUB_DIVISION_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="STATE" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CITY" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="COUNTY" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STREET" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ROUTE" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="DOT" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="MILE_POST" Precision="15" Scale="2" />
-          <Property Type="String" Name="SERVICE_TYPE" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SUB_DIVISION_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="PA_TASKS_V">
           <Key>
@@ -6620,6 +6592,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="CROSSING_SERVICE_SUB_DIV">
+          <Key>
+            <PropertyRef Name="SERVICE_SUB_ID" />
+          </Key>
+          <Property Type="Decimal" Name="SERVICE_SUB_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="RR_ID" Precision="38" Scale="0" />
+          <Property Type="String" Name="RR_NAME" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="SERVICE_UNIT_ID" Precision="38" Scale="0" />
+          <Property Type="String" Name="SERVICE_UNIT_NAME" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="SUB_DIVISION_ID" Precision="38" Scale="0" />
+          <Property Type="String" Name="SUB_DIVISION_NAME" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7211,27 +7195,6 @@
                 <ScalarProperty Name="ENTRY_TYPE" ColumnName="ENTRY_TYPE" />
                 <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
                 <ScalarProperty Name="DATA_ENTRY_ID" ColumnName="DATA_ENTRY_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CROSSING_SUB_DIVISION">
-            <EntityTypeMapping TypeName="OracleModel.CROSSING_SUB_DIVISION">
-              <MappingFragment StoreEntitySet="CROSSING_SUB_DIVISION">
-                <ScalarProperty Name="SUB_DIVISION_NAME" ColumnName="SUB_DIVISION_NAME" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="REMARKS" ColumnName="REMARKS" />
-                <ScalarProperty Name="SERVICE_TYPE" ColumnName="SERVICE_TYPE" />
-                <ScalarProperty Name="MILE_POST" ColumnName="MILE_POST" />
-                <ScalarProperty Name="DOT" ColumnName="DOT" />
-                <ScalarProperty Name="ROUTE" ColumnName="ROUTE" />
-                <ScalarProperty Name="STREET" ColumnName="STREET" />
-                <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
-                <ScalarProperty Name="CITY" ColumnName="CITY" />
-                <ScalarProperty Name="STATE" ColumnName="STATE" />
-                <ScalarProperty Name="SUB_DIVISION_ID" ColumnName="SUB_DIVISION_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -8812,6 +8775,19 @@
                 <ScalarProperty Name="BUDGET_NAME" ColumnName="BUDGET_NAME" />
                 <ScalarProperty Name="PARENT_BUDGET_TYPE_ID" ColumnName="PARENT_BUDGET_TYPE_ID" />
                 <ScalarProperty Name="OVERHEAD_BUDGET_TYPE_ID" ColumnName="OVERHEAD_BUDGET_TYPE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CROSSING_SERVICE_SUB_DIV">
+            <EntityTypeMapping TypeName="OracleModel.CROSSING_SERVICE_SUB_DIV">
+              <MappingFragment StoreEntitySet="CROSSING_SERVICE_SUB_DIV">
+                <ScalarProperty Name="SUB_DIVISION_NAME" ColumnName="SUB_DIVISION_NAME" />
+                <ScalarProperty Name="SUB_DIVISION_ID" ColumnName="SUB_DIVISION_ID" />
+                <ScalarProperty Name="SERVICE_UNIT_NAME" ColumnName="SERVICE_UNIT_NAME" />
+                <ScalarProperty Name="SERVICE_UNIT_ID" ColumnName="SERVICE_UNIT_ID" />
+                <ScalarProperty Name="RR_NAME" ColumnName="RR_NAME" />
+                <ScalarProperty Name="RR_ID" ColumnName="RR_ID" />
+                <ScalarProperty Name="SERVICE_SUB_ID" ColumnName="SERVICE_SUB_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
