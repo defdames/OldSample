@@ -29,7 +29,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 ReadInTruckNumberForApplication("Add");
 
             }
-            //X.Msg.Alert("test", Session["rrType"].ToString()).Show();
+          
         }
         protected void deApplicationGridData(object sender, StoreReadDataEventArgs e)
         {
@@ -62,26 +62,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             //Get application data and set datasource
          
                 List<object> data;
-                
-                //long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
-               
+                            
                 string json = (e.ExtraParams["crossingId"]);
                 List<CrossingForApplicationDetails> crossingList = JSON.Deserialize<List<CrossingForApplicationDetails>>(json);
                 List<long>crossingIdList = new List<long>();
                 foreach (CrossingForApplicationDetails crossing in crossingList)
                 {
                     crossingIdList.Add(crossing.CROSSING_ID);
-                    //CheckboxSelectionModel cm = CheckboxSelectionModel1;
-
-                    //List<string> selectedRecords = new List<string>();
-                    
-                    //foreach (Ext.Net.SelectedRow selectedRecord in cm.SelectedRows)
-                    //{
-                    //    selectedRecords.Add(selectedRecord.RecordID.ToString());
-                    //}
-                 
-                  
-                        //List<ApplicationDetails> selectedRecords = new List<ApplicationDetails>();
+                   
                 }        
                         using (Entities _context = new Entities())
                         {
@@ -103,9 +91,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         protected void deAddApplication(object sender, DirectEventArgs e)
         {
             CROSSING_APPLICATION data;
-
-            //long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
-
 
             //do type conversions
             DateTime Date = (DateTime)uxAddEntryDate.Value;

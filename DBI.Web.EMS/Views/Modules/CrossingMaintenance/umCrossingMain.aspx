@@ -149,7 +149,18 @@
                                  <BeforeActivate Handler="#{Toolbar1}.show()" />                            
                                 </Listeners>
                             </ext:Panel>
-
+                             <ext:Panel runat="server"
+                                Title="Manage KCS"
+                                ID="uxManageKCS"
+                                Disabled="false">
+                                <Loader runat="server"
+                                    ID="Loader3" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="ManageKCS.aspx">
+                                    <LoadMask ShowMask="true" />
+                                </Loader>
+                                 <Listeners>
+                                 <BeforeActivate Handler="#{Toolbar1}.show()" />                            
+                                </Listeners>
+                            </ext:Panel>
 
 
 
