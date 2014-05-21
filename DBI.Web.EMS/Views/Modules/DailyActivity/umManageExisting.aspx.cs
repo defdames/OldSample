@@ -305,6 +305,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						uxDeactivate.Value = "Deactivate";
 						uxTabSetInactiveButton.Text = "Set Inactive";
 						uxInactiveActivityButton.Text = "Set Inactive";
+                        uxApproveActivityButton.Text = "Approve";
+						uxTabApproveButton.Text = "Approve";
+                        uxHiddenApprove.Value = "Approve";
 						break;
 					case "APPROVED":
 						uxTabSetInactiveButton.Text = "Set Inactive";
@@ -333,6 +336,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 							uxTabApproveButton.Text = "Unapprove";
 							uxApproveActivityButton.Disabled = false;
 							uxTabApproveButton.Disabled = false;
+                            uxHiddenApprove.Value = "Unapprove";
 						}
 						else
 						{
@@ -543,15 +547,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 			long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
 
 			DAILY_ACTIVITY_HEADER data;
-
-			//Get record to be updated
-			using (Entities _context = new Entities())
-			{
-				data = (from d in _context.DAILY_ACTIVITY_HEADER
-						where d.HEADER_ID == HeaderId
-						select d).Single();
-				data.STATUS = 3;
-			}
+            
+            //Get record to be updated
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.DAILY_ACTIVITY_HEADER
+                        where d.HEADER_ID == HeaderId
+                        select d).Single();
+                if (uxHiddenApprove.Value.ToString() == "Approve")
+                {
+                    data.STATUS = 3;
+                }
+                else
+                {
+                    data.STATUS = 2;
+                }
+            }
 
 			//Update record in DB
 			GenericData.Update<DAILY_ACTIVITY_HEADER>(data);
