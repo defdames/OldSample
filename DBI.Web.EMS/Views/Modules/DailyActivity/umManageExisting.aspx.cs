@@ -60,7 +60,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 		{
 			using (Entities _context = new Entities())
 			{
-				List<object> rawData;
+				List<HeaderData> rawData;
 
 
 				if (validateComponentSecurity("SYS.DailyActivity.View"))
@@ -80,7 +80,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 								   join empv in _context.EMPLOYEES_V on empl.PERSON_ID equals empv.PERSON_ID into emplv
 								   from withempl in emplv.DefaultIfEmpty()
 								   where OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains(proj.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains((long)withempl.ORGANIZATION_ID)
-								   select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS, p.ORG_ID }).Distinct().ToList<object>();
+								   select new HeaderData{HEADER_ID = d.HEADER_ID, PROJECT_ID = d.PROJECT_ID, DA_DATE = d.DA_DATE, SEGMENT1 = p.SEGMENT1, LONG_NAME = p.LONG_NAME, STATUS_VALUE = s.STATUS_VALUE, DA_HEADER_ID = d.DA_HEADER_ID, STATUS = d.STATUS, ORG_ID = p.ORG_ID }).Distinct().ToList();
 					}
 					else
 					{
@@ -96,7 +96,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 								   join empv in _context.EMPLOYEES_V on empl.PERSON_ID equals empv.PERSON_ID into emplv
 								   from withempl in emplv.DefaultIfEmpty()
 								   where d.STATUS != 4 && (OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains(proj.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains((long)withempl.ORGANIZATION_ID))
-								   select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS, p.ORG_ID }).Distinct().ToList<object>();
+								   select new HeaderData{HEADER_ID = d.HEADER_ID, PROJECT_ID = d.PROJECT_ID, DA_DATE = d.DA_DATE, SEGMENT1 = p.SEGMENT1, LONG_NAME = p.LONG_NAME, STATUS_VALUE = s.STATUS_VALUE, DA_HEADER_ID = d.DA_HEADER_ID, STATUS = d.STATUS, ORG_ID = p.ORG_ID }).Distinct().ToList();
 					}
 				}
 				else
@@ -113,7 +113,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 								   join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
 								   join s in _context.DAILY_ACTIVITY_STATUS on h.STATUS equals s.STATUS
 								   where d.PERSON_ID == PersonId
-								   select new { d.HEADER_ID, h.PROJECT_ID, h.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, h.DA_HEADER_ID, h.STATUS }).ToList<object>();
+								   select new HeaderData{ HEADER_ID = d.HEADER_ID, PROJECT_ID = h.PROJECT_ID, DA_DATE = h.DA_DATE, SEGMENT1 = p.SEGMENT1, LONG_NAME = p.LONG_NAME, STATUS_VALUE = s.STATUS_VALUE, DA_HEADER_ID = h.DA_HEADER_ID, STATUS = h.STATUS }).ToList();
 					}
 					else
 					{
@@ -122,117 +122,95 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 								   join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
 								   join s in _context.DAILY_ACTIVITY_STATUS on h.STATUS equals s.STATUS
 								   where d.PERSON_ID == PersonId && h.STATUS != 4
-								   select new { d.HEADER_ID, h.PROJECT_ID, h.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, h.DA_HEADER_ID, h.STATUS }).ToList<object>();
+								   select new HeaderData{HEADER_ID = d.HEADER_ID, PROJECT_ID = h.PROJECT_ID, DA_DATE = h.DA_DATE, SEGMENT1 = p.SEGMENT1, LONG_NAME = p.LONG_NAME, STATUS_VALUE = s.STATUS_VALUE, DA_HEADER_ID = h.DA_HEADER_ID, STATUS = h.STATUS }).ToList();
 					}
 					uxCreateActivityButton.Disabled = true;
 
 				}
-				List<HeaderData> data = new List<HeaderData>();
+
+                int count;
+                
+                List<HeaderData> data = GenericData.EnumerableFilterHeader<HeaderData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], rawData, out count).ToList();
 
 				List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime(24);
 				List<EmployeeData> HoursOver14 = ValidationChecks.checkEmployeeTime(14);
-				List<long> OverlapProjects = ValidationChecks.employeeTimeOverlapCheck();
-				List<long> BusinessUnitProjects = ValidationChecks.EquipmentBusinessUnitCheck();
-				List<long> BusinessUnitEmployees = ValidationChecks.EmployeeBusinessUnitCheck();
-				
-				foreach (dynamic record in rawData)
+				//List<long> OverlapProjects = ValidationChecks.employeeTimeOverlapCheck();
+				//List<long> BusinessUnitProjects = ValidationChecks.EquipmentBusinessUnitCheck();
+				//List<long> BusinessUnitEmployees = ValidationChecks.EmployeeBusinessUnitCheck();
+                
+
+				foreach (HeaderData record in data)
 				{
+                    
 					string Warning = "Zero";
 					string WarningType = string.Empty;
+                    if (record.STATUS != 4 && record.STATUS != 5)
+                    {
+                        foreach (EmployeeData OffendingProject in HoursOver14)
+                        {
+                            if (OffendingProject.HEADER_ID == record.HEADER_ID)
+                            {
+                                Warning = "Warning";
+                                WarningType = "Over 14 hours logged for an employee <br />";
+                                break;
+                            }
 
-					foreach (EmployeeData OffendingProject in HoursOver14)
-					{
-						if (OffendingProject.HEADER_ID == record.HEADER_ID)
-						{
-							Warning = "Warning";
-							WarningType = "Over 14 hours logged for an employee <br />";
-							break;
-						}
+                        }
+                        if (ValidationChecks.EquipmentBusinessUnitCheck(record.HEADER_ID, "bool")){
+                            {
+                                Warning = "Error";
+                                WarningType += "Contains Equipment outside of Business Unit.<br />";
+                            }
+                        }
+                        if(ValidationChecks.EmployeeBusinessUnitCheck(record.HEADER_ID, "bool")){
+                        
+                                Warning = "Error";
+                                WarningType += "Contains Employees outside of Business Unit.<br />";
+                        }
+                        foreach (EmployeeData OffendingProject in HoursOver24)
+                        {
+                            if (OffendingProject.HEADER_ID == record.HEADER_ID)
+                            {
+                                Warning = "Error";
+                                WarningType += "24 or more hours logged for an employee.<br />";
+                                break;
+                            }
+                        }
 
-					}
-					foreach (long OffendingProject in BusinessUnitProjects)
-					{
-						if (OffendingProject == record.HEADER_ID)
-						{
-							Warning = "Error";
-							WarningType += "Contains Equipment outside of Business Unit.<br />";
-							break;
-						}
-					}
+                        if (ValidationChecks.employeeTimeOverlapCheck(record.HEADER_ID))
+                        {
+                            Warning = "Error";
+                            WarningType += "An employee has overlapping time with another project.<br />";
+                        }
 
-					foreach (long OffendingProject in BusinessUnitEmployees)
-					{
-						if (OffendingProject == record.HEADER_ID)
-						{
-							Warning = "Error";
-							WarningType += "Contains Employees outside of Business Unit.<br />";
-							break;
-						}
-					}
-					foreach (EmployeeData OffendingProject in HoursOver24)
-					{
-						if (OffendingProject.HEADER_ID == record.HEADER_ID)
-						{
-							Warning = "Error";
-							WarningType += "24 or more hours logged for an employee.<br />";
-							break;
-						}
-					}
+                        if (record.ORG_ID == 121)
+                        {
+                            List<WarningData> LunchList = ValidationChecks.LunchCheck(record.HEADER_ID);
+                            if (LunchList.Count > 0)
+                            {
+                                Warning = "Error";
+                                WarningType += "An employee is missing a lunch entry.<br />";
+                            }
+                        }
 
+                        WarningData PerDiems = ValidationChecks.checkPerDiem(record.HEADER_ID);
+                        if (PerDiems != null)
+                        {
+                            Warning = PerDiems.WarningType;
+                            WarningType += PerDiems.AdditionalInformation;
+                        }
 
-					foreach (long OffendingProject in OverlapProjects)
-					{
-						if (OffendingProject == record.HEADER_ID)
-						{
-							Warning = "Error";
-							WarningType += "An employee has overlapping time with another project.<br />";
-							break;
-						}
-					}
-					if (record.ORG_ID == 121)
-					{
-						List<WarningData> LunchList = ValidationChecks.LunchCheck(record.HEADER_ID);
-						if (LunchList.Count > 0)
-						{
-							Warning = "Error";
-							WarningType += "An employee is missing a lunch entry.<br />";
-						}
-					}
-					if (record.ORG_ID == 123)
-					{
-						if (ValidationChecks.employeeWithShopTimeCheck(record.HEADER_ID))
-						{
-							Warning = "Error";
-							WarningType += "An employee is missing shop time.";
-						}
-					}
-
-					WarningData PerDiems = ValidationChecks.checkPerDiem(record.HEADER_ID);
-					if (PerDiems != null)
-					{
-						Warning = PerDiems.WarningType;
-						WarningType += PerDiems.AdditionalInformation;
-					}
-
-					data.Add(new HeaderData
-					{
-						HEADER_ID = record.HEADER_ID,
-						PROJECT_ID = record.PROJECT_ID,
-						DA_DATE = record.DA_DATE,
-						SEGMENT1 = record.SEGMENT1,
-						LONG_NAME = record.LONG_NAME,
-						STATUS_VALUE = record.STATUS_VALUE,
-						DA_HEADER_ID = record.DA_HEADER_ID,
-						STATUS = record.STATUS,
-						WARNING = Warning,
-						WARNING_TYPE = WarningType
-					});
+                        record.WARNING = Warning;
+                        record.WARNING_TYPE = WarningType;
+                    }
 				}
 
 
-				var SortedData = data.OrderBy(x => x.STATUS).ThenBy(x => x.WARNING).ThenBy(x => x.DA_DATE).ToList<HeaderData>();
-				int count;
-				uxManageGridStore.DataSource = GenericData.EnumerableFilterHeader<HeaderData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], SortedData, out count);
+
+
+
+                var SortedData = data.OrderByDescending(x => x.DA_DATE).ThenBy(x => x.STATUS).ToList<HeaderData>();
+                uxManageGridStore.DataSource = SortedData;
 				e.Total = count;
 
 			}
@@ -342,17 +320,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
 						uxDeactivate.Value = "Deactivate";
 
-						if (!validateComponentSecurity("SYS.DailyActivity.Post") && !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted"))
-						{
-							uxChemicalTab.Disabled = true;
-							uxEmployeeTab.Disabled = true;
-							uxEquipmentTab.Disabled = true;
-							uxInventoryTab.Disabled = true;
-							uxHeaderTab.Disabled = true;
-							uxWeatherTab.Disabled = true;
-							uxProductionTab.Disabled = true;
-							uxFooterTab.Disabled = true;
-						}
+						uxChemicalTab.Disabled = true;
+						uxEmployeeTab.Disabled = true;
+						uxEquipmentTab.Disabled = true;
+						uxInventoryTab.Disabled = true;
+						uxHeaderTab.Disabled = true;
+						uxWeatherTab.Disabled = true;
+						uxProductionTab.Disabled = true;
+						uxFooterTab.Disabled = true;
 
 						break;
 					case "POSTED":
@@ -859,8 +834,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 				ToUpdate = _context.DAILY_ACTIVITY_HEADER.Where(x => x.HEADER_ID == HeaderId).Single();
 				ToUpdate.STATUS = 4;
 			}
+            uxMarkAsPostedButton.Disabled = true;
+            uxTabMarkButton.Disabled = true;
 			GenericData.Update<DAILY_ACTIVITY_HEADER>(ToUpdate);
-			uxManageGridStore.Reload();
+            RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
+            var Index = GridModel.SelectedIndex;
+
+            uxManageGridStore.Reload(new
+            {
+                callback = JRawValue.From("function() {App.uxManageGrid.getSelectionModel().select(" + Index + ")}")
+            });
+			
 		}
 
 		protected MemoryStream generatePDF(long HeaderId)
@@ -1815,14 +1799,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 			uxPlaceholderWindow.Show();
 		}
 
-		[DirectMethod]
-		public void dmLoadSupportProjectWindow(string HeaderId, string EmployeeId)
-		{
-			uxPlaceholderWindow.ClearContent();
-			uxPlaceholderWindow.LoadContent(string.Format("umChooseSupportProject.aspx?HeaderId={0}&EmployeeId={1}", HeaderId, EmployeeId));
-			uxPlaceholderWindow.Show();
-		}
-		
 	}
 
 	public class EquipmentDetails

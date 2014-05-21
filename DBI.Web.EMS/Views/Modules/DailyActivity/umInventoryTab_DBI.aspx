@@ -34,6 +34,7 @@
 								<ext:ModelField Name="UNIT_OF_MEASURE" Type="String" />
 								<ext:ModelField Name="EPA_NUMBER" Type="String" />
 								<ext:ModelField Name="INV_NAME" Type="String" />
+								<ext:ModelField Name="CONTRACTOR_SUPPLIED" Type="Boolean"  />
 							</Fields>
 						</ext:Model>
 					</Model>
@@ -86,6 +87,9 @@
 					<ext:Column runat="server"
 						DataIndex="INV_NAME"
 						Text="Inventory Name" Hidden="true" />
+					<ext:CheckColumn runat="server"
+						DataIndex="CONTRACTOR_SUPPLIED"
+						Text="Contractor Supplied" />
 				</Columns>
 			</ColumnModel>
 			<TopBar>

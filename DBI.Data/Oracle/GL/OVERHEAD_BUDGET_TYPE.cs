@@ -18,7 +18,7 @@ namespace DBI.Data
         {
             using (Entities _context = new Entities())
             {
-                List<OVERHEAD_BUDGET_TYPE> _returnList = _context.OVERHEAD_BUDGET_TYPE.Where(c => c.LE_ORD_ID == BusinessUnitID).ToList();
+                List<OVERHEAD_BUDGET_TYPE> _returnList = _context.OVERHEAD_BUDGET_TYPE.Where(c => c.LE_ORG_ID == BusinessUnitID).ToList();
                 return _returnList;
             }
         }

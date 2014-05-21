@@ -33,13 +33,7 @@ namespace DBI.Data
         public string CREATED_BY { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string MODIFIED_BY { get; set; }
-        public decimal ADJ_ID { get; set; }
-        public decimal DETAIL_TASK_ID { get; set; }
-        public decimal BUDGET_NUM_ID { get; set; }
     
-        public virtual BUD_BID_ADJUSTMENT BUD_BID_ADJUSTMENT { get; set; }
-        public virtual BUD_BID_BUDGET_NUM BUD_BID_BUDGET_NUM { get; set; }
-        public virtual BUD_BID_DETAIL_TASK BUD_BID_DETAIL_TASK { get; set; }
         public virtual BUD_BID_STATUS BUD_BID_STATUS { get; set; }
     }
 }

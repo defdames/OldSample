@@ -77,7 +77,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.BudgetType.AddEdit
             {
                  data.BUDGET_NAME = uxBudgetName.SelectedItem.Value;
                  data.BUDGET_DESCRIPTION = uxBudgetDescription.Text;
-                 data.LE_ORD_ID = organizationID;
+                 data.LE_ORG_ID = organizationID;
                  data.CREATE_DATE = DateTime.Now;
                  data.MODIFY_DATE = DateTime.Now;
                  data.CREATED_BY = User.Identity.Name;

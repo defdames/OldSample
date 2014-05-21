@@ -12,16 +12,13 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class BUD_BID_ADJUSTMENT
+    public partial class SYS_SECURITY_AUDIT
     {
-        public decimal ADJ_ID { get; set; }
-        public long PROJECT_ID { get; set; }
-        public Nullable<decimal> MAT_ADJ { get; set; }
-        public Nullable<decimal> WEATHER_ADJ { get; set; }
-        public Nullable<decimal> OVERHEAD { get; set; }
-        public Nullable<System.DateTime> CREATE_DATE { get; set; }
-        public string CREATED_BY { get; set; }
-        public Nullable<System.DateTime> MODIFY_DATE { get; set; }
+        public decimal SEC_AUDIT_ID { get; set; }
+        public string MODULE { get; set; }
+        public decimal RECORD_NUMBER { get; set; }
+        public string COMMENTS { get; set; }
         public string MODIFIED_BY { get; set; }
+        public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
     }
 }
