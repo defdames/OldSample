@@ -314,8 +314,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						uxPostMultipleButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
 						uxMarkAsPostedButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
 						uxTabMarkButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
-						uxApproveActivityButton.Disabled = true;
-						uxTabApproveButton.Disabled = true;
 						uxTabSetInactiveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
 						uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
 						uxDeactivate.Value = "Deactivate";
@@ -329,6 +327,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						uxProductionTab.Disabled = true;
 						uxFooterTab.Disabled = true;
 
+						if (validateComponentSecurity("SYS.DailyActivity.Post") && validateComponentSecurity("SYS.DailyActivity.Approve"))
+						{
+							uxApproveActivityButton.Text = "Unapprove";
+							uxTabApproveButton.Text = "Unapprove";
+							uxApproveActivityButton.Disabled = false;
+							uxTabApproveButton.Disabled = false;
+						}
+						else
+						{
+							uxApproveActivityButton.Disabled = true;
+							uxTabApproveButton.Disabled = true;
+						}
 						break;
 					case "POSTED":
 						uxApproveActivityButton.Disabled = true;
