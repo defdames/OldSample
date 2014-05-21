@@ -95,14 +95,14 @@
 						<ext:TextField runat="server"
 							ID="uxAddProductionPoleTo"
 							FieldLabel="Pole/MP To" Width="500" />
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxAddProductionAcresPerMile"
 							FieldLabel="Acres/Mile"
-							AllowBlank="false" Width="500" />
-						<ext:TextField runat="server"
+							AllowBlank="false" Width="500" MinValue="0" />
+						<ext:NumberField runat="server"
 							ID="uxAddProductionGallons"
 							FieldLabel="Gallons"
-							AllowBlank="false" Width="500" />
+							AllowBlank="false" Width="500" MinValue="0" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
@@ -195,14 +195,14 @@
 						<ext:TextField runat="server"
 							ID="uxEditProductionPoleTo"
 							FieldLabel="Pole/MP To" Width="500" />
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxEditProductionAcresPerMile"
 							FieldLabel="Acres/Mile"
-							AllowBlank="false" Width="500" />
-						<ext:TextField runat="server"
+							AllowBlank="false" Width="500" MinValue="0" />
+						<ext:NumberField runat="server"
 							ID="uxEditProductionGallons"
 							FieldLabel="Gallons"
-							AllowBlank="false" Width="500" />
+							AllowBlank="false" Width="500" MinValue="0" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"

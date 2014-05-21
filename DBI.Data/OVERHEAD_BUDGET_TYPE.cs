@@ -18,7 +18,7 @@ namespace DBI.Data
         public long PARENT_BUDGET_TYPE_ID { get; set; }
         public string BUDGET_NAME { get; set; }
         public string BUDGET_DESCRIPTION { get; set; }
-        public long LE_ORD_ID { get; set; }
+        public long LE_ORG_ID { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }

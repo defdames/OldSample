@@ -148,12 +148,12 @@
 				</ext:DropDownField>
 				<ext:NumberField runat="server"
 					ID="uxAddEquipmentStart"
-					FieldLabel="Starting Meter"
+					FieldLabel="Starting Units"
 					Vtype="numberrange" Width="500"
 					EndNumberField="uxAddEquipmentEnd" />
 				<ext:NumberField runat="server"
 					ID="uxAddEquipmentEnd"
-					FieldLabel="Ending Meter"
+					FieldLabel="Ending Units"
 					Vtype="numberrange" Width="500"
 					StartNumberField="uxAddEquipmentStart" />
 			</Items>
@@ -285,13 +285,13 @@
 				</ext:DropDownField>
 				<ext:NumberField runat="server"
 					ID="uxEditEquipmentStart"
-					FieldLabel="Starting Meter"
+					FieldLabel="Starting Units"
 					AllowBlank="true"
 					Vtype="numberrange" Width="500"
 					EndNumberField="uxEditEquipmentEnd" />
 				<ext:NumberField runat="server"
 					ID="uxEditEquipmentEnd"
-					FieldLabel="Ending Meter"
+					FieldLabel="Ending Units"
 					AllowBlank="true"
 					Vtype="numberrange" Width="500"
 					StartNumberField="uxEditEquipmentStart" />
