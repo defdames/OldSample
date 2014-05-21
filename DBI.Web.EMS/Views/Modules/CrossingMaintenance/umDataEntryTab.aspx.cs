@@ -27,7 +27,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
                 ReadInTruckNumberForApplication("Add");
-              
+
             }
             //X.Msg.Alert("test", Session["rrType"].ToString()).Show();
         }
@@ -41,7 +41,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 if (validateComponentSecurity("SYS.CrossingMaintenance.DataEntryView"))
                 {
                     long RailroadId = long.Parse(Session["rrType"].ToString());
-                
+
                     List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
                     data = (from d in _context.CROSSINGS
                             join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
@@ -57,31 +57,55 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             }
         }
-        //protected void GetApplicationGridData(object sender, DirectEventArgs e)
-        //{
-        //    //Get application data and set datasource
-        //    using (Entities _context = new Entities())
-        //    {
-        //        long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
-        //        var data = (from a in _context.CROSSING_APPLICATION
-        //                    join c in _context.CROSSINGS on a.CROSSING_ID equals c.CROSSING_ID
-        //                    where a.CROSSING_ID == CrossingId
+        protected void GetApplicationGridData(object sender, DirectEventArgs e)
+        {
+            //Get application data and set datasource
+         
+                List<object> data;
+                
+                //long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+               
+                string json = (e.ExtraParams["crossingId"]);
+                List<CrossingForApplicationDetails> crossingList = JSON.Deserialize<List<CrossingForApplicationDetails>>(json);
+                List<long>crossingIdList = new List<long>();
+                foreach (CrossingForApplicationDetails crossing in crossingList)
+                {
+                    crossingIdList.Add(crossing.CROSSING_ID);
+                    //CheckboxSelectionModel cm = CheckboxSelectionModel1;
 
-        //                    select new { a.CROSSING_ID, a.APPLICATION_ID, a.APPLICATION_NUMBER, a.APPLICATION_REQUESTED, a.APPLICATION_DATE, a.TRUCK_NUMBER, a.SPRAY, a.CUT, a.INSPECT, a.REMARKS }).ToList<object>();
+                    //List<string> selectedRecords = new List<string>();
+                    
+                    //foreach (Ext.Net.SelectedRow selectedRecord in cm.SelectedRows)
+                    //{
+                    //    selectedRecords.Add(selectedRecord.RecordID.ToString());
+                    //}
+                 
+                  
+                        //List<ApplicationDetails> selectedRecords = new List<ApplicationDetails>();
+                }        
+                        using (Entities _context = new Entities())
+                        {
+
+                            data = (from a in _context.CROSSING_APPLICATION
+                                    join c in _context.CROSSINGS on a.CROSSING_ID equals c.CROSSING_ID
+                                    where  crossingIdList.Contains(a.CROSSING_ID)
+                                    select new { c.CROSSING_NUMBER, a.CROSSING_ID, a.APPLICATION_ID, a.APPLICATION_NUMBER, a.APPLICATION_REQUESTED, a.APPLICATION_DATE, a.TRUCK_NUMBER, a.SPRAY, a.CUT, a.INSPECT, a.REMARKS }).ToList<object>();
 
 
-        //        uxApplicationEntryGrid.Store.Primary.DataSource = data;
-        //        uxApplicationEntryGrid.Store.Primary.DataBind();
+                            uxApplicationEntryGrid.Store.Primary.DataSource = data;
+                            uxApplicationEntryGrid.Store.Primary.DataBind();
 
-
-        //    }
-        //}
+                        }
+                  
+                
+            
+        }
         protected void deAddApplication(object sender, DirectEventArgs e)
         {
             CROSSING_APPLICATION data;
 
             //long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
-            
+
 
             //do type conversions
             DateTime Date = (DateTime)uxAddEntryDate.Value;
@@ -90,7 +114,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string Spray = uxAddEntrySprayBox.Value.ToString();
             string Cut = uxAddEntryCutBox.Value.ToString();
             string Inspect = uxAddEntryInspectBox.Value.ToString();
-            
+
             if (uxAddEntrySprayBox.Checked)
             {
                 Spray = "Y";
@@ -124,74 +148,54 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 //check for if application requested has been duplicated in the same fiscal year.
                 //CROSSING_APPLICATION appdatedata;
-                //DateTime appDate = Date;
-                //DateTime Start = new DateTime(2014, 11, 1); //this pulls in november 1st of year for fiscal yr
-                //DateTime End = new DateTime(2015, 10, 31); //this pulls in oct 31st of next year for fiscal yr
-                //if (appDate >= Start && appDate <= End)
-                //{
-                //    using (Entities _context = new Entities())
-                //    {
-                //        data = (from a in _context.CROSSING_APPLICATION
-                //                where a.APPLICATION_REQUESTED == AppRequested && AppRequested.Contains(a.APPLICATION_REQUESTED)
-                //                select a).Single();
-                //    }
-                   
-                //    //MessageBox.Show(new MessageBoxConfig()
-                //    //{
-                //    //    Title = "Warning",
-                //    //    Message = "Application already contains this number for this fiscal year",
-                //    //    Buttons = MessageBox.Button.OK,
-                //    //    Icon = MessageBox.Icon.WARNING,
-                //    //});
-                //    Notification.Show(new NotificationConfig()
-                //    {
-                //        Title = "Success",
-                //        Html = "Application Added Successfully",
-                //        Closable = true,
-                //        AlignCfg = new NotificationAlignConfig
-                //        {
-                //            ElementAnchor = AnchorPoint.Center,
-                //            TargetAnchor = AnchorPoint.Center
-                //        }
-                //    });
-                                   
-                //}
-                //else
-                //{
+                DateTime appDate = Date;
+                DateTime Start = new DateTime(2014, 11, 1); //this pulls in november 1st of year for fiscal yr
+                DateTime End = new DateTime(2015, 10, 31); //this pulls in oct 31st of next year for fiscal yr
+                if (appDate >= Start && appDate <= End)
+                {
+                    using (Entities _context = new Entities())
+                    {
+                        data = (from a in _context.CROSSING_APPLICATION
+                                where a.APPLICATION_REQUESTED == AppRequested && AppRequested.Contains(a.APPLICATION_REQUESTED)
+                                select a).Single();
+                    }
+                X.Msg.Alert("test",  "Application already contains this number for this fiscal year").Show();
+                }
+                else
+                {
 
                 //Add to Db
                 using (Entities _context = new Entities())
                 {
                     data = new CROSSING_APPLICATION();
 
-                        data.APPLICATION_DATE = Date;
-                        data.APPLICATION_REQUESTED = AppRequested;
-                        data.TRUCK_NUMBER = TruckNumber;
-                        data.SPRAY = Spray;
-                        data.CUT = Cut;
-                        data.INSPECT = Inspect;                       
-                        data.CROSSING_ID = crossing.CROSSING_ID;
-                        try
-                        {
-                            string Remarks = uxAddEntryRemarks.Value.ToString();
-                            data.REMARKS = Remarks;
-                        }
-                        catch (Exception)
-                        {
-                            data.REMARKS = null;
-                        }
-                       GenericData.Insert<CROSSING_APPLICATION>(data); 
+                    data.APPLICATION_DATE = Date;
+                    data.APPLICATION_REQUESTED = AppRequested;
+                    data.TRUCK_NUMBER = TruckNumber;
+                    data.SPRAY = Spray;
+                    data.CUT = Cut;
+                    data.INSPECT = Inspect;
+                    data.CROSSING_ID = crossing.CROSSING_ID;
+                    try
+                    {
+                        string Remarks = uxAddEntryRemarks.Value.ToString();
+                        data.REMARKS = Remarks;
+                    }
+                    catch (Exception)
+                    {
+                        data.REMARKS = null;
+                    }
+                    GenericData.Insert<CROSSING_APPLICATION>(data);
                 }
 
                 uxAddNewApplicationEntryWindow.Hide();
-                uxAddApplicationForm.Reset();
-                uxAppEntryCrossingStore.Reload();
+                uxApplicationStore.Reload();
 
 
 
                 Notification.Show(new NotificationConfig()
                 {
-                    Title = "Success",                  
+                    Title = "Success",
                     Html = "Application Added Successfully",
                     HideDelay = 1000,
                     AlignCfg = new NotificationAlignConfig
@@ -201,9 +205,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     }
                 });
                 }
-                
-            
-          }
+            }
+        }
+
+
+        
         //protected void deEditApplicationForm(object sender, DirectEventArgs e)
         //{
         //    string json = e.ExtraParams["ApplicationInfo"];
@@ -315,7 +321,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
         //    uxEditApplicationEntryWindow.Hide();
         //    uxEditApplicationForm.Reset();
-           
+
 
         //    Notification.Show(new NotificationConfig()
         //    {
@@ -339,7 +345,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             public string TRUCK_NUMBER { get; set; }
             public long FISCAL_YEAR { get; set; }
             public string SPRAY { get; set; }
-            public string CUT { get; set; }        
+            public string CUT { get; set; }
             public string INSPECT { get; set; }
             public string REMARKS { get; set; }
 
@@ -362,52 +368,54 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 {
                     uxAddApplicationTruckStore.DataSource = data;
                 }
-               
+
             }
         }
-          public class CrossingForApplicationDetails
+        public class CrossingForApplicationDetails
+        {
+            public long CROSSING_ID { get; set; }
+            public string CROSSING_NUMBER { get; set; }
+            public string SERVICE_UNIT { get; set; }
+            public string SUB_DIVISION { get; set; }
+            public string DOT { get; set; }
+            public string MILE_POST { get; set; }
+            public string STATE { get; set; }
+            public string CONTACT_ID { get; set; }
+        }
+        protected void deRemoveApplicationEntry(object sender, DirectEventArgs e)
+        {
+            CROSSING_APPLICATION data;
+            string json = e.ExtraParams["ApplicationInfo"];
+
+            List<ApplicationDetails> ApplicationList = JSON.Deserialize<List<ApplicationDetails>>(json);
+            foreach (ApplicationDetails Application in ApplicationList)
             {
-                public long CROSSING_ID { get; set; }
-                public string CROSSING_NUMBER { get; set; }              
-                public string SERVICE_UNIT { get; set; }
-                public string SUB_DIVISION { get; set; }
-                public string DOT { get; set; }
-                public string MILE_POST{ get; set; }
-                public string STATE { get; set; }
-                public string CONTACT_ID { get; set; }
+                using (Entities _context = new Entities())
+                {
+                    data = (from d in _context.CROSSING_APPLICATION
+                            where d.APPLICATION_ID == Application.APPLICATION_ID
+                            select d).Single();
+
+
+                    GenericData.Delete<CROSSING_APPLICATION>(data);
+                    uxApplicationStore.Reload();
+                }
+
+                Notification.Show(new NotificationConfig()
+                {
+                    Title = "Success",
+                    Html = "Application Removed Successfully",
+                    HideDelay = 1000,
+                    AlignCfg = new NotificationAlignConfig
+                    {
+                        ElementAnchor = AnchorPoint.Center,
+                        TargetAnchor = AnchorPoint.Center
+                    }
+                });
+
+
             }
-        //protected void deRemoveApplicationEntry(object sender, DirectEventArgs e)
-        //{
-        //      CROSSING_APPLICATION data;
-        //    string json = e.ExtraParams["ApplicationInfo"];
 
-        //    List<ApplicationDetails> ApplicationList = JSON.Deserialize<List<ApplicationDetails>>(json);
-        //    foreach (ApplicationDetails Application in ApplicationList)
-        //    {
-        //        using (Entities _context = new Entities())
-        //        {
-        //            data = (from d in _context.CROSSING_APPLICATION
-        //                    where d.APPLICATION_ID == Application.APPLICATION_ID
-        //                    select d).Single();
-
-        //        }
-        //        GenericData.Delete<CROSSING_APPLICATION>(data);
-
-              
-
-        //        Notification.Show(new NotificationConfig()
-        //        {
-        //            Title = "Success",
-        //            Html = "Application Removed Successfully",
-        //            HideDelay = 1000,
-        //            AlignCfg = new NotificationAlignConfig
-        //            {
-        //                ElementAnchor = AnchorPoint.Center,
-        //                TargetAnchor = AnchorPoint.Center
-        //            }
-        //        });
-         
-        
         }
-     
     }
+}
