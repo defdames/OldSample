@@ -480,12 +480,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                     join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                     join em in _context.EMPLOYEES_V on e.PERSON_ID equals em.PERSON_ID
                                     where e.HEADER_ID == HeaderId
-                                    select new {e.EMPLOYEE_ID, e.PERSON_ID, em.EMPLOYEE_NAME, e.DAILY_ACTIVITY_HEADER.DA_DATE, e.TIME_IN, e.TRAVEL_TIME, e.DRIVE_TIME, p.ORG_ID }).ToList();
+                                    select new {e.EMPLOYEE_ID, e.PERSON_ID, em.EMPLOYEE_NAME, e.DAILY_ACTIVITY_HEADER.DA_DATE, e.TRAVEL_TIME, e.DRIVE_TIME, p.ORG_ID }).ToList();
                 foreach (var Employee in EmployeeList)
                 {
                     var TotalMinutes = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                         join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                                        where EntityFunctions.TruncateTime(d.TIME_IN) == EntityFunctions.TruncateTime(Employee.TIME_IN) && d.PERSON_ID == Employee.PERSON_ID && h.STATUS != 5
+                                        where h.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID && h.STATUS != 5
                                         group d by new { d.PERSON_ID } into g
                                         select new { g.Key.PERSON_ID, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value)) }).SingleOrDefault();
                     
@@ -501,7 +501,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         {
                             var LoggedLunches = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                                  join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                                                 where EntityFunctions.TruncateTime(d.TIME_IN) == EntityFunctions.TruncateTime(Employee.TIME_IN) && d.PERSON_ID == Employee.PERSON_ID && d.LUNCH == "Y"
+                                                 where h.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID && d.LUNCH == "Y"
                                                  select d.LUNCH).Count();
                             if (LoggedLunches == 0)
                             {
@@ -516,7 +516,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             {
                                 var LunchLength = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                                    join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                                                   where EntityFunctions.TruncateTime(d.TIME_IN) == EntityFunctions.TruncateTime(Employee.TIME_IN) && d.PERSON_ID == Employee.PERSON_ID && d.LUNCH == "Y"
+                                                   where h.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID && d.LUNCH == "Y"
                                                    select d.LUNCH_LENGTH).Single();
                                 if (TotalTime >= 308 && TotalTime < 728)
                                 {
@@ -557,7 +557,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 var TotalMinutes = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                     join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                                    where EntityFunctions.TruncateTime(d.TIME_IN) == EntityFunctions.TruncateTime(HeaderDate) && d.PERSON_ID == PersonId && h.STATUS != 5
+                                    where EntityFunctions.TruncateTime(h.DA_DATE) == EntityFunctions.TruncateTime(HeaderDate) && d.PERSON_ID == PersonId && h.STATUS != 5
                                     group d by new { d.PERSON_ID } into g
                                     select new { g.Key.PERSON_ID, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value)), TravelTime = g.Sum(d => d.TRAVEL_TIME), DriveTime = g.Sum(d => d.DRIVE_TIME) }).Single();
                 var Employee = (from e in _context.EMPLOYEES_V
