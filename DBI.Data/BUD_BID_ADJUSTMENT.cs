@@ -14,11 +14,6 @@ namespace DBI.Data
     
     public partial class BUD_BID_ADJUSTMENT
     {
-        public BUD_BID_ADJUSTMENT()
-        {
-            this.BUD_BID_PROJECTS = new HashSet<BUD_BID_PROJECTS>();
-        }
-    
         public decimal ADJ_ID { get; set; }
         public long PROJECT_ID { get; set; }
         public Nullable<decimal> MAT_ADJ { get; set; }
@@ -28,7 +23,5 @@ namespace DBI.Data
         public string CREATED_BY { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string MODIFIED_BY { get; set; }
-    
-        public virtual ICollection<BUD_BID_PROJECTS> BUD_BID_PROJECTS { get; set; }
     }
 }

@@ -44,7 +44,6 @@
 								<ext:ModelField Name="DRIVE_TIME_FORMATTED" Type="String" />
 								<ext:ModelField Name="SHOPTIME_AM_FORMATTED" Type="String" />
 								<ext:ModelField Name="SHOPTIME_PM_FORMATTED" Type="String" />
-								<ext:ModelField Name="SUPPORT_PROJECT" />
 								<ext:ModelField Name="PER_DIEM" Type="String"  />
 								<ext:ModelField Name="FOREMAN_LICENSE" />
 								<ext:ModelField Name="COMMENTS" Type="String"  />
@@ -94,12 +93,6 @@
 						Flex="1"
 						Hidden="true" />
 					<ext:Column runat="server"
-						ID="uxSupportProjectColumn"
-						Text="Support Project"
-						DataIndex="SUPPORT_PROJECT"
-						Flex="1"
-						Hidden="true" />
-					<ext:Column runat="server"
 						Text="Per Diem"
 						DataIndex="PER_DIEM"
 						Flex="1" />
@@ -114,6 +107,7 @@
 					<ext:Column runat="server"
 						ID="uxRoleTypeColumn"
 						Text="Role Type"
+						Hidden="true"
 						DataIndex="ROLE_TYPE"
 						Flex="1" />
 					<ext:Column runat="server"
@@ -196,19 +190,6 @@
 							</DirectEvents>
 						</ext:Button>
 						<ext:ToolbarSpacer ID="ToolbarSpacer4" runat="server" />
-						<ext:Button runat="server"
-							ID="uxChooseSupportProject"
-							Text="Choose Support Project"
-							Icon="LinkGo"
-							Disabled="true">
-							<DirectEvents>
-								<Click OnEvent="deChooseSupportProject">
-									<ExtraParams>
-										<ext:Parameter Name="EmployeeId" Value="#{uxCurrentEmployeeGrid}.getSelectionModel().getSelection()[0].data.EMPLOYEE_ID" Mode="Raw" />
-									</ExtraParams>
-								</Click>
-							</DirectEvents>
-						</ext:Button>
 					</Items>
 				</ext:Toolbar>
 			</TopBar>
