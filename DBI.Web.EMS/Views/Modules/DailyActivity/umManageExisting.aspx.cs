@@ -380,35 +380,36 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						break;
 
 				}
+                if (e.ExtraParams["Status"] != "INACTIVE")
+                {
+                    List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
 
-				List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
-
-				if (HoursOver24.Count > 0)
-				{
-					if (HoursOver24.Exists(emp => emp.HEADER_ID == HeaderId))
-					{
-						EmployeeData HeaderData = HoursOver24.Find(emp => emp.HEADER_ID == HeaderId);
-						BadHeader = true;
-					}
+                    if (HoursOver24.Count > 0)
+                    {
+                        if (HoursOver24.Exists(emp => emp.HEADER_ID == HeaderId))
+                        {
+                            EmployeeData HeaderData = HoursOver24.Find(emp => emp.HEADER_ID == HeaderId);
+                            BadHeader = true;
+                        }
 
 
-				}
+                    }
 
-				if (EmployeeOverLap.Count > 0)
-				{
-					using (Entities _context = new Entities())
-					{
-						if (EmployeeOverLap.Exists(x => x == HeaderId))
-						{
-							var HeaderData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-											  join emp in _context.EMPLOYEES_V on d.PERSON_ID equals emp.PERSON_ID
-											  where d.HEADER_ID == HeaderId
-											  select new { d.DAILY_ACTIVITY_HEADER.DA_DATE, emp.EMPLOYEE_NAME }).First();
-							BadHeader = true;
-						}
-					}
-				}
-
+                    if (EmployeeOverLap.Count > 0)
+                    {
+                        using (Entities _context = new Entities())
+                        {
+                            if (EmployeeOverLap.Exists(x => x == HeaderId))
+                            {
+                                var HeaderData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                                  join emp in _context.EMPLOYEES_V on d.PERSON_ID equals emp.PERSON_ID
+                                                  where d.HEADER_ID == HeaderId
+                                                  select new { d.DAILY_ACTIVITY_HEADER.DA_DATE, emp.EMPLOYEE_NAME }).First();
+                                BadHeader = true;
+                            }
+                        }
+                    }
+                }
 				if (BadHeader)
 				{
 					uxApproveActivityButton.Disabled = true;
