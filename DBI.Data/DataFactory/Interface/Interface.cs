@@ -52,7 +52,7 @@ namespace DBI.Data
 
                     Interface.postNotificationMessage(userInformation.EMPLOYEE_NAME, HeaderRecord);
 
-                    //transaction.Complete();
+                    transaction.Complete();
                 }
             }
             catch (Exception)
