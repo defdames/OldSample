@@ -130,7 +130,9 @@
         <EntityTypeShape EntityType="OracleModel.BUD_BID_PROJECTS" Width="1.5" PointX="19.25" PointY="86.25" />
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" Width="1.5" PointX="10.75" PointY="83.125" />
         <AssociationConnector Association="OracleModel.FK_PROJECTS_STATUS_ID" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING_SERVICE_SUB_DIV" Width="1.5" PointX="29.25" PointY="6.125" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_SERVICE_UNIT" Width="1.5" PointX="29.25" PointY="6.25" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_SUB_DIVISION" Width="1.5" PointX="32.25" PointY="7.75" />
+        <AssociationConnector Association="OracleModel.FK_SUB_SERVICE_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

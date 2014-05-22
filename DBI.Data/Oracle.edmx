@@ -59,7 +59,8 @@
           <EntitySet Name="CROSSING_PROJECT" EntityType="OracleModel.Store.CROSSING_PROJECT" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_RAILROAD" EntityType="OracleModel.Store.CROSSING_RAILROAD" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_RELATIONSHIP" EntityType="OracleModel.Store.CROSSING_RELATIONSHIP" store:Type="Tables" Schema="XXEMS" />
-          <EntitySet Name="CROSSING_SERVICE_SUB_DIV" EntityType="OracleModel.Store.CROSSING_SERVICE_SUB_DIV" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="CROSSING_SERVICE_UNIT" EntityType="OracleModel.Store.CROSSING_SERVICE_UNIT" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="CROSSING_SUB_DIVISION" EntityType="OracleModel.Store.CROSSING_SUB_DIVISION" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_SUPPLEMENTAL" EntityType="OracleModel.Store.CROSSING_SUPPLEMENTAL" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSINGS" EntityType="OracleModel.Store.CROSSINGS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CUSTOMER_SURVEY_FIELDSETS" EntityType="OracleModel.Store.CUSTOMER_SURVEY_FIELDSETS" store:Type="Tables" Schema="XXEMS" />
@@ -791,6 +792,10 @@
             <End Role="CUSTOMER_SURVEY_QUESTIONS" EntitySet="CUSTOMER_SURVEY_QUESTIONS" />
             <End Role="CUSTOMER_SURVEY_RELATION" EntitySet="CUSTOMER_SURVEY_RELATION" />
           </AssociationSet>
+          <AssociationSet Name="FK_SUB_SERVICE_ID" Association="OracleModel.Store.FK_SUB_SERVICE_ID">
+            <End Role="CROSSING_SERVICE_UNIT" EntitySet="CROSSING_SERVICE_UNIT" />
+            <End Role="CROSSING_SUB_DIVISION" EntitySet="CROSSING_SUB_DIVISION" />
+          </AssociationSet>
           <AssociationSet Name="FK_SUPPLEMENTAL_CROSSING_ID" Association="OracleModel.Store.FK_SUPPLEMENTAL_CROSSING_ID">
             <End Role="CROSSINGS" EntitySet="CROSSINGS" />
             <End Role="CROSSING_SUPPLEMENTAL" EntitySet="CROSSING_SUPPLEMENTAL" />
@@ -1141,17 +1146,21 @@
           <Property Name="PROJECT_ID" Type="number" Precision="15" />
           <Property Name="CROSSING_ID" Type="number" Precision="15" />
         </EntityType>
-        <EntityType Name="CROSSING_SERVICE_SUB_DIV">
+        <EntityType Name="CROSSING_SERVICE_UNIT">
           <Key>
-            <PropertyRef Name="SERVICE_SUB_ID" />
+            <PropertyRef Name="SERVICE_UNIT_ID" />
           </Key>
-          <Property Name="SERVICE_SUB_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="RR_ID" Type="number" />
-          <Property Name="RR_NAME" Type="varchar2" MaxLength="200" />
-          <Property Name="SERVICE_UNIT_ID" Type="number" />
-          <Property Name="SERVICE_UNIT_NAME" Type="varchar2" MaxLength="200" />
-          <Property Name="SUB_DIVISION_ID" Type="number" />
-          <Property Name="SUB_DIVISION_NAME" Type="varchar2" MaxLength="200" />
+          <Property Name="SERVICE_UNIT_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
+          <Property Name="RAILROAD_ID" Type="number" />
+          <Property Name="SERVICE_UNIT_NAME" Type="varchar2" Nullable="false" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="CROSSING_SUB_DIVISION">
+          <Key>
+            <PropertyRef Name="SUB_DIVISION_ID" />
+          </Key>
+          <Property Name="SUB_DIVISION_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
+          <Property Name="SERVICE_UNIT_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="SUB_DIVISION_NAME" Type="varchar2" Nullable="false" MaxLength="100" />
         </EntityType>
         <EntityType Name="CROSSING_SUPPLEMENTAL">
           <Key>
@@ -2487,6 +2496,7 @@
           <Property Name="BU_ORG" Type="varchar2" MaxLength="10" />
         </EntityType>
         <EntityType Name="PA_ROLES_V">
+          
           <Key>
             <PropertyRef Name="ROWNUM" />
           </Key>
@@ -3451,6 +3461,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SUB_SERVICE_ID">
+          <End Role="CROSSING_SERVICE_UNIT" Type="OracleModel.Store.CROSSING_SERVICE_UNIT" Multiplicity="1" />
+          <End Role="CROSSING_SUB_DIVISION" Type="OracleModel.Store.CROSSING_SUB_DIVISION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSING_SERVICE_UNIT">
+              <PropertyRef Name="SERVICE_UNIT_ID" />
+            </Principal>
+            <Dependent Role="CROSSING_SUB_DIVISION">
+              <PropertyRef Name="SERVICE_UNIT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SUPPLEMENTAL_CROSSING_ID">
           <End Role="CROSSINGS" Type="OracleModel.Store.CROSSINGS" Multiplicity="1" />
           <End Role="CROSSING_SUPPLEMENTAL" Type="OracleModel.Store.CROSSING_SUPPLEMENTAL" Multiplicity="*" />
@@ -3740,7 +3762,12 @@
             <End Role="BUD_BID_STATUS" EntitySet="BUD_BID_STATUS" />
             <End Role="BUD_BID_PROJECTS" EntitySet="BUD_BID_PROJECTS" />
           </AssociationSet>
-          <EntitySet Name="CROSSING_SERVICE_SUB_DIV" EntityType="OracleModel.CROSSING_SERVICE_SUB_DIV" />
+          <EntitySet Name="CROSSING_SERVICE_UNIT" EntityType="OracleModel.CROSSING_SERVICE_UNIT" />
+          <EntitySet Name="CROSSING_SUB_DIVISION" EntityType="OracleModel.CROSSING_SUB_DIVISION" />
+          <AssociationSet Name="FK_SUB_SERVICE_ID" Association="OracleModel.FK_SUB_SERVICE_ID">
+            <End Role="CROSSING_SERVICE_UNIT" EntitySet="CROSSING_SERVICE_UNIT" />
+            <End Role="CROSSING_SUB_DIVISION" EntitySet="CROSSING_SUB_DIVISION" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -6592,18 +6619,36 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="CROSSING_SERVICE_SUB_DIV">
+        <EntityType Name="CROSSING_SERVICE_UNIT">
           <Key>
-            <PropertyRef Name="SERVICE_SUB_ID" />
+            <PropertyRef Name="SERVICE_UNIT_ID" />
           </Key>
-          <Property Type="Decimal" Name="SERVICE_SUB_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Decimal" Name="RR_ID" Precision="38" Scale="0" />
-          <Property Type="String" Name="RR_NAME" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="SERVICE_UNIT_ID" Precision="38" Scale="0" />
-          <Property Type="String" Name="SERVICE_UNIT_NAME" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="SUB_DIVISION_ID" Precision="38" Scale="0" />
-          <Property Type="String" Name="SUB_DIVISION_NAME" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="SERVICE_UNIT_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="RAILROAD_ID" Precision="38" Scale="0" />
+          <Property Type="String" Name="SERVICE_UNIT_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CROSSING_SUB_DIVISION" Relationship="OracleModel.FK_SUB_SERVICE_ID" FromRole="CROSSING_SERVICE_UNIT" ToRole="CROSSING_SUB_DIVISION" />
         </EntityType>
+        <EntityType Name="CROSSING_SUB_DIVISION">
+          <Key>
+            <PropertyRef Name="SUB_DIVISION_ID" />
+          </Key>
+          <Property Type="Int64" Name="SUB_DIVISION_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="SERVICE_UNIT_ID" Nullable="false" />
+          <Property Type="String" Name="SUB_DIVISION_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CROSSING_SERVICE_UNIT" Relationship="OracleModel.FK_SUB_SERVICE_ID" FromRole="CROSSING_SUB_DIVISION" ToRole="CROSSING_SERVICE_UNIT" />
+        </EntityType>
+        <Association Name="FK_SUB_SERVICE_ID">
+          <End Type="OracleModel.CROSSING_SERVICE_UNIT" Role="CROSSING_SERVICE_UNIT" Multiplicity="1" />
+          <End Type="OracleModel.CROSSING_SUB_DIVISION" Role="CROSSING_SUB_DIVISION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSING_SERVICE_UNIT">
+              <PropertyRef Name="SERVICE_UNIT_ID" />
+            </Principal>
+            <Dependent Role="CROSSING_SUB_DIVISION">
+              <PropertyRef Name="SERVICE_UNIT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8778,16 +8823,21 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CROSSING_SERVICE_SUB_DIV">
-            <EntityTypeMapping TypeName="OracleModel.CROSSING_SERVICE_SUB_DIV">
-              <MappingFragment StoreEntitySet="CROSSING_SERVICE_SUB_DIV">
-                <ScalarProperty Name="SUB_DIVISION_NAME" ColumnName="SUB_DIVISION_NAME" />
-                <ScalarProperty Name="SUB_DIVISION_ID" ColumnName="SUB_DIVISION_ID" />
+          <EntitySetMapping Name="CROSSING_SERVICE_UNIT">
+            <EntityTypeMapping TypeName="OracleModel.CROSSING_SERVICE_UNIT">
+              <MappingFragment StoreEntitySet="CROSSING_SERVICE_UNIT">
                 <ScalarProperty Name="SERVICE_UNIT_NAME" ColumnName="SERVICE_UNIT_NAME" />
+                <ScalarProperty Name="RAILROAD_ID" ColumnName="RAILROAD_ID" />
                 <ScalarProperty Name="SERVICE_UNIT_ID" ColumnName="SERVICE_UNIT_ID" />
-                <ScalarProperty Name="RR_NAME" ColumnName="RR_NAME" />
-                <ScalarProperty Name="RR_ID" ColumnName="RR_ID" />
-                <ScalarProperty Name="SERVICE_SUB_ID" ColumnName="SERVICE_SUB_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CROSSING_SUB_DIVISION">
+            <EntityTypeMapping TypeName="OracleModel.CROSSING_SUB_DIVISION">
+              <MappingFragment StoreEntitySet="CROSSING_SUB_DIVISION">
+                <ScalarProperty Name="SUB_DIVISION_NAME" ColumnName="SUB_DIVISION_NAME" />
+                <ScalarProperty Name="SERVICE_UNIT_ID" ColumnName="SERVICE_UNIT_ID" />
+                <ScalarProperty Name="SUB_DIVISION_ID" ColumnName="SUB_DIVISION_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
