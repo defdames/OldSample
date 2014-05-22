@@ -50,7 +50,8 @@ namespace DBI.Web.EMS.Views.Modules.Security
 
             var UserPermissions = SYS_PERMISSIONS.GetPermissions(UserId);
             CheckboxSelectionModel GridModel = uxEditUserGrid.GetSelectionModel() as CheckboxSelectionModel;
-            GridModel.DeselectAll();
+            GridModel.SelectedRows.Clear();
+            //GridModel.DeselectAll();
             GridModel.UpdateSelection();
             foreach (var UserPermission in UserPermissions)
             {
