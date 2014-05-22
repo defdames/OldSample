@@ -304,6 +304,7 @@
 										<ext:ModelField Name="TOTAL" />
 										<ext:ModelField Name="UNIT_OF_MEASURE" />
 										<ext:ModelField Name="EPA_NUMBER" />
+										<ext:ModelField Name="CONTRACTOR_SUPPLIED" Type="Boolean" />
 									</Fields>
 								</ext:Model>
 							</Model>
@@ -311,15 +312,18 @@
 					</Store>
 					<ColumnModel>
 						<Columns>
-							<ext:Column ID="Column36" runat="server" DataIndex="CHEMICAL_MIX_NUMBER" Text="Mix Number" />
-							<ext:Column runat="server" DataIndex="INV_NAME" Text="Inventory Org" />
-							<ext:Column ID="Column37" runat="server" DataIndex="SUB_INVENTORY_SECONDARY_NAME" Text="Sub-Inv Name" />
-							<ext:Column runat="server" DataIndex="SEGMENT1" Text="Item ID" />
-							<ext:Column ID="Column38" runat="server" DataIndex="DESCRIPTION" Text="Item" />
-							<ext:Column ID="Column39" runat="server" DataIndex="RATE" Text="Rate" />
-							<ext:Column runat="server" DataIndex="TOTAL" Text="Total" />
-							<ext:Column ID="Column40" runat="server" DataIndex="UNIT_OF_MEASURE" Text="Unit" />
-							<ext:Column ID="Column41" runat="server" DataIndex="EPA_NUMBER" Text="EPA Number" />
+							<ext:Column ID="Column36" runat="server" DataIndex="CHEMICAL_MIX_NUMBER" Text="Mix Number" Flex="1" />
+							<ext:Column runat="server" DataIndex="INV_NAME" Text="Inventory Org" Flex="1" />
+							<ext:Column ID="Column37" runat="server" DataIndex="SUB_INVENTORY_SECONDARY_NAME" Text="Sub-Inv Name" Flex="1" />
+							<ext:Column runat="server" DataIndex="SEGMENT1" Text="Item ID" Flex="1" />
+							<ext:Column ID="Column38" runat="server" DataIndex="DESCRIPTION" Text="Item" Flex="1" />
+							<ext:Column ID="Column39" runat="server" DataIndex="RATE" Text="Rate" Flex="1" />
+							<ext:Column runat="server" DataIndex="TOTAL" Text="Total" Flex="1" />
+							<ext:Column ID="Column40" runat="server" DataIndex="UNIT_OF_MEASURE" Text="Unit" Flex="1" />
+							<ext:Column ID="Column41" runat="server" DataIndex="EPA_NUMBER" Text="EPA Number" Flex="1" />
+							<ext:CheckColumn ID="CheckColumn1" runat="server"
+								DataIndex="CONTRACTOR_SUPPLIED"
+								Text="Contractor Supplied" Flex="1" />
 						</Columns>
 					</ColumnModel>
 				</ext:GridPanel>
