@@ -733,6 +733,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Column Column41;
         
         /// <summary>
+        /// CheckColumn1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.CheckColumn CheckColumn1;
+        
+        /// <summary>
         /// uxFooterPanel control.
         /// </summary>
         /// <remarks>

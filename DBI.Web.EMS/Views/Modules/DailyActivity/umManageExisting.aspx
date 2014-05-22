@@ -64,6 +64,7 @@
 		<ext:Viewport runat="server" ID="uxViewPort" Layout="AccordionLayout" IDMode="Explicit" Namespace="App" RenderXType="True">
 			<Items>
 				<ext:GridPanel runat="server" ID="uxManageGrid" Layout="FitLayout" Title="Headers" SelectionMemoryEvents="false" SelectionMemory="true">
+					
 					<SelectionModel>
 						<ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
 					</SelectionModel>
@@ -140,6 +141,7 @@
 					<TopBar>
 						<ext:Toolbar runat="server">
 							<Items>
+        						<ext:Hidden runat="server" ID="uxHiddenApprove" />
 								<ext:Button runat="server"
 									ID="uxCreateActivityButton"
 									Text="Create Activity"
