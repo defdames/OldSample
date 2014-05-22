@@ -106,7 +106,6 @@
 										<ext:ModelField Name="PER_DIEM" />
 										<ext:ModelField Name="FOREMAN_LICENSE" />
 										<ext:ModelField Name="COMMENTS" />
-										<ext:ModelField Name="LUNCH_LENGTH" />
 									</Fields>
 								</ext:Model>
 							</Model>

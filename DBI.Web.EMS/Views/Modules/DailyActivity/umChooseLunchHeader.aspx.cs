@@ -125,6 +125,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 {
                     return 30;
                 }
+                else if (TotalTime < 308)
+                {
+                    return 0;
+                }
                 else
                 {
                     return 60;

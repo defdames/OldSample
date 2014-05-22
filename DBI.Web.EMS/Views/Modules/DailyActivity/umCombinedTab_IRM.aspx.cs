@@ -117,7 +117,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
                     item.SHOPTIME_PM_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
 
-                    List<WarningData> Overlaps = ValidationChecks.employeeTimeOverlapCheck(item.PERSON_ID, item.TIME_IN);
+                    List<WarningData> Overlaps = ValidationChecks.employeeTimeOverlapCheck(item.PERSON_ID, item.TIME_IN, HeaderId);
                     if (Overlaps.Count > 0)
                     {
                         WarningList.AddRange(Overlaps);
