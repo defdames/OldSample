@@ -179,10 +179,10 @@
 							MsgTarget="Side" Width="500">
 							<Items>
 								<ext:TextField runat="server"
-                                    ID="uxAddEmployeeTimeInDate"
+									ID="uxAddEmployeeTimeInDate"
 									IsRemoteValidation="true"
 									AllowBlank="false"
-                                    ReadOnly="true">
+									ReadOnly="true">
 									<RemoteValidation OnValidation="ValidateDateTime">
 										<ExtraParams>
 											<ext:Parameter Name="Type" Value="Add" />
