@@ -42,6 +42,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         uxAddEmployeeShopTimePMHours.Value = "0";
                         uxAddEmployeeShopTimePMMinutes.Value = "0";
                     }
+                    using (Entities _context = new Entities())
+                    {
+                        DateTime HeaderDate = _context.DAILY_ACTIVITY_HEADER.Where(x => x.HEADER_ID == HeaderId).Select(x => (DateTime)x.DA_DATE).Single();
+                        uxAddEmployeeTimeInDate.Value = HeaderDate.Date.ToString("MM/dd/yyyy");
+                        uxAddEmployeeTimeOutDate.MinDate = HeaderDate;
+                        uxAddEmployeeTimeOutDate.MaxDate = HeaderDate.AddDays(1);
+                    }
                 }
                 else
                 {
@@ -61,8 +68,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         uxEditEmployeeShopTimePMHours.Show();
                         uxEditEmployeeShopTimePMMinutes.Show();
                     }
+                    using (Entities _context = new Entities())
+                    {
+                        DateTime HeaderDate = _context.DAILY_ACTIVITY_HEADER.Where(x => x.HEADER_ID == HeaderId).Select(x => (DateTime)x.DA_DATE).Single();
+                        uxEditEmployeeTimeInDate.MinDate = HeaderDate;
+                        uxEditEmployeeTimeInDate.MaxDate = HeaderDate;
+                        uxEditEmployeeTimeOutDate.MinDate = HeaderDate;
+                        uxEditEmployeeTimeOutDate.MaxDate = HeaderDate.AddDays(1);
+                    }
                 }
-                uxAddEmployeeTimeInDate.SelectedDate = DateTime.Now.Date;
+                
                 uxAddEmployeeTimeOutDate.SelectedDate = DateTime.Now.Date;
             }
         }

@@ -226,7 +226,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateField uxAddEmployeeTimeInDate;
+        protected global::Ext.Net.TextField uxAddEmployeeTimeInDate;
         
         /// <summary>
         /// uxAddEmployeeTimeInTime control.
