@@ -547,24 +547,34 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 			long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
 
 			DAILY_ACTIVITY_HEADER data;
-            
+            SYS_SECURITY_AUDIT ActionToLog = new SYS_SECURITY_AUDIT();
             //Get record to be updated
             using (Entities _context = new Entities())
             {
                 data = (from d in _context.DAILY_ACTIVITY_HEADER
                         where d.HEADER_ID == HeaderId
                         select d).Single();
+                
+                ActionToLog.MODULE = "Daily Activity";
+                ActionToLog.RECORD_NUMBER = HeaderId;
+                ActionToLog.MODIFIED_BY = User.Identity.Name;
+                ActionToLog.MODIFIED_DATE = DateTime.Now;
                 if (uxHiddenApprove.Value.ToString() == "Approve")
                 {
                     data.STATUS = 3;
+                    ActionToLog.COMMENTS = "DRS Approved";
                 }
                 else
                 {
                     data.STATUS = 2;
+                    ActionToLog.COMMENTS = "DRS Unapproved";
                 }
             }
 
+            
+            
 			//Update record in DB
+            GenericData.Insert<SYS_SECURITY_AUDIT>(ActionToLog);
 			GenericData.Update<DAILY_ACTIVITY_HEADER>(data);
 			RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
 			var Index = GridModel.SelectedIndex;
