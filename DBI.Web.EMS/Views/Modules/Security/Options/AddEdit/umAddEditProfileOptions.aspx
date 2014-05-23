@@ -37,7 +37,7 @@
                                 <ext:Parameter Name="MsgTarget"/>
                             </Defaults>
                             <Items>
-                               <ext:TextArea runat="server" ID="uxProfileDescription" FieldLabel="Description" AnchorHorizontal="55%" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" MaxLengthText="2000"  />
+                               <ext:TextArea runat="server" ID="uxProfileDescription" FieldLabel="Description" AnchorHorizontal="55%" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" MaxLengthText="2000" Height="125"  />
                             </Items>
                         </ext:FieldContainer> 
                     </Items>

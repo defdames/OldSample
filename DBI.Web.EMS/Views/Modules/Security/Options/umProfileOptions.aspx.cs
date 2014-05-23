@@ -20,6 +20,10 @@ namespace DBI.Web.EMS.Views.Modules.Security.Options
 
         protected void deReadProfileOptions(object sender, StoreReadDataEventArgs e)
         {
+            uxProfileOptionStore.RemoveAll();
+            uxProfileOptionStore.ClearFilter();
+            uxProfileOptionSelectionModel.ClearSelection();
+
             var data = SYS_PROFILE_OPTIONS.systemProfileOptions();
 
             int count;
