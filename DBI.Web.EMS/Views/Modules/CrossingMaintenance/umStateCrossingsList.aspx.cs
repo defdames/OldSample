@@ -27,22 +27,33 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         {
             if (!X.IsAjaxRequest)
             {
+             
                uxAddStateList.Data = StaticLists.StateList;
                uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
+               if (Session["rrType"] != null)
+               {
+                   deGetRRType("Add");
+                   
+               }
+               
             //   deLoadUnit("Add");
             }
         }
-        protected void deStateCrossingListGrid(object sender, StoreReadDataEventArgs e)
+        protected void deStateCrossingListGrid(object sender, DirectEventArgs e)
         {
-
+            string Application = uxAddAppReqeusted.SelectedItem.Value;
+            string ServiceUnit = uxAddServiceUnit.SelectedItem.Value;
+            string SubDiv = uxAddSubDiv.SelectedItem.Value;
+            string State = uxAddStateComboBox.SelectedItem.Value;
             using (Entities _context = new Entities())
             {
                 List<object> data;
 
                 //Get List of all new crossings
-
+                //long selectedCrossings = long.Parse(e.ExtraParams["selectedCrossings"]);
                 data = (from d in _context.CROSSINGS
                         join a in _context.CROSSING_APPLICATION on d.CROSSING_ID equals a.CROSSING_ID
+                        where a.APPLICATION_REQUESTED == Application && d.SERVICE_UNIT == ServiceUnit && d.SUB_DIVISION == SubDiv && d.STATE == State
                         select new
                         {
                             d.CROSSING_ID,
@@ -64,12 +75,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                             d.SPECIAL_INSTRUCTIONS,
                             a.SPRAY,
                             a.CUT,
-                            a.INSPECT
+                            a.INSPECT,
+                            a.APPLICATION_ID,
+                            a.APPLICATION_REQUESTED
                         }).ToList<object>();
 
-                int count;
-                uxStateCrossingListStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-                e.Total = count;
+             
+                uxStateCrossingListStore.DataSource = data;
+                uxStateCrossingListStore.Reload();
+                
             }
 
         }
@@ -101,7 +115,46 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 return returnData;
             }
         }
+        protected void deGetRRType(string rrLoad)
+        {
+            
+                using (Entities _context = new Entities())
+                {
+                    long RailroadId = long.Parse(Session["rrType"].ToString());
+                    var RRdata = (from r in _context.CROSSING_RAILROAD
+                                  where r.RAILROAD_ID == RailroadId
+                                  select new
+                                  {
+                                      r
 
+                                  }).Single();
+
+                    uxRRCI.SetValue(RRdata.r.RAILROAD);
+
+                    string rrType = RRdata.r.RAILROAD;
+                    if (rrLoad == "Add")
+                    {
+                        List<ServiceUnitResponse> units = ServiceUnitData.ServiceUnitUnits(rrType).ToList();
+                        uxAddServiceUnit.Clear();
+                        uxAddSubDiv.Clear();
+                        uxAddServiceUnitStore.DataSource = units;
+                        uxAddServiceUnitStore.DataBind();
+                    }
+                
+            }
+        }
+        protected void deLoadSubDiv(object sender, DirectEventArgs e)
+        {
+
+
+            if (e.ExtraParams["Type"] == "Add")
+            {
+                List<ServiceUnitResponse> divisions = ServiceUnitData.ServiceUnitDivisions(uxAddServiceUnit.SelectedItem.Value).ToList();
+                uxAddSubDiv.Clear();
+                uxAddSubDivStore.DataSource = divisions;
+                uxAddSubDivStore.DataBind();
+            }
+        }
         protected void GetAdditionalData(object sender, DirectEventArgs e)
         {
             List<object> data;
@@ -116,31 +169,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
         }
 
-        //protected void deLoadUnit(string serviceunitType)
-        //{
-        //    if (serviceunitType == "Add")
-        //    {
-        //        List<ServiceUnitResponse> units = ServiceUnitData.ServiceUnitUnits().ToList();
-        //        uxAddServiceUnitStore.DataSource = units;
-        //        uxAddServiceUnitStore.DataBind();
-
-        //    }
-
-
-        //}
-        //protected void deLoadSubDiv(object sender, DirectEventArgs e)
-        //{
-
-        //    if (e.ExtraParams["Type"] == "Add")
-        //    {
-        //        List<ServiceUnitResponse> divisions = ServiceUnitData.ServiceUnitDivisions(uxAddServiceUnitCI.SelectedItem.Value).ToList();
-        //        uxAddSubDivCI.Clear();
-        //        uxAddSubDivStore.DataSource = divisions;
-        //        uxAddSubDivStore.DataBind();
-        //    }
-
-
-        //}
+       
         protected void deExportToPDF(object sender, DirectEventArgs e)
         {
             //Set crossing Id

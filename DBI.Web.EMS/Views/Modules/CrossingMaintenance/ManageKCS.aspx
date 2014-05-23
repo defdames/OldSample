@@ -16,16 +16,17 @@
                      <ext:BorderLayoutConfig Padding="5" />
                  </LayoutConfig>
                         <Items>  --%>         
-          <ext:GridPanel ID="uxRailRoadGridPanel" runat="server" Margin="5" Title="SERVICE UNIT">
+          <ext:GridPanel ID="uxServiceUnitGridPanel" runat="server" Margin="5" Title="SERVICE UNIT">
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxRailRoadStore"                    
+                            ID="uxServiceUnitStore" OnReadData="deReadServiceUnit"                      
                             AutoDataBind="true" WarningOnDirty="false">
                             <Model>
-                                <ext:Model ID="Model1" Name="RailRoad" IDProperty="RAILROAD_ID" runat="server">
+                                <ext:Model ID="Model1" Name="ServiceUnit" IDProperty="SERVICE_UNIT_ID" runat="server">
                                     <Fields>
-                                        <ext:ModelField Name="RAILROAD_ID" />
-                                        <ext:ModelField Name="RAILROAD" />
+                                        <ext:ModelField Name="SERVICE_SUB_ID" />
+                                        <ext:ModelField Name="SERVICE_UNIT_ID" />
+                                        <ext:ModelField Name="SERVICE_UNIT_NAME" />
 
                                     </Fields>
                                 </ext:Model>
@@ -37,7 +38,7 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column4" runat="server" DataIndex="RAILROAD" Text="RailRoad" Flex="1">
+                            <ext:Column ID="Column4" runat="server" DataIndex="SERVICE_UNIT_NAME" Text="Service Unit" Flex="1">
                                 <Editor>
                                     <ext:TextField ID="TextField1" runat="server" />
                                 </Editor>
@@ -58,23 +59,23 @@
                               <ext:Button ID="uxAddServiceUnitButton" runat="server" Text="Add Service Unit" Icon="ApplicationAdd" >
 
                                <Listeners>
-                                        <Click Handler="#{uxRailRoadStore}.insert(0, new RailRoad());" />
+                                        <Click Handler="#{uxServiceUnitStore}.insert(0, new ServiceUnit());" />
                                     </Listeners>
                                 </ext:Button>
                                <ext:Button ID="uxSaveServiceUnitButton" runat="server" Text="Save Service Unit" Icon="Add" >
 
-                                   <%-- <DirectEvents>
-                                        <Click OnEvent="deSaveRailRoad" Before="#{uxRailRoadStore}.isDirty()">
+                                    <DirectEvents>
+                                        <Click OnEvent="deSaveServiceUnit" Before="#{uxServiceUnitStore}.isDirty()">
                                             <ExtraParams>
-                                                <ext:Parameter Name="rrdata" Value="#{uxRailRoadStore}.getChangedData()" Mode="Raw" Encode="true" />
+                                                <ext:Parameter Name="sudata" Value="#{uxServiceUnitStore}.getChangedData()" Mode="Raw" Encode="true" />
                                             </ExtraParams>
                                         </Click>
-                                    </DirectEvents>--%>
+                                    </DirectEvents>
                                 </ext:Button>
                                  <ext:Button ID="uxRemoveServiceUnitButton" runat="server" Text="Remove Service Unit" Icon="Delete" >
 
                                    <%-- <DirectEvents>
-                                        <Click OnEvent="deSaveRailRoad" Before="#{uxRailRoadStore}.isDirty()">
+                                        <Click OnEvent="deSaveServiceUnit" Before="#{uxRailRoadStore}.isDirty()">
                                             <ExtraParams>
                                                 <ext:Parameter Name="rrdata" Value="#{uxRailRoadStore}.getChangedData()" Mode="Raw" Encode="true" />
                                             </ExtraParams>
@@ -85,25 +86,25 @@
                         </ext:Toolbar>
                     </TopBar>
                 <%--  <DirectEvents>
-                <Select OnEvent="deLoadStores">
+                <Select OnEvent="deLoadSubDiv">
                     <ExtraParams>
-                        <ext:Parameter Name="RailroadId" Value="#{uxRailRoadGridPanel}.getSelectionModel().getSelection()[0].data.RAILROAD_ID" Mode="Raw" />
+                        <ext:Parameter Name="ServiceUnitId" Value="#{uxServiceUnitGridPanel}.getSelectionModel().getSelection()[0].data.SERVICE_UNIT_ID" Mode="Raw" />
                     </ExtraParams>
                 </Select>
             </DirectEvents>--%>
                 </ext:GridPanel>
      <%--  ------------------------------------------------------------------------------------------------------------------------------------------------------%>
    
-          <ext:GridPanel ID="GridPanel1" runat="server" Margin="5" Title="SUB DIVISION">
+          <ext:GridPanel ID="uxSubDivGridPanel" runat="server" Margin="5" Title="SUB DIVISION">
                     <Store>
                         <ext:Store runat="server"
-                            ID="Store1"                      
+                            ID="uxSubDivStore"                      
                             AutoDataBind="true" WarningOnDirty="false">
                             <Model>
-                                <ext:Model ID="Model2" Name="RailRoad" IDProperty="RAILROAD_ID" runat="server">
+                                <ext:Model ID="Model2" Name="SubDiv" IDProperty="SUB_DIVISION_ID" runat="server">
                                     <Fields>
-                                        <ext:ModelField Name="RAILROAD_ID" />
-                                        <ext:ModelField Name="RAILROAD" />
+                                        <ext:ModelField Name="SUB_DIVISION_ID" />
+                                        <ext:ModelField Name="SUB_DIVISION_NAME" />
 
                                     </Fields>
                                 </ext:Model>
@@ -115,7 +116,7 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column1" runat="server" DataIndex="RAILROAD" Text="RailRoad" Flex="1">
+                            <ext:Column ID="Column1" runat="server" DataIndex="SUB_DIVISION_NAME" Text="Subdivision" Flex="1">
                                 <Editor>
                                     <ext:TextField ID="TextField2" runat="server" />
                                 </Editor>
@@ -133,28 +134,28 @@
                     <TopBar>
                     <ext:Toolbar ID="Toolbar1" runat="server" Region="North">
                             <Items>
-                              <ext:Button ID="Button1" runat="server" Text="Add Subdivision" Icon="ApplicationAdd" >
+                              <ext:Button ID="uxAddSubDivButton" runat="server" Text="Add Subdivision" Icon="ApplicationAdd" >
 
                                <Listeners>
-                                        <Click Handler="#{uxRailRoadStore}.insert(0, new RailRoad());" />
+                                        <Click Handler="#{uxSubDivStore}.insert(0, new SubDiv());" />
                                     </Listeners>
                                 </ext:Button>
-                               <ext:Button ID="Button2" runat="server" Text="Save Subdivision" Icon="Add" >
+                               <ext:Button ID="uxSaveSubDivButton" runat="server" Text="Save Subdivision" Icon="Add" >
 
-                                   <%-- <DirectEvents>
-                                        <Click OnEvent="deSaveRailRoad" Before="#{uxRailRoadStore}.isDirty()">
+                                    <DirectEvents>
+                                        <Click OnEvent="deSaveSubDiv" Before="#{uxSubDivStore}.isDirty()">
                                             <ExtraParams>
-                                                <ext:Parameter Name="rrdata" Value="#{uxRailRoadStore}.getChangedData()" Mode="Raw" Encode="true" />
+                                                <ext:Parameter Name="subdivdata" Value="#{uxSubDivStore}.getChangedData()" Mode="Raw" Encode="true" />
                                             </ExtraParams>
                                         </Click>
-                                    </DirectEvents>--%>
+                                    </DirectEvents>
                                 </ext:Button>
                                  <ext:Button ID="uxSaveRRButton" runat="server" Text="Remove Subdivision" Icon="Delete" >
 
                                    <%-- <DirectEvents>
-                                        <Click OnEvent="deSaveRailRoad" Before="#{uxRailRoadStore}.isDirty()">
+                                        <Click OnEvent="deSaveSubDiv" Before="#{uxSubDivStore}.isDirty()">
                                             <ExtraParams>
-                                                <ext:Parameter Name="rrdata" Value="#{uxRailRoadStore}.getChangedData()" Mode="Raw" Encode="true" />
+                                                <ext:Parameter Name="subdivdata" Value="#{uxSubDivStore}.getChangedData()" Mode="Raw" Encode="true" />
                                             </ExtraParams>
                                         </Click>
                                     </DirectEvents>--%>

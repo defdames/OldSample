@@ -31,22 +31,22 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.ResourceManager ResourceManager2;
         
         /// <summary>
-        /// uxRailRoadGridPanel control.
+        /// uxServiceUnitGridPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxRailRoadGridPanel;
+        protected global::Ext.Net.GridPanel uxServiceUnitGridPanel;
         
         /// <summary>
-        /// uxRailRoadStore control.
+        /// uxServiceUnitStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxRailRoadStore;
+        protected global::Ext.Net.Store uxServiceUnitStore;
         
         /// <summary>
         /// Model1 control.
@@ -139,22 +139,22 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Button uxRemoveServiceUnitButton;
         
         /// <summary>
-        /// GridPanel1 control.
+        /// uxSubDivGridPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel GridPanel1;
+        protected global::Ext.Net.GridPanel uxSubDivGridPanel;
         
         /// <summary>
-        /// Store1 control.
+        /// uxSubDivStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store Store1;
+        protected global::Ext.Net.Store uxSubDivStore;
         
         /// <summary>
         /// Model2 control.
@@ -220,22 +220,22 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Toolbar Toolbar1;
         
         /// <summary>
-        /// Button1 control.
+        /// uxAddSubDivButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button1;
+        protected global::Ext.Net.Button uxAddSubDivButton;
         
         /// <summary>
-        /// Button2 control.
+        /// uxSaveSubDivButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button2;
+        protected global::Ext.Net.Button uxSaveSubDivButton;
         
         /// <summary>
         /// uxSaveRRButton control.
