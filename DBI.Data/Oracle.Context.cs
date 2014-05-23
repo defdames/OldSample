@@ -111,5 +111,10 @@ namespace DBI.Data
         public DbSet<OVERHEAD_BUDGET_TYPE> OVERHEAD_BUDGET_TYPE { get; set; }
         public DbSet<CROSSING_SERVICE_UNIT> CROSSING_SERVICE_UNIT { get; set; }
         public DbSet<CROSSING_SUB_DIVISION> CROSSING_SUB_DIVISION { get; set; }
+        public DbSet<JOB_COST_BALANCE_TYPE> JOB_COST_BALANCE_TYPE { get; set; }
+        public DbSet<JOB_COST_DATE> JOB_COST_DATE { get; set; }
+        public DbSet<JOB_COST_PROJECTS> JOB_COST_PROJECTS { get; set; }
+        public DbSet<JOB_COST_ROLLUPS> JOB_COST_ROLLUPS { get; set; }
+        public DbSet<JOB_COST_TASK> JOB_COST_TASK { get; set; }
     }
 }

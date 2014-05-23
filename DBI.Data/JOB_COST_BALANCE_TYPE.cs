@@ -12,21 +12,24 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class CROSSING_SERVICE_UNIT
+    public partial class JOB_COST_BALANCE_TYPE
     {
-        public CROSSING_SERVICE_UNIT()
+        public JOB_COST_BALANCE_TYPE()
         {
-            this.CROSSING_SUB_DIVISION = new HashSet<CROSSING_SUB_DIVISION>();
+            this.JOB_COST_PROJECTS = new HashSet<JOB_COST_PROJECTS>();
+            this.JOB_COST_ROLLUPS = new HashSet<JOB_COST_ROLLUPS>();
+            this.JOB_COST_TASK = new HashSet<JOB_COST_TASK>();
         }
     
-        public long SERVICE_UNIT_ID { get; set; }
-        public Nullable<decimal> RAILROAD_ID { get; set; }
-        public string SERVICE_UNIT_NAME { get; set; }
+        public decimal BALANCE_TYPE_ID { get; set; }
+        public string BALANCE_DESCRIPTION { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
     
-        public virtual ICollection<CROSSING_SUB_DIVISION> CROSSING_SUB_DIVISION { get; set; }
+        public virtual ICollection<JOB_COST_PROJECTS> JOB_COST_PROJECTS { get; set; }
+        public virtual ICollection<JOB_COST_ROLLUPS> JOB_COST_ROLLUPS { get; set; }
+        public virtual ICollection<JOB_COST_TASK> JOB_COST_TASK { get; set; }
     }
 }

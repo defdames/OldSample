@@ -82,7 +82,12 @@
           <EntitySet Name="DAILY_ACTIVITY_PRODUCTION" EntityType="OracleModel.Store.DAILY_ACTIVITY_PRODUCTION" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_STATUS" EntityType="OracleModel.Store.DAILY_ACTIVITY_STATUS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_WEATHER" EntityType="OracleModel.Store.DAILY_ACTIVITY_WEATHER" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="JOB_COST_BALANCE_TYPE" EntityType="OracleModel.Store.JOB_COST_BALANCE_TYPE" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="JOB_COST_CLASSES" EntityType="OracleModel.Store.JOB_COST_CLASSES" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="JOB_COST_DATE" EntityType="OracleModel.Store.JOB_COST_DATE" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="JOB_COST_PROJECTS" EntityType="OracleModel.Store.JOB_COST_PROJECTS" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="JOB_COST_ROLLUPS" EntityType="OracleModel.Store.JOB_COST_ROLLUPS" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="JOB_COST_TASK" EntityType="OracleModel.Store.JOB_COST_TASK" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="OVERHEAD_BUDGET_TYPE" EntityType="OracleModel.Store.OVERHEAD_BUDGET_TYPE" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="OVERHEAD_BUDGET_VERSION" EntityType="OracleModel.Store.OVERHEAD_BUDGET_VERSION" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="OVERHEAD_GL_ACCOUNT" EntityType="OracleModel.Store.OVERHEAD_GL_ACCOUNT" store:Type="Tables" Schema="XXEMS" />
@@ -772,9 +777,17 @@
             <End Role="SYS_PROFILE_OPTIONS" EntitySet="SYS_PROFILE_OPTIONS" />
             <End Role="SYS_USER_PROFILE_OPTIONS" EntitySet="SYS_USER_PROFILE_OPTIONS" />
           </AssociationSet>
+          <AssociationSet Name="FK_PROJECT_DATE_ID" Association="OracleModel.Store.FK_PROJECT_DATE_ID">
+            <End Role="JOB_COST_DATE" EntitySet="JOB_COST_DATE" />
+            <End Role="JOB_COST_PROJECTS" EntitySet="JOB_COST_PROJECTS" />
+          </AssociationSet>
           <AssociationSet Name="FK_PROJECT_RAILROAD_ID" Association="OracleModel.Store.FK_PROJECT_RAILROAD_ID">
             <End Role="CROSSING_RAILROAD" EntitySet="CROSSING_RAILROAD" />
             <End Role="CROSSING_PROJECT" EntitySet="CROSSING_PROJECT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PROJECT_TYPE_ID" Association="OracleModel.Store.FK_PROJECT_TYPE_ID">
+            <End Role="JOB_COST_BALANCE_TYPE" EntitySet="JOB_COST_BALANCE_TYPE" />
+            <End Role="JOB_COST_PROJECTS" EntitySet="JOB_COST_PROJECTS" />
           </AssociationSet>
           <AssociationSet Name="FK_PROJECTS_STATUS_ID" Association="OracleModel.Store.FK_PROJECTS_STATUS_ID">
             <End Role="BUD_BID_STATUS" EntitySet="BUD_BID_STATUS" />
@@ -792,6 +805,14 @@
             <End Role="CUSTOMER_SURVEY_QUESTIONS" EntitySet="CUSTOMER_SURVEY_QUESTIONS" />
             <End Role="CUSTOMER_SURVEY_RELATION" EntitySet="CUSTOMER_SURVEY_RELATION" />
           </AssociationSet>
+          <AssociationSet Name="FK_ROLLUPS_DATE_ID" Association="OracleModel.Store.FK_ROLLUPS_DATE_ID">
+            <End Role="JOB_COST_DATE" EntitySet="JOB_COST_DATE" />
+            <End Role="JOB_COST_ROLLUPS" EntitySet="JOB_COST_ROLLUPS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ROLLUPS_TYPE_ID" Association="OracleModel.Store.FK_ROLLUPS_TYPE_ID">
+            <End Role="JOB_COST_BALANCE_TYPE" EntitySet="JOB_COST_BALANCE_TYPE" />
+            <End Role="JOB_COST_ROLLUPS" EntitySet="JOB_COST_ROLLUPS" />
+          </AssociationSet>
           <AssociationSet Name="FK_SUB_SERVICE_ID" Association="OracleModel.Store.FK_SUB_SERVICE_ID">
             <End Role="CROSSING_SERVICE_UNIT" EntitySet="CROSSING_SERVICE_UNIT" />
             <End Role="CROSSING_SUB_DIVISION" EntitySet="CROSSING_SUB_DIVISION" />
@@ -799,6 +820,14 @@
           <AssociationSet Name="FK_SUPPLEMENTAL_CROSSING_ID" Association="OracleModel.Store.FK_SUPPLEMENTAL_CROSSING_ID">
             <End Role="CROSSINGS" EntitySet="CROSSINGS" />
             <End Role="CROSSING_SUPPLEMENTAL" EntitySet="CROSSING_SUPPLEMENTAL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TASK_DATE_ID" Association="OracleModel.Store.FK_TASK_DATE_ID">
+            <End Role="JOB_COST_DATE" EntitySet="JOB_COST_DATE" />
+            <End Role="JOB_COST_TASK" EntitySet="JOB_COST_TASK" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TASK_TYPE_ID" Association="OracleModel.Store.FK_TASK_TYPE_ID">
+            <End Role="JOB_COST_BALANCE_TYPE" EntitySet="JOB_COST_BALANCE_TYPE" />
+            <End Role="JOB_COST_TASK" EntitySet="JOB_COST_TASK" />
           </AssociationSet>
           <AssociationSet Name="FK_USER_PERMS_PERM_ID" Association="OracleModel.Store.FK_USER_PERMS_PERM_ID">
             <End Role="SYS_PERMISSIONS" EntitySet="SYS_PERMISSIONS" />
@@ -1153,6 +1182,10 @@
           <Property Name="SERVICE_UNIT_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="RAILROAD_ID" Type="number" />
           <Property Name="SERVICE_UNIT_NAME" Type="varchar2" Nullable="false" MaxLength="100" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="CROSSING_SUB_DIVISION">
           <Key>
@@ -1161,6 +1194,10 @@
           <Property Name="SUB_DIVISION_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="SERVICE_UNIT_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="SUB_DIVISION_NAME" Type="varchar2" Nullable="false" MaxLength="100" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="CROSSING_SUPPLEMENTAL">
           <Key>
@@ -1560,6 +1597,17 @@
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
+        <EntityType Name="JOB_COST_BALANCE_TYPE">
+          <Key>
+            <PropertyRef Name="BALANCE_TYPE_ID" />
+          </Key>
+          <Property Name="BALANCE_TYPE_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="BALANCE_DESCRIPTION" Type="varchar2" MaxLength="500" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+        </EntityType>
         <EntityType Name="JOB_COST_CLASSES">
           <Key>
             <PropertyRef Name="JOB_COST_CLASSES_ID" />
@@ -1570,6 +1618,64 @@
           <Property Name="CLASS_CODE" Type="varchar2" MaxLength="30" />
           <Property Name="JOB_COST_DATE" Type="date" />
           <Property Name="BUID" Type="number" Precision="15" />
+        </EntityType>
+        <EntityType Name="JOB_COST_DATE">
+          <Key>
+            <PropertyRef Name="JC_DATE_ID" />
+          </Key>
+          <Property Name="JC_DATE_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="JC_WK_DATE" Type="date" />
+          <Property Name="LE_ORG_ID" Type="number" Precision="15" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="JOB_COST_PROJECTS">
+          <Key>
+            <PropertyRef Name="JC_PROJECT_ID" />
+          </Key>
+          <Property Name="JC_PROJECT_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="JC_DATE_ID" Type="number" Nullable="false" />
+          <Property Name="PROJECT_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="BALANCE_TYPE_ID" Type="number" Nullable="false" />
+          <Property Name="AMOUNT" Type="number" Precision="20" Scale="4" />
+          <Property Name="SOURCE_TYPE" Type="varchar2" MaxLength="20" />
+          <Property Name="CARRYING_OUT_ORG_ID" Type="number" Precision="15" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="JOB_COST_ROLLUPS">
+          <Key>
+            <PropertyRef Name="JC_ROLLUP_ID" />
+          </Key>
+          <Property Name="JC_ROLLUP_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="JC_DATE_ID" Type="number" Nullable="false" />
+          <Property Name="ROLLUP_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="BALANCE_TYPE_ID" Type="number" Nullable="false" />
+          <Property Name="AMOUNT" Type="number" Precision="20" Scale="4" />
+          <Property Name="SOURCE_TYPE" Type="varchar2" MaxLength="20" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="JOB_COST_TASK">
+          <Key>
+            <PropertyRef Name="JC_TASK_ID" />
+          </Key>
+          <Property Name="JC_TASK_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="JC_DATE_ID" Type="number" Nullable="false" />
+          <Property Name="TASK_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="BALANCE_TYPE_ID" Type="number" Nullable="false" />
+          <Property Name="AMOUNT" Type="number" Precision="20" Scale="4" />
+          <Property Name="SOURCE_TYPE" Type="varchar2" MaxLength="20" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="OVERHEAD_BUDGET_TYPE">
           <Key>
@@ -2496,7 +2602,6 @@
           <Property Name="BU_ORG" Type="varchar2" MaxLength="10" />
         </EntityType>
         <EntityType Name="PA_ROLES_V">
-          
           <Key>
             <PropertyRef Name="ROWNUM" />
           </Key>
@@ -3401,6 +3506,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PROJECT_DATE_ID">
+          <End Role="JOB_COST_DATE" Type="OracleModel.Store.JOB_COST_DATE" Multiplicity="1" />
+          <End Role="JOB_COST_PROJECTS" Type="OracleModel.Store.JOB_COST_PROJECTS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JOB_COST_DATE">
+              <PropertyRef Name="JC_DATE_ID" />
+            </Principal>
+            <Dependent Role="JOB_COST_PROJECTS">
+              <PropertyRef Name="JC_DATE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PROJECT_RAILROAD_ID">
           <End Role="CROSSING_RAILROAD" Type="OracleModel.Store.CROSSING_RAILROAD" Multiplicity="0..1" />
           <End Role="CROSSING_PROJECT" Type="OracleModel.Store.CROSSING_PROJECT" Multiplicity="*" />
@@ -3410,6 +3527,18 @@
             </Principal>
             <Dependent Role="CROSSING_PROJECT">
               <PropertyRef Name="RAILROAD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PROJECT_TYPE_ID">
+          <End Role="JOB_COST_BALANCE_TYPE" Type="OracleModel.Store.JOB_COST_BALANCE_TYPE" Multiplicity="1" />
+          <End Role="JOB_COST_PROJECTS" Type="OracleModel.Store.JOB_COST_PROJECTS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JOB_COST_BALANCE_TYPE">
+              <PropertyRef Name="BALANCE_TYPE_ID" />
+            </Principal>
+            <Dependent Role="JOB_COST_PROJECTS">
+              <PropertyRef Name="BALANCE_TYPE_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3461,6 +3590,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ROLLUPS_DATE_ID">
+          <End Role="JOB_COST_DATE" Type="OracleModel.Store.JOB_COST_DATE" Multiplicity="1" />
+          <End Role="JOB_COST_ROLLUPS" Type="OracleModel.Store.JOB_COST_ROLLUPS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JOB_COST_DATE">
+              <PropertyRef Name="JC_DATE_ID" />
+            </Principal>
+            <Dependent Role="JOB_COST_ROLLUPS">
+              <PropertyRef Name="JC_DATE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ROLLUPS_TYPE_ID">
+          <End Role="JOB_COST_BALANCE_TYPE" Type="OracleModel.Store.JOB_COST_BALANCE_TYPE" Multiplicity="1" />
+          <End Role="JOB_COST_ROLLUPS" Type="OracleModel.Store.JOB_COST_ROLLUPS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JOB_COST_BALANCE_TYPE">
+              <PropertyRef Name="BALANCE_TYPE_ID" />
+            </Principal>
+            <Dependent Role="JOB_COST_ROLLUPS">
+              <PropertyRef Name="BALANCE_TYPE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SUB_SERVICE_ID">
           <End Role="CROSSING_SERVICE_UNIT" Type="OracleModel.Store.CROSSING_SERVICE_UNIT" Multiplicity="1" />
           <End Role="CROSSING_SUB_DIVISION" Type="OracleModel.Store.CROSSING_SUB_DIVISION" Multiplicity="*" />
@@ -3482,6 +3635,30 @@
             </Principal>
             <Dependent Role="CROSSING_SUPPLEMENTAL">
               <PropertyRef Name="CROSSING_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TASK_DATE_ID">
+          <End Role="JOB_COST_DATE" Type="OracleModel.Store.JOB_COST_DATE" Multiplicity="1" />
+          <End Role="JOB_COST_TASK" Type="OracleModel.Store.JOB_COST_TASK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JOB_COST_DATE">
+              <PropertyRef Name="JC_DATE_ID" />
+            </Principal>
+            <Dependent Role="JOB_COST_TASK">
+              <PropertyRef Name="JC_DATE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TASK_TYPE_ID">
+          <End Role="JOB_COST_BALANCE_TYPE" Type="OracleModel.Store.JOB_COST_BALANCE_TYPE" Multiplicity="1" />
+          <End Role="JOB_COST_TASK" Type="OracleModel.Store.JOB_COST_TASK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JOB_COST_BALANCE_TYPE">
+              <PropertyRef Name="BALANCE_TYPE_ID" />
+            </Principal>
+            <Dependent Role="JOB_COST_TASK">
+              <PropertyRef Name="BALANCE_TYPE_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3764,9 +3941,38 @@
           </AssociationSet>
           <EntitySet Name="CROSSING_SERVICE_UNIT" EntityType="OracleModel.CROSSING_SERVICE_UNIT" />
           <EntitySet Name="CROSSING_SUB_DIVISION" EntityType="OracleModel.CROSSING_SUB_DIVISION" />
+          <EntitySet Name="JOB_COST_BALANCE_TYPE" EntityType="OracleModel.JOB_COST_BALANCE_TYPE" />
+          <EntitySet Name="JOB_COST_DATE" EntityType="OracleModel.JOB_COST_DATE" />
+          <EntitySet Name="JOB_COST_PROJECTS" EntityType="OracleModel.JOB_COST_PROJECTS" />
+          <EntitySet Name="JOB_COST_ROLLUPS" EntityType="OracleModel.JOB_COST_ROLLUPS" />
+          <EntitySet Name="JOB_COST_TASK" EntityType="OracleModel.JOB_COST_TASK" />
           <AssociationSet Name="FK_SUB_SERVICE_ID" Association="OracleModel.FK_SUB_SERVICE_ID">
             <End Role="CROSSING_SERVICE_UNIT" EntitySet="CROSSING_SERVICE_UNIT" />
             <End Role="CROSSING_SUB_DIVISION" EntitySet="CROSSING_SUB_DIVISION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PROJECT_TYPE_ID" Association="OracleModel.FK_PROJECT_TYPE_ID">
+            <End Role="JOB_COST_BALANCE_TYPE" EntitySet="JOB_COST_BALANCE_TYPE" />
+            <End Role="JOB_COST_PROJECTS" EntitySet="JOB_COST_PROJECTS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ROLLUPS_TYPE_ID" Association="OracleModel.FK_ROLLUPS_TYPE_ID">
+            <End Role="JOB_COST_BALANCE_TYPE" EntitySet="JOB_COST_BALANCE_TYPE" />
+            <End Role="JOB_COST_ROLLUPS" EntitySet="JOB_COST_ROLLUPS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TASK_TYPE_ID" Association="OracleModel.FK_TASK_TYPE_ID">
+            <End Role="JOB_COST_BALANCE_TYPE" EntitySet="JOB_COST_BALANCE_TYPE" />
+            <End Role="JOB_COST_TASK" EntitySet="JOB_COST_TASK" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PROJECT_DATE_ID" Association="OracleModel.FK_PROJECT_DATE_ID">
+            <End Role="JOB_COST_DATE" EntitySet="JOB_COST_DATE" />
+            <End Role="JOB_COST_PROJECTS" EntitySet="JOB_COST_PROJECTS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ROLLUPS_DATE_ID" Association="OracleModel.FK_ROLLUPS_DATE_ID">
+            <End Role="JOB_COST_DATE" EntitySet="JOB_COST_DATE" />
+            <End Role="JOB_COST_ROLLUPS" EntitySet="JOB_COST_ROLLUPS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TASK_DATE_ID" Association="OracleModel.FK_TASK_DATE_ID">
+            <End Role="JOB_COST_DATE" EntitySet="JOB_COST_DATE" />
+            <End Role="JOB_COST_TASK" EntitySet="JOB_COST_TASK" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
@@ -6626,6 +6832,10 @@
           <Property Type="Int64" Name="SERVICE_UNIT_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Decimal" Name="RAILROAD_ID" Precision="38" Scale="0" />
           <Property Type="String" Name="SERVICE_UNIT_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CROSSING_SUB_DIVISION" Relationship="OracleModel.FK_SUB_SERVICE_ID" FromRole="CROSSING_SERVICE_UNIT" ToRole="CROSSING_SUB_DIVISION" />
         </EntityType>
         <EntityType Name="CROSSING_SUB_DIVISION">
@@ -6635,7 +6845,92 @@
           <Property Type="Int64" Name="SUB_DIVISION_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int64" Name="SERVICE_UNIT_ID" Nullable="false" />
           <Property Type="String" Name="SUB_DIVISION_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CROSSING_SERVICE_UNIT" Relationship="OracleModel.FK_SUB_SERVICE_ID" FromRole="CROSSING_SUB_DIVISION" ToRole="CROSSING_SERVICE_UNIT" />
+        </EntityType>
+        <EntityType Name="JOB_COST_BALANCE_TYPE">
+          <Key>
+            <PropertyRef Name="BALANCE_TYPE_ID" />
+          </Key>
+          <Property Type="Decimal" Name="BALANCE_TYPE_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="BALANCE_DESCRIPTION" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="JOB_COST_PROJECTS" Relationship="OracleModel.FK_PROJECT_TYPE_ID" FromRole="JOB_COST_BALANCE_TYPE" ToRole="JOB_COST_PROJECTS" />
+          <NavigationProperty Name="JOB_COST_ROLLUPS" Relationship="OracleModel.FK_ROLLUPS_TYPE_ID" FromRole="JOB_COST_BALANCE_TYPE" ToRole="JOB_COST_ROLLUPS" />
+          <NavigationProperty Name="JOB_COST_TASK" Relationship="OracleModel.FK_TASK_TYPE_ID" FromRole="JOB_COST_BALANCE_TYPE" ToRole="JOB_COST_TASK" />
+        </EntityType>
+        <EntityType Name="JOB_COST_DATE">
+          <Key>
+            <PropertyRef Name="JC_DATE_ID" />
+          </Key>
+          <Property Type="Decimal" Name="JC_DATE_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="JC_WK_DATE" />
+          <Property Type="Int64" Name="LE_ORG_ID" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="JOB_COST_PROJECTS" Relationship="OracleModel.FK_PROJECT_DATE_ID" FromRole="JOB_COST_DATE" ToRole="JOB_COST_PROJECTS" />
+          <NavigationProperty Name="JOB_COST_ROLLUPS" Relationship="OracleModel.FK_ROLLUPS_DATE_ID" FromRole="JOB_COST_DATE" ToRole="JOB_COST_ROLLUPS" />
+          <NavigationProperty Name="JOB_COST_TASK" Relationship="OracleModel.FK_TASK_DATE_ID" FromRole="JOB_COST_DATE" ToRole="JOB_COST_TASK" />
+        </EntityType>
+        <EntityType Name="JOB_COST_PROJECTS">
+          <Key>
+            <PropertyRef Name="JC_PROJECT_ID" />
+          </Key>
+          <Property Type="Decimal" Name="JC_PROJECT_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="JC_DATE_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
+          <Property Type="Decimal" Name="BALANCE_TYPE_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="AMOUNT" Precision="20" Scale="4" />
+          <Property Type="String" Name="SOURCE_TYPE" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="CARRYING_OUT_ORG_ID" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="JOB_COST_BALANCE_TYPE" Relationship="OracleModel.FK_PROJECT_TYPE_ID" FromRole="JOB_COST_PROJECTS" ToRole="JOB_COST_BALANCE_TYPE" />
+          <NavigationProperty Name="JOB_COST_DATE" Relationship="OracleModel.FK_PROJECT_DATE_ID" FromRole="JOB_COST_PROJECTS" ToRole="JOB_COST_DATE" />
+        </EntityType>
+        <EntityType Name="JOB_COST_ROLLUPS">
+          <Key>
+            <PropertyRef Name="JC_ROLLUP_ID" />
+          </Key>
+          <Property Type="Decimal" Name="JC_ROLLUP_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="JC_DATE_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Int64" Name="ROLLUP_ID" Nullable="false" />
+          <Property Type="Decimal" Name="BALANCE_TYPE_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="AMOUNT" Precision="20" Scale="4" />
+          <Property Type="String" Name="SOURCE_TYPE" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="JOB_COST_BALANCE_TYPE" Relationship="OracleModel.FK_ROLLUPS_TYPE_ID" FromRole="JOB_COST_ROLLUPS" ToRole="JOB_COST_BALANCE_TYPE" />
+          <NavigationProperty Name="JOB_COST_DATE" Relationship="OracleModel.FK_ROLLUPS_DATE_ID" FromRole="JOB_COST_ROLLUPS" ToRole="JOB_COST_DATE" />
+        </EntityType>
+        <EntityType Name="JOB_COST_TASK">
+          <Key>
+            <PropertyRef Name="JC_TASK_ID" />
+          </Key>
+          <Property Type="Decimal" Name="JC_TASK_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="JC_DATE_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Int64" Name="TASK_ID" Nullable="false" />
+          <Property Type="Decimal" Name="BALANCE_TYPE_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="AMOUNT" Precision="20" Scale="4" />
+          <Property Type="String" Name="SOURCE_TYPE" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="JOB_COST_BALANCE_TYPE" Relationship="OracleModel.FK_TASK_TYPE_ID" FromRole="JOB_COST_TASK" ToRole="JOB_COST_BALANCE_TYPE" />
+          <NavigationProperty Name="JOB_COST_DATE" Relationship="OracleModel.FK_TASK_DATE_ID" FromRole="JOB_COST_TASK" ToRole="JOB_COST_DATE" />
         </EntityType>
         <Association Name="FK_SUB_SERVICE_ID">
           <End Type="OracleModel.CROSSING_SERVICE_UNIT" Role="CROSSING_SERVICE_UNIT" Multiplicity="1" />
@@ -6646,6 +6941,78 @@
             </Principal>
             <Dependent Role="CROSSING_SUB_DIVISION">
               <PropertyRef Name="SERVICE_UNIT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PROJECT_TYPE_ID">
+          <End Type="OracleModel.JOB_COST_BALANCE_TYPE" Role="JOB_COST_BALANCE_TYPE" Multiplicity="1" />
+          <End Type="OracleModel.JOB_COST_PROJECTS" Role="JOB_COST_PROJECTS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JOB_COST_BALANCE_TYPE">
+              <PropertyRef Name="BALANCE_TYPE_ID" />
+            </Principal>
+            <Dependent Role="JOB_COST_PROJECTS">
+              <PropertyRef Name="BALANCE_TYPE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ROLLUPS_TYPE_ID">
+          <End Type="OracleModel.JOB_COST_BALANCE_TYPE" Role="JOB_COST_BALANCE_TYPE" Multiplicity="1" />
+          <End Type="OracleModel.JOB_COST_ROLLUPS" Role="JOB_COST_ROLLUPS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JOB_COST_BALANCE_TYPE">
+              <PropertyRef Name="BALANCE_TYPE_ID" />
+            </Principal>
+            <Dependent Role="JOB_COST_ROLLUPS">
+              <PropertyRef Name="BALANCE_TYPE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TASK_TYPE_ID">
+          <End Type="OracleModel.JOB_COST_BALANCE_TYPE" Role="JOB_COST_BALANCE_TYPE" Multiplicity="1" />
+          <End Type="OracleModel.JOB_COST_TASK" Role="JOB_COST_TASK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JOB_COST_BALANCE_TYPE">
+              <PropertyRef Name="BALANCE_TYPE_ID" />
+            </Principal>
+            <Dependent Role="JOB_COST_TASK">
+              <PropertyRef Name="BALANCE_TYPE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PROJECT_DATE_ID">
+          <End Type="OracleModel.JOB_COST_DATE" Role="JOB_COST_DATE" Multiplicity="1" />
+          <End Type="OracleModel.JOB_COST_PROJECTS" Role="JOB_COST_PROJECTS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JOB_COST_DATE">
+              <PropertyRef Name="JC_DATE_ID" />
+            </Principal>
+            <Dependent Role="JOB_COST_PROJECTS">
+              <PropertyRef Name="JC_DATE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ROLLUPS_DATE_ID">
+          <End Type="OracleModel.JOB_COST_DATE" Role="JOB_COST_DATE" Multiplicity="1" />
+          <End Type="OracleModel.JOB_COST_ROLLUPS" Role="JOB_COST_ROLLUPS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JOB_COST_DATE">
+              <PropertyRef Name="JC_DATE_ID" />
+            </Principal>
+            <Dependent Role="JOB_COST_ROLLUPS">
+              <PropertyRef Name="JC_DATE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TASK_DATE_ID">
+          <End Type="OracleModel.JOB_COST_DATE" Role="JOB_COST_DATE" Multiplicity="1" />
+          <End Type="OracleModel.JOB_COST_TASK" Role="JOB_COST_TASK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JOB_COST_DATE">
+              <PropertyRef Name="JC_DATE_ID" />
+            </Principal>
+            <Dependent Role="JOB_COST_TASK">
+              <PropertyRef Name="JC_DATE_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8826,6 +9193,10 @@
           <EntitySetMapping Name="CROSSING_SERVICE_UNIT">
             <EntityTypeMapping TypeName="OracleModel.CROSSING_SERVICE_UNIT">
               <MappingFragment StoreEntitySet="CROSSING_SERVICE_UNIT">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="SERVICE_UNIT_NAME" ColumnName="SERVICE_UNIT_NAME" />
                 <ScalarProperty Name="RAILROAD_ID" ColumnName="RAILROAD_ID" />
                 <ScalarProperty Name="SERVICE_UNIT_ID" ColumnName="SERVICE_UNIT_ID" />
@@ -8835,9 +9206,87 @@
           <EntitySetMapping Name="CROSSING_SUB_DIVISION">
             <EntityTypeMapping TypeName="OracleModel.CROSSING_SUB_DIVISION">
               <MappingFragment StoreEntitySet="CROSSING_SUB_DIVISION">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="SUB_DIVISION_NAME" ColumnName="SUB_DIVISION_NAME" />
                 <ScalarProperty Name="SERVICE_UNIT_ID" ColumnName="SERVICE_UNIT_ID" />
                 <ScalarProperty Name="SUB_DIVISION_ID" ColumnName="SUB_DIVISION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JOB_COST_BALANCE_TYPE">
+            <EntityTypeMapping TypeName="OracleModel.JOB_COST_BALANCE_TYPE">
+              <MappingFragment StoreEntitySet="JOB_COST_BALANCE_TYPE">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="BALANCE_DESCRIPTION" ColumnName="BALANCE_DESCRIPTION" />
+                <ScalarProperty Name="BALANCE_TYPE_ID" ColumnName="BALANCE_TYPE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JOB_COST_DATE">
+            <EntityTypeMapping TypeName="OracleModel.JOB_COST_DATE">
+              <MappingFragment StoreEntitySet="JOB_COST_DATE">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="LE_ORG_ID" ColumnName="LE_ORG_ID" />
+                <ScalarProperty Name="JC_WK_DATE" ColumnName="JC_WK_DATE" />
+                <ScalarProperty Name="JC_DATE_ID" ColumnName="JC_DATE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JOB_COST_PROJECTS">
+            <EntityTypeMapping TypeName="OracleModel.JOB_COST_PROJECTS">
+              <MappingFragment StoreEntitySet="JOB_COST_PROJECTS">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="CARRYING_OUT_ORG_ID" ColumnName="CARRYING_OUT_ORG_ID" />
+                <ScalarProperty Name="SOURCE_TYPE" ColumnName="SOURCE_TYPE" />
+                <ScalarProperty Name="AMOUNT" ColumnName="AMOUNT" />
+                <ScalarProperty Name="BALANCE_TYPE_ID" ColumnName="BALANCE_TYPE_ID" />
+                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
+                <ScalarProperty Name="JC_DATE_ID" ColumnName="JC_DATE_ID" />
+                <ScalarProperty Name="JC_PROJECT_ID" ColumnName="JC_PROJECT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JOB_COST_ROLLUPS">
+            <EntityTypeMapping TypeName="OracleModel.JOB_COST_ROLLUPS">
+              <MappingFragment StoreEntitySet="JOB_COST_ROLLUPS">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="SOURCE_TYPE" ColumnName="SOURCE_TYPE" />
+                <ScalarProperty Name="AMOUNT" ColumnName="AMOUNT" />
+                <ScalarProperty Name="BALANCE_TYPE_ID" ColumnName="BALANCE_TYPE_ID" />
+                <ScalarProperty Name="ROLLUP_ID" ColumnName="ROLLUP_ID" />
+                <ScalarProperty Name="JC_DATE_ID" ColumnName="JC_DATE_ID" />
+                <ScalarProperty Name="JC_ROLLUP_ID" ColumnName="JC_ROLLUP_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JOB_COST_TASK">
+            <EntityTypeMapping TypeName="OracleModel.JOB_COST_TASK">
+              <MappingFragment StoreEntitySet="JOB_COST_TASK">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="SOURCE_TYPE" ColumnName="SOURCE_TYPE" />
+                <ScalarProperty Name="AMOUNT" ColumnName="AMOUNT" />
+                <ScalarProperty Name="BALANCE_TYPE_ID" ColumnName="BALANCE_TYPE_ID" />
+                <ScalarProperty Name="TASK_ID" ColumnName="TASK_ID" />
+                <ScalarProperty Name="JC_DATE_ID" ColumnName="JC_DATE_ID" />
+                <ScalarProperty Name="JC_TASK_ID" ColumnName="JC_TASK_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
