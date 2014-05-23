@@ -109,6 +109,7 @@ namespace DBI.Data
         public DbSet<SYS_SECURITY_AUDIT> SYS_SECURITY_AUDIT { get; set; }
         public DbSet<BUD_BID_PROJECTS> BUD_BID_PROJECTS { get; set; }
         public DbSet<OVERHEAD_BUDGET_TYPE> OVERHEAD_BUDGET_TYPE { get; set; }
-        public DbSet<CROSSING_SERVICE_SUB_DIV> CROSSING_SERVICE_SUB_DIV { get; set; }
+        public DbSet<CROSSING_SERVICE_UNIT> CROSSING_SERVICE_UNIT { get; set; }
+        public DbSet<CROSSING_SUB_DIVISION> CROSSING_SUB_DIVISION { get; set; }
     }
 }

@@ -305,6 +305,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						uxDeactivate.Value = "Deactivate";
 						uxTabSetInactiveButton.Text = "Set Inactive";
 						uxInactiveActivityButton.Text = "Set Inactive";
+                        uxApproveActivityButton.Text = "Approve";
+						uxTabApproveButton.Text = "Approve";
+                        uxHiddenApprove.Value = "Approve";
 						break;
 					case "APPROVED":
 						uxTabSetInactiveButton.Text = "Set Inactive";
@@ -314,8 +317,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						uxPostMultipleButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
 						uxMarkAsPostedButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
 						uxTabMarkButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
-						uxApproveActivityButton.Disabled = true;
-						uxTabApproveButton.Disabled = true;
 						uxTabSetInactiveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
 						uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
 						uxDeactivate.Value = "Deactivate";
@@ -329,6 +330,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						uxProductionTab.Disabled = true;
 						uxFooterTab.Disabled = true;
 
+						if (validateComponentSecurity("SYS.DailyActivity.Post") && validateComponentSecurity("SYS.DailyActivity.Approve"))
+						{
+							uxApproveActivityButton.Text = "Unapprove";
+							uxTabApproveButton.Text = "Unapprove";
+							uxApproveActivityButton.Disabled = false;
+							uxTabApproveButton.Disabled = false;
+                            uxHiddenApprove.Value = "Unapprove";
+						}
+						else
+						{
+							uxApproveActivityButton.Disabled = true;
+							uxTabApproveButton.Disabled = true;
+						}
 						break;
 					case "POSTED":
 						uxApproveActivityButton.Disabled = true;
@@ -366,35 +380,36 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						break;
 
 				}
+                if (e.ExtraParams["Status"] != "INACTIVE")
+                {
+                    List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
 
-				List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
-
-				if (HoursOver24.Count > 0)
-				{
-					if (HoursOver24.Exists(emp => emp.HEADER_ID == HeaderId))
-					{
-						EmployeeData HeaderData = HoursOver24.Find(emp => emp.HEADER_ID == HeaderId);
-						BadHeader = true;
-					}
+                    if (HoursOver24.Count > 0)
+                    {
+                        if (HoursOver24.Exists(emp => emp.HEADER_ID == HeaderId))
+                        {
+                            EmployeeData HeaderData = HoursOver24.Find(emp => emp.HEADER_ID == HeaderId);
+                            BadHeader = true;
+                        }
 
 
-				}
+                    }
 
-				if (EmployeeOverLap.Count > 0)
-				{
-					using (Entities _context = new Entities())
-					{
-						if (EmployeeOverLap.Exists(x => x == HeaderId))
-						{
-							var HeaderData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-											  join emp in _context.EMPLOYEES_V on d.PERSON_ID equals emp.PERSON_ID
-											  where d.HEADER_ID == HeaderId
-											  select new { d.DAILY_ACTIVITY_HEADER.DA_DATE, emp.EMPLOYEE_NAME }).First();
-							BadHeader = true;
-						}
-					}
-				}
-
+                    if (EmployeeOverLap.Count > 0)
+                    {
+                        using (Entities _context = new Entities())
+                        {
+                            if (EmployeeOverLap.Exists(x => x == HeaderId))
+                            {
+                                var HeaderData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                                  join emp in _context.EMPLOYEES_V on d.PERSON_ID equals emp.PERSON_ID
+                                                  where d.HEADER_ID == HeaderId
+                                                  select new { d.DAILY_ACTIVITY_HEADER.DA_DATE, emp.EMPLOYEE_NAME }).First();
+                                BadHeader = true;
+                            }
+                        }
+                    }
+                }
 				if (BadHeader)
 				{
 					uxApproveActivityButton.Disabled = true;
@@ -533,17 +548,34 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 			long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
 
 			DAILY_ACTIVITY_HEADER data;
+            SYS_SECURITY_AUDIT ActionToLog = new SYS_SECURITY_AUDIT();
+            //Get record to be updated
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.DAILY_ACTIVITY_HEADER
+                        where d.HEADER_ID == HeaderId
+                        select d).Single();
+                
+                ActionToLog.MODULE = "Daily Activity";
+                ActionToLog.RECORD_NUMBER = HeaderId;
+                ActionToLog.MODIFIED_BY = User.Identity.Name;
+                ActionToLog.MODIFIED_DATE = DateTime.Now;
+                if (uxHiddenApprove.Value.ToString() == "Approve")
+                {
+                    data.STATUS = 3;
+                    ActionToLog.COMMENTS = "DRS Approved";
+                }
+                else
+                {
+                    data.STATUS = 2;
+                    ActionToLog.COMMENTS = "DRS Unapproved";
+                }
+            }
 
-			//Get record to be updated
-			using (Entities _context = new Entities())
-			{
-				data = (from d in _context.DAILY_ACTIVITY_HEADER
-						where d.HEADER_ID == HeaderId
-						select d).Single();
-				data.STATUS = 3;
-			}
-
+            
+            
 			//Update record in DB
+            GenericData.Insert<SYS_SECURITY_AUDIT>(ActionToLog);
 			GenericData.Update<DAILY_ACTIVITY_HEADER>(data);
 			RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
 			var Index = GridModel.SelectedIndex;
