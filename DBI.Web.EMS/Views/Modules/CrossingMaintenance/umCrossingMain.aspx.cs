@@ -61,8 +61,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     if (RRdata.r.RAILROAD_ID != 21)
                     {
                         uxManageKCS.Hidden = true;
-                        uxCrossingTab.Reload();
+                       
                     }
+                    uxCrossingTab.Reload();
                 }
 
             }

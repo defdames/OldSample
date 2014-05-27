@@ -159,7 +159,7 @@
                              <ext:Panel runat="server"
                                 Title="Manage KCS"
                                 ID="uxManageKCS"
-                                Disabled="true">
+                                Disabled="false">
                                 <Loader runat="server"
                                     ID="Loader3" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="ManageKCS.aspx">
                                     <LoadMask ShowMask="true" />
