@@ -141,8 +141,8 @@
         <AssociationConnector Association="OracleModel.FK_PROJECT_DATE_ID" />
         <AssociationConnector Association="OracleModel.FK_ROLLUPS_DATE_ID" />
         <AssociationConnector Association="OracleModel.FK_TASK_DATE_ID" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING_SERVICE_UNIT" Width="1.5" PointX="4.7399425640422583" PointY="25.7636080355214" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING_SUB_DIVISION" Width="1.5" PointX="3.6607257480084554" PointY="0.0047470927260569729" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_SERVICE_UNIT" Width="1.5" PointX="19.25" PointY="19.875" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_SUB_DIVISION" Width="1.5" PointX="19.375" PointY="23.375" />
         <AssociationConnector Association="OracleModel.FK_SERVICE_SUB_ID" />
         </Diagram>
     </edmx:Diagrams>
