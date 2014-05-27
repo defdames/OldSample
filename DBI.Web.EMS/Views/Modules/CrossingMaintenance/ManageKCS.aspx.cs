@@ -114,7 +114,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         //}
         protected void deRemoveSubDiv(object sender, DirectEventArgs e)
         {
-            CROSSING_SUB_DIVISION data;
+           
             string json = e.ExtraParams["SDInfo"];
 
             List<RemoveSubDiv> SDList = JSON.Deserialize<List<RemoveSubDiv>>(json);
@@ -122,9 +122,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 using (Entities _context = new Entities())
                 {
-                    data = (from d in _context.CROSSING_SUB_DIVISION
-                            where d.SUB_DIVISION_ID == SubDiv.SUB_DIVISION_ID
-                            select d).Single();
+                    CROSSING_SUB_DIVISION data = _context.CROSSING_SUB_DIVISION.Where(x => x.SUB_DIVISION_ID == SubDiv.SUB_DIVISION_ID).SingleOrDefault();
 
 
                     GenericData.Delete<CROSSING_SUB_DIVISION>(data);
