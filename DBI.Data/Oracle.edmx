@@ -813,9 +813,9 @@
             <End Role="JOB_COST_BALANCE_TYPE" EntitySet="JOB_COST_BALANCE_TYPE" />
             <End Role="JOB_COST_ROLLUPS" EntitySet="JOB_COST_ROLLUPS" />
           </AssociationSet>
-          <AssociationSet Name="FK_SUB_SERVICE_ID" Association="OracleModel.Store.FK_SUB_SERVICE_ID">
-            <End Role="CROSSING_SERVICE_UNIT" EntitySet="CROSSING_SERVICE_UNIT" />
+          <AssociationSet Name="FK_SERVICE_SUB_ID" Association="OracleModel.Store.FK_SERVICE_SUB_ID">
             <End Role="CROSSING_SUB_DIVISION" EntitySet="CROSSING_SUB_DIVISION" />
+            <End Role="CROSSING_SERVICE_UNIT" EntitySet="CROSSING_SERVICE_UNIT" />
           </AssociationSet>
           <AssociationSet Name="FK_SUPPLEMENTAL_CROSSING_ID" Association="OracleModel.Store.FK_SUPPLEMENTAL_CROSSING_ID">
             <End Role="CROSSINGS" EntitySet="CROSSINGS" />
@@ -1186,6 +1186,7 @@
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="SUB_DIVISION_ID" Type="number" Nullable="false" Precision="15" />
         </EntityType>
         <EntityType Name="CROSSING_SUB_DIVISION">
           <Key>
@@ -3614,15 +3615,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SUB_SERVICE_ID">
-          <End Role="CROSSING_SERVICE_UNIT" Type="OracleModel.Store.CROSSING_SERVICE_UNIT" Multiplicity="1" />
-          <End Role="CROSSING_SUB_DIVISION" Type="OracleModel.Store.CROSSING_SUB_DIVISION" Multiplicity="*" />
+        <Association Name="FK_SERVICE_SUB_ID">
+          <End Role="CROSSING_SUB_DIVISION" Type="OracleModel.Store.CROSSING_SUB_DIVISION" Multiplicity="1" />
+          <End Role="CROSSING_SERVICE_UNIT" Type="OracleModel.Store.CROSSING_SERVICE_UNIT" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="CROSSING_SERVICE_UNIT">
-              <PropertyRef Name="SERVICE_UNIT_ID" />
+            <Principal Role="CROSSING_SUB_DIVISION">
+              <PropertyRef Name="SUB_DIVISION_ID" />
             </Principal>
-            <Dependent Role="CROSSING_SUB_DIVISION">
-              <PropertyRef Name="SERVICE_UNIT_ID" />
+            <Dependent Role="CROSSING_SERVICE_UNIT">
+              <PropertyRef Name="SUB_DIVISION_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3939,17 +3940,11 @@
             <End Role="BUD_BID_STATUS" EntitySet="BUD_BID_STATUS" />
             <End Role="BUD_BID_PROJECTS" EntitySet="BUD_BID_PROJECTS" />
           </AssociationSet>
-          <EntitySet Name="CROSSING_SERVICE_UNIT" EntityType="OracleModel.CROSSING_SERVICE_UNIT" />
-          <EntitySet Name="CROSSING_SUB_DIVISION" EntityType="OracleModel.CROSSING_SUB_DIVISION" />
           <EntitySet Name="JOB_COST_BALANCE_TYPE" EntityType="OracleModel.JOB_COST_BALANCE_TYPE" />
           <EntitySet Name="JOB_COST_DATE" EntityType="OracleModel.JOB_COST_DATE" />
           <EntitySet Name="JOB_COST_PROJECTS" EntityType="OracleModel.JOB_COST_PROJECTS" />
           <EntitySet Name="JOB_COST_ROLLUPS" EntityType="OracleModel.JOB_COST_ROLLUPS" />
           <EntitySet Name="JOB_COST_TASK" EntityType="OracleModel.JOB_COST_TASK" />
-          <AssociationSet Name="FK_SUB_SERVICE_ID" Association="OracleModel.FK_SUB_SERVICE_ID">
-            <End Role="CROSSING_SERVICE_UNIT" EntitySet="CROSSING_SERVICE_UNIT" />
-            <End Role="CROSSING_SUB_DIVISION" EntitySet="CROSSING_SUB_DIVISION" />
-          </AssociationSet>
           <AssociationSet Name="FK_PROJECT_TYPE_ID" Association="OracleModel.FK_PROJECT_TYPE_ID">
             <End Role="JOB_COST_BALANCE_TYPE" EntitySet="JOB_COST_BALANCE_TYPE" />
             <End Role="JOB_COST_PROJECTS" EntitySet="JOB_COST_PROJECTS" />
@@ -3973,6 +3968,12 @@
           <AssociationSet Name="FK_TASK_DATE_ID" Association="OracleModel.FK_TASK_DATE_ID">
             <End Role="JOB_COST_DATE" EntitySet="JOB_COST_DATE" />
             <End Role="JOB_COST_TASK" EntitySet="JOB_COST_TASK" />
+          </AssociationSet>
+          <EntitySet Name="CROSSING_SERVICE_UNIT" EntityType="OracleModel.CROSSING_SERVICE_UNIT" />
+          <EntitySet Name="CROSSING_SUB_DIVISION" EntityType="OracleModel.CROSSING_SUB_DIVISION" />
+          <AssociationSet Name="FK_SERVICE_SUB_ID" Association="OracleModel.FK_SERVICE_SUB_ID">
+            <End Role="CROSSING_SUB_DIVISION" EntitySet="CROSSING_SUB_DIVISION" />
+            <End Role="CROSSING_SERVICE_UNIT" EntitySet="CROSSING_SERVICE_UNIT" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
@@ -6825,32 +6826,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="CROSSING_SERVICE_UNIT">
-          <Key>
-            <PropertyRef Name="SERVICE_UNIT_ID" />
-          </Key>
-          <Property Type="Int64" Name="SERVICE_UNIT_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Decimal" Name="RAILROAD_ID" Precision="38" Scale="0" />
-          <Property Type="String" Name="SERVICE_UNIT_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="CROSSING_SUB_DIVISION" Relationship="OracleModel.FK_SUB_SERVICE_ID" FromRole="CROSSING_SERVICE_UNIT" ToRole="CROSSING_SUB_DIVISION" />
-        </EntityType>
-        <EntityType Name="CROSSING_SUB_DIVISION">
-          <Key>
-            <PropertyRef Name="SUB_DIVISION_ID" />
-          </Key>
-          <Property Type="Int64" Name="SUB_DIVISION_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int64" Name="SERVICE_UNIT_ID" Nullable="false" />
-          <Property Type="String" Name="SUB_DIVISION_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="CROSSING_SERVICE_UNIT" Relationship="OracleModel.FK_SUB_SERVICE_ID" FromRole="CROSSING_SUB_DIVISION" ToRole="CROSSING_SERVICE_UNIT" />
-        </EntityType>
         <EntityType Name="JOB_COST_BALANCE_TYPE">
           <Key>
             <PropertyRef Name="BALANCE_TYPE_ID" />
@@ -6932,18 +6907,6 @@
           <NavigationProperty Name="JOB_COST_BALANCE_TYPE" Relationship="OracleModel.FK_TASK_TYPE_ID" FromRole="JOB_COST_TASK" ToRole="JOB_COST_BALANCE_TYPE" />
           <NavigationProperty Name="JOB_COST_DATE" Relationship="OracleModel.FK_TASK_DATE_ID" FromRole="JOB_COST_TASK" ToRole="JOB_COST_DATE" />
         </EntityType>
-        <Association Name="FK_SUB_SERVICE_ID">
-          <End Type="OracleModel.CROSSING_SERVICE_UNIT" Role="CROSSING_SERVICE_UNIT" Multiplicity="1" />
-          <End Type="OracleModel.CROSSING_SUB_DIVISION" Role="CROSSING_SUB_DIVISION" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CROSSING_SERVICE_UNIT">
-              <PropertyRef Name="SERVICE_UNIT_ID" />
-            </Principal>
-            <Dependent Role="CROSSING_SUB_DIVISION">
-              <PropertyRef Name="SERVICE_UNIT_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_PROJECT_TYPE_ID">
           <End Type="OracleModel.JOB_COST_BALANCE_TYPE" Role="JOB_COST_BALANCE_TYPE" Multiplicity="1" />
           <End Type="OracleModel.JOB_COST_PROJECTS" Role="JOB_COST_PROJECTS" Multiplicity="*" />
@@ -7013,6 +6976,45 @@
             </Principal>
             <Dependent Role="JOB_COST_TASK">
               <PropertyRef Name="JC_DATE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CROSSING_SERVICE_UNIT">
+          <Key>
+            <PropertyRef Name="SERVICE_UNIT_ID" />
+          </Key>
+          <Property Type="Int64" Name="SERVICE_UNIT_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="RAILROAD_ID" Precision="38" Scale="0" />
+          <Property Type="String" Name="SERVICE_UNIT_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="SUB_DIVISION_ID" Nullable="false" />
+          <NavigationProperty Name="CROSSING_SUB_DIVISION" Relationship="OracleModel.FK_SERVICE_SUB_ID" FromRole="CROSSING_SERVICE_UNIT" ToRole="CROSSING_SUB_DIVISION" />
+        </EntityType>
+        <EntityType Name="CROSSING_SUB_DIVISION">
+          <Key>
+            <PropertyRef Name="SUB_DIVISION_ID" />
+          </Key>
+          <Property Type="Int64" Name="SUB_DIVISION_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="SERVICE_UNIT_ID" Nullable="false" />
+          <Property Type="String" Name="SUB_DIVISION_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CROSSING_SERVICE_UNIT" Relationship="OracleModel.FK_SERVICE_SUB_ID" FromRole="CROSSING_SUB_DIVISION" ToRole="CROSSING_SERVICE_UNIT" />
+        </EntityType>
+        <Association Name="FK_SERVICE_SUB_ID">
+          <End Type="OracleModel.CROSSING_SUB_DIVISION" Role="CROSSING_SUB_DIVISION" Multiplicity="1" />
+          <End Type="OracleModel.CROSSING_SERVICE_UNIT" Role="CROSSING_SERVICE_UNIT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSING_SUB_DIVISION">
+              <PropertyRef Name="SUB_DIVISION_ID" />
+            </Principal>
+            <Dependent Role="CROSSING_SERVICE_UNIT">
+              <PropertyRef Name="SUB_DIVISION_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -9190,32 +9192,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CROSSING_SERVICE_UNIT">
-            <EntityTypeMapping TypeName="OracleModel.CROSSING_SERVICE_UNIT">
-              <MappingFragment StoreEntitySet="CROSSING_SERVICE_UNIT">
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="SERVICE_UNIT_NAME" ColumnName="SERVICE_UNIT_NAME" />
-                <ScalarProperty Name="RAILROAD_ID" ColumnName="RAILROAD_ID" />
-                <ScalarProperty Name="SERVICE_UNIT_ID" ColumnName="SERVICE_UNIT_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CROSSING_SUB_DIVISION">
-            <EntityTypeMapping TypeName="OracleModel.CROSSING_SUB_DIVISION">
-              <MappingFragment StoreEntitySet="CROSSING_SUB_DIVISION">
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="SUB_DIVISION_NAME" ColumnName="SUB_DIVISION_NAME" />
-                <ScalarProperty Name="SERVICE_UNIT_ID" ColumnName="SERVICE_UNIT_ID" />
-                <ScalarProperty Name="SUB_DIVISION_ID" ColumnName="SUB_DIVISION_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="JOB_COST_BALANCE_TYPE">
             <EntityTypeMapping TypeName="OracleModel.JOB_COST_BALANCE_TYPE">
               <MappingFragment StoreEntitySet="JOB_COST_BALANCE_TYPE">
@@ -9287,6 +9263,33 @@
                 <ScalarProperty Name="TASK_ID" ColumnName="TASK_ID" />
                 <ScalarProperty Name="JC_DATE_ID" ColumnName="JC_DATE_ID" />
                 <ScalarProperty Name="JC_TASK_ID" ColumnName="JC_TASK_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CROSSING_SERVICE_UNIT">
+            <EntityTypeMapping TypeName="OracleModel.CROSSING_SERVICE_UNIT">
+              <MappingFragment StoreEntitySet="CROSSING_SERVICE_UNIT">
+                <ScalarProperty Name="SUB_DIVISION_ID" ColumnName="SUB_DIVISION_ID" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="SERVICE_UNIT_NAME" ColumnName="SERVICE_UNIT_NAME" />
+                <ScalarProperty Name="RAILROAD_ID" ColumnName="RAILROAD_ID" />
+                <ScalarProperty Name="SERVICE_UNIT_ID" ColumnName="SERVICE_UNIT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CROSSING_SUB_DIVISION">
+            <EntityTypeMapping TypeName="OracleModel.CROSSING_SUB_DIVISION">
+              <MappingFragment StoreEntitySet="CROSSING_SUB_DIVISION">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="SUB_DIVISION_NAME" ColumnName="SUB_DIVISION_NAME" />
+                <ScalarProperty Name="SERVICE_UNIT_ID" ColumnName="SERVICE_UNIT_ID" />
+                <ScalarProperty Name="SUB_DIVISION_ID" ColumnName="SUB_DIVISION_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

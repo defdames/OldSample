@@ -14,11 +14,6 @@ namespace DBI.Data
     
     public partial class CROSSING_SERVICE_UNIT
     {
-        public CROSSING_SERVICE_UNIT()
-        {
-            this.CROSSING_SUB_DIVISION = new HashSet<CROSSING_SUB_DIVISION>();
-        }
-    
         public long SERVICE_UNIT_ID { get; set; }
         public Nullable<decimal> RAILROAD_ID { get; set; }
         public string SERVICE_UNIT_NAME { get; set; }
@@ -26,7 +21,8 @@ namespace DBI.Data
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
+        public long SUB_DIVISION_ID { get; set; }
     
-        public virtual ICollection<CROSSING_SUB_DIVISION> CROSSING_SUB_DIVISION { get; set; }
+        public virtual CROSSING_SUB_DIVISION CROSSING_SUB_DIVISION { get; set; }
     }
 }
