@@ -20,7 +20,6 @@ namespace DBI.Data
         }
     
         public long SUB_DIVISION_ID { get; set; }
-        public long SERVICE_UNIT_ID { get; set; }
         public string SUB_DIVISION_NAME { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
