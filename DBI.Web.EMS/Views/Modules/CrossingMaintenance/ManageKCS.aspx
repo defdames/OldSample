@@ -11,12 +11,9 @@
     <div> </div>
         <ext:ResourceManager ID="ResourceManager2" runat="server" />
          
-            <%-- <ext:Panel ID="uxAssignContactPanel" runat="server" >
-                 <LayoutConfig>
-                     <ext:BorderLayoutConfig Padding="5" />
-                 </LayoutConfig>
-                        <Items>  --%>         
-          <ext:GridPanel ID="uxServiceUnitGridPanel" runat="server" Margin="5" Title="SERVICE UNIT">
+            <ext:Viewport ID="uxAdminViewPort" runat="server" Layout="BorderLayout" >
+            <Items>      
+          <ext:GridPanel ID="uxServiceUnitGridPanel" runat="server" Margin="10" Region="West" Title="SERVICE UNIT" Width="750">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxServiceUnitStore" OnReadData="deReadServiceUnit"                      
@@ -24,7 +21,7 @@
                             <Model>
                                 <ext:Model ID="Model1" Name="ServiceUnit" IDProperty="SERVICE_UNIT_ID" runat="server">
                                     <Fields>
-                                        <ext:ModelField Name="SERVICE_SUB_ID" />
+                                        <ext:ModelField Name="RAILROAD_ID" />
                                         <ext:ModelField Name="SERVICE_UNIT_ID" />
                                         <ext:ModelField Name="SERVICE_UNIT_NAME" />
 
@@ -52,7 +49,11 @@
                     <SelectionModel>
                         <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" Mode="Single" />
                     </SelectionModel>
-
+                 <DirectEvents>
+                <Select OnEvent="deLoadSubDiv">
+                  
+                </Select>
+            </DirectEvents>
                     <TopBar>
                     <ext:Toolbar ID="Toolbar2" runat="server" Region="North">
                             <Items>
@@ -72,39 +73,31 @@
                                         </Click>
                                     </DirectEvents>
                                 </ext:Button>
-                                 <ext:Button ID="uxRemoveServiceUnitButton" runat="server" Text="Remove Service Unit" Icon="Delete" >
+                               <%--  <ext:Button ID="uxRemoveServiceUnitButton" runat="server" Text="Remove Service Unit" Icon="Delete" >
 
-                                   <%-- <DirectEvents>
-                                        <Click OnEvent="deSaveServiceUnit" Before="#{uxRailRoadStore}.isDirty()">
-                                            <ExtraParams>
-                                                <ext:Parameter Name="rrdata" Value="#{uxRailRoadStore}.getChangedData()" Mode="Raw" Encode="true" />
-                                            </ExtraParams>
-                                        </Click>
-                                    </DirectEvents>--%>
-                                </ext:Button>
+                                  
+                                </ext:Button>--%>
+                               
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
-                <%--  <DirectEvents>
-                <Select OnEvent="deLoadSubDiv">
-                    <ExtraParams>
-                        <ext:Parameter Name="ServiceUnitId" Value="#{uxServiceUnitGridPanel}.getSelectionModel().getSelection()[0].data.SERVICE_UNIT_ID" Mode="Raw" />
-                    </ExtraParams>
-                </Select>
-            </DirectEvents>--%>
+               <Listeners>
+                   <Select Handler="#{uxAddSubDivButton}.enable(); #{uxSaveSubDivButton}.enable()" />
+               </Listeners>
                 </ext:GridPanel>
      <%--  ------------------------------------------------------------------------------------------------------------------------------------------------------%>
    
-          <ext:GridPanel ID="uxSubDivGridPanel" runat="server" Margin="5" Title="SUB DIVISION">
+          <ext:GridPanel ID="uxSubDivGridPanel" runat="server" Margin="10" Region="Center" Title="SUB DIVISION" Width="400" >
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxSubDivStore"                      
-                            AutoDataBind="true" WarningOnDirty="false">
+                            ID="uxSubDivStore" OnReadData="deReadSubDiv"                     
+                            AutoDataBind="true" WarningOnDirty="false" AutoLoad="false">
                             <Model>
                                 <ext:Model ID="Model2" Name="SubDiv" IDProperty="SUB_DIVISION_ID" runat="server">
                                     <Fields>
                                         <ext:ModelField Name="SUB_DIVISION_ID" />
                                         <ext:ModelField Name="SUB_DIVISION_NAME" />
+                                        <ext:ModelField Name="SERVICE_UNIT_ID" />
 
                                     </Fields>
                                 </ext:Model>
@@ -112,6 +105,9 @@
                             <Proxy>
                                 <ext:PageProxy />
                             </Proxy>
+                            <Parameters>
+                               <ext:StoreParameter Name="ServiceUnitId" Value="#{uxServiceUnitGridPanel}.getSelectionModel().getSelection()[0].data.SERVICE_UNIT_ID" Mode="Raw" />
+                            </Parameters>
                         </ext:Store>
                     </Store>
                     <ColumnModel>
@@ -134,45 +130,42 @@
                     <TopBar>
                     <ext:Toolbar ID="Toolbar1" runat="server" Region="North">
                             <Items>
-                              <ext:Button ID="uxAddSubDivButton" runat="server" Text="Add Subdivision" Icon="ApplicationAdd" >
+                              <ext:Button ID="uxAddSubDivButton" runat="server" Text="Add Subdivision" Icon="ApplicationAdd" Disabled="true" >
 
                                <Listeners>
                                         <Click Handler="#{uxSubDivStore}.insert(0, new SubDiv());" />
                                     </Listeners>
                                 </ext:Button>
-                               <ext:Button ID="uxSaveSubDivButton" runat="server" Text="Save Subdivision" Icon="Add" >
+                               <ext:Button ID="uxSaveSubDivButton" runat="server" Text="Save Subdivision" Icon="Add" Disabled="true" >
 
                                     <DirectEvents>
                                         <Click OnEvent="deSaveSubDiv" Before="#{uxSubDivStore}.isDirty()">
                                             <ExtraParams>
+                                                <ext:Parameter Name="ServiceUnitId" Value="#{uxServiceUnitGridPanel}.getSelectionModel().getSelection()[0].data.SERVICE_UNIT_ID" Mode="Raw" />
                                                 <ext:Parameter Name="subdivdata" Value="#{uxSubDivStore}.getChangedData()" Mode="Raw" Encode="true" />
                                             </ExtraParams>
                                         </Click>
                                     </DirectEvents>
                                 </ext:Button>
-                                 <ext:Button ID="uxSaveRRButton" runat="server" Text="Remove Subdivision" Icon="Delete" >
+                                 <ext:Button ID="uxRemoveSDButton" runat="server" Text="Remove Subdivision" Icon="Delete" Disabled="true" >
 
-                                   <%-- <DirectEvents>
-                                        <Click OnEvent="deSaveSubDiv" Before="#{uxSubDivStore}.isDirty()">
+                                    <DirectEvents>
+                                        <Click OnEvent="deRemoveSubDiv" >
                                             <ExtraParams>
-                                                <ext:Parameter Name="subdivdata" Value="#{uxSubDivStore}.getChangedData()" Mode="Raw" Encode="true" />
+                                                <ext:Parameter Name="SDInfo" Value="Ext.encode(#{uxSubDivGridPanel}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
                                             </ExtraParams>
                                         </Click>
-                                    </DirectEvents>--%>
+                                    </DirectEvents>
                                 </ext:Button>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
-                <%--  <DirectEvents>
-                <Select OnEvent="deLoadStores">
-                    <ExtraParams>
-                        <ext:Parameter Name="RailroadId" Value="#{uxRailRoadGridPanel}.getSelectionModel().getSelection()[0].data.RAILROAD_ID" Mode="Raw" />
-                    </ExtraParams>
-                </Select>
-            </DirectEvents>--%>
+                    <Listeners>
+                        <Select Handler="#{uxRemoveSDButton}.enable()" />
+                    </Listeners>
                 </ext:GridPanel>
-              <%--</Items>
-             </ext:Panel>--%>
+              </Items>
+             </ext:Viewport>
     </form>
 </body>
 </html>

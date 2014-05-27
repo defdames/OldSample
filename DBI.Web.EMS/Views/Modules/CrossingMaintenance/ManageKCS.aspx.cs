@@ -20,8 +20,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         {
             using (Entities _context = new Entities())
             {
-                List<CROSSING_SERVICE_SUB_DIV> SUData = _context.CROSSING_SERVICE_SUB_DIV.ToList();
-
+                List<CROSSING_SERVICE_UNIT> SUData = _context.CROSSING_SERVICE_UNIT.ToList();
 
                 uxServiceUnitStore.DataSource = SUData;
 
@@ -31,51 +30,126 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         protected void deSaveServiceUnit(object sender, DirectEventArgs e)
         {
             //long RailroadId = long.Parse(Session["rrType"].ToString());
-            //CROSSING_SERVICE_SUB_DIV rrId = new CROSSING_SERVICE_SUB_DIV();
+            //CROSSING_SERVICE_UNIT rrId = new CROSSING_SERVICE_UNIT();
             //{
-            //    RailroadId = rrId.RR_ID;
-            //}
-            //if (Session["rrType"] != null)
-            //{
-            //    Session["rrType"] = rrId.RR_ID;
+                
             //}
             ChangeRecords<AddServiceUnit> data = new StoreDataHandler(e.ExtraParams["sudata"]).BatchObjectData<AddServiceUnit>();
             foreach (AddServiceUnit CreatedServiceUnit in data.Created)
             {
-                CROSSING_SERVICE_SUB_DIV NewServiceUnit = new CROSSING_SERVICE_SUB_DIV();
+                CROSSING_SERVICE_UNIT NewServiceUnit = new CROSSING_SERVICE_UNIT();
                 NewServiceUnit.SERVICE_UNIT_NAME = CreatedServiceUnit.SERVICE_UNIT_NAME;
+                NewServiceUnit.RAILROAD_ID = decimal.Parse(Session["rrType"].ToString());
 
-                GenericData.Insert<CROSSING_SERVICE_SUB_DIV>(NewServiceUnit);
+                GenericData.Insert<CROSSING_SERVICE_UNIT>(NewServiceUnit);
                 uxServiceUnitStore.Reload();
             }
+        }
+        protected void deReadSubDiv(object sender, StoreReadDataEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                long ServiceUnitId = long.Parse(e.Parameters["ServiceUnitId"].ToString());
+                List<CROSSING_SUB_DIVISION> SDData = _context.CROSSING_SUB_DIVISION.Where(x => x.SERVICE_UNIT_ID == ServiceUnitId).ToList();
+
+
+                int count;
+                uxSubDivStore.DataSource = GenericData.EnumerableFilterHeader<CROSSING_SUB_DIVISION>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], SDData, out count);
+                e.Total = count;
+
+            }
+
         }
         protected void deSaveSubDiv(object sender, DirectEventArgs e)
         {
             ChangeRecords<AddSubDiv> data = new StoreDataHandler(e.ExtraParams["subdivdata"]).BatchObjectData<AddSubDiv>();
             foreach (AddSubDiv CreatedSubDiv in data.Created)
             {
-                CROSSING_SERVICE_SUB_DIV NewSubDiv = new CROSSING_SERVICE_SUB_DIV();
+                CROSSING_SUB_DIVISION NewSubDiv = new CROSSING_SUB_DIVISION();
                 NewSubDiv.SUB_DIVISION_NAME = CreatedSubDiv.SUB_DIVISION_NAME;
+                NewSubDiv.SERVICE_UNIT_ID = long.Parse(e.ExtraParams["ServiceUnitId"].ToString());
 
-                GenericData.Insert<CROSSING_SERVICE_SUB_DIV>(NewSubDiv);
-                uxServiceUnitStore.Reload();
+                GenericData.Insert<CROSSING_SUB_DIVISION>(NewSubDiv);
+                uxSubDivStore.Reload();
             }
         }
-        //protected void deLoadSubDiv(object sender, DirectEventArgs e)
+        protected void deLoadSubDiv(object sender, DirectEventArgs e)
+        {
+            uxSubDivStore.Reload();
+        }
+        //protected void deRemoveServiceUnit(object sender, DirectEventArgs e)
         //{
-        //    using (Entities _context = new Entities())
-        //    {
-        //        List<object> data;
-        //        long ServiceUnitid = long.Parse(e.ExtraParams["ServiceUnitId"].ToString());
+        //    CROSSING_SERVICE_UNIT data;
+        //    string json = e.ExtraParams["SUInfo"];
 
-        //        data = (from d in _context.SUB_DIVISION
-        //                where d.SERVICE_UNIT_ID == ServiceUnitId
-        //                select new { d.SUB_DIVISION_ID, SUB_DIVISION_NAME }).ToList<object>();
+        //    List<AddServiceUnit> SUList = JSON.Deserialize<List<AddServiceUnit>>(json);
+        //    foreach (AddServiceUnit ServiceUnit in SUList)
+        //    {
+        //        using (Entities _context = new Entities())
+        //        {
+        //            data = (from s in _context.CROSSING_SERVICE_UNIT
+        //                    where s.SERVICE_UNIT_ID == ServiceUnit.SERVICE_UNIT_ID
+        //                    select s).Single();
+
+
+        //            GenericData.Delete<CROSSING_SERVICE_UNIT>(data);
+                   
+        //        }
+
+        //        Notification.Show(new NotificationConfig()
+        //        {
+        //            Title = "Success",
+        //            Html = "Service Unit Removed Successfully",
+        //            HideDelay = 1000,
+        //            AlignCfg = new NotificationAlignConfig
+        //            {
+        //                ElementAnchor = AnchorPoint.Center,
+        //                TargetAnchor = AnchorPoint.Center
+        //            }
+        //        });
+
+
         //    }
+
         //}
+        protected void deRemoveSubDiv(object sender, DirectEventArgs e)
+        {
+            CROSSING_SUB_DIVISION data;
+            string json = e.ExtraParams["SDInfo"];
+
+            List<RemoveSubDiv> SDList = JSON.Deserialize<List<RemoveSubDiv>>(json);
+            foreach (RemoveSubDiv SubDiv in SDList)
+            {
+                using (Entities _context = new Entities())
+                {
+                    data = (from d in _context.CROSSING_SUB_DIVISION
+                            where d.SUB_DIVISION_ID == SubDiv.SUB_DIVISION_ID
+                            select d).Single();
+
+
+                    GenericData.Delete<CROSSING_SUB_DIVISION>(data);
+                    uxSubDivStore.Reload();
+                }
+
+                Notification.Show(new NotificationConfig()
+                {
+                    Title = "Success",
+                    Html = "Subdivision Removed Successfully",
+                    HideDelay = 1000,
+                    AlignCfg = new NotificationAlignConfig
+                    {
+                        ElementAnchor = AnchorPoint.Center,
+                        TargetAnchor = AnchorPoint.Center
+                    }
+                });
+
+
+            }
+
+        }
         public class AddServiceUnit
         {
-            public decimal RAILROAD_ID { get; set; }
+            public decimal? RAILROAD_ID { get; set; }
             public int SERVICE_UNIT_ID { get; set; }
             public string SERVICE_UNIT_NAME { get; set; }
         }
@@ -83,6 +157,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         {
             public int SUB_DIVISION_ID { get; set; }
             public string SUB_DIVISION_NAME { get; set; }
+            public long? SERVICE_UNIT_ID { get; set; }
+        }
+        public class RemoveSubDiv
+        {
+            public int SUB_DIVISION_ID { get; set; }
+            public string SUB_DIVISION_NAME { get; set; }
+            public long? SERVICE_UNIT_ID { get; set; }
         }
     }
 }

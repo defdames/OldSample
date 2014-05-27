@@ -31,6 +31,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.ResourceManager ResourceManager2;
         
         /// <summary>
+        /// uxAdminViewPort control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Viewport uxAdminViewPort;
+        
+        /// <summary>
         /// uxServiceUnitGridPanel control.
         /// </summary>
         /// <remarks>
@@ -128,15 +137,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxSaveServiceUnitButton;
-        
-        /// <summary>
-        /// uxRemoveServiceUnitButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxRemoveServiceUnitButton;
         
         /// <summary>
         /// uxSubDivGridPanel control.
@@ -238,12 +238,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Button uxSaveSubDivButton;
         
         /// <summary>
-        /// uxSaveRRButton control.
+        /// uxRemoveSDButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxSaveRRButton;
+        protected global::Ext.Net.Button uxRemoveSDButton;
     }
 }

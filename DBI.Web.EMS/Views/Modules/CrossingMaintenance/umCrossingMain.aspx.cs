@@ -30,9 +30,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                                       }).Single();
 
-
                         uxRailRoadCI.SetValue(RRdata.r.RAILROAD);
-
+                      
                     }
 
                 }
@@ -43,7 +42,35 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             }
         }
-     
+        protected void deReadKCS(object sender, DirectEventArgs e)
+        {
+            if (Session["rrType"] != null)
+            {
+                using (Entities _context = new Entities())
+                {
+                    long RailroadId = long.Parse(Session["rrType"].ToString());
+                    var RRdata = (from r in _context.CROSSING_RAILROAD
+                                  where r.RAILROAD_ID == RailroadId
+                                  select new
+                                  {
+                                      r
+
+                                  }).Single();
+
+                    uxRailRoadCI.SetValue(RRdata.r.RAILROAD);
+                    if (RRdata.r.RAILROAD_ID != 21)
+                    {
+                        uxManageKCS.Hidden = true;
+                        uxCrossingTab.Reload();
+                    }
+                }
+
+            }
+           
+         
+            
+           
+        }
         protected void deReadRRTypes(object sender, StoreReadDataEventArgs e)
         {
            
@@ -96,6 +123,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxCrossingInfoTab.Reload();
                 uxContactsTab.Reload();
                 uxCrossingSecurity.Reload();
+                uxManageKCS.Reload();
             }
         
 
@@ -109,6 +137,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             uxCrossingInfoTab.Reload();
             uxContactsTab.Reload();
             uxCrossingSecurity.Reload();
+            uxManageKCS.Reload();
 
         }
 
