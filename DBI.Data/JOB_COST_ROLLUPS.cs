@@ -12,21 +12,20 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class CROSSING_SUB_DIVISION
+    public partial class JOB_COST_ROLLUPS
     {
-        public CROSSING_SUB_DIVISION()
-        {
-            this.CROSSING_SERVICE_UNIT = new HashSet<CROSSING_SERVICE_UNIT>();
-        }
-    
-        public long SUB_DIVISION_ID { get; set; }
-        public long SERVICE_UNIT_ID { get; set; }
-        public string SUB_DIVISION_NAME { get; set; }
+        public decimal JC_ROLLUP_ID { get; set; }
+        public decimal JC_DATE_ID { get; set; }
+        public long ROLLUP_ID { get; set; }
+        public decimal BALANCE_TYPE_ID { get; set; }
+        public Nullable<decimal> AMOUNT { get; set; }
+        public string SOURCE_TYPE { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
     
-        public virtual ICollection<CROSSING_SERVICE_UNIT> CROSSING_SERVICE_UNIT { get; set; }
+        public virtual JOB_COST_BALANCE_TYPE JOB_COST_BALANCE_TYPE { get; set; }
+        public virtual JOB_COST_DATE JOB_COST_DATE { get; set; }
     }
 }
