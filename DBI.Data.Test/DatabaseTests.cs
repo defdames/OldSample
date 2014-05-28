@@ -33,5 +33,15 @@ namespace DBI.Data.Test
             }
            
         }
+
+        [TestMethod]
+        public void userProfileOptionTest()
+        {
+            string _profile_option_name = "UserCrossingSelectedValue";
+            long _user_id = 12501;
+            string _value = SYS_USER_PROFILE_OPTIONS.userProfileOption(_profile_option_name,_user_id);
+            Assert.IsTrue(_value.Length > 0);
+        }
+
     }
 }
