@@ -80,7 +80,6 @@
     <Compile Include="Web\BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Web\DBICustomException.cs" />
     <Compile Include="Web\ExtensionMethods\DateTime_xm.cs" />
     <Compile Include="Web\Mailer.cs" />
   </ItemGroup>

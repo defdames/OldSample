@@ -223,6 +223,7 @@
     <Compile Include="DataFactory\Employees\Employees.cs" />
     <Compile Include="DataFactory\Employees\WebEmployee.cs" />
     <Compile Include="DataFactory\Equipment\Equipment.cs" />
+    <Compile Include="DBICustomException.cs" />
     <Compile Include="EMPLOYEES_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>

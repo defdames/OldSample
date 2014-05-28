@@ -84,7 +84,7 @@ namespace DBI.Web.EMS.Views.Modules.Security.Options.AddEdit
                 throw new DBICustomException(outputLines.ToString());
             }
 
-            catch (DBI.Core.Web.DBICustomException ex)
+            catch (DBICustomException ex)
             {
                 e.Success = false;
                 e.ErrorMessage = ex.ToString();

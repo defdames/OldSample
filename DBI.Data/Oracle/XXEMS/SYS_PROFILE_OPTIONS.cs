@@ -39,5 +39,19 @@ namespace DBI.Data
             }
 
         }
+
+        /// <summary>
+        /// Returns a profile option by the profile key name.
+        /// </summary>
+        /// <param name="key_name"></param>
+        /// <returns></returns>
+        public static SYS_PROFILE_OPTIONS profileOptionByKey(string key_name)
+        {
+            using (Entities _context = new Entities())
+            {
+                return _context.SYS_PROFILE_OPTIONS.Where(a => a.PROFILE_KEY == key_name).SingleOrDefault();
+            }
+
+        }
     }
 }
