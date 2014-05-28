@@ -202,13 +202,15 @@ namespace DBI.Core.Web
             script.Append("value: errorMsg.substring(stack0, stack1).trim(),"); // display stack
             script.Append("buttons: Ext.MessageBox.OK,");
 
-#if (DEBUG)
-            script.Append("multiline: true,");
+#if (PCL05)
+           script.Append("multiline: true,");
+           script.Append("width: 550,");
+           script.Append("defaultTextHeight: 350,");
 #else
-                script.Append("multiline: false,"); // ==> "value" textfield gets hidden
+            script.Append("multiline: false,"); // ==> "value" textfield gets hidden
+            script.Append("width: 400,");
 #endif
 
-            script.Append("width: 400,");
             script.Append("icon: Ext.MessageBox.ERROR");
             script.Append("});");
 

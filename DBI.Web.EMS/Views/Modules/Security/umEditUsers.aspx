@@ -87,7 +87,8 @@
                         </ext:Toolbar>
                     </TopBar>
                     <Listeners>
-                        <Select Handler="#{uxEditUserButton}.enable();#{uxEditOrgsButton}.enable();#{uxImpersonateButton}.enable();" />
+                        <Select Handler="#{uxEditUserButton}.enable();#{uxEditOrgsButton}.enable();#{uxImpersonateButton}.enable();#{uxProfileOptionsButton}.enable();" />
+                        <Deselect Handler="#{uxEditUserButton}.disable();#{uxEditOrgsButton}.disable();#{uxImpersonateButton}.disable();#{uxProfileOptionsButton}.disable();" />
                     </Listeners>
                 </ext:GridPanel>
             </Items>
