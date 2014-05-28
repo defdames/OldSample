@@ -13,7 +13,7 @@
             <Items>
 
                 <ext:FormPanel ID="uxFormPanel" runat="server" Header="false" BodyPadding="10"
-                    Margins="5 5 5 5" Region="Center">
+                    Margins="5 5 5 5" Region="Center" DefaultButton="uxAddProfileOptionButton">
                     <Items>
                         <ext:FieldContainer ID="uxFieldContainer2"
                             runat="server"
@@ -44,7 +44,7 @@
                     <Buttons>
                         <ext:Button runat="server" ID="uxAddProfileOptionButton" Text="Save" Disabled="true" FormBind="true" Icon="ApplicationAdd">
                             <DirectEvents>
-                                <Click OnEvent="deSaveProfileOption" Success="parent.Ext.getCmp('uxAddEditProfileOptionWindow').close();">
+                                <Click OnEvent="deSaveProfileOption" Success="parent.Ext.getCmp('uxAddEditProfileOptionWindow').close();" >
                                     <EventMask ShowMask="true"></EventMask>
                                 </Click>
                             </DirectEvents>

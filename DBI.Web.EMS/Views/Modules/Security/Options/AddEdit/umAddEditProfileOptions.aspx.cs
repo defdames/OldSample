@@ -11,7 +11,7 @@ using DBI.Data;
 
 namespace DBI.Web.EMS.Views.Modules.Security.Options.AddEdit
 {
-    public partial class umAddEditProfileOptions : System.Web.UI.Page
+    public partial class umAddEditProfileOptions : DBI.Core.Web.BasePage
     {
 
         protected void Page_Load(object sender, EventArgs e)
@@ -33,7 +33,16 @@ namespace DBI.Web.EMS.Views.Modules.Security.Options.AddEdit
         protected void deSaveProfileOption(object sender, DirectEventArgs e)
         {
             try
-            {               
+            {   
+                //Validate Form Data
+                if (uxProfileKey.Text.Contains(" "))
+                {
+                    e.Success = false;
+                    e.ErrorMessage = "Profile name must not contain any spaces!";
+                    return;
+                }
+
+
                 if (!string.IsNullOrEmpty(Request.QueryString["recordID"]))
                 {
                     long _recordID = long.Parse(Request.QueryString["recordID"].ToString());
@@ -59,8 +68,8 @@ namespace DBI.Web.EMS.Views.Modules.Security.Options.AddEdit
             }
             catch (Exception ex)
             {
+                e.Success = false;
                 e.ErrorMessage = "There was an error saving your profile option, please try again";
-                throw;
             }
 
         }

@@ -308,6 +308,7 @@
       <DependentUpon>Oracle.edmx</DependentUpon>
     </Compile>
     <Compile Include="Oracle\XXEMS\SYS_PROFILE_OPTIONS.cs" />
+    <Compile Include="Oracle\XXEMS\SYS_USER_PROFILE_OPTIONS.cs" />
     <Compile Include="ORG_HIER_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
