@@ -31,7 +31,7 @@ namespace DBI.Data
         }
 
         /// <summary>
-        /// Returns a selected user profile option by name
+        /// Returns a selected user profile option by name and user_id
         /// </summary>
         /// <param name="profile_option_name"></param>
         /// <returns></returns>
@@ -52,8 +52,89 @@ namespace DBI.Data
             {
 
                 throw;
+            }       
+        }
+
+        /// <summary>
+        /// Returns a selected user profile option by name and logged in user
+        /// </summary>
+        /// <param name="profile_option_name"></param>
+        /// <returns></returns>
+        public static string userProfileOption(string profile_option_name)
+        {
+            try
+            {
+                SYS_USER_INFORMATION _loggedInUser = SYS_USER_INFORMATION.LoggedInUser();
+                SYS_USER_PROFILE_OPTIONS_V _option = userProfileOptions().Where(x => x.PROFILE_KEY == profile_option_name && x.USER_ID == _loggedInUser.USER_ID).SingleOrDefault();
+                string _value = string.Empty;
+                if (_option != null)
+                {
+                    _value = _option.PROFILE_VALUE;
+                }
+
+                return _value;
             }
-           
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public static void setProfileOption(string profile_option_name, string new_key_value)
+        {
+            try
+            {
+                SYS_USER_INFORMATION _loggedInUser = SYS_USER_INFORMATION.LoggedInUser();
+                SYS_PROFILE_OPTIONS _option = SYS_PROFILE_OPTIONS.profileOptionByKey(profile_option_name);
+
+                if (_option == null)
+                {
+                    // Option doesn't exist
+                    throw new DBICustomException(string.Format("Can't update profile option {0}. Profile option doesn't exist!", profile_option_name));
+                }
+
+                SYS_USER_PROFILE_OPTIONS _user_option;
+
+                using (Entities _context = new Entities())
+                {
+                    _user_option = _context.SYS_USER_PROFILE_OPTIONS.Where(x => x.PROFILE_OPTION_ID == _option.PROFILE_OPTION_ID && x.USER_ID == _loggedInUser.USER_ID).SingleOrDefault();
+                }
+
+                if (_user_option != null)
+                {
+                    //Perform update
+                    _user_option.PROFILE_VALUE = new_key_value;
+                    _user_option.MODIFY_DATE = DateTime.Now;
+                    _user_option.MODIFIED_BY = _loggedInUser.USER_NAME;
+                    _user_option.USER_ID = _loggedInUser.USER_ID;
+                    DBI.Data.GenericData.Update<SYS_USER_PROFILE_OPTIONS>(_user_option);
+                }
+                else
+                {
+                    //Create new and save
+                    _user_option = new SYS_USER_PROFILE_OPTIONS();
+                    _user_option.PROFILE_OPTION_ID = _option.PROFILE_OPTION_ID;
+                    _user_option.CREATE_DATE = DateTime.Now;
+                    _user_option.USER_ID = _loggedInUser.USER_ID;
+                    _user_option.MODIFY_DATE = DateTime.Now;
+                    _user_option.CREATED_BY = _loggedInUser.USER_NAME;
+                    _user_option.MODIFIED_BY = _loggedInUser.USER_NAME;
+                    _user_option.PROFILE_VALUE = new_key_value;
+                    DBI.Data.GenericData.Insert<SYS_USER_PROFILE_OPTIONS>(_user_option);
+                }
+
+            }
+
+            catch (DBICustomException)
+            {
+                throw;
+            }
+
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
 
@@ -111,8 +192,6 @@ namespace DBI.Data
             {
                 throw;
             }
-
-
         }
 
 
