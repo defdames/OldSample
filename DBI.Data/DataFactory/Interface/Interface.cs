@@ -724,9 +724,14 @@ namespace DBI.Data
                             CREATED_BY = postedByUserId,
                             CREATION_DATE = DateTime.Now,
                         };
-                        InventoryCount++;
-                        RecordsToInsert.Add(Record);
-                        GenericData.Insert<MTL_TRANSACTION_INT_V>(Record);
+
+                        //HOTFIX EV-287 only insert records if the quantity is not equal to zero (+ or -)
+                        if (Record.TRANSACTION_QUANTITY != 0)
+                        {
+                            InventoryCount++;
+                            RecordsToInsert.Add(Record);
+                            GenericData.Insert<MTL_TRANSACTION_INT_V>(Record);
+                        }
                     }
 
                 }
