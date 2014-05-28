@@ -37,7 +37,7 @@
                         <Columns>
                             <ext:Column ID="Column4" runat="server" DataIndex="SERVICE_UNIT_NAME" Text="Service Unit" Flex="1">
                                 <Editor>
-                                    <ext:TextField ID="TextField1" runat="server" />
+                                    <ext:TextField ID="TextField1" EmptyText="Service Unit Name" runat="server" />
                                 </Editor>
                             </ext:Column>
                         </Columns>
@@ -49,11 +49,7 @@
                     <SelectionModel>
                         <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" Mode="Single" />
                     </SelectionModel>
-                 <DirectEvents>
-                <Select OnEvent="deLoadSubDiv">
-                  
-                </Select>
-            </DirectEvents>
+                
                     <TopBar>
                     <ext:Toolbar ID="Toolbar2" runat="server" Region="North">
                             <Items>
@@ -81,6 +77,10 @@
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
+               <DirectEvents>
+                <Select OnEvent="deLoadSubDiv">
+                </Select>
+            </DirectEvents>
                <Listeners>
                    <Select Handler="#{uxAddSubDivButton}.enable(); #{uxSaveSubDivButton}.enable()" />
                </Listeners>
@@ -114,7 +114,7 @@
                         <Columns>
                             <ext:Column ID="Column1" runat="server" DataIndex="SUB_DIVISION_NAME" Text="Subdivision" Flex="1">
                                 <Editor>
-                                    <ext:TextField ID="TextField2" runat="server" />
+                                    <ext:TextField ID="TextField2" EmptyText="Subdivision Name" runat="server" />
                                 </Editor>
                             </ext:Column>
                         </Columns>

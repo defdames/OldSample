@@ -49,7 +49,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         {
             using (Entities _context = new Entities())
             {
-                long ServiceUnitId = long.Parse(e.Parameters["ServiceUnitId"].ToString());
+                long ServiceUnitId = 0;
+                try
+                {
+                     ServiceUnitId = long.Parse(e.Parameters["ServiceUnitId"].ToString());
+                }
+                catch (NullReferenceException)
+                {
+                    ServiceUnitId = 0;
+                }
                 List<CROSSING_SUB_DIVISION> SDData = _context.CROSSING_SUB_DIVISION.Where(x => x.SERVICE_UNIT_ID == ServiceUnitId).ToList();
 
 
@@ -114,20 +122,23 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         //}
         protected void deRemoveSubDiv(object sender, DirectEventArgs e)
         {
-           
+
             string json = e.ExtraParams["SDInfo"];
 
             List<RemoveSubDiv> SDList = JSON.Deserialize<List<RemoveSubDiv>>(json);
             foreach (RemoveSubDiv SubDiv in SDList)
             {
+
+                CROSSING_SUB_DIVISION data = new CROSSING_SUB_DIVISION();
+
                 using (Entities _context = new Entities())
                 {
-                    CROSSING_SUB_DIVISION data = _context.CROSSING_SUB_DIVISION.Where(x => x.SUB_DIVISION_ID == SubDiv.SUB_DIVISION_ID).SingleOrDefault();
+                    data = _context.CROSSING_SUB_DIVISION.Where(x => x.SUB_DIVISION_ID == SubDiv.SUB_DIVISION_ID).SingleOrDefault();
 
-
-                    GenericData.Delete<CROSSING_SUB_DIVISION>(data);
                     uxSubDivStore.Reload();
                 }
+
+                GenericData.Delete<CROSSING_SUB_DIVISION>(data);
 
                 Notification.Show(new NotificationConfig()
                 {

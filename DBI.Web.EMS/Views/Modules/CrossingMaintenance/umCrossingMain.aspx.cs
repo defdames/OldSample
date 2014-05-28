@@ -31,7 +31,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                                       }).Single();
 
                         uxRailRoadCI.SetValue(RRdata.r.RAILROAD);
-                      
+                        //if (RRdata.r.RAILROAD_ID != 21)
+                        //{
+                        //    uxManageKCS.Hidden = true;
+
+                        //}
                     }
 
                 }
@@ -61,9 +65,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     if (RRdata.r.RAILROAD_ID != 21)
                     {
                         uxManageKCS.Hidden = true;
-                       
+                        uxManageKCS.Reload();
                     }
-                    uxCrossingTab.Reload();
+                    
                 }
 
             }
