@@ -198,17 +198,19 @@ namespace DBI.Core.Web
             script.Append("var desc1 = stack0;");
             script.Append("parent.Ext.MessageBox.show({");
             script.Append("title: 'System Error',");
-            script.Append("msg: errorMsg,"); // error message
+            script.Append("msg: errorMsg.substring(desc0, desc1),"); // error message
             script.Append("value: errorMsg.substring(stack0, stack1).trim(),"); // display stack
             script.Append("buttons: Ext.MessageBox.OK,");
 
 #if (PCL05)
            script.Append("multiline: true,");
+           script.Append("width: 550,");
+           script.Append("defaultTextHeight: 350,");
 #else
-           script.Append("multiline: false,"); // ==> "value" textfield gets hidden
+            script.Append("multiline: false,"); // ==> "value" textfield gets hidden
+            script.Append("width: 400,");
 #endif
 
-            script.Append("width: 400,");
             script.Append("icon: Ext.MessageBox.ERROR");
             script.Append("});");
 

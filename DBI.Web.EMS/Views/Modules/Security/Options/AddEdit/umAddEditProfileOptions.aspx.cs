@@ -7,6 +7,8 @@ using System.Web.UI.WebControls;
 
 using Ext.Net;
 using DBI.Data;
+using System.Data.Entity.Validation;
+using System.Text;
 
 
 namespace DBI.Web.EMS.Views.Modules.Security.Options.AddEdit
@@ -37,11 +39,8 @@ namespace DBI.Web.EMS.Views.Modules.Security.Options.AddEdit
                 //Validate Form Data
                 if (uxProfileKey.Text.Contains(" "))
                 {
-                    e.Success = false;
-                    e.ErrorMessage = "Profile name must not contain any spaces!";
-                    return;
+                    throw new DBICustomException("Profile name must not contain any spaces!");
                 }
-
 
                 if (!string.IsNullOrEmpty(Request.QueryString["recordID"]))
                 {
@@ -66,10 +65,35 @@ namespace DBI.Web.EMS.Views.Modules.Security.Options.AddEdit
                 }
 
             }
+
+            catch (DbEntityValidationException dbeve)
+            {
+                var outputLines = new StringBuilder();
+                foreach (var eve in dbeve.EntityValidationErrors)
+                {
+                    outputLines.AppendFormat("{0}: Entity of type \"{1}\" in state \"{2}\" has the following validation errors:"
+                      , DateTime.Now, eve.Entry.Entity.GetType().Name, eve.Entry.State);
+
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        outputLines.AppendFormat("- Property: \"{0}\", Error: \"{1}\""
+                         , ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+
+                throw new DBICustomException(outputLines.ToString());
+            }
+
+            catch (DBI.Core.Web.DBICustomException ex)
+            {
+                e.Success = false;
+                e.ErrorMessage = ex.ToString();
+            }
+
             catch (Exception ex)
             {
                 e.Success = false;
-                e.ErrorMessage = "There was an error saving your profile option, please try again";
+                e.ErrorMessage = ex.ToString();
             }
 
         }
