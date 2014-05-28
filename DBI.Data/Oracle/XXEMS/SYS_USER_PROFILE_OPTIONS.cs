@@ -69,6 +69,7 @@ namespace DBI.Data
                     _user_option.PROFILE_VALUE = new_key_value;
                     _user_option.MODIFY_DATE = DateTime.Now;
                     _user_option.MODIFIED_BY = _loggedInUserName;
+                    _user_option.USER_ID = user_id;
                     DBI.Data.GenericData.Update<SYS_USER_PROFILE_OPTIONS>(_user_option);
                 }
                 else
@@ -77,6 +78,7 @@ namespace DBI.Data
                     _user_option = new SYS_USER_PROFILE_OPTIONS();
                     _user_option.PROFILE_OPTION_ID = _option.PROFILE_OPTION_ID;
                     _user_option.CREATE_DATE = DateTime.Now;
+                    _user_option.USER_ID = user_id;
                     _user_option.MODIFY_DATE = DateTime.Now;
                     _user_option.CREATED_BY = _loggedInUserName;
                     _user_option.MODIFIED_BY = _loggedInUserName;
