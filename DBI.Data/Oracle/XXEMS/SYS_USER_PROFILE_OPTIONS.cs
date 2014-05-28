@@ -23,9 +23,8 @@ namespace DBI.Data
             using (Entities _context = new Entities())
             {
 
-                var data = from a in _context.SYS_USER_PROFILE_OPTIONS
-                           join b in _context.SYS_PROFILE_OPTIONS on a.PROFILE_OPTION_ID equals b.PROFILE_OPTION_ID
-                           select new SYS_USER_PROFILE_OPTIONS_V { PROFILE_KEY = b.PROFILE_KEY, DESCRIPTION = b.DESCRIPTION, USER_PROFILE_OPTION_ID = a.USER_PROFILE_OPTION_ID, PROFILE_VALUE = a.PROFILE_VALUE };
+                var data = from a in _context.SYS_USER_PROFILE_OPTIONS.Include("SYS_PROFILE_OPTIONS")
+                           select new SYS_USER_PROFILE_OPTIONS_V { PROFILE_KEY = a.SYS_PROFILE_OPTIONS.PROFILE_KEY, DESCRIPTION = a.SYS_PROFILE_OPTIONS.DESCRIPTION, USER_PROFILE_OPTION_ID = a.USER_PROFILE_OPTION_ID, PROFILE_VALUE = a.PROFILE_VALUE, USER_ID= a.USER_ID };
                 return data.ToList();
 
             }
@@ -36,10 +35,25 @@ namespace DBI.Data
         /// </summary>
         /// <param name="profile_option_name"></param>
         /// <returns></returns>
-        public static string userProfileOption(string profile_option_name)
+        public static string userProfileOption(string profile_option_name, long user_id)
         {
-            string _value = userProfileOptions().Where(x => x.PROFILE_KEY == profile_option_name).SingleOrDefault().PROFILE_VALUE;
-            return _value;
+            try
+            {
+                SYS_USER_PROFILE_OPTIONS_V _option = userProfileOptions().Where(x => x.PROFILE_KEY == profile_option_name && x.USER_ID == user_id).SingleOrDefault();
+                string _value = string.Empty;
+                if (_option != null)
+                {
+                    _value = _option.PROFILE_VALUE;
+                }
+
+                return _value;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
         }
 
 
