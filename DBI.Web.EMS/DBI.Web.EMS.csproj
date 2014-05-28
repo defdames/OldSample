@@ -63,6 +63,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\lib\EXT\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NinjaNye.SearchExtensions">
+      <HintPath>..\packages\NinjaNye.SearchExtensions.0.6.5193.24776\lib\net40\NinjaNye.SearchExtensions.dll</HintPath>
+    </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\odp.net.managed.121.1.1\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
@@ -177,11 +180,13 @@
     <Content Include="Views\Modules\Overhead\umOrganizationBudgetSecurity.aspx" />
     <Content Include="Views\Modules\Overhead\GLSecurity\umGLSecurity.aspx" />
     <Content Include="Views\Modules\Overhead\umViewBudgets.aspx" />
+    <Content Include="Views\Modules\Security\Options\AddEdit\umAddEditProfileOptions.aspx" />
     <Content Include="Views\Modules\Security\umEditGroups.aspx" />
     <Content Include="Views\Modules\Security\umEditModules.aspx" />
     <Content Include="Views\Modules\Security\umEditOrgs.aspx" />
     <Content Include="Views\Modules\Security\umEditPermissions.aspx" />
     <Content Include="Views\Modules\Security\umEditUsers.aspx" />
+    <Content Include="Views\Modules\Security\Options\umProfileOptions.aspx" />
     <Content Include="Views\Modules\Security\umSecurityLogList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityActivityList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityUsersList.aspx" />
@@ -650,6 +655,13 @@
     <Compile Include="Views\Modules\Overhead\umViewBudgets.aspx.designer.cs">
       <DependentUpon>umViewBudgets.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\Security\Options\AddEdit\umAddEditProfileOptions.aspx.cs">
+      <DependentUpon>umAddEditProfileOptions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Security\Options\AddEdit\umAddEditProfileOptions.aspx.designer.cs">
+      <DependentUpon>umAddEditProfileOptions.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\Security\umEditGroups.aspx.cs">
       <DependentUpon>umEditGroups.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -684,6 +696,13 @@
     </Compile>
     <Compile Include="Views\Modules\Security\umEditUsers.aspx.designer.cs">
       <DependentUpon>umEditUsers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Security\Options\umProfileOptions.aspx.cs">
+      <DependentUpon>umProfileOptions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Security\Options\umProfileOptions.aspx.designer.cs">
+      <DependentUpon>umProfileOptions.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\Security\umSecurityLogList.aspx.cs">
       <DependentUpon>umSecurityLogList.aspx</DependentUpon>
