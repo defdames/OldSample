@@ -17,11 +17,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             LoadSelectRailroad();
             if (!X.IsAjaxRequest)
             {
-                if (Session["rrType"] != null)
+                long _user_id = SYS_USER_INFORMATION.LoggedInUser().USER_ID;
+                if (SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue", _user_id) != null)
                 {
                     using (Entities _context = new Entities())
                     {
-                        long RailroadId = long.Parse(Session["rrType"].ToString());
+                        //long RailroadId = long.Parse(Session["rrType"].ToString());
+                        
+                        long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue", _user_id));
                         var RRdata = (from r in _context.CROSSING_RAILROAD
                                       where r.RAILROAD_ID == RailroadId
                                       select new
@@ -52,11 +55,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         protected void deReadKCS(object sender, DirectEventArgs e)
         {
-            if (Session["rrType"] != null)
-            {
+           
                 using (Entities _context = new Entities())
                 {
-                    long RailroadId = long.Parse(Session["rrType"].ToString());
+                    //long RailroadId = long.Parse(Session["rrType"].ToString());
+                    long _user_id = SYS_USER_INFORMATION.LoggedInUser().USER_ID;
+                    long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue", _user_id));
                     var RRdata = (from r in _context.CROSSING_RAILROAD
                                   where r.RAILROAD_ID == RailroadId
                                   select new
@@ -82,7 +86,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             }
 
-        }
+        
         protected void deReadRRTypes(object sender, StoreReadDataEventArgs e)
         {
            
@@ -112,7 +116,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 RowSelectionModel rrSelection = RowSelectionModel1;
 
 
-                Session.Add("rrType", rrSelection.SelectedRecordID.ToString());
+                //Session.Add("rrType", rrSelection.SelectedRecordID.ToString());
+                long _user_id = SYS_USER_INFORMATION.LoggedInUser().USER_ID;               
+                SYS_USER_PROFILE_OPTIONS.setProfileOption("UserCrossingSelectedValue", _user_id, uxRailRoadCI.SelectedItem.Value);
                 
                  using (Entities _context = new Entities())
                     {
@@ -153,7 +159,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             long _user_id = SYS_USER_INFORMATION.LoggedInUser().USER_ID;
 
-            Session.Add("rrType", uxRailRoadCI.SelectedItem.Value);
+            //Session.Add("rrType", uxRailRoadCI.SelectedItem.Value);
             SYS_USER_PROFILE_OPTIONS.setProfileOption("UserCrossingSelectedValue", _user_id, uxRailRoadCI.SelectedItem.Value);
             
             uxCrossingInfoTab.Reload();

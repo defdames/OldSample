@@ -43,7 +43,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             using (Entities _context = new Entities())
             {
                 List<object> data;
-                long RailroadId = long.Parse(Session["rrType"].ToString());
+                //long RailroadId = long.Parse(Session["rrType"].ToString());
+                long _user_id = SYS_USER_INFORMATION.LoggedInUser().USER_ID;
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue", _user_id));
                 //Get List of all new crossings
 
                     data = (from d in _context.CROSSINGS
