@@ -5,6 +5,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    
+     <style type="text/css">
+        .rowBodyCls .x-grid-cell-rowbody {
+            border-style: solid;
+            border-width: 0px 0px 1px;
+            border-color: black;
+        }
+
+        .x-grid-group-title {
+            color: #000000;
+            font: bold 11px/13px tahoma,arial,verdana,sans-serif;
+        }
+
+        .x-grid-group-hd {
+            border-width: 0 0 1px 0;
+            border-style: solid;
+            border-color: #000000;
+            padding: 10px 4px 4px 4px;
+            background: white;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -13,7 +35,7 @@
         <%-- <Service Units Tab>--%>
         <ext:GridPanel ID="uxSupplementalCrossingGrid" Title="CROSSING LIST FOR SUPPLEMENTAL ENTRY" runat="server" Layout="HBoxLayout" Collapsible="true">
             <SelectionModel>
-                <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
+                <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Multi" />
             </SelectionModel>
             <Store>
                 <ext:Store runat="server"
@@ -54,11 +76,14 @@
                 <ext:FilterHeader ID="FilterHeader1" runat="server" />
             </Plugins>
             <DirectEvents>
-                <Select OnEvent="GetSupplementalGridData">
-                    <ExtraParams>
+                <SelectionChange OnEvent="GetSupplementalGridData">
+                  <%--  <ExtraParams>
                         <ext:Parameter Name="CrossingId" Value="#{uxSupplementalCrossingGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                    </ExtraParams>
-                </Select>
+                    </ExtraParams>--%>
+                     <ExtraParams>
+                      <ext:Parameter Name="crossingId" Value="Ext.encode(#{uxSupplementalCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+                     </ExtraParams>
+                </SelectionChange>
             </DirectEvents>
 
 
@@ -102,13 +127,14 @@
 
             <Store>
                 <ext:Store runat="server"
-                    ID="uxSupplementalStore">
+                    ID="uxSupplementalStore" GroupField="CROSSING_NUMBER">
                     <Model>
                         <ext:Model ID="Model1" runat="server">
                             <Fields>
                                
 
                                 <ext:ModelField Name="CROSSING_ID" />
+                                <ext:ModelField Name="CROSSING_NUMBER" />
                                 <ext:ModelField Name="SUPPLEMENTAL_ID" />
                                 <ext:ModelField Name="APPROVED_DATE" Type="Date" />
                                 <ext:ModelField Name="SERVICE_TYPE" />
@@ -119,11 +145,16 @@
                             </Fields>
                         </ext:Model>
                     </Model>
+                     <Sorters>
+                        <ext:DataSorter Property="APPROVED_DATE" Direction="ASC" />
+                    </Sorters>
                 </ext:Store>
             </Store>
+            
+
             <ColumnModel>
                 <Columns>
-
+                     <ext:Column ID="Column2" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing Number" Flex="1" />
                     <ext:DateColumn ID="DateColumn1" runat="server" DataIndex="APPROVED_DATE" Text="Approved Date" Flex="1" Format="MM/dd/yyyy" />
                     <ext:Column ID="Column6" runat="server" DataIndex="SERVICE_TYPE" Text="Service Type" Flex="1" />
                     <ext:Column ID="Column3" runat="server" DataIndex="TRUCK_NUMBER" Text="Truck" Flex="1" />
@@ -141,6 +172,11 @@
                 <Select Handler="#{uxRemoveSuppButton}.enable();" />
                 <Deselect Handler="#{uxRemoveSuppButton}.disable();" />
             </Listeners>
+             <Features>
+                <ext:Grouping ID="Grouping1"
+                    runat="server"
+                    HideGroupedHeader="true" Collapsible="false" Cls="x-grid-group-title; x-grid-group-hd" />
+            </Features>
         </ext:GridPanel>
 
 
@@ -193,7 +229,7 @@
 
                                 <ext:TextField runat="server" ID="uxAddSquareFeet" FieldLabel="Square Feet" LabelAlign="Right" AnchorHorizontal="100%" AllowBlank="false" />
 
-                                <ext:ComboBox ID="uxAddTruckComboBox"
+                               <%-- <ext:ComboBox ID="uxAddTruckComboBox"
                                     runat="server"
                                     FieldLabel="Truck #"
                                     LabelAlign="Right"
@@ -214,12 +250,114 @@
 
                                         </ext:Store>
                                     </Store>
-                                </ext:ComboBox>
-                                  <ext:Label ID="Label2" runat="server" Text="" Width="25" />
-                                <ext:Checkbox ID="uxAddRecurringBox" runat="server" BoxLabel="Recurring" BoxLabelAlign="After" AllowBlank="false" />
+                                </ext:ComboBox>--%>
+                                <ext:Label runat="server" Width="65" />
+                                   <ext:Checkbox ID="uxAddRecurringBox" runat="server" BoxLabel="Recurring" BoxLabelAlign="After" AllowBlank="false" />
 
                             </Items>
                         </ext:FieldContainer>
+                                <ext:DropDownField runat="server" Editable="false"
+					ID="uxAddEquipmentDropDown"
+					FieldLabel="Choose Equipment"
+					Mode="ValueText" LabelAlign="Right"
+					AllowBlank="false" Width="540">
+					<Component>
+						<ext:GridPanel runat="server"
+							ID="uxEquipmentGrid" 
+							Layout="HBoxLayout">
+							<Store>
+								<ext:Store runat="server"
+									ID="uxEquipmentStore"
+									OnReadData="deReadGrid"
+									PageSize="10"
+									RemoteSort="true"
+									AutoDataBind="true">
+									<Model>
+										<ext:Model ID="Model3" runat="server">
+											<Fields>
+												<ext:ModelField Name="CLASS_CODE" Type="String"/>
+												<ext:ModelField Name="NAME" Type="String"/>
+												<ext:ModelField Name="ORG_ID" />
+												<ext:ModelField Name="ORGANIZATION_ID" Type="Int" />
+												<ext:ModelField Name="ORGANIZATION_NAME" Type="String" />
+												<ext:ModelField Name="PROJECT_ID" Type="Int" />
+												<ext:ModelField Name="PROJECT_STATUS_CODE" />
+												<ext:ModelField Name="SEGMENT1" Type="Int" />
+											</Fields>
+										</ext:Model>
+									</Model>											
+									<Proxy>
+										<ext:PageProxy />
+									</Proxy>   
+									<Parameters>
+										<ext:StoreParameter Name="Form" Value="Add" />
+									</Parameters>
+								</ext:Store>
+							</Store>
+							<ColumnModel>
+								<Columns>
+									<ext:Column runat="server"
+										ID="uxEquipmentClassCode"
+										DataIndex="CLASS_CODE"
+										Text="Class Code" />
+									<ext:Column runat="server"
+										ID="uxEquipmentName"
+										DataIndex="NAME" 
+										Text="Equipment Name"/>
+									<ext:Column runat="server"
+										ID="uxEquipmentOrgName"
+										DataIndex="ORGANIZATION_NAME"
+										Text="Organization Name" />                     
+									<ext:Column runat="server"
+										ID="uxEquipmentSegment"
+										DataIndex="SEGMENT1"
+										Text="Project Number" />
+								</Columns>
+							</ColumnModel>
+							<Plugins>
+								<ext:FilterHeader ID="uxAddEquipmentFilter" runat="server" Remote="true"  />
+							</Plugins>									
+							<TopBar>
+								<ext:Toolbar runat="server"
+									ID="uxEquipmentBar">
+									<Items>
+										<ext:Button runat="server"
+											ID="uxAddEquipmentToggleOrg"
+											EnableToggle="true"
+											Text="All Regions"
+											Icon="Group">
+											<DirectEvents>
+												<Toggle OnEvent="deReloadStore">
+													<ExtraParams>
+														<ext:Parameter Name="Type" Value="Equipment" />
+													</ExtraParams>
+												</Toggle>
+											</DirectEvents>
+										</ext:Button>
+									</Items>
+								</ext:Toolbar>
+							</TopBar>
+							<BottomBar>
+								<ext:PagingToolbar runat="server"
+									ID="uxAddEquipmentPaging" />
+							</BottomBar>
+							<SelectionModel>
+								<ext:RowSelectionModel ID="RowSelectionModel3" runat="server" Mode="Single" />
+							</SelectionModel>
+							<DirectEvents>
+								<SelectionChange OnEvent="deStoreGridValue">
+									<ExtraParams>
+										<ext:Parameter Name="ProjectId" Value="#{uxEquipmentGrid}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
+										<ext:Parameter Name="EquipmentName" Value="#{uxEquipmentGrid}.getSelectionModel().getSelection()[0].data.NAME" Mode="Raw" />
+										<ext:Parameter Name="Form" Value="Add" />
+									</ExtraParams>
+								</SelectionChange>
+							</DirectEvents>
+						</ext:GridPanel>
+					</Component>
+				</ext:DropDownField>
+                                  <ext:Label ID="Label2" runat="server" Text="" Width="25" />
+                             
 
 
                         <ext:TextArea ID="uxAddRemarks" runat="server" FieldLabel="Remarks" AnchorHorizontal="92%" LabelAlign="Right" />

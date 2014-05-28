@@ -54,7 +54,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                             join c in _context.CROSSINGS on i.CROSSING_ID equals c.CROSSING_ID
                             where i.CROSSING_ID == CrossingId
 
-                            select new { i.CROSSING_ID, i.INCIDENT_ID, i.INCIDENT_NUMBER, i.DATE_REPORTED, i.DATE_CLOSED, i.SLOW_ORDER, i.REMARKS }).ToList<object>();
+                            select new {c.CROSSING_NUMBER, i.CROSSING_ID, i.INCIDENT_ID, i.INCIDENT_NUMBER, i.DATE_REPORTED, i.DATE_CLOSED, i.SLOW_ORDER, i.REMARKS }).ToList<object>();
 
 
                 }
@@ -64,7 +64,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                             join c in _context.CROSSINGS on i.CROSSING_ID equals c.CROSSING_ID
                             where i.CROSSING_ID == CrossingId && i.DATE_CLOSED == null
 
-                            select new { i.CROSSING_ID, i.INCIDENT_ID, i.INCIDENT_NUMBER, i.DATE_REPORTED, i.DATE_CLOSED, i.SLOW_ORDER, i.REMARKS }).ToList<object>();
+                            select new {c.CROSSING_NUMBER, i.CROSSING_ID, i.INCIDENT_ID, i.INCIDENT_NUMBER, i.DATE_REPORTED, i.DATE_CLOSED, i.SLOW_ORDER, i.REMARKS }).ToList<object>();
 
                 }
 

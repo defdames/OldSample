@@ -127,7 +127,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                                   {
                                       r
 
-                                  }).Single();
+                                  }).SingleOrDefault();
 
                     uxRRCI.SetValue(RRdata.r.RAILROAD);
 

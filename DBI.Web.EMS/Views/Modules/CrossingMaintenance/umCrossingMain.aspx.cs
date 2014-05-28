@@ -31,11 +31,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                                       }).Single();
 
                         uxRailRoadCI.SetValue(RRdata.r.RAILROAD);
-                        //if (RRdata.r.RAILROAD_ID != 21)
-                        //{
-                        //    uxManageKCS.Hidden = true;
+                        if (RRdata.r.RAILROAD_ID == 21)
+                        {
+                            uxManageKCS.Enable();
 
-                        //}
+                        }
+                        else
+                        {
+                            uxManageKCS.Disable();
+                        }
                     }
 
                 }
@@ -62,19 +66,22 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                                   }).Single();
 
                     uxRailRoadCI.SetValue(RRdata.r.RAILROAD);
-                    if (RRdata.r.RAILROAD_ID != 21)
+                    if (RRdata.r.RAILROAD_ID == 21)
                     {
-                        uxManageKCS.Hidden = true;
-                        uxManageKCS.Reload();
+                        uxManageKCS.Enable();
                     }
-                    
+                    else
+                    {
+                        uxManageKCS.Disable();
+                    }
+                    uxCrossingInfoTab.Reload();
+                    uxContactsTab.Reload();
+                    uxCrossingSecurity.Reload();
+                    uxManageKCS.Reload();
                 }
 
             }
-           
-         
-            
-           
+
         }
         protected void deReadRRTypes(object sender, StoreReadDataEventArgs e)
         {
@@ -120,9 +127,16 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
 
                         uxRailRoadCI.SetValue(RRdata.r.RAILROAD);
-
+                        if (RRdata.r.RAILROAD_ID == 21)
+                        {
+                            uxManageKCS.Enable();
+                        }
+                        else
+                        {
+                            uxManageKCS.Disable();
+                        }
                     }
-
+               
                 
                 uxChangeRailroadWindow.Close();
                 uxCrossingInfoTab.Reload();

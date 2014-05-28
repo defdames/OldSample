@@ -158,7 +158,7 @@
                 <ColumnModel>
                     <Columns>
                           <ext:Column ID="Column1" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing Number" Flex="1" />
-                        <ext:Column ID="Column2" runat="server" DataIndex="APPLICATION_REQUESTED" Text="App Requested" Flex="1" />
+                        <ext:Column ID="Column2" runat="server" DataIndex="APPLICATION_REQUESTED" Text="Appplication #" Flex="1" />
                         <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="APPLICATION_DATE" Text="Date" Flex="1" Format="MM/dd/yyyy" />
                         <ext:Column ID="Column3" runat="server" DataIndex="TRUCK_NUMBER" Text="Truck #" Flex="1" />                     
                         <ext:Column ID="Column7" runat="server" DataIndex="SPRAY" Text="Spray" Flex="1" />
@@ -232,7 +232,7 @@
 
                         <ext:FieldContainer ID="FieldContainer2" runat="server" Layout="HBoxLayout">
                             <Items>
-                                <ext:ComboBox ID="uxAddApplicationTruckComboBox"
+                               <%-- <ext:ComboBox ID="uxAddApplicationTruckComboBox"
                                     runat="server"
                                     FieldLabel="Truck #"
                                     LabelAlign="Right"
@@ -253,7 +253,107 @@
 
                                         </ext:Store>
                                     </Store>
-                                </ext:ComboBox>
+                                </ext:ComboBox>--%>
+                                 <ext:DropDownField runat="server" Editable="false"
+					ID="uxAddEquipmentDropDown"
+					FieldLabel="Choose Equipment"
+					Mode="ValueText" LabelAlign="Right"
+					AllowBlank="false" Width="500">
+					<Component>
+						<ext:GridPanel runat="server"
+							ID="uxEquipmentGrid" 
+							Layout="HBoxLayout">
+							<Store>
+								<ext:Store runat="server"
+									ID="uxEquipmentStore"
+									OnReadData="deReadGrid"
+									PageSize="10"
+									RemoteSort="true"
+									AutoDataBind="true">
+									<Model>
+										<ext:Model ID="Model4" runat="server">
+											<Fields>
+												<ext:ModelField Name="CLASS_CODE" Type="String"/>
+												<ext:ModelField Name="NAME" Type="String"/>
+												<ext:ModelField Name="ORG_ID" />
+												<ext:ModelField Name="ORGANIZATION_ID" Type="Int" />
+												<ext:ModelField Name="ORGANIZATION_NAME" Type="String" />
+												<ext:ModelField Name="PROJECT_ID" Type="Int" />
+												<ext:ModelField Name="PROJECT_STATUS_CODE" />
+												<ext:ModelField Name="SEGMENT1" Type="Int" />
+											</Fields>
+										</ext:Model>
+									</Model>											
+									<Proxy>
+										<ext:PageProxy />
+									</Proxy>   
+									<Parameters>
+										<ext:StoreParameter Name="Form" Value="Add" />
+									</Parameters>
+								</ext:Store>
+							</Store>
+							<ColumnModel>
+								<Columns>
+									<ext:Column runat="server"
+										ID="uxEquipmentClassCode"
+										DataIndex="CLASS_CODE"
+										Text="Class Code" />
+									<ext:Column runat="server"
+										ID="uxEquipmentName"
+										DataIndex="NAME" 
+										Text="Equipment Name"/>
+									<ext:Column runat="server"
+										ID="uxEquipmentOrgName"
+										DataIndex="ORGANIZATION_NAME"
+										Text="Organization Name" />                     
+									<ext:Column runat="server"
+										ID="uxEquipmentSegment"
+										DataIndex="SEGMENT1"
+										Text="Project Number" />
+								</Columns>
+							</ColumnModel>
+							<Plugins>
+								<ext:FilterHeader ID="uxAddEquipmentFilter" runat="server" Remote="true"  />
+							</Plugins>									
+							<TopBar>
+								<ext:Toolbar runat="server"
+									ID="uxEquipmentBar">
+									<Items>
+										<ext:Button runat="server"
+											ID="uxAddEquipmentToggleOrg"
+											EnableToggle="true"
+											Text="All Regions"
+											Icon="Group">
+											<DirectEvents>
+												<Toggle OnEvent="deReloadStore">
+													<ExtraParams>
+														<ext:Parameter Name="Type" Value="Equipment" />
+													</ExtraParams>
+												</Toggle>
+											</DirectEvents>
+										</ext:Button>
+									</Items>
+								</ext:Toolbar>
+							</TopBar>
+							<BottomBar>
+								<ext:PagingToolbar runat="server"
+									ID="uxAddEquipmentPaging" />
+							</BottomBar>
+							<SelectionModel>
+								<ext:RowSelectionModel ID="RowSelectionModel3" runat="server" Mode="Single" />
+							</SelectionModel>
+							<DirectEvents>
+								<SelectionChange OnEvent="deStoreGridValue">
+									<ExtraParams>
+										<ext:Parameter Name="ProjectId" Value="#{uxEquipmentGrid}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
+										<ext:Parameter Name="EquipmentName" Value="#{uxEquipmentGrid}.getSelectionModel().getSelection()[0].data.NAME" Mode="Raw" />
+										<ext:Parameter Name="Form" Value="Add" />
+									</ExtraParams>
+								</SelectionChange>
+							</DirectEvents>
+						</ext:GridPanel>
+					</Component>
+				</ext:DropDownField>
                                   <ext:Label ID="Label2" runat="server" Text="" Width="25" />
                                 <ext:Checkbox ID="uxAddEntryInspectBox" runat="server" BoxLabel="Inspect" BoxLabelAlign="After" Width="250" TabIndex="6" />
                             </Items>
