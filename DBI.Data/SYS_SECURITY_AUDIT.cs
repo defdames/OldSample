@@ -20,5 +20,7 @@ namespace DBI.Data
         public string COMMENTS { get; set; }
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
+        public Nullable<System.DateTime> CREATE_DATE { get; set; }
+        public string CREATED_BY { get; set; }
     }
 }
