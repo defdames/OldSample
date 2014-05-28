@@ -31,7 +31,7 @@ namespace DBI.Data
         }
 
         /// <summary>
-        /// Returns a selected user profile option by name
+        /// Returns a selected user profile option by name and user_id
         /// </summary>
         /// <param name="profile_option_name"></param>
         /// <returns></returns>
@@ -52,8 +52,33 @@ namespace DBI.Data
             {
 
                 throw;
+            }       
+        }
+
+        /// <summary>
+        /// Returns a selected user profile option by name and logged in user
+        /// </summary>
+        /// <param name="profile_option_name"></param>
+        /// <returns></returns>
+        public static string userProfileOption(string profile_option_name)
+        {
+            try
+            {
+                SYS_USER_INFORMATION _loggedInUser = SYS_USER_INFORMATION.LoggedInUser();
+                SYS_USER_PROFILE_OPTIONS_V _option = userProfileOptions().Where(x => x.PROFILE_KEY == profile_option_name && x.USER_ID == _loggedInUser.USER_ID).SingleOrDefault();
+                string _value = string.Empty;
+                if (_option != null)
+                {
+                    _value = _option.PROFILE_VALUE;
+                }
+
+                return _value;
             }
-           
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
 
