@@ -50,7 +50,8 @@
                 <ext:FieldSet runat="server" Title="Filter">
                     <Items>
 
-
+                        <ext:TextField ID="uxRRCI" runat="server" FieldLabel="Railroad" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true"/>
+                        
                         <ext:ComboBox ID="uxAddAppReqeusted"
                             runat="server"
                             FieldLabel="Application #"
@@ -77,7 +78,7 @@
                             </Store>
                         </ext:ComboBox>
 
-                        <ext:ComboBox ID="uxAddServiceUnitCI"
+                        <ext:ComboBox ID="uxAddServiceUnit"
                             runat="server" FieldLabel="Service Unit"
                             LabelAlign="Right"
                             AnchorHorizontal="20%"
@@ -97,7 +98,7 @@
                                     </Model>
                                 </ext:Store>
                             </Store>
-                            <%--  <DirectEvents>
+                              <DirectEvents>
                                                     <Select OnEvent="deLoadSubDiv">
                                                         <ExtraParams>
                                                             <ext:Parameter Name="Type" Value="Add" />
@@ -106,9 +107,9 @@
                                                 </DirectEvents>
                                                 <Listeners>
                                                     <Select Handler="#{uxAddSubDivStore}.load()" />
-                                                </Listeners>--%>
+                                                </Listeners>
                         </ext:ComboBox>
-                        <ext:ComboBox ID="uxAddSubDivCI"
+                        <ext:ComboBox ID="uxAddSubDiv"
                             runat="server"
                             FieldLabel="Sub-Division"
                             LabelAlign="Right"
@@ -169,14 +170,14 @@
                             ID="Button4"
                             Text="Run"
                             Icon="PlayGreen">
-                            <%-- <DirectEvents>
-                        <Click OnEvent="deExportToPDF" IsUpload="true">
-                            <ExtraParams>
-                                <ext:Parameter Name="CrossingId" Value="#{GridPanel1}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                             <DirectEvents>
+                        <Click OnEvent="deStateCrossingListGrid" >
+                            <%--<ExtraParams>
                                <ext:Parameter Name="selectedCrossings" Value="Ext.encode(#{GridPanel1}.getRowsValues())" Mode="Raw" />
-                            </ExtraParams>
+                            </ExtraParams>--%>
                         </Click>
-                    </DirectEvents>--%>
+                    </DirectEvents>
+                           
                         </ext:Button>
                         <ext:Button runat="server"
                             ID="Button2"
@@ -207,7 +208,7 @@
             <Store>
                 <ext:Store ID="uxStateCrossingListStore"
                     runat="server"
-                    GroupField="SUB_DIVISION" OnReadData="deStateCrossingListGrid" AutoLoad="false" PageSize="7">
+                    GroupField="SUB_DIVISION" AutoLoad="false" PageSize="7">
                     <Model>
                         <ext:Model ID="Model1" runat="server">
                             <Fields>
@@ -232,6 +233,7 @@
                                 <ext:ModelField Name="SPRAY" />
                                 <ext:ModelField Name="CUT" />
                                 <ext:ModelField Name="INSPECT" />
+                                <ext:ModelField Name="APPLICATION_REQUESTED" />
 
 
                             </Fields>
@@ -270,10 +272,7 @@
                             </Html>
                         </Template>
                     </ext:TemplateColumn>
-                    <%--    <ext:Column ID="Column6" runat="server" Text="NE" Flex="1" DataIndex="ROWNE" />
-                    <ext:Column ID="Column7" runat="server" Text="NW" Flex="1" DataIndex="ROWNW" />
-                    <ext:Column ID="Column9" runat="server" Text="SE" Flex="1" DataIndex="ROWSE" />
-                    <ext:Column ID="Column10" runat="server" Text="SW" Flex="1" DataIndex="ROWSW" />--%>
+                    
                       <ext:TemplateColumn ID="TemplateColumn2" runat="server" DataIndex="" MenuDisabled="true" Header="Spray / Cut / Inspect" Flex="1">
                         <Template ID="Template2" runat="server">
                             <Html>

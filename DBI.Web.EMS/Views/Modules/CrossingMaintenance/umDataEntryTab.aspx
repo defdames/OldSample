@@ -5,6 +5,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+     <style type="text/css">
+        .rowBodyCls .x-grid-cell-rowbody {
+            border-style: solid;
+            border-width: 0px 0px 1px;
+            border-color: black;
+        }
+
+        .x-grid-group-title {
+            color: #000000;
+            font: bold 11px/13px tahoma,arial,verdana,sans-serif;
+        }
+
+        .x-grid-group-hd {
+            border-width: 0 0 1px 0;
+            border-style: solid;
+            border-color: #000000;
+            padding: 10px 4px 4px 4px;
+            background: white;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -51,20 +72,23 @@
                 <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true" />
             </Plugins>
             <SelectionModel>
-                <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi" />
+                <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi"  />
             </SelectionModel>
             <Listeners>
-                <Select Handler="#{uxAddAppButton}.enable();" />
+                <Select Handler="#{uxAddAppButton}.enable(); #{uxRemoveAppButton}.enable()" />
                
             </Listeners>
 
-           <%--  <DirectEvents>
-                    <Select OnEvent="GetApplicationGridData">
-                        <ExtraParams>
+             <DirectEvents>
+                    <SelectionChange OnEvent="GetApplicationGridData">
+                      <%--  <ExtraParams>
                             <ext:Parameter Name="CrossingId" Value="#{uxApplicationCrossingGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                        </ExtraParams>
-                    </Select>
-                </DirectEvents>--%>
+                        </ExtraParams>--%>
+                          <ExtraParams>
+                                <ext:Parameter Name="crossingId" Value="Ext.encode(#{uxApplicationCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+                            </ExtraParams>
+                    </SelectionChange>
+                </DirectEvents>
             <BottomBar>
                 <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True">
                 </ext:PagingToolbar>
@@ -83,22 +107,33 @@
                                     </Click>
                                 </DirectEvents>--%>
                 </ext:Button>
-               
+                <ext:Button ID="uxRemoveAppButton" runat="server" Text="Delete Application" Icon="ApplicationDelete" Disabled="true">
+                    <DirectEvents>
+                        <Click OnEvent="deRemoveApplicationEntry">
+                            <Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete this application entry?" />
+
+                            <ExtraParams>
+                                <ext:Parameter Name="ApplicationInfo" Value="Ext.encode(#{uxApplicationEntryGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+                            </ExtraParams>
+                        
+                        </Click>
+                    </DirectEvents>
+
+                </ext:Button>
             </Items>
         </ext:Toolbar>
-      <%--  <ext:GridPanel ID="uxApplicationEntryGrid" Title="APPLICATION ENTRIES" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true" Hidden="true">
+        <ext:GridPanel ID="uxApplicationEntryGrid" Title="APPLICATION ENTRIES" runat="server" Region="North" Frame="false" Collapsible="true" MultiSelect="true" >
                 <SelectionModel>
                     <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" AllowDeselect="true" Mode="Single" />
                 </SelectionModel>
                 <Store>
                     <ext:Store runat="server"
-                        ID="uxApplicationStore">
+                        ID="uxApplicationStore" GroupField="CROSSING_NUMBER">
                         <Model>
                             <ext:Model ID="Model1" runat="server">
                                 <Fields>
-                                    <ext:ModelField Name="CROSSING_ID" />
-                                  
-                                   
+                                    <ext:ModelField Name="CROSSING_ID" />  
+                                    <ext:ModelField Name="CROSSING_NUMBER" />                                
                                     <ext:ModelField Name="APPLICATION_ID" />
                                     <ext:ModelField Name="APPLICATION_NUMBER" />
                                     <ext:ModelField Name="APPLICATION_DATE" Type="Date" />
@@ -112,16 +147,20 @@
                                 </Fields>
                             </ext:Model>
                         </Model>
-                       
+                        <Sorters>
+                        <ext:DataSorter Property="APPLICATION_DATE" Direction="ASC" />
+
+                    </Sorters>
+
                     </ext:Store>
                 </Store>
+
                 <ColumnModel>
                     <Columns>
-
-                        <ext:Column ID="Column1" runat="server" DataIndex="APPLICATION_NUMBER" Text="Application #" Flex="1" />
+                          <ext:Column ID="Column1" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing Number" Flex="1" />
+                        <ext:Column ID="Column2" runat="server" DataIndex="APPLICATION_REQUESTED" Text="App Requested" Flex="1" />
                         <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="APPLICATION_DATE" Text="Date" Flex="1" Format="MM/dd/yyyy" />
-                        <ext:Column ID="Column3" runat="server" DataIndex="TRUCK_NUMBER" Text="Truck #" Flex="1" />
-                         <ext:Column ID="Column2" runat="server" DataIndex="APPLICATION_REQUESTED" Text="App Requested" Flex="1" />
+                        <ext:Column ID="Column3" runat="server" DataIndex="TRUCK_NUMBER" Text="Truck #" Flex="1" />                     
                         <ext:Column ID="Column7" runat="server" DataIndex="SPRAY" Text="Spray" Flex="1" />
                         <ext:Column ID="Column9" runat="server" DataIndex="CUT" Text="Cut" Flex="1" />
                         <ext:Column ID="Column10" runat="server" DataIndex="INSPECT" Text="Inspect" Flex="1" />
@@ -129,8 +168,12 @@
 
                     </Columns>
                 </ColumnModel>               
-
-            </ext:GridPanel>--%>
+             <Features>
+                <ext:Grouping ID="Grouping1"
+                    runat="server"
+                    HideGroupedHeader="true" Collapsible="false" Cls="x-grid-group-title; x-grid-group-hd" />
+            </Features>
+            </ext:GridPanel>
 
 
         <%---------------------------------------Hidden Windows-----------------------------------%>

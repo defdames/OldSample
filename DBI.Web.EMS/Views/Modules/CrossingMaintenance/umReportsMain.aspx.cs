@@ -97,9 +97,18 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             uxAppDate.Reload();
             uxIncidents.Reload();
         }
-        
 
-        
+
+        protected void deLoadUnit(object sender, DirectEventArgs e)
+        {
+
+            Session.Add("rrType", uxRailRoadCI.SelectedItem.Value);
+
+            uxStateCrossingsList.Reload();
+            uxAppDate.Reload();
+            uxIncidents.Reload();
+
+        }
 
         protected void LoadSelectRailroad()
         {

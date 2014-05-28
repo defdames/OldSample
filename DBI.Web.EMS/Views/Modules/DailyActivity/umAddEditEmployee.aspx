@@ -178,17 +178,17 @@
 							FieldLabel="Time In"
 							MsgTarget="Side" Width="500">
 							<Items>
-								<ext:DateField runat="server"
+								<ext:TextField runat="server"
 									ID="uxAddEmployeeTimeInDate"
-									EnableKeyEvents="true"
 									IsRemoteValidation="true"
-									AllowBlank="false">
+									AllowBlank="false"
+									ReadOnly="true">
 									<RemoteValidation OnValidation="ValidateDateTime">
 										<ExtraParams>
 											<ext:Parameter Name="Type" Value="Add" />
 										</ExtraParams>
 									</RemoteValidation>
-								</ext:DateField>
+								</ext:TextField>
 								<ext:TimeField runat="server"
 									ID="uxAddEmployeeTimeInTime"
 									IsRemoteValidation="true"

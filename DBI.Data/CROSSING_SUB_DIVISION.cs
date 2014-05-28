@@ -12,14 +12,16 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class CROSSING_SERVICE_SUB_DIV
+    public partial class CROSSING_SUB_DIVISION
     {
-        public decimal SERVICE_SUB_ID { get; set; }
-        public Nullable<decimal> RR_ID { get; set; }
-        public string RR_NAME { get; set; }
-        public Nullable<decimal> SERVICE_UNIT_ID { get; set; }
-        public string SERVICE_UNIT_NAME { get; set; }
-        public Nullable<decimal> SUB_DIVISION_ID { get; set; }
+        public long SUB_DIVISION_ID { get; set; }
         public string SUB_DIVISION_NAME { get; set; }
+        public Nullable<System.DateTime> CREATE_DATE { get; set; }
+        public Nullable<System.DateTime> MODIFY_DATE { get; set; }
+        public string CREATED_BY { get; set; }
+        public string MODIFIED_BY { get; set; }
+        public long SERVICE_UNIT_ID { get; set; }
+    
+        public virtual CROSSING_SERVICE_UNIT CROSSING_SERVICE_UNIT { get; set; }
     }
 }

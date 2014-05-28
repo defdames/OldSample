@@ -154,7 +154,10 @@
     <Compile Include="CROSSING_RELATIONSHIP.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
-    <Compile Include="CROSSING_SERVICE_SUB_DIV.cs">
+    <Compile Include="CROSSING_SERVICE_UNIT.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CROSSING_SUB_DIVISION.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="CROSSING_SUPPLEMENTAL.cs">
@@ -235,7 +238,22 @@
     <Compile Include="INVENTORY_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="JOB_COST_BALANCE_TYPE.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="JOB_COST_CLASSES.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="JOB_COST_DATE.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="JOB_COST_PROJECTS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="JOB_COST_ROLLUPS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="JOB_COST_TASK.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="JOB_TITLE_V.cs">

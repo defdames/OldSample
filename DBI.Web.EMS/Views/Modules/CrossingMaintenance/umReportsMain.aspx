@@ -38,7 +38,10 @@
                                                         </Model>
                                                     </ext:Store>
                                                 </Store>
-                                            
+                                             <DirectEvents>
+                                                    <Select OnEvent="deLoadUnit"> 
+                                                    </Select>
+                                                </DirectEvents>
                                             </ext:ComboBox>
                             
                         </Items>
