@@ -151,7 +151,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         protected void deLoadUnit(object sender, DirectEventArgs e)
         {
 
+            long _user_id = SYS_USER_INFORMATION.LoggedInUser().USER_ID;
+
             Session.Add("rrType", uxRailRoadCI.SelectedItem.Value);
+            SYS_USER_PROFILE_OPTIONS.setProfileOption("UserCrossingSelectedValue", _user_id, uxRailRoadCI.SelectedItem.Value);
             
             uxCrossingInfoTab.Reload();
             uxContactsTab.Reload();
