@@ -970,9 +970,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             //Get Contacts
             using (Entities _context = new Entities())
             {
+                long RailroadId = long.Parse(Session["rrType"].ToString());
                 List<object> data;
                 data = (from d in _context.CROSSING_CONTACTS
-  
+                        where d.RAILROAD_ID == RailroadId
                         select new { d.CONTACT_ID, d.CONTACT_NAME, d.CELL_NUMBER, d.WORK_NUMBER }).ToList<object>();
                 int count;
                 uxAddManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -985,9 +986,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             //Get Contacts
             using (Entities _context = new Entities())
             {
+                long RailroadId = long.Parse(Session["rrType"].ToString());
                 List<object> data;
                 data = (from d in _context.CROSSING_CONTACTS
-
+                        where d.RAILROAD_ID == RailroadId
                         select new { d.CONTACT_ID, d.CONTACT_NAME, d.CELL_NUMBER, d.WORK_NUMBER }).ToList<object>();
                 int count;
                 uxEditManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);

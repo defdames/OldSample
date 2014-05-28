@@ -122,6 +122,7 @@
     <Content Include="Views\Modules\BudgetBidding\umBlankBudget.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umBudgetBiddingMain.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umYearBudget.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\ManageKCS.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umAppDate.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingHome.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umDataEntryMain.aspx" />
@@ -244,6 +245,13 @@
     </Compile>
     <Compile Include="Views\Modules\BudgetBidding\umYearBudget.aspx.designer.cs">
       <DependentUpon>umYearBudget.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\ManageKCS.aspx.cs">
+      <DependentUpon>ManageKCS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\ManageKCS.aspx.designer.cs">
+      <DependentUpon>ManageKCS.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umAppDate.aspx.cs">
       <DependentUpon>umAppDate.aspx</DependentUpon>
