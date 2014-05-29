@@ -48,7 +48,7 @@ namespace DBI.Data.Test
         {
             string _buid = "12231";
             string _fiscalYear = "2013";
-            decimal _value = DBI.Data.Oracle.PA.Projects.laborBurden(_buid, _fiscalYear);
+            decimal _value = DBI.Data.Oracle.PA.laborBurden(_buid, _fiscalYear);
             Assert.IsTrue(_value > 0);
         }
 

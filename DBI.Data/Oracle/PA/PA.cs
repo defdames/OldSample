@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBI.Data.Oracle.PA
+namespace DBI.Data.Oracle
 {
-    public class Projects
+    public class PA
     {
 
         public static decimal laborBurden(string buid, string fiscalYear)
