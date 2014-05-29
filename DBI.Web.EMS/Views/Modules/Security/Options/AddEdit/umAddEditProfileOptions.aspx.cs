@@ -42,10 +42,18 @@ namespace DBI.Web.EMS.Views.Modules.Security.Options.AddEdit
                     throw new DBICustomException("Profile name must not contain any spaces!");
                 }
 
+
                 if (!string.IsNullOrEmpty(Request.QueryString["recordID"]))
                 {
                     long _recordID = long.Parse(Request.QueryString["recordID"].ToString());
                     SYS_PROFILE_OPTIONS _profile = SYS_PROFILE_OPTIONS.profileOptionByRecordID(_recordID);
+
+                    //Make sure it doesn't exits in user_profile_options
+                    int _cnt = DBI.Data.SYS_USER_PROFILE_OPTIONS.count((long)_profile.PROFILE_OPTION_ID);
+                    if (_cnt > 0)
+                    {
+                        throw new DBICustomException("You can not update this profile option,it is currently in use!");
+                    }
                     _profile.PROFILE_KEY = uxProfileKey.Text;
                     _profile.DESCRIPTION = uxProfileDescription.Text;
                     _profile.MODIFY_DATE = DateTime.Now;
