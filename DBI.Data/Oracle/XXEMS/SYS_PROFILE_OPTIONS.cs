@@ -22,13 +22,28 @@ namespace DBI.Data
 
         public static void deleteProfileOptionByRecordID(long recordID)
         {
-            SYS_PROFILE_OPTIONS option;
-            using (Entities _context = new Entities())
+            try
             {
-               option = _context.SYS_PROFILE_OPTIONS.Where(a => a.PROFILE_OPTION_ID == recordID).SingleOrDefault();
-            }
+                SYS_PROFILE_OPTIONS option;
+                using (Entities _context = new Entities())
+                {
+                    option = _context.SYS_PROFILE_OPTIONS.Where(a => a.PROFILE_OPTION_ID == recordID).SingleOrDefault();
+                }
 
-            GenericData.Delete<SYS_PROFILE_OPTIONS>(option);
+                //Make sure it doesn't exits in user_profile_options
+                int _cnt = DBI.Data.SYS_USER_PROFILE_OPTIONS.count((long)option.PROFILE_OPTION_ID);
+                if (_cnt > 0)
+                {
+                    throw new DBICustomException("You can not delete this user profile, it is currently in use!");
+                }
+
+                GenericData.Delete<SYS_PROFILE_OPTIONS>(option);
+            }
+            catch (Exception)
+            {  
+                throw;
+            }
+           
         }
 
         public static SYS_PROFILE_OPTIONS profileOptionByRecordID(long recordID)

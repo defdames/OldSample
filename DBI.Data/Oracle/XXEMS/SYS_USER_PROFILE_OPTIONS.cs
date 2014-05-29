@@ -9,9 +9,19 @@ namespace DBI.Data
 {
     public partial class SYS_USER_PROFILE_OPTIONS
     {
-
-
-
+        /// <summary>
+        /// Returns a count of profile options by that profile option name.
+        /// </summary>
+        /// <param name="profile_option_name"></param>
+        /// <returns></returns>
+        public static int count(long profile_option_id)
+        {
+            using (Entities _context = new Entities())
+            {
+                var data = _context.SYS_USER_PROFILE_OPTIONS.Where(x => x.PROFILE_OPTION_ID == profile_option_id).Count();
+                return data;
+            }
+        }
 
 
         /// <summary>
