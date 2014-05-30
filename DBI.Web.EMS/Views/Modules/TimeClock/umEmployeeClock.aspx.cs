@@ -24,6 +24,14 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
         }
 
+        protected void deSetTest(object sender, DirectEventArgs e)
+        {
+
+          
+             uxTest.Text = (uxDateTime.Value).ToString();
+            
+        }
+
 
         protected void deSetTime(object sender, DirectEventArgs e)
         {
@@ -45,7 +53,10 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
             if (time == null)  //If it is a new record do the following
             {
-                uxTime_InTextBox.Text = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt");
+
+
+                uxTime_InTextBox.Text = uxDateTime.Value.ToString();
+                //uxTime_InTextBox.Text = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt");
                 uxTimeButton.Text = "Clock In";
                 DateTime dow = Convert.ToDateTime(uxTime_InTextBox.Text);
 
@@ -76,7 +87,8 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
             else  //If it isnt a new record due the following
             {
-                uxTime_OutTextBox.Text = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt");
+                uxTime_OutTextBox.Text = uxDateTime.Value.ToString();
+                //uxTime_OutTextBox.Text = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt");
                 using (Entities _context = new Entities())
                 {
 
