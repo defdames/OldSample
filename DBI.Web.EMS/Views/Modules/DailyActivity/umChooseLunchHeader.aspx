@@ -9,7 +9,7 @@
 <body>
 	<form id="form1" runat="server">
 	<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
-				<ext:FormPanel runat="server" ID="uxChooseLunchForm" Layout="FormLayout">
+				<ext:FormPanel runat="server" ID="uxChooseLunchForm" Layout="FormLayout" DefaultButton="uxStoreLunchButton">
 					<Items>
 						<ext:ComboBox runat="server" ID="uxLunchHeader" DisplayField="ProjectTask" AllowBlank="false" 
 							ValueField="HeaderId" QueryMode="Local" ForceSelection="true" TypeAhead="true" EmptyText="Choose a project/task" FieldLabel="Choose Lunch Project">
@@ -52,7 +52,7 @@
 						</ext:ComboBox>
 					</Items>
 					<Buttons>
-						<ext:Button runat="server" Text="Submit" ID="uxStoreLunchButton" Disabled="true">
+						<ext:Button runat="server" Text="Save" ID="uxStoreLunchButton" Disabled="true" Icon="Add">
 							<DirectEvents>
 								<Click OnEvent="deStoreLunchChoice">
 									<EventMask ShowMask="true" />

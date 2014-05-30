@@ -12,7 +12,7 @@
 	<form id="form1" runat="server">
 		<ext:FormPanel runat="server"
 			ID="uxEditHeaderForm"
-			Layout="FormLayout" MaxWidth="1000">
+			Layout="FormLayout" MaxWidth="1000" DefaultButton="uxFormSubmit">
 			<Items>
 				<ext:DropDownField runat="server"
 					ID="uxFormProject"
@@ -223,12 +223,14 @@
 				</ext:ComboBox>
 			</Items>
 			<Buttons>
-				<ext:Button runat="server" ID="uxFormSubmit" Text="Submit" Disabled="true">
+				<ext:Button runat="server" ID="uxFormSubmit" Text="Save" Disabled="true" Icon="Add">
 					<DirectEvents>
-						<Click OnEvent="deStoreHeader" />
+						<Click OnEvent="deStoreHeader">
+							<EventMask ShowMask="true" />
+						</Click>
 					</DirectEvents>    
 				</ext:Button>
-				<ext:Button runat="server" ID="uxFormClear" Text="Clear">
+				<ext:Button runat="server" ID="uxFormClear" Text="Clear" Icon="Delete">
 					<Listeners>
 						<Click Handler="#{uxEditHeaderForm}.reset()" />
 					</Listeners>

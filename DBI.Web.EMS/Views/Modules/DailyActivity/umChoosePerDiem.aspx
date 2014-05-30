@@ -11,7 +11,7 @@
 	<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
 		<ext:Panel runat="server" Layout="FitLayout">
 			<Items>
-				<ext:FormPanel runat="server" ID="uxChoosePerDiemFormPanel" Layout="FormLayout">
+				<ext:FormPanel runat="server" ID="uxChoosePerDiemFormPanel" Layout="FormLayout" DefaultButton="uxChoosePerDiemSubmitButton">
 					<Items>
 						<ext:ComboBox runat="server" ID="uxChoosePerDiemHeaderId" DisplayField="ProjectTask" ValueField="HeaderId" AllowBlank="false" 
 							FieldLabel="Project" EmptyText="Choose Project for Per Diem" ForceSelection="true" LabelWidth="100" Width="500">
@@ -51,7 +51,7 @@
 						</ext:ComboBox>
 					</Items>
 					<Buttons>
-						<ext:Button runat="server" Id="uxChoosePerDiemSubmitButton" Text="Submit" Disabled="true">
+						<ext:Button runat="server" Id="uxChoosePerDiemSubmitButton" Text="Save" Disabled="true" Icon="Add">
 							<DirectEvents>
 								<Click OnEvent="deUpdatePerDiem">
 									<EventMask ShowMask="true" />

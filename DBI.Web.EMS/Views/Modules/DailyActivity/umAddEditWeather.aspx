@@ -14,7 +14,7 @@
 				<ext:FormPanel runat="server"
 					ID="uxAddWeatherForm"
 					Layout="FormLayout"
-					Hidden="true">
+					Hidden="true" DefaultButton="uxAddWeatherSubmit">
 					<Items>
 						<ext:FieldContainer runat="server"
 							FieldLabel="Date and Time" ID="ctl69" Width="500">
@@ -77,7 +77,7 @@
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxAddWeatherSubmit"
-							Text="Submit"
+							Text="Save"
 							Icon="Add"
 							Disabled="true">
 							<DirectEvents>
@@ -103,7 +103,7 @@
 				<ext:FormPanel runat="server"
 					ID="uxEditWeatherForm"
 					Layout="FormLayout"
-					Hidden="true">
+					Hidden="true" DefaultButton="uxEditWeatherSubmit">
 					<Items>
 						<ext:FieldContainer runat="server"
 							FieldLabel="Date and Time" ID="ctl75" Width="500">
@@ -165,7 +165,7 @@
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxEditWeatherSubmit"
-							Text="Submit"
+							Text="Save"
 							Icon="Add"
 							Disabled="true">
 							<DirectEvents>
