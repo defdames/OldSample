@@ -23,7 +23,7 @@ namespace DBI.Data
         /// <param name="segment4"></param>
         /// <param name="organizationId"></param>
         /// <returns></returns>
-        public static List<DBI.Data.GL_ACCOUNTS_V> filter(string segment1, string segment2, string segment3, string segment4, long organizationId)
+        public static List<GL_ACCOUNTS_V> Filter(string segment1, string segment2, string segment3, string segment4, long organizationId)
         {
             try
             {
@@ -48,24 +48,23 @@ namespace DBI.Data
             }
            
         }
+
     }
 
-    /// <summary>
-    /// Custom methods and fuctions over GL data
-    /// </summary>
+
     public class GL
     {
         /// <summary>
         /// Returns a list of all budget types
         /// </summary>
         /// <returns></returns>
-        public static List<BUDGET_TYPE> budgetTypes()
+        public static List<BUDGET_TYPE> BudgetTypes()
         {
             try
             {
                 using (Entities _context = new Entities())
                 {
-                    string sql = @"select a.budget_name,a.Description,b.legal_entity_id as LE_ORG_ID
+                    string sql = @"select a.budget_name,a.Description,b.legal_entity_id as LE_ORG_ID, a.status
                              from gl.gl_budgets a
                              inner join apps.hr_operating_units b on b.set_of_books_id = a.set_of_books_idorder by 1";
 
@@ -84,46 +83,79 @@ namespace DBI.Data
         /// <summary>
         /// Returns a list of active budget types by legal entity organization id
         /// </summary>
-        /// <param name="organizationBusinessUnitId"></param>
+        /// <param name="legalEntity"></param>
         /// <returns></returns>
-        public static List<BUDGET_TYPE> activeBudgetTypes(long organizationBusinessUnitId)
+        public static List<BUDGET_TYPE> ActiveBudgetTypes(long legalEntity)
         {
             try
             {
-                List<BUDGET_TYPE> _data = GL.budgetTypes().Where(x => x.STATUS == "O" && x.LE_ORG_ID == organizationBusinessUnitId).ToList();
+                List<BUDGET_TYPE> _data = BudgetTypes().Where(x => x.STATUS == "O" && x.LE_ORG_ID == legalEntity).ToList();
                 return _data;
             }
             catch (Exception)
             {             
                 throw;
             }
-         
         }
 
-
-        /// <summary>
-        /// Returns a list of legal entities from oracle that can have a budget because there is a budget type assigned to that businessunit
-        /// </summary>
-        /// <returns></returns>
-        public static List<HR.ORGANIZATION> legalEntitiesWithActiveBudgetTypes()
+        public static List<BUDGET_TYPE> UnUsedBudgetTypesByLegalEntity(long legalEntity)
         {
             try
             {
                 using (Entities _context = new Entities())
                 {
-                    List<HR.ORGANIZATION> _data = HR.activeLegalEntityOrganizationList();
-                    List<HR.ORGANIZATION> _returnList = new List<HR.ORGANIZATION>();
+                    string sql = @"select a.budget_name,a.Description,b.legal_entity_id as LE_ORG_ID
+                             from gl.gl_budgets a
+                             inner join apps.hr_operating_units b on b.set_of_books_id = a.set_of_books_id
+                             where a.status = 'O'
+                             and a.budget_name not in (select distinct budget_name from xxems.overhead_budget_type where LE_ORD_ID = '" + legalEntity + @"') order by 1";
 
-                    foreach (HR.ORGANIZATION var in _data)
+                    List<BUDGET_TYPE> _data = _context.Database.SqlQuery<BUDGET_TYPE>(sql).Where(a => a.LE_ORG_ID == legalEntity).ToList();
+                    return _data;
+                }
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+        }
+        
+        /// <summary>
+        /// Returns a list of unused budget types that are availible for use, if user adds the overheadBudgetTypeId it also make sure not to return that one that they selected.
+        /// </summary>
+        /// <param name="legalEntity"></param>
+        /// <param name="overheadBudgetTypeId"></param>
+        /// <returns></returns>
+        public static List<BUDGET_TYPE> UnUsedBudgetTypesByLegalEntity(long legalEntity, string overheadBudgetTypeId = null)
+        {
+            try
+            {
+                using (Entities _context = new Entities())
+                {
+                    string sql = string.Empty;
+
+                    if (!string.IsNullOrEmpty(overheadBudgetTypeId))
                     {
-                        int count = DBI.Data.GL.activeBudgetTypes(var.ORGANIZATION_ID).Count();
-                        if (count > 0)
-                        {
-                            _returnList.Add(var);
-                        }
+
+                        sql = @"select a.budget_name,a.Description,b.legal_entity_id as LE_ORG_ID
+                             from gl.gl_budgets a
+                             inner join apps.hr_operating_units b on b.set_of_books_id = a.set_of_books_id
+                             where a.status = 'O'
+                             and a.budget_name not in (select distinct budget_name from xxems.overhead_budget_type where LE_ORD_ID = '" + legalEntity + @"' and OVERHEAD_BUDGET_TYPE_ID != '" + overheadBudgetTypeId + @"') order by 1";
+                    }
+                    else
+                    {
+                        sql = @"select a.budget_name,a.Description,b.legal_entity_id as LE_ORG_ID
+                             from gl.gl_budgets a
+                             inner join apps.hr_operating_units b on b.set_of_books_id = a.set_of_books_id
+                             where a.status = 'O'
+                             and a.budget_name not in (select distinct budget_name from xxems.overhead_budget_type where LE_ORD_ID = '" + legalEntity + @"') order by 1";
                     }
 
-                    return _returnList;
+                    List<BUDGET_TYPE> _data = _context.Database.SqlQuery<BUDGET_TYPE>(sql).Where(a => a.LE_ORG_ID == legalEntity).ToList();
+                    return _data;
+
                 }
             }
             catch (Exception)
@@ -131,22 +163,16 @@ namespace DBI.Data
 
                 throw;
             }
-
         }
-     
+
+        public class BUDGET_TYPE
+        {
+            public string BUDGET_NAME { get; set; }
+            public string DESCRIPTION { get; set; }
+            public long LE_ORG_ID { get; set; }
+            public string STATUS { get; set; }
+        }
 
     }
-
-    //****************************************************************************************
-    // Custom classes
-    //****************************************************************************************
     
-    public class BUDGET_TYPE
-    {
-        public string BUDGET_NAME { get; set; }
-        public string DESCRIPTION { get; set; }
-        public long LE_ORG_ID { get; set; }
-        public string STATUS { get; set; }
-    }
-
 }

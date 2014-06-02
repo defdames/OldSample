@@ -285,9 +285,6 @@
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="Oracle\GL.cs" />
-    <Compile Include="Oracle\GL\OVERHEAD_BUDGET_TYPE.cs" />
-    <Compile Include="Oracle\GL\Budgets.cs" />
-    <Compile Include="Oracle\GL\OVERHEAD_GL_ACCOUNT.cs" />
     <Compile Include="Oracle\HR.cs" />
     <Compile Include="DataFactory\Interface\Interface.cs" />
     <Compile Include="DataFactory\GMS\Data.cs" />
@@ -328,8 +325,7 @@
       <DependentUpon>Oracle.edmx</DependentUpon>
     </Compile>
     <Compile Include="Oracle\PA.cs" />
-    <Compile Include="Oracle\XXEMS\SYS_PROFILE_OPTIONS.cs" />
-    <Compile Include="Oracle\XXEMS\SYS_USER_PROFILE_OPTIONS.cs" />
+    <Compile Include="Oracle\XXEMS.cs" />
     <Compile Include="ORG_HIER_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>

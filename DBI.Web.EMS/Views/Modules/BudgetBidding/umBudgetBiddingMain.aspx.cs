@@ -124,7 +124,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             {
                 if (e.NodeID == "0")
                 {
-                    var data = GL.legalEntitiesWithActiveBudgetTypes();
+                    var data = HR.LegalEntitiesWithActiveOverheadBudgetTypes();
                     foreach (var view in data)
                     {
                         Node node = new Node();
@@ -137,7 +137,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 else
                 {
                     long nodeID = long.Parse(e.NodeID);
-                    var data = HR.hierarchiesByBusinessUnit().Where(a => a.ORGANIZATION_ID == nodeID);
+                    var data = HR.HierarchyListByLegalEntity().Where(a => a.ORGANIZATION_ID == nodeID);
                     foreach (var view in data)
                     {
                         Node node = new Node();
@@ -155,7 +155,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 string[] selID = e.NodeID.Split(delimChars);
                 long hierarchyID = long.Parse(selID[0].ToString());
                 long orgID = long.Parse(selID[1].ToString());
-                var data = HR.organizationsByHierarchy(hierarchyID, orgID);
+                var data = HR.ActiveOrganizationsByHierarchy(hierarchyID, orgID);
                 var OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID);
                 bool addNode;
                 bool leafNode;
@@ -168,7 +168,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                         addNode = false;
                         leafNode = true;
                         colorNode = false;
-                        var nextData = HR.organizationsByHierarchy(hierarchyID, view.ORGANIZATION_ID);
+                        var nextData = HR.ActiveOrganizationsByHierarchy(hierarchyID, view.ORGANIZATION_ID);
 
                         // In this org?
                         if (SYS_USER_ORGS.IsInOrg(SYS_USER_INFORMATION.UserID(User.Identity.Name), view.ORGANIZATION_ID) == true)

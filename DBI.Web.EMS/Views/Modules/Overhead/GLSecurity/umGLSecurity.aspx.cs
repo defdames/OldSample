@@ -31,7 +31,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     long _hierarchyID = long.Parse(_selectedID[1].ToString());
                     long _organizationID = long.Parse(_selectedID[0].ToString());
 
-                    var data = HR.organizationsByHierarchy(_hierarchyID, _organizationID);
+                    var data = HR.OverheadBudgetOrganizationsByHierarchy(_hierarchyID, _organizationID);
 
                     int count;
                     uxOrganizationSecurityStore.DataSource = GenericData.EnumerableFilterHeader<HR.ORGANIZATION_V1>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -52,7 +52,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 //Load LEs
                 if (e.NodeID == "0")
                 {
-                    var data = HR.hierarchiesByBusinessUnit().Select(a => new { a.ORGANIZATION_ID, a.ORGANIZATION_NAME }).Distinct().ToList();
+                    var data = HR.HierarchyListByLegalEntity().Select(a => new { a.ORGANIZATION_ID, a.ORGANIZATION_NAME }).Distinct().ToList();
 
                     //Build the treepanel
                     foreach (var view in data)
@@ -69,7 +69,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     long nodeID = long.Parse(e.NodeID);
 
                     //Load Hierarchies for LE
-                    var data = HR.hierarchiesByBusinessUnit().Where(a => a.ORGANIZATION_ID == nodeID).ToList();
+                    var data = HR.HierarchyListByLegalEntity().Where(a => a.ORGANIZATION_ID == nodeID).ToList();
 
                     //Build the treepanel
                     foreach (var view in data)
@@ -132,15 +132,14 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                 if (_organizationID > 0)
                 {
-                    var data = OVERHEAD_GL_ACCOUNT.overheadAccountsByOrganizationId(_organizationID);
+                    var data = OVERHEAD_GL_ACCOUNT.OverHeadGlAccountsByLegalEntity(_organizationID);
                     int count;
-                    uxGlAccountSecurityStore.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_GL_ACCOUNT.GL_ACCOUNT_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                    uxGlAccountSecurityStore.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_GL_ACCOUNT.GL_ACCOUNTS_V2>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                     e.Total = count;
                 }
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -221,10 +220,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 foreach (SelectedRow _row in _model.SelectedRows)
                 {
                     long _recordID = long.Parse(_row.RecordID);
-                    OVERHEAD_GL_ACCOUNT.deleteOverheadGLAccountByID(_recordID);
+                    OVERHEAD_GL_ACCOUNT.DeleteOverHeadAccountByOverheadGlId(_recordID);
                 }
 
-                int recordCount = OVERHEAD_GL_ACCOUNT.countOverheadGLAccountsByOrganizationId(_organizationID);
+                int recordCount = OVERHEAD_GL_ACCOUNT.CountOverheadAccountsByLegalEntity(_organizationID);
 
                 if (recordCount == 0)
                 {

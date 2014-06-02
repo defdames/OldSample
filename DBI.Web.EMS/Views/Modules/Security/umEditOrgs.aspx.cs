@@ -32,7 +32,7 @@ namespace DBI.Web.EMS.Views.Modules.Security
                     long _hierarchyID = long.Parse(_selectedID[1].ToString());
                     long _organizationID = long.Parse(_selectedID[0].ToString());
 
-                    var data = HR.organizationsByHierarchy(_hierarchyID, _organizationID);
+                    var data = HR.ActiveOrganizationsByHierarchy(_hierarchyID, _organizationID);
 
                     uxOrganizationSecurityStore.DataSource = data;
                 }

@@ -40,7 +40,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 string _segment3 = e.Parameters["SEGMENT3"].ToString();
                 string _segment4 = e.Parameters["SEGMENT4"].ToString();
 
-                var _filteredData = GL_ACCOUNTS_V.filter(_segment1,_segment2,_segment3,_segment4,_organizationID);
+                var _filteredData = GL_ACCOUNTS_V.Filter(_segment1,_segment2,_segment3,_segment4,_organizationID);
                 int count;
                 uxGlAccountSecurityStore.DataSource = GenericData.EnumerableFilterHeader<GL_ACCOUNTS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _filteredData, out count);
                 e.Total = _filteredData.Count();

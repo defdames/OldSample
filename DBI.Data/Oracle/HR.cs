@@ -13,7 +13,7 @@ namespace DBI.Data
         /// Returns a list of all organizations in the system.
         /// </summary>
         /// <returns></returns>
-        public static List<HR.ORGANIZATION> organizationList()
+        public static List<HR.ORGANIZATION> OrganizationList()
         {
             try
             {
@@ -34,13 +34,13 @@ namespace DBI.Data
         /// Returns a list of only active organizations in oracle using the current system date and time.
         /// </summary>
         /// <returns></returns>
-        public static List<HR.ORGANIZATION> activeOrganizationList()
+        public static List<HR.ORGANIZATION> ActiveOrganizationList()
         {
             try
             {
                 using (Entities _context = new Entities())
                 {
-                    List<HR.ORGANIZATION> _data = HR.organizationList().Where(x => x.DATE_FROM >= DateTime.Now && x.DATE_TO <= DateTime.Now).ToList();
+                    List<HR.ORGANIZATION> _data = HR.OrganizationList().Where(x => x.DATE_FROM >= DateTime.Now && x.DATE_TO <= DateTime.Now).ToList();
                     return _data;
                 }
             }
@@ -54,13 +54,13 @@ namespace DBI.Data
         /// Returns a list of only active organizations by type
         /// </summary>
         /// <returns></returns>
-        public static List<HR.ORGANIZATION> activeOrganizationListByType(string type)
+        public static List<HR.ORGANIZATION> ActiveOrganizationsByType(string type)
         {
             try
             {
                 using (Entities _context = new Entities())
                 {
-                    List<HR.ORGANIZATION> _data = HR.activeOrganizationList().Where(x => x.TYPE == type).ToList();
+                    List<HR.ORGANIZATION> _data = HR.ActiveOrganizationList().Where(x => x.TYPE == type).ToList();
                     return _data;
                 }
             }
@@ -75,13 +75,13 @@ namespace DBI.Data
         /// Returns a list of only active legal entity organizations, ordered by organization name
         /// </summary>
         /// <returns></returns>
-        public static List<HR.ORGANIZATION> activeLegalEntityOrganizationList()
+        public static List<HR.ORGANIZATION> ActiveLegalEntityOrganizationList()
         {
             try
             {
                 using (Entities _context = new Entities())
                 {
-                    List<HR.ORGANIZATION> _data = HR.activeOrganizationListByType("LE").OrderBy(x => x.ORGANIZATION_NAME).ToList();
+                    List<HR.ORGANIZATION> _data = HR.ActiveOrganizationsByType("LE").OrderBy(x => x.ORGANIZATION_NAME).ToList();
                     return _data;
                 }
             }
@@ -92,28 +92,13 @@ namespace DBI.Data
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-       
         /// <summary>
         /// returns a list of organizations by hierarchy and business unit or legal entity.
         /// </summary>
         /// <param name="hierarchyId"></param>
         /// <param name="organizationId"></param>
         /// <returns></returns>
-        public static List<ORGANIZATION_V1> organizationsByHierarchy(long hierarchyId, long organizationId)
+        public static List<ORGANIZATION_V1> ActiveOrganizationsByHierarchy(long hierarchyId, long organizationId)
         {
             try
             {
@@ -133,6 +118,24 @@ namespace DBI.Data
                         ORDER SIBLINGS BY   c.d_child_name";
 
                     List<ORGANIZATION_V1> _data = _context.Database.SqlQuery<ORGANIZATION_V1>(sql).Select(a => new ORGANIZATION_V1 { ORGANIZATION_ID = a.ORGANIZATION_ID, ORGANIZATION_NAME = a.ORGANIZATION_NAME, HIER_LEVEL = a.HIER_LEVEL }).ToList();
+                    return _data;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
+
+        public static List<ORGANIZATION_V1> OverheadBudgetOrganizationsByHierarchy(long hierarchyId, long organizationId)
+        {
+            try
+            {
+                using (Entities _context = new Entities())
+                {
+                    List<ORGANIZATION_V1> _data = ActiveOrganizationsByHierarchy(hierarchyId, organizationId);
                     foreach (var view in _data)
                     {
                         view.GL_ASSIGNED = (_context.OVERHEAD_GL_ACCOUNT.Where(a => a.OVERHEAD_ORG_ID == view.ORGANIZATION_ID).Count() > 0 ? "Active" : "No Accounts Found");
@@ -141,14 +144,13 @@ namespace DBI.Data
                 }
             }
             catch (Exception)
-            {   
+            {
                 throw;
             }
-           
-
         }
 
-        public static List<HIERARCHY> hierarchiesByBusinessUnit()
+
+        public static List<HIERARCHY> HierarchyListByLegalEntity()
         {
             try
             {
@@ -171,6 +173,39 @@ namespace DBI.Data
                 throw;
             }
           
+
+        }
+
+        /// <summary>
+        /// Returns a list of legal entities from oracle that can have a budget because there is a budget type assigned to that businessunit
+        /// </summary>
+        /// <returns></returns>
+        public static List<HR.ORGANIZATION> LegalEntitiesWithActiveOverheadBudgetTypes()
+        {
+            try
+            {
+                using (Entities _context = new Entities())
+                {
+                    List<HR.ORGANIZATION> _data = HR.ActiveLegalEntityOrganizationList();
+                    List<HR.ORGANIZATION> _returnList = new List<HR.ORGANIZATION>();
+
+                    foreach (HR.ORGANIZATION var in _data)
+                    {
+                        int count = OVERHEAD_BUDGET_TYPE.BudgetTypesByLegalEntity(var.ORGANIZATION_ID).Count();
+                        if (count > 0)
+                        {
+                            _returnList.Add(var);
+                        }
+                    }
+
+                    return _returnList;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
 
         }
 

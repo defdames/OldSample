@@ -24,7 +24,7 @@
           var onShow = function (toolTip, grid) {
               var view = grid.getView(),
                   record = view.getRecord(toolTip.triggerElement),
-                  data = "General Ledger Description</br>" + record.data.SEGMENT1DESC + "." + record.data.SEGMENT2DESC + "." + record.data.SEGMENT3DESC + "." + record.data.SEGMENT4DESC + "." + record.data.SEGMENT5DESC + "." + record.data.SEGMENT6DESC + "." + record.data.SEGMENT7DESC;
+                  data = "General Ledger Description</br>" + record.data.SEGMENT1_DESC + "." + record.data.SEGMENT2_DESC + "." + record.data.SEGMENT3_DESC + "." + record.data.SEGMENT4_DESC + "." + record.data.SEGMENT5_DESC + "." + record.data.SEGMENT6_DESC + "." + record.data.SEGMENT7_DESC;
               toolTip.update(data);
           };
 
@@ -159,15 +159,15 @@
                                         <ext:ModelField Name="SEGMENT3" />
                                         <ext:ModelField Name="SEGMENT4" />
                                         <ext:ModelField Name="SEGMENT5" />
-                                        <ext:ModelField Name="SEGMENT5DESC" />
+                                        <ext:ModelField Name="SEGMENT5_DESC" />
                                         <ext:ModelField Name="SEGMENT6" />
                                         <ext:ModelField Name="SEGMENT7" />
-                                        <ext:ModelField Name="SEGMENT1DESC" />
-                                        <ext:ModelField Name="SEGMENT2DESC" />
-                                        <ext:ModelField Name="SEGMENT3DESC" />
-                                        <ext:ModelField Name="SEGMENT4DESC" />
-                                        <ext:ModelField Name="SEGMENT6DESC" />
-                                        <ext:ModelField Name="SEGMENT7DESC" />
+                                        <ext:ModelField Name="SEGMENT1_DESC" />
+                                        <ext:ModelField Name="SEGMENT2_DESC" />
+                                        <ext:ModelField Name="SEGMENT3_DESC" />
+                                        <ext:ModelField Name="SEGMENT4_DESC" />
+                                        <ext:ModelField Name="SEGMENT6_DESC" />
+                                        <ext:ModelField Name="SEGMENT7_DESC" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -175,7 +175,7 @@
                                 <ext:PageProxy />
                             </Proxy>
                             <Sorters>
-                                <ext:DataSorter Property="SEGMENT5DESC" Direction="ASC" />
+                                <ext:DataSorter Property="SEGMENT5_DESC" Direction="ASC" />
                             </Sorters>
                             <Listeners><Load Handler="#{uxGlAccountDelete}.disable();"></Load></Listeners>
                         </ext:Store>
@@ -183,7 +183,7 @@
                    
                     <ColumnModel>
                         <Columns>
-                             <ext:Column ID="Column7" runat="server" DataIndex="SEGMENT5DESC" Text="Account Name" Flex="2" />
+                             <ext:Column ID="Column7" runat="server" DataIndex="SEGMENT5_DESC" Text="Account Name" Flex="2" />
                             <ext:Column ID="Column4" runat="server" DataIndex="SEGMENT1" Text="Company" Flex="1" />
                             <ext:Column ID="Column3" runat="server" DataIndex="SEGMENT2" Text="Location" Flex="1" />
                             <ext:Column ID="Column5" runat="server" DataIndex="SEGMENT3" Text="Division" Flex="1" />

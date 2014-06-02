@@ -24,7 +24,7 @@ namespace DBI.Web.EMS.Views.Modules.Security.Options
             uxProfileOptionStore.ClearFilter();
             uxProfileOptionSelectionModel.ClearSelection();
 
-            var data = SYS_PROFILE_OPTIONS.systemProfileOptions();
+            var data = SYS_PROFILE_OPTIONS.List();
 
             int count;
             uxProfileOptionStore.DataSource = GenericData.EnumerableFilterHeader<SYS_PROFILE_OPTIONS>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -80,7 +80,7 @@ namespace DBI.Web.EMS.Views.Modules.Security.Options
         {
             RowSelectionModel _model = uxProfileOptionSelectionModel;
             long _recordID = long.Parse(_model.SelectedRecordID);
-            SYS_PROFILE_OPTIONS.deleteProfileOptionByRecordID(_recordID);
+            SYS_PROFILE_OPTIONS.DeleteProfileOption(_recordID);
 
             uxProfileOptionStore.RemoveAll();
             uxProfileOptionStore.ClearFilter();
