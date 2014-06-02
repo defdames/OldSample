@@ -9,7 +9,7 @@ using Ext.Net;
 
 namespace DBI.Web.EMS.Views.Modules.Overhead.BudgetType.AddEdit
 {
-    public partial class umAddEditBudgetType : System.Web.UI.Page
+    public partial class umAddEditBudgetType : DBI.Core.Web.BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {

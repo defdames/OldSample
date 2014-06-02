@@ -6,11 +6,11 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using DBI.Data;
 using Ext.Net;
-using DBI.Data.Oracle.HR;
+using DBI.Data.Oracle;
 
 namespace DBI.Web.EMS.Views.Modules.Overhead
 {
-    public partial class umBudgetTypes : System.Web.UI.Page
+    public partial class umBudgetTypes : DBI.Core.Web.BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -22,10 +22,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             //Load LEs
             if (e.NodeID == "0")
             {
-                List<Organizations.ORGANIZATION> _legalEntities = Organizations.legalEntitiesWithActiveBudgetTypes();
+                List<HR.ORGANIZATION> _legalEntities = GL.legalEntitiesWithActiveBudgetTypes();
 
                 //Build the treepanel
-                foreach (Organizations.ORGANIZATION view in _legalEntities)
+                foreach (HR.ORGANIZATION view in _legalEntities)
                 {
                     //Create the Hierarchy Levels
                     Node node = new Node();

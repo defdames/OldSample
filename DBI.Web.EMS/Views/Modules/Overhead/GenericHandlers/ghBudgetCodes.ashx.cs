@@ -47,17 +47,17 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 recordId = context.Request["RECORDID"];
             }
 
-            Paging<DBI.Data.Oracle.GL.BUDGET_TYPE> responseData = dataPaging(start, limit, query, businessUnitId, recordId);
+            Paging<DBI.Data.BUDGET_TYPE> responseData = dataPaging(start, limit, query, businessUnitId, recordId);
 
             context.Response.Write(string.Format("{{total:{1},'data':{0}}}", JSON.Serialize(responseData.Data), responseData.TotalRecords));
         }
 
-        public static Paging<DBI.Data.Oracle.GL.BUDGET_TYPE> dataPaging(int start, int limit, string filter, string businessUnitId, string recordId)
+        public static Paging<BUDGET_TYPE> dataPaging(int start, int limit, string filter, string businessUnitId, string recordId)
         {
 
             long _businessUnitId = long.Parse(businessUnitId);
 
-            List<DBI.Data.Oracle.GL.BUDGET_TYPE> data = DBI.Data.Oracle.GL.Budgets.budgetTypesAvailaibleForUseByBusinessUnit(_businessUnitId, recordId);
+            List<BUDGET_TYPE> data = DBI.Data.Oracle.GL.Budgets.budgetTypesAvailaibleForUseByBusinessUnit(_businessUnitId, recordId);
 
             if (!string.IsNullOrEmpty(filter) && filter != "*")
             {
@@ -69,9 +69,9 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 limit = data.Count - start;
             }
 
-            List<DBI.Data.Oracle.GL.BUDGET_TYPE> _range = (start < 0 || limit < 0) ? data : data.GetRange(start, limit);
+            List<BUDGET_TYPE> _range = (start < 0 || limit < 0) ? data : data.GetRange(start, limit);
 
-            return new Paging<DBI.Data.Oracle.GL.BUDGET_TYPE>(_range, data.Count);
+            return new Paging<BUDGET_TYPE>(_range, data.Count);
         }
       
 

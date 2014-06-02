@@ -46,7 +46,7 @@ namespace DBI.Data.Test
         [TestMethod]
         public void laborBurdenTest()
         {
-            string _buid = "12231";
+            string _buid = "121";
             string _fiscalYear = "2013";
             decimal _value = DBI.Data.Oracle.PA.laborBurden(_buid, _fiscalYear);
             Assert.IsTrue(_value > 0);
