@@ -1963,6 +1963,8 @@
           <Property Name="DAY_OF_WEEK" Type="varchar2" MaxLength="20" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="MODIFIED_TIME_IN" Type="date" />
+          <Property Name="MODIFIED_TIME_OUT" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'APPS.PA_LOCATIONS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -3911,7 +3913,6 @@
             <End Role="CROSSING" EntitySet="CROSSINGS" />
             <End Role="CROSSING_SUPPLEMENTAL" EntitySet="CROSSING_SUPPLEMENTAL" />
           </AssociationSet>
-          <EntitySet Name="TIME_CLOCK" EntityType="OracleModel.TIME_CLOCK" />
           <EntitySet Name="DAILY_ACTIVITY_PRODUCTION" EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" />
           <AssociationSet Name="FK_PRODUCTION_HEADER_ID" Association="OracleModel.FK_PRODUCTION_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
@@ -4019,6 +4020,7 @@
             <End Role="CROSSING_SERVICE_UNIT" EntitySet="CROSSING_SERVICE_UNIT" />
             <End Role="CROSSING_SUB_DIVISION" EntitySet="CROSSING_SUB_DIVISION" />
           </AssociationSet>
+          <EntitySet Name="TIME_CLOCK" EntityType="OracleModel.TIME_CLOCK" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -6420,24 +6422,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="TIME_CLOCK">
-          <Key>
-            <PropertyRef Name="TIME_CLOCK_ID" />
-          </Key>
-          <Property Type="Decimal" Name="TIME_CLOCK_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Decimal" Name="PERSON_ID" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="DateTime" Name="TIME_IN" />
-          <Property Type="DateTime" Name="TIME_OUT" />
-          <Property Type="String" Name="SUBMITTED" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="APPROVED" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="COMPLETED" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="Decimal" Name="ACTUAL_HOURS" Precision="15" Scale="4" />
-          <Property Type="Decimal" Name="ADJUSTED_HOURS" Precision="15" Scale="4" />
-          <Property Type="Int32" Name="SUPERVISOR_ID" />
-          <Property Type="String" Name="DAY_OF_WEEK" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-        </EntityType>
         <EntityType Name="DAILY_ACTIVITY_PRODUCTION">
           <Key>
             <PropertyRef Name="PRODUCTION_ID" />
@@ -7106,6 +7090,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="TIME_CLOCK">
+          <Key>
+            <PropertyRef Name="TIME_CLOCK_ID" />
+          </Key>
+          <Property Type="Decimal" Name="TIME_CLOCK_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="PERSON_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="TIME_IN" />
+          <Property Type="DateTime" Name="TIME_OUT" />
+          <Property Type="String" Name="SUBMITTED" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="APPROVED" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="COMPLETED" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="Decimal" Name="ACTUAL_HOURS" Precision="15" Scale="4" />
+          <Property Type="Decimal" Name="ADJUSTED_HOURS" Precision="15" Scale="4" />
+          <Property Type="Int32" Name="SUPERVISOR_ID" />
+          <Property Type="String" Name="DAY_OF_WEEK" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="DateTime" Name="MODIFIED_TIME_IN" />
+          <Property Type="DateTime" Name="MODIFIED_TIME_OUT" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8985,25 +8989,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TIME_CLOCK">
-            <EntityTypeMapping TypeName="OracleModel.TIME_CLOCK">
-              <MappingFragment StoreEntitySet="TIME_CLOCK">
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="DAY_OF_WEEK" ColumnName="DAY_OF_WEEK" />
-                <ScalarProperty Name="SUPERVISOR_ID" ColumnName="SUPERVISOR_ID" />
-                <ScalarProperty Name="ADJUSTED_HOURS" ColumnName="ADJUSTED_HOURS" />
-                <ScalarProperty Name="ACTUAL_HOURS" ColumnName="ACTUAL_HOURS" />
-                <ScalarProperty Name="COMPLETED" ColumnName="COMPLETED" />
-                <ScalarProperty Name="APPROVED" ColumnName="APPROVED" />
-                <ScalarProperty Name="SUBMITTED" ColumnName="SUBMITTED" />
-                <ScalarProperty Name="TIME_OUT" ColumnName="TIME_OUT" />
-                <ScalarProperty Name="TIME_IN" ColumnName="TIME_IN" />
-                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
-                <ScalarProperty Name="TIME_CLOCK_ID" ColumnName="TIME_CLOCK_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="DAILY_ACTIVITY_PRODUCTION">
             <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_PRODUCTION">
               <MappingFragment StoreEntitySet="DAILY_ACTIVITY_PRODUCTION">
@@ -9422,6 +9407,27 @@
                 <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="SUB_DIVISION_NAME" ColumnName="SUB_DIVISION_NAME" />
                 <ScalarProperty Name="SUB_DIVISION_ID" ColumnName="SUB_DIVISION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TIME_CLOCK">
+            <EntityTypeMapping TypeName="OracleModel.TIME_CLOCK">
+              <MappingFragment StoreEntitySet="TIME_CLOCK">
+                <ScalarProperty Name="MODIFIED_TIME_OUT" ColumnName="MODIFIED_TIME_OUT" />
+                <ScalarProperty Name="MODIFIED_TIME_IN" ColumnName="MODIFIED_TIME_IN" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="DAY_OF_WEEK" ColumnName="DAY_OF_WEEK" />
+                <ScalarProperty Name="SUPERVISOR_ID" ColumnName="SUPERVISOR_ID" />
+                <ScalarProperty Name="ADJUSTED_HOURS" ColumnName="ADJUSTED_HOURS" />
+                <ScalarProperty Name="ACTUAL_HOURS" ColumnName="ACTUAL_HOURS" />
+                <ScalarProperty Name="COMPLETED" ColumnName="COMPLETED" />
+                <ScalarProperty Name="APPROVED" ColumnName="APPROVED" />
+                <ScalarProperty Name="SUBMITTED" ColumnName="SUBMITTED" />
+                <ScalarProperty Name="TIME_OUT" ColumnName="TIME_OUT" />
+                <ScalarProperty Name="TIME_IN" ColumnName="TIME_IN" />
+                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
+                <ScalarProperty Name="TIME_CLOCK_ID" ColumnName="TIME_CLOCK_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

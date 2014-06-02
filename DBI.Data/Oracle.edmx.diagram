@@ -96,13 +96,12 @@
         <AssociationConnector Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID" />
         <AssociationConnector Association="OracleModel.FK_INCIDENT_CROSSING_ID" />
         <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
-        <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="1.25" PointY="31.25" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" Width="1.5" PointX="1" PointY="21.375" />
         <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_PROJECT" Width="1.5" PointX="21.625" PointY="11.5" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_RAILROAD" Width="1.5" PointX="24.625" PointY="13" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_INVENTORY" Width="1.5" PointX="5.625" PointY="21.375" />
-        <EntityTypeShape EntityType="OracleModel.JOB_COST_CLASSES" Width="1.5" PointX="6.6409545664866245" PointY="15.271937302906038" />
+        <EntityTypeShape EntityType="OracleModel.JOB_COST_CLASSES" Width="1.5" PointX="13.75" PointY="15.375" />
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_VERSION" Width="1.5" PointX="18" PointY="25.875" />
         <AssociationConnector Association="OracleModel.FK_CONTACTS_RAILROAD_ID" />
         <AssociationConnector Association="OracleModel.FK_PROJECT_RAILROAD_ID" />
@@ -141,9 +140,10 @@
         <AssociationConnector Association="OracleModel.FK_PROJECT_DATE_ID" />
         <AssociationConnector Association="OracleModel.FK_ROLLUPS_DATE_ID" />
         <AssociationConnector Association="OracleModel.FK_TASK_DATE_ID" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING_SERVICE_UNIT" Width="1.5" PointX="1.4543515860356164" PointY="16.788995914528609" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING_SUB_DIVISION" Width="1.5" PointX="8.98125400626159" PointY="15.099019549367492" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_SERVICE_UNIT" Width="1.5" PointX="19.125" PointY="17.5" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_SUB_DIVISION" Width="1.5" PointX="19" PointY="14.25" />
         <AssociationConnector Association="OracleModel.FK_SUB_SERVICE_ID" />
+        <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="1.125" PointY="30.5" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
