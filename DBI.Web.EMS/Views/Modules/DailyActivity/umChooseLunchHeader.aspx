@@ -11,7 +11,7 @@
 	<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
 				<ext:FormPanel runat="server" ID="uxChooseLunchForm" Layout="FormLayout" DefaultButton="uxStoreLunchButton">
 					<Items>
-                        <ext:DropDownField runat="server" ID="uxLunchDRS" Mode="ValueText" Editable="false" FieldLabel="Choose a DRS">
+                        <ext:DropDownField runat="server" ID="uxLunchDRS" Mode="ValueText" Editable="false" FieldLabel="Choose a DRS" AllowBlank="false">
                             <Component>
                                 <ext:GridPanel runat="server" ID="uxLunchDRSGrid">
                                     <Store>
