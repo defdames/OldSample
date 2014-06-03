@@ -733,7 +733,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 										   where d.HEADER_ID == HeaderId
 										   from j in joined
 										   where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
-										   select new { c.CHEMICAL_MIX_NUMBER, j.INV_NAME, d.SUB_INVENTORY_SECONDARY_NAME, j.DESCRIPTION, d.TOTAL, d.RATE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).ToList<object>();
+										   select new { c.CHEMICAL_MIX_NUMBER, j.INV_NAME, d.SUB_INVENTORY_SECONDARY_NAME, j.SEGMENT1, j.DESCRIPTION, d.TOTAL, d.RATE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).ToList<object>();
 
 				return returnData;
 			}
@@ -749,7 +749,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 										   where d.HEADER_ID == HeaderId
 										   from j in joined
 										   where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
-										   select new { d.SUB_INVENTORY_SECONDARY_NAME, j.INV_NAME, j.DESCRIPTION, d.RATE, u.UNIT_OF_MEASURE }).ToList<object>();
+										   select new { d.SUB_INVENTORY_SECONDARY_NAME, j.INV_NAME, j.SEGMENT1, j.DESCRIPTION, d.RATE, u.UNIT_OF_MEASURE }).ToList<object>();
 
 				return returnData;
 			}
@@ -1422,10 +1422,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 					if (OrgId == 121)
 					{
 						var InventoryData = GetInventoryDBI(HeaderId);
-						PdfPTable InventoryTable = new PdfPTable(7);
+						PdfPTable InventoryTable = new PdfPTable(8);
 
 						Cells = new PdfPCell[]{
 					new PdfPCell(new Phrase("Mix #", HeaderFont)),
+                    new PdfPCell(new Phrase("Item #", HeaderFont)),
 					new PdfPCell(new Phrase("Inventory Org", HeaderFont)),
 					new PdfPCell(new Phrase("Sub-Inventory", HeaderFont)),
 					new PdfPCell(new Phrase("Item Name", HeaderFont)),
@@ -1449,6 +1450,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 							}
 							Cells = new PdfPCell[]{
 						new PdfPCell(new Phrase(Data.CHEMICAL_MIX_NUMBER.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.SEGMENT1, CellFont)),
 						new PdfPCell(new Phrase(Data.INV_NAME, CellFont)),
 						new PdfPCell(new Phrase(Data.SUB_INVENTORY_SECONDARY_NAME, CellFont)),
 						new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
@@ -1466,9 +1468,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 					if (OrgId == 123)
 					{
 						var InventoryData = GetInventoryIRM(HeaderId);
-						PdfPTable InventoryTable = new PdfPTable(4);
+						PdfPTable InventoryTable = new PdfPTable(5);
 
 						Cells = new PdfPCell[]{
+                            new PdfPCell(new Phrase("Item #", HeaderFont)),
 							new PdfPCell(new Phrase("Inventory Org", HeaderFont)),
 							new PdfPCell(new Phrase("Sub-Inventory", HeaderFont)),
 							new PdfPCell(new Phrase("Item Name", HeaderFont)),
@@ -1480,6 +1483,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						foreach (dynamic Data in InventoryData)
 						{
 							Cells = new PdfPCell[]{
+                                new PdfPCell(new Phrase(Data.SEGMENT1, CellFont)),
 								new PdfPCell(new Phrase(Data.INV_NAME, CellFont)),
 								new PdfPCell(new Phrase(Data.SUB_INVENTORY_SECONDARY_NAME, CellFont)),
 								new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
