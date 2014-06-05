@@ -181,6 +181,31 @@ namespace DBI.Data
         }
 
         /// <summary>
+        /// Returns a user profile option value by name and logged in user account
+        /// </summary>
+        /// <param name="profile_option_name"></param>
+        /// <returns></returns>
+        public static string UserProfileOption(string profileOptionName)
+        {
+            try
+            {
+                SYS_USER_INFORMATION _user = SYS_USER_INFORMATION.LoggedInUser();
+                SYS_USER_PROFILE_OPTIONS_V _option = UserProfileOptions().Where(x => x.PROFILE_KEY == profileOptionName && x.USER_ID == _user.USER_ID).SingleOrDefault();
+                string _value = string.Empty;
+                if (_option != null)
+                {
+                    _value = _option.PROFILE_VALUE;
+                }
+                return _value;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Returns a user profile option by name and user_id
         /// </summary>
         /// <param name="profile_option_name"></param>

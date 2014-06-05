@@ -43,7 +43,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             using (Entities _context = new Entities())
             {
                 List<object> data;
-                long RailroadId = long.Parse(Session["rrType"].ToString());
+                //long RailroadId = long.Parse(Session["rrType"].ToString());
+                
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                 //Get List of all new crossings
 
                     data = (from d in _context.CROSSINGS
@@ -150,7 +152,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             CROSSING data = new CROSSING();
             using (Entities _context = new Entities())
             {
-                long RailroadId = long.Parse(Session["rrType"].ToString());
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                 var RRdata = (from r in _context.CROSSING_RAILROAD
                               where r.RAILROAD_ID == RailroadId
                               select new
@@ -211,7 +213,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string RailRoad = uxAddRailRoadCITextField.Value.ToString();
             string ServiceUnit = uxAddServiceUnitCI.Value.ToString();
             string SubDiv = uxAddSubDivCI.Value.ToString();
-            long RailroadId = long.Parse(Session["rrType"].ToString());
+            //long RailroadId = long.Parse(Session["rrType"].ToString());
+            long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
 
             if (uxAddSubConCI.Checked)
             {
@@ -447,10 +450,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 data.STATUS = "ACTIVE";
             }
-            if (Session["rrType"] != null)
-            {
-                Session["rrType"] = data.RAILROAD_ID;
-            }
+            //if (Session["rrType"] != null)
+            //{
+            //    Session["rrType"] = data.RAILROAD_ID;
+            ////}
+            //if(SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue") != null)
+            //{
+            //    (SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue")) = data.RAILROAD_ID;
+            //}
             //Write to DB
             GenericData.Insert<CROSSING>(data);
 
@@ -584,8 +591,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string OnSpur = uxEditSubConCI.Value.ToString();
             string RailRoad = uxEditRRCI.Value.ToString();
             string ServiceUnit = uxEditServiceUnitCI.Value.ToString();
-            long RailroadId = long.Parse(Session["rrType"].ToString());
-
+            long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
             if (uxEditSubConCI.Checked)
             {
                 Sub_contracted = "Y";
@@ -818,10 +824,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
              {
                  data.SPECIAL_INSTRUCTIONS = null;
              }
-             if (Session["rrType"] != null)
-             {
-                 Session["rrType"] = data.RAILROAD_ID;
-             }
+             //if (Session["rrType"] != null)
+             //{
+             //    Session["rrType"] = data.RAILROAD_ID;
+             //}
                
                 //Write to DB
                 GenericData.Update<CROSSING>(data);
@@ -970,7 +976,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             //Get Contacts
             using (Entities _context = new Entities())
             {
-                long RailroadId = long.Parse(Session["rrType"].ToString());
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                 List<object> data;
                 data = (from d in _context.CROSSING_CONTACTS
                         where d.RAILROAD_ID == RailroadId
@@ -986,7 +992,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             //Get Contacts
             using (Entities _context = new Entities())
             {
-                long RailroadId = long.Parse(Session["rrType"].ToString());
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                 List<object> data;
                 data = (from d in _context.CROSSING_CONTACTS
                         where d.RAILROAD_ID == RailroadId
