@@ -11,45 +11,49 @@
 	<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
 				<ext:FormPanel runat="server" ID="uxChooseLunchForm" Layout="FormLayout" DefaultButton="uxStoreLunchButton">
 					<Items>
-						<ext:ComboBox runat="server" ID="uxLunchHeader" DisplayField="ProjectTask" AllowBlank="false" 
-							ValueField="HeaderId" QueryMode="Local" ForceSelection="true" TypeAhead="true" EmptyText="Choose a project/task" FieldLabel="Choose Lunch Project">
-							<Store>
-								<ext:Store runat="server" ID="uxLunchHeaderStore" OnReadData="deReadLunchHeaders" AutoDataBind="true">
-									<Model>
-										<ext:Model runat="server">
-											<Fields>
-												<ext:ModelField Name="ProjectTask" Type="String" />
-												<ext:ModelField Name="HeaderId" Type="Int" />
-											</Fields>
-										</ext:Model>
-									</Model>
-									<Proxy>
-										<ext:PageProxy />
-									</Proxy>
-								</ext:Store>
-							</Store>
-							<Listeners>
-								<Select Handler="#{uxLunchTaskStore}.reload()" />
-							</Listeners>
-						</ext:ComboBox>
-						<ext:ComboBox runat="server" ID="uxLunchTask" DisplayField="DESCRIPTION" ValueField="TASK_ID" AllowBlank="false"
-							TypeAhead="true" QueryMode="Local" ForceSelection="true" EmptyText="Choose a task" FieldLabel="Task" AutoLoad="false">
-							<Store>
-								<ext:Store runat="server" ID="uxLunchTaskStore" OnReadData="deReadLunchTasks" AutoDataBind="true">
-									<Model>
-										<ext:Model runat="server">
-											<Fields>
-												<ext:ModelField Name="DESCRIPTION" />
-												<ext:ModelField Name="TASK_ID" />
-											</Fields>
-										</ext:Model>
-									</Model>
-									<Parameters>
-										<ext:StoreParameter Name="HeaderId" Value="#{uxLunchHeader}.value" Mode="Raw" />
-									</Parameters>
-								</ext:Store>
-							</Store>
-						</ext:ComboBox>
+                        <ext:DropDownField runat="server" ID="uxLunchDRS" Mode="ValueText" Editable="false" FieldLabel="Choose a DRS" AllowBlank="false">
+                            <Component>
+                                <ext:GridPanel runat="server" ID="uxLunchDRSGrid">
+                                    <Store>
+								        <ext:Store runat="server" ID="uxLunchHeaderStore" OnReadData="deReadLunchHeaders" AutoDataBind="true">
+									        <Model>
+										        <ext:Model ID="Model1" runat="server">
+											        <Fields>
+												        <ext:ModelField Name="ProjectName" Type="String" />
+												        <ext:ModelField Name="HeaderId" Type="Int" />
+                                                        <ext:ModelField Name="TaskNumber" Type="String" />
+                                                        <ext:ModelField Name="TaskName" Type="String" />
+                                                        <ext:ModelField Name="TaskId" Type="Int" />
+											        </Fields>
+										        </ext:Model>
+									        </Model>
+									        <Proxy>
+										        <ext:PageProxy />
+									        </Proxy>
+								        </ext:Store>
+							        </Store>
+                                    <ColumnModel>
+                                        <Columns>
+                                            <ext:Column runat="server" DataIndex="HeaderId" Text="DRS Id" Flex="10" />
+                                            <ext:Column runat="server" DataIndex="ProjectName" Text="Project" Flex="50" />
+                                            <ext:Column runat="server" DataIndex="TaskNumber" Text="Task Number" Flex="15" />
+                                            <ext:Column runat="server" DataIndex="TaskName" Text="Task Name" Flex="25" />
+                                        </Columns>
+                                    </ColumnModel>
+                                    <SelectionModel>
+                                        <ext:RowSelectionModel runat="server" Mode="Single" />
+                                    </SelectionModel>
+                                    <DirectEvents>
+                                        <SelectionChange OnEvent="deStoreValues">
+                                            <ExtraParams>
+                                                <ext:Parameter Name="selectedInfo" Value="Ext.encode(#{uxLunchDRSGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+                                            </ExtraParams>
+                                        </SelectionChange>
+                                    </DirectEvents>
+                                </ext:GridPanel>
+                            </Component>
+                        </ext:DropDownField>
+					    <ext:Hidden runat="server" ID="uxHiddenTask" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server" Text="Save" ID="uxStoreLunchButton" Disabled="true" Icon="Add">

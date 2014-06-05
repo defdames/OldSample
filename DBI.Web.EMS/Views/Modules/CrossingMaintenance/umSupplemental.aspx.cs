@@ -6,10 +6,12 @@ using System.Net;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using DBI.Core.Web;
+using DBI.Core.Security;
 using DBI.Data;
 using Ext.Net;
 using DBI.Data.GMS;
 using DBI.Data.DataFactory;
+using System.Security.Claims;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
@@ -26,7 +28,40 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
 
                 uxAddServiceTypeStore.Data = StaticLists.ServiceTypes;
-                ReadInTruckNumber("Add");
+                //ReadInTruckNumber("Add");
+            }
+        }
+        protected void deReadGrid(object sender, StoreReadDataEventArgs e)
+        {
+            List<WEB_EQUIPMENT_V> dataIn;
+
+            if (e.Parameters["Form"] == "Add")
+            {
+                if (uxAddEquipmentToggleOrg.Pressed)
+                {
+                    //Get All Projects
+                    dataIn = WEB_EQUIPMENT_V.ListEquipment();
+                }
+                else
+                {
+                    int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                    //Get projects for my org only
+                    dataIn = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
+                }
+
+
+
+                int count;
+
+                //Get paged, filterable list of Equipment
+                List<WEB_EQUIPMENT_V> data = GenericData.EnumerableFilterHeader<WEB_EQUIPMENT_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
+
+                e.Total = count;
+                if (e.Parameters["Form"] == "Add")
+                {
+                    uxEquipmentStore.DataSource = data;
+                }
+
             }
         }
         protected void deSupplementalGridData(object sender, StoreReadDataEventArgs e)
@@ -37,7 +72,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 List<object> data;
                 if (validateComponentSecurity("SYS.CrossingMaintenance.DataEntryView"))
                 {
-                    long RailroadId = long.Parse(Session["rrType"].ToString());
+                    long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                     List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
                     data = (from d in _context.CROSSINGS
                             join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
@@ -55,20 +90,46 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         protected void GetSupplementalGridData(object sender, DirectEventArgs e)
         {
             //Get Supplemental data and set datasource
+            List<object> data;
+
+            string json = (e.ExtraParams["crossingId"]);
+            List<CrossingForSupplementalDetails> crossingList = JSON.Deserialize<List<CrossingForSupplementalDetails>>(json);
+            List<long> crossingIdList = new List<long>();
+            foreach (CrossingForSupplementalDetails crossing in crossingList)
+            {
+                crossingIdList.Add(crossing.CROSSING_ID);
+
+            }        
             using (Entities _context = new Entities())
             {
-                long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
-                var data = (from s in _context.CROSSING_SUPPLEMENTAL
+                //long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+                data = (from s in _context.CROSSING_SUPPLEMENTAL
                             join c in _context.CROSSINGS on s.CROSSING_ID equals c.CROSSING_ID
-                            where s.CROSSING_ID == CrossingId
-
-                            select new { s.CROSSING_ID, s.SUPPLEMENTAL_ID, s.APPROVED_DATE, s.COMPLETED_DATE, s.SERVICE_TYPE, s.INSPECT_START, s.INSPECT_END, s.SQUARE_FEET, s.TRUCK_NUMBER, s.SPRAY, s.CUT, s.INSPECT, s.MAINTAIN, s.RECURRING, s.REMARKS }).ToList<object>();
+                            //where s.CROSSING_ID == CrossingId
+                            where crossingIdList.Contains(s.CROSSING_ID)
+                            select new {c.CROSSING_NUMBER, s.CROSSING_ID,s.SUPPLEMENTAL_ID, s.APPROVED_DATE, s.COMPLETED_DATE, s.SERVICE_TYPE, s.INSPECT_START, s.INSPECT_END, s.SQUARE_FEET, s.TRUCK_NUMBER, s.SPRAY, s.CUT, s.INSPECT, s.MAINTAIN, s.RECURRING, s.REMARKS }).ToList<object>();
 
 
                 uxSupplementalGrid.Store.Primary.DataSource = data;
                 uxSupplementalGrid.Store.Primary.DataBind();
 
 
+            }
+        }
+        protected void deReloadStore(object sender, DirectEventArgs e)
+        {
+            string type = e.ExtraParams["Type"];
+            if (type == "Equipment")
+            {
+                uxEquipmentStore.Reload();
+                if (uxAddEquipmentToggleOrg.Pressed)
+                {
+                    uxAddEquipmentToggleOrg.Text = "My Region";
+                }
+                else
+                {
+                    uxAddEquipmentToggleOrg.Text = "All Regions";
+                }
             }
         }
         protected void deAddSupplemental(object sender, DirectEventArgs e)
@@ -80,7 +141,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             //do type conversions
             DateTime ApprovedDate = (DateTime)uxAddApprovedDateField.Value;
             decimal SquareFeet = Convert.ToDecimal(uxAddSquareFeet.Value);
-            string TruckNumber = uxAddTruckComboBox.Value.ToString();
+            string TruckNumber = uxAddEquipmentDropDown.Value.ToString();
             string ServiceType = uxAddServiceType.Value.ToString();
             string Recurring = uxAddRecurringBox.Value.ToString();
 
@@ -225,31 +286,51 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         //            }
         //        });
         //    }
-
-        protected void ReadInTruckNumber(string truckType)
+        protected void deStoreGridValue(object sender, DirectEventArgs e)
         {
-
-            using (Entities _context = new Entities())
+            if (e.ExtraParams["Form"] == "Add")
             {
-                List<object> data;
+                //Set value and text for equipment
+                uxAddEquipmentDropDown.SetValue(e.ExtraParams["EquipmentName"], e.ExtraParams["EquipmentName"]);
 
-                //Get List of all new headers
-
-                data = (from p in _context.PROJECTS_V
-                        where p.PROJECT_TYPE == "TRUCK & EQUIPMENT"
-                        select new { p.PROJECT_ID, p.PROJECT_TYPE, p.NAME }).ToList<object>();
-
-
-                if (truckType == "Add")
-                {
-                    uxAddTruckStore.DataSource = data;
-                }
-
-
-
+                //Clear existing filters
+                uxAddEquipmentFilter.ClearFilter();
             }
         }
+        //protected void ReadInTruckNumber(string truckType)
+        //{
 
+        //    using (Entities _context = new Entities())
+        //    {
+        //        List<object> data;
+
+        //        //Get List of all new headers
+
+        //        data = (from p in _context.PROJECTS_V
+        //                where p.PROJECT_TYPE == "TRUCK & EQUIPMENT"
+        //                select new { p.PROJECT_ID, p.PROJECT_TYPE, p.NAME }).ToList<object>();
+
+
+        //        if (truckType == "Add")
+        //        {
+        //            uxEquipmentStoreDataSource = data;
+        //        }
+
+
+
+        //    }
+        //}
+        public class CrossingForSupplementalDetails
+        {
+            public long CROSSING_ID { get; set; }
+            public string CROSSING_NUMBER { get; set; }
+            public string SERVICE_UNIT { get; set; }
+            public string SUB_DIVISION { get; set; }
+            public string DOT { get; set; }
+            public string MILE_POST { get; set; }
+            public string STATE { get; set; }
+            public string CONTACT_ID { get; set; }
+        }
 
         public class SupplementalDetails
         {

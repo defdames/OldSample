@@ -38,7 +38,7 @@
                         <Columns>
                             <ext:Column ID="Column4" runat="server" DataIndex="RAILROAD" Text="RailRoad" Flex="1">
                                 <Editor>
-                                    <ext:TextField runat="server" />
+                                    <ext:TextField runat="server" EmptyText="Railroad Name" />
                                 </Editor>
                             </ext:Column>
                         </Columns>

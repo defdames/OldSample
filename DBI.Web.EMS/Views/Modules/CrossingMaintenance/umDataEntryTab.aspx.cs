@@ -10,6 +10,8 @@ using DBI.Data;
 using Ext.Net;
 using DBI.Data.GMS;
 using DBI.Data.DataFactory;
+using DBI.Core.Security;
+using System.Security.Claims;
 
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
@@ -26,7 +28,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             if (!X.IsAjaxRequest)
             {
                 uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
-                ReadInTruckNumberForApplication("Add");
+                //ReadInTruckNumberForApplication("Add");
 
             }
           
@@ -40,7 +42,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                 if (validateComponentSecurity("SYS.CrossingMaintenance.DataEntryView"))
                 {
-                    long RailroadId = long.Parse(Session["rrType"].ToString());
+                    long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
 
                     List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
                     data = (from d in _context.CROSSINGS
@@ -88,6 +90,39 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 
             
         }
+        protected void deReadGrid(object sender, StoreReadDataEventArgs e)
+        {
+            List<WEB_EQUIPMENT_V> dataIn;
+
+            if (e.Parameters["Form"] == "Add")
+            {
+                if (uxAddEquipmentToggleOrg.Pressed)
+                {
+                    //Get All Projects
+                    dataIn = WEB_EQUIPMENT_V.ListEquipment();
+                }
+                else
+                {
+                    int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                    //Get projects for my org only
+                    dataIn = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
+                }
+
+
+
+                int count;
+
+                //Get paged, filterable list of Equipment
+                List<WEB_EQUIPMENT_V> data = GenericData.EnumerableFilterHeader<WEB_EQUIPMENT_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
+
+                e.Total = count;
+                if (e.Parameters["Form"] == "Add")
+                {
+                    uxEquipmentStore.DataSource = data;
+                }
+
+            }
+        }
         protected void deAddApplication(object sender, DirectEventArgs e)
         {
             CROSSING_APPLICATION data;
@@ -95,7 +130,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             //do type conversions
             DateTime Date = (DateTime)uxAddEntryDate.Value;
             string AppRequested = uxAddAppReqeusted.Value.ToString();
-            string TruckNumber = uxAddApplicationTruckComboBox.Value.ToString();
+            string TruckNumber = uxAddEquipmentDropDown.Value.ToString();
             string Spray = uxAddEntrySprayBox.Value.ToString();
             string Cut = uxAddEntryCutBox.Value.ToString();
             string Inspect = uxAddEntryInspectBox.Value.ToString();
@@ -133,21 +168,21 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 //check for if application requested has been duplicated in the same fiscal year.
                 //CROSSING_APPLICATION appdatedata;
-                DateTime appDate = Date;
-                DateTime Start = new DateTime(2014, 11, 1); //this pulls in november 1st of year for fiscal yr
-                DateTime End = new DateTime(2015, 10, 31); //this pulls in oct 31st of next year for fiscal yr
-                if (appDate >= Start && appDate <= End)
-                {
-                    using (Entities _context = new Entities())
-                    {
-                        data = (from a in _context.CROSSING_APPLICATION
-                                where a.APPLICATION_REQUESTED == AppRequested && AppRequested.Contains(a.APPLICATION_REQUESTED)
-                                select a).Single();
-                    }
-                X.Msg.Alert("test",  "Application already contains this number for this fiscal year").Show();
-                }
-                else
-                {
+                //DateTime appDate = Date;
+                //DateTime Start = new DateTime(2014, 11, 1); //this pulls in november 1st of year for fiscal yr
+                //DateTime End = new DateTime(2015, 10, 31); //this pulls in oct 31st of next year for fiscal yr
+                //if (appDate >= Start && appDate <= End)
+                //{
+                //    using (Entities _context = new Entities())
+                //    {
+                //        data = (from a in _context.CROSSING_APPLICATION
+                //                where a.APPLICATION_REQUESTED == AppRequested && AppRequested.Contains(a.APPLICATION_REQUESTED)
+                //                select a).Single();
+                //    }
+                //X.Msg.Alert("test",  "Application already contains this number for this fiscal year").Show();
+                //}
+                //else
+                //{
 
                 //Add to Db
                 using (Entities _context = new Entities())
@@ -171,7 +206,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                         data.REMARKS = null;
                     }
                     GenericData.Insert<CROSSING_APPLICATION>(data);
-                }
+                //}
 
                 uxAddNewApplicationEntryWindow.Hide();
                 uxApplicationStore.Reload();
@@ -192,134 +227,35 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             }
         }
+        protected void deStoreGridValue(object sender, DirectEventArgs e)
+        {
+            if (e.ExtraParams["Form"] == "Add")
+            {
+                //Set value and text for equipment
+                uxAddEquipmentDropDown.SetValue(e.ExtraParams["EquipmentName"], e.ExtraParams["EquipmentName"]);
 
-
+                //Clear existing filters
+                uxAddEquipmentFilter.ClearFilter();
+            }
+        }
+        protected void deReloadStore(object sender, DirectEventArgs e)
+        {
+            string type = e.ExtraParams["Type"];
+            if (type == "Equipment")
+            {
+                uxEquipmentStore.Reload();
+                if (uxAddEquipmentToggleOrg.Pressed)
+                {
+                    uxAddEquipmentToggleOrg.Text = "My Region";
+                }
+                else
+                {
+                    uxAddEquipmentToggleOrg.Text = "All Regions";
+                }
+            }
+        }
         
-        //protected void deEditApplicationForm(object sender, DirectEventArgs e)
-        //{
-        //    string json = e.ExtraParams["ApplicationInfo"];
-        //    List<ApplicationDetails> ApplicationList = JSON.Deserialize<List<ApplicationDetails>>(json);
-        //    foreach (ApplicationDetails Application in ApplicationList)
-        //    {
-
-
-        //        uxEditEntryNumber.SetValue(Application.APPLICATION_NUMBER);
-        //        uxEditApplicationTruckNumber.SetValue(Application.TRUCK_NUMBER);
-        //        uxEditAppRequested.SetValue(Application.APPLICATION_REQUESTED);
-        //        uxEditEntryDate.SetValue(Application.APPLICATION_DATE);
-        //        uxEditEntrySprayBox.SetValue(Application.SPRAY);
-        //        uxEditEntryCutBox.SetValue(Application.CUT);
-        //        uxEditEntryInspectBox.SetValue(Application.INSPECT);
-        //        uxEditEntryRemarks.SetValue(Application.REMARKS);
-
-        //        if (Application.SPRAY == "Y")
-        //        {
-        //            uxEditEntrySprayBox.Checked = true;
-        //        }
-        //        if (Application.CUT == "Y")
-        //        {
-        //            uxEditEntryCutBox.Checked = true;
-        //        }
-
-        //        if (Application.INSPECT == "Y")
-        //        {
-        //            uxEditEntryInspectBox.Checked = true;
-        //        }
-
-        //    }
-
-        //}
-
-
-        /// <summary>
-        /// Store edit changes to database
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        //protected void deEditApplication(object sender, DirectEventArgs e)
-        //{
-        //    CROSSING_APPLICATION data;
-
-        //    //Do type conversions
-
-        //    long ApplicationNumber = Convert.ToInt64(uxEditEntryNumber.Value);
-        //    DateTime Date = (DateTime)uxEditEntryDate.Value;
-        //    string TruckNumber = uxEditApplicationTruckNumber.Value.ToString();
-        //    string AppRequested = uxEditAppRequested.Value.ToString();
-        //    string Spray = uxEditEntrySprayBox.Value.ToString();
-        //    string Cut = uxEditEntryCutBox.Value.ToString();
-        //    string Inspect = uxEditEntryInspectBox.Value.ToString();
-        //    string Remarks = uxEditEntryRemarks.Value.ToString();
-        //    if (uxEditEntrySprayBox.Checked)
-        //    {
-        //        Spray = "Y";
-        //    }
-        //    else
-        //    {
-        //        Spray = "N";
-        //    }
-
-        //    if (uxEditEntryCutBox.Checked)
-        //    {
-        //        Cut = "Y";
-        //    }
-        //    else
-        //    {
-        //        Cut = "N";
-        //    }
-        //    if (uxEditEntryInspectBox.Checked)
-        //    {
-        //        Inspect = "Y";
-        //    }
-        //    else
-        //    {
-        //        Inspect = "N";
-        //    }
-
-
-
-        //    //Get record to be edited
-        //    using (Entities _context = new Entities())
-        //    {
-        //        var ApplicationId = long.Parse(e.ExtraParams["ApplicationId"]);
-        //        data = (from d in _context.CROSSING_APPLICATION
-        //                where d.APPLICATION_ID == ApplicationId
-
-        //                select d).Single();
-
-        //    }
-
-
-
-        //    data.APPLICATION_DATE = Date;
-        //    data.APPLICATION_NUMBER = ApplicationNumber;
-        //    data.APPLICATION_REQUESTED = AppRequested;
-        //    data.TRUCK_NUMBER = TruckNumber;
-        //    data.SPRAY = Spray;
-        //    data.CUT = Cut;
-        //    data.INSPECT = Inspect;
-        //    data.REMARKS = Remarks;
-        //    //data.CROSSING_ID = CrossingId;
-
-        //    //Write to DB
-        //    GenericData.Update<CROSSING_APPLICATION>(data);
-
-        //    uxEditApplicationEntryWindow.Hide();
-        //    uxEditApplicationForm.Reset();
-
-
-        //    Notification.Show(new NotificationConfig()
-        //    {
-        //        Title = "Success",
-        //        Html = "Application Edited Successfully",
-        //        HideDelay = 1000,
-        //        AlignCfg = new NotificationAlignConfig
-        //        {
-        //            ElementAnchor = AnchorPoint.Center,
-        //            TargetAnchor = AnchorPoint.Center
-        //        }
-        //    });
-        //}
+       
         public class ApplicationDetails
         {
             public long APPLICATION_ID { get; set; }
@@ -335,27 +271,27 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             public string REMARKS { get; set; }
 
         }
-        protected void ReadInTruckNumberForApplication(string truckType)
-        {
+        //protected void ReadInTruckNumberForApplication(string truckType)
+        //{
 
-            using (Entities _context = new Entities())
-            {
-                List<object> data;
+        //    using (Entities _context = new Entities())
+        //    {
+        //        List<object> data;
 
-                //Get List of all new headers
+        //        //Get List of all new headers
 
-                data = (from p in _context.PROJECTS_V
-                        where p.PROJECT_TYPE == "TRUCK & EQUIPMENT"
-                        select new { p.PROJECT_ID, p.PROJECT_TYPE, p.NAME }).ToList<object>();
+        //        data = (from p in _context.PROJECTS_V
+        //                where p.PROJECT_TYPE == "TRUCK & EQUIPMENT"
+        //                select new { p.PROJECT_ID, p.PROJECT_TYPE, p.NAME }).ToList<object>();
 
 
-                if (truckType == "Add")
-                {
-                    uxAddApplicationTruckStore.DataSource = data;
-                }
+        //        if (truckType == "Add")
+        //        {
+        //            uxAddApplicationTruckStore.DataSource = data;
+        //        }
 
-            }
-        }
+        //    }
+        //}
         public class CrossingForApplicationDetails
         {
             public long CROSSING_ID { get; set; }

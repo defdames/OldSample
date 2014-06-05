@@ -37,26 +37,29 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 List<LunchInfo> ComboList = new List<LunchInfo>();
                 foreach (DAILY_ACTIVITY_HEADER Header in HeaderComboStore)
                 {
-                    PROJECTS_V ProjectName = _context.PROJECTS_V.Where(x => x.PROJECT_ID == Header.PROJECT_ID).Single();
+                    string ProjectName = (from p in _context.PROJECTS_V
+                                          where p.PROJECT_ID == Header.PROJECT_ID
+                                          select p.LONG_NAME).Single();
+                    DAILY_ACTIVITY_PRODUCTION ProductionEntry = Header.DAILY_ACTIVITY_PRODUCTION.SingleOrDefault();
+                    PA_TASKS_V TaskInfo;
+                    if (ProductionEntry != null)
+                    {
+                        TaskInfo = _context.PA_TASKS_V.Where(x => x.TASK_ID == ProductionEntry.TASK_ID).Single();
+                    }
+                    else
+                    {
+                        TaskInfo = _context.PA_TASKS_V.Where(x => (x.PROJECT_ID == Header.PROJECT_ID) && (x.TASK_NUMBER == "9999")).Single();
+                    }
                     ComboList.Add(new LunchInfo
                     {
                         HeaderId = Header.HEADER_ID,
-                        ProjectTask = string.Format("{0} (DRS: {1})", ProjectName.LONG_NAME, Header.HEADER_ID.ToString())
-                        });
+                        ProjectName = ProjectName,
+                        TaskName = TaskInfo.DESCRIPTION,
+                        TaskNumber = TaskInfo.TASK_NUMBER,
+                        TaskId = TaskInfo.TASK_ID.ToString()
+                    });
                 }
                 uxChoosePerDiemHeaderIdStore.DataSource = ComboList;
-            }
-        }
-
-        protected void deReadTasks(object sender, StoreReadDataEventArgs e)
-        {
-            using (Entities _context = new Entities())
-            {
-                long HeaderId = long.Parse(e.Parameters["HeaderId"]);
-                long ProjectId = _context.DAILY_ACTIVITY_HEADER.Where(x => x.HEADER_ID == HeaderId).Select(x => (long)x.PROJECT_ID).Single();
-
-                List<PA_TASKS_V> TaskList = _context.PA_TASKS_V.Where(x => x.PROJECT_ID == ProjectId).ToList();
-                uxChoosePerDiemTaskStore.DataSource = TaskList;
             }
         }
 
@@ -64,7 +67,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             long EmployeeId = long.Parse(Request.QueryString["EmployeeId"]);
-            long ChosenHeaderId = long.Parse(uxChoosePerDiemHeaderId.SelectedItem.Value.ToString());
+            long ChosenHeaderId = long.Parse(uxChoosePerDiemHeaderId.Value.ToString());
             List<DAILY_ACTIVITY_EMPLOYEE> RecordsToUpdate;
             long? OrgId;
             using (Entities _context = new Entities())
@@ -102,6 +105,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             X.Js.Call("parent.App.uxPlaceholderWindow.hide(); parent.App.uxEmployeeTab.reload()");
 
+        }
+
+        protected void deStoreValues(object sender, DirectEventArgs e)
+        {
+            List<LunchInfo> SelectedRows = JSON.Deserialize<List<LunchInfo>>(e.ExtraParams["selectedInfo"]);
+            foreach (LunchInfo SelectedRow in SelectedRows)
+            {
+                uxChoosePerDiemHeaderId.SetValue(SelectedRow.HeaderId.ToString(), SelectedRow.ProjectName);
+                uxChoosePerDiemTask.Value = SelectedRow.TaskId;
+            }
         }
     }
 

@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace DBI.Web.EMS.Views.Modules.Overhead
 {
-    public partial class umViewBudgets : System.Web.UI.Page
+    public partial class umViewBudgets : DBI.Core.Web.BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {

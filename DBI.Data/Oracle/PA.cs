@@ -9,7 +9,13 @@ namespace DBI.Data.Oracle
     public class PA
     {
 
-        public static decimal laborBurden(string buid, string fiscalYear)
+        /// <summary>
+        /// Gets the labor burden for a fiscal year and organization id
+        /// </summary>
+        /// <param name="buid"></param>
+        /// <param name="fiscalYear"></param>
+        /// <returns></returns>
+        public static decimal LaborBurden(string buid, string fiscalYear)
         {
             try
             {

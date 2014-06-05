@@ -21,11 +21,11 @@ using DBI.Data.DataFactory;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
-    public partial class umAppDate : BasePage
+    public partial class umInspectionReport : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!X.IsAjaxRequest)
+             if (!X.IsAjaxRequest)
             {
                 uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
                 uxAddStateList.Data = StaticLists.StateList;
@@ -37,9 +37,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             }
         }
-        protected void deAppDateGrid(object sender, StoreReadDataEventArgs e)
-        {
-            
+         protected void deInspectDateGrid(object sender, StoreReadDataEventArgs e)
+         {
             DateTime StartDate = uxStartDate.SelectedDate;
             DateTime EndDate = uxEndDate.SelectedDate;
             string Application = uxAddAppReqeusted.SelectedItem.Value;
@@ -54,7 +53,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                var allData = (from d in _context.CROSSING_APPLICATION
                         join c in _context.CROSSINGS on d.CROSSING_ID equals c.CROSSING_ID
-                        where c.RAILROAD_ID == RailroadId && d.APPLICATION_REQUESTED == Application
+                        where c.RAILROAD_ID == RailroadId && d.APPLICATION_REQUESTED == Application && d.INSPECT == "Y"
                         select new
                         {
                             d.CROSSING_ID,
@@ -104,7 +103,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 
 
                 int count;
-                uxAppDateStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
+                uxInspectDateStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
                 e.Total = count;
             }
         }

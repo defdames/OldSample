@@ -40,13 +40,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.FormPanel uxChooseLunchForm;
         
         /// <summary>
-        /// uxLunchHeader control.
+        /// uxLunchDRS control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ComboBox uxLunchHeader;
+        protected global::Ext.Net.DropDownField uxLunchDRS;
+        
+        /// <summary>
+        /// uxLunchDRSGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridPanel uxLunchDRSGrid;
         
         /// <summary>
         /// uxLunchHeaderStore control.
@@ -58,22 +67,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Store uxLunchHeaderStore;
         
         /// <summary>
-        /// uxLunchTask control.
+        /// Model1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ComboBox uxLunchTask;
+        protected global::Ext.Net.Model Model1;
         
         /// <summary>
-        /// uxLunchTaskStore control.
+        /// uxHiddenTask control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxLunchTaskStore;
+        protected global::Ext.Net.Hidden uxHiddenTask;
         
         /// <summary>
         /// uxStoreLunchButton control.

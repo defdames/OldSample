@@ -39,7 +39,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 CROSSING_SERVICE_UNIT NewServiceUnit = new CROSSING_SERVICE_UNIT();
                 NewServiceUnit.SERVICE_UNIT_NAME = CreatedServiceUnit.SERVICE_UNIT_NAME;
-                NewServiceUnit.RAILROAD_ID = decimal.Parse(Session["rrType"].ToString());
+                NewServiceUnit.RAILROAD_ID = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
 
                 GenericData.Insert<CROSSING_SERVICE_UNIT>(NewServiceUnit);
                 uxServiceUnitStore.Reload();
