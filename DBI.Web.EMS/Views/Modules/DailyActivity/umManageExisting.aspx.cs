@@ -897,7 +897,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 					TargetAnchor = AnchorPoint.Center
 				}
 			});
-			uxManageGridStore.Reload();
+            RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
+            var Index = GridModel.SelectedIndex;
+
+
+            uxManageGridStore.Reload(new
+            {
+                callback = JRawValue.From("function() {App.uxManageGrid.getSelectionModel().select(" + Index + ")}")
+            });
 		}
 
 		protected void deMarkAsPosted(object sender, DirectEventArgs e)
