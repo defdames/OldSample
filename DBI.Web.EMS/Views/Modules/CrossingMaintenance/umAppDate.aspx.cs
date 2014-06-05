@@ -30,7 +30,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
                 uxAddStateList.Data = StaticLists.StateList;
 
-                if (SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue") != string.Empty)
+                if (SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue") != string.Empty)
                 {
                     deGetRRType("Add");
 
@@ -51,7 +51,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                
 
                 //Get List of all new crossings
-                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue"));
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                var allData = (from d in _context.CROSSING_APPLICATION
                         join c in _context.CROSSINGS on d.CROSSING_ID equals c.CROSSING_ID
                         where c.RAILROAD_ID == RailroadId && d.APPLICATION_REQUESTED == Application
@@ -117,7 +117,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             using (Entities _context = new Entities())
             {
-                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue"));
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                 var RRdata = (from r in _context.CROSSING_RAILROAD
                               where r.RAILROAD_ID == RailroadId
                               select new

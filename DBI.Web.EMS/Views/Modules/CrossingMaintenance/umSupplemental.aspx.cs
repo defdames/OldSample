@@ -72,7 +72,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 List<object> data;
                 if (validateComponentSecurity("SYS.CrossingMaintenance.DataEntryView"))
                 {
-                    long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue"));
+                    long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                     List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
                     data = (from d in _context.CROSSINGS
                             join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID

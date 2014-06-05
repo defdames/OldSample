@@ -17,11 +17,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             LoadSelectRailroad();
             if (!X.IsAjaxRequest)
             {
-                if (SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue") != string.Empty)
+
+                if (SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue") != string.Empty)
                 {
                     using (Entities _context = new Entities())
                     {
-                        long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue"));
+                        long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                         var RRdata = (from r in _context.CROSSING_RAILROAD
                                       where r.RAILROAD_ID == RailroadId
                                       select new
@@ -36,7 +37,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     }
 
                 }
-                else if (SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue") == string.Empty)
+                else if (SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue") == string.Empty)
                 {
                     uxChangeRailroadWindow.Show();
                 }
@@ -140,11 +141,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             RowSelectionModel rrSelection = RowSelectionModel1;
 
 
-            SYS_USER_PROFILE_OPTIONS.setProfileOption("UserCrossingSelectedValue", rrSelection.SelectedRecordID.ToString());
+            SYS_USER_PROFILE_OPTIONS.SetProfileOption("UserCrossingSelectedValue", rrSelection.SelectedRecordID.ToString());
 
             using (Entities _context = new Entities())
             {
-                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue"));
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                 var RRdata = (from r in _context.CROSSING_RAILROAD
                               where r.RAILROAD_ID == RailroadId
                               select new
@@ -169,7 +170,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         protected void deLoadUnit(object sender, DirectEventArgs e)
         {
 
-            SYS_USER_PROFILE_OPTIONS.setProfileOption("UserCrossingSelectedValue", uxRailRoadCI.SelectedItem.Value);
+            SYS_USER_PROFILE_OPTIONS.SetProfileOption("UserCrossingSelectedValue", uxRailRoadCI.SelectedItem.Value);
 
             uxReportListStore.Reload();
             uxReportMainPanel.ClearContent();
