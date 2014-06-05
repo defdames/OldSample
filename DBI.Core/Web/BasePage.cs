@@ -202,7 +202,7 @@ namespace DBI.Core.Web
             script.Append("value: errorMsg.substring(stack0, stack1).trim(),"); // display stack
             script.Append("buttons: Ext.MessageBox.OK,");
 
-#if (PCL05)
+#if (APPDEV)
            script.Append("multiline: true,");
            script.Append("width: 550,");
            script.Append("defaultTextHeight: 350,");

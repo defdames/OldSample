@@ -14,7 +14,7 @@
             <Items>
                 <ext:TreePanel ID="uxLegalEntityTreePanel"
                     runat="server"
-                    Title="Business Units"
+                    Title="Legal Entities"
                     Width="300"
                     RootVisible="false"
                     SingleExpand="true"
@@ -29,6 +29,9 @@
                             <Proxy>
                                 <ext:PageProxy></ext:PageProxy>
                             </Proxy>
+                             <DirectEvents>
+                                <BeforeLoad><EventMask ShowMask="true"></EventMask></BeforeLoad>
+                            </DirectEvents>
                         </ext:TreeStore>
                     </Store>
                     <Root>
