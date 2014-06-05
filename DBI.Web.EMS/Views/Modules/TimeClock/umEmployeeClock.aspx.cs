@@ -24,13 +24,6 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
         }
 
-        protected void deSetTest(object sender, DirectEventArgs e)
-        {
-
-          
-             uxTest.Text = (uxDateTime.Value).ToString();
-            
-        }
 
 
         protected void deSetTime(object sender, DirectEventArgs e)
