@@ -1743,6 +1743,10 @@
           <Property Name="GROUP_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="GROUP_NAME" Type="varchar2" Nullable="false" MaxLength="100" />
           <Property Name="JOB_ID" Type="number" Precision="15" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="SYS_GROUPS_PERMS">
           <Key>
@@ -1751,6 +1755,10 @@
           <Property Name="GROUPS_PERMS_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="GROUP_ID" Type="number" Nullable="false" />
           <Property Name="PERMISSION_ID" Type="number" Nullable="false" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="SYS_LOG">
           <Key>
@@ -1766,6 +1774,10 @@
           <Property Name="STACKTRACE" Type="varchar2" Nullable="false" MaxLength="500" />
           <Property Name="DEBUG" Type="varchar2" MaxLength="1" />
           <Property Name="CREATED_DATE" Type="date" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="SYS_MENU">
           <Key>
@@ -1777,6 +1789,10 @@
           <Property Name="MODULE_ID" Type="number" Nullable="false" />
           <Property Name="PERMISSION_ID" Type="number" Nullable="false" />
           <Property Name="ICON" Type="varchar2" MaxLength="200" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="SYS_MOBILE_DEVICES">
           <Key>
@@ -1786,6 +1802,10 @@
           <Property Name="DATE_CREATED" Type="date" />
           <Property Name="LAST_ACTIVITY_DATE" Type="date" />
           <Property Name="LAST_ACTIVITY_USER_ID" Type="number" Precision="15" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="SYS_MOBILE_NOTIFICATIONS">
           <Key>
@@ -1798,6 +1818,9 @@
           <Property Name="PROCESSED_DATE" Type="date" />
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="PROCESSING_ERROR" Type="clob" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="SYS_MODULE_PROFILE_OPTIONS">
           <Key>
@@ -1819,6 +1842,10 @@
           <Property Name="MODULE_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="MODULE_NAME" Type="varchar2" Nullable="false" MaxLength="100" />
           <Property Name="PERMISSION_ID" Type="number" Nullable="false" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="SYS_PERMISSIONS">
           <Key>
@@ -1828,6 +1855,10 @@
           <Property Name="PERMISSION_NAME" Type="varchar2" Nullable="false" MaxLength="100" />
           <Property Name="PARENT_PERM_ID" Type="number" />
           <Property Name="DESCRIPTION" Type="varchar2" MaxLength="300" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="SYS_PROFILE_OPTIONS">
           <Key>
@@ -1851,6 +1882,8 @@
           <Property Name="COMMENTS" Type="clob" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="SYS_USER_ACTIVITY">
           <Key>
@@ -1871,6 +1904,10 @@
           <Property Name="SYS_ORG_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="USER_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="ORG_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="SYS_USER_PERMS">
           <Key>
@@ -1880,6 +1917,10 @@
           <Property Name="PERMISSION_ID" Type="number" Nullable="false" />
           <Property Name="USER_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="ALLOW_DENY" Type="char" MaxLength="1" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="SYS_USER_PROFILE_OPTIONS">
           <Key>
@@ -1900,6 +1941,10 @@
           </Key>
           <Property Name="USER_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="LAST_ACTIVITY_DATE" Type="date" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="TIME_CLOCK">
           <Key>
@@ -1918,6 +1963,8 @@
           <Property Name="DAY_OF_WEEK" Type="varchar2" MaxLength="20" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="MODIFIED_TIME_IN" Type="date" />
+          <Property Name="MODIFIED_TIME_OUT" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'APPS.PA_LOCATIONS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -3866,7 +3913,6 @@
             <End Role="CROSSING" EntitySet="CROSSINGS" />
             <End Role="CROSSING_SUPPLEMENTAL" EntitySet="CROSSING_SUPPLEMENTAL" />
           </AssociationSet>
-          <EntitySet Name="TIME_CLOCK" EntityType="OracleModel.TIME_CLOCK" />
           <EntitySet Name="DAILY_ACTIVITY_PRODUCTION" EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" />
           <AssociationSet Name="FK_PRODUCTION_HEADER_ID" Association="OracleModel.FK_PRODUCTION_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
@@ -3974,6 +4020,7 @@
             <End Role="CROSSING_SERVICE_UNIT" EntitySet="CROSSING_SERVICE_UNIT" />
             <End Role="CROSSING_SUB_DIVISION" EntitySet="CROSSING_SUB_DIVISION" />
           </AssociationSet>
+          <EntitySet Name="TIME_CLOCK" EntityType="OracleModel.TIME_CLOCK" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -3984,6 +4031,10 @@
           <NavigationProperty Name="SYS_USER_INFORMATION" Relationship="OracleModel.SYS_USERSSYS_USER_INFORMATION" FromRole="SYS_USERS" ToRole="SYS_USER_INFORMATION" />
           <NavigationProperty Name="SYS_USER_ACTIVITY" Relationship="OracleModel.SYS_USERSSYS_USER_ACTIVITY" FromRole="SYS_USERS" ToRole="SYS_USER_ACTIVITY" />
           <NavigationProperty Name="SYS_LOG" Relationship="OracleModel.SYS_USERSSYS_LOG" FromRole="SYS_USERS" ToRole="SYS_LOG" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <ComplexType Name="SYS_USER_ACTIVITY_CT" >
           <Property Type="Int64" Name="USER_ACTIVITY_ID" Nullable="false" />
@@ -4071,6 +4122,10 @@
           <NavigationProperty Name="SYS_USERS" Relationship="OracleModel.SYS_USERSSYS_LOG" FromRole="SYS_LOG" ToRole="SYS_USERS" />
           <Property Type="String" Name="DEBUG" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="GUID" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="SYS_USERSSYS_LOG">
           <End Type="OracleModel.SYS_USERS" Role="SYS_USERS" Multiplicity="1" />
@@ -5837,6 +5892,10 @@
           <Property Type="Decimal" Name="PERMISSION_ID" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="SYS_GROUPS" Relationship="OracleModel.FK_GRP_PERMS_GROUP_ID" FromRole="SYS_GROUPS_PERMS" ToRole="SYS_GROUPS" />
           <NavigationProperty Name="SYS_PERMISSIONS" Relationship="OracleModel.FK_GRP_PERMS_PERM_ID" FromRole="SYS_GROUPS_PERMS" ToRole="SYS_PERMISSIONS" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="SYS_MODULES">
           <Key>
@@ -5848,6 +5907,10 @@
           <NavigationProperty Name="SYS_MENU" Relationship="OracleModel.FK_MENU_MODULE_ID" FromRole="SYS_MODULES" ToRole="SYS_MENU" />
           <NavigationProperty Name="SYS_PERMISSIONS" Relationship="OracleModel.FK_MODULE_PERM_ID" FromRole="SYS_MODULES" ToRole="SYS_PERMISSIONS" />
           <NavigationProperty Name="SYS_MODULE_PROFILE_OPTIONS" Relationship="OracleModel.FK_PROFILE_MODULE_ID" FromRole="SYS_MODULES" ToRole="SYS_MODULE_PROFILE_OPTIONS" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="SYS_MOBILE_DEVICES">
           <Key>
@@ -5857,6 +5920,10 @@
           <Property Type="DateTime" Name="DATE_CREATED" />
           <Property Type="DateTime" Name="LAST_ACTIVITY_DATE" />
           <Property Type="Int64" Name="LAST_ACTIVITY_USER_ID" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="SYS_MOBILE_NOTIFICATIONS">
           <Key>
@@ -5869,6 +5936,9 @@
           <Property Type="DateTime" Name="PROCESSED_DATE" />
           <Property Type="DateTime" Name="CREATE_DATE" />
           <Property Type="String" Name="PROCESSING_ERROR" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="SYS_USER_PERMS">
           <Key>
@@ -5879,6 +5949,10 @@
           <Property Type="Int64" Name="USER_ID" Nullable="false" />
           <Property Type="String" Name="ALLOW_DENY" MaxLength="1" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="SYS_PERMISSIONS" Relationship="OracleModel.FK_USER_PERMS_PERM_ID" FromRole="SYS_USER_PERMS" ToRole="SYS_PERMISSIONS" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="SYS_MENU">
           <Key>
@@ -5892,6 +5966,10 @@
           <Property Type="String" Name="ICON" MaxLength="200" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="SYS_MODULES" Relationship="OracleModel.FK_MENU_MODULE_ID" FromRole="SYS_MENU" ToRole="SYS_MODULES" />
           <NavigationProperty Name="SYS_PERMISSIONS" Relationship="OracleModel.FK_MENU_PERM_ID" FromRole="SYS_MENU" ToRole="SYS_PERMISSIONS" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_MENU_MODULE_ID">
           <End Type="OracleModel.SYS_MODULES" Role="SYS_MODULES" Multiplicity="1" />
@@ -5969,6 +6047,10 @@
           <Property Type="String" Name="GROUP_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="Int64" Name="JOB_ID" />
           <NavigationProperty Name="SYS_GROUPS_PERMS" Relationship="OracleModel.FK_GRP_PERMS_GROUP_ID" FromRole="SYS_GROUPS" ToRole="SYS_GROUPS_PERMS" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_GRP_PERMS_GROUP_ID">
           <End Type="OracleModel.SYS_GROUPS" Role="SYS_GROUPS" Multiplicity="1" />
@@ -6010,6 +6092,10 @@
           <NavigationProperty Name="SYS_MENU" Relationship="OracleModel.FK_MENU_PERM_ID" FromRole="SYS_PERMISSIONS" ToRole="SYS_MENU" />
           <NavigationProperty Name="SYS_MODULES" Relationship="OracleModel.FK_MODULE_PERM_ID" FromRole="SYS_PERMISSIONS" ToRole="SYS_MODULES" />
           <NavigationProperty Name="SYS_USER_PERMS" Relationship="OracleModel.FK_USER_PERMS_PERM_ID" FromRole="SYS_PERMISSIONS" ToRole="SYS_USER_PERMS" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_GRP_PERMS_PERM_ID">
           <End Type="OracleModel.SYS_PERMISSIONS" Role="SYS_PERMISSIONS" Multiplicity="1" />
@@ -6162,6 +6248,10 @@
           <Property Type="Decimal" Name="SYS_ORG_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int64" Name="USER_ID" Nullable="false" />
           <Property Type="Int64" Name="ORG_ID" Nullable="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="OVERHEAD_GL_ACCOUNT">
           <Key>
@@ -6332,24 +6422,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="TIME_CLOCK">
-          <Key>
-            <PropertyRef Name="TIME_CLOCK_ID" />
-          </Key>
-          <Property Type="Decimal" Name="TIME_CLOCK_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Decimal" Name="PERSON_ID" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="DateTime" Name="TIME_IN" />
-          <Property Type="DateTime" Name="TIME_OUT" />
-          <Property Type="String" Name="SUBMITTED" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="APPROVED" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="COMPLETED" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="Decimal" Name="ACTUAL_HOURS" Precision="15" Scale="4" />
-          <Property Type="Decimal" Name="ADJUSTED_HOURS" Precision="15" Scale="4" />
-          <Property Type="Int32" Name="SUPERVISOR_ID" />
-          <Property Type="String" Name="DAY_OF_WEEK" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-        </EntityType>
         <EntityType Name="DAILY_ACTIVITY_PRODUCTION">
           <Key>
             <PropertyRef Name="PRODUCTION_ID" />
@@ -6773,6 +6845,8 @@
           <Property Type="String" Name="COMMENTS" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="MODIFIED_DATE" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="BUD_BID_PROJECTS">
           <Key>
@@ -7016,6 +7090,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="TIME_CLOCK">
+          <Key>
+            <PropertyRef Name="TIME_CLOCK_ID" />
+          </Key>
+          <Property Type="Decimal" Name="TIME_CLOCK_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="PERSON_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="TIME_IN" />
+          <Property Type="DateTime" Name="TIME_OUT" />
+          <Property Type="String" Name="SUBMITTED" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="APPROVED" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="COMPLETED" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="Decimal" Name="ACTUAL_HOURS" Precision="15" Scale="4" />
+          <Property Type="Decimal" Name="ADJUSTED_HOURS" Precision="15" Scale="4" />
+          <Property Type="Int32" Name="SUPERVISOR_ID" />
+          <Property Type="String" Name="DAY_OF_WEEK" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="DateTime" Name="MODIFIED_TIME_IN" />
+          <Property Type="DateTime" Name="MODIFIED_TIME_OUT" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7025,6 +7119,10 @@
           <EntitySetMapping Name="SYS_USERS">
             <EntityTypeMapping TypeName="OracleModel.SYS_USERS">
               <MappingFragment StoreEntitySet="SYS_USERS">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="LAST_ACTIVITY_DATE" ColumnName="LAST_ACTIVITY_DATE" />
                 <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
               </MappingFragment>
@@ -7068,6 +7166,10 @@
           <EntitySetMapping Name="SYS_LOG">
             <EntityTypeMapping TypeName="OracleModel.SYS_LOG">
               <MappingFragment StoreEntitySet="SYS_LOG">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="GUID" ColumnName="GUID" />
                 <ScalarProperty Name="DEBUG" ColumnName="DEBUG" />
                 <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
@@ -8492,6 +8594,10 @@
           <EntitySetMapping Name="SYS_GROUPS_PERMS">
             <EntityTypeMapping TypeName="OracleModel.SYS_GROUPS_PERMS">
               <MappingFragment StoreEntitySet="SYS_GROUPS_PERMS">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="PERMISSION_ID" ColumnName="PERMISSION_ID" />
                 <ScalarProperty Name="GROUP_ID" ColumnName="GROUP_ID" />
                 <ScalarProperty Name="GROUPS_PERMS_ID" ColumnName="GROUPS_PERMS_ID" />
@@ -8501,6 +8607,10 @@
           <EntitySetMapping Name="SYS_MODULES">
             <EntityTypeMapping TypeName="OracleModel.SYS_MODULES">
               <MappingFragment StoreEntitySet="SYS_MODULES">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="PERMISSION_ID" ColumnName="PERMISSION_ID" />
                 <ScalarProperty Name="MODULE_NAME" ColumnName="MODULE_NAME" />
                 <ScalarProperty Name="MODULE_ID" ColumnName="MODULE_ID" />
@@ -8510,6 +8620,10 @@
           <EntitySetMapping Name="SYS_MOBILE_DEVICES">
             <EntityTypeMapping TypeName="OracleModel.SYS_MOBILE_DEVICES">
               <MappingFragment StoreEntitySet="SYS_MOBILE_DEVICES">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="LAST_ACTIVITY_USER_ID" ColumnName="LAST_ACTIVITY_USER_ID" />
                 <ScalarProperty Name="LAST_ACTIVITY_DATE" ColumnName="LAST_ACTIVITY_DATE" />
                 <ScalarProperty Name="DATE_CREATED" ColumnName="DATE_CREATED" />
@@ -8520,6 +8634,9 @@
           <EntitySetMapping Name="SYS_MOBILE_NOTIFICATIONS">
             <EntityTypeMapping TypeName="OracleModel.SYS_MOBILE_NOTIFICATIONS">
               <MappingFragment StoreEntitySet="SYS_MOBILE_NOTIFICATIONS">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
                 <ScalarProperty Name="PROCESSING_ERROR" ColumnName="PROCESSING_ERROR" />
                 <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="PROCESSED_DATE" ColumnName="PROCESSED_DATE" />
@@ -8533,6 +8650,10 @@
           <EntitySetMapping Name="SYS_USER_PERMS">
             <EntityTypeMapping TypeName="OracleModel.SYS_USER_PERMS">
               <MappingFragment StoreEntitySet="SYS_USER_PERMS">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="ALLOW_DENY" ColumnName="ALLOW_DENY" />
                 <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
                 <ScalarProperty Name="PERMISSION_ID" ColumnName="PERMISSION_ID" />
@@ -8543,6 +8664,10 @@
           <EntitySetMapping Name="SYS_MENU">
             <EntityTypeMapping TypeName="OracleModel.SYS_MENU">
               <MappingFragment StoreEntitySet="SYS_MENU">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="ICON" ColumnName="ICON" />
                 <ScalarProperty Name="PERMISSION_ID" ColumnName="PERMISSION_ID" />
                 <ScalarProperty Name="MODULE_ID" ColumnName="MODULE_ID" />
@@ -8611,6 +8736,10 @@
           <EntitySetMapping Name="SYS_GROUPS">
             <EntityTypeMapping TypeName="OracleModel.SYS_GROUPS">
               <MappingFragment StoreEntitySet="SYS_GROUPS">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="JOB_ID" ColumnName="JOB_ID" />
                 <ScalarProperty Name="GROUP_NAME" ColumnName="GROUP_NAME" />
                 <ScalarProperty Name="GROUP_ID" ColumnName="GROUP_ID" />
@@ -8638,6 +8767,10 @@
           <EntitySetMapping Name="SYS_PERMISSIONS">
             <EntityTypeMapping TypeName="OracleModel.SYS_PERMISSIONS">
               <MappingFragment StoreEntitySet="SYS_PERMISSIONS">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
                 <ScalarProperty Name="PARENT_PERM_ID" ColumnName="PARENT_PERM_ID" />
                 <ScalarProperty Name="PERMISSION_NAME" ColumnName="PERMISSION_NAME" />
@@ -8733,6 +8866,10 @@
           <EntitySetMapping Name="SYS_USER_ORGS">
             <EntityTypeMapping TypeName="OracleModel.SYS_USER_ORGS">
               <MappingFragment StoreEntitySet="SYS_USER_ORGS">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
                 <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
                 <ScalarProperty Name="SYS_ORG_ID" ColumnName="SYS_ORG_ID" />
@@ -8849,25 +8986,6 @@
                 <ScalarProperty Name="PREF" ColumnName="PREF" />
                 <ScalarProperty Name="DOT" ColumnName="DOT" />
                 <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TIME_CLOCK">
-            <EntityTypeMapping TypeName="OracleModel.TIME_CLOCK">
-              <MappingFragment StoreEntitySet="TIME_CLOCK">
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="DAY_OF_WEEK" ColumnName="DAY_OF_WEEK" />
-                <ScalarProperty Name="SUPERVISOR_ID" ColumnName="SUPERVISOR_ID" />
-                <ScalarProperty Name="ADJUSTED_HOURS" ColumnName="ADJUSTED_HOURS" />
-                <ScalarProperty Name="ACTUAL_HOURS" ColumnName="ACTUAL_HOURS" />
-                <ScalarProperty Name="COMPLETED" ColumnName="COMPLETED" />
-                <ScalarProperty Name="APPROVED" ColumnName="APPROVED" />
-                <ScalarProperty Name="SUBMITTED" ColumnName="SUBMITTED" />
-                <ScalarProperty Name="TIME_OUT" ColumnName="TIME_OUT" />
-                <ScalarProperty Name="TIME_IN" ColumnName="TIME_IN" />
-                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
-                <ScalarProperty Name="TIME_CLOCK_ID" ColumnName="TIME_CLOCK_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -9141,6 +9259,8 @@
           <EntitySetMapping Name="SYS_SECURITY_AUDIT">
             <EntityTypeMapping TypeName="OracleModel.SYS_SECURITY_AUDIT">
               <MappingFragment StoreEntitySet="SYS_SECURITY_AUDIT">
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
                 <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
@@ -9287,6 +9407,27 @@
                 <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="SUB_DIVISION_NAME" ColumnName="SUB_DIVISION_NAME" />
                 <ScalarProperty Name="SUB_DIVISION_ID" ColumnName="SUB_DIVISION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TIME_CLOCK">
+            <EntityTypeMapping TypeName="OracleModel.TIME_CLOCK">
+              <MappingFragment StoreEntitySet="TIME_CLOCK">
+                <ScalarProperty Name="MODIFIED_TIME_OUT" ColumnName="MODIFIED_TIME_OUT" />
+                <ScalarProperty Name="MODIFIED_TIME_IN" ColumnName="MODIFIED_TIME_IN" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="DAY_OF_WEEK" ColumnName="DAY_OF_WEEK" />
+                <ScalarProperty Name="SUPERVISOR_ID" ColumnName="SUPERVISOR_ID" />
+                <ScalarProperty Name="ADJUSTED_HOURS" ColumnName="ADJUSTED_HOURS" />
+                <ScalarProperty Name="ACTUAL_HOURS" ColumnName="ACTUAL_HOURS" />
+                <ScalarProperty Name="COMPLETED" ColumnName="COMPLETED" />
+                <ScalarProperty Name="APPROVED" ColumnName="APPROVED" />
+                <ScalarProperty Name="SUBMITTED" ColumnName="SUBMITTED" />
+                <ScalarProperty Name="TIME_OUT" ColumnName="TIME_OUT" />
+                <ScalarProperty Name="TIME_IN" ColumnName="TIME_IN" />
+                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
+                <ScalarProperty Name="TIME_CLOCK_ID" ColumnName="TIME_CLOCK_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -14,7 +14,7 @@
 			ID="uxSubmitActivityForm"
 			Layout="FormLayout"
 			Padding="5"
-			MaxWidth="1000">
+			MaxWidth="1000" DefaultButton="uxSaveOnlyButton">
 			<Items>
 				<ext:TextField runat="server"
 					ID="uxSubmitReasonForNoWork"
@@ -79,10 +79,12 @@
 			<Buttons>
 				<ext:Button runat="server"
 					ID="uxSaveOnlyButton"
-					Text="Submit"
+					Text="Save"
 					Icon="Add">
 					<DirectEvents>
-						<Click OnEvent="deStoreFooter" />
+						<Click OnEvent="deStoreFooter">
+							<EventMask ShowMask="true" />
+						</Click>
 					</DirectEvents>
 				</ext:Button>
 				<ext:Button runat="server"

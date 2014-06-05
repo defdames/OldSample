@@ -27,5 +27,7 @@ namespace DBI.Data
         public string DAY_OF_WEEK { get; set; }
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
+        public Nullable<System.DateTime> MODIFIED_TIME_IN { get; set; }
+        public Nullable<System.DateTime> MODIFIED_TIME_OUT { get; set; }
     }
 }

@@ -33,7 +33,7 @@
 				<ext:FormPanel runat="server"
 					ID="uxAddEmployeeForm"
 					Layout="FormLayout"
-					Hidden="false" Width="600">
+					Hidden="false" Width="600" DefaultButton="uxAddEmployeeSubmit">
 					<Items>
 						<ext:DropDownField runat="server"
 							ID="uxAddEmployeeEmpDropDown"
@@ -382,7 +382,7 @@
 						<ext:Button runat="server"
 							ID="uxAddEmployeeSubmit"
 							Icon="Add"
-							Text="Submit"
+							Text="Save"
 							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deAddEmployee">
@@ -407,7 +407,7 @@
 				<ext:FormPanel runat="server"
 					ID="uxEditEmployeeForm"
 					Layout="FormLayout"
-					Hidden="true" Width="600">
+					Hidden="true" Width="600" DefaultButton="uxEditEmployeeSubmit">
 					<Items>
 						<ext:DropDownField runat="server" Editable="false"
 							ID="uxEditEmployeeEmpDropDown"
@@ -758,7 +758,7 @@
 						<ext:Button runat="server"
 							ID="uxEditEmployeeSubmit"
 							Icon="Add"
-							Text="Submit"
+							Text="Save"
 							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deEditEmployee">

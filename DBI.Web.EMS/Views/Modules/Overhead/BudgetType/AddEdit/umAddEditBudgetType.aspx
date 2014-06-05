@@ -27,7 +27,7 @@
                             <Store>
                                 <ext:Store runat="server" ID="uxBudgetNameStore" AutoLoad="false">
                                     <Proxy>
-                                        <ext:AjaxProxy Url="../../GenericHandlers/ghBudgetCodes.ashx">
+                                        <ext:AjaxProxy Url="~/Views/Modules/Overhead/GenericHandlers/ghBudgetCodes.ashx">
                                             <ActionMethods Read="POST" />
                                             <Reader>
                                                 <ext:JsonReader Root="data" TotalProperty="total" />
@@ -74,7 +74,7 @@
                             <Store>
                                 <ext:Store runat="server" ID="uxParentBudgetStore" AutoLoad="false">
                                     <Proxy>
-                                        <ext:AjaxProxy Url="../../GenericHandlers/ghBudgetParentCodes.ashx">
+                                        <ext:AjaxProxy Url="~/Views/Modules/Overhead/GenericHandlers/ghBudgetParentCodes.ashx">
                                             <ActionMethods Read="POST" />
                                             <Reader>
                                                 <ext:JsonReader Root="data" TotalProperty="total" />

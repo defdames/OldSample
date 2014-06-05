@@ -51,7 +51,7 @@
 						<ext:FilterHeader runat="server" Remote="true" DateFormat="MM-dd-yyyy" />
 					</Plugins>
 					<Buttons>
-						<ext:Button runat="server" ID="uxPostMultipleButton" Text="Submit">
+						<ext:Button runat="server" ID="uxPostMultipleButton" Text="Save" Icon="Add">
 							<DirectEvents>
 								<Click OnEvent="dePostData">
 									<ExtraParams>
@@ -61,7 +61,7 @@
 								</Click>
 							</DirectEvents>
 						</ext:Button>
-						<ext:Button runat="server" ID="uxCancelPostButton" Text="Cancel">
+						<ext:Button runat="server" ID="uxCancelPostButton" Text="Cancel" Icon="Delete">
 							<Listeners>
 								<Click Handler="parentAutoLoadControl.hide();" />
 							</Listeners>

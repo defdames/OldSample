@@ -17,6 +17,10 @@ namespace DBI.Data
         public decimal GROUPS_PERMS_ID { get; set; }
         public decimal GROUP_ID { get; set; }
         public decimal PERMISSION_ID { get; set; }
+        public Nullable<System.DateTime> CREATE_DATE { get; set; }
+        public Nullable<System.DateTime> MODIFY_DATE { get; set; }
+        public string CREATED_BY { get; set; }
+        public string MODIFIED_BY { get; set; }
     
         public virtual SYS_GROUPS SYS_GROUPS { get; set; }
         public virtual SYS_PERMISSIONS SYS_PERMISSIONS { get; set; }

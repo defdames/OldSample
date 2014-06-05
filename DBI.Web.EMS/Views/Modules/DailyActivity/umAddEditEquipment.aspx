@@ -44,7 +44,7 @@
 		<ext:FormPanel runat="server"
 			ID="uxAddEquipmentForm"
 			Layout="FormLayout"
-			Hidden="false" Width="600">
+			Hidden="false" Width="600" DefaultButton="uxAddEquipmentSubmit">
 			<Items>
 				<ext:DropDownField runat="server" Editable="false"
 					ID="uxAddEquipmentDropDown"
@@ -160,7 +160,7 @@
 			<Buttons>
 				<ext:Button runat="server"
 					ID="uxAddEquipmentSubmit"
-					Text="Submit"
+					Text="Save"
 					Icon="Add"
 					Disabled="true">
 					<DirectEvents>
@@ -187,7 +187,7 @@
 		<ext:FormPanel runat="server"
 			ID="uxEditEquipmentForm"
 			Layout="FormLayout"
-			Hidden="true" Width="600">
+			Hidden="true" Width="600" DefaultButton="uxEditEquipmentSubmit">
 			<Items>
 				<ext:DropDownField runat="server" Editable="false"
 					ID="uxEditEquipmentProject"
@@ -303,7 +303,7 @@
 				<ext:Button runat="server"
 					ID="uxEditEquipmentSubmit"
 					Icon="Add"
-					Text="Submit"
+					Text="Save"
 					Disabled="true">
 					<DirectEvents>
 						<Click OnEvent="deEditEquipment">

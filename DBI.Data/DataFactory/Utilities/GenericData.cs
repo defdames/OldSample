@@ -13,7 +13,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Ext.Net;
 
-
 namespace DBI.Data
 {
     public static class GenericData
