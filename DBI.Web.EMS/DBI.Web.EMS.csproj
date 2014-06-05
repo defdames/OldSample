@@ -137,6 +137,9 @@
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingInfoTab.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingSecurity.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umInspectionReport.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umMissingROW.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umPrivateCrossingReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umRailRoadProject.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umRailroadToolbar.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umReportsMain.aspx" />
@@ -334,6 +337,27 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx.designer.cs">
       <DependentUpon>umDataEntryTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umInspectionReport.aspx.cs">
+      <DependentUpon>umInspectionReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umInspectionReport.aspx.designer.cs">
+      <DependentUpon>umInspectionReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umMissingROW.aspx.cs">
+      <DependentUpon>umMissingROW.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umMissingROW.aspx.designer.cs">
+      <DependentUpon>umMissingROW.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umPrivateCrossingReport.aspx.cs">
+      <DependentUpon>umPrivateCrossingReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umPrivateCrossingReport.aspx.designer.cs">
+      <DependentUpon>umPrivateCrossingReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umRailRoadProject.aspx.cs">
       <DependentUpon>umRailRoadProject.aspx</DependentUpon>

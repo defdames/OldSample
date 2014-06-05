@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umAppDate.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.CrossingMaintenance.umAppDate" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umInspectionReport.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.CrossingMaintenance.umInspectionReport" %>
 
 <!DOCTYPE html>
 
@@ -43,15 +43,16 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div>
+    
+      <div>
             <ext:ResourceManager ID="ResourceManager1" runat="server" />
-            <ext:FormPanel ID="uxFilterForm" runat="server" Margin="5" Title="Filter Application Date">
+            <ext:FormPanel ID="uxFilterForm" runat="server" Margin="5" Title="Filter Inspection Date">
                 <Items>
                     <ext:FieldSet ID="FieldSet1" runat="server" Title="Filter">
                         <Items>
                             <ext:TextField ID="uxRRCI" runat="server" FieldLabel="Railroad" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" Hidden="true" />
 
-
+                          
                             <ext:ComboBox ID="uxAddAppReqeusted"
                                 runat="server"
                                 FieldLabel="Application #"
@@ -63,7 +64,7 @@
                                 TypeAhead="true" AllowBlank="false" ForceSelection="true" TabIndex="1">
                                 <Store>
                                     <ext:Store runat="server"
-                                        ID="uxAddAppRequestedStore" AutoDataBind="true">
+                                        ID="uxAddAppRequestedStore" OnReadData="deInspectDateGrid" AutoDataBind="true">
                                         <Model>
                                             <ext:Model ID="Model3" runat="server">
                                                 <Fields>
@@ -77,7 +78,7 @@
                                     </ext:Store>
                                 </Store>
                             </ext:ComboBox>
-                            <ext:DateField ID="uxStartDate" runat="server" AnchorHorizontal="25%" FieldLabel="Start Date" LabelAlign="Right" Editable="false" TabIndex="2" EmptyText="ALL" />
+                             <ext:DateField ID="uxStartDate" runat="server" AnchorHorizontal="25%" FieldLabel="Start Date" LabelAlign="Right" Editable="false" TabIndex="2" EmptyText="ALL" />
                             <ext:DateField ID="uxEndDate" runat="server" AnchorHorizontal="25%" FieldLabel="End Date" LabelAlign="Right"  Editable="false" TabIndex="2" EmptyText="ALL" />
                             <ext:ComboBox ID="uxAddServiceUnit"
                                 runat="server" FieldLabel="Service Unit"
@@ -85,7 +86,7 @@
                                 AnchorHorizontal="25%"
                                 DisplayField="service_unit"
                                 ValueField="service_unit"
-                                QueryMode="Local" TypeAhead="true" TabIndex="3" AllowBlank="false" ForceSelection="true" EmptyText="ALL">
+                                QueryMode="Local" TypeAhead="true" TabIndex="3" AllowBlank="false" ForceSelection="true">
                                 <Store>
                                     <ext:Store runat="server"
                                         ID="uxAddServiceUnitStore">
@@ -99,25 +100,25 @@
                                         </Model>
                                     </ext:Store>
                                 </Store>
-                            <DirectEvents>
-                                <Select OnEvent="deLoadSubDiv">
-                                    <ExtraParams>
-                                        <ext:Parameter Name="Type" Value="Add" />
-                                    </ExtraParams>
-                                </Select>
-                            </DirectEvents>
-                            <Listeners>
-                                <Select Handler="#{uxAddSubDivStore}.load()" />
-                            </Listeners>
+                                  <DirectEvents>
+                                                    <Select OnEvent="deLoadSubDiv">
+                                                        <ExtraParams>
+                                                            <ext:Parameter Name="Type" Value="Add" />
+                                                        </ExtraParams>
+                                                    </Select>
+                                                </DirectEvents>
+                                                <Listeners>
+                                                    <Select Handler="#{uxAddSubDivStore}.load()" />
+                                                </Listeners>
                             </ext:ComboBox>
                             <ext:ComboBox ID="uxAddSubDiv"
                                 runat="server"
                                 FieldLabel="Sub-Division"
-                                LabelAlign="Right"                                
+                                LabelAlign="Right"
                                 AnchorHorizontal="25%"
                                 DisplayField="sub_division"
                                 ValueField="sub_division"
-                                TypeAhead="true" TabIndex="5" AllowBlank="false" ForceSelection="true" EmptyText="ALL">
+                                TypeAhead="true" TabIndex="5" AllowBlank="false" ForceSelection="true">
                                 <Store>
                                     <ext:Store runat="server"
                                         ID="uxAddSubDivStore">
@@ -143,7 +144,7 @@
                                 QueryMode="Local"
                                 TypeAhead="true"
                                 AllowBlank="false"
-                                ForceSelection="true" TabIndex="4" EmptyText="ALL">
+                                ForceSelection="true" TabIndex="4">
                                 <Store>
                                     <ext:Store ID="uxAddStateList" runat="server" AutoDataBind="true">
                                         <Model>
@@ -167,22 +168,22 @@
                 <BottomBar>
                     <ext:Toolbar ID="Toolbar1" runat="server">
                         <Items>
-                             <ext:Button runat="server"
-                            ID="Button4"
-                            Text="Run"
-                            Icon="PlayGreen">
-                            <Listeners>
+                            <ext:Button runat="server"
+                                ID="Button4"
+                                Text="Run"
+                                Icon="PlayGreen">
+                             <Listeners>
                                 <Click Handler="#{uxAppDateStore}.load()" />
                             </Listeners>
-                        </ext:Button>
-                        <ext:Button runat="server"
-                            ID="Button3"
-                            Text="Cancel"
-                            Icon="StopRed">
-                             <DirectEvents>
-                        <Click OnEvent="deClearFilters" />
-                    </DirectEvents>
-                        </ext:Button>
+                            </ext:Button>
+                            <ext:Button runat="server"
+                                ID="Button3"
+                                Text="Cancel"
+                                Icon="StopRed">
+                            <DirectEvents>
+                            <Click OnEvent="deClearFilters" />
+                            </DirectEvents>
+                            </ext:Button>
                         </Items>
                     </ext:Toolbar>
                 </BottomBar>
@@ -191,15 +192,15 @@
             <ext:GridPanel
                 ID="GridPanel1"
                 runat="server"
-                Title="Application Date Report"
+                Title="Inspection Date Report"
                 Icon="Report"
                 Frame="false"
                 Resizable="false"
                 Collapsible="false">
                 <Store>
-                    <ext:Store ID="uxAppDateStore"
+                    <ext:Store ID="uxInspectDateStore"
                         runat="server"
-                        GroupField="SUB_DIVISION" AutoDataBind="true" OnReadData="deAppDateGrid" AutoLoad="false">
+                        GroupField="SUB_DIVISION" OnReadData="deInspectDateGrid" AutoLoad="false">
                         <Model>
                             <ext:Model ID="Model1" runat="server">
                                 <Fields>
@@ -225,8 +226,7 @@
 
                         <Sorters>
                             <ext:DataSorter Property="SUB_DIVISION" />
-
-                        </Sorters>
+                      </Sorters>
 
                     </ext:Store>
                 </Store>
@@ -238,7 +238,7 @@
                         <ext:Column ID="Column2" runat="server" Text="State" Flex="1" DataIndex="STATE" />
                         <ext:Column ID="Column1" runat="server" Text="MP" Flex="1" DataIndex="MILE_POST" />
                         <ext:Column ID="Column3" runat="server" Text="DOT" Flex="1" DataIndex="DOT" />
-                        <ext:DateColumn runat="server" Text="Date" DataIndex="APPLICATION_DATE" Flex="1" Format="MM/dd/yyyy" />
+                        <ext:DateColumn ID="DateColumn1" runat="server" Text="Date" DataIndex="APPLICATION_DATE" Flex="1" Format="MM/dd/yyyy" />
                         <ext:Column ID="Column4" runat="server" DataIndex="TRUCK_NUMBER" Text="Truck #" Flex="1" />
                         <%--<ext:Column ID="Column8" runat="server" DataIndex="REMARKS" Text="Remarks" Flex="3" />--%>
                     </Columns>
@@ -259,7 +259,7 @@
                 <TopBar>
                     <ext:Toolbar ID="Toolbar2" runat="server">
                         <Items>
-                           
+                          
                             <ext:Button ID="Button2"
                                 runat="server"
                                 Text="Print"
@@ -297,8 +297,8 @@
                 <BottomBar>
                     <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
                 </BottomBar>
-            </ext:GridPanel>
-        </div>
+                </ext:GridPanel>
+    </div>
     </form>
 </body>
 </html>

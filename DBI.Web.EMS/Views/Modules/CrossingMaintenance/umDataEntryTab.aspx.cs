@@ -42,7 +42,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                 if (validateComponentSecurity("SYS.CrossingMaintenance.DataEntryView"))
                 {
-                    long RailroadId = long.Parse(Session["rrType"].ToString());
+                    long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue"));
 
                     List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
                     data = (from d in _context.CROSSINGS
@@ -168,21 +168,21 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 //check for if application requested has been duplicated in the same fiscal year.
                 //CROSSING_APPLICATION appdatedata;
-                DateTime appDate = Date;
-                DateTime Start = new DateTime(2014, 11, 1); //this pulls in november 1st of year for fiscal yr
-                DateTime End = new DateTime(2015, 10, 31); //this pulls in oct 31st of next year for fiscal yr
-                if (appDate >= Start && appDate <= End)
-                {
-                    using (Entities _context = new Entities())
-                    {
-                        data = (from a in _context.CROSSING_APPLICATION
-                                where a.APPLICATION_REQUESTED == AppRequested && AppRequested.Contains(a.APPLICATION_REQUESTED)
-                                select a).Single();
-                    }
-                X.Msg.Alert("test",  "Application already contains this number for this fiscal year").Show();
-                }
-                else
-                {
+                //DateTime appDate = Date;
+                //DateTime Start = new DateTime(2014, 11, 1); //this pulls in november 1st of year for fiscal yr
+                //DateTime End = new DateTime(2015, 10, 31); //this pulls in oct 31st of next year for fiscal yr
+                //if (appDate >= Start && appDate <= End)
+                //{
+                //    using (Entities _context = new Entities())
+                //    {
+                //        data = (from a in _context.CROSSING_APPLICATION
+                //                where a.APPLICATION_REQUESTED == AppRequested && AppRequested.Contains(a.APPLICATION_REQUESTED)
+                //                select a).Single();
+                //    }
+                //X.Msg.Alert("test",  "Application already contains this number for this fiscal year").Show();
+                //}
+                //else
+                //{
 
                 //Add to Db
                 using (Entities _context = new Entities())
@@ -206,7 +206,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                         data.REMARKS = null;
                     }
                     GenericData.Insert<CROSSING_APPLICATION>(data);
-                }
+                //}
 
                 uxAddNewApplicationEntryWindow.Hide();
                 uxApplicationStore.Reload();
@@ -232,7 +232,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             if (e.ExtraParams["Form"] == "Add")
             {
                 //Set value and text for equipment
-                uxAddEquipmentDropDown.SetValue(e.ExtraParams["ProjectId"], e.ExtraParams["EquipmentName"]);
+                uxAddEquipmentDropDown.SetValue(e.ExtraParams["EquipmentName"], e.ExtraParams["EquipmentName"]);
 
                 //Clear existing filters
                 uxAddEquipmentFilter.ClearFilter();

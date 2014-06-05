@@ -72,7 +72,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 List<object> data;
                 if (validateComponentSecurity("SYS.CrossingMaintenance.DataEntryView"))
                 {
-                    long RailroadId = long.Parse(Session["rrType"].ToString());
+                    long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue"));
                     List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
                     data = (from d in _context.CROSSINGS
                             join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
@@ -291,7 +291,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             if (e.ExtraParams["Form"] == "Add")
             {
                 //Set value and text for equipment
-                uxAddEquipmentDropDown.SetValue(e.ExtraParams["ProjectId"], e.ExtraParams["EquipmentName"]);
+                uxAddEquipmentDropDown.SetValue(e.ExtraParams["EquipmentName"], e.ExtraParams["EquipmentName"]);
 
                 //Clear existing filters
                 uxAddEquipmentFilter.ClearFilter();

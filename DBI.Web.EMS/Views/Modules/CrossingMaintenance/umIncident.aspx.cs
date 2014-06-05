@@ -29,7 +29,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             using (Entities _context = new Entities())
             {
                 List<object> data;
-                long RailroadId = long.Parse(Session["rrType"].ToString());
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue"));
                 data = (from d in _context.CROSSINGS
                         where d.RAILROAD_ID == RailroadId
                         select new { d.CONTACT_ID, d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.SUB_DIVISION, d.CROSSING_CONTACTS.CONTACT_NAME, d.PROJECT_ID }).ToList<object>();

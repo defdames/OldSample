@@ -21,15 +21,15 @@ using DBI.Data.DataFactory;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
-    public partial class umAppDate : BasePage
+    public partial class umMissingROW : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!X.IsAjaxRequest)
             {
-                uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
-                uxAddStateList.Data = StaticLists.StateList;
 
+                uxAddStateList.Data = StaticLists.StateList;
+               
                 if (SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue") != string.Empty)
                 {
                     deGetRRType("Add");
@@ -37,80 +37,65 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             }
         }
-        protected void deAppDateGrid(object sender, StoreReadDataEventArgs e)
+        protected void deMissingROWGrid(object sender, StoreReadDataEventArgs e)
         {
-            
-            DateTime StartDate = uxStartDate.SelectedDate;
-            DateTime EndDate = uxEndDate.SelectedDate;
-            string Application = uxAddAppReqeusted.SelectedItem.Value;
             string ServiceUnit = uxAddServiceUnit.SelectedItem.Value;
             string SubDiv = uxAddSubDiv.SelectedItem.Value;
             string State = uxAddStateComboBox.SelectedItem.Value;
             using (Entities _context = new Entities())
             {
-               
-
-                //Get List of all new crossings
+                
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue"));
-               var allData = (from d in _context.CROSSING_APPLICATION
-                        join c in _context.CROSSINGS on d.CROSSING_ID equals c.CROSSING_ID
-                        where c.RAILROAD_ID == RailroadId && d.APPLICATION_REQUESTED == Application
+              
+                var allData = (from d in _context.CROSSINGS
+                        where  d.RAILROAD_ID == RailroadId && d.ROWNE == 0 && d.ROWNW == 0 && d.ROWSE == 0 && d.ROWSW == 0
                         select new
                         {
                             d.CROSSING_ID,
-                            c.CROSSING_NUMBER,
-                            c.SUB_DIVISION,
-                            c.SERVICE_UNIT,
-                            c.STATE,
-                            c.MILE_POST,
-                            c.DOT,
-                            d.REMARKS,
-                            d.APPLICATION_DATE,
-                            d.TRUCK_NUMBER
+                            d.CROSSING_NUMBER,
+                            d.SUB_DIVISION,
+                            d.STATE,
+                            d.COUNTY,
+                            d.CITY,
+                            d.MILE_POST,
+                            d.DOT,
+                            d.SERVICE_UNIT,
+                            d.ROWNE,
+                            d.ROWNW,
+                            d.ROWSE,
+                            d.ROWSW,
+                            d.STREET,
+                            d.SUB_CONTRACTED,
+                            d.LONGITUDE,
+                            d.LATITUDE,
+                            d.SPECIAL_INSTRUCTIONS,
+                         
                         });
-              
-               
-               if (StartDate != DateTime.MinValue)
-               {
-                   allData = allData.Where(x => x.APPLICATION_DATE >= StartDate);
-               }
+                if (ServiceUnit != null)
+                {
+                    allData = allData.Where(x => x.SERVICE_UNIT == ServiceUnit);
+                }
+                if (SubDiv != null)
+                {
+                    allData = allData.Where(x => x.SUB_DIVISION == SubDiv);
+                }
+                if (State != null)
+                {
+                    allData = allData.Where(x => x.STATE == State);
+                }
 
-               if (EndDate != DateTime.MinValue)
-               {
-                   allData = allData.Where(x => x.APPLICATION_DATE <= EndDate);
-               }
-
-               if (StartDate != DateTime.MinValue && EndDate != DateTime.MinValue)
-               {
-                   allData = allData.Where(x => x.APPLICATION_DATE >= StartDate && x.APPLICATION_DATE <= EndDate);
-               }
-
-               if (ServiceUnit != null)
-               {
-                   allData = allData.Where(x => x.SERVICE_UNIT == ServiceUnit);
-               }
-
-               if (SubDiv != null)
-               {
-                   allData = allData.Where(x => x.SUB_DIVISION == SubDiv);
-               }
-
-               if (State != null)
-               {
-                   allData = allData.Where(x => x.STATE == State);
-               }
-
-               List<object> _data = allData.ToList<object>();
-                
+                List<object> _data = allData.ToList<object>();
 
                 int count;
-                uxAppDateStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
+                uxMissingROWStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
                 e.Total = count;
+             
             }
+
         }
         protected void deClearFilters(object sender, DirectEventArgs e)
         {
-            uxFilterForm.Reset();
+            FilterForm.Reset();
         }
         protected void deGetRRType(string rrLoad)
         {

@@ -50,13 +50,13 @@
                     <ext:FieldSet ID="FieldSet1" runat="server" Title="Filter">
                         <Items>
 
-                            <ext:DateField ID="uxAddEntryDate" runat="server" AnchorHorizontal="20%" FieldLabel="Start Date" LabelAlign="Right" AllowBlank="false" Editable="false" TabIndex="2" />
-                            <ext:DateField ID="DateField1" runat="server" AnchorHorizontal="20%" FieldLabel="End Date" LabelAlign="Right" AllowBlank="false" Editable="false" TabIndex="2" />
+                            <ext:DateField ID="uxAddEntryDate" runat="server" AnchorHorizontal="25%" FieldLabel="Start Date" LabelAlign="Right" AllowBlank="false" Editable="false" TabIndex="2" />
+                            <ext:DateField ID="DateField1" runat="server" AnchorHorizontal="25%" FieldLabel="End Date" LabelAlign="Right" AllowBlank="false" Editable="false" TabIndex="2" />
 
                             <ext:ComboBox ID="uxAddServiceUnitCI"
                                 runat="server" FieldLabel="Service Unit"
                                 LabelAlign="Right"
-                                AnchorHorizontal="20%"
+                                AnchorHorizontal="25%"
                                 DisplayField="service_unit"
                                 ValueField="service_unit"
                                 QueryMode="Local" TypeAhead="true" TabIndex="3" AllowBlank="false" ForceSelection="true">
@@ -88,7 +88,7 @@
                                 runat="server"
                                 FieldLabel="Sub-Division"
                                 LabelAlign="Right"
-                                AnchorHorizontal="20%"
+                                AnchorHorizontal="25%"
                                 DisplayField="sub_division"
                                 ValueField="sub_division"
                                 TypeAhead="true" TabIndex="5" AllowBlank="false" ForceSelection="true">
@@ -111,7 +111,7 @@
                                 ID="uxAddStateComboBox"
                                 FieldLabel="State"
                                 LabelAlign="Right"
-                                AnchorHorizontal="20%"
+                                AnchorHorizontal="25%"
                                 DisplayField="name"
                                 ValueField="name"
                                 QueryMode="Local"
@@ -150,27 +150,13 @@
                                 ID="Button4"
                                 Text="Run"
                                 Icon="PlayGreen">
-                                <%-- <DirectEvents>
-                        <Click OnEvent="deExportToPDF" IsUpload="true">
-                            <ExtraParams>
-                                <ext:Parameter Name="CrossingId" Value="#{GridPanel1}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                               <ext:Parameter Name="selectedCrossings" Value="Ext.encode(#{GridPanel1}.getRowsValues())" Mode="Raw" />
-                            </ExtraParams>
-                        </Click>
-                    </DirectEvents>--%>
+                       
                             </ext:Button>
                             <ext:Button runat="server"
                                 ID="Button3"
                                 Text="Cancel"
                                 Icon="StopRed">
-                                <%-- <DirectEvents>
-                        <Click OnEvent="deExportToPDF" IsUpload="true">
-                            <ExtraParams>
-                                <ext:Parameter Name="CrossingId" Value="#{GridPanel1}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                               <ext:Parameter Name="selectedCrossings" Value="Ext.encode(#{GridPanel1}.getRowsValues())" Mode="Raw" />
-                            </ExtraParams>
-                        </Click>
-                    </DirectEvents>--%>
+                     
                             </ext:Button>
                         </Items>
                     </ext:Toolbar>
@@ -181,7 +167,7 @@
         <ext:GridPanel
             ID="uxIncidentGrid"
             runat="server"
-            Title="Application Date Report"
+            Title="Incident Report"
             Icon="Report"
             Frame="false"
             Resizable="false"
@@ -258,25 +244,7 @@
             <TopBar>
                 <ext:Toolbar ID="Toolbar2" runat="server">
                     <Items>
-                        <ext:Button ID="Button1" runat="server" Text="Sub-Division Filter" Icon="Find">
-                            <Menu>
-                                <ext:Menu ID="Menu1" runat="server">
-                                    <Items>
-                                        <ext:MenuItem ID="MenuItem1" runat="server" Text="Show Filter">
-                                            <Listeners>
-                                                <Click Handler="#{uxSubDiv}.show();" />
-                                            </Listeners>
-                                        </ext:MenuItem>
-                                        <ext:MenuItem ID="MenuItem2" runat="server" Text="Hide Filter">
-                                            <Listeners>
-                                                <Click Handler="#{uxSubDiv}.hide();" />
-                                            </Listeners>
-                                        </ext:MenuItem>
-                                    </Items>
-                                </ext:Menu>
-                            </Menu>
-
-                        </ext:Button>
+                       
                         <ext:Button ID="Button2"
                     runat="server"
                     Text="Print"

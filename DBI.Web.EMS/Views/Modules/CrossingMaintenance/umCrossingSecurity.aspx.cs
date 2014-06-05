@@ -25,7 +25,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 if (validateComponentSecurity("SYS.CrossingMaintenance.InformationView"))
                 {
-                    long RailroadId = long.Parse(Session["rrType"].ToString());
+                    long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue"));
                     List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
                     using (Entities _context = new Entities())
                     {                        
@@ -57,7 +57,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
      
         protected void deSecurityCrossingGridData(object sender, DirectEventArgs e)
         {
-                long RailroadId = long.Parse(Session["rrType"].ToString());
+                //long RailroadId = long.Parse(Session["rrType"].ToString());
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue"));
               long ProjectId = long.Parse(e.ExtraParams["ProjectId"]);
               List<object> data;
             using (Entities _context = new Entities())
@@ -81,7 +82,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             
             using (Entities _context = new Entities())
             {
-                long RailroadId = long.Parse(Session["rrType"].ToString());
+                //long RailroadId = long.Parse(Session["rrType"].ToString());
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue"));
                 long ProjectId = long.Parse(e.ExtraParams["ProjectId"]);
                 var data = (from r in _context.CROSSING_RELATIONSHIP
                             join d in _context.CROSSINGS on r.CROSSING_ID equals d.CROSSING_ID

@@ -17,14 +17,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             LoadSelectRailroad();
             if (!X.IsAjaxRequest)
             {
-                long _user_id = SYS_USER_INFORMATION.LoggedInUser().USER_ID;
-                if (SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue", _user_id) != null)
+                if (SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue") != string.Empty)
                 {
                     using (Entities _context = new Entities())
                     {
                         //long RailroadId = long.Parse(Session["rrType"].ToString());
                         
-                        long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue", _user_id));
+                        long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue"));
                         var RRdata = (from r in _context.CROSSING_RAILROAD
                                       where r.RAILROAD_ID == RailroadId
                                       select new
@@ -46,7 +45,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     }
 
                 }
-                else if (Session["rrType"] == null)
+                else if (SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue") == string.Empty)
                 {
                     uxChangeRailroadWindow.Show();
                 }
@@ -59,8 +58,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 using (Entities _context = new Entities())
                 {
                     //long RailroadId = long.Parse(Session["rrType"].ToString());
-                    long _user_id = SYS_USER_INFORMATION.LoggedInUser().USER_ID;
-                    long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue", _user_id));
+                    long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue"));
                     var RRdata = (from r in _context.CROSSING_RAILROAD
                                   where r.RAILROAD_ID == RailroadId
                                   select new
@@ -116,13 +114,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 RowSelectionModel rrSelection = RowSelectionModel1;
 
 
-                //Session.Add("rrType", rrSelection.SelectedRecordID.ToString());
-                long _user_id = SYS_USER_INFORMATION.LoggedInUser().USER_ID;               
-                SYS_USER_PROFILE_OPTIONS.setProfileOption("UserCrossingSelectedValue", _user_id, uxRailRoadCI.SelectedItem.Value);
+                //Session.Add("rrType", rrSelection.SelectedRecordID.ToString());              
+                SYS_USER_PROFILE_OPTIONS.setProfileOption("UserCrossingSelectedValue", rrSelection.SelectedRecordID.ToString());
                 
                  using (Entities _context = new Entities())
                     {
-                        long RailroadId = long.Parse(Session["rrType"].ToString());
+                        long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue"));
                         var RRdata = (from r in _context.CROSSING_RAILROAD
                                       where r.RAILROAD_ID == RailroadId
                                       select new
@@ -157,10 +154,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         protected void deLoadUnit(object sender, DirectEventArgs e)
         {
 
-            long _user_id = SYS_USER_INFORMATION.LoggedInUser().USER_ID;
-
             //Session.Add("rrType", uxRailRoadCI.SelectedItem.Value);
-            SYS_USER_PROFILE_OPTIONS.setProfileOption("UserCrossingSelectedValue", _user_id, uxRailRoadCI.SelectedItem.Value);
+            SYS_USER_PROFILE_OPTIONS.setProfileOption("UserCrossingSelectedValue", uxRailRoadCI.SelectedItem.Value);
             
             uxCrossingInfoTab.Reload();
             uxContactsTab.Reload();

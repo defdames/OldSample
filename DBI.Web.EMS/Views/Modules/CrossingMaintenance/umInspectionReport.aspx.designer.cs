@@ -10,7 +10,7 @@
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
     
     
-    public partial class umAppDate {
+    public partial class umInspectionReport {
         
         /// <summary>
         /// form1 control.
@@ -220,13 +220,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.GridPanel GridPanel1;
         
         /// <summary>
-        /// uxAppDateStore control.
+        /// uxInspectDateStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxAppDateStore;
+        protected global::Ext.Net.Store uxInspectDateStore;
         
         /// <summary>
         /// Model1 control.
@@ -281,6 +281,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Column Column3;
+        
+        /// <summary>
+        /// DateColumn1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DateColumn DateColumn1;
         
         /// <summary>
         /// Column4 control.

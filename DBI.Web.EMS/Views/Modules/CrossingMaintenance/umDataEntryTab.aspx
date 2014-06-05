@@ -157,7 +157,7 @@
 
                 <ColumnModel>
                     <Columns>
-                          <ext:Column ID="Column1" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing Number" Flex="1" />
+                         <ext:Column ID="Column1" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing Number" Flex="1" />
                         <ext:Column ID="Column2" runat="server" DataIndex="APPLICATION_REQUESTED" Text="Appplication #" Flex="1" />
                         <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="APPLICATION_DATE" Text="Date" Flex="1" Format="MM/dd/yyyy" />
                         <ext:Column ID="Column3" runat="server" DataIndex="TRUCK_NUMBER" Text="Truck #" Flex="1" />                     
