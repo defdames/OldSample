@@ -5,22 +5,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
 	<title></title>
-   <script>
-	   var setIcon = function (value, metadata, record)
-	   {
-			var tpl = "<img src='{0}' />";
-			if (value == "Modified")
-
-				 {
-						return "<img src='" + App.uxYellowWarning.getValue() + "' />";
-				 }
-			else
-
-				{
-						return "";
-				}
-	  };
-  </script>
+	
+    <script type="text/javascript">
+        var getTime = function()
+        {   // For todays date;
+            Date.prototype.today = function () {
+                //return ((this.getDate() < 10)?"0":"") + this.getDate() +"/"+(((this.getMonth()+1) < 10)?"0":"") + (this.getMonth()+1) +"/"+ this.getFullYear();
+                return (((this.getMonth() + 1) < 10) ? "0" : "") + (this.getMonth() + 1) + "/" + ((this.getDate() < 10) ? "0" : "") + this.getDate() + "/" + this.getFullYear();
+            }
+            // For the time now
+            Date.prototype.timeNow = function () {
+                //return ((this.getHours() < 10) ? "0" : "") + this.getHours() + ":" + ((this.getMinutes() < 10) ? "0" : "") + this.getMinutes() + ":" + ((this.getSeconds() < 10) ? "0" : "") + this.getSeconds();
+                return ((this.getHours() > 12) ? (this.getHours() - 12)  : this.getHours()) + ":" + ((this.getMinutes() < 10) ? "0" : "") + this.getMinutes() + " " + ((this.getHours() > 12) ? ('pm') : 'am');
+            }
+                var datetime = new Date().today() + " " + new Date().timeNow();
+               
+                document.getElementById("uxDateTime").value = datetime
+       }
+    </script>
 </head>
 <body>
 	<form id="form1" runat="server">
@@ -43,13 +45,19 @@
 								<ext:TextField Id="uxTime_InTextBox" runat="server" FieldLabel="Time In" readonly="true"/>
 								<ext:TextField ID="uxTime_OutTextBox" runat="server" FieldLabel="Time Out" readonly="true"/>
 								<ext:TextField ID="uxUser_NameTextBox" runat="server" FieldLabel="Name"   readonly="true" />
+                                <ext:Hidden runat="server" ID="uxDateTime" />
+								<ext:TextField ID="uxTest" runat="server" FieldLabel="Time" ReadOnly="true" />
 							</Items>
 						
 						 <Buttons>
 								<ext:Button runat="server" ID="uxTimeButton" Text="Clock In" >
-									<DirectEvents>
-										<Click OnEvent="deSetTime"/>
+                                    <DirectEvents>
+                                        <Click OnEvent="deSetTime"/>
 									</DirectEvents>
+                                    <Listeners>
+                                        <Click Fn="getTime" />
+                                    </Listeners>
+									
 								</ext:Button>
 							</Buttons>
 
@@ -97,7 +105,6 @@
 										ID="uxWarningColumn" 
 										Text="Modified" 
 										DataIndex="WARNING">
-								<Renderer Fn="setIcon" />
 							</ext:Column>
 						</Columns>
 					</ColumnModel>

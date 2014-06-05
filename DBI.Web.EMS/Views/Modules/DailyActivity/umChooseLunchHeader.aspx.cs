@@ -28,9 +28,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 DateTime HeaderDate = (from d in _context.DAILY_ACTIVITY_HEADER
                                        where d.HEADER_ID == HeaderId
                                        select (DateTime)d.DA_DATE).Single();
+
+                long PersonId = _context.DAILY_ACTIVITY_EMPLOYEE.Where(x => x.EMPLOYEE_ID == EmployeeId).Select(x => x.PERSON_ID).Single();
                 List<DAILY_ACTIVITY_HEADER> HeaderList = (from em in _context.DAILY_ACTIVITY_EMPLOYEE
                                                           join d in _context.DAILY_ACTIVITY_HEADER on em.HEADER_ID equals d.HEADER_ID
-                                                          where em.EMPLOYEE_ID == EmployeeId && EntityFunctions.TruncateTime(d.DA_DATE) == EntityFunctions.TruncateTime(HeaderDate)
+                                                          where em.PERSON_ID == PersonId && EntityFunctions.TruncateTime(d.DA_DATE) == EntityFunctions.TruncateTime(HeaderDate)
                                                           select d).ToList();
                 List<LunchInfo> LunchList = new List<LunchInfo>();
                 foreach (DAILY_ACTIVITY_HEADER Header in HeaderList)
@@ -38,10 +40,23 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     string ProjectName = (from p in _context.PROJECTS_V
                                           where p.PROJECT_ID == Header.PROJECT_ID
                                           select p.LONG_NAME).Single();
+                    DAILY_ACTIVITY_PRODUCTION ProductionEntry = Header.DAILY_ACTIVITY_PRODUCTION.SingleOrDefault();
+                    PA_TASKS_V TaskInfo;
+                    if (ProductionEntry != null)
+                    {
+                        TaskInfo = _context.PA_TASKS_V.Where(x => x.TASK_ID == ProductionEntry.TASK_ID).Single();
+                    }
+                    else
+                    {
+                        TaskInfo = _context.PA_TASKS_V.Where(x => (x.PROJECT_ID == Header.PROJECT_ID) && (x.TASK_NUMBER == "9999")).Single();
+                    }
                     LunchList.Add(new LunchInfo
                     {
                         HeaderId = Header.HEADER_ID,
-                        ProjectTask = string.Format("{0} (DRS Id: {1})", ProjectName, Header.HEADER_ID.ToString())
+                        ProjectName = ProjectName,
+                        TaskName = TaskInfo.DESCRIPTION,
+                        TaskNumber = TaskInfo.TASK_NUMBER,
+                        TaskId = TaskInfo.TASK_ID.ToString()
                     });
                 
                 }
@@ -51,15 +66,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
-        protected void deReadLunchTasks(object sender, StoreReadDataEventArgs e)
+        protected void deStoreValues(object sender, DirectEventArgs e)
         {
-            using (Entities _context = new Entities())
+            List<LunchInfo> SelectedRows = JSON.Deserialize<List<LunchInfo>>(e.ExtraParams["selectedInfo"]);
+            foreach (LunchInfo SelectedRow in SelectedRows)
             {
-                long HeaderId = long.Parse(e.Parameters["HeaderId"]);
-                long ProjectId = _context.DAILY_ACTIVITY_HEADER.Where(x => x.HEADER_ID == HeaderId).Select(x => (long)x.PROJECT_ID).Single();
-
-                List<PA_TASKS_V> TaskList = _context.PA_TASKS_V.Where(x => x.PROJECT_ID == ProjectId).ToList();
-                uxLunchTaskStore.DataSource = TaskList;
+                uxLunchDRS.SetValue(SelectedRow.HeaderId.ToString(), SelectedRow.ProjectName);
+                uxHiddenTask.Value = SelectedRow.TaskId;
             }
         }
 
@@ -67,7 +80,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             long EmployeeId = long.Parse(Request.QueryString["EmployeeId"]);
-            long ChosenLunch = long.Parse(uxLunchHeader.Value.ToString());
+            long ChosenLunch = long.Parse(uxLunchDRS.Value.ToString());
             DAILY_ACTIVITY_EMPLOYEE ExistingLunch;
             DAILY_ACTIVITY_EMPLOYEE EmployeeToUpdate;
 
@@ -90,11 +103,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 //Create New Lunch Record
                 EmployeeToUpdate = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                                    where d.HEADER_ID == ChosenLunch && d.EMPLOYEE_ID == EmployeeId
+                                    where d.HEADER_ID == ChosenLunch && d.PERSON_ID == PersonId
                                     select d).Single();
                 EmployeeToUpdate.LUNCH = "Y";
                 EmployeeToUpdate.LUNCH_LENGTH = GetLunchLength(PersonId, HeaderDate);
-                EmployeeToUpdate.LUNCH_TASK_ID = long.Parse(uxLunchTask.Value.ToString());
+                EmployeeToUpdate.LUNCH_TASK_ID = long.Parse(uxHiddenTask.Value.ToString());
             }
 
             if (ExistingLunch != null)
@@ -141,5 +154,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 public class LunchInfo
 {
     public long HeaderId { get; set; }
-    public string ProjectTask { get; set; }
+    public string ProjectName { get; set; }
+    public string TaskNumber { get; set; }
+    public string TaskName { get; set; }
+    public string TaskId { get; set; }
 }

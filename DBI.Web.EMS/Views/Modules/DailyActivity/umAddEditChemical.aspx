@@ -28,7 +28,7 @@
 		<ext:FormPanel runat="server"
 			ID="uxAddChemicalForm"
 			Layout="FormLayout"
-			Hidden="true" Width="600">
+			Hidden="true" Width="600" DefaultButton="uxAddChemicalSubmit">
 			<Items>
 				<ext:TextField runat="server"
 					ID="uxAddChemicalTargetAre"
@@ -106,7 +106,7 @@
 				<ext:Button runat="server"
 					ID="uxAddChemicalSubmit"
 					Icon="Add"
-					Text="Submit"
+					Text="Save"
 					Disabled="true">
 					<DirectEvents>
 						<Click OnEvent="deAddChemical">
@@ -130,7 +130,7 @@
 		</ext:FormPanel>
 		<ext:FormPanel runat="server"
 			ID="uxEditChemicalForm"
-			Layout="FormLayout" Hidden="true" Width="600">
+			Layout="FormLayout" Hidden="true" Width="600" DefaultButton="uxEditChemicalSubmit">
 			<Items>
 				<ext:TextField runat="server"
 					ID="uxEditChemicalTargetAre"
@@ -211,7 +211,7 @@
 				<ext:Button runat="server"
 					ID="uxEditChemicalSubmit"
 					Icon="Add"
-					Text="Submit"
+					Text="Save"
 					Disabled="true">
 					<DirectEvents>
 						<Click OnEvent="deEditChemical">
