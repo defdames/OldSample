@@ -15,7 +15,7 @@ namespace DBI.Data.Oracle
         /// <param name="buid"></param>
         /// <param name="fiscalYear"></param>
         /// <returns></returns>
-        public static decimal LaborBurdenByLegalEntityAndFiscalYear(string buid, string fiscalYear)
+        public static decimal LaborBurden(string buid, string fiscalYear)
         {
             try
             {

@@ -52,7 +52,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 //Load LEs
                 if (e.NodeID == "0")
                 {
-                    var data = HR.HierarchyListByLegalEntity().Select(a => new { a.ORGANIZATION_ID, a.ORGANIZATION_NAME }).Distinct().ToList();
+                    var data = HR.LegalEntityHierarchies().Select(a => new { a.ORGANIZATION_ID, a.ORGANIZATION_NAME }).Distinct().ToList();
 
                     //Build the treepanel
                     foreach (var view in data)
@@ -69,7 +69,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     long nodeID = long.Parse(e.NodeID);
 
                     //Load Hierarchies for LE
-                    var data = HR.HierarchyListByLegalEntity().Where(a => a.ORGANIZATION_ID == nodeID).ToList();
+                    var data = HR.LegalEntityHierarchies().Where(a => a.ORGANIZATION_ID == nodeID).ToList();
 
                     //Build the treepanel
                     foreach (var view in data)
@@ -132,7 +132,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                 if (_organizationID > 0)
                 {
-                    var data = OVERHEAD_GL_ACCOUNT.OverHeadGlAccountsByLegalEntity(_organizationID);
+                    var data = OVERHEAD_GL_ACCOUNT.AccountsByLegalEntity(_organizationID);
                     int count;
                     uxGlAccountSecurityStore.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_GL_ACCOUNT.GL_ACCOUNTS_V2>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                     e.Total = count;
@@ -219,10 +219,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 foreach (SelectedRow _row in _model.SelectedRows)
                 {
                     long _recordID = long.Parse(_row.RecordID);
-                    OVERHEAD_GL_ACCOUNT.DeleteOverHeadAccountByOverheadGlId(_recordID);
+                    OVERHEAD_GL_ACCOUNT.Delete(_recordID);
                 }
 
-                int recordCount = OVERHEAD_GL_ACCOUNT.CountOverheadGLAccountsAssignedByOrganizationId(_organizationID);
+                int recordCount = OVERHEAD_GL_ACCOUNT.GetCount(_organizationID);
 
                 if (recordCount == 0)
                 {

@@ -29,6 +29,9 @@
                             <Proxy>
                                 <ext:PageProxy></ext:PageProxy>
                             </Proxy>
+                             <DirectEvents>
+                                <BeforeLoad><EventMask ShowMask="true"></EventMask></BeforeLoad>
+                            </DirectEvents>
                         </ext:TreeStore>
                     </Store>
                     <Root>

@@ -57,7 +57,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             long _businessUnitId = long.Parse(businessUnitId);
 
-            List<OVERHEAD_BUDGET_TYPE> data = OVERHEAD_BUDGET_TYPE.BudgetTypesByLegalEntity(_businessUnitId);
+            List<OVERHEAD_BUDGET_TYPE> data = OVERHEAD_BUDGET_TYPE.BudgetTypes(_businessUnitId);
 
             if (!string.IsNullOrEmpty(filter) && filter != "*")
             {

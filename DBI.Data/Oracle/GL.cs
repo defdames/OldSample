@@ -10,20 +10,20 @@ namespace DBI.Data
 
 {
     /// <summary>
-    /// Methods and fuctions over the GL_ACCOUNTS_V Entity Object
+    /// Methods and fuctions over the GL_ACCOUNTS_V entity object
     /// </summary>
     public partial class GL_ACCOUNTS_V
     {
+
         /// <summary>
-        /// Filters gl accounts by segments
+        /// Returns a list of filtered general ledger accounts.
         /// </summary>
         /// <param name="segment1"></param>
         /// <param name="segment2"></param>
         /// <param name="segment3"></param>
         /// <param name="segment4"></param>
-        /// <param name="organizationId"></param>
         /// <returns></returns>
-        public static List<GL_ACCOUNTS_V> Filter(string segment1, string segment2, string segment3, string segment4, long organizationId)
+        public static List<GL_ACCOUNTS_V> AccountsFiltered(string segment1, string segment2, string segment3, string segment4)
         {
             try
             {
@@ -34,6 +34,36 @@ namespace DBI.Data
                     _data = _data.Where(a => a.SEGMENT3 == segment3);
                     _data = _data.Where(a => a.SEGMENT4 == segment4);
 
+                    return _data.ToList();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+       
+
+        /// <summary>
+        /// Returns a list of filtered general ledger accounts that have not been used in the overhead module.
+        /// </summary>
+        /// <param name="segment1"></param>
+        /// <param name="segment2"></param>
+        /// <param name="segment3"></param>
+        /// <param name="segment4"></param>
+        /// <param name="organizationId"></param>
+        /// <returns></returns>
+        public static List<GL_ACCOUNTS_V> AccountsFiltered(string segment1, string segment2, string segment3, string segment4, long organizationId)
+        {
+            try
+            {
+
+                IQueryable<GL_ACCOUNTS_V> _data = AccountsFiltered(segment1, segment2, segment3, segment4).AsQueryable();
+
+                using (Entities _context = new Entities())
+                {
                     _data = (from dups in _data
                              where !_context.OVERHEAD_GL_ACCOUNT.Where(ac => ac.OVERHEAD_ORG_ID == organizationId).Any(c => c.CODE_COMBO_ID == dups.CODE_COMBINATION_ID)
                              select dups);
@@ -52,6 +82,9 @@ namespace DBI.Data
     }
 
 
+    /// <summary>
+    /// Methods and functions over generic GL data that are not tied to entity objects.
+    /// </summary>
     public class GL
     {
         /// <summary>
@@ -66,7 +99,7 @@ namespace DBI.Data
                 {
                     string sql = @"select a.budget_name,a.Description,b.legal_entity_id as LE_ORG_ID, a.status
                              from gl.gl_budgets a
-                             inner join apps.hr_operating_units b on b.set_of_books_id = a.set_of_books_idorder by 1";
+                             inner join apps.hr_operating_units b on b.set_of_books_id = a.set_of_books_id order by 1";
 
                     List<BUDGET_TYPE> _returnList = _context.Database.SqlQuery<BUDGET_TYPE>(sql).ToList();
 
@@ -85,11 +118,12 @@ namespace DBI.Data
         /// </summary>
         /// <param name="legalEntity"></param>
         /// <returns></returns>
-        public static List<BUDGET_TYPE> ActiveBudgetTypes(long legalEntity)
+        public static List<BUDGET_TYPE> BudgetTypes(long legalEntityOrganizationId)
         {
             try
             {
-                List<BUDGET_TYPE> _data = BudgetTypes().Where(x => x.STATUS == "O" && x.LE_ORG_ID == legalEntity).ToList();
+                string legalEntityString = legalEntityOrganizationId.ToString();
+                List<BUDGET_TYPE> _data = BudgetTypes().Where(x => x.STATUS == "O" && x.LE_ORG_ID == legalEntityString).ToList();
                 return _data;
             }
             catch (Exception)
@@ -98,21 +132,27 @@ namespace DBI.Data
             }
         }
 
-        public static List<BUDGET_TYPE> UnUsedBudgetTypesByLegalEntity(long legalEntity)
+        /// <summary>
+        /// Returns a list of unused budget types by a legal entity. If they were used in the overhead system, they will not show in this returned list.
+        /// </summary>
+        /// <param name="legalEntity"></param>
+        /// <returns></returns>
+        public static List<BUDGET_TYPE> BudgetTypesRemaining(long legalEntityOrganizationId)
         {
             try
             {
-                using (Entities _context = new Entities())
-                {
-                    string sql = @"select a.budget_name,a.Description,b.legal_entity_id as LE_ORG_ID
-                             from gl.gl_budgets a
-                             inner join apps.hr_operating_units b on b.set_of_books_id = a.set_of_books_id
-                             where a.status = 'O'
-                             and a.budget_name not in (select distinct budget_name from xxems.overhead_budget_type where LE_ORD_ID = '" + legalEntity + @"') order by 1";
+                //Budget Types that are active by legal entity organization Id
+                IQueryable<BUDGET_TYPE> _data = BudgetTypes(legalEntityOrganizationId).AsQueryable();
 
-                    List<BUDGET_TYPE> _data = _context.Database.SqlQuery<BUDGET_TYPE>(sql).Where(a => a.LE_ORG_ID == legalEntity).ToList();
-                    return _data;
-                }
+                //Budget Types in the overhead budget system that have been entered by this legal entity organization.
+                List<OVERHEAD_BUDGET_TYPE> _budgetTypes = OVERHEAD_BUDGET_TYPE.BudgetTypes(legalEntityOrganizationId);
+
+                _data = (from dups in _data
+                         where !_budgetTypes.Any(x => x.BUDGET_NAME == dups.BUDGET_NAME)
+                         select dups);
+
+                return _data.ToList();
+
             }
             catch (Exception)
             {
@@ -120,43 +160,29 @@ namespace DBI.Data
                 throw;
             }
         }
-        
+
         /// <summary>
-        /// Returns a list of unused budget types that are availible for use, if user adds the overheadBudgetTypeId it also make sure not to return that one that they selected.
+        /// Returns a list of unused budget types by a legal entity. If they were used in the overhead system, they will not show in this returned list. This list will also filter out the same type so it can't be picked again.
         /// </summary>
-        /// <param name="legalEntity"></param>
+        /// <param name="legalEntityOrganizationId"></param>
         /// <param name="overheadBudgetTypeId"></param>
         /// <returns></returns>
-        public static List<BUDGET_TYPE> UnUsedBudgetTypesByLegalEntity(long legalEntity, string overheadBudgetTypeId = null)
+        public static List<BUDGET_TYPE> BudgetTypesRemaining(long legalEntityOrganizationId, long overheadBudgetTypeId)
         {
             try
             {
-                using (Entities _context = new Entities())
-                {
-                    string sql = string.Empty;
+                //Budget Types that are active by legal entity organization Id
+                IQueryable<BUDGET_TYPE> _data = BudgetTypes(legalEntityOrganizationId).AsQueryable();
 
-                    if (!string.IsNullOrEmpty(overheadBudgetTypeId))
-                    {
+                //Budget Types in the overhead budget system that have been entered by this legal entity organization.
+                List<OVERHEAD_BUDGET_TYPE> _budgetTypes = OVERHEAD_BUDGET_TYPE.BudgetTypes(legalEntityOrganizationId);
 
-                        sql = @"select a.budget_name,a.Description,b.legal_entity_id as LE_ORG_ID
-                             from gl.gl_budgets a
-                             inner join apps.hr_operating_units b on b.set_of_books_id = a.set_of_books_id
-                             where a.status = 'O'
-                             and a.budget_name not in (select distinct budget_name from xxems.overhead_budget_type where LE_ORD_ID = '" + legalEntity + @"' and OVERHEAD_BUDGET_TYPE_ID != '" + overheadBudgetTypeId + @"') order by 1";
-                    }
-                    else
-                    {
-                        sql = @"select a.budget_name,a.Description,b.legal_entity_id as LE_ORG_ID
-                             from gl.gl_budgets a
-                             inner join apps.hr_operating_units b on b.set_of_books_id = a.set_of_books_id
-                             where a.status = 'O'
-                             and a.budget_name not in (select distinct budget_name from xxems.overhead_budget_type where LE_ORD_ID = '" + legalEntity + @"') order by 1";
-                    }
+                _data = (from dups in _data
+                         where !_budgetTypes.Any(x => x.BUDGET_NAME == dups.BUDGET_NAME && x.OVERHEAD_BUDGET_TYPE_ID == overheadBudgetTypeId)
+                         select dups);
 
-                    List<BUDGET_TYPE> _data = _context.Database.SqlQuery<BUDGET_TYPE>(sql).Where(a => a.LE_ORG_ID == legalEntity).ToList();
-                    return _data;
+                return _data.ToList();
 
-                }
             }
             catch (Exception)
             {
@@ -164,12 +190,13 @@ namespace DBI.Data
                 throw;
             }
         }
+        
 
         public class BUDGET_TYPE
         {
             public string BUDGET_NAME { get; set; }
             public string DESCRIPTION { get; set; }
-            public long LE_ORG_ID { get; set; }
+            public string LE_ORG_ID { get; set; }
             public string STATUS { get; set; }
         }
 

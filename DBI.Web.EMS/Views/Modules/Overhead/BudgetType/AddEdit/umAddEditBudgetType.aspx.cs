@@ -37,7 +37,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.BudgetType.AddEdit
                         uxBudgetNameStore.Parameters.Add(new Ext.Net.StoreParameter("RECORDID", _editRecordId.ToString()));
 
                         uxBudgetNameStore.Reload();
-                        OVERHEAD_BUDGET_TYPE _budgetType = OVERHEAD_BUDGET_TYPE.BudgetTypeByBudgetTypeId(_editRecordId);
+                        OVERHEAD_BUDGET_TYPE _budgetType = OVERHEAD_BUDGET_TYPE.BudgetType(_editRecordId);
                         uxBudgetName.SetValueAndFireSelect(_budgetType.BUDGET_NAME);
                         uxBudgetDescription.Text = _budgetType.BUDGET_DESCRIPTION;
                         uxDeleteBudgetType.Disabled = false;
@@ -79,7 +79,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.BudgetType.AddEdit
                     long _editRecordId;
                     bool _editRecordCheck = long.TryParse(_recordId, out _editRecordId);
 
-                    data = OVERHEAD_BUDGET_TYPE.BudgetTypeByBudgetTypeId(_editRecordId);
+                    data = OVERHEAD_BUDGET_TYPE.BudgetType(_editRecordId);
                     data.BUDGET_DESCRIPTION = uxBudgetDescription.Text;
                     data.MODIFY_DATE = DateTime.Now;
                     data.MODIFIED_BY = User.Identity.Name;
@@ -111,7 +111,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.BudgetType.AddEdit
                 long _editRecordId;
                 bool _editRecordCheck = long.TryParse(Request.QueryString["recordId"].ToString(), out _editRecordId);
 
-                OVERHEAD_BUDGET_TYPE _budgetType = OVERHEAD_BUDGET_TYPE.BudgetTypeByBudgetTypeId(_editRecordId);
+                OVERHEAD_BUDGET_TYPE _budgetType = OVERHEAD_BUDGET_TYPE.BudgetType(_editRecordId);
                 GenericData.Delete<OVERHEAD_BUDGET_TYPE>(_budgetType);
             }
             catch (Exception ex)

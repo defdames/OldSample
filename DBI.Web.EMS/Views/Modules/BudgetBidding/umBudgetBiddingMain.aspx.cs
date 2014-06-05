@@ -124,7 +124,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             {
                 if (e.NodeID == "0")
                 {
-                    var data = HR.LegalEntitiesWithActiveOverheadBudgetTypes();
+                    var data = HR.ActiveOverheadBudgetLegalEntities();
                     foreach (var view in data)
                     {
                         Node node = new Node();
@@ -137,7 +137,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 else
                 {
                     long nodeID = long.Parse(e.NodeID);
-                    var data = HR.HierarchyListByLegalEntity().Where(a => a.ORGANIZATION_ID == nodeID);
+                    var data = HR.LegalEntityHierarchies().Where(a => a.ORGANIZATION_ID == nodeID);
                     foreach (var view in data)
                     {
                         Node node = new Node();

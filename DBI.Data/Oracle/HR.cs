@@ -13,7 +13,7 @@ namespace DBI.Data
         /// Returns a list of all organizations in the system.
         /// </summary>
         /// <returns></returns>
-        public static List<HR.ORGANIZATION> OrganizationList()
+        public static List<HR.ORGANIZATION> Organizations()
         {
             try
             {
@@ -34,11 +34,11 @@ namespace DBI.Data
         /// Returns a list of only active organizations in oracle using the current system date and time.
         /// </summary>
         /// <returns></returns>
-        public static List<HR.ORGANIZATION> ActiveOrganizationList()
+        public static List<HR.ORGANIZATION> ActiveOrganizations()
         {
             try
             {
-                List<HR.ORGANIZATION> _data = HR.OrganizationList().Where(x => x.DATE_FROM <= DateTime.Now && !x.DATE_TO.HasValue).ToList();
+                List<HR.ORGANIZATION> _data = HR.Organizations().Where(x => x.DATE_FROM <= DateTime.Now && !x.DATE_TO.HasValue).ToList();
                 return _data;
             }
             catch (Exception)
@@ -51,34 +51,13 @@ namespace DBI.Data
         /// Returns a list of only active organizations by type
         /// </summary>
         /// <returns></returns>
-        public static List<HR.ORGANIZATION> ActiveOrganizationsByType(string type)
+        public static List<HR.ORGANIZATION> ActiveOrganizations(string type)
         {
             try
             {
                 using (Entities _context = new Entities())
                 {
-                    List<HR.ORGANIZATION> _data = HR.ActiveOrganizationList().Where(x => x.TYPE == type).ToList();
-                    return _data;
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-
-        /// <summary>
-        /// Returns a list of only active legal entity organizations, ordered by organization name
-        /// </summary>
-        /// <returns></returns>
-        public static List<HR.ORGANIZATION> ActiveLegalEntityOrganizationList()
-        {
-            try
-            {
-                using (Entities _context = new Entities())
-                {
-                    List<HR.ORGANIZATION> _data = HR.ActiveOrganizationsByType("LE").OrderBy(x => x.ORGANIZATION_NAME).ToList();
+                    List<HR.ORGANIZATION> _data = HR.ActiveOrganizations().Where(x => x.TYPE == type).ToList();
                     return _data;
                 }
             }
@@ -126,28 +105,11 @@ namespace DBI.Data
 
 
 
-        public static List<ORGANIZATION_V1> ActiveOverheadOrganizationsByHierarchy(long hierarchyId, long organizationId)
-        {
-            try
-            {
-                using (Entities _context = new Entities())
-                {
-                    List<ORGANIZATION_V1> _data = ActiveOrganizationsByHierarchy(hierarchyId, organizationId);
-                    foreach (var view in _data)
-                    {
-                        view.GL_ASSIGNED = (_context.OVERHEAD_GL_ACCOUNT.Where(a => a.OVERHEAD_ORG_ID == view.ORGANIZATION_ID).Count() > 0 ? "Active" : "No Accounts Found");
-                    }
-                    return _data;
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-
-        public static List<HIERARCHY> HierarchyListByLegalEntity()
+        /// <summary>
+        /// Returns a list of valid hierarchies in the system, it will return a list of hierarcies by legal entity.
+        /// </summary>
+        /// <returns></returns>
+        public static List<HIERARCHY> LegalEntityHierarchies()
         {
             try
             {
@@ -169,26 +131,51 @@ namespace DBI.Data
                 
                 throw;
             }
-          
-
         }
 
         /// <summary>
-        /// Returns a list of legal entities from oracle that can have a budget because there is a budget type assigned to that businessunit
+        /// Returns a list of active organizations that have a gl account assigned to them in the overhead system.
         /// </summary>
+        /// <param name="hierarchyId"></param>
+        /// <param name="organizationId"></param>
         /// <returns></returns>
-        public static List<HR.ORGANIZATION> LegalEntitiesWithActiveOverheadBudgetTypes()
+        public static List<HR.ORGANIZATION_V1> ActiveOverheadOrganizationsByHierarchy(long hierarchyId, long organizationId)
         {
             try
             {
                 using (Entities _context = new Entities())
                 {
-                    List<HR.ORGANIZATION> _data = HR.ActiveLegalEntityOrganizationList();
+                    List<HR.ORGANIZATION_V1> _data = ActiveOrganizationsByHierarchy(hierarchyId, organizationId);
+                    foreach (var view in _data)
+                    {
+                        view.GL_ASSIGNED = (_context.OVERHEAD_GL_ACCOUNT.Where(a => a.OVERHEAD_ORG_ID == view.ORGANIZATION_ID).Count() > 0 ? "Active" : "No Accounts Found");
+                    }
+                    return _data;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
+        /// <summary>
+        /// Returns a list of legal entities from oracle that can have a budget because there is a budget type assigned to that businessunit
+        /// </summary>
+        /// <returns></returns>
+        public static List<HR.ORGANIZATION> ActiveOverheadBudgetLegalEntities()
+        {
+            try
+            {
+                using (Entities _context = new Entities())
+                {
+                    List<HR.ORGANIZATION> _data = HR.ActiveOrganizations("LE");
                     List<HR.ORGANIZATION> _returnList = new List<HR.ORGANIZATION>();
 
                     foreach (HR.ORGANIZATION var in _data)
                     {
-                        int count = DBI.Data.OVERHEAD_GL_ACCOUNT.CountOverheadGLAccountsAssignedByOrganizationId(var.ORGANIZATION_ID);
+                        int count = GL.BudgetTypes(var.ORGANIZATION_ID).Count();
                         if (count > 0)
                         {
                             _returnList.Add(var);

@@ -24,7 +24,7 @@ namespace DBI.Web.EMS.Views.Modules.Security.Options
             uxProfileOptionStore.ClearFilter();
             uxProfileOptionSelectionModel.ClearSelection();
 
-            var data = SYS_PROFILE_OPTIONS.List();
+            var data = SYS_PROFILE_OPTIONS.ProfileOptions();
 
             int count;
             uxProfileOptionStore.DataSource = GenericData.EnumerableFilterHeader<SYS_PROFILE_OPTIONS>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);

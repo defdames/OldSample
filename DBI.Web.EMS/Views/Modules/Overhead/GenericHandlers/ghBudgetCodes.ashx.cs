@@ -57,21 +57,31 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             long _businessUnitId = long.Parse(businessUnitId);
 
-            List<GL.BUDGET_TYPE> data = GL.UnUsedBudgetTypesByLegalEntity(_businessUnitId, recordId);
+            List<GL.BUDGET_TYPE> _data;
+
+            if (!string.IsNullOrEmpty(recordId))
+            {
+                long _recordId = long.Parse(recordId.ToString());
+                _data = GL.BudgetTypesRemaining(_businessUnitId, _recordId);
+            }
+            else
+            {
+                _data = GL.BudgetTypesRemaining(_businessUnitId);
+            }
 
             if (!string.IsNullOrEmpty(filter) && filter != "*")
             {
-                data.RemoveAll(bu__1 => !bu__1.BUDGET_NAME.ToLower().StartsWith(filter.ToLower()));
+                _data.RemoveAll(bu__1 => !bu__1.BUDGET_NAME.ToLower().StartsWith(filter.ToLower()));
             }
 
-            if ((start + limit) > data.Count)
+            if ((start + limit) > _data.Count)
             {
-                limit = data.Count - start;
+                limit = _data.Count - start;
             }
 
-            List<GL.BUDGET_TYPE> _range = (start < 0 || limit < 0) ? data : data.GetRange(start, limit);
+            List<GL.BUDGET_TYPE> _range = (start < 0 || limit < 0) ? _data : _data.GetRange(start, limit);
 
-            return new Paging<GL.BUDGET_TYPE>(_range, data.Count);
+            return new Paging<GL.BUDGET_TYPE>(_range, _data.Count);
         }
       
 

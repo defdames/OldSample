@@ -15,7 +15,7 @@ namespace DBI.Data
         /// Returns a list of profile options in the system.
         /// </summary>
         /// <returns></returns>
-        public static List<SYS_PROFILE_OPTIONS> List()
+        public static List<SYS_PROFILE_OPTIONS> ProfileOptions()
         {
             try 
 	        {	        
@@ -45,7 +45,7 @@ namespace DBI.Data
                 }
 
                 //Make sure it doesn't exits in user_profile_options
-                int _cnt = DBI.Data.SYS_USER_PROFILE_OPTIONS.Count((long)option.PROFILE_OPTION_ID);
+                int _cnt = DBI.Data.SYS_USER_PROFILE_OPTIONS.GetCount((long)option.PROFILE_OPTION_ID);
                 if (_cnt > 0)
                 {
                     throw new DBICustomException("You can not delete this user profile, it is currently in use!");
@@ -66,7 +66,7 @@ namespace DBI.Data
         /// </summary>
         /// <param name="profileOptionId"></param>
         /// <returns></returns>
-        public static SYS_PROFILE_OPTIONS ProfileOptionByProfileOptionId(long profileOptionId)
+        public static SYS_PROFILE_OPTIONS ProfileOption(long profileOptionId)
         {
             try 
             {        
@@ -87,7 +87,7 @@ namespace DBI.Data
         /// </summary>
         /// <param name="key_name"></param>
         /// <returns></returns>
-        public static SYS_PROFILE_OPTIONS ProfileOptionByKey(string key_name)
+        public static SYS_PROFILE_OPTIONS ProfileOption(string key_name)
         {
             try 
 	        {	        
@@ -114,7 +114,7 @@ namespace DBI.Data
         /// </summary>
         /// <param name="profile_option_name"></param>
         /// <returns></returns>
-        public static int Count(long profile_option_id)
+        public static int GetCount(long profile_option_id)
         {
             try
             {
@@ -136,7 +136,7 @@ namespace DBI.Data
         /// Returns a list of user profile options
         /// </summary>
         /// <returns></returns>
-        public static List<SYS_USER_PROFILE_OPTIONS_V> UserProfileOptionsList()
+        public static List<SYS_USER_PROFILE_OPTIONS_V> UserProfileOptions()
         {
             try
             {
@@ -165,7 +165,7 @@ namespace DBI.Data
         {
             try
             {
-                SYS_USER_PROFILE_OPTIONS_V _option = UserProfileOptionsList().Where(x => x.PROFILE_KEY == profileOptionName && x.USER_ID == userId).SingleOrDefault();
+                SYS_USER_PROFILE_OPTIONS_V _option = UserProfileOptions().Where(x => x.PROFILE_KEY == profileOptionName && x.USER_ID == userId).SingleOrDefault();
                 string _value = string.Empty;
                 if (_option != null)
                 {
@@ -214,7 +214,7 @@ namespace DBI.Data
             {
              
                 SYS_USER_INFORMATION _loggedInUser = SYS_USER_INFORMATION.LoggedInUser();
-                SYS_PROFILE_OPTIONS _option = SYS_PROFILE_OPTIONS.ProfileOptionByKey(profileOptionName);
+                SYS_PROFILE_OPTIONS _option = SYS_PROFILE_OPTIONS.ProfileOption(profileOptionName);
 
                 if (_option == null)
                 {
@@ -295,13 +295,13 @@ namespace DBI.Data
         /// </summary>
         /// <param name="orgID"></param>
         /// <returns></returns>
-        public static List<OVERHEAD_BUDGET_TYPE> BudgetTypesByLegalEntity(long legalEntity)
+        public static List<OVERHEAD_BUDGET_TYPE> BudgetTypes(long legalEntityOrganizationId)
         {
             try
             {
                 using (Entities _context = new Entities())
                 {
-                    List<OVERHEAD_BUDGET_TYPE> _returnList = _context.OVERHEAD_BUDGET_TYPE.Where(c => c.LE_ORG_ID == legalEntity).ToList();
+                    List<OVERHEAD_BUDGET_TYPE> _returnList = _context.OVERHEAD_BUDGET_TYPE.Where(c => c.LE_ORG_ID == legalEntityOrganizationId).ToList();
                     return _returnList;
                 }
             }
@@ -318,7 +318,7 @@ namespace DBI.Data
         /// </summary>
         /// <param name="orgID"></param>
         /// <returns></returns>
-        public static OVERHEAD_BUDGET_TYPE BudgetTypeByBudgetTypeId(long budgetTypeId)
+        public static OVERHEAD_BUDGET_TYPE BudgetType(long budgetTypeId)
         {
             try
             {
@@ -343,18 +343,22 @@ namespace DBI.Data
     /// </summary>
     public partial class OVERHEAD_GL_ACCOUNT
     {
+
+        
+
+
         /// <summary>
         /// Returns a list of Overhead GL Accounts by legal entity
         /// </summary>
         /// <param name="legalEntity"></param>
         /// <returns></returns>
-        public static List<GL_ACCOUNTS_V2> OverHeadGlAccountsByLegalEntity(long legalEntity)
+        public static List<GL_ACCOUNTS_V2> AccountsByLegalEntity(long legalEntityOrganizationId)
         {
             try
             {
                 using (Entities _context = new Entities())
                 {
-                    var data = (from gl in _context.OVERHEAD_GL_ACCOUNT.Where(c => c.OVERHEAD_ORG_ID == legalEntity)
+                    var data = (from gl in _context.OVERHEAD_GL_ACCOUNT.Where(c => c.OVERHEAD_ORG_ID == legalEntityOrganizationId)
                                 join gla in _context.GL_ACCOUNTS_V on gl.CODE_COMBO_ID equals gla.CODE_COMBINATION_ID
                                 select new GL_ACCOUNTS_V2
                                 {
@@ -387,8 +391,11 @@ namespace DBI.Data
            
         }
 
-
-        public static void DeleteOverHeadAccountByOverheadGlId(long overheadGlId)
+        /// <summary>
+        /// Allows the user to delete an overhead Gl account that has been assigned.
+        /// </summary>
+        /// <param name="overheadGlId"></param>
+        public static void Delete(long overheadGlId)
         {
             try
             {
@@ -406,7 +413,12 @@ namespace DBI.Data
             
         }
 
-        public static int CountOverheadGLAccountsAssignedByOrganizationId(long organizationId)
+        /// <summary>
+        /// Returns a count of how many OVERHEAD_GL_ACCOUNTS are assigned by an organization Id
+        /// </summary>
+        /// <param name="organizationId"></param>
+        /// <returns></returns>
+        public static int GetCount(long organizationId)
         {
             try
             {

@@ -24,7 +24,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 //Load LEs
                 if (e.NodeID == "0")
                 {
-                    List<HR.ORGANIZATION> _legalEntities = HR.LegalEntitiesWithActiveOverheadBudgetTypes();
+                    List<HR.ORGANIZATION> _legalEntities = HR.ActiveOverheadBudgetLegalEntities();
 
                     //Build the treepanel
                     foreach (HR.ORGANIZATION view in _legalEntities)
@@ -59,7 +59,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 {
                     using (Entities _context = new Entities())
                     {
-                        List<OVERHEAD_BUDGET_TYPE> data = OVERHEAD_BUDGET_TYPE.BudgetTypesByLegalEntity(_organizationID);
+                        List<OVERHEAD_BUDGET_TYPE> data = OVERHEAD_BUDGET_TYPE.BudgetTypes(_organizationID);
 
                         int count;
                         uxBudgetTypeStore.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_BUDGET_TYPE>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
