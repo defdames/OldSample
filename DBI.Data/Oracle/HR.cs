@@ -25,7 +25,7 @@ namespace DBI.Data
                 }
             }
             catch (Exception)
-            {         
+            {   
                 throw;
             }
         }
@@ -38,11 +38,8 @@ namespace DBI.Data
         {
             try
             {
-                using (Entities _context = new Entities())
-                {
-                    List<HR.ORGANIZATION> _data = HR.OrganizationList().Where(x => x.DATE_FROM >= DateTime.Now && x.DATE_TO <= DateTime.Now).ToList();
-                    return _data;
-                }
+                List<HR.ORGANIZATION> _data = HR.OrganizationList().Where(x => x.DATE_FROM <= DateTime.Now && !x.DATE_TO.HasValue).ToList();
+                return _data;
             }
             catch (Exception)
             {
@@ -129,7 +126,7 @@ namespace DBI.Data
 
 
 
-        public static List<ORGANIZATION_V1> OverheadBudgetOrganizationsByHierarchy(long hierarchyId, long organizationId)
+        public static List<ORGANIZATION_V1> ActiveOverheadOrganizationsByHierarchy(long hierarchyId, long organizationId)
         {
             try
             {
@@ -191,7 +188,7 @@ namespace DBI.Data
 
                     foreach (HR.ORGANIZATION var in _data)
                     {
-                        int count = OVERHEAD_BUDGET_TYPE.BudgetTypesByLegalEntity(var.ORGANIZATION_ID).Count();
+                        int count = DBI.Data.OVERHEAD_GL_ACCOUNT.CountOverheadGLAccountsAssignedByOrganizationId(var.ORGANIZATION_ID);
                         if (count > 0)
                         {
                             _returnList.Add(var);
@@ -216,7 +213,7 @@ namespace DBI.Data
             public string ORGANIZATION_NAME { get; set; }
             public string TYPE { get; set; }
             public DateTime DATE_FROM { get; set; }
-            public DateTime DATE_TO { get; set; }
+            public DateTime? DATE_TO { get; set; }
         }
 
         public class ORGANIZATION_V1 : ORGANIZATION

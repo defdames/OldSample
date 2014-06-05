@@ -31,7 +31,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     long _hierarchyID = long.Parse(_selectedID[1].ToString());
                     long _organizationID = long.Parse(_selectedID[0].ToString());
 
-                    var data = HR.OverheadBudgetOrganizationsByHierarchy(_hierarchyID, _organizationID);
+                    var data = HR.ActiveOverheadOrganizationsByHierarchy(_hierarchyID, _organizationID);
 
                     int count;
                     uxOrganizationSecurityStore.DataSource = GenericData.EnumerableFilterHeader<HR.ORGANIZATION_V1>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -84,9 +84,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                e.Success = false;
+                e.ErrorMessage = ex.ToString();
             }
            
         }
@@ -106,17 +107,16 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                     uxOrganizationSecurityStore.RemoveAll();
                     uxOrganizationsGridFilter.ClearFilter();
-                    uxOrganizationSecurityStore.Reload();
 
                     uxGlAccountSecurityStore.RemoveAll();
                     uxGlAccountSecurityGridFilter.ClearFilter();
                     uxGlAccountSecurityGrid.Refresh();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                
-                throw;
+                e.Success = false;
+                e.ErrorMessage = ex.ToString();
             }
             
         }
@@ -152,12 +152,11 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
                 uxGlAccountSecurityStore.RemoveAll();
                 uxGlAccountSecurityGridFilter.ClearFilter();
-                uxGlAccountSecurityStore.Reload();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                
-                throw;
+                e.Success = false;
+                e.ErrorMessage = ex.ToString();
             }
           
         }
@@ -197,10 +196,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 win.Render(this.Form);
                 win.Show();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                
-                throw;
+                e.Success = false;
+                e.ErrorMessage = ex.ToString();
             }
           
         }
@@ -223,7 +222,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     OVERHEAD_GL_ACCOUNT.DeleteOverHeadAccountByOverheadGlId(_recordID);
                 }
 
-                int recordCount = OVERHEAD_GL_ACCOUNT.CountOverheadAccountsByLegalEntity(_organizationID);
+                int recordCount = OVERHEAD_GL_ACCOUNT.CountOverheadGLAccountsAssignedByOrganizationId(_organizationID);
 
                 if (recordCount == 0)
                 {
@@ -234,10 +233,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 uxGlAccountSecurityStore.ClearFilter();
                 uxGlAccountSecurityStore.Reload();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                
-                throw;
+                e.Success = false;
+                e.ErrorMessage = ex.ToString();
             }
            
         }

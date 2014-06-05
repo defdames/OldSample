@@ -406,13 +406,13 @@ namespace DBI.Data
             
         }
 
-        public static int CountOverheadAccountsByLegalEntity(long legalEntity)
+        public static int CountOverheadGLAccountsAssignedByOrganizationId(long organizationId)
         {
             try
             {
                 using (Entities _context = new Entities())
                 {
-                    int cnt = _context.OVERHEAD_GL_ACCOUNT.Where(a => a.OVERHEAD_ORG_ID == legalEntity).Count();
+                    int cnt = _context.OVERHEAD_GL_ACCOUNT.Where(a => a.OVERHEAD_ORG_ID == organizationId).Count();
                     return cnt;
                 }
             }

@@ -21,10 +21,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 uxGlAccountSecurityStore.ClearFilter();
                 uxGlAccountSecurityStore.Reload();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                
-                throw;
+                e.Success = false;
+                e.ErrorMessage = ex.ToString();
             }
 
         }
@@ -78,10 +78,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 uxGlAccountSecurityStore.ClearFilter();
                 uxGlAccountSecurityStore.Reload();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                
-                throw;
+                e.Success = false;
+                e.ErrorMessage = ex.ToString();
             }
            
 
