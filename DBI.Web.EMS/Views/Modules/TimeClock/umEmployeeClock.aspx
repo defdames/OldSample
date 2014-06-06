@@ -6,23 +6,23 @@
 <head id="Head1" runat="server">
 	<title></title>
 	
-    <script type="text/javascript">
-        var getTime = function()
-        {   // For todays date;
-            Date.prototype.today = function () {
-                //return ((this.getDate() < 10)?"0":"") + this.getDate() +"/"+(((this.getMonth()+1) < 10)?"0":"") + (this.getMonth()+1) +"/"+ this.getFullYear();
-                return (((this.getMonth() + 1) < 10) ? "0" : "") + (this.getMonth() + 1) + "/" + ((this.getDate() < 10) ? "0" : "") + this.getDate() + "/" + this.getFullYear();
-            }
-            // For the time now
-            Date.prototype.timeNow = function () {
-                //return ((this.getHours() < 10) ? "0" : "") + this.getHours() + ":" + ((this.getMinutes() < 10) ? "0" : "") + this.getMinutes() + ":" + ((this.getSeconds() < 10) ? "0" : "") + this.getSeconds();
-                return ((this.getHours() > 12) ? (this.getHours() - 12)  : this.getHours()) + ":" + ((this.getMinutes() < 10) ? "0" : "") + this.getMinutes() + " " + ((this.getHours() > 12) ? ('pm') : 'am');
-            }
-                var datetime = new Date().today() + " " + new Date().timeNow();
-               
-                document.getElementById("uxDateTime").value = datetime
-       }
-    </script>
+	<script type="text/javascript">
+		var getTime = function()
+		{   // For todays date;
+			Date.prototype.today = function () {
+				//return ((this.getDate() < 10)?"0":"") + this.getDate() +"/"+(((this.getMonth()+1) < 10)?"0":"") + (this.getMonth()+1) +"/"+ this.getFullYear();
+				return (((this.getMonth() + 1) < 10) ? "0" : "") + (this.getMonth() + 1) + "/" + ((this.getDate() < 10) ? "0" : "") + this.getDate() + "/" + this.getFullYear();
+			}
+			// For the time now
+			Date.prototype.timeNow = function () {
+				//return ((this.getHours() < 10) ? "0" : "") + this.getHours() + ":" + ((this.getMinutes() < 10) ? "0" : "") + this.getMinutes() + ":" + ((this.getSeconds() < 10) ? "0" : "") + this.getSeconds();
+				return ((this.getHours() > 12) ? (this.getHours() - 12)  : this.getHours()) + ":" + ((this.getMinutes() < 10) ? "0" : "") + this.getMinutes() + " " + ((this.getHours() > 12) ? ('pm') : 'am');
+			}
+				var datetime = new Date().today() + " " + new Date().timeNow();
+			   
+				document.getElementById("uxDateTime").value = datetime
+	   }
+	</script>
 </head>
 <body>
 	<form id="form1" runat="server">
@@ -45,18 +45,17 @@
 								<ext:TextField Id="uxTime_InTextBox" runat="server" FieldLabel="Time In" readonly="true"/>
 								<ext:TextField ID="uxTime_OutTextBox" runat="server" FieldLabel="Time Out" readonly="true"/>
 								<ext:TextField ID="uxUser_NameTextBox" runat="server" FieldLabel="Name"   readonly="true" />
-                                <ext:Hidden runat="server" ID="uxDateTime" />
-								<ext:TextField ID="uxTest" runat="server" FieldLabel="Time" ReadOnly="true" />
+								<ext:Hidden runat="server" ID="uxDateTime" />
 							</Items>
 						
 						 <Buttons>
 								<ext:Button runat="server" ID="uxTimeButton" Text="Clock In" >
-                                    <DirectEvents>
-                                        <Click OnEvent="deSetTime"/>
+									<DirectEvents>
+										<Click OnEvent="deSetTime"/>
 									</DirectEvents>
-                                    <Listeners>
-                                        <Click Fn="getTime" />
-                                    </Listeners>
+									<Listeners>
+										<Click Fn="getTime" />
+									</Listeners>
 									
 								</ext:Button>
 							</Buttons>
@@ -73,7 +72,8 @@
 										<ext:ModelField Name="TIME_IN" Type="Date"/>
 										<ext:ModelField Name="TIME_OUT" Type="Date"/>
 										<ext:ModelField Name="TOTAL_HOURS" />
-										<ext:ModelField Name="WARNING" Type="String" />
+										<ext:ModelField Name="MODIFIED_BY" />
+                                        <ext:ModelField Name="APPROVED" />
 									</Fields>
 								</ext:Model>
 							</Model>
@@ -101,12 +101,18 @@
 								Text="Total Time" 
 								DataIndex="TOTAL_HOURS"
 								Flex="1"/>
-							<ext:Column runat="server" 
-										ID="uxWarningColumn" 
-										Text="Modified" 
-										DataIndex="WARNING">
-							</ext:Column>
-						</Columns>
+							<ext:Column ID="colModifiedBy"
+								runat="server"
+								Text="Modified by"
+								DataIndex="MODIFIED_BY"
+								Flex="1" />
+                            <ext:Column ID="colApproved"
+                                runat="server"
+                                Text="Approved"
+                                DataIndex="APPROVED"
+                                Flwx="1" />
+						    </Columns>
+                            
 					</ColumnModel>
 					<BottomBar>
 						<ext:PagingToolbar runat="server" DisplayInfo="true" DisplayMsg="Records {0} - {1} of {2}"/>
