@@ -69,7 +69,7 @@
                         </DirectEvents>
                     </ext:Button>
                     <ext:ToolbarSpacer runat="server" />
-                    <ext:Checkbox runat="server" ID="uxToggleApproved" FieldLabel="Show Approved" >
+                    <ext:Checkbox runat="server" ID="uxToggleApproved" BoxLabel="Show Approved" BoxLabelAlign="After" >
 					    <Listeners>
 					        <Change Handler="#{uxEmployeeHoursStore}.reload()" />
 				        </Listeners>

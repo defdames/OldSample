@@ -29,23 +29,18 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
             decimal person_id = Convert.ToDecimal(Authentication.GetClaimValue("PersonId", User as ClaimsPrincipal));
             
-            
-
             using (Entities _context = new Entities())
             {   //Manager Query
                 if (validateComponentSecurity("SYS.TimeClock.Manager"))
                 {
-                    var data = (from tc in _context.TIME_CLOCK
-                                join ev in _context.EMPLOYEES_V on tc.PERSON_ID equals ev.PERSON_ID
-                                where tc.SUPERVISOR_ID == person_id && tc.COMPLETED == "Y" && tc.APPROVED == "N"
-                                select new EmployeeTime { TIME_IN = (DateTime)tc.TIME_IN, TIME_OUT = (DateTime)tc.TIME_OUT, EMPLOYEE_NAME = ev.EMPLOYEE_NAME, DAY_OF_WEEK = tc.DAY_OF_WEEK, 
-                                                          TIME_CLOCK_ID = tc.TIME_CLOCK_ID, ADJUSTED_HOURS = tc.ADJUSTED_HOURS, ACTUAL_HOURS = tc.ACTUAL_HOURS, SUBMITTED = tc.SUBMITTED, APPROVED = tc.APPROVED }).ToList();
+
+                    var data = TIME_CLOCK.EmployeeTimeCompletedUnapproved(person_id);
 
 
                     foreach (var item in data)
                     {
-                        TimeSpan ts = item.TIME_OUT - item.TIME_IN;
-                        DateTime dow = item.TIME_IN;
+                        TimeSpan ts = (DateTime)item.TIME_OUT - (DateTime)item.TIME_IN;
+                        DateTime dow = (DateTime)item.TIME_IN;
 
 
 
@@ -65,19 +60,13 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
                 else if (validateComponentSecurity("SYS.TimeClock.Payroll"))
                 {   //Payroll query
-                     var data = (from tc in _context.TIME_CLOCK
-                                join ev in _context.EMPLOYEES_V on tc.PERSON_ID equals ev.PERSON_ID
-                                where tc.COMPLETED == "Y" && tc.APPROVED == "N"
-                                 select new EmployeeTime { TIME_IN = (DateTime)tc.TIME_IN, TIME_OUT = (DateTime)tc.TIME_OUT, EMPLOYEE_NAME = ev.EMPLOYEE_NAME, DAY_OF_WEEK = tc.DAY_OF_WEEK, 
-                                                           TIME_CLOCK_ID = tc.TIME_CLOCK_ID, ADJUSTED_HOURS = tc.ADJUSTED_HOURS, ACTUAL_HOURS = tc.ACTUAL_HOURS, SUBMITTED = tc.SUBMITTED, APPROVED = tc.APPROVED }).ToList();
 
+                    var data = TIME_CLOCK.EmployeeTimeCompletedUnapprovedPayroll();
 
                     foreach (var item in data)
                     {
-                        TimeSpan ts = item.TIME_OUT - item.TIME_IN;
-                        DateTime dow = item.TIME_IN;
-
-
+                        TimeSpan ts = (DateTime)item.TIME_OUT - (DateTime)item.TIME_IN;
+                        DateTime dow = (DateTime)item.TIME_IN;
 
 
                         TimeSpan adjustedhours = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_HOURS.Value));
@@ -94,17 +83,13 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
                 if ((uxToggleApproved.Checked) && (validateComponentSecurity("SYS.TimeClock.Manager")))
                 {
-                    var data = (from tc in _context.TIME_CLOCK
-                                join ev in _context.EMPLOYEES_V on tc.PERSON_ID equals ev.PERSON_ID
-                                where tc.SUPERVISOR_ID == person_id && tc.COMPLETED == "Y"
-                                select new EmployeeTime{ TIME_IN = (DateTime)tc.TIME_IN, TIME_OUT = (DateTime)tc.TIME_OUT, EMPLOYEE_NAME = ev.EMPLOYEE_NAME, DAY_OF_WEEK = tc.DAY_OF_WEEK,
-                                    TIME_CLOCK_ID = tc.TIME_CLOCK_ID, ADJUSTED_HOURS = tc.ADJUSTED_HOURS, ACTUAL_HOURS = tc.ACTUAL_HOURS, SUBMITTED = tc.SUBMITTED, APPROVED = tc.APPROVED}).ToList();
+                    var data = TIME_CLOCK.EmployeeTimeCompleted(person_id);
 
 
                     foreach (var item in data)
                     {
-                        TimeSpan ts = item.TIME_OUT - item.TIME_IN;
-                        DateTime dow = item.TIME_IN;
+                        TimeSpan ts = (DateTime)item.TIME_OUT - (DateTime)item.TIME_IN;
+                        DateTime dow = (DateTime)item.TIME_IN;
 
 
 
@@ -124,27 +109,13 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
                 else if ((uxToggleApproved.Checked) && (validateComponentSecurity("SYS.TimeClock.Payroll")))
                 {   //Payroll query
-                    var data = (from tc in _context.TIME_CLOCK
-                                join ev in _context.EMPLOYEES_V on tc.PERSON_ID equals ev.PERSON_ID
-                                where tc.COMPLETED == "Y"
-                                select new EmployeeTime
-                                {
-                                    TIME_IN = (DateTime)tc.TIME_IN,
-                                    TIME_OUT = (DateTime)tc.TIME_OUT,
-                                    EMPLOYEE_NAME = ev.EMPLOYEE_NAME,
-                                    DAY_OF_WEEK = tc.DAY_OF_WEEK,
-                                    TIME_CLOCK_ID = tc.TIME_CLOCK_ID,
-                                    ADJUSTED_HOURS = tc.ADJUSTED_HOURS,
-                                    ACTUAL_HOURS = tc.ACTUAL_HOURS,
-                                    SUBMITTED = tc.SUBMITTED,
-                                    APPROVED = tc.APPROVED
-                                }).ToList();
+                    var data = TIME_CLOCK.EmployeeTimeCompletedPayroll();
 
 
                     foreach (var item in data)
                     {
-                        TimeSpan ts = item.TIME_OUT - item.TIME_IN;
-                        DateTime dow = item.TIME_IN;
+                        TimeSpan ts = (DateTime)item.TIME_OUT - (DateTime)item.TIME_IN;
+                        DateTime dow = (DateTime)item.TIME_IN;
 
 
 
