@@ -6,12 +6,13 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Ext.Net;
 using DBI.Data;
+using DBI.Data.Oracle.XXDBI_DW;
 
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 {
     public partial class umYearBudget : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Load(object sender, EventArgs e)        
         {
 
         }
@@ -115,7 +116,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void deGetFormData(object sender, DirectEventArgs e)
         {
-            uxProjectNum.SetValue("2001517");//e.ExtraParams["CrossingId"]);
+            uxProjectNum.SetValue("2001517");//e.ExtraParams["ProjectId"]);
         }
 
         protected void Test(object sender, DirectEventArgs e)
@@ -168,7 +169,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxActionsStore.DataSource = list;
         }
 
-        class ActionsStruct  // DELETE WHEN GETTING DATA FROM CORRECT SOURCE
+        class ActionsStruct
         {
             public long ACTION_ID { get; set; }
             public string ACTION_NAME { get; set; }
@@ -189,7 +190,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             {
                 uxGridRowModel.ClearSelection();
                 uxProjectDetail.Reset();
-                uxProjectDetail.Enable();              
+                uxProjectDetail.Enable();
             }
         }
         
@@ -201,31 +202,195 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void deSave(object sender, DirectEventArgs e)
         {
-            long projectNum = 30000; //Convert.ToInt64(uxProjectNum.Text);
+            long orgID = long.Parse(Request.QueryString["OrgID"]);
+            long verID = long.Parse(Request.QueryString["verID"]);
+            long fiscalYear = long.Parse(Request.QueryString["fiscalYear"]);
+            long projectNum = Convert.ToInt64(uxProjectNum.Value);
+            string projectName = uxProjectName.Value.ToString();
 
             BUD_BID_PROJECTS data = new BUD_BID_PROJECTS()
             {
-                PROJECT_ID = projectNum
+                ORG_ID = orgID,
+                VER_ID = verID,
+                YEAR_ID = fiscalYear,
+                PROJECT_ID = projectNum,
+                OVERRIDE_PROJ_NAME = projectName
             };
 
             GenericData.Insert<BUD_BID_PROJECTS>(data);
+            NotificationMsg("Save", "Project has been saved.", Icon.DiskBlack);         
+        }
 
+        protected void deSelectProject(object sender, DirectEventArgs e)
+        {
+            string type = e.ExtraParams["Type"];
+            uxHidProjectID.Value = e.ExtraParams["ProjectID"];
+            uxHidProjectNum.Value = e.ExtraParams["ProjectNum"];
+            uxHidProjectName.Value = e.ExtraParams["ProjectName"];
+            uxHidType.Value = type;
+            LoadJCNumbers();
+        }
+
+        protected void deSelectJCDate(object sender, DirectEventArgs e)
+        {
+            uxHidDate.Value = uxJCDate1.Value;
+            LoadJCNumbers();
+        }
+
+        protected void LoadJCNumbers()
+        {
+            string hierID = Request.QueryString["hierID"];
+            string orgID = Request.QueryString["orgID"];
+            string projectID = uxHidProjectID.Value.ToString();
+            string projectNum = uxHidProjectNum.Value.ToString();
+            string projectName = uxHidProjectName.Value.ToString();
+            string type = uxHidType.Value.ToString();
+            string jcDate = uxHidDate.Value.ToString();            
+            JOB_COST.JOB_COST_V jcLine = null;
+
+            if (jcDate != "")
+            {
+                jcDate = JOB_COST.getWeekEndingDateByFYAndDate(jcDate);
+            }      
+
+            switch (type)
+            {
+                case "":
+                    return;
+
+                case "OVERRIDE":
+                    uxProjectNum.SetValue(projectID, projectName);                    
+                    uxProjectName.SetValue(null);
+                    projectOverride(true);
+                    jcLine = JOB_COST.jobCostByProjectIdWeekendingDate(Convert.ToInt64("0"), jcDate);
+                    break;
+
+                case "ORG":
+                    uxProjectNum.SetValue(projectID, projectNum);
+                    uxProjectName.SetValue(projectName);
+                    projectOverride(false);
+                    jcLine = JOB_COST.jobCostByOrgIdWeekendingDate(Convert.ToInt64(hierID), Convert.ToInt64(projectID), jcDate);
+                    break;
+
+                case "PROJECT":               
+                    uxProjectNum.SetValue(projectID, projectNum);
+                    uxProjectName.SetValue(projectName);
+                    projectOverride(false);
+                    jcLine = JOB_COST.jobCostByProjectIdWeekendingDate(Convert.ToInt64(projectID), jcDate);
+                    break;
+
+                case "ROLLUP":
+                    uxProjectNum.SetValue(projectID, projectNum);
+                    uxProjectName.SetValue(projectName);
+                    projectOverride(false);
+                    jcLine = JOB_COST.jobCostByRollupWeekendingDate(Convert.ToInt64(orgID), projectID, jcDate);
+                    break;
+            }
+
+
+            uxSGrossRec.Value = String.Format("{0:N2}", jcLine.FY_GREC);
+            uxSMatUsage.Value = String.Format("{0:N2}", jcLine.FY_MU);
+            uxSGrossRev.Value = String.Format("{0:N2}", jcLine.FY_GREV);
+            uxSDirects.Value = String.Format("{0:N2}", jcLine.FY_TDE);
+            uxSOP.Value = String.Format("{0:N2}", jcLine.FY_TOP);
+
+
+        }
+
+        protected void deProjectDropdownDeactivate(object sender, DirectEventArgs e)
+        {
+            uxProjectFilter.ClearFilter();
+        }
+
+        protected void NotificationMsg(string title, string msg, Icon msgIcon)
+        {
             Notification.Show(new NotificationConfig()
             {
-                Title = "Success",
-                Html = "Project Added Successfully",
-                HideDelay = 1000,
+                Icon = msgIcon,
+                Title = title,
+                Html = msg,
+                HideDelay = 1000,   
                 AlignCfg = new NotificationAlignConfig
                 {
                     ElementAnchor = AnchorPoint.Center,
                     TargetAnchor = AnchorPoint.Center
                 }
             });
-
-
-
         }
         
+        protected void deLoadOrgProjects(object sender, StoreReadDataEventArgs e)
+        {
+            long orgID = long.Parse(Request.QueryString["orgID"]);
+            string orgName = Request.QueryString["orgName"];
+
+            using (Entities context = new Entities())
+            {
+                string sql = string.Format(@"SELECT TO_CHAR(sysdate, 'YYMMDDHH24MISS') as PROJECT_ID, 'N/A' as PROJECT_NUM, '-- OVERRIDE --' as PROJECT_NAME, 'OVERRIDE' as TYPE, 'ID1' as ORDERKEY
+                    FROM DUAL
+                        UNION ALL
+                    SELECT '{1}' as PROJECT_ID, 'N/A' as PROJECT_NUM, '{0} (Org)' as PROJECT_NAME, 'ORG' as TYPE, 'ID2' AS ORDERKEY
+                    FROM DUAL
+                        UNION ALL
+                    SELECT CAST(PROJECTS_V.PROJECT_ID as varchar(20)) as PROJECT_ID, PROJECTS_V.SEGMENT1 as PROJECT_NUM, PROJECTS_V.LONG_NAME as PROJECT_NAME, 'PROJECT' as TYPE, 'ID3' AS ORDERKEY
+                    FROM PROJECTS_V
+                    LEFT JOIN pa.pa_project_classes
+                    ON PROJECTS_V.PROJECT_ID = pa.pa_project_classes.PROJECT_ID
+                    WHERE PROJECTS_V.PROJECT_STATUS_CODE = 'APPROVED' and PROJECTS_V.PROJECT_TYPE <> 'TRUCK ' || chr(38) || ' EQUIPMENT' and pa.pa_project_classes.CLASS_CATEGORY = 'Job Cost Rollup'
+                    and PROJECTS_V.CARRYING_OUT_ORGANIZATION_ID = {1}
+                        UNION ALL
+                    SELECT CONCAT('Various - ', pa.pa_project_classes.CLASS_CODE) as PROJECT_ID, 'N/A' as PROJECT_NUM, CONCAT('Various - ', pa.pa_project_classes.CLASS_CODE) as PROJECT_NAME, 'ROLLUP' as TYPE, 'ID4' AS ORDERKEY
+                    FROM PROJECTS_V
+                    LEFT JOIN pa.pa_project_classes
+                    ON PROJECTS_V.PROJECT_ID = pa.pa_project_classes.PROJECT_ID
+                    WHERE PROJECTS_V.PROJECT_STATUS_CODE = 'APPROVED' and PROJECTS_V.PROJECT_TYPE <> 'TRUCK ' || chr(38) || ' EQUIPMENT' and pa.pa_project_classes.CLASS_CATEGORY = 'Job Cost Rollup'
+                    and pa.pa_project_classes.CLASS_CODE <> 'None' and PROJECTS_V.CARRYING_OUT_ORGANIZATION_ID = {1}
+                    GROUP BY  CONCAT('Various - ', pa.pa_project_classes.CLASS_CODE) 
+                    ORDER BY ORDERKEY, PROJECT_NAME", orgName, orgID);
+                List<object> dataSource;
+                dataSource = context.Database.SqlQuery<ORG_PROJECTS>(sql).ToList<object>();
+                int count;
+                uxProjectNumStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataSource, out count);
+                e.Total = count;
+            }
+        }
+
+        public class ORG_PROJECTS
+        {
+            public string PROJECT_ID { get; set; }
+            public string PROJECT_NUM { get; set; }
+            public string PROJECT_NAME { get; set; }
+            public string TYPE { get; set; }
+            public string ORDERKEY { get; set; }
+        }
+
+        protected void projectOverride(Boolean projOverride)
+        {
+            if (projOverride == true)
+            {
+                uxJCDate1.Value = null;
+                uxHidDate.Value = null;
+                uxJCDate1.Disable();
+                uxProjectName.ReadOnly = false;
+                uxSGrossRec.ReadOnly = false;
+                uxSMatUsage.ReadOnly = false;
+                uxSGrossRev.ReadOnly = false;
+                uxSDirects.ReadOnly = false;
+                uxSOP.ReadOnly = false;
+            }
+
+            else
+            {
+                uxJCDate1.Enable();
+                uxProjectName.ReadOnly = true;
+                uxSGrossRec.ReadOnly = true;
+                uxSMatUsage.ReadOnly = true;
+                uxSGrossRev.ReadOnly = true;
+                uxSDirects.ReadOnly = true;
+                uxSOP.ReadOnly = true;
+            }
+        }
+
+ 
 
     }
 }

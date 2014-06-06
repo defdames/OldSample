@@ -224,6 +224,7 @@
     <Compile Include="Views\Handlers\SystemUsers.ashx.cs">
       <DependentUpon>SystemUsers.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\BudgetBiddingFunctions.cs" />
     <Compile Include="Views\Modules\BudgetBidding\umBlankBudget.aspx.cs">
       <DependentUpon>umBlankBudget.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

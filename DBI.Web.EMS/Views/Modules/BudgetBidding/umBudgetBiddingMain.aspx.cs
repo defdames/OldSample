@@ -14,10 +14,10 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!X.IsAjaxRequest)
-            {
+            //if (!X.IsAjaxRequest)
+            //{
                 // PUT CODE IN HERE THAT YOU ONLY WANT TO EXECUTE ONE TIME AND NOT EVERYTIME SOMETHING IS CLICKED (POST BACK)
-            }
+            //}
         }
 
         protected void deLoadFiscalYears(object sender, StoreReadDataEventArgs e)
@@ -61,7 +61,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         }
 
         protected void deLoadCorrectBudgetType(object sender, DirectEventArgs e)
-        {              
+        {
+            long hierarchyID;
             long orgID;
 
             // Is an org selected, and is the org an org and not just a legal entity or hierarchy?
@@ -70,7 +71,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 string nodeID = uxOrgPanel.SelectedNodes[0].NodeID;
                 char[] delimChars = { ':' };
                 string[] selID = nodeID.Split(delimChars);
-                long hierarchyID = long.Parse(selID[0].ToString());
+                hierarchyID = long.Parse(selID[0].ToString());
                 orgID = long.Parse(selID[1].ToString());
             }
             
@@ -86,17 +87,17 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
             // Is an org, year and version selected?
             string fiscalYear = uxFiscalYear.SelectedItem.Value;
-            string version = uxVersion.SelectedItem.Value;
+            string verID = uxVersion.SelectedItem.Value;
 
             if (SYS_USER_ORGS.IsInOrg(SYS_USER_INFORMATION.UserID(User.Identity.Name), orgID) == true)
             {
                 if (!string.IsNullOrEmpty(fiscalYear))
                 {
-                    if (!string.IsNullOrEmpty(version))
+                    if (!string.IsNullOrEmpty(verID))
                     {
-                        LoadBudget("umYearBudget.aspx?orgID=" + orgID + "&fiscalYear=" + fiscalYear + "&version=" + version);
                         string nodeName = uxOrgPanel.SelectedNodes[0].Text;
                         uxYearVersionTitle.Text = nodeName;
+                        LoadBudget("umYearBudget.aspx?hierID=" + hierarchyID + "&orgID=" + orgID + "&orgName=" + nodeName + "&fiscalYear=" + fiscalYear + "&verID=" + verID);
                     }
                 }
             }
@@ -201,10 +202,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     }
                 }          
             }
-        }
-        
-
-
-
+        }        
     }
 }
