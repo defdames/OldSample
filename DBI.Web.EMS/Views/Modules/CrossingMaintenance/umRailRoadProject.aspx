@@ -9,7 +9,7 @@
 <body>
     <form id="form1" runat="server">
         <ext:ResourceManager ID="ResourceManager2" runat="server" />
-        <%-- <div>      </div>--%>
+      
         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
             <Items>
                        
@@ -38,7 +38,7 @@
                         <Columns>
                             <ext:Column ID="Column4" runat="server" DataIndex="RAILROAD" Text="RailRoad" Flex="1">
                                 <Editor>
-                                    <ext:TextField runat="server" />
+                                    <ext:TextField runat="server" EmptyText="Railroad Name" />
                                 </Editor>
                             </ext:Column>
                         </Columns>

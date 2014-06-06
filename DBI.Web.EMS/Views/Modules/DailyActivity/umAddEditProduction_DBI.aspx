@@ -33,7 +33,7 @@
 				<ext:FormPanel runat="server"
 					ID="uxAddProductionForm"
 					Layout="FormLayout"
-					Hidden="true" Width="600">
+					Hidden="true" Width="600" DefaultButton="uxAddProductionSubmit">
 					<Items>
 						<ext:DropDownField runat="server" Editable="false"
 							ID="uxAddProductionTask"
@@ -95,19 +95,19 @@
 						<ext:TextField runat="server"
 							ID="uxAddProductionPoleTo"
 							FieldLabel="Pole/MP To" Width="500" />
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxAddProductionAcresPerMile"
 							FieldLabel="Acres/Mile"
-							AllowBlank="false" Width="500" />
-						<ext:TextField runat="server"
+							AllowBlank="false" Width="500" MinValue="0" />
+						<ext:NumberField runat="server"
 							ID="uxAddProductionGallons"
 							FieldLabel="Gallons"
-							AllowBlank="false" Width="500" />
+							AllowBlank="false" Width="500" MinValue="0" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxAddProductionSubmit"
-							Text="Submit"
+							Text="Save"
 							Icon="Add"
 							Disabled="true">
 							<DirectEvents>
@@ -133,7 +133,7 @@
 				<ext:FormPanel runat="server"
 					ID="uxEditProductionForm"
 					Layout="FormLayout"
-					Hidden="true" Width="600">
+					Hidden="true" Width="600" DefaultButton="uxEditProductionSubmit">
 					<Items>
 						<ext:DropDownField runat="server" Editable="false"
 							ID="uxEditProductionTask"
@@ -195,19 +195,19 @@
 						<ext:TextField runat="server"
 							ID="uxEditProductionPoleTo"
 							FieldLabel="Pole/MP To" Width="500" />
-						<ext:TextField runat="server"
+						<ext:NumberField runat="server"
 							ID="uxEditProductionAcresPerMile"
 							FieldLabel="Acres/Mile"
-							AllowBlank="false" Width="500" />
-						<ext:TextField runat="server"
+							AllowBlank="false" Width="500" MinValue="0" />
+						<ext:NumberField runat="server"
 							ID="uxEditProductionGallons"
 							FieldLabel="Gallons"
-							AllowBlank="false" Width="500" />
+							AllowBlank="false" Width="500" MinValue="0" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxEditProductionSubmit"
-							Text="Submit"
+							Text="Save"
 							Icon="Add"
 							Disabled="true">
 							<DirectEvents>

@@ -33,7 +33,7 @@
 				<ext:FormPanel runat="server"
 					ID="uxAddProductionForm"
 					Layout="FormLayout"
-					Hidden="true">
+					Hidden="true" DefaultButton="uxAddProductionSubmit">
 					<Items>
 						<ext:DropDownField runat="server" Editable="false"
 							ID="uxAddProductionTask"
@@ -185,7 +185,7 @@
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxAddProductionSubmit"
-							Text="Submit"
+							Text="Save"
 							Icon="Add"
 							Disabled="true">
 							<DirectEvents>
@@ -211,7 +211,7 @@
 				<ext:FormPanel runat="server"
 					ID="uxEditProductionForm"
 					Layout="FormLayout"
-					Hidden="true">
+					Hidden="true" DefaultButton="uxEditProductionSubmit">
 					<Items>
 						<ext:DropDownField runat="server"
 							ID="uxEditProductionTask" Editable="false"
@@ -370,7 +370,7 @@
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxEditProductionSubmit"
-							Text="Submit"
+							Text="Save"
 							Icon="Add"
 							Disabled="true">
 							<DirectEvents>

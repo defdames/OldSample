@@ -31,6 +31,24 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.ResourceManager ResourceManager1;
         
         /// <summary>
+        /// FilterForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FormPanel FilterForm;
+        
+        /// <summary>
+        /// uxRRCI control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxRRCI;
+        
+        /// <summary>
         /// uxAddAppReqeusted control.
         /// </summary>
         /// <remarks>
@@ -58,13 +76,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Model Model3;
         
         /// <summary>
-        /// uxAddServiceUnitCI control.
+        /// uxAddServiceUnit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ComboBox uxAddServiceUnitCI;
+        protected global::Ext.Net.ComboBox uxAddServiceUnit;
         
         /// <summary>
         /// uxAddServiceUnitStore control.
@@ -85,13 +103,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Model Model5;
         
         /// <summary>
-        /// uxAddSubDivCI control.
+        /// uxAddSubDiv control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ComboBox uxAddSubDivCI;
+        protected global::Ext.Net.ComboBox uxAddSubDiv;
         
         /// <summary>
         /// uxAddSubDivStore control.

@@ -45,19 +45,18 @@
     <form id="form1" runat="server">
         <div>
             <ext:ResourceManager ID="ResourceManager1" runat="server" />
-            <ext:FormPanel ID="FormPanel1" runat="server" Margin="5" Title="Filter State Crossing List">
+            <ext:FormPanel ID="uxFilterForm" runat="server" Margin="5" Title="Filter Application Date">
                 <Items>
                     <ext:FieldSet ID="FieldSet1" runat="server" Title="Filter">
                         <Items>
+                            <ext:TextField ID="uxRRCI" runat="server" FieldLabel="Railroad" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" Hidden="true" />
 
-                            <ext:DateField ID="uxAddEntryDate" runat="server" AnchorHorizontal="20%" FieldLabel="Start Date" LabelAlign="Right" AllowBlank="false" Editable="false" TabIndex="2" />
-                            <ext:DateField ID="DateField1" runat="server" AnchorHorizontal="20%" FieldLabel="End Date" LabelAlign="Right" AllowBlank="false" Editable="false" TabIndex="2" />
 
                             <ext:ComboBox ID="uxAddAppReqeusted"
                                 runat="server"
                                 FieldLabel="Application #"
                                 LabelAlign="Right"
-                                AnchorHorizontal="20%"
+                                AnchorHorizontal="25%"
                                 DisplayField="type"
                                 ValueField="type"
                                 QueryMode="Local"
@@ -78,14 +77,15 @@
                                     </ext:Store>
                                 </Store>
                             </ext:ComboBox>
-
-                            <ext:ComboBox ID="uxAddServiceUnitCI"
+                            <ext:DateField ID="uxStartDate" runat="server" AnchorHorizontal="25%" FieldLabel="Start Date" LabelAlign="Right" Editable="false" TabIndex="2" EmptyText="ALL" />
+                            <ext:DateField ID="uxEndDate" runat="server" AnchorHorizontal="25%" FieldLabel="End Date" LabelAlign="Right"  Editable="false" TabIndex="2" EmptyText="ALL" />
+                            <ext:ComboBox ID="uxAddServiceUnit"
                                 runat="server" FieldLabel="Service Unit"
                                 LabelAlign="Right"
-                                AnchorHorizontal="20%"
+                                AnchorHorizontal="25%"
                                 DisplayField="service_unit"
                                 ValueField="service_unit"
-                                QueryMode="Local" TypeAhead="true" TabIndex="3" AllowBlank="false" ForceSelection="true">
+                                QueryMode="Local" TypeAhead="true" TabIndex="3" AllowBlank="false" ForceSelection="true" EmptyText="ALL">
                                 <Store>
                                     <ext:Store runat="server"
                                         ID="uxAddServiceUnitStore">
@@ -99,25 +99,25 @@
                                         </Model>
                                     </ext:Store>
                                 </Store>
-                                <%--  <DirectEvents>
-                                                    <Select OnEvent="deLoadSubDiv">
-                                                        <ExtraParams>
-                                                            <ext:Parameter Name="Type" Value="Add" />
-                                                        </ExtraParams>
-                                                    </Select>
-                                                </DirectEvents>
-                                                <Listeners>
-                                                    <Select Handler="#{uxAddSubDivStore}.load()" />
-                                                </Listeners>--%>
+                            <DirectEvents>
+                                <Select OnEvent="deLoadSubDiv">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="Type" Value="Add" />
+                                    </ExtraParams>
+                                </Select>
+                            </DirectEvents>
+                            <Listeners>
+                                <Select Handler="#{uxAddSubDivStore}.load()" />
+                            </Listeners>
                             </ext:ComboBox>
-                            <ext:ComboBox ID="uxAddSubDivCI"
+                            <ext:ComboBox ID="uxAddSubDiv"
                                 runat="server"
                                 FieldLabel="Sub-Division"
-                                LabelAlign="Right"
-                                AnchorHorizontal="20%"
+                                LabelAlign="Right"                                
+                                AnchorHorizontal="25%"
                                 DisplayField="sub_division"
                                 ValueField="sub_division"
-                                TypeAhead="true" TabIndex="5" AllowBlank="false" ForceSelection="true">
+                                TypeAhead="true" TabIndex="5" AllowBlank="false" ForceSelection="true" EmptyText="ALL">
                                 <Store>
                                     <ext:Store runat="server"
                                         ID="uxAddSubDivStore">
@@ -137,13 +137,13 @@
                                 ID="uxAddStateComboBox"
                                 FieldLabel="State"
                                 LabelAlign="Right"
-                                AnchorHorizontal="20%"
+                                AnchorHorizontal="25%"
                                 DisplayField="name"
                                 ValueField="name"
                                 QueryMode="Local"
                                 TypeAhead="true"
                                 AllowBlank="false"
-                                ForceSelection="true" TabIndex="4">
+                                ForceSelection="true" TabIndex="4" EmptyText="ALL">
                                 <Store>
                                     <ext:Store ID="uxAddStateList" runat="server" AutoDataBind="true">
                                         <Model>
@@ -167,32 +167,22 @@
                 <BottomBar>
                     <ext:Toolbar ID="Toolbar1" runat="server">
                         <Items>
-                            <ext:Button runat="server"
-                                ID="Button4"
-                                Text="Run"
-                                Icon="PlayGreen">
-                                <%-- <DirectEvents>
-                        <Click OnEvent="deExportToPDF" IsUpload="true">
-                            <ExtraParams>
-                                <ext:Parameter Name="CrossingId" Value="#{GridPanel1}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                               <ext:Parameter Name="selectedCrossings" Value="Ext.encode(#{GridPanel1}.getRowsValues())" Mode="Raw" />
-                            </ExtraParams>
-                        </Click>
-                    </DirectEvents>--%>
-                            </ext:Button>
-                            <ext:Button runat="server"
-                                ID="Button3"
-                                Text="Cancel"
-                                Icon="StopRed">
-                                <%-- <DirectEvents>
-                        <Click OnEvent="deExportToPDF" IsUpload="true">
-                            <ExtraParams>
-                                <ext:Parameter Name="CrossingId" Value="#{GridPanel1}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                               <ext:Parameter Name="selectedCrossings" Value="Ext.encode(#{GridPanel1}.getRowsValues())" Mode="Raw" />
-                            </ExtraParams>
-                        </Click>
-                    </DirectEvents>--%>
-                            </ext:Button>
+                             <ext:Button runat="server"
+                            ID="Button4"
+                            Text="Run"
+                            Icon="PlayGreen">
+                            <Listeners>
+                                <Click Handler="#{uxAppDateStore}.load()" />
+                            </Listeners>
+                        </ext:Button>
+                        <ext:Button runat="server"
+                            ID="Button3"
+                            Text="Cancel"
+                            Icon="StopRed">
+                             <DirectEvents>
+                        <Click OnEvent="deClearFilters" />
+                    </DirectEvents>
+                        </ext:Button>
                         </Items>
                     </ext:Toolbar>
                 </BottomBar>
@@ -206,12 +196,10 @@
                 Frame="false"
                 Resizable="false"
                 Collapsible="false">
-
-
                 <Store>
                     <ext:Store ID="uxAppDateStore"
                         runat="server"
-                        GroupField="SUB_DIVISION" OnReadData="deAppDateGrid" AutoLoad="false">
+                        GroupField="SUB_DIVISION" AutoDataBind="true" OnReadData="deAppDateGrid" AutoLoad="false">
                         <Model>
                             <ext:Model ID="Model1" runat="server">
                                 <Fields>
@@ -271,25 +259,7 @@
                 <TopBar>
                     <ext:Toolbar ID="Toolbar2" runat="server">
                         <Items>
-                            <ext:Button ID="Button1" runat="server" Text="Sub-Division Filter" Icon="Find">
-                                <Menu>
-                                    <ext:Menu ID="Menu1" runat="server">
-                                        <Items>
-                                            <ext:MenuItem ID="MenuItem1" runat="server" Text="Show Filter">
-                                                <Listeners>
-                                                    <Click Handler="#{uxSubDiv}.show();" />
-                                                </Listeners>
-                                            </ext:MenuItem>
-                                            <ext:MenuItem ID="MenuItem2" runat="server" Text="Hide Filter">
-                                                <Listeners>
-                                                    <Click Handler="#{uxSubDiv}.hide();" />
-                                                </Listeners>
-                                            </ext:MenuItem>
-                                        </Items>
-                                    </ext:Menu>
-                                </Menu>
-
-                            </ext:Button>
+                           
                             <ext:Button ID="Button2"
                                 runat="server"
                                 Text="Print"

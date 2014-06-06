@@ -33,7 +33,7 @@
 				<ext:FormPanel runat="server"
 					ID="uxAddEmployeeForm"
 					Layout="FormLayout"
-					Hidden="false" Width="600">
+					Hidden="false" Width="600" DefaultButton="uxAddEmployeeSubmit">
 					<Items>
 						<ext:DropDownField runat="server"
 							ID="uxAddEmployeeEmpDropDown"
@@ -178,17 +178,17 @@
 							FieldLabel="Time In"
 							MsgTarget="Side" Width="500">
 							<Items>
-								<ext:DateField runat="server"
+								<ext:TextField runat="server"
 									ID="uxAddEmployeeTimeInDate"
-									EnableKeyEvents="true"
 									IsRemoteValidation="true"
-									AllowBlank="false">
+									AllowBlank="false"
+									ReadOnly="true">
 									<RemoteValidation OnValidation="ValidateDateTime">
 										<ExtraParams>
 											<ext:Parameter Name="Type" Value="Add" />
 										</ExtraParams>
 									</RemoteValidation>
-								</ext:DateField>
+								</ext:TextField>
 								<ext:TimeField runat="server"
 									ID="uxAddEmployeeTimeInTime"
 									IsRemoteValidation="true"
@@ -382,7 +382,7 @@
 						<ext:Button runat="server"
 							ID="uxAddEmployeeSubmit"
 							Icon="Add"
-							Text="Submit"
+							Text="Save"
 							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deAddEmployee">
@@ -407,7 +407,7 @@
 				<ext:FormPanel runat="server"
 					ID="uxEditEmployeeForm"
 					Layout="FormLayout"
-					Hidden="true" Width="600">
+					Hidden="true" Width="600" DefaultButton="uxEditEmployeeSubmit">
 					<Items>
 						<ext:DropDownField runat="server" Editable="false"
 							ID="uxEditEmployeeEmpDropDown"
@@ -758,7 +758,7 @@
 						<ext:Button runat="server"
 							ID="uxEditEmployeeSubmit"
 							Icon="Add"
-							Text="Submit"
+							Text="Save"
 							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deEditEmployee">

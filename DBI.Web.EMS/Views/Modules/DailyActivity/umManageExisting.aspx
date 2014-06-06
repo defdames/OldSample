@@ -64,6 +64,7 @@
 		<ext:Viewport runat="server" ID="uxViewPort" Layout="AccordionLayout" IDMode="Explicit" Namespace="App" RenderXType="True">
 			<Items>
 				<ext:GridPanel runat="server" ID="uxManageGrid" Layout="FitLayout" Title="Headers" SelectionMemoryEvents="false" SelectionMemory="true">
+					
 					<SelectionModel>
 						<ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
 					</SelectionModel>
@@ -80,10 +81,11 @@
 								<ext:ModelField Name="DA_HEADER_ID" Type="String" />
 								<ext:ModelField Name="WARNING" Type="String" />
 								<ext:ModelField Name="WARNING_TYPE" Type="String" />
+                                <ext:ModelField Name="STATUS" Type="Int" />
 							</Fields>
 							<Proxy>
 								<ext:PageProxy  />
-							</Proxy>
+							</Proxy>                           
 						</ext:Store>
 					</Store>
 					<ColumnModel>
@@ -140,6 +142,7 @@
 					<TopBar>
 						<ext:Toolbar runat="server">
 							<Items>
+        						<ext:Hidden runat="server" ID="uxHiddenApprove" />
 								<ext:Button runat="server"
 									ID="uxCreateActivityButton"
 									Text="Create Activity"
@@ -159,6 +162,7 @@
 											<ExtraParams>
 												<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
 											</ExtraParams>
+											<EventMask ShowMask="true" />
 										</Click>
 									</DirectEvents>
 								</ext:Button>
@@ -227,6 +231,7 @@
 											<ExtraParams>
 												<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
 											</ExtraParams>
+											<EventMask ShowMask="true" />
 										</Click>
 									</DirectEvents>
 								</ext:Button>
@@ -241,15 +246,21 @@
 											<ExtraParams>
 												<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
 											</ExtraParams>
+											<EventMask ShowMask="true" />
 										</Click>
 									</DirectEvents>
 								</ext:Button>
 								<ext:ToolbarSpacer runat="server" />
-								<ext:Checkbox runat="server" ID="uxTogglePosted" FieldLabel="Show Posted">
+								<ext:Checkbox runat="server" ID="uxTogglePosted" BoxLabel="Show Posted" BoxLabelAlign="After">
 									<Listeners>
 										<Change Handler="#{uxManageGridStore}.reload()" />
 									</Listeners>
 								</ext:Checkbox>
+                                <ext:Checkbox runat="server" ID="uxToggleInactive" BoxLabel="Show Inactive" BoxLabelAlign="After">
+                                    <Listeners>
+                                        <Change Handler="#{uxManageGridStore}.reload()" />
+                                    </Listeners>
+                                </ext:Checkbox>
 							</Items>
 						</ext:Toolbar>
 					</TopBar>
@@ -373,6 +384,7 @@
 											<ExtraParams>
 												<ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
 											</ExtraParams>
+											<EventMask ShowMask="true" />
 										</Click>
 									</DirectEvents>
 								</ext:Button>

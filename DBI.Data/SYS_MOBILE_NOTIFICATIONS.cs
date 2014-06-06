@@ -21,5 +21,8 @@ namespace DBI.Data
         public Nullable<System.DateTime> PROCESSED_DATE { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public string PROCESSING_ERROR { get; set; }
+        public Nullable<System.DateTime> MODIFY_DATE { get; set; }
+        public string CREATED_BY { get; set; }
+        public string MODIFIED_BY { get; set; }
     }
 }

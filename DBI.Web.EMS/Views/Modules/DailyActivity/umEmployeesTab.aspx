@@ -107,6 +107,7 @@
 					<ext:Column runat="server"
 						ID="uxRoleTypeColumn"
 						Text="Role Type"
+						Hidden="true"
 						DataIndex="ROLE_TYPE"
 						Flex="1" />
 					<ext:Column runat="server"

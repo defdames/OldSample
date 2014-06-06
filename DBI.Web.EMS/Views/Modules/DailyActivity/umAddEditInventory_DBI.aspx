@@ -92,7 +92,7 @@
 				<ext:FormPanel runat="server"
 					ID="uxAddInventoryForm"
 					Layout="FormLayout"
-					Hidden="true">
+					Hidden="true" DefaultButton="uxAddInventorySubmit">
 					<Items>
 						<ext:DropDownField runat="server" Editable="false"
 							ID="uxAddInventoryMix"
@@ -310,7 +310,7 @@
 						<ext:Button runat="server"
 							ID="uxAddInventorySubmit"
 							Icon="Add"
-							Text="Submit"
+							Text="Save"
 							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deAddInventory">
@@ -338,7 +338,7 @@
 				<ext:FormPanel runat="server"
 					ID="uxEditInventoryForm"
 					Layout="FormLayout"
-					Hidden="true">
+					Hidden="true" DefaultButton="uxEditInventorySubmit">
 					<Items>
 						<ext:TextField runat="server"
 							ID="uxEditInventoryMix"
@@ -495,7 +495,7 @@
 						<ext:Button runat="server"
 							ID="uxEditInventorySubmit"
 							Icon="Add"
-							Text="Submit">
+							Text="Save">
 							<DirectEvents>
 								<Click OnEvent="deEditInventory">
 									<ExtraParams>

@@ -23,7 +23,6 @@
         <EntityTypeShape EntityType="OracleModel.SYS_ACTIVITY" Width="1.5" PointX="3.75" PointY="4.75" />
         <AssociationConnector Association="OracleModel.SYS_ACTIVITYSYS_USER_ACTIVITY" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_DATA_ENTRY" Width="1.5" PointX="22.875" PointY="1.625" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING_SUB_DIVISION" Width="1.5" PointX="29.125" PointY="5.5" />
         <EntityTypeShape EntityType="OracleModel.PA_TASKS_V" Width="1.5" PointX="0.5" PointY="8.375" />
         <EntityTypeShape EntityType="OracleModel.PA_LOCATIONS_V" Width="1.5" PointX="14.75" PointY="4" />
         <EntityTypeShape EntityType="OracleModel.EXPENDITURE_TYPE_V" Width="1.5" PointX="14.75" PointY="7.375" />
@@ -97,13 +96,12 @@
         <AssociationConnector Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID" />
         <AssociationConnector Association="OracleModel.FK_INCIDENT_CROSSING_ID" />
         <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
-        <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="1.25" PointY="31.25" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" Width="1.5" PointX="1" PointY="21.375" />
         <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_PROJECT" Width="1.5" PointX="21.625" PointY="11.5" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_RAILROAD" Width="1.5" PointX="24.625" PointY="13" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_INVENTORY" Width="1.5" PointX="5.625" PointY="21.375" />
-        <EntityTypeShape EntityType="OracleModel.JOB_COST_CLASSES" Width="1.5" PointX="6.6409545664866245" PointY="15.271937302906038" />
+        <EntityTypeShape EntityType="OracleModel.JOB_COST_CLASSES" Width="1.5" PointX="13.75" PointY="15.375" />
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_VERSION" Width="1.5" PointX="18" PointY="25.875" />
         <AssociationConnector Association="OracleModel.FK_CONTACTS_RAILROAD_ID" />
         <AssociationConnector Association="OracleModel.FK_PROJECT_RAILROAD_ID" />
@@ -131,6 +129,21 @@
         <EntityTypeShape EntityType="OracleModel.BUD_BID_PROJECTS" Width="1.5" PointX="19.25" PointY="86.25" />
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" Width="1.5" PointX="10.75" PointY="83.125" />
         <AssociationConnector Association="OracleModel.FK_PROJECTS_STATUS_ID" />
+        <EntityTypeShape EntityType="OracleModel.JOB_COST_BALANCE_TYPE" Width="1.5" PointX="42.875" PointY="3.5" />
+        <EntityTypeShape EntityType="OracleModel.JOB_COST_DATE" Width="1.5" PointX="45.875" PointY="5" />
+        <EntityTypeShape EntityType="OracleModel.JOB_COST_PROJECTS" Width="1.5" PointX="48.875" PointY="6.5" />
+        <EntityTypeShape EntityType="OracleModel.JOB_COST_ROLLUPS" Width="1.5" PointX="31.375" PointY="8" />
+        <EntityTypeShape EntityType="OracleModel.JOB_COST_TASK" Width="1.5" PointX="33.875" PointY="9.5" />
+        <AssociationConnector Association="OracleModel.FK_PROJECT_TYPE_ID" />
+        <AssociationConnector Association="OracleModel.FK_ROLLUPS_TYPE_ID" />
+        <AssociationConnector Association="OracleModel.FK_TASK_TYPE_ID" />
+        <AssociationConnector Association="OracleModel.FK_PROJECT_DATE_ID" />
+        <AssociationConnector Association="OracleModel.FK_ROLLUPS_DATE_ID" />
+        <AssociationConnector Association="OracleModel.FK_TASK_DATE_ID" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_SERVICE_UNIT" Width="1.5" PointX="19.125" PointY="17.5" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_SUB_DIVISION" Width="1.5" PointX="19" PointY="14.25" />
+        <AssociationConnector Association="OracleModel.FK_SUB_SERVICE_ID" />
+        <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="1.125" PointY="30.5" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

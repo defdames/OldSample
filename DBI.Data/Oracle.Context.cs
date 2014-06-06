@@ -39,7 +39,6 @@ namespace DBI.Data
         public DbSet<UNIT_OF_MEASURE_V> UNIT_OF_MEASURE_V { get; set; }
         public DbSet<SYS_ACTIVITY> SYS_ACTIVITY { get; set; }
         public DbSet<CROSSING_DATA_ENTRY> CROSSING_DATA_ENTRY { get; set; }
-        public DbSet<CROSSING_SUB_DIVISION> CROSSING_SUB_DIVISION { get; set; }
         public DbSet<PA_TASKS_V> PA_TASKS_V { get; set; }
         public DbSet<PA_LOCATIONS_V> PA_LOCATIONS_V { get; set; }
         public DbSet<EXPENDITURE_TYPE_V> EXPENDITURE_TYPE_V { get; set; }
@@ -89,7 +88,6 @@ namespace DBI.Data
         public DbSet<GL_ACCOUNTS_V> GL_ACCOUNTS_V { get; set; }
         public DbSet<ORG_HIER_V> ORG_HIER_V { get; set; }
         public DbSet<CROSSING> CROSSINGS { get; set; }
-        public DbSet<TIME_CLOCK> TIME_CLOCK { get; set; }
         public DbSet<DAILY_ACTIVITY_PRODUCTION> DAILY_ACTIVITY_PRODUCTION { get; set; }
         public DbSet<CROSSING_PROJECT> CROSSING_PROJECT { get; set; }
         public DbSet<CROSSING_RAILROAD> CROSSING_RAILROAD { get; set; }
@@ -110,5 +108,13 @@ namespace DBI.Data
         public DbSet<SYS_SECURITY_AUDIT> SYS_SECURITY_AUDIT { get; set; }
         public DbSet<BUD_BID_PROJECTS> BUD_BID_PROJECTS { get; set; }
         public DbSet<OVERHEAD_BUDGET_TYPE> OVERHEAD_BUDGET_TYPE { get; set; }
+        public DbSet<JOB_COST_BALANCE_TYPE> JOB_COST_BALANCE_TYPE { get; set; }
+        public DbSet<JOB_COST_DATE> JOB_COST_DATE { get; set; }
+        public DbSet<JOB_COST_PROJECTS> JOB_COST_PROJECTS { get; set; }
+        public DbSet<JOB_COST_ROLLUPS> JOB_COST_ROLLUPS { get; set; }
+        public DbSet<JOB_COST_TASK> JOB_COST_TASK { get; set; }
+        public DbSet<CROSSING_SERVICE_UNIT> CROSSING_SERVICE_UNIT { get; set; }
+        public DbSet<CROSSING_SUB_DIVISION> CROSSING_SUB_DIVISION { get; set; }
+        public DbSet<TIME_CLOCK> TIME_CLOCK { get; set; }
     }
 }

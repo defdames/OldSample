@@ -35,7 +35,7 @@
                             <Store>
                                 <ext:Store runat="server" ID="uxSegment1Store" AutoLoad="false">
                                     <Proxy>
-                                        <ext:AjaxProxy Url="GenericHandlers/GLCompanyCodes.ashx">
+                                        <ext:AjaxProxy Url="~/Views/Modules/Overhead/GenericHandlers/GLCompanyCodes.ashx">
                                             <ActionMethods Read="POST" />
                                             <Reader>
                                                 <ext:JsonReader Root="glcodes" TotalProperty="total" />
@@ -73,7 +73,7 @@
                             <Store>
                                 <ext:Store ID="uxSegment2Store" runat="server" AutoLoad="false">
                                     <Proxy>
-                                        <ext:AjaxProxy Url="GenericHandlers/GLLocationCodes.ashx">
+                                        <ext:AjaxProxy Url="~/Views/Modules/Overhead/GenericHandlers/GLLocationCodes.ashx">
                                             <ActionMethods Read="POST" />
                                             <Reader>
                                                 <ext:JsonReader Root="glcodes" TotalProperty="total" />
@@ -115,7 +115,7 @@
                             <Store>
                                 <ext:Store ID="uxSegment3Store" runat="server" AutoLoad="false">
                                     <Proxy>
-                                        <ext:AjaxProxy Url="GenericHandlers/GLDivisionCodes.ashx">
+                                        <ext:AjaxProxy Url="~/Views/Modules/Overhead/GenericHandlers/GLDivisionCodes.ashx">
                                             <ActionMethods Read="POST" />
                                             <Reader>
                                                 <ext:JsonReader Root="glcodes" TotalProperty="total" />
@@ -159,7 +159,7 @@
                             <Store>
                                 <ext:Store ID="uxSegment4Store" runat="server" AutoLoad="false">
                                     <Proxy>
-                                        <ext:AjaxProxy Url="GenericHandlers/GLBranchCodes.ashx">
+                                        <ext:AjaxProxy Url="~/Views/Modules/Overhead/GenericHandlers/GLBranchCodes.ashx">
                                             <ActionMethods Read="POST" />
                                             <Reader>
                                                 <ext:JsonReader Root="glcodes" TotalProperty="total" />

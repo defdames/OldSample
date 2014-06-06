@@ -57,7 +57,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 var TotalMinutes = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                                    where d.DAILY_ACTIVITY_HEADER.STATUS != 4 && d.DAILY_ACTIVITY_HEADER.STATUS != 5 && d.PERSON_ID == PersonId && EntityFunctions.TruncateTime(d.TIME_IN) == EntityFunctions.TruncateTime(HeaderDate)
+                                    where d.DAILY_ACTIVITY_HEADER.STATUS != 4 && d.DAILY_ACTIVITY_HEADER.STATUS != 5 && d.PERSON_ID == PersonId && EntityFunctions.TruncateTime(d.DAILY_ACTIVITY_HEADER.DA_DATE) == EntityFunctions.TruncateTime(HeaderDate)
                                     group d by new { d.PERSON_ID } into g
                                     select g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value))).SingleOrDefault();
                 if (TotalMinutes / 60 > Hours)
@@ -178,7 +178,45 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
-        public static List<WarningData> employeeTimeOverlapCheck(long PersonId, DateTime HeaderDate)
+        public static bool employeeTimeOverlapCheck(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
+                List<DAILY_ACTIVITY_EMPLOYEE> EmployeeList = _context.DAILY_ACTIVITY_EMPLOYEE.Where(x => x.HEADER_ID == HeaderId).ToList();
+                foreach (DAILY_ACTIVITY_EMPLOYEE Person in EmployeeList)
+                {
+                    DateTime HeaderDate = (DateTime)Person.DAILY_ACTIVITY_HEADER.DA_DATE;
+                    List<DAILY_ACTIVITY_EMPLOYEE> EmployeeData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                                                  join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                                                  orderby d.TIME_IN ascending
+                                                                  where d.PERSON_ID == Person.PERSON_ID && EntityFunctions.TruncateTime(Person.TIME_IN) == EntityFunctions.TruncateTime(HeaderDate) && h.STATUS != 5
+                                                                  select d).ToList();
+                    DateTime PreviousTimeIn = DateTime.Parse("1/11/1955");
+                    DateTime PreviousTimeOut = DateTime.Parse("1/11/1955");
+                    long PreviousHeader = 0;
+                    int count = 0;
+                    foreach (DAILY_ACTIVITY_EMPLOYEE Employee in EmployeeData)
+                    {
+                        DateTime CurrentTimeIn = (DateTime)Employee.TIME_IN;
+                        DateTime CurrentTimeOut = (DateTime)Employee.TIME_OUT;
+                        if (count > 0)
+                        {
+
+                            if (CurrentTimeIn < PreviousTimeOut)
+                            {
+                                return true;
+                            }
+                        }
+                        PreviousTimeIn = CurrentTimeIn;
+                        PreviousTimeOut = CurrentTimeOut;
+                        PreviousHeader = Employee.HEADER_ID;
+                        count++;
+                    }
+                }
+                return false;
+            }
+        }
+        public static List<WarningData> employeeTimeOverlapCheck(long PersonId, DateTime HeaderDate, long HeaderId)
         {
             using (Entities _context = new Entities())
             {
@@ -202,7 +240,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         if (CurrentTimeIn < PreviousTimeOut)
                         {
                             string Name = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == PersonId).Select(x => x.EMPLOYEE_NAME).Single();
-                            HeaderIdList.Add(new WarningData { WarningType = "Error", RecordType = Name, AdditionalInformation = string.Format("Employee has time overlap on DRS Id:{0}", PreviousHeader.ToString()) });
+                            if (PreviousHeader == HeaderId)
+                            {
+                                HeaderIdList.Add(new WarningData { WarningType = "Error", RecordType = Name, AdditionalInformation = string.Format("Employee has time overlap on DRS Id:{0}", Employee.HEADER_ID.ToString()) });
+                            }
+                            else
+                            {
+                                HeaderIdList.Add(new WarningData { WarningType = "Error", RecordType = Name, AdditionalInformation = string.Format("Employee has time overlap on DRS Id:{0}", PreviousHeader.ToString()) });
+                            }
                         }
                     }
                     PreviousTimeIn = CurrentTimeIn;
@@ -244,6 +289,36 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     }
                 }
                 return OffendingHeaders;
+            }
+        }
+
+        public static bool EquipmentBusinessUnitCheck(long HeaderId, string type)
+        {
+            using (Entities _context = new Entities())
+            {
+                var HeaderInfo = (from d in _context.DAILY_ACTIVITY_HEADER
+                                  where d.HEADER_ID == HeaderId
+                                  select new { d.HEADER_ID, d.PROJECT_ID, d.DAILY_ACTIVITY_EQUIPMENT }).Single();
+
+                long ProjectId = (long)HeaderInfo.PROJECT_ID;
+                long? ProjectOrgId = (from d in _context.PROJECTS_V
+                                      where d.PROJECT_ID == ProjectId
+                                      select d.ORG_ID).Single<long?>();
+                foreach (DAILY_ACTIVITY_EQUIPMENT Equipment in HeaderInfo.DAILY_ACTIVITY_EQUIPMENT)
+                {
+                    long? EquipmentBusinessUnit = (from p in _context.PROJECTS_V
+                                                   where p.PROJECT_ID == Equipment.PROJECT_ID
+                                                   select p.ORG_ID).Single();
+                    if (EquipmentBusinessUnit != ProjectOrgId)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                return false;
             }
         }
 
@@ -297,6 +372,36 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        public static bool EmployeeBusinessUnitCheck(long HeaderId, string Type)
+        {
+            using (Entities _context = new Entities())
+            {
+                var HeaderInfo = (from d in _context.DAILY_ACTIVITY_HEADER
+                                  where d.HEADER_ID == HeaderId
+                                  select new { d.HEADER_ID, d.PROJECT_ID, d.DAILY_ACTIVITY_EMPLOYEE }).Single();
+                long ProjectId = (long)HeaderInfo.PROJECT_ID;
+                long? ProjectOrgId = (from d in _context.PROJECTS_V
+                                      where d.PROJECT_ID == ProjectId
+                                      select d.ORG_ID).Single<long?>();
+                foreach (DAILY_ACTIVITY_EMPLOYEE Employee in HeaderInfo.DAILY_ACTIVITY_EMPLOYEE)
+                {
+                    long? EmployeeOrgId = (from e in _context.EMPLOYEES_V
+                                           where e.PERSON_ID == Employee.PERSON_ID
+                                           select e.ORGANIZATION_ID).Single();
+                    long EmployeeBusinessUnit = EMPLOYEES_V.GetEmployeeBusinessUnit((long)EmployeeOrgId);
+                    if (EmployeeBusinessUnit != ProjectOrgId)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                return false;
+            }
+
+        }
         public static WarningData EmployeeBusinessUnitCheck(long EmployeeId)
         {
             using (Entities _context = new Entities())
@@ -382,21 +487,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                     join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                     join em in _context.EMPLOYEES_V on e.PERSON_ID equals em.PERSON_ID
                                     where e.HEADER_ID == HeaderId
-                                    select new {e.EMPLOYEE_ID, e.PERSON_ID, em.EMPLOYEE_NAME, e.DAILY_ACTIVITY_HEADER.DA_DATE, e.TRAVEL_TIME, e.DRIVE_TIME, p.ORG_ID }).ToList();
+                                    select new {e.EMPLOYEE_ID, e.PERSON_ID, em.EMPLOYEE_NAME, h.DA_DATE, e.TRAVEL_TIME, e.DRIVE_TIME, p.ORG_ID}).ToList();
                 foreach (var Employee in EmployeeList)
                 {
                     var TotalMinutes = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                         join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                                        where h.DA_DATE == Employee.DA_DATE && d.PERSON_ID == Employee.PERSON_ID && h.STATUS != 5
+                                        where EntityFunctions.TruncateTime(h.DA_DATE) == EntityFunctions.TruncateTime(Employee.DA_DATE) && d.PERSON_ID == Employee.PERSON_ID && h.STATUS != 5
                                         group d by new { d.PERSON_ID } into g
-                                        select new { g.Key.PERSON_ID, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value)) }).SingleOrDefault();
+                                        select new { g.Key.PERSON_ID, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value)), TravelTime = g.Sum(d => d.TRAVEL_TIME), DriveTime = g.Sum(d => d.DRIVE_TIME) }).SingleOrDefault();
                     
                     if (Employee.ORG_ID == 121 && TotalMinutes != null) 
                     {
                         decimal TotalTime = (decimal)TotalMinutes.TotalMinutes;
                         try
                         {
-                            TotalTime = TotalTime - (decimal)((Employee.TRAVEL_TIME == null ?0:Employee.TRAVEL_TIME * 60) - (Employee.DRIVE_TIME == null ?0:Employee.DRIVE_TIME * 60));
+                            decimal TravelDeduct = (decimal)((TotalMinutes.TravelTime == null ?0:TotalMinutes.TravelTime * 60));
+                            TotalTime = TotalTime - (decimal)(TotalMinutes.TravelTime == null ?0:TotalMinutes.TravelTime * 60) - (decimal)(TotalMinutes.DriveTime == null ?0:TotalMinutes.DriveTime * 60);
                         }
                         catch { }
                         if (TotalTime >= 308)
@@ -604,15 +710,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
     public class HeaderData
     {
         public long HEADER_ID { get; set; }
-        public long PROJECT_ID { get; set; }
-        public DateTime DA_DATE { get; set; }
+        public long? PROJECT_ID { get; set; }
+        public DateTime? DA_DATE { get; set; }
         public string SEGMENT1 { get; set; }
         public string LONG_NAME { get; set; }
-        public decimal DA_HEADER_ID { get; set; }
+        public decimal? DA_HEADER_ID { get; set; }
         public string STATUS_VALUE { get; set; }
         public string WARNING { get; set; }
         public string WARNING_TYPE { get; set; }
-        public int STATUS { get; set; }
+        public int? STATUS { get; set; }
+        public long? ORG_ID { get; set; }
     }
 
     public class WarningData

@@ -50,7 +50,8 @@ namespace DBI.Web.EMS.Views.Modules.Security
 
             var UserPermissions = SYS_PERMISSIONS.GetPermissions(UserId);
             CheckboxSelectionModel GridModel = uxEditUserGrid.GetSelectionModel() as CheckboxSelectionModel;
-            GridModel.DeselectAll();
+            GridModel.SelectedRows.Clear();
+            //GridModel.DeselectAll();
             GridModel.UpdateSelection();
             foreach (var UserPermission in UserPermissions)
             {
@@ -244,5 +245,48 @@ namespace DBI.Web.EMS.Views.Modules.Security
             });
             uxTwoGridWindow.Hide();
         }
+
+
+        protected void deViewUserProfileOptions(object sender, DirectEventArgs e)
+        {
+            string selectedUserID = e.ExtraParams["UserID"];
+
+            string URL = string.Empty;
+            URL = "/Views/Modules/Security/UserOptions/umUserProfileOptions.aspx?userID=" + selectedUserID;
+
+
+            Ext.Net.Button closeButton = new Ext.Net.Button();
+            closeButton.Text = "Close Form";
+            closeButton.Listeners.Click.Handler = "Ext.getCmp('uxUserProfileOptionWindow').close();";
+
+            Window win = new Window
+            {
+                ID = "uxUserProfileOptionWindow",
+                Title = "User Profile Options",
+                Height = 700,
+                Width = 800,
+                Modal = true,
+                CloseAction = CloseAction.Destroy,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = URL,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                },          
+            };
+
+            win.Buttons.Add(closeButton);
+            win.Render(this.Form);
+            win.Show();
+        }
+
+
     }
 }
+
+ 

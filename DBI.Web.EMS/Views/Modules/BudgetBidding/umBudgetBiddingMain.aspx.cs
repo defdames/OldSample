@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Ext.Net;
 using DBI.Data;
-using DBI.Data.Oracle.HR;
+using DBI.Data.Oracle;
 
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 {
@@ -119,7 +119,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             {
                 if (e.NodeID == "0")
                 {
-                    var data = Organizations.legalEntitiesWithActiveBudgetTypes();
+                    var data = HR.ActiveOverheadBudgetLegalEntities();
                     foreach (var view in data)
                     {
                         Node node = new Node();
@@ -132,7 +132,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 else
                 {
                     long nodeID = long.Parse(e.NodeID);
-                    var data = Organizations.hierarchiesByBusinessUnit().Where(a => a.ORGANIZATION_ID == nodeID);
+                    var data = HR.LegalEntityHierarchies().Where(a => a.ORGANIZATION_ID == nodeID);
                     foreach (var view in data)
                     {
                         Node node = new Node();
@@ -150,7 +150,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 string[] selID = e.NodeID.Split(delimChars);
                 long hierarchyID = long.Parse(selID[0].ToString());
                 long orgID = long.Parse(selID[1].ToString());
-                var data = Organizations.organizationsByHierarchy(hierarchyID, orgID);
+                var data = HR.ActiveOrganizationsByHierarchy(hierarchyID, orgID);
                 var OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID);
                 bool addNode;
                 bool leafNode;
@@ -163,7 +163,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                         addNode = false;
                         leafNode = true;
                         colorNode = false;
-                        var nextData = Organizations.organizationsByHierarchy(hierarchyID, view.ORGANIZATION_ID);
+                        var nextData = HR.ActiveOrganizationsByHierarchy(hierarchyID, view.ORGANIZATION_ID);
 
                         // In this org?
                         if (SYS_USER_ORGS.IsInOrg(SYS_USER_INFORMATION.UserID(User.Identity.Name), view.ORGANIZATION_ID) == true)

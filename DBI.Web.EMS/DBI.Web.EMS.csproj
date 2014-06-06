@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisIgnoreGeneratedCode>false</CodeAnalysisIgnoreGeneratedCode>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'PROD|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -39,6 +40,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\DBI.Web.EMS.XML</DocumentationFile>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Antlr3.Runtime">
@@ -62,6 +64,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\lib\EXT\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NinjaNye.SearchExtensions">
+      <HintPath>..\packages\NinjaNye.SearchExtensions.0.6.5193.24776\lib\net40\NinjaNye.SearchExtensions.dll</HintPath>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -122,6 +127,7 @@
     <Content Include="Views\Modules\BudgetBidding\umBlankBudget.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umBudgetBiddingMain.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umYearBudget.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\ManageKCS.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umAppDate.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingHome.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umDataEntryMain.aspx" />
@@ -133,6 +139,9 @@
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingInfoTab.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingSecurity.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umInspectionReport.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umMissingROW.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umPrivateCrossingReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umRailRoadProject.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umRailroadToolbar.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umReportsMain.aspx" />
@@ -176,11 +185,13 @@
     <Content Include="Views\Modules\Overhead\umOrganizationBudgetSecurity.aspx" />
     <Content Include="Views\Modules\Overhead\GLSecurity\umGLSecurity.aspx" />
     <Content Include="Views\Modules\Overhead\umViewBudgets.aspx" />
+    <Content Include="Views\Modules\Security\Options\AddEdit\umAddEditProfileOptions.aspx" />
     <Content Include="Views\Modules\Security\umEditGroups.aspx" />
     <Content Include="Views\Modules\Security\umEditModules.aspx" />
     <Content Include="Views\Modules\Security\umEditOrgs.aspx" />
     <Content Include="Views\Modules\Security\umEditPermissions.aspx" />
     <Content Include="Views\Modules\Security\umEditUsers.aspx" />
+    <Content Include="Views\Modules\Security\Options\umProfileOptions.aspx" />
     <Content Include="Views\Modules\Security\umSecurityLogList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityActivityList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityUsersList.aspx" />
@@ -245,6 +256,13 @@
     </Compile>
     <Compile Include="Views\Modules\BudgetBidding\umYearBudget.aspx.designer.cs">
       <DependentUpon>umYearBudget.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\ManageKCS.aspx.cs">
+      <DependentUpon>ManageKCS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\ManageKCS.aspx.designer.cs">
+      <DependentUpon>ManageKCS.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umAppDate.aspx.cs">
       <DependentUpon>umAppDate.aspx</DependentUpon>
@@ -322,6 +340,27 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx.designer.cs">
       <DependentUpon>umDataEntryTab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umInspectionReport.aspx.cs">
+      <DependentUpon>umInspectionReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umInspectionReport.aspx.designer.cs">
+      <DependentUpon>umInspectionReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umMissingROW.aspx.cs">
+      <DependentUpon>umMissingROW.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umMissingROW.aspx.designer.cs">
+      <DependentUpon>umMissingROW.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umPrivateCrossingReport.aspx.cs">
+      <DependentUpon>umPrivateCrossingReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umPrivateCrossingReport.aspx.designer.cs">
+      <DependentUpon>umPrivateCrossingReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umRailRoadProject.aspx.cs">
       <DependentUpon>umRailRoadProject.aspx</DependentUpon>
@@ -643,6 +682,13 @@
     <Compile Include="Views\Modules\Overhead\umViewBudgets.aspx.designer.cs">
       <DependentUpon>umViewBudgets.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\Security\Options\AddEdit\umAddEditProfileOptions.aspx.cs">
+      <DependentUpon>umAddEditProfileOptions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Security\Options\AddEdit\umAddEditProfileOptions.aspx.designer.cs">
+      <DependentUpon>umAddEditProfileOptions.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\Security\umEditGroups.aspx.cs">
       <DependentUpon>umEditGroups.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -677,6 +723,13 @@
     </Compile>
     <Compile Include="Views\Modules\Security\umEditUsers.aspx.designer.cs">
       <DependentUpon>umEditUsers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Security\Options\umProfileOptions.aspx.cs">
+      <DependentUpon>umProfileOptions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Security\Options\umProfileOptions.aspx.designer.cs">
+      <DependentUpon>umProfileOptions.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\Security\umSecurityLogList.aspx.cs">
       <DependentUpon>umSecurityLogList.aspx</DependentUpon>

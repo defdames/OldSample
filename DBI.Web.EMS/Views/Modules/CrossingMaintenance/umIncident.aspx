@@ -5,6 +5,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    <style type="text/css">
+        .rowBodyCls .x-grid-cell-rowbody {
+            border-style: solid;
+            border-width: 0px 0px 1px;
+            border-color: black;
+        }
+
+        .x-grid-group-title {
+            color: #000000;
+            font: bold 11px/13px tahoma,arial,verdana,sans-serif;
+        }
+
+        .x-grid-group-hd {
+            border-width: 0 0 1px 0;
+            border-style: solid;
+            border-color: #000000;
+            padding: 10px 4px 4px 4px;
+            background: white;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -94,7 +115,7 @@
 
                 <Store>
                     <ext:Store runat="server"
-                        ID="uxIncidentStore" OnReadData="GetIncidentGridData" AutoDataBind="true" AutoLoad="false">
+                        ID="uxIncidentStore" OnReadData="GetIncidentGridData" AutoDataBind="true" AutoLoad="false" GroupField="CROSSING_NUMBER">
                         <Parameters>
                             <ext:StoreParameter Name="CrossingId" Value="#{uxCrossingIncidentGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
                         </Parameters>
@@ -104,6 +125,7 @@
 
 
                                     <ext:ModelField Name="CROSSING_ID" />
+                                     <ext:ModelField Name="CROSSING_NUMBER" />
                                     <ext:ModelField Name="INCIDENT_ID" />
                                     <ext:ModelField Name="DATE_REPORTED" Type="Date" />
                                     <ext:ModelField Name="DATE_CLOSED" Type="Date" />
@@ -113,11 +135,14 @@
                                 </Fields>
                             </ext:Model>
                         </Model>
-
+                         <Sorters>
+                        <ext:DataSorter Property="DATE_REPORTED" Direction="ASC" />
+                    </Sorters>
                     </ext:Store>
                 </Store>
                 <ColumnModel>
                     <Columns>
+                        <ext:Column ID="Column2" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing Number" Flex="1" />
                         <ext:Column ID="Column6" runat="server" DataIndex="INCIDENT_NUMBER" Text="Incident Number" Flex="1" />
                         <ext:DateColumn ID="DateColumn1" runat="server" DataIndex="DATE_REPORTED" Text="Date Reported" Flex="1" Format="MM/dd/yyyy" />
                         <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="DATE_CLOSED" Text="Date Closed" Flex="1" Format="MM/dd/yyyy" />
@@ -141,6 +166,12 @@
                     <Select Handler="#{uxCloseIncident}.enable()" />
                     <Deselect Handler="#{uxCloseIncident}.disable()" />
                 </Listeners>
+                <Features>
+                <ext:Grouping ID="Grouping1"
+                    runat="server"
+                    HideGroupedHeader="true" Collapsible="false" Cls="x-grid-group-title; x-grid-group-hd" />
+            </Features>
+
             </ext:GridPanel>
 
             <ext:Window runat="server"

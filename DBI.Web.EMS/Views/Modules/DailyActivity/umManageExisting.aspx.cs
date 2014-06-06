@@ -60,13 +60,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 		{
 			using (Entities _context = new Entities())
 			{
-				List<object> rawData;
-
+				List<HeaderData> rawData;
 
 				if (validateComponentSecurity("SYS.DailyActivity.View"))
 				{
 					List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
-					if (uxTogglePosted.Checked)
+					if (uxTogglePosted.Checked && uxToggleInactive.Checked)
 					{
 						rawData = (from d in _context.DAILY_ACTIVITY_HEADER
 								   join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
@@ -80,24 +79,56 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 								   join empv in _context.EMPLOYEES_V on empl.PERSON_ID equals empv.PERSON_ID into emplv
 								   from withempl in emplv.DefaultIfEmpty()
 								   where OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains(proj.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains((long)withempl.ORGANIZATION_ID)
-								   select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS, p.ORG_ID }).Distinct().ToList<object>();
+								   select new HeaderData{HEADER_ID = d.HEADER_ID, PROJECT_ID = d.PROJECT_ID, DA_DATE = d.DA_DATE, SEGMENT1 = p.SEGMENT1, LONG_NAME = p.LONG_NAME, STATUS_VALUE = s.STATUS_VALUE, DA_HEADER_ID = d.DA_HEADER_ID, STATUS = d.STATUS, ORG_ID = p.ORG_ID }).Distinct().ToList();
 					}
-					else
-					{
-						rawData = (from d in _context.DAILY_ACTIVITY_HEADER
-								   join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
-								   join s in _context.DAILY_ACTIVITY_STATUS on d.STATUS equals s.STATUS
-								   join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.HEADER_ID equals eq.HEADER_ID into equ
-								   from equip in equ.DefaultIfEmpty()
-								   join pr in _context.PROJECTS_V on equip.PROJECT_ID equals pr.PROJECT_ID into pro
-								   from proj in pro.DefaultIfEmpty()
-								   join em in _context.DAILY_ACTIVITY_EMPLOYEE on d.HEADER_ID equals em.HEADER_ID into emp
-								   from empl in emp.DefaultIfEmpty()
-								   join empv in _context.EMPLOYEES_V on empl.PERSON_ID equals empv.PERSON_ID into emplv
-								   from withempl in emplv.DefaultIfEmpty()
-								   where d.STATUS != 4 && (OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains(proj.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains((long)withempl.ORGANIZATION_ID))
-								   select new { d.HEADER_ID, d.PROJECT_ID, d.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, d.DA_HEADER_ID, d.STATUS, p.ORG_ID }).Distinct().ToList<object>();
-					}
+                    else if (uxToggleInactive.Checked)
+                    {
+                        rawData = (from d in _context.DAILY_ACTIVITY_HEADER
+                                   join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                                   join s in _context.DAILY_ACTIVITY_STATUS on d.STATUS equals s.STATUS
+                                   join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.HEADER_ID equals eq.HEADER_ID into equ
+                                   from equip in equ.DefaultIfEmpty()
+                                   join pr in _context.PROJECTS_V on equip.PROJECT_ID equals pr.PROJECT_ID into pro
+                                   from proj in pro.DefaultIfEmpty()
+                                   join em in _context.DAILY_ACTIVITY_EMPLOYEE on d.HEADER_ID equals em.HEADER_ID into emp
+                                   from empl in emp.DefaultIfEmpty()
+                                   join empv in _context.EMPLOYEES_V on empl.PERSON_ID equals empv.PERSON_ID into emplv
+                                   from withempl in emplv.DefaultIfEmpty()
+                                   where d.STATUS != 4 && (OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains(proj.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains((long)withempl.ORGANIZATION_ID))
+                                   select new HeaderData { HEADER_ID = d.HEADER_ID, PROJECT_ID = d.PROJECT_ID, DA_DATE = d.DA_DATE, SEGMENT1 = p.SEGMENT1, LONG_NAME = p.LONG_NAME, STATUS_VALUE = s.STATUS_VALUE, DA_HEADER_ID = d.DA_HEADER_ID, STATUS = d.STATUS, ORG_ID = p.ORG_ID }).Distinct().ToList();
+                    }
+                    else if (uxTogglePosted.Checked)
+                    {
+                        rawData = (from d in _context.DAILY_ACTIVITY_HEADER
+                                   join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                                   join s in _context.DAILY_ACTIVITY_STATUS on d.STATUS equals s.STATUS
+                                   join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.HEADER_ID equals eq.HEADER_ID into equ
+                                   from equip in equ.DefaultIfEmpty()
+                                   join pr in _context.PROJECTS_V on equip.PROJECT_ID equals pr.PROJECT_ID into pro
+                                   from proj in pro.DefaultIfEmpty()
+                                   join em in _context.DAILY_ACTIVITY_EMPLOYEE on d.HEADER_ID equals em.HEADER_ID into emp
+                                   from empl in emp.DefaultIfEmpty()
+                                   join empv in _context.EMPLOYEES_V on empl.PERSON_ID equals empv.PERSON_ID into emplv
+                                   from withempl in emplv.DefaultIfEmpty()
+                                   where d.STATUS != 5 && (OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains(proj.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains((long)withempl.ORGANIZATION_ID))
+                                   select new HeaderData { HEADER_ID = d.HEADER_ID, PROJECT_ID = d.PROJECT_ID, DA_DATE = d.DA_DATE, SEGMENT1 = p.SEGMENT1, LONG_NAME = p.LONG_NAME, STATUS_VALUE = s.STATUS_VALUE, DA_HEADER_ID = d.DA_HEADER_ID, STATUS = d.STATUS, ORG_ID = p.ORG_ID }).Distinct().ToList();
+                    }
+                    else
+                    {
+                        rawData = (from d in _context.DAILY_ACTIVITY_HEADER
+                                   join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                                   join s in _context.DAILY_ACTIVITY_STATUS on d.STATUS equals s.STATUS
+                                   join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.HEADER_ID equals eq.HEADER_ID into equ
+                                   from equip in equ.DefaultIfEmpty()
+                                   join pr in _context.PROJECTS_V on equip.PROJECT_ID equals pr.PROJECT_ID into pro
+                                   from proj in pro.DefaultIfEmpty()
+                                   join em in _context.DAILY_ACTIVITY_EMPLOYEE on d.HEADER_ID equals em.HEADER_ID into emp
+                                   from empl in emp.DefaultIfEmpty()
+                                   join empv in _context.EMPLOYEES_V on empl.PERSON_ID equals empv.PERSON_ID into emplv
+                                   from withempl in emplv.DefaultIfEmpty()
+                                   where d.STATUS != 4 && d.STATUS != 5 && (OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains(proj.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains((long)withempl.ORGANIZATION_ID))
+                                   select new HeaderData { HEADER_ID = d.HEADER_ID, PROJECT_ID = d.PROJECT_ID, DA_DATE = d.DA_DATE, SEGMENT1 = p.SEGMENT1, LONG_NAME = p.LONG_NAME, STATUS_VALUE = s.STATUS_VALUE, DA_HEADER_ID = d.DA_HEADER_ID, STATUS = d.STATUS, ORG_ID = p.ORG_ID }).Distinct().ToList();
+                    }
 				}
 				else
 				{
@@ -106,125 +137,125 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 									 where d.EMPLOYEE_NAME == EmployeeName
 									 select d.PERSON_ID).Single();
 
-					if (uxTogglePosted.Checked)
+					if (uxTogglePosted.Checked && uxToggleInactive.Checked)
 					{
 						rawData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
 								   join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
 								   join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
 								   join s in _context.DAILY_ACTIVITY_STATUS on h.STATUS equals s.STATUS
 								   where d.PERSON_ID == PersonId
-								   select new { d.HEADER_ID, h.PROJECT_ID, h.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, h.DA_HEADER_ID, h.STATUS }).ToList<object>();
+								   select new HeaderData{ HEADER_ID = d.HEADER_ID, PROJECT_ID = h.PROJECT_ID, DA_DATE = h.DA_DATE, SEGMENT1 = p.SEGMENT1, LONG_NAME = p.LONG_NAME, STATUS_VALUE = s.STATUS_VALUE, DA_HEADER_ID = h.DA_HEADER_ID, STATUS = h.STATUS }).ToList();
 					}
-					else
+					else if(uxToggleInactive.Checked)
 					{
 						rawData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
 								   join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
 								   join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
 								   join s in _context.DAILY_ACTIVITY_STATUS on h.STATUS equals s.STATUS
 								   where d.PERSON_ID == PersonId && h.STATUS != 4
-								   select new { d.HEADER_ID, h.PROJECT_ID, h.DA_DATE, p.SEGMENT1, p.LONG_NAME, s.STATUS_VALUE, h.DA_HEADER_ID, h.STATUS }).ToList<object>();
+								   select new HeaderData{HEADER_ID = d.HEADER_ID, PROJECT_ID = h.PROJECT_ID, DA_DATE = h.DA_DATE, SEGMENT1 = p.SEGMENT1, LONG_NAME = p.LONG_NAME, STATUS_VALUE = s.STATUS_VALUE, DA_HEADER_ID = h.DA_HEADER_ID, STATUS = h.STATUS }).ToList();
 					}
+                    else if (uxTogglePosted.Checked)
+                    {
+                        rawData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                   join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                   join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
+                                   join s in _context.DAILY_ACTIVITY_STATUS on h.STATUS equals s.STATUS
+                                   where d.PERSON_ID == PersonId && h.STATUS != 5
+                                   select new HeaderData { HEADER_ID = d.HEADER_ID, PROJECT_ID = h.PROJECT_ID, DA_DATE = h.DA_DATE, SEGMENT1 = p.SEGMENT1, LONG_NAME = p.LONG_NAME, STATUS_VALUE = s.STATUS_VALUE, DA_HEADER_ID = h.DA_HEADER_ID, STATUS = h.STATUS }).ToList();
+                    }
+                    else
+                    {
+                        rawData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                   join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                   join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
+                                   join s in _context.DAILY_ACTIVITY_STATUS on h.STATUS equals s.STATUS
+                                   where d.PERSON_ID == PersonId && h.STATUS != 4 && h.STATUS !=5
+                                   select new HeaderData { HEADER_ID = d.HEADER_ID, PROJECT_ID = h.PROJECT_ID, DA_DATE = h.DA_DATE, SEGMENT1 = p.SEGMENT1, LONG_NAME = p.LONG_NAME, STATUS_VALUE = s.STATUS_VALUE, DA_HEADER_ID = h.DA_HEADER_ID, STATUS = h.STATUS }).ToList();
+                    }
 					uxCreateActivityButton.Disabled = true;
 
 				}
-				List<HeaderData> data = new List<HeaderData>();
+
+				int count;
+                List<HeaderData> SortedData = rawData.OrderByDescending(x => x.DA_DATE).ThenBy(x => x.STATUS).ToList();
+				List<HeaderData> data = GenericData.EnumerableFilterHeader<HeaderData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], SortedData, out count).ToList();
 
 				List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime(24);
 				List<EmployeeData> HoursOver14 = ValidationChecks.checkEmployeeTime(14);
-				List<long> OverlapProjects = ValidationChecks.employeeTimeOverlapCheck();
-				List<long> BusinessUnitProjects = ValidationChecks.EquipmentBusinessUnitCheck();
-				List<long> BusinessUnitEmployees = ValidationChecks.EmployeeBusinessUnitCheck();
-				
-				foreach (dynamic record in rawData)
+				//List<long> OverlapProjects = ValidationChecks.employeeTimeOverlapCheck();
+				//List<long> BusinessUnitProjects = ValidationChecks.EquipmentBusinessUnitCheck();
+				//List<long> BusinessUnitEmployees = ValidationChecks.EmployeeBusinessUnitCheck();
+
+                //var SortedData = data.OrderByDescending(x => x.DA_DATE).ThenBy(x => x.STATUS).ToList<HeaderData>();
+
+				foreach (HeaderData record in data)
 				{
 					string Warning = "Zero";
 					string WarningType = string.Empty;
-
-					foreach (EmployeeData OffendingProject in HoursOver14)
+					if (record.STATUS != 4 && record.STATUS != 5)
 					{
-						if (OffendingProject.HEADER_ID == record.HEADER_ID)
+						foreach (EmployeeData OffendingProject in HoursOver14)
 						{
-							Warning = "Warning";
-							WarningType = "Over 14 hours logged for an employee <br />";
-							break;
+							if (OffendingProject.HEADER_ID == record.HEADER_ID)
+							{
+								Warning = "Warning";
+								WarningType = "Over 14 hours logged for an employee <br />";
+								break;
+							}
+
+						}
+						if (ValidationChecks.EquipmentBusinessUnitCheck(record.HEADER_ID, "bool")){
+							{
+								Warning = "Error";
+								WarningType += "Contains Equipment outside of Business Unit.<br />";
+							}
+						}
+						if(ValidationChecks.EmployeeBusinessUnitCheck(record.HEADER_ID, "bool")){
+						
+								Warning = "Error";
+								WarningType += "Contains Employees outside of Business Unit.<br />";
+						}
+						foreach (EmployeeData OffendingProject in HoursOver24)
+						{
+							if (OffendingProject.HEADER_ID == record.HEADER_ID)
+							{
+								Warning = "Error";
+								WarningType += "24 or more hours logged for an employee.<br />";
+								break;
+							}
 						}
 
-					}
-					foreach (long OffendingProject in BusinessUnitProjects)
-					{
-						if (OffendingProject == record.HEADER_ID)
-						{
-							Warning = "Error";
-							WarningType += "Contains Equipment outside of Business Unit.<br />";
-							break;
-						}
-					}
-
-					foreach (long OffendingProject in BusinessUnitEmployees)
-					{
-						if (OffendingProject == record.HEADER_ID)
-						{
-							Warning = "Error";
-							WarningType += "Contains Employees outside of Business Unit.<br />";
-							break;
-						}
-					}
-					foreach (EmployeeData OffendingProject in HoursOver24)
-					{
-						if (OffendingProject.HEADER_ID == record.HEADER_ID)
-						{
-							Warning = "Error";
-							WarningType += "24 or more hours logged for an employee.<br />";
-							break;
-						}
-					}
-
-
-					foreach (long OffendingProject in OverlapProjects)
-					{
-						if (OffendingProject == record.HEADER_ID)
+						if (ValidationChecks.employeeTimeOverlapCheck(record.HEADER_ID))
 						{
 							Warning = "Error";
 							WarningType += "An employee has overlapping time with another project.<br />";
-							break;
 						}
-					}
-					if (record.ORG_ID == 121)
-					{
-						List<WarningData> LunchList = ValidationChecks.LunchCheck(record.HEADER_ID);
-						if (LunchList.Count > 0)
+
+						if (record.ORG_ID == 121)
 						{
-							Warning = "Error";
-							WarningType += "An employee is missing a lunch entry.<br />";
+							List<WarningData> LunchList = ValidationChecks.LunchCheck(record.HEADER_ID);
+							if (LunchList.Count > 0)
+							{
+								Warning = "Error";
+								WarningType += "An employee is missing a lunch entry.<br />";
+							}
 						}
-					}
 
-					WarningData PerDiems = ValidationChecks.checkPerDiem(record.HEADER_ID);
-					if (PerDiems != null)
-					{
-						Warning = PerDiems.WarningType;
-						WarningType += PerDiems.AdditionalInformation;
-					}
+						WarningData PerDiems = ValidationChecks.checkPerDiem(record.HEADER_ID);
+						if (PerDiems != null)
+						{
+							Warning = PerDiems.WarningType;
+							WarningType += PerDiems.AdditionalInformation;
+						}
 
-					data.Add(new HeaderData
-					{
-						HEADER_ID = record.HEADER_ID,
-						PROJECT_ID = record.PROJECT_ID,
-						DA_DATE = record.DA_DATE,
-						SEGMENT1 = record.SEGMENT1,
-						LONG_NAME = record.LONG_NAME,
-						STATUS_VALUE = record.STATUS_VALUE,
-						DA_HEADER_ID = record.DA_HEADER_ID,
-						STATUS = record.STATUS,
-						WARNING = Warning,
-						WARNING_TYPE = WarningType
-					});
+						record.WARNING = Warning;
+						record.WARNING_TYPE = WarningType;
+					}
 				}
 
-
-				var SortedData = data.OrderBy(x => x.STATUS).ThenBy(x => x.WARNING).ThenBy(x => x.DA_DATE).ToList<HeaderData>();
-				int count;
-				uxManageGridStore.DataSource = GenericData.EnumerableFilterHeader<HeaderData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], SortedData, out count);
+				
+				uxManageGridStore.DataSource = data;
 				e.Total = count;
 
 			}
@@ -319,6 +350,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						uxDeactivate.Value = "Deactivate";
 						uxTabSetInactiveButton.Text = "Set Inactive";
 						uxInactiveActivityButton.Text = "Set Inactive";
+						uxApproveActivityButton.Text = "Approve";
+						uxTabApproveButton.Text = "Approve";
+						uxHiddenApprove.Value = "Approve";
 						break;
 					case "APPROVED":
 						uxTabSetInactiveButton.Text = "Set Inactive";
@@ -328,8 +362,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						uxPostMultipleButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
 						uxMarkAsPostedButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
 						uxTabMarkButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
-						uxApproveActivityButton.Disabled = true;
-						uxTabApproveButton.Disabled = true;
 						uxTabSetInactiveButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
 						uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
 						uxDeactivate.Value = "Deactivate";
@@ -343,6 +375,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						uxProductionTab.Disabled = true;
 						uxFooterTab.Disabled = true;
 
+						if (validateComponentSecurity("SYS.DailyActivity.Post") && validateComponentSecurity("SYS.DailyActivity.Approve"))
+						{
+							uxApproveActivityButton.Text = "Unapprove";
+							uxTabApproveButton.Text = "Unapprove";
+							uxApproveActivityButton.Disabled = false;
+							uxTabApproveButton.Disabled = false;
+							uxHiddenApprove.Value = "Unapprove";
+						}
+						else
+						{
+							uxApproveActivityButton.Disabled = true;
+							uxTabApproveButton.Disabled = true;
+						}
 						break;
 					case "POSTED":
 						uxApproveActivityButton.Disabled = true;
@@ -380,35 +425,34 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						break;
 
 				}
-
-				List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
-
-				if (HoursOver24.Count > 0)
+				if (e.ExtraParams["Status"] != "INACTIVE")
 				{
-					if (HoursOver24.Exists(emp => emp.HEADER_ID == HeaderId))
+					List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
+
+					if (HoursOver24.Count > 0)
 					{
-						EmployeeData HeaderData = HoursOver24.Find(emp => emp.HEADER_ID == HeaderId);
-						BadHeader = true;
-					}
-
-
-				}
-
-				if (EmployeeOverLap.Count > 0)
-				{
-					using (Entities _context = new Entities())
-					{
-						if (EmployeeOverLap.Exists(x => x == HeaderId))
+						if (HoursOver24.Exists(emp => emp.HEADER_ID == HeaderId))
 						{
-							var HeaderData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-											  join emp in _context.EMPLOYEES_V on d.PERSON_ID equals emp.PERSON_ID
-											  where d.HEADER_ID == HeaderId
-											  select new { d.DAILY_ACTIVITY_HEADER.DA_DATE, emp.EMPLOYEE_NAME }).First();
+							EmployeeData HeaderData = HoursOver24.Find(emp => emp.HEADER_ID == HeaderId);
 							BadHeader = true;
 						}
 					}
-				}
 
+					if (EmployeeOverLap.Count > 0)
+					{
+						using (Entities _context = new Entities())
+						{
+							if (EmployeeOverLap.Exists(x => x == HeaderId))
+							{
+								var HeaderData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+												  join emp in _context.EMPLOYEES_V on d.PERSON_ID equals emp.PERSON_ID
+												  where d.HEADER_ID == HeaderId
+												  select new { d.DAILY_ACTIVITY_HEADER.DA_DATE, emp.EMPLOYEE_NAME }).First();
+								BadHeader = true;
+							}
+						}
+					}
+				}
 				if (BadHeader)
 				{
 					uxApproveActivityButton.Disabled = true;
@@ -547,17 +591,34 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 			long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
 
 			DAILY_ACTIVITY_HEADER data;
-
+			SYS_SECURITY_AUDIT ActionToLog = new SYS_SECURITY_AUDIT();
 			//Get record to be updated
 			using (Entities _context = new Entities())
 			{
 				data = (from d in _context.DAILY_ACTIVITY_HEADER
 						where d.HEADER_ID == HeaderId
 						select d).Single();
-				data.STATUS = 3;
+				
+				ActionToLog.MODULE = "Daily Activity";
+				ActionToLog.RECORD_NUMBER = HeaderId;
+				ActionToLog.MODIFIED_BY = User.Identity.Name;
+				ActionToLog.MODIFIED_DATE = DateTime.Now;
+				if (uxHiddenApprove.Value.ToString() == "Approve")
+				{
+					data.STATUS = 3;
+					ActionToLog.COMMENTS = "DRS Approved";
+				}
+				else
+				{
+					data.STATUS = 2;
+					ActionToLog.COMMENTS = "DRS Unapproved";
+				}
 			}
 
+			
+			
 			//Update record in DB
+			GenericData.Insert<SYS_SECURITY_AUDIT>(ActionToLog);
 			GenericData.Update<DAILY_ACTIVITY_HEADER>(data);
 			RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
 			var Index = GridModel.SelectedIndex;
@@ -715,7 +776,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 										   where d.HEADER_ID == HeaderId
 										   from j in joined
 										   where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
-										   select new { c.CHEMICAL_MIX_NUMBER, j.INV_NAME, d.SUB_INVENTORY_SECONDARY_NAME, j.DESCRIPTION, d.TOTAL, d.RATE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).ToList<object>();
+										   select new { c.CHEMICAL_MIX_NUMBER, j.INV_NAME, d.SUB_INVENTORY_SECONDARY_NAME, j.SEGMENT1, j.DESCRIPTION, d.TOTAL, d.RATE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).ToList<object>();
 
 				return returnData;
 			}
@@ -731,7 +792,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 										   where d.HEADER_ID == HeaderId
 										   from j in joined
 										   where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
-										   select new { d.SUB_INVENTORY_SECONDARY_NAME, j.INV_NAME, j.DESCRIPTION, d.RATE, u.UNIT_OF_MEASURE }).ToList<object>();
+										   select new { d.SUB_INVENTORY_SECONDARY_NAME, j.INV_NAME, j.SEGMENT1, j.DESCRIPTION, d.RATE, u.UNIT_OF_MEASURE }).ToList<object>();
 
 				return returnData;
 			}
@@ -836,7 +897,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 					TargetAnchor = AnchorPoint.Center
 				}
 			});
-			uxManageGridStore.Reload();
+            RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
+            var Index = GridModel.SelectedIndex;
+
+
+            uxManageGridStore.Reload(new
+            {
+                callback = JRawValue.From("function() {App.uxManageGrid.getSelectionModel().select(" + Index + ")}")
+            });
 		}
 
 		protected void deMarkAsPosted(object sender, DirectEventArgs e)
@@ -848,8 +916,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 				ToUpdate = _context.DAILY_ACTIVITY_HEADER.Where(x => x.HEADER_ID == HeaderId).Single();
 				ToUpdate.STATUS = 4;
 			}
+			uxMarkAsPostedButton.Disabled = true;
+			uxTabMarkButton.Disabled = true;
 			GenericData.Update<DAILY_ACTIVITY_HEADER>(ToUpdate);
-			uxManageGridStore.Reload();
+			RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
+			var Index = GridModel.SelectedIndex;
+
+			uxManageGridStore.Reload(new
+			{
+				callback = JRawValue.From("function() {App.uxManageGrid.getSelectionModel().select(" + Index + ")}")
+			});
+			
 		}
 
 		protected MemoryStream generatePDF(long HeaderId)
@@ -1395,10 +1472,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 					if (OrgId == 121)
 					{
 						var InventoryData = GetInventoryDBI(HeaderId);
-						PdfPTable InventoryTable = new PdfPTable(7);
+						PdfPTable InventoryTable = new PdfPTable(8);
 
 						Cells = new PdfPCell[]{
 					new PdfPCell(new Phrase("Mix #", HeaderFont)),
+                    new PdfPCell(new Phrase("Item #", HeaderFont)),
 					new PdfPCell(new Phrase("Inventory Org", HeaderFont)),
 					new PdfPCell(new Phrase("Sub-Inventory", HeaderFont)),
 					new PdfPCell(new Phrase("Item Name", HeaderFont)),
@@ -1422,6 +1500,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 							}
 							Cells = new PdfPCell[]{
 						new PdfPCell(new Phrase(Data.CHEMICAL_MIX_NUMBER.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.SEGMENT1, CellFont)),
 						new PdfPCell(new Phrase(Data.INV_NAME, CellFont)),
 						new PdfPCell(new Phrase(Data.SUB_INVENTORY_SECONDARY_NAME, CellFont)),
 						new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
@@ -1439,9 +1518,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 					if (OrgId == 123)
 					{
 						var InventoryData = GetInventoryIRM(HeaderId);
-						PdfPTable InventoryTable = new PdfPTable(4);
+						PdfPTable InventoryTable = new PdfPTable(5);
 
 						Cells = new PdfPCell[]{
+                            new PdfPCell(new Phrase("Item #", HeaderFont)),
 							new PdfPCell(new Phrase("Inventory Org", HeaderFont)),
 							new PdfPCell(new Phrase("Sub-Inventory", HeaderFont)),
 							new PdfPCell(new Phrase("Item Name", HeaderFont)),
@@ -1453,6 +1533,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						foreach (dynamic Data in InventoryData)
 						{
 							Cells = new PdfPCell[]{
+                                new PdfPCell(new Phrase(Data.SEGMENT1, CellFont)),
 								new PdfPCell(new Phrase(Data.INV_NAME, CellFont)),
 								new PdfPCell(new Phrase(Data.SUB_INVENTORY_SECONDARY_NAME, CellFont)),
 								new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
@@ -1663,7 +1744,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 				return PdfStream;
 			}
 		}
-				
 
 		/// <summary>
 		/// DirectMethod accessed from umSubmitActivity.aspx when signature is missing on SubmitActivity form

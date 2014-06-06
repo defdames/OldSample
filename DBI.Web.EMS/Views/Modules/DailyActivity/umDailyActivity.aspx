@@ -11,7 +11,7 @@
 	<ext:ResourceManager ID="ResourceManager1" runat="server"  IsDynamic="False" RethrowAjaxExceptions="true">
 	</ext:ResourceManager>
 	<form id="form1" runat="server">
-		<ext:FormPanel ID="uxFormPanel" runat="server" Layout="FormLayout" BodyPadding="5" MaxWidth="1000">
+		<ext:FormPanel ID="uxFormPanel" runat="server" Layout="FormLayout" BodyPadding="5" MaxWidth="1000" DefaultButton="uxFormSubmit">
 			<Items>
 				<ext:DropDownField runat="server" Editable="false" 
 					ID="uxFormProject"
@@ -216,7 +216,7 @@
 				</ext:ComboBox>
 			</Items>
 			<Buttons>
-				<ext:Button runat="server" ID="uxFormSubmit" Text="Submit" Disabled="true" Icon="Add">
+				<ext:Button runat="server" ID="uxFormSubmit" Text="Save" Disabled="true" Icon="Add">
 					<DirectEvents>
 						<Click OnEvent="deStoreHeader">
 							<EventMask ShowMask="true" />

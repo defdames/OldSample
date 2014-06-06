@@ -44,7 +44,7 @@
 		<ext:FormPanel runat="server"
 			ID="uxAddEquipmentForm"
 			Layout="FormLayout"
-			Hidden="false" Width="600">
+			Hidden="false" Width="600" DefaultButton="uxAddEquipmentSubmit">
 			<Items>
 				<ext:DropDownField runat="server" Editable="false"
 					ID="uxAddEquipmentDropDown"
@@ -148,19 +148,19 @@
 				</ext:DropDownField>
 				<ext:NumberField runat="server"
 					ID="uxAddEquipmentStart"
-					FieldLabel="Starting Meter"
+					FieldLabel="Starting Units"
 					Vtype="numberrange" Width="500"
 					EndNumberField="uxAddEquipmentEnd" />
 				<ext:NumberField runat="server"
 					ID="uxAddEquipmentEnd"
-					FieldLabel="Ending Meter"
+					FieldLabel="Ending Units"
 					Vtype="numberrange" Width="500"
 					StartNumberField="uxAddEquipmentStart" />
 			</Items>
 			<Buttons>
 				<ext:Button runat="server"
 					ID="uxAddEquipmentSubmit"
-					Text="Submit"
+					Text="Save"
 					Icon="Add"
 					Disabled="true">
 					<DirectEvents>
@@ -187,7 +187,7 @@
 		<ext:FormPanel runat="server"
 			ID="uxEditEquipmentForm"
 			Layout="FormLayout"
-			Hidden="true" Width="600">
+			Hidden="true" Width="600" DefaultButton="uxEditEquipmentSubmit">
 			<Items>
 				<ext:DropDownField runat="server" Editable="false"
 					ID="uxEditEquipmentProject"
@@ -285,13 +285,13 @@
 				</ext:DropDownField>
 				<ext:NumberField runat="server"
 					ID="uxEditEquipmentStart"
-					FieldLabel="Starting Meter"
+					FieldLabel="Starting Units"
 					AllowBlank="true"
 					Vtype="numberrange" Width="500"
 					EndNumberField="uxEditEquipmentEnd" />
 				<ext:NumberField runat="server"
 					ID="uxEditEquipmentEnd"
-					FieldLabel="Ending Meter"
+					FieldLabel="Ending Units"
 					AllowBlank="true"
 					Vtype="numberrange" Width="500"
 					StartNumberField="uxEditEquipmentStart" />
@@ -303,7 +303,7 @@
 				<ext:Button runat="server"
 					ID="uxEditEquipmentSubmit"
 					Icon="Add"
-					Text="Submit"
+					Text="Save"
 					Disabled="true">
 					<DirectEvents>
 						<Click OnEvent="deEditEquipment">

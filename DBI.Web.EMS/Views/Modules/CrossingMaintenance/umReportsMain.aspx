@@ -9,84 +9,88 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
-     <ext:ResourceManager ID="ResourceManager2" runat="server" />
-
         <div>
-            <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
-                <Items>
-                     <ext:Toolbar ID="Toolbar1" runat="server" Region="North">
-                        <Items>
-                             <ext:ComboBox ID="uxRailRoadCI"
-                                                runat="server"
-                                                FieldLabel="Railroad"
-                                                LabelAlign="Right"
-                                                DisplayField="RAILROAD"
-                                                ValueField="RAILROAD_ID"
-                                                QueryMode="Local"
-                                                TypeAhead="true" Editable="false">
-                                                <Store>
-                                                    <ext:Store runat="server"
-                                                        ID="uxAddRailRoadStore">
-                                                        <Model>
-                                                            <ext:Model ID="Model4" runat="server">
-                                                                <Fields>
-                                                                    <ext:ModelField Name="RAILROAD_ID" />
-                                                                    <ext:ModelField Name="RAILROAD" />
-                                                                </Fields>
-                                                            </ext:Model>
-                                                        </Model>
-                                                    </ext:Store>
-                                                </Store>
-                                            
-                                            </ext:ComboBox>
-                            
-                        </Items>
-                    </ext:Toolbar>
-                      <ext:Window
-                        runat="server"
-                        ID="uxChangeRailroadWindow"
-                        Hidden="true"
-                        Width="350"
-                        Height="350"
-                        Modal="true" Closable="false">
-                        <Items>
+            <ext:ResourceManager ID="ResourceManager2" runat="server" />
 
-                            <ext:GridPanel ID="uxRailroadGrid" runat="server" Title="Select Railroad" Height="325">
-                              
-                                <Store>
-                                    <ext:Store runat="server"
-                                        ID="uxRailRoadStore" OnReadData="deReadRRTypes" AutoDataBind="true"
-                                        WarningOnDirty="false">
-                                        <Model>
-                                            <ext:Model ID="Model1" runat="server" IDProperty="RAILROAD_ID">
-                                                <Fields>
-                                                    <ext:ModelField Name="RAILROAD_ID" />
-                                                    <ext:ModelField Name="RAILROAD" />
-                                                </Fields>
-                                            </ext:Model>
-                                        </Model>
-                                        <Proxy>
-                                            <ext:PageProxy />
-                                        </Proxy>
-                                    </ext:Store>
-                                </Store>
-                                <ColumnModel>
-                                    <Columns>
-                                        <ext:Column ID="Column7" runat="server" DataIndex="RAILROAD" Text="Railroad" Flex="1" />
-                                    </Columns>
-                                </ColumnModel>
-                               <DirectEvents>
-                                   <Select OnEvent="deLoadRR" />
-                               </DirectEvents>
+            <div>
+                <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
+                    <Items>
+                        <ext:Toolbar ID="Toolbar1" runat="server" Region="North">
+                            <Items>
+                                <ext:ComboBox ID="uxRailRoadCI"
+                                    runat="server"
+                                    FieldLabel="Railroad"
+                                    LabelAlign="Right"
+                                    DisplayField="RAILROAD"
+                                    ValueField="RAILROAD_ID"
+                                    QueryMode="Local"
+                                    TypeAhead="true" Editable="false">
+                                    <Store>
+                                        <ext:Store runat="server"
+                                            ID="uxAddRailRoadStore">
+                                            <Model>
+                                                <ext:Model ID="Model4" runat="server">
+                                                    <Fields>
+                                                        <ext:ModelField Name="RAILROAD_ID" />
+                                                        <ext:ModelField Name="RAILROAD" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                        </ext:Store>
+                                    </Store>
+                                    <DirectEvents>
+                                        <Select OnEvent="deLoadUnit">
+                                        </Select>
+                                    </DirectEvents>
+                                </ext:ComboBox>
+
+                            </Items>
+                        </ext:Toolbar>
+                        <ext:Window
+                            runat="server"
+                            ID="uxChangeRailroadWindow"
+                            Hidden="true"
+                            Width="350"
+                            Height="350"
+                            Modal="true" Closable="false">
+                            <Items>
+
+                                <ext:GridPanel ID="uxRailroadGrid" runat="server" Title="Select Railroad" Height="325">
+
+                                    <Store>
+                                        <ext:Store runat="server"
+                                            ID="uxRailRoadStore" OnReadData="deReadRRTypes" AutoDataBind="true"
+                                            WarningOnDirty="false">
+                                            <Model>
+                                                <ext:Model ID="Model1" runat="server" IDProperty="RAILROAD_ID">
+                                                    <Fields>
+                                                        <ext:ModelField Name="RAILROAD_ID" />
+                                                        <ext:ModelField Name="RAILROAD" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                            <Proxy>
+                                                <ext:PageProxy />
+                                            </Proxy>
+                                        </ext:Store>
+                                    </Store>
+                                    <ColumnModel>
+                                        <Columns>
+                                            <ext:Column ID="Column7" runat="server" DataIndex="RAILROAD" Text="Railroad" Flex="1" />
+                                        </Columns>
+                                    </ColumnModel>
+                                    <DirectEvents>
+                                        <Select OnEvent="deLoadRR" />
+                                    </DirectEvents>
                                     <SelectionModel>
-                                    <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" />
-                                </SelectionModel>
-                            </ext:GridPanel>
-                        </Items>
-                    </ext:Window>
-                    <ext:TabPanel ID="uxReportsTab" runat="server" Region="Center">
+                                        <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" />
+                                    </SelectionModel>
+                                </ext:GridPanel>
+                            </Items>
+                        </ext:Window>
+                        <%--<ext:TabPanel ID="uxReportsTab" runat="server" Region="Center">
                         <Items>
+                           
                             <ext:Panel runat="server" 
                                 Title="State Crossing List"
                                 ID="uxStateCrossingsList"
@@ -121,12 +125,53 @@
                            
 
                         </Items>
-                    </ext:TabPanel>
+                    </ext:TabPanel>--%>
+                        <ext:Panel runat="server" Region="Center" ID="uxReportMainPanel" Layout="BorderLayout" >
+                            <Loader runat="server"
+                                ID="ReportLoader" Mode="Frame" AutoLoad="true" ReloadOnEvent="true">
+                                <LoadMask ShowMask="true" />
+                            </Loader>
+                        </ext:Panel>
+                        <ext:GridPanel ID="uxReportListGrid" runat="server" Title="Reports" Region="West" Width="245" Collapsible="true">
 
-                </Items>
-            </ext:Viewport>
+                            <Store>
+                                <ext:Store runat="server"
+                                    ID="uxReportListStore" OnReadData="deLoadReportList" AutoDataBind="true"
+                                    WarningOnDirty="false">
+                                    <Model>
+                                        <ext:Model ID="Model2" runat="server">
+                                            <Fields>
+                                                <ext:ModelField Name="REPORT_ID" />
+                                                <ext:ModelField Name="REPORT_NAME" />
+                                            </Fields>
+                                        </ext:Model>
+                                    </Model>
+                                    <Proxy>
+                                        <ext:PageProxy />
+                                    </Proxy>
+                                </ext:Store>
+                            </Store>
+                            <ColumnModel>
+                                <Columns>
+                                    <ext:Column ID="Column1" runat="server" DataIndex="REPORT_NAME" Text="Report List" Flex="1" />
+                                </Columns>
+                            </ColumnModel>
+                            <DirectEvents>
+                                <Select OnEvent="deLoadReport">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="selectedReport" Value="#{uxReportListGrid}.getSelectionModel().getSelection()[0].data.REPORT_NAME" Mode="Raw" />
+                                    </ExtraParams>
+                                </Select>
+                            </DirectEvents>
+                            <SelectionModel>
+                                <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" />
+                            </SelectionModel>
+                        </ext:GridPanel>
+                    </Items>
+
+                </ext:Viewport>
+            </div>
         </div>
-    </div>
     </form>
 </body>
 </html>

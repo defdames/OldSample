@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using Ext.Net;
 
 namespace DBI.Data
@@ -65,6 +66,15 @@ namespace DBI.Data
             }
         }
 
+        /// <summary>
+        /// Returns user information for the logged in user account
+        /// </summary>
+        /// <returns></returns>
+        public static SYS_USER_INFORMATION LoggedInUser()
+        {
+            string _currentUserDetails = HttpContext.Current.User.Identity.Name;
+            return UserByUserName(_currentUserDetails);  
+        }
 
         /// <summary>
         /// Return user id by user name

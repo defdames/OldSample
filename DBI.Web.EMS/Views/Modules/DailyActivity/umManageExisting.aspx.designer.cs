@@ -112,6 +112,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.ToolTip uxWarningToolTip;
         
         /// <summary>
+        /// uxHiddenApprove control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Hidden uxHiddenApprove;
+        
+        /// <summary>
         /// uxCreateActivityButton control.
         /// </summary>
         /// <remarks>
@@ -238,6 +247,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Checkbox uxTogglePosted;
         
         /// <summary>
+        /// uxToggleInactive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Checkbox uxToggleInactive;
+        
+        /// <summary>
         /// uxTabPanel control.
         /// </summary>
         /// <remarks>
@@ -274,15 +292,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Panel uxCombinedTab;
         
         /// <summary>
-        /// uxCombinedTabLoader control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl uxCombinedTabLoader;
-        
-        /// <summary>
         /// uxHeaderTab control.
         /// </summary>
         /// <remarks>
@@ -290,15 +299,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Panel uxHeaderTab;
-        
-        /// <summary>
-        /// uxHeaderLoader control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl uxHeaderLoader;
         
         /// <summary>
         /// uxEquipmentTab control.
@@ -310,15 +310,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Panel uxEquipmentTab;
         
         /// <summary>
-        /// uxEquipmentLoader control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl uxEquipmentLoader;
-        
-        /// <summary>
         /// uxEmployeeTab control.
         /// </summary>
         /// <remarks>
@@ -326,15 +317,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Panel uxEmployeeTab;
-        
-        /// <summary>
-        /// uxEmployeeLoader control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl uxEmployeeLoader;
         
         /// <summary>
         /// uxWeatherTab control.
@@ -346,15 +328,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Panel uxWeatherTab;
         
         /// <summary>
-        /// uxWeatherLoader control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl uxWeatherLoader;
-        
-        /// <summary>
         /// uxChemicalTab control.
         /// </summary>
         /// <remarks>
@@ -362,15 +335,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Panel uxChemicalTab;
-        
-        /// <summary>
-        /// uxChemicalLoader control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl uxChemicalLoader;
         
         /// <summary>
         /// uxInventoryTab control.
@@ -382,15 +346,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Panel uxInventoryTab;
         
         /// <summary>
-        /// uxInventoryLoader control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl uxInventoryLoader;
-        
-        /// <summary>
         /// uxProductionTab control.
         /// </summary>
         /// <remarks>
@@ -400,15 +355,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Panel uxProductionTab;
         
         /// <summary>
-        /// uxProductionLoader control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl uxProductionLoader;
-        
-        /// <summary>
         /// uxFooterTab control.
         /// </summary>
         /// <remarks>
@@ -416,15 +362,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Panel uxFooterTab;
-        
-        /// <summary>
-        /// uxFooterLoader control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl uxFooterLoader;
         
         /// <summary>
         /// uxTabPanelToolbar control.
@@ -535,15 +472,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Window uxPlaceholderWindow;
         
         /// <summary>
-        /// uxPlaceholderLoader control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl uxPlaceholderLoader;
-        
-        /// <summary>
         /// uxCreateActivityWindow control.
         /// </summary>
         /// <remarks>
@@ -551,14 +479,5 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Window uxCreateActivityWindow;
-        
-        /// <summary>
-        /// uxCreateActivityLoader control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl uxCreateActivityLoader;
     }
 }

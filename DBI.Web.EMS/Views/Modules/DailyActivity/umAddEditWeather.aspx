@@ -14,7 +14,7 @@
 				<ext:FormPanel runat="server"
 					ID="uxAddWeatherForm"
 					Layout="FormLayout"
-					Hidden="true">
+					Hidden="true" DefaultButton="uxAddWeatherSubmit">
 					<Items>
 						<ext:FieldContainer runat="server"
 							FieldLabel="Date and Time" ID="ctl69" Width="500">
@@ -32,7 +32,9 @@
 						<ext:NumberField runat="server"
 							ID="uxAddWeatherTemp"
 							FieldLabel="Temperature"
-							AllowBlank="false" Width="500" />
+							AllowBlank="false" Width="500"
+							MinValue="-50"
+							MaxValue ="130"   />
 						<ext:ComboBox runat="server"
 							ID="uxAddWeatherWindDirection"
 							FieldLabel="Wind Direction"
@@ -62,11 +64,11 @@
 						<ext:NumberField runat="server"
 							ID="uxAddWeatherWindVelocity"
 							FieldLabel="Wind Velocity"
-							AllowBlank="false" Width="500" />
+							AllowBlank="false" Width="500" MinValue="0" MaxValue="150" />
 						<ext:NumberField runat="server"
 							ID="uxAddWeatherHumidity"
 							FieldLabel="Humidity"
-							AllowBlank="false" Width="500" />
+							AllowBlank="false" Width="500" MinValue="0" MaxValue="100" />
 						<ext:TextArea runat="server"
 							ID="uxAddWeatherComments"
 							FieldLabel="Comments"
@@ -75,7 +77,7 @@
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxAddWeatherSubmit"
-							Text="Submit"
+							Text="Save"
 							Icon="Add"
 							Disabled="true">
 							<DirectEvents>
@@ -101,7 +103,7 @@
 				<ext:FormPanel runat="server"
 					ID="uxEditWeatherForm"
 					Layout="FormLayout"
-					Hidden="true">
+					Hidden="true" DefaultButton="uxEditWeatherSubmit">
 					<Items>
 						<ext:FieldContainer runat="server"
 							FieldLabel="Date and Time" ID="ctl75" Width="500">
@@ -120,7 +122,7 @@
 						<ext:NumberField runat="server"
 							ID="uxEditWeatherTemp"
 							FieldLabel="Temperature"
-							AllowBlank="false" Width="500" />
+							AllowBlank="false" Width="500" MinValue="-50" MaxValue="130" />
 						<ext:ComboBox runat="server"
 							ID="uxEditWeatherWindDirection"
 							FieldLabel="Wind Direction"
@@ -150,11 +152,11 @@
 						<ext:NumberField runat="server"
 							ID="uxEditWeatherWindVelocity"
 							FieldLabel="Wind Velocity"
-							AllowBlank="false" Width="500" />
+							AllowBlank="false" Width="500" MinValue="0" MaxValue="150" />
 						<ext:NumberField runat="server"
 							ID="uxEditWeatherHumidity"
 							FieldLabel="Humidity"
-							AllowBlank="false" Width="500" />
+							AllowBlank="false" Width="500" MinValue="0" MaxValue="100" />
 						<ext:TextArea runat="server"
 							ID="uxEditWeatherComments"
 							FieldLabel="Comments"
@@ -163,7 +165,7 @@
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxEditWeatherSubmit"
-							Text="Submit"
+							Text="Save"
 							Icon="Add"
 							Disabled="true">
 							<DirectEvents>

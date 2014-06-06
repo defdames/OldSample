@@ -12,7 +12,7 @@
 	<form id="form1" runat="server">
 		<ext:FormPanel runat="server"
 			ID="uxEditHeaderForm"
-			Layout="FormLayout" MaxWidth="1000">
+			Layout="FormLayout" MaxWidth="1000" DefaultButton="uxFormSubmit">
 			<Items>
 				<ext:DropDownField runat="server"
 					ID="uxFormProject"
@@ -181,15 +181,15 @@
 						</ext:GridPanel>
 					</Component>
 				</ext:DropDownField>
-				<ext:TextField runat="server" ID="uxFormLicense" FieldLabel="Business License" AllowBlank="false" />
+				<ext:TextField runat="server" ID="uxFormLicense" FieldLabel="Business License" AllowBlank="true" />
 				<ext:ComboBox runat="server"
 					ID="uxFormState"
-					FieldLabel="State"
+					FieldLabel="Business License State"
 					DisplayField="name"
 					ValueField="name"
 					QueryMode="Local"
 					TypeAhead="true"
-					AllowBlank="false"
+					AllowBlank="true"
 					ForceSelection="true">
 					<Store>
 						<ext:Store ID="uxStateList" runat="server" AutoDataBind="true">
@@ -213,7 +213,8 @@
 					FieldLabel="Density"
 					QueryMode="Local"
 					TypeAhead="true"
-					AllowBlank="true">
+					AllowBlank="true"
+					ForceSelection="true">
 					<Items>
 						<ext:ListItem Text="Low" Value="LOW" />
 						<ext:ListItem Text="Medium" Value="MEDIUM" />
@@ -222,14 +223,16 @@
 				</ext:ComboBox>
 			</Items>
 			<Buttons>
-				<ext:Button runat="server" ID="uxFormSubmit" Text="Submit" Disabled="true">
+				<ext:Button runat="server" ID="uxFormSubmit" Text="Save" Disabled="true" Icon="Add">
 					<DirectEvents>
-						<Click OnEvent="deStoreHeader" />
+						<Click OnEvent="deStoreHeader">
+							<EventMask ShowMask="true" />
+						</Click>
 					</DirectEvents>    
 				</ext:Button>
-				<ext:Button runat="server" ID="uxFormClear" Text="Clear">
+				<ext:Button runat="server" ID="uxFormClear" Text="Clear" Icon="Delete">
 					<Listeners>
-						<Click Handler="#{uxFormPanel}.reset()" />
+						<Click Handler="#{uxEditHeaderForm}.reset()" />
 					</Listeners>
 				</ext:Button>
 			</Buttons>

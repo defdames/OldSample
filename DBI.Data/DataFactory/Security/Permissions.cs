@@ -26,7 +26,7 @@ namespace DBI.Data
         {
             using (Entities _context = new Entities())
             {
-                string Query = "select permission_id, permission_name, parent_perm_id, description from xxems.sys_permissions connect by prior permission_id = parent_perm_id start with permission_id=1";
+                string Query = "select * from xxems.sys_permissions connect by prior permission_id = parent_perm_id start with permission_id=1";
                 List<SYS_PERMISSIONS> Permissions = _context.Database.SqlQuery<SYS_PERMISSIONS>(Query).ToList();
 
                 return Permissions;
