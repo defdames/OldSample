@@ -85,7 +85,7 @@
                                 AnchorHorizontal="25%"
                                 DisplayField="service_unit"
                                 ValueField="service_unit"
-                                QueryMode="Local" TypeAhead="true" TabIndex="3" AllowBlank="false" ForceSelection="true" EmptyText="ALL">
+                                QueryMode="Local" TypeAhead="true" TabIndex="3" ForceSelection="true" EmptyText="ALL">
                                 <Store>
                                     <ext:Store runat="server"
                                         ID="uxAddServiceUnitStore">
@@ -117,7 +117,7 @@
                                 AnchorHorizontal="25%"
                                 DisplayField="sub_division"
                                 ValueField="sub_division"
-                                TypeAhead="true" TabIndex="5" AllowBlank="false" ForceSelection="true" EmptyText="ALL">
+                                TypeAhead="true" TabIndex="5" ForceSelection="true" EmptyText="ALL">
                                 <Store>
                                     <ext:Store runat="server"
                                         ID="uxAddSubDivStore">
@@ -142,7 +142,6 @@
                                 ValueField="name"
                                 QueryMode="Local"
                                 TypeAhead="true"
-                                AllowBlank="false"
                                 ForceSelection="true" TabIndex="4" EmptyText="ALL">
                                 <Store>
                                     <ext:Store ID="uxAddStateList" runat="server" AutoDataBind="true">
@@ -170,7 +169,7 @@
                              <ext:Button runat="server"
                             ID="Button4"
                             Text="Run"
-                            Icon="PlayGreen">
+                            Icon="PlayGreen" Disabled="true">
                             <Listeners>
                                 <Click Handler="#{uxAppDateStore}.load()" />
                             </Listeners>
@@ -186,6 +185,9 @@
                         </Items>
                     </ext:Toolbar>
                 </BottomBar>
+                  <Listeners>
+						<ValidityChange Handler="#{Button4}.setDisabled(!valid);" />
+					</Listeners>
             </ext:FormPanel>
 
             <ext:GridPanel

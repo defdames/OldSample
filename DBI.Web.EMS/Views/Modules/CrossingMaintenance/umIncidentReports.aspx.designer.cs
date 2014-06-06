@@ -31,13 +31,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.ResourceManager ResourceManager1;
         
         /// <summary>
-        /// FormPanel1 control.
+        /// uxFilterForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FormPanel FormPanel1;
+        protected global::Ext.Net.FormPanel uxFilterForm;
         
         /// <summary>
         /// FieldSet1 control.
@@ -49,31 +49,40 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FieldSet FieldSet1;
         
         /// <summary>
-        /// uxAddEntryDate control.
+        /// uxRRCI control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateField uxAddEntryDate;
+        protected global::Ext.Net.TextField uxRRCI;
         
         /// <summary>
-        /// DateField1 control.
+        /// uxStartDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateField DateField1;
+        protected global::Ext.Net.DateField uxStartDate;
         
         /// <summary>
-        /// uxAddServiceUnitCI control.
+        /// uxEndDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ComboBox uxAddServiceUnitCI;
+        protected global::Ext.Net.DateField uxEndDate;
+        
+        /// <summary>
+        /// uxAddServiceUnit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ComboBox uxAddServiceUnit;
         
         /// <summary>
         /// uxAddServiceUnitStore control.
@@ -94,13 +103,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Model Model5;
         
         /// <summary>
-        /// uxAddSubDivCI control.
+        /// uxAddSubDiv control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ComboBox uxAddSubDivCI;
+        protected global::Ext.Net.ComboBox uxAddSubDiv;
         
         /// <summary>
         /// uxAddSubDivStore control.
