@@ -115,6 +115,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="GL_ACCOUNTS_VTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -86,7 +86,7 @@
                                 AnchorHorizontal="25%"
                                 DisplayField="service_unit"
                                 ValueField="service_unit"
-                                QueryMode="Local" TypeAhead="true" TabIndex="3" AllowBlank="false" ForceSelection="true">
+                                QueryMode="Local" TypeAhead="true" TabIndex="3" ForceSelection="true" EmptyText="ALL">
                                 <Store>
                                     <ext:Store runat="server"
                                         ID="uxAddServiceUnitStore">
@@ -101,15 +101,15 @@
                                     </ext:Store>
                                 </Store>
                                   <DirectEvents>
-                                                    <Select OnEvent="deLoadSubDiv">
-                                                        <ExtraParams>
-                                                            <ext:Parameter Name="Type" Value="Add" />
-                                                        </ExtraParams>
-                                                    </Select>
-                                                </DirectEvents>
-                                                <Listeners>
-                                                    <Select Handler="#{uxAddSubDivStore}.load()" />
-                                                </Listeners>
+                                      <Select OnEvent="deLoadSubDiv">
+                                          <ExtraParams>
+                                             <ext:Parameter Name="Type" Value="Add" />
+                                          </ExtraParams>
+                                       </Select>
+                                 </DirectEvents>
+                                      <Listeners>
+                                         <Select Handler="#{uxAddSubDivStore}.load()" />
+                                      </Listeners>
                             </ext:ComboBox>
                             <ext:ComboBox ID="uxAddSubDiv"
                                 runat="server"
@@ -118,7 +118,7 @@
                                 AnchorHorizontal="25%"
                                 DisplayField="sub_division"
                                 ValueField="sub_division"
-                                TypeAhead="true" TabIndex="5" AllowBlank="false" ForceSelection="true">
+                                TypeAhead="true" TabIndex="5" ForceSelection="true" EmptyText="ALL">
                                 <Store>
                                     <ext:Store runat="server"
                                         ID="uxAddSubDivStore">
@@ -143,10 +143,9 @@
                                 ValueField="name"
                                 QueryMode="Local"
                                 TypeAhead="true"
-                                AllowBlank="false"
-                                ForceSelection="true" TabIndex="4">
+                                ForceSelection="true" TabIndex="4" EmptyText="ALL">
                                 <Store>
-                                    <ext:Store ID="uxAddStateList" runat="server" AutoDataBind="true">
+                                    <ext:Store ID="uxAddStateList" runat="server" AutoDataBind="true" >
                                         <Model>
                                             <ext:Model ID="Model10" runat="server">
                                                 <Fields>
@@ -171,9 +170,9 @@
                             <ext:Button runat="server"
                                 ID="Button4"
                                 Text="Run"
-                                Icon="PlayGreen">
+                                Icon="PlayGreen" Disabled="true">
                              <Listeners>
-                                <Click Handler="#{uxAppDateStore}.load()" />
+                                <Click Handler="#{uxInspectDateStore}.load()" />
                             </Listeners>
                             </ext:Button>
                             <ext:Button runat="server"
@@ -187,6 +186,9 @@
                         </Items>
                     </ext:Toolbar>
                 </BottomBar>
+                  <Listeners>
+					<ValidityChange Handler="#{Button4}.setDisabled(!valid);" />
+				  </Listeners>
             </ext:FormPanel>
 
             <ext:GridPanel
