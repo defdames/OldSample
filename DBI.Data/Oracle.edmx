@@ -1112,6 +1112,10 @@
           <Property Name="STATE" Type="varchar2" MaxLength="100" />
           <Property Name="SUB_DIVISION" Type="varchar2" MaxLength="100" />
           <Property Name="REMARKS" Type="varchar2" MaxLength="500" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="CROSSING_INCIDENT">
           <Key>
@@ -1159,6 +1163,10 @@
           <Property Name="PROJECT_ID" Type="number" Precision="15" />
           <Property Name="PROJECT_NAME" Type="varchar2" MaxLength="30" />
           <Property Name="RAILROAD_ID" Type="number" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="CROSSING_RAILROAD">
           <Key>
@@ -1166,6 +1174,10 @@
           </Key>
           <Property Name="RAILROAD_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="RAILROAD" Type="varchar2" MaxLength="50" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="CROSSING_RELATIONSHIP">
           <Key>
@@ -1174,6 +1186,10 @@
           <Property Name="RELATIONSHIP_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="PROJECT_ID" Type="number" Precision="15" />
           <Property Name="CROSSING_ID" Type="number" Precision="15" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="CROSSING_SERVICE_UNIT">
           <Key>
@@ -1400,6 +1416,8 @@
           <Property Name="TO_STATUS" Type="number" Nullable="false" Precision="10" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="DAILY_ACTIVITY_CHEMICAL_MIX">
           <Key>
@@ -1526,6 +1544,8 @@
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="HEADER_ID" Type="number" Precision="15" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="DAILY_ACTIVITY_INVENTORY">
           <Key>
@@ -1579,6 +1599,10 @@
           <Property Name="STATUS_ID" Type="number" Nullable="false" Precision="19" StoreGeneratedPattern="Identity" />
           <Property Name="STATUS" Type="number" Nullable="false" Precision="10" />
           <Property Name="STATUS_VALUE" Type="varchar2" Nullable="false" MaxLength="50" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="DAILY_ACTIVITY_WEATHER">
           <Key>
@@ -4814,6 +4838,10 @@
           <Property Type="String" Name="SUB_DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CROSSING" Relationship="OracleModel.FK_DATA_ENTRY_CROSSING_ID" FromRole="CROSSING_DATA_ENTRY" ToRole="CROSSING" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="PA_TASKS_V">
           <Key>
@@ -4996,6 +5024,8 @@
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <NavigationProperty Name="DAILY_ACTIVITY_HEADER" Relationship="OracleModel.FK_AUDIT_HEADER_ID" FromRole="DAILY_ACTIVITY_AUDIT" ToRole="DAILY_ACTIVITY_HEADER" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_AUDIT_HEADER_ID">
           <End Type="OracleModel.DAILY_ACTIVITY_HEADER" Role="DAILY_ACTIVITY_HEADER" Multiplicity="1" />
@@ -5557,6 +5587,8 @@
           <Property Type="DateTime" Name="CREATE_DATE" />
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="Int64" Name="HEADER_ID" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_FIELDSETS">
           <Key>
@@ -5882,6 +5914,10 @@
           <Property Type="Int64" Name="STATUS_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int32" Name="STATUS" Nullable="false" />
           <Property Type="String" Name="STATUS_VALUE" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="SYS_GROUPS_PERMS">
           <Key>
@@ -6079,6 +6115,10 @@
           <Property Type="Decimal" Name="RELATIONSHIP_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int64" Name="PROJECT_ID" />
           <Property Type="Int64" Name="CROSSING_ID" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="SYS_PERMISSIONS">
           <Key>
@@ -6469,6 +6509,10 @@
           <Property Type="String" Name="PROJECT_NAME" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Type="Decimal" Name="RAILROAD_ID" Precision="38" Scale="0" />
           <NavigationProperty Name="CROSSING_RAILROAD" Relationship="OracleModel.FK_PROJECT_RAILROAD_ID" FromRole="CROSSING_PROJECT" ToRole="CROSSING_RAILROAD" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="CROSSING_RAILROAD">
           <Key>
@@ -6479,6 +6523,10 @@
           <NavigationProperty Name="CROSSING_CONTACTS" Relationship="OracleModel.FK_CONTACTS_RAILROAD_ID" FromRole="CROSSING_RAILROAD" ToRole="CROSSING_CONTACTS" />
           <NavigationProperty Name="CROSSING_PROJECT" Relationship="OracleModel.FK_PROJECT_RAILROAD_ID" FromRole="CROSSING_RAILROAD" ToRole="CROSSING_PROJECT" />
           <NavigationProperty Name="CROSSINGS" Relationship="OracleModel.FK_CROSSINGS_RAILROAD_ID" FromRole="CROSSING_RAILROAD" ToRole="CROSSING" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="DAILY_ACTIVITY_INVENTORY">
           <Key>
@@ -7696,6 +7744,10 @@
           <EntitySetMapping Name="CROSSING_DATA_ENTRY">
             <EntityTypeMapping TypeName="OracleModel.CROSSING_DATA_ENTRY">
               <MappingFragment StoreEntitySet="CROSSING_DATA_ENTRY">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="REMARKS" ColumnName="REMARKS" />
                 <ScalarProperty Name="SUB_DIVISION" ColumnName="SUB_DIVISION" />
                 <ScalarProperty Name="STATE" ColumnName="STATE" />
@@ -7823,6 +7875,8 @@
           <EntitySetMapping Name="DAILY_ACTIVITY_AUDIT">
             <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_AUDIT">
               <MappingFragment StoreEntitySet="DAILY_ACTIVITY_AUDIT">
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
                 <ScalarProperty Name="TO_STATUS" ColumnName="TO_STATUS" />
@@ -8364,6 +8418,8 @@
           <EntitySetMapping Name="DAILY_ACTIVITY_IMPORT">
             <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_IMPORT">
               <MappingFragment StoreEntitySet="DAILY_ACTIVITY_IMPORT">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
                 <ScalarProperty Name="HEADER_ID" ColumnName="HEADER_ID" />
                 <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
                 <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
@@ -8585,6 +8641,10 @@
           <EntitySetMapping Name="DAILY_ACTIVITY_STATUS">
             <EntityTypeMapping TypeName="OracleModel.DAILY_ACTIVITY_STATUS">
               <MappingFragment StoreEntitySet="DAILY_ACTIVITY_STATUS">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="STATUS_VALUE" ColumnName="STATUS_VALUE" />
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
                 <ScalarProperty Name="STATUS_ID" ColumnName="STATUS_ID" />
@@ -8758,6 +8818,10 @@
           <EntitySetMapping Name="CROSSING_RELATIONSHIP">
             <EntityTypeMapping TypeName="OracleModel.CROSSING_RELATIONSHIP">
               <MappingFragment StoreEntitySet="CROSSING_RELATIONSHIP">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
                 <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
                 <ScalarProperty Name="RELATIONSHIP_ID" ColumnName="RELATIONSHIP_ID" />
@@ -9018,6 +9082,10 @@
           <EntitySetMapping Name="CROSSING_PROJECT">
             <EntityTypeMapping TypeName="OracleModel.CROSSING_PROJECT">
               <MappingFragment StoreEntitySet="CROSSING_PROJECT">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="RAILROAD_ID" ColumnName="RAILROAD_ID" />
                 <ScalarProperty Name="PROJECT_NAME" ColumnName="PROJECT_NAME" />
                 <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
@@ -9028,6 +9096,10 @@
           <EntitySetMapping Name="CROSSING_RAILROAD">
             <EntityTypeMapping TypeName="OracleModel.CROSSING_RAILROAD">
               <MappingFragment StoreEntitySet="CROSSING_RAILROAD">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="RAILROAD" ColumnName="RAILROAD" />
                 <ScalarProperty Name="RAILROAD_ID" ColumnName="RAILROAD_ID" />
               </MappingFragment>
