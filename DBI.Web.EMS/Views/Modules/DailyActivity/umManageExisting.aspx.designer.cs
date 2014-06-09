@@ -49,6 +49,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Viewport uxViewPort;
         
         /// <summary>
+        /// uxTabPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TabPanel uxTabPanel;
+        
+        /// <summary>
         /// uxManageGrid control.
         /// </summary>
         /// <remarks>
@@ -76,13 +85,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Store uxManageGridStore;
         
         /// <summary>
-        /// uxWarningColumn control.
+        /// Column2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column uxWarningColumn;
+        protected global::Ext.Net.Column Column2;
         
         /// <summary>
         /// Column1 control.
@@ -112,6 +121,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.ToolTip uxWarningToolTip;
         
         /// <summary>
+        /// uxDetailsPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Panel uxDetailsPanel;
+        
+        /// <summary>
+        /// Toolbar1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Toolbar Toolbar1;
+        
+        /// <summary>
         /// uxHiddenApprove control.
         /// </summary>
         /// <remarks>
@@ -130,6 +157,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Button uxCreateActivityButton;
         
         /// <summary>
+        /// ToolbarSpacer1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer1;
+        
+        /// <summary>
         /// uxInactiveActivityButton control.
         /// </summary>
         /// <remarks>
@@ -137,6 +173,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxInactiveActivityButton;
+        
+        /// <summary>
+        /// ToolbarSpacer2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer2;
         
         /// <summary>
         /// uxApproveActivityButton control.
@@ -148,13 +193,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Button uxApproveActivityButton;
         
         /// <summary>
-        /// ToolbarSpacer1 control.
+        /// ToolbarSpacer3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer1;
+        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer3;
         
         /// <summary>
         /// uxPostActivityButton control.
@@ -166,13 +211,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Button uxPostActivityButton;
         
         /// <summary>
-        /// ToolbarSpacer2 control.
+        /// ToolbarSpacer4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer2;
+        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer4;
         
         /// <summary>
         /// uxMarkAsPostedButton control.
@@ -202,13 +247,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Button uxPostMultipleButton;
         
         /// <summary>
-        /// ToolbarSpacer3 control.
+        /// ToolbarSpacer6 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer3;
+        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer6;
         
         /// <summary>
         /// uxExportToPDF control.
@@ -220,13 +265,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Button uxExportToPDF;
         
         /// <summary>
-        /// ToolbarSpacer4 control.
+        /// ToolbarSpacer7 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer4;
+        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer7;
         
         /// <summary>
         /// uxEmailPdf control.
@@ -236,6 +281,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxEmailPdf;
+        
+        /// <summary>
+        /// ToolbarSpacer8 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer8;
         
         /// <summary>
         /// uxTogglePosted control.
@@ -254,213 +308,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Checkbox uxToggleInactive;
-        
-        /// <summary>
-        /// uxTabPanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TabPanel uxTabPanel;
-        
-        /// <summary>
-        /// uxYellowWarning control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Hidden uxYellowWarning;
-        
-        /// <summary>
-        /// uxRedWarning control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Hidden uxRedWarning;
-        
-        /// <summary>
-        /// uxCombinedTab control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxCombinedTab;
-        
-        /// <summary>
-        /// uxHeaderTab control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxHeaderTab;
-        
-        /// <summary>
-        /// uxEquipmentTab control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxEquipmentTab;
-        
-        /// <summary>
-        /// uxEmployeeTab control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxEmployeeTab;
-        
-        /// <summary>
-        /// uxWeatherTab control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxWeatherTab;
-        
-        /// <summary>
-        /// uxChemicalTab control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxChemicalTab;
-        
-        /// <summary>
-        /// uxInventoryTab control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxInventoryTab;
-        
-        /// <summary>
-        /// uxProductionTab control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxProductionTab;
-        
-        /// <summary>
-        /// uxFooterTab control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxFooterTab;
-        
-        /// <summary>
-        /// uxTabPanelToolbar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Toolbar uxTabPanelToolbar;
-        
-        /// <summary>
-        /// uxTabSetInactiveButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxTabSetInactiveButton;
-        
-        /// <summary>
-        /// ToolbarSpacer7 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer7;
-        
-        /// <summary>
-        /// uxTabApproveButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxTabApproveButton;
-        
-        /// <summary>
-        /// ToolbarSpacer9 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer9;
-        
-        /// <summary>
-        /// uxTabPostButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxTabPostButton;
-        
-        /// <summary>
-        /// ToolbarSpacer10 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer10;
-        
-        /// <summary>
-        /// uxTabMarkButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxTabMarkButton;
-        
-        /// <summary>
-        /// uxTabExportButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxTabExportButton;
-        
-        /// <summary>
-        /// ToolbarSpacer12 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer12;
-        
-        /// <summary>
-        /// uxTabEmailButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxTabEmailButton;
         
         /// <summary>
         /// uxPlaceholderWindow control.
