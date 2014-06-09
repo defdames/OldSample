@@ -66,7 +66,7 @@
             <Items>
                 <ext:TabPanel runat="server" ID="uxTabPanel" Layout="FitLayout">
                     <Items>
-                        <ext:GridPanel runat="server" ID="uxManageGrid" Layout="FitLayout" SelectionMemoryEvents="false" SelectionMemory="true" Title="DRS List">
+                        <ext:GridPanel runat="server" ID="uxManageGrid" Layout="FitLayout" SelectionMemoryEvents="false" SelectionMemory="true">
                             <SelectionModel>
                                 <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
                             </SelectionModel>
@@ -143,10 +143,21 @@
                             </ToolTips>
 
                         </ext:GridPanel>
-                        <ext:Panel runat="server" ID="uxDetailsPanel" CloseAction="Hide" Layout="FitLayout" Title="DRS Details">
-                            <Loader Url="">
+                        <ext:Panel runat="server" ID="uxDetailsPanel" CloseAction="Hide" Layout="FitLayout" Title="DRS Details" Hidden="true" Closable="true">
+                            <Loader runat="server" Mode="Frame">
                                 <LoadMask ShowMask="true" />
                             </Loader>
+                            <BottomBar>
+                                <ext:Toolbar ID="Toolbar2" runat="server">
+                                    <Items>
+                                        <ext:Button runat="server" ID="uxCancelButton" Text="Cancel" Icon="Delete">
+                                            <Listeners>
+                                                <Click Handler="#{uxTabPanel}.setActiveTab(#{uxManageGrid})" />
+                                            </Listeners>
+                                        </ext:Button>
+                                    </Items>
+                                </ext:Toolbar>
+                            </BottomBar>
                         </ext:Panel>
                     </Items>
                     <TopBar>
@@ -274,6 +285,7 @@
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
+                    
                 </ext:TabPanel>
                 <%-- Hidden Windows --%>
                 <ext:Window runat="server"

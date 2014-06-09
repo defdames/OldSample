@@ -381,7 +381,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             string LoaderURL = (OrgId == 123 ? "umCombinedTab_IRM.aspx":"umCombinedTab_DBI.aspx") + "?HeaderId=" + HeaderId;
 
             uxDetailsPanel.LoadContent(LoaderURL);
-            uxDetailsPanel.Show();
+            uxTabPanel.Add(uxDetailsPanel);
             uxTabPanel.SetActiveTab(uxDetailsPanel);
         }
 
