@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using DBI.Data.Generic;
 using Ext.Net;
 
 namespace DBI.Data.DataFactory
@@ -125,7 +125,7 @@ namespace DBI.Data.DataFactory
                 };
             }
         }
-             public static object ServiceTypes
+        public static object ServiceTypes
         {
             get
             {
@@ -137,7 +137,7 @@ namespace DBI.Data.DataFactory
                 };
             }
         }
-             public static object ApplicationRequested
+        public static object ApplicationRequested
              {
                  get
                  {
@@ -148,7 +148,7 @@ namespace DBI.Data.DataFactory
                 };
                  }
              }
-             public static object PropertyType
+        public static object PropertyType
              {
                  get
                  {
@@ -160,5 +160,20 @@ namespace DBI.Data.DataFactory
                  }
              }
 
+        public static List<DoubleComboLongID> BudgetVersions()
+        {
+            using (Entities context = new Entities())
+            {
+                List<DoubleComboLongID> comboItem = new List<DoubleComboLongID>();
+                comboItem.Add(new DoubleComboLongID { ID = 1, ID_NAME = "Bid" });
+                comboItem.Add(new DoubleComboLongID { ID = 2, ID_NAME = "First Draft" });
+                comboItem.Add(new DoubleComboLongID { ID = 3, ID_NAME = "Final Draft" });
+                comboItem.Add(new DoubleComboLongID { ID = 4, ID_NAME = "1st Reforecast" });
+                comboItem.Add(new DoubleComboLongID { ID = 5, ID_NAME = "2nd Reforecast" });
+                comboItem.Add(new DoubleComboLongID { ID = 6, ID_NAME = "3rd Reforecast" });
+                comboItem.Add(new DoubleComboLongID { ID = 7, ID_NAME = "4th Reforecast" });
+                return comboItem;
+            }
+        }
     }
 }

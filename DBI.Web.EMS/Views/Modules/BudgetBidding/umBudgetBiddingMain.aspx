@@ -60,8 +60,8 @@
                     <Items>
                         <ext:ComboBox ID="uxFiscalYear"
                             runat="server"
-                            DisplayField="END_DATE"
-                            ValueField="END_DATE"
+                            DisplayField="ID_NAME"
+                            ValueField="ID_NAME"
                             Width="120"
                             EmptyText="-- Year --"
                             Editable="false">
@@ -70,7 +70,7 @@
                                     <Model>
                                         <ext:Model ID="Model1" runat="server">
                                             <Fields>
-                                                <ext:ModelField Name="END_DATE" />
+                                                <ext:ModelField Name="ID_NAME" />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
@@ -92,8 +92,8 @@
 
                         <ext:ComboBox ID="uxVersion"
                             runat="server"
-                            DisplayField="BUD_VERSION"
-                            ValueField="VER_ID"
+                            DisplayField="ID_NAME"
+                            ValueField="ID"
                             Width="120"
                             EmptyText="-- Versions --"
                             Editable="false">
@@ -102,8 +102,8 @@
                                     <Model>
                                         <ext:Model ID="Model2" runat="server">
                                             <Fields>
-                                                <ext:ModelField Name="VER_ID" />
-                                                <ext:ModelField Name="BUD_VERSION" />
+                                                <ext:ModelField Name="ID" />
+                                                <ext:ModelField Name="ID_NAME" />
                                             </Fields>
                                         </ext:Model>
                                     </Model>

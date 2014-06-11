@@ -6,7 +6,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Ext.Net;
 using DBI.Data;
-using DBI.Data.Oracle.XXDBI_DW;
 
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 {
@@ -218,6 +217,23 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             };
 
             GenericData.Insert<BUD_BID_PROJECTS>(data);
+
+            BUD_BID_BUDGET_NUM data1 = new BUD_BID_BUDGET_NUM()
+            {
+                PROJECT_ID = projectNum,
+
+            };
+
+
+
+
+
+
+
+
+
+
+
             NotificationMsg("Save", "Project has been saved.", Icon.DiskBlack);         
         }
 
@@ -233,7 +249,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void deSelectJCDate(object sender, DirectEventArgs e)
         {
-            uxHidDate.Value = uxJCDate1.Value;
+            uxHidDate.Value = uxJCDate.Value;
             LoadJCNumbers();
         }
 
@@ -245,13 +261,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             string projectNum = uxHidProjectNum.Value.ToString();
             string projectName = uxHidProjectName.Value.ToString();
             string type = uxHidType.Value.ToString();
-            string jcDate = uxHidDate.Value.ToString();            
-            JOB_COST.JOB_COST_V jcLine = null;
-
-            if (jcDate != "")
-            {
-                jcDate = JOB_COST.getWeekEndingDateByFYAndDate(jcDate);
-            }      
+            string jcDate = uxHidDate.Value.ToString();
+            XXDBI_DW.JOB_COST_V jcLine = null;
 
             switch (type)
             {
@@ -259,31 +270,31 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     return;
 
                 case "OVERRIDE":
-                    uxProjectNum.SetValue(projectID, projectName);                    
+                    uxProjectNum.SetValue(projectID, projectName);
                     uxProjectName.SetValue(null);
                     projectOverride(true);
-                    jcLine = JOB_COST.jobCostByProjectIdWeekendingDate(Convert.ToInt64("0"), jcDate);
+                    jcLine = XXDBI_DW.JcSummaryLineAmounts(Convert.ToInt64("0"), jcDate);
                     break;
 
                 case "ORG":
                     uxProjectNum.SetValue(projectID, projectNum);
                     uxProjectName.SetValue(projectName);
                     projectOverride(false);
-                    jcLine = JOB_COST.jobCostByOrgIdWeekendingDate(Convert.ToInt64(hierID), Convert.ToInt64(projectID), jcDate);
+                    jcLine = XXDBI_DW.JcSummaryLineAmounts(Convert.ToInt64(hierID), Convert.ToInt64(projectID), jcDate);
                     break;
 
-                case "PROJECT":               
+                case "PROJECT":
                     uxProjectNum.SetValue(projectID, projectNum);
                     uxProjectName.SetValue(projectName);
                     projectOverride(false);
-                    jcLine = JOB_COST.jobCostByProjectIdWeekendingDate(Convert.ToInt64(projectID), jcDate);
+                    jcLine = XXDBI_DW.JcSummaryLineAmounts(Convert.ToInt64(projectID), jcDate);
                     break;
 
                 case "ROLLUP":
                     uxProjectNum.SetValue(projectID, projectNum);
                     uxProjectName.SetValue(projectName);
                     projectOverride(false);
-                    jcLine = JOB_COST.jobCostByRollupWeekendingDate(Convert.ToInt64(orgID), projectID, jcDate);
+                    jcLine = XXDBI_DW.JcSummaryLineAmounts(Convert.ToInt64(orgID), projectID, jcDate);
                     break;
             }
 
@@ -293,8 +304,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxSGrossRev.Value = String.Format("{0:N2}", jcLine.FY_GREV);
             uxSDirects.Value = String.Format("{0:N2}", jcLine.FY_TDE);
             uxSOP.Value = String.Format("{0:N2}", jcLine.FY_TOP);
-
-
         }
 
         protected void deProjectDropdownDeactivate(object sender, DirectEventArgs e)
@@ -367,9 +376,9 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         {
             if (projOverride == true)
             {
-                uxJCDate1.Value = null;
+                uxJCDate.Value = null;
                 uxHidDate.Value = null;
-                uxJCDate1.Disable();
+                uxJCDate.Disable();
                 uxProjectName.ReadOnly = false;
                 uxSGrossRec.ReadOnly = false;
                 uxSMatUsage.ReadOnly = false;
@@ -380,7 +389,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
             else
             {
-                uxJCDate1.Enable();
+                uxJCDate.Enable();
                 uxProjectName.ReadOnly = true;
                 uxSGrossRec.ReadOnly = true;
                 uxSMatUsage.ReadOnly = true;
@@ -390,7 +399,28 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             }
         }
 
- 
+        protected void deLoadJCDates(object sender, StoreReadDataEventArgs e)
+        {
+            long hierID = Convert.ToInt64(Request.QueryString["hierID"]);
+            uxJCDateStore.DataSource = XXDBI_DW.LoadedJcWeDates(hierID, true, 5);
+        }
+
+        protected void deLoadCompareToProjects(object sender, StoreReadDataEventArgs e)
+        {
+            long orgID = long.Parse(Request.QueryString["orgID"]);
+            long fiscalYear = long.Parse(Request.QueryString["fiscalYear"]);
+            long verID = long.Parse(Request.QueryString["verID"]);
+
+            using (Entities context = new Entities())
+            {
+                string sql = string.Format("SELECT OVERRIDE_PROJ_NAME FROM BUD_BID_PROJECTS WHERE ORG_ID = {0} AND YEAR_ID = {1} AND VER_ID = {2} ORDER BY OVERRIDE_PROJ_NAME", orgID, fiscalYear, verID);
+                List<object> dataSource;
+                dataSource = context.Database.SqlQuery<ORG_PROJECTS>(sql).ToList<object>();
+                int count;
+                uxProjectCompareStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataSource, out count);
+                e.Total = count;
+            }
+        }
 
     }
 }

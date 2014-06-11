@@ -230,6 +230,7 @@
     <Compile Include="EXPENDITURE_TYPE_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="Generic\ComboClasses.cs" />
     <Compile Include="GL_ACCOUNTS_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
@@ -324,7 +325,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Oracle.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Oracle\XXDBI_DW\JOB_COST.cs" />
+    <Compile Include="Oracle\XXDBI_DW.cs" />
     <Compile Include="Oracle\PA.cs" />
     <Compile Include="Oracle\XXEMS.cs" />
     <Compile Include="ORG_HIER_V.cs">

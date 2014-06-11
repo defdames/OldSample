@@ -8,7 +8,6 @@ namespace DBI.Data
 {
     public class HR
     {
-
         /// <summary>
         /// Returns a list of all organizations in the system.
         /// </summary>
@@ -67,7 +66,6 @@ namespace DBI.Data
             }
         }
 
-
         /// <summary>
         /// returns a list of organizations by hierarchy and business unit or legal entity.
         /// </summary>
@@ -102,8 +100,6 @@ namespace DBI.Data
                 throw;
             }
         }
-
-
 
         /// <summary>
         /// Returns a list of valid hierarchies in the system, it will return a list of hierarcies by legal entity.
@@ -159,7 +155,6 @@ namespace DBI.Data
             }
         }
 
-
         /// <summary>
         /// Returns a list of legal entities from oracle that can have a budget because there is a budget type assigned to that businessunit
         /// </summary>
@@ -193,7 +188,6 @@ namespace DBI.Data
 
         }
 
-
         public class ORGANIZATION
         {
             public long ORGANIZATION_ID { get; set; }
@@ -214,8 +208,5 @@ namespace DBI.Data
             public string HIERARCHY_NAME { get; set; }
             public long ORGANIZATION_STRUCTURE_ID { get; set; }
         }
-
     }
-
-
 }
