@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DBI.Data.Generic;
 
-namespace DBI.Data.Oracle
+namespace DBI.Data
 {
     public class PA
     {
-
         /// <summary>
         /// Gets the labor burden for a fiscal year and organization id
         /// </summary>
@@ -49,6 +49,29 @@ namespace DBI.Data.Oracle
 
         }
 
+        /// <summary>
+        /// Returns a list of loaded job cost week ending dates in EMS.
+        /// </summary>
+        /// <param name="hierarchyId"></param>
+        /// <param name="organizationId"></param>
+        /// <param name="optionalNumOfReturnRecords"></param>
+        /// <returns></returns>
+        public static List<SingleCombo> AllFiscalYears()
+        {
+            try
+            {
+                using (Entities context = new Entities())
+                {                    
+                    string sql = "SELECT DISTINCT TO_CHAR(END_DATE, 'YYYY') ID_NAME FROM APPS.PA_PERIODS_ALL ORDER BY 1";
+                    List<SingleCombo> data = context.Database.SqlQuery<SingleCombo>(sql).ToList();
+                    return data;
+                }
+            }
 
+            catch (Exception)
+            {
+                throw;
+            }
+        }        
     }
 }
