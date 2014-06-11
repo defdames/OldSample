@@ -60,8 +60,8 @@
 
                         <ext:ComboBox ID="uxActions"
                             runat="server"
-                            DisplayField="ACTION_NAME"
-                            ValueField="ACTION_NAME"
+                            DisplayField="ID_NAME"
+                            ValueField="ID_NAME"
                             Width="253"
                             EmptyText="-- Actions --"
                             Editable="false">
@@ -70,8 +70,7 @@
                                     <Model>
                                         <ext:Model ID="Model4" runat="server">
                                             <Fields>
-                                                <ext:ModelField Name="ACTION_ID" />
-                                                <ext:ModelField Name="ACTION_NAME" />
+                                                <ext:ModelField Name="ID_NAME" />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
@@ -511,8 +510,8 @@
                                     <Items>
                                         <ext:ComboBox ID="uxJCDate"
                                             runat="server"
-                                            DisplayField="JC_WK_DATE"
-                                            ValueField="JC_WK_DATE"
+                                            DisplayField="ID_NAME"
+                                            ValueField="ID_NAME"
                                             Width="100"
                                             EmptyText="-- Select --"
                                             Editable="false">
@@ -521,7 +520,7 @@
                                                     <Model>
                                                         <ext:Model ID="Model5" runat="server">
                                                             <Fields>
-                                                                <ext:ModelField Name="JC_WK_DATE" />
+                                                                <ext:ModelField Name="ID_NAME" />
                                                             </Fields>
                                                         </ext:Model>
                                                     </Model>

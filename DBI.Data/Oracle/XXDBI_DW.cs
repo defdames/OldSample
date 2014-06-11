@@ -130,7 +130,7 @@ namespace DBI.Data
                         sortOrder = "DESC";
                     }
 
-                    string sql = string.Format(@"SELECT TO_CHAR(JC_WK_DATE,'DD-Mon-YYYY') JC_WK_DATE
+                    string sql = string.Format(@"SELECT TO_CHAR(JC_WK_DATE,'DD-Mon-YYYY') ID_NAME
                         FROM (SELECT DISTINCT JC_WK_DATE FROM APPS.XX_JOBCOST_DATES_MV WHERE HIERARCHY_ID = {0} ORDER BY JC_WK_DATE {1}) JC_DATES
                         WHERE ROWNUM <= {2}
                         ORDER BY ROWNUM", hierarchyId, sortOrder, optionalNumOfReturnRecords);

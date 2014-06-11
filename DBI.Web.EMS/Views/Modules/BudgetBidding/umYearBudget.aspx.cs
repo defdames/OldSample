@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Ext.Net;
 using DBI.Data;
+using DBI.Data.DataFactory;
 
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 {
@@ -79,6 +80,11 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             }
         }
 
+        protected void deGetFormData(object sender, DirectEventArgs e)
+        {
+            uxProjectNum.SetValue("2001517");//e.ExtraParams["ProjectId"]);
+        }
+
         protected void deReadDetailGridData(object sender, StoreReadDataEventArgs e)
         {
             List<DetailStruct> list = new List<DetailStruct> 
@@ -112,19 +118,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 OP = proOP;
             }
         }
-
-        protected void deGetFormData(object sender, DirectEventArgs e)
-        {
-            uxProjectNum.SetValue("2001517");//e.ExtraParams["ProjectId"]);
-        }
-
-        protected void Test(object sender, DirectEventArgs e)
-        {
-            long orgID = long.Parse(Request.QueryString["OrgID"]);
-            long version = long.Parse(Request.QueryString["version"]);
-            X.MessageBox.Alert("Title", orgID + " " + version + " " + e.ExtraParams["SheetName"]).Show();
-        }
-
+        
         protected void deFormatNumber(object sender, DirectEventArgs e)
         {
             Ext.Net.TextField myTextField = sender as Ext.Net.TextField;
@@ -160,24 +154,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void deLoadActions(object sender, StoreReadDataEventArgs e)
         {
-            List<ActionsStruct> list = new List<ActionsStruct> 
-                {
-                    new ActionsStruct(1, "Add a New Project"),
-                    new ActionsStruct(2, "Delete Selected Project")
-                };
-            uxActionsStore.DataSource = list;
-        }
-
-        class ActionsStruct
-        {
-            public long ACTION_ID { get; set; }
-            public string ACTION_NAME { get; set; }
-
-            public ActionsStruct(long id, string actName)
-            {
-                ACTION_ID = id;
-                ACTION_NAME = actName;
-            }
+            uxActionsStore.DataSource = StaticLists.YearBudgetProjectActions();
         }
 
         protected void deChooseAction(object sender, DirectEventArgs e)
@@ -213,7 +190,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 VER_ID = verID,
                 YEAR_ID = fiscalYear,
                 PROJECT_ID = projectNum,
-                OVERRIDE_PROJ_NAME = projectName
+                PRJ_NAME = projectName
             };
 
             GenericData.Insert<BUD_BID_PROJECTS>(data);
@@ -422,5 +399,11 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             }
         }
 
+        protected void Test(object sender, DirectEventArgs e)
+        {
+            long orgID = long.Parse(Request.QueryString["OrgID"]);
+            long version = long.Parse(Request.QueryString["version"]);
+            X.MessageBox.Alert("Title", orgID + " " + version + " " + e.ExtraParams["SheetName"]).Show();
+        }
     }
 }

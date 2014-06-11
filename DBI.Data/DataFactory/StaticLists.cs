@@ -175,5 +175,16 @@ namespace DBI.Data.DataFactory
                 return comboItem;
             }
         }
+
+        public static List<SingleCombo> YearBudgetProjectActions()
+        {
+            using (Entities context = new Entities())
+            {
+                List<SingleCombo> comboItem = new List<SingleCombo>();
+                comboItem.Add(new SingleCombo { ID_NAME = "Add a New Project" });
+                comboItem.Add(new SingleCombo { ID_NAME = "Delete Selected Project" });
+                return comboItem;
+            }
+        }
     }
 }
