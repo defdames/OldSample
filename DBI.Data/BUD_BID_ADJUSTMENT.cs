@@ -15,7 +15,7 @@ namespace DBI.Data
     public partial class BUD_BID_ADJUSTMENT
     {
         public decimal ADJ_ID { get; set; }
-        public long PROJECT_ID { get; set; }
+        public long ORG_ID { get; set; }
         public Nullable<decimal> MAT_ADJ { get; set; }
         public Nullable<decimal> WEATHER_ADJ { get; set; }
         public Nullable<decimal> OVERHEAD { get; set; }

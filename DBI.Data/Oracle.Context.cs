@@ -94,7 +94,6 @@ namespace DBI.Data
         public DbSet<DAILY_ACTIVITY_INVENTORY> DAILY_ACTIVITY_INVENTORY { get; set; }
         public DbSet<JOB_COST_CLASSES> JOB_COST_CLASSES { get; set; }
         public DbSet<OVERHEAD_BUDGET_VERSION> OVERHEAD_BUDGET_VERSION { get; set; }
-        public DbSet<BUD_BID_ADJUSTMENT> BUD_BID_ADJUSTMENT { get; set; }
         public DbSet<BUD_BID_BUDGET_NUM> BUD_BID_BUDGET_NUM { get; set; }
         public DbSet<BUD_BID_DETAIL_SHEET> BUD_BID_DETAIL_SHEET { get; set; }
         public DbSet<BUD_BID_DETAIL_TASK> BUD_BID_DETAIL_TASK { get; set; }
@@ -106,7 +105,6 @@ namespace DBI.Data
         public DbSet<SYS_PROFILE_OPTIONS> SYS_PROFILE_OPTIONS { get; set; }
         public DbSet<SYS_USER_PROFILE_OPTIONS> SYS_USER_PROFILE_OPTIONS { get; set; }
         public DbSet<SYS_SECURITY_AUDIT> SYS_SECURITY_AUDIT { get; set; }
-        public DbSet<BUD_BID_PROJECTS> BUD_BID_PROJECTS { get; set; }
         public DbSet<OVERHEAD_BUDGET_TYPE> OVERHEAD_BUDGET_TYPE { get; set; }
         public DbSet<JOB_COST_BALANCE_TYPE> JOB_COST_BALANCE_TYPE { get; set; }
         public DbSet<JOB_COST_DATE> JOB_COST_DATE { get; set; }
@@ -116,5 +114,8 @@ namespace DBI.Data
         public DbSet<CROSSING_SERVICE_UNIT> CROSSING_SERVICE_UNIT { get; set; }
         public DbSet<CROSSING_SUB_DIVISION> CROSSING_SUB_DIVISION { get; set; }
         public DbSet<TIME_CLOCK> TIME_CLOCK { get; set; }
+        public DbSet<BUD_BID_ACTUAL_NUM> BUD_BID_ACTUAL_NUM { get; set; }
+        public DbSet<BUD_BID_ADJUSTMENT> BUD_BID_ADJUSTMENT { get; set; }
+        public DbSet<BUD_BID_PROJECTS> BUD_BID_PROJECTS { get; set; }
     }
 }
