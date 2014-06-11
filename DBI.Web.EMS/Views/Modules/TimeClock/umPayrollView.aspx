@@ -21,7 +21,7 @@
                 Resizeable="true"
                 Collapsable="true">
                 <Store>
-                    <ext:Store ID="uxPayrollAuditStore" runat="server" AutoDataBind="true" GroupField="EMPLOYEE_NAME" OnReadData="deGetEmployeeHoursData" PageSize="20">
+                    <ext:Store ID="uxPayrollAuditStore" runat="server" AutoDataBind="true" GroupField="EMPLOYEE_NAME" OnReadData="deGetEmployeesHourData" PageSize="20">
                         <Model>
                             <ext:Model runat="server">
                                 <Fields>

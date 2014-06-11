@@ -573,6 +573,19 @@ namespace DBI.Data
 
         }
 
+        public static List<Employee> EmployeeTimeCompletedApprovedPayroll()
+        {
+            try
+            {
+                var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "Y").ToList();
+                return _data;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public class Employee : TIME_CLOCK
         {
             public decimal TIME_CLOCK_ID { get; set; }

@@ -58,13 +58,13 @@
                         <ext:Button runat="server" ID="uxApproveButton" Text="Approve" Icon="ApplicationPut">
                             <DirectEvents>
                                 <Click OnEvent="deApproveTime">
-                                    <%--<EventMask ShowMask="true" />
+                                    <EventMask ShowMask="true" />
                                         <ExtraParams>
-                                            <ext:Parameter Name="TimeClockId" Value="#{uxEmployeeHoursGrid}.getSelectionModel().getSelection()[0].data.TIME_CLOCK_ID" Mode="Raw" />
-                                            <ext:Parameter Name="AdjustedHoursGrid" Value="#{uxEmployeeHoursGrid}.getSelectionModel().getSelection()[0].data.ADJUSTED_HOURS_GRID" Mode="Raw" />
+                                            <%--<ext:Parameter Name="TimeClockId" Value="#{uxEmployeeHoursGrid}.getSelectionModel().getSelection()[0].data.TIME_CLOCK_ID" Mode="Raw" />
+                                            <ext:Parameter Name="AdjustedHoursGrid" Value="#{uxEmployeeHoursGrid}.getSelectionModel().getSelection()[0].data.ADJUSTED_HOURS_GRID" Mode="Raw" />--%>
                                             <ext:Parameter Name="ApprovedTime" Value="Ext.encode(#{uxEmployeeHoursGrid}.getRowsValues({selectedOnly : true}))" Mode="Raw" />
-                                            <ext:Parameter Name="NewTime" Value="#{uxEmployeeHoursStore}.getChangedData()" Mode="Raw" Encode="true" />
-                                        </ExtraParams>--%>
+                                           <%-- <ext:Parameter Name="NewTime" Value="#{uxEmployeeHoursStore}.getChangedData()" Mode="Raw" Encode="true" />--%>
+                                        </ExtraParams>
                                </Click> 
                         </DirectEvents>
                     </ext:Button>

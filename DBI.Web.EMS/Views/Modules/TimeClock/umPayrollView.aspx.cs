@@ -17,19 +17,12 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (validateComponentSecurity("SYS.TimeClock.Payroll"))
-            //{
-            //    deGetEnployeesHourData();
-            //}
-            //else
-            //{
-            //    X.Redirect("~/Views/uxDefault.aspx");
-            //}
+          
         }
 
-        protected void deGetEnployeesHourData(object sender, StoreReadDataEventArgs e)
+        protected void deGetEmployeesHourData(object sender, StoreReadDataEventArgs e)
         {
-            var data = TIME_CLOCK.EmployeeTimeCompletedUnapprovedPayroll();
+            var data = TIME_CLOCK.EmployeeTimeCompletedApprovedPayroll();
 
             foreach (var item in data)
             {
@@ -50,17 +43,17 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
         }
     }
 
-    public class EmployeeTimePayroll
-    {
-        public decimal TIME_CLOCK_ID { get; set; }
-        public string EMPLOYEE_NAME { get; set; }
-        public DateTime TIME_IN { get; set; }
-        public DateTime TIME_OUT { get; set; }
-        public string ADJUSTED_HOURS_GRID { get; set; }
-        public string DAY_OF_WEEK { get; set; }
-        public string ACTUAL_HOURS_GRID { get; set; }
-        public decimal? ACTUAL_HOURS { get; set; }
-        public decimal? ADJUSTED_HOURS { get; set; }
+    //public class EmployeeTimePayroll
+    //{
+    //    public decimal TIME_CLOCK_ID { get; set; }
+    //    public string EMPLOYEE_NAME { get; set; }
+    //    public DateTime TIME_IN { get; set; }
+    //    public DateTime TIME_OUT { get; set; }
+    //    public string ADJUSTED_HOURS_GRID { get; set; }
+    //    public string DAY_OF_WEEK { get; set; }
+    //    public string ACTUAL_HOURS_GRID { get; set; }
+    //    public decimal? ACTUAL_HOURS { get; set; }
+    //    public decimal? ADJUSTED_HOURS { get; set; }
 
-    }
+    //}
 }
