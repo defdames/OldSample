@@ -252,6 +252,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 				
 				uxManageGridStore.DataSource = data;
 				e.Total = count;
+                uxTotalRecords.Text = count.ToString() + "Total Records";
 
 			}
 		}

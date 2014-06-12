@@ -225,12 +225,24 @@
                                         <ext:ToolbarFill runat="server" />
                                         <ext:Button runat="server" Text="Previous DRS" Icon="ArrowLeft">
                                             <DirectEvents>
-                                                <Click OnEvent="deLoadPreviousActivity" />
+                                                <Click OnEvent="deLoadPreviousActivity">
+                                                    <ExtraParams>
+                                                        <ext:Parameter Name="CurrentPage" Value="#{uxManageGridPaging}.getPageData().currentPage" Mode="Raw" />
+                                                    </ExtraParams>
+                                                </Click>
                                             </DirectEvents>
                                         </ext:Button>
+                                        <ext:ToolbarSpacer runat="server" />
+                                        <ext:ToolbarTextItem runat="server" ID="uxTotalRecords" />
+                                        <ext:ToolbarSpacer runat="server" />
                                         <ext:Button runat="server" Text="Next DRS" Icon="ArrowRight" IconAlign="Right">
                                             <DirectEvents>
-                                                <Click OnEvent="deLoadNextActivity" />
+                                                <Click OnEvent="deLoadNextActivity">
+                                                    <ExtraParams>
+                                                        <ext:Parameter Name="FromRecord" Value="#{uxManageGridPaging}.getPageData().fromRecord" Mode="Raw" />
+                                                        <ext:Parameter Name="ToRecord" Value="#{uxManageGridPaging}.getPageData().toRecord" Mode="Raw" />
+                                                    </ExtraParams>
+                                                </Click>
                                             </DirectEvents>
                                         </ext:Button>
                                     </Items>
