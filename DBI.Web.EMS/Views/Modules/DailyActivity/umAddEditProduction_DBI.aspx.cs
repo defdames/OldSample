@@ -16,16 +16,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             if (!X.IsAjaxRequest)
             {
+                GetTaskList();
                 if (Request.QueryString["Type"] == "Add")
                 {
-                    uxAddProductionForm.Show();
-                    GetTaskList();
+                    uxFormType.Value = "Add";
                 }
                 else
                 {
-                    uxEditProductionForm.Show();
+                    uxFormType.Value = "Edit";
                     LoadEditProductionForm();
-                    GetTaskList();
                 }
             }
         }
@@ -49,16 +48,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             select t).ToList();
 
                 //Set datasource for Add/Edit store
-                if (Request.QueryString["Type"] == "Add")
-                {
-                    uxAddProductionTaskStore.DataSource = data;
-                    uxAddProductionTaskStore.DataBind();
-                }
-                else
-                {
-                    uxEditProductionTaskStore.DataSource = data;
-                    uxEditProductionTaskStore.DataBind();
-                }
+                uxAddProductionTaskStore.DataSource = data;
+                uxAddProductionTaskStore.DataBind();
             }
         }
 
@@ -77,12 +68,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                   where d.PRODUCTION_ID == ProductionId
                                   select new { d.TASK_ID, e.DESCRIPTION, d.WORK_AREA, d.POLE_FROM, d.POLE_TO, d.ACRES_MILE, d.QUANTITY }).Single();
 
-                uxEditProductionTask.SetValue(Production.TASK_ID.ToString(), Production.DESCRIPTION);
-                uxEditProductionWorkArea.SetValue(Production.WORK_AREA);
-                uxEditProductionPoleFrom.SetValue(Production.POLE_FROM);
-                uxEditProductionPoleTo.SetValue(Production.POLE_TO);
-                uxEditProductionAcresPerMile.SetValue(Production.ACRES_MILE);
-                uxEditProductionGallons.SetValue(Production.QUANTITY);
+                uxAddProductionTask.SetValue(Production.TASK_ID.ToString(), Production.DESCRIPTION);
+                uxAddProductionWorkArea.SetValue(Production.WORK_AREA);
+                uxAddProductionPoleFrom.SetValue(Production.POLE_FROM);
+                uxAddProductionPoleTo.SetValue(Production.POLE_TO);
+                uxAddProductionAcresPerMile.SetValue(Production.ACRES_MILE);
+                uxAddProductionGallons.SetValue(Production.QUANTITY);
+            }
+        }
+
+        protected void deProcessForm(object sender, DirectEventArgs e)
+        {
+            if (uxFormType.Value.ToString() == "Add")
+            {
+                deAddProduction(sender, e);
+            }
+            else
+            {
+                deEditProduction(sender, e);
             }
         }
 
@@ -131,19 +134,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GenericData.Insert<DAILY_ACTIVITY_PRODUCTION>(data);
 
             uxAddProductionForm.Reset();
-            X.Js.Call("parent.App.uxPlaceholderWindow.hide(); parent.App.uxProductionTab.reload()");
-
-            Notification.Show(new NotificationConfig()
-            {
-                Title = "Success",
-                Html = "Production Added Successfully",
-                HideDelay = 1000,
-                AlignCfg = new NotificationAlignConfig
-                {
-                    ElementAnchor = AnchorPoint.Center,
-                    TargetAnchor = AnchorPoint.Center
-                }
-            });
+            X.Js.Call("parent.App.uxDetailsPanel.reload(); parent.App.uxPlaceholderWindow.close()");
         }
 
         /// <summary>
@@ -156,9 +147,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             DAILY_ACTIVITY_PRODUCTION data;
 
             //Do type conversions
-            long TaskId = long.Parse(uxEditProductionTask.Value.ToString());
-            decimal AcresPerMile = decimal.Parse(uxEditProductionAcresPerMile.Value.ToString());
-            long Gallons = long.Parse(uxEditProductionGallons.Value.ToString());
+            long TaskId = long.Parse(uxAddProductionTask.Value.ToString());
+            decimal AcresPerMile = decimal.Parse(uxAddProductionAcresPerMile.Value.ToString());
+            long Gallons = long.Parse(uxAddProductionGallons.Value.ToString());
             long ProductionId = long.Parse(Request.QueryString["ProductionId"]);
 
             //Get record to be edited
@@ -169,10 +160,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         select d).Single();
             }
             data.TASK_ID = TaskId;
-            data.WORK_AREA = uxEditProductionWorkArea.Value.ToString();
+            data.WORK_AREA = uxAddProductionWorkArea.Value.ToString();
             try
             {
-                data.POLE_FROM = uxEditProductionPoleFrom.Value.ToString();
+                data.POLE_FROM = uxAddProductionPoleFrom.Value.ToString();
             }
             catch
             {
@@ -180,7 +171,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             try
             {
-                data.POLE_TO = uxEditProductionPoleTo.Value.ToString();
+                data.POLE_TO = uxAddProductionPoleTo.Value.ToString();
             }
             catch
             {
@@ -194,35 +185,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Write to DB
             GenericData.Update<DAILY_ACTIVITY_PRODUCTION>(data);
 
-            X.Js.Call("parent.App.uxPlaceholderWindow.hide(); parent.App.uxProductionTab.reload()");
-
-            Notification.Show(new NotificationConfig()
-            {
-                Title = "Success",
-                Html = "Production Edited Successfully",
-                HideDelay = 1000,
-                AlignCfg = new NotificationAlignConfig
-                {
-                    ElementAnchor = AnchorPoint.Center,
-                    TargetAnchor = AnchorPoint.Center
-                }
-            });
+            X.Js.Call("parent.App.uxDetailsPanel.reload(); parent.App.uxPlaceholderWindow.close()");
         }
 
         protected void deStoreTask(object sender, DirectEventArgs e)
         {
-            if (e.ExtraParams["Type"] == "Edit")
-            {
-                uxEditProductionTask.SetValue(e.ExtraParams["TaskId"], e.ExtraParams["Description"]);
-
-                uxEditProductionTaskStore.ClearFilter();
-            }
-            else
-            {
-                uxAddProductionTask.SetValue(e.ExtraParams["TaskId"], e.ExtraParams["Description"]);
-
-                uxAddProductionTaskStore.ClearFilter();
-            }
+            uxAddProductionTask.SetValue(e.ExtraParams["TaskId"], e.ExtraParams["Description"]);
+            uxAddProductionTaskStore.ClearFilter();
         }
     }
 }

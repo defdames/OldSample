@@ -74,7 +74,7 @@
 				<ext:StoreParameter Name="OrgId" Value="#{uxEditInventoryRegion}.value" Mode="Raw" />
 			</Parameters>
 		</ext:Store>
-		<ext:Panel runat="server">
+		<ext:ViewPort runat="server" Layout="FitLayout">
 			<Items>
 				<ext:FormPanel runat="server"
 					ID="uxAddInventoryForm"
@@ -419,12 +419,11 @@
 		<AfterRender
 			Handler="var win = parentAutoLoadControl.target || parentAutoLoadControl, //you can use just 'parentAutoLoadControl' after update to Ext.NET v2 beta.
 							size = this.getSize();
-							size.height += 250;
-							size.width += 12;
+							size.width += 24;
 							win.setSize(size);"
 					Delay="100" />
 			</Listeners>
-		</ext:Panel>
+		</ext:ViewPort>
 	</form>
 </body>
 </html>

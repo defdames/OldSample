@@ -37,6 +37,23 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 this.uxRedWarning.Value = ResourceManager.GetInstance().GetIconUrl(Icon.Exclamation);
                 this.uxYellowWarning.Value = ResourceManager.GetInstance().GetIconUrl(Icon.Error);
             }
+            if (GetStatus(long.Parse(Request.QueryString["HeaderId"])) != 2)
+            {
+                uxEmployeeToolbar.Hide();
+                uxEquipmentToolbar.Hide();
+                uxProductionToolbar.Hide();
+                uxWeatherToolbar.Hide();
+                uxChemicalToolbar.Hide();
+                uxInventoryToolbar.Hide();
+            }
+        }
+
+        protected int GetStatus(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
+                return (int)_context.DAILY_ACTIVITY_HEADER.Where(x => x.HEADER_ID == HeaderId).Select(x => x.STATUS).Single();
+            }
         }
 
         /// <summary>
@@ -229,7 +246,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
                 var data = (from c in _context.DAILY_ACTIVITY_CHEMICAL_MIX
                             where c.HEADER_ID == HeaderId
-                            select new { c.CHEMICAL_MIX_NUMBER, c.COUNTY, c.STATE, c.TARGET_AREA, c.GALLON_ACRE, c.GALLON_STARTING, c.GALLON_MIXED, c.GALLON_REMAINING, c.ACRES_SPRAYED, TOTAL = c.GALLON_STARTING + c.GALLON_MIXED, USED = c.GALLON_STARTING + c.GALLON_MIXED - c.GALLON_REMAINING }).ToList();
+                            select new { c.CHEMICAL_MIX_ID, c.CHEMICAL_MIX_NUMBER, c.COUNTY, c.STATE, c.TARGET_AREA, c.GALLON_ACRE, c.GALLON_STARTING, c.GALLON_MIXED, c.GALLON_REMAINING, c.ACRES_SPRAYED, TOTAL = c.GALLON_STARTING + c.GALLON_MIXED, USED = c.GALLON_STARTING + c.GALLON_MIXED - c.GALLON_REMAINING }).ToList();
                 uxChemicalStore.DataSource = data;
                 uxChemicalStore.DataBind();
             }
@@ -251,7 +268,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             where d.HEADER_ID == HeaderId
                             from j in joined
                             where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
-                            select new InventoryDetails { ENABLED_FLAG = j.ENABLED_FLAG, ITEM_ID = j.ITEM_ID, ACTIVE = j.ACTIVE, LE = j.LE, SEGMENT1 = j.SEGMENT1, LAST_UPDATE_DATE = j.LAST_UPDATE_DATE, ATTRIBUTE2 = j.ATTRIBUTE2, INV_LOCATION = j.INV_LOCATION, CONTRACTOR_SUPPLIED = (d.CONTRACTOR_SUPPLIED == "Y" ? true : false), TOTAL = d.TOTAL, INV_NAME = j.INV_NAME, INVENTORY_ID = d.INVENTORY_ID, CHEMICAL_MIX_ID = d.CHEMICAL_MIX_ID, CHEMICAL_MIX_NUMBER = c.CHEMICAL_MIX_NUMBER, SUB_INVENTORY_SECONDARY_NAME = d.SUB_INVENTORY_SECONDARY_NAME, SUB_INVENTORY_ORG_ID = d.SUB_INVENTORY_ORG_ID, DESCRIPTION = j.DESCRIPTION, RATE = d.RATE, UOM_CODE = u.UOM_CODE, UNIT_OF_MEASURE = u.UNIT_OF_MEASURE, EPA_NUMBER = d.EPA_NUMBER }).ToList();
+                            select new InventoryDetails { INVENTORY_ID = d.INVENTORY_ID, ENABLED_FLAG = j.ENABLED_FLAG, ITEM_ID = j.ITEM_ID, ACTIVE = j.ACTIVE, LE = j.LE, SEGMENT1 = j.SEGMENT1, LAST_UPDATE_DATE = j.LAST_UPDATE_DATE, ATTRIBUTE2 = j.ATTRIBUTE2, INV_LOCATION = j.INV_LOCATION, CONTRACTOR_SUPPLIED = (d.CONTRACTOR_SUPPLIED == "Y" ? true : false), TOTAL = d.TOTAL, INV_NAME = j.INV_NAME, CHEMICAL_MIX_ID = d.CHEMICAL_MIX_ID, CHEMICAL_MIX_NUMBER = c.CHEMICAL_MIX_NUMBER, SUB_INVENTORY_SECONDARY_NAME = d.SUB_INVENTORY_SECONDARY_NAME, SUB_INVENTORY_ORG_ID = d.SUB_INVENTORY_ORG_ID, DESCRIPTION = j.DESCRIPTION, RATE = d.RATE, UOM_CODE = u.UOM_CODE, UNIT_OF_MEASURE = u.UNIT_OF_MEASURE, EPA_NUMBER = d.EPA_NUMBER }).ToList();
                 uxInventoryStore.DataSource = data;
                 uxInventoryStore.DataBind();
             }
@@ -304,6 +321,162 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         uxContractImage.ImageUrl = "../../../Resources/Images/1pixel.jpg";
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Remove Employee entry from db
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void deRemoveEmployee(object sender, DirectEventArgs e)
+        {
+
+            long EmployeeId = long.Parse(e.ExtraParams["EmployeeID"]);
+            //Get Record to Remove
+            DAILY_ACTIVITY_EMPLOYEE data;
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                        where d.EMPLOYEE_ID == EmployeeId
+                        select d).Single();
+            }
+            GenericData.Delete<DAILY_ACTIVITY_EMPLOYEE>(data);
+            X.Js.Call("parent.App.uxDetailsPanel.reload()");
+        }
+
+        /// <summary>
+        /// Remove equipment from db
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void deRemoveEquipment(object sender, DirectEventArgs e)
+        {
+            //Convert EquipmentId to long
+            long EquipmentId = long.Parse(e.ExtraParams["EquipmentId"]);
+            DAILY_ACTIVITY_EQUIPMENT data;
+
+            //Get record to be deleted
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
+                        where d.EQUIPMENT_ID == EquipmentId
+                        select d).Single();
+            }
+
+            GenericData.Delete<DAILY_ACTIVITY_EQUIPMENT>(data);
+            X.Js.Call("parent.App.uxDetailsPanel.reload()");
+        }
+
+        /// <summary>
+        /// Remove production item from db
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void deRemoveProduction(object sender, DirectEventArgs e)
+        {
+            long ProductionId = long.Parse(e.ExtraParams["ProductionId"]);
+            DAILY_ACTIVITY_PRODUCTION data;
+
+            //Get record to be deleted
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.DAILY_ACTIVITY_PRODUCTION
+                        where d.PRODUCTION_ID == ProductionId
+                        select d).Single();
+            }
+
+            //Process deletion
+            GenericData.Delete<DAILY_ACTIVITY_PRODUCTION>(data);
+            X.Js.Call("parent.App.uxDetailsPanel.reload()");
+        }
+
+        /// <summary>
+        /// Remove weather from db
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void deRemoveWeather(object sender, DirectEventArgs e)
+        {
+            long WeatherId = long.Parse(e.ExtraParams["WeatherId"]);
+            DAILY_ACTIVITY_WEATHER data;
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.DAILY_ACTIVITY_WEATHER
+                        where d.WEATHER_ID == WeatherId
+                        select d).Single();
+            }
+            GenericData.Delete<DAILY_ACTIVITY_WEATHER>(data);
+
+            X.Js.Call("parent.App.uxDetailsPanel.reload()");
+        }
+
+        /// <summary>
+        /// Remove inventory entry from DB
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void deRemoveInventory(object sender, DirectEventArgs e)
+        {
+            long InventoryId = long.Parse(e.ExtraParams["InventoryId"]);
+            DAILY_ACTIVITY_INVENTORY data;
+
+            //Get record to be deleted
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.DAILY_ACTIVITY_INVENTORY
+                        where d.INVENTORY_ID == InventoryId
+                        select d).Single();
+            }
+
+            //Delete from DB
+            GenericData.Delete<DAILY_ACTIVITY_INVENTORY>(data);
+
+            X.Js.Call("parent.App.uxDetailsPanel.reload()");
+        }
+
+        protected void deRemoveChemical(object sender, DirectEventArgs e)
+        {
+            long ChemicalId = long.Parse(e.ExtraParams["ChemicalId"]);
+            //check for existing inven
+            DAILY_ACTIVITY_CHEMICAL_MIX data;
+
+
+            //Get record to be deleted.
+            using (Entities _context = new Entities())
+            {
+                data = _context.DAILY_ACTIVITY_CHEMICAL_MIX.Include("DAILY_ACTIVITY_INVENTORY").Where(x => x.CHEMICAL_MIX_ID == ChemicalId).Single();
+
+            }
+            if (data.DAILY_ACTIVITY_INVENTORY.Count == 0)
+            {
+                //Log Mix #
+                long DeletedMix = data.CHEMICAL_MIX_NUMBER;
+
+                //Delete from db
+                GenericData.Delete<DAILY_ACTIVITY_CHEMICAL_MIX>(data);
+
+                long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+                //Get all records from this header where mix# is greater than the one that was deleted
+                using (Entities _context = new Entities())
+                {
+                    var Updates = (from d in _context.DAILY_ACTIVITY_CHEMICAL_MIX
+                                   where d.CHEMICAL_MIX_NUMBER > DeletedMix && d.HEADER_ID == HeaderId
+                                   select d).ToList();
+
+                    //Loop through and update db
+                    foreach (var ToUpdate in Updates)
+                    {
+                        ToUpdate.CHEMICAL_MIX_NUMBER = ToUpdate.CHEMICAL_MIX_NUMBER - 1;
+                        _context.SaveChanges();
+                    }
+
+                }
+                X.Js.Call("parent.App.uxDetailPanel.reload(); parent.App.uxPlaceholderWindow.close()");
+            }
+            else
+            {
+                X.Msg.Alert("Error", "You must first delete the associated inventory entries before deleting this item").Show();
             }
         }
     }

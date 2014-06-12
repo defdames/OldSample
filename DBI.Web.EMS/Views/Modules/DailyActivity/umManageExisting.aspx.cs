@@ -381,8 +381,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             string LoaderURL = (OrgId == 123 ? "umCombinedTab_IRM.aspx":"umCombinedTab_DBI.aspx") + "?HeaderId=" + HeaderId;
 
             uxDetailsPanel.LoadContent(LoaderURL);
-            uxTabPanel.Add(uxDetailsPanel);
-            uxTabPanel.SetActiveTab(uxDetailsPanel);
         }
 
 		protected long GetCoOrgId(long HeaderId)
@@ -1701,83 +1699,92 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 		[DirectMethod]
 		public void dmLoadChemicalWindow(string WindowType, string HeaderId, string ChemicalMixId)
 		{
-			uxPlaceholderWindow.ClearContent();
-			uxPlaceholderWindow.LoadContent(string.Format("umAddEditChemical.aspx?HeaderId={0}&Type={1}&ChemicalMixId={2}", HeaderId, WindowType, ChemicalMixId));
-			uxPlaceholderWindow.Show();
+			CreateWindow(string.Format("umAddEditChemical.aspx?HeaderId={0}&Type={1}&ChemicalMixId={2}", HeaderId, WindowType, ChemicalMixId));
 		}
 
 		[DirectMethod]
 		public void dmLoadEmployeeWindow(string WindowType, string HeaderId, string EmployeeId)
 		{
-			uxPlaceholderWindow.ClearContent();
-			uxPlaceholderWindow.LoadContent(string.Format("umAddEditEmployee.aspx?HeaderId={0}&Type={1}&EmployeeId={2}", HeaderId, WindowType, EmployeeId));
-			uxPlaceholderWindow.Show();
+            CreateWindow(string.Format("umAddEditEmployee.aspx?HeaderId={0}&Type={1}&EmployeeId={2}", HeaderId, WindowType, EmployeeId));
 		}
 
 		[DirectMethod]
 		public void dmLoadEquipmentWindow(string WindowType, string HeaderId, string EquipmentId)
 		{
-			uxPlaceholderWindow.ClearContent();
-			uxPlaceholderWindow.LoadContent(string.Format("umAddEditEquipment.aspx?HeaderId={0}&Type={1}&EquipmentId={2}", HeaderId, WindowType, EquipmentId));
-			uxPlaceholderWindow.Show();
+            CreateWindow(string.Format("umAddEditEquipment.aspx?HeaderId={0}&Type={1}&EquipmentId={2}", HeaderId, WindowType, EquipmentId));
 		}
 
 		[DirectMethod]
 		public void dmLoadInventoryWindow_DBI(string WindowType, string HeaderId, string InventoryId)
 		{
-			uxPlaceholderWindow.ClearContent();
-			uxPlaceholderWindow.LoadContent(string.Format("umAddEditInventory_DBI.aspx?HeaderId={0}&Type={1}&InventoryId={2}", HeaderId, WindowType, InventoryId));
-			uxPlaceholderWindow.Show();
+            CreateWindow(string.Format("umAddEditInventory_DBI.aspx?HeaderId={0}&Type={1}&InventoryId={2}", HeaderId, WindowType, InventoryId));
 		}
 
 		[DirectMethod]
 		public void dmLoadInventoryWindow_IRM(string WindowType, string HeaderId, string InventoryId)
 		{
-			uxPlaceholderWindow.ClearContent();
-			uxPlaceholderWindow.LoadContent(string.Format("umAddEditInventory_IRM.aspx?HeaderId={0}&Type={1}&InventoryId={2}", HeaderId, WindowType, InventoryId));
-			uxPlaceholderWindow.Show();
+            CreateWindow(string.Format("umAddEditInventory_IRM.aspx?HeaderId={0}&Type={1}&InventoryId={2}", HeaderId, WindowType, InventoryId));
 		}
 
 		[DirectMethod]
 		public void dmLoadProductionWindow_DBI(string WindowType, string HeaderId, string ProductionId)
 		{
-			uxPlaceholderWindow.ClearContent();
-			uxPlaceholderWindow.LoadContent(string.Format("umAddEditProduction_DBI.aspx?HeaderId={0}&Type={1}&ProductionId={2}", HeaderId, WindowType, ProductionId));
-			uxPlaceholderWindow.Show();
+            CreateWindow(string.Format("umAddEditProduction_DBI.aspx?HeaderId={0}&Type={1}&ProductionId={2}", HeaderId, WindowType, ProductionId));
 		}
 
 		[DirectMethod]
 		public void dmLoadProductionWindow_IRM(string WindowType, string HeaderId, string ProductionId)
 		{
-			uxPlaceholderWindow.ClearContent();
-			uxPlaceholderWindow.LoadContent(string.Format("umAddEditProduction_IRM.aspx?HeaderId={0}&Type={1}&ProductionId={2}", HeaderId, WindowType, ProductionId));
-			uxPlaceholderWindow.Show();
+            CreateWindow(string.Format("umAddEditProduction_IRM.aspx?HeaderId={0}&Type={1}&ProductionId={2}", HeaderId, WindowType, ProductionId));
 		}
 
 		[DirectMethod]
 		public void dmLoadWeatherWindow(string WindowType, string HeaderId, string WeatherId)
 		{
-			uxPlaceholderWindow.ClearContent();
-			uxPlaceholderWindow.LoadContent(string.Format("umAddEditWeather.aspx?HeaderId={0}&Type={1}&WeatherId={2}", HeaderId, WindowType, WeatherId));
-			uxPlaceholderWindow.Show();
+            CreateWindow(string.Format("umAddEditWeather.aspx?HeaderId={0}&Type={1}&WeatherId={2}", HeaderId, WindowType, WeatherId));
 		}
 
 		[DirectMethod]
 		public void dmLoadLunchWindow(string HeaderId, string EmployeeId)
 		{
-			uxPlaceholderWindow.ClearContent();
-			uxPlaceholderWindow.LoadContent(string.Format("umChooseLunchHeader.aspx?HeaderId={0}&EmployeeId={1}", HeaderId, EmployeeId));
-			uxPlaceholderWindow.Show();
+            CreateWindow(string.Format("umChooseLunchHeader.aspx?HeaderId={0}&EmployeeId={1}", HeaderId, EmployeeId));
 		}
 
 		[DirectMethod]
 		public void dmLoadPerDiemWindow(string HeaderId, string EmployeeId)
 		{
-			uxPlaceholderWindow.ClearContent();
-			uxPlaceholderWindow.LoadContent(string.Format("umChoosePerDiem.aspx?HeaderId={0}&EmployeeId={1}", HeaderId, EmployeeId));
-			uxPlaceholderWindow.Show();
+            CreateWindow(string.Format("umChoosePerDiem.aspx?HeaderId={0}&EmployeeId={1}", HeaderId, EmployeeId));
 		}
 
+        protected void CreateWindow(string LoaderUrl)
+        {
+            Window win = new Window()
+            {
+                ID = "uxPlaceholderWindow",
+                Width = Unit.Pixel(600),
+                Modal = true,
+                Resizable = false,
+                AutoRender = false,
+                Y = 15,
+                Constrain=false,
+                CloseAction=CloseAction.Destroy,
+                Loader = new ComponentLoader
+                {
+                    Url = LoaderUrl,
+                    DisableCaching = true,
+                    Mode = LoadMode.Frame,
+                    AutoLoad=true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
+
+            this.Form.Controls.Add(win);
+            win.Render(this.Form);
+            win.Show();
+        }
 	}
 
 	public class EquipmentDetails

@@ -18,14 +18,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             if (!X.IsAjaxRequest)
             {
-                if (Request.QueryString["type"] == "Add")
+                if (Request.QueryString["type"] == "Edit")
                 {
-                    uxAddEquipmentForm.Show();
-                }
-                else
-                {
-                    uxAddEquipmentForm.Hide();
-                    uxEditEquipmentForm.Show();
                     LoadEditEquipmentForm();
                 }
             }
@@ -40,33 +34,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             List<WEB_EQUIPMENT_V> dataIn;
 
-            if (e.Parameters["Form"] == "Add")
+            if (uxAddEquipmentToggleOrg.Pressed)
             {
-                if (uxAddEquipmentToggleOrg.Pressed)
-                {
-                    //Get All Projects
-                    dataIn = WEB_EQUIPMENT_V.ListEquipment();
-                }
-                else
-                {
-                    int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
-                    //Get projects for my org only
-                    dataIn = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
-                }
+                //Get All Projects
+                dataIn = WEB_EQUIPMENT_V.ListEquipment();
             }
             else
             {
-                if (uxEditRegion.Pressed)
-                {
-                    //Get All Projects
-                    dataIn = WEB_EQUIPMENT_V.ListEquipment();
-                }
-                else
-                {
-                    int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
-                    //Get projects for my org only
-                    dataIn = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
-                }
+                int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                //Get projects for my org only
+                dataIn = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
             }
 
             int count;
@@ -75,13 +52,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             List<WEB_EQUIPMENT_V> data = GenericData.EnumerableFilterHeader<WEB_EQUIPMENT_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
 
             e.Total = count;
-            if (e.Parameters["Form"] == "Add")
+            uxEquipmentStore.DataSource = data;
+        }
+
+        protected void deProcessForm(object sender, DirectEventArgs e)
+        {
+            if (uxFormType.Value.ToString() == "Add")
             {
-                uxEquipmentStore.DataSource = data;
+                deAddEquipment(sender, e);
             }
             else
             {
-                uxEditEquipmentProjectStore.DataSource = data;
+                deEditEquipment(sender, e);
             }
         }
 
@@ -135,21 +117,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Write Data to DB
             GenericData.Insert<DAILY_ACTIVITY_EQUIPMENT>(added);
 
-            uxAddEquipmentForm.Reset();
-            X.Js.Call("parent.App.uxPlaceholderWindow.hide(); parent.App.uxEquipmentTab.reload()");
+            X.Js.Call("parent.App.uxDetailsPanel.reload(); parent.App.uxPlaceholderWindow.close()");
 
-
-            Notification.Show(new NotificationConfig()
-            {
-                Title = "Success",
-                Html = "Equipment Added Successfully",
-                HideDelay = 1000,
-                AlignCfg = new NotificationAlignConfig
-                {
-                    ElementAnchor = AnchorPoint.Center,
-                    TargetAnchor = AnchorPoint.Center
-                }
-            });
         }
 
         /// <summary>
@@ -165,9 +134,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                  join p in _context.CLASS_CODES_V on d.PROJECT_ID equals p.PROJECT_ID
                                      where d.EQUIPMENT_ID == EquipmentId
                                      select new{d, p.NAME}).Single();
-                uxEditEquipmentProject.SetValue(Equipment.d.PROJECT_ID.ToString(), Equipment.NAME);
-                uxEditEquipmentStart.SetValue(Equipment.d.ODOMETER_START);
-                uxEditEquipmentEnd.SetValue(Equipment.d.ODOMETER_END);
+                uxAddEquipmentDropDown.SetValue(Equipment.d.PROJECT_ID.ToString(), Equipment.NAME);
+                uxAddEquipmentStart.SetValue(Equipment.d.ODOMETER_START);
+                uxAddEquipmentEnd.SetValue(Equipment.d.ODOMETER_END);
             }
         }
 
@@ -189,14 +158,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         where d.EQUIPMENT_ID == EquipmentId
                         select d).Single();
 
-                long ProjectId = long.Parse(uxEditEquipmentProject.Value.ToString());
+                long ProjectId = long.Parse(uxAddEquipmentDropDown.Value.ToString());
                 long OdStart;
                 long OdEnd;
 
                 //Check for odometer start
                 try
                 {
-                    OdStart = long.Parse(uxEditEquipmentStart.Value.ToString());
+                    OdStart = long.Parse(uxAddEquipmentStart.Value.ToString());
                     data.ODOMETER_START = OdStart;
                 }
                 catch (NullReferenceException)
@@ -207,7 +176,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 //Check for odometer end
                 try
                 {
-                    OdEnd = long.Parse(uxEditEquipmentEnd.Value.ToString());
+                    OdEnd = long.Parse(uxAddEquipmentEnd.Value.ToString());
                     data.ODOMETER_END = OdEnd;
                 }
                 catch (NullReferenceException)
@@ -224,20 +193,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Save to DB
             GenericData.Update<DAILY_ACTIVITY_EQUIPMENT>(data);
 
-            X.Js.Call("parent.App.uxPlaceholderWindow.hide(); parent.App.uxEquipmentTab.reload()");
-
-            Notification.Show(new NotificationConfig()
-            {
-                Title = "Success",
-                Html = "Equipment Edited Successfully",
-                HideDelay = 1000,
-                AlignCfg = new NotificationAlignConfig
-                {
-                    ElementAnchor = AnchorPoint.Center,
-                    TargetAnchor = AnchorPoint.Center
-                }
-            });
-
+            X.Js.Call("parent.App.uxDetailsPanel.reload(); parent.App.uxPlaceholderWindow.close()");
         }
 
           /// <summary>
@@ -247,30 +203,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deReloadStore(object sender, DirectEventArgs e)
         {
-            string type = e.ExtraParams["Type"];
-            if (type == "Equipment")
+            uxEquipmentStore.Reload();
+            if (uxAddEquipmentToggleOrg.Pressed)
             {
-                uxEquipmentStore.Reload();
-                if (uxAddEquipmentToggleOrg.Pressed)
-                {
-                    uxAddEquipmentToggleOrg.Text = "My Region";
-                }
-                else
-                {
-                    uxAddEquipmentToggleOrg.Text = "All Regions";
-                }
+                uxAddEquipmentToggleOrg.Text = "My Region";
             }
-            if (type == "Edit")
+            else
             {
-                uxEditEquipmentProjectStore.Reload();
-                if (uxEditRegion.Pressed)
-                {
-                    uxEditRegion.Text = "My Region";
-                }
-                else
-                {
-                    uxEditRegion.Text = "All Regions";
-                }
+                uxAddEquipmentToggleOrg.Text = "All Regions";
             }
         }
 
@@ -281,22 +221,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deStoreGridValue(object sender, DirectEventArgs e)
         {
-            if (e.ExtraParams["Form"] == "Add")
-            {
                 //Set value and text for equipment
                 uxAddEquipmentDropDown.SetValue(e.ExtraParams["ProjectId"], e.ExtraParams["EquipmentName"]);
 
                 //Clear existing filters
                 uxAddEquipmentFilter.ClearFilter();
-            }
-            else
-            {
-                //Set value and text for equipment
-                uxEditEquipmentProject.SetValue(e.ExtraParams["ProjectId"], e.ExtraParams["EquipmentName"]);
-
-                //Clear existing filters
-                uxEditEquipmentFilter.ClearFilter();
-            }
         }
+
+        
     }
 }

@@ -19,8 +19,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             if (!X.IsAjaxRequest)
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-                if (Request.QueryString["type"] == "Add")
-                {
+
                     if (roleNeeded())
                     {
                         uxAddEmployeeRole.Show();
@@ -49,36 +48,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         uxAddEmployeeTimeOutDate.MinDate = HeaderDate;
                         uxAddEmployeeTimeOutDate.MaxDate = HeaderDate.AddDays(1);
                     }
-                }
-                else
-                {
-                    uxAddEmployeeForm.Hide();
-                    uxEditEmployeeForm.Show();
-                    if (roleNeeded())
+                    uxAddEmployeeTimeOutDate.SelectedDate = DateTime.Now.Date;
+                    if (Request.QueryString["Type"] == "Edit")
                     {
-                        uxEditEmployeeRole.Show();
+                        LoadEditEmployeeForm();
+                        uxFormType.Value = "Edit";
                     }
-                    LoadEditEmployeeForm();
-                    if (GetOrgId(HeaderId) == 123)
+                    else
                     {
-                        uxEditEmployeeDriveTimeHours.Show();
-                        uxEditEmployeeDriveTimeMinutes.Show();
-                        uxEditEmployeeShopTimeAMHours.Show();
-                        uxEditEmployeeShopTimeAMMinutes.Show();
-                        uxEditEmployeeShopTimePMHours.Show();
-                        uxEditEmployeeShopTimePMMinutes.Show();
+                        uxFormType.Value = "Add";
                     }
-                    using (Entities _context = new Entities())
-                    {
-                        DateTime HeaderDate = _context.DAILY_ACTIVITY_HEADER.Where(x => x.HEADER_ID == HeaderId).Select(x => (DateTime)x.DA_DATE).Single();
-                        uxEditEmployeeTimeInDate.MinDate = HeaderDate;
-                        uxEditEmployeeTimeInDate.MaxDate = HeaderDate;
-                        uxEditEmployeeTimeOutDate.MinDate = HeaderDate;
-                        uxEditEmployeeTimeOutDate.MaxDate = HeaderDate.AddDays(1);
-                    }
-                }
-                
-                uxAddEmployeeTimeOutDate.SelectedDate = DateTime.Now.Date;
+            
+
             }
         }
 
@@ -116,43 +97,43 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 DateTime TimeIn = (DateTime)Employee.TIME_IN;
                 DateTime TimeOut = (DateTime)Employee.TIME_OUT;
 
-                uxEditEmployeeEmpDropDown.SetValue(Employee.PERSON_ID.ToString(), Employee.EMPLOYEE_NAME);
+                uxAddEmployeeEmpDropDown.SetValue(Employee.PERSON_ID.ToString(), Employee.EMPLOYEE_NAME);
                 
                 try
                 {
-                    uxEditEmployeeEqDropDown.SetValue(Employee.EQUIPMENT_ID.ToString(), Employee.SEGMENT1.ToString());
+                    uxAddEmployeeEqDropDown.SetValue(Employee.EQUIPMENT_ID.ToString(), Employee.SEGMENT1.ToString());
                 }
                 catch (NullReferenceException) { }
 
-                uxEditEmployeeTimeInDate.SetValue(TimeIn.Date);
-                uxEditEmployeeTimeInTime.SetValue(TimeIn.TimeOfDay);
-                uxEditEmployeeTimeOutDate.SetValue(TimeOut.Date);
-                uxEditEmployeeTimeOutTime.SetValue(TimeOut.TimeOfDay);
-                uxEditEmployeeComments.SetValue(Employee.COMMENTS);
+                uxAddEmployeeTimeInDate.SetValue(TimeIn.Date.ToString("MM/dd/yyyy"));
+                uxAddEmployeeTimeInTime.SetValue(TimeIn.TimeOfDay);
+                uxAddEmployeeTimeOutDate.SetValue(TimeOut.Date);
+                uxAddEmployeeTimeOutTime.SetValue(TimeOut.TimeOfDay);
+                uxAddEmployeeComments.SetValue(Employee.COMMENTS);
                 try
                 {
-                    uxEditEmployeeDriveTimeHours.SetValue(Math.Truncate((double)Employee.DRIVE_TIME));
-                    uxEditEmployeeDriveTimeMinutes.SetValue(Math.Round(((double)Employee.DRIVE_TIME - Math.Truncate((double)Employee.DRIVE_TIME)) * 60));
+                    uxAddEmployeeDriveTimeHours.SetValue(Math.Truncate((double)Employee.DRIVE_TIME));
+                    uxAddEmployeeDriveTimeMinutes.SetValue(Math.Round(((double)Employee.DRIVE_TIME - Math.Truncate((double)Employee.DRIVE_TIME)) * 60));
                 }
                 catch (Exception)
                 {
                 }
                 try
                 {
-                    uxEditEmployeeTravelTimeHours.SetValue(Math.Truncate((double)Employee.TRAVEL_TIME));
-                    uxEditEmployeeTravelTimeMinutes.SetValue(Math.Round(((double)Employee.TRAVEL_TIME - Math.Truncate((double)Employee.TRAVEL_TIME)) * 60));
+                    uxAddEmployeeTravelTimeHours.SetValue(Math.Truncate((double)Employee.TRAVEL_TIME));
+                    uxAddEmployeeTravelTimeMinutes.SetValue(Math.Round(((double)Employee.TRAVEL_TIME - Math.Truncate((double)Employee.TRAVEL_TIME)) * 60));
                 }
                 catch (Exception)
                 {
                 }
-                uxEditEmployeeRole.SetValue(Employee.ROLE_TYPE, Employee.ROLE_TYPE);
-                uxEditEmployeeLicense.SetValue(Employee.FOREMAN_LICENSE);
+                uxAddEmployeeRole.SetValue(Employee.ROLE_TYPE, Employee.ROLE_TYPE);
+                uxAddEmployeeLicense.SetValue(Employee.FOREMAN_LICENSE);
                 if (GetOrgId(Employee.HEADER_ID) == 123)
                 {
                     try
                     {
-                        uxEditEmployeeShopTimeAMHours.SetValue(Math.Truncate((double)Employee.SHOPTIME_AM));
-                        uxEditEmployeeShopTimeAMMinutes.SetValue(Math.Round(((double)Employee.SHOPTIME_AM - Math.Truncate((double)Employee.SHOPTIME_AM)) * 60));
+                        uxAddEmployeeShopTimeAMHours.SetValue(Math.Truncate((double)Employee.SHOPTIME_AM));
+                        uxAddEmployeeShopTimeAMMinutes.SetValue(Math.Round(((double)Employee.SHOPTIME_AM - Math.Truncate((double)Employee.SHOPTIME_AM)) * 60));
                         
                     }
                     catch (Exception)
@@ -160,8 +141,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     }
                     try
                     {
-                        uxEditEmployeeShopTimePMHours.SetValue(Math.Truncate((double)Employee.SHOPTIME_PM));
-                        uxEditEmployeeShopTimePMMinutes.SetValue(Math.Round(((double)Employee.SHOPTIME_PM - Math.Truncate((double)Employee.SHOPTIME_PM)) * 60));
+                        uxAddEmployeeShopTimePMHours.SetValue(Math.Truncate((double)Employee.SHOPTIME_PM));
+                        uxAddEmployeeShopTimePMMinutes.SetValue(Math.Round(((double)Employee.SHOPTIME_PM - Math.Truncate((double)Employee.SHOPTIME_PM)) * 60));
                     }
                     catch (Exception)
                     {
@@ -169,7 +150,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 if (Employee.PER_DIEM == "Y")
                 {
-                    uxEditEmployeePerDiem.Checked = true;
+                    uxAddEmployeePerDiem.Checked = true;
                 }
             }
         }
@@ -182,8 +163,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void deReadEmployeeData(object sender, StoreReadDataEventArgs e)
         {
             List<EMPLOYEES_V> dataIn;
-            if (e.Parameters["Form"] == "EmployeeAdd")
-            {
+
                 if (uxAddEmployeeRegion.Pressed)
                 {
                     //Get All Projects
@@ -195,38 +175,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     //Get projects for my org only
                     dataIn = EMPLOYEES_V.EmployeeDropDown(CurrentOrg);
                 }
-            }
-            else
-            {
-                if (uxEditEmployeeEmpRegion.Pressed)
-                {
-                    //Get All Projects
-                    dataIn = EMPLOYEES_V.EmployeeDropDown();
-                }
-                else
-                {
-                    int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
-                    //Get projects for my org only
-                    dataIn = EMPLOYEES_V.EmployeeDropDown(CurrentOrg);
-                }
-            }
-
             int count;
 
             //Get paged,filterable list of Employees
             List<EMPLOYEES_V> data = GenericData.EnumerableFilterHeader<EMPLOYEES_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
 
             e.Total = count;
-            if (e.Parameters["Form"] == "EmployeeAdd")
-            {
-                uxAddEmployeeEmpStore.DataSource = data;
-                uxAddEmployeeEmpStore.DataBind();
-            }
-            else
-            {
-                uxEditEmployeeEmpStore.DataSource = data;
-                uxEditEmployeeEmpStore.DataBind();
-            }
+            uxAddEmployeeEmpStore.DataSource = data;
+            uxAddEmployeeEmpStore.DataBind();
         }
 
         /// <summary>
@@ -244,18 +200,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                             where d.HEADER_ID == HeaderId
                             select new { d.EQUIPMENT_ID, p.NAME, d.PROJECT_ID }).ToList();
-                if (e.Parameters["Form"] == "EquipmentAdd")
-                {
                     //Set add store
-                    uxAddEmployeeEqStore.DataSource = data;
-                    uxAddEmployeeEqStore.DataBind();
-                }
-                else
-                {
-                    //Set edit store
-                    uxEditEmployeeEqStore.DataSource = data;
-                    uxEditEmployeeEqStore.DataBind();
-                }
+                uxAddEmployeeEqStore.DataSource = data;
+                uxAddEmployeeEqStore.DataBind();
+                
             }
 
         }
@@ -267,32 +215,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deRegionToggle(object sender, DirectEventArgs e)
         {
-            switch (e.ExtraParams["Type"])
+            if (uxAddEmployeeRegion.Pressed)
             {
-                case "EmployeeAdd":
-                    if (uxAddEmployeeRegion.Pressed)
-                    {
-                        uxAddEmployeeRegion.Text = "My Region";
-                        uxAddEmployeeEmpStore.Reload();
-                    }
-                    else
-                    {
-                        uxAddEmployeeRegion.Text = "All Regions";
-                        uxAddEmployeeEmpStore.Reload();
-                    }
-                    break;
-                case "EmployeeEdit":
-                    if (uxEditEmployeeEmpRegion.Pressed)
-                    {
-                        uxEditEmployeeEmpStore.Reload();
-                        uxEditEmployeeEmpRegion.Text = "My Region";
-                    }
-                    else
-                    {
-                        uxEditEmployeeEmpStore.Reload();
-                        uxEditEmployeeEmpRegion.Text = "All Regions";
-                    }
-                    break;
+                uxAddEmployeeRegion.Text = "My Region";
+                uxAddEmployeeEmpStore.Reload();
+            }
+            else
+            {
+                uxAddEmployeeRegion.Text = "All Regions";
+                uxAddEmployeeEmpStore.Reload();
             }
         }
 
@@ -303,25 +234,29 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deStoreGridValue(object sender, DirectEventArgs e)
         {
-            switch (e.ExtraParams["Type"])
+            if(e.ExtraParams["Type"] == "EmployeeAdd")
             {
-                case "EmployeeAdd":
-                    uxAddEmployeeEmpDropDown.SetValue(e.ExtraParams["PersonId"], e.ExtraParams["Name"]);
-                    uxAddEmployeeEmpFilter.ClearFilter();
-                    break;
-                case "EmployeeEdit":
-                    uxEditEmployeeEmpDropDown.SetValue(e.ExtraParams["PersonId"], e.ExtraParams["Name"]);
-                    uxEditEmployeeEmpFilter.ClearFilter();
-                    break;
-                case "EquipmentAdd":
-                    uxAddEmployeeEqDropDown.SetValue(e.ExtraParams["EquipmentId"], e.ExtraParams["Name"]);
-                    break;
-                case "EquipmentEdit":
-                    uxEditEmployeeEqDropDown.SetValue(e.ExtraParams["EquipmentId"], e.ExtraParams["Name"]);
-                    break;
+                uxAddEmployeeEmpDropDown.SetValue(e.ExtraParams["PersonId"], e.ExtraParams["Name"]);
+                uxAddEmployeeEmpFilter.ClearFilter();
+            }
+            else
+            {
+                uxAddEmployeeEqDropDown.SetValue(e.ExtraParams["EquipmentId"], e.ExtraParams["Name"]);
             }
         }
 
+        protected void deProcessForm(object sender, DirectEventArgs e)
+        {
+            if (uxFormType.Value.ToString() == "Add")
+            {
+                deAddEmployee(sender, e);
+            }
+            else
+            {
+                deEditEmployee(sender, e);
+            }
+        }
+            
         /// <summary>
         /// Add Employee to Db
         /// </summary>
@@ -475,7 +410,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Write to DB
             GenericData.Insert<DAILY_ACTIVITY_EMPLOYEE>(data);
 
-            X.Js.Call("parent.App.uxPlaceholderWindow.hide(); parent.App.uxEmployeeTab.reload()");
+            X.Js.Call("parent.App.uxDetailsPanel.reload(); parent.App.uxPlaceholderWindow.close()");
             uxAddEmployeeForm.Reset();
 
 
@@ -500,13 +435,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void deEditEmployee(object sender, DirectEventArgs e)
         {
             //Convert to correct types
-            int PersonId = int.Parse(uxEditEmployeeEmpDropDown.Value.ToString());
+            int PersonId = int.Parse(uxAddEmployeeEmpDropDown.Value.ToString());
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             //Combine Date/Time for TimeIn/Out
-            DateTime TimeIn = DateTime.Parse(uxEditEmployeeTimeInDate.Value.ToString());
-            DateTime TimeInTime = DateTime.Parse(uxEditEmployeeTimeInTime.Value.ToString());
-            DateTime TimeOut = DateTime.Parse(uxEditEmployeeTimeOutDate.Value.ToString());
-            DateTime TimeOutTime = DateTime.Parse(uxEditEmployeeTimeOutTime.Value.ToString());
+            DateTime TimeIn = DateTime.Parse(uxAddEmployeeTimeInDate.Value.ToString());
+            DateTime TimeInTime = DateTime.Parse(uxAddEmployeeTimeInTime.Value.ToString());
+            DateTime TimeOut = DateTime.Parse(uxAddEmployeeTimeOutDate.Value.ToString());
+            DateTime TimeOutTime = DateTime.Parse(uxAddEmployeeTimeOutTime.Value.ToString());
 
             TimeIn = TimeIn + TimeInTime.TimeOfDay;
             TimeOut = TimeOut + TimeOutTime.TimeOfDay;
@@ -514,7 +449,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             //Convert PerDiem to string
             string PerDiem;
-            if (uxEditEmployeePerDiem.Checked)
+            if (uxAddEmployeePerDiem.Checked)
             {
                 PerDiem = "Y";
             }
@@ -535,8 +470,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.PERSON_ID = PersonId;
 
             //Check for Equipment
-            if(uxEditEmployeeEqDropDown.Text != ""){
-                long EquipmentId = long.Parse(uxEditEmployeeEqDropDown.Value.ToString());
+            if(uxAddEmployeeEqDropDown.Text != ""){
+                long EquipmentId = long.Parse(uxAddEmployeeEqDropDown.Value.ToString());
                 data.EQUIPMENT_ID = EquipmentId;
             }
             else
@@ -547,7 +482,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Check for Travel Time
             try
             {
-                decimal TravelTime = decimal.Parse(uxEditEmployeeTravelTimeHours.Value.ToString()) + (decimal.Parse(uxEditEmployeeTravelTimeMinutes.Value.ToString()) / 60);
+                decimal TravelTime = decimal.Parse(uxAddEmployeeTravelTimeHours.Value.ToString()) + (decimal.Parse(uxAddEmployeeTravelTimeMinutes.Value.ToString()) / 60);
                 data.TRAVEL_TIME = TravelTime;
             }
             catch (NullReferenceException)
@@ -558,7 +493,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Check for Drive Time
             try
             {
-                decimal DriveTime = decimal.Parse(uxEditEmployeeDriveTimeHours.Value.ToString()) + (decimal.Parse(uxEditEmployeeDriveTimeMinutes.Value.ToString()) /60);
+                decimal DriveTime = decimal.Parse(uxAddEmployeeDriveTimeHours.Value.ToString()) + (decimal.Parse(uxAddEmployeeDriveTimeMinutes.Value.ToString()) /60);
                 data.DRIVE_TIME = DriveTime;
             }
             catch (NullReferenceException)
@@ -568,7 +503,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             try
             {
-                data.COMMENTS = uxEditEmployeeComments.Value.ToString();
+                data.COMMENTS = uxAddEmployeeComments.Value.ToString();
             }
             catch (NullReferenceException)
             {
@@ -576,7 +511,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             try
             {
-                data.FOREMAN_LICENSE = uxEditEmployeeLicense.Value.ToString();
+                data.FOREMAN_LICENSE = uxAddEmployeeLicense.Value.ToString();
             }
             catch (NullReferenceException)
             {
@@ -591,8 +526,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             if (GetOrgId(HeaderId) == 123)
             {
-                decimal ShoptimeAM = decimal.Parse(uxEditEmployeeShopTimeAMHours.Value.ToString()) + (decimal.Parse(uxEditEmployeeShopTimeAMMinutes.Value.ToString()) / 60);
-                decimal ShoptimePM = decimal.Parse(uxEditEmployeeShopTimePMHours.Value.ToString()) + (decimal.Parse(uxEditEmployeeShopTimePMMinutes.Value.ToString()) / 60);
+                decimal ShoptimeAM = decimal.Parse(uxAddEmployeeShopTimeAMHours.Value.ToString()) + (decimal.Parse(uxAddEmployeeShopTimeAMMinutes.Value.ToString()) / 60);
+                decimal ShoptimePM = decimal.Parse(uxAddEmployeeShopTimePMHours.Value.ToString()) + (decimal.Parse(uxAddEmployeeShopTimePMMinutes.Value.ToString()) / 60);
                 data.SHOPTIME_AM = ShoptimeAM;
                 data.SHOPTIME_PM = ShoptimePM;
             }
@@ -601,7 +536,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 try
                 {
-                    data.ROLE_TYPE = uxEditEmployeeRole.Value.ToString();
+                    data.ROLE_TYPE = uxAddEmployeeRole.Value.ToString();
                 }
                 catch (NullReferenceException)
                 {
@@ -609,7 +544,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 try
                 {
-                    data.STATE = uxEditEmployeeState.Value.ToString();
+                    data.STATE = uxAddEmployeeState.Value.ToString();
                 }
                 catch (NullReferenceException)
                 {
@@ -617,7 +552,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 try
                 {
-                    data.COUNTY = uxEditEmployeeCounty.Value.ToString();
+                    data.COUNTY = uxAddEmployeeCounty.Value.ToString();
                 }
                 catch (NullReferenceException)
                 {
@@ -627,8 +562,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Write to db
             GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(data);
 
-            X.Js.Call("parent.App.uxPlaceholderWindow.hide(); parent.App.uxEmployeeTab.reload()");
-            uxEditEmployeeForm.Reset();
+            X.Js.Call("parent.App.uxDetailsPanel.reload(); parent.App.uxPlaceholderWindow.close()");
+            uxAddEmployeeForm.Reset();
 
             Notification.Show(new NotificationConfig()
             {
@@ -676,14 +611,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 if (Disable)
                 {
-                    if (e.ExtraParams["Form"] == "Add")
-                    {
-                        uxAddEmployeePerDiem.Disabled = true;
-                    }
-                    else
-                    {
-                        uxEditEmployeePerDiem.Disabled = true;
-                    }
+                    uxAddEmployeePerDiem.Disabled = true;
                 }
             }
         }
@@ -719,96 +647,46 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                              where d.HEADER_ID == HeaderId
                                              select p).ToList();
 
-                if (e.Parameters["Form"] == "Add")
-                {
-                    uxAddEmployeeRoleStore.DataSource = RoleList;
-                }
-                else
-                {
-                    uxEditEmployeeRoleStore.DataSource = RoleList;
-                }
+                uxAddEmployeeRoleStore.DataSource = RoleList;
             }
         }
 
         protected void deStoreRoleGridValue(object sender, DirectEventArgs e)
         {
-            if (e.ExtraParams["Type"] == "Add")
-            {
-                uxAddEmployeeRole.SetValue(e.ExtraParams["Meaning"], e.ExtraParams["Meaning"]);
-                uxAddEmployeeState.SetValue(e.ExtraParams["State"]);
-                uxAddEmployeeCounty.SetValue(e.ExtraParams["County"]);
-            }
-            else
-            {
-                uxEditEmployeeRole.SetValue(e.ExtraParams["Meaning"], e.ExtraParams["Meaning"]);
-                uxEditEmployeeState.SetValue(e.ExtraParams["State"]);
-                uxEditEmployeeCounty.SetValue(e.ExtraParams["County"]);
-            }
+            uxAddEmployeeRole.SetValue(e.ExtraParams["Meaning"], e.ExtraParams["Meaning"]);
+            uxAddEmployeeState.SetValue(e.ExtraParams["State"]);
+            uxAddEmployeeCounty.SetValue(e.ExtraParams["County"]);
         }
 
         protected void ValidateDateTime(object sender, RemoteValidationEventArgs e)
         {
-            if (e.ExtraParams["Type"] == "Add")
-            {
-                DateTime StartDate = DateTime.Parse(uxAddEmployeeTimeInDate.Value.ToString());
-                DateTime StartTime = DateTime.Parse(uxAddEmployeeTimeInTime.Value.ToString());
-                DateTime EndDate = DateTime.Parse(uxAddEmployeeTimeOutDate.Value.ToString());
-                DateTime EndTime = DateTime.Parse(uxAddEmployeeTimeOutTime.Value.ToString());
+            DateTime StartDate = DateTime.Parse(uxAddEmployeeTimeInDate.Value.ToString());
+            DateTime StartTime = DateTime.Parse(uxAddEmployeeTimeInTime.Value.ToString());
+            DateTime EndDate = DateTime.Parse(uxAddEmployeeTimeOutDate.Value.ToString());
+            DateTime EndTime = DateTime.Parse(uxAddEmployeeTimeOutTime.Value.ToString());
 
-                DateTime CombinedStart = StartDate.Date + StartTime.TimeOfDay;
-                DateTime CombinedEnd = EndDate.Date + EndTime.TimeOfDay;
-                if (CombinedStart > CombinedEnd)
-                {
-                    e.Success = false;
-                    e.ErrorMessage = "End Date and Time must be later than Start Date and Time";
-                    uxAddEmployeeTimeInDate.MarkInvalid();
-                    uxAddEmployeeTimeOutDate.MarkInvalid();
-                    uxAddEmployeeTimeInTime.MarkInvalid();
-                    uxAddEmployeeTimeOutTime.MarkInvalid();
-                }
-                else
-                {
-                    e.Success = true;
-                    uxAddEmployeeTimeInDate.ClearInvalid();
-                    uxAddEmployeeTimeInDate.MarkAsValid();
-                    uxAddEmployeeTimeOutDate.ClearInvalid();
-                    uxAddEmployeeTimeOutDate.MarkAsValid();
-                    uxAddEmployeeTimeInTime.ClearInvalid();
-                    uxAddEmployeeTimeInTime.MarkAsValid();
-                    uxAddEmployeeTimeOutTime.ClearInvalid();
-                    uxAddEmployeeTimeOutTime.MarkAsValid();
-                }
+            DateTime CombinedStart = StartDate.Date + StartTime.TimeOfDay;
+            DateTime CombinedEnd = EndDate.Date + EndTime.TimeOfDay;
+            if (CombinedStart > CombinedEnd)
+            {
+                e.Success = false;
+                e.ErrorMessage = "End Date and Time must be later than Start Date and Time";
+                uxAddEmployeeTimeInDate.MarkInvalid();
+                uxAddEmployeeTimeOutDate.MarkInvalid();
+                uxAddEmployeeTimeInTime.MarkInvalid();
+                uxAddEmployeeTimeOutTime.MarkInvalid();
             }
             else
             {
-                DateTime StartDate = DateTime.Parse(uxEditEmployeeTimeInDate.Value.ToString());
-                DateTime StartTime = DateTime.Parse(uxEditEmployeeTimeInTime.Value.ToString());
-                DateTime EndDate = DateTime.Parse(uxEditEmployeeTimeOutDate.Value.ToString());
-                DateTime EndTime = DateTime.Parse(uxEditEmployeeTimeOutTime.Value.ToString());
-
-                DateTime CombinedStart = StartDate.Date + StartTime.TimeOfDay;
-                DateTime CombinedEnd = EndDate.Date + EndTime.TimeOfDay;
-                if (CombinedStart > CombinedEnd)
-                {
-                    e.Success = false;
-                    e.ErrorMessage = "End Date and Time must be later than Start Date and Time";
-                    uxEditEmployeeTimeInDate.MarkInvalid();
-                    uxEditEmployeeTimeOutDate.MarkInvalid();
-                    uxEditEmployeeTimeInTime.MarkInvalid();
-                    uxEditEmployeeTimeOutTime.MarkInvalid();
-                }
-                else
-                {
-                    e.Success = true;
-                    uxEditEmployeeTimeInDate.ClearInvalid();
-                    uxEditEmployeeTimeInDate.MarkAsValid();
-                    uxEditEmployeeTimeOutDate.ClearInvalid();
-                    uxEditEmployeeTimeOutDate.MarkAsValid();
-                    uxEditEmployeeTimeInTime.ClearInvalid();
-                    uxEditEmployeeTimeInTime.MarkAsValid();
-                    uxEditEmployeeTimeOutTime.ClearInvalid();
-                    uxEditEmployeeTimeOutTime.MarkAsValid();
-                }
+                e.Success = true;
+                uxAddEmployeeTimeInDate.ClearInvalid();
+                uxAddEmployeeTimeInDate.MarkAsValid();
+                uxAddEmployeeTimeOutDate.ClearInvalid();
+                uxAddEmployeeTimeOutDate.MarkAsValid();
+                uxAddEmployeeTimeInTime.ClearInvalid();
+                uxAddEmployeeTimeInTime.MarkAsValid();
+                uxAddEmployeeTimeOutTime.ClearInvalid();
+                uxAddEmployeeTimeOutTime.MarkAsValid();
             }
         }
     }

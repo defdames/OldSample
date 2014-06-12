@@ -64,9 +64,9 @@
         <ext:Hidden ID="uxDeactivate" runat="server" />
         <ext:Viewport runat="server" ID="uxViewPort" Layout="FitLayout" IDMode="Explicit" Namespace="App" RenderXType="True">
             <Items>
-                <ext:TabPanel runat="server" ID="uxTabPanel" Layout="FitLayout">
+                <ext:TabPanel runat="server" ID="uxTabPanel">
                     <Items>
-                        <ext:GridPanel runat="server" ID="uxManageGrid" Layout="FitLayout" SelectionMemoryEvents="false" SelectionMemory="true">
+                        <ext:GridPanel runat="server" ID="uxManageGrid" Layout="FitLayout" SelectionMemoryEvents="false" SelectionMemory="true" Title="DRS List">
                             <SelectionModel>
                                 <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
                             </SelectionModel>
@@ -100,8 +100,8 @@
                                         </HeaderItems>
                                     </ext:DateColumn>
                                     <ext:Column ID="Column1" runat="server" Text="Project" DataIndex="SEGMENT1" Flex="10" />
-                                    <ext:Column runat="server" Text="Project Name" DataIndex="LONG_NAME" Flex="50" />
-                                    <ext:Column runat="server" Text="Status" DataIndex="STATUS_VALUE" Flex="10">
+                                    <ext:Column runat="server" Text="Project Name" DataIndex="LONG_NAME" Flex="45" />
+                                    <ext:Column runat="server" Text="Status" DataIndex="STATUS_VALUE" Flex="15">
                                         <Renderer Fn="colorErrors" />
                                     </ext:Column>
 
@@ -113,7 +113,73 @@
 						</ext:GridView>
 					</View>--%>
                             <BottomBar>
-                                <ext:PagingToolbar ID="uxManageGridPaging" runat="server" />
+                                <ext:Toolbar ID="Toolbar1" runat="server">
+                            <Items>
+                                <ext:Hidden runat="server" ID="uxHiddenApprove" />
+                                <ext:Button runat="server"
+                                    ID="uxCreateActivityButton"
+                                    Text="Create Activity"
+                                    Icon="ApplicationAdd">
+                                    <DirectEvents>
+                                        <Click OnEvent="deLoadCreateActivity" />
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server" />
+                               
+                                <ext:Button ID="uxPostMultipleButton" runat="server"
+                                    Text="Post Multiple Headers"
+                                    Icon="ApplicationGet"
+                                    Disabled="true">
+                                    <DirectEvents>
+                                        <Click OnEvent="deOpenPostMultipleWindow" />
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:ToolbarSpacer ID="ToolbarSpacer6" runat="server" />
+                                <ext:Button runat="server"
+                                    ID="uxExportToPDF"
+                                    Text="Export to PDF"
+                                    Icon="PageWhiteAcrobat"
+                                    Disabled="true">
+                                    <DirectEvents>
+                                        <Click OnEvent="deExportToPDF" IsUpload="true">
+                                            <ExtraParams>
+                                                <ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
+                                            </ExtraParams>
+                                            <EventMask ShowMask="true" />
+                                        </Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:ToolbarSpacer ID="ToolbarSpacer7" runat="server" />
+                                <ext:Button runat="server"
+                                    ID="uxEmailPdf"
+                                    Text="Email Copy"
+                                    Icon="EmailAttach"
+                                    Disabled="true">
+                                    <DirectEvents>
+                                        <Click OnEvent="deSendPDF" IsUpload="true">
+                                            <ExtraParams>
+                                                <ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
+                                            </ExtraParams>
+                                            <EventMask ShowMask="true" />
+                                        </Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:ToolbarSpacer ID="ToolbarSpacer8" runat="server" />
+                                <ext:Checkbox runat="server" ID="uxTogglePosted" BoxLabel="Show Posted" BoxLabelAlign="After">
+                                    <Listeners>
+                                        <Change Handler="#{uxManageGridStore}.reload()" />
+                                    </Listeners>
+                                </ext:Checkbox>
+                                <ext:Checkbox runat="server" ID="uxToggleInactive" BoxLabel="Show Inactive" BoxLabelAlign="After">
+                                    <Listeners>
+                                        <Change Handler="#{uxManageGridStore}.reload()" />
+                                    </Listeners>
+                                </ext:Checkbox>
+                                <ext:ToolbarFill runat="server" />
+                                <ext:PagingToolbar ID="uxManageGridPaging" runat="server" StoreID="uxManageGridStore" />
+                            </Items>
+                        </ext:Toolbar>
+                                
                             </BottomBar>
                             <Plugins>
                                 <ext:FilterHeader runat="server" Remote="true" DateFormat="MM-dd-yyyy" />
@@ -128,6 +194,9 @@
                                     <EventMask ShowMask="true" />
                                 </Select>
                             </DirectEvents>
+                            <Listeners>
+                                <Select Handler="#{uxTabPanel}.addTab(#{uxTabPanel}.bin[0]);#{uxTabPanel}.setActiveTab(#{uxDetailsPanel})" />
+                            </Listeners>
                             <ToolTips>
                                 <ext:ToolTip ID="uxWarningToolTip"
                                     runat="server"
@@ -143,37 +212,42 @@
                             </ToolTips>
 
                         </ext:GridPanel>
+                        
+                    </Items>
+                    <Bin>
                         <ext:Panel runat="server" ID="uxDetailsPanel" CloseAction="Hide" Layout="FitLayout" Title="DRS Details" Hidden="true" Closable="true">
-                            <Loader runat="server" Mode="Frame">
+                            <Loader ID="Loader1" runat="server" Mode="Frame">
                                 <LoadMask ShowMask="true" />
                             </Loader>
+                            <TopBar>
+                                <ext:Toolbar runat="server">
+                                    <Items>
+                                        <ext:ToolbarFill runat="server" />
+                                        <ext:Button runat="server" Text="Previous DRS" Icon="ArrowLeft">
+                                            <DirectEvents>
+                                                <Click OnEvent="deLoadPreviousActivity" />
+                                            </DirectEvents>
+                                        </ext:Button>
+                                        <ext:Button runat="server" Text="Next DRS" Icon="ArrowRight" IconAlign="Right">
+                                            <DirectEvents>
+                                                <Click OnEvent="deLoadNextActivity" />
+                                            </DirectEvents>
+                                        </ext:Button>
+                                    </Items>
+                                </ext:Toolbar>
+                            </TopBar>
                             <BottomBar>
                                 <ext:Toolbar ID="Toolbar2" runat="server">
                                     <Items>
                                         <ext:Button runat="server" ID="uxCancelButton" Text="Cancel" Icon="Delete">
                                             <Listeners>
-                                                <Click Handler="#{uxTabPanel}.setActiveTab(#{uxManageGrid})" />
+                                                <Click Handler="#{uxTabPanel}.closeTab(#{uxDetailsPanel})" />
                                             </Listeners>
                                         </ext:Button>
-                                    </Items>
-                                </ext:Toolbar>
-                            </BottomBar>
-                        </ext:Panel>
-                    </Items>
-                    <TopBar>
-                        <ext:Toolbar ID="Toolbar1" runat="server">
-                            <Items>
-                                <ext:Hidden runat="server" ID="uxHiddenApprove" />
-                                <ext:Button runat="server"
-                                    ID="uxCreateActivityButton"
-                                    Text="Create Activity"
-                                    Icon="ApplicationAdd">
-                                    <DirectEvents>
-                                        <Click OnEvent="deLoadCreateActivity" />
-                                    </DirectEvents>
-                                </ext:Button>
-                                <ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server" />
-                                <ext:Button runat="server"
+                                        <ext:ToolbarFill runat="server" />
+                                        <ext:Toolbar ID="Toolbar3" runat="server">
+                                    <Items>
+                                         <ext:Button runat="server"
                                     ID="uxInactiveActivityButton"
                                     Text="Set Inactive"
                                     Icon="ApplicationStop"
@@ -233,57 +307,18 @@
                                     </DirectEvents>
                                 </ext:Button>
                                 <ext:ToolbarSpacer ID="ToolbarSpacer5" runat="server" />
-                                <ext:Button ID="uxPostMultipleButton" runat="server"
-                                    Text="Post Multiple Headers"
-                                    Icon="ApplicationGet"
-                                    Disabled="true">
-                                    <DirectEvents>
-                                        <Click OnEvent="deOpenPostMultipleWindow" />
-                                    </DirectEvents>
-                                </ext:Button>
-                                <ext:ToolbarSpacer ID="ToolbarSpacer6" runat="server" />
-                                <ext:Button runat="server"
-                                    ID="uxExportToPDF"
-                                    Text="Export to PDF"
-                                    Icon="PageWhiteAcrobat"
-                                    Disabled="true">
-                                    <DirectEvents>
-                                        <Click OnEvent="deExportToPDF" IsUpload="true">
-                                            <ExtraParams>
-                                                <ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
-                                            </ExtraParams>
-                                            <EventMask ShowMask="true" />
-                                        </Click>
-                                    </DirectEvents>
-                                </ext:Button>
-                                <ext:ToolbarSpacer ID="ToolbarSpacer7" runat="server" />
-                                <ext:Button runat="server"
-                                    ID="uxEmailPdf"
-                                    Text="Email Copy"
-                                    Icon="EmailAttach"
-                                    Disabled="true">
-                                    <DirectEvents>
-                                        <Click OnEvent="deSendPDF" IsUpload="true">
-                                            <ExtraParams>
-                                                <ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
-                                            </ExtraParams>
-                                            <EventMask ShowMask="true" />
-                                        </Click>
-                                    </DirectEvents>
-                                </ext:Button>
-                                <ext:ToolbarSpacer ID="ToolbarSpacer8" runat="server" />
-                                <ext:Checkbox runat="server" ID="uxTogglePosted" BoxLabel="Show Posted" BoxLabelAlign="After">
-                                    <Listeners>
-                                        <Change Handler="#{uxManageGridStore}.reload()" />
-                                    </Listeners>
-                                </ext:Checkbox>
-                                <ext:Checkbox runat="server" ID="uxToggleInactive" BoxLabel="Show Inactive" BoxLabelAlign="After">
-                                    <Listeners>
-                                        <Change Handler="#{uxManageGridStore}.reload()" />
-                                    </Listeners>
-                                </ext:Checkbox>
-                            </Items>
-                        </ext:Toolbar>
+                                    </Items>
+                                </ext:Toolbar>
+                                    </Items>
+                                </ext:Toolbar>
+                            </BottomBar>
+                            <TopBar>
+                                
+                            </TopBar>
+                        </ext:Panel>
+                    </Bin>
+                    <TopBar>
+                        
                     </TopBar>
                     
                 </ext:TabPanel>

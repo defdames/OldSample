@@ -84,7 +84,7 @@
 							<ext:Column runat="server" DataIndex="AdditionalInformation" Text=" Additional Information" Flex="50" />
 						</Columns>
 					</ColumnModel>
-
+					
 				</ext:GridPanel>
 				<ext:GridPanel runat="server"
 					ID="uxEmployeeGrid"
@@ -97,6 +97,7 @@
 							<Model>
 								<ext:Model ID="Model2" runat="server">
 									<Fields>
+										<ext:ModelField Name="EMPLOYEE_ID" />
 										<ext:ModelField Name="EMPLOYEE_NAME" />
 										<ext:ModelField Name="NAME" />
 										<ext:ModelField Name="TIME_IN" Type="Date" />
@@ -126,6 +127,35 @@
 							<ext:Column ID="Column14" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="1" />
 						</Columns>
 					</ColumnModel>
+					<TopBar>
+						<ext:Toolbar ID="uxEmployeeToolbar" runat="server">
+							<Items>
+								<ext:Button ID="uxAddEmployeeButton" runat="server" Text="Add" Icon="ApplicationAdd">
+									<Listeners>
+										<Click Handler="parent.App.direct.dmLoadEmployeeWindow('Add',App.uxHeaderField.value, '')" />
+									</Listeners>
+								</ext:Button>
+								<ext:Button ID="uxEditEmployeeButton" runat="server" Text="Edit" Icon="ApplicationEdit" Disabled="true">
+									<Listeners>
+										<Click Handler="parent.App.direct.dmLoadEmployeeWindow('Edit', App.uxHeaderField.value, App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.EMPLOYEE_ID)" />
+									</Listeners>
+								</ext:Button>
+								<ext:Button ID="uxDeleteEmployeeButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
+									<DirectEvents>
+										<Click OnEvent="deRemoveEmployee">
+											<Confirmation Title="Remove?" ConfirmRequest="true" Message="Do you really want to remove the Employee?" />
+											<ExtraParams>
+												<ext:Parameter Name="EmployeeID" Value="#{uxEmployeeGrid}.getSelectionModel().getSelection()[0].data.EMPLOYEE_ID" Mode="Raw" />
+											</ExtraParams>
+										</Click>
+									</DirectEvents>
+								</ext:Button>
+							</Items>
+						</ext:Toolbar>
+					</TopBar>
+					<Listeners>
+						<Select Handler="#{uxEditEmployeeButton}.enable(); #{uxDeleteEmployeeButton}.enable()" />
+					</Listeners>
 				</ext:GridPanel>
 				<ext:GridPanel runat="server" ID="uxEquipmentGrid"
 					Title="Equipment"
@@ -172,6 +202,35 @@
 								Text="Ending Units" Flex="1" />
 						</Columns>
 					</ColumnModel>
+					<TopBar>
+						<ext:Toolbar ID="uxEquipmentToolbar" runat="server">
+							<Items>
+								<ext:Button ID="uxAddEquipmentButton" runat="server" Text="Add" Icon="ApplicationAdd">
+									<Listeners>
+										<Click Handler="parent.App.direct.dmLoadEquipmentWindow('Add',App.uxHeaderField.value, '')" />
+									</Listeners>
+								</ext:Button>
+								<ext:Button ID="uxEditEquipmentButton" runat="server" Text="Edit" Icon="ApplicationEdit" Disabled="true">
+									<Listeners>
+										<Click Handler="parent.App.direct.dmLoadEquipmentWindow('Edit',App.uxHeaderField.value, App.uxEquipmentGrid.getSelectionModel().getSelection()[0].data.EQUIPMENT_ID)" />
+									</Listeners>
+								</ext:Button>
+								<ext:Button ID="uxDeleteEquipmentButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
+									<DirectEvents>
+										<Click OnEvent="deRemoveEquipment">
+											<Confirmation ConfirmRequest="true" Title="Remove?" Message="Do you really want to remove?" />
+											<ExtraParams>
+												<ext:Parameter Name="EquipmentId" Value="#{uxEquipmentGrid}.getSelectionModel().getSelection()[0].data.EQUIPMENT_ID" Mode="Raw" />
+											</ExtraParams>
+										</Click>                                
+									</DirectEvents>
+								</ext:Button>
+							</Items>
+						</ext:Toolbar>
+					</TopBar>
+					<Listeners>
+						<Select Handler="#{uxEditEquipmentButton}.enable(); #{uxDeleteEquipmentButton}.enable()" />
+					</Listeners>
 				</ext:GridPanel>
 				<ext:GridPanel runat="server"
 					ID="uxProductionGrid"
@@ -184,6 +243,7 @@
 							<Model>
 								<ext:Model ID="Model3" runat="server">
 									<Fields>
+										<ext:ModelField Name="PRODUCTION_ID" />
 										<ext:ModelField Name="TASK_NUMBER" />
 										<ext:ModelField Name="DESCRIPTION" />
 										<ext:ModelField Name="WORK_AREA" />
@@ -207,6 +267,35 @@
 							<ext:Column ID="Column20" runat="server" DataIndex="QUANTITY" Text="Gallons" Flex="1" />
 						</Columns>
 					</ColumnModel>
+					<TopBar>
+						<ext:Toolbar ID="uxProductionToolbar" runat="server">
+							<Items>
+								<ext:Button ID="uxAddProductionButton" runat="server" Text="Add" Icon="ApplicationAdd">
+									<Listeners>
+										<Click Handler="parent.App.direct.dmLoadProductionWindow_DBI('Add',App.uxHeaderField.value, '')" />
+									</Listeners>
+								</ext:Button>
+								<ext:Button ID="uxEditProductionButton" runat="server" Text="Edit" Icon="ApplicationEdit" Disabled="true">
+									<Listeners>
+										<Click Handler="parent.App.direct.dmLoadProductionWindow_DBI('Edit',App.uxHeaderField.value, App.uxProductionGrid.getSelectionModel().getSelection()[0].data.PRODUCTION_ID)" />
+									</Listeners>
+								</ext:Button>
+								<ext:Button ID="uxDeleteProductionButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
+									<DirectEvents>
+										<Click OnEvent="deRemoveProduction">
+											<Confirmation ConfirmRequest="true" Title="Really?" Message="Do you really want to remove?" />
+											<ExtraParams>
+												<ext:Parameter Name="ProductionId" Value="#{uxProductionGrid}.getSelectionModel().getSelection()[0].data.PRODUCTION_ID" Mode="Raw" />
+											</ExtraParams>
+										</Click>
+									</DirectEvents>
+								</ext:Button>
+							</Items>
+						</ext:Toolbar>
+					</TopBar>
+					<Listeners>
+						<Select Handler="#{uxEditProductionButton}.enable(); #{uxDeleteProductionButton}.enable()" />
+					</Listeners>
 				</ext:GridPanel>
 				<ext:GridPanel runat="server"
 					ID="uxWeatherGrid"
@@ -219,6 +308,7 @@
 							<Model>
 								<ext:Model ID="Model4" runat="server">
 									<Fields>
+										<ext:ModelField Name="WEATHER_ID" />
 										<ext:ModelField Name="WEATHER_DATE_TIME" Type="Date" />
 										<ext:ModelField Name="WIND_DIRECTION" />
 										<ext:ModelField Name="WIND_VELOCITY" />
@@ -240,6 +330,35 @@
 							<ext:Column ID="Column25" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="25" />
 						</Columns>
 					</ColumnModel>
+					<TopBar>
+						<ext:Toolbar ID="uxWeatherToolbar" runat="server">
+							<Items>
+								<ext:Button ID="uxAddWeatherButton" runat="server" Text="Add" Icon="ApplicationAdd">
+									<Listeners>
+										<Click Handler="parent.App.direct.dmLoadWeatherWindow('Add',App.uxHeaderField.value, '')" />
+									</Listeners>
+								</ext:Button>
+								<ext:Button ID="uxEditWeatherButton" runat="server" Text="Edit" Icon="ApplicationEdit" Disabled="true">
+									<Listeners>
+										<Click Handler="parent.App.direct.dmLoadWeatherWindow('Edit', App.uxHeaderField.value, App.uxWeatherGrid.getSelectionModel().getSelection()[0].data.WEATHER_ID)" /> 
+									</Listeners>
+								</ext:Button>
+								<ext:Button ID="uxDeleteWeatherButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
+									<DirectEvents>
+										<Click OnEvent="deRemoveWeather">
+											<Confirmation ConfirmRequest="true" Title="Remove?" Message="Do you really want to remove the weather?" />
+											<ExtraParams>
+												<ext:Parameter Name="WeatherId" Value="#{uxCurrentWeatherGrid}.getSelectionModel().getSelection()[0].data.WEATHER_ID" Mode="Raw" />
+											</ExtraParams>
+										</Click>
+									</DirectEvents>
+								</ext:Button>
+							</Items>
+						</ext:Toolbar>
+					</TopBar>
+					<Listeners>
+						<Select Handler="#{uxEditWeatherButton}.enable(); #{uxDeleteWeatherButton}.enable()" />
+					</Listeners>
 				</ext:GridPanel>
 				<ext:GridPanel runat="server"
 					ID="uxChemicalGrid"
@@ -252,6 +371,7 @@
 							<Model>
 								<ext:Model ID="Model5" runat="server">
 									<Fields>
+										<ext:ModelField Name="CHEMICAL_MIX_ID" />
 										<ext:ModelField Name="CHEMICAL_MIX_NUMBER" />
 										<ext:ModelField Name="TARGET_AREA" />
 										<ext:ModelField Name="GALLON_ACRE" />
@@ -283,6 +403,35 @@
 							<ext:Column ID="Column35" runat="server" DataIndex="COUNTY" Text="County" Flex="1" />
 						</Columns>
 					</ColumnModel>
+					<TopBar>
+						<ext:Toolbar ID="uxChemicalToolbar" runat="server">
+							<Items>
+								<ext:Button ID="uxAddChemicalButton" runat="server" Text="Add" Icon="ApplicationAdd">
+									<Listeners>
+										<Click Handler="parent.App.direct.dmLoadChemicalWindow('Add',App.uxHeaderField.value, '')" />
+									</Listeners>
+								</ext:Button>
+								<ext:Button ID="uxEditChemicalButton" runat="server" Text="Edit" Icon="ApplicationEdit" Disabled="true">
+									<Listeners>
+										<Click Handler="parent.App.direct.dmLoadChemicalWindow('Edit', App.uxHeaderField.value, App.uxChemicalGrid.getSelectionModel().getSelection()[0].data.CHEMICAL_MIX_ID)" /> 
+									</Listeners>
+								</ext:Button>
+								<ext:Button ID="uxDeleteChemicalButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
+									<DirectEvents>
+										<Click OnEvent="deRemoveChemical">
+											<Confirmation ConfirmRequest="true" Title="Remove?" Message="Do you really want to remove?" />
+											<ExtraParams>
+												<ext:Parameter Name="ChemicalId" Value="#{uxChemicalGrid}.getSelectionModel().getSelection()[0].data.CHEMICAL_MIX_ID" Mode="Raw" />
+											</ExtraParams>
+										</Click>
+									</DirectEvents>
+								</ext:Button>
+							</Items>
+						</ext:Toolbar>
+					</TopBar>
+					<Listeners>
+						<Select Handler="#{uxEditChemicalButton}.enable(); #{uxDeleteChemicalButton}.enable()" />
+					</Listeners>
 				</ext:GridPanel>
 				<ext:GridPanel runat="server"
 					ID="uxInventoryGrid"
@@ -295,6 +444,7 @@
 							<Model>
 								<ext:Model ID="Model6" runat="server">
 									<Fields>
+										<ext:ModelField Name="INVENTORY_ID" />
 										<ext:ModelField Name="CHEMICAL_MIX_NUMBER" />
 										<ext:ModelField Name="SEGMENT1" />
 										<ext:ModelField Name="INV_NAME" />
@@ -326,6 +476,35 @@
 								Text="Contractor Supplied" Flex="1" />
 						</Columns>
 					</ColumnModel>
+					<TopBar>
+						<ext:Toolbar ID="uxInventoryToolbar" runat="server">
+							<Items>
+								<ext:Button ID="uxAddInventoryButton" runat="server" Text="Add" Icon="ApplicationAdd">
+									<Listeners>
+										<Click Handler="parent.App.direct.dmLoadInventoryWindow_DBI('Add',App.uxHeaderField.value, '')" />
+									</Listeners>
+								</ext:Button>
+								<ext:Button ID="uxEditInventoryButton" runat="server" Text="Edit" Icon="ApplicationEdit" Disabled="true">
+									<Listeners>
+										<Click Handler="parent.App.direct.dmLoadInventoryWindow_DBI('Edit', App.uxHeaderField.value, App.uxInventoryGrid.getSelectionModel().getSelection()[0].data.INVENTORY_ID)" /> 
+									</Listeners>
+								</ext:Button>
+								<ext:Button ID="uxDeleteInventoryButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
+									<DirectEvents>
+										<Click OnEvent="deRemoveInventory">
+											<Confirmation ConfirmRequest="true" Title="Really Delete?" Message="Do you really want to delete?" />
+											<ExtraParams>
+												<ext:Parameter Name="InventoryId" Value="#{uxInventoryGrid}.getSelectionModel().getSelection()[0].data.INVENTORY_ID" Mode="Raw" />
+											</ExtraParams>
+										</Click>
+									</DirectEvents>
+								</ext:Button>
+							</Items>
+						</ext:Toolbar>
+					</TopBar>
+					<Listeners>
+						<Select Handler="#{uxEditInventoryButton}.enable(); #{uxDeleteInventoryButton}.enable()" />
+					</Listeners>
 				</ext:GridPanel>
 				<ext:FormPanel runat="server" ID="uxFooterPanel" Padding="10" BodyPadding="5" MaxWidth="1000">
 					<Items>
