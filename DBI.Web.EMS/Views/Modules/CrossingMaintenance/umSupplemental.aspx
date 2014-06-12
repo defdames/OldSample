@@ -224,38 +224,7 @@
                             </Items>
                         </ext:FieldContainer>
 
-                        <ext:FieldContainer ID="FieldContainer2" runat="server" Layout="HBoxLayout">
-                            <Items>
-
-                                <ext:TextField runat="server" ID="uxAddSquareFeet" FieldLabel="Square Feet" LabelAlign="Right" AnchorHorizontal="100%" AllowBlank="false" />
-
-                               <%-- <ext:ComboBox ID="uxAddTruckComboBox"
-                                    runat="server"
-                                    FieldLabel="Truck #"
-                                    LabelAlign="Right"
-                                    DisplayField="NAME"
-                                    ValueField="PROJECT_ID"
-                                    QueryMode="Local"
-                                    TypeAhead="true" Width="300" AllowBlank="false" ForceSelection="true">
-                                    <Store>
-                                        <ext:Store runat="server"
-                                            ID="uxAddTruckStore" AutoDataBind="true">
-                                            <Model>
-                                                <ext:Model ID="Model5" runat="server">
-                                                    <Fields>
-                                                        <ext:ModelField Name="NAME" />
-                                                    </Fields>
-                                                </ext:Model>
-                                            </Model>
-
-                                        </ext:Store>
-                                    </Store>
-                                </ext:ComboBox>--%>
-                                <ext:Label runat="server" Width="65" />
-                                   <ext:Checkbox ID="uxAddRecurringBox" runat="server" BoxLabel="Recurring" BoxLabelAlign="After" AllowBlank="false" />
-
-                            </Items>
-                        </ext:FieldContainer>
+                      
                                 <ext:DropDownField runat="server" Editable="false"
 					ID="uxAddEquipmentDropDown"
 					FieldLabel="Choose Equipment"
@@ -357,7 +326,15 @@
 					</Component>
 				</ext:DropDownField>
                                   <ext:Label ID="Label2" runat="server" Text="" Width="25" />
-                             
+                              <ext:FieldContainer ID="FieldContainer2" runat="server" Layout="HBoxLayout">
+                            <Items>
+
+                                <ext:TextField runat="server" ID="uxAddSquareFeet" FieldLabel="Square Feet" LabelAlign="Right" AnchorHorizontal="100%" AllowBlank="false" />
+                                <ext:Label ID="Label1" runat="server" Width="65" />
+                                   <ext:Checkbox ID="uxAddRecurringBox" runat="server" BoxLabel="Recurring" BoxLabelAlign="After" AllowBlank="false" />
+
+                            </Items>
+                        </ext:FieldContainer> 
 
 
                         <ext:TextArea ID="uxAddRemarks" runat="server" FieldLabel="Remarks" AnchorHorizontal="92%" LabelAlign="Right" />

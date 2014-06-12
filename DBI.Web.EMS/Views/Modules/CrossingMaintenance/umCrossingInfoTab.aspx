@@ -373,7 +373,7 @@
                                                 AnchorHorizontal="100%"
                                                 DisplayField="sub_division"
                                                 ValueField="sub_division"
-                                                TypeAhead="true" TabIndex="4" AllowBlank="false" >
+                                                TypeAhead="true" TabIndex="4" >
                                                 <Store>
                                                     <ext:Store runat="server"
                                                         ID="uxAddSubDivStore">

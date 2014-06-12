@@ -123,110 +123,120 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             }
         }
+      
         protected void deAddApplication(object sender, DirectEventArgs e)
         {
-            CROSSING_APPLICATION data;
 
-            //do type conversions
-            DateTime Date = (DateTime)uxAddEntryDate.Value;
-            string AppRequested = uxAddAppReqeusted.Value.ToString();
-            string TruckNumber = uxAddEquipmentDropDown.Value.ToString();
-            string Spray = uxAddEntrySprayBox.Value.ToString();
-            string Cut = uxAddEntryCutBox.Value.ToString();
-            string Inspect = uxAddEntryInspectBox.Value.ToString();
+           
+                CROSSING_APPLICATION data;
 
-            if (uxAddEntrySprayBox.Checked)
-            {
-                Spray = "Y";
-            }
-            else
-            {
-                Spray = "N";
-            }
+                //do type conversions
+                DateTime Date = (DateTime)uxAddEntryDate.Value;
+                string AppRequested = uxAddAppReqeusted.Value.ToString();
+                string TruckNumber = uxAddEquipmentDropDown.Value.ToString();
+                string Spray = uxAddEntrySprayBox.Value.ToString();
+                string Cut = uxAddEntryCutBox.Value.ToString();
+                string Inspect = uxAddEntryInspectBox.Value.ToString();
 
-            if (uxAddEntryCutBox.Checked)
-            {
-                Cut = "Y";
-            }
-            else
-            {
-                Cut = "N";
-            }
-
-            if (uxAddEntryInspectBox.Checked)
-            {
-                Inspect = "Y";
-            }
-            else
-            {
-                Inspect = "N";
-            }
-
-            string json = (e.ExtraParams["selectedCrossings"]);
-            List<CrossingForApplicationDetails> crossingList = JSON.Deserialize<List<CrossingForApplicationDetails>>(json);
-            foreach (CrossingForApplicationDetails crossing in crossingList)
-            {
-                //check for if application requested has been duplicated in the same fiscal year.
-                //CROSSING_APPLICATION appdatedata;
-                //DateTime appDate = Date;
-                //DateTime Start = new DateTime(2014, 11, 1); //this pulls in november 1st of year for fiscal yr
-                //DateTime End = new DateTime(2015, 10, 31); //this pulls in oct 31st of next year for fiscal yr
-                //if (appDate >= Start && appDate <= End)
-                //{
-                //    using (Entities _context = new Entities())
-                //    {
-                //        data = (from a in _context.CROSSING_APPLICATION
-                //                where a.APPLICATION_REQUESTED == AppRequested && AppRequested.Contains(a.APPLICATION_REQUESTED)
-                //                select a).Single();
-                //    }
-                //X.Msg.Alert("test",  "Application already contains this number for this fiscal year").Show();
-                //}
-                //else
-                //{
-
-                //Add to Db
-                using (Entities _context = new Entities())
+                if (uxAddEntrySprayBox.Checked)
                 {
-                    data = new CROSSING_APPLICATION();
-
-                    data.APPLICATION_DATE = Date;
-                    data.APPLICATION_REQUESTED = AppRequested;
-                    data.TRUCK_NUMBER = TruckNumber;
-                    data.SPRAY = Spray;
-                    data.CUT = Cut;
-                    data.INSPECT = Inspect;
-                    data.CROSSING_ID = crossing.CROSSING_ID;
-                    try
-                    {
-                        string Remarks = uxAddEntryRemarks.Value.ToString();
-                        data.REMARKS = Remarks;
-                    }
-                    catch (Exception)
-                    {
-                        data.REMARKS = null;
-                    }
-                    GenericData.Insert<CROSSING_APPLICATION>(data);
-                //}
-
-                uxAddNewApplicationEntryWindow.Hide();
-                uxApplicationStore.Reload();
-
-
-
-                Notification.Show(new NotificationConfig()
+                    Spray = "Y";
+                }
+                else
                 {
-                    Title = "Success",
-                    Html = "Application Added Successfully",
-                    HideDelay = 1000,
-                    AlignCfg = new NotificationAlignConfig
+                    Spray = "N";
+                }
+
+                if (uxAddEntryCutBox.Checked)
+                {
+                    Cut = "Y";
+                }
+                else
+                {
+                    Cut = "N";
+                }
+
+                if (uxAddEntryInspectBox.Checked)
+                {
+                    Inspect = "Y";
+                }
+                else
+                {
+                    Inspect = "N";
+                }
+
+                string json = (e.ExtraParams["selectedCrossings"]);
+                List<CrossingForApplicationDetails> crossingList = JSON.Deserialize<List<CrossingForApplicationDetails>>(json);
+                foreach (CrossingForApplicationDetails crossing in crossingList)
+                {
+                    //check for if application requested has been duplicated in the same fiscal year.
+
+                    DateTime AppDate = uxAddEntryDate.SelectedDate;
+                    DateTime Start = new DateTime(2013, 11, 1); //this pulls in november 1st of year for fiscal yr
+                    DateTime End = new DateTime(2014, 10, 31); //this pulls in oct 31st of next year for fiscal yr
+                    string app = (e.ExtraParams["appList"]);
+                    List<AppNumber> appList = JSON.Deserialize<List<AppNumber>>(app);
+
+                    List<object> checkApp;
+                    using (Entities _context = new Entities())
                     {
-                        ElementAnchor = AnchorPoint.Center,
-                        TargetAnchor = AnchorPoint.Center
+                        checkApp = (from a in _context.CROSSING_APPLICATION
+                                    where a.APPLICATION_REQUESTED == AppRequested
+                                    select new { a.APPLICATION_REQUESTED, a.APPLICATION_ID }).ToList<object>();
+
+
+
+                        if (AppDate >= Start.Date && AppDate <= End.Date && appList.Where(x => x.APPLICATION_REQUESTED == AppRequested).Count() > 0)
+                        {
+
+                            X.Msg.Alert("Warning", "Application exists for this fiscal year").Show();
+
+                        }
+
+                        else
+                        {
+
+                            data = new CROSSING_APPLICATION();
+                            data.APPLICATION_DATE = Date;
+                            data.APPLICATION_REQUESTED = AppRequested;
+                            data.TRUCK_NUMBER = TruckNumber;
+                            data.SPRAY = Spray;
+                            data.CUT = Cut;
+                            data.INSPECT = Inspect;
+                            data.CROSSING_ID = crossing.CROSSING_ID;
+                            try
+                            {
+                                string Remarks = uxAddEntryRemarks.Value.ToString();
+                                data.REMARKS = Remarks;
+                            }
+                            catch (Exception)
+                            {
+                                data.REMARKS = null;
+                            }
+                            GenericData.Insert<CROSSING_APPLICATION>(data);
+
+                            uxAddNewApplicationEntryWindow.Hide();
+                            uxApplicationStore.Reload();
+                            uxAddApplicationForm.Reset();
+
+
+                            Notification.Show(new NotificationConfig()
+                            {
+                                Title = "Success",
+                                Html = "Application Added Successfully",
+                                HideDelay = 1000,
+                                AlignCfg = new NotificationAlignConfig
+                                {
+                                    ElementAnchor = AnchorPoint.Center,
+                                    TargetAnchor = AnchorPoint.Center
+                                }
+                            });
+                        }
                     }
-                });
                 }
             }
-        }
+            
+        
         protected void deStoreGridValue(object sender, DirectEventArgs e)
         {
             if (e.ExtraParams["Form"] == "Add")
@@ -254,7 +264,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             }
         }
-        
+        public class AppNumber
+        {
+            public string APPLICATION_REQUESTED { get; set; }
+        }
        
         public class ApplicationDetails
         {
