@@ -293,6 +293,7 @@
                                                     </ExtraParams>
                                                     <EventMask ShowMask="true" />
                                                 </SelectionChange>
+                                                <SelectionChange OnEvent="deCheckAllowSave" />
                                                 <Deactivate OnEvent="deProjectDropdownDeactivate" />
                                             </DirectEvents>
                                             <Plugins>
@@ -382,7 +383,11 @@
                             Layout="HBoxLayout">
                             <Items>
                                 <ext:Label ID="Label7" runat="server" Width="100" Text="Project Name:" />
-                                <ext:TextField ID="uxProjectName" runat="server" Width="300" ReadOnly="true" />
+                                <ext:TextField ID="uxProjectName" runat="server" Width="300" ReadOnly="true">
+                                    <DirectEvents>
+                                        <Change OnEvent="deCheckAllowSave" />
+                                    </DirectEvents>
+                                </ext:TextField>
                                 <ext:Label ID="Label8" runat="server" Width="50" />
                                 <ext:Label ID="Label9" runat="server" Width="170" Text="Final Draft OP:" />
                                 <ext:TextField ID="uxCompareOP" runat="server" Width="110" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign">
@@ -395,7 +400,7 @@
                                 </ext:TextField>
                                 <ext:Label ID="Label10" runat="server" Width="50" />
                                 <ext:Label ID="Label11" runat="server" Width="40" Text="Days:" />
-                                <ext:TextField ID="txtDays" runat="server" Width="110" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign">
+                                <ext:TextField ID="uxDays" runat="server" Width="110" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign">
                                     <Listeners>
                                         <Focus Handler="this.setValue(this.getValue().replace(',', ''));" />
                                     </Listeners>
@@ -411,7 +416,36 @@
                             Layout="HBoxLayout">
                             <Items>
                                 <ext:Label ID="Label13" runat="server" Width="100" Text="Status:" />
-                                <ext:ComboBox ID="uxStatus" runat="server" Width="110" />
+                                <ext:ComboBox ID="uxStatus"
+                                    runat="server"
+                                    DisplayField="ID_NAME"
+                                    ValueField="ID"
+                                    Width="110"
+                                    EmptyText="-- Select --"
+                                    Editable="false">
+                                    <Store>
+                                        <ext:Store ID="uxStatusStore" runat="server" OnReadData="deLoadStatuses" AutoLoad="false">
+                                            <Model>
+                                                <ext:Model ID="Model9" runat="server">
+                                                    <Fields>
+                                                        <ext:ModelField Name="ID_NAME" />
+                                                        <ext:ModelField Name="ID" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                            <Proxy>
+                                                <ext:PageProxy />
+                                            </Proxy>
+                                        </ext:Store>
+                                    </Store>
+                                    <Listeners>
+                                        <Activate Handler="#{uxStatusStore}.store.reload();" />
+                                    </Listeners>
+                                    <DirectEvents>
+                                        <Select OnEvent="deCheckAllowSave">
+                                        </Select>
+                                    </DirectEvents>
+                                </ext:ComboBox>
                                 <ext:Label ID="Label14" runat="server" Width="240" />
                                 <ext:Label ID="Label15" runat="server" Width="170" Text="Variance:" />
                                 <ext:Label ID="uxCompareVar" runat="server" Width="110" Text="0.00" Cls="labelRightAlign" />
@@ -695,7 +729,7 @@
                             Layout="HBoxLayout">
                             <Items>
                                 <ext:Label ID="Label3" runat="server" Width="770" />
-                                <ext:Button ID="uxSave" runat="server" Text="Save" Icon="Add" Width="75">
+                                <ext:Button ID="uxSave" runat="server" Text="Save" Icon="Add" Width="75" Disabled="true">
                                     <DirectEvents>
                                         <Click OnEvent="deSave" />
                                     </DirectEvents>

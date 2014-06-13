@@ -176,44 +176,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxProjectDetail.Disable();
         }
 
-        protected void deSave(object sender, DirectEventArgs e)
-        {
-            long orgID = long.Parse(Request.QueryString["OrgID"]);
-            long verID = long.Parse(Request.QueryString["verID"]);
-            long fiscalYear = long.Parse(Request.QueryString["fiscalYear"]);
-            long projectNum = Convert.ToInt64(uxProjectNum.Value);
-            string projectName = uxProjectName.Value.ToString();
-
-            BUD_BID_PROJECTS data = new BUD_BID_PROJECTS()
-            {
-                ORG_ID = orgID,
-                VER_ID = verID,
-                YEAR_ID = fiscalYear,
-                PROJECT_ID = projectNum,
-                PRJ_NAME = projectName
-            };
-
-            GenericData.Insert<BUD_BID_PROJECTS>(data);
-
-            BUD_BID_BUDGET_NUM data1 = new BUD_BID_BUDGET_NUM()
-            {
-                PROJECT_ID = projectNum,
-
-            };
-
-
-
-
-
-
-
-
-
-
-
-            NotificationMsg("Save", "Project has been saved.", Icon.DiskBlack);         
-        }
-
         protected void deSelectProject(object sender, DirectEventArgs e)
         {
             string type = e.ExtraParams["Type"];
@@ -404,6 +366,77 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             long orgID = long.Parse(Request.QueryString["OrgID"]);
             long version = long.Parse(Request.QueryString["version"]);
             X.MessageBox.Alert("Title", orgID + " " + version + " " + e.ExtraParams["SheetName"]).Show();
+        }
+
+        protected void deSave(object sender, DirectEventArgs e)
+        {
+            // Write project info to DB
+            //BUD_BID_PROJECTS prjInfoData = new BUD_BID_PROJECTS();
+            //prjInfoData.PROJECT_ID = Convert.ToInt64(uxHidProjectID.Value);
+            //prjInfoData.PROJ_NUM = uxProjectNum.Value.ToString();
+            //prjInfoData.PRJ_NAME = uxProjectName.Value.ToString();
+            //prjInfoData.TYPE = uxHidType.Value.ToString();
+            //prjInfoData.ORG_ID = long.Parse(Request.QueryString["OrgID"]);
+            //prjInfoData.YEAR_ID = long.Parse(Request.QueryString["fiscalYear"]);
+            //prjInfoData.VER_ID = long.Parse(Request.QueryString["verID"]);
+            //prjInfoData.STATUS_ID = Convert.ToInt64(uxStatus.Value);
+            //prjInfoData.ACRES = Convert.ToDecimal(uxAcres.Value);
+            //prjInfoData.DAYS = Convert.ToDecimal(uxDays.Value);
+            //if (uxAppType.Value != null) { prjInfoData.APP_TYPE = uxAppType.Value.ToString(); }
+            //if (uxChemMix.Value != null) { prjInfoData.CHEMICAL_MIX = uxChemMix.Value.ToString(); }
+            //if (uxComments.Value != null) { prjInfoData.COMMENTS = uxComments.Value.ToString(); }
+            //if (uxLiabilityCheckbox.Checked != true) { prjInfoData.LIABILITY = "Y"; } else { prjInfoData.LIABILITY = "N"; }
+            ////if (liabilityOP != null) { prjInfoData.LIABILITY_OP = liabilityOP; }
+            //if (uxJCDate.Value != "") { prjInfoData.WE_DATE = Convert.ToDateTime(uxJCDate.Value); }
+            //GenericData.Insert<BUD_BID_PROJECTS>(prjInfoData);
+
+            // Write project start numbers to DB
+            //BUD_BID_ACTUAL_NUM startNumsdata = new BUD_BID_ACTUAL_NUM();
+            //long[] arr1 = { 1, 2, 3, 4, 5 };
+            //Ext.Net.TextField[] arr2 = { uxSGrossRec, uxSMatUsage, uxSGrossRev, uxSDirects, uxSOP };
+            //for (int i = 0; i <=4; i++)
+            //{
+            //    startNumsdata.PROJECT_ID = Convert.ToInt64(uxHidProjectID.Value);
+            //    startNumsdata.DETAIL_TASK_ID = 0;
+            //    startNumsdata.LINE_ID = arr1[i];
+            //    startNumsdata.NOV = 0;// Convert.ToDecimal(arr2[i].Value);
+            //    GenericData.Insert<BUD_BID_ACTUAL_NUM>(startNumsdata);
+            //}    
+            //try
+            //{
+            //    BUD_BID_ACTUAL_NUM startNumsdata = new BUD_BID_ACTUAL_NUM();
+            //    startNumsdata.PROJECT_ID = 1;
+            //    startNumsdata.DETAIL_TASK_ID = 2;
+            //    startNumsdata.LINE_ID = 3;
+            //    startNumsdata.NOV = 4;
+            //    GenericData.Insert<BUD_BID_ACTUAL_NUM>(startNumsdata);
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw ex;
+            //}
+
+
+
+            NotificationMsg("Save", "Project has been saved.", Icon.DiskBlack);
+        }
+
+        protected void deCheckAllowSave(object sender, DirectEventArgs e)
+        {
+            if (uxProjectName.Value == null || String.IsNullOrWhiteSpace(uxProjectName.Value.ToString()) || uxStatus.SelectedItem.Value == null)
+            {
+                uxSave.Disable();
+            }
+
+            else
+            {
+                uxSave.Enable();
+            }
+        }
+
+        protected void deLoadStatuses(object sender, StoreReadDataEventArgs e)
+        {
+            uxStatusStore.DataSource = BUD_BID_STATUS.Statuses();
         }
     }
 }

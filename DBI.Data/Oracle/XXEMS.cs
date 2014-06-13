@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DBI.Data.Generic;
 
 namespace DBI.Data
 {
@@ -602,7 +603,34 @@ namespace DBI.Data
             public int SUPERVISOR_ID { get; set; }
             public string COMPLETED { get; set; }
         }
+    }
 
+    /// <summary>
+    /// Custom methods and functions over BUD_BID_PROJECTS Entity Object
+    /// </summary>
+    public partial class BUD_BID_STATUS
+    {
+        /// <summary>
+        /// Returns list of statuses
+        /// </summary>
+        /// <returns></returns>
+        public static List<DoubleComboLongID> Statuses()
+        {
+            try
+            {
+                using (Entities context = new Entities())
+                {
+                    string sql = "SELECT STATUS_ID AS ID, STATUS AS ID_NAME FROM BUD_BID_STATUS ORDER BY STATUS";
+                    List<DoubleComboLongID> data = context.Database.SqlQuery<DoubleComboLongID>(sql).ToList();
+                    return data;
+                }
+            }
+
+            catch (Exception)
+            {
+                throw;
+            }
+        }        
     }
 }
 

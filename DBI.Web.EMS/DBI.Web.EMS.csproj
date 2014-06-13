@@ -124,6 +124,7 @@
     <Content Include="Resources\Images\wwbnight.png" />
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
+    <Content Include="Test.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umBlankBudget.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umBudgetBiddingMain.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umYearBudget.aspx" />
@@ -234,6 +235,13 @@
     </Compile>
     <Compile Include="Views\Handlers\SystemUsers.ashx.cs">
       <DependentUpon>SystemUsers.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Test.aspx.cs">
+      <DependentUpon>Test.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Test.aspx.designer.cs">
+      <DependentUpon>Test.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\BudgetBidding\umBlankBudget.aspx.cs">
       <DependentUpon>umBlankBudget.aspx</DependentUpon>

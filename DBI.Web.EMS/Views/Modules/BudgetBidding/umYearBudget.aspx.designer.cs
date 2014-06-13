@@ -823,13 +823,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label11;
         
         /// <summary>
-        /// txtDays control.
+        /// uxDays control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField txtDays;
+        protected global::Ext.Net.TextField uxDays;
         
         /// <summary>
         /// FieldContainer5 control.
@@ -857,6 +857,24 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.ComboBox uxStatus;
+        
+        /// <summary>
+        /// uxStatusStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxStatusStore;
+        
+        /// <summary>
+        /// Model9 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model Model9;
         
         /// <summary>
         /// Label14 control.
