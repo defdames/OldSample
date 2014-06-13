@@ -65,6 +65,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                         uxBudgetTypeStore.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_BUDGET_TYPE>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                         e.Total = count;
                     }
+
+                    uxAddBudgetType.Disabled = false;
                 }
             }
             catch (Exception)
@@ -146,6 +148,31 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 e.ErrorMessage = ex.ToString();
             }
            
+        }
+
+
+        protected void deDeleteBudgetType(object sender, DirectEventArgs e)
+        {
+            try
+            {
+
+                RowSelectionModel _sm = uxBudgetTypeSelectionModel;
+                foreach (var _selectedRow in _sm.SelectedRows)
+                {
+                    long _recordID;
+                    bool _recordCheck = long.TryParse(_selectedRow.RecordID, out _recordID);
+                    OVERHEAD_BUDGET_TYPE _budgetType = OVERHEAD_BUDGET_TYPE.BudgetType(_recordID);
+                    GenericData.Delete<OVERHEAD_BUDGET_TYPE>(_budgetType);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                e.Success = false;
+                e.ErrorMessage = ex.ToString();
+            }
+
+
         }
 
     }

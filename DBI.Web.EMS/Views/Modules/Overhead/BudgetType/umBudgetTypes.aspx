@@ -57,12 +57,12 @@
                     <TopBar>
                         <ext:Toolbar runat="server">
                             <Items>
-                                <ext:Button runat="server" ID="uxAddBudgetType" Icon="ApplicationAdd" Text="Add">
+                                <ext:Button runat="server" ID="uxAddBudgetType" Icon="ApplicationAdd" Text="Add" Disabled="true">
                                     <DirectEvents>
                                         <Click OnEvent="deAddEditBudgetType" />
                                     </DirectEvents>
                                 </ext:Button>
-                                 <ext:Button runat="server" ID="uxEditBudgetType" Icon="ApplicationEdit" Text="Edit">
+                                 <ext:Button runat="server" ID="uxEditBudgetType" Icon="ApplicationEdit" Text="Edit" Disabled="true">
                                       <DirectEvents>
                                         <Click OnEvent="deAddEditBudgetType" >
                                             <ExtraParams>
@@ -71,6 +71,11 @@
                                         </Click>
                                     </DirectEvents>
                                  </ext:Button>
+                                 <ext:Button runat="server" ID="uxDeleteBudgetType" Text="Delete" Icon="ApplicationDelete" Disabled="true">
+                            <DirectEvents>
+                                <Click OnEvent="deDeleteBudgetType" Success="#{uxBudgetTypeGridPanel}.getStore().load();"><Confirmation ConfirmRequest="true" Message="Are you sure you want to delete the selected budget type(s)?"></Confirmation><EventMask ShowMask="true"></EventMask></Click>
+                            </DirectEvents>
+                        </ext:Button>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
@@ -106,10 +111,10 @@
                                 <ext:FilterHeader ID="uxBudgetTypeGridFilter" runat="server" Remote="true" />
                             </Plugins>
                             <SelectionModel>
-                                <ext:RowSelectionModel runat="server" Mode="Single" ID="uxBudgetTypeSelectionModel">
+                                <ext:RowSelectionModel runat="server" Mode="Simple" ID="uxBudgetTypeSelectionModel">
                                     <Listeners>
-                                        <Select Handler="if(#{uxBudgetTypeSelectionModel}.getCount() > 0){#{uxEditBudgetType}.enable();}else {#{uxEditBudgetType}.disable();}"></Select>
-                                        <Deselect Handler="if(#{uxBudgetTypeSelectionModel}.getCount() > 0){#{uxEditBudgetType}.enable();} else {#{uxEditBudgetType}.disable();}"></Deselect>
+                                        <Select Handler="if(#{uxBudgetTypeSelectionModel}.getCount() > 0){#{uxEditBudgetType}.enable();#{uxDeleteBudgetType}.enable();}else {#{uxEditBudgetType}.disable();#{uxDeleteBudgetType}.disable();}"></Select>
+                                        <Deselect Handler="if(#{uxBudgetTypeSelectionModel}.getCount() > 0){#{uxEditBudgetType}.enable();#{uxDeleteBudgetType}.enable();} else {#{uxEditBudgetType}.disable();#{uxDeleteBudgetType}.disable();}"></Deselect>
                                     </Listeners>
                                 </ext:RowSelectionModel>
                             </SelectionModel>
