@@ -483,7 +483,7 @@ namespace DBI.Data
                 using (Entities _context = new Entities())
                 {
 
-                    DateTime? _timeout;
+                    
                     var _data = (from tc in _context.TIME_CLOCK
                                  join ev in _context.EMPLOYEES_V on tc.PERSON_ID equals ev.PERSON_ID
                                  select new Employee
@@ -531,7 +531,10 @@ namespace DBI.Data
             }
 
         }
-
+        /// <summary>
+        /// Returns all employee time that has been completed and NOT approved
+        /// </summary>
+        /// <returns></returns>
         public static List<Employee> EmployeeTimeCompletedUnapprovedPayroll()
         {
             try
@@ -544,7 +547,11 @@ namespace DBI.Data
                 throw;
             }
         }
-
+        /// <summary>
+        /// Returns all employee time that has been completed by supervisor ID
+        /// </summary>
+        /// <param name="supervisorId"></param>
+        /// <returns></returns>
         public static List<Employee> EmployeeTimeCompleted(decimal supervisorId)
         {
             try
@@ -558,7 +565,10 @@ namespace DBI.Data
             }
 
         }
-
+        /// <summary>
+        /// Reuturns all employee time that has been completed
+        /// </summary>
+        /// <returns></returns>
         public static List<Employee> EmployeeTimeCompletedPayroll()
         {
             try
@@ -572,13 +582,43 @@ namespace DBI.Data
             }
 
         }
-
+        /// <summary>
+        /// Returns all Employee time that has been completed and approved
+        /// </summary>
+        /// <returns></returns>
         public static List<Employee> EmployeeTimeCompletedApprovedPayroll()
         {
             try
             {
                 var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "Y").ToList();
                 return _data;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Approves Employee time so payroll can submit
+        /// </summary>
+        /// <param name="selection"></param>
+        public static void EmployeeTimeSelectionApproved(List<TIME_CLOCK>selection)
+        {
+            try
+            {
+                foreach (TIME_CLOCK selected in selection)
+                {
+
+                    TIME_CLOCK _data;
+                    using (Entities _context = new Entities())
+                    {
+                        _data = _context.TIME_CLOCK.Where(x => x.COMPLETED == "Y" && x.TIME_CLOCK_ID == selected.TIME_CLOCK_ID).SingleOrDefault();
+
+                        _data.APPROVED = "Y";
+                    }
+                     DBI.Data.GenericData.Update<TIME_CLOCK>(_data);   
+                }
             }
             catch (Exception)
             {

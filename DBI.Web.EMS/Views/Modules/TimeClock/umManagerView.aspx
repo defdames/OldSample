@@ -63,9 +63,19 @@
                                             <%--<ext:Parameter Name="TimeClockId" Value="#{uxEmployeeHoursGrid}.getSelectionModel().getSelection()[0].data.TIME_CLOCK_ID" Mode="Raw" />
                                             <ext:Parameter Name="AdjustedHoursGrid" Value="#{uxEmployeeHoursGrid}.getSelectionModel().getSelection()[0].data.ADJUSTED_HOURS_GRID" Mode="Raw" />--%>
                                             <ext:Parameter Name="ApprovedTime" Value="Ext.encode(#{uxEmployeeHoursGrid}.getRowsValues({selectedOnly : true}))" Mode="Raw" />
-                                           <%-- <ext:Parameter Name="NewTime" Value="#{uxEmployeeHoursStore}.getChangedData()" Mode="Raw" Encode="true" />--%>
+                                            <ext:Parameter Name="NewTime" Value="#{uxEmployeeHoursStore}.getChangedData()" Mode="Raw" Encode="true" />
                                         </ExtraParams>
                                </Click> 
+                        </DirectEvents>
+                    </ext:Button>
+                    <ext:Button runat="server" ID="uxEdit" Text="Edit" Icon="ApplicationEdit">
+                        <DirectEvents>
+                            <Click OnEvent="deEditTime">
+                                <ExtraParams>
+                                    <ext:Parameter Name="Edit" Value="True"></ext:Parameter>
+                                </ExtraParams>
+                                <EventMask ShowMask="true" />
+                            </Click>
                         </DirectEvents>
                     </ext:Button>
                     <ext:ToolbarSpacer runat="server" />
@@ -85,7 +95,7 @@
                     StartCollapsed="true"/>                               
             </Features>
             <SelectionModel>
-                <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi" />
+                <ext:CheckboxSelectionModel ID="uxTimeClockSelectionModel" runat="server" Mode="Multi" />
             </SelectionModel>
             <Plugins>
                 <ext:CellEditing runat="server" ClicksToEdit="2"/>

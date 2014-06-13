@@ -112,6 +112,15 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         protected global::Ext.Net.Button uxApproveButton;
         
         /// <summary>
+        /// uxEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxEdit;
+        
+        /// <summary>
         /// uxToggleApproved control.
         /// </summary>
         /// <remarks>
@@ -121,12 +130,12 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         protected global::Ext.Net.Checkbox uxToggleApproved;
         
         /// <summary>
-        /// CheckboxSelectionModel1 control.
+        /// uxTimeClockSelectionModel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.CheckboxSelectionModel CheckboxSelectionModel1;
+        protected global::Ext.Net.CheckboxSelectionModel uxTimeClockSelectionModel;
     }
 }
