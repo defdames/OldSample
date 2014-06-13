@@ -108,13 +108,11 @@
         <AssociationConnector Association="OracleModel.FK_CROSSINGS_RAILROAD_ID" />
         <AssociationConnector Association="OracleModel.FK_INVENTORY_CHEMICAL_MIX_ID" />
         <AssociationConnector Association="OracleModel.FK_INVENTORY_HEADER_ID" />
-        <EntityTypeShape EntityType="OracleModel.BUD_BID_DETAIL_SHEET" Width="1.5" PointX="26.625" PointY="82.125" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_DETAIL_TASK" Width="1.5" PointX="23.875" PointY="85.5" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_LINES" Width="1.5" PointX="24" PointY="91.25" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_LOCKED" Width="1.5" PointX="26.75" PointY="86.875" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_ORGS" Width="1.5" PointX="21.875" PointY="89" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_STATUS" Width="1.5" PointX="21.875" PointY="86.125" />
-        <AssociationConnector Association="OracleModel.FK_DETAIL_DETAIL_SHEET_ID" />
         <EntityTypeShape EntityType="OracleModel.SYS_MODULE_PROFILE_OPTIONS" Width="1.5" PointX="29.375" PointY="32.75" />
         <EntityTypeShape EntityType="OracleModel.SYS_PROFILE_OPTIONS" Width="1.5" PointX="31.875" PointY="34.25" />
         <EntityTypeShape EntityType="OracleModel.SYS_USER_PROFILE_OPTIONS" Width="1.5" PointX="34.875" PointY="35.75" />
@@ -145,8 +143,10 @@
         <AssociationConnector Association="OracleModel.FK_BUDGET_NUM_DETAIL_TASK_ID" />
         <AssociationConnector Association="OracleModel.FK_BUDGET_NUM_LINES_ID" />
         <AssociationConnector Association="OracleModel.FK_ACTUAL_NUM_DETAIL_TASK_ID" />
-        <EntityTypeShape EntityType="OracleModel.BUD_BID_PROJECTS" Width="1.5" PointX="7.2655539304323273" PointY="4.3577312996414168" />
+        <EntityTypeShape EntityType="OracleModel.BUD_BID_PROJECTS" Width="1.5" PointX="13.125" PointY="40.125" />
         <AssociationConnector Association="OracleModel.FK_PROJECTS_STATUS_ID" />
+        <EntityTypeShape EntityType="OracleModel.BUD_BID_DETAIL_SHEET" Width="1.5" PointX="11.906230576292719" PointY="4.0808475483585367" />
+        <AssociationConnector Association="OracleModel.FK_DETAIL_DETAIL_TASK_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

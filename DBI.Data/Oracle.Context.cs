@@ -94,7 +94,6 @@ namespace DBI.Data
         public DbSet<DAILY_ACTIVITY_INVENTORY> DAILY_ACTIVITY_INVENTORY { get; set; }
         public DbSet<JOB_COST_CLASSES> JOB_COST_CLASSES { get; set; }
         public DbSet<OVERHEAD_BUDGET_VERSION> OVERHEAD_BUDGET_VERSION { get; set; }
-        public DbSet<BUD_BID_DETAIL_SHEET> BUD_BID_DETAIL_SHEET { get; set; }
         public DbSet<BUD_BID_DETAIL_TASK> BUD_BID_DETAIL_TASK { get; set; }
         public DbSet<BUD_BID_LINES> BUD_BID_LINES { get; set; }
         public DbSet<BUD_BID_LOCKED> BUD_BID_LOCKED { get; set; }
@@ -117,5 +116,6 @@ namespace DBI.Data
         public DbSet<BUD_BID_ACTUAL_NUM> BUD_BID_ACTUAL_NUM { get; set; }
         public DbSet<BUD_BID_BUDGET_NUM> BUD_BID_BUDGET_NUM { get; set; }
         public DbSet<BUD_BID_PROJECTS> BUD_BID_PROJECTS { get; set; }
+        public DbSet<BUD_BID_DETAIL_SHEET> BUD_BID_DETAIL_SHEET { get; set; }
     }
 }

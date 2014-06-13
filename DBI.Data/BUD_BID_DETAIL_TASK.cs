@@ -18,6 +18,7 @@ namespace DBI.Data
         {
             this.BUD_BID_BUDGET_NUM = new HashSet<BUD_BID_BUDGET_NUM>();
             this.BUD_BID_ACTUAL_NUM = new HashSet<BUD_BID_ACTUAL_NUM>();
+            this.BUD_BID_DETAIL_SHEET = new HashSet<BUD_BID_DETAIL_SHEET>();
         }
     
         public decimal DETAIL_TASK_ID { get; set; }
@@ -31,8 +32,8 @@ namespace DBI.Data
         public string MODIFIED_BY { get; set; }
         public decimal DETAIL_SHEET_ID { get; set; }
     
-        public virtual BUD_BID_DETAIL_SHEET BUD_BID_DETAIL_SHEET { get; set; }
         public virtual ICollection<BUD_BID_BUDGET_NUM> BUD_BID_BUDGET_NUM { get; set; }
         public virtual ICollection<BUD_BID_ACTUAL_NUM> BUD_BID_ACTUAL_NUM { get; set; }
+        public virtual ICollection<BUD_BID_DETAIL_SHEET> BUD_BID_DETAIL_SHEET { get; set; }
     }
 }
