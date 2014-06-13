@@ -108,7 +108,6 @@
         <AssociationConnector Association="OracleModel.FK_CROSSINGS_RAILROAD_ID" />
         <AssociationConnector Association="OracleModel.FK_INVENTORY_CHEMICAL_MIX_ID" />
         <AssociationConnector Association="OracleModel.FK_INVENTORY_HEADER_ID" />
-        <EntityTypeShape EntityType="OracleModel.BUD_BID_ADJUSTMENT" Width="1.5" PointX="24" PointY="82" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_BUDGET_NUM" Width="1.5" PointX="23.875" PointY="92.375" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_DETAIL_SHEET" Width="1.5" PointX="26.625" PointY="82.125" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_DETAIL_TASK" Width="1.5" PointX="23.875" PointY="85.5" />
@@ -126,9 +125,7 @@
         <AssociationConnector Association="OracleModel.FK_PROFILE_MODULE_ID" />
         <AssociationConnector Association="OracleModel.FK_PROFILE_OPTION_ID" />
         <EntityTypeShape EntityType="OracleModel.SYS_SECURITY_AUDIT" Width="1.5" PointX="3.375" PointY="34.125" />
-        <EntityTypeShape EntityType="OracleModel.BUD_BID_PROJECTS" Width="1.5" PointX="19.25" PointY="86.25" />
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" Width="1.5" PointX="10.75" PointY="83.125" />
-        <AssociationConnector Association="OracleModel.FK_PROJECTS_STATUS_ID" />
         <EntityTypeShape EntityType="OracleModel.JOB_COST_BALANCE_TYPE" Width="1.5" PointX="42.875" PointY="3.5" />
         <EntityTypeShape EntityType="OracleModel.JOB_COST_DATE" Width="1.5" PointX="45.875" PointY="5" />
         <EntityTypeShape EntityType="OracleModel.JOB_COST_PROJECTS" Width="1.5" PointX="48.875" PointY="6.5" />
@@ -144,6 +141,11 @@
         <EntityTypeShape EntityType="OracleModel.CROSSING_SUB_DIVISION" Width="1.5" PointX="19" PointY="14.25" />
         <AssociationConnector Association="OracleModel.FK_SUB_SERVICE_ID" />
         <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="1.125" PointY="30.5" />
+        <EntityTypeShape EntityType="OracleModel.BUD_BID_ACTUAL_NUM" Width="1.5" PointX="14.625" PointY="89.875" />
+        <EntityTypeShape EntityType="OracleModel.BUD_BID_ADJUSTMENT" Width="1.5" PointX="17.125" PointY="91.375" />
+        <EntityTypeShape EntityType="OracleModel.BUD_BID_PROJECTS" Width="1.5" PointX="20.125" PointY="92.875" />
+        <AssociationConnector Association="OracleModel.FK_ACTUAL_NUM_LINES_ID" />
+        <AssociationConnector Association="OracleModel.FK_PROJECTS_STATUS_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -22,6 +22,15 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         protected global::Ext.Net.ResourceManager ResourceManager1;
         
         /// <summary>
+        /// form1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        
+        /// <summary>
         /// ViewPort1 control.
         /// </summary>
         /// <remarks>
@@ -85,13 +94,22 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         protected global::Ext.Net.Column Column2;
         
         /// <summary>
-        /// TextField1 control.
+        /// Approved control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField TextField1;
+        protected global::Ext.Net.Column Approved;
+        
+        /// <summary>
+        /// Submitted control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Submitted;
         
         /// <summary>
         /// Grouping1 control.

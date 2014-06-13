@@ -20,6 +20,8 @@ namespace DBI.Data
         public int TO_STATUS { get; set; }
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
+        public Nullable<System.DateTime> CREATE_DATE { get; set; }
+        public string CREATED_BY { get; set; }
     
         public virtual DAILY_ACTIVITY_HEADER DAILY_ACTIVITY_HEADER { get; set; }
     }

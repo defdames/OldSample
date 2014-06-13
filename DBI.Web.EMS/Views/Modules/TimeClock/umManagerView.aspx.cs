@@ -19,44 +19,33 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
         
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            GetEmployeeHoursData();
+            
             
         }
 
-        protected void GetEmployeeHoursData()
+        protected void deGetEmployeeHoursData(object sender, StoreReadDataEventArgs e)
         {
 
             decimal person_id = Convert.ToDecimal(Authentication.GetClaimValue("PersonId", User as ClaimsPrincipal));
             
-            
-
             using (Entities _context = new Entities())
             {   //Manager Query
                 if (validateComponentSecurity("SYS.TimeClock.Manager"))
                 {
-                    var data = (from tc in _context.TIME_CLOCK
-                                join ev in _context.EMPLOYEES_V on tc.PERSON_ID equals ev.PERSON_ID
-                                where tc.SUPERVISOR_ID == person_id && tc.COMPLETED == "Y" && tc.APPROVED == "N"
-                                select new EmployeeTime { TIME_IN = (DateTime)tc.TIME_IN, TIME_OUT = (DateTime)tc.TIME_OUT, EMPLOYEE_NAME = ev.EMPLOYEE_NAME, DAY_OF_WEEK = tc.DAY_OF_WEEK, TIME_CLOCK_ID = tc.TIME_CLOCK_ID, ADJUSTED_HOURS = tc.ADJUSTED_HOURS, ACTUAL_HOURS = tc.ACTUAL_HOURS }).ToList();
+
+                    var data = TIME_CLOCK.EmployeeTimeCompletedUnapproved(person_id);
 
 
                     foreach (var item in data)
                     {
-                        TimeSpan ts = item.TIME_OUT - item.TIME_IN;
-                        DateTime dow = item.TIME_IN;
-
-
-
+                        TimeSpan ts = (DateTime)item.TIME_OUT - (DateTime)item.TIME_IN;
+                        DateTime dow = (DateTime)item.TIME_IN;
 
                         TimeSpan adjustedhours = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_HOURS.Value));
                         item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("hh\\:mm");
 
-
                         TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
                         item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");
-
-
                     }
                     uxEmployeeHoursStore.DataSource = data;
 
@@ -64,18 +53,13 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
                 else if (validateComponentSecurity("SYS.TimeClock.Payroll"))
                 {   //Payroll query
-                     var data = (from tc in _context.TIME_CLOCK
-                                join ev in _context.EMPLOYEES_V on tc.PERSON_ID equals ev.PERSON_ID
-                                where tc.COMPLETED == "Y" && tc.APPROVED == "N"
-                                select new EmployeeTime { TIME_IN = (DateTime)tc.TIME_IN, TIME_OUT = (DateTime)tc.TIME_OUT, EMPLOYEE_NAME = ev.EMPLOYEE_NAME, DAY_OF_WEEK = tc.DAY_OF_WEEK, TIME_CLOCK_ID = tc.TIME_CLOCK_ID, ADJUSTED_HOURS = tc.ADJUSTED_HOURS, ACTUAL_HOURS = tc.ACTUAL_HOURS }).ToList();
 
+                    var data = TIME_CLOCK.EmployeeTimeCompletedUnapprovedPayroll();
 
                     foreach (var item in data)
                     {
-                        TimeSpan ts = item.TIME_OUT - item.TIME_IN;
-                        DateTime dow = item.TIME_IN;
-
-
+                        TimeSpan ts = (DateTime)item.TIME_OUT - (DateTime)item.TIME_IN;
+                        DateTime dow = (DateTime)item.TIME_IN;
 
 
                         TimeSpan adjustedhours = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_HOURS.Value));
@@ -90,33 +74,95 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                     uxEmployeeHoursStore.DataSource = data;
                 }
 
+                if ((uxToggleApproved.Checked) && (validateComponentSecurity("SYS.TimeClock.Manager")))
+                {
+                    var data = TIME_CLOCK.EmployeeTimeCompleted(person_id);
+
+
+                    foreach (var item in data)
+                    {
+                        TimeSpan ts = (DateTime)item.TIME_OUT - (DateTime)item.TIME_IN;
+                        DateTime dow = (DateTime)item.TIME_IN;
+
+                        TimeSpan adjustedhours = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_HOURS.Value));
+                        item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("hh\\:mm");
+
+                        TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
+                        item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");
+
+                    }
+                    uxEmployeeHoursStore.DataSource = data;
+                
+                }
+
+                else if ((uxToggleApproved.Checked) && (validateComponentSecurity("SYS.TimeClock.Payroll")))
+                {   //Payroll query
+                    var data = TIME_CLOCK.EmployeeTimeCompletedPayroll();
+
+
+                    foreach (var item in data)
+                    {
+                        TimeSpan ts = (DateTime)item.TIME_OUT - (DateTime)item.TIME_IN;
+                        DateTime dow = (DateTime)item.TIME_IN;
+
+                        TimeSpan adjustedhours = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_HOURS.Value));
+                        item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("hh\\:mm");
+
+                        TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
+                        item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");
+
+
+                    }
+                    uxEmployeeHoursStore.DataSource = data;
+                }
+
             }
+
+        }
+
+        protected void deEditTime(object sender, DirectEventArgs e)
+        {
+            //try
+            //{
+            //    decimal _timeClockId;
+
+            //    RowSelectionModel selection = uxTimeClockSelectionModel;
+            //    Boolean checkTime = decimal.TryParse(selection.SelectedRecordID, out _timeClockId);
+            //    string _editMode = e.ExtraParams["Edit"];
+
+            //    string url = "/Views/Modules/TimeClock/umManagerView.aspx?tcID=" + _timeClockId;
+                
+            //}
+
 
         }
         
         protected void deApproveTime(object sender, DirectEventArgs e)
         {
-            string person_name = Authentication.GetClaimValue("EmployeeName", User as ClaimsPrincipal);
+            
             List<TIME_CLOCK> ApprovedTime = JSON.Deserialize<List<TIME_CLOCK>>(e.ExtraParams["ApprovedTime"]);
             ChangeRecords<EmployeeTime> NewTime = new StoreDataHandler(e.ExtraParams["NewTime"]).BatchObjectData<EmployeeTime>();
- 
+            string person_name = Authentication.GetClaimValue("EmployeeName", User as ClaimsPrincipal);
+
+
+            TIME_CLOCK.EmployeeTimeSelectionApproved(ApprovedTime);
             
-            foreach (TIME_CLOCK Approved in ApprovedTime)
-            {
-                TIME_CLOCK data;
-                using (Entities _context = new Entities())
-                {
-                     data = (from tc in _context.TIME_CLOCK
-                                join ev in _context.EMPLOYEES_V on tc.PERSON_ID equals ev.PERSON_ID
-                                where tc.COMPLETED == "Y" && tc.TIME_CLOCK_ID == Approved.TIME_CLOCK_ID  //Took out tc.SUPERVISOR_ID == person_id
-                                select tc).SingleOrDefault();
-                }
-                data.APPROVED = "Y";
-                GenericData.Update<TIME_CLOCK>(data);
-                uxEmployeeHoursStore.Reload();
+            //foreach (TIME_CLOCK Approved in ApprovedTime)
+            //{
+            //    TIME_CLOCK data;
+            //    using (Entities _context = new Entities())
+            //    {
+            //         data = (from tc in _context.TIME_CLOCK
+            //                    join ev in _context.EMPLOYEES_V on tc.PERSON_ID equals ev.PERSON_ID
+            //                    where tc.COMPLETED == "Y" && tc.TIME_CLOCK_ID == Approved.TIME_CLOCK_ID  //Took out tc.SUPERVISOR_ID == person_id
+            //                    select tc).SingleOrDefault();
+            //    }
+            //    data.APPROVED = "Y";
+            //    GenericData.Update<TIME_CLOCK>(data);
+                  uxEmployeeHoursStore.Reload();
                
                
-            }
+            //}
 
             foreach (EmployeeTime Updated in NewTime.Updated)
             {
@@ -154,6 +200,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
         public string ACTUAL_HOURS_GRID { get; set; }
         public decimal? ACTUAL_HOURS { get; set; }
         public decimal? ADJUSTED_HOURS { get; set; }
-        
+        public string APPROVED { get; set; }
+        public string SUBMITTED { get; set; }        
     }
 }

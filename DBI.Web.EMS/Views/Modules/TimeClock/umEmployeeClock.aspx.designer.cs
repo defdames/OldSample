@@ -76,15 +76,6 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         protected global::Ext.Net.Hidden uxDateTime;
         
         /// <summary>
-        /// uxTest control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxTest;
-        
-        /// <summary>
         /// uxTimeButton control.
         /// </summary>
         /// <remarks>
@@ -148,12 +139,21 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         protected global::Ext.Net.Column colTotalHours;
         
         /// <summary>
-        /// uxWarningColumn control.
+        /// colModifiedBy control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column uxWarningColumn;
+        protected global::Ext.Net.Column colModifiedBy;
+        
+        /// <summary>
+        /// colApproved control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column colApproved;
     }
 }

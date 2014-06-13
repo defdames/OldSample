@@ -26,5 +26,7 @@ namespace DBI.Data
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public Nullable<long> HEADER_ID { get; set; }
+        public Nullable<System.DateTime> MODIFY_DATE { get; set; }
+        public string MODIFIED_BY { get; set; }
     }
 }

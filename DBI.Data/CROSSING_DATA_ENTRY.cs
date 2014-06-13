@@ -27,6 +27,10 @@ namespace DBI.Data
         public string STATE { get; set; }
         public string SUB_DIVISION { get; set; }
         public string REMARKS { get; set; }
+        public Nullable<System.DateTime> CREATE_DATE { get; set; }
+        public Nullable<System.DateTime> MODIFY_DATE { get; set; }
+        public string CREATED_BY { get; set; }
+        public string MODIFIED_BY { get; set; }
     
         public virtual CROSSING CROSSING { get; set; }
     }

@@ -17,6 +17,7 @@ namespace DBI.Data
         public BUD_BID_LINES()
         {
             this.BUD_BID_BUDGET_NUM = new HashSet<BUD_BID_BUDGET_NUM>();
+            this.BUD_BID_ACTUAL_NUM = new HashSet<BUD_BID_ACTUAL_NUM>();
         }
     
         public decimal LINE_ID { get; set; }
@@ -28,5 +29,6 @@ namespace DBI.Data
         public string MODIFIED_BY { get; set; }
     
         public virtual ICollection<BUD_BID_BUDGET_NUM> BUD_BID_BUDGET_NUM { get; set; }
+        public virtual ICollection<BUD_BID_ACTUAL_NUM> BUD_BID_ACTUAL_NUM { get; set; }
     }
 }
