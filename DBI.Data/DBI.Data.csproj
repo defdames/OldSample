@@ -288,6 +288,7 @@
     <Compile Include="MTL_TRANSACTION_INT_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="Oracle\Class1.cs" />
     <Compile Include="Oracle\GL.cs" />
     <Compile Include="Oracle\HR.cs" />
     <Compile Include="DataFactory\Interface\Interface.cs" />
