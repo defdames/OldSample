@@ -402,19 +402,14 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             //    startNumsdata.NOV = 0;// Convert.ToDecimal(arr2[i].Value);
             //    GenericData.Insert<BUD_BID_ACTUAL_NUM>(startNumsdata);
             //}    
-            try
-            {
-                BUD_BID_ACTUAL_NUM startNumsdata = new BUD_BID_ACTUAL_NUM();
-                startNumsdata.PROJECT_ID = 1;
-                startNumsdata.DETAIL_TASK_ID = 2;
-                startNumsdata.LINE_ID = 3;
-                startNumsdata.NOV = 4;
-                GenericData.Insert<BUD_BID_ACTUAL_NUM>(startNumsdata);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+
+            BUD_BID_ACTUAL_NUM startNumsdata = new BUD_BID_ACTUAL_NUM();
+            startNumsdata.PROJECT_ID = 1;
+            startNumsdata.DETAIL_TASK_ID = 2;
+            startNumsdata.LINE_ID = 3;
+            startNumsdata.NOV = 4;
+            GenericData.Insert<BUD_BID_ACTUAL_NUM>(startNumsdata);
+
 
 
 
