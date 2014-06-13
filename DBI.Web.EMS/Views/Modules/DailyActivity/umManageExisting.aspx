@@ -190,6 +190,8 @@
                                         <ext:Parameter Name="HeaderId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.HEADER_ID" Mode="Raw" />
                                         <ext:Parameter Name="OrgId" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.ORG_ID" Mode="Raw" />
                                         <ext:Parameter Name="Status" Value="#{uxManageGrid}.getSelectionModel().getSelection()[0].data.STATUS_VALUE" Mode="Raw" />
+                                        <ext:Parameter Name="CurrentPage" Value="#{uxManageGridPaging}.getPageData().currentPage" Mode="Raw" />
+                                        <ext:Parameter Name="TotalRecords" Value="#{uxManageGridStore}.getTotalCount()" Mode="Raw" />
                                     </ExtraParams>
                                     <EventMask ShowMask="true" />
                                 </Select>

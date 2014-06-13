@@ -380,10 +380,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxExportToPDF.Disabled = false;
             uxEmailPdf.Disabled = false;
             string LoaderURL = (OrgId == 123 ? "umCombinedTab_IRM.aspx":"umCombinedTab_DBI.aspx") + "?HeaderId=" + HeaderId;
-
+            uxTotalRecords.Text = GetRecordNumber(int.Parse(e.ExtraParams["CurrentPage"])).ToString() + "/" + e.ExtraParams["TotalRecords"];
             uxDetailsPanel.LoadContent(LoaderURL);
+            
         }
 
+        protected int GetRecordNumber(int CurrentPage)
+        {
+            RowSelectionModel GridModel = uxManageGrid.GetSelectionModel() as RowSelectionModel;
+            var Index = GridModel.SelectedIndex;
+            return (CurrentPage - 1) * 20 + Index + 1;
+        }
 		protected long GetCoOrgId(long HeaderId)
 		{
 			using (Entities _context = new Entities())

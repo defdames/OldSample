@@ -234,7 +234,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             where d.HEADER_ID == HeaderId
                             from j in joined
                             where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
-                            select new {j.INV_NAME, j.SEGMENT1, d.SUB_INVENTORY_SECONDARY_NAME, j.DESCRIPTION, d.RATE }).ToList();
+                            select new {d.INVENTORY_ID, j.INV_NAME, j.SEGMENT1, d.SUB_INVENTORY_SECONDARY_NAME, j.DESCRIPTION, d.RATE }).ToList();
                 uxInventoryStore.DataSource = data;
                 uxInventoryStore.DataBind();
             }
@@ -301,6 +301,117 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Remove Employee entry from db
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void deRemoveEmployee(object sender, DirectEventArgs e)
+        {
+
+            long EmployeeId = long.Parse(e.ExtraParams["EmployeeID"]);
+            //Get Record to Remove
+            DAILY_ACTIVITY_EMPLOYEE data;
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                        where d.EMPLOYEE_ID == EmployeeId
+                        select d).Single();
+            }
+            GenericData.Delete<DAILY_ACTIVITY_EMPLOYEE>(data);
+            X.Js.Call("parent.App.uxDetailsPanel.reload()");
+        }
+
+        /// <summary>
+        /// Remove equipment from db
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void deRemoveEquipment(object sender, DirectEventArgs e)
+        {
+            //Convert EquipmentId to long
+            long EquipmentId = long.Parse(e.ExtraParams["EquipmentId"]);
+            DAILY_ACTIVITY_EQUIPMENT data;
+
+            //Get record to be deleted
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
+                        where d.EQUIPMENT_ID == EquipmentId
+                        select d).Single();
+            }
+
+            GenericData.Delete<DAILY_ACTIVITY_EQUIPMENT>(data);
+            X.Js.Call("parent.App.uxDetailsPanel.reload()");
+        }
+
+        /// <summary>
+        /// Remove production item from db
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void deRemoveProduction(object sender, DirectEventArgs e)
+        {
+            long ProductionId = long.Parse(e.ExtraParams["ProductionId"]);
+            DAILY_ACTIVITY_PRODUCTION data;
+
+            //Get record to be deleted
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.DAILY_ACTIVITY_PRODUCTION
+                        where d.PRODUCTION_ID == ProductionId
+                        select d).Single();
+            }
+
+            //Process deletion
+            GenericData.Delete<DAILY_ACTIVITY_PRODUCTION>(data);
+            X.Js.Call("parent.App.uxDetailsPanel.reload()");
+        }
+
+        /// <summary>
+        /// Remove weather from db
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void deRemoveWeather(object sender, DirectEventArgs e)
+        {
+            long WeatherId = long.Parse(e.ExtraParams["WeatherId"]);
+            DAILY_ACTIVITY_WEATHER data;
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.DAILY_ACTIVITY_WEATHER
+                        where d.WEATHER_ID == WeatherId
+                        select d).Single();
+            }
+            GenericData.Delete<DAILY_ACTIVITY_WEATHER>(data);
+
+            X.Js.Call("parent.App.uxDetailsPanel.reload()");
+        }
+
+        /// <summary>
+        /// Remove inventory entry from DB
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void deRemoveInventory(object sender, DirectEventArgs e)
+        {
+            long InventoryId = long.Parse(e.ExtraParams["InventoryId"]);
+            DAILY_ACTIVITY_INVENTORY data;
+
+            //Get record to be deleted
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.DAILY_ACTIVITY_INVENTORY
+                        where d.INVENTORY_ID == InventoryId
+                        select d).Single();
+            }
+
+            //Delete from DB
+            GenericData.Delete<DAILY_ACTIVITY_INVENTORY>(data);
+
+            X.Js.Call("parent.App.uxDetailsPanel.reload()");
         }
     }
 }

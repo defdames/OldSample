@@ -17,18 +17,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             if (!X.IsAjaxRequest)
             {
+                uxAddProductionSurfaceTypeStore.Data = StaticLists.SurfaceTypes;
                 if (Request.QueryString["Type"] == "Add")
                 {
-                    uxAddProductionForm.Show();
-                    uxAddProductionSurfaceTypeStore.Data = StaticLists.SurfaceTypes;
+                    uxFormType.Value = "Add";
                 }
                 else
                 {
-                    uxEditProductionForm.Show();
-                    uxEditProductionSurfaceTypeStore.Data = StaticLists.SurfaceTypes;
+                    uxFormType.Value = "Edit";
                     LoadEditProductionForm();
                 }
-                GetTaskList(Request.QueryString["Type"]);
+                GetTaskList();
             }
         }
 
@@ -37,7 +36,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void GetTaskList(string FormType)
+        protected void GetTaskList()
         {
 
             //Query for project ID, and get tasks for that project
@@ -52,16 +51,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             select t).ToList();
 
                 //Set datasource for Add/Edit store
-                if (FormType == "Add")
-                {
-                    uxAddProductionTaskStore.DataSource = data;
-                    uxAddProductionTaskStore.DataBind();
-                }
-                else
-                {
-                    uxEditProductionTaskStore.DataSource = data;
-                    uxEditProductionTaskStore.DataBind();
-                }
+                uxAddProductionTaskStore.DataSource = data;
+                uxAddProductionTaskStore.DataBind();
             }
         }
 
@@ -78,18 +69,29 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                   join t in _context.PA_TASKS_V on d.TASK_ID equals t.TASK_ID
                                   where d.PRODUCTION_ID == ProductionId
                                   select new { d, t.DESCRIPTION }).Single();
-                uxEditProductionTask.SetValue(Production.d.TASK_ID.ToString(), Production.DESCRIPTION);
-                uxEditProductionStation.SetValue(Production.d.STATION);
-                uxEditProductionExpenditureType.SetValue(Production.d.EXPENDITURE_TYPE, Production.d.EXPENDITURE_TYPE);
-                uxEditProductionQuantity.SetValue(Production.d.QUANTITY);
-                uxEditProductionBillRate.SetValue(Production.d.BILL_RATE);
-                uxEditProductionUOM.SetValue(Production.d.UNIT_OF_MEASURE);
-                uxEditProductionSurfaceType.SetValueAndFireSelect(Production.d.SURFACE_TYPE);
-                uxEditProductionSurfaceType.SetValue(Production.d.SURFACE_TYPE);
-                uxEditProductionComments.SetValue(Production.d.COMMENTS);
+                uxAddProductionTask.SetValue(Production.d.TASK_ID.ToString(), Production.DESCRIPTION);
+                uxAddProductionStation.SetValue(Production.d.STATION);
+                uxAddProductionExpenditureType.SetValue(Production.d.EXPENDITURE_TYPE, Production.d.EXPENDITURE_TYPE);
+                uxAddProductionQuantity.SetValue(Production.d.QUANTITY);
+                uxAddProductionBillRate.SetValue(Production.d.BILL_RATE);
+                uxAddProductionUOM.SetValue(Production.d.UNIT_OF_MEASURE);
+                uxAddProductionSurfaceType.SetValueAndFireSelect(Production.d.SURFACE_TYPE);
+                uxAddProductionSurfaceType.SetValue(Production.d.SURFACE_TYPE);
+                uxAddProductionComments.SetValue(Production.d.COMMENTS);
             }
         }
 
+        protected void deProcessForm(object sender, DirectEventArgs e)
+        {
+            if (uxFormType.Value.ToString() == "Add")
+            {
+                deAddProduction(sender, e);
+            }
+            else
+            {
+                deEditProduction(sender, e);
+            }
+        }
         /// <summary>
         /// Add Production Item to db
         /// </summary>
@@ -129,19 +131,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GenericData.Insert<DAILY_ACTIVITY_PRODUCTION>(data);
 
             uxAddProductionForm.Reset();
-            X.Js.Call("parent.App.uxPlaceholderWindow.hide(); parent.App.uxProductionTab.reload()");
-
-            Notification.Show(new NotificationConfig()
-            {
-                Title = "Success",
-                Html = "Production Added Successfully",
-                HideDelay = 1000,
-                AlignCfg = new NotificationAlignConfig
-                {
-                    ElementAnchor = AnchorPoint.Center,
-                    TargetAnchor = AnchorPoint.Center
-                }
-            });
+            X.Js.Call("parent.App.uxDetailsPanel.reload(); parent.App.uxPlaceholderWindow.close()");
         }
 
         /// <summary>
@@ -154,9 +144,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             DAILY_ACTIVITY_PRODUCTION data;
 
             //Do type conversions
-            long TaskId = long.Parse(uxEditProductionTask.Value.ToString());
-            decimal Quantity = decimal.Parse(uxEditProductionQuantity.Value.ToString());
-            decimal BillRate = decimal.Parse(uxEditProductionBillRate.Value.ToString());
+            long TaskId = long.Parse(uxAddProductionTask.Value.ToString());
+            decimal Quantity = decimal.Parse(uxAddProductionQuantity.Value.ToString());
+            decimal BillRate = decimal.Parse(uxAddProductionBillRate.Value.ToString());
             long ProductionId = long.Parse(Request.QueryString["ProductionId"]);
 
             //Get record to be edited
@@ -167,32 +157,21 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         select d).Single();
             }
             data.TASK_ID = TaskId;
-            data.EXPENDITURE_TYPE = uxEditProductionExpenditureType.Value.ToString();
+            data.EXPENDITURE_TYPE = uxAddProductionExpenditureType.Value.ToString();
             data.QUANTITY = Quantity;
-            data.STATION = uxEditProductionStation.Value.ToString();
+            data.STATION = uxAddProductionStation.Value.ToString();
             data.BILL_RATE = BillRate;
             data.MODIFY_DATE = DateTime.Now;
-            data.UNIT_OF_MEASURE = uxEditProductionUOM.Value.ToString();
-            data.SURFACE_TYPE = uxEditProductionSurfaceType.Value.ToString();
-            data.COMMENTS = uxEditProductionComments.Value.ToString();
+            data.UNIT_OF_MEASURE = uxAddProductionUOM.Value.ToString();
+            data.SURFACE_TYPE = uxAddProductionSurfaceType.Value.ToString();
+            data.COMMENTS = uxAddProductionComments.Value.ToString();
             data.MODIFIED_BY = User.Identity.Name;
 
             //Write to DB
             GenericData.Update<DAILY_ACTIVITY_PRODUCTION>(data);
 
-            X.Js.Call("parent.App.uxPlaceholderWindow.hide(); parent.App.uxProductionTab.reload()");
+            X.Js.Call("parent.App.uxDetailsPanel.reload(); parent.App.uxPlaceholderWindow.close()");
 
-            Notification.Show(new NotificationConfig()
-            {
-                Title = "Success",
-                Html = "Production Edited Successfully",
-                HideDelay = 1000,
-                AlignCfg = new NotificationAlignConfig
-                {
-                    ElementAnchor = AnchorPoint.Center,
-                    TargetAnchor = AnchorPoint.Center
-                }
-            });
         }
 
         protected void deReadExpenditures(object sender, StoreReadDataEventArgs e)
@@ -212,45 +191,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 e.Total = count;
 
                 uxAddProductionExpenditureStore.DataSource = data;
-                uxEditProductionExpenditureStore.DataSource = data;
             }
         }
 
         protected void deStoreExpenditureType(object sender, DirectEventArgs e)
         {
-            if (e.ExtraParams["Type"] == "Edit")
-            {
-                uxEditProductionExpenditureType.SetValue(e.ExtraParams["ExpenditureType"], e.ExtraParams["ExpenditureType"]);
-                uxEditProductionUOM.SetValue(e.ExtraParams["UnitOfMeasure"]);
-                uxEditProductionBillRate.SetValue(e.ExtraParams["BillRate"]);
+            uxAddProductionExpenditureType.SetValue(e.ExtraParams["ExpenditureType"], e.ExtraParams["ExpenditureType"]);
+            uxAddProductionUOM.SetValue(e.ExtraParams["UnitOfMeasure"]);
+            uxAddProductionBillRate.SetValue(e.ExtraParams["BillRate"]);
 
-                uxEditProductionExpenditureStore.ClearFilter();
-            }
-            else
-            {
-                uxAddProductionExpenditureType.SetValue(e.ExtraParams["ExpenditureType"], e.ExtraParams["ExpenditureType"]);
-                uxAddProductionUOM.SetValue(e.ExtraParams["UnitOfMeasure"]);
-                uxAddProductionBillRate.SetValue(e.ExtraParams["BillRate"]);
-
-                uxAddProductionExpenditureStore.ClearFilter();
-            }
+            uxAddProductionExpenditureStore.ClearFilter();
         }
 
         protected void deStoreTask(object sender, DirectEventArgs e)
         {
-            if (e.ExtraParams["Type"] == "Edit")
-            {
-                uxEditProductionTask.SetValue(e.ExtraParams["TaskId"], e.ExtraParams["Description"]);
-
-                uxEditProductionTaskStore.ClearFilter();
-            }
-            else
-            {
                 uxAddProductionTask.SetValue(e.ExtraParams["TaskId"], e.ExtraParams["Description"]);
-
                 uxAddProductionTaskStore.ClearFilter();
-            }
         }
-
     }
 }

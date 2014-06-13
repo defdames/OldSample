@@ -38,7 +38,7 @@
 				<ext:Hidden ID="uxYellowWarning" runat="server" />
 				<ext:Hidden ID="uxRedWarning" runat="server" />
 				<ext:FormPanel runat="server"
-					ID="uxHeaderPanel" Padding="10" BodyPadding="5" MaxWidth="1000" Layout="FormLayout">
+					ID="uxHeaderPanel" Padding="10" BodyPadding="5" MaxWidth="1100" Layout="FormLayout">
 					<Items>
 						<ext:TextField runat="server" ID="uxDateField" FieldLabel="Date" Width="200" ReadOnly="true" LabelWidth="100" />
 						<ext:TextField runat="server" ID="uxHeaderField" FieldLabel="DRS Id" Width="200" ReadOnly="true" LabelWidth="100" />
@@ -57,7 +57,7 @@
 					ID="uxWarningGrid"
 					Title="Warnings/Errors"
 					Padding="10"
-					MaxWidth="1000">
+					MaxWidth="1100">
 					<Store>
 						<ext:Store runat="server" ID="uxWarningStore">
 							<Model>
@@ -90,7 +90,7 @@
 					ID="uxEmployeeGrid"
 					Title="Employees"
 					Padding="10"
-					MaxWidth="1000">
+					MaxWidth="1100">
 					<Store>
 						<ext:Store runat="server"
 							ID="uxEmployeeStore">
@@ -115,16 +115,16 @@
 					</Store>
 					<ColumnModel>
 						<Columns>
-							<ext:Column ID="Column9" runat="server" DataIndex="EMPLOYEE_NAME" Text="Employee Name" Flex="1" />
-							<ext:Column ID="Column10" runat="server" DataIndex="NAME" Text="Equipment Name" Flex="1" />
-							<ext:DateColumn ID="DateColumn2" runat="server" DataIndex="TIME_IN" Text="Time In" Flex="1" Format="M/d/yyyy h:mm tt" />
-							<ext:DateColumn ID="DateColumn3" runat="server" DataIndex="TIME_OUT" Text="Time Out" Flex="1" Format="M/d/yyyy h:mm tt" />
-							<ext:Column ID="Column11" runat="server" DataIndex="TRAVEL_TIME_FORMATTED" Text="Travel Time" Flex="1" />
-							<ext:Column ID="Column12" runat="server" DataIndex="DRIVE_TIME_FORMATTED" Text="Drive Time" Flex="1" />
-							<ext:Column ID="Column13" runat="server" DataIndex="PER_DIEM" Text="Per Diem" Flex="1" />
-							<ext:Column runat="server" DataIndex="FOREMAN_LICENSE" Text="License" Flex="1" />
-							<ext:Column ID="Column1" runat="server" DataIndex="LUNCH_LENGTH" Text="Lunch Length" Flex="1" />
-							<ext:Column ID="Column14" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="1" />
+							<ext:Column ID="Column9" runat="server" DataIndex="EMPLOYEE_NAME" Text="Employee Name" Flex="13" />
+							<ext:Column ID="Column10" runat="server" DataIndex="NAME" Text="Equipment Name" Flex="13" />
+							<ext:DateColumn ID="DateColumn2" runat="server" DataIndex="TIME_IN" Text="Time In" Flex="10" Format="M/d/yyyy h:mm tt" />
+							<ext:DateColumn ID="DateColumn3" runat="server" DataIndex="TIME_OUT" Text="Time Out" Flex="10" Format="M/d/yyyy h:mm tt" />
+							<ext:Column ID="Column11" runat="server" DataIndex="TRAVEL_TIME_FORMATTED" Text="Travel Time" Flex="7" />
+							<ext:Column ID="Column12" runat="server" DataIndex="DRIVE_TIME_FORMATTED" Text="Drive Time" Flex="7" />
+							<ext:Column ID="Column13" runat="server" DataIndex="PER_DIEM" Text="Per Diem" Flex="6" />
+							<ext:Column runat="server" DataIndex="FOREMAN_LICENSE" Text="License" Flex="7" />
+							<ext:Column ID="Column1" runat="server" DataIndex="LUNCH_LENGTH" Text="Lunch Length" Flex="9" />
+							<ext:Column ID="Column14" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="18" />
 						</Columns>
 					</ColumnModel>
 					<TopBar>
@@ -159,7 +159,7 @@
 				</ext:GridPanel>
 				<ext:GridPanel runat="server" ID="uxEquipmentGrid"
 					Title="Equipment"
-					Padding="10" MaxWidth="1000">
+					Padding="10" MaxWidth="1100">
 					<Store>
 						<ext:Store runat="server"
 							ID="uxEquipmentStore">
@@ -184,22 +184,22 @@
 						<Columns>
 							<ext:Column ID="Column47" runat="server"
 								DataIndex="SEGMENT1"
-								Text="Project Number" Flex="1" />
+								Text="Project Number" Flex="10" />
 							<ext:Column ID="Column48" runat="server"
 								DataIndex="NAME"
-								Text="Name" Flex="1" />
+								Text="Name" Flex="10" />
 							<ext:Column ID="Column49" runat="server"
 								DataIndex="CLASS_CODE"
-								Text="Class Code" Flex="1" />
+								Text="Class Code" Flex="35" />
 							<ext:Column ID="Column50" runat="server"
 								DataIndex="ORGANIZATION_NAME"
-								Text="Organization Name" Flex="1" />
+								Text="Organization Name" Flex="25" />
 							<ext:Column ID="Column51" runat="server"
 								DataIndex="ODOMETER_START" 
-								Text="Starting Units" Flex="1" />
+								Text="Starting Units" Flex="10" />
 							<ext:Column ID="Column52" runat="server"
 								DataIndex="ODOMETER_END"
-								Text="Ending Units" Flex="1" />
+								Text="Ending Units" Flex="10" />
 						</Columns>
 					</ColumnModel>
 					<TopBar>
@@ -236,7 +236,7 @@
 					ID="uxProductionGrid"
 					Title="Production"
 					Padding="10"
-					MaxWidth="1000">
+					MaxWidth="1100">
 					<Store>
 						<ext:Store runat="server"
 							ID="uxProductionStore">
@@ -258,13 +258,13 @@
 					</Store>
 					<ColumnModel>
 						<Columns>
-							<ext:Column runat="server" DataIndex="TASK_NUMBER" Text="Task Number" Flex="1" />
-							<ext:Column ID="Column15" runat="server" DataIndex="DESCRIPTION" Text="Task Name" Flex="1" />
-							<ext:Column ID="Column16" runat="server" DataIndex="WORK_AREA" Text="Spray/Work Area" Flex="1" />
-							<ext:Column ID="Column17" runat="server" DataIndex="POLE_FROM" Text="Pole/MP From" Flex="1" />
-							<ext:Column ID="Column18" runat="server" DataIndex="POLE_TO" Text="Pole/MP To" Flex="1" />
-							<ext:Column ID="Column19" runat="server" DataIndex="ACRES_MILE" Text="Acres/Mile" Flex="1" />
-							<ext:Column ID="Column20" runat="server" DataIndex="QUANTITY" Text="Gallons" Flex="1" />
+							<ext:Column runat="server" DataIndex="TASK_NUMBER" Text="Task Number" Flex="10" />
+							<ext:Column ID="Column15" runat="server" DataIndex="DESCRIPTION" Text="Task Name" Flex="15" />
+							<ext:Column ID="Column16" runat="server" DataIndex="WORK_AREA" Text="Spray/Work Area" Flex="40" />
+							<ext:Column ID="Column17" runat="server" DataIndex="POLE_FROM" Text="Pole/MP From" Flex="9" />
+							<ext:Column ID="Column18" runat="server" DataIndex="POLE_TO" Text="Pole/MP To" Flex="9" />
+							<ext:Column ID="Column19" runat="server" DataIndex="ACRES_MILE" Text="Acres/Mile" Flex="9" />
+							<ext:Column ID="Column20" runat="server" DataIndex="QUANTITY" Text="Gallons" Flex="8" />
 						</Columns>
 					</ColumnModel>
 					<TopBar>
@@ -301,7 +301,7 @@
 					ID="uxWeatherGrid"
 					Title="Weather"
 					Padding="10"
-					MaxWidth="1000">
+					MaxWidth="1100">
 					<Store>
 						<ext:Store runat="server"
 							ID="uxWeatherStore">
@@ -323,11 +323,11 @@
 					<ColumnModel>
 						<Columns>
 							<ext:DateColumn ID="DateColumn6" runat="server" DataIndex="WEATHER_DATE_TIME" Text="Date/Time" Format="M/d/yyyy h:mm tt" Flex="15" />
-							<ext:Column ID="Column21" runat="server" DataIndex="WIND_DIRECTION" Text="Wind Direction" Flex="15" />
-							<ext:Column ID="Column22" runat="server" DataIndex="WIND_VELOCITY" Text="Wind Velocity" Flex="15" />
-							<ext:Column ID="Column23" runat="server" DataIndex="TEMP" Text="Temperature" Flex="15" />
-							<ext:Column ID="Column24" runat="server" DataIndex="HUMIDITY" Text="Humidity" Flex="15" />
-							<ext:Column ID="Column25" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="25" />
+							<ext:Column ID="Column21" runat="server" DataIndex="WIND_DIRECTION" Text="Wind Direction" Flex="10" />
+							<ext:Column ID="Column22" runat="server" DataIndex="WIND_VELOCITY" Text="Wind Velocity" Flex="10" />
+							<ext:Column ID="Column23" runat="server" DataIndex="TEMP" Text="Temperature" Flex="10" />
+							<ext:Column ID="Column24" runat="server" DataIndex="HUMIDITY" Text="Humidity" Flex="10" />
+							<ext:Column ID="Column25" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="45" />
 						</Columns>
 					</ColumnModel>
 					<TopBar>
@@ -364,7 +364,7 @@
 					ID="uxChemicalGrid"
 					Title="Chemical Mix"
 					Padding="10"
-					MaxWidth="1000">
+					MaxWidth="1100">
 					<Store>
 						<ext:Store runat="server"
 							ID="uxChemicalStore">
@@ -390,17 +390,17 @@
 					</Store>
 					<ColumnModel>
 						<Columns>
-							<ext:Column ID="Column26" runat="server" DataIndex="CHEMICAL_MIX_NUMBER" Text="Mix #" Flex="1" />
-							<ext:Column ID="Column27" runat="server" DataIndex="TARGET_AREA" Text="Target Area" Flex="1" />
-							<ext:Column ID="Column28" runat="server" DataIndex="GALLON_ACRE" Text="Gallons/Acre" Flex="1" />
-							<ext:Column ID="Column29" runat="server" DataIndex="GALLON_STARTING" Text="Gallons Starting" Flex="1" />
-							<ext:Column ID="Column30" runat="server" DataIndex="GALLON_MIXED" Text="Gallon Mixed" Flex="1" />
-							<ext:Column runat="server" DataIndex="GALLON_REMAINING" Text="Gallon Remaining" Flex="1" />
-							<ext:Column ID="Column31" runat="server" DataIndex="TOTAL" Text="Total Gallons" Flex="1" />
-							<ext:Column ID="Column32" runat="server" DataIndex="USED" Text="Gallons Used" Flex="1" />
-							<ext:Column ID="Column33" runat="server" DataIndex="ACRES_SPRAYED" Text="Acres Sprayed" Flex="1" />
-							<ext:Column ID="Column34" runat="server" DataIndex="STATE" Text="State" Flex="1" />
-							<ext:Column ID="Column35" runat="server" DataIndex="COUNTY" Text="County" Flex="1" />
+							<ext:Column ID="Column26" runat="server" DataIndex="CHEMICAL_MIX_NUMBER" Text="Mix #" Flex="4" />
+							<ext:Column ID="Column27" runat="server" DataIndex="TARGET_AREA" Text="Target Area" Flex="10" />
+							<ext:Column ID="Column28" runat="server" DataIndex="GALLON_ACRE" Text="Gallons/Acre" Flex="8" />
+							<ext:Column ID="Column29" runat="server" DataIndex="GALLON_STARTING" Text="Gallons Starting" Flex="10" />
+							<ext:Column ID="Column30" runat="server" DataIndex="GALLON_MIXED" Text="Gallon Mixed" Flex="8" />
+							<ext:Column runat="server" DataIndex="GALLON_REMAINING" Text="Gallon Remaining" Flex="10" />
+							<ext:Column ID="Column31" runat="server" DataIndex="TOTAL" Text="Total Gallons" Flex="10" />
+							<ext:Column ID="Column32" runat="server" DataIndex="USED" Text="Gallons Used" Flex="10" />
+							<ext:Column ID="Column33" runat="server" DataIndex="ACRES_SPRAYED" Text="Acres Sprayed" Flex="10" />
+							<ext:Column ID="Column34" runat="server" DataIndex="STATE" Text="State" Flex="10" />
+							<ext:Column ID="Column35" runat="server" DataIndex="COUNTY" Text="County" Flex="10" />
 						</Columns>
 					</ColumnModel>
 					<TopBar>
@@ -437,7 +437,7 @@
 					ID="uxInventoryGrid"
 					Title="Inventory"
 					Padding="10"
-					MaxWidth="1000">
+					MaxWidth="1100">
 					<Store>
 						<ext:Store runat="server"
 							ID="uxInventoryStore">
@@ -462,18 +462,18 @@
 					</Store>
 					<ColumnModel>
 						<Columns>
-							<ext:Column ID="Column36" runat="server" DataIndex="CHEMICAL_MIX_NUMBER" Text="Mix Number" Flex="1" />
-							<ext:Column runat="server" DataIndex="INV_NAME" Text="Inventory Org" Flex="1" />
-							<ext:Column ID="Column37" runat="server" DataIndex="SUB_INVENTORY_SECONDARY_NAME" Text="Sub-Inv Name" Flex="1" />
-							<ext:Column runat="server" DataIndex="SEGMENT1" Text="Item ID" Flex="1" />
-							<ext:Column ID="Column38" runat="server" DataIndex="DESCRIPTION" Text="Item" Flex="1" />
-							<ext:Column ID="Column39" runat="server" DataIndex="RATE" Text="Rate" Flex="1" />
-							<ext:Column runat="server" DataIndex="TOTAL" Text="Total" Flex="1" />
-							<ext:Column ID="Column40" runat="server" DataIndex="UNIT_OF_MEASURE" Text="Unit" Flex="1" />
-							<ext:Column ID="Column41" runat="server" DataIndex="EPA_NUMBER" Text="EPA Number" Flex="1" />
+							<ext:Column ID="Column36" runat="server" DataIndex="CHEMICAL_MIX_NUMBER" Text="Mix #" Flex="4" />
+							<ext:Column runat="server" DataIndex="INV_NAME" Text="Inventory Org" Flex="13" />
+							<ext:Column ID="Column37" runat="server" DataIndex="SUB_INVENTORY_SECONDARY_NAME" Text="Sub-Inv Name" Flex="10" />
+							<ext:Column runat="server" DataIndex="SEGMENT1" Text="Item ID" Flex="5" />
+							<ext:Column ID="Column38" runat="server" DataIndex="DESCRIPTION" Text="Item" Flex="23" />
+							<ext:Column ID="Column39" runat="server" DataIndex="RATE" Text="Rate" Flex="5" />
+							<ext:Column runat="server" DataIndex="TOTAL" Text="Total" Flex="5" />
+							<ext:Column ID="Column40" runat="server" DataIndex="UNIT_OF_MEASURE" Text="Unit" Flex="10" />
+							<ext:Column ID="Column41" runat="server" DataIndex="EPA_NUMBER" Text="EPA Number" Flex="10" />
 							<ext:CheckColumn ID="CheckColumn1" runat="server"
 								DataIndex="CONTRACTOR_SUPPLIED"
-								Text="Contractor Supplied" Flex="1" />
+								Text="Contractor Supplied" Flex="15" />
 						</Columns>
 					</ColumnModel>
 					<TopBar>
@@ -506,7 +506,7 @@
 						<Select Handler="#{uxEditInventoryButton}.enable(); #{uxDeleteInventoryButton}.enable()" />
 					</Listeners>
 				</ext:GridPanel>
-				<ext:FormPanel runat="server" ID="uxFooterPanel" Padding="10" BodyPadding="5" MaxWidth="1000">
+				<ext:FormPanel runat="server" ID="uxFooterPanel" Padding="10" BodyPadding="5" MaxWidth="1100">
 					<Items>
 						<ext:TextField runat="server" ID="uxReasonForNoWorkField" FieldLabel="Reason for no work" Width="700" ReadOnly="true" LabelWidth="100" />
 						<ext:TextField runat="server" ID="uxHotelField" FieldLabel="Hotel" ReadOnly="true" LabelWidth="100" Width="400" />
