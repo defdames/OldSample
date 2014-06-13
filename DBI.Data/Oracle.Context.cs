@@ -114,8 +114,8 @@ namespace DBI.Data
         public DbSet<CROSSING_SUB_DIVISION> CROSSING_SUB_DIVISION { get; set; }
         public DbSet<TIME_CLOCK> TIME_CLOCK { get; set; }
         public DbSet<BUD_BID_ADJUSTMENT> BUD_BID_ADJUSTMENT { get; set; }
-        public DbSet<BUD_BID_PROJECTS> BUD_BID_PROJECTS { get; set; }
         public DbSet<BUD_BID_ACTUAL_NUM> BUD_BID_ACTUAL_NUM { get; set; }
         public DbSet<BUD_BID_BUDGET_NUM> BUD_BID_BUDGET_NUM { get; set; }
+        public DbSet<BUD_BID_PROJECTS> BUD_BID_PROJECTS { get; set; }
     }
 }

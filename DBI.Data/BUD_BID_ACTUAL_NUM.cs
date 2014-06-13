@@ -36,5 +36,6 @@ namespace DBI.Data
         public string MODIFIED_BY { get; set; }
     
         public virtual BUD_BID_LINES BUD_BID_LINES { get; set; }
+        public virtual BUD_BID_DETAIL_TASK BUD_BID_DETAIL_TASK { get; set; }
     }
 }
