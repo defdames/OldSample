@@ -69,7 +69,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             using (Entities _context = new Entities())
             {
-                List<object> data;
+                List<CrossingData> data;
                 if (validateComponentSecurity("SYS.CrossingMaintenance.DataEntryView"))
                 {
                     long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
@@ -78,43 +78,86 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                             join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
                             join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID
                             where p.PROJECT_TYPE == "CUSTOMER BILLING" && p.TEMPLATE_FLAG == "N" && p.PROJECT_STATUS_CODE == "APPROVED" && OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID) && d.RAILROAD_ID == RailroadId
-                            select new { d.CONTACT_ID, d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.SUB_DIVISION, d.CROSSING_CONTACTS.CONTACT_NAME, p.PROJECT_ID, p.LONG_NAME }).ToList<object>();
+                            select new CrossingData { CONTACT_ID = d.CONTACT_ID,CROSSING_ID = d.CROSSING_ID, CROSSING_NUMBER = d.CROSSING_NUMBER, SERVICE_UNIT = d.SERVICE_UNIT, SUB_DIVISION = d.SUB_DIVISION, CONTACT_NAME = d.CROSSING_CONTACTS.CONTACT_NAME }).Distinct().ToList();
 
 
                     int count;
-                    uxSupplementalCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                    uxSupplementalCrossingStore.DataSource = GenericData.EnumerableFilterHeader<CrossingData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                     e.Total = count;
                 }
             }
         }
-        protected void GetSupplementalGridData(object sender, DirectEventArgs e)
+        //protected void GetSupplementalGridData(object sender, DirectEventArgs e)
+        //{
+        //    //Get Supplemental data and set datasource
+        //    List<object> data;
+
+        //    string json = (e.ExtraParams["crossingId"]);
+        //    List<CrossingForSupplementalDetails> crossingList = JSON.Deserialize<List<CrossingForSupplementalDetails>>(json);
+        //    List<long> crossingIdList = new List<long>();
+        //    foreach (CrossingForSupplementalDetails crossing in crossingList)
+        //    {
+        //        crossingIdList.Add(crossing.CROSSING_ID);
+
+        //    }        
+        //    using (Entities _context = new Entities())
+        //    {
+        //        //long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+        //        data = (from s in _context.CROSSING_SUPPLEMENTAL
+        //                    join c in _context.CROSSINGS on s.CROSSING_ID equals c.CROSSING_ID
+        //                    //where s.CROSSING_ID == CrossingId
+        //                    where crossingIdList.Contains(s.CROSSING_ID)
+        //                    select new {c.CROSSING_NUMBER, s.CROSSING_ID,s.SUPPLEMENTAL_ID, s.APPROVED_DATE, s.COMPLETED_DATE, s.SERVICE_TYPE, s.INSPECT_START, s.INSPECT_END, s.SQUARE_FEET, s.TRUCK_NUMBER, s.SPRAY, s.CUT, s.INSPECT, s.MAINTAIN, s.RECURRING, s.REMARKS }).ToList<object>();
+
+
+        //        uxSupplementalGrid.Store.Primary.DataSource = data;
+        //        uxSupplementalGrid.Store.Primary.DataBind();
+
+
+        //    }
+        //}
+        protected void GetSupplementalGridData(object sender, StoreReadDataEventArgs e)
         {
             //Get Supplemental data and set datasource
             List<object> data;
 
-            string json = (e.ExtraParams["crossingId"]);
+            string json = (e.Parameters["crossingId"]);
             List<CrossingForSupplementalDetails> crossingList = JSON.Deserialize<List<CrossingForSupplementalDetails>>(json);
             List<long> crossingIdList = new List<long>();
             foreach (CrossingForSupplementalDetails crossing in crossingList)
             {
                 crossingIdList.Add(crossing.CROSSING_ID);
 
-            }        
+            }
             using (Entities _context = new Entities())
             {
                 //long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
                 data = (from s in _context.CROSSING_SUPPLEMENTAL
-                            join c in _context.CROSSINGS on s.CROSSING_ID equals c.CROSSING_ID
-                            //where s.CROSSING_ID == CrossingId
-                            where crossingIdList.Contains(s.CROSSING_ID)
-                            select new {c.CROSSING_NUMBER, s.CROSSING_ID,s.SUPPLEMENTAL_ID, s.APPROVED_DATE, s.COMPLETED_DATE, s.SERVICE_TYPE, s.INSPECT_START, s.INSPECT_END, s.SQUARE_FEET, s.TRUCK_NUMBER, s.SPRAY, s.CUT, s.INSPECT, s.MAINTAIN, s.RECURRING, s.REMARKS }).ToList<object>();
+                        join c in _context.CROSSINGS on s.CROSSING_ID equals c.CROSSING_ID
+                        //where s.CROSSING_ID == CrossingId
+                        where crossingIdList.Contains(s.CROSSING_ID)
+                        select new { c.CROSSING_NUMBER, s.CROSSING_ID, s.SUPPLEMENTAL_ID, s.APPROVED_DATE, s.COMPLETED_DATE, s.SERVICE_TYPE, s.INSPECT_START, s.INSPECT_END, s.SQUARE_FEET, s.TRUCK_NUMBER, s.SPRAY, s.CUT, s.INSPECT, s.MAINTAIN, s.RECURRING, s.REMARKS }).ToList<object>();
 
 
-                uxSupplementalGrid.Store.Primary.DataSource = data;
-                uxSupplementalGrid.Store.Primary.DataBind();
+                int count;
+                uxSupplementalStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                e.Total = count;
 
 
             }
+        }
+        public class CrossingData
+        {
+            public long CROSSING_ID { get; set; }
+            public string CROSSING_NUMBER { get; set; }
+            public string SERVICE_UNIT { get; set; }
+            public string SUB_DIVISION { get; set; }
+            public string DOT { get; set; }
+            public long? PROJECT_ID { get; set; }
+            public string STATE { get; set; }
+            public decimal? CONTACT_ID { get; set; }
+            public string CONTACT_NAME { get; set; }
+            public decimal? RAILROAD_ID { get; set; }
         }
         protected void deReloadStore(object sender, DirectEventArgs e)
         {
@@ -161,12 +204,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 {
 
                     APPROVED_DATE = ApprovedDate,
-                    //COMPLETED_DATE = CompletedDate,
                     SERVICE_TYPE = ServiceType,
                     TRUCK_NUMBER = TruckNumber,
                     SQUARE_FEET = SquareFeet,
                     RECURRING = Recurring,
-
+                    CREATE_DATE = DateTime.Now,
+                    MODIFY_DATE = DateTime.Now,
+                    CREATED_BY = User.Identity.Name,
+                    MODIFIED_BY = User.Identity.Name,
                     CROSSING_ID = CrossingId,
                 };
             }
@@ -183,8 +228,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             GenericData.Insert<CROSSING_SUPPLEMENTAL>(data);
 
             uxAddNewSupplementalWindow.Hide();
-            uxSupplementalStore.Reload();
             uxAddSupplementalForm.Reset();
+            uxSupplementalStore.Reload();
+         
 
 
             Notification.Show(new NotificationConfig()

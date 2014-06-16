@@ -38,7 +38,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             using (Entities _context = new Entities())
             {
-                List<object> data;
+                List<CrossingData> data;
 
                 if (validateComponentSecurity("SYS.CrossingMaintenance.DataEntryView"))
                 {
@@ -48,47 +48,79 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     data = (from d in _context.CROSSINGS
                             join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
                             join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID
-
                             where p.PROJECT_TYPE == "CUSTOMER BILLING" && p.TEMPLATE_FLAG == "N" && p.PROJECT_STATUS_CODE == "APPROVED" && OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID) && d.RAILROAD_ID == RailroadId
-                            select new { d.RAILROAD_ID, d.CONTACT_ID, d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.SUB_DIVISION, d.CROSSING_CONTACTS.CONTACT_NAME, d.PROJECT_ID, p.LONG_NAME }).ToList<object>();
+                            select new CrossingData{ RAILROAD_ID = d.RAILROAD_ID, CONTACT_ID = d.CONTACT_ID,CROSSING_ID = d.CROSSING_ID,
+                            CROSSING_NUMBER = d.CROSSING_NUMBER, SERVICE_UNIT = d.SERVICE_UNIT,SUB_DIVISION = d.SUB_DIVISION, CONTACT_NAME = d.CROSSING_CONTACTS.CONTACT_NAME }).Distinct().ToList();
 
 
                     int count;
-                    uxAppEntryCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                    uxAppEntryCrossingStore.DataSource = GenericData.EnumerableFilterHeader<CrossingData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                     e.Total = count;
                 }
             }
         }
-        protected void GetApplicationGridData(object sender, DirectEventArgs e)
-        {
-            //Get application data and set datasource
+        //protected void GetApplicationGridData(object sender, DirectEventArgs e)
+        //{
+        //    //Get application data and set datasource
          
-                List<object> data;
+        //        List<object> data;
                             
-                string json = (e.ExtraParams["crossingId"]);
-                List<CrossingForApplicationDetails> crossingList = JSON.Deserialize<List<CrossingForApplicationDetails>>(json);
-                List<long>crossingIdList = new List<long>();
-                foreach (CrossingForApplicationDetails crossing in crossingList)
-                {
-                    crossingIdList.Add(crossing.CROSSING_ID);
+        //        string json = (e.ExtraParams["crossingId"]);
+        //        List<CrossingForApplicationDetails> crossingList = JSON.Deserialize<List<CrossingForApplicationDetails>>(json);
+        //        List<long>crossingIdList = new List<long>();
+        //        foreach (CrossingForApplicationDetails crossing in crossingList)
+        //        {
+        //            crossingIdList.Add(crossing.CROSSING_ID);
                    
-                }        
-                        using (Entities _context = new Entities())
-                        {
+        //        }        
+        //                using (Entities _context = new Entities())
+        //                {
 
-                            data = (from a in _context.CROSSING_APPLICATION
-                                    join c in _context.CROSSINGS on a.CROSSING_ID equals c.CROSSING_ID
-                                    where  crossingIdList.Contains(a.CROSSING_ID)
-                                    select new { c.CROSSING_NUMBER, a.CROSSING_ID, a.APPLICATION_ID, a.APPLICATION_NUMBER, a.APPLICATION_REQUESTED, a.APPLICATION_DATE, a.TRUCK_NUMBER, a.SPRAY, a.CUT, a.INSPECT, a.REMARKS }).ToList<object>();
+        //                    data = (from a in _context.CROSSING_APPLICATION
+        //                            join c in _context.CROSSINGS on a.CROSSING_ID equals c.CROSSING_ID
+        //                            where  crossingIdList.Contains(a.CROSSING_ID)
+        //                            select new { c.CROSSING_NUMBER, a.CROSSING_ID, a.APPLICATION_ID, a.APPLICATION_NUMBER, a.APPLICATION_REQUESTED, a.APPLICATION_DATE, a.TRUCK_NUMBER, a.SPRAY, a.CUT, a.INSPECT, a.REMARKS }).ToList<object>();
 
 
-                            uxApplicationEntryGrid.Store.Primary.DataSource = data;
-                            uxApplicationEntryGrid.Store.Primary.DataBind();
+        //                    uxApplicationEntryGrid.Store.Primary.DataSource = data;
+        //                    uxApplicationEntryGrid.Store.Primary.DataBind();
 
-                        }
+        //                }
                   
                 
             
+        //}
+        protected void GetApplicationGridData(object sender, StoreReadDataEventArgs e)
+        {
+            //Get application data and set datasource
+
+            List<object> data;
+
+            string json = (e.Parameters["crossingId"]);
+            List<CrossingForApplicationDetails> crossingList = JSON.Deserialize<List<CrossingForApplicationDetails>>(json);
+            List<long> crossingIdList = new List<long>();
+            foreach (CrossingForApplicationDetails crossing in crossingList)
+            {
+                crossingIdList.Add(crossing.CROSSING_ID);
+
+            }
+            using (Entities _context = new Entities())
+            {
+
+                data = (from a in _context.CROSSING_APPLICATION
+                        join c in _context.CROSSINGS on a.CROSSING_ID equals c.CROSSING_ID
+                        where crossingIdList.Contains(a.CROSSING_ID)
+                        select new { c.CROSSING_NUMBER, a.CROSSING_ID, a.APPLICATION_ID, a.APPLICATION_NUMBER, a.APPLICATION_REQUESTED, a.APPLICATION_DATE, a.TRUCK_NUMBER, a.SPRAY, a.CUT, a.INSPECT, a.REMARKS }).ToList<object>();
+
+
+                int count;
+                uxApplicationStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                e.Total = count;
+
+            }
+
+
+
         }
         protected void deReadGrid(object sender, StoreReadDataEventArgs e)
         {
@@ -204,6 +236,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                             data.CUT = Cut;
                             data.INSPECT = Inspect;
                             data.CROSSING_ID = crossing.CROSSING_ID;
+                            data.CREATE_DATE = DateTime.Now;
+                            data.MODIFY_DATE = DateTime.Now;
+                            data.CREATED_BY = User.Identity.Name;
+                            data.MODIFIED_BY = User.Identity.Name;
+
                             try
                             {
                                 string Remarks = uxAddEntryRemarks.Value.ToString();
@@ -315,6 +352,19 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             public string MILE_POST { get; set; }
             public string STATE { get; set; }
             public string CONTACT_ID { get; set; }
+        }
+        public class CrossingData
+        {
+            public long CROSSING_ID { get; set; }
+            public string CROSSING_NUMBER { get; set; }
+            public string SERVICE_UNIT { get; set; }
+            public string SUB_DIVISION { get; set; }
+            public string DOT { get; set; }
+            public long? PROJECT_ID { get; set; }
+            public string STATE { get; set; }
+            public decimal? CONTACT_ID { get; set; }
+            public string CONTACT_NAME { get; set; }
+            public decimal? RAILROAD_ID { get; set; }
         }
         protected void deRemoveApplicationEntry(object sender, DirectEventArgs e)
         {

@@ -72,23 +72,21 @@
                 <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true" />
             </Plugins>
             <SelectionModel>
-                <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi"  />
+                <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi" />
+                
             </SelectionModel>
             <Listeners>
-                <Select Handler="#{uxAddAppButton}.enable(); #{uxRemoveAppButton}.enable()" />
-               
+                <SelectionChange Handler="#{uxApplicationStore}.reload(); #{uxAddAppButton}.enable();" />
             </Listeners>
 
-             <DirectEvents>
+            <%-- <DirectEvents>
                     <SelectionChange OnEvent="GetApplicationGridData">
-                      <%--  <ExtraParams>
-                            <ext:Parameter Name="CrossingId" Value="#{uxApplicationCrossingGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                        </ExtraParams>--%>
+                     
                           <ExtraParams>
                                 <ext:Parameter Name="crossingId" Value="Ext.encode(#{uxApplicationCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
                             </ExtraParams>
                     </SelectionChange>
-                </DirectEvents>
+                </DirectEvents>--%>
             <BottomBar>
                 <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True">
                 </ext:PagingToolbar>
@@ -128,7 +126,10 @@
                 </SelectionModel>
                 <Store>
                     <ext:Store runat="server"
-                        ID="uxApplicationStore" GroupField="CROSSING_NUMBER">
+                        ID="uxApplicationStore" OnReadData="GetApplicationGridData" AutoDataBind="true" AutoLoad="false" GroupField="CROSSING_NUMBER">
+                        <Parameters>
+                              <ext:StoreParameter Name="crossingId" Value="Ext.encode(#{uxApplicationCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+                        </Parameters>
                         <Model>
                             <ext:Model ID="Model1" runat="server">
                                 <Fields>
@@ -167,7 +168,11 @@
                         <ext:Column ID="Column5" runat="server" DataIndex="REMARKS" Text="Remarks" Flex="3" />
 
                     </Columns>
-                </ColumnModel>               
+                </ColumnModel> 
+            <Listeners>
+                <Select Handler="#{uxRemoveAppButton}.enable();" />
+                  <Deselect Handler="#{uxRemoveAppButton}.disable();" />
+            </Listeners>              
              <Features>
                 <ext:Grouping ID="Grouping1"
                     runat="server"

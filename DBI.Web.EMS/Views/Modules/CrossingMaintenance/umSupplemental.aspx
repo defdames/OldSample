@@ -32,7 +32,7 @@
     <form id="form1" runat="server">
         <ext:ResourceManager ID="ResourceManager1" runat="server" />
         <div></div>
-        <%-- <Service Units Tab>--%>
+        
         <ext:GridPanel ID="uxSupplementalCrossingGrid" Title="CROSSING LIST FOR SUPPLEMENTAL ENTRY" runat="server" Layout="HBoxLayout" Collapsible="true">
             <SelectionModel>
                 <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Multi" />
@@ -75,16 +75,14 @@
             <Plugins>
                 <ext:FilterHeader ID="FilterHeader1" runat="server" />
             </Plugins>
-            <DirectEvents>
+           <%-- <DirectEvents>
                 <SelectionChange OnEvent="GetSupplementalGridData">
-                  <%--  <ExtraParams>
-                        <ext:Parameter Name="CrossingId" Value="#{uxSupplementalCrossingGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                    </ExtraParams>--%>
+                
                      <ExtraParams>
                       <ext:Parameter Name="crossingId" Value="Ext.encode(#{uxSupplementalCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
                      </ExtraParams>
                 </SelectionChange>
-            </DirectEvents>
+            </DirectEvents>--%>
 
 
             <BottomBar>
@@ -92,7 +90,7 @@
                 </ext:PagingToolbar>
             </BottomBar>
             <Listeners>
-                <Select Handler="#{uxAddSuppButton}.enable();" />
+                <Select Handler="#{uxSupplementalStore}.reload(); #{uxAddSuppButton}.enable()" />
                 <Deselect Handler="#{uxAddSuppButton}.disable();" />
             </Listeners>
 
@@ -123,11 +121,14 @@
             </Items>
         </ext:Toolbar>
 
-        <ext:GridPanel ID="uxSupplementalGrid" Title="SUPPLEMENTAL ENTRIES" runat="server" Layout="HBoxLayout">
+        <ext:GridPanel ID="uxSupplementalGrid" Title="SUPPLEMENTAL ENTRIES" runat="server" Layout="FitLayout">
 
             <Store>
                 <ext:Store runat="server"
-                    ID="uxSupplementalStore" GroupField="CROSSING_NUMBER">
+                    ID="uxSupplementalStore" OnReadData="GetSupplementalGridData" AutoDataBind="true" AutoLoad="false" GroupField="CROSSING_NUMBER">
+                    <Parameters>
+                        <ext:StoreParameter Name="crossingId" Value="Ext.encode(#{uxSupplementalCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+                    </Parameters>
                     <Model>
                         <ext:Model ID="Model1" runat="server">
                             <Fields>
