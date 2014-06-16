@@ -111,7 +111,7 @@
         <EntityTypeShape EntityType="OracleModel.BUD_BID_BUDGET_NUM" Width="1.5" PointX="23.875" PointY="92.375" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_DETAIL_SHEET" Width="1.5" PointX="26.625" PointY="82.125" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_DETAIL_TASK" Width="1.5" PointX="23.875" PointY="85.5" />
-        <EntityTypeShape EntityType="OracleModel.BUD_BID_LINES" Width="1.5" PointX="23.875" PointY="89.375" />
+        <EntityTypeShape EntityType="OracleModel.BUD_BID_LINES" Width="2.75" PointX="26.125" PointY="89.75" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_LOCKED" Width="1.5" PointX="26.75" PointY="86.875" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_ORGS" Width="1.5" PointX="21.875" PointY="89" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_STATUS" Width="1.5" PointX="21.875" PointY="86.125" />
@@ -141,7 +141,7 @@
         <EntityTypeShape EntityType="OracleModel.CROSSING_SUB_DIVISION" Width="1.5" PointX="19" PointY="14.25" />
         <AssociationConnector Association="OracleModel.FK_SUB_SERVICE_ID" />
         <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="1.125" PointY="30.5" />
-        <EntityTypeShape EntityType="OracleModel.BUD_BID_ACTUAL_NUM" Width="1.5" PointX="14.625" PointY="89.875" />
+        <EntityTypeShape EntityType="OracleModel.BUD_BID_ACTUAL_NUM" Width="2.125" PointX="14.625" PointY="89.875" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_ADJUSTMENT" Width="1.5" PointX="17.125" PointY="91.375" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_PROJECTS" Width="1.5" PointX="20.125" PointY="92.875" />
         <AssociationConnector Association="OracleModel.FK_ACTUAL_NUM_LINES_ID" />
