@@ -61,6 +61,9 @@
     <Reference Include="iTextSharp">
       <HintPath>..\packages\iTextSharp-LGPL.4.1.6\lib\iTextSharp.dll</HintPath>
     </Reference>
+    <Reference Include="MessagingToolkit.Barcode">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\MessagingToolkit\MessagingToolkit-Barcode\Binaries\.NET 3.5\WinForms\x86\MessagingToolkit.Barcode.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\lib\EXT\Newtonsoft.Json.dll</HintPath>
@@ -111,6 +114,7 @@
     <None Include="Properties\PublishProfiles\EMSV2.pubxml" />
     <None Include="Resources\Scripts\jquery-2.0.1.intellisense.js" />
     <Content Include="Global.asax" />
+    <Content Include="QRCodeGenerator.aspx" />
     <Content Include="Resources\Images\1pixel.jpg" />
     <Content Include="Resources\Images\bgimage.jpg" />
     <Content Include="Resources\Scripts\functions.js" />
@@ -220,6 +224,13 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="QRCodeGenerator.aspx.cs">
+      <DependentUpon>QRCodeGenerator.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="QRCodeGenerator.aspx.designer.cs">
+      <DependentUpon>QRCodeGenerator.aspx</DependentUpon>
     </Compile>
     <Compile Include="uxLogin.aspx.cs">
       <DependentUpon>uxLogin.aspx</DependentUpon>

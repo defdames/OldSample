@@ -6,9 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Ext.Net;
 using DBI.Data;
-using DBI.Data.Oracle;
-
-using System.Security.Claims;
+using DBI.Data.DataFactory;
 
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 {
@@ -16,105 +14,10 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!X.IsAjaxRequest)
-            {
+            //if (!X.IsAjaxRequest)
+            //{
                 // PUT CODE IN HERE THAT YOU ONLY WANT TO EXECUTE ONE TIME AND NOT EVERYTIME SOMETHING IS CLICKED (POST BACK)
-            }
-        }
-
-        protected void deLoadFiscalYears(object sender, StoreReadDataEventArgs e)
-        {
-            using (Entities _context = new Entities())
-            {
-                List<object> dataSource;
-                dataSource = (from d in _context.PA_PERIODS_ALL
-                              select new { END_DATE = d.END_DATE.Year }).Distinct().OrderBy(d => d.END_DATE).ToList<object>();
-                int count;
-                uxFiscalYearStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataSource, out count);
-                e.Total = count;
-            }
-        }
-
-        protected void deLoadBudgetVersions(object sender, StoreReadDataEventArgs e)
-        {
-            List<BudVerStruct> list = new List<BudVerStruct> 
-                {
-                    new BudVerStruct(1, "Bid"),
-                    new BudVerStruct(2, "First Draft"),
-                    new BudVerStruct(3, "Final Draft"),
-                    new BudVerStruct(4, "1st Reforecast") ,
-                    new BudVerStruct(5, "2nd Reforecast"),
-                    new BudVerStruct(6, "3rd Reforecast"),
-                    new BudVerStruct(7, "4th Reforecast") 
-                };
-            uxVersionStore.DataSource = list;
-        }
-
-        class BudVerStruct  // DELETE WHEN GETTING DATA FROM CORRECT SOURCE
-        {
-            public long VER_ID { get; set; }
-            public string BUD_VERSION { get; set; }
-
-
-            public BudVerStruct(long id, string budName)
-            {
-                VER_ID = id;
-                BUD_VERSION = budName;
-            }
-        }
-
-        protected void deLoadCorrectBudgetType(object sender, DirectEventArgs e)
-        {
-            // Is an org selected?
-            string nodeID = null;
-            try
-            {
-                nodeID = uxOrgPanel.SelectedNodes[0].NodeID;                
-            }
-            catch (NullReferenceException)
-            {
-                return;
-            }
-
-            // Is the org an org and not just a legal entity or hierarchy?
-            long orgID;
-            try
-            {
-                char[] delimChars = { ':' };
-                string[] selID = nodeID.Split(delimChars);
-                long hierarchyID = long.Parse(selID[0].ToString());
-                orgID = long.Parse(selID[1].ToString());
-            }
-            catch (IndexOutOfRangeException)
-            {
-                return;
-            }
-
-            // Is an org, year and version selected?
-            string fiscalYear = uxFiscalYear.SelectedItem.Value;
-            string version = uxVersion.SelectedItem.Value;
-
-            if (SYS_USER_ORGS.IsInOrg(SYS_USER_INFORMATION.UserID(User.Identity.Name), orgID) == true)
-            {
-                if (!string.IsNullOrEmpty(fiscalYear))
-                {
-                    if (!string.IsNullOrEmpty(version))
-                    {
-                        LoadBudget("umYearBudget.aspx?orgID=" + orgID + "&fiscalYear=" + fiscalYear + "&version=" + version);
-                        string nodeName = uxOrgPanel.SelectedNodes[0].Text;
-                        uxSpacerBar.Title = nodeName;
-                    }
-                }
-            }
-        }
-
-        protected void LoadBudget(string url)
-        {
-            uxBudgetPanel.Loader.SuspendScripting();
-            uxBudgetPanel.Loader.Url = url;
-            uxBudgetPanel.Loader.Mode = LoadMode.Frame;
-            uxBudgetPanel.Loader.DisableCaching = true;
-            uxBudgetPanel.LoadContent();
+            //}
         }
 
         protected void deLoadOrgTree(object sender, NodeLoadEventArgs e)
@@ -205,8 +108,70 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                             e.Nodes.Add(node);
                         }
                     }
-                }          
+                }
+            }
+        }        
+
+        protected void deLoadFiscalYears(object sender, StoreReadDataEventArgs e)
+        {
+            uxFiscalYearStore.DataSource = PA.AllFiscalYears();
+        }
+
+        protected void deLoadBudgetVersions(object sender, StoreReadDataEventArgs e)
+        {
+            uxVersionStore.DataSource = StaticLists.BudgetVersions();
+        }
+        
+        protected void deLoadCorrectBudgetType(object sender, DirectEventArgs e)
+        {
+            long hierarchyID;
+            long orgID;
+
+            // Is an org selected, and is the org an org and not just a legal entity or hierarchy?
+            try
+            {
+                string nodeID = uxOrgPanel.SelectedNodes[0].NodeID;
+                char[] delimChars = { ':' };
+                string[] selID = nodeID.Split(delimChars);
+                hierarchyID = long.Parse(selID[0].ToString());
+                orgID = long.Parse(selID[1].ToString());
+            }
+            
+            catch (NullReferenceException)
+            {
+                return;
+            }
+
+            catch (IndexOutOfRangeException)
+            {
+                return;
+            }
+
+            // Is an org, year and version selected?
+            string fiscalYear = uxFiscalYear.SelectedItem.Value;
+            string verID = uxVersion.SelectedItem.Value;
+
+            if (SYS_USER_ORGS.IsInOrg(SYS_USER_INFORMATION.UserID(User.Identity.Name), orgID) == true)
+            {
+                if (!string.IsNullOrEmpty(fiscalYear))
+                {
+                    if (!string.IsNullOrEmpty(verID))
+                    {
+                        string nodeName = uxOrgPanel.SelectedNodes[0].Text;
+                        uxYearVersionTitle.Text = nodeName;
+                        LoadBudget("umYearBudget.aspx?hierID=" + hierarchyID + "&orgID=" + orgID + "&orgName=" + nodeName + "&fiscalYear=" + fiscalYear + "&verID=" + verID);
+                    }
+                }
             }
         }
+
+        protected void LoadBudget(string url)
+        {
+            uxBudgetPanel.Loader.SuspendScripting();
+            uxBudgetPanel.Loader.Url = url;
+            uxBudgetPanel.Loader.Mode = LoadMode.Frame;
+            uxBudgetPanel.Loader.DisableCaching = true;
+            uxBudgetPanel.LoadContent();
+        }        
     }
 }

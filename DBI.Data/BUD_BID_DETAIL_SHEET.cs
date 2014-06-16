@@ -14,11 +14,6 @@ namespace DBI.Data
     
     public partial class BUD_BID_DETAIL_SHEET
     {
-        public BUD_BID_DETAIL_SHEET()
-        {
-            this.BUD_BID_DETAIL_TASK = new HashSet<BUD_BID_DETAIL_TASK>();
-        }
-    
         public decimal DETAIL_SHEET_ID { get; set; }
         public Nullable<long> PROJECT_ID { get; set; }
         public Nullable<decimal> DETAIL_ID { get; set; }
@@ -35,7 +30,8 @@ namespace DBI.Data
         public string CREATED_BY { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string MODIFIED_BY { get; set; }
+        public decimal DETAIL_TASK_ID { get; set; }
     
-        public virtual ICollection<BUD_BID_DETAIL_TASK> BUD_BID_DETAIL_TASK { get; set; }
+        public virtual BUD_BID_DETAIL_TASK BUD_BID_DETAIL_TASK { get; set; }
     }
 }

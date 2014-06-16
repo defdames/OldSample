@@ -148,15 +148,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.BudgetType.AddEdit {
         protected global::Ext.Net.Button uxAddBudgetType;
         
         /// <summary>
-        /// uxDeleteBudgetType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxDeleteBudgetType;
-        
-        /// <summary>
         /// uxCloseButton control.
         /// </summary>
         /// <remarks>

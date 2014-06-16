@@ -21,34 +21,30 @@
                         Layout="HBoxLayout">
                         <Items>
                             <ext:ComboBox runat="server" ID="uxBudgetName" Editable="true" TypeAhead="true"
-                            FieldLabel="Budget Name" AnchorHorizontal="55%" DisplayField="BUDGET_NAME" LoadingText="Searching..."
-                            ValueField="BUDGET_NAME" ForceSelection="true" HideTrigger="false" FireSelectOnLoad="true"
-                            MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1">
-                            <Store>
-                                <ext:Store runat="server" ID="uxBudgetNameStore" AutoLoad="false">
-                                    <Proxy>
-                                        <ext:AjaxProxy Url="~/Views/Modules/Overhead/GenericHandlers/ghBudgetCodes.ashx">
-                                            <ActionMethods Read="POST" />
-                                            <Reader>
-                                                <ext:JsonReader Root="data" TotalProperty="total" />
-                                            </Reader>
-                                        </ext:AjaxProxy>
-                                    </Proxy>
-                                    <Model>
-                                        <ext:Model ID="Model5" runat="server">
-                                            <Fields>
-                                                <ext:ModelField Name="BUDGET_NAME" />
-                                                <ext:ModelField Name="DESCRIPTION" />
-                                                <ext:ModelField Name="LE_ORG_ID" />
-                                            </Fields>
-                                        </ext:Model>
-                                    </Model>
-                                </ext:Store>
-                            </Store>
-                            <Listeners>
-                                <Select Handler="#{uxBudgetDescription}.setValue(#{uxBudgetName}.getStore().getAt(#{uxBudgetName}.getStore().findExact('BUDGET_NAME',#{uxBudgetName}.getValue())).get('DESCRIPTION'));#{uxAddBudgetType}.enable();"></Select>
-                            </Listeners>   
-                        </ext:ComboBox>
+                                FieldLabel="Budget Name" AnchorHorizontal="55%" DisplayField="BUDGET_NAME"
+                                ValueField="BUDGET_NAME" TriggerAction="All" 
+                                MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" >
+                                <Store>
+                                    <ext:Store runat="server" ID="uxBudgetNameStore" OnReadData="deLoadBudgetNames" AutoLoad="false" >
+                                        <Proxy>
+                                            <ext:PageProxy />
+                                        </Proxy>
+                                        <Model>
+                                            <ext:Model ID="Model5" runat="server" IDProperty="BUDGET_NAME">
+                                                <Fields>
+                                                    <ext:ModelField Name="BUDGET_NAME" />
+                                                    <ext:ModelField Name="DESCRIPTION" />
+                                                    <ext:ModelField Name="LE_ORG_ID" />
+                                                </Fields>
+                                            </ext:Model>
+                                        </Model>
+                                    </ext:Store>
+                                </Store>
+                                <Listeners>
+                                   <BeforeQuery Handler="delete queryEvent.combo.lastQuery;" />
+                                    <Select Handler="#{uxBudgetDescription}.setValue(#{uxBudgetName}.getStore().getAt(#{uxBudgetName}.getStore().findExact('BUDGET_NAME',#{uxBudgetName}.getValue())).get('DESCRIPTION'));#{uxAddBudgetType}.enable();"></Select>
+                                </Listeners>
+                            </ext:ComboBox>
                            
                         </Items>
                     </ext:FieldContainer>
@@ -106,11 +102,6 @@
                         <ext:Button runat="server" ID="uxAddBudgetType" Text="Save" Disabled="true" icon="ApplicationAdd">
                             <DirectEvents>
                                 <Click OnEvent="deSaveBudgetType" Success="parent.Ext.getCmp('uxAddEditBudgetType').close();"><EventMask ShowMask="true"></EventMask></Click>
-                            </DirectEvents>
-                        </ext:Button>
-                        <ext:Button runat="server" ID="uxDeleteBudgetType" Text="Delete" Icon="ApplicationDelete" Disabled="true">
-                            <DirectEvents>
-                                <Click OnEvent="deDeleteBudgetType" Success="parent.Ext.getCmp('uxAddEditBudgetType').close();"><Confirmation ConfirmRequest="true" Message="Are you sure you want to delete this budget type?"></Confirmation><EventMask ShowMask="true"></EventMask></Click>
                             </DirectEvents>
                         </ext:Button>
                         <ext:Button ID="uxCloseButton" runat="server" Text="Close Form"><Listeners><Click Handler="parent.Ext.getCmp('uxAddEditBudgetType').close();"></Click></Listeners></ext:Button>

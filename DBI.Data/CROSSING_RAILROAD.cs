@@ -23,6 +23,10 @@ namespace DBI.Data
     
         public decimal RAILROAD_ID { get; set; }
         public string RAILROAD { get; set; }
+        public Nullable<System.DateTime> CREATE_DATE { get; set; }
+        public Nullable<System.DateTime> MODIFY_DATE { get; set; }
+        public string CREATED_BY { get; set; }
+        public string MODIFIED_BY { get; set; }
     
         public virtual ICollection<CROSSING_CONTACTS> CROSSING_CONTACTS { get; set; }
         public virtual ICollection<CROSSING_PROJECT> CROSSING_PROJECT { get; set; }

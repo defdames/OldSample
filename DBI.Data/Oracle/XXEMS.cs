@@ -468,4 +468,181 @@ namespace DBI.Data
         
 
     }
+
+    public partial class TIME_CLOCK
+    {
+
+        /// <summary>
+        /// Returns all employee time.
+        /// </summary>
+        /// <returns></returns>
+        public static List<Employee> EmployeeTime()
+        {
+            try
+            {
+                using (Entities _context = new Entities())
+                {
+
+                    
+                    var _data = (from tc in _context.TIME_CLOCK
+                                 join ev in _context.EMPLOYEES_V on tc.PERSON_ID equals ev.PERSON_ID
+                                 select new Employee
+                                 {
+                                     TIME_IN = (DateTime)tc.TIME_IN,
+                                     TIME_OUT = (DateTime)tc.TIME_OUT,
+                                     EMPLOYEE_NAME = ev.EMPLOYEE_NAME,
+                                     DAY_OF_WEEK = tc.DAY_OF_WEEK,
+                                     TIME_CLOCK_ID = tc.TIME_CLOCK_ID,
+                                     ADJUSTED_HOURS = tc.ADJUSTED_HOURS,
+                                     ACTUAL_HOURS = tc.ACTUAL_HOURS,
+                                     SUBMITTED = tc.SUBMITTED,
+                                     APPROVED = tc.APPROVED,
+                                     COMPLETED = tc.COMPLETED,
+                                     SUPERVISOR_ID = (int)tc.SUPERVISOR_ID
+                                 }).ToList();
+                    return _data;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+
+        /// <summary>
+        /// Returns all employee time by supervisior Id that has been completed by the user and is NOT approved
+        /// </summary>
+        /// <param name="supervisorId"></param>
+        /// <returns></returns>
+        public static List<Employee> EmployeeTimeCompletedUnapproved(decimal supervisorId)
+        {
+            try
+            {
+                var _data = EmployeeTime().Where(x => x.SUPERVISOR_ID == supervisorId && x.COMPLETED  == "Y" && x.APPROVED == "N").ToList();
+                return _data;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+        /// <summary>
+        /// Returns all employee time that has been completed and NOT approved
+        /// </summary>
+        /// <returns></returns>
+        public static List<Employee> EmployeeTimeCompletedUnapprovedPayroll()
+        {
+            try
+            {
+                var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "N").ToList();
+                return _data;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        /// <summary>
+        /// Returns all employee time that has been completed by supervisor ID
+        /// </summary>
+        /// <param name="supervisorId"></param>
+        /// <returns></returns>
+        public static List<Employee> EmployeeTimeCompleted(decimal supervisorId)
+        {
+            try
+            {
+                var _data = EmployeeTime().Where(x => x.SUPERVISOR_ID == supervisorId && x.COMPLETED == "Y").ToList();
+                return _data;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+        /// <summary>
+        /// Reuturns all employee time that has been completed
+        /// </summary>
+        /// <returns></returns>
+        public static List<Employee> EmployeeTimeCompletedPayroll()
+        {
+            try
+            {
+                var _data = EmployeeTime().Where(x => x.COMPLETED == "Y").ToList();
+                return _data;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+        /// <summary>
+        /// Returns all Employee time that has been completed and approved
+        /// </summary>
+        /// <returns></returns>
+        public static List<Employee> EmployeeTimeCompletedApprovedPayroll()
+        {
+            try
+            {
+                var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "Y").ToList();
+                return _data;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Approves Employee time so payroll can submit
+        /// </summary>
+        /// <param name="selection"></param>
+        public static void EmployeeTimeSelectionApproved(List<TIME_CLOCK>selection)
+        {
+            try
+            {
+                foreach (TIME_CLOCK selected in selection)
+                {
+
+                    TIME_CLOCK _data;
+                    using (Entities _context = new Entities())
+                    {
+                        _data = _context.TIME_CLOCK.Where(x => x.COMPLETED == "Y" && x.TIME_CLOCK_ID == selected.TIME_CLOCK_ID).SingleOrDefault();
+
+                        _data.APPROVED = "Y";
+                    }
+                     DBI.Data.GenericData.Update<TIME_CLOCK>(_data);   
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public class Employee : TIME_CLOCK
+        {
+            public decimal TIME_CLOCK_ID { get; set; }
+            public string EMPLOYEE_NAME { get; set; }
+            public DateTime? TIME_IN { get; set; }
+            public DateTime? TIME_OUT { get; set; }
+            public string ADJUSTED_HOURS_GRID { get; set; }
+            public string DAY_OF_WEEK { get; set; }
+            public string ACTUAL_HOURS_GRID { get; set; }
+            public decimal? ACTUAL_HOURS { get; set; }
+            public decimal? ADJUSTED_HOURS { get; set; }
+            public string APPROVED { get; set; }
+            public string SUBMITTED { get; set; }
+            public int SUPERVISOR_ID { get; set; }
+            public string COMPLETED { get; set; }
+        }
+
+    }
 }
+

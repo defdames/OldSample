@@ -9,7 +9,6 @@ using DBI.Core.Web;
 using DBI.Core.Security;
 using DBI.Data;
 using Ext.Net;
-using DBI.Data.Oracle;
 
 namespace DBI.Web.EMS.Views.Modules.Security
 {
