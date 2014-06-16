@@ -641,6 +641,8 @@ namespace DBI.Data
             public string SUBMITTED { get; set; }
             public int SUPERVISOR_ID { get; set; }
             public string COMPLETED { get; set; }
+         
+            
         }
 
     }

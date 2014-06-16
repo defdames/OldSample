@@ -195,6 +195,7 @@
     <Content Include="Views\Modules\Security\umSecurityLogList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityActivityList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityUsersList.aspx" />
+    <Content Include="Views\Modules\TimeClock\Edit\umEditTime.aspx" />
     <Content Include="Views\Modules\TimeClock\umEmployeeClock.aspx" />
     <Content Include="Views\Modules\TimeClock\umManagerView.aspx" />
     <Content Include="Views\Modules\TimeClock\umPayrollView.aspx" />
@@ -750,6 +751,13 @@
     </Compile>
     <Compile Include="Views\Modules\Security\umSecurityUsersList.aspx.designer.cs">
       <DependentUpon>umSecurityUsersList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\TimeClock\Edit\umEditTime.aspx.cs">
+      <DependentUpon>umEditTime.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\TimeClock\Edit\umEditTime.aspx.designer.cs">
+      <DependentUpon>umEditTime.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\TimeClock\umEmployeeClock.aspx.cs">
       <DependentUpon>umEmployeeClock.aspx</DependentUpon>
