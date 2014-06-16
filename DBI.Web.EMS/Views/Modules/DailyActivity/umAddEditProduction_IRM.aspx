@@ -30,7 +30,7 @@
         <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
         <ext:FormPanel runat="server"
             ID="uxAddProductionForm"
-            DefaultButton="uxAddProductionSubmit">
+            DefaultButton="uxAddProductionSubmit" Height="300">
             <Items>
                 <ext:Hidden ID="uxFormType" runat="server" />
                 <ext:DropDownField runat="server" Editable="false"

@@ -28,6 +28,16 @@
 
 			toolTip.update(data);
 		};
+
+		var showButtons = function () {
+		    App.uxSaveFooterButton.show();
+		    App.uxSaveHeaderButton.show();
+		};
+
+		var disableOnError = function () {
+		    parent.App.uxPostActivityButton.disable();
+		    parent.App.uxApproveActivityButton.disable();
+		};
 	</script>
 </head>
 <body>
@@ -38,20 +48,232 @@
 				<ext:Hidden ID="uxYellowWarning" runat="server" />
 				<ext:Hidden ID="uxRedWarning" runat="server" />
 				<ext:FormPanel runat="server"
-					ID="uxHeaderPanel" Padding="10" BodyPadding="5" MaxWidth="1100" Layout="FormLayout">
+					ID="uxHeaderPanel" Padding="10" BodyPadding="5" MaxWidth="1100">
 					<Items>
-						<ext:TextField runat="server" ID="uxDateField" FieldLabel="Date" Width="200" ReadOnly="true" LabelWidth="100" />
-						<ext:TextField runat="server" ID="uxHeaderField" FieldLabel="DRS Id" Width="200" ReadOnly="true" LabelWidth="100" />
+						<ext:DateField runat="server" ID="uxDateField" FieldLabel="Date" AllowBlank="false" LabelWidth="100" Width="200" />
+						<ext:TextField runat="server" ID="uxHeaderField" FieldLabel="DRS Id" Width="200" LabelWidth="100" ReadOnly="true" />
 						<ext:TextField runat="server" ID="uxOracleField" FieldLabel="Oracle DRS Id" Width="200" ReadOnly="true" />
-						<ext:TextField runat="server" ID="uxProjectField" FieldLabel="Project" Width="600" ReadOnly="true" LabelWidth="100" />
-						<ext:TextField runat="server" ID="uxSubDivisionField" FieldLabel="Sub-Division" Width="300" ReadOnly="true" LabelWidth="100" />
-						<ext:TextField runat="server" ID="uxSupervisorField" FieldLabel="Supervisor/Area Manager" Width="500" ReadOnly="true" LabelWidth="100" />
-						<ext:TextField runat="server" ID="uxContractorField" FieldLabel="Contractor" Width="500" ReadOnly="true" LabelWidth="100" />
-						<ext:TextField runat="server" ID="uxLicenseField" FieldLabel="Business License" Width="250" ReadOnly="true" LabelWidth="100" />
-						<ext:TextField runat="server" ID="uxStateField" FieldLabel="State" Width="250" ReadOnly="true" LabelWidth="100" />
-						<ext:TextField runat="server" ID="uxTypeField" FieldLabel="Type of Work" Width="250" ReadOnly="true" LabelWidth="100" />
-						<ext:TextField runat="server" ID="uxDensityField" FieldLabel="Density" Width="200" ReadOnly="true" LabelWidth="100" />
+						<ext:DropDownField runat="server"
+							ID="uxProjectField"
+							FieldLabel="Project"
+							Mode="ValueText"
+							AllowBlank="false" Editable="false" Width="600" LabelWidth="100">
+							<Component>
+								<ext:GridPanel runat="server"
+									ID="uxFormProjectGrid"
+									Layout="HBoxLayout">
+									<Store>
+										<ext:Store runat="server"
+											ID="uxFormProjectStore"
+											OnReadData="deReadProjectData"
+											PageSize="10"
+											RemoteSort="true">
+											<Model>
+												<ext:Model runat="server"
+													ID="uxFormProjectModel">
+													<Fields>
+														<ext:ModelField Name="PROJECT_ID" Type="Int" />
+														<ext:ModelField Name="ORGANIZATION_NAME" Type="String" />
+														<ext:ModelField Name="SEGMENT1" Type="String" />
+														<ext:ModelField Name="LONG_NAME" Type="String" />
+													</Fields>
+												</ext:Model>
+											</Model>
+											<Proxy>
+												<ext:PageProxy />
+											</Proxy>
+										</ext:Store>
+									</Store>
+									<ColumnModel>
+										<Columns>
+											<ext:Column runat="server"
+												ID="uxFormSegment"
+												DataIndex="SEGMENT1"
+												Text="Project #" Flex="15" />
+											<ext:Column runat="server"
+												ID="uxFormLong"
+												DataIndex="LONG_NAME"
+												Text="Project Name" Flex="50" />
+											<ext:Column runat="server"
+												ID="uxFormOrg"
+												DataIndex="ORGANIZATION_NAME"
+												Text="Organization Name" Flex="35" />
+										</Columns>
+									</ColumnModel>
+									<SelectionModel>
+										<ext:RowSelectionModel ID="uxFormProjectSelection" runat="server" Mode="Single" />
+									</SelectionModel>
+									<DirectEvents>
+										<SelectionChange OnEvent="deStoreProjectValue">
+											<ExtraParams>
+												<ext:Parameter Name="ProjectId" Value="#{uxFormProjectGrid}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
+												<ext:Parameter Name="LongName" Value="#{uxFormProjectGrid}.getSelectionModel().getSelection()[0].data.LONG_NAME" Mode="Raw" />
+											</ExtraParams>
+										</SelectionChange>
+									</DirectEvents>
+									<Plugins>
+										<ext:FilterHeader ID="uxFormProjectFilter" runat="server" Remote="true" />
+									</Plugins>
+									<TopBar>
+										<ext:Toolbar runat="server"
+											ID="uxFormProjectTop">
+											<Items>
+												<ext:Button runat="server"
+													ID="uxFormProjectToggleOrg"
+													EnableToggle="true"
+													Text="All Regions"
+													Icon="Group">
+													<DirectEvents>
+														<Toggle OnEvent="deReloadStore">
+															<ExtraParams>
+																<ext:Parameter Name="Type" Value="Project" />
+															</ExtraParams>
+														</Toggle>
+													</DirectEvents>
+												</ext:Button>
+											</Items>
+										</ext:Toolbar>
+									</TopBar>
+									<BottomBar>
+										<ext:PagingToolbar ID="uxFormProjectPaging" runat="server" />
+									</BottomBar>
+								</ext:GridPanel>
+							</Component>
+						</ext:DropDownField>
+						<ext:TextField runat="server" ID="uxSubDivisionField" FieldLabel="Sub-Division" Width="300" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxContractorField" FieldLabel="Contractor" Width="500" LabelWidth="100" />
+						<ext:DropDownField runat="server"
+							ID="uxSupervisorField"
+							FieldLabel="Supervisor/Area Manager"
+							Mode="ValueText"
+							AllowBlank="false" Editable="false" Width="500" LabelWidth="100">
+							<Component>
+								<ext:GridPanel runat="server"
+									ID="uxFormEmployeeGrid"
+									Layout="HBoxLayout">
+									<Store>
+										<ext:Store runat="server"
+											ID="uxFormEmployeeStore"
+											OnReadData="deLoadEmployees"
+											PageSize="10"
+											RemoteSort="true">
+											<Model>
+												<ext:Model ID="uxFormEmployeeModel" runat="server">
+													<Fields>
+														<ext:ModelField Name="PERSON_ID" Type="Int" />
+														<ext:ModelField Name="EMPLOYEE_NAME" Type="String" />
+														<ext:ModelField Name="JOB_NAME" Type="String" />
+													</Fields>
+												</ext:Model>
+											</Model>
+											<Proxy>
+												<ext:PageProxy />
+											</Proxy>
+										</ext:Store>
+									</Store>
+									<ColumnModel>
+										<Columns>
+											<ext:Column runat="server" Text="Person ID" ID="uxFormPersonId" DataIndex="PERSON_ID" Flex="20" />
+											<ext:Column runat="server" Text="Employee Name" ID="uxFormEmployeeName" DataIndex="EMPLOYEE_NAME" Flex="35" />
+											<ext:Column runat="server" Text="Job Name" ID="uxFormJobName" DataIndex="JOB_NAME" Flex="35" />
+										</Columns>
+									</ColumnModel>
+									<Plugins>
+										<ext:FilterHeader runat="server"
+											ID="uxFormEmployeeFilter"
+											Remote="true" />
+									</Plugins>
+									<DirectEvents>
+										<SelectionChange OnEvent="deStoreEmployee">
+											<ExtraParams>
+												<ext:Parameter Name="EmployeeName" Value="#{uxFormEmployeeGrid}.getSelectionModel().getSelection()[0].data.EMPLOYEE_NAME" Mode="Raw" />
+												<ext:Parameter Name="PersonID" Value="#{uxFormEmployeeGrid}.getSelectionModel().getSelection()[0].data.PERSON_ID" Mode="Raw" />
+											</ExtraParams>
+										</SelectionChange>
+									</DirectEvents>
+									<SelectionModel>
+										<ext:RowSelectionModel ID="uxFormEmployeeSelection" runat="server" Mode="Single" />
+									</SelectionModel>
+									<TopBar>
+										<ext:Toolbar ID="Toolbar1" runat="server">
+											<Items>
+												<ext:Button runat="server"
+													ID="uxFormEmployeeToggleOrg"
+													EnableToggle="true"
+													Text="All Regions"
+													Icon="Group">
+													<DirectEvents>
+														<Toggle OnEvent="deReloadStore">
+															<ExtraParams>
+																<ext:Parameter Name="Type" Value="Employee" />
+															</ExtraParams>
+														</Toggle>
+													</DirectEvents>
+												</ext:Button>
+											</Items>
+										</ext:Toolbar>
+									</TopBar>
+									<BottomBar>
+										<ext:PagingToolbar ID="uxFormEmployeePaging" runat="server" />
+									</BottomBar>
+								</ext:GridPanel>
+							</Component>
+						</ext:DropDownField>
+						<ext:TextField runat="server" ID="uxLicenseField" FieldLabel="Business License" Width="250" LabelWidth="100" />
+						<ext:ComboBox runat="server"
+					ID="uxStateField"
+					FieldLabel="Business License State"
+					DisplayField="name"
+					ValueField="name"
+					QueryMode="Local"
+					TypeAhead="true"
+					AllowBlank="true"
+					ForceSelection="true">
+					<Store>
+						<ext:Store ID="uxStateStore" runat="server" AutoDataBind="true">
+							<Model>
+								<ext:Model ID="Model8" runat="server">
+									<Fields>
+										<ext:ModelField Name="abbr" />
+										<ext:ModelField Name="name" />
+									</Fields>
+								</ext:Model>
+							</Model>
+							<Reader>
+								<ext:ArrayReader />
+							</Reader>
+						</ext:Store>
+					</Store>
+				</ext:ComboBox>
+						<ext:TextField runat="server" ID="uxTypeField" FieldLabel="Type of Work" Width="250" LabelWidth="100" />
+						<ext:ComboBox runat="server"
+							ID="uxDensityField"
+							FieldLabel="Density"
+							QueryMode="Local"
+							TypeAhead="true"
+							AllowBlank="true"
+							ForceSelection="true"
+							Width="200"
+							LabelWidth="100">
+							<Items>
+								<ext:ListItem Text="Low" Value="LOW" />
+								<ext:ListItem Text="Medium" Value="MEDIUM" />
+								<ext:ListItem Text="High" Value="HIGH" />
+							</Items>
+						</ext:ComboBox>
 					</Items>
+					<Buttons>
+						<ext:Button runat="server" ID="uxSaveHeaderButton" Icon="Add" Text="Save" Hidden="true" Disabled="true">
+							<DirectEvents>
+								<Click OnEvent="deUpdateHeader">
+									<EventMask ShowMask="true" />
+								</Click>
+							</DirectEvents>
+						</ext:Button>
+					</Buttons>
+					<Listeners>
+						<ValidityChange Handler="#{uxSaveHeaderButton}.setDisabled(!valid)" />
+					</Listeners>
 				</ext:FormPanel>
 				<ext:GridPanel runat="server"
 					ID="uxWarningGrid"
@@ -508,24 +730,62 @@
 				</ext:GridPanel>
 				<ext:FormPanel runat="server" ID="uxFooterPanel" Padding="10" BodyPadding="5" MaxWidth="1100">
 					<Items>
-						<ext:TextField runat="server" ID="uxReasonForNoWorkField" FieldLabel="Reason for no work" Width="700" ReadOnly="true" LabelWidth="100" />
-						<ext:TextField runat="server" ID="uxHotelField" FieldLabel="Hotel" ReadOnly="true" LabelWidth="100" Width="400" />
-						<ext:TextField runat="server" ID="uxCityField" FieldLabel="City" ReadOnly="true" LabelWidth="100" Width="300" />
-						<ext:TextField runat="server" ID="uxFooterStateField" FieldLabel="State" ReadOnly="true" LabelWidth="100" Width="300" />
-						<ext:TextField runat="server" ID="uxPhoneField" FieldLabel="Phone" ReadOnly="true" LabelWidth="100" Width="300" />
-						<ext:TextField runat="server" ID="uxForemanNameField" FieldLabel="Foreman Name" LabelWidth="100" Width="500" ReadOnly="true" />
-						<ext:FieldContainer runat="server" FieldLabel="Foreman Signature" LabelWidth="100">
+						<ext:TextField runat="server" ID="uxReasonForNoWorkField" FieldLabel="Reason for no work" Width="700" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxHotelField" FieldLabel="Hotel" LabelWidth="100" Width="400" />
+						<ext:TextField runat="server" ID="uxCityField" FieldLabel="City" LabelWidth="100" Width="300" />
+						<ext:ComboBox runat="server"
+							ID="uxFooterStateField"
+							FieldLabel="State"
+							DisplayField="name"
+							ValueField="name"
+							QueryMode="Local"
+							TypeAhead="true"
+							ForceSelection="true">
+							<Store>
+								<ext:Store ID="uxStateList" runat="server" AutoDataBind="true">
+									<Model>
+										<ext:Model ID="Model7" runat="server">
+											<Fields>
+												<ext:ModelField Name="abbr" />
+												<ext:ModelField Name="name" />
+											</Fields>
+										</ext:Model>
+									</Model>
+									<Reader>
+										<ext:ArrayReader />
+									</Reader>
+								</ext:Store>
+							</Store>
+						</ext:ComboBox>
+						<ext:TextField runat="server" ID="uxPhoneField" FieldLabel="Phone" LabelWidth="100" Width="300" />
+						<ext:TextField runat="server" ID="uxForemanNameField" FieldLabel="Foreman Name" ReadOnly="true" LabelWidth="100" Width="500" />
+						<ext:FileUploadField runat="server"
+							ID="uxForemanImageField"
+							FieldLabel="Foreman Signature" />
+						<ext:FieldContainer ID="FieldContainer1" runat="server" FieldLabel="Foreman Signature" LabelWidth="100">
 							<Items>
 								<ext:Image runat="server" Height="214" ID="uxForemanImage" Width="320" />
 							</Items>
 						</ext:FieldContainer>
-						<ext:TextField runat="server" ID="uxContractNameField" FieldLabel="Contract Rep Name" Width="500" ReadOnly="true" LabelWidth="100" />
-						<ext:FieldContainer runat="server" FieldLabel="Contract Rep Signature" LabelWidth="100">
+						<ext:TextField runat="server" ID="uxContractNameField" FieldLabel="Contract Rep Name" Width="500" LabelWidth="100" />
+						<ext:FileUploadField runat="server"
+							ID="uxContractImageField"
+							FieldLabel="Contract Representative" />
+						<ext:FieldContainer ID="FieldContainer2" runat="server" FieldLabel="Contract Rep Signature" LabelWidth="100">
 							<Items>
 								<ext:Image runat="server" Height="214" ID="uxContractImage" Width="320" />
 							</Items>
 						</ext:FieldContainer>
 					</Items>
+					<Buttons>
+						<ext:Button runat="server" ID="uxSaveFooterButton" Text="Save" Icon="Add" Hidden="true">
+							<DirectEvents>
+								<Click OnEvent="deUpdateFooter">
+									<EventMask ShowMask="true" />
+								</Click>
+							</DirectEvents>
+						</ext:Button>
+					</Buttons>
 				</ext:FormPanel>
 				<ext:ToolTip ID="ToolTip1"
 					runat="server"

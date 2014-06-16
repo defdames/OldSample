@@ -162,7 +162,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                     GetUnitOfMeasure(Inventory.UOM_CODE);
                     uxAddInventoryMeasure.SelectedItems.Clear();
-                    uxAddInventoryMeasure.SelectedItems.Add(new Ext.Net.ListItem(Inventory.UNIT_OF_MEASURE, Inventory.UOM_CODE));
+                    uxAddInventoryMeasure.SelectedItems.Add(new Ext.Net.ListItem(Inventory.UNIT_OF_MEASURE));
                     uxAddInventoryMeasure.UpdateSelectedItems();
                     uxAddInventoryItem.SetValue(Inventory.ITEM_ID.ToString(), Inventory.DESCRIPTION);
 

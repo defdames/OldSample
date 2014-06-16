@@ -20,7 +20,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 if (Request.QueryString["type"] == "Edit")
                 {
+                    uxFormType.Value = "Edit";
                     LoadEditEquipmentForm();
+                }
+                else
+                {
+                    uxFormType.Value = "Add";
                 }
             }
         }

@@ -23,6 +23,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     if (roleNeeded())
                     {
                         uxAddEmployeeRole.Show();
+                        uxAddEmployeeForm.Height = 750;
                     }
                     uxAddEmployeeDriveTimeHours.Value = "0";
                     uxAddEmployeeDriveTimeMinutes.Value = "0";
