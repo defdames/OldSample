@@ -36,7 +36,7 @@ namespace DBI.Data
         public string PROJ_NUM { get; set; }
         public string TYPE { get; set; }
         public string LIABILITY { get; set; }
-        public string LIABILITY_OP { get; set; }
+        public Nullable<short> LIABILITY_OP { get; set; }
     
         public virtual BUD_BID_STATUS BUD_BID_STATUS { get; set; }
     }
