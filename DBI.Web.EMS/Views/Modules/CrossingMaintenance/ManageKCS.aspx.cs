@@ -40,7 +40,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 CROSSING_SERVICE_UNIT NewServiceUnit = new CROSSING_SERVICE_UNIT();
                 NewServiceUnit.SERVICE_UNIT_NAME = CreatedServiceUnit.SERVICE_UNIT_NAME;
                 NewServiceUnit.RAILROAD_ID = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-
+                NewServiceUnit.CREATE_DATE = DateTime.Now;
+                NewServiceUnit.MODIFY_DATE = DateTime.Now;
+                NewServiceUnit.CREATED_BY = User.Identity.Name;
+                NewServiceUnit.MODIFIED_BY = User.Identity.Name;
                 GenericData.Insert<CROSSING_SERVICE_UNIT>(NewServiceUnit);
                 uxServiceUnitStore.Reload();
             }
@@ -76,7 +79,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 CROSSING_SUB_DIVISION NewSubDiv = new CROSSING_SUB_DIVISION();
                 NewSubDiv.SUB_DIVISION_NAME = CreatedSubDiv.SUB_DIVISION_NAME;
                 NewSubDiv.SERVICE_UNIT_ID = long.Parse(e.ExtraParams["ServiceUnitId"].ToString());
-
+                NewSubDiv.CREATE_DATE = DateTime.Now;
+                NewSubDiv.MODIFY_DATE = DateTime.Now;
+                NewSubDiv.CREATED_BY = User.Identity.Name;
+                NewSubDiv.MODIFIED_BY = User.Identity.Name;
                 GenericData.Insert<CROSSING_SUB_DIVISION>(NewSubDiv);
                 uxSubDivStore.Reload();
             }

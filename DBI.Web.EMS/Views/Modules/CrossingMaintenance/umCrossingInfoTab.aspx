@@ -373,7 +373,7 @@
                                                 AnchorHorizontal="100%"
                                                 DisplayField="sub_division"
                                                 ValueField="sub_division"
-                                                TypeAhead="true" TabIndex="4" AllowBlank="false" >
+                                                TypeAhead="true" TabIndex="4" >
                                                 <Store>
                                                     <ext:Store runat="server"
                                                         ID="uxAddSubDivStore">
@@ -682,7 +682,7 @@
                                                 DisplayField="service_unit"
                                                 ValueField="service_unit"
                                                 LabelAlign="Right"
-                                                AnchorHorizontal="100%" TabIndex="3" AllowBlank="false">
+                                                AnchorHorizontal="100%" TabIndex="3" AllowBlank="false" >
                                                 <Store>
                                                     <ext:Store runat="server"
                                                         ID="uxEditServiceUnitStore">
@@ -722,7 +722,7 @@
                                                 LabelAlign="Right"
                                                 DisplayField="sub_division"
                                                 ValueField="sub_division"
-                                                AnchorHorizontal="100%" TabIndex="4" AllowBlank="false">
+                                                AnchorHorizontal="100%" TabIndex="4" AllowBlank="false" ForceSelection="true" >
                                                 <Store>
                                                     <ext:Store runat="server"
                                                         ID="uxEditSubDivStore">
