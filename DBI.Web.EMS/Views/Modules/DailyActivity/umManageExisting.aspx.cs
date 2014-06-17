@@ -677,7 +677,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 										   where d.HEADER_ID == HeaderId
 										   from j in joined
 										   where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
-										   select new { c.CHEMICAL_MIX_NUMBER, j.INV_NAME, d.SUB_INVENTORY_SECONDARY_NAME, j.SEGMENT1, j.DESCRIPTION, d.TOTAL, d.RATE, u.UNIT_OF_MEASURE, d.EPA_NUMBER }).ToList<object>();
+										   select new { c.CHEMICAL_MIX_NUMBER, j.INV_NAME, d.SUB_INVENTORY_SECONDARY_NAME, j.SEGMENT1, j.DESCRIPTION, d.TOTAL, d.RATE, u.UNIT_OF_MEASURE, d.EPA_NUMBER, d.CONTRACTOR_SUPPLIED }).ToList<object>();
 
 				return returnData;
 			}
@@ -1113,9 +1113,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 				{
 					//Get Equipment Data
 					var EquipmentData = GetEquipment(HeaderId);
-					PdfPTable EquipmentTable = new PdfPTable(5);
+					PdfPTable EquipmentTable = new PdfPTable(6);
 
 					Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase("Project Number", HeaderFont)),
 						new PdfPCell(new Phrase("Equipment Name", HeaderFont)),
 						new PdfPCell(new Phrase("Class Code", HeaderFont)),
 						new PdfPCell(new Phrase("Organization Name", HeaderFont)),
@@ -1130,7 +1131,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 					{
 						string OdometerStart;
 						string OdometerEnd;
-						string ProjectId;
+						string ProjectNumber;
+                        try
+                        {
+                            ProjectNumber = Equipment.SEGMENT1;
+                        }
+                        catch (Exception)
+                        {
+                            ProjectNumber = string.Empty;
+                        }
 						try
 						{
 							OdometerStart = Equipment.ODOMETER_START.ToString();
@@ -1149,6 +1158,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						}
 
 						Cells = new PdfPCell[]{
+                            new PdfPCell(new Phrase(ProjectNumber, CellFont)),
 							new PdfPCell(new Phrase(Equipment.NAME, CellFont)),
 							new PdfPCell(new Phrase(Equipment.CLASS_CODE, CellFont)),
 							new PdfPCell(new Phrase(Equipment.ORGANIZATION_NAME, CellFont)),
@@ -1372,7 +1382,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 					if (OrgId == 121)
 					{
 						var InventoryData = GetInventoryDBI(HeaderId);
-						PdfPTable InventoryTable = new PdfPTable(8);
+						PdfPTable InventoryTable = new PdfPTable(9);
 
 						Cells = new PdfPCell[]{
 					new PdfPCell(new Phrase("Mix #", HeaderFont)),
@@ -1382,7 +1392,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 					new PdfPCell(new Phrase("Item Name", HeaderFont)),
 					new PdfPCell(new Phrase("Rate", HeaderFont)),
 					new PdfPCell(new Phrase("EPA \n Number", HeaderFont)),
-					new PdfPCell(new Phrase("Total", HeaderFont))
+					new PdfPCell(new Phrase("Total", HeaderFont)),
+                    new PdfPCell(new Phrase("Contractor Supplied", HeaderFont))
 				};
 						Row = new PdfPRow(Cells);
 						InventoryTable.Rows.Add(Row);
@@ -1406,7 +1417,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
 						new PdfPCell(new Phrase(string.Format("{0} {1}", Data.RATE.ToString(), Data.UNIT_OF_MEASURE), CellFont)),
 						new PdfPCell(new Phrase(EPANumber, CellFont)),
-						new PdfPCell(new Phrase(Data.TOTAL.ToString(), CellFont))
+						new PdfPCell(new Phrase(Data.TOTAL.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.CONTRACTOR_SUPPLIED, CellFont))
 					};
 
 							Row = new PdfPRow(Cells);
