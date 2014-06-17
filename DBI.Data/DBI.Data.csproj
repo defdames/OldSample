@@ -390,6 +390,9 @@
     <Compile Include="SYS_MODULE_PROFILE_OPTIONS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="SYS_ORG_PROFILE_OPTIONS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="SYS_PERMISSIONS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>

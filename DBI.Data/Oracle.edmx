@@ -101,6 +101,7 @@
           <EntitySet Name="SYS_MOBILE_NOTIFICATIONS" EntityType="OracleModel.Store.SYS_MOBILE_NOTIFICATIONS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_MODULE_PROFILE_OPTIONS" EntityType="OracleModel.Store.SYS_MODULE_PROFILE_OPTIONS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_MODULES" EntityType="OracleModel.Store.SYS_MODULES" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="SYS_ORG_PROFILE_OPTIONS" EntityType="OracleModel.Store.SYS_ORG_PROFILE_OPTIONS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_PERMISSIONS" EntityType="OracleModel.Store.SYS_PERMISSIONS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_PROFILE_OPTIONS" EntityType="OracleModel.Store.SYS_PROFILE_OPTIONS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="SYS_SECURITY_AUDIT" EntityType="OracleModel.Store.SYS_SECURITY_AUDIT" store:Type="Tables" Schema="XXEMS" />
@@ -1907,6 +1908,19 @@
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="SYS_ORG_PROFILE_OPTIONS">
+          <Key>
+            <PropertyRef Name="ORG_PROFILE_OPTION_ID" />
+          </Key>
+          <Property Name="ORG_PROFILE_OPTION_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ORGANIZATION_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="PROFILE_OPTION_ID" Type="number" Nullable="false" />
+          <Property Name="PROFILE_VALUE" Type="varchar2" MaxLength="2000" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="SYS_PERMISSIONS">
@@ -4116,6 +4130,7 @@
             <End Role="BUD_BID_DETAIL_TASK" EntitySet="BUD_BID_DETAIL_TASK" />
             <End Role="BUD_BID_DETAIL_SHEET" EntitySet="BUD_BID_DETAIL_SHEET" />
           </AssociationSet>
+          <EntitySet Name="SYS_ORG_PROFILE_OPTIONS" EntityType="OracleModel.SYS_ORG_PROFILE_OPTIONS" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -7286,6 +7301,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="SYS_ORG_PROFILE_OPTIONS">
+          <Key>
+            <PropertyRef Name="ORG_PROFILE_OPTION_ID" />
+          </Key>
+          <Property Type="Decimal" Name="ORG_PROFILE_OPTION_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="ORGANIZATION_ID" Nullable="false" />
+          <Property Type="Decimal" Name="PROFILE_OPTION_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="PROFILE_VALUE" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -9658,6 +9686,20 @@
                 <ScalarProperty Name="DETAIL_NAME" ColumnName="DETAIL_NAME" />
                 <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
                 <ScalarProperty Name="DETAIL_TASK_ID" ColumnName="DETAIL_TASK_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_ORG_PROFILE_OPTIONS">
+            <EntityTypeMapping TypeName="OracleModel.SYS_ORG_PROFILE_OPTIONS">
+              <MappingFragment StoreEntitySet="SYS_ORG_PROFILE_OPTIONS">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="PROFILE_VALUE" ColumnName="PROFILE_VALUE" />
+                <ScalarProperty Name="PROFILE_OPTION_ID" ColumnName="PROFILE_OPTION_ID" />
+                <ScalarProperty Name="ORGANIZATION_ID" ColumnName="ORGANIZATION_ID" />
+                <ScalarProperty Name="ORG_PROFILE_OPTION_ID" ColumnName="ORG_PROFILE_OPTION_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
