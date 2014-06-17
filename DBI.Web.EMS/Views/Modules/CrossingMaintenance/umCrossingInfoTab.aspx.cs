@@ -34,7 +34,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxAddPropertyType.Data = StaticLists.PropertyType;
                 uxEditPropertyType.Data = StaticLists.PropertyType;
             }
-            //X.Msg.Alert("test", Session["rrType"].ToString()).Show();
+      
         }
 
         protected void deCrossingGridData(object sender, StoreReadDataEventArgs e)
@@ -43,18 +43,30 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             using (Entities _context = new Entities())
             {
                 List<object> data;
-                //long RailroadId = long.Parse(Session["rrType"].ToString());
                 
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                 //Get List of all new crossings
-
+                if (uxToggleClosed.Checked)
+                {
+                    data = (from d in _context.CROSSINGS 
+                            //join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
+                              where !(from r in _context.CROSSING_RELATIONSHIP 
+                                where d.CROSSING_ID == r.CROSSING_ID
+                                 select r.CROSSING_ID)
+                                 .Contains(d.CROSSING_ID)
+                                 where d.RAILROAD_ID == RailroadId
+                            select new { d.RAILROAD_ID, d.RAILROAD, d.CONTACT_ID, d.STATUS, d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.SUB_DIVISION, d.CROSSING_CONTACTS.CONTACT_NAME }).ToList<object>();  
+                }
+                else
+                {
                     data = (from d in _context.CROSSINGS
                             where d.RAILROAD_ID == RailroadId
                             select new { d.RAILROAD_ID, d.RAILROAD, d.CONTACT_ID, d.STATUS, d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.SUB_DIVISION, d.CROSSING_CONTACTS.CONTACT_NAME }).ToList<object>();
+                }
 
-                    int count;
-                    uxCurrentCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-                    e.Total = count;
+                int count;
+                uxCurrentCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                e.Total = count;
             
             }
         }

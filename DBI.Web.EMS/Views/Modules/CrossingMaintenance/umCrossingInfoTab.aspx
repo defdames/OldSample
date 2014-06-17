@@ -158,7 +158,11 @@
                                     </Click>
                                 </DirectEvents>
                                 </ext:Button>
-
+                             <ext:Checkbox runat="server" ID="uxToggleClosed" BoxLabel="Unassigned Crossings" BoxLabelAlign="After">
+                        <Listeners>
+                            <Change Handler="#{uxCurrentCrossingStore}.reload()" />
+                        </Listeners>
+                    </ext:Checkbox>
 
                         </Items>
                     </ext:Toolbar>
@@ -480,7 +484,7 @@
                                                 ValueField="name"
                                                 QueryMode="Local"
                                                 TypeAhead="true"
-                                                ForceSelection="true" TabIndex="5">
+                                                ForceSelection="true" TabIndex="26" AllowBlank="false">
                                                 <Store>
                                                     <ext:Store ID="uxAddPropertyType" runat="server" AutoDataBind="true">
                                                         <Model>
@@ -636,38 +640,6 @@
                                     <ext:FieldContainer ID="FieldContainer21" runat="server" Layout="HBoxLayout">
                                         <Items>
                                             <ext:TextField ID="uxEditRRCI" runat="server" FieldLabel="Railroad" LabelAlign="Right" AnchorHorizontal="100%" TabIndex="2" />
-                                            <%-- <ext:ComboBox ID="uxEditRRComboBox"
-                                                runat="server"
-                                                FieldLabel="Railroad"
-                                                LabelAlign="Right"
-                                                DisplayField="project"
-                                                ValueField="project"
-                                                QueryMode="Local"
-                                                TypeAhead="true" TabIndex="2" AllowBlank="false" >
-                                                <Store>
-                                                    <ext:Store runat="server"
-                                                        ID="uxEditRRStore">
-                                                        <Model>
-                                                            <ext:Model ID="Model3" runat="server">
-                                                                <Fields>
-                                                                    <ext:ModelField Name="project" />
-                                                                    <ext:ModelField Name="project" />
-                                                                </Fields>
-                                                            </ext:Model>
-                                                        </Model>
-                                                    </ext:Store>
-                                                </Store>
-                                                <DirectEvents>
-                                                    <Select OnEvent="deLoadUnit">
-                                                        <ExtraParams>
-                                                            <ext:Parameter Name="Type" Value="Edit" />
-                                                        </ExtraParams>
-                                                    </Select>
-                                                </DirectEvents>
-                                                <Listeners>
-                                                    <Select Handler="#{uxEditServiceUnitStore}.load()" />
-                                                </Listeners>
-                                            </ext:ComboBox>--%>
                                             <ext:TextField ID="uxEditRouteCI" runat="server" FieldLabel="Route" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="6" AllowBlank="false" />
                                             <ext:TextField ID="uxEditDotCI" runat="server" FieldLabel="DOT #" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="10" AllowBlank="false" />
                                            
@@ -827,7 +799,7 @@
                                                 ValueField="name"
                                                 QueryMode="Local"
                                                 TypeAhead="true"
-                                                ForceSelection="true" TabIndex="5">
+                                                ForceSelection="true" TabIndex="26" AllowBlank="false">
                                                 <Store>
                                                     <ext:Store ID="uxEditPropertyType" runat="server" AutoDataBind="true">
                                                         <Model>
@@ -853,7 +825,7 @@
                                 <Items>
                                     <ext:FieldContainer ID="FieldContainer30" runat="server" Layout="HBoxLayout">
                                         <Items>
-                                            <ext:DropDownField ID="uxEditManagerCI" runat="server" FieldLabel="Manager" AnchorHorizontal="100%" LabelAlign="Right" Width="475" Mode="ValueText" TabIndex="25" >
+                                            <ext:DropDownField ID="uxEditManagerCI" runat="server" FieldLabel="Manager" AnchorHorizontal="100%" LabelAlign="Right" Width="475" Mode="ValueText" TabIndex="26" >
                                                 <Component>
                                                     <ext:GridPanel runat="server"
                                                         ID="uxEditManager"
