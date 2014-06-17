@@ -28,10 +28,12 @@
                         LabelStyle="font-weight:bold;padding:0;"
                         Layout="HBoxLayout">
                         <Items>
-                             <ext:ComboBox runat="server" ID="uxSegment1" Editable="true" TypeAhead="true"
-                                FieldLabel="Company" AnchorHorizontal="55%" DisplayField="ID_NAME"
-                                ValueField="ID" TriggerAction="All" 
+                             <ext:ComboBox runat="server" ID="uxSegment1" Editable="false" TypeAhead="false"
+                                FieldLabel="Company" AnchorHorizontal="55%" DisplayField="ID_NAME" ValueField="ID" 
                                 MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true" >
+                                  <Triggers>
+                                    <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
+                                    </Triggers>
                                 <Store>
                                     <ext:Store runat="server" ID="uxCompanyNameStore" OnReadData="deLoadCompanyCodes" AutoLoad="false" >
                                         <Proxy>
@@ -49,8 +51,13 @@
                                     </ext:Store>
                                 </Store>
                                 <Listeners>
-                                    <BeforeQuery Handler="delete queryEvent.combo.lastQuery;" />
-                                    <Select Handler="#{uxSegment1Description}.setText(#{uxSegment1}.getStore().getAt(#{uxSegment1}.getStore().findExact('ID',#{uxSegment1}.getValue())).get('DESCRIPTION'));#{uxSegment2}.clearValue(); #{uxSegment2Store}.reload();#{uxSegment3}.clearValue(); #{uxSegment3Store}.reload();#{uxSegment4}.clearValue(); #{uxSegment4Store}.reload();if(#{uxGlAccountSecurityStore}.getCount() > 0){#{uxGlAccountSecurityStore}.reload();#{uxGlAccountSecurityGrid}.getView().refresh();#{uxGlAccountSecurityGridFilter}.clearFilter();}#{uxSegment2Description}.setText('');#{uxSegment3Description}.setText('');#{uxSegment4Description}.setText('');"></Select>
+                                    <Select Handler="this.getTrigger(0).show();#{uxSegment1Description}.setText(#{uxSegment1}.getStore().getAt(#{uxSegment1}.getStore().findExact('ID',#{uxSegment1}.getValue())).get('DESCRIPTION'));#{uxSegment2}.clearValue(); #{uxSegment2Store}.reload();#{uxSegment3}.clearValue(); #{uxSegment3Store}.reload();#{uxSegment4}.clearValue(); #{uxSegment4Store}.reload();if(#{uxGlAccountSecurityStore}.getCount() > 0){#{uxGlAccountSecurityStore}.reload();#{uxGlAccountSecurityGrid}.getView().refresh();#{uxGlAccountSecurityGridFilter}.clearFilter();}#{uxSegment2Description}.setText('');#{uxSegment3Description}.setText('');#{uxSegment4Description}.setText('');"></Select>
+                                    <BeforeQuery Handler="this.getTrigger(0)[this.getRawValue().toString().length == 0 ? 'hide' : 'show']();" />
+                                    <TriggerClick Handler="if (index == 0) { 
+                                           this.clearValue(); 
+                                           this.getTrigger(0).hide();
+                                        #{uxSegment1Description}.setText('');
+                                       }" />
                                 </Listeners>
                             </ext:ComboBox>
                             <ext:Label runat="server" ID="uxSegment1Description" Margins="0 0 0 5" StyleSpec="color:green;" Flex="1"></ext:Label>

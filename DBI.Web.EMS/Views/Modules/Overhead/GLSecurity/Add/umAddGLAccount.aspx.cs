@@ -40,11 +40,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                                            group accounts by new { accounts.SEGMENT1, accounts.SEGMENT1_DESC} into grp
                                            select new TripleCombo { ID = grp.Key.SEGMENT1, ID_NAME = grp.Key.SEGMENT1, DESCRIPTION = grp.Key.SEGMENT1_DESC}).OrderBy(o => o.ID).AsQueryable();
 
-                        if (!string.IsNullOrEmpty(e.Parameters["query"]) && e.Parameters["query"] != "*")
-                        {
-                            _glCodes.Where(x => x.ID_NAME.Contains(e.Parameters["query"]));
-                        }
-
                     uxCompanyNameStore.DataSource = _glCodes.ToList();
 
                 }
