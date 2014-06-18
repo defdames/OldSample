@@ -269,6 +269,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 SERVICE_UNIT = ServiceUnit,
                 SUB_DIVISION = SubDiv,
                 RAILROAD_ID = RailroadId,
+                CREATED_DATE = DateTime.Now,
+                MODIFIED_DATE = DateTime.Now,
+                CREATED_BY = User.Identity.Name,
+                MODIFIED_BY = User.Identity.Name,
 
             };
 
@@ -661,6 +665,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 data.ON_SPUR = OnSpur;
                 data.RAILROAD_ID = RailroadId;
                 data.SERVICE_UNIT = ServiceUnit;
+                data.MODIFIED_DATE = DateTime.Now;
+                data.MODIFIED_BY = User.Identity.Name;
                 try
                 {
                     decimal Latitude = decimal.Parse(uxEditLatCINumberField.Value.ToString());
@@ -861,6 +867,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                         select d).Single();
 
                 data.STATUS = "DELETED";
+                data.DELETED_BY = User.Identity.Name;
+                data.DELETED_DATE = DateTime.Now;
             }
             GenericData.Update<CROSSING>(data);
            

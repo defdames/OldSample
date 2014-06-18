@@ -17,39 +17,43 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (validateComponentSecurity("SYS.TimeClock.Payroll"))
-            {
-                GetEnployeesHourData();
-            }
-            else
-            {
-                X.Redirect("~/Views/uxDefault.aspx");
-            }
+          
         }
 
-        protected void GetEnployeesHourData()
+        protected void deGetEmployeesHourData(object sender, StoreReadDataEventArgs e)
         {
-            using (Entities _context = new Entities())
+            var data = TIME_CLOCK.EmployeeTimeCompletedApprovedPayroll();
+
+            foreach (var item in data)
             {
-                var data = (from tc in _context.TIME_CLOCK
-                            join ev in _context.EMPLOYEES_V on tc.PERSON_ID equals ev.PERSON_ID
-                            where tc.APPROVED=="Y"
-                            select new EmployeeTimePayroll { TIME_IN = (DateTime)tc.TIME_IN, TIME_OUT = (DateTime)tc.TIME_OUT, EMPLOYEE_NAME = ev.EMPLOYEE_NAME, DAY_OF_WEEK = tc.DAY_OF_WEEK, TIME_CLOCK_ID = tc.TIME_CLOCK_ID, ADJUSTED_HOURS = tc.ADJUSTED_HOURS, ACTUAL_HOURS = tc.ACTUAL_HOURS }).ToList();
+                TimeSpan ts = (DateTime)item.TIME_OUT - (DateTime)item.TIME_IN;
+                DateTime dow = (DateTime)item.TIME_IN;
+
+
+                TimeSpan adjustedhours = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_HOURS.Value));
+                item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("hh\\:mm");
+
+
+                TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
+                item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");
+
+
             }
+            uxPayrollAuditStore.DataSource = data;
         }
     }
 
-    public class EmployeeTimePayroll
-    {
-        public decimal TIME_CLOCK_ID { get; set; }
-        public string EMPLOYEE_NAME { get; set; }
-        public DateTime TIME_IN { get; set; }
-        public DateTime TIME_OUT { get; set; }
-        public string ADJUSTED_HOURS_GRID { get; set; }
-        public string DAY_OF_WEEK { get; set; }
-        public string ACTUAL_HOURS_GRID { get; set; }
-        public decimal? ACTUAL_HOURS { get; set; }
-        public decimal? ADJUSTED_HOURS { get; set; }
+    //public class EmployeeTimePayroll
+    //{
+    //    public decimal TIME_CLOCK_ID { get; set; }
+    //    public string EMPLOYEE_NAME { get; set; }
+    //    public DateTime TIME_IN { get; set; }
+    //    public DateTime TIME_OUT { get; set; }
+    //    public string ADJUSTED_HOURS_GRID { get; set; }
+    //    public string DAY_OF_WEEK { get; set; }
+    //    public string ACTUAL_HOURS_GRID { get; set; }
+    //    public decimal? ACTUAL_HOURS { get; set; }
+    //    public decimal? ADJUSTED_HOURS { get; set; }
 
-    }
+    //}
 }

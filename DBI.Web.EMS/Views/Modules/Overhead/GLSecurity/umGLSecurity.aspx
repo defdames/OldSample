@@ -135,12 +135,12 @@
                     <TopBar>
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
-                                <ext:Button runat="server" ID="uxShowGLAccoutsWindow" Text="Add" Icon="Add" Disabled="true">
+                                <ext:Button runat="server" ID="uxShowGLAccoutsWindow" Text="Assign" Icon="Add" Disabled="true">
                                     <DirectEvents>
                                         <Click OnEvent="deShowGLAccounts"></Click>
                                     </DirectEvents>
                                 </ext:Button>
-                                <ext:Button runat="server" ID="uxGlAccountDelete" Text="Delete" Icon="Delete" Disabled="true">
+                                <ext:Button runat="server" ID="uxGlAccountDelete" Text="Unassign" Icon="Delete" Disabled="true">
                                      <DirectEvents>
                                         <Click OnEvent="deDeleteGLAccounts"><Confirmation Message="Are you sure you want to unassign these general ledger accounts for this organization?" Title="Unassign GL Accounts" ConfirmRequest="true"></Confirmation></Click>
                                     </DirectEvents>

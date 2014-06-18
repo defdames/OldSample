@@ -103,6 +103,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     DATE_REPORTED = DateReported,
                     SLOW_ORDER = SlowOrder,
                     CROSSING_ID = CrossingId,
+                    CREATE_DATE = DateTime.Now,
+                    MODIFY_DATE = DateTime.Now,
+                    CREATED_BY = User.Identity.Name,
+                    MODIFIED_BY = User.Identity.Name,
                 };
             }
         

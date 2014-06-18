@@ -12,17 +12,15 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class CROSSING_PROJECT
+    public partial class SYS_ORG_PROFILE_OPTIONS
     {
-        public decimal PROJ_CORSSING_ID { get; set; }
-        public Nullable<long> PROJECT_ID { get; set; }
-        public string PROJECT_NAME { get; set; }
-        public Nullable<decimal> RAILROAD_ID { get; set; }
+        public decimal ORG_PROFILE_OPTION_ID { get; set; }
+        public long ORGANIZATION_ID { get; set; }
+        public decimal PROFILE_OPTION_ID { get; set; }
+        public string PROFILE_VALUE { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
-        public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
+        public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string MODIFIED_BY { get; set; }
-    
-        public virtual CROSSING_RAILROAD CROSSING_RAILROAD { get; set; }
     }
 }

@@ -56,16 +56,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\EXT\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NinjaNye.SearchExtensions">
-      <HintPath>..\packages\NinjaNye.SearchExtensions.0.6.5193.24776\lib\net40\NinjaNye.SearchExtensions.dll</HintPath>
-    </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\app\ljankowski\product\12.1.0\client_1\odp.net\managed\common\Oracle.ManagedDataAccess.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccessDTC, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\My Received Files\Oracle.ManagedDataAccessDTC.dll</HintPath>
     </Reference>
     <Reference Include="PushSharp.Apple">
@@ -96,6 +91,9 @@
   <ItemGroup>
     <Compile Include="..\DBI.AssemblyVersion\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="BUD_BID_ACTUAL_NUM.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="BUD_BID_ADJUSTMENT.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
@@ -230,6 +228,7 @@
     <Compile Include="EXPENDITURE_TYPE_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="Generic\ComboClasses.cs" />
     <Compile Include="GL_ACCOUNTS_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
@@ -324,6 +323,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Oracle.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Oracle\XXDBI_DW.cs" />
     <Compile Include="Oracle\PA.cs" />
     <Compile Include="Oracle\XXEMS.cs" />
     <Compile Include="ORG_HIER_V.cs">
@@ -388,6 +388,9 @@
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="SYS_MODULE_PROFILE_OPTIONS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SYS_ORG_PROFILE_OPTIONS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="SYS_PERMISSIONS.cs">

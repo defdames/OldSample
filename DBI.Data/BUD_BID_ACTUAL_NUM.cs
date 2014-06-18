@@ -12,9 +12,9 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class BUD_BID_BUDGET_NUM
+    public partial class BUD_BID_ACTUAL_NUM
     {
-        public decimal BUDGET_NUM_ID { get; set; }
+        public decimal ACTUAL_NUM_ID { get; set; }
         public long PROJECT_ID { get; set; }
         public decimal DETAIL_TASK_ID { get; set; }
         public decimal LINE_ID { get; set; }

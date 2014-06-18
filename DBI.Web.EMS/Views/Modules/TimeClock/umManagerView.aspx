@@ -5,6 +5,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title></title>
+    <script>
+        var onGroupCommand = function (column, command, group) {
+            if (command === 'SelectGroup') {
+                var isSelected = App.uxEmployeeHoursGrid.getSelectionModel().isSelected(group.children[0]);
+
+                if (!isSelected) {
+                    column.grid.getSelectionModel().select(group.children, true);
+                } else {
+                    column.grid.getSelectionModel().deselect(group.children, true);
+                };
+            }
+            
+        };
+    </script>
 </head>
 <body>
     
@@ -50,22 +64,51 @@
                     <ext:Column ID="AdjustedTime" runat="server" Text="Adjusted Time" Flex="1" DataIndex="ADJUSTED_HOURS_GRID"/>
                     <ext:Column ID="Approved" runat="server" Text="Approved" Flex="1" DataIndex="APPROVED" />
                     <ext:Column ID="Submitted" runat="server" Text="Submitted" Flex="1" DataIndex="SUBMITTED" />
+                    <ext:CommandColumn runat="server">
+                        <Commands>
+                            <ext:GridCommand Icon="NoteEdit" CommandName="Edit" Text="Edit"/>
+                        </Commands>
+                    </ext:CommandColumn>
+                    <ext:CommandColumn ID="CommandColumn1" runat="server" Hidden="true">
+                        <GroupCommands>
+                            <ext:GridCommand Icon="TableRow" CommandName="SelectGroup">
+                                <ToolTip Title="Select" Text="Select all rows of the group" />
+                            </ext:GridCommand>
+                            <ext:CommandFill />
+                        </GroupCommands>
+                        <Listeners>
+                            <GroupCommand Fn="onGroupCommand" />
+                        </Listeners>
+                    </ext:CommandColumn>
                 </Columns>
             </ColumnModel>
+            <DirectEvents>
+                <Comma
+            </DirectEvents>
             <TopBar>
                 <ext:Toolbar runat="server">
                     <Items>
                         <ext:Button runat="server" ID="uxApproveButton" Text="Approve" Icon="ApplicationPut">
                             <DirectEvents>
                                 <Click OnEvent="deApproveTime">
-                                    <%--<EventMask ShowMask="true" />
+                                    <EventMask ShowMask="true" />
                                         <ExtraParams>
-                                            <ext:Parameter Name="TimeClockId" Value="#{uxEmployeeHoursGrid}.getSelectionModel().getSelection()[0].data.TIME_CLOCK_ID" Mode="Raw" />
-                                            <ext:Parameter Name="AdjustedHoursGrid" Value="#{uxEmployeeHoursGrid}.getSelectionModel().getSelection()[0].data.ADJUSTED_HOURS_GRID" Mode="Raw" />
+                                            <%--<ext:Parameter Name="TimeClockId" Value="#{uxEmployeeHoursGrid}.getSelectionModel().getSelection()[0].data.TIME_CLOCK_ID" Mode="Raw" />
+                                            <ext:Parameter Name="AdjustedHoursGrid" Value="#{uxEmployeeHoursGrid}.getSelectionModel().getSelection()[0].data.ADJUSTED_HOURS_GRID" Mode="Raw" />--%>
                                             <ext:Parameter Name="ApprovedTime" Value="Ext.encode(#{uxEmployeeHoursGrid}.getRowsValues({selectedOnly : true}))" Mode="Raw" />
                                             <ext:Parameter Name="NewTime" Value="#{uxEmployeeHoursStore}.getChangedData()" Mode="Raw" Encode="true" />
-                                        </ExtraParams>--%>
+                                        </ExtraParams>
                                </Click> 
+                        </DirectEvents>
+                    </ext:Button>
+                    <ext:Button runat="server" ID="uxEdit" Text="Edit" Icon="ApplicationEdit">
+                        <DirectEvents>
+                            <Click OnEvent="deEditTime">
+                                <ExtraParams>
+                                    <ext:Parameter Name="Edit" Value="True"></ext:Parameter>
+                                </ExtraParams>
+                                <EventMask ShowMask="true" />
+                            </Click>
                         </DirectEvents>
                     </ext:Button>
                     <ext:ToolbarSpacer runat="server" />
@@ -85,7 +128,7 @@
                     StartCollapsed="true"/>                               
             </Features>
             <SelectionModel>
-                <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi" />
+                <ext:CheckboxSelectionModel ID="uxTimeClockSelectionModel" runat="server" Mode="Multi" />
             </SelectionModel>
             <Plugins>
                 <ext:CellEditing runat="server" ClicksToEdit="2"/>
