@@ -87,7 +87,6 @@ namespace DBI.Data
         public DbSet<OVERHEAD_GL_ACCOUNT> OVERHEAD_GL_ACCOUNT { get; set; }
         public DbSet<GL_ACCOUNTS_V> GL_ACCOUNTS_V { get; set; }
         public DbSet<ORG_HIER_V> ORG_HIER_V { get; set; }
-        public DbSet<CROSSING> CROSSINGS { get; set; }
         public DbSet<DAILY_ACTIVITY_PRODUCTION> DAILY_ACTIVITY_PRODUCTION { get; set; }
         public DbSet<CROSSING_PROJECT> CROSSING_PROJECT { get; set; }
         public DbSet<CROSSING_RAILROAD> CROSSING_RAILROAD { get; set; }
@@ -118,5 +117,6 @@ namespace DBI.Data
         public DbSet<BUD_BID_DETAIL_SHEET> BUD_BID_DETAIL_SHEET { get; set; }
         public DbSet<BUD_BID_DETAIL_TASK> BUD_BID_DETAIL_TASK { get; set; }
         public DbSet<SYS_ORG_PROFILE_OPTIONS> SYS_ORG_PROFILE_OPTIONS { get; set; }
+        public DbSet<CROSSING> CROSSINGS { get; set; }
     }
 }
