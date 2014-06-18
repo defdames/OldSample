@@ -1287,7 +1287,7 @@
           </Key>
           <Property Name="CROSSING_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
           <Property Name="DOT" Type="varchar2" MaxLength="30" />
-          <Property Name="PREF" Type="varchar2" MaxLength="5" />
+          <Property Name="PREF" Type="varchar2" MaxLength="20" />
           <Property Name="MILE_POST" Type="number" Precision="15" Scale="2" />
           <Property Name="DIVISION" Type="varchar2" MaxLength="100" />
           <Property Name="SUB_DIVISION" Type="varchar2" MaxLength="100" />
@@ -7195,7 +7195,7 @@
           </Key>
           <Property Type="Int64" Name="CROSSING_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="DOT" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="PREF" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PREF" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Type="Decimal" Name="MILE_POST" Precision="15" Scale="2" />
           <Property Type="String" Name="DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="SUB_DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -7214,8 +7214,8 @@
           <Property Type="Int64" Name="MAX_SPEED" />
           <Property Type="String" Name="SUB_CONTRACTED" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Type="String" Name="FENCE_ENCROACHMENT" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="Decimal" Name="LATITUDE" />
-          <Property Type="Decimal" Name="LONGITUDE" />
+          <Property Type="Decimal" Name="LATITUDE" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="LONGITUDE" Precision="38" Scale="0" />
           <Property Type="String" Name="PROPERTY_TYPE" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="WARNING_DEVICE" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="SURFACE" MaxLength="50" FixedLength="false" Unicode="false" />
