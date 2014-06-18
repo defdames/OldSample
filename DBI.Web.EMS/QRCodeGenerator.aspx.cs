@@ -8,7 +8,7 @@ using System.Web.UI.WebControls;
 using DBI.Data;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using MessagingToolkit.Barcode;
+//using MessagingToolkit.Barcode;
 
 namespace DBI.Web.EMS
 {
@@ -22,7 +22,7 @@ namespace DBI.Web.EMS
 
             try
             {
-                BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                //BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                 List<string> equipment = new List<string>();
 
                 using (Entities _context = new Entities())
@@ -38,11 +38,11 @@ namespace DBI.Web.EMS
 
                 foreach (var equip in equipment)
                 {
-                    System.Drawing.Image image = barcodeEncoder.Encode(BarcodeFormat.QRCode, equip);
-                    iTextSharp.text.Image QRCodeImage = iTextSharp.text.Image.GetInstance(image, System.Drawing.Imaging.ImageFormat.Jpeg);
-                    QRCodeImage.Alignment = 1;
-                    QRCodeImage.ScaleToFit(100f, 100f);
-                    ExportedPDF.Add(QRCodeImage);
+                    //System.Drawing.Image image = barcodeEncoder.Encode(BarcodeFormat.QRCode, equip);
+                    //iTextSharp.text.Image QRCodeImage = iTextSharp.text.Image.GetInstance(image, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    //QRCodeImage.Alignment = 1;
+                    //QRCodeImage.ScaleToFit(100f, 100f);
+                    //ExportedPDF.Add(QRCodeImage);
 
                     Paragraph Title = new Paragraph(equip, cellFont);
                     Title.Alignment = 1;

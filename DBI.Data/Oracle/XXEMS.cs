@@ -644,5 +644,44 @@ namespace DBI.Data
         }
 
     }
+
+
+    public partial class CROSSINGS
+    {
+        public static void UpdateServiceUnits()
+        {
+            try
+            {
+                List<CROSSING> _crossings = new List<CROSSING>();
+                using (Entities _context = new Entities())
+                {
+                    _crossings = _context.CROSSINGS.ToList();
+
+                }
+
+                _crossings = _crossings.Where(x => x.CROSSING_ID == 164).ToList();
+
+                foreach (var _crossing in _crossings)
+                {
+                    DBI.Data.GMS.ServiceUnitResponse _data = DBI.Data.GMS.ServiceUnitData.ServiceUnits().Where(x => x.sub_division.ToUpper() == _crossing.SUB_DIVISION).FirstOrDefault();
+
+                    if (_data != null)
+                    {
+
+                        System.Diagnostics.Debug.WriteLine(_crossing.CROSSING_ID);
+                        _crossing.SERVICE_UNIT = _data.service_unit;
+                        DBI.Data.GenericData.Update<CROSSING>(_crossing);
+
+                    }
+                }
+            }
+            catch (Oracle.ManagedDataAccess.Types.OracleTruncateException ex)
+            {
+
+                throw (ex);
+            }
+           
+        }
+    }
 }
 

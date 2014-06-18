@@ -153,8 +153,8 @@ namespace DBI.Data.DataFactory
                  get
                  {
                      return new object[]{
-                    new object[]{"Public", "Public"},
-                    new object[]{"Private", "Private"},
+                    new object[]{"PUB", "PUB"},
+                    new object[]{"PRI", "PRI"},
                  
                 };
                  }
