@@ -11,7 +11,7 @@
     <ext:ResourceManager ID="ResourceManager1" runat="server" />   
     <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
         <Items>
-            <ext:GridPanel ID="uxProfileOptionGridPanel" runat="server" Flex="1" Title="Profile Options" Margins="5" Region="Center" SelectionMemory="false">
+            <ext:GridPanel ID="uxProfileOptionGridPanel" runat="server" Flex="1" Title="Profile Options" Margins="5" Region="North" SelectionMemory="false">
                 <TopBar>
                     <ext:Toolbar runat="server">
                         <Items>
@@ -73,8 +73,54 @@
                                 <Select Handler="if(#{uxProfileOptionSelectionModel}.getCount() > 0){#{uxEditButton}.enable(); #{uxDeleteButton}.enable();}else {#{uxEditButton}.disable(); #{uxDeleteButton}.disable();}"></Select>
                                 <Deselect Handler="if(#{uxProfileOptionSelectionModel}.getCount() > 0){#{uxEditButton}.enable(); #{uxDeleteButton}.enable();}else {#{uxEditButton}.disable(); #{uxDeleteButton}.disable();}"></Deselect>
                             </Listeners>
+                              <DirectEvents>
+                                       <Select OnEvent="deProfileOptionSelection">
+                                       </Select>
+                                   </DirectEvents>
                         </ext:RowSelectionModel>
                     </SelectionModel>
+            </ext:GridPanel>
+
+
+
+
+             <ext:GridPanel ID="uxProfileOptionValuesGridPanel" runat="server" Flex="1" Title="Profile Options" Margins="5" Region="Center" SelectionMemory="false">
+               <Store>
+                    <ext:Store runat="server"
+                        ID="uxProfileOptionValuesStore" RemoteSort="true" AutoLoad="false" OnReadData="deReadProfileOptionValues">
+                        <Model>
+                            <ext:Model ID="Model1" runat="server">
+                                <Fields>
+                                    <ext:ModelField Name="USER_PROFILE_OPTION_ID" Type="Int" />
+                                    <ext:ModelField Name="ORG_PROFILE_OPTION_ID" Type="Int" />
+                                    <ext:ModelField Name="PROFILE_OPTION_TYPE" Type="String" />
+                                    <ext:ModelField Name="PROFILE_VALUE" Type="String" />
+                                    <ext:ModelField Name="PROFILE_OWNER_NAME" Type="String" />
+                                </Fields>
+                            </ext:Model>
+                        </Model>
+                        <Proxy>
+                            <ext:PageProxy />
+                        </Proxy>
+                    </ext:Store>
+                </Store>
+                <ColumnModel>
+                    <Columns>
+                        <ext:Column ID="Column3" runat="server" DataIndex="PROFILE_OPTION_TYPE" Text="Type" Flex="1" />
+                        <ext:Column ID="Column2" runat="server" DataIndex="PROFILE_OWNER_NAME" Text="Owner Name" Flex="1" />
+                        <ext:Column ID="Column1" runat="server" DataIndex="PROFILE_VALUE" Text="Value" Flex="1" />
+                    </Columns>
+                </ColumnModel>
+                <Plugins>
+                    <ext:FilterHeader ID="uxProfileOptionValuesFilter" runat="server" Remote="true" />
+                </Plugins>
+                <BottomBar>
+                    <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
+                </BottomBar>
+                <View>
+                    <ext:GridView ID="GridView1" StripeRows="true" runat="server">
+                    </ext:GridView>
+                    </View>
             </ext:GridPanel>
         </Items>
     </ext:Viewport>
