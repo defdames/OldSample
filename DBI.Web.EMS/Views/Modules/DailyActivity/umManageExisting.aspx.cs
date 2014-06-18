@@ -31,6 +31,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 				X.Redirect("~/Views/uxDefault.aspx");
 
 			}
+            uxPostMultipleButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
 		}
 
 		protected long GetOrgId(long HeaderId)
@@ -288,7 +289,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     case "PENDING APPROVAL":
                         uxApproveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
                         uxPostActivityButton.Disabled = true;
-                        uxPostMultipleButton.Disabled = true;
                         uxMarkAsPostedButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
                         uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
                         uxDeactivate.Value = "Deactivate";
@@ -299,7 +299,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     case "APPROVED":
                         uxInactiveActivityButton.Text = "Set Inactive";
                         uxPostActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
-                        uxPostMultipleButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
                         uxMarkAsPostedButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
                         uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
                         uxDeactivate.Value = "Deactivate";
@@ -318,14 +317,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     case "POSTED":
                         uxApproveActivityButton.Disabled = true;
                         uxPostActivityButton.Disabled = true;
-                        uxPostMultipleButton.Disabled = true;
                         uxMarkAsPostedButton.Disabled = true;
                         uxInactiveActivityButton.Disabled = true;
                         break;
                     case "INACTIVE":
                         uxApproveActivityButton.Disabled = true;
                         uxPostActivityButton.Disabled = true;
-                        uxPostMultipleButton.Disabled = true;
                         uxMarkAsPostedButton.Disabled = true;
 
                         uxInactiveActivityButton.Text = "Activate";
@@ -372,13 +369,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 uxApproveActivityButton.Disabled = true;
                 uxPostActivityButton.Disabled = true;
-                uxPostMultipleButton.Disabled = true;
                 uxMarkAsPostedButton.Disabled = true;
                 uxInactiveActivityButton.Disabled = true;
             }
 
             uxExportToPDF.Disabled = false;
             uxEmailPdf.Disabled = false;
+            uxExportPDFCombined.Disabled = false;
+            uxEmailPDFCombined.Disabled = false;
+            
             string LoaderURL = (OrgId == 123 ? "umCombinedTab_IRM.aspx":"umCombinedTab_DBI.aspx") + "?HeaderId=" + HeaderId;
             uxTotalRecords.Text = GetRecordNumber(int.Parse(e.ExtraParams["CurrentPage"])).ToString() + "/" + e.ExtraParams["TotalRecords"];
             uxDetailsPanel.LoadContent(LoaderURL);
@@ -593,7 +592,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 				var data = (from e in _context.DAILY_ACTIVITY_EQUIPMENT
 							join p in _context.CLASS_CODES_V on e.PROJECT_ID equals p.PROJECT_ID
 							where e.HEADER_ID == HeaderId
-							select new EquipmentDetails { CLASS_CODE = p.CLASS_CODE, ORGANIZATION_NAME = p.ORGANIZATION_NAME, ODOMETER_START = e.ODOMETER_START, ODOMETER_END = e.ODOMETER_END, PROJECT_ID = e.PROJECT_ID, EQUIPMENT_ID = e.EQUIPMENT_ID, NAME = p.NAME, HEADER_ID = e.HEADER_ID }).ToList();
+							select new EquipmentDetails { CLASS_CODE = p.CLASS_CODE, ORGANIZATION_NAME = p.ORGANIZATION_NAME, ODOMETER_START = e.ODOMETER_START, ODOMETER_END = e.ODOMETER_END, PROJECT_ID = e.PROJECT_ID, EQUIPMENT_ID = e.EQUIPMENT_ID, NAME = p.NAME, HEADER_ID = e.HEADER_ID, SEGMENT1 = p.SEGMENT1 }).ToList();
 				return data;
 			}
 		}

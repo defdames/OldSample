@@ -69,9 +69,9 @@
 									</Store>
 									<ColumnModel>
 										<Columns>
-											<ext:Column ID="Column1" runat="server" Text="Person ID" DataIndex="PERSON_ID" />
-											<ext:Column ID="Column2" runat="server" Text="Name" DataIndex="EMPLOYEE_NAME" />
-											<ext:Column ID="Column3" runat="server" Text="Job Name" DataIndex="JOB_NAME" />
+											<ext:Column ID="Column1" runat="server" Text="Person ID" DataIndex="PERSON_ID" Flex="20" />
+											<ext:Column ID="Column2" runat="server" Text="Name" DataIndex="EMPLOYEE_NAME" Flex="40" />
+											<ext:Column ID="Column3" runat="server" Text="Job Name" DataIndex="JOB_NAME" Flex="40" />
 										</Columns>
 									</ColumnModel>
 									<TopBar>
@@ -139,7 +139,11 @@
 													<Fields>
 														<ext:ModelField Name="EQUIPMENT_ID" Type="Int" />
 														<ext:ModelField Name="NAME" Type="String" />
-														<ext:ModelField Name="PROJECT_ID" Type="Int" />
+														<ext:ModelField Name="SEGMENT1" Type="String" />
+                                                        <ext:ModelField Name="ORGANIZATION_NAME" />
+                                                        <ext:ModelField Name="CLASS_CODE" />
+                                                        <ext:ModelField Name="ODOMETER_START" />
+                                                        <ext:ModelField Name="ODOMETER_END" />
 													</Fields>
 												</ext:Model>
 											</Model>
@@ -153,9 +157,11 @@
 									</Store>
 									<ColumnModel>
 										<Columns>
-											<ext:Column ID="Column4" runat="server" Text="Equipment Id" DataIndex="EQUIPMENT_ID" />
-											<ext:Column ID="Column5" runat="server" Text="Name" DataIndex="NAME" />
-											<ext:Column ID="Column6" runat="server" Text="Project Id" DataIndex="PROJECT_ID" />
+											<ext:Column ID="Column5" runat="server" Text="Name" DataIndex="NAME" Flex="15" />
+                                            <ext:Column runat="server" Text="Class Code" DataIndex="CLASS_CODE" Flex="35" />
+											<ext:Column ID="Column6" runat="server" Text="Project Number" DataIndex="SEGMENT1" Flex="20" />
+                                            <ext:Column runat="server" DataIndex="ODOMETER_START" Text="Starting Units" Flex="15" />
+                                            <ext:Column runat="server" DataIndex="ODOMETER_END" Text="Ending Units" Flex="15" />
 										</Columns>
 									</ColumnModel>
 									<SelectionModel>
@@ -175,7 +181,7 @@
 						</ext:DropDownField>
 						<ext:FieldContainer ID="FieldContainer1" runat="server"
 							FieldLabel="Time In"
-							MsgTarget="Side" Width="500">
+							MsgTarget="Side" Width="500" Layout="HBoxLayout" >
 							<Items>
 								<ext:TextField runat="server"
 									ID="uxAddEmployeeTimeInDate"
@@ -209,7 +215,7 @@
 						</ext:FieldContainer>
 						<ext:FieldContainer ID="FieldContainer2" runat="server"
 							FieldLabel="Time Out"
-							MsgTarget="Side" Width="500">
+							MsgTarget="Side" Width="500" Layout="HBoxLayout">
 							<Defaults>
 								<ext:Parameter Name="Flex" Value="1" Mode="Raw" />
 								<ext:Parameter Name="HideLabel" Value="true" Mode="Raw" />
@@ -241,74 +247,87 @@
 								</ext:TimeField>
 							</Items>
 						</ext:FieldContainer>
-				<ext:NumberField runat="server"
-					ID="uxAddEmployeeTravelTimeHours"
-					FieldLabel="Travel Time Hours"
-					AllowBlank="false"
-					ConstrainEmptyValue="true"
-					Text="0"
-					MinValue="0"
-					MaxValue="12" Width="500" />
-				<ext:NumberField runat="server"
-					ID="uxAddEmployeeTravelTimeMinutes"
-					FieldLabel="Travel Time Minutes"
-					AllowBlank="false"
-					ConstrainEmptyValue="true"
-					Text="0"
-					MinValue="0"
-					MaxValue="59" Width="500" />
-				<ext:NumberField runat="server"
-					ID="uxAddEmployeeDriveTimeHours"
-					FieldLabel="Drive Time Hours"
-					AllowBlank="false"
-					ConstrainEmptyValue="true"
-					Text="0"
-					MinValue="0"
-					MaxValue="12" Width="500" Hidden="true" />
-				<ext:NumberField runat="server"
-					ID="uxAddEmployeeDriveTimeMinutes"
-					FieldLabel="Drive Time Minutes"
-					AllowBlank="false"
-					ConstrainEmptyValue="true"
-					Text="0"
-					MinValue="0"
-					MaxValue="59" Width="500" Hidden="true" />
-				<ext:NumberField runat="server"
-					ID="uxAddEmployeeShopTimeAMHours"
-					FieldLabel="Shop Time AM Hours"
-					Hidden="true"
-					AllowBlank="false"
-					ConstrainEmptyValue="true"
-					Text="0"
-					MinValue="0"
-					MaxValue="12" Width="500" />
-				<ext:NumberField runat="server"
-					ID="uxAddEmployeeShopTimeAMMinutes"
-					FieldLabel="Shop Time AM Minutes"
-					Hidden="true"
-					AllowBlank="false"
-					ConstrainEmptyValue="true"
-					Text="0"
-					MinValue="0"
-					MaxValue="59" Width="500" />
-				<ext:NumberField runat="server"
-					ID="uxAddEmployeeShopTimePMHours"
-					FieldLabel="Shop Time PM Hours"
-					Hidden="true"
-					AllowBlank="false"
-					ConstrainEmptyValue="true"
-					Text="0"
-					MinValue="0"
-					MaxValue="12" Width="500" />
-				<ext:NumberField runat="server"
-					ID="uxAddEmployeeShopTimePMMinutes"
-					FieldLabel="Shop Time PM Minutes"
-					Hidden="true"
-					AllowBlank="false"
-					ConstrainEmptyValue="true"
-					Text="0"
-					MinValue="0"
-					MaxValue="59" Width="500" />
+                        <ext:FieldContainer runat="server" Layout="HBoxLayout" FieldLabel="Travel Time">
+                            <Items>
+                                <ext:NumberField runat="server"
+					                ID="uxAddEmployeeTravelTimeHours"
+					                FieldLabel="Hours"
+					                AllowBlank="false"
+					                ConstrainEmptyValue="true"
+					                Text="0"
+					                MinValue="0"
+					                MaxValue="12" Width="200" Flex="1" />
+				                <ext:NumberField runat="server"
+					                ID="uxAddEmployeeTravelTimeMinutes"
+					                FieldLabel="Minutes"
+					                AllowBlank="false"
+					                ConstrainEmptyValue="true"
+					                Text="0"
+					                MinValue="0"
+					                MaxValue="59" Width="200" Flex="1" />
+                            </Items>
+                        </ext:FieldContainer>
+                        <ext:FieldContainer runat="server" Layout="HBoxLayout" FieldLabel="Drive Time" ID="uxAddEmployeeDriveTimeContainer" Hidden="true">
+                            <Items>
+                                <ext:NumberField runat="server"
+					                ID="uxAddEmployeeDriveTimeHours"
+					                FieldLabel="Hours"
+					                AllowBlank="false"
+					                ConstrainEmptyValue="true"
+					                Text="0"
+					                MinValue="0"
+					                MaxValue="12" Width="200" Flex="1" />
+				                <ext:NumberField runat="server"
+					                ID="uxAddEmployeeDriveTimeMinutes"
+					                FieldLabel="Minutes"
+					                AllowBlank="false"
+					                ConstrainEmptyValue="true"
+					                Text="0"
+					                MinValue="0"
+					                MaxValue="59" Width="200" Flex="1" />
+                            </Items>
+                        </ext:FieldContainer>
+				        <ext:FieldContainer runat="server" Layout="HBoxLayout" FieldLabel="Shop Time AM" ID="uxShopTimeAMContainer" Hidden="true">
+                            <Items>
+                                <ext:NumberField runat="server"
+					                ID="uxAddEmployeeShopTimeAMHours"
+					                FieldLabel="Hours"
+					                AllowBlank="false"
+					                ConstrainEmptyValue="true"
+					                Text="0"
+					                MinValue="0"
+					                MaxValue="12" Width="200" Flex="1" />
+				                <ext:NumberField runat="server"
+					                ID="uxAddEmployeeShopTimeAMMinutes"
+					                FieldLabel="Minutes"
+					                AllowBlank="false"
+					                ConstrainEmptyValue="true"
+					                Text="0"
+					                MinValue="0"
+					                MaxValue="59" Width="200" Flex="1" />
+                            </Items>
+				        </ext:FieldContainer>
+				        <ext:FieldContainer runat="server" Layout="HBoxLayout" FieldLabel="Shop Time PM" ID="uxShopTimePMContainer" Hidden="true">
+                            <Items>
+                                <ext:NumberField runat="server"
+					                ID="uxAddEmployeeShopTimePMHours"
+					                FieldLabel="Hours"
+					                AllowBlank="false"
+					                ConstrainEmptyValue="true"
+					                Text="0"
+					                MinValue="0"
+					                MaxValue="12" Width="200" Flex="1" />
+				                <ext:NumberField runat="server"
+					                ID="uxAddEmployeeShopTimePMMinutes"
+					                FieldLabel="Minutes"
+					                AllowBlank="false"
+					                ConstrainEmptyValue="true"
+					                Text="0"
+					                MinValue="0"
+					                MaxValue="59" Width="200" Flex="1" />
+                            </Items>
+				        </ext:FieldContainer>
+				
 				<ext:Checkbox runat="server"
 					ID="uxAddEmployeePerDiem"
 					FieldLabel="Per Diem" />
@@ -353,9 +372,9 @@
 							</Store>
 							<ColumnModel>
 								<Columns>
-									<ext:Column ID="Column13" runat="server" Text="Role Name" DataIndex="MEANING" />
-									<ext:Column ID="Column14" runat="server" Text="County" DataIndex="COUNTY" />
-									<ext:Column ID="Column15" runat="server" Text="State" DataIndex="STATE" />
+									<ext:Column ID="Column13" runat="server" Text="Role Name" DataIndex="MEANING" Flex="33" />
+									<ext:Column ID="Column14" runat="server" Text="County" DataIndex="COUNTY" Flex="34" />
+									<ext:Column ID="Column15" runat="server" Text="State" DataIndex="STATE" Flex="33" />
 								</Columns>
 							</ColumnModel>
 							<SelectionModel>

@@ -193,15 +193,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Model Model2;
         
         /// <summary>
-        /// Column4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column Column4;
-        
-        /// <summary>
         /// Column5 control.
         /// </summary>
         /// <remarks>
@@ -292,6 +283,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.NumberField uxAddEmployeeTravelTimeMinutes;
         
         /// <summary>
+        /// uxAddEmployeeDriveTimeContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer uxAddEmployeeDriveTimeContainer;
+        
+        /// <summary>
         /// uxAddEmployeeDriveTimeHours control.
         /// </summary>
         /// <remarks>
@@ -310,6 +310,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.NumberField uxAddEmployeeDriveTimeMinutes;
         
         /// <summary>
+        /// uxShopTimeAMContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer uxShopTimeAMContainer;
+        
+        /// <summary>
         /// uxAddEmployeeShopTimeAMHours control.
         /// </summary>
         /// <remarks>
@@ -326,6 +335,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.NumberField uxAddEmployeeShopTimeAMMinutes;
+        
+        /// <summary>
+        /// uxShopTimePMContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer uxShopTimePMContainer;
         
         /// <summary>
         /// uxAddEmployeeShopTimePMHours control.
