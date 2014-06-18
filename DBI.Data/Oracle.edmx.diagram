@@ -141,8 +141,8 @@
         <AssociationConnector Association="OracleModel.FK_ACTUAL_NUM_DETAIL_TASK_ID" />
         <AssociationConnector Association="OracleModel.FK_BUDGET_NUM_DETAIL_TASK_ID" />
         <AssociationConnector Association="OracleModel.FK_DETAIL_DETAIL_TASK_ID" />
-        <EntityTypeShape EntityType="OracleModel.SYS_ORG_PROFILE_OPTIONS" Width="1.5" PointX="1.409538254798175" PointY="20.224106023192455" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING" Width="1.5" PointX="2.2491105581862434" PointY="14.64363738086244" />
+        <EntityTypeShape EntityType="OracleModel.SYS_ORG_PROFILE_OPTIONS" Width="1.5" PointX="19.125" PointY="20.25" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING" Width="1.5" PointX="26.75" PointY="0.5" />
         <AssociationConnector Association="OracleModel.FK_CROSSINGS_CONTACT_ID" />
         <AssociationConnector Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID" />
         <AssociationConnector Association="OracleModel.FK_INCIDENT_CROSSING_ID" />

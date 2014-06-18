@@ -1306,8 +1306,8 @@
           <Property Name="MAX_SPEED" Type="number" Precision="15" />
           <Property Name="SUB_CONTRACTED" Type="char" MaxLength="1" />
           <Property Name="FENCE_ENCROACHMENT" Type="char" MaxLength="1" />
-          <Property Name="LATITUDE" Type="number" Precision="9" Scale="6" />
-          <Property Name="LONGITUDE" Type="number" Precision="9" Scale="6" />
+          <Property Name="LATITUDE" Type="float" Precision="126" />
+          <Property Name="LONGITUDE" Type="float" Precision="126" />
           <Property Name="PROPERTY_TYPE" Type="varchar2" MaxLength="15" />
           <Property Name="WARNING_DEVICE" Type="varchar2" MaxLength="50" />
           <Property Name="SURFACE" Type="varchar2" MaxLength="50" />
@@ -7214,8 +7214,8 @@
           <Property Type="Int64" Name="MAX_SPEED" />
           <Property Type="String" Name="SUB_CONTRACTED" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Type="String" Name="FENCE_ENCROACHMENT" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="Decimal" Name="LATITUDE" Precision="9" Scale="6" />
-          <Property Type="Decimal" Name="LONGITUDE" Precision="9" Scale="6" />
+          <Property Type="Decimal" Name="LATITUDE" />
+          <Property Type="Decimal" Name="LONGITUDE" />
           <Property Type="String" Name="PROPERTY_TYPE" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="WARNING_DEVICE" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="SURFACE" MaxLength="50" FixedLength="false" Unicode="false" />
