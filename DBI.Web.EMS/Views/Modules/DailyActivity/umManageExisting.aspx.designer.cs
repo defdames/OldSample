@@ -202,6 +202,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Panel uxDetailsPanel;
         
         /// <summary>
+        /// uxLoadPreviousButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxLoadPreviousButton;
+        
+        /// <summary>
         /// uxTotalRecords control.
         /// </summary>
         /// <remarks>
@@ -209,6 +218,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.ToolbarTextItem uxTotalRecords;
+        
+        /// <summary>
+        /// uxLoadNextButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxLoadNextButton;
         
         /// <summary>
         /// Toolbar2 control.

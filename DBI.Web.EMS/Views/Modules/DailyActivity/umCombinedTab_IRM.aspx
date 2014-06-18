@@ -32,11 +32,12 @@
 		var showButtons = function () {
 		    App.uxSaveFooterButton.show();
 		    App.uxSaveHeaderButton.show();
+		    App.uxSaveHeaderButton.enable();
 		};
 
 		var disableOnError = function () {
 		    parent.App.uxPostActivityButton.disable();
-		    parent.App.uxApproveActivityButton.disable();
+            parent.App.uxApproveActivityButton.disable();
 		};
 	</script>
 </head>
@@ -263,7 +264,7 @@
 						</ext:ComboBox>
 					</Items>
 					<Buttons>
-						<ext:Button runat="server" ID="uxSaveHeaderButton" Icon="Add" Text="Save" Hidden="true" Disabled="true">
+						<ext:Button runat="server" ID="uxSaveHeaderButton" Icon="Add" Text="Save" Hidden="true" Disabled="true" Enabled="false">
 							<DirectEvents>
 								<Click OnEvent="deUpdateHeader">
 									<EventMask ShowMask="true" />
@@ -374,11 +375,21 @@
 										</Click>
 									</DirectEvents>
 								</ext:Button>
+                                <ext:ToolbarSeparator runat="server" />
+                                <ext:Button runat="server"
+									ID="uxChoosePerDiemButton"
+									Text="Choose Per Diem"
+									Icon="LinkAdd"
+									Disabled="true">
+									<Listeners>
+										<Click Handler="parent.App.direct.dmLoadPerDiemWindow(App.uxHeaderField.value, App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.EMPLOYEE_ID)" />
+									</Listeners>
+								</ext:Button>
 							</Items>
 						</ext:Toolbar>
 					</TopBar>
 					<Listeners>
-						<Select Handler="#{uxEditEmployeeButton}.enable(); #{uxDeleteEmployeeButton}.enable()" />
+						<Select Handler="#{uxEditEmployeeButton}.enable(); #{uxDeleteEmployeeButton}.enable(); #{uxChoosePerDiemButton}.enable()" />
 					</Listeners>
 				</ext:GridPanel>
 				<ext:GridPanel runat="server" ID="uxEquipmentGrid"
@@ -610,12 +621,12 @@
 					</Store>
 					<ColumnModel>
 						<Columns>
-							<ext:Column runat="server" DataIndex="INV_NAME" Text="Inventory Org" Flex="1" />
-							<ext:Column runat="server" DataIndex="SUB_INVENTORY_SECONDARY_NAME" Text="Sub-Inv Name" Flex="1" />
-							<ext:Column runat="server" DataIndex="SEGMENT1" Text="Item ID" Flex="1" />
-							<ext:Column runat="server" DataIndex="DESCRIPTION" Text="Item" Flex="1" />
-							<ext:Column runat="server" DataIndex="RATE" Text="Quantity" Flex="1" />
-                            <ext:Column runat="server" DataIndex="UNIT_OF_MEASURE"	Text="Unit" Flex="1" />
+							<ext:Column runat="server" DataIndex="INV_NAME" Text="Inventory Org" Flex="15" />
+							<ext:Column runat="server" DataIndex="SUB_INVENTORY_SECONDARY_NAME" Text="Sub-Inv Name" Flex="15" />
+							<ext:Column runat="server" DataIndex="SEGMENT1" Text="Item ID" Flex="15" />
+							<ext:Column runat="server" DataIndex="DESCRIPTION" Text="Item" Flex="35" />
+							<ext:Column runat="server" DataIndex="RATE" Text="Quantity" Flex="10" />
+                            <ext:Column runat="server" DataIndex="UNIT_OF_MEASURE"	Text="Unit" Flex="10" />
 						</Columns>
 					</ColumnModel>
 					<TopBar>

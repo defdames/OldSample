@@ -661,7 +661,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 data.CONTRACTOR = null;
             }
             data.PERSON_ID = PersonId;
-            data.LICENSE = uxLicenseField.Value.ToString();
+            try
+            {
+                data.LICENSE = uxLicenseField.Value.ToString();
+            }
+            catch (NullReferenceException)
+            {
+                data.LICENSE = null;
+            }
             data.STATE = uxStateField.Value.ToString();
             try
             {

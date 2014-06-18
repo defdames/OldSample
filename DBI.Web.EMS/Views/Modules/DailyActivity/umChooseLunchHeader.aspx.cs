@@ -115,7 +115,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(ExistingLunch);
             }
             GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(EmployeeToUpdate);
-            X.Js.Call("parent.App.uxPlaceholderWindow.hide(); parent.App.uxEmployeeTab.reload()");
+            X.Js.Call("parent.App.uxDetailsPanel.reload(); parent.App.uxPlaceholderWindow.close()");
         }
 
         protected int GetLunchLength(long PersonId, DateTime HeaderDate)

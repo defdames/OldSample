@@ -30,13 +30,14 @@
 		};
 
 		var showButtons = function () {
-		    App.uxSaveFooterButton.show();
-		    App.uxSaveHeaderButton.show();
+			App.uxSaveFooterButton.show();
+			App.uxSaveHeaderButton.show();
+			App.uxSaveHeaderButton.enable();
 		};
 
 		var disableOnError = function () {
-		    parent.App.uxPostActivityButton.disable();
-		    parent.App.uxApproveActivityButton.disable();
+			parent.App.uxPostActivityButton.disable();
+			parent.App.uxApproveActivityButton.disable();
 		};
 	</script>
 </head>
@@ -263,7 +264,7 @@
 						</ext:ComboBox>
 					</Items>
 					<Buttons>
-						<ext:Button runat="server" ID="uxSaveHeaderButton" Icon="Add" Text="Save" Hidden="true" Disabled="true">
+						<ext:Button runat="server" ID="uxSaveHeaderButton" Icon="Add" Text="Save" Hidden="true" Disabled="true" Enabled="false">
 							<DirectEvents>
 								<Click OnEvent="deUpdateHeader">
 									<EventMask ShowMask="true" />
@@ -372,11 +373,31 @@
 										</Click>
 									</DirectEvents>
 								</ext:Button>
+								<ext:ToolbarSeparator runat="server" />
+								<ext:Button runat="server"
+									ID="uxChooseLunchHeaderButton"
+									Text="Choose Lunch Project"
+									Icon="Link"
+									Disabled="true">
+									<Listeners>
+										<Click Handler="parent.App.direct.dmLoadLunchWindow(App.uxHeaderField.value, App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.EMPLOYEE_ID)" />
+									</Listeners>
+								</ext:Button>
+								<ext:ToolbarSpacer ID="ToolbarSpacer3" runat="server" />
+								<ext:Button runat="server"
+									ID="uxChoosePerDiemButton"
+									Text="Choose Per Diem"
+									Icon="LinkAdd"
+									Disabled="true">
+									<Listeners>
+										<Click Handler="parent.App.direct.dmLoadPerDiemWindow(App.uxHeaderField.value, App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.EMPLOYEE_ID)" />
+									</Listeners>
+								</ext:Button>
 							</Items>
 						</ext:Toolbar>
 					</TopBar>
 					<Listeners>
-						<Select Handler="#{uxEditEmployeeButton}.enable(); #{uxDeleteEmployeeButton}.enable()" />
+						<Select Handler="#{uxEditEmployeeButton}.enable(); #{uxDeleteEmployeeButton}.enable(); #{uxChooseLunchHeaderButton}.enable(); #{uxChoosePerDiemButton}.enable()" />
 					</Listeners>
 				</ext:GridPanel>
 				<ext:GridPanel runat="server" ID="uxEquipmentGrid"

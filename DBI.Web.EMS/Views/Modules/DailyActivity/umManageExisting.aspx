@@ -43,6 +43,10 @@
 		.yellow-warning .x-grid-cell, .yellow-warning .x-grid-rowwrap-div {
 			background: #ffff00 !important;
 		}
+
+        .x-toolbar div.ux-bold-text-item {
+            font-weight: bold;
+        }
 	</style>
 </head>
 <body>
@@ -55,7 +59,7 @@
 					<Items>
 						<ext:GridPanel runat="server" ID="uxManageGrid" Layout="FitLayout" SelectionMemoryEvents="false" SelectionMemory="true" Title="DRS List">
 							<SelectionModel>
-								<ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Single" />
+								<ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="false" Mode="Single" />
 							</SelectionModel>
 							<Store>
 								<ext:Store runat="server" AutoDataBind="true" ID="uxManageGridStore" OnReadData="deReadHeaderData" PageSize="20" RemoteSort="true" IsPagingStore="true">
@@ -200,7 +204,7 @@
 								<ext:Toolbar runat="server">
 									<Items>
 										<ext:ToolbarFill runat="server" />
-										<ext:Button runat="server" Text="Previous DRS" Icon="ArrowLeft">
+										<ext:Button runat="server" Text="Previous DRS" Icon="ArrowLeft" ID="uxLoadPreviousButton">
 											<DirectEvents>
 												<Click OnEvent="deLoadPreviousActivity">
 													<ExtraParams>
@@ -210,14 +214,15 @@
 											</DirectEvents>
 										</ext:Button>
 										<ext:ToolbarSpacer runat="server" />
-										<ext:ToolbarTextItem runat="server" ID="uxTotalRecords" />
+										<ext:ToolbarTextItem runat="server" ID="uxTotalRecords" Cls="ux-bold-text-item"  />
 										<ext:ToolbarSpacer runat="server" />
-										<ext:Button runat="server" Text="Next DRS" Icon="ArrowRight" IconAlign="Right">
+										<ext:Button runat="server" Text="Next DRS" Icon="ArrowRight" IconAlign="Right" ID="uxLoadNextButton">
 											<DirectEvents>
 												<Click OnEvent="deLoadNextActivity">
 													<ExtraParams>
 														<ext:Parameter Name="FromRecord" Value="#{uxManageGridPaging}.getPageData().fromRecord" Mode="Raw" />
 														<ext:Parameter Name="ToRecord" Value="#{uxManageGridPaging}.getPageData().toRecord" Mode="Raw" />
+                                                        <ext:Parameter Name="TotalRecords" Value="#{uxManageGridStore}.getTotalCount()" Mode="Raw" />
 													</ExtraParams>
 												</Click>
 											</DirectEvents>
@@ -334,8 +339,6 @@
 							</TopBar>
 						</ext:Panel>
 					</Bin>
-					<TopBar>
-					</TopBar>
 				</ext:TabPanel>
 				<%-- Hidden Windows --%>
 				<ext:Window runat="server"

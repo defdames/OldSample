@@ -562,6 +562,33 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Button uxDeleteEmployeeButton;
         
         /// <summary>
+        /// uxChooseLunchHeaderButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxChooseLunchHeaderButton;
+        
+        /// <summary>
+        /// ToolbarSpacer3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer3;
+        
+        /// <summary>
+        /// uxChoosePerDiemButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxChoosePerDiemButton;
+        
+        /// <summary>
         /// uxEquipmentGrid control.
         /// </summary>
         /// <remarks>
