@@ -58,22 +58,22 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.ComboBox uxSegment1;
         
         /// <summary>
-        /// uxSegment1Store control.
+        /// uxCompanyNameStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxSegment1Store;
+        protected global::Ext.Net.Store uxCompanyNameStore;
         
         /// <summary>
-        /// Model5 control.
+        /// Model6 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Model Model5;
+        protected global::Ext.Net.Model Model6;
         
         /// <summary>
         /// uxSegment1Description control.
@@ -389,6 +389,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxAddGLCodeButton;
+        
+        /// <summary>
+        /// uxExcludeGLCodeButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxExcludeGLCodeButton;
         
         /// <summary>
         /// GridView1 control.
