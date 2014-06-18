@@ -95,7 +95,6 @@
                                 <Columns>
                                     <ext:Column ID="Column2" runat="server" DataIndex="BUDGET_NAME" Text="Budget Type" Flex="1" />
                                     <ext:Column ID="Column1" runat="server" DataIndex="BUDGET_DESCRIPTION" Text="Description" Flex="1" />
-                                    <ext:Column ID="Column3" runat="server" DataIndex="PARENT_BUDGET_DESCRIPTION" Text="Parent" Flex="1" />
                                 </Columns>
                             </ColumnModel>
                             <Plugins>
