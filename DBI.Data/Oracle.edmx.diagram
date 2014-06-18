@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="8b6e550daa334a819f81705cc030411f" Name="Diagram1" ZoomLevel="77">
+      <Diagram DiagramId="8b6e550daa334a819f81705cc030411f" Name="Diagram1" ZoomLevel="57">
         <EntityTypeShape EntityType="OracleModel.SYS_USERS" Width="1.875" PointX="0.5" PointY="0.625" />
         <EntityTypeShape EntityType="OracleModel.SYS_USER_INFORMATION" Width="2.875" PointX="3.75" PointY="0.75" />
         <AssociationConnector Association="OracleModel.SYS_USERSSYS_USER_INFORMATION" />
@@ -91,11 +91,6 @@
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="1.5" PointX="17.875" PointY="23" />
         <EntityTypeShape EntityType="OracleModel.GL_ACCOUNTS_V" Width="1.5" PointX="16.5" PointY="9.625" />
         <EntityTypeShape EntityType="OracleModel.ORG_HIER_V" Width="1.5" PointX="3.625" PointY="27.25" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING" Width="1.5" PointX="27.5" PointY="0.625" />
-        <AssociationConnector Association="OracleModel.FK_CROSSINGS_CONTACT_ID" />
-        <AssociationConnector Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID" />
-        <AssociationConnector Association="OracleModel.FK_INCIDENT_CROSSING_ID" />
-        <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" Width="1.5" PointX="1" PointY="21.375" />
         <AssociationConnector Association="OracleModel.FK_PRODUCTION_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_PROJECT" Width="1.5" PointX="21.625" PointY="11.5" />
@@ -105,7 +100,6 @@
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_VERSION" Width="1.5" PointX="18" PointY="25.875" />
         <AssociationConnector Association="OracleModel.FK_CONTACTS_RAILROAD_ID" />
         <AssociationConnector Association="OracleModel.FK_PROJECT_RAILROAD_ID" />
-        <AssociationConnector Association="OracleModel.FK_CROSSINGS_RAILROAD_ID" />
         <AssociationConnector Association="OracleModel.FK_INVENTORY_CHEMICAL_MIX_ID" />
         <AssociationConnector Association="OracleModel.FK_INVENTORY_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_LINES" Width="1.5" PointX="24" PointY="91.25" />
@@ -147,6 +141,13 @@
         <AssociationConnector Association="OracleModel.FK_ACTUAL_NUM_DETAIL_TASK_ID" />
         <AssociationConnector Association="OracleModel.FK_BUDGET_NUM_DETAIL_TASK_ID" />
         <AssociationConnector Association="OracleModel.FK_DETAIL_DETAIL_TASK_ID" />
+        <EntityTypeShape EntityType="OracleModel.SYS_ORG_PROFILE_OPTIONS" Width="1.5" PointX="19.125" PointY="20.25" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING" Width="1.5" PointX="26.75" PointY="0.5" />
+        <AssociationConnector Association="OracleModel.FK_CROSSINGS_CONTACT_ID" />
+        <AssociationConnector Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID" />
+        <AssociationConnector Association="OracleModel.FK_INCIDENT_CROSSING_ID" />
+        <AssociationConnector Association="OracleModel.FK_CROSSINGS_RAILROAD_ID" />
+        <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

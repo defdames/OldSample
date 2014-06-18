@@ -5,10 +5,29 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title></title>
+    <script>
+        var onGroupCommand = function (column, command, group) {
+            if (command === 'SelectGroup') {
+                var isSelected = App.uxEmployeeHoursGrid.getSelectionModel().isSelected(group.children[0]);
+
+                if (!isSelected) {
+                    column.grid.getSelectionModel().select(group.children, true);
+                } else {
+                    column.grid.getSelectionModel().deselect(group.children, true);
+                };
+            }
+            
+        };
+    </script>
 </head>
 <body>
     
-        <ext:ResourceManager ID="ResourceManager1" runat="server"/>
+        <ext:ResourceManager ID="ResourceManager1" runat="server">
+            <CustomDirectEvents>
+
+
+            </CustomDirectEvents>
+        </ext:ResourceManager>
     <form id="form1" runat="server">
     <ext:viewport ID="Viewport1" runat="server" Layout="Fit">
         
@@ -50,8 +69,35 @@
                     <ext:Column ID="AdjustedTime" runat="server" Text="Adjusted Time" Flex="1" DataIndex="ADJUSTED_HOURS_GRID"/>
                     <ext:Column ID="Approved" runat="server" Text="Approved" Flex="1" DataIndex="APPROVED" />
                     <ext:Column ID="Submitted" runat="server" Text="Submitted" Flex="1" DataIndex="SUBMITTED" />
+                    <ext:CommandColumn ID="ccEditTime" runat="server">
+                        <Commands>
+                            <ext:GridCommand Icon="NoteEdit" CommandName="Edit" Text="Edit"/>
+                        </Commands>
+                        <DirectEvents>
+                            <Command OnEvent="deEditTime">
+                                <EventMask ShowMask ="true" />
+                                <ExtraParams>
+                                    <ext:Parameter Name="EditTime" Value="Ext.encode(#{uxEmployeeHoursGrid}.getRowsValues({selectedOnly : true}))" Mode="Raw" />
+                                </ExtraParams>
+
+                            </Command>
+                        </DirectEvents>
+                    
+                    </ext:CommandColumn>
+                    <ext:CommandColumn ID="CommandColumn1" runat="server" Hidden="true">
+                        <GroupCommands>
+                            <ext:GridCommand Icon="TableRow" CommandName="SelectGroup">
+                                <ToolTip Title="Select" Text="Select all rows of the group" />
+                            </ext:GridCommand>
+                            <ext:CommandFill />
+                        </GroupCommands>
+                        <Listeners>
+                            <GroupCommand Fn="onGroupCommand" />
+                        </Listeners>
+                    </ext:CommandColumn>
                 </Columns>
             </ColumnModel>
+            
             <TopBar>
                 <ext:Toolbar runat="server">
                     <Items>
@@ -95,11 +141,8 @@
                     StartCollapsed="true"/>                               
             </Features>
             <SelectionModel>
-                <ext:CheckboxSelectionModel ID="uxTimeClockSelectionModel" runat="server" Mode="Multi" />
+                <ext:CheckboxSelectionModel ID="uxTimeClockSelectionModel" runat="server" Mode="Multi"/>
             </SelectionModel>
-            <Plugins>
-                <ext:CellEditing runat="server" ClicksToEdit="2"/>
-            </Plugins> 
         </ext:GridPanel>
            </Items>
         </ext:viewport>

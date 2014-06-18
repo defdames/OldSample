@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace DBI.Data
 {
+
+    #region User Profile Options
+
     /// <summary>
     /// Custom Methods and functions over SYS_PROFILE_OPTIONS
     /// </summary>
@@ -104,6 +107,148 @@ namespace DBI.Data
         }
     }
 
+    public partial class SYS_ORG_PROFILE_OPTIONS
+    {
+        #region Organization Profile Options
+
+        /// <summary>
+        /// Returns a list of organization profile options
+        /// </summary>
+        /// <returns></returns>
+        public static List<SYS_ORG_PROFILE_OPTIONS_V> OrganizationProfileOptions()
+        {
+            try
+            {
+                using (Entities _context = new Entities())
+                {
+                    var data = from a in _context.SYS_ORG_PROFILE_OPTIONS
+                               join b in _context.SYS_PROFILE_OPTIONS on a.PROFILE_OPTION_ID equals b.PROFILE_OPTION_ID
+                               select new SYS_ORG_PROFILE_OPTIONS_V { PROFILE_OPTION_ID = b.PROFILE_OPTION_ID, PROFILE_KEY = b.PROFILE_KEY, DESCRIPTION = b.DESCRIPTION, ORG_PROFILE_OPTION_ID = a.ORG_PROFILE_OPTION_ID, PROFILE_VALUE = a.PROFILE_VALUE, ORGANIZATION_ID = a.ORGANIZATION_ID };
+                    return data.ToList();
+
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        /// <summary>
+        /// Returns an organization profile option by profile option name and organization id
+        /// </summary>
+        /// <param name="profileOptionName"></param>
+        /// <param name="organizationId"></param>
+        /// <returns></returns>
+        public static string OrganizationProfileOption(string profileOptionName, long organizationId)
+        {
+            try
+            {
+                SYS_ORG_PROFILE_OPTIONS_V _option = OrganizationProfileOptions().Where(x => x.PROFILE_KEY == profileOptionName && x.ORGANIZATION_ID == organizationId).SingleOrDefault();
+                string _value = string.Empty;
+                if (_option != null)
+                {
+                    _value = _option.PROFILE_VALUE;
+                }
+                return _value;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
+
+        /// <summary>
+        /// Returns a profile option by profile option ID and organization
+        /// </summary>
+        /// <param name="profileOptionId"></param>
+        /// <param name="organizationId"></param>
+        /// <returns></returns>
+        public static SYS_ORG_PROFILE_OPTIONS OrganizationProfileOption(decimal profileOptionId, long organizationId)
+        {
+            try
+            {
+                using (Entities _context = new Entities())
+                {
+                    SYS_ORG_PROFILE_OPTIONS _option = _context.SYS_ORG_PROFILE_OPTIONS.Where(x => x.PROFILE_OPTION_ID == profileOptionId && x.ORGANIZATION_ID == organizationId).SingleOrDefault();
+                    return _option;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Sets a profile option for an organization level.
+        /// </summary>
+        /// <param name="profileOptionName"></param>
+        /// <param name="keyValue"></param>
+        /// <param name="organizationId"></param>
+        public static void SetOrganizationProfileOption(string profileOptionName, string keyValue, long organizationId)
+        {
+            try
+            {
+                SYS_PROFILE_OPTIONS _option = SYS_PROFILE_OPTIONS.ProfileOption(profileOptionName);
+                SYS_USER_INFORMATION _loggedInUser = SYS_USER_INFORMATION.LoggedInUser();
+
+                if (_option == null)
+                {
+                    // Option doesn't exist
+                    throw new DBICustomException(string.Format("Can't update profile option {0}. Profile option doesn't exist!", profileOptionName));
+                }
+
+                SYS_ORG_PROFILE_OPTIONS _profileOption = OrganizationProfileOption(_option.PROFILE_OPTION_ID, organizationId);
+
+                if (_profileOption != null)
+                {
+                    //Perform update
+                    _profileOption.PROFILE_VALUE = keyValue;
+                    _profileOption.MODIFY_DATE = DateTime.Now;
+                    _profileOption.MODIFIED_BY = _loggedInUser.USER_NAME;
+                    _profileOption.MODIFIED_BY = _loggedInUser.USER_NAME;
+                    _profileOption.ORGANIZATION_ID = organizationId;
+                    DBI.Data.GenericData.Update<SYS_ORG_PROFILE_OPTIONS>(_profileOption);
+                }
+                else
+                {
+                    //Create new and save
+                    _profileOption = new SYS_ORG_PROFILE_OPTIONS();
+                    _profileOption.PROFILE_OPTION_ID = _option.PROFILE_OPTION_ID;
+                    _profileOption.CREATE_DATE = DateTime.Now;
+                    _profileOption.ORGANIZATION_ID = organizationId;
+                    _profileOption.MODIFY_DATE = DateTime.Now;
+                    _profileOption.CREATED_BY = _loggedInUser.USER_NAME;
+                    _profileOption.MODIFIED_BY = _loggedInUser.USER_NAME;
+                    _profileOption.PROFILE_VALUE = keyValue;
+                    DBI.Data.GenericData.Insert<SYS_ORG_PROFILE_OPTIONS>(_profileOption);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+
+        }
+
+        public class SYS_ORG_PROFILE_OPTIONS_V : SYS_ORG_PROFILE_OPTIONS
+        {
+            public string PROFILE_KEY { get; set; }
+            public string DESCRIPTION { get; set; }
+
+        }
+
+        #endregion
+    }
+
     /// <summary>
     /// Custom methods and functions over SYS_USER_PROFILE_OPTIONS
     /// </summary>
@@ -143,7 +288,7 @@ namespace DBI.Data
                 using (Entities _context = new Entities())
                 {
                     var data = from a in _context.SYS_USER_PROFILE_OPTIONS.Include("SYS_PROFILE_OPTIONS")
-                               select new SYS_USER_PROFILE_OPTIONS_V { PROFILE_KEY = a.SYS_PROFILE_OPTIONS.PROFILE_KEY, DESCRIPTION = a.SYS_PROFILE_OPTIONS.DESCRIPTION, USER_PROFILE_OPTION_ID = a.USER_PROFILE_OPTION_ID, PROFILE_VALUE = a.PROFILE_VALUE, USER_ID = a.USER_ID };
+                               select new SYS_USER_PROFILE_OPTIONS_V { PROFILE_OPTION_ID = a.SYS_PROFILE_OPTIONS.PROFILE_OPTION_ID, PROFILE_KEY = a.SYS_PROFILE_OPTIONS.PROFILE_KEY, DESCRIPTION = a.SYS_PROFILE_OPTIONS.DESCRIPTION, USER_PROFILE_OPTION_ID = a.USER_PROFILE_OPTION_ID, PROFILE_VALUE = a.PROFILE_VALUE, USER_ID = a.USER_ID };
                     return data.ToList();
 
                 }
@@ -300,14 +445,13 @@ namespace DBI.Data
             }
         }
 
-
         public class SYS_USER_PROFILE_OPTIONS_V : SYS_USER_PROFILE_OPTIONS
         {
             public string PROFILE_KEY { get; set; }
             public string DESCRIPTION { get; set; }
         }
 
-
+    #endregion
     }
 
     /// <summary>
@@ -641,47 +785,72 @@ namespace DBI.Data
             public string SUBMITTED { get; set; }
             public int SUPERVISOR_ID { get; set; }
             public string COMPLETED { get; set; }
+         
+            
         }
 
     }
 
 
-    public partial class CROSSINGS
+    public class XXEMS
     {
-        public static void UpdateServiceUnits()
+
+
+        /// <summary>
+        /// Returns a list of all profile options, user and organization and their values
+        /// </summary>
+        /// <returns></returns>
+        public static List<SYS_PROFILE_OPTIONS_V2> ProfileOptionsByType(decimal profileOptionId)
         {
             try
             {
-                List<CROSSING> _crossings = new List<CROSSING>();
-                using (Entities _context = new Entities())
-                {
-                    _crossings = _context.CROSSINGS.ToList();
+                List<DBI.Data.SYS_USER_PROFILE_OPTIONS.SYS_USER_PROFILE_OPTIONS_V> _userProfileOptions = SYS_USER_PROFILE_OPTIONS.UserProfileOptions().Where(x => x.PROFILE_OPTION_ID == profileOptionId).ToList();
+                List<DBI.Data.SYS_ORG_PROFILE_OPTIONS.SYS_ORG_PROFILE_OPTIONS_V> _orgProfileOptions = SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOptions().Where(x => x.PROFILE_OPTION_ID == profileOptionId).ToList();
 
+                List<SYS_PROFILE_OPTIONS_V2> _options = new List<SYS_PROFILE_OPTIONS_V2>();
+
+                foreach (var userOption in _userProfileOptions)
+                {
+                    SYS_PROFILE_OPTIONS_V2 _option = new SYS_PROFILE_OPTIONS_V2();
+                    _option.PROFILE_OPTION_TYPE = "User";
+                    _option.PROFILE_OWNER_NAME = SYS_USER_INFORMATION.UserByID(userOption.USER_ID).USER_NAME;
+                    _option.USER_PROFILE_OPTION_ID = userOption.USER_PROFILE_OPTION_ID;
+                    _option.PROFILE_VALUE = userOption.PROFILE_VALUE;
+                    _options.Add(_option);
                 }
 
-                _crossings = _crossings.Where(x => x.CROSSING_ID == 164).ToList();
-
-                foreach (var _crossing in _crossings)
+                foreach (var orgOption in _orgProfileOptions)
                 {
-                    DBI.Data.GMS.ServiceUnitResponse _data = DBI.Data.GMS.ServiceUnitData.ServiceUnits().Where(x => x.sub_division.ToUpper() == _crossing.SUB_DIVISION).FirstOrDefault();
-
-                    if (_data != null)
-                    {
-
-                        System.Diagnostics.Debug.WriteLine(_crossing.CROSSING_ID);
-                        _crossing.SERVICE_UNIT = _data.service_unit;
-                        DBI.Data.GenericData.Update<CROSSING>(_crossing);
-
-                    }
+                    SYS_PROFILE_OPTIONS_V2 _option = new SYS_PROFILE_OPTIONS_V2();
+                    _option.PROFILE_OPTION_TYPE = "Organization";
+                    _option.PROFILE_OWNER_NAME = HR.Organization(orgOption.ORGANIZATION_ID).ORGANIZATION_NAME;
+                    _option.USER_PROFILE_OPTION_ID = orgOption.ORG_PROFILE_OPTION_ID;
+                    _option.PROFILE_VALUE = orgOption.PROFILE_VALUE;
+                    _options.Add(_option);
                 }
+
+                return _options;
             }
-            catch (Oracle.ManagedDataAccess.Types.OracleTruncateException ex)
+            catch (Exception)
             {
 
-                throw (ex);
+                throw;
             }
-           
+
         }
+
+
+
+        public class SYS_PROFILE_OPTIONS_V2
+        {
+            public decimal USER_PROFILE_OPTION_ID { get; set; }
+            public decimal ORG_PROFILE_OPTION_ID { get; set; }
+            public string PROFILE_OPTION_TYPE { get; set; }
+            public string PROFILE_VALUE { get; set; }
+            public string PROFILE_OWNER_NAME { get; set; }
+        }
+
     }
+
 }
 

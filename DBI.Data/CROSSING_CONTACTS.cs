@@ -35,7 +35,7 @@ namespace DBI.Data
         public string MODIFIED_BY { get; set; }
         public Nullable<decimal> RAILROAD_ID { get; set; }
     
-        public virtual ICollection<CROSSING> CROSSINGS { get; set; }
         public virtual CROSSING_RAILROAD CROSSING_RAILROAD { get; set; }
+        public virtual ICollection<CROSSING> CROSSINGS { get; set; }
     }
 }
