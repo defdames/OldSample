@@ -8,9 +8,8 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
-    
-    </div>
+    <ext:ResourceManager ID="ResourceManager1" runat="server" />
+
     </form>
 </body>
 </html>
