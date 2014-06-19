@@ -15,7 +15,6 @@ namespace DBI.Data
     public partial class OVERHEAD_BUDGET_TYPE
     {
         public long OVERHEAD_BUDGET_TYPE_ID { get; set; }
-        public long PARENT_BUDGET_TYPE_ID { get; set; }
         public string BUDGET_NAME { get; set; }
         public string BUDGET_DESCRIPTION { get; set; }
         public long LE_ORG_ID { get; set; }
@@ -23,5 +22,6 @@ namespace DBI.Data
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
+        public string CHILD_BUDGET_NAME { get; set; }
     }
 }
