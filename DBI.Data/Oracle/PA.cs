@@ -17,11 +17,10 @@ namespace DBI.Data
         /// <returns></returns>
         public static decimal LaborBurden(string buid, string fiscalYear)
         {
-            try
+
+            using (Entities _context = new Entities())
             {
-                using (Entities _context = new Entities())
-                {
-                    string sql = @" SELECT (Icm.Multiplier / 100) as labor_burden_rate
+                string sql = @" SELECT (Icm.Multiplier / 100) as labor_burden_rate
                                 FROM Pa.Pa_Ind_Rate_Schedules_All_Bg Irsab
                                 INNER JOIN Pa.Pa_Ind_Rate_Sch_Revisions Irsr
                                     ON Irsab.Ind_Rate_Sch_Id = Irsr.Ind_Rate_Sch_Id
@@ -32,20 +31,16 @@ namespace DBI.Data
                                 AND Icm.Ind_Cost_Code = 'Labor Burden'
                                 AND irsr.ind_rate_sch_revision = '" + fiscalYear + "'";
 
-                    decimal _returnValue = _context.Database.SqlQuery<decimal>(sql).FirstOrDefault();
+                decimal _returnValue = _context.Database.SqlQuery<decimal>(sql).FirstOrDefault();
 
-                    if (_returnValue == 0)
-                    {
-                        throw new DBICustomException("Labor burden does not exist for this organization and fiscal year.");
-                    }
-
-                    return _returnValue;
+                if (_returnValue == 0)
+                {
+                    throw new DBICustomException("Labor burden does not exist for this organization and fiscal year.");
                 }
+
+                return _returnValue;
             }
-            catch (Exception)
-            {
-                throw;
-            }
+    
 
         }
 
@@ -58,20 +53,14 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<SingleCombo> AllFiscalYears()
         {
-            try
-            {
+
                 using (Entities context = new Entities())
                 {                    
                     string sql = "SELECT DISTINCT TO_CHAR(END_DATE, 'YYYY') ID_NAME FROM APPS.PA_PERIODS_ALL ORDER BY 1";
                     List<SingleCombo> data = context.Database.SqlQuery<SingleCombo>(sql).ToList();
                     return data;
                 }
-            }
-
-            catch (Exception)
-            {
-                throw;
-            }
+           
         }        
     }
 }

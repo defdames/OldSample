@@ -17,16 +17,10 @@ namespace DBI.Data
         /// <returns></returns>
         public static XXDBI_DW.JOB_COST_V JcSummaryLineAmounts(long projectId, string weekEndingDate)
         {
-            try
-            {
+
                 string sql = string.Format("SELECT FY_GREC, FY_MU, FY_GREV, FY_TDE, FY_TOP FROM XXDBI_DW.JOB_COST WHERE LEVEL_SORT = 8 AND PROJECT_ID = {0} AND JC_WK_DATE = TO_DATE('{1}', 'DD-Mon-YYYY')", projectId, weekEndingDate);
                 return GetJCNumbers(sql);
-            }
-
-            catch (Exception)
-            {
-                throw;
-            }
+           
         }
 
         /// <summary>
@@ -38,16 +32,10 @@ namespace DBI.Data
         /// <returns></returns>
         public static XXDBI_DW.JOB_COST_V JcSummaryLineAmounts(long hierarchyId, long organizationId, string weekEndingDate)
         {
-            try
-            {
+
                 string sql = string.Format("SELECT FY_GREC, FY_MU, FY_GREV, FY_TDE, FY_TOP FROM XXDBI_DW.JOB_COST WHERE HIERARCHY_ID = {0} AND DIVISION_ID = {1} AND (CLASS_CATEGORY = 'Job Cost Rollup' OR CLASS_CATEGORY IS NULL) AND JC_WK_DATE = TO_DATE('{2}', 'DD-Mon-YYYY')", hierarchyId, organizationId, weekEndingDate);
                 return GetJCNumbers(sql);
-            }
-
-            catch (Exception)
-            {
-                throw;
-            }
+           
         }
 
         /// <summary>
@@ -59,22 +47,15 @@ namespace DBI.Data
         /// <returns></returns>
         public static XXDBI_DW.JOB_COST_V JcSummaryLineAmounts(long organizationId, string rollupName, string weekEndingDate)
         {
-            try
-            {
+
                 string sql = string.Format("SELECT FY_GREC, FY_MU, FY_GREV, FY_TDE, FY_TOP FROM XXDBI_DW.JOB_COST WHERE LEVEL_SORT = 10 AND DIVISION_ID = {0} AND PROJECT_LONG_NAME = '{1}' AND CLASS_CATEGORY = 'Job Cost Rollup' AND JC_WK_DATE = TO_DATE('{2}', 'DD-Mon-YYYY')", organizationId, rollupName, weekEndingDate);
                 return GetJCNumbers(sql);
-            }
-
-            catch (Exception)
-            {
-                throw;
-            }
+           
         }
 
         protected static XXDBI_DW.JOB_COST_V GetJCNumbers(string sql)
         {
-            try
-            {
+
                 using (Entities context = new Entities())
                 {
                     XXDBI_DW.JOB_COST_V data = context.Database.SqlQuery<XXDBI_DW.JOB_COST_V>(sql).SingleOrDefault();
@@ -97,12 +78,7 @@ namespace DBI.Data
                         return data;
                     }
                 }
-            }
-
-            catch (Exception)
-            {
-                throw;
-            }
+           
         }
 
         /// <summary>
@@ -114,8 +90,7 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<SingleCombo> LoadedJcWeDates(long hierarchyId, bool optionalsortDescending = false, long optionalNumOfReturnRecords = long.MaxValue)
         {
-            try
-            {
+
                 using (Entities context = new Entities())
                 {
                     string sortOrder;
@@ -137,12 +112,7 @@ namespace DBI.Data
                     List<SingleCombo> data = context.Database.SqlQuery<SingleCombo>(sql).ToList();
                     return data;
                 }
-            }
-
-            catch (Exception)
-            {
-                throw;
-            }
+           
         }              
 
         public class JOB_COST_V

@@ -25,8 +25,6 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<GL_ACCOUNTS_V> AccountsFiltered(string segment1, string segment2, string segment3, string segment4)
         {
-            try
-            {
                 using (Entities _context = new Entities())
                 {
                     var _data = _context.GL_ACCOUNTS_V.AsNoTracking().Where(a => a.SEGMENT1 == segment1);
@@ -36,12 +34,6 @@ namespace DBI.Data
 
                     return _data.ToList();
                 }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
 
         }
        
@@ -57,8 +49,6 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<GL_ACCOUNTS_V> AccountsFiltered(string segment1, string segment2, string segment3, string segment4, long organizationId)
         {
-            try
-            {
 
                 IQueryable<GL_ACCOUNTS_V> _data = AccountsFiltered(segment1, segment2, segment3, segment4).AsQueryable();
 
@@ -70,12 +60,7 @@ namespace DBI.Data
 
                     return _data.ToList();
                 }
-            }
-            catch (Exception)
-            {
-                
-                throw;
-            }
+           
            
         }
 
@@ -93,8 +78,7 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<BUDGET_TYPE> BudgetTypes()
         {
-            try
-            {
+          
                 using (Entities _context = new Entities())
                 {
                     string sql = @"select a.budget_name,a.Description,b.legal_entity_id as LE_ORG_ID, a.status
@@ -105,11 +89,7 @@ namespace DBI.Data
 
                     return _returnList;
                 }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+           
 
         }
 
@@ -120,16 +100,11 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<BUDGET_TYPE> BudgetTypes(long legalEntityOrganizationId)
         {
-            try
-            {
+           
                 string legalEntityString = legalEntityOrganizationId.ToString();
                 List<BUDGET_TYPE> _data = BudgetTypes().Where(x => x.STATUS == "O" && x.LE_ORG_ID == legalEntityString).ToList();
                 return _data;
-            }
-            catch (Exception)
-            {             
-                throw;
-            }
+           
         }
 
         /// <summary>
@@ -139,8 +114,7 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<BUDGET_TYPE> BudgetTypesRemaining(long legalEntityOrganizationId)
         {
-            try
-            {
+           
                 //Budget Types that are active by legal entity organization Id
                 IQueryable<BUDGET_TYPE> _data = BudgetTypes(legalEntityOrganizationId).AsQueryable();
 
@@ -153,12 +127,7 @@ namespace DBI.Data
 
                 return _data.ToList();
 
-            }
-            catch (Exception)
-            {
-                
-                throw;
-            }
+           
         }
 
         /// <summary>
@@ -169,8 +138,7 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<BUDGET_TYPE> BudgetTypesRemaining(long legalEntityOrganizationId, long overheadBudgetTypeId)
         {
-            try
-            {
+           
                 //Budget Types that are active by legal entity organization Id
                 IQueryable<BUDGET_TYPE> _data = BudgetTypes(legalEntityOrganizationId).AsQueryable();
 
@@ -183,12 +151,7 @@ namespace DBI.Data
 
                 return _data.ToList();
 
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            
         }
         
 

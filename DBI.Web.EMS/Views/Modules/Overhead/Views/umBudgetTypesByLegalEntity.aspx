@@ -66,6 +66,14 @@
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
                                 <ext:Button runat="server" ID="uxAssignBudgetType" Icon="Add" Text="Assign" Disabled="true">
+                                     <DirectEvents>
+                                        <Click OnEvent="deAddEditBudgetType" ><EventMask ShowMask="true"></EventMask></Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                 <ext:Button runat="server" ID="uxUnAssignBudgetType" Icon="Delete" Text="UnAssign" Disabled="true">
+                                     <DirectEvents>
+                                         <Click OnEvent="deUnassignBudgetType"><EventMask ShowMask="true"></EventMask><Confirmation ConfirmRequest="true" Message="Are you sure you want to unassign this budget type from this organization?"></Confirmation></Click>
+                                     </DirectEvents>
                                 </ext:Button>
                             </Items>
                         </ext:Toolbar>
@@ -101,10 +109,10 @@
                                 <ext:FilterHeader ID="uxBudgetTypeGridFilter" runat="server" Remote="true" />
                             </Plugins>
                             <SelectionModel>
-                                <ext:RowSelectionModel runat="server" Mode="Simple" ID="uxBudgetTypeSelectionModel">
+                                <ext:RowSelectionModel runat="server" Mode="Single" ID="uxBudgetTypeSelectionModel">
                                     <Listeners>
-                                        <Select Handler="if(#{uxBudgetTypeSelectionModel}.getCount() > 0){#{uxEditBudgetType}.enable();#{uxDeleteBudgetType}.enable();}else {#{uxEditBudgetType}.disable();#{uxDeleteBudgetType}.disable();}"></Select>
-                                        <Deselect Handler="if(#{uxBudgetTypeSelectionModel}.getCount() > 0){#{uxEditBudgetType}.enable();#{uxDeleteBudgetType}.enable();} else {#{uxEditBudgetType}.disable();#{uxDeleteBudgetType}.disable();}"></Deselect>
+                                        <Select Handler="if(#{uxBudgetTypeSelectionModel}.getCount() > 0){#{uxUnAssignBudgetType}.enable();}else {#{uxUnAssignBudgetType}.disable();}"></Select>
+                                        <Deselect Handler="if(#{uxBudgetTypeSelectionModel}.getCount() > 0){#{uxUnAssignBudgetType}.enable();}else {#{uxUnAssignBudgetType}.disable();}"></Deselect>
                                     </Listeners>
                                 </ext:RowSelectionModel>
                             </SelectionModel>

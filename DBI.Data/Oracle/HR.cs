@@ -14,19 +14,14 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<HR.ORGANIZATION> Organizations()
         {
-            try
-            {
+            
                 using (Entities _context = new Entities())
                 {
                     string sql = @"select organization_id,name as organization_name, type, date_from, date_to from apps.hr_all_organization_units";
                     List<HR.ORGANIZATION> _data = _context.Database.SqlQuery<HR.ORGANIZATION>(sql).ToList();
                     return _data;
                 }
-            }
-            catch (Exception)
-            {   
-                throw;
-            }
+           
         }
 
         /// <summary>
@@ -36,15 +31,10 @@ namespace DBI.Data
         /// <returns></returns>
         public static HR.ORGANIZATION Organization(long organizationId)
         {
-            try
-            {
+           
                 HR.ORGANIZATION _data = Organizations().Where(x => x.ORGANIZATION_ID == organizationId).SingleOrDefault();
                 return _data;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+           
         }
 
         /// <summary>
@@ -53,15 +43,10 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<HR.ORGANIZATION> ActiveOrganizations()
         {
-            try
-            {
+           
                 List<HR.ORGANIZATION> _data = HR.Organizations().Where(x => x.DATE_FROM <= DateTime.Now && !x.DATE_TO.HasValue).ToList();
                 return _data;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+           
         }
 
         /// <summary>
@@ -70,18 +55,13 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<HR.ORGANIZATION> ActiveOrganizations(string type)
         {
-            try
-            {
+           
                 using (Entities _context = new Entities())
                 {
                     List<HR.ORGANIZATION> _data = HR.ActiveOrganizations().Where(x => x.TYPE == type).ToList();
                     return _data;
                 }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+           
         }
 
         /// <summary>
@@ -92,8 +72,7 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<ORGANIZATION_V1> ActiveOrganizationsByHierarchy(long hierarchyId, long organizationId)
         {
-            try
-            {
+
                 using (Entities _context = new Entities())
                 {
                     string sql = @"SELECT              c.organization_id_child ORGANIZATION_ID,
@@ -112,11 +91,7 @@ namespace DBI.Data
                     List<ORGANIZATION_V1> _data = _context.Database.SqlQuery<ORGANIZATION_V1>(sql).Select(a => new ORGANIZATION_V1 { ORGANIZATION_ID = a.ORGANIZATION_ID, ORGANIZATION_NAME = a.ORGANIZATION_NAME, HIER_LEVEL = a.HIER_LEVEL }).ToList();
                     return _data;
                 }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+           
         }
 
         /// <summary>
@@ -125,8 +100,7 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<HIERARCHY> LegalEntityHierarchies()
         {
-            try
-            {
+
                 using (Entities _context = new Entities())
                 {
                     string sql = @"select distinct a.organization_id_parent as organization_id,C.ORGANIZATION_STRUCTURE_ID,c.name as hierarchy_name, d.name as organization_name  from per_org_structure_elements_v a
@@ -139,12 +113,7 @@ namespace DBI.Data
                     var data = _context.Database.SqlQuery<HIERARCHY>(sql).ToList();
                     return data;
                 }
-            }
-            catch (Exception)
-            {
-                
-                throw;
-            }
+          
         }
 
         /// <summary>
@@ -155,8 +124,7 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<HR.ORGANIZATION_V1> ActiveOverheadOrganizationsByHierarchy(long hierarchyId, long organizationId)
         {
-            try
-            {
+
                 using (Entities _context = new Entities())
                 {
                     List<HR.ORGANIZATION_V1> _data = ActiveOrganizationsByHierarchy(hierarchyId, organizationId);
@@ -166,11 +134,7 @@ namespace DBI.Data
                     }
                     return _data;
                 }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+          
         }
 
         /// <summary>
@@ -179,8 +143,7 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<HR.ORGANIZATION> ActiveOverheadBudgetLegalEntities()
         {
-            try
-            {
+           
                 using (Entities _context = new Entities())
                 {
                     List<HR.ORGANIZATION> _data = HR.ActiveOrganizations("LE");
@@ -197,12 +160,7 @@ namespace DBI.Data
 
                     return _returnList;
                 }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+           
 
         }
 

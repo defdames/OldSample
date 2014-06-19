@@ -21,11 +21,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
             }
         }
 
-
         protected void deLoadOverheadLegalEntities(object sender, NodeLoadEventArgs e)
         {
-            try
-            {
                 if (e.NodeID == "0")
                 {
                     List<HR.ORGANIZATION> _legalEntities = HR.ActiveOverheadBudgetLegalEntities();
@@ -41,20 +38,12 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
                         e.Nodes.Add(node);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                e.Success = false;
-                e.ErrorMessage = ex.ToString();
-            }
 
         }
 
-
         protected void deReadBudgetTypesByLegalEntity(object sender, StoreReadDataEventArgs e)
         {
-            try
-            {
+
                 long _organizationID;
 
                 RowSelectionModel selection = uxLegalEntityTreeSelectionModel;
@@ -72,33 +61,82 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
                     }
 
                 }
-            }
-            catch (Exception ex)
-            {
-
-                throw(ex);
-            }
+           
 
         }
 
         protected void deShowBudgetTypesByLegalEntity(object sender, DirectEventArgs e)
         {
-            try
-            {
+           
                 string selectedRecordID = uxLegalEntityTreeSelectionModel.SelectedRecordID;
                 if (selectedRecordID != "0")
                 {
                     uxBudgetTypeStore.RemoveAll();
                     uxBudgetTypeGridFilter.ClearFilter();
-                    uxBudgetTypeGridPanel.Refresh();
-                }
-            }
-            catch (Exception ex)
-            {
-                e.Success = false;
-                e.ErrorMessage = ex.ToString();
-            }
+                    uxBudgetTypeStore.Reload();
 
+                    uxAssignBudgetType.Disabled = false;
+                }
+           
+        }
+
+        protected void deUnassignBudgetType(object sender, DirectEventArgs e)
+        {
+                long _budgetTypeIDSelected;
+
+                RowSelectionModel _rsm = uxBudgetTypeSelectionModel;
+                Boolean _check = long.TryParse(_rsm.SelectedRecordID, out _budgetTypeIDSelected);
+
+                OVERHEAD_BUDGET_TYPE _budgetType = OVERHEAD_BUDGET_TYPE.BudgetType(_budgetTypeIDSelected);
+                GenericData.Delete<OVERHEAD_BUDGET_TYPE>(_budgetType);
+
+                uxBudgetTypeStore.Reload();
+
+        }
+
+        protected void deAddEditBudgetType(object sender, DirectEventArgs e)
+        {
+                long _businessUnitID;
+
+                RowSelectionModel selection = uxLegalEntityTreeSelectionModel;
+                Boolean checkOrganization = long.TryParse(selection.SelectedRecordID, out _businessUnitID);
+                string _editMode = e.ExtraParams["Edit"];
+
+
+                string url = "/Views/Modules/Overhead/Views/umAddRemoveBudgetType.aspx?buID=" + _businessUnitID;
+                RowSelectionModel _recordID = uxBudgetTypeSelectionModel;
+
+                if (!string.IsNullOrEmpty(_editMode))
+                {
+                    url = url + "&recordId=" + _recordID.SelectedRecordID.ToString();
+                }
+
+                Window win = new Window
+                {
+                    ID = "uxAddEditBudgetType",
+                    Title = "Budget Types",
+                    Height = 350,
+                    Width = 500,
+                    Modal = true,
+                    Resizable = false,
+                    CloseAction = CloseAction.Destroy,
+                    Loader = new ComponentLoader
+                    {
+                        Mode = LoadMode.Frame,
+                        DisableCaching = true,
+                        Url = url,
+                        AutoLoad = true,
+                        LoadMask =
+                        {
+                            ShowMask = true
+                        }
+                    }
+                };
+
+                win.Listeners.Close.Handler = "#{uxBudgetTypeGridPanel}.getStore().load();";
+
+                win.Render(this.Form);
+                win.Show();
         }
 
     }
