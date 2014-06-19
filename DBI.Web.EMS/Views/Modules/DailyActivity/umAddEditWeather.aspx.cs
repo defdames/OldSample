@@ -50,34 +50,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void deAddWeather(object sender, DirectEventArgs e)
         {
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-            DateTime WeatherDate = DateTime.Parse(uxAddWeatherDate.Value.ToString());
-            DateTime WeatherTime = DateTime.Parse(uxAddWeatherTime.Value.ToString());
-            WeatherDate = WeatherDate + WeatherTime.TimeOfDay;
+            DateTime WeatherDate = uxAddWeatherDate.SelectedDate;
+            TimeSpan WeatherTime = uxAddWeatherTime.SelectedTime;
+            WeatherDate = WeatherDate + WeatherTime;
 
             DAILY_ACTIVITY_WEATHER data = new DAILY_ACTIVITY_WEATHER()
             {
                 WEATHER_DATE_TIME = WeatherDate,
                 HEADER_ID = HeaderId,
                 TEMP = uxAddWeatherTemp.Value.ToString(),
-                WIND_DIRECTION = uxAddWeatherWindDirection.Value.ToString(),
-                WIND_VELOCITY = uxAddWeatherWindVelocity.Value.ToString(),
-                HUMIDITY = uxAddWeatherHumidity.Value.ToString(),
+                WIND_DIRECTION = uxAddWeatherWindDirection.SelectedItem.Value,
+                WIND_VELOCITY = uxAddWeatherWindVelocity.Text,
+                HUMIDITY = uxAddWeatherHumidity.Text,
                 CREATE_DATE = DateTime.Now,
                 MODIFY_DATE = DateTime.Now,
                 CREATED_BY = User.Identity.Name,
-                MODIFIED_BY = User.Identity.Name
+                MODIFIED_BY = User.Identity.Name,
+                COMMENTS = uxAddWeatherComments.Text
             };
-
-            try
-            {
-                string Comments = uxAddWeatherComments.Value.ToString();
-                data.COMMENTS = Comments;
-            }
-            catch (NullReferenceException)
-            {
-                data.COMMENTS = null;
-            }
-
             GenericData.Insert<DAILY_ACTIVITY_WEATHER>(data);
 
             uxAddWeatherForm.Reset();
@@ -92,10 +82,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void deEditWeather(object sender, DirectEventArgs e)
         {
             long WeatherId = long.Parse(Request.QueryString["WeatherId"]);
-            DateTime WeatherDate = DateTime.Parse(uxAddWeatherDate.Value.ToString());
-            DateTime WeatherTime = DateTime.Parse(uxAddWeatherTime.Value.ToString());
-
-            WeatherDate = WeatherDate + WeatherTime.TimeOfDay;
+            DateTime WeatherDate = uxAddWeatherDate.SelectedDate;
+            TimeSpan WeatherTime = uxAddWeatherTime.SelectedTime;
+            WeatherDate = WeatherDate + WeatherTime;
 
             DAILY_ACTIVITY_WEATHER data;
 
@@ -106,22 +95,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         select d).Single();
             }
             data.WEATHER_DATE_TIME = WeatherDate;
-            data.TEMP = uxAddWeatherTemp.Value.ToString();
-            data.WIND_DIRECTION = uxAddWeatherWindDirection.Value.ToString();
-            data.WIND_VELOCITY = uxAddWeatherWindVelocity.Value.ToString();
-            data.HUMIDITY = uxAddWeatherHumidity.Value.ToString();
+            data.TEMP = uxAddWeatherTemp.Text;
+            data.WIND_DIRECTION = uxAddWeatherWindDirection.SelectedItem.Value;
+            data.WIND_VELOCITY = uxAddWeatherWindVelocity.Text;
+            data.HUMIDITY = uxAddWeatherHumidity.Text;
             data.MODIFIED_BY = User.Identity.Name;
             data.MODIFY_DATE = DateTime.Now;
-
-            try
-            {
-                string Comments = uxAddWeatherComments.Value.ToString();
-                data.COMMENTS = Comments;
-            }
-            catch (NullReferenceException)
-            {
-                data.COMMENTS = null;
-            }
+            data.COMMENTS = uxAddWeatherComments.Text;
+            
             GenericData.Update<DAILY_ACTIVITY_WEATHER>(data);
 
             X.Js.Call("parent.App.uxDetailsPanel.reload(); parent.App.uxPlaceholderWindow.hide()");

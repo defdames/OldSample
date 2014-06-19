@@ -100,8 +100,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             //Do type conversions
             long TaskId = long.Parse(uxAddProductionTask.Value.ToString());
-            decimal AcresPerMile = decimal.Parse(uxAddProductionAcresPerMile.Value.ToString());
-            decimal Gallons = decimal.Parse(uxAddProductionGallons.Value.ToString());
+            decimal AcresPerMile = decimal.Parse(uxAddProductionAcresPerMile.Text);
+            decimal Gallons = decimal.Parse(uxAddProductionGallons.Text);
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
 
             using (Entities _context = new Entities())
@@ -110,24 +110,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 {
                     HEADER_ID = HeaderId,
                     TASK_ID = TaskId,
-                    WORK_AREA = uxAddProductionWorkArea.Value.ToString(),
+                    WORK_AREA = uxAddProductionWorkArea.Text,
                     ACRES_MILE = AcresPerMile,
                     QUANTITY = Gallons,
                     CREATE_DATE = DateTime.Now,
                     MODIFY_DATE = DateTime.Now,
                     CREATED_BY = User.Identity.Name,
-                    MODIFIED_BY = User.Identity.Name
+                    MODIFIED_BY = User.Identity.Name,
+                    POLE_FROM = uxAddProductionPoleFrom.Text,
+                    POLE_TO = uxAddProductionPoleTo.Text
                 };
-                try
-                {
-                    data.POLE_FROM = uxAddProductionPoleFrom.Value.ToString();
-                }
-                catch { }
-                try
-                {
-                    data.POLE_TO = uxAddProductionPoleTo.Value.ToString();
-                }
-                catch { }
             }
 
             //Write to DB
@@ -148,8 +140,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             //Do type conversions
             long TaskId = long.Parse(uxAddProductionTask.Value.ToString());
-            decimal AcresPerMile = decimal.Parse(uxAddProductionAcresPerMile.Value.ToString());
-            long Gallons = long.Parse(uxAddProductionGallons.Value.ToString());
+            decimal AcresPerMile = decimal.Parse(uxAddProductionAcresPerMile.Text);
+            long Gallons = long.Parse(uxAddProductionGallons.Text);
             long ProductionId = long.Parse(Request.QueryString["ProductionId"]);
 
             //Get record to be edited
@@ -160,23 +152,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         select d).Single();
             }
             data.TASK_ID = TaskId;
-            data.WORK_AREA = uxAddProductionWorkArea.Value.ToString();
-            try
-            {
-                data.POLE_FROM = uxAddProductionPoleFrom.Value.ToString();
-            }
-            catch
-            {
-                data.POLE_FROM = null;
-            }
-            try
-            {
-                data.POLE_TO = uxAddProductionPoleTo.Value.ToString();
-            }
-            catch
-            {
-                data.POLE_TO = null;
-            }
+            data.WORK_AREA = uxAddProductionWorkArea.Text;
+            data.POLE_FROM = uxAddProductionPoleFrom.Text;
+            data.POLE_TO = uxAddProductionPoleTo.Text;
             data.ACRES_MILE = AcresPerMile;
             data.QUANTITY = Gallons;
             data.MODIFY_DATE = DateTime.Now;

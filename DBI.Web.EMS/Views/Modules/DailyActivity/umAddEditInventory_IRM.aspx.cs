@@ -89,9 +89,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             DAILY_ACTIVITY_INVENTORY data;
 
             //do type conversions
-            long SubInventoryOrg = long.Parse(uxAddInventorySub.Value.ToString());
+            long SubInventoryOrg = long.Parse(uxAddInventorySub.SelectedItem.Value);
             long ItemId = long.Parse(uxAddInventoryItem.Value.ToString());
-            long Rate = long.Parse(uxAddInventoryRate.Value.ToString());
+            long Rate = long.Parse(uxAddInventoryRate.Text);
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
 
             //Add to Db
@@ -103,7 +103,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     SUB_INVENTORY_ORG_ID = SubInventoryOrg,
                     ITEM_ID = ItemId,
                     RATE = Rate,
-                    UNIT_OF_MEASURE = uxAddInventoryMeasure.Value.ToString(),
+                    UNIT_OF_MEASURE = uxAddInventoryMeasure.SelectedItem.Value,
                     CREATE_DATE = DateTime.Now,
                     MODIFY_DATE = DateTime.Now,
                     CREATED_BY = User.Identity.Name,
@@ -181,9 +181,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             //Do type conversions
             long InventoryId = long.Parse(Request.QueryString["InventoryId"]);
-            long OrgId = long.Parse(uxAddInventoryRegion.Value.ToString());
+            long OrgId = long.Parse(uxAddInventoryRegion.SelectedItem.Value);
             decimal ItemId = decimal.Parse(uxAddInventoryItem.Value.ToString());
-            decimal Rate = decimal.Parse(uxAddInventoryRate.Value.ToString());
+            decimal Rate = decimal.Parse(uxAddInventoryRate.Text);
 
             //Get record to be updated
             using (Entities _context = new Entities())
@@ -196,7 +196,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.SUB_INVENTORY_ORG_ID = OrgId;
             data.ITEM_ID = ItemId;
             data.RATE = Rate;
-            data.UNIT_OF_MEASURE = uxAddInventoryMeasure.Value.ToString();
+            data.UNIT_OF_MEASURE = uxAddInventoryMeasure.SelectedItem.Value;
             data.MODIFIED_BY = User.Identity.Name;
             data.MODIFY_DATE = DateTime.Now;
 

@@ -591,7 +591,7 @@
 										<Click OnEvent="deRemoveWeather">
 											<Confirmation ConfirmRequest="true" Title="Remove?" Message="Do you really want to remove the weather?" />
 											<ExtraParams>
-												<ext:Parameter Name="WeatherId" Value="#{uxCurrentWeatherGrid}.getSelectionModel().getSelection()[0].data.WEATHER_ID" Mode="Raw" />
+												<ext:Parameter Name="WeatherId" Value="#{uxWeatherGrid}.getSelectionModel().getSelection()[0].data.WEATHER_ID" Mode="Raw" />
 											</ExtraParams>
 										</Click>
 									</DirectEvents>

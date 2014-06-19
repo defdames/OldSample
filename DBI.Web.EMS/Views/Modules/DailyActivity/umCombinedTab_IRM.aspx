@@ -105,12 +105,12 @@
 										<ext:RowSelectionModel ID="uxFormProjectSelection" runat="server" Mode="Single" />
 									</SelectionModel>
 									<DirectEvents>
-										<SelectionChange OnEvent="deStoreProjectValue">
+										<Select OnEvent="deStoreProjectValue">
 											<ExtraParams>
 												<ext:Parameter Name="ProjectId" Value="#{uxFormProjectGrid}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
 												<ext:Parameter Name="LongName" Value="#{uxFormProjectGrid}.getSelectionModel().getSelection()[0].data.LONG_NAME" Mode="Raw" />
 											</ExtraParams>
-										</SelectionChange>
+										</Select>
 									</DirectEvents>
 									<Plugins>
 										<ext:FilterHeader ID="uxFormProjectFilter" runat="server" Remote="true" />
@@ -585,7 +585,7 @@
 										<Click OnEvent="deRemoveWeather">
 											<Confirmation ConfirmRequest="true" Title="Remove?" Message="Do you really want to remove the weather?" />
 											<ExtraParams>
-												<ext:Parameter Name="WeatherId" Value="#{uxCurrentWeatherGrid}.getSelectionModel().getSelection()[0].data.WEATHER_ID" Mode="Raw" />
+												<ext:Parameter Name="WeatherId" Value="#{uxWeatherGrid}.getSelectionModel().getSelection()[0].data.WEATHER_ID" Mode="Raw" />
 											</ExtraParams>
 										</Click>
 									</DirectEvents>

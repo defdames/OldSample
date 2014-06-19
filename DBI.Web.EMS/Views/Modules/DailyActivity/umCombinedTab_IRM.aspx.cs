@@ -313,41 +313,30 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     uxContractNameField.Value = data.d.CONTRACT_REP_NAME;
                     uxDOTRep.Value = data.d.DOT_REP_NAME;
                     uxForemanNameField.Value = data.EMPLOYEE_NAME;
-                    try
-                    {
-                        byte[] ForemanImage = data.d.FOREMAN_SIGNATURE.ToArray();
-                        if (ForemanImage.Length > 0)
-                        {
-                            uxForemanImage.ImageUrl = string.Format("ImageLoader/ImageLoader.aspx?headerId={0}&type=foreman", HeaderId);
-                        }
-                    }
-                    catch (Exception)
+                    if (data.d.FOREMAN_SIGNATURE == null || data.d.FOREMAN_SIGNATURE.Length == 0)
                     {
                         uxForemanImage.ImageUrl = "../../../Resources/Images/1pixel.jpg";
                     }
-                    try
+                    else
                     {
-                        byte[] ContractImage = data.d.CONTRACT_REP.ToArray();
-                        if (ContractImage.Length > 0)
-                        {
-                            uxContractImage.ImageUrl = string.Format("ImageLoader/ImageLoader.aspx?headerId={0}&type=contract", HeaderId);
-                        }
+                        uxForemanImage.ImageUrl = string.Format("ImageLoader/ImageLoader.aspx?headerId={0}&type=foreman", HeaderId);
                     }
-                    catch (Exception)
+                    if (data.d.CONTRACT_REP == null || data.d.CONTRACT_REP.Length == 0)
                     {
                         uxContractImage.ImageUrl = "../../../Resources/Images/1pixel.jpg";
                     }
-                    try
+                    else
                     {
-                        byte[] DOTImage = data.d.DOT_REP.ToArray();
-                        if (DOTImage.Length > 0)
-                        {
-                            uxDOTImage.ImageUrl = string.Format("ImageLoader/ImageLoader.aspx?headerId={0}&type=dot", HeaderId);
-                        }
+                        uxContractImage.ImageUrl = string.Format("ImageLoader/ImageLoader.aspx?headerId={0}&type=contract", HeaderId);
                     }
-                    catch (Exception)
+
+                    if (data.d.DOT_REP == null || data.d.DOT_REP.Length == 0)
                     {
                         uxDOTImage.ImageUrl = "../../../Resources/Images/1pixel.jpg";
+                    }
+                    else
+                    {
+                        uxDOTImage.ImageUrl = string.Format("ImageLoader/ImageLoader.aspx?headerId={0}&type=dot", HeaderId);
                     }
                 }
             }
@@ -584,9 +573,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void deUpdateHeader(object sender, Ext.Net.DirectEventArgs e)
         {
             //Get values in correct formats
-            long ProjectId = Convert.ToInt64(uxProjectField.Value);
+            long ProjectId = long.Parse(uxProjectField.Value.ToString());
             DateTime DaDate = (DateTime)uxDateField.Value;
-            int PersonId = Convert.ToInt32(uxSupervisorField.Value);
+            int PersonId = int.Parse(uxSupervisorField.Value.ToString());
 
             DAILY_ACTIVITY_HEADER data;
 
@@ -599,41 +588,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             data.PROJECT_ID = ProjectId;
             data.DA_DATE = DaDate;
-            try
-            {
-                data.SUBDIVISION = uxSubDivisionField.Value.ToString();
-            }
-            catch (NullReferenceException)
-            {
-                data.SUBDIVISION = null;
-            }
-            try
-            {
-                data.CONTRACTOR = uxContractorField.Value.ToString();
-            }
-            catch (NullReferenceException)
-            {
-                data.CONTRACTOR = null;
-            }
+            data.SUBDIVISION = uxSubDivisionField.Text;
+            data.CONTRACTOR = uxContractorField.Text;
             data.PERSON_ID = PersonId;
             data.LICENSE = uxLicenseField.Value.ToString();
             data.STATE = uxStateField.Value.ToString();
-            try
-            {
-                data.APPLICATION_TYPE = uxTypeField.Value.ToString();
-            }
-            catch (NullReferenceException)
-            {
-                data.APPLICATION_TYPE = null;
-            }
-            try
-            {
-                data.DENSITY = uxDensityField.Value.ToString();
-            }
-            catch (NullReferenceException)
-            {
-                data.DENSITY = null;
-            }
+            data.APPLICATION_TYPE = uxTypeField.Text;
+            data.DENSITY = uxDensityField.SelectedItem.Value;
             data.MODIFIED_BY = User.Identity.Name;
             data.MODIFY_DATE = DateTime.Now;
 
@@ -664,70 +625,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             if (data != null)
             {
                 //Check for empty values
-                try
-                {
-                    string ReasonForNoWork = uxReasonForNoWorkField.Value.ToString();
-                    data.COMMENTS = ReasonForNoWork;
-                }
-                catch (NullReferenceException)
-                {
-                }
-
-                try
-                {
-                    string Hotel = uxHotelField.Value.ToString();
-                    data.HOTEL_NAME = Hotel;
-                }
-                catch (NullReferenceException)
-                {
-                }
-
-                try
-                {
-                    string HotelCity = uxCityField.Value.ToString();
-                    data.HOTEL_CITY = HotelCity;
-                }
-                catch (NullReferenceException)
-                {
-                }
-
-                try
-                {
-                    string HotelState = uxFooterStateField.Value.ToString();
-                    data.HOTEL_STATE = HotelState;
-                }
-                catch
-                {
-                }
-
-                try
-                {
-                    string HotelPhone = uxPhoneField.Value.ToString();
-                    data.HOTEL_PHONE = HotelPhone;
-                }
-                catch
-                {
-                }
-
-                try
-                {
-                    string ContractRepName = uxContractNameField.Value.ToString();
-                    data.CONTRACT_REP_NAME = ContractRepName;
-                }
-                catch
-                {
-                    data.CONTRACT_REP_NAME = null;
-                }
-
-                try
-                {
-                    string DotRepName = uxDOTRep.Value.ToString();
-                    data.DOT_REP_NAME = DotRepName;
-                }
-                catch
-                {
-                    data.DOT_REP_NAME = null;
-                }
+                data.COMMENTS = uxReasonForNoWorkField.Text;
+                data.HOTEL_NAME = uxHotelField.Text;
+                data.HOTEL_CITY = uxCityField.Text;
+                data.HOTEL_STATE = uxFooterStateField.Text;
+                data.HOTEL_PHONE = uxPhoneField.Text;
+                data.CONTRACT_REP_NAME = uxContractNameField.Text;
+                data.DOT_REP_NAME = uxDOTRep.Text;
+                
                 //file upload
                 HttpPostedFile ForemanSignatureFile = uxForemanImageField.PostedFile;
                 byte[] ForemanSignatureArray = ImageToByteArray(ForemanSignatureFile);
@@ -766,65 +671,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 data.HEADER_ID = HeaderId;
 
                 //Check for empty values
-                try
-                {
-                    string ReasonForNoWork = uxReasonForNoWorkField.Value.ToString();
-                    data.COMMENTS = ReasonForNoWork;
-                }
-                catch (NullReferenceException)
-                {
-                    data.COMMENTS = null;
-                }
-
-                try
-                {
-                    string Hotel = uxHotelField.Value.ToString();
-                    data.HOTEL_NAME = Hotel;
-                }
-                catch (NullReferenceException)
-                {
-                    data.HOTEL_NAME = null;
-                }
-
-                try
-                {
-                    string HotelCity = uxCityField.Value.ToString();
-                    data.HOTEL_CITY = HotelCity;
-                }
-                catch
-                {
-                    data.HOTEL_CITY = null;
-                }
-
-                try
-                {
-                    string HotelState = uxFooterStateField.Value.ToString();
-                    data.HOTEL_STATE = HotelState;
-                }
-                catch
-                {
-                    data.HOTEL_STATE = null;
-                }
-
-                try
-                {
-                    string HotelPhone = uxPhoneField.Value.ToString();
-                    data.HOTEL_PHONE = HotelPhone;
-                }
-                catch
-                {
-                    data.HOTEL_PHONE = null;
-                }
-
-                try
-                {
-                    string ContractRepName = uxContractNameField.Value.ToString();
-                    data.CONTRACT_REP_NAME = ContractRepName;
-                }
-                catch
-                {
-                    data.CONTRACT_REP_NAME = null;
-                }
+                data.COMMENTS = uxReasonForNoWorkField.Text;
+                data.HOTEL_NAME = uxHotelField.Text;
+                data.HOTEL_CITY = uxCityField.Text;
+                data.HOTEL_STATE = uxFooterStateField.Text;
+                data.HOTEL_PHONE = uxPhoneField.Text;
+                data.CONTRACT_REP_NAME = uxContractNameField.Text;
+                data.DOT_REP_NAME = uxDOTRep.Text;
 
                 try
                 {

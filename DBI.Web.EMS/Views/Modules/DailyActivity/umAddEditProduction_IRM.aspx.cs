@@ -104,7 +104,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Do type conversions
             long TaskId = long.Parse(uxAddProductionTask.Value.ToString());
             decimal BillRate = decimal.Parse(uxAddProductionBillRate.Value.ToString());
-            decimal Quantity = decimal.Parse(uxAddProductionQuantity.Value.ToString());
+            decimal Quantity = decimal.Parse(uxAddProductionQuantity.Text);
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
 
             using (Entities _context = new Entities())
@@ -115,11 +115,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     TASK_ID = TaskId,
                     EXPENDITURE_TYPE = uxAddProductionExpenditureType.Value.ToString(),
                     BILL_RATE = BillRate,
-                    COMMENTS = uxAddProductionComments.Value.ToString(),
-                    STATION = uxAddProductionStation.Value.ToString(),
+                    COMMENTS = uxAddProductionComments.Text,
+                    STATION = uxAddProductionStation.Text,
                     UNIT_OF_MEASURE = uxAddProductionUOM.Value.ToString(),
                     QUANTITY = Quantity,
-                    SURFACE_TYPE = uxAddProductionSurfaceType.Value.ToString(),
+                    SURFACE_TYPE = uxAddProductionSurfaceType.SelectedItem.Value,
                     CREATE_DATE = DateTime.Now,
                     MODIFY_DATE = DateTime.Now,
                     CREATED_BY = User.Identity.Name,
@@ -145,7 +145,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             //Do type conversions
             long TaskId = long.Parse(uxAddProductionTask.Value.ToString());
-            decimal Quantity = decimal.Parse(uxAddProductionQuantity.Value.ToString());
+            decimal Quantity = decimal.Parse(uxAddProductionQuantity.Text);
             decimal BillRate = decimal.Parse(uxAddProductionBillRate.Value.ToString());
             long ProductionId = long.Parse(Request.QueryString["ProductionId"]);
 
@@ -159,12 +159,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.TASK_ID = TaskId;
             data.EXPENDITURE_TYPE = uxAddProductionExpenditureType.Value.ToString();
             data.QUANTITY = Quantity;
-            data.STATION = uxAddProductionStation.Value.ToString();
+            data.STATION = uxAddProductionStation.Text;
             data.BILL_RATE = BillRate;
             data.MODIFY_DATE = DateTime.Now;
             data.UNIT_OF_MEASURE = uxAddProductionUOM.Value.ToString();
-            data.SURFACE_TYPE = uxAddProductionSurfaceType.Value.ToString();
-            data.COMMENTS = uxAddProductionComments.Value.ToString();
+            data.SURFACE_TYPE = uxAddProductionSurfaceType.SelectedItem.Value;
+            data.COMMENTS = uxAddProductionComments.Text;
             data.MODIFIED_BY = User.Identity.Name;
 
             //Write to DB

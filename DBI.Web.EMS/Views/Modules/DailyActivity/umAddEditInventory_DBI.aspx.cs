@@ -97,11 +97,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             //do type conversions
             long ChemicalMix = long.Parse(uxAddInventoryMix.Value.ToString());
-            long SubInventoryOrg = long.Parse(uxAddInventorySub.Value.ToString());
+            long SubInventoryOrg = long.Parse(uxAddInventorySub.SelectedItem.Value);
             long ItemId = long.Parse(uxAddInventoryItem.Value.ToString());
-            long Rate = long.Parse(uxAddInventoryRate.Value.ToString());
+            long Rate = long.Parse(uxAddInventoryRate.Text);
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-            decimal Total = decimal.Parse(uxAddInventoryTotal.Value.ToString());
+            decimal Total = decimal.Parse(uxAddInventoryTotal.Text);
             string ContractorSupplied;
             if (uxAddInventoryContractor.Checked)
             {
@@ -121,8 +121,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     SUB_INVENTORY_ORG_ID = SubInventoryOrg,
                     ITEM_ID = ItemId,
                     RATE = Rate,
-                    UNIT_OF_MEASURE = uxAddInventoryMeasure.Value.ToString(),
-                    EPA_NUMBER = uxAddInventoryEPA.Value.ToString(),
+                    UNIT_OF_MEASURE = uxAddInventoryMeasure.SelectedItem.Value,
+                    EPA_NUMBER = uxAddInventoryEPA.Text,
                     CREATE_DATE = DateTime.Now,
                     MODIFY_DATE = DateTime.Now,
                     CREATED_BY = User.Identity.Name,
@@ -240,9 +240,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             long MixNumber = long.Parse(uxAddInventoryMix.Value.ToString());
             long InventoryId = long.Parse(Request.QueryString["InventoryId"]);
-            long OrgId = long.Parse(uxAddInventoryRegion.Value.ToString());
+            long OrgId = long.Parse(uxAddInventoryRegion.SelectedItem.Value);
             decimal ItemId = decimal.Parse(uxAddInventoryItem.Value.ToString());
-            decimal Rate = decimal.Parse(uxAddInventoryRate.Value.ToString());
+            decimal Rate = decimal.Parse(uxAddInventoryRate.Text);
             string ContractorSupplied;
             if (uxAddInventoryContractor.Checked)
             {
@@ -266,15 +266,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.SUB_INVENTORY_ORG_ID = OrgId;
             data.ITEM_ID = ItemId;
             data.RATE = Rate;
-            data.UNIT_OF_MEASURE = uxAddInventoryMeasure.Value.ToString();
-            data.EPA_NUMBER = uxAddInventoryEPA.Value.ToString();
+            data.UNIT_OF_MEASURE = uxAddInventoryMeasure.SelectedItem.Value;
+            data.EPA_NUMBER = uxAddInventoryEPA.Text;
             data.MODIFIED_BY = User.Identity.Name;
             data.MODIFY_DATE = DateTime.Now;
-            try
-            {
-                data.TOTAL = decimal.Parse(uxAddInventoryTotal.Value.ToString()); 
+            
+            decimal Total;
+            if(decimal.TryParse(uxAddInventoryTotal.Text, out Total)){
+                data.TOTAL = Total;
             }
-            catch (NullReferenceException)
+            else
             {
                 data.TOTAL = null;
             }

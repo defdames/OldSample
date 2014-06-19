@@ -157,7 +157,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             //Get values in correct formats
             long ProjectId = Convert.ToInt64(uxFormProject.Value);
-            DateTime DaDate = (DateTime)uxFormDate.Value;
+            DateTime DaDate = uxFormDate.SelectedDate;
             int PersonId = Convert.ToInt32(uxFormEmployee.Value);            
             var icp = User as ClaimsPrincipal;
             var AddingUser = Authentication.GetClaimValue(ClaimTypes.Name, icp);
@@ -181,52 +181,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 CREATED_BY = AddingUser,
                 MODIFIED_BY = AddingUser,
                 STATUS = 2,
-                DA_HEADER_ID = 0
+                DA_HEADER_ID = 0,
+                SUBDIVISION = uxFormSubDivision.Text,
+                APPLICATION_TYPE = uxFormType.Text,
+                CONTRACTOR = uxFormContractor.Text,
+                DENSITY = uxFormDensity.SelectedItem.Value
             };
 
-            //check for SubDivision value
-            try
-            {
-                SubDivision = uxFormSubDivision.Value.ToString();
-                ToStore.SUBDIVISION = SubDivision;
-            }
-            catch (NullReferenceException)
-            {
-                ToStore.SUBDIVISION = null;
-            }
-
-            //check for Type value
-            try
-            {
-                HeaderType = uxFormType.Value.ToString();
-                ToStore.APPLICATION_TYPE = HeaderType;
-            }
-            catch (NullReferenceException)
-            {
-                ToStore.APPLICATION_TYPE = null;
-            }
-
-            //check for Contractor
-            try
-            {
-                Contractor = uxFormContractor.Value.ToString();
-                ToStore.CONTRACTOR = Contractor;
-            }
-            catch (NullReferenceException)
-            {
-                ToStore.CONTRACTOR = null;
-            }
-
-            //check for Density
-            try
-            {
-                Density = uxFormDensity.Value.ToString();
-                ToStore.DENSITY = Density;
-            }
-            catch (NullReferenceException)
-            {
-                ToStore.DENSITY = null;
-            }
+            
             //Write to the DB
             GenericData.Insert<DAILY_ACTIVITY_HEADER>(ToStore);
             X.Js.Call("parent.App.direct.dmHideAddWindow()");

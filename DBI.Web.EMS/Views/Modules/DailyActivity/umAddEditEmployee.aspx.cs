@@ -272,13 +272,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
 
             //Combine Date/Time for TimeIn/Out
-            DateTime TimeIn = DateTime.Parse(uxAddEmployeeTimeInDate.Value.ToString());
-            DateTime TimeInTime = DateTime.Parse(uxAddEmployeeTimeInTime.Value.ToString());
-            DateTime TimeOut = DateTime.Parse(uxAddEmployeeTimeOutDate.Value.ToString());
-            DateTime TimeOutTime = DateTime.Parse(uxAddEmployeeTimeOutTime.Value.ToString());
+            DateTime TimeIn = DateTime.Parse(uxAddEmployeeTimeInDate.Text);
+            TimeSpan TimeInTime = uxAddEmployeeTimeInTime.SelectedTime;
+            DateTime TimeOut = DateTime.Parse(uxAddEmployeeTimeOutDate.Text);
+            TimeSpan TimeOutTime = uxAddEmployeeTimeOutTime.SelectedTime;
 
-            TimeIn = TimeIn + TimeInTime.TimeOfDay;
-            TimeOut = TimeOut + TimeOutTime.TimeOfDay;
+            TimeIn = TimeIn + TimeInTime;
+            TimeOut = TimeOut + TimeOutTime;
 
             //Convert PerDiem to string
             string PerDiem;
@@ -289,16 +289,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             else
             {
                 PerDiem = "N";
-            }
-
-            string License;
-            try
-            {
-                License = uxAddEmployeeLicense.Value.ToString();
-            }
-            catch (NullReferenceException)
-            {
-                License = null;
             }
             DAILY_ACTIVITY_EMPLOYEE data = new DAILY_ACTIVITY_EMPLOYEE()
             {
@@ -311,20 +301,21 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 MODIFY_DATE = DateTime.Now,
                 CREATED_BY = User.Identity.Name,
                 MODIFIED_BY = User.Identity.Name,
-                FOREMAN_LICENSE = License
+                FOREMAN_LICENSE = uxAddEmployeeLicense.Text
             };
+            decimal Hours = 0;
+            decimal Minutes = 0;
 
             if (GetOrgId(HeaderId) == 123)
             {
-                decimal Hours = 0;
-                decimal Minutes = 0;
-                decimal.TryParse(uxAddEmployeeShopTimeAMHours.Value.ToString(), out Hours);
-                decimal.TryParse(uxAddEmployeeShopTimeAMMinutes.Value.ToString(), out Minutes);
+                
+                decimal.TryParse(uxAddEmployeeShopTimeAMHours.Text, out Hours);
+                decimal.TryParse(uxAddEmployeeShopTimeAMMinutes.Text, out Minutes);
                 decimal ShoptimeAM = Hours + (Minutes / 60);
                 Hours = 0;
                 Minutes = 0;
-                decimal.TryParse(uxAddEmployeeShopTimePMHours.Value.ToString(), out Hours);
-                decimal.TryParse(uxAddEmployeeShopTimePMMinutes.Value.ToString(), out Minutes);
+                decimal.TryParse(uxAddEmployeeShopTimePMHours.Text, out Hours);
+                decimal.TryParse(uxAddEmployeeShopTimePMMinutes.Text, out Minutes);
                 decimal ShoptimePM = Hours + (Minutes / 60);
                 data.SHOPTIME_AM = ShoptimeAM;
                 data.SHOPTIME_PM = ShoptimePM;
@@ -351,46 +342,20 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
 
             //Check for travel time
-            try
-            {
-                decimal Hours = 0;
-                decimal Minutes = 0;
-                decimal.TryParse(uxAddEmployeeTravelTimeHours.Value.ToString(), out Hours);
-                decimal.TryParse(uxAddEmployeeTravelTimeMinutes.Value.ToString(), out Minutes);
-                decimal TravelTime = Hours + (Minutes / 60);
-                data.TRAVEL_TIME = TravelTime;
-            }
-            catch (NullReferenceException)
-            {
-                data.TRAVEL_TIME = null;
-            }
+            
+            decimal.TryParse(uxAddEmployeeTravelTimeHours.Text, out Hours);
+            decimal.TryParse(uxAddEmployeeTravelTimeMinutes.Text, out Minutes);
+            decimal TravelTime = Hours + (Minutes / 60);
+            data.TRAVEL_TIME = TravelTime;
 
-            //Check for drive time
-            try
-            {
-                decimal Hours = 0;
-                decimal Minutes = 0;
-                decimal.TryParse(uxAddEmployeeDriveTimeHours.Value.ToString(), out Hours);
-                decimal.TryParse(uxAddEmployeeDriveTimeMinutes.Value.ToString(), out Minutes);
-                decimal DriveTime = Hours + (Minutes / 60);
-                data.DRIVE_TIME = DriveTime;
-            }
-            catch (NullReferenceException)
-            {
-                data.DRIVE_TIME = null;
-            }
-
-            //Check for comments
-            try
-            {
-                string Comments = uxAddEmployeeComments.Value.ToString(); ;
-                data.COMMENTS = Comments;
-            }
-            catch (NullReferenceException)
-            {
-                data.COMMENTS = null;
-            }
-
+            Hours = 0;
+            Minutes = 0;
+            decimal.TryParse(uxAddEmployeeDriveTimeHours.Text, out Hours);
+            decimal.TryParse(uxAddEmployeeDriveTimeMinutes.Text, out Minutes);
+            decimal DriveTime = Hours + (Minutes / 60);
+            data.DRIVE_TIME = DriveTime;
+            data.COMMENTS = uxAddEmployeeComments.Text;
+            
             //Check for Equipment
             try
             {
@@ -401,33 +366,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 data.EQUIPMENT_ID = null;
             }
-            try
-            {
-                License = uxAddEmployeeLicense.Value.ToString();
-                data.FOREMAN_LICENSE = License;
-            }
-            catch (NullReferenceException)
-            {
-                data.FOREMAN_LICENSE = null;
-            }
+            data.FOREMAN_LICENSE = uxAddEmployeeLicense.Text;
+            
             //Write to DB
             GenericData.Insert<DAILY_ACTIVITY_EMPLOYEE>(data);
 
             X.Js.Call("parent.App.uxDetailsPanel.reload(); parent.App.uxPlaceholderWindow.close()");
             uxAddEmployeeForm.Reset();
 
-
-            Notification.Show(new NotificationConfig()
-            {
-                Title = "Success",
-                Html = "Employee Added Successfully",
-                HideDelay = 1000,
-                AlignCfg = new NotificationAlignConfig
-                {
-                    ElementAnchor = AnchorPoint.Center,
-                    TargetAnchor = AnchorPoint.Center
-                }
-            });
         }
 
         /// <summary>
@@ -441,13 +387,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             int PersonId = int.Parse(uxAddEmployeeEmpDropDown.Value.ToString());
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             //Combine Date/Time for TimeIn/Out
-            DateTime TimeIn = DateTime.Parse(uxAddEmployeeTimeInDate.Value.ToString());
-            DateTime TimeInTime = DateTime.Parse(uxAddEmployeeTimeInTime.Value.ToString());
-            DateTime TimeOut = DateTime.Parse(uxAddEmployeeTimeOutDate.Value.ToString());
-            DateTime TimeOutTime = DateTime.Parse(uxAddEmployeeTimeOutTime.Value.ToString());
+            DateTime TimeIn = DateTime.Parse(uxAddEmployeeTimeInDate.Text);
+            TimeSpan TimeInTime = uxAddEmployeeTimeInTime.SelectedTime;
+            DateTime TimeOut = DateTime.Parse(uxAddEmployeeTimeOutDate.Text);
+            TimeSpan TimeOutTime = uxAddEmployeeTimeOutTime.SelectedTime;
 
-            TimeIn = TimeIn + TimeInTime.TimeOfDay;
-            TimeOut = TimeOut + TimeOutTime.TimeOfDay;
+            TimeIn = TimeIn + TimeInTime;
+            TimeOut = TimeOut + TimeOutTime;
 
 
             //Convert PerDiem to string
@@ -483,45 +429,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 data.EQUIPMENT_ID = null;
             }
 
-            //Check for Travel Time
-            try
-            {
-                decimal TravelTime = decimal.Parse(uxAddEmployeeTravelTimeHours.Value.ToString()) + (decimal.Parse(uxAddEmployeeTravelTimeMinutes.Value.ToString()) / 60);
-                data.TRAVEL_TIME = TravelTime;
-            }
-            catch (NullReferenceException)
-            {
-                data.TRAVEL_TIME = null;
-            }
-
-            //Check for Drive Time
-            try
-            {
-                decimal DriveTime = decimal.Parse(uxAddEmployeeDriveTimeHours.Value.ToString()) + (decimal.Parse(uxAddEmployeeDriveTimeMinutes.Value.ToString()) / 60);
-                data.DRIVE_TIME = DriveTime;
-            }
-            catch (NullReferenceException)
-            {
-                data.DRIVE_TIME = null;
-            }
-
-            try
-            {
-                data.COMMENTS = uxAddEmployeeComments.Value.ToString();
-            }
-            catch (NullReferenceException)
-            {
-                data.COMMENTS = null;
-            }
-            try
-            {
-                data.FOREMAN_LICENSE = uxAddEmployeeLicense.Value.ToString();
-            }
-            catch (NullReferenceException)
-            {
-                data.FOREMAN_LICENSE = null;
-            }
-
+            data.TRAVEL_TIME = decimal.Parse(uxAddEmployeeTravelTimeHours.Text) + (decimal.Parse(uxAddEmployeeTravelTimeMinutes.Text) / 60);
+            data.DRIVE_TIME = decimal.Parse(uxAddEmployeeDriveTimeHours.Text) + (decimal.Parse(uxAddEmployeeDriveTimeMinutes.Text) / 60);
+            data.COMMENTS = uxAddEmployeeComments.Text;
+            data.FOREMAN_LICENSE = uxAddEmployeeLicense.Text;
             data.TIME_IN = TimeIn;
             data.TIME_OUT = TimeOut;
             data.PER_DIEM = PerDiem;
@@ -530,10 +441,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             if (GetOrgId(HeaderId) == 123)
             {
-                decimal ShoptimeAM = decimal.Parse(uxAddEmployeeShopTimeAMHours.Value.ToString()) + (decimal.Parse(uxAddEmployeeShopTimeAMMinutes.Value.ToString()) / 60);
-                decimal ShoptimePM = decimal.Parse(uxAddEmployeeShopTimePMHours.Value.ToString()) + (decimal.Parse(uxAddEmployeeShopTimePMMinutes.Value.ToString()) / 60);
-                data.SHOPTIME_AM = ShoptimeAM;
-                data.SHOPTIME_PM = ShoptimePM;
+                data.SHOPTIME_AM = decimal.Parse(uxAddEmployeeShopTimeAMHours.Text) + (decimal.Parse(uxAddEmployeeShopTimeAMMinutes.Text) / 60);
+                data.SHOPTIME_PM = decimal.Parse(uxAddEmployeeShopTimePMHours.Text) + (decimal.Parse(uxAddEmployeeShopTimePMMinutes.Text) / 60);
             }
 
             if (roleNeeded())
@@ -567,19 +476,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(data);
 
             X.Js.Call("parent.App.uxDetailsPanel.reload(); parent.App.uxPlaceholderWindow.close()");
-            uxAddEmployeeForm.Reset();
-
-            Notification.Show(new NotificationConfig()
-            {
-                Title = "Success",
-                Html = "Employee Edited Successfully",
-                HideDelay = 1000,
-                AlignCfg = new NotificationAlignConfig
-                {
-                    ElementAnchor = AnchorPoint.Center,
-                    TargetAnchor = AnchorPoint.Center
-                }
-            });
         }
 
         /// <summary>

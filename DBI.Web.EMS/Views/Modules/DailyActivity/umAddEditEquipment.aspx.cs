@@ -98,23 +98,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             };
 
             //Check for Odometer Start
-            try
+            if (long.TryParse(uxAddEquipmentStart.Text, out odStart))
             {
-                odStart = long.Parse(uxAddEquipmentStart.Value.ToString());
                 added.ODOMETER_START = odStart;
             }
-            catch (NullReferenceException)
+            else
             {
                 added.ODOMETER_START = null;
             }
 
             //Check for Odometer End
-            try
+            if(long.TryParse(uxAddEquipmentEnd.Text, out odEnd))
             {
                 odEnd = long.Parse(uxAddEquipmentEnd.Value.ToString());
                 added.ODOMETER_END = odEnd;
             }
-            catch (NullReferenceException)
+            else
             {
                 added.ODOMETER_END = null;
             }
@@ -164,27 +163,26 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         select d).Single();
 
                 long ProjectId = long.Parse(uxAddEquipmentDropDown.Value.ToString());
-                long OdStart;
-                long OdEnd;
+                long odStart;
+                long odEnd;
 
                 //Check for odometer start
-                try
+                if (long.TryParse(uxAddEquipmentStart.Text, out odStart))
                 {
-                    OdStart = long.Parse(uxAddEquipmentStart.Value.ToString());
-                    data.ODOMETER_START = OdStart;
+                    data.ODOMETER_START = odStart;
                 }
-                catch (NullReferenceException)
+                else
                 {
                     data.ODOMETER_START = null;
                 }
 
-                //Check for odometer end
-                try
+                //Check for Odometer End
+                if (long.TryParse(uxAddEquipmentEnd.Text, out odEnd))
                 {
-                    OdEnd = long.Parse(uxAddEquipmentEnd.Value.ToString());
-                    data.ODOMETER_END = OdEnd;
+                    odEnd = long.Parse(uxAddEquipmentEnd.Value.ToString());
+                    data.ODOMETER_END = odEnd;
                 }
-                catch (NullReferenceException)
+                else
                 {
                     data.ODOMETER_END = null;
                 }
