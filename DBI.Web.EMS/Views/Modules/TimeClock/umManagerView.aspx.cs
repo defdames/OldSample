@@ -129,18 +129,48 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
         {
             try
             {
-                decimal _timeClockId;
+                //decimal _timeClockId;
 
-                RowSelectionModel selection = uxTimeClockSelectionModel;
-                Boolean checkTime = decimal.TryParse(selection.SelectedRecordID, out _timeClockId);
-                string _editMode = e.ExtraParams["Edit"];
+                //CommandColumn selection = ccEditTime;
+
+               
+                string _timeClockId = e.ExtraParams["EditTime"];
 
                 string url = "/Views/Modules/TimeClock/Edit/umEditTime.aspx?tcID=" + _timeClockId;
 
+                Window win = new Window
+                {
+                    ID = "uxAddEditTime",
+                    Title = "Edit Time",
+                    Height = 350,
+                    Width = 500,
+                    Modal = true,
+                    Resizable = false,
+                    CloseAction = CloseAction.Destroy,
+                    Loader = new ComponentLoader
+                    {
+                        Mode = LoadMode.Frame,
+                        DisableCaching = true,
+                        Url = url,
+                        AutoLoad = true,
+                        LoadMask =
+                        {
+                            ShowMask = true
+                        }
+                    }
+
+
+                };
+                win.Listeners.Close.Handler = "#{uxEmployeeHoursGrid}.getStore().load();";
+
+                win.Render(this.Form);
+                win.Show();
+
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                e.Success = false;
+                e.ErrorMessage = ex.ToString();
             }
 
 

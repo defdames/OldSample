@@ -30,4 +30,12 @@ namespace DBI.Data.Generic
     {
         public long ID { get; set; }
     }
+
+    /// <summary>
+    /// Adds a description field to an EXT Single Combo
+    /// </summary>
+    public class TripleCombo : DoubleComboStringID
+    {
+        public string DESCRIPTION { get; set; }
+    }
 }
