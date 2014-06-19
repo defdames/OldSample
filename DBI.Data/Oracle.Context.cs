@@ -101,7 +101,6 @@ namespace DBI.Data
         public DbSet<SYS_PROFILE_OPTIONS> SYS_PROFILE_OPTIONS { get; set; }
         public DbSet<SYS_USER_PROFILE_OPTIONS> SYS_USER_PROFILE_OPTIONS { get; set; }
         public DbSet<SYS_SECURITY_AUDIT> SYS_SECURITY_AUDIT { get; set; }
-        public DbSet<OVERHEAD_BUDGET_TYPE> OVERHEAD_BUDGET_TYPE { get; set; }
         public DbSet<JOB_COST_BALANCE_TYPE> JOB_COST_BALANCE_TYPE { get; set; }
         public DbSet<JOB_COST_DATE> JOB_COST_DATE { get; set; }
         public DbSet<JOB_COST_PROJECTS> JOB_COST_PROJECTS { get; set; }
@@ -118,5 +117,6 @@ namespace DBI.Data
         public DbSet<BUD_BID_DETAIL_TASK> BUD_BID_DETAIL_TASK { get; set; }
         public DbSet<SYS_ORG_PROFILE_OPTIONS> SYS_ORG_PROFILE_OPTIONS { get; set; }
         public DbSet<CROSSING> CROSSINGS { get; set; }
+        public DbSet<OVERHEAD_BUDGET_TYPE> OVERHEAD_BUDGET_TYPE { get; set; }
     }
 }
