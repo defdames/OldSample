@@ -185,13 +185,13 @@
                                 <Columns>
                                     <ext:Column ID="Column4" runat="server"
                                         DataIndex="SEGMENT1"
-                                        Text="Item Id" />
+                                        Text="Item Id" Flex="20" />
                                     <ext:Column ID="Column5" runat="server"
-                                        DataIndex="DESCRIPTION"
+                                        DataIndex="DESCRIPTION" Flex="50"
                                         Text="Name" />
                                     <ext:Column ID="Column6" runat="server"
                                         DataIndex="UOM_CODE"
-                                        Text="Measure" />
+                                        Text="Measure" Flex="30" />
                                 </Columns>
                             </ColumnModel>
                             <Plugins>

@@ -1710,9 +1710,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
 		protected void deOpenPostMultipleWindow(object sender, DirectEventArgs e)
 		{
-			uxPlaceholderWindow.ClearContent();
-			uxPlaceholderWindow.LoadContent("umPostMultipleWindow.aspx");
-			uxPlaceholderWindow.Show();
+			CreateWindow("umPostMultipleWindow.aspx");
 		}
 
 		[DirectMethod]

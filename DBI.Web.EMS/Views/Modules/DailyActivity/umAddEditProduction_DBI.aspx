@@ -59,8 +59,8 @@
                             </Store>
                             <ColumnModel>
                                 <Columns>
-                                    <ext:Column ID="Column7" runat="server" DataIndex="TASK_NUMBER" Text="Task Number" />
-                                    <ext:Column ID="Column10" runat="server" DataIndex="DESCRIPTION" Text="Name" />
+                                    <ext:Column ID="Column7" runat="server" DataIndex="TASK_NUMBER" Text="Task Number" Flex="25"/>
+                                    <ext:Column ID="Column10" runat="server" DataIndex="DESCRIPTION" Text="Name" Flex="75" />
                                 </Columns>
                             </ColumnModel>
                             <DirectEvents>
