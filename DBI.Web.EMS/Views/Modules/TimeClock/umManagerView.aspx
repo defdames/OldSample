@@ -82,7 +82,6 @@
                                     <ext:Parameter Name="command" Value="command" Mode="Raw" ></ext:Parameter>
                                 </ExtraParams>
                             </Command>
-
                         </DirectEvents>
                     </ext:CommandColumn>
                     <ext:CommandColumn ID="CommandColumn1" runat="server" Hidden="true">
@@ -118,9 +117,9 @@
                     <ext:Button runat="server" ID="uxEdit" Text="Edit" Icon="ApplicationEdit">
                         <DirectEvents>
                             <Click OnEvent="deEditTime">
-                                <ExtraParams>
+                                <%--<ExtraParams>
                                     <ext:Parameter Name="Edit" Value="True"></ext:Parameter>
-                                </ExtraParams>
+                                </ExtraParams>--%>
                                 <EventMask ShowMask="true" />
                             </Click>
                         </DirectEvents>

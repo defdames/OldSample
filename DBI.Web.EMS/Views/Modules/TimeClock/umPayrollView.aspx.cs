@@ -41,6 +41,53 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
             }
             uxPayrollAuditStore.DataSource = data;
         }
+
+        protected void deEditTime(object sender, DirectEventArgs e)
+        {
+            try
+            {
+
+                string _tcId = e.ExtraParams["id"];
+
+                string url = "/Views/Modules/TimeClock/Edit/umEditTime.aspx?tcID=" + _tcId;
+
+                Window win = new Window
+                {
+                    ID = "uxAddEditTime",
+                    Title = "Edit Time",
+                    Height = 350,
+                    Width = 500,
+                    Modal = true,
+                    Resizable = false,
+                    CloseAction = CloseAction.Destroy,
+                    Loader = new ComponentLoader
+                    {
+                        Mode = LoadMode.Frame,
+                        DisableCaching = true,
+                        Url = url,
+                        AutoLoad = true,
+                        LoadMask =
+                        {
+                            ShowMask = true
+                        }
+                    }
+
+
+                };
+                win.Listeners.Close.Handler = "#{uxEmployeeHoursGrid}.getStore().load();";
+
+                win.Render(this.Form);
+                win.Show();
+
+            }
+            catch (Exception ex)
+            {
+                e.Success = false;
+                e.ErrorMessage = ex.ToString();
+            }
+
+
+        }
     }
 
     //public class EmployeeTimePayroll

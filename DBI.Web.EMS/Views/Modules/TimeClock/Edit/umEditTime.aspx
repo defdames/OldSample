@@ -9,42 +9,33 @@
 <body>
     <form id="form1" runat="server">
     <ext:ResourceManager ID="ResourceManager1" runat="server" />
-        <ext:Viewport ID="ViewPort1" runat="server" Layout="BorderLayout">
-            <Items>
-            <%--    <ext:GridPanel ID="uxEditTimeGrid" runat="server" Frame="true" Region="Center">
-                    <Store>
-                        <ext:Store ID="uxEditTimeStore" runat="server">
-                            <Model>
-                                <ext:Model runat="server" IDProperty="ID">
-                                    <Fields>
-                                        <ext:ModelField Name="DATE"  Type="Date" Mapping="DATETIME"/>   
-                                        <ext:ModelField Name="TIME"  Type="Date" Mapping="DATETIME" />
-                                    </Fields>
-                                </ext:Model>
-                            </Model>
-                        </ext:Store>
-                    </Store>
-                    <ColumnModel runat="server">
-                        <Columns>
-                            <ext:DateColumn runat="server" DataIndex="DATE">
-                                <Editor>
-                                    <ext:DateField runat="server" Format="M/d/yyyy"/>
-                                </Editor>
-                            </ext:DateColumn>
-                            <ext:DateColumn runat="server" DataIndex="TIME" Format="h:mm tt">
-                                <Editor>
-                                    <ext:TimeField runat="server" Format="h:mm tt"/>
-                                </Editor>
-                            </ext:DateColumn>
-                        </Columns>
-
-                    </ColumnModel>--%>
-                    <ext:DateField ID="uxDateTimeInField" runat="server" FieldLabel="TimeIn"></ext:DateField>
+        <ext:Panel runat="server">
+            <Items> 
+                <ext:FormPanel ID="frmPanelIn" runat="server" ButtonAlign="Left" Title="Edit Time In" BodyPadding="5" Region="North" Layout="FormLayout">
+                    <Items>
+                        <ext:DateField ID="uxDateInField" runat="server" FieldLabel="Date In"></ext:DateField>
                 
-                    <ext:TimeField ID="uxDateTimeOutField" runat="server" FieldLabel="TimeOut"></ext:TimeField>
-               <%-- </ext:GridPanel>--%>
+                        <ext:TimeField ID="uxTimeInField" runat="server" FieldLabel="Time In"></ext:TimeField>
+                    </Items>
+                </ext:FormPanel>
+                 <ext:FormPanel ID="frmPanelOut" runat="server" Title="Edit Time Out" BodyPadding="5" Region="North" Layout="FormLayout">
+                    <Items>
+                        <ext:DateField ID="uxDateOutField" runat="server" FieldLabel="Date Out"></ext:DateField>
+                
+                        <ext:TimeField ID="uxTimeOutField" runat="server" FieldLabel="Time Out"></ext:TimeField>
+                    </Items>
+                        <Buttons>
+						    <ext:Button runat="server" ID="uxEditButton" Text="Save">
+								<DirectEvents>
+									<Click OnEvent="deEditTime"/>
+								</DirectEvents>
+							</ext:Button>
+						</Buttons>
+                </ext:FormPanel>
             </Items>
-        </ext:Viewport>
+        </ext:Panel>
+          
+
 
     </form>
 </body>
