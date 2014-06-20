@@ -23,5 +23,6 @@ namespace DBI.Data
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
         public string CHILD_BUDGET_NAME { get; set; }
+        public string BUDGET_ORIGIN_FLAG { get; set; }
     }
 }
