@@ -1752,8 +1752,7 @@
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
-          <Property Name="CHILD_BUDGET_NAME" Type="varchar2" MaxLength="250" />
-          <Property Name="BUDGET_ORIGIN_FLAG" Type="varchar2" MaxLength="1" />
+          <Property Name="PARENT_BUDGET_TYPE_ID" Type="number" Precision="15" />
         </EntityType>
         <EntityType Name="OVERHEAD_BUDGET_VERSION">
           <Key>
@@ -7313,8 +7312,7 @@
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CHILD_BUDGET_NAME" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="BUDGET_ORIGIN_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="PARENT_BUDGET_TYPE_ID" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -9693,8 +9691,7 @@
           <EntitySetMapping Name="OVERHEAD_BUDGET_TYPE">
             <EntityTypeMapping TypeName="OracleModel.OVERHEAD_BUDGET_TYPE">
               <MappingFragment StoreEntitySet="OVERHEAD_BUDGET_TYPE">
-                <ScalarProperty Name="BUDGET_ORIGIN_FLAG" ColumnName="BUDGET_ORIGIN_FLAG" />
-                <ScalarProperty Name="CHILD_BUDGET_NAME" ColumnName="CHILD_BUDGET_NAME" />
+                <ScalarProperty Name="PARENT_BUDGET_TYPE_ID" ColumnName="PARENT_BUDGET_TYPE_ID" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
                 <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
                 <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />

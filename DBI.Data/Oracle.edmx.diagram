@@ -147,7 +147,7 @@
         <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_PROJECTS" Width="1.5" PointX="0.8438104450906676" PointY="21.71829433260406" />
         <AssociationConnector Association="OracleModel.FK_PROJECTS_STATUS_ID" />
-        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" Width="1.5" PointX="5.3022782454743416" PointY="13.058126977206268" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" Width="1.5" PointX="9.85859737818064" PointY="6.4736919582233261" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

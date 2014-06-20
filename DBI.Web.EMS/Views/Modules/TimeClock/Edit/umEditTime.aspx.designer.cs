@@ -55,6 +55,6 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock.Edit {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateField uxDateTimeOutField;
+        protected global::Ext.Net.TimeField uxDateTimeOutField;
     }
 }
