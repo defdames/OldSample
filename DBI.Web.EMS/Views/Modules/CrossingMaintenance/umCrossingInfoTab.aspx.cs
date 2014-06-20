@@ -29,8 +29,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 //deLoadUnit();
                 //deLoadType("Edit");
-                uxAddStateList.Data = StaticLists.StateList;
-                uxEditStateList.Data = StaticLists.StateList;
+                uxAddStateList.Data = StaticLists.CrossingStateList;
+                uxEditStateList.Data = StaticLists.CrossingStateList;
                 uxAddPropertyType.Data = StaticLists.PropertyType;
                 uxEditPropertyType.Data = StaticLists.PropertyType;
             }

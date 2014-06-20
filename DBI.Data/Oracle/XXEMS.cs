@@ -852,5 +852,50 @@ namespace DBI.Data
 
     }
 
+    public partial class CROSSINGS
+    {
+        public static void UpdateServiceUnits()
+        {
+            try
+            {
+                List<CROSSING> _crossings = new List<CROSSING>();
+                using (Entities _context = new Entities())
+                {
+                    _crossings = _context.CROSSINGS.Where(x => x.MODIFIED_DATE == null).Take(5000).ToList();
+                }
+
+                //GMS Data
+                List<DBI.Data.GMS.ServiceUnitResponse> _gmsData = DBI.Data.GMS.ServiceUnitData.ServiceUnits();
+
+
+                foreach (var _crossing in _crossings)
+                {
+                    DBI.Data.GMS.ServiceUnitResponse _data = _gmsData.Where(x => x.sub_division.ToUpper() == _crossing.SUB_DIVISION).FirstOrDefault();
+
+                    if (_data != null)
+                    {
+
+                        System.Diagnostics.Debug.WriteLine(_crossing.CROSSING_ID);
+                        _crossing.SERVICE_UNIT = _data.service_unit;
+                        _crossing.MODIFIED_DATE = DateTime.Now;
+                        DBI.Data.GenericData.Update<CROSSING>(_crossing);
+                    }
+                    else
+                    {
+                        _crossing.MODIFIED_DATE = DateTime.Now;
+                        DBI.Data.GenericData.Update<CROSSING>(_crossing);
+                    }
+
+                }
+            }
+            catch (Oracle.ManagedDataAccess.Types.OracleTruncateException ex)
+            {
+
+                throw (ex);
+            }
+           
+        }
+    }
+
 }
 
