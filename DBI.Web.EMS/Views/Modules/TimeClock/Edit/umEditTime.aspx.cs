@@ -14,11 +14,14 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock.Edit
         protected void Page_Load(object sender, EventArgs e)
         {
             string _TimeClockId = Request.QueryString["tcID"].ToString();
-            var dataTimeIn = TIME_CLOCK.ManagerTimeInEditScreen(decimal.Parse(_TimeClockId));
-            var dataTimeOut = TIME_CLOCK.ManagerTimeOutEditScreen(decimal.Parse(_TimeClockId));
+            DateTime dataTimeIn = TIME_CLOCK.ManagerTimeInEditScreen(decimal.Parse(_TimeClockId));
+           TimeSpan dataTimeOut = TIME_CLOCK.ManagerTimeOutEditScreen(decimal.Parse(_TimeClockId));
 
-            uxDateTimeInField.Text = dataTimeIn.ToString();
-            uxDateTimeOutField.Text = dataTimeOut.ToString();
+
+
+
+            uxDateTimeInField.SelectedDate = dataTimeIn;
+            uxDateTimeOutField.SelectedTime = dataTimeOut;
         }
     }
 }

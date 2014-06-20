@@ -746,11 +746,13 @@ namespace DBI.Data
                 return (DateTime)_data;
         }
 
-        public static DateTime ManagerTimeOutEditScreen(decimal tcID)
+        public static TimeSpan ManagerTimeOutEditScreen(decimal tcID)
         {
 
             DateTime? _data = EmployeeTime().Where(x => x.TIME_CLOCK_ID == tcID).SingleOrDefault().TIME_OUT;
-            return (DateTime)_data;
+            TimeSpan ts = _data.Value.TimeOfDay;
+            
+            return ts;
         }
 
         
