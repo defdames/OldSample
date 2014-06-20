@@ -145,9 +145,9 @@
         <AssociationConnector Association="OracleModel.FK_INCIDENT_CROSSING_ID" />
         <AssociationConnector Association="OracleModel.FK_CROSSINGS_RAILROAD_ID" />
         <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
-        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" Width="1.5" PointX="6.125" PointY="71.5" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_PROJECTS" Width="1.5" PointX="0.8438104450906676" PointY="21.71829433260406" />
         <AssociationConnector Association="OracleModel.FK_PROJECTS_STATUS_ID" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" Width="1.5" PointX="5.3022782454743416" PointY="13.058126977206268" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
