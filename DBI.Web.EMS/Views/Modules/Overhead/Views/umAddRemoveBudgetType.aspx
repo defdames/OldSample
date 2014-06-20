@@ -41,11 +41,10 @@
                                     </ext:Store>
                                 </Store>
                                 <Listeners>
-                                   <BeforeQuery Handler="delete queryEvent.combo.lastQuery;" />
                                     <Select Handler="#{uxBudgetDescription}.setValue(#{uxBudgetName}.getStore().getAt(#{uxBudgetName}.getStore().findExact('BUDGET_NAME',#{uxBudgetName}.getValue())).get('DESCRIPTION'));#{uxAddBudgetType}.enable();"></Select>
                                 </Listeners>
                             </ext:ComboBox>
-                           
+                           <ext:Checkbox ID="uxInitialCheckboxBudgetType" runat="server" Flex="1" HideLabel="true" BoxLabel="Initial Budget Type" Margins="0 0 0 10" ></ext:Checkbox>
                         </Items>
                     </ext:FieldContainer>
 
@@ -58,11 +57,41 @@
                         </Items>
                     </ext:FieldContainer>
 
+                          <ext:FieldContainer ID="FieldContainer3" 
+                        runat="server"
+                        LabelStyle="font-weight:bold;padding:0;"
+                        Layout="HBoxLayout">
+                        <Items>
+                            <ext:ComboBox runat="server" ID="uxNextBudgetType" Editable="true" TypeAhead="true"
+                                FieldLabel="Budget Name" AnchorHorizontal="55%" DisplayField="BUDGET_NAME"
+                                ValueField="BUDGET_NAME" TriggerAction="All" 
+                                MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" >
+                                <Store>
+                                    <ext:Store runat="server" ID="uxNextBudgetTypeStore" OnReadData="deLoadNextBudgetNames" AutoLoad="false" >
+                                        <Proxy>
+                                            <ext:PageProxy />
+                                        </Proxy>
+                                        <Model>
+                                            <ext:Model ID="Model1" runat="server" IDProperty="BUDGET_NAME">
+                                                <Fields>
+                                                    <ext:ModelField Name="BUDGET_NAME" />
+                                                    <ext:ModelField Name="DESCRIPTION" />
+                                                    <ext:ModelField Name="LE_ORG_ID" />
+                                                </Fields>
+                                            </ext:Model>
+                                        </Model>
+                                    </ext:Store>
+                                </Store>
+                            </ext:ComboBox>
+                           
+                        </Items>
+                    </ext:FieldContainer>
+
                     </Items>
                     <Buttons>
                         <ext:Button runat="server" ID="uxAddBudgetType" Text="Save" Disabled="true" icon="ApplicationAdd">
                             <DirectEvents>
-                                <Click Success="parent.Ext.getCmp('uxAddEditBudgetType').close();"><EventMask ShowMask="true"></EventMask></Click>
+                                <Click OnEvent="deAssignBudgetType" Success="parent.Ext.getCmp('uxAddEditBudgetType').close();"><EventMask ShowMask="true"></EventMask></Click>
                             </DirectEvents>
                         </ext:Button>
                         <ext:Button ID="uxCloseButton" runat="server" Text="Close Form"><Listeners><Click Handler="parent.Ext.getCmp('uxAddEditBudgetType').close();"></Click></Listeners></ext:Button>

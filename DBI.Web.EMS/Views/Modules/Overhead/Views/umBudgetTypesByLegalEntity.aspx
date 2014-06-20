@@ -86,8 +86,7 @@
                                         <ext:Model ID="Model2" runat="server" IDProperty="OVERHEAD_BUDGET_TYPE_ID">
                                             <Fields>
                                                 <ext:ModelField Name="OVERHEAD_BUDGET_TYPE_ID"  />
-                                                <ext:ModelField Name="PARENT_BUDGET_TYPE_ID"  />
-                                                <ext:ModelField Name="PARENT_BUDGET_DESCRIPTION"  />
+                                                <ext:ModelField Name="CHILD_BUDGET_NAME"  />
                                                 <ext:ModelField Name="BUDGET_NAME" />
                                                 <ext:ModelField Name="BUDGET_DESCRIPTION" />
                                                 <ext:ModelField Name="LE_ORG_ID" />
@@ -103,6 +102,7 @@
                                 <Columns>
                                     <ext:Column ID="Column2" runat="server" DataIndex="BUDGET_NAME" Text="Budget Type" Flex="1" />
                                     <ext:Column ID="Column1" runat="server" DataIndex="BUDGET_DESCRIPTION" Text="Description" Flex="1" />
+                                     <ext:Column ID="Column3" runat="server" DataIndex="CHILD_BUDGET_NAME" Text="Next Budget Type" Flex="1" />
                                 </Columns>
                             </ColumnModel>
                             <Plugins>

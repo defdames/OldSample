@@ -62,7 +62,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             if (!string.IsNullOrEmpty(recordId))
             {
                 long _recordId = long.Parse(recordId.ToString());
-                _data = GL.BudgetTypesRemaining(_businessUnitId, _recordId);
+                _data = GL.BudgetTypesRemaining(_businessUnitId);
             }
             else
             {

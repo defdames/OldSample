@@ -25,16 +25,50 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
 
         protected void deLoadBudgetNames(object sender, StoreReadDataEventArgs e)
         {
-            string _businessUnitId = Request.QueryString["buID"].ToString();
-            string _recordId = string.Empty;
+            long _businessUnitId = 0;
 
-            if (Request.QueryString["recordId"] != "" && Request.QueryString["recordId"] != null)
-            {
-                _recordId = Request.QueryString["recordId"].ToString();
-            }
+            if (Request.QueryString["buID"] != "" && Request.QueryString["buID"] != null)
+                _businessUnitId = long.Parse(Request.QueryString["buID"]);
 
-            uxBudgetNameStore.DataSource = GL.BudgetTypesRemaining(long.Parse(_businessUnitId), 0);
+            uxBudgetNameStore.DataSource = GL.BudgetTypesRemaining(_businessUnitId);
             uxBudgetNameStore.DataBind();
+
+        }
+
+        protected void deLoadNextBudgetNames(object sender, StoreReadDataEventArgs e)
+        {
+            long _businessUnitId = 0;
+
+            if (Request.QueryString["buID"] != "" && Request.QueryString["buID"] != null)
+                _businessUnitId = long.Parse(Request.QueryString["buID"]);
+
+            uxNextBudgetTypeStore.DataSource = GL.BudgetTypesRemaining(_businessUnitId);
+            uxNextBudgetTypeStore.DataBind();
+
+        }
+
+        protected void deAssignBudgetType(object sender, DirectEventArgs e)
+        {
+
+            long _businessUnitId = 0;
+
+            if (Request.QueryString["buID"] != "" && Request.QueryString["buID"] != null)
+                _businessUnitId = long.Parse(Request.QueryString["buID"]);
+
+            OVERHEAD_BUDGET_TYPE _data = new OVERHEAD_BUDGET_TYPE();
+            _data.LE_ORG_ID = _businessUnitId;
+            _data.BUDGET_NAME = uxBudgetName.SelectedItem.Value;
+            _data.BUDGET_DESCRIPTION = uxBudgetDescription.Text;
+            _data.CHILD_BUDGET_NAME = uxNextBudgetType.SelectedItem.Value;
+            _data.CREATE_DATE = DateTime.Now;
+            _data.MODIFY_DATE = DateTime.Now;
+            _data.CREATED_BY = User.Identity.Name;
+            _data.MODIFIED_BY = User.Identity.Name;
+
+            if (uxInitialCheckboxBudgetType.Checked)
+                _data.BUDGET_ORIGIN_FLAG = "Y";
+
+            GenericData.Insert<OVERHEAD_BUDGET_TYPE>(_data);
 
         }
 

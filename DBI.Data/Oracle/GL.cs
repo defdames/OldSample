@@ -134,9 +134,9 @@ namespace DBI.Data
         /// Returns a list of unused budget types by a legal entity. If they were used in the overhead system, they will not show in this returned list. This list will also filter out the same type so it can't be picked again.
         /// </summary>
         /// <param name="legalEntityOrganizationId"></param>
-        /// <param name="overheadBudgetTypeId"></param>
+        /// <param name="budgetType"></param>
         /// <returns></returns>
-        public static List<BUDGET_TYPE> BudgetTypesRemaining(long legalEntityOrganizationId, long overheadBudgetTypeId)
+        public static List<BUDGET_TYPE> BudgetTypesRemaining(long legalEntityOrganizationId, string budgetType)
         {
            
                 //Budget Types that are active by legal entity organization Id
@@ -146,7 +146,7 @@ namespace DBI.Data
                 List<OVERHEAD_BUDGET_TYPE> _budgetTypes = OVERHEAD_BUDGET_TYPE.BudgetTypes(legalEntityOrganizationId);
 
                 _data = (from dups in _data
-                         where !_budgetTypes.Any(x => x.BUDGET_NAME == dups.BUDGET_NAME && x.OVERHEAD_BUDGET_TYPE_ID == overheadBudgetTypeId)
+                         where !_budgetTypes.Any(x => x.BUDGET_NAME == dups.BUDGET_NAME && x.BUDGET_NAME == budgetType)
                          select dups);
 
                 return _data.ToList();

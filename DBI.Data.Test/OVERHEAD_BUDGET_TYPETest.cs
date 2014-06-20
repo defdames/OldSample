@@ -8,11 +8,11 @@ namespace DBI.Data.Test
     
     
     /// <summary>
-    ///This is a test class for SYS_USER_PROFILE_OPTIONSTest and is intended
-    ///to contain all SYS_USER_PROFILE_OPTIONSTest Unit Tests
+    ///This is a test class for OVERHEAD_BUDGET_TYPETest and is intended
+    ///to contain all OVERHEAD_BUDGET_TYPETest Unit Tests
     ///</summary>
     [TestClass()]
-    public class SYS_USER_PROFILE_OPTIONSTest
+    public class OVERHEAD_BUDGET_TYPETest
     {
 
 
@@ -65,7 +65,16 @@ namespace DBI.Data.Test
         #endregion
 
 
-
-      
+        /// <summary>
+        ///A test for BudgetTypes
+        ///</summary>
+        [TestMethod()]
+        public void BudgetTypesTest()
+        {
+            long legalEntityOrganizationId = 121; 
+            List<OVERHEAD_BUDGET_TYPE> actual;
+            actual = OVERHEAD_BUDGET_TYPE.BudgetTypes(legalEntityOrganizationId);
+            Assert.IsTrue(actual.Count > 0);
+        }
     }
 }

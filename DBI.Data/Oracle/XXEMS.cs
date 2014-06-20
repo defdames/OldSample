@@ -404,7 +404,12 @@ namespace DBI.Data
 
                 using (Entities _context = new Entities())
                 {
-                    List<OVERHEAD_BUDGET_TYPE> _returnList = _context.OVERHEAD_BUDGET_TYPE.Where(c => c.LE_ORG_ID == legalEntityOrganizationId).ToList();
+                    var sql = string.Format(@"select * from xxems.overhead_budget_type 
+                                where le_org_id = {0}
+                                start with parent_budget_type_id is null
+                                connect by prior overhead_budget_type_id = parent_budget_type_id",legalEntityOrganizationId);
+
+                    List<OVERHEAD_BUDGET_TYPE> _returnList = _context.Database.SqlQuery<OVERHEAD_BUDGET_TYPE>(sql).ToList();
                     return _returnList;
                 }
             
@@ -720,8 +725,6 @@ namespace DBI.Data
 
         }
 
-
-
         public class SYS_PROFILE_OPTIONS_V2
         {
             public decimal USER_PROFILE_OPTION_ID { get; set; }
@@ -731,6 +734,8 @@ namespace DBI.Data
             public string PROFILE_OWNER_NAME { get; set; }
         }
 
+
+              
     }
 
 }
