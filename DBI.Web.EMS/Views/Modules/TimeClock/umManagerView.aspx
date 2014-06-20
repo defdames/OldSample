@@ -35,9 +35,9 @@
        <Items>
         <ext:GridPanel ID="uxEmployeeHoursGrid" runat="server" Frame="true" Title="Employee Hours" Icon ="Table" Width ="1200" Resizeable="true" Collapsable="true">
             <Store>
-                <ext:Store ID="uxEmployeeHoursStore" runat="server" AutoDataBind="true" GroupField="EMPLOYEE_NAME" OnReadData="deGetEmployeeHoursData" PageSize="20">
+                <ext:Store ID="uxEmployeeHoursStore" runat="server" AutoDataBind="true" GroupField="EMPLOYEE_NAME" OnReadData="deGetEmployeeHoursData" PageSize="20" >
                     <Model>
-                        <ext:Model runat="server">
+                        <ext:Model runat="server" IDProperty="TIME_CLOCK_ID">
                             <Fields>
                                 <ext:ModelField Name="TIME_CLOCK_ID" />
                                 <ext:ModelField Name="EMPLOYEE_NAME" />
@@ -75,14 +75,15 @@
                         </Commands>
                         <DirectEvents>
                             <Command OnEvent="deEditTime">
-                                <EventMask ShowMask ="true" />
-                                <ExtraParams>
-                                    <ext:Parameter Name="EditTime" Value="Ext.encode(#{uxEmployeeHoursGrid}.getRowsValues({selectedOnly : true}))" Mode="Raw" />
+                                <EventMask ShowMask="true">
+                                </EventMask>
+                               <ExtraParams>
+                                    <ext:Parameter Name="id" Value="record.data.TIME_CLOCK_ID" Mode="Raw"></ext:Parameter>
+                                    <ext:Parameter Name="command" Value="command" Mode="Raw" ></ext:Parameter>
                                 </ExtraParams>
-
                             </Command>
+
                         </DirectEvents>
-                    
                     </ext:CommandColumn>
                     <ext:CommandColumn ID="CommandColumn1" runat="server" Hidden="true">
                         <GroupCommands>
