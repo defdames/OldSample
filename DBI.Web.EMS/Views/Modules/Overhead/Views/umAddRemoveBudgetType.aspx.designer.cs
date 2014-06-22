@@ -85,15 +85,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views {
         protected global::Ext.Net.Model Model5;
         
         /// <summary>
-        /// uxInitialCheckboxBudgetType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Checkbox uxInitialCheckboxBudgetType;
-        
-        /// <summary>
         /// FieldContainer2 control.
         /// </summary>
         /// <remarks>
@@ -110,42 +101,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.TextField uxBudgetDescription;
-        
-        /// <summary>
-        /// FieldContainer3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer3;
-        
-        /// <summary>
-        /// uxNextBudgetType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ComboBox uxNextBudgetType;
-        
-        /// <summary>
-        /// uxNextBudgetTypeStore control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Store uxNextBudgetTypeStore;
-        
-        /// <summary>
-        /// Model1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Model Model1;
         
         /// <summary>
         /// uxAddBudgetType control.

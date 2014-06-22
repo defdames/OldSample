@@ -51,16 +51,9 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
 
                 if (_organizationID > 0) 
                 {
-                    using (Entities _context = new Entities())
-                    {
                         List<OVERHEAD_BUDGET_TYPE> data = OVERHEAD_BUDGET_TYPE.BudgetTypes(_organizationID);
-
-                        int count;
-                        uxBudgetTypeStore.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_BUDGET_TYPE>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-                        e.Total = count;
-                    }
-
-                    uxAssignBudgetType.Disabled = false;
+                        uxBudgetTypeStore.DataSource = data;
+                        uxAssignBudgetType.Disabled = false;
                 }
            
 
@@ -72,8 +65,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
                 string selectedRecordID = uxLegalEntityTreeSelectionModel.SelectedRecordID;
                 if (selectedRecordID != "0")
                 {
-                    uxBudgetTypeStore.RemoveAll();
-                    uxBudgetTypeGridFilter.ClearFilter();
                     uxBudgetTypeStore.Reload();
                 }
            
@@ -90,7 +81,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
                 GenericData.Delete<OVERHEAD_BUDGET_TYPE>(_budgetType);
 
                 uxBudgetTypeStore.Reload();
-                uxUnAssignBudgetType.Disabled = true;
         }
 
         protected void deAddEditBudgetType(object sender, DirectEventArgs e)
