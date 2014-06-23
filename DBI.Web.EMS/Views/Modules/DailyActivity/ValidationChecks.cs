@@ -329,12 +329,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 DAILY_ACTIVITY_EQUIPMENT EquipmentData = _context.DAILY_ACTIVITY_EQUIPMENT.Where(x => x.EQUIPMENT_ID == EquipmentId).Single();
 
                 long ProjectOrgId = _context.PROJECTS_V.Where(x => x.PROJECT_ID == EquipmentData.DAILY_ACTIVITY_HEADER.PROJECT_ID).Select(x => (long)x.ORG_ID).Single();
-                long EquipmentOrg = _context.PROJECTS_V.Where(x => x.PROJECT_ID == EquipmentData.PROJECT_ID).Select(x => (long)x.ORG_ID).Single();
-                if (ProjectOrgId != EquipmentOrg)
+                long EquipmentOrgId = _context.PROJECTS_V.Where(x => x.PROJECT_ID == EquipmentData.PROJECT_ID).Select(x => (long)x.ORG_ID).Single();
+                if (ProjectOrgId != EquipmentOrgId)
                 {
+                    string ProjectOrg = (from p in _context.PROJECTS_V
+                                         join o in _context.ORG_HIER_V on p.CARRYING_OUT_ORGANIZATION_ID equals o.ORG_ID
+                                         where p.PROJECT_ID == EquipmentData.DAILY_ACTIVITY_HEADER.PROJECT_ID
+                                         select o.PARENT_ORG).Distinct().Single();
+                    string EquipmentOrg = (from p in _context.PROJECTS_V
+                                           join o in _context.ORG_HIER_V on p.CARRYING_OUT_ORGANIZATION_ID equals o.ORG_ID
+                                           where p.PROJECT_ID == EquipmentData.PROJECT_ID
+                                           select o.PARENT_ORG).Distinct().Single();
                     string Name = _context.PROJECTS_V.Where(x => x.PROJECT_ID == EquipmentData.PROJECT_ID).Select(x => x.NAME).Single();
                     string ClassCode = _context.CLASS_CODES_V.Where(x => x.PROJECT_ID == EquipmentData.PROJECT_ID).Select(x => x.CLASS_CODE).Single();
-                    return new WarningData { WarningType = "Error", RecordType = string.Format("{0} - {1}", Name, ClassCode), AdditionalInformation = string.Format("Equipment has Org of {0}, Project has Org of {1}", EquipmentOrg.ToString(), ProjectOrgId.ToString()) };
+
+
+                    return new WarningData { WarningType = "Error", RecordType = string.Format("{0} - {1}", Name, ClassCode), AdditionalInformation = string.Format("Equipment BU is {0}, Project BU is {1}", EquipmentOrg, ProjectOrg) };
                 }
                 return null;
             }
@@ -407,13 +417,23 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 DAILY_ACTIVITY_EMPLOYEE Employee = _context.DAILY_ACTIVITY_EMPLOYEE.Where(x => x.EMPLOYEE_ID == EmployeeId).Single();
-                long ProjectOrg = _context.PROJECTS_V.Where(x => x.PROJECT_ID == Employee.DAILY_ACTIVITY_HEADER.PROJECT_ID).Select(x => (long)x.ORG_ID).Single();
-                long EmployeeOrg = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == Employee.PERSON_ID).Select(x => (long)x.ORGANIZATION_ID).Single();
+                long ProjectOrgID = _context.PROJECTS_V.Where(x => x.PROJECT_ID == Employee.DAILY_ACTIVITY_HEADER.PROJECT_ID).Select(x => (long)x.ORG_ID).Single();
+                long EmployeeOrgID = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == Employee.PERSON_ID).Select(x => (long)x.ORGANIZATION_ID).Single();
 
-                if (ProjectOrg != EMPLOYEES_V.GetEmployeeBusinessUnit(EmployeeOrg))
+                if (ProjectOrgID != EMPLOYEES_V.GetEmployeeBusinessUnit(EmployeeOrgID))
                 {
+                    string ProjectOrg = (from p in _context.PROJECTS_V
+                                         join o in _context.ORG_HIER_V on p.CARRYING_OUT_ORGANIZATION_ID equals o.ORG_ID
+                                         where p.PROJECT_ID == Employee.DAILY_ACTIVITY_HEADER.PROJECT_ID
+                                         select o.PARENT_ORG).Distinct().Single();
+                    string EmployeeOrg = (from e in _context.EMPLOYEES_V
+                                          join o in _context.ORG_HIER_V on e.ORGANIZATION_ID equals o.ORG_ID
+                                          where e.ORGANIZATION_ID == EmployeeOrgID
+                                          select o.PARENT_ORG).Distinct().Single();
+
+
                     string Name = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == Employee.PERSON_ID).Select(x => x.EMPLOYEE_NAME).Single();
-                    return new WarningData { WarningType = "Error", RecordType = Name, AdditionalInformation = string.Format("Employee Org is {0}, Project Org is {1}", EmployeeOrg.ToString(), ProjectOrg.ToString()) };
+                    return new WarningData { WarningType = "Error", RecordType = Name, AdditionalInformation = string.Format("Employee BU is {0}, Project BU is {1}", EmployeeOrg, ProjectOrg) };
                 }
                 return null;
             }
