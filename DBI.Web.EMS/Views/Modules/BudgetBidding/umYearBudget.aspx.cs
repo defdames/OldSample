@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using Ext.Net;
 using DBI.Data;
 using DBI.Data.DataFactory;
+using DBI.Data.Generic;
 
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 {
@@ -19,66 +20,16 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void deReadSummaryGridData(object sender, StoreReadDataEventArgs e)
         {
-            //using (Entities _context = new Entities())
-            //{
-            //    List<object> dataSource;
-            //    dataSource = (from d in _context.CROSSINGS
-            //                  join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID into pn
-            //                  from proj in pn.DefaultIfEmpty()
-            //                  select new { d.CONTACT_ID, d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.SUB_DIVISION, d.CROSSING_CONTACTS.CONTACT_NAME, d.PROJECT_ID, proj.LONG_NAME }).ToList<object>();
-            //    int count;
-            //    uxSummaryGridStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataSource, out count);
-            //    e.Total = count;
-            //}
+            long orgID = long.Parse(Request.QueryString["OrgID"]);
+            string orgName = Request.QueryString["orgName"];
+            long yearID = long.Parse(Request.QueryString["fiscalYear"]);
+            long verID = long.Parse(Request.QueryString["verID"]);
 
-            List<YearSummaryStruct> list = new List<YearSummaryStruct> 
-            {
-                    new YearSummaryStruct(1, "Test Project 1", "Expected", 2, 5, 10000, 2000, 8000, 1000, 7000, 12.50m, 1500),
-                    new YearSummaryStruct(2, "Test Project 2", "Renewal", 2, 5, 15000, 2000, 8000, 1000, 12000, -12.5m, 1500),
-                    new YearSummaryStruct(3, "Test Project 3", "Expected", 2, 5, 20000, 2000, 8000, 1000, 17000, 12.5m, 1500),
-                    new YearSummaryStruct(4, "Test Project 4", "Renewal", 2, 5, 25000, 2000, 8000, 1000, 23000, 12.5m, 1500),
-                    new YearSummaryStruct(5, "Test Project 5", "Renewal", 2, 5, 30000, 2000, 8000, 1000, 28000, 12.5m, 1500),
-                    new YearSummaryStruct(6, "Test Project 6", "New Sale", 2, 5, 35000, 2000, 8000, 1000, 33000, 12.5m, 1500),
-                    new YearSummaryStruct(7, "Test Project 7", "Expected", 2, 5, 40000, 2000, 8000, 1000, 38000, 12.5m, 1500),
-                    new YearSummaryStruct(8, "Test Project 8", "Expected", 2, 5, 45000, 2000, 8000, 1000, 43000, 12.5m, 1500),
-                    new YearSummaryStruct(9, "Test Project 9", "New Sale", 2, 5, 50000, 2000, 8000, 1000, 48000, 12.5m, 1500),
-                    new YearSummaryStruct(10, "Test Project 10", "New Sale", 2, 5, 55000, 2000, 8000, 1000, 53000, 12.5m, 1500)
-            };
-            uxSummaryGridStore.DataSource = list;
-        }
-
-        class YearSummaryStruct  // DELETE WHEN GETTING DATA FROM CORRECT SOURCE
-        {
-            public long PROJ_ID { get; set; }
-            public string PROJECT_NAME { get; set; }
-            public string STATUS { get; set; }
-            public decimal ACRES { get; set; }
-            public decimal DAYS { get; set; }
-            public decimal GROSS_REC { get; set; }
-            public decimal MAT_USAGE { get; set; }
-            public decimal GROSS_REV { get; set; }
-            public decimal DIR_EXP { get; set; }
-            public decimal OP { get; set; }
-            public decimal OP_PERC { get; set; }
-            public decimal OP_VAR { get; set; }
-
-            public YearSummaryStruct(long id, string project, string proStatus, decimal proAcres, decimal proDays,
-                decimal grRec, decimal mat, decimal grRev, decimal dirs, decimal proOP, decimal proOPPerc, decimal proOPVar)
-            {
-                PROJ_ID = id;
-                PROJECT_NAME = project;
-                STATUS = proStatus;
-                ACRES = proAcres;
-                DAYS = proDays;
-                GROSS_REC = grRec;
-                MAT_USAGE = mat;
-                GROSS_REV = grRev;
-                DIR_EXP = dirs;
-                OP = proOP;
-                OP_PERC = proOPPerc;
-                OP_VAR = proOPVar;
-            }
-        }
+            CalcPrevYearAndVersion(yearID, verID);
+            long prevYearID = Convert.ToInt64(uxHidPrevYear.Value);
+            long prevVerID = Convert.ToInt64(uxHidPrevVer.Value);
+            uxSummaryGridStore.DataSource = BUD_BID_STATUS.OrgSummaryProjects(orgName, orgID, yearID, verID, prevYearID, prevVerID);
+        }       
 
         protected void deGetFormData(object sender, DirectEventArgs e)
         {
@@ -167,6 +118,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 uxGridRowModel.ClearSelection();
                 uxProjectDetail.Reset();
                 uxProjectDetail.Enable();
+                uxHidNewProject.Value = "True";
             }
         }
         
@@ -196,11 +148,11 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         {
             string hierID = Request.QueryString["hierID"];
             string orgID = Request.QueryString["orgID"];
-            string projectID = uxHidProjectID.Value.ToString();
-            string projectNum = uxHidProjectNum.Value.ToString();
-            string projectName = uxHidProjectName.Value.ToString();
-            string type = uxHidType.Value.ToString();
-            string jcDate = uxHidDate.Value.ToString();
+            string projectID = uxHidProjectID.Value == null ? "" : uxHidProjectID.Value.ToString();
+            string projectNum = uxHidProjectNum.Value == null ? "" : uxHidProjectNum.Value.ToString();
+            string projectName = uxHidProjectName.Value == null ? "" : uxHidProjectName.Value.ToString();
+            string type = uxHidType.Value == null ? "" : uxHidType.Value.ToString();
+            string jcDate = uxHidDate.Value == null ? "" : uxHidDate.Value.ToString();
             XXDBI_DW.JOB_COST_V jcLine = null;
 
             switch (type)
@@ -371,49 +323,67 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         protected void deSave(object sender, DirectEventArgs e)
         {
             // Write project info to DB
-            //BUD_BID_PROJECTS prjInfoData = new BUD_BID_PROJECTS();
-            //prjInfoData.PROJECT_ID = Convert.ToInt64(uxHidProjectID.Value);
+            BUD_BID_PROJECTS prjInfoData = new BUD_BID_PROJECTS();
+            prjInfoData.PROJECT_ID = Convert.ToInt64(uxHidProjectID.Value);
             //prjInfoData.PROJ_NUM = uxProjectNum.Value.ToString();
-            //prjInfoData.PRJ_NAME = uxProjectName.Value.ToString();
-            //prjInfoData.TYPE = uxHidType.Value.ToString();
-            //prjInfoData.ORG_ID = long.Parse(Request.QueryString["OrgID"]);
-            //prjInfoData.YEAR_ID = long.Parse(Request.QueryString["fiscalYear"]);
-            //prjInfoData.VER_ID = long.Parse(Request.QueryString["verID"]);
-            //prjInfoData.STATUS_ID = Convert.ToInt64(uxStatus.Value);
-            //prjInfoData.ACRES = Convert.ToDecimal(uxAcres.Value);
-            //prjInfoData.DAYS = Convert.ToDecimal(uxDays.Value);
-            //if (uxAppType.Value != null) { prjInfoData.APP_TYPE = uxAppType.Value.ToString(); }
-            //if (uxChemMix.Value != null) { prjInfoData.CHEMICAL_MIX = uxChemMix.Value.ToString(); }
-            //if (uxComments.Value != null) { prjInfoData.COMMENTS = uxComments.Value.ToString(); }
-            //if (uxLiabilityCheckbox.Checked != true) { prjInfoData.LIABILITY = "Y"; } else { prjInfoData.LIABILITY = "N"; }
-            ////if (liabilityOP != null) { prjInfoData.LIABILITY_OP = liabilityOP; }
-            //if (uxJCDate.Value != "") { prjInfoData.WE_DATE = Convert.ToDateTime(uxJCDate.Value); }
-            //GenericData.Insert<BUD_BID_PROJECTS>(prjInfoData);
+            prjInfoData.PRJ_NAME = uxProjectName.Value.ToString();
+            prjInfoData.TYPE = uxHidType.Value.ToString();
+            prjInfoData.ORG_ID = long.Parse(Request.QueryString["OrgID"]);
+            prjInfoData.YEAR_ID = long.Parse(Request.QueryString["fiscalYear"]);
+            prjInfoData.VER_ID = long.Parse(Request.QueryString["verID"]);
+            prjInfoData.STATUS_ID = Convert.ToInt64(uxStatus.Value);
+            prjInfoData.ACRES = Convert.ToDecimal(uxAcres.Value);
+            prjInfoData.DAYS = Convert.ToDecimal(uxDays.Value);
+            if (uxAppType.Value != null) { prjInfoData.APP_TYPE = uxAppType.Value.ToString(); }
+            if (uxChemMix.Value != null) { prjInfoData.CHEMICAL_MIX = uxChemMix.Value.ToString(); }
+            if (uxComments.Value != null) { prjInfoData.COMMENTS = uxComments.Value.ToString(); }
+            if (uxLiabilityCheckbox.Checked != true) { prjInfoData.LIABILITY = "Y"; } else { prjInfoData.LIABILITY = "N"; }
+            //if (liabilityOP != null) { prjInfoData.LIABILITY_OP = liabilityOP; }
+            if (uxJCDate.Value != "") { prjInfoData.WE_DATE = Convert.ToDateTime(uxJCDate.Value); }
+
+            if (uxHidNewProject.Value.ToString() == "True")
+            {
+                GenericData.Insert<BUD_BID_PROJECTS>(prjInfoData);
+            }
+
+            else
+            {
+                GenericData.Update<BUD_BID_PROJECTS>(prjInfoData);
+            }
+
+            // Get created project id from BUD_BID_PROJECTS table
+            decimal tableProjectID = prjInfoData.BUD_BID_PROJECTS_ID;
 
             // Write project start numbers to DB
-            //BUD_BID_ACTUAL_NUM startNumsdata = new BUD_BID_ACTUAL_NUM();
-            //long[] arr1 = { 1, 2, 3, 4, 5 };
-            //Ext.Net.TextField[] arr2 = { uxSGrossRec, uxSMatUsage, uxSGrossRev, uxSDirects, uxSOP };
-            //for (int i = 0; i <=4; i++)
-            //{
-            //    startNumsdata.PROJECT_ID = Convert.ToInt64(uxHidProjectID.Value);
-            //    startNumsdata.DETAIL_TASK_ID = 0;
-            //    startNumsdata.LINE_ID = arr1[i];
-            //    startNumsdata.NOV = 0;// Convert.ToDecimal(arr2[i].Value);
-            //    GenericData.Insert<BUD_BID_ACTUAL_NUM>(startNumsdata);
-            //}    
-
             BUD_BID_ACTUAL_NUM startNumsdata = new BUD_BID_ACTUAL_NUM();
-            startNumsdata.PROJECT_ID = 1;
-            startNumsdata.DETAIL_TASK_ID = 2;
-            startNumsdata.LINE_ID = 3;
-            startNumsdata.NOV = 4;
-            GenericData.Insert<BUD_BID_ACTUAL_NUM>(startNumsdata);
+            long[] arr1 = { 6, 7, 8, 9, 10 };
+            Ext.Net.TextField[] arr2 = { uxSGrossRec, uxSMatUsage, uxSGrossRev, uxSDirects, uxSOP };
+            for (int i = 0; i <= 4; i++)
+            {
+                startNumsdata.PROJECT_ID = Convert.ToInt64(tableProjectID);
+                startNumsdata.DETAIL_TASK_ID = 7;
+                startNumsdata.LINE_ID = arr1[i];
+                startNumsdata.NOV = Convert.ToDecimal(arr2[i].Value);
+                if (uxHidNewProject.Value.ToString() == "True")
+                {
+                    GenericData.Insert<BUD_BID_ACTUAL_NUM>(startNumsdata);
+                }
 
+                else
+                {
+                    GenericData.Update<BUD_BID_ACTUAL_NUM>(startNumsdata);
+                }                
+            }
 
-
+            //BUD_BID_BUDGET_NUM startNumsdata = new BUD_BID_BUDGET_NUM();
+            //startNumsdata.PROJECT_ID = 1;
+            //startNumsdata.DETAIL_TASK_ID = 7;
+            //startNumsdata.LINE_ID = 6;
+            //startNumsdata.NOV = 4;
+            //GenericData.Insert<BUD_BID_BUDGET_NUM>(startNumsdata);
 
             NotificationMsg("Save", "Project has been saved.", Icon.DiskBlack);
+            uxProjectDetail.Disable();
         }
 
         protected void deCheckAllowSave(object sender, DirectEventArgs e)
@@ -432,6 +402,48 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         protected void deLoadStatuses(object sender, StoreReadDataEventArgs e)
         {
             uxStatusStore.DataSource = BUD_BID_STATUS.Statuses();
+        }
+
+        protected void CalcPrevYearAndVersion(long curYear, long curVer)
+        {
+            switch (curVer)
+            {
+                case 1:  // Bid
+                    uxHidPrevYear.Value = curYear;
+                    uxHidPrevVer.Value = 1;
+                    break;
+
+                case 2:  // First Draft
+                    uxHidPrevYear.Value = curYear;
+                    uxHidPrevVer.Value = 1;
+                    break;
+
+                case 3:  // Final Draft
+                    uxHidPrevYear.Value = curYear - 1;
+                    uxHidPrevVer.Value = 3;
+                    break;
+
+                case 4:  // 1st Reforecast
+                    uxHidPrevYear.Value = curYear;
+                    uxHidPrevVer.Value = 3;
+                    break;
+
+                case 5:  // 2nd Reforecast
+                    uxHidPrevYear.Value = curYear;
+                    uxHidPrevVer.Value = 4;
+                    break;
+
+                case 6:  // 3rd Reforecast
+                    uxHidPrevYear.Value = curYear;
+                    uxHidPrevVer.Value = 5;
+                    break;
+
+                case 7:  // 4th Reforecast
+                    uxHidPrevYear.Value = curYear;
+                    uxHidPrevVer.Value = 6;
+                    break;
+            }
+
         }
     }
 }

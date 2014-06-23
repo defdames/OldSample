@@ -182,5 +182,32 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Panel uxBudgetPanel;
+        
+        /// <summary>
+        /// uxHidOrgOK control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Hidden uxHidOrgOK;
+        
+        /// <summary>
+        /// uxHidYearOK control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Hidden uxHidYearOK;
+        
+        /// <summary>
+        /// uxHidVerOK control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Hidden uxHidVerOK;
     }
 }

@@ -46,7 +46,7 @@
                         <ext:TreeSelectionModel ID="uxCompanySelectionModel" runat="server" Mode="Single"></ext:TreeSelectionModel>
                     </SelectionModel>
                     <DirectEvents>
-                        <ItemClick OnEvent="deLoadCorrectBudgetType">
+                        <ItemClick OnEvent="deSelectOrg">
                             <ExtraParams>
                                 <ext:Parameter Name="node" Value="record.data.id" Mode="Raw" />
                             </ExtraParams>
@@ -64,7 +64,8 @@
                             ValueField="ID_NAME"
                             Width="120"
                             EmptyText="-- Year --"
-                            Editable="false">
+                            Editable="false"
+                            Disabled="true">
                             <Store>
                                 <ext:Store ID="uxFiscalYearStore" runat="server" OnReadData="deLoadFiscalYears" AutoLoad="false">
                                     <Model>
@@ -83,7 +84,7 @@
                                 <Activate Handler="#{uxFiscalYearStore}.store.reload();" />
                             </Listeners>
                             <DirectEvents>
-                                <Select OnEvent="deLoadCorrectBudgetType">
+                                <Select OnEvent="deSelectYear">
                                 </Select>
                             </DirectEvents>
                         </ext:ComboBox>
@@ -96,7 +97,8 @@
                             ValueField="ID"
                             Width="120"
                             EmptyText="-- Versions --"
-                            Editable="false">
+                            Editable="false"
+                            Disabled="true">
                             <Store>
                                 <ext:Store ID="uxVersionStore" runat="server" OnReadData="deLoadBudgetVersions" AutoLoad="false">
                                     <Model>
@@ -116,7 +118,7 @@
                                 <Activate Handler="#{uxVersionStore}.store.reload();" />
                             </Listeners>
                             <DirectEvents>
-                                <Select OnEvent="deLoadCorrectBudgetType">
+                                <Select OnEvent="deSelectVersion">
                                 </Select>
                             </DirectEvents>
                         </ext:ComboBox>
@@ -147,6 +149,11 @@
                         <LoadMask ShowMask="true" />
                     </Loader>
                 </ext:Panel>
+
+                <ext:Hidden ID="uxHidOrgOK" runat="server" />
+                <ext:Hidden ID="uxHidYearOK" runat="server" />
+                <ext:Hidden ID="uxHidVerOK" runat="server" />
+
             </Items>
         </ext:Viewport>
     </form>

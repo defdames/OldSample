@@ -143,7 +143,6 @@
                             <Model>
                                 <ext:Model ID="Model1" runat="server">
                                     <Fields>
-                                        <ext:ModelField Name="PROJ_ID" />
                                         <ext:ModelField Name="PROJECT_NAME" />
                                         <ext:ModelField Name="STATUS" />
                                         <ext:ModelField Name="ACRES" />
@@ -167,23 +166,41 @@
                         <Columns>
                             <ext:Column ID="Column1" runat="server" DataIndex="PROJECT_NAME" Text="Project Name" Flex="6" />
                             <ext:Column ID="Column2" runat="server" DataIndex="STATUS" Text="Status" Flex="2" />
-                            <ext:Column ID="Column3" runat="server" DataIndex="ACRES" Text="Acres" Flex="1" Align="Right" />
-                            <ext:Column ID="Column4" runat="server" DataIndex="DAYS" Text="Days" Flex="1" Align="Right" />
-                            <ext:Column ID="Column5" runat="server" DataIndex="GROSS_REC" Text="Gross Receipts" Flex="2" Align="Right" />
-                            <ext:Column ID="Column6" runat="server" DataIndex="MAT_USAGE" Text="Material Usage" Flex="2" Align="Right" />
-                            <ext:Column ID="Column7" runat="server" DataIndex="GROSS_REV" Text="Gross Revenue" Flex="2" Align="Right" />
-                            <ext:Column ID="Column8" runat="server" DataIndex="DIR_EXP" Text="Direct Expenses" Flex="2" Align="Right" />
-                            <ext:Column ID="Column9" runat="server" DataIndex="OP" Text="OP" Flex="2" Align="Right" />
-                            <ext:Column ID="Column10" runat="server" DataIndex="OP_PERC" Text="OP %" Flex="2" Align="Right" />
-                            <ext:Column ID="Column11" runat="server" DataIndex="OP_VAR" Text="OP +/-" Flex="2" Align="Right" />
+                            <ext:Column ID="Column3" runat="server" DataIndex="ACRES" Text="Acres" Flex="1" Align="Right">
+                                <Renderer Fn="Ext.util.Format.numberRenderer('0,000.00')" />
+                            </ext:Column>
+                            <ext:Column ID="Column4" runat="server" DataIndex="DAYS" Text="Days" Flex="1" Align="Right">
+                                <Renderer Fn="Ext.util.Format.numberRenderer('0,000.00')" />
+                            </ext:Column>
+                            <ext:Column ID="Column5" runat="server" DataIndex="GROSS_REC" Text="Gross Receipts" Flex="2" Align="Right">
+                                <Renderer Fn="Ext.util.Format.numberRenderer('0,000.00')" />
+                            </ext:Column>
+                            <ext:Column ID="Column6" runat="server" DataIndex="MAT_USAGE" Text="Material Usage" Flex="2" Align="Right">
+                                <Renderer Fn="Ext.util.Format.numberRenderer('0,000.00')" />
+                            </ext:Column>
+                            <ext:Column ID="Column7" runat="server" DataIndex="GROSS_REV" Text="Gross Revenue" Flex="2" Align="Right">
+                                <Renderer Fn="Ext.util.Format.numberRenderer('0,000.00')" />
+                            </ext:Column>
+                            <ext:Column ID="Column8" runat="server" DataIndex="DIR_EXP" Text="Direct Expenses" Flex="2" Align="Right">
+                                <Renderer Fn="Ext.util.Format.numberRenderer('0,000.00')" />
+                            </ext:Column>
+                            <ext:Column ID="Column9" runat="server" DataIndex="OP" Text="OP" Flex="2" Align="Right">
+                                <Renderer Fn="Ext.util.Format.numberRenderer('0,000.00')" />
+                            </ext:Column>
+                            <ext:Column ID="Column10" runat="server" DataIndex="OP_PERC" Text="OP %" Flex="2" Align="Right">
+                                <Renderer Fn="Ext.util.Format.numberRenderer('0,000.00 %')" />
+                            </ext:Column>
+                            <ext:Column ID="Column11" runat="server" DataIndex="OP_VAR" Text="OP +/-" Flex="2" Align="Right">
+                                <Renderer Fn="Ext.util.Format.numberRenderer('0,000.00')" />
+                            </ext:Column>
                         </Columns>
                     </ColumnModel>
                     <DirectEvents>
-                        <Select OnEvent="deGetFormData">
+ <%--                       <Select OnEvent="deGetFormData">
                             <ExtraParams>
                                 <ext:Parameter Name="ProjectId" Value="#{uxSummaryGrid}.getSelectionModel().getSelection()[0].data.PROJECT_NAME" Mode="Raw" />
                             </ExtraParams>
-                        </Select>
+                        </Select>--%>
                     </DirectEvents>
                     <DockedItems>
                         <ext:FieldContainer ID="uxInactiveTotal" runat="server" Layout="HBoxLayout" Dock="Bottom" Cls="inactiveBackground">
@@ -294,7 +311,7 @@
                                                     <EventMask ShowMask="true" />
                                                 </SelectionChange>
                                                 <SelectionChange OnEvent="deCheckAllowSave" />
-                                                <Deactivate OnEvent="deProjectDropdownDeactivate" />
+                                                <Select OnEvent="deProjectDropdownDeactivate" />
                                             </DirectEvents>
                                             <Plugins>
                                                 <ext:FilterHeader runat="server" ID="uxProjectFilter" Remote="true" />
@@ -357,7 +374,7 @@
                                                     </ExtraParams>
                                                     <EventMask ShowMask="true" />
                                                 </SelectionChange>
-                                                <Deactivate OnEvent="deProjectDropdownDeactivate" />
+                                                <Select OnEvent="deProjectDropdownDeactivate" />
                                             </DirectEvents>--%>
                                             <Plugins>
                                                 <ext:FilterHeader runat="server" ID="uxProjectCompareFilter" Remote="true" />
@@ -741,12 +758,16 @@
                                     </DirectEvents>
                                 </ext:Button>
 
-                                <ext:Hidden ID="uxHidProjectID" runat="server" />
-                                <ext:Hidden ID="uxHidProjectNum" runat="server" />
-                                <ext:Hidden ID="uxHidProjectName" runat="server" />
-                                <ext:Hidden ID="uxHidType" runat="server" />
-                                <ext:Hidden ID="uxHidDate" runat="server" />
-
+                                <%-- Change these back to ext:Hidden --%>
+                                <ext:TextField ID="uxHidNewProject" runat="server" />
+                                <ext:TextField ID="uxHidProjectID" runat="server" />
+                                <ext:TextField ID="uxHidProjectNum" runat="server" />
+                                <ext:TextField ID="uxHidProjectName" runat="server" />
+                                <ext:TextField ID="uxHidType" runat="server" />
+                                <ext:TextField ID="uxHidDate" runat="server" />
+                                <ext:TextField ID="uxHidPrevYear" runat="server" />
+                                <ext:TextField ID="uxHidPrevVer" runat="server" />
+                                <%-- Change these back to ext:Hidden --%>
                             </Items>
                         </ext:FieldContainer>
                     </Items>
