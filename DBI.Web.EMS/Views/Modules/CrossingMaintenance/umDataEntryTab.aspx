@@ -72,23 +72,21 @@
                 <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true" />
             </Plugins>
             <SelectionModel>
-                <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi"  />
+                <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi" />
+                
             </SelectionModel>
             <Listeners>
-                <Select Handler="#{uxAddAppButton}.enable(); #{uxRemoveAppButton}.enable()" />
-               
+                <SelectionChange Handler="#{uxApplicationStore}.reload(); #{uxAddAppButton}.enable();" />
             </Listeners>
 
-             <DirectEvents>
+            <%-- <DirectEvents>
                     <SelectionChange OnEvent="GetApplicationGridData">
-                      <%--  <ExtraParams>
-                            <ext:Parameter Name="CrossingId" Value="#{uxApplicationCrossingGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                        </ExtraParams>--%>
+                     
                           <ExtraParams>
                                 <ext:Parameter Name="crossingId" Value="Ext.encode(#{uxApplicationCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
                             </ExtraParams>
                     </SelectionChange>
-                </DirectEvents>
+                </DirectEvents>--%>
             <BottomBar>
                 <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True">
                 </ext:PagingToolbar>
@@ -128,7 +126,10 @@
                 </SelectionModel>
                 <Store>
                     <ext:Store runat="server"
-                        ID="uxApplicationStore" GroupField="CROSSING_NUMBER">
+                        ID="uxApplicationStore" OnReadData="GetApplicationGridData" AutoDataBind="true" AutoLoad="false" GroupField="CROSSING_NUMBER">
+                        <Parameters>
+                              <ext:StoreParameter Name="crossingId" Value="Ext.encode(#{uxApplicationCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+                        </Parameters>
                         <Model>
                             <ext:Model ID="Model1" runat="server">
                                 <Fields>
@@ -148,7 +149,7 @@
                             </ext:Model>
                         </Model>
                         <Sorters>
-                        <ext:DataSorter Property="APPLICATION_DATE" Direction="ASC" />
+                        <ext:DataSorter Property="APPLICATION_REQUESTED" Direction="ASC" />
 
                     </Sorters>
 
@@ -167,7 +168,11 @@
                         <ext:Column ID="Column5" runat="server" DataIndex="REMARKS" Text="Remarks" Flex="3" />
 
                     </Columns>
-                </ColumnModel>               
+                </ColumnModel> 
+            <Listeners>
+                <Select Handler="#{uxRemoveAppButton}.enable();" />
+                  <Deselect Handler="#{uxRemoveAppButton}.disable();" />
+            </Listeners>              
              <Features>
                 <ext:Grouping ID="Grouping1"
                     runat="server"
@@ -225,6 +230,9 @@
                                 <ext:DateField ID="uxAddEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" Width="300" AllowBlank="false" Editable="false" TabIndex="2" />
                                   <ext:Label ID="Label1" runat="server" Text="" Width="25" />
                                 <ext:Checkbox ID="uxAddEntryCutBox" runat="server" BoxLabel="Cut" BoxLabelAlign="After" TabIndex="5" />
+                                  <ext:Label ID="Label2" runat="server" Text="" Width="25" />
+                                <ext:Checkbox ID="uxAddEntryInspectBox" runat="server" BoxLabel="Inspect" BoxLabelAlign="After" Width="250" TabIndex="6" />
+
 
                             </Items>
                         </ext:FieldContainer>
@@ -232,28 +240,7 @@
 
                         <ext:FieldContainer ID="FieldContainer2" runat="server" Layout="HBoxLayout">
                             <Items>
-                               <%-- <ext:ComboBox ID="uxAddApplicationTruckComboBox"
-                                    runat="server"
-                                    FieldLabel="Truck #"
-                                    LabelAlign="Right"
-                                    DisplayField="NAME"
-                                    ValueField="NAME"
-                                    QueryMode="Local"
-                                    TypeAhead="true" Width="300" AllowBlank="false" ForceSelection="true" TabIndex="3">
-                                    <Store>
-                                        <ext:Store runat="server"
-                                            ID="uxAddApplicationTruckStore" AutoDataBind="true">
-                                            <Model>
-                                                <ext:Model ID="Model5" runat="server">
-                                                    <Fields>
-                                                        <ext:ModelField Name="NAME" />
-                                                    </Fields>
-                                                </ext:Model>
-                                            </Model>
-
-                                        </ext:Store>
-                                    </Store>
-                                </ext:ComboBox>--%>
+                
                                  <ext:DropDownField runat="server" Editable="false"
 					ID="uxAddEquipmentDropDown"
 					FieldLabel="Choose Equipment"
@@ -354,8 +341,6 @@
 						</ext:GridPanel>
 					</Component>
 				</ext:DropDownField>
-                                  <ext:Label ID="Label2" runat="server" Text="" Width="25" />
-                                <ext:Checkbox ID="uxAddEntryInspectBox" runat="server" BoxLabel="Inspect" BoxLabelAlign="After" Width="250" TabIndex="6" />
                             </Items>
                         </ext:FieldContainer>
 
@@ -369,6 +354,8 @@
                                     <ExtraParams>
                                         <ext:Parameter Name="CrossingId" Value="#{uxApplicationCrossingGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
                                         <ext:Parameter Name="selectedCrossings" Value="Ext.encode(#{uxApplicationCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+                                        <ext:Parameter Name="appList" Value="Ext.encode(#{uxApplicationEntryGrid}.getRowsValues({selectedOnly: false}))" Mode="Raw" />
+
                                     </ExtraParams>
                                 </Click>
                             </DirectEvents>

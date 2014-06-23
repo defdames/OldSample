@@ -40,17 +40,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                         e.Total = count;
                         
                     }
-                    //List<WEB_PROJECTS_V> dataIn;
-
-                    //dataIn = WEB_PROJECTS_V.ProjectList();
-
-                    //int count;
-                    ////Get paged, filterable list of data
-                    //List<WEB_PROJECTS_V> data = GenericData.EnumerableFilterHeader<WEB_PROJECTS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
-
-                    //e.Total = count;
-                    //uxCurrentSecurityProjectStore.DataSource = data;
-                    //uxCurrentSecurityProjectStore.DataBind();
+                 
                 }
             }
         }
@@ -99,6 +89,24 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             }
         }
+        //protected void deUnassignedCrossings(object sender, DirectEventArgs e)
+        //{
+        //       using (Entities _context = new Entities())
+        //    {
+        //        //long RailroadId = long.Parse(Session["rrType"].ToString());
+        //        long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+              
+        //        var data = (from d in _context.CROSSINGS
+        //                    join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
+        //                    join i in _context.CROSSING_RAILROAD on d.RAILROAD_ID equals i.RAILROAD_ID
+        //                    where d.RAILROAD_ID == RailroadId 
+
+        //                    select new { r.CROSSING_ID, r.PROJECT_ID, d.CROSSING_NUMBER, i.RAILROAD, d.SERVICE_UNIT, d.SUB_DIVISION }).ToList<object>();
+
+
+        //        uxAssignedCrossingGrid.Store.Primary.DataSource = data;
+        //        uxAssignedCrossingGrid.Store.Primary.DataBind();
+        //}
         protected void deAssociateCrossings(object sender, DirectEventArgs e)
         {       
             long ProjectId = long.Parse(e.ExtraParams["projectId"]);

@@ -12,16 +12,15 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class OVERHEAD_BUDGET_TYPE
+    public partial class SYS_ORG_PROFILE_OPTIONS
     {
-        public long OVERHEAD_BUDGET_TYPE_ID { get; set; }
-        public string BUDGET_NAME { get; set; }
-        public string BUDGET_DESCRIPTION { get; set; }
-        public long LE_ORG_ID { get; set; }
+        public decimal ORG_PROFILE_OPTION_ID { get; set; }
+        public long ORGANIZATION_ID { get; set; }
+        public decimal PROFILE_OPTION_ID { get; set; }
+        public string PROFILE_VALUE { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
-        public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
+        public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string MODIFIED_BY { get; set; }
-        public Nullable<long> PARENT_BUDGET_TYPE_ID { get; set; }
     }
 }

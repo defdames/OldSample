@@ -61,6 +61,9 @@
     <Reference Include="iTextSharp">
       <HintPath>..\packages\iTextSharp-LGPL.4.1.6\lib\iTextSharp.dll</HintPath>
     </Reference>
+    <Reference Include="MessagingToolkit.Barcode">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\MessagingToolkit\MessagingToolkit-Barcode\Binaries\.NET 3.5\WinForms\x86\MessagingToolkit.Barcode.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\lib\EXT\Newtonsoft.Json.dll</HintPath>
@@ -111,6 +114,7 @@
     <None Include="Properties\PublishProfiles\EMSV2.pubxml" />
     <None Include="Resources\Scripts\jquery-2.0.1.intellisense.js" />
     <Content Include="Global.asax" />
+    <Content Include="QRCodeGenerator.aspx" />
     <Content Include="Resources\Images\1pixel.jpg" />
     <Content Include="Resources\Images\bgimage.jpg" />
     <Content Include="Resources\Scripts\functions.js" />
@@ -185,6 +189,7 @@
     <Content Include="Views\Modules\Overhead\umOrganizationBudgetSecurity.aspx" />
     <Content Include="Views\Modules\Overhead\GLSecurity\umGLSecurity.aspx" />
     <Content Include="Views\Modules\Overhead\umViewBudgets.aspx" />
+    <Content Include="Views\Modules\Overhead\Views\umBudgetTypesByLegalEntity.aspx" />
     <Content Include="Views\Modules\Security\Options\AddEdit\umAddEditProfileOptions.aspx" />
     <Content Include="Views\Modules\Security\umEditGroups.aspx" />
     <Content Include="Views\Modules\Security\umEditModules.aspx" />
@@ -195,6 +200,7 @@
     <Content Include="Views\Modules\Security\umSecurityLogList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityActivityList.aspx" />
     <Content Include="Views\Modules\Security\umSecurityUsersList.aspx" />
+    <Content Include="Views\Modules\TimeClock\Edit\umEditTime.aspx" />
     <Content Include="Views\Modules\TimeClock\umEmployeeClock.aspx" />
     <Content Include="Views\Modules\TimeClock\umManagerView.aspx" />
     <Content Include="Views\Modules\TimeClock\umPayrollView.aspx" />
@@ -220,6 +226,13 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="QRCodeGenerator.aspx.cs">
+      <DependentUpon>QRCodeGenerator.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="QRCodeGenerator.aspx.designer.cs">
+      <DependentUpon>QRCodeGenerator.aspx</DependentUpon>
     </Compile>
     <Compile Include="uxLogin.aspx.cs">
       <DependentUpon>uxLogin.aspx</DependentUpon>
@@ -681,6 +694,13 @@
     <Compile Include="Views\Modules\Overhead\umViewBudgets.aspx.designer.cs">
       <DependentUpon>umViewBudgets.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\Overhead\Views\umBudgetTypesByLegalEntity.aspx.cs">
+      <DependentUpon>umBudgetTypesByLegalEntity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\Views\umBudgetTypesByLegalEntity.aspx.designer.cs">
+      <DependentUpon>umBudgetTypesByLegalEntity.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\Security\Options\AddEdit\umAddEditProfileOptions.aspx.cs">
       <DependentUpon>umAddEditProfileOptions.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -750,6 +770,13 @@
     </Compile>
     <Compile Include="Views\Modules\Security\umSecurityUsersList.aspx.designer.cs">
       <DependentUpon>umSecurityUsersList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\TimeClock\Edit\umEditTime.aspx.cs">
+      <DependentUpon>umEditTime.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\TimeClock\Edit\umEditTime.aspx.designer.cs">
+      <DependentUpon>umEditTime.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\TimeClock\umEmployeeClock.aspx.cs">
       <DependentUpon>umEmployeeClock.aspx</DependentUpon>

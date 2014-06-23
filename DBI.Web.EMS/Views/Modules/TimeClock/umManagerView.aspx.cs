@@ -46,6 +46,8 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
                         TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
                         item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");
+                        
+
                     }
                     uxEmployeeHoursStore.DataSource = data;
 
@@ -68,6 +70,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
                         TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
                         item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");
+                       
 
 
                     }
@@ -89,6 +92,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
                         TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
                         item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");
+                        
 
                     }
                     uxEmployeeHoursStore.DataSource = data;
@@ -110,6 +114,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
                         TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
                         item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");
+                        
 
 
                     }
@@ -122,17 +127,47 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
         protected void deEditTime(object sender, DirectEventArgs e)
         {
-            //try
-            //{
-            //    decimal _timeClockId;
+            try
+            {
+                            
+                string _tcId = e.ExtraParams["id"];
 
-            //    RowSelectionModel selection = uxTimeClockSelectionModel;
-            //    Boolean checkTime = decimal.TryParse(selection.SelectedRecordID, out _timeClockId);
-            //    string _editMode = e.ExtraParams["Edit"];
+                string url = "/Views/Modules/TimeClock/Edit/umEditTime.aspx?tcID=" + _tcId;
 
-            //    string url = "/Views/Modules/TimeClock/umManagerView.aspx?tcID=" + _timeClockId;
-                
-            //}
+                Window win = new Window
+                {
+                    ID = "uxAddEditTime",
+                    Title = "Edit Time",
+                    Height = 350,
+                    Width = 500,
+                    Modal = true,
+                    Resizable = false,
+                    CloseAction = CloseAction.Destroy,
+                    Loader = new ComponentLoader
+                    {
+                        Mode = LoadMode.Frame,
+                        DisableCaching = true,
+                        Url = url,
+                        AutoLoad = true,
+                        LoadMask =
+                        {
+                            ShowMask = true
+                        }
+                    }
+
+
+                };
+                win.Listeners.Close.Handler = "#{uxEmployeeHoursGrid}.getStore().load();";
+
+                win.Render(this.Form);
+                win.Show();
+
+            }
+            catch (Exception ex)
+            {
+                e.Success = false;
+                e.ErrorMessage = ex.ToString();
+            }
 
 
         }
@@ -201,6 +236,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
         public decimal? ACTUAL_HOURS { get; set; }
         public decimal? ADJUSTED_HOURS { get; set; }
         public string APPROVED { get; set; }
-        public string SUBMITTED { get; set; }        
+        public string SUBMITTED { get; set; }
+        
     }
 }

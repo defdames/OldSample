@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DBI.Web.EMS.Views.Modules.Overhead {
+namespace DBI.Web.EMS.Views.Modules.Overhead.Views {
     
     
-    public partial class umBudgetTypes {
+    public partial class umBudgetTypesByLegalEntity {
         
         /// <summary>
         /// ResourceManager1 control.
@@ -31,15 +31,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// uxViewPort control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Viewport uxViewPort;
-        
-        /// <summary>
         /// uxLegalEntityTreePanel control.
         /// </summary>
         /// <remarks>
@@ -47,6 +38,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.TreePanel uxLegalEntityTreePanel;
+        
+        /// <summary>
+        /// ToolTip1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ToolTip ToolTip1;
         
         /// <summary>
         /// uxLegalEntityGridStore control.
@@ -76,31 +76,22 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.GridPanel uxBudgetTypeGridPanel;
         
         /// <summary>
-        /// uxAddBudgetType control.
+        /// Toolbar1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxAddBudgetType;
+        protected global::Ext.Net.Toolbar Toolbar1;
         
         /// <summary>
-        /// uxEditBudgetType control.
+        /// uxAssignBudgetType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxEditBudgetType;
-        
-        /// <summary>
-        /// uxDeleteBudgetType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxDeleteBudgetType;
+        protected global::Ext.Net.Button uxAssignBudgetType;
         
         /// <summary>
         /// uxBudgetTypeStore control.
@@ -137,15 +128,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Column Column1;
-        
-        /// <summary>
-        /// Column3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column Column3;
         
         /// <summary>
         /// uxBudgetTypeGridFilter control.

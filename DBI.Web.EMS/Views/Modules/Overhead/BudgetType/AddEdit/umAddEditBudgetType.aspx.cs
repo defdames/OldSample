@@ -35,12 +35,9 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.BudgetType.AddEdit
                     if (_editRecordId > 0)
                     {
                         uxBudgetNameStore.Parameters.Add(new Ext.Net.StoreParameter("RECORDID", _editRecordId.ToString()));
-
-                        uxBudgetNameStore.Reload();
                         OVERHEAD_BUDGET_TYPE _budgetType = OVERHEAD_BUDGET_TYPE.BudgetType(_editRecordId);
-                        uxBudgetName.SetValueAndFireSelect(_budgetType.BUDGET_NAME);
+                        uxBudgetName.Text = _budgetType.BUDGET_NAME;
                         uxBudgetDescription.Text = _budgetType.BUDGET_DESCRIPTION;
-                        uxDeleteBudgetType.Disabled = false;
                         uxBudgetName.ReadOnly = true;
                         uxAddBudgetType.Disabled = false;
                     }
@@ -53,6 +50,22 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.BudgetType.AddEdit
                 throw;
             }
            
+
+        }
+
+
+        protected void deLoadBudgetNames(object sender, StoreReadDataEventArgs e)
+        {
+            string _businessUnitId = Request.QueryString["buID"].ToString();
+            string _recordId = string.Empty;
+
+            if (Request.QueryString["recordId"] != "" && Request.QueryString["recordId"] != null)
+            {
+                _recordId = Request.QueryString["recordId"].ToString();
+            }
+
+            uxBudgetNameStore.DataSource = GL.BudgetTypesRemaining(long.Parse(_businessUnitId), 0);
+            uxBudgetNameStore.DataBind();
 
         }
 
@@ -83,6 +96,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.BudgetType.AddEdit
                     data.BUDGET_DESCRIPTION = uxBudgetDescription.Text;
                     data.MODIFY_DATE = DateTime.Now;
                     data.MODIFIED_BY = User.Identity.Name;
+                    GenericData.Update<OVERHEAD_BUDGET_TYPE>(data);
                 }
                 else
                 {
@@ -93,9 +107,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.BudgetType.AddEdit
                     data.MODIFY_DATE = DateTime.Now;
                     data.CREATED_BY = User.Identity.Name;
                     data.MODIFIED_BY = User.Identity.Name;
+                    GenericData.Insert<OVERHEAD_BUDGET_TYPE>(data);
                 }
 
-                GenericData.Insert<OVERHEAD_BUDGET_TYPE>(data);
+                
             }
             catch (Exception ex)
             {

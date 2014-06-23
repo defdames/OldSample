@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web;
 using DBI.Data;
+using DBI.Data.Generic;
 using Ext.Net;
 
 namespace DBI.Web.EMS.Views.Modules.Overhead
@@ -25,6 +26,27 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
                 e.Success = false;
                 e.ErrorMessage = ex.ToString();
+            }
+
+        }
+
+        protected void deLoadCompanyCodes(object sender, StoreReadDataEventArgs e)
+        {
+            try
+            {
+                using (Entities _context = new Entities())
+                {
+                    var _glCodes = (from accounts in _context.GL_ACCOUNTS_V
+                                           group accounts by new { accounts.SEGMENT1, accounts.SEGMENT1_DESC} into grp
+                                           select new TripleCombo { ID = grp.Key.SEGMENT1, ID_NAME = grp.Key.SEGMENT1, DESCRIPTION = grp.Key.SEGMENT1_DESC}).OrderBy(o => o.ID).AsQueryable();
+
+                    uxCompanyNameStore.DataSource = _glCodes.ToList();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
             }
 
         }

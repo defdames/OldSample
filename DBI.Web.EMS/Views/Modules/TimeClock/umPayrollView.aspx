@@ -5,6 +5,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    <script>
+        var onGroupCommand = function (column, command, group) {
+            if (command === 'SelectGroup') {
+                var isSelected = App.uxEmployeeHoursGrid.getSelectionModel().isSelected(group.children[0]);
+
+                if (!isSelected) {
+                    column.grid.getSelectionModel().select(group.children, true);
+                } else {
+                    column.grid.getSelectionModel().deselect(group.children, true);
+                };
+            }
+
+        };
+    </script>
 </head>
 <body>
 
@@ -23,7 +37,7 @@
                 <Store>
                     <ext:Store ID="uxPayrollAuditStore" runat="server" AutoDataBind="true" GroupField="EMPLOYEE_NAME" OnReadData="deGetEmployeesHourData" PageSize="20">
                         <Model>
-                            <ext:Model runat="server">
+                            <ext:Model runat="server" IDProperty="TIME_CLOCK_ID">
                                 <Fields>
                                     <ext:ModelField Name="TIME_CLOCK_ID" />
                                     <ext:ModelField Name="EMPLOYEE_NAME" />
@@ -54,6 +68,32 @@
                         <ext:Column ID="Column2" runat="server" Text="Adjusted Time" Flex="1" DataIndex="ADJUSTED_HOURS_GRID"/>
                         <ext:Column ID="Approved" runat="server" Text="Approved" Flex="1" DataIndex="APPROVED" />
                         <ext:Column ID="Submitted" runat="server" Text="Submitted" Flex="1" DataIndex="SUBMITTED" />
+                        <ext:CommandColumn ID="ccEditTime" runat="server">
+                        <Commands>
+                            <ext:GridCommand Icon="NoteEdit" CommandName="Edit" Text="Edit"/>
+                        </Commands>
+                        <DirectEvents>
+                            <Command OnEvent="deEditTime">
+                                <EventMask ShowMask="true">
+                                </EventMask>
+                               <ExtraParams>
+                                    <ext:Parameter Name="id" Value="record.data.TIME_CLOCK_ID" Mode="Raw"></ext:Parameter>
+                                    <ext:Parameter Name="command" Value="command" Mode="Raw" ></ext:Parameter>
+                                </ExtraParams>
+                            </Command>
+                        </DirectEvents>
+                    </ext:CommandColumn>
+                        <ext:CommandColumn ID="CommandColumn1" runat="server" Hidden="true">
+                        <GroupCommands>
+                            <ext:GridCommand Icon="TableRow" CommandName="SelectGroup">
+                                <ToolTip Title="Select" Text="Select all rows of the group" />
+                            </ext:GridCommand>
+                            <ext:CommandFill />
+                        </GroupCommands>
+                        <Listeners>
+                            <GroupCommand Fn="onGroupCommand" />
+                        </Listeners>
+                    </ext:CommandColumn>
                     </Columns>
                 </ColumnModel>
                 <Features>
@@ -65,29 +105,9 @@
                 </Features>
                 <SelectionModel>
                     <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi" />
-                </SelectionModel>
-                <Plugins>
-                    <ext:CellEditing ID="CellEditing1" runat="server" ClicksToEdit="2"/>
-                </Plugins> 
-                <Buttons>
-                    <ext:Button runat="server" ID="uxApproveButton" Text="Approve">
-                        <%--<DirectEvents>
-                            <Click OnEvent="deApproveTime">
-                                <EventMask ShowMask="true" />
-                                <ExtraParams>
-                                    <ext:Parameter Name="TimeClockId" Value="#{uxEmployeeHoursGrid}.getSelectionModel().getSelection()[0].data.TIME_CLOCK_ID" Mode="Raw" />
-                                    <ext:Parameter Name="ApprovedTime" Value="Ext.encode(#{uxEmployeeHoursGrid}.getRowsValues({selectedOnly : true}))" Mode="Raw" />
-                                </ExtraParams>
-                            </Click> 
-                        </DirectEvents>--%>
-                    </ext:Button>
-                </Buttons>
-
-
+                </SelectionModel>                
             </ext:GridPanel>
-            
         </Items>
-
     </ext:Viewport>
     </form>
 

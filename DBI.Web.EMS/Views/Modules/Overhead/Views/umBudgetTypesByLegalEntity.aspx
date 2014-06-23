@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umBudgetTypes.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.Overhead.umBudgetTypes" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umBudgetTypesByLegalEntity.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.Overhead.Views.umBudgetTypesByLegalEntity" %>
 
 <!DOCTYPE html>
 
@@ -9,12 +9,11 @@
 <body>
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
     <form id="form1" runat="server">
-      
-        <ext:Viewport runat="server" ID="uxViewPort" Layout="BorderLayout" IDMode="Explicit" Namespace="App" RenderXType="True">
+        <ext:Viewport runat="server" Layout="BorderLayout" Namespace="App">
             <Items>
                 <ext:TreePanel ID="uxLegalEntityTreePanel"
                     runat="server"
-                    Title="Legal Entities"
+                    Title="Overhead Legal Entities"
                     Width="300"
                     RootVisible="false"
                     SingleExpand="true"
@@ -24,13 +23,25 @@
                     UseArrows="true"
                     Region="West"
                     Scroll="Vertical" Collapsible="false">
+                    <Tools>
+                        <ext:Tool runat="server" Type="Help">
+                            <ToolTips>
+                                <ext:ToolTip ID="ToolTip1" runat="server" Html="These are legal entities that have budget types assigned in oracle. If the legal entity is not displayed you must create a budget type for it in oracle and assign it to that organization." UI="Info">
+                                </ext:ToolTip>
+                            </ToolTips>
+                        </ext:Tool>
+                    </Tools>
+                    <ToolTips>
+                    </ToolTips>
                     <Store>
-                        <ext:TreeStore ID="uxLegalEntityGridStore" runat="server" OnReadData="LoadLegalEntitiesTreePanel">
+                        <ext:TreeStore ID="uxLegalEntityGridStore" runat="server" OnReadData="deLoadOverheadLegalEntities">
                             <Proxy>
                                 <ext:PageProxy></ext:PageProxy>
                             </Proxy>
-                             <DirectEvents>
-                                <BeforeLoad><EventMask ShowMask="true"></EventMask></BeforeLoad>
+                            <DirectEvents>
+                                <BeforeLoad>
+                                    <EventMask ShowMask="true"></EventMask>
+                                </BeforeLoad>
                             </DirectEvents>
                         </ext:TreeStore>
                     </Store>
@@ -41,48 +52,28 @@
                         <ext:TreeSelectionModel ID="uxLegalEntityTreeSelectionModel" runat="server" Mode="Single">
                         </ext:TreeSelectionModel>
                     </SelectionModel>
-                    <DirectEvents>
-                        <ItemClick OnEvent="deShowBudgetTypesByBusinessUnit">
+                     <DirectEvents>
+                        <ItemClick OnEvent="deShowBudgetTypesByLegalEntity">
                             <ExtraParams>
                                 <ext:Parameter Name="id" Value="record.data.id" Mode="Raw" />
                             </ExtraParams>
                         </ItemClick>
                     </DirectEvents>
-                    <Listeners>
-                        <Select Handler="#{uxEditBudgetType}.disable();"></Select>
-                    </Listeners>
                 </ext:TreePanel>
-     
-                <ext:GridPanel ID="uxBudgetTypeGridPanel" runat="server" Flex="1" SimpleSelect="true" Title="Budget Types By Business Unit" Padding="5" Region="Center">
+
+                 <ext:GridPanel ID="uxBudgetTypeGridPanel" runat="server" Flex="1" SimpleSelect="true" Title="Budget Types By Legal Entity" Padding="5" Region="Center">
                     <TopBar>
-                        <ext:Toolbar runat="server">
+                        <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
-                                <ext:Button runat="server" ID="uxAddBudgetType" Icon="ApplicationAdd" Text="Add" Disabled="true">
-                                    <DirectEvents>
-                                        <Click OnEvent="deAddEditBudgetType" />
-                                    </DirectEvents>
+                                <ext:Button runat="server" ID="uxAssignBudgetType" Icon="Add" Text="Assign" Disabled="true">
                                 </ext:Button>
-                                 <ext:Button runat="server" ID="uxEditBudgetType" Icon="ApplicationEdit" Text="Edit" Disabled="true">
-                                      <DirectEvents>
-                                        <Click OnEvent="deAddEditBudgetType" >
-                                            <ExtraParams>
-                                                <ext:Parameter Name="Edit" Value="True"></ext:Parameter>
-                                            </ExtraParams>
-                                        </Click>
-                                    </DirectEvents>
-                                 </ext:Button>
-                                 <ext:Button runat="server" ID="uxDeleteBudgetType" Text="Delete" Icon="ApplicationDelete" Disabled="true">
-                            <DirectEvents>
-                                <Click OnEvent="deDeleteBudgetType" Success="#{uxBudgetTypeGridPanel}.getStore().load();"><Confirmation ConfirmRequest="true" Message="Are you sure you want to delete the selected budget type(s)?"></Confirmation><EventMask ShowMask="true"></EventMask></Click>
-                            </DirectEvents>
-                        </ext:Button>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
                     <Store>
                         <ext:Store runat="server"
                             ID="uxBudgetTypeStore"
-                            AutoDataBind="true" RemoteSort="true" PageSize="10" OnReadData="deReadBudgetTypesByOrganization" AutoLoad="false">
+                            AutoDataBind="true" RemoteSort="true" AutoLoad="false" OnReadData="deReadBudgetTypesByLegalEntity">
                             <Model>
                                         <ext:Model ID="Model2" runat="server" IDProperty="OVERHEAD_BUDGET_TYPE_ID">
                                             <Fields>
@@ -104,7 +95,6 @@
                                 <Columns>
                                     <ext:Column ID="Column2" runat="server" DataIndex="BUDGET_NAME" Text="Budget Type" Flex="1" />
                                     <ext:Column ID="Column1" runat="server" DataIndex="BUDGET_DESCRIPTION" Text="Description" Flex="1" />
-                                    <ext:Column ID="Column3" runat="server" DataIndex="PARENT_BUDGET_DESCRIPTION" Text="Parent" Flex="1" />
                                 </Columns>
                             </ColumnModel>
                             <Plugins>
