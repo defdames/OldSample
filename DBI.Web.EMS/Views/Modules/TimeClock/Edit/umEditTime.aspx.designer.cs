@@ -10,7 +10,7 @@
 namespace DBI.Web.EMS.Views.Modules.TimeClock.Edit {
     
     
-    public partial class WebForm1 {
+    public partial class umEditTime {
         
         /// <summary>
         /// form1 control.
@@ -29,5 +29,68 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock.Edit {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.ResourceManager ResourceManager1;
+        
+        /// <summary>
+        /// frmPanelIn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FormPanel frmPanelIn;
+        
+        /// <summary>
+        /// uxDateInField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DateField uxDateInField;
+        
+        /// <summary>
+        /// uxTimeInField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TimeField uxTimeInField;
+        
+        /// <summary>
+        /// frmPanelOut control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FormPanel frmPanelOut;
+        
+        /// <summary>
+        /// uxDateOutField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DateField uxDateOutField;
+        
+        /// <summary>
+        /// uxTimeOutField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TimeField uxTimeOutField;
+        
+        /// <summary>
+        /// uxEditButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxEditButton;
     }
 }

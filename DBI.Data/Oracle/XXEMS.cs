@@ -732,16 +732,46 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<Employee> EmployeeTimeCompletedApprovedPayroll()
         {
-            try
-            {
+            
                 var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "Y").ToList();
                 return _data;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            
+           
         }
+
+        public static DateTime ManagerDateInEditScreen(decimal tcID)
+        {
+            
+                DateTime? _data = EmployeeTime().Where(x => x.TIME_CLOCK_ID == tcID).SingleOrDefault().TIME_IN;
+                return (DateTime)_data;
+        }
+
+        public static TimeSpan ManagerTimeInEditScreen(decimal tcID)
+        {
+
+            DateTime? _data = EmployeeTime().Where(x => x.TIME_CLOCK_ID == tcID).SingleOrDefault().TIME_IN;
+            TimeSpan ts = _data.Value.TimeOfDay;
+            
+            return ts;
+        }
+
+        public static DateTime ManagerDateOutEditScreen(decimal tcID)
+        {
+
+            DateTime? _data = EmployeeTime().Where(x => x.TIME_CLOCK_ID == tcID).SingleOrDefault().TIME_OUT;
+            return (DateTime)_data;
+        }
+
+        public static TimeSpan ManagerTimeOutEditScreen(decimal tcID)
+        {
+
+            DateTime? _data = EmployeeTime().Where(x => x.TIME_CLOCK_ID == tcID).SingleOrDefault().TIME_OUT;
+            TimeSpan ts = _data.Value.TimeOfDay;
+
+            return ts;
+        }
+
+        
 
         /// <summary>
         /// Approves Employee time so payroll can submit

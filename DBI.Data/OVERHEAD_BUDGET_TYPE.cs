@@ -22,6 +22,6 @@ namespace DBI.Data
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
-        public string CHILD_BUDGET_NAME { get; set; }
+        public Nullable<long> PARENT_BUDGET_TYPE_ID { get; set; }
     }
 }

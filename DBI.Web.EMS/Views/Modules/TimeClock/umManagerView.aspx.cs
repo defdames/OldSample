@@ -129,14 +129,10 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
         {
             try
             {
-                //decimal _timeClockId;
+                            
+                string _tcId = e.ExtraParams["id"];
 
-                //CommandColumn selection = ccEditTime;
-
-               
-                string _timeClockId = e.ExtraParams["EditTime"];
-
-                string url = "/Views/Modules/TimeClock/Edit/umEditTime.aspx?tcID=" + _timeClockId;
+                string url = "/Views/Modules/TimeClock/Edit/umEditTime.aspx?tcID=" + _tcId;
 
                 Window win = new Window
                 {

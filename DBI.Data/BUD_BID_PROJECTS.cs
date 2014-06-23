@@ -20,7 +20,6 @@ namespace DBI.Data
         public Nullable<long> ORG_ID { get; set; }
         public Nullable<decimal> YEAR_ID { get; set; }
         public Nullable<decimal> VER_ID { get; set; }
-        public Nullable<long> COMPARE_PROJ_NUM { get; set; }
         public Nullable<decimal> STATUS_ID { get; set; }
         public Nullable<decimal> ACRES { get; set; }
         public Nullable<decimal> DAYS { get; set; }
@@ -33,10 +32,11 @@ namespace DBI.Data
         public string CREATED_BY { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string MODIFIED_BY { get; set; }
-        public string PROJ_NUM { get; set; }
         public string TYPE { get; set; }
         public string LIABILITY { get; set; }
         public Nullable<short> LIABILITY_OP { get; set; }
+        public string COMPARE_PRJ_OVERRIDE { get; set; }
+        public Nullable<short> COMPARE_PRJ_AMOUNT { get; set; }
     
         public virtual BUD_BID_STATUS BUD_BID_STATUS { get; set; }
     }
