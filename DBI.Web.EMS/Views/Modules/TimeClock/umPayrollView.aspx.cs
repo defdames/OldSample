@@ -74,7 +74,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
 
                 };
-                win.Listeners.Close.Handler = "#{uxEmployeeHoursGrid}.getStore().load();";
+                win.Listeners.Close.Handler = "#{uxPayrollAuditGrid}.getStore().load();";
 
                 win.Render(this.Form);
                 win.Show();
@@ -88,6 +88,15 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
 
         }
+
+
+        protected void deSubmitTime (object sender, DirectEventArgs e)
+        {
+
+        }
+
+        
+
     }
 
     //public class EmployeeTimePayroll
