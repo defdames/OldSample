@@ -10,7 +10,7 @@
 namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
     
     
-    public partial class umManageForms {
+    public partial class umCustomerSurveyAdmin {
         
         /// <summary>
         /// form1 control.
@@ -22,40 +22,40 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// ResourceManager1 control.
+        /// uxAdminViewPort control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ResourceManager ResourceManager1;
+        protected global::Ext.Net.Viewport uxAdminViewPort;
         
         /// <summary>
-        /// uxTopPanel control.
+        /// uxFormsGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxTopPanel;
+        protected global::Ext.Net.GridPanel uxFormsGrid;
         
         /// <summary>
-        /// uxCurrentFormsGrid control.
+        /// uxFormsStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxCurrentFormsGrid;
+        protected global::Ext.Net.Store uxFormsStore;
         
         /// <summary>
-        /// uxCurrentFormsStore control.
+        /// uxAddFormOrgStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxCurrentFormsStore;
+        protected global::Ext.Net.Store uxAddFormOrgStore;
         
         /// <summary>
         /// uxAddFormButton control.
@@ -67,211 +67,13 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Button uxAddFormButton;
         
         /// <summary>
-        /// uxEditFormButton control.
+        /// Button1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxEditFormButton;
-        
-        /// <summary>
-        /// uxAddFieldSetButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxAddFieldSetButton;
-        
-        /// <summary>
-        /// uxEditFieldSetButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxEditFieldSetButton;
-        
-        /// <summary>
-        /// uxPreviewFormButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxPreviewFormButton;
-        
-        /// <summary>
-        /// uxAddFormPanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FormPanel uxAddFormPanel;
-        
-        /// <summary>
-        /// uxAddFormName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxAddFormName;
-        
-        /// <summary>
-        /// uxAddFormOrg control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ComboBox uxAddFormOrg;
-        
-        /// <summary>
-        /// uxAddFormSubmit control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxAddFormSubmit;
-        
-        /// <summary>
-        /// uxAddFormCancel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxAddFormCancel;
-        
-        /// <summary>
-        /// uxMiddlePanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxMiddlePanel;
-        
-        /// <summary>
-        /// uxCurrentFieldSetsGrid control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.GridPanel uxCurrentFieldSetsGrid;
-        
-        /// <summary>
-        /// uxCurrentFieldSetsStore control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Store uxCurrentFieldSetsStore;
-        
-        /// <summary>
-        /// uxAddRemoveFieldSetsButtons control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxAddRemoveFieldSetsButtons;
-        
-        /// <summary>
-        /// uxAvailableFieldSetsGrid control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.GridPanel uxAvailableFieldSetsGrid;
-        
-        /// <summary>
-        /// uxAvailableFieldSetsStore control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Store uxAvailableFieldSetsStore;
-        
-        /// <summary>
-        /// uxSaveFieldSetsButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxSaveFieldSetsButton;
-        
-        /// <summary>
-        /// uxCancelFieldSetsButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxCancelFieldSetsButton;
-        
-        /// <summary>
-        /// uxFieldSetsGrid control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.GridPanel uxFieldSetsGrid;
-        
-        /// <summary>
-        /// uxFieldSetsStore control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Store uxFieldSetsStore;
-        
-        /// <summary>
-        /// uxAddFieldSetPanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FormPanel uxAddFieldSetPanel;
-        
-        /// <summary>
-        /// uxAddFieldSetTitle control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxAddFieldSetTitle;
-        
-        /// <summary>
-        /// uxAddFieldSetSubmit control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxAddFieldSetSubmit;
-        
-        /// <summary>
-        /// uxAddFieldSetCancel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxAddFieldSetCancel;
+        protected global::Ext.Net.Button Button1;
         
         /// <summary>
         /// uxBottomPanel control.
@@ -283,111 +85,174 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Panel uxBottomPanel;
         
         /// <summary>
-        /// uxCurrentQuestionsGrid control.
+        /// uxFieldsetsGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxCurrentQuestionsGrid;
+        protected global::Ext.Net.GridPanel uxFieldsetsGrid;
         
         /// <summary>
-        /// uxCurrentQuestionsStore control.
+        /// uxFieldsetsStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxCurrentQuestionsStore;
+        protected global::Ext.Net.Store uxFieldsetsStore;
         
         /// <summary>
-        /// uxAddRemoveQuestionsButtons control.
+        /// Model1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxAddRemoveQuestionsButtons;
+        protected global::Ext.Net.Model Model1;
         
         /// <summary>
-        /// Button1 control.
+        /// Column1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button1;
+        protected global::Ext.Net.Column Column1;
         
         /// <summary>
-        /// Button2 control.
+        /// Column2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button2;
+        protected global::Ext.Net.Column Column2;
         
         /// <summary>
-        /// Button3 control.
+        /// FilterHeader1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button3;
+        protected global::Ext.Net.FilterHeader FilterHeader1;
         
         /// <summary>
-        /// Button4 control.
+        /// PagingToolbar1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button4;
+        protected global::Ext.Net.PagingToolbar PagingToolbar1;
         
         /// <summary>
-        /// uxAvailableQuestionsGrid control.
+        /// uxAddFieldsetButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxAvailableQuestionsGrid;
+        protected global::Ext.Net.Button uxAddFieldsetButton;
         
         /// <summary>
-        /// uxSaveQuestionsButton control.
+        /// uxSaveFieldsetButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxSaveQuestionsButton;
+        protected global::Ext.Net.Button uxSaveFieldsetButton;
         
         /// <summary>
-        /// uxCancelQuestionsButton control.
+        /// uxQuestionsGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxCancelQuestionsButton;
+        protected global::Ext.Net.GridPanel uxQuestionsGrid;
         
         /// <summary>
-        /// uxAddFormWindow control.
+        /// uxQuestionsStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Window uxAddFormWindow;
+        protected global::Ext.Net.Store uxQuestionsStore;
         
         /// <summary>
-        /// uxAddFieldSetWindow control.
+        /// uxQuestionTypeStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Window uxAddFieldSetWindow;
+        protected global::Ext.Net.Store uxQuestionTypeStore;
+        
+        /// <summary>
+        /// uxQuestionFieldsetStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxQuestionFieldsetStore;
+        
+        /// <summary>
+        /// uxAddQuestionButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxAddQuestionButton;
+        
+        /// <summary>
+        /// uxSaveQuestionButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxSaveQuestionButton;
+        
+        /// <summary>
+        /// uxOptionsGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridPanel uxOptionsGrid;
+        
+        /// <summary>
+        /// uxOptionsStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxOptionsStore;
+        
+        /// <summary>
+        /// uxAddOptionButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxAddOptionButton;
+        
+        /// <summary>
+        /// uxSaveOptionButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxSaveOptionButton;
     }
 }
