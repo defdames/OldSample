@@ -8,7 +8,7 @@
 	<script>
 		var onGroupCommand = function (column, command, group) {
 			if (command === 'SelectGroup') {
-			    var isSelected = App.uxPayrollAuditGrid.getSelectionModel().isSelected(group.children[0]);
+				var isSelected = App.uxPayrollAuditGrid.getSelectionModel().isSelected(group.children[0]);
 
 				if (!isSelected) {
 					column.grid.getSelectionModel().select(group.children, true);
@@ -16,6 +16,16 @@
 					column.grid.getSelectionModel().deselect(group.children, true);
 				};
 			}
+
+		};
+		var prepare = function (grid, toolbar, rowIndex, record) {
+		    var firstButton = toolbar.items.get(0);
+
+		    if (record.data.SUBMITTED == "Y") {
+		        firstButton.setDisabled(true);
+		        firstButton.setTooltip("Disabled");
+		    }
+
 
 		};
 	</script>
@@ -72,6 +82,7 @@
 						<Commands>
 							<ext:GridCommand Icon="NoteEdit" CommandName="Edit" Text="Edit"/>
 						</Commands>
+                        <PrepareToolbar Fn="prepare"/>
 						<DirectEvents>
 							<Command OnEvent="deEditTime">
 								<EventMask ShowMask="true">
@@ -79,6 +90,22 @@
 							   <ExtraParams>
 									<ext:Parameter Name="id" Value="record.data.TIME_CLOCK_ID" Mode="Raw"></ext:Parameter>
 									<ext:Parameter Name="command" Value="command" Mode="Raw" ></ext:Parameter>
+								</ExtraParams>
+							</Command>
+						</DirectEvents>
+						</ext:CommandColumn>
+					    <ext:CommandColumn ID="ccDeleteTime" runat="server">
+						<Commands>
+							<ext:GridCommand Icon="Delete" CommandName="Delete" Text="Delete" />
+						</Commands>
+                        <PrepareToolbar Fn="prepare"/>
+						<DirectEvents>
+							<Command OnEvent="deDeleteTime">
+								<EventMask ShowMask="true">
+								</EventMask>
+								<ExtraParams>
+									<ext:Parameter Name="delId" Value="record.data.TIME_CLOCK_ID" Mode="Raw"></ext:Parameter>
+									<ext:Parameter Name="command" Value="command" Mode="Raw"></ext:Parameter>
 								</ExtraParams>
 							</Command>
 						</DirectEvents>
@@ -93,7 +120,7 @@
 						<Listeners>
 							<GroupCommand Fn="onGroupCommand" />
 						</Listeners>
-                        
+						
 					</ext:CommandColumn>
 					</Columns>
 				</ColumnModel>

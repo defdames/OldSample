@@ -18,6 +18,14 @@
 			}
 			
 		};
+		var prepare = function (grid, toolbar, rowIndex, record) {
+		    var firstButton = toolbar.items.get(0);
+
+		    if (record.data.SUBMITTED == "Y") {
+		        firstButton.setDisabled(true);
+		        firstButton.setTooltip("Disabled");
+		    }
+		};
 	</script>
 </head>
 <body>
@@ -69,6 +77,7 @@
 						<Commands>
 							<ext:GridCommand Icon="NoteEdit" CommandName="Edit" Text="Edit"/>
 						</Commands>
+                        <PrepareToolbar Fn="prepare"/>
 						<DirectEvents>
 							<Command OnEvent="deEditTime">
 								<EventMask ShowMask="true">
@@ -84,6 +93,7 @@
                         <Commands>
                             <ext:GridCommand Icon="Delete" CommandName="Delete" Text="Delete" />
                         </Commands>
+                        <PrepareToolbar Fn="prepare"/>
                         <DirectEvents>
                             <Command OnEvent="deDeleteTime">
                                 <EventMask ShowMask="true">

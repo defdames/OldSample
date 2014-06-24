@@ -159,10 +159,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                     {
                         TimeSpan ts = (DateTime)item.TIME_OUT - item.TIME_IN;
                         item.TOTAL_HOURS = ts.ToString("hh\\:mm");
-                        
-
-                    }
-                    
+                    }                    
                 }
 
 

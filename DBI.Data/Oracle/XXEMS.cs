@@ -740,10 +740,15 @@ namespace DBI.Data
         public static List<Employee> EmployeeTimeCompletedApprovedPayroll()
         {
 
-            var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "Y" && x.DELETED == "N" && x.DELETED == "N").ToList();
+            var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "Y" && x.SUBMITTED == "N" && x.DELETED == "N").ToList();
             return _data;
             
-           
+        }
+
+        public static List<Employee> EmployeeTimeCompletedApprovedSubmittedPayroll()
+        {
+            var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "Y" && x.DELETED == "N").ToList();
+            return _data;
         }
 
         public static DateTime ManagerDateInEditScreen(decimal tcID)
