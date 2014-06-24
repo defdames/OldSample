@@ -12,7 +12,7 @@
         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
             <Items>
 
-                <ext:FormPanel ID="FormPanel1" runat="server" Header="false" BodyPadding="10"
+                <ext:FormPanel ID="FormPanel1" runat="server" Header="false" BodyPadding="10" DefaultButton="uxAddBudgetType"
                     Margins="5 5 5 5" Region="Center">
                     <Items>
                         <ext:FieldContainer ID="FieldContainer1" 

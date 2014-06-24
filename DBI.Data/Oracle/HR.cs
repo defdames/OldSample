@@ -117,25 +117,21 @@ namespace DBI.Data
         }
 
         /// <summary>
-        /// Returns a list of active organizations that have a gl account assigned to them in the overhead system.
+        /// Shows organizations in oracle and their overhead status based on the organization profile option
         /// </summary>
         /// <param name="hierarchyId"></param>
         /// <param name="organizationId"></param>
         /// <returns></returns>
-        public static List<HR.ORGANIZATION_V1> ActiveOverheadOrganizationsByHierarchy(long hierarchyId, long organizationId)
+        public static List<HR.ORGANIZATION_V1> OverheadOrganizationStatusByHierarchy(long hierarchyId, long organizationId)
         {
-
-                using (Entities _context = new Entities())
-                {
                     List<HR.ORGANIZATION_V1> _data = ActiveOrganizationsByHierarchy(hierarchyId, organizationId);
                     foreach (var view in _data)
                     {
-                        view.GL_ASSIGNED = (_context.OVERHEAD_GL_ACCOUNT.Where(a => a.OVERHEAD_ORG_ID == view.ORGANIZATION_ID).Count() > 0 ? "Active" : "No Accounts Found");
+                        view.ORGANIZATION_STATUS = (SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetOrganization", view.ORGANIZATION_ID) == "Y" ? "Allowed" : "Not Active");
                     }
                     return _data;
-                }
-          
         }
+
 
         /// <summary>
         /// Returns a list of legal entities from oracle that can have a budget because there is a budget type assigned to that businessunit
@@ -176,7 +172,7 @@ namespace DBI.Data
         public class ORGANIZATION_V1 : ORGANIZATION
         {
             public long HIER_LEVEL { get; set; }
-            public string GL_ASSIGNED { get; set; }
+            public string ORGANIZATION_STATUS { get; set; }
         }
 
         public class HIERARCHY : ORGANIZATION

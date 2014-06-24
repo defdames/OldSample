@@ -27,8 +27,10 @@ namespace DBI.Data
 
             try
             {
-                Entities _context = new Entities();
-                _context.SYS_ACTIVITY.Count();
+                using (Entities _context = new Entities())
+                {
+                    _context.SYS_ACTIVITY.Count();
+                }
                 isValid = true;
             }
             catch

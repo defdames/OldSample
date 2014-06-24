@@ -73,7 +73,7 @@ namespace DBI.Data.Test
         {
             long legalEntityOrganizationId = 121; // TODO: Initialize to an appropriate value
             List<OVERHEAD_BUDGET_TYPE> actual;
-            actual = GL.BudgetTypesEnteredAndAvailaible(legalEntityOrganizationId)
+            actual = GL.BudgetTypesEnteredAndAvailaible(legalEntityOrganizationId);
         }
     }
 }
