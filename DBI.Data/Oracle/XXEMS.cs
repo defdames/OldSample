@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace DBI.Data
 {
 
@@ -632,8 +633,8 @@ namespace DBI.Data
                                  join ev in _context.EMPLOYEES_V on tc.PERSON_ID equals ev.PERSON_ID
                                  select new Employee
                                  {
-                                     TIME_IN = (DateTime)tc.TIME_IN,
-                                     TIME_OUT = (DateTime)tc.TIME_OUT,
+                                     TIME_IN = ((DateTime)tc.MODIFIED_TIME_IN == null) ? tc.TIME_IN : tc.MODIFIED_TIME_IN,
+                                     TIME_OUT = ((DateTime)tc.MODIFIED_TIME_OUT == null) ? tc.TIME_OUT : tc.MODIFIED_TIME_OUT,
                                      EMPLOYEE_NAME = ev.EMPLOYEE_NAME,
                                      DAY_OF_WEEK = tc.DAY_OF_WEEK,
                                      TIME_CLOCK_ID = tc.TIME_CLOCK_ID,
@@ -642,7 +643,11 @@ namespace DBI.Data
                                      SUBMITTED = tc.SUBMITTED,
                                      APPROVED = tc.APPROVED,
                                      COMPLETED = tc.COMPLETED,
-                                     SUPERVISOR_ID = (int)tc.SUPERVISOR_ID
+                                     SUPERVISOR_ID = (int)tc.SUPERVISOR_ID,
+                                     //MODIFIED_TIME_IN = (DateTime)tc.MODIFIED_TIME_IN,
+                                     //MODIFIED_TIME_OUT = (DateTime)tc.MODIFIED_TIME_OUT,
+                                     MODIFY_DATE = (DateTime)tc.MODIFY_DATE,
+                                     MODIFIED_BY = tc.MODIFIED_BY
                                  }).ToList();
                     return _data;
                 }
@@ -771,7 +776,51 @@ namespace DBI.Data
             return ts;
         }
 
+        /// <summary>
+        /// Updates TIME CLOCK table with new time edited by Manager or Payroll Manager
+        /// </summary>
+        /// <param name="tcID"></param>
+        /// <param name="newTimeIn"></param>
+        /// <param name="newTimeOut"></param>
+        /// <param name="personName"></param>
+
+        public static void InsertEditedEmployeeTime(decimal tcID, DateTime newTimeIn, DateTime newTimeOut, string personName)
+        {
+
+            TIME_CLOCK _data;
+            using (Entities _context = new Entities())
+            {
+                TimeSpan ts = newTimeOut - newTimeIn;
+                decimal adjts = ConvertTimeToOraclePayrollFormat(ts);
+
+
+                _data = _context.TIME_CLOCK.Where(x => x.TIME_CLOCK_ID == tcID).SingleOrDefault();
+                _data.ACTUAL_HOURS = (decimal)ts.TotalHours;
+                _data.ADJUSTED_HOURS = adjts;
+                _data.MODIFIED_TIME_IN = newTimeIn;
+                _data.MODIFIED_TIME_OUT = newTimeOut;
+                _data.MODIFIED_BY = personName;
+                _data.MODIFY_DATE = DateTime.Now;
+
+            }
+
+            DBI.Data.GenericData.Update<TIME_CLOCK>(_data);
+        }
         
+        public static decimal ConvertTimeToOraclePayrollFormat(TimeSpan adjts)
+        {
+            //Adjust time to nearest quarter of hour and store in table
+            double adjtime = (adjts.Minutes > 0 && adjts.Minutes <= 8) ? 0
+                         : (adjts.Minutes > 8 && adjts.Minutes <= 23) ? .25
+                         : (adjts.Minutes > 23 && adjts.Minutes <= 38) ? .50
+                         : (adjts.Minutes > 38 && adjts.Minutes <= 53) ? .75
+                         : (adjts.Minutes > 53 && adjts.Minutes <= 60) ? 1
+                         : 0;
+
+            decimal fixedtime = adjts.Hours + (decimal)adjtime;
+            return fixedtime;
+        }
+
 
         /// <summary>
         /// Approves Employee time so payroll can submit
@@ -815,6 +864,11 @@ namespace DBI.Data
             public string SUBMITTED { get; set; }
             public int SUPERVISOR_ID { get; set; }
             public string COMPLETED { get; set; }
+            public string MODIFIED_BY { get; set; }
+            public DateTime? MODIFIED_TIME_IN { get; set; }
+            public DateTime? MODIFIED_TIME_OUT { get; set; }
+            public DateTime? MODIFY_DATE { get; set; }
+
          
             
         }
