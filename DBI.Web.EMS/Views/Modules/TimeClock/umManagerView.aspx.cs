@@ -171,6 +171,51 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
 
         }
+
+        protected void deDeleteTime(object sender, DirectEventArgs e)
+        {
+            try
+            {
+
+                string _tcId = e.ExtraParams["delId"];
+
+                string url = "/Views/Modules/TimeClock/Edit/umDeleteTime.aspx?tcID=" + _tcId;
+
+                Window win = new Window
+                {
+                    ID = "uxDeleteTime",
+                    Title = "Delete Time",
+                    Height = 350,
+                    Width = 500,
+                    Modal = true,
+                    Resizable = false,
+                    CloseAction = CloseAction.Destroy,
+                    Loader = new ComponentLoader
+                    {
+                        Mode = LoadMode.Frame,
+                        DisableCaching = true,
+                        Url = url,
+                        AutoLoad = true,
+                        LoadMask =
+                        {
+                            ShowMask = true
+                        }
+                    }
+
+
+                };
+                win.Listeners.Close.Handler = "#{uxEmployeeHoursGrid}.getStore().load();";
+
+                win.Render(this.Form);
+                win.Show();
+
+            }
+            catch (Exception ex)
+            {
+                e.Success = false;
+                e.ErrorMessage = ex.ToString();
+            }
+        }
         
         protected void deApproveTime(object sender, DirectEventArgs e)
         {

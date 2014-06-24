@@ -80,6 +80,21 @@
 							</Command>
 						</DirectEvents>
 					</ext:CommandColumn>
+                    <ext:CommandColumn ID="ccDeleteTime" runat="server">
+                        <Commands>
+                            <ext:GridCommand Icon="Delete" CommandName="Delete" Text="Delete" />
+                        </Commands>
+                        <DirectEvents>
+                            <Command OnEvent="deDeleteTime">
+                                <EventMask ShowMask="true">
+                                </EventMask>
+                                <ExtraParams>
+                                    <ext:Parameter Name="delId" Value="record.data.TIME_CLOCK_ID" Mode="Raw"></ext:Parameter>
+                                    <ext:Parameter Name="command" Value="command" Mode="Raw"></ext:Parameter>
+                                </ExtraParams>
+                            </Command>
+                        </DirectEvents>
+                    </ext:CommandColumn>
 					<ext:CommandColumn ID="CommandColumn1" runat="server" Hidden="true">
 						<GroupCommands>
 							<ext:GridCommand Icon="TableRow" CommandName="SelectGroup">

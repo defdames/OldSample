@@ -49,10 +49,6 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock.Edit
              DateTime updateTimeOut = uxDateOutField.SelectedDate + uxTimeOutField.SelectedTime;
 
              TIME_CLOCK.InsertEditedEmployeeTime(decimal.Parse(_TimeClockId), updateTimeIn, updateTimeOut, person_name);
-
-
-
-
             
         }
     }
