@@ -56,6 +56,34 @@
                         </Items>
                     </ext:FieldContainer>
 
+                          <ext:FieldContainer ID="FieldContainer3" 
+                        runat="server"
+                        LabelStyle="font-weight:bold;padding:0;"
+                        Layout="HBoxLayout">
+                        <Items>
+                            <ext:ComboBox runat="server" ID="uxLinkedBudgetType" Editable="true" TypeAhead="true"
+                                FieldLabel="Linked Type" AnchorHorizontal="55%" DisplayField="BUDGET_NAME"
+                                ValueField="OVERHEAD_BUDGET_TYPE_ID" TriggerAction="All" 
+                                MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" >
+                                <Store>
+                                    <ext:Store runat="server" ID="uxLinkedBudgetTypeStore" OnReadData="deLoadLinkedBudgetNames" AutoLoad="false" >
+                                        <Proxy>
+                                            <ext:PageProxy />
+                                        </Proxy>
+                                        <Model>
+                                            <ext:Model ID="Model1" runat="server" IDProperty="OVERHEAD_BUDGET_TYPE_ID">
+                                                <Fields>
+                                                    <ext:ModelField Name="BUDGET_NAME" />
+                                                    <ext:ModelField Name="OVERHEAD_BUDGET_TYPE_ID" />
+                                                </Fields>
+                                            </ext:Model>
+                                        </Model>
+                                    </ext:Store>
+                                </Store>
+                            </ext:ComboBox>
+                        </Items>
+                    </ext:FieldContainer>
+
                     </Items>
                     <Buttons>
                         <ext:Button runat="server" ID="uxAddBudgetType" Text="Save" Disabled="true" icon="ApplicationAdd">

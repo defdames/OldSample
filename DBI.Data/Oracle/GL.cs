@@ -125,9 +125,21 @@ namespace DBI.Data
                          where !_budgetTypes.Any(x => x.BUDGET_NAME == dups.BUDGET_NAME)
                          select dups);
 
-                return _data.ToList();
+                return _data.ToList();    
+        }
 
-           
+        public static List<OVERHEAD_BUDGET_TYPE> BudgetTypesEnteredAndAvailaible(long legalEntityOrganizationId)
+        {
+
+            IQueryable<OVERHEAD_BUDGET_TYPE> _data = OVERHEAD_BUDGET_TYPE.BudgetTypes(legalEntityOrganizationId).AsQueryable();
+
+            List<OVERHEAD_BUDGET_TYPE> _existingData = OVERHEAD_BUDGET_TYPE.BudgetTypes(legalEntityOrganizationId).ToList();
+
+            _data = (from dups in _data
+                     where !_existingData.Any(x => x.PARENT_BUDGET_TYPE_ID == dups.OVERHEAD_BUDGET_TYPE_ID)
+                     select dups);
+
+            return _data.ToList();
         }
 
         /// <summary>

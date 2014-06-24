@@ -94,6 +94,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views {
         protected global::Ext.Net.Button uxAssignBudgetType;
         
         /// <summary>
+        /// uxDeleteBudgetType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxDeleteBudgetType;
+        
+        /// <summary>
         /// uxBudgetTypeStore control.
         /// </summary>
         /// <remarks>
@@ -128,15 +137,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Column Column1;
-        
-        /// <summary>
-        /// CommandColumn1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.CommandColumn CommandColumn1;
         
         /// <summary>
         /// uxBudgetTypeSelectionModel control.

@@ -66,10 +66,21 @@
                     <TopBar>
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
-                                <ext:Button runat="server" ID="uxAssignBudgetType" Icon="Add" Text="Enable Budget Type" Disabled="true">
+                                <ext:Button runat="server" ID="uxAssignBudgetType" Icon="ApplicationAdd" Text="New Budget Type" Disabled="true">
                                      <DirectEvents>
-                                        <Click OnEvent="deAddEditBudgetType" ><EventMask ShowMask="true"></EventMask></Click>
+                                        <Click OnEvent="deAddBudgetType" ><EventMask ShowMask="true"></EventMask></Click>
                                     </DirectEvents>
+                                    <ToolTips>
+                                        <ext:ToolTip runat="server" Html="This allows you to assign a budget type to this organization" UI="Info"></ext:ToolTip>
+                                    </ToolTips>
+                                </ext:Button>
+                                <ext:Button runat="server" ID="uxDeleteBudgetType" Icon="ApplicationDelete" Text="Remove Type" Disabled="true">
+                                     <DirectEvents>
+                                        <Click OnEvent="deDeleteBudgetType" ><EventMask ShowMask="true"></EventMask><Confirmation ConfirmRequest="true" Message="Are you sure you want to remove this budget type?" /></Click>
+                                    </DirectEvents>
+                                      <ToolTips>
+                                        <ext:ToolTip runat="server" Html="This allows you to unassign a budget type from this organization" UI="Info"></ext:ToolTip>
+                                    </ToolTips>
                                 </ext:Button>
                             </Items>
                         </ext:Toolbar>
@@ -98,21 +109,15 @@
                                 <Columns>
                                     <ext:Column ID="Column2" runat="server" DataIndex="BUDGET_NAME" Text="Budget Type" Flex="1" />
                                     <ext:Column ID="Column1" runat="server" DataIndex="BUDGET_DESCRIPTION" Text="Description" Flex="1" />
-                                    <ext:CommandColumn ID="CommandColumn1" runat="server" Width="120">
-                                        <Commands>
-                                            <ext:GridCommand Icon="Delete" CommandName="Delete" Text="Delete" />
-                                            <ext:GridCommand Icon="NoteEdit" CommandName="Edit" Text="Edit" />
-                                        </Commands>
-                                    </ext:CommandColumn>
                                 </Columns>
                             </ColumnModel>
                      <SelectionModel>
-                         <ext:RowSelectionModel runat="server" Mode="Single" ID="uxBudgetTypeSelectionModel">
+                         <ext:RowSelectionModel runat="server" Mode="Single" ID="uxBudgetTypeSelectionModel" AllowDeselect="true">
                              <Listeners>
-                                 <Select Handler="if(#{uxBudgetTypeSelectionModel}.getCount() > 0){#{uxUnAssignBudgetType}.enable();}else {#{uxUnAssignBudgetType}.disable();}"></Select>
-                                        <Deselect Handler="if(#{uxBudgetTypeSelectionModel}.getCount() > 0){#{uxUnAssignBudgetType}.enable();}else {#{uxUnAssignBudgetType}.disable();}"></Deselect>
-                                    </Listeners>
-                                </ext:RowSelectionModel>
+                                 <Select Handler="if(#{uxBudgetTypeSelectionModel}.getCount() > 0 && (#{uxBudgetTypeStore}.getCount() == (index + 1))){#{uxDeleteBudgetType}.enable();}else {#{uxDeleteBudgetType}.disable();}"></Select>
+                                        <Deselect Handler="if(#{uxBudgetTypeSelectionModel}.getCount() > 0 && (#{uxBudgetTypeStore}.getCount() == (index + 1))){#{uxDeleteBudgetType}.enable();}else {#{uxDeleteBudgetType}.disable();}"></Deselect>
+                                 </Listeners>
+                         </ext:RowSelectionModel>
                             </SelectionModel>
                             <BottomBar>
                                 <ext:PagingToolbar ID="uxOrganizationGridPageBar" runat="server" />

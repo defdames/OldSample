@@ -14,10 +14,12 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!validateComponentSecurity("SYS.OverheadBudget.Security"))
+            if (!X.IsAjaxRequest)
             {
-                X.Redirect("~/Views/uxDefault.aspx");
-
+                if (!validateComponentSecurity("SYS.OverheadBudget.Security"))
+                {
+                    X.Redirect("~/Views/uxDefault.aspx");
+                }
             }
         }
 
@@ -66,24 +68,27 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
                 if (selectedRecordID != "0")
                 {
                     uxBudgetTypeStore.Reload();
+                    uxDeleteBudgetType.Disabled = true;
                 }
            
         }
 
-        protected void deUnassignBudgetType(object sender, DirectEventArgs e)
-        {
+        protected void deDeleteBudgetType(object sender, DirectEventArgs e)
+        {           
                 long _budgetTypeIDSelected;
 
                 RowSelectionModel _rsm = uxBudgetTypeSelectionModel;
                 Boolean _check = long.TryParse(_rsm.SelectedRecordID, out _budgetTypeIDSelected);
 
                 OVERHEAD_BUDGET_TYPE _budgetType = OVERHEAD_BUDGET_TYPE.BudgetType(_budgetTypeIDSelected);
+   
                 GenericData.Delete<OVERHEAD_BUDGET_TYPE>(_budgetType);
-
                 uxBudgetTypeStore.Reload();
+                uxDeleteBudgetType.Disabled = true;
+               
         }
 
-        protected void deAddEditBudgetType(object sender, DirectEventArgs e)
+        protected void deAddBudgetType(object sender, DirectEventArgs e)
         {
                 long _businessUnitID;
 
