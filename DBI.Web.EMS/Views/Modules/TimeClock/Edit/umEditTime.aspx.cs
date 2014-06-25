@@ -42,7 +42,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock.Edit
          protected void deEditTime(object sender, DirectEventArgs e)
         {
 
-             string person_name = Authentication.GetClaimValue("EmployeeName", User as ClaimsPrincipal);
+            string person_name = User.Identity.Name;//Authentication.GetClaimValue("EmployeeName", User as ClaimsPrincipal);
              string _TimeClockId = Request.QueryString["tcID"].ToString();
 
              DateTime updateTimeIn = uxDateInField.SelectedDate + uxTimeInField.SelectedTime;

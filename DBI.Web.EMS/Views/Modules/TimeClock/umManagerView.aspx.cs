@@ -222,7 +222,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
             
             List<TIME_CLOCK> ApprovedTime = JSON.Deserialize<List<TIME_CLOCK>>(e.ExtraParams["ApprovedTime"]);
             ChangeRecords<EmployeeTime> NewTime = new StoreDataHandler(e.ExtraParams["NewTime"]).BatchObjectData<EmployeeTime>();
-            string person_name = Authentication.GetClaimValue("EmployeeName", User as ClaimsPrincipal);
+            string person_name = User.Identity.Name;//Authentication.GetClaimValue("EmployeeName", User as ClaimsPrincipal);
 
 
             TIME_CLOCK.EmployeeTimeSelectionApproved(ApprovedTime);

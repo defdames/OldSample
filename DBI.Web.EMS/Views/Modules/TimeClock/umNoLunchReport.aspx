@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umUnapprovedHoursReport.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.TimeClock.umUnapprovedHoursReport" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umNoLunchReport.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.TimeClock.umNoLunchReport" %>
 
 <!DOCTYPE html>
 
@@ -22,10 +22,6 @@
                                        <ext:ModelField Name="EMPLOYEE_NAME" />
 								<ext:ModelField Name="TIME_IN" Type="Date" />
 								<ext:ModelField Name="TIME_OUT" Type="Date"/>
-								<ext:ModelField Name="ADJUSTED_HOURS" />
-								<ext:ModelField Name="ADJUSTED_HOURS_GRID" />
-								<ext:ModelField Name="ACTUAL_HOURS" />
-								<ext:ModelField Name="ACTUAL_HOURS_GRID" />
 									</Fields>
 								</ext:Model>
 							</Model>
@@ -50,11 +46,6 @@
 								Text="Time Out"
 								Format="MM/dd/yyyy hh:mm tt" 
 								DataIndex="TIME_OUT" 
-								Flex="1"/>
-							<ext:Column ID="colTotalHours"
-								runat="server"
-								Text="Total Time" 
-								DataIndex="ACTUAL_HOURS_GRID"
 								Flex="1"/>
                             </Columns>
 					</ColumnModel>

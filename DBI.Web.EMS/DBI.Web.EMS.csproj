@@ -202,6 +202,9 @@
     <Content Include="Views\Modules\Security\umSecurityUsersList.aspx" />
     <Content Include="Views\Modules\TimeClock\Edit\umDeleteTime.aspx" />
     <Content Include="Views\Modules\TimeClock\Edit\umEditTime.aspx" />
+    <Content Include="Views\Modules\TimeClock\umNoLunchReport.aspx" />
+    <Content Include="Views\Modules\TimeClock\um12HourDayReport.aspx" />
+    <Content Include="Views\Modules\TimeClock\umAdjustedverseActualHoursReport.aspx" />
     <Content Include="Views\Modules\TimeClock\umEmployeeClock.aspx" />
     <Content Include="Views\Modules\TimeClock\umManagerView.aspx" />
     <Content Include="Views\Modules\TimeClock\umPayrollView.aspx" />
@@ -787,6 +790,27 @@
     </Compile>
     <Compile Include="Views\Modules\TimeClock\Edit\umEditTime.aspx.designer.cs">
       <DependentUpon>umEditTime.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\TimeClock\umNoLunchReport.aspx.cs">
+      <DependentUpon>umNoLunchReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\TimeClock\umNoLunchReport.aspx.designer.cs">
+      <DependentUpon>umNoLunchReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\TimeClock\um12HourDayReport.aspx.cs">
+      <DependentUpon>um12HourDayReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\TimeClock\um12HourDayReport.aspx.designer.cs">
+      <DependentUpon>um12HourDayReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\TimeClock\umAdjustedverseActualHoursReport.aspx.cs">
+      <DependentUpon>umAdjustedverseActualHoursReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\TimeClock\umAdjustedverseActualHoursReport.aspx.designer.cs">
+      <DependentUpon>umAdjustedverseActualHoursReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\TimeClock\umEmployeeClock.aspx.cs">
       <DependentUpon>umEmployeeClock.aspx</DependentUpon>

@@ -12,19 +12,19 @@ using Ext.Net;
 using DBI.Data.DataFactory;
 using System.Globalization;
 
+
 namespace DBI.Web.EMS.Views.Modules.TimeClock
 {
-    public partial class umUnapprovedHoursReport : System.Web.UI.Page
+    public partial class umAdjustedverseActualHoursReport : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
 
         }
-
         protected void deGetEmployeeHoursData(object sender, StoreReadDataEventArgs e)
         {
 
-            var data = TIME_CLOCK.EmployeeTimeCompletedUnapprovedPayroll();
+            var data = TIME_CLOCK.EmployeeTimeCompletedPayroll();
 
             foreach (var item in data)
             {
@@ -37,9 +37,21 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                 TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
                 item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");
 
+                TimeSpan timeDiff =adjustedhours - actualhours;
+                string strTimeDiff = ForamtTimeSpan(timeDiff);
+                item.TIME_DIFF = strTimeDiff;
+
+
+
 
             }
+
             uxHoursStore.DataSource = data;
+        }
+
+        private string ForamtTimeSpan(TimeSpan time)
+        {
+            return ((time < TimeSpan.Zero) ? "-" : "") + time.ToString("hh\\:mm");
         }
     }
 }

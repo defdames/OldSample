@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umUnapprovedHoursReport.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.TimeClock.umUnapprovedHoursReport" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="um12HourDayReport.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.TimeClock.um12HourDayReport" %>
 
 <!DOCTYPE html>
 
@@ -8,7 +8,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <div></div>
+   <div></div>
         <ext:ResourceManager ID="ResourceManager1" runat="server">
 		</ext:ResourceManager>
         <ext:Viewport ID="Viewport1" runat="server" Layout="Fit">
@@ -25,7 +25,7 @@
 								<ext:ModelField Name="ADJUSTED_HOURS" />
 								<ext:ModelField Name="ADJUSTED_HOURS_GRID" />
 								<ext:ModelField Name="ACTUAL_HOURS" />
-								<ext:ModelField Name="ACTUAL_HOURS_GRID" />
+								<ext:ModelField Name="ACTUAL_HOURS_GRID"/>
 									</Fields>
 								</ext:Model>
 							</Model>
@@ -51,11 +51,11 @@
 								Format="MM/dd/yyyy hh:mm tt" 
 								DataIndex="TIME_OUT" 
 								Flex="1"/>
-							<ext:Column ID="colTotalHours"
-								runat="server"
-								Text="Total Time" 
-								DataIndex="ACTUAL_HOURS_GRID"
-								Flex="1"/>
+                            <ext:Column ID="TotalTime" 
+                                runat="server" 
+                                Text="Total Time" 
+                                Flex="1" 
+                                DataIndex="ACTUAL_HOURS_GRID"/>
                             </Columns>
 					</ColumnModel>
 					<BottomBar>

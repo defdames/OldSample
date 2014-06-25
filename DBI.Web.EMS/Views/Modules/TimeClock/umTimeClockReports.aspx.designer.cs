@@ -49,39 +49,30 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         protected global::Ext.Net.Panel uxUnapprovedHours;
         
         /// <summary>
-        /// uxCrossingSecurity control.
+        /// uxAcutalVerseAdjusted control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxCrossingSecurity;
+        protected global::Ext.Net.Panel uxAcutalVerseAdjusted;
         
         /// <summary>
-        /// uxCrossingInfoTab control.
+        /// ux12HourDay control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxCrossingInfoTab;
+        protected global::Ext.Net.Panel ux12HourDay;
         
         /// <summary>
-        /// uxContactsTab control.
+        /// uxNoLunch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxContactsTab;
-        
-        /// <summary>
-        /// uxManageKCS control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxManageKCS;
+        protected global::Ext.Net.Panel uxNoLunch;
     }
 }

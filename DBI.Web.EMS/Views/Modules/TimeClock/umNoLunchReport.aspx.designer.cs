@@ -10,7 +10,7 @@
 namespace DBI.Web.EMS.Views.Modules.TimeClock {
     
     
-    public partial class umUnapprovedHoursReport {
+    public partial class umNoLunchReport {
         
         /// <summary>
         /// form1 control.
@@ -83,15 +83,6 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.DateColumn colTimeOut;
-        
-        /// <summary>
-        /// colTotalHours control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column colTotalHours;
         
         /// <summary>
         /// PagingToolbar1 control.

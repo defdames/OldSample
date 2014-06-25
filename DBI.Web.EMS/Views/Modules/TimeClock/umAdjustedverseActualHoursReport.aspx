@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umUnapprovedHoursReport.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.TimeClock.umUnapprovedHoursReport" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umAdjustedverseActualHoursReport.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.TimeClock.umAdjustedverseActualHoursReport" %>
 
 <!DOCTYPE html>
 
@@ -8,7 +8,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <div></div>
+   <div></div>
         <ext:ResourceManager ID="ResourceManager1" runat="server">
 		</ext:ResourceManager>
         <ext:Viewport ID="Viewport1" runat="server" Layout="Fit">
@@ -25,7 +25,8 @@
 								<ext:ModelField Name="ADJUSTED_HOURS" />
 								<ext:ModelField Name="ADJUSTED_HOURS_GRID" />
 								<ext:ModelField Name="ACTUAL_HOURS" />
-								<ext:ModelField Name="ACTUAL_HOURS_GRID" />
+								<ext:ModelField Name="ACTUAL_HOURS_GRID"/>
+                                <ext:ModelField Name="TIME_DIFF" />
 									</Fields>
 								</ext:Model>
 							</Model>
@@ -51,18 +52,29 @@
 								Format="MM/dd/yyyy hh:mm tt" 
 								DataIndex="TIME_OUT" 
 								Flex="1"/>
-							<ext:Column ID="colTotalHours"
-								runat="server"
-								Text="Total Time" 
-								DataIndex="ACTUAL_HOURS_GRID"
-								Flex="1"/>
+                            <ext:Column ID="ActualTime" 
+                                runat="server" 
+                                Text="Actual Time" 
+                                SummaryType="Sum"
+                                Flex="1" 
+                                DataIndex="ACTUAL_HOURS_GRID"/>
+					        <ext:Column ID="AdjustedTime" 
+                                runat="server" 
+                                Text="Adjusted Time" 
+                                Flex="1" 
+                                DataIndex="ADJUSTED_HOURS_GRID"/>
+                            <ext:Column ID="TimeDiff"
+                                runat="server"
+                                Text="Time Difference"
+                                Flex="1"
+                                DataIndex="TIME_DIFF" />
                             </Columns>
 					</ColumnModel>
 					<BottomBar>
 						<ext:PagingToolbar ID="PagingToolbar1" runat="server" DisplayInfo="true" DisplayMsg="Records {0} - {1} of {2}"/>
 					</BottomBar>
                     <Features>
-				            <ext:Grouping ID="Grouping1"
+				            <ext:Grouping
 					        runat="server"
 					        HideGroupHeader="true"
 					        GroupHeaderTplString="Employee: {name}"
@@ -72,6 +84,7 @@
             </Items>
 
         </ext:Viewport>
+
     </form>
 </body>
 </html>

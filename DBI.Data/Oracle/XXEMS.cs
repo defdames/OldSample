@@ -881,6 +881,8 @@ namespace DBI.Data
             return fixedtime;
         }
 
+       
+
       
 
         
@@ -906,6 +908,7 @@ namespace DBI.Data
             public DateTime? MODIFY_DATE { get; set; }
             public string DELETED { get; set; }
             public string DELETED_COMMENTS { get; set; }
+            public string TIME_DIFF { get; set; }
 
          
             

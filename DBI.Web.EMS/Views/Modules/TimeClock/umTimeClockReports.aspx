@@ -24,57 +24,33 @@
                                 </Loader>
                             </ext:Panel>
                             <ext:Panel runat="server"
-                                Title="Crossing Security"
-                                ID="uxCrossingSecurity"
+                                Title="Actual Verse Adjusted"
+                                ID="uxAcutalVerseAdjusted"
                                 Disabled="false">
                                 <Loader runat="server"
-                                    ID="Loader5" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umCrossingSecurity.aspx">
+                                    ID="Loader5" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umAdjustedverseActualHoursreport.aspx">
                                     <LoadMask ShowMask="true" />
                                 </Loader>
-                                 <Listeners>
-                                 <BeforeActivate Handler="#{Toolbar1}.show()" />                            
-                                </Listeners>
                             </ext:Panel>
 
                             <ext:Panel runat="server"
-                                Title="Crossing Information"
-                                ID="uxCrossingInfoTab"
+                                Title="12 Hour Day"
+                                ID="ux12HourDay"
                                 Disabled="false">
                                 <Loader runat="server"
-                                    ID="uxHeaderLoader" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umCrossingInfoTab.aspx">
+                                    ID="uxHeaderLoader" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="um12HourDayReport.aspx">
                                     <LoadMask ShowMask="true" />
                                 </Loader>
-                                 <Listeners>
-                                 <BeforeActivate Handler="#{Toolbar1}.show()" />                            
-                                </Listeners>
                             </ext:Panel>
                             <ext:Panel runat="server"
-                                Title="Contacts"
-                                ID="uxContactsTab"
+                                Title="No Lunch"
+                                ID="uxNoLunch"
                                 Disabled="false">
                                 <Loader runat="server"
-                                    ID="Loader1" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umContactsTab.aspx">
+                                    ID="Loader1" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umNoLunchReport.aspx">
                                     <LoadMask ShowMask="true" />
                                 </Loader>
-                                 <Listeners>
-                                 <BeforeActivate Handler="#{Toolbar1}.show()" />                            
-                                </Listeners>
                             </ext:Panel>
-                             <ext:Panel runat="server"
-                                Title="Manage KCS"
-                                ID="uxManageKCS"
-                                Disabled="true" >
-                                <Loader runat="server"
-                                    ID="Loader3" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="ManageKCS.aspx">
-                                    <LoadMask ShowMask="true" />
-                                </Loader>
-                                 <Listeners>
-                                 <BeforeActivate Handler="#{Toolbar1}.show()" />                            
-                                </Listeners>
-                            </ext:Panel>
-
-
-
                         </Items>
                     </ext:TabPanel>
                 </Items>

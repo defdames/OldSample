@@ -134,16 +134,6 @@
 							   </Click> 
 						</DirectEvents>
 					</ext:Button>
-					<%--<ext:Button runat="server" ID="uxEdit" Text="Edit" Icon="ApplicationEdit">
-						<DirectEvents>
-							<Click OnEvent="deEditTime">
-								<ExtraParams>
-									<ext:Parameter Name="Edit" Value="True"></ext:Parameter>
-								</ExtraParams>
-								<EventMask ShowMask="true" />
-							</Click>
-						</DirectEvents>
-					</ext:Button>--%>
 					<ext:ToolbarSpacer runat="server" />
 					<ext:Checkbox runat="server" ID="uxToggleApproved" BoxLabel="Show Approved" BoxLabelAlign="After" >
 						<Listeners>
