@@ -148,13 +148,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.CheckboxSelectionModel CheckboxSelectionModel2;
         
         /// <summary>
-        /// uxApplicationStore control.
+        /// uxInvoiceSupplementalStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxApplicationStore;
+        protected global::Ext.Net.Store uxInvoiceSupplementalStore;
         
         /// <summary>
         /// Model1 control.

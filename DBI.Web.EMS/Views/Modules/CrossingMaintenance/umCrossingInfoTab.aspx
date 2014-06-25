@@ -171,7 +171,7 @@
                         <Items>
                              <ext:FieldContainer ID="FieldContainer39" runat="server">
                             <Items>
-                             <ext:TextField ID="uxCrossingNumCI" runat="server" FieldLabel="Crossing #" LabelAlign="Right" AnchorHorizontal="100%" DisableKeyFilter="False" Width="300" ReadOnly="true" />
+                             <%--<ext:TextField ID="uxCrossingNumCI" runat="server" FieldLabel="Crossing #" LabelAlign="Right" AnchorHorizontal="100%" DisableKeyFilter="False" Width="300" ReadOnly="true" />--%>
                             </Items>
                                  </ext:FieldContainer>
                                  <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
@@ -314,7 +314,7 @@
                                 <Items>
                                      <ext:FieldContainer ID="FieldContainer38" runat="server">
                                         <Items>
-                                    <ext:TextField ID="uxAddCrossingNumCI" runat="server" FieldLabel="Crossing #" LabelAlign="Right" AnchorHorizontal="100%" TabIndex="1" AllowBlank="false" Width="300"/>
+                                    <%--<ext:TextField ID="uxAddCrossingNumCI" runat="server" FieldLabel="Crossing #" LabelAlign="Right" AnchorHorizontal="100%" TabIndex="1" AllowBlank="false" Width="300"/>--%>
                                         </Items>
                                          </ext:FieldContainer>
                                     <ext:FieldContainer ID="FieldContainer9" runat="server" Layout="HBoxLayout">
@@ -634,7 +634,7 @@
                                 <Items>
                                     <ext:FieldContainer runat="server">
                                         <Items>
-                                            <ext:TextField ID="uxEditCrossingNumCI" runat="server" FieldLabel="Crossing #" LabelAlign="Right" AnchorHorizontal="100%" TabIndex="1" AllowBlank="false" Width="300" />
+                                            <%--<ext:TextField ID="uxEditCrossingNumCI" runat="server" LabelAlign="Right" AnchorHorizontal="50%" TabIndex="1" AllowBlank="false" Width="300" ReadOnly="true" />--%>
                                        </Items>
                                              </ext:FieldContainer>
                                     <ext:FieldContainer ID="FieldContainer21" runat="server" Layout="HBoxLayout">

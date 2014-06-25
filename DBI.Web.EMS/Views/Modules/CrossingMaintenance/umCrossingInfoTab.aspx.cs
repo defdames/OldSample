@@ -106,9 +106,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxServiceUnitCI.SetValue(data.d.SERVICE_UNIT);
                 uxSubDivCI.SetValue(data.d.SUB_DIVISION);
                 uxRRCI.SetValue(data.r.RAILROAD);
-                uxCrossingNumCI.SetValue(data.d.CROSSING_NUMBER);
                 uxRouteCI.SetValue(data.d.ROUTE);
-                uxDOTCI.SetValue(data.d.DOT);
+                uxDOTCI.SetValue(data.d.CROSSING_NUMBER);
                 uxStreetCI.SetValue(data.d.STREET);
                 uxMPCI.SetValue(data.d.MILE_POST);
                 uxStateCI.SetValue(data.d.STATE);
@@ -209,7 +208,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
            
 
             //Do type conversions
-            string CrossingNum = uxAddCrossingNumCI.Value.ToString();
+            //string CrossingNum = uxAddCrossingNumCI.Value.ToString();
             string Route = uxAddRouteCI.Value.ToString();
             string DotNum = uxAddDotCI.Value.ToString();
             string Street = uxAddStreetCI.Value.ToString();
@@ -265,14 +264,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             CROSSING data = new CROSSING()
             {
                 
-                CROSSING_NUMBER = CrossingNum,
+                //CROSSING_NUMBER = CrossingNum,
                 MILE_POST = MP,
                 CITY = City,
                 STREET = Street,
                 STATE = State,
                 COUNTY = County,
                 ROUTE = Route,
-                DOT = DotNum,
+                CROSSING_NUMBER = DotNum,
                 SUB_CONTRACTED = Sub_contracted,
                 RESTRICTED_COUNTY = Restricted,
                 FENCE_ENCROACHMENT = FenceEncroach,
@@ -527,9 +526,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     uxEditManagerCI.Value = string.Empty;
                 }
                
-                uxEditCrossingNumCI.SetValue(data.d.CROSSING_NUMBER);
+                //uxEditCrossingNumCI.SetValue(data.d.CROSSING_NUMBER);
                 uxEditRouteCI.SetValue(data.d.ROUTE);
-                uxEditDotCI.SetValue(data.d.DOT);
+                uxEditDotCI.SetValue(data.d.CROSSING_NUMBER);
                 uxEditStreetCI.SetValue(data.d.STREET);
                 uxEditMPCINumberField.SetValue(data.d.MILE_POST);
                 uxEditStateComboBox.SetValue(data.d.STATE);
@@ -592,7 +591,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             CROSSING data;
 
             //Do type conversions
-            string CrossingNum = uxEditCrossingNumCI.Value.ToString();
+            //string CrossingNum = uxEditCrossingNumCI.Value.ToString();
             string Route = uxEditRouteCI.Value.ToString();
             string DotNum = uxEditDotCI.Value.ToString();
             string Street = uxEditStreetCI.Value.ToString();
@@ -662,7 +661,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 data.CONTACT_ID = null;
             }    
 
-                data.CROSSING_NUMBER = CrossingNum;
+                //data.CROSSING_NUMBER = CrossingNum;
                 data.MILE_POST = MP;
                 data.SUB_DIVISION = Sub_divisions;
                 data.CITY = City;
@@ -670,7 +669,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 data.STATE = State;
                 data.COUNTY = County;
                 data.ROUTE = Route;
-                data.DOT = DotNum;
+                data.CROSSING_NUMBER = DotNum;
                 data.SUB_CONTRACTED = Sub_contracted;
                 data.RESTRICTED_COUNTY = Restricted;
                 data.FENCE_ENCROACHMENT = FenceEncroach;

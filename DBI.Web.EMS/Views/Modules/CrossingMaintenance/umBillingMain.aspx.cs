@@ -39,7 +39,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     }
                     else if (SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue") == string.Empty)
                     {
-                        uxChangeDataEntryWindow.Show();
+                        uxChangeRailroadWindow.Show();
                     }
 
                 }
@@ -50,9 +50,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             SYS_USER_PROFILE_OPTIONS.SetProfileOption("UserCrossingSelectedValue", uxRailRoadCI.SelectedItem.Value);
 
-            //uxDataEntryTab.Reload();
-            //uxIncident.Reload();
-            //uxSupplemental.Reload();
+            uxBillingInvoiceTab.Reload();
+            uxSupplementalBilling.Reload();
+          
         }
           protected void deReadRRTypes(object sender, StoreReadDataEventArgs e)
         {
@@ -102,10 +102,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
 
 
-            uxChangeDataEntryWindow.Close();
-            //uxDataEntryTab.Reload();
-            //uxIncident.Reload();
-            //uxSupplemental.Reload();
+            uxChangeRailroadWindow.Close();
+            uxBillingInvoiceTab.Reload();
+            uxSupplementalBilling.Reload();
+   
         }
         
 

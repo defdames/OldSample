@@ -76,13 +76,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Model Model4;
         
         /// <summary>
-        /// uxChangeDataEntryWindow control.
+        /// uxChangeRailroadWindow control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Window uxChangeDataEntryWindow;
+        protected global::Ext.Net.Window uxChangeRailroadWindow;
         
         /// <summary>
         /// uxRailroadGrid control.

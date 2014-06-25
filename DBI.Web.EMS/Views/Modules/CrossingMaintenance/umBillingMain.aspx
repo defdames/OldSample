@@ -46,7 +46,7 @@
                     </ext:Toolbar>
                       <ext:Window
                         runat="server"
-                        ID="uxChangeDataEntryWindow"
+                        ID="uxChangeRailroadWindow"
                         Hidden="true"
                         Width="350"
                         Height="350"

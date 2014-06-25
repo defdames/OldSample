@@ -19,13 +19,13 @@
                             <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                                 <Items>
                                   <ext:DateField ID="uxStartDate" runat="server" AnchorHorizontal="100%" FieldLabel="Start Date" LabelAlign="Right" Editable="false" TabIndex="1" />
-                                  <ext:TextField ID="uxInvoiceNumber" runat="server" FieldLabel="Invoice Number" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" TabIndex="3" />
+                                  <ext:TextField ID="uxInvoiceNumber" runat="server" FieldLabel="Invoice Number" AnchorHorizontal="100%" AllowBlank="false" LabelAlign="Right" TabIndex="3" />
                                 </Items>
                             </ext:FieldContainer>
                            <ext:FieldContainer ID="FieldContainer2" runat="server" Layout="HBoxLayout">
                                 <Items>
                                     <ext:DateField ID="uxEndDate" runat="server" AnchorHorizontal="100%" FieldLabel="End Date" LabelAlign="Right"  Editable="false" TabIndex="2" />
-                                    <ext:DateField ID="uxInvoiceDate" runat="server" AnchorHorizontal="100s%" FieldLabel="Invoice Date" LabelAlign="Right"  Editable="false" TabIndex="4" />
+                                    <ext:DateField ID="uxInvoiceDate" runat="server" AnchorHorizontal="100s%" FieldLabel="Invoice Date" AllowBlank="false" LabelAlign="Right"  Editable="false" TabIndex="4" />
                                 </Items>
                             </ext:FieldContainer>
                            
@@ -40,22 +40,25 @@
                             <ext:Button runat="server"
                                 ID="Button4"
                                 Text="View"
-                                Icon="ApplicationViewList">
-                         <%--<Listeners>
-                                <Click Handler="#{uxIncidentStore}.load()" />
-                            </Listeners>--%>
+                                Icon="ApplicationViewList" Disabled="true">
+                         <Listeners>
+                                <Click Handler="#{uxInvoiceSupplementalStore}.load()" />
+                            </Listeners>
                             </ext:Button>
                             <ext:Button runat="server"
                                 ID="Button3"
                                 Text="Cancel"
                                 Icon="StopRed">
-                           <%--  <DirectEvents>
+                             <DirectEvents>
                             <Click OnEvent="deClearFilters" />
-                            </DirectEvents>--%>
+                            </DirectEvents>
                             </ext:Button>
                         </Items>
                     </ext:Toolbar>
                 </BottomBar>
+           <Listeners>
+			 <ValidityChange Handler="#{Button4}.setDisabled(!valid);" />
+		  </Listeners>
             </ext:FormPanel>
 
         <ext:GridPanel ID="uxApplicationEntryGrid" Title="Completed Crossings" runat="server" Region="North" Frame="false" Collapsible="true" MultiSelect="true" >
@@ -64,7 +67,7 @@
                 </SelectionModel>
                 <Store>
                     <ext:Store runat="server"
-                        ID="uxApplicationStore" AutoDataBind="true" AutoLoad="false" >
+                        ID="uxInvoiceSupplementalStore" OnReadData="deInvoiceSupplementalGrid" AutoDataBind="true" AutoLoad="false" >
                        <%-- <Parameters>
                               <ext:StoreParameter Name="crossingId" Value="Ext.encode(#{uxApplicationCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
                         </Parameters>--%>
@@ -73,23 +76,31 @@
                                 <Fields>
                                     <ext:ModelField Name="CROSSING_ID" />  
                                     <ext:ModelField Name="CROSSING_NUMBER" />                                
-                                    <ext:ModelField Name="APPLICATION_ID" />
-                                  
+                                    <ext:ModelField Name="SUPLLEMENTAL_ID" />
+                                    <ext:ModelField Name="APPROVED_DATE" /> 
+                                    <ext:ModelField Name="MILE_POST" />
+                                    <ext:ModelField Name="SERVICE_TYPE" />
+                                    <ext:ModelField Name="TRUCK_NUMBER" />
+                                    <ext:ModelField Name="SQUARE_FEET" />
+                                    <ext:ModelField Name="SERVICE_UNIT" />
+                                    <ext:ModelField Name="SUB_DIVISION" />
 
                                 </Fields>
                             </ext:Model>
                         </Model>
-                        
+                        <Proxy>
+                            <ext:PageProxy />
+                        </Proxy>
 
                     </ext:Store>
                 </Store>
 
                 <ColumnModel>
                     <Columns>
-                         <ext:Column ID="Column1" runat="server" DataIndex="" Text="DOT Number" Flex="1" />
-                        <ext:Column ID="Column2" runat="server" DataIndex="" Text="MP" Flex="1" />
-                        <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="" Text="Service Unit" Flex="1" Format="MM/dd/yyyy" />
-                        <ext:Column ID="Column3" runat="server" DataIndex="" Text="Sub Division" Flex="1" />                     
+                         <ext:Column ID="Column1" runat="server" DataIndex="CROSSING_NUMBER" Text="DOT Number" Flex="1" />
+                        <ext:Column ID="Column2" runat="server" DataIndex="MILE_POST" Text="MP" Flex="1" />
+                        <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" Format="MM/dd/yyyy" />
+                        <ext:Column ID="Column3" runat="server" DataIndex="SUB_DIVISION" Text="Sub Division" Flex="1" />                     
                         <ext:DateColumn ID="DateColumn1" runat="server" DataIndex="APPROVED_DATE" Text="Approved Date" Flex="1" Format="MM/dd/yyyy" />
                     <ext:Column ID="Column6" runat="server" DataIndex="SERVICE_TYPE" Text="Service Type" Flex="1" />
                     <ext:Column ID="Column4" runat="server" DataIndex="TRUCK_NUMBER" Text="Truck" Flex="1" />
