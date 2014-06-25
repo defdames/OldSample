@@ -862,6 +862,20 @@ namespace DBI.Data
             }
         }
 
+        public static void EmployeeTimeSelectionSubmitted(List<TIME_CLOCK> selection)
+        {
+            foreach (TIME_CLOCK selected in selection)
+            {
+                TIME_CLOCK _data;
+                using (Entities _context = new Entities())
+                {
+                    _data = _context.TIME_CLOCK.Where(x => x.APPROVED == "Y" && x.TIME_CLOCK_ID == selected.TIME_CLOCK_ID).SingleOrDefault();
+                    _data.SUBMITTED = "Y";
+                }
+                DBI.Data.GenericData.Update <TIME_CLOCK>(_data);
+            }
+        }
+
         /// <summary>
         /// ADjusts time to be  for oracle payroll
         /// </summary> Adjust time to nearest quarter of hour and store in table
