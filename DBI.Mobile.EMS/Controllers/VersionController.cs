@@ -19,10 +19,10 @@ namespace DBI.Mobile.EMS.Controllers
             if (id == "production")
             {
                 Version ver = new Version();
-                ver.number = "1.0.R140512";
-                ver.mandatory = false;
-                ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobile.dbiservices.com/iems/iEMS.plist";
-                ver.descriptionText = "Updated DAR screen to show task information, corrected order of DARs.";
+                ver.number = "1.0.R140625";
+                ver.mandatory = true;
+                ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobiletest.dbiservices.com/iems/iEMS.plist";
+                ver.descriptionText = "Mockup Test PCL05";
 
                 RootObject root = new RootObject();
                 root.version = ver;
@@ -32,10 +32,10 @@ namespace DBI.Mobile.EMS.Controllers
             else if (id == "internal")
             {
                 Version ver = new Version();
-                ver.number = "1.0.B140314";
-                ver.mandatory = false;
-                ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobile.dbiservices.com/iems/iEMS.plist";
-                ver.descriptionText = "Employee drive time removed from non IRM Jobs. Added updated version control and modified the copy feature.";
+                ver.number = "1.0.T140625";
+                ver.mandatory = true;
+                ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobiletest.dbiservices.com/iems/iEMS.plist";
+                ver.descriptionText = "Mockup Test PCL05";
 
                 RootObject root = new RootObject();
                 root.version = ver;
