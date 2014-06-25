@@ -40,24 +40,6 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         protected global::Ext.Net.ResourceManager resourceManager1;
         
         /// <summary>
-        /// ViewPort1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Viewport ViewPort1;
-        
-        /// <summary>
-        /// FormPanel1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FormPanel FormPanel1;
-        
-        /// <summary>
         /// uxTime_InTextBox control.
         /// </summary>
         /// <remarks>
@@ -85,21 +67,93 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         protected global::Ext.Net.TextField uxUser_NameTextBox;
         
         /// <summary>
-        /// uxTimeInButton control.
+        /// uxDateTime control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxTimeInButton;
+        protected global::Ext.Net.Hidden uxDateTime;
         
         /// <summary>
-        /// uxTimeOutButton control.
+        /// uxTimeButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxTimeOutButton;
+        protected global::Ext.Net.Button uxTimeButton;
+        
+        /// <summary>
+        /// uxEmployeeHoursList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridPanel uxEmployeeHoursList;
+        
+        /// <summary>
+        /// uxHoursStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxHoursStore;
+        
+        /// <summary>
+        /// Model1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model Model1;
+        
+        /// <summary>
+        /// colTimeIn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DateColumn colTimeIn;
+        
+        /// <summary>
+        /// colTimeOut control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DateColumn colTimeOut;
+        
+        /// <summary>
+        /// colTotalHours control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column colTotalHours;
+        
+        /// <summary>
+        /// colModifiedBy control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column colModifiedBy;
+        
+        /// <summary>
+        /// colApproved control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column colApproved;
     }
 }

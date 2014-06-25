@@ -125,7 +125,8 @@ namespace DBI.Web.EMS
         {
             try
             {
-                if (String.IsNullOrWhiteSpace(this.uxUsername.Text) || String.IsNullOrWhiteSpace(this.uxPassword.Text))
+                string[] LogInUser = this.uxUsername.Text.Split(new char[]{'@'});
+                if (String.IsNullOrWhiteSpace(LogInUser[0]) || String.IsNullOrWhiteSpace(this.uxPassword.Text))
                 {
                     var focusBtn = new JFunction { Handler = "#{uxUsername}.focus(false,250);"};
                     X.Msg.Alert((string)GetLocalResourceObject("loginErrorTitle"), (string)GetLocalResourceObject("loginErrorMessage"), focusBtn).Show();
@@ -133,9 +134,9 @@ namespace DBI.Web.EMS
                     return;
                 }
 
-                if (Authentication.Authenticate(this.uxUsername.Text, this.uxPassword.Text))
+                if (Authentication.Authenticate(LogInUser[0], this.uxPassword.Text))
                 {
-                    List<Claim> claims = SYS_PERMISSIONS.Claims(this.uxUsername.Text.ToUpper());
+                    List<Claim> claims = SYS_PERMISSIONS.Claims(LogInUser[0].ToUpper());
 
                     int cnt = claims.Count;
 

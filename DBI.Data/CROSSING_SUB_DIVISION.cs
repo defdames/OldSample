@@ -15,19 +15,13 @@ namespace DBI.Data
     public partial class CROSSING_SUB_DIVISION
     {
         public long SUB_DIVISION_ID { get; set; }
-        public string STATE { get; set; }
-        public string CITY { get; set; }
-        public string COUNTY { get; set; }
-        public string STREET { get; set; }
-        public string ROUTE { get; set; }
-        public string DOT { get; set; }
-        public Nullable<decimal> MILE_POST { get; set; }
-        public string SERVICE_TYPE { get; set; }
-        public string REMARKS { get; set; }
+        public string SUB_DIVISION_NAME { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
-        public string SUB_DIVISION_NAME { get; set; }
+        public long SERVICE_UNIT_ID { get; set; }
+    
+        public virtual CROSSING_SERVICE_UNIT CROSSING_SERVICE_UNIT { get; set; }
     }
 }

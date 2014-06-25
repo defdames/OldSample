@@ -18,8 +18,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         {
             if (!X.IsAjaxRequest)
             {
-                deLoadRRType("Add");
-                deLoadRRType("Edit");
+                //deLoadRRType("Add");
+                //deLoadRRType("Edit");
                 uxAddStateList.Data = StaticLists.StateList;
                 uxEditStateList.Data = StaticLists.StateList;
             }
@@ -31,13 +31,33 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             //Get Contacts
             using (Entities _context = new Entities())
             {
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                 List<object> data;
                 data = (from d in _context.CROSSING_CONTACTS
-
-                        select new { d.CONTACT_ID, d.CONTACT_NAME, d.WORK_NUMBER, d.CELL_NUMBER, d.RAILROAD }).ToList<object>();
+                        join r in _context.CROSSING_RAILROAD on d.RAILROAD_ID equals r.RAILROAD_ID
+                        where d.RAILROAD_ID == RailroadId
+                        select new {r.RAILROAD,  d.CONTACT_ID, d.CONTACT_NAME, d.WORK_NUMBER, d.CELL_NUMBER }).ToList<object>();
                 int count;
                 uxCurrentContactStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 e.Total = count;
+            }
+        }
+        protected void deGetRRType(object sender, DirectEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+                var RRdata = (from r in _context.CROSSING_RAILROAD
+                              where r.RAILROAD_ID == RailroadId
+                              select new
+                              {
+                                  r
+
+                              }).Single();
+
+
+                uxAddRailRoadCITextField.SetValue(RRdata.r.RAILROAD);
+
             }
         }
         protected void GetContactGridData(object sender, DirectEventArgs e)
@@ -79,22 +99,23 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             //do type conversions
             string ContactName = uxAddNewManagerName.Value.ToString();
-            string RailRoad = uxAddRRType.Value.ToString();
+            //string RailRoad = uxAddRRType.Value.ToString();
            
             string State = uxAddContactStateComboBox.Value.ToString();
-           
+            long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
 
             //Add to Db
             using (Entities _context = new Entities())
             {
                 data = new CROSSING_CONTACTS()
                 {
-
                     CONTACT_NAME = ContactName,
-                    RAILROAD = RailRoad.ToString(),
-                   
                     STATE = State,
-                   
+                    RAILROAD_ID = RailroadId,
+                    CREATE_DATE = DateTime.Now,
+                    MODIFY_DATE = DateTime.Now,
+                    CREATED_BY = User.Identity.Name,
+                    MODIFIED_BY = User.Identity.Name,
                 };
             }
             try
@@ -195,7 +216,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                                 d.WORK_NUMBER,
                             }).SingleOrDefault();
                 uxEditManagerName.SetValue(data.CONTACT_NAME);
-                uxEditRRType.SetValue(data.RAILROAD);
                 uxEditContactAdd1.SetValue(data.ADDRESS_1);
                 uxEditContactAdd2.SetValue(data.ADDRESS_2);
                 uxEditContactCity.SetValue(data.CITY);
@@ -220,10 +240,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             //do type conversions
             string ContactName = uxEditManagerName.Value.ToString();
-            string RailRoad = uxEditRRType.Value.ToString();
-         
             string State = uxEditContactState.Value.ToString();
-          
+            long RailroadId = long.Parse(Session["rrType"].ToString());
+            
             //Get record to be edited
             using (Entities _context = new Entities())
             {
@@ -234,9 +253,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
 
             data.CONTACT_NAME = ContactName;
-            data.RAILROAD = RailRoad;
             data.STATE = State;
-
+            data.RAILROAD_ID = RailroadId;
+            data.MODIFY_DATE = DateTime.Now;
+            data.MODIFIED_BY = User.Identity.Name;
             try
             {
                 string Address1 = uxEditContactAdd1.Value.ToString();
@@ -346,11 +366,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             using (Entities _context = new Entities())
             {
                 List<object> data;
-
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                 //Get List of all new contacts
 
                 data = (from d in _context.CROSSING_CONTACTS
-                        select new { d.CONTACT_ID, d.CONTACT_NAME, d.CELL_NUMBER, d.WORK_NUMBER, d.RAILROAD }).ToList<object>();
+                        join r in _context.CROSSING_RAILROAD on d.RAILROAD_ID equals r.RAILROAD_ID
+                        where d.RAILROAD_ID == RailroadId
+                        select new {r.RAILROAD_ID, d.CONTACT_ID, d.CONTACT_NAME, d.CELL_NUMBER, d.WORK_NUMBER, r.RAILROAD }).ToList<object>();
 
                 int count;
                 uxAssignContactManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -365,10 +387,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 List<object> data;
 
                 //Get List of all new crossings
-
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                 data = (from d in _context.CROSSINGS
-                        where d.CONTACT_ID == null
-                        select new { d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.RAILROAD, d.SUB_DIVISION }).ToList<object>();
+                        join r in _context.CROSSING_RAILROAD on d.RAILROAD_ID equals r.RAILROAD_ID
+                        where d.CONTACT_ID == null && d.RAILROAD_ID == RailroadId
+                        select new { d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, r.RAILROAD, d.SUB_DIVISION }).ToList<object>();
 
                 int count;
                 uxAssignContactCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -391,11 +414,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 //Get record to be edited
                 using (Entities _context = new Entities())
                 {
-
+                    long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                     data = (from d in _context.CROSSINGS
-                            where d.CROSSING_ID == crossing.CROSSING_ID
+                            where d.CROSSING_ID == crossing.CROSSING_ID && d.RAILROAD_ID == RailroadId
                             select d).Single();
                     data.CONTACT_ID = ContactId;
+                       
                 }
                 GenericData.Update<CROSSING>(data);
             }
@@ -425,8 +449,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             //Get Contacts
             using (Entities _context = new Entities())
             {
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                 List<object> data;
                 data = (from d in _context.CROSSING_CONTACTS
+                        join r in _context.CROSSING_RAILROAD on d.RAILROAD_ID equals r.RAILROAD_ID
+                        where d.RAILROAD_ID == RailroadId
                         select new { d.CONTACT_ID, d.CONTACT_NAME, }).ToList<object>();
                 int count;
                 uxCurrentManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -439,8 +466,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             //Get Contacts
             using (Entities _context = new Entities())
             {
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                 List<object> data;
                 data = (from d in _context.CROSSING_CONTACTS
+                        join r in _context.CROSSING_RAILROAD on d.RAILROAD_ID equals r.RAILROAD_ID
+                        where d.RAILROAD_ID == RailroadId
                         select new { d.CONTACT_ID, d.CONTACT_NAME }).ToList<object>();
                 int count;
                 uxNewManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -501,9 +531,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 //Get record to be edited
                 using (Entities _context = new Entities())
                 {
-                   
+                    long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                         data = (from d in _context.CROSSINGS
-                                where d.CROSSING_ID == crossing.CROSSING_ID
+                                where d.CROSSING_ID == crossing.CROSSING_ID && d.RAILROAD_ID == RailroadId
                                 select d).SingleOrDefault();
 
 
@@ -534,22 +564,22 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             });
         }
-        protected void deLoadRRType(string rrType)
-        {
+        //protected void deLoadRRType(string rrType)
+        //{
 
-            List<ServiceUnitResponse> types = ServiceUnitData.ServiceUnitTypes().ToList();
-            if (rrType == "Add")
-            {
-                uxAddContactRRStore.DataSource = types;
-                uxAddContactRRStore.DataBind();
-            }
-            else
-            {
-                uxEditContactRRStore.DataSource = types;
-                uxEditContactRRStore.DataBind();
-            }
+        //    List<ServiceUnitResponse> types = ServiceUnitData.ServiceUnitTypes().ToList();
+        //    if (rrType == "Add")
+        //    {
+        //        uxAddContactRRStore.DataSource = types;
+        //        uxAddContactRRStore.DataBind();
+        //    }
+        //    else
+        //    {
+        //        uxEditContactRRStore.DataSource = types;
+        //        uxEditContactRRStore.DataBind();
+        //    }
 
-        }
+        //}
         public class CrossingDetails
         {
             public long CROSSING_ID { get; set; }

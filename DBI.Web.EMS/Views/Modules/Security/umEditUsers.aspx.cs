@@ -50,6 +50,9 @@ namespace DBI.Web.EMS.Views.Modules.Security
 
             var UserPermissions = SYS_PERMISSIONS.GetPermissions(UserId);
             CheckboxSelectionModel GridModel = uxEditUserGrid.GetSelectionModel() as CheckboxSelectionModel;
+            GridModel.SelectedRows.Clear();
+            //GridModel.DeselectAll();
+            GridModel.UpdateSelection();
             foreach (var UserPermission in UserPermissions)
             {
                 GridModel.SelectedRows.Add(new SelectedRow(UserPermission.PERMISSION_NAME));
@@ -158,5 +161,132 @@ namespace DBI.Web.EMS.Views.Modules.Security
                 ResourceManager.GetInstance().AddScript("parent.window.location = '{0}';", "../../uxDefault.aspx");
             }
         }
+
+        protected void deLoadUpdateOrgWindow(object sender, DirectEventArgs e)
+        {
+
+            using (Entities _context = new Entities())
+            {
+                var AllOrgs = _context.ORG_HIER_V.Select(x => new { x.ORG_HIER, x.ORG_ID }).Distinct().ToList();
+                long UserId = long.Parse(e.ExtraParams["UserId"]);
+
+                var SelectedOrgs = (from s in _context.SYS_USER_ORGS
+                                    join o in _context.ORG_HIER_V on s.ORG_ID equals o.ORG_ID
+                                    where s.USER_ID == UserId
+                                    select new { o.ORG_ID, o.ORG_HIER }).Distinct().ToList();
+
+                foreach (var SelectedOrg in SelectedOrgs)
+                {
+                    AllOrgs.RemoveAt(AllOrgs.FindIndex(x => x.ORG_ID == SelectedOrg.ORG_ID));
+                }
+
+
+                this.uxAvailableOrgsStore.DataSource = AllOrgs;
+                this.uxAvailableOrgsStore.DataBind();
+                uxSelectedOrgsStore.DataSource = SelectedOrgs;
+                uxSelectedOrgsStore.DataBind();
+
+                uxTwoGridWindow.Show();
+            }
+        }
+
+        protected void deSaveUserOrgs(object sender, DirectEventArgs e)
+        {
+            List<ORG_HIER_V> NotSelectedOrgs = JSON.Deserialize<List<ORG_HIER_V>>(e.ExtraParams["NotSelectedOrgs"]);
+            List<ORG_HIER_V> SelectedOrgs = JSON.Deserialize<List<ORG_HIER_V>>(e.ExtraParams["SelectedOrgs"]);
+            List<SYS_USER_ORGS> UserOrgs;
+            long UserId = long.Parse(e.ExtraParams["UserId"]);
+
+            using (Entities _context = new Entities())
+            {
+                UserOrgs = _context.SYS_USER_ORGS.Where(x => x.USER_ID == UserId).ToList();
+            }
+            if (SelectedOrgs.Count > 0)
+            {
+                foreach (ORG_HIER_V SelectedOrg in SelectedOrgs)
+                {
+                    if (!UserOrgs.Exists(x => x.ORG_ID == SelectedOrg.ORG_ID))
+                    {
+                        SYS_USER_ORGS NewUserOrg = new SYS_USER_ORGS
+                        {
+                            ORG_ID = SelectedOrg.ORG_ID,
+                            USER_ID = UserId
+                        };
+                        GenericData.Insert<SYS_USER_ORGS>(NewUserOrg);
+                    }
+                }
+            }
+            if (NotSelectedOrgs.Count > 0)
+            {
+                foreach (ORG_HIER_V NotSelectedOrg in NotSelectedOrgs)
+                {
+                    if (UserOrgs.Exists(x => x.ORG_ID == NotSelectedOrg.ORG_ID))
+                    {
+                        SYS_USER_ORGS ToBeDeleted;
+                        using (Entities _context = new Entities())
+                        {
+                            ToBeDeleted = _context.SYS_USER_ORGS.Where(x => (x.ORG_ID == NotSelectedOrg.ORG_ID) && (x.USER_ID == UserId)).Single();
+                        }
+                        GenericData.Delete<SYS_USER_ORGS>(ToBeDeleted);
+                    }
+                }
+            }
+
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "User organizations updated successfully.",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
+            uxTwoGridWindow.Hide();
+        }
+
+
+        protected void deViewUserProfileOptions(object sender, DirectEventArgs e)
+        {
+            string selectedUserID = e.ExtraParams["UserID"];
+
+            string URL = string.Empty;
+            URL = "/Views/Modules/Security/UserOptions/umUserProfileOptions.aspx?userID=" + selectedUserID;
+
+
+            Ext.Net.Button closeButton = new Ext.Net.Button();
+            closeButton.Text = "Close Form";
+            closeButton.Listeners.Click.Handler = "Ext.getCmp('uxUserProfileOptionWindow').close();";
+
+            Window win = new Window
+            {
+                ID = "uxUserProfileOptionWindow",
+                Title = "User Profile Options",
+                Height = 700,
+                Width = 800,
+                Modal = true,
+                CloseAction = CloseAction.Destroy,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = URL,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                },          
+            };
+
+            win.Buttons.Add(closeButton);
+            win.Render(this.Form);
+            win.Show();
+        }
+
+
     }
 }
+
+ 

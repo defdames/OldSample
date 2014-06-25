@@ -102,9 +102,9 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column runat="server" Text="Name" DataIndex="ITEM_NAME" />
-                            <ext:Column runat="server" Text="URL" DataIndex="ITEM_URL" />
-                            <ext:Column runat="server" Text="Permission Required" DataIndex="PERMISSION_NAME" />
+                            <ext:Column runat="server" Text="Name" DataIndex="ITEM_NAME" Flex="1" />
+                            <ext:Column runat="server" Text="URL" DataIndex="ITEM_URL" Flex="1" />
+                            <ext:Column runat="server" Text="Permission Required" DataIndex="PERMISSION_NAME" Flex="1" />
                         </Columns>
                     </ColumnModel>
                     <TopBar>

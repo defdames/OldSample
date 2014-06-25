@@ -74,10 +74,13 @@ namespace DBI.Data
         public string SERVICE_UNIT { get; set; }
         public Nullable<long> PROJECT_ID { get; set; }
         public string SPECIAL_INSTRUCTIONS { get; set; }
+        public string STATUS { get; set; }
+        public Nullable<decimal> RAILROAD_ID { get; set; }
     
         public virtual CROSSING_CONTACTS CROSSING_CONTACTS { get; set; }
         public virtual ICollection<CROSSING_DATA_ENTRY> CROSSING_DATA_ENTRY { get; set; }
         public virtual ICollection<CROSSING_INCIDENT> CROSSING_INCIDENT { get; set; }
+        public virtual CROSSING_RAILROAD CROSSING_RAILROAD { get; set; }
         public virtual ICollection<CROSSING_SUPPLEMENTAL> CROSSING_SUPPLEMENTAL { get; set; }
     }
 }

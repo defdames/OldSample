@@ -8,7 +8,7 @@
 </head>
 <body>
 	<form id="form1" runat="server">
-	<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
+		<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
 		<ext:Store runat="server"
 			ID="uxAddInventoryItemStore"
 			RemoteSort="true"
@@ -74,123 +74,125 @@
 				<ext:StoreParameter Name="OrgId" Value="#{uxEditInventoryRegion}.value" Mode="Raw" />
 			</Parameters>
 		</ext:Store>
-		<ext:FormPanel runat="server"
-			ID="uxAddInventoryForm"
-			Layout="FormLayout"
-			Hidden="true">
+		<ext:Panel runat="server">
 			<Items>
-				<ext:ComboBox runat="server"
-					ID="uxAddInventoryRegion"
-					FieldLabel="Select Region"
-					DisplayField="INV_NAME"
-					ValueField="ORGANIZATION_ID"
-					QueryMode="Local"
-					TypeAhead="true"
-					AllowBlank="false"
-					ForceSelection="true" Width="500">
-					<Store>
-						<ext:Store runat="server" 
-							ID="uxAddInventoryRegionStore">
-							<Model>
-								<ext:Model ID="Model2" runat="server">
-									<Fields>
-										<ext:ModelField Name="INV_NAME" />
-										<ext:ModelField Name="ORGANIZATION_ID" />
-									</Fields>
-								</ext:Model>
-							</Model>
-						</ext:Store>
-					</Store>
-					<DirectEvents>
-						<Select OnEvent="deLoadSubinventory">
-							<ExtraParams>
-								<ext:Parameter Name="Type" Value="Add" />
-							</ExtraParams>
-						</Select>
-					</DirectEvents>					
-				</ext:ComboBox>
-				<ext:ComboBox runat="server"
-					ID="uxAddInventorySub"
-					FieldLabel="Select Subinventory"
-					ValueField="ORG_ID"
-					DisplayField="SECONDARY_INV_NAME"
-					QueryMode="Local"
-					TypeAhead="true"
-					AllowBlank="false"
-					ForceSelection="true" Width="500">
-					<Store>
-						<ext:Store runat="server"
-							ID="uxAddInventorySubStore">
-							<Model>
-								<ext:Model ID="Model3" runat="server">
-									<Fields>
-										<ext:ModelField Name="ORG_ID" />
-										<ext:ModelField Name="SECONDARY_INV_NAME" />
-									</Fields>
-								</ext:Model>
-							</Model>
-						</ext:Store>
-					</Store>
-				</ext:ComboBox>
-				<ext:DropDownField runat="server" Editable="false"
-					ID="uxAddInventoryItem"
-					FieldLabel="Select Item"
-					Mode="ValueText"
-					AllowBlank="false" Width="500">
-					<Component>
-						<ext:GridPanel runat="server"
-							ID="uxAddInventoryItemGrid" StoreID="uxAddInventoryItemStore">
-							<ColumnModel>
-								<Columns>
-									<ext:Column ID="Column17" runat="server"
-										DataIndex="SEGMENT1"
-										Text="Item Id" />
-									<ext:Column ID="Column18" runat="server"
-										DataIndex="DESCRIPTION"
-										Text="Name" />
-									<ext:Column ID="Column19" runat="server"
-										DataIndex="UOM_CODE"
-										Text="Measure" />
-								</Columns>
-							</ColumnModel>
-							<Plugins>
-								<ext:FilterHeader runat="server" ID="uxAddInventoryItemHeadFilter" Remote="true" />
-							</Plugins>
-							<BottomBar>
-								<ext:PagingToolbar runat="server" ID="uxAddInventoryItemPaging" />
-							</BottomBar>
-							<SelectionModel>
-								<ext:RowSelectionModel ID="RowSelectionModel3" runat="server" Mode="Single" />
-							</SelectionModel>
+				<ext:FormPanel runat="server"
+					ID="uxAddInventoryForm"
+					Layout="FormLayout"
+					Hidden="true" DefaultButton="uxAddInventorySubmit">
+					<Items>
+						<ext:ComboBox runat="server"
+							ID="uxAddInventoryRegion"
+							FieldLabel="Select Region"
+							DisplayField="INV_NAME"
+							ValueField="ORGANIZATION_ID"
+							QueryMode="Local"
+							TypeAhead="true"
+							AllowBlank="false"
+							ForceSelection="true" Width="500">
+							<Store>
+								<ext:Store runat="server"
+									ID="uxAddInventoryRegionStore">
+									<Model>
+										<ext:Model ID="Model2" runat="server">
+											<Fields>
+												<ext:ModelField Name="INV_NAME" />
+												<ext:ModelField Name="ORGANIZATION_ID" />
+											</Fields>
+										</ext:Model>
+									</Model>
+								</ext:Store>
+							</Store>
 							<DirectEvents>
-								<Select OnEvent="deStoreGridValue">
+								<Select OnEvent="deLoadSubinventory">
 									<ExtraParams>
-										<ext:Parameter Name="ItemId" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.ITEM_ID" Mode="Raw" />
-										<ext:Parameter Name="Description" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.DESCRIPTION" Mode="Raw" />
 										<ext:Parameter Name="Type" Value="Add" />
 									</ExtraParams>
 								</Select>
+							</DirectEvents>					
+						</ext:ComboBox>
+						<ext:ComboBox runat="server"
+							ID="uxAddInventorySub"
+							FieldLabel="Select Subinventory"
+							ValueField="ORG_ID"
+							DisplayField="SECONDARY_INV_NAME"
+							QueryMode="Local"
+							TypeAhead="true"
+							AllowBlank="false"
+							ForceSelection="true" Width="500">
+							<Store>
+								<ext:Store runat="server"
+									ID="uxAddInventorySubStore">
+									<Model>
+										<ext:Model ID="Model3" runat="server">
+											<Fields>
+												<ext:ModelField Name="ORG_ID" />
+												<ext:ModelField Name="SECONDARY_INV_NAME" />
+											</Fields>
+										</ext:Model>
+									</Model>
+								</ext:Store>
+							</Store>
+						</ext:ComboBox>
+						<ext:DropDownField runat="server" Editable="false"
+							ID="uxAddInventoryItem"
+							FieldLabel="Select Item"
+							Mode="ValueText"
+							AllowBlank="false" Width="500">
+							<Component>
+								<ext:GridPanel runat="server"
+									ID="uxAddInventoryItemGrid" StoreID="uxAddInventoryItemStore">
+									<ColumnModel>
+										<Columns>
+											<ext:Column ID="Column17" runat="server"
+												DataIndex="SEGMENT1"
+												Text="Item Id" />
+											<ext:Column ID="Column18" runat="server"
+												DataIndex="DESCRIPTION"
+												Text="Name" />
+											<ext:Column ID="Column19" runat="server"
+												DataIndex="UOM_CODE"
+												Text="Measure" />
+										</Columns>
+									</ColumnModel>
+									<Plugins>
+										<ext:FilterHeader runat="server" ID="uxAddInventoryItemHeadFilter" Remote="true" />
+									</Plugins>
+									<BottomBar>
+										<ext:PagingToolbar runat="server" ID="uxAddInventoryItemPaging" />
+									</BottomBar>
+									<SelectionModel>
+										<ext:RowSelectionModel ID="RowSelectionModel3" runat="server" Mode="Single" />
+									</SelectionModel>
+									<DirectEvents>
+										<Select OnEvent="deStoreGridValue">
+											<ExtraParams>
+												<ext:Parameter Name="ItemId" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.ITEM_ID" Mode="Raw" />
+												<ext:Parameter Name="Description" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.DESCRIPTION" Mode="Raw" />
+												<ext:Parameter Name="Type" Value="Add" />
+											</ExtraParams>
+										</Select>
+									</DirectEvents>
+								</ext:GridPanel>
+							</Component>
+							<DirectEvents>
+								<Change OnEvent="deGetUnitOfMeasure">
+									<ExtraParams>
+										<ext:Parameter Name="uomCode" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.UOM_CODE" Mode="Raw" />
+										<ext:Parameter Name="Type" Value="Add" />
+									</ExtraParams>
+								</Change>
 							</DirectEvents>
-						</ext:GridPanel>
-					</Component>
-					<DirectEvents>
-						<Change OnEvent="deGetUnitOfMeasure">
-							<ExtraParams>
-								<ext:Parameter Name="uomCode" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.UOM_CODE" Mode="Raw" />
-								<ext:Parameter Name="Type" Value="Add" />
-							</ExtraParams>
-						</Change>
-					</DirectEvents>
-					<Listeners>
-						<Expand Handler="#{uxAddInventoryItemStore}.load()" />
-					</Listeners>                            
-				</ext:DropDownField>
-				<ext:NumberField runat="server"
-					ID="uxAddInventoryRate"
-					FieldLabel="Quantity"
-					AllowBlank="false" Width="500">
-				</ext:NumberField>
-				<ext:ComboBox runat="server"
+							<Listeners>
+								<Expand Handler="#{uxAddInventoryItemStore}.load()" />
+							</Listeners>
+						</ext:DropDownField>
+						<ext:NumberField runat="server"
+							ID="uxAddInventoryRate"
+							FieldLabel="Quantity"
+							AllowBlank="false" Width="500">
+						</ext:NumberField>
+						<ext:ComboBox runat="server"
 					ID="uxAddInventoryMeasure"
 					FieldLabel="Unit of Measure"
 					ValueField="UOM_CODE"
@@ -220,7 +222,7 @@
 				<ext:Button runat="server"
 					ID="uxAddInventorySubmit"
 					Icon="Add"
-					Text="Submit"
+					Text="Save"
 					Disabled="true">
 					<DirectEvents>
 						<Click OnEvent="deAddInventory">
@@ -237,7 +239,7 @@
 					Text="Cancel">
 					<Listeners>
 						<Click Handler="#{uxAddInventoryForm}.reset();
-							parentAutoLoadControl.hide();" />
+					parentAutoLoadControl.hide();" />
 					</Listeners>
 				</ext:Button>
 			</Buttons>
@@ -248,7 +250,7 @@
 		<ext:FormPanel runat="server"
 			ID="uxEditInventoryForm"
 			Layout="FormLayout"
-			Hidden="true">
+			Hidden="true" DefaultButton="uxEditInventorySubmit">
 			<Items>
 				<ext:ComboBox runat="server"
 					ID="uxEditInventoryRegion"
@@ -342,6 +344,14 @@
 							</DirectEvents>
 						</ext:GridPanel>
 					</Component>
+					<DirectEvents>
+						<Change OnEvent="deGetUnitOfMeasure">
+							<ExtraParams>
+								<ext:Parameter Name="uomCode" Value="#{uxEditInventoryItemGrid}.getSelectionModel().getSelection()[0].data.UOM_CODE" Mode="Raw" />
+								<ext:Parameter Name="Type" Value="Edit" />
+							</ExtraParams>
+						</Change>
+					</DirectEvents>
 					<Listeners>
 						<Expand Handler="#{uxEditInventoryItemStore}.reload()" />
 					</Listeners>
@@ -380,7 +390,7 @@
 				<ext:Button runat="server"
 					ID="uxEditInventorySubmit"
 					Icon="Add"
-					Text="Submit">
+					Text="Save">
 					<DirectEvents>
 						<Click OnEvent="deEditInventory">
 							<ExtraParams>
@@ -403,7 +413,18 @@
 			<Listeners>
 				<ValidityChange Handler="#{uxEditEmployeeSubmit}.setDisabled(!valid);" />
 			</Listeners>
-				</ext:FormPanel>
+		</ext:FormPanel>
+	</Items>
+	<Listeners>
+		<AfterRender
+			Handler="var win = parentAutoLoadControl.target || parentAutoLoadControl, //you can use just 'parentAutoLoadControl' after update to Ext.NET v2 beta.
+							size = this.getSize();
+							size.height += 250;
+							size.width += 12;
+							win.setSize(size);"
+					Delay="100" />
+			</Listeners>
+		</ext:Panel>
 	</form>
 </body>
 </html>

@@ -39,7 +39,6 @@ namespace DBI.Data
         public DbSet<UNIT_OF_MEASURE_V> UNIT_OF_MEASURE_V { get; set; }
         public DbSet<SYS_ACTIVITY> SYS_ACTIVITY { get; set; }
         public DbSet<CROSSING_DATA_ENTRY> CROSSING_DATA_ENTRY { get; set; }
-        public DbSet<CROSSING_SUB_DIVISION> CROSSING_SUB_DIVISION { get; set; }
         public DbSet<PA_TASKS_V> PA_TASKS_V { get; set; }
         public DbSet<PA_LOCATIONS_V> PA_LOCATIONS_V { get; set; }
         public DbSet<EXPENDITURE_TYPE_V> EXPENDITURE_TYPE_V { get; set; }
@@ -55,7 +54,6 @@ namespace DBI.Data
         public DbSet<XXDBI_TRUCK_EQUIP_USAGE_V> XXDBI_TRUCK_EQUIP_USAGE_V { get; set; }
         public DbSet<PA_TRANSACTION_INT_V> PA_TRANSACTION_INT_V { get; set; }
         public DbSet<DAILY_ACTIVITY_IMPORT> DAILY_ACTIVITY_IMPORT { get; set; }
-        public DbSet<DAILY_ACTIVITY_INVENTORY> DAILY_ACTIVITY_INVENTORY { get; set; }
         public DbSet<CUSTOMER_SURVEY_FIELDSETS> CUSTOMER_SURVEY_FIELDSETS { get; set; }
         public DbSet<CUSTOMER_SURVEY_FORMS> CUSTOMER_SURVEY_FORMS { get; set; }
         public DbSet<CUSTOMER_SURVEY_FORMS_ANS> CUSTOMER_SURVEY_FORMS_ANS { get; set; }
@@ -89,8 +87,36 @@ namespace DBI.Data
         public DbSet<OVERHEAD_GL_ACCOUNT> OVERHEAD_GL_ACCOUNT { get; set; }
         public DbSet<GL_ACCOUNTS_V> GL_ACCOUNTS_V { get; set; }
         public DbSet<ORG_HIER_V> ORG_HIER_V { get; set; }
-        public DbSet<CROSSING> CROSSINGS { get; set; }
-        public DbSet<TIME_CLOCK> TIME_CLOCK { get; set; }
         public DbSet<DAILY_ACTIVITY_PRODUCTION> DAILY_ACTIVITY_PRODUCTION { get; set; }
+        public DbSet<CROSSING_PROJECT> CROSSING_PROJECT { get; set; }
+        public DbSet<CROSSING_RAILROAD> CROSSING_RAILROAD { get; set; }
+        public DbSet<DAILY_ACTIVITY_INVENTORY> DAILY_ACTIVITY_INVENTORY { get; set; }
+        public DbSet<JOB_COST_CLASSES> JOB_COST_CLASSES { get; set; }
+        public DbSet<OVERHEAD_BUDGET_VERSION> OVERHEAD_BUDGET_VERSION { get; set; }
+        public DbSet<BUD_BID_LINES> BUD_BID_LINES { get; set; }
+        public DbSet<BUD_BID_LOCKED> BUD_BID_LOCKED { get; set; }
+        public DbSet<BUD_BID_ORGS> BUD_BID_ORGS { get; set; }
+        public DbSet<BUD_BID_STATUS> BUD_BID_STATUS { get; set; }
+        public DbSet<SYS_MODULE_PROFILE_OPTIONS> SYS_MODULE_PROFILE_OPTIONS { get; set; }
+        public DbSet<SYS_PROFILE_OPTIONS> SYS_PROFILE_OPTIONS { get; set; }
+        public DbSet<SYS_USER_PROFILE_OPTIONS> SYS_USER_PROFILE_OPTIONS { get; set; }
+        public DbSet<SYS_SECURITY_AUDIT> SYS_SECURITY_AUDIT { get; set; }
+        public DbSet<JOB_COST_BALANCE_TYPE> JOB_COST_BALANCE_TYPE { get; set; }
+        public DbSet<JOB_COST_DATE> JOB_COST_DATE { get; set; }
+        public DbSet<JOB_COST_PROJECTS> JOB_COST_PROJECTS { get; set; }
+        public DbSet<JOB_COST_ROLLUPS> JOB_COST_ROLLUPS { get; set; }
+        public DbSet<JOB_COST_TASK> JOB_COST_TASK { get; set; }
+        public DbSet<CROSSING_SERVICE_UNIT> CROSSING_SERVICE_UNIT { get; set; }
+        public DbSet<CROSSING_SUB_DIVISION> CROSSING_SUB_DIVISION { get; set; }
+        public DbSet<BUD_BID_ADJUSTMENT> BUD_BID_ADJUSTMENT { get; set; }
+        public DbSet<BUD_BID_ACTUAL_NUM> BUD_BID_ACTUAL_NUM { get; set; }
+        public DbSet<BUD_BID_BUDGET_NUM> BUD_BID_BUDGET_NUM { get; set; }
+        public DbSet<BUD_BID_DETAIL_SHEET> BUD_BID_DETAIL_SHEET { get; set; }
+        public DbSet<BUD_BID_DETAIL_TASK> BUD_BID_DETAIL_TASK { get; set; }
+        public DbSet<SYS_ORG_PROFILE_OPTIONS> SYS_ORG_PROFILE_OPTIONS { get; set; }
+        public DbSet<CROSSING> CROSSINGS { get; set; }
+        public DbSet<BUD_BID_PROJECTS> BUD_BID_PROJECTS { get; set; }
+        public DbSet<OVERHEAD_BUDGET_TYPE> OVERHEAD_BUDGET_TYPE { get; set; }
+        public DbSet<TIME_CLOCK> TIME_CLOCK { get; set; }
     }
 }

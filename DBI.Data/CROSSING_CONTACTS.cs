@@ -33,7 +33,9 @@ namespace DBI.Data
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
+        public Nullable<decimal> RAILROAD_ID { get; set; }
     
+        public virtual CROSSING_RAILROAD CROSSING_RAILROAD { get; set; }
         public virtual ICollection<CROSSING> CROSSINGS { get; set; }
     }
 }

@@ -87,10 +87,12 @@
 				<ext:StoreParameter Name="OrgId" Value="#{uxEditInventoryRegion}.value" Mode="Raw" />
 			</Parameters>
 		</ext:Store>
+		<ext:Panel runat="server">
+			<Items>
 				<ext:FormPanel runat="server"
 					ID="uxAddInventoryForm"
 					Layout="FormLayout"
-					Hidden="true">
+					Hidden="true" DefaultButton="uxAddInventorySubmit">
 					<Items>
 						<ext:DropDownField runat="server" Editable="false"
 							ID="uxAddInventoryMix"
@@ -302,12 +304,13 @@
 							ID="uxAddInventoryEPA"
 							FieldLabel="EPA Number"
 							AllowBlank="false" Width="500" />
+						<ext:Checkbox runat="server" FieldLabel="Contracter Supplied" ID="uxAddInventoryContractor" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxAddInventorySubmit"
 							Icon="Add"
-							Text="Submit"
+							Text="Save"
 							Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deAddInventory">
@@ -335,7 +338,7 @@
 				<ext:FormPanel runat="server"
 					ID="uxEditInventoryForm"
 					Layout="FormLayout"
-					Hidden="true">
+					Hidden="true" DefaultButton="uxEditInventorySubmit">
 					<Items>
 						<ext:TextField runat="server"
 							ID="uxEditInventoryMix"
@@ -486,12 +489,13 @@
 							ID="uxEditInventoryEPA"
 							FieldLabel="EPA Number"
 							AllowBlank="false" Width="500" />
+						<ext:Checkbox runat="server" FieldLabel="Contracter Supplied" ID="uxEditInventoryContractor" />
 					</Items>
 					<Buttons>
 						<ext:Button runat="server"
 							ID="uxEditInventorySubmit"
 							Icon="Add"
-							Text="Submit">
+							Text="Save">
 							<DirectEvents>
 								<Click OnEvent="deEditInventory">
 									<ExtraParams>
@@ -515,7 +519,8 @@
 						<ValidityChange Handler="#{uxEditEmployeeSubmit}.setDisabled(!valid);" />
 					</Listeners>
 				</ext:FormPanel>
-			<%--<Listeners>
+			</Items>
+			<Listeners>
 				<AfterRender
 					Handler="var win = parentAutoLoadControl.target || parentAutoLoadControl, //you can use just 'parentAutoLoadControl' after update to Ext.NET v2 beta.
 									size = this.getSize();
@@ -524,7 +529,9 @@
 								size.width += 12;
 								win.setSize(size);"
 					Delay="100" />
-			</Listeners>--%>
+			</Listeners>
+		</ext:Panel>
+
 	</form>
 </body>
 </html>

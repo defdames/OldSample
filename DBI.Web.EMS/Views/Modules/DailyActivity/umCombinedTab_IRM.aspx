@@ -6,16 +6,41 @@
 <head id="Head1" runat="server">
 	<title></title>
 	<link href="../../../Resources/StyleSheets/main.css" rel="stylesheet" />
+	<script type="text/javascript">
+		var setIcon = function (value, metadata, record) {
+			var tpl = "<img src='{0}' />";
+			if (value == "Error") {
+				return "<img src='" + App.uxRedWarning.getValue() + "' />";
+			}
+			else if (value == "Warning") {
+				return "<img src='" + App.uxYellowWarning.getValue() + "' />";
+			}
+			else {
+				return "";
+			}
+		};
+		var onShow = function (toolTip, grid) {
+			var view = grid.getView(),
+				store = grid.getStore(),
+				record = view.getRecord(view.findItemByChild(toolTip.triggerElement)),
+				column = view.getHeaderByCell(toolTip.triggerElement),
+				data = record.get(column.dataIndex);
+
+			toolTip.update(data);
+		};
+	</script>
 </head>
 <body>
 	<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
 	<form id="form1" runat="server">
 		<ext:Panel runat="server" ID="uxMainContainer" Layout="AutoLayout">
 			<Items>
+				<ext:Hidden ID="uxYellowWarning" runat="server" />
+				<ext:Hidden ID="uxRedWarning" runat="server" />
 				<ext:FormPanel runat="server"
 					ID="uxHeaderPanel" Padding="10" BodyPadding="5" MaxWidth="1100" Layout="FormLayout">
 					<Items>
-						<ext:TextField runat="server" ID="uxDateField" FieldLabel="Date" Width="200"  ReadOnly="true" LabelWidth="100" />
+						<ext:TextField runat="server" ID="uxDateField" FieldLabel="Date" Width="200" ReadOnly="true" LabelWidth="100" />
 						<ext:TextField runat="server" ID="uxHeaderField" FieldLabel="DRS Id" Width="200" ReadOnly="true" LabelWidth="100" />
 						<ext:TextField runat="server" ID="uxOracleField" FieldLabel="Oracle DRS Id" Width="200" ReadOnly="true" />
 						<ext:TextField runat="server" ID="uxProjectField" FieldLabel="Project" Width="600" ReadOnly="true" LabelWidth="100" />
@@ -27,7 +52,39 @@
 						<ext:TextField runat="server" ID="uxTypeField" FieldLabel="Type of Work" Width="250" ReadOnly="true" LabelWidth="100" />
 						<ext:TextField runat="server" ID="uxDensityField" FieldLabel="Density" Width="200" ReadOnly="true" LabelWidth="100" />
 					</Items>
-				</ext:FormPanel>                    
+				</ext:FormPanel>
+				<ext:GridPanel runat="server"
+					ID="uxWarningGrid"
+					Title="Warnings/Errors"
+					Padding="10"
+					MaxWidth="1100">
+					<Store>
+						<ext:Store runat="server" ID="uxWarningStore">
+							<Model>
+								<ext:Model ID="Model1" runat="server">
+									<Fields>
+										<ext:ModelField Name="WarningType" />
+										<ext:ModelField Name="RecordType" />
+										<ext:ModelField Name="AdditionalInformation" />
+									</Fields>
+								</ext:Model>
+							</Model>
+							<Sorters>
+								<ext:DataSorter Property="WarningType" Direction="ASC" />
+							</Sorters>
+						</ext:Store>
+					</Store>
+					<ColumnModel ID="ColumnModel1" runat="server">
+						<Columns>
+							<ext:Column runat="server" ID="uxWarningColumn" DataIndex="WarningType" Flex="5">
+								<Renderer Fn="setIcon" />
+							</ext:Column>
+							<ext:Column ID="Column1" runat="server" DataIndex="WarningType" Text="Warning Type" Flex="10" />
+							<ext:Column ID="Column2" runat="server" DataIndex="RecordType" Text="Record" Flex="30" />
+							<ext:Column ID="Column3" runat="server" DataIndex="AdditionalInformation" Text=" Additional Information" Flex="55" />
+						</Columns>
+					</ColumnModel>
+				</ext:GridPanel>
 				<ext:GridPanel runat="server"
 					ID="uxEmployeeGrid"
 					Title="Employees"
@@ -46,9 +103,7 @@
 										<ext:ModelField Name="DRIVE_TIME_FORMATTED" />
 										<ext:ModelField Name="SHOPTIME_AM_FORMATTED" />
 										<ext:ModelField Name="SHOPTIME_PM_FORMATTED" />
-										<ext:ModelField Name="SUPPORT_PROJECT" />
 										<ext:ModelField Name="PER_DIEM" />
-										<ext:ModelField Name="FOREMAN_LICENSE" />
 										<ext:ModelField Name="COMMENTS" />
 									</Fields>
 								</ext:Model>
@@ -57,18 +112,16 @@
 					</Store>
 					<ColumnModel>
 						<Columns>
-							<ext:Column ID="Column9" runat="server" DataIndex="EMPLOYEE_NAME" Text="Employee Name" />
-							<ext:Column ID="Column10" runat="server" DataIndex="NAME" Text="Equipment Name" />
-							<ext:DateColumn ID="DateColumn2" runat="server" DataIndex="TIME_IN" Text="Time In" Format="M/d/yyyy h:mm tt" />
-							<ext:DateColumn ID="DateColumn3" runat="server" DataIndex="TIME_OUT" Text="Time Out" Format="M/d/yyyy h:mm tt" />
-							<ext:Column ID="Column11" runat="server" DataIndex="TRAVEL_TIME_FORMATTED" Text="Travel Time" />
-							<ext:Column ID="Column12" runat="server" DataIndex="DRIVE_TIME_FORMATTED" Text="Drive Time" />
-							<ext:Column runat="server" DataIndex="SHOPTIME_AM_FORMATTED" Text="Shoptime AM" />
-							<ext:Column runat="server" DataIndex="SHOPTIME_PM_FORMATTED" Text="Shoptime PM" />
-							<ext:Column runat="server" DataIndex="SUPPORT_PROJECT" Text="Support Project" />
-							<ext:Column ID="Column13" runat="server" DataIndex="PER_DIEM" Text="Per Diem" />
-							<ext:Column ID="Column1" runat="server" DataIndex="FOREMAN_LICENSE" Text="License" Flex="5" />
-							<ext:Column ID="Column14" runat="server" DataIndex="COMMENTS" Text="Comments" />
+							<ext:Column ID="Column9" runat="server" DataIndex="EMPLOYEE_NAME" Text="Employee Name" Flex="1" />
+							<ext:Column ID="Column10" runat="server" DataIndex="NAME" Text="Equipment Name" Flex="1" />
+							<ext:DateColumn ID="DateColumn2" runat="server" DataIndex="TIME_IN" Text="Time In" Format="M/d/yyyy h:mm tt" Flex="1" />
+							<ext:DateColumn ID="DateColumn3" runat="server" DataIndex="TIME_OUT" Text="Time Out" Format="M/d/yyyy h:mm tt" Flex="1" />
+							<ext:Column ID="Column11" runat="server" DataIndex="TRAVEL_TIME_FORMATTED" Text="Travel Time" Flex="1" />
+							<ext:Column ID="Column12" runat="server" DataIndex="DRIVE_TIME_FORMATTED" Text="Drive Time" Flex="1" />
+							<ext:Column runat="server" DataIndex="SHOPTIME_AM_FORMATTED" Text="Shoptime AM" Flex="1" />
+							<ext:Column runat="server" DataIndex="SHOPTIME_PM_FORMATTED" Text="Shoptime PM" Flex="1" />
+							<ext:Column ID="Column13" runat="server" DataIndex="PER_DIEM" Text="Per Diem" Flex="1" />
+							<ext:Column ID="Column14" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="1" />
 						</Columns>
 					</ColumnModel>
 				</ext:GridPanel>
@@ -99,22 +152,22 @@
 						<Columns>
 							<ext:Column ID="Column47" runat="server"
 								DataIndex="SEGMENT1"
-								Text="Project Number" />
+								Text="Project Number" Flex="1" />
 							<ext:Column ID="Column48" runat="server"
 								DataIndex="NAME"
-								Text="Name" />
+								Text="Name" Flex="1" />
 							<ext:Column ID="Column49" runat="server"
-								DataIndex="CLASS_CODE" 
-								Text="Class Code"/>
+								DataIndex="CLASS_CODE"
+								Text="Class Code" Flex="1" />
 							<ext:Column ID="Column50" runat="server"
-								DataIndex="ORGANIZATION_NAME" 
-								Text="Organization Name"/>
+								DataIndex="ORGANIZATION_NAME"
+								Text="Organization Name" Flex="1" />
 							<ext:Column ID="Column51" runat="server"
-								DataIndex="ODOMETER_START" 
-								Text="Meter Start"/>
+								DataIndex="ODOMETER_START"
+								Text="Starting Units" Flex="1" />
 							<ext:Column ID="Column52" runat="server"
 								DataIndex="ODOMETER_END"
-								Text="Meter End" />
+								Text="Ending Units" Flex="1" />
 						</Columns>
 					</ColumnModel>
 				</ext:GridPanel>
@@ -145,16 +198,16 @@
 					</Store>
 					<ColumnModel>
 						<Columns>
-							<ext:Column runat="server" DataIndex="TASK_NUMBER" Text="Task Number" />
-							<ext:Column runat="server" DataIndex="DESCRIPTION" Text="Task Name" />
-							<ext:Column runat="server" DataIndex="WORK_AREA" Text="Spray/Work Area" />
-							<ext:Column runat="server" DataIndex="QUANTITY" Text="Quantity" />
-							<ext:Column runat="server" DataIndex="STATION" Text="Station" />
-							<ext:Column runat="server" DataIndex="EXPENDITURE_TYPE" Text="Expenditure Type" />
-							<ext:Column runat="server" DataIndex="BILL_RATE" Text="Bill Rate" />
-							<ext:Column runat="server" DataIndex="UNIT_OF_MEASURE" Text="Unit of Measure" />
-							<ext:Column runat="server" DataIndex="SURFACE_TYPE" Text="Surface Type" />
-							<ext:Column runat="server" DataIndex="COMMENTS" Text="Comments" />
+							<ext:Column runat="server" DataIndex="TASK_NUMBER" Text="Task Number" Flex="1" />
+							<ext:Column runat="server" DataIndex="DESCRIPTION" Text="Task Name" Flex="1" />
+							<ext:Column runat="server" DataIndex="WORK_AREA" Text="Spray/Work Area" Flex="1" />
+							<ext:Column runat="server" DataIndex="QUANTITY" Text="Quantity" Flex="1" />
+							<ext:Column runat="server" DataIndex="STATION" Text="Station" Flex="1" />
+							<ext:Column runat="server" DataIndex="EXPENDITURE_TYPE" Text="Expenditure Type" Flex="1" />
+							<ext:Column runat="server" DataIndex="BILL_RATE" Text="Bill Rate" Flex="1" />
+							<ext:Column runat="server" DataIndex="UNIT_OF_MEASURE" Text="Unit of Measure" Flex="1" />
+							<ext:Column runat="server" DataIndex="SURFACE_TYPE" Text="Surface Type" Flex="1" />
+							<ext:Column runat="server" DataIndex="COMMENTS" Text="Comments" Flex="1" />
 						</Columns>
 					</ColumnModel>
 				</ext:GridPanel>
@@ -212,11 +265,11 @@
 					</Store>
 					<ColumnModel>
 						<Columns>
-							<ext:Column runat="server" DataIndex="INV_NAME" Text="Inventory Org" />
-							<ext:Column runat="server" DataIndex="SUB_INVENTORY_SECONDARY_NAME" Text="Sub-Inv Name" />
-							<ext:Column runat="server" DataIndex="SEGMENT1" Text="Item ID" />
-							<ext:Column runat="server" DataIndex="DESCRIPTION" Text="Item" />
-							<ext:Column runat="server" DataIndex="RATE" Text="Quantity" />
+							<ext:Column runat="server" DataIndex="INV_NAME" Text="Inventory Org" Flex="1" />
+							<ext:Column runat="server" DataIndex="SUB_INVENTORY_SECONDARY_NAME" Text="Sub-Inv Name" Flex="1" />
+							<ext:Column runat="server" DataIndex="SEGMENT1" Text="Item ID" Flex="1" />
+							<ext:Column runat="server" DataIndex="DESCRIPTION" Text="Item" Flex="1" />
+							<ext:Column runat="server" DataIndex="RATE" Text="Quantity" Flex="1" />
 						</Columns>
 					</ColumnModel>
 				</ext:GridPanel>
@@ -245,8 +298,74 @@
 								<ext:Image runat="server" Height="214" ID="uxDOTImage" Width="320" />
 							</Items>
 						</ext:FieldContainer>
-					 </Items>
+					</Items>
 				</ext:FormPanel>
+				<ext:ToolTip ID="ToolTip1"
+					runat="server"
+					Target="={#{uxWarningGrid}.getView().el}"
+					Delegate=".x-grid-cell"
+					TrackMouse="true"
+					UI="Warning"
+					Width="400">
+					<Listeners>
+						<Show Handler="onShow(this, #{uxWarningGrid});" />
+					</Listeners>
+				</ext:ToolTip>
+				<ext:ToolTip ID="ToolTip2"
+					runat="server"
+					Target="={#{uxEmployeeGrid}.getView().el}"
+					Delegate=".x-grid-cell"
+					TrackMouse="true"
+					UI="Warning"
+					Width="400">
+					<Listeners>
+						<Show Handler="onShow(this, #{uxEmployeeGrid});" />
+					</Listeners>
+				</ext:ToolTip>
+				<ext:ToolTip ID="ToolTip3"
+					runat="server"
+					Target="={#{uxEquipmentGrid}.getView().el}"
+					Delegate=".x-grid-cell"
+					TrackMouse="true"
+					UI="Warning"
+					Width="400">
+					<Listeners>
+						<Show Handler="onShow(this, #{uxEquipmentGrid});" />
+					</Listeners>
+				</ext:ToolTip>
+				<ext:ToolTip ID="ToolTip4"
+					runat="server"
+					Target="={#{uxInventoryGrid}.getView().el}"
+					Delegate=".x-grid-cell"
+					TrackMouse="true"
+					UI="Warning"
+					Width="400">
+					<Listeners>
+						<Show Handler="onShow(this, #{uxInventoryGrid});" />
+					</Listeners>
+				</ext:ToolTip>
+				<ext:ToolTip ID="ToolTip5"
+					runat="server"
+					Target="={#{uxWeatherGrid}.getView().el}"
+					Delegate=".x-grid-cell"
+					TrackMouse="true"
+					UI="Warning"
+					Width="400">
+					<Listeners>
+						<Show Handler="onShow(this, #{uxWeatherGrid});" />
+					</Listeners>
+				</ext:ToolTip>
+				<ext:ToolTip ID="ToolTip6"
+					runat="server"
+					Target="={#{uxProductionGrid}.getView().el}"
+					Delegate=".x-grid-cell"
+					TrackMouse="true"
+					UI="Warning"
+					Width="400">
+					<Listeners>
+						<Show Handler="onShow(this, #{uxProductionGrid});" />
+					</Listeners>
+				</ext:ToolTip>
 			</Items>
 		</ext:Panel>
 	</form>

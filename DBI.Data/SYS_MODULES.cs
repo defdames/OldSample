@@ -17,13 +17,19 @@ namespace DBI.Data
         public SYS_MODULES()
         {
             this.SYS_MENU = new HashSet<SYS_MENU>();
+            this.SYS_MODULE_PROFILE_OPTIONS = new HashSet<SYS_MODULE_PROFILE_OPTIONS>();
         }
     
         public decimal MODULE_ID { get; set; }
         public string MODULE_NAME { get; set; }
         public decimal PERMISSION_ID { get; set; }
+        public Nullable<System.DateTime> CREATE_DATE { get; set; }
+        public Nullable<System.DateTime> MODIFY_DATE { get; set; }
+        public string CREATED_BY { get; set; }
+        public string MODIFIED_BY { get; set; }
     
         public virtual ICollection<SYS_MENU> SYS_MENU { get; set; }
         public virtual SYS_PERMISSIONS SYS_PERMISSIONS { get; set; }
+        public virtual ICollection<SYS_MODULE_PROFILE_OPTIONS> SYS_MODULE_PROFILE_OPTIONS { get; set; }
     }
 }

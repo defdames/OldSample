@@ -23,10 +23,12 @@
 <body>
 	<form id="form1" runat="server">
 		<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
+		<ext:Panel runat="server">
+			<Items>
 		<ext:FormPanel runat="server"
 			ID="uxAddChemicalForm"
 			Layout="FormLayout"
-			Hidden="true">
+			Hidden="true" Width="600" DefaultButton="uxAddChemicalSubmit">
 			<Items>
 				<ext:TextField runat="server"
 					ID="uxAddChemicalTargetAre"
@@ -78,7 +80,7 @@
 					TypeAhead="true"
 					AllowBlank="false"
 					ForceSelection="true"
-                        Width="500">
+						Width="500">
 					<Store>
 						<ext:Store ID="uxAddStateList" runat="server" AutoDataBind="true">
 							<Model>
@@ -104,7 +106,7 @@
 				<ext:Button runat="server"
 					ID="uxAddChemicalSubmit"
 					Icon="Add"
-					Text="Submit"
+					Text="Save"
 					Disabled="true">
 					<DirectEvents>
 						<Click OnEvent="deAddChemical">
@@ -128,7 +130,7 @@
 		</ext:FormPanel>
 		<ext:FormPanel runat="server"
 			ID="uxEditChemicalForm"
-			Layout="FormLayout" Hidden="true">
+			Layout="FormLayout" Hidden="true" Width="600" DefaultButton="uxEditChemicalSubmit">
 			<Items>
 				<ext:TextField runat="server"
 					ID="uxEditChemicalTargetAre"
@@ -209,7 +211,7 @@
 				<ext:Button runat="server"
 					ID="uxEditChemicalSubmit"
 					Icon="Add"
-					Text="Submit"
+					Text="Save"
 					Disabled="true">
 					<DirectEvents>
 						<Click OnEvent="deEditChemical">
@@ -231,6 +233,18 @@
 				<ValidityChange Handler="#{uxEditChemicalSubmit}.setDisabled(!valid);" />
 			</Listeners>
 		</ext:FormPanel>
+			</Items>
+			<Listeners>
+				<AfterRender
+					Handler="var win = parentAutoLoadControl.target || parentAutoLoadControl, //you can use just 'parentAutoLoadControl' after update to Ext.NET v2 beta.
+									size = this.getSize();
+ 
+								size.height += 250;
+								size.width += 12;
+								win.setSize(size);"
+					Delay="100" />
+			</Listeners>
+		</ext:Panel>
 	</form>
 </body>
 </html>
