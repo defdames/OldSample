@@ -116,7 +116,9 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SYS_USER_PROFILE_OPTIONSTest.cs" />
     <Compile Include="TIME_CLOCKTest.cs" />
+    <Compile Include="ServiceUnitDataTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DBI.Core\DBI.Core.csproj">

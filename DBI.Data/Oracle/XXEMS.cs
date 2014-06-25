@@ -4,8 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace DBI.Data
 {
+
+    #region User Profile Options
+
     /// <summary>
     /// Custom Methods and functions over SYS_PROFILE_OPTIONS
     /// </summary>
@@ -104,6 +108,148 @@ namespace DBI.Data
         }
     }
 
+    public partial class SYS_ORG_PROFILE_OPTIONS
+    {
+        #region Organization Profile Options
+
+        /// <summary>
+        /// Returns a list of organization profile options
+        /// </summary>
+        /// <returns></returns>
+        public static List<SYS_ORG_PROFILE_OPTIONS_V> OrganizationProfileOptions()
+        {
+            try
+            {
+                using (Entities _context = new Entities())
+                {
+                    var data = from a in _context.SYS_ORG_PROFILE_OPTIONS
+                               join b in _context.SYS_PROFILE_OPTIONS on a.PROFILE_OPTION_ID equals b.PROFILE_OPTION_ID
+                               select new SYS_ORG_PROFILE_OPTIONS_V { PROFILE_OPTION_ID = b.PROFILE_OPTION_ID, PROFILE_KEY = b.PROFILE_KEY, DESCRIPTION = b.DESCRIPTION, ORG_PROFILE_OPTION_ID = a.ORG_PROFILE_OPTION_ID, PROFILE_VALUE = a.PROFILE_VALUE, ORGANIZATION_ID = a.ORGANIZATION_ID };
+                    return data.ToList();
+
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        /// <summary>
+        /// Returns an organization profile option by profile option name and organization id
+        /// </summary>
+        /// <param name="profileOptionName"></param>
+        /// <param name="organizationId"></param>
+        /// <returns></returns>
+        public static string OrganizationProfileOption(string profileOptionName, long organizationId)
+        {
+            try
+            {
+                SYS_ORG_PROFILE_OPTIONS_V _option = OrganizationProfileOptions().Where(x => x.PROFILE_KEY == profileOptionName && x.ORGANIZATION_ID == organizationId).SingleOrDefault();
+                string _value = string.Empty;
+                if (_option != null)
+                {
+                    _value = _option.PROFILE_VALUE;
+                }
+                return _value;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
+
+        /// <summary>
+        /// Returns a profile option by profile option ID and organization
+        /// </summary>
+        /// <param name="profileOptionId"></param>
+        /// <param name="organizationId"></param>
+        /// <returns></returns>
+        public static SYS_ORG_PROFILE_OPTIONS OrganizationProfileOption(decimal profileOptionId, long organizationId)
+        {
+            try
+            {
+                using (Entities _context = new Entities())
+                {
+                    SYS_ORG_PROFILE_OPTIONS _option = _context.SYS_ORG_PROFILE_OPTIONS.Where(x => x.PROFILE_OPTION_ID == profileOptionId && x.ORGANIZATION_ID == organizationId).SingleOrDefault();
+                    return _option;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Sets a profile option for an organization level.
+        /// </summary>
+        /// <param name="profileOptionName"></param>
+        /// <param name="keyValue"></param>
+        /// <param name="organizationId"></param>
+        public static void SetOrganizationProfileOption(string profileOptionName, string keyValue, long organizationId)
+        {
+            try
+            {
+                SYS_PROFILE_OPTIONS _option = SYS_PROFILE_OPTIONS.ProfileOption(profileOptionName);
+                SYS_USER_INFORMATION _loggedInUser = SYS_USER_INFORMATION.LoggedInUser();
+
+                if (_option == null)
+                {
+                    // Option doesn't exist
+                    throw new DBICustomException(string.Format("Can't update profile option {0}. Profile option doesn't exist!", profileOptionName));
+                }
+
+                SYS_ORG_PROFILE_OPTIONS _profileOption = OrganizationProfileOption(_option.PROFILE_OPTION_ID, organizationId);
+
+                if (_profileOption != null)
+                {
+                    //Perform update
+                    _profileOption.PROFILE_VALUE = keyValue;
+                    _profileOption.MODIFY_DATE = DateTime.Now;
+                    _profileOption.MODIFIED_BY = _loggedInUser.USER_NAME;
+                    _profileOption.MODIFIED_BY = _loggedInUser.USER_NAME;
+                    _profileOption.ORGANIZATION_ID = organizationId;
+                    DBI.Data.GenericData.Update<SYS_ORG_PROFILE_OPTIONS>(_profileOption);
+                }
+                else
+                {
+                    //Create new and save
+                    _profileOption = new SYS_ORG_PROFILE_OPTIONS();
+                    _profileOption.PROFILE_OPTION_ID = _option.PROFILE_OPTION_ID;
+                    _profileOption.CREATE_DATE = DateTime.Now;
+                    _profileOption.ORGANIZATION_ID = organizationId;
+                    _profileOption.MODIFY_DATE = DateTime.Now;
+                    _profileOption.CREATED_BY = _loggedInUser.USER_NAME;
+                    _profileOption.MODIFIED_BY = _loggedInUser.USER_NAME;
+                    _profileOption.PROFILE_VALUE = keyValue;
+                    DBI.Data.GenericData.Insert<SYS_ORG_PROFILE_OPTIONS>(_profileOption);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+
+        }
+
+        public class SYS_ORG_PROFILE_OPTIONS_V : SYS_ORG_PROFILE_OPTIONS
+        {
+            public string PROFILE_KEY { get; set; }
+            public string DESCRIPTION { get; set; }
+
+        }
+
+        #endregion
+    }
+
     /// <summary>
     /// Custom methods and functions over SYS_USER_PROFILE_OPTIONS
     /// </summary>
@@ -143,7 +289,7 @@ namespace DBI.Data
                 using (Entities _context = new Entities())
                 {
                     var data = from a in _context.SYS_USER_PROFILE_OPTIONS.Include("SYS_PROFILE_OPTIONS")
-                               select new SYS_USER_PROFILE_OPTIONS_V { PROFILE_KEY = a.SYS_PROFILE_OPTIONS.PROFILE_KEY, DESCRIPTION = a.SYS_PROFILE_OPTIONS.DESCRIPTION, USER_PROFILE_OPTION_ID = a.USER_PROFILE_OPTION_ID, PROFILE_VALUE = a.PROFILE_VALUE, USER_ID = a.USER_ID };
+                               select new SYS_USER_PROFILE_OPTIONS_V { PROFILE_OPTION_ID = a.SYS_PROFILE_OPTIONS.PROFILE_OPTION_ID, PROFILE_KEY = a.SYS_PROFILE_OPTIONS.PROFILE_KEY, DESCRIPTION = a.SYS_PROFILE_OPTIONS.DESCRIPTION, USER_PROFILE_OPTION_ID = a.USER_PROFILE_OPTION_ID, PROFILE_VALUE = a.PROFILE_VALUE, USER_ID = a.USER_ID };
                     return data.ToList();
 
                 }
@@ -300,14 +446,13 @@ namespace DBI.Data
             }
         }
 
-
         public class SYS_USER_PROFILE_OPTIONS_V : SYS_USER_PROFILE_OPTIONS
         {
             public string PROFILE_KEY { get; set; }
             public string DESCRIPTION { get; set; }
         }
 
-
+    #endregion
     }
 
     /// <summary>
@@ -488,8 +633,8 @@ namespace DBI.Data
                                  join ev in _context.EMPLOYEES_V on tc.PERSON_ID equals ev.PERSON_ID
                                  select new Employee
                                  {
-                                     TIME_IN = (DateTime)tc.TIME_IN,
-                                     TIME_OUT = (DateTime)tc.TIME_OUT,
+                                     TIME_IN = ((DateTime)tc.MODIFIED_TIME_IN == null) ? tc.TIME_IN : tc.MODIFIED_TIME_IN,
+                                     TIME_OUT = ((DateTime)tc.MODIFIED_TIME_OUT == null) ? tc.TIME_OUT : tc.MODIFIED_TIME_OUT,
                                      EMPLOYEE_NAME = ev.EMPLOYEE_NAME,
                                      DAY_OF_WEEK = tc.DAY_OF_WEEK,
                                      TIME_CLOCK_ID = tc.TIME_CLOCK_ID,
@@ -498,7 +643,13 @@ namespace DBI.Data
                                      SUBMITTED = tc.SUBMITTED,
                                      APPROVED = tc.APPROVED,
                                      COMPLETED = tc.COMPLETED,
-                                     SUPERVISOR_ID = (int)tc.SUPERVISOR_ID
+                                     SUPERVISOR_ID = (int)tc.SUPERVISOR_ID,
+                                     //MODIFIED_TIME_IN = (DateTime)tc.MODIFIED_TIME_IN,
+                                     //MODIFIED_TIME_OUT = (DateTime)tc.MODIFIED_TIME_OUT,
+                                     MODIFY_DATE = (DateTime)tc.MODIFY_DATE,
+                                     MODIFIED_BY = tc.MODIFIED_BY,
+                                     DELETED = tc.DELETED,
+                                     DELETED_COMMENTS = tc.DELETED_COMMENTS
                                  }).ToList();
                     return _data;
                 }
@@ -521,7 +672,7 @@ namespace DBI.Data
         {
             try
             {
-                var _data = EmployeeTime().Where(x => x.SUPERVISOR_ID == supervisorId && x.COMPLETED  == "Y" && x.APPROVED == "N").ToList();
+                var _data = EmployeeTime().Where(x => x.SUPERVISOR_ID == supervisorId && x.COMPLETED  == "Y" && x.APPROVED == "N" && x.DELETED =="N").ToList();
                 return _data;
             }
             catch (Exception)
@@ -539,7 +690,7 @@ namespace DBI.Data
         {
             try
             {
-                var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "N").ToList();
+                var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "N" && x.DELETED == "N").ToList();
                 return _data;
             }
             catch (Exception)
@@ -556,7 +707,7 @@ namespace DBI.Data
         {
             try
             {
-                var _data = EmployeeTime().Where(x => x.SUPERVISOR_ID == supervisorId && x.COMPLETED == "Y").ToList();
+                var _data = EmployeeTime().Where(x => x.SUPERVISOR_ID == supervisorId && x.COMPLETED == "Y" && x.DELETED == "N").ToList();
                 return _data;
             }
             catch (Exception)
@@ -573,7 +724,7 @@ namespace DBI.Data
         {
             try
             {
-                var _data = EmployeeTime().Where(x => x.COMPLETED == "Y").ToList();
+                var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.DELETED == "N").ToList();
                 return _data;
             }
             catch (Exception)
@@ -588,22 +739,107 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<Employee> EmployeeTimeCompletedApprovedPayroll()
         {
-            try
+
+            var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "Y" && x.SUBMITTED == "N" && x.DELETED == "N").ToList();
+            return _data;
+            
+        }
+
+        public static List<Employee> EmployeeTimeCompletedApprovedSubmittedPayroll()
+        {
+            var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "Y" && x.DELETED == "N").ToList();
+            return _data;
+        }
+
+        public static DateTime ManagerDateInEditScreen(decimal tcID)
+        {
+            
+                DateTime? _data = EmployeeTime().Where(x => x.TIME_CLOCK_ID == tcID).SingleOrDefault().TIME_IN;
+                return (DateTime)_data;
+        }
+
+        public static TimeSpan ManagerTimeInEditScreen(decimal tcID)
+        {
+
+            DateTime? _data = EmployeeTime().Where(x => x.TIME_CLOCK_ID == tcID).SingleOrDefault().TIME_IN;
+            TimeSpan ts = _data.Value.TimeOfDay;
+            
+            return ts;
+        }
+
+        public static DateTime ManagerDateOutEditScreen(decimal tcID)
+        {
+
+            DateTime? _data = EmployeeTime().Where(x => x.TIME_CLOCK_ID == tcID).SingleOrDefault().TIME_OUT;
+            return (DateTime)_data;
+        }
+
+        public static TimeSpan ManagerTimeOutEditScreen(decimal tcID)
+        {
+
+            DateTime? _data = EmployeeTime().Where(x => x.TIME_CLOCK_ID == tcID).SingleOrDefault().TIME_OUT;
+            TimeSpan ts = _data.Value.TimeOfDay;
+
+            return ts;
+        }
+
+        /// <summary>
+        /// Updates TIME CLOCK table with new time edited by Manager or Payroll Manager
+        /// </summary>
+        /// <param name="tcID"></param>
+        /// <param name="newTimeIn"></param>
+        /// <param name="newTimeOut"></param>
+        /// <param name="personName"></param>
+
+        public static void InsertEditedEmployeeTime(decimal tcID, DateTime newTimeIn, DateTime newTimeOut, string personName)
+        {
+
+            TIME_CLOCK _data;
+            using (Entities _context = new Entities())
             {
-                var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "Y").ToList();
-                return _data;
+                TimeSpan ts = newTimeOut - newTimeIn;
+                decimal adjts = ConvertTimeToOraclePayrollFormat(ts);
+
+
+                _data = _context.TIME_CLOCK.Where(x => x.TIME_CLOCK_ID == tcID).SingleOrDefault();
+                _data.ACTUAL_HOURS = (decimal)ts.TotalHours;
+                _data.ADJUSTED_HOURS = adjts;
+                _data.MODIFIED_TIME_IN = newTimeIn;
+                _data.MODIFIED_TIME_OUT = newTimeOut;
+                _data.MODIFIED_BY = personName;
+                _data.MODIFY_DATE = DateTime.Now;
+
             }
-            catch (Exception)
+
+            DBI.Data.GenericData.Update<TIME_CLOCK>(_data);
+        }
+
+        /// <summary>
+        /// Marks a flag on the TIMECLOCK table that a time was record was deleted.  Said flg will hide record from all screens
+        /// </summary>
+        /// <param name="tcId"></param>
+        /// <param name="comment"></param>
+        /// <param name="personName"></param>
+        public static void DeleteEmployeeTime(decimal tcID, string comment, string personName)
+        {
+            TIME_CLOCK _data;
+            using (Entities _context = new Entities())
             {
-                throw;
+                _data = _context.TIME_CLOCK.Where(x => x.TIME_CLOCK_ID == tcID).SingleOrDefault();
+                _data.DELETED = "Y";
+                _data.DELETED_COMMENTS = comment;
+                _data.MODIFIED_BY = personName;
+                _data.MODIFY_DATE = DateTime.Now;
+
             }
+            DBI.Data.GenericData.Update<TIME_CLOCK>(_data);
         }
 
         /// <summary>
         /// Approves Employee time so payroll can submit
         /// </summary>
         /// <param name="selection"></param>
-        public static void EmployeeTimeSelectionApproved(List<TIME_CLOCK>selection)
+        public static void EmployeeTimeSelectionApproved(List<TIME_CLOCK> selection)
         {
             try
             {
@@ -617,7 +853,7 @@ namespace DBI.Data
 
                         _data.APPROVED = "Y";
                     }
-                     DBI.Data.GenericData.Update<TIME_CLOCK>(_data);   
+                    DBI.Data.GenericData.Update<TIME_CLOCK>(_data);
                 }
             }
             catch (Exception)
@@ -625,6 +861,31 @@ namespace DBI.Data
                 throw;
             }
         }
+
+        /// <summary>
+        /// ADjusts time to be  for oracle payroll
+        /// </summary> Adjust time to nearest quarter of hour and store in table
+        /// <param name="adjts"></param>
+        /// <returns></returns>
+        public static decimal ConvertTimeToOraclePayrollFormat(TimeSpan adjts)
+        {
+            
+            double adjtime = (adjts.Minutes > 0 && adjts.Minutes <= 8) ? 0
+                         : (adjts.Minutes > 8 && adjts.Minutes <= 23) ? .25
+                         : (adjts.Minutes > 23 && adjts.Minutes <= 38) ? .50
+                         : (adjts.Minutes > 38 && adjts.Minutes <= 53) ? .75
+                         : (adjts.Minutes > 53 && adjts.Minutes <= 60) ? 1
+                         : 0;
+
+            decimal fixedtime = adjts.Hours + (decimal)adjtime;
+            return fixedtime;
+        }
+
+       
+
+      
+
+        
 
         public class Employee : TIME_CLOCK
         {
@@ -641,8 +902,80 @@ namespace DBI.Data
             public string SUBMITTED { get; set; }
             public int SUPERVISOR_ID { get; set; }
             public string COMPLETED { get; set; }
+            public string MODIFIED_BY { get; set; }
+            public DateTime? MODIFIED_TIME_IN { get; set; }
+            public DateTime? MODIFIED_TIME_OUT { get; set; }
+            public DateTime? MODIFY_DATE { get; set; }
+            public string DELETED { get; set; }
+            public string DELETED_COMMENTS { get; set; }
+            public string TIME_DIFF { get; set; }
+
+         
+            
         }
 
     }
+
+
+    public class XXEMS
+    {
+
+
+        /// <summary>
+        /// Returns a list of all profile options, user and organization and their values
+        /// </summary>
+        /// <returns></returns>
+        public static List<SYS_PROFILE_OPTIONS_V2> ProfileOptionsByType(decimal profileOptionId)
+        {
+            try
+            {
+                List<DBI.Data.SYS_USER_PROFILE_OPTIONS.SYS_USER_PROFILE_OPTIONS_V> _userProfileOptions = SYS_USER_PROFILE_OPTIONS.UserProfileOptions().Where(x => x.PROFILE_OPTION_ID == profileOptionId).ToList();
+                List<DBI.Data.SYS_ORG_PROFILE_OPTIONS.SYS_ORG_PROFILE_OPTIONS_V> _orgProfileOptions = SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOptions().Where(x => x.PROFILE_OPTION_ID == profileOptionId).ToList();
+
+                List<SYS_PROFILE_OPTIONS_V2> _options = new List<SYS_PROFILE_OPTIONS_V2>();
+
+                foreach (var userOption in _userProfileOptions)
+                {
+                    SYS_PROFILE_OPTIONS_V2 _option = new SYS_PROFILE_OPTIONS_V2();
+                    _option.PROFILE_OPTION_TYPE = "User";
+                    _option.PROFILE_OWNER_NAME = SYS_USER_INFORMATION.UserByID(userOption.USER_ID).USER_NAME;
+                    _option.USER_PROFILE_OPTION_ID = userOption.USER_PROFILE_OPTION_ID;
+                    _option.PROFILE_VALUE = userOption.PROFILE_VALUE;
+                    _options.Add(_option);
+                }
+
+                foreach (var orgOption in _orgProfileOptions)
+                {
+                    SYS_PROFILE_OPTIONS_V2 _option = new SYS_PROFILE_OPTIONS_V2();
+                    _option.PROFILE_OPTION_TYPE = "Organization";
+                    _option.PROFILE_OWNER_NAME = HR.Organization(orgOption.ORGANIZATION_ID).ORGANIZATION_NAME;
+                    _option.USER_PROFILE_OPTION_ID = orgOption.ORG_PROFILE_OPTION_ID;
+                    _option.PROFILE_VALUE = orgOption.PROFILE_VALUE;
+                    _options.Add(_option);
+                }
+
+                return _options;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+
+
+        public class SYS_PROFILE_OPTIONS_V2
+        {
+            public decimal USER_PROFILE_OPTION_ID { get; set; }
+            public decimal ORG_PROFILE_OPTION_ID { get; set; }
+            public string PROFILE_OPTION_TYPE { get; set; }
+            public string PROFILE_VALUE { get; set; }
+            public string PROFILE_OWNER_NAME { get; set; }
+        }
+
+    }
+
 }
 

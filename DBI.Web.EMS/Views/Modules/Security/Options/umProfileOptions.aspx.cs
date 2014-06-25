@@ -15,7 +15,6 @@ namespace DBI.Web.EMS.Views.Modules.Security.Options
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
         }
 
         protected void deReadProfileOptions(object sender, StoreReadDataEventArgs e)
@@ -32,6 +31,41 @@ namespace DBI.Web.EMS.Views.Modules.Security.Options
 
         }
 
+        protected void deReadProfileOptionValues(object sender, StoreReadDataEventArgs e)
+        {
+
+            uxProfileOptionValuesStore.RemoveAll();
+            uxProfileOptionValuesStore.ClearFilter();
+
+            RowSelectionModel rs = uxProfileOptionSelectionModel;
+            decimal _selectedProfileOption;
+            Boolean _check = decimal.TryParse(rs.SelectedRecordID.ToString(), out _selectedProfileOption);
+
+            var data = XXEMS.ProfileOptionsByType(_selectedProfileOption);
+
+            int count;
+            uxProfileOptionValuesStore.DataSource = GenericData.EnumerableFilterHeader<XXEMS.SYS_PROFILE_OPTIONS_V2>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+            e.Total = count;
+
+
+        }
+
+        protected void deProfileOptionSelection(object sender, DirectEventArgs e)
+        {
+            try
+            {
+                uxProfileOptionValuesStore.RemoveAll();
+                uxProfileOptionValuesFilter.ClearFilter();
+            }
+            catch (Exception ex)
+            {
+                e.Success = false;
+                e.ErrorMessage = ex.ToString();
+            }
+
+        }
+        
+       
         protected void deShowAddEditWindow(object sender, DirectEventArgs e)
         {
             long recordID;

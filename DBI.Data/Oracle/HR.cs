@@ -30,6 +30,24 @@ namespace DBI.Data
         }
 
         /// <summary>
+        /// Returns organization information by organization id
+        /// </summary>
+        /// <param name="organizationId"></param>
+        /// <returns></returns>
+        public static HR.ORGANIZATION Organization(long organizationId)
+        {
+            try
+            {
+                HR.ORGANIZATION _data = Organizations().Where(x => x.ORGANIZATION_ID == organizationId).SingleOrDefault();
+                return _data;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Returns a list of only active organizations in oracle using the current system date and time.
         /// </summary>
         /// <returns></returns>

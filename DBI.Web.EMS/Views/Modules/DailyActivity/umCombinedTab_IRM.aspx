@@ -76,12 +76,12 @@
 					</Store>
 					<ColumnModel ID="ColumnModel1" runat="server">
 						<Columns>
-							<ext:Column runat="server" ID="uxWarningColumn" DataIndex="WarningType">
+							<ext:Column runat="server" ID="uxWarningColumn" DataIndex="WarningType" Flex="5">
 								<Renderer Fn="setIcon" />
 							</ext:Column>
-							<ext:Column ID="Column1" runat="server" DataIndex="WarningType" Text="Warning Type" Flex="25" />
-							<ext:Column ID="Column2" runat="server" DataIndex="RecordType" Text="Record" Flex="25" />
-							<ext:Column ID="Column3" runat="server" DataIndex="AdditionalInformation" Text=" Additional Information" Flex="50" />
+							<ext:Column ID="Column1" runat="server" DataIndex="WarningType" Text="Warning Type" Flex="10" />
+							<ext:Column ID="Column2" runat="server" DataIndex="RecordType" Text="Record" Flex="30" />
+							<ext:Column ID="Column3" runat="server" DataIndex="AdditionalInformation" Text=" Additional Information" Flex="55" />
 						</Columns>
 					</ColumnModel>
 				</ext:GridPanel>

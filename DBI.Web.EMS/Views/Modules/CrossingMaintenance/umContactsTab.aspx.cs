@@ -112,6 +112,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     CONTACT_NAME = ContactName,
                     STATE = State,
                     RAILROAD_ID = RailroadId,
+                    CREATE_DATE = DateTime.Now,
+                    MODIFY_DATE = DateTime.Now,
+                    CREATED_BY = User.Identity.Name,
+                    MODIFIED_BY = User.Identity.Name,
                 };
             }
             try
@@ -251,6 +255,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             data.CONTACT_NAME = ContactName;
             data.STATE = State;
             data.RAILROAD_ID = RailroadId;
+            data.MODIFY_DATE = DateTime.Now;
+            data.MODIFIED_BY = User.Identity.Name;
             try
             {
                 string Address1 = uxEditContactAdd1.Value.ToString();
@@ -413,6 +419,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                             where d.CROSSING_ID == crossing.CROSSING_ID && d.RAILROAD_ID == RailroadId
                             select d).Single();
                     data.CONTACT_ID = ContactId;
+                       
                 }
                 GenericData.Update<CROSSING>(data);
             }

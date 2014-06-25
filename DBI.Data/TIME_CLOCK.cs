@@ -29,5 +29,7 @@ namespace DBI.Data
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public Nullable<System.DateTime> MODIFIED_TIME_IN { get; set; }
         public Nullable<System.DateTime> MODIFIED_TIME_OUT { get; set; }
+        public string DELETED { get; set; }
+        public string DELETED_COMMENTS { get; set; }
     }
 }
