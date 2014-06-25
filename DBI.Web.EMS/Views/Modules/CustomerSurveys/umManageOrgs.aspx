@@ -9,70 +9,89 @@
 <body>
     <form id="form1" runat="server">
         <ext:ResourceManager runat="server" IsDynamic="false" />
-        <ext:Viewport runat="server" Layout="AutoLayout">
+        <ext:Viewport runat="server" Layout="BorderLayout">
             <Items>
-                <ext:FormPanel runat="server" ID="uxOrganizationForm" BodyPadding="10" Layout="FormLayout" Width="650">
+                <ext:TreePanel
+                    ID="uxOrgPanel"
+                    runat="server"
+                    Title="Organizations"
+                    BodyPadding="6"
+                    Region="West"
+                    Weight="100"
+                    Width="300"
+                    AutoScroll="true"
+                    RootVisible="true"
+                    SingleExpand="true"
+                    Lines="false"
+                    UseArrows="true">
+                    <Store>
+                        <ext:TreeStore ID="TreeStore1" runat="server" OnReadData="deLoadOrgTree">
+                            <Proxy>
+                                <ext:PageProxy></ext:PageProxy>
+                            </Proxy>
+                        </ext:TreeStore>
+                    </Store>
+                    <Root>
+                        <ext:Node NodeID="0" Text="All Companies" Expanded="true" />
+                    </Root>
+                    <SelectionModel>
+                        <ext:TreeSelectionModel ID="uxCompanySelectionModel" runat="server" Mode="Single" />
+                    </SelectionModel>
+                    <Listeners>
+                        <ItemClick Handler="#{uxFormsGridStore}.reload()" />
+                    </Listeners>
+                </ext:TreePanel>
+                <%--<ext:GridPanel runat="server" ID="uxFormsGrid" Region="North">
+                    <Store>
+                        <ext:Store runat="server" ID="uxFormsGridStore" OnReadData="deReadForms" AutoDataBind="true">
+                            <Model>
+                                <ext:Model runat="server">
+                                    <Fields>
+                                        <ext:ModelField Name="FORM_ID" />
+                                        <ext:ModelField Name="FORMS_NAME" />
+                                        <ext:ModelField Name="NUM_QUESTIONS" />
+                                    </Fields>
+                                </ext:Model>
+                            </Model>
+                        </ext:Store>
+                    </Store>
+                    <ColumnModel>
+                        <Columns>
+                            <ext:Column runat="server" DataIndex="FORMS_NAME" Text="Form Name" Flex="50" />
+                            <ext:Column runat="server" DataIndex="NUM_QUESTIONS" Text="Number of Questions" Flex="50" />
+                        </Columns>
+                    </ColumnModel>
+                    <DirectEvents>
+                        <Select OnEvent="deLoadFormThresholds">
+                            <ExtraParams>
+                                <ext:Parameter Name="FormId" Value="#{uxFormsGrid}.getSelectionModel().getSelection()[0].data.FORM_ID" Mode="Raw" />
+                                <ext:Parameter Name="OrgId" Value="#{uxOrgPanel}.getSelectionModel().getSelectedNode()" Mode="Raw" />
+                            </ExtraParams>
+                        </Select>
+                    </DirectEvents>
+                </ext:GridPanel>--%>
+                <ext:FormPanel runat="server" ID="uxOrganizationForm" BodyPadding="10" Region="Center">
                     <Items>
-                        <ext:ComboBox runat="server" ID="uxOrganizationComboBox"
-                            QueryMode="Local"
-                            TypeAhead="true"
-                            FieldLabel="Choose an Organization"
-                            DisplayField="LONG_NAME"
-                            ValueField="ORG_ID">
-                            <Store>
-                                <ext:Store runat="server" ID="uxOrganizationStore" AutoDataBind="true">
-                                    <Model>
-                                        <ext:Model runat="server">
-                                            <Fields>
-                                                <ext:ModelField Name="ORG_ID" />
-                                                <ext:ModelField Name="LONG_NAME" />
-                                            </Fields>
-                                        </ext:Model>
-                                    </Model>
-                                </ext:Store>
-                            </Store>
-                        </ext:ComboBox>
-                        <ext:DropDownField runat="server" ID="uxFormDropDown"
-                            FieldLabel="Choose a form">
-                            <Component>
-                                <ext:GridPanel runat="server" ID="uxFormDropGrid">
-                                    <Store>
-                                        <ext:Store runat="server" ID="uxFormDropStore" OnReadData="deReadForms" AutoDataBind="true">
-                                            <Model>
-                                                <ext:Model runat="server">
-                                                    <Fields>
-                                                        <ext:ModelField Name="FORMS_NAME" />
-                                                        <ext:ModelField Name="NUM_QUESTIONS" />
-                                                    </Fields>
-                                                </ext:Model>
-                                            </Model>
-                                        </ext:Store>
-                                    </Store>
-                                    <ColumnModel>
-                                        <Columns>
-                                            <ext:Column runat="server" Text="Form Name" DataIndex="FORMS_NAME" />
-                                            <ext:Column runat="server" Text="Number of Questions" DataIndex="NUM_QUESTIONS" />
-                                        </Columns>
-                                    </ColumnModel>
-                                </ext:GridPanel>
-                            </Component>
-                        </ext:DropDownField>
-                        <ext:TextField runat="server" FieldLabel="Threshold for Small Jobs" />
-                        <ext:FieldSet runat="server" Title="Thresholds for Large Jobs">
+                        <ext:NumberField runat="server" FieldLabel="Threshold for Small Jobs" Width="650" LabelWidth="150" InputWidth="50" MinValue="1" MaxValue="100" AllowBlank="false" AllowDecimals="false" AllowExponential="false" />
+                        <ext:FieldSet runat="server" Title="Thresholds for Large Jobs" Width="650">
                             <Items>
-                                <ext:TextField runat="server" ID="uxFirstLargeThreshold" FieldLabel="First Threshold in %" />
-                                <ext:TextField runat="server" ID="uxSecondLargeThreshold" FieldLabel="Second Threshold in %" />
+                                <ext:NumberField runat="server" ID="uxFirstLargeThreshold" FieldLabel="First Threshold in %" LabelWidth="150" InputWidth="50" MinValue="1" MaxValue="100" AllowBlank="false" AllowDecimals="false" AllowExponential="false" />
+                                <ext:NumberField runat="server" ID="uxSecondLargeThreshold" FieldLabel="Second Threshold in %" LabelWidth="150" InputWidth="50" MinValue="1" MaxValue="100" AllowBlank="false" AllowDecimals="false" AllowExponential="false" />
                             </Items>
                         </ext:FieldSet>
                     </Items>
                     <Buttons>
-                        <ext:Button runat="server" ID="uxOrganizationSubmitButton" Text="Submit" Icon="Add">
-
+                        <ext:Button runat="server" ID="uxOrganizationSubmitButton" Text="Submit" Icon="Add" Disabled="true">
+                            <DirectEvents>
+                                <Click OnEvent="deSubmitThreshold" />
+                            </DirectEvents>
                         </ext:Button>
                         <ext:Button runat="server" ID="uxOrganizationCancelButton" Text="Cancel" Icon="Delete">
-
                         </ext:Button>
                     </Buttons>
+                    <Listeners>
+                        <ValidityChange Handler="#{uxOrganizationSubmitButton}.setDisabled(!valid)" />
+                    </Listeners>
                 </ext:FormPanel>
             </Items>
         </ext:Viewport>

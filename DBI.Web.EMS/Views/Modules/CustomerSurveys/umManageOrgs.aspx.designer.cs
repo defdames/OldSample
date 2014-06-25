@@ -22,6 +22,33 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
+        /// uxOrgPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TreePanel uxOrgPanel;
+        
+        /// <summary>
+        /// TreeStore1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TreeStore TreeStore1;
+        
+        /// <summary>
+        /// uxCompanySelectionModel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TreeSelectionModel uxCompanySelectionModel;
+        
+        /// <summary>
         /// uxOrganizationForm control.
         /// </summary>
         /// <remarks>
@@ -31,58 +58,13 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.FormPanel uxOrganizationForm;
         
         /// <summary>
-        /// uxOrganizationComboBox control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ComboBox uxOrganizationComboBox;
-        
-        /// <summary>
-        /// uxOrganizationStore control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Store uxOrganizationStore;
-        
-        /// <summary>
-        /// uxFormDropDown control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.DropDownField uxFormDropDown;
-        
-        /// <summary>
-        /// uxFormDropGrid control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.GridPanel uxFormDropGrid;
-        
-        /// <summary>
-        /// uxFormDropStore control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Store uxFormDropStore;
-        
-        /// <summary>
         /// uxFirstLargeThreshold control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxFirstLargeThreshold;
+        protected global::Ext.Net.NumberField uxFirstLargeThreshold;
         
         /// <summary>
         /// uxSecondLargeThreshold control.
@@ -91,7 +73,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxSecondLargeThreshold;
+        protected global::Ext.Net.NumberField uxSecondLargeThreshold;
         
         /// <summary>
         /// uxOrganizationSubmitButton control.

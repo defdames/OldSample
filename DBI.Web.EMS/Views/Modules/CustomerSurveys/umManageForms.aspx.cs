@@ -318,6 +318,43 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             uxSaveQuestionButton.Disabled = false;
             uxOptionsStore.RemoveAll();
         }
+
+        protected void deViewForm(object sender, DirectEventArgs e)
+        {
+            CreateWindow("/Views/Modules/CustomerSurveys/umViewSurvey.aspx?FormId=" + e.ExtraParams["FormId"]);
+        }
+
+        protected void CreateWindow(string LoaderUrl)
+        {
+            Window win = new Window()
+            {
+                ID = "uxPlaceholderWindow",
+                Title = "View Survey",
+                Width = 800,
+                Modal = true,
+                Resizable = false,
+                AutoRender = false,
+                Y = 15,
+                Constrain = false,
+                CloseAction = CloseAction.Destroy,
+                Loader = new ComponentLoader
+                {
+                    Url = LoaderUrl,
+                    DisableCaching = true,
+                    Mode = LoadMode.Frame,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
+
+            this.Form.Controls.Add(win);
+            win.Render(this.Form);
+            win.Show();
+        }
+
     }
 
     public class CustomerSurveyForms

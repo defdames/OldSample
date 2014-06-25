@@ -113,6 +113,15 @@
                                         </Click>
                                     </DirectEvents>
                                 </ext:Button>
+                                <ext:Button runat="server" ID="uxViewFormButton" Text="View Form" Icon="ApplicationViewDetail">
+                                    <DirectEvents>
+                                        <Click OnEvent="deViewForm">
+                                            <ExtraParams>
+                                                <ext:Parameter Name="FormId" Value="#{uxFormsGrid}.getSelectionModel().getSelection()[0].data.FORM_ID" Mode="Raw" />
+                                            </ExtraParams>
+                                        </Click>
+                                    </DirectEvents>
+                                </ext:Button>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
@@ -220,7 +229,7 @@
                                             <ext:TextField runat="server" AllowBlank="false" EmptyText="Question Text" />
                                         </Editor>
                                     </ext:Column>
-                                    <ext:Column runat="server" DataIndex="TYPE_ID" Text="Question Type" Flex="20" AllowBlank="false">
+                                    <ext:Column runat="server" DataIndex="TYPE_ID" Text="Question Type" Flex="20">
                                         <Renderer Fn="TypeRenderer" />
                                         <Editor>
                                             <ext:ComboBox runat="server" ForceSelection="true" TypeAhead="true" QueryMode="Local" DisplayField="QUESTION_TYPE_NAME" ValueField="TYPE_ID" AllowBlank="false" EmptyText="Select a Question Type">
