@@ -7,6 +7,8 @@ using System.Web.UI.WebControls;
 
 using Ext.Net;
 using DBI.Data;
+using System.Reflection;
+using System.Linq.Expressions;
 
 namespace DBI.Web.EMS.Views.Modules.Overhead.Views
 {
@@ -29,7 +31,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
             Entities _context = new Entities();
             var _data = _context.GL_ACCOUNTS_V.OrderBy(x => x.CODE_COMBINATION_ID);
             e.Total = _data.Count();
-            uxGlAccountSecurityStore.DataSource = _data.Skip(e.Start).Take(10).AsEnumerable();  
+            var test = _data.Skip(e.Start).Take(10).AsEnumerable();
         }
     
     
