@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace DBI.Data
 {
 
@@ -632,8 +633,8 @@ namespace DBI.Data
                                  join ev in _context.EMPLOYEES_V on tc.PERSON_ID equals ev.PERSON_ID
                                  select new Employee
                                  {
-                                     TIME_IN = (DateTime)tc.TIME_IN,
-                                     TIME_OUT = (DateTime)tc.TIME_OUT,
+                                     TIME_IN = ((DateTime)tc.MODIFIED_TIME_IN == null) ? tc.TIME_IN : tc.MODIFIED_TIME_IN,
+                                     TIME_OUT = ((DateTime)tc.MODIFIED_TIME_OUT == null) ? tc.TIME_OUT : tc.MODIFIED_TIME_OUT,
                                      EMPLOYEE_NAME = ev.EMPLOYEE_NAME,
                                      DAY_OF_WEEK = tc.DAY_OF_WEEK,
                                      TIME_CLOCK_ID = tc.TIME_CLOCK_ID,
@@ -642,7 +643,13 @@ namespace DBI.Data
                                      SUBMITTED = tc.SUBMITTED,
                                      APPROVED = tc.APPROVED,
                                      COMPLETED = tc.COMPLETED,
-                                     SUPERVISOR_ID = (int)tc.SUPERVISOR_ID
+                                     SUPERVISOR_ID = (int)tc.SUPERVISOR_ID,
+                                     //MODIFIED_TIME_IN = (DateTime)tc.MODIFIED_TIME_IN,
+                                     //MODIFIED_TIME_OUT = (DateTime)tc.MODIFIED_TIME_OUT,
+                                     MODIFY_DATE = (DateTime)tc.MODIFY_DATE,
+                                     MODIFIED_BY = tc.MODIFIED_BY,
+                                     DELETED = tc.DELETED,
+                                     DELETED_COMMENTS = tc.DELETED_COMMENTS
                                  }).ToList();
                     return _data;
                 }
@@ -665,7 +672,7 @@ namespace DBI.Data
         {
             try
             {
-                var _data = EmployeeTime().Where(x => x.SUPERVISOR_ID == supervisorId && x.COMPLETED  == "Y" && x.APPROVED == "N").ToList();
+                var _data = EmployeeTime().Where(x => x.SUPERVISOR_ID == supervisorId && x.COMPLETED  == "Y" && x.APPROVED == "N" && x.DELETED =="N").ToList();
                 return _data;
             }
             catch (Exception)
@@ -683,7 +690,7 @@ namespace DBI.Data
         {
             try
             {
-                var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "N").ToList();
+                var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "N" && x.DELETED == "N").ToList();
                 return _data;
             }
             catch (Exception)
@@ -700,7 +707,7 @@ namespace DBI.Data
         {
             try
             {
-                var _data = EmployeeTime().Where(x => x.SUPERVISOR_ID == supervisorId && x.COMPLETED == "Y").ToList();
+                var _data = EmployeeTime().Where(x => x.SUPERVISOR_ID == supervisorId && x.COMPLETED == "Y" && x.DELETED == "N").ToList();
                 return _data;
             }
             catch (Exception)
@@ -717,7 +724,7 @@ namespace DBI.Data
         {
             try
             {
-                var _data = EmployeeTime().Where(x => x.COMPLETED == "Y").ToList();
+                var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.DELETED == "N").ToList();
                 return _data;
             }
             catch (Exception)
@@ -732,11 +739,16 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<Employee> EmployeeTimeCompletedApprovedPayroll()
         {
+
+            var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "Y" && x.SUBMITTED == "N" && x.DELETED == "N").ToList();
+            return _data;
             
-                var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "Y").ToList();
-                return _data;
-            
-           
+        }
+
+        public static List<Employee> EmployeeTimeCompletedApprovedSubmittedPayroll()
+        {
+            var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "Y" && x.DELETED == "N").ToList();
+            return _data;
         }
 
         public static DateTime ManagerDateInEditScreen(decimal tcID)
@@ -771,13 +783,63 @@ namespace DBI.Data
             return ts;
         }
 
-        
+        /// <summary>
+        /// Updates TIME CLOCK table with new time edited by Manager or Payroll Manager
+        /// </summary>
+        /// <param name="tcID"></param>
+        /// <param name="newTimeIn"></param>
+        /// <param name="newTimeOut"></param>
+        /// <param name="personName"></param>
+
+        public static void InsertEditedEmployeeTime(decimal tcID, DateTime newTimeIn, DateTime newTimeOut, string personName)
+        {
+
+            TIME_CLOCK _data;
+            using (Entities _context = new Entities())
+            {
+                TimeSpan ts = newTimeOut - newTimeIn;
+                decimal adjts = ConvertTimeToOraclePayrollFormat(ts);
+
+
+                _data = _context.TIME_CLOCK.Where(x => x.TIME_CLOCK_ID == tcID).SingleOrDefault();
+                _data.ACTUAL_HOURS = (decimal)ts.TotalHours;
+                _data.ADJUSTED_HOURS = adjts;
+                _data.MODIFIED_TIME_IN = newTimeIn;
+                _data.MODIFIED_TIME_OUT = newTimeOut;
+                _data.MODIFIED_BY = personName;
+                _data.MODIFY_DATE = DateTime.Now;
+
+            }
+
+            DBI.Data.GenericData.Update<TIME_CLOCK>(_data);
+        }
+
+        /// <summary>
+        /// Marks a flag on the TIMECLOCK table that a time was record was deleted.  Said flg will hide record from all screens
+        /// </summary>
+        /// <param name="tcId"></param>
+        /// <param name="comment"></param>
+        /// <param name="personName"></param>
+        public static void DeleteEmployeeTime(decimal tcID, string comment, string personName)
+        {
+            TIME_CLOCK _data;
+            using (Entities _context = new Entities())
+            {
+                _data = _context.TIME_CLOCK.Where(x => x.TIME_CLOCK_ID == tcID).SingleOrDefault();
+                _data.DELETED = "Y";
+                _data.DELETED_COMMENTS = comment;
+                _data.MODIFIED_BY = personName;
+                _data.MODIFY_DATE = DateTime.Now;
+
+            }
+            DBI.Data.GenericData.Update<TIME_CLOCK>(_data);
+        }
 
         /// <summary>
         /// Approves Employee time so payroll can submit
         /// </summary>
         /// <param name="selection"></param>
-        public static void EmployeeTimeSelectionApproved(List<TIME_CLOCK>selection)
+        public static void EmployeeTimeSelectionApproved(List<TIME_CLOCK> selection)
         {
             try
             {
@@ -791,7 +853,7 @@ namespace DBI.Data
 
                         _data.APPROVED = "Y";
                     }
-                     DBI.Data.GenericData.Update<TIME_CLOCK>(_data);   
+                    DBI.Data.GenericData.Update<TIME_CLOCK>(_data);
                 }
             }
             catch (Exception)
@@ -799,6 +861,31 @@ namespace DBI.Data
                 throw;
             }
         }
+
+        /// <summary>
+        /// ADjusts time to be  for oracle payroll
+        /// </summary> Adjust time to nearest quarter of hour and store in table
+        /// <param name="adjts"></param>
+        /// <returns></returns>
+        public static decimal ConvertTimeToOraclePayrollFormat(TimeSpan adjts)
+        {
+            
+            double adjtime = (adjts.Minutes > 0 && adjts.Minutes <= 8) ? 0
+                         : (adjts.Minutes > 8 && adjts.Minutes <= 23) ? .25
+                         : (adjts.Minutes > 23 && adjts.Minutes <= 38) ? .50
+                         : (adjts.Minutes > 38 && adjts.Minutes <= 53) ? .75
+                         : (adjts.Minutes > 53 && adjts.Minutes <= 60) ? 1
+                         : 0;
+
+            decimal fixedtime = adjts.Hours + (decimal)adjtime;
+            return fixedtime;
+        }
+
+       
+
+      
+
+        
 
         public class Employee : TIME_CLOCK
         {
@@ -815,6 +902,14 @@ namespace DBI.Data
             public string SUBMITTED { get; set; }
             public int SUPERVISOR_ID { get; set; }
             public string COMPLETED { get; set; }
+            public string MODIFIED_BY { get; set; }
+            public DateTime? MODIFIED_TIME_IN { get; set; }
+            public DateTime? MODIFIED_TIME_OUT { get; set; }
+            public DateTime? MODIFY_DATE { get; set; }
+            public string DELETED { get; set; }
+            public string DELETED_COMMENTS { get; set; }
+            public string TIME_DIFF { get; set; }
+
          
             
         }

@@ -17,30 +17,59 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-          
+            if (!X.IsAjaxRequest) ; 
         }
 
         protected void deGetEmployeesHourData(object sender, StoreReadDataEventArgs e)
         {
-            var data = TIME_CLOCK.EmployeeTimeCompletedApprovedPayroll();
 
-            foreach (var item in data)
+            using (Entities _context = new Entities())
+            { 
+            if (validateComponentSecurity("SYS.TimeClock.Payroll"))
             {
-                TimeSpan ts = (DateTime)item.TIME_OUT - (DateTime)item.TIME_IN;
-                DateTime dow = (DateTime)item.TIME_IN;
+                var data = TIME_CLOCK.EmployeeTimeCompletedApprovedPayroll();
+
+                foreach (var item in data)
+                {
+                    TimeSpan ts = (DateTime)item.TIME_OUT - (DateTime)item.TIME_IN;
+                    DateTime dow = (DateTime)item.TIME_IN;
 
 
-                TimeSpan adjustedhours = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_HOURS.Value));
-                item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("hh\\:mm");
+                    TimeSpan adjustedhours = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_HOURS.Value));
+                    item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("hh\\:mm");
 
 
-                TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
-                item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");
+                    TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
+                    item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");
 
 
+                }
+                uxPayrollAuditStore.DataSource = data;
             }
-            uxPayrollAuditStore.DataSource = data;
+
+             if ((uxToggleSubmitted.Checked) && (validateComponentSecurity("SYS.TimeClock.Payroll")))
+            {
+                var data = TIME_CLOCK.EmployeeTimeCompletedApprovedSubmittedPayroll();
+                foreach (var item in data)
+                {
+                    TimeSpan ts = (DateTime)item.TIME_OUT - (DateTime)item.TIME_IN;
+                    DateTime dow = (DateTime)item.TIME_IN;
+
+
+                    TimeSpan adjustedhours = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_HOURS.Value));
+                    item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("hh\\:mm");
+
+
+                    TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
+                    item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");
+
+
+                }
+                uxPayrollAuditStore.DataSource = data;
+            }
+                }
         }
+
 
         protected void deEditTime(object sender, DirectEventArgs e)
         {
@@ -74,7 +103,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
 
                 };
-                win.Listeners.Close.Handler = "#{uxEmployeeHoursGrid}.getStore().load();";
+                win.Listeners.Close.Handler = "#{uxPayrollAuditGrid}.getStore().load();";
 
                 win.Render(this.Form);
                 win.Show();
@@ -88,6 +117,60 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
 
         }
+
+        protected void deDeleteTime(object sender, DirectEventArgs e)
+        {
+            try
+            {
+
+                string _tcId = e.ExtraParams["delId"];
+
+                string url = "/Views/Modules/TimeClock/Edit/umDeleteTime.aspx?tcID=" + _tcId;
+
+                Window win = new Window
+                {
+                    ID = "uxDeleteTime",
+                    Title = "Delete Time",
+                    Height = 350,
+                    Width = 500,
+                    Modal = true,
+                    Resizable = false,
+                    CloseAction = CloseAction.Destroy,
+                    Loader = new ComponentLoader
+                    {
+                        Mode = LoadMode.Frame,
+                        DisableCaching = true,
+                        Url = url,
+                        AutoLoad = true,
+                        LoadMask =
+                        {
+                            ShowMask = true
+                        }
+                    }
+
+
+                };
+                win.Listeners.Close.Handler = "#{uxPayrollAuditGrid}.getStore().load();";
+
+                win.Render(this.Form);
+                win.Show();
+
+            }
+            catch (Exception ex)
+            {
+                e.Success = false;
+                e.ErrorMessage = ex.ToString();
+            }
+        }
+
+
+        protected void deSubmitTime (object sender, DirectEventArgs e)
+        {
+
+        }
+
+        
+
     }
 
     //public class EmployeeTimePayroll
