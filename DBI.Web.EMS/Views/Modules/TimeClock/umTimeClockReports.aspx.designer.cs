@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DBI.Web.EMS.Views.Modules.TimeClock.Edit {
+namespace DBI.Web.EMS.Views.Modules.TimeClock {
     
     
-    public partial class umEditTime {
+    public partial class umTimeClockReports {
         
         /// <summary>
         /// form1 control.
@@ -22,75 +22,57 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock.Edit {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// ResourceManager1 control.
+        /// resourcemanager control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ResourceManager ResourceManager1;
+        protected global::Ext.Net.ResourceManager resourcemanager;
         
         /// <summary>
-        /// frmPanelIn control.
+        /// uxCrossingTab control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FormPanel frmPanelIn;
+        protected global::Ext.Net.TabPanel uxCrossingTab;
         
         /// <summary>
-        /// uxDateInField control.
+        /// uxUnapprovedHours control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateField uxDateInField;
+        protected global::Ext.Net.Panel uxUnapprovedHours;
         
         /// <summary>
-        /// uxTimeInField control.
+        /// uxAcutalVerseAdjusted control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TimeField uxTimeInField;
+        protected global::Ext.Net.Panel uxAcutalVerseAdjusted;
         
         /// <summary>
-        /// frmPanelOut control.
+        /// ux12HourDay control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FormPanel frmPanelOut;
+        protected global::Ext.Net.Panel ux12HourDay;
         
         /// <summary>
-        /// uxDateOutField control.
+        /// uxNoLunch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateField uxDateOutField;
-        
-        /// <summary>
-        /// uxTimeOutField control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TimeField uxTimeOutField;
-        
-        /// <summary>
-        /// uxEditButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxEditButton;
+        protected global::Ext.Net.Panel uxNoLunch;
     }
 }

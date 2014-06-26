@@ -48,7 +48,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     }
                     else
                     {
-                        TaskInfo = _context.PA_TASKS_V.Where(x => (x.PROJECT_ID == Header.PROJECT_ID) && (x.TASK_NUMBER == "9999")).Single();
+                        TaskInfo = _context.PA_TASKS_V.Where(x => (x.PROJECT_ID == Header.PROJECT_ID) && (x.TASK_NUMBER == "9999")).SingleOrDefault();
+                        if (TaskInfo == null)
+                        {
+                            X.Js.Call(string.Format("parent.App.direct.dmShowLunchTaskError('{0}');parent.App.uxPlaceholderWindow.hide()", ProjectName));
+                        }
                     }
                     LunchList.Add(new LunchInfo
                     {
