@@ -27,7 +27,7 @@
                         <Buttons>
 						    <ext:Button runat="server" ID="uxEditButton" Text="Save">
 								<DirectEvents>
-									<Click OnEvent="deEditTime"/>
+									<Click OnEvent="deEditTime" Success="parent.Ext.getCmp('uxAddEditTime').close();"></Click>
 								</DirectEvents>
 							</ext:Button>
 						</Buttons>
