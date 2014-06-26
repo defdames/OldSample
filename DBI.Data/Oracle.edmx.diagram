@@ -144,10 +144,10 @@
         <AssociationConnector Association="OracleModel.FK_INCIDENT_CROSSING_ID" />
         <AssociationConnector Association="OracleModel.FK_CROSSINGS_RAILROAD_ID" />
         <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
-        <EntityTypeShape EntityType="OracleModel.BUD_BID_PROJECTS" Width="1.5" PointX="21.875" PointY="79.25" />
-        <AssociationConnector Association="OracleModel.FK_PROJECTS_STATUS_ID" />
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" Width="1.5" PointX="9.85859737818064" PointY="6.4736919582233261" />
         <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="0.625" PointY="31" />
+        <EntityTypeShape EntityType="OracleModel.BUD_BID_PROJECTS" Width="1.5" PointX="19.75" PointY="86" />
+        <AssociationConnector Association="OracleModel.FK_PROJECTS_STATUS_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

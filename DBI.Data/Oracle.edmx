@@ -1057,7 +1057,7 @@
             <PropertyRef Name="BUD_BID_PROJECTS_ID" />
           </Key>
           <Property Name="BUD_BID_PROJECTS_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="PROJECT_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="PROJECT_ID" Type="varchar2" Nullable="false" MaxLength="20" />
           <Property Name="PRJ_NAME" Type="varchar2" MaxLength="200" />
           <Property Name="ORG_ID" Type="number" Precision="15" />
           <Property Name="YEAR_ID" Type="number" />
@@ -4126,13 +4126,13 @@
             <End Role="CROSSING" EntitySet="CROSSINGS" />
             <End Role="CROSSING_SUPPLEMENTAL" EntitySet="CROSSING_SUPPLEMENTAL" />
           </AssociationSet>
+          <EntitySet Name="OVERHEAD_BUDGET_TYPE" EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" />
+          <EntitySet Name="TIME_CLOCK" EntityType="OracleModel.TIME_CLOCK" />
           <EntitySet Name="BUD_BID_PROJECTS" EntityType="OracleModel.BUD_BID_PROJECTS" />
           <AssociationSet Name="FK_PROJECTS_STATUS_ID" Association="OracleModel.FK_PROJECTS_STATUS_ID">
             <End Role="BUD_BID_STATUS" EntitySet="BUD_BID_STATUS" />
             <End Role="BUD_BID_PROJECTS" EntitySet="BUD_BID_PROJECTS" />
           </AssociationSet>
-          <EntitySet Name="OVERHEAD_BUDGET_TYPE" EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" />
-          <EntitySet Name="TIME_CLOCK" EntityType="OracleModel.TIME_CLOCK" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -7241,47 +7241,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="BUD_BID_PROJECTS">
-          <Key>
-            <PropertyRef Name="BUD_BID_PROJECTS_ID" />
-          </Key>
-          <Property Type="Decimal" Name="BUD_BID_PROJECTS_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
-          <Property Type="String" Name="PRJ_NAME" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="ORG_ID" />
-          <Property Type="Decimal" Name="YEAR_ID" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="VER_ID" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="STATUS_ID" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="ACRES" Precision="15" Scale="4" />
-          <Property Type="Decimal" Name="DAYS" Precision="15" Scale="4" />
-          <Property Type="Decimal" Name="OH_ID" Precision="38" Scale="0" />
-          <Property Type="String" Name="APP_TYPE" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CHEMICAL_MIX" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="COMMENTS" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="WE_DATE" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="TYPE" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="LIABILITY" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="Int16" Name="LIABILITY_OP" />
-          <Property Type="String" Name="COMPARE_PRJ_OVERRIDE" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Type="Int16" Name="COMPARE_PRJ_AMOUNT" />
-          <NavigationProperty Name="BUD_BID_STATUS" Relationship="OracleModel.FK_PROJECTS_STATUS_ID" FromRole="BUD_BID_PROJECTS" ToRole="BUD_BID_STATUS" />
-        </EntityType>
-        <Association Name="FK_PROJECTS_STATUS_ID">
-          <End Type="OracleModel.BUD_BID_STATUS" Role="BUD_BID_STATUS" Multiplicity="0..1" />
-          <End Type="OracleModel.BUD_BID_PROJECTS" Role="BUD_BID_PROJECTS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BUD_BID_STATUS">
-              <PropertyRef Name="STATUS_ID" />
-            </Principal>
-            <Dependent Role="BUD_BID_PROJECTS">
-              <PropertyRef Name="STATUS_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="OVERHEAD_BUDGET_TYPE">
           <Key>
             <PropertyRef Name="OVERHEAD_BUDGET_TYPE_ID" />
@@ -7318,6 +7277,47 @@
           <Property Type="String" Name="DELETED" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Type="String" Name="DELETED_COMMENTS" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="BUD_BID_PROJECTS">
+          <Key>
+            <PropertyRef Name="BUD_BID_PROJECTS_ID" />
+          </Key>
+          <Property Type="Decimal" Name="BUD_BID_PROJECTS_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="PROJECT_ID" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PRJ_NAME" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="ORG_ID" />
+          <Property Type="Decimal" Name="YEAR_ID" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="VER_ID" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="STATUS_ID" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="ACRES" Precision="15" Scale="4" />
+          <Property Type="Decimal" Name="DAYS" Precision="15" Scale="4" />
+          <Property Type="Decimal" Name="OH_ID" Precision="38" Scale="0" />
+          <Property Type="String" Name="APP_TYPE" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CHEMICAL_MIX" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="COMMENTS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="WE_DATE" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="TYPE" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="LIABILITY" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="Int16" Name="LIABILITY_OP" />
+          <Property Type="String" Name="COMPARE_PRJ_OVERRIDE" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="Int16" Name="COMPARE_PRJ_AMOUNT" />
+          <NavigationProperty Name="BUD_BID_STATUS" Relationship="OracleModel.FK_PROJECTS_STATUS_ID" FromRole="BUD_BID_PROJECTS" ToRole="BUD_BID_STATUS" />
+        </EntityType>
+        <Association Name="FK_PROJECTS_STATUS_ID">
+          <End Type="OracleModel.BUD_BID_STATUS" Role="BUD_BID_STATUS" Multiplicity="0..1" />
+          <End Type="OracleModel.BUD_BID_PROJECTS" Role="BUD_BID_PROJECTS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BUD_BID_STATUS">
+              <PropertyRef Name="STATUS_ID" />
+            </Principal>
+            <Dependent Role="BUD_BID_PROJECTS">
+              <PropertyRef Name="STATUS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -9642,35 +9642,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="BUD_BID_PROJECTS">
-            <EntityTypeMapping TypeName="OracleModel.BUD_BID_PROJECTS">
-              <MappingFragment StoreEntitySet="BUD_BID_PROJECTS">
-                <ScalarProperty Name="COMPARE_PRJ_AMOUNT" ColumnName="COMPARE_PRJ_AMOUNT" />
-                <ScalarProperty Name="COMPARE_PRJ_OVERRIDE" ColumnName="COMPARE_PRJ_OVERRIDE" />
-                <ScalarProperty Name="LIABILITY_OP" ColumnName="LIABILITY_OP" />
-                <ScalarProperty Name="LIABILITY" ColumnName="LIABILITY" />
-                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="WE_DATE" ColumnName="WE_DATE" />
-                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
-                <ScalarProperty Name="CHEMICAL_MIX" ColumnName="CHEMICAL_MIX" />
-                <ScalarProperty Name="APP_TYPE" ColumnName="APP_TYPE" />
-                <ScalarProperty Name="OH_ID" ColumnName="OH_ID" />
-                <ScalarProperty Name="DAYS" ColumnName="DAYS" />
-                <ScalarProperty Name="ACRES" ColumnName="ACRES" />
-                <ScalarProperty Name="STATUS_ID" ColumnName="STATUS_ID" />
-                <ScalarProperty Name="VER_ID" ColumnName="VER_ID" />
-                <ScalarProperty Name="YEAR_ID" ColumnName="YEAR_ID" />
-                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
-                <ScalarProperty Name="PRJ_NAME" ColumnName="PRJ_NAME" />
-                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
-                <ScalarProperty Name="BUD_BID_PROJECTS_ID" ColumnName="BUD_BID_PROJECTS_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="OVERHEAD_BUDGET_TYPE">
             <EntityTypeMapping TypeName="OracleModel.OVERHEAD_BUDGET_TYPE">
               <MappingFragment StoreEntitySet="OVERHEAD_BUDGET_TYPE">
@@ -9706,6 +9677,35 @@
                 <ScalarProperty Name="TIME_IN" ColumnName="TIME_IN" />
                 <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
                 <ScalarProperty Name="TIME_CLOCK_ID" ColumnName="TIME_CLOCK_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BUD_BID_PROJECTS">
+            <EntityTypeMapping TypeName="OracleModel.BUD_BID_PROJECTS">
+              <MappingFragment StoreEntitySet="BUD_BID_PROJECTS">
+                <ScalarProperty Name="COMPARE_PRJ_AMOUNT" ColumnName="COMPARE_PRJ_AMOUNT" />
+                <ScalarProperty Name="COMPARE_PRJ_OVERRIDE" ColumnName="COMPARE_PRJ_OVERRIDE" />
+                <ScalarProperty Name="LIABILITY_OP" ColumnName="LIABILITY_OP" />
+                <ScalarProperty Name="LIABILITY" ColumnName="LIABILITY" />
+                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="WE_DATE" ColumnName="WE_DATE" />
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
+                <ScalarProperty Name="CHEMICAL_MIX" ColumnName="CHEMICAL_MIX" />
+                <ScalarProperty Name="APP_TYPE" ColumnName="APP_TYPE" />
+                <ScalarProperty Name="OH_ID" ColumnName="OH_ID" />
+                <ScalarProperty Name="DAYS" ColumnName="DAYS" />
+                <ScalarProperty Name="ACRES" ColumnName="ACRES" />
+                <ScalarProperty Name="STATUS_ID" ColumnName="STATUS_ID" />
+                <ScalarProperty Name="VER_ID" ColumnName="VER_ID" />
+                <ScalarProperty Name="YEAR_ID" ColumnName="YEAR_ID" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="PRJ_NAME" ColumnName="PRJ_NAME" />
+                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
+                <ScalarProperty Name="BUD_BID_PROJECTS_ID" ColumnName="BUD_BID_PROJECTS_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
