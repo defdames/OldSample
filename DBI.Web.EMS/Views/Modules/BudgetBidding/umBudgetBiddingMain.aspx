@@ -60,8 +60,8 @@
                     <Items>
                         <ext:ComboBox ID="uxFiscalYear"
                             runat="server"
-                            DisplayField="ID_NAME"
                             ValueField="ID_NAME"
+                            DisplayField="ID_NAME"
                             Width="120"
                             EmptyText="-- Year --"
                             Editable="false"
@@ -93,8 +93,8 @@
 
                         <ext:ComboBox ID="uxVersion"
                             runat="server"
-                            DisplayField="ID_NAME"
                             ValueField="ID"
+                            DisplayField="ID_NAME"
                             Width="120"
                             EmptyText="-- Versions --"
                             Editable="false"

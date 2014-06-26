@@ -74,7 +74,7 @@ namespace DBI.Data
         }
 
         /// <summary>
-        /// Returns a list of loaded job cost week ending dates in EMS.
+        /// Returns a list of loaded job cost week ending dates in EMS
         /// </summary>
         /// <param name="hierarchyId"></param>
         /// <param name="organizationId"></param>
@@ -96,10 +96,11 @@ namespace DBI.Data
                     sortOrder = "DESC";
                 }
 
-                string sql = string.Format(@"SELECT TO_CHAR(JC_WK_DATE,'DD-Mon-YYYY') ID_NAME
+                string sql = string.Format(@"SELECT '-- OVERRIDE --' AS ID_NAME FROM DUAL
+                        UNION ALL
+                    SELECT TO_CHAR(JC_WK_DATE,'DD-Mon-YYYY') ID_NAME
                     FROM (SELECT DISTINCT JC_WK_DATE FROM APPS.XX_JOBCOST_DATES_MV WHERE HIERARCHY_ID = {0} ORDER BY JC_WK_DATE {1}) JC_DATES
-                    WHERE ROWNUM <= {2}
-                    ORDER BY ROWNUM", hierarchyId, sortOrder, optionalNumOfReturnRecords);
+                    WHERE ROWNUM <= {2}", hierarchyId, sortOrder, optionalNumOfReturnRecords);
                 List<SingleCombo> data = context.Database.SqlQuery<SingleCombo>(sql).ToList();
                 return data;
             }

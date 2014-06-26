@@ -128,12 +128,11 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             string nodeID = uxOrgPanel.SelectedNodes[0].NodeID;
             char[] delimChars = { ':' };
             string[] selID = nodeID.Split(delimChars);
-            long hierarchyID = long.Parse(selID[0].ToString());
 
             if (nodeID == "0" || selID.GetUpperBound(0) == 0)
             {
-                uxHidOrgOK.Value = "";
-                uxYearVersionTitle.Value = "";
+                uxHidOrgOK.Text = "";
+                uxYearVersionTitle.Text = "";
                 DisableYearAndVersionCombo();
                 LoadBudget(prevBlank);
                 return;
@@ -143,16 +142,16 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             
             if (SYS_USER_ORGS.IsInOrg(SYS_USER_INFORMATION.UserID(User.Identity.Name), orgID) == false)
             {
-                uxHidOrgOK.Value = "";
-                uxYearVersionTitle.Value = "";
+                uxHidOrgOK.Text = "";
+                uxYearVersionTitle.Text = "";
                 DisableYearAndVersionCombo();
                 LoadBudget(prevBlank);
             }
 
             else
             {
-                uxHidOrgOK.Value = "Y";
-                uxYearVersionTitle.Value = uxOrgPanel.SelectedNodes[0].Text;
+                uxHidOrgOK.Text = "Y";
+                uxYearVersionTitle.Text = uxOrgPanel.SelectedNodes[0].Text;
                 EnableYearAndVersionCombo();
                 LoadBudget(prevBlank);
             }     
@@ -161,37 +160,24 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         protected void deSelectYear(object sender, DirectEventArgs e)
         {
             bool prevBlank = PreviouslyBlankBudget();
-            string fiscalYear = uxFiscalYear.SelectedItem.Value;
-            string yearOK = string.IsNullOrEmpty(fiscalYear) ? "" : "Y";
 
-            uxHidYearOK.Value = yearOK;
+            uxHidYearOK.Text = "Y";
             LoadBudget(prevBlank);
         }
 
         protected void deSelectVersion(object sender, DirectEventArgs e)
         {
-            try
-            {
-                bool prevBlank = PreviouslyBlankBudget();
-                string verID = uxVersion.SelectedItem.Value;
-                string verOK = string.IsNullOrEmpty(verID) ? "" : "Y";
+            bool prevBlank = PreviouslyBlankBudget();
 
-                uxHidVerOK.Value = verOK;
-                LoadBudget(prevBlank);
-            }
-            catch (Exception ex)
-            {
-                e.Success = false;
-                e.ErrorMessage = ex.ToString();
-            }
-            
+            uxHidVerOK.Text = "Y";
+            LoadBudget(prevBlank);            
         }
 
         protected bool PreviouslyBlankBudget()
         {
-            string orgOK = uxHidOrgOK.Value.ToString();
-            string yearOK = uxHidYearOK.Value.ToString();
-            string verOK = uxHidVerOK.Value.ToString();
+            string orgOK = uxHidOrgOK.Text;
+            string yearOK = uxHidYearOK.Text;
+            string verOK = uxHidVerOK.Text;
             bool prevBlank = (orgOK == "" || yearOK == "" || verOK == "") ? true : false;
 
             return prevBlank;
@@ -199,9 +185,9 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void LoadBudget(bool prevBlank)
         {
-            string orgOK = uxHidOrgOK.Value.ToString();
-            string yearOK = uxHidYearOK.Value.ToString();
-            string verOK = uxHidVerOK.Value.ToString();
+            string orgOK = uxHidOrgOK.Text;
+            string yearOK = uxHidYearOK.Text;
+            string verOK = uxHidVerOK.Text;
             string url = "umBlankBudget.aspx";
 
             if (orgOK == "Y" && yearOK == "Y" && verOK == "Y")
@@ -209,8 +195,9 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 string nodeID = uxOrgPanel.SelectedNodes[0].NodeID;
                 char[] delimChars = { ':' };
                 string[] selID = nodeID.Split(delimChars);
-                long hierarchyID = long.Parse(selID[0].ToString());
-                long orgID = long.Parse(selID[1].ToString());
+                string hierarchyID = selID[0].ToString();
+                string orgID = selID[1].ToString();
+
                 string nodeName = uxOrgPanel.SelectedNodes[0].Text;
                 string fiscalYear = uxFiscalYear.SelectedItem.Value;
                 string verID = uxVersion.SelectedItem.Value;
@@ -220,16 +207,16 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
             else if (prevBlank == true)
             {
-                return;
+                return;            
             }
 
             uxBudgetPanel.Loader.SuspendScripting();
             uxBudgetPanel.Loader.Url = url;
             uxBudgetPanel.Loader.Mode = LoadMode.Frame;
             uxBudgetPanel.Loader.DisableCaching = true;
-            uxBudgetPanel.LoadContent();           
+            uxBudgetPanel.LoadContent();
         }
-
+      
         protected void EnableYearAndVersionCombo()
         {
             uxFiscalYear.Enable();

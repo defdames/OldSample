@@ -42,11 +42,8 @@ namespace DBI.Data
         }
 
         /// <summary>
-        /// Returns a list of loaded job cost week ending dates in EMS.
+        /// Returns a list of loaded job cost week ending dates in EMS
         /// </summary>
-        /// <param name="hierarchyId"></param>
-        /// <param name="organizationId"></param>
-        /// <param name="optionalNumOfReturnRecords"></param>
         /// <returns></returns>
         public static List<SingleCombo> AllFiscalYears()
         {

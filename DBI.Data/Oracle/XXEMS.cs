@@ -888,56 +888,104 @@ namespace DBI.Data
     public partial class BUD_BID_STATUS
     {
         /// <summary>
-        /// Returns list of statuses
+        /// Returns list of available statuses
         /// </summary>
         /// <returns></returns>
         public static List<DoubleComboLongID> Statuses()
         {
             using (Entities context = new Entities())
             {
-                string sql = "SELECT STATUS_ID AS ID, STATUS AS ID_NAME FROM BUD_BID_STATUS ORDER BY STATUS";
+                string sql = "SELECT STATUS_ID ID, STATUS ID_NAME FROM BUD_BID_STATUS ORDER BY STATUS";
+
                 List<DoubleComboLongID> data = context.Database.SqlQuery<DoubleComboLongID>(sql).ToList();
                 return data;
             }
         }
 
         /// <summary>
-        /// Returns org summary projects information
+        /// Returns list of projects also containing org and override for a given org
         /// </summary>
+        /// <param name="orgID"></param>
+        /// <param name="orgName"></param>
         /// <returns></returns>
-        public static List<BUD_BID_STATUS.BUD_SUMMARY_V> OrgSummaryProjects(string orgName, long orgID, long yearID, long verID, long prevYearID, long prevVerID)
+        public static List<BUD_BID_STATUS.BUD_SUMMARY_V> ProjectList(long orgID, string orgName)
+        {
+            using (Entities context = new Entities())
+            {
+                string sql = string.Format(@"SELECT TO_CHAR(SYSDATE, 'YYMMDDHH24MISS') AS PROJECT_ID, 'N/A' AS PROJECT_NUM, '-- OVERRIDE --' AS PROJECT_NAME, 'OVERRIDE' AS TYPE, 'ID1' AS ORDERKEY
+                    FROM DUAL
+                        UNION ALL
+                    SELECT '{1}' AS PROJECT_ID, 'N/A' AS PROJECT_NUM, '{0} (Org)' AS PROJECT_NAME, 'ORG' AS TYPE, 'ID2' AS ORDERKEY
+                    FROM DUAL
+                        UNION ALL
+                    SELECT CAST(PROJECTS_V.PROJECT_ID AS VARCHAR(20)) AS PROJECT_ID, PROJECTS_V.SEGMENT1 AS PROJECT_NUM, PROJECTS_V.LONG_NAME AS PROJECT_NAME, 'PROJECT' AS TYPE, 'ID3' AS ORDERKEY
+                    FROM PROJECTS_V
+                    LEFT JOIN PA.PA_PROJECT_CLASSES
+                    ON PROJECTS_V.PROJECT_ID = PA.PA_PROJECT_CLASSES.PROJECT_ID
+                    WHERE PROJECTS_V.PROJECT_STATUS_CODE = 'APPROVED' AND PROJECTS_V.PROJECT_TYPE <> 'TRUCK ' || CHR(38) || ' EQUIPMENT' AND PA.PA_PROJECT_CLASSES.CLASS_CATEGORY = 'Job Cost Rollup'
+                    AND PROJECTS_V.CARRYING_OUT_ORGANIZATION_ID = {1}
+                        UNION ALL
+                    SELECT CONCAT('Various - ', PA.PA_PROJECT_CLASSES.CLASS_CODE) AS PROJECT_ID, 'N/A' AS PROJECT_NUM, CONCAT('Various - ', PA.PA_PROJECT_CLASSES.CLASS_CODE) AS PROJECT_NAME, 'ROLLUP' AS TYPE, 'ID4' AS ORDERKEY
+                    FROM PROJECTS_V
+                    LEFT JOIN PA.PA_PROJECT_CLASSES
+                    ON PROJECTS_V.PROJECT_ID = PA.PA_PROJECT_CLASSES.PROJECT_ID
+                    WHERE PROJECTS_V.PROJECT_STATUS_CODE = 'APPROVED' AND PROJECTS_V.PROJECT_TYPE <> 'TRUCK ' || CHR(38) || ' EQUIPMENT' AND PA.PA_PROJECT_CLASSES.CLASS_CATEGORY = 'Job Cost Rollup'
+                    AND PA.PA_PROJECT_CLASSES.CLASS_CODE <> 'None' AND PROJECTS_V.CARRYING_OUT_ORGANIZATION_ID = {1}
+                    GROUP BY CONCAT('Various - ', PA.PA_PROJECT_CLASSES.CLASS_CODE) 
+                    ORDER BY ORDERKEY, PROJECT_NAME", orgName, orgID);
+
+                List<BUD_BID_STATUS.BUD_SUMMARY_V> data = context.Database.SqlQuery<BUD_BID_STATUS.BUD_SUMMARY_V>(sql).ToList();
+                return data;
+            }
+        }
+
+        /// <summary>
+        /// Returns list of projects along with project summary line info for a given org
+        /// </summary>
+        /// <param name="orgName"></param>
+        /// <param name="orgID"></param>
+        /// <param name="yearID"></param>
+        /// <param name="verID"></param>
+        /// <param name="prevYearID"></param>
+        /// <param name="prevVerID"></param>
+        /// <returns></returns>
+        public static List<BUD_BID_STATUS.BUD_SUMMARY_V> SummaryProjectsWithLineInfo(string orgName, long orgID, long yearID, long verID, long prevYearID, long prevVerID)
         {
             using (Entities context = new Entities())
             {
                 string sql = string.Format(@"WITH
+
                     CUR_PROJECT_INFO_WITH_STATUS AS(
                     SELECT BUD_BID_PROJECTS.PROJECT_ID, BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID, BUD_BID_PROJECTS.TYPE, BUD_BID_PROJECTS.PRJ_NAME, BUD_BID_STATUS.STATUS, BUD_BID_PROJECTS.ACRES, BUD_BID_PROJECTS.DAYS FROM BUD_BID_PROJECTS
                     INNER JOIN BUD_BID_STATUS
                     ON BUD_BID_PROJECTS.STATUS_ID = BUD_BID_STATUS.STATUS_ID
                     WHERE ORG_ID = {1} AND YEAR_ID = {2} AND VER_ID = {3}
                     ),     
+
                     ORACLE_PROJECT_NAMES AS (
-                    SELECT '{1}' as PROJECT_ID, '{0} (Org)' as PROJECT_NAME, 'ORG' as TYPE
+                    SELECT '{1}' AS PROJECT_ID, '{0} (Org)' AS PROJECT_NAME, 'ORG' AS TYPE
                     FROM DUAL
                         UNION ALL
-                    SELECT CAST(PROJECTS_V.PROJECT_ID as varchar(20)) as PROJECT_ID, PROJECTS_V.LONG_NAME as PROJECT_NAME, 'PROJECT' as TYPE
+                    SELECT CAST(PROJECTS_V.PROJECT_ID AS varchar(20)) AS PROJECT_ID, PROJECTS_V.LONG_NAME AS PROJECT_NAME, 'PROJECT' AS TYPE
                     FROM PROJECTS_V
-                    LEFT JOIN pa.pa_project_classes
-                    ON PROJECTS_V.PROJECT_ID = pa.pa_project_classes.PROJECT_ID
-                    WHERE PROJECTS_V.PROJECT_STATUS_CODE = 'APPROVED' and PROJECTS_V.PROJECT_TYPE <> 'TRUCK ' || chr(38) || ' EQUIPMENT' and pa.pa_project_classes.CLASS_CATEGORY = 'Job Cost Rollup'
-                    and PROJECTS_V.CARRYING_OUT_ORGANIZATION_ID = {1}
+                    LEFT JOIN PA.PA_PROJECT_CLASSES
+                    ON PROJECTS_V.PROJECT_ID = PA.PA_PROJECT_CLASSES.PROJECT_ID
+                    WHERE PROJECTS_V.PROJECT_STATUS_CODE = 'APPROVED' AND PROJECTS_V.PROJECT_TYPE <> 'TRUCK ' || CHR(38) || ' EQUIPMENT' AND PA.PA_PROJECT_CLASSES.CLASS_CATEGORY = 'Job Cost Rollup'
+                    AND PROJECTS_V.CARRYING_OUT_ORGANIZATION_ID = {1}
                         UNION ALL
-                    SELECT CONCAT('Various - ', pa.pa_project_classes.CLASS_CODE) as PROJECT_ID, CONCAT('Various - ', pa.pa_project_classes.CLASS_CODE) as PROJECT_NAME, 'ROLLUP' as TYPE
+                    SELECT CONCAT('Various - ', PA.PA_PROJECT_CLASSES.CLASS_CODE) AS PROJECT_ID, CONCAT('Various - ', PA.PA_PROJECT_CLASSES.CLASS_CODE) AS PROJECT_NAME, 'ROLLUP' AS TYPE
                     FROM PROJECTS_V
-                    LEFT JOIN pa.pa_project_classes
-                    ON PROJECTS_V.PROJECT_ID = pa.pa_project_classes.PROJECT_ID
-                    WHERE PROJECTS_V.PROJECT_STATUS_CODE = 'APPROVED' and PROJECTS_V.PROJECT_TYPE <> 'TRUCK ' || chr(38) || ' EQUIPMENT' and pa.pa_project_classes.CLASS_CATEGORY = 'Job Cost Rollup'
-                    and pa.pa_project_classes.CLASS_CODE <> 'None' and PROJECTS_V.CARRYING_OUT_ORGANIZATION_ID = {1}
-                    GROUP BY  CONCAT('Various - ', pa.pa_project_classes.CLASS_CODE) 
+                    LEFT JOIN PA.PA_PROJECT_CLASSES
+                    ON PROJECTS_V.PROJECT_ID = PA.PA_PROJECT_CLASSES.PROJECT_ID
+                    WHERE PROJECTS_V.PROJECT_STATUS_CODE = 'APPROVED' AND PROJECTS_V.PROJECT_TYPE <> 'TRUCK ' || CHR(38) || ' EQUIPMENT' AND PA.PA_PROJECT_CLASSES.CLASS_CATEGORY = 'Job Cost Rollup'
+                    AND PA.PA_PROJECT_CLASSES.CLASS_CODE <> 'None' AND PROJECTS_V.CARRYING_OUT_ORGANIZATION_ID = {1}
+                    GROUP BY CONCAT('Various - ', PA.PA_PROJECT_CLASSES.CLASS_CODE) 
                     ),
+
                     LINE_AMOUNTS AS (
                     SELECT * FROM (SELECT PROJECT_ID, LINE_ID, SUM(NOV) NOV FROM BUD_BID_ACTUAL_NUM GROUP BY PROJECT_ID, LINE_ID) PIVOT (SUM(NOV) FOR LINE_ID IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
                     ),
+
                     PREV_OP AS (
                     SELECT BUD_BID_PROJECTS.PROJECT_ID, NOV PREV_OP FROM BUD_BID_PROJECTS    
                     LEFT OUTER JOIN BUD_BID_ACTUAL_NUM ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_ACTUAL_NUM.PROJECT_ID
@@ -955,8 +1003,8 @@ namespace DBI.Data
                         LINE_AMOUNTS.MAT_USAGE,
                         LINE_AMOUNTS.GROSS_REV,
                         LINE_AMOUNTS.DIR_EXP,
-                        LINE_AMOUNTS.OP,
-                        PREV_OP.PREV_OP,
+                        LINE_AMOUNTS.OP,                        
+                        CASE WHEN PREV_OP.PREV_OP IS NULL THEN 0 ELSE PREV_OP.PREV_OP END PREV_OP,
                         CASE WHEN LINE_AMOUNTS.GROSS_REC = 0 THEN 0 ELSE ROUND(LINE_AMOUNTS.MAT_USAGE/LINE_AMOUNTS.GROSS_REC,2)*100 END MAT_PERC,
                         CASE WHEN LINE_AMOUNTS.GROSS_REV = 0 THEN 0 ELSE ROUND(LINE_AMOUNTS.GROSS_REC/LINE_AMOUNTS.GROSS_REV,2)*100 END GR_PERC,
                         CASE WHEN LINE_AMOUNTS.GROSS_REV = 0 THEN 0 ELSE ROUND(LINE_AMOUNTS.DIR_EXP/LINE_AMOUNTS.GROSS_REV,2)*100 END DIRECTS_PERC,
@@ -965,7 +1013,8 @@ namespace DBI.Data
                 FROM CUR_PROJECT_INFO_WITH_STATUS
                 LEFT OUTER JOIN ORACLE_PROJECT_NAMES ON CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID = ORACLE_PROJECT_NAMES.PROJECT_ID AND CUR_PROJECT_INFO_WITH_STATUS.TYPE = ORACLE_PROJECT_NAMES.TYPE
                 LEFT OUTER JOIN LINE_AMOUNTS ON CUR_PROJECT_INFO_WITH_STATUS.BUD_BID_PROJECTS_ID = LINE_AMOUNTS.PROJECT_ID
-                LEFT OUTER JOIN PREV_OP ON CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID = PREV_OP.PROJECT_ID", orgName, orgID, yearID, verID, prevYearID, prevVerID);
+                LEFT OUTER JOIN PREV_OP ON CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID = PREV_OP.PROJECT_ID
+                ORDER BY LOWER(PROJECT_NAME)", orgName, orgID, yearID, verID, prevYearID, prevVerID);
           
                 List<BUD_BID_STATUS.BUD_SUMMARY_V> data = context.Database.SqlQuery<BUD_BID_STATUS.BUD_SUMMARY_V>(sql).ToList();
                 return data;
@@ -974,19 +1023,27 @@ namespace DBI.Data
 
         public class BUD_SUMMARY_V
         {
+            public long PROJECT_ID { get; set; }
+            public long BUD_BID_PROJECTS_ID { get; set; }
+            public string TYPE { get; set; }
+            public string PROJECT_NUM { get; set; }
             public string PROJECT_NAME { get; set; }
             public string STATUS { get; set; }
-            public decimal? ACRES { get; set; }
-            public decimal? DAYS { get; set; }
-            public decimal? GROSS_REC { get; set; }
-            public decimal? MAT_USAGE { get; set; }
-            public decimal? GROSS_REV { get; set; }
-            public decimal? DIR_EXP { get; set; }
-            public decimal? OP { get; set; }
-            public decimal? OP_PERC { get; set; }
-            public decimal? OP_VAR { get; set; }
+            public decimal ACRES { get; set; }
+            public decimal DAYS { get; set; }
+            public decimal GROSS_REC { get; set; }
+            public decimal MAT_USAGE { get; set; }
+            public decimal GROSS_REV { get; set; }
+            public decimal DIR_EXP { get; set; }
+            public decimal OP { get; set; }
+            public decimal PREV_OP { get; set; }
+            public decimal MAT_PERC { get; set; }
+            public decimal GR_PERC { get; set; }
+            public decimal DIRECTS_PERC { get; set; }
+            public decimal OP_PERC { get; set; }
+            public decimal OP_VAR { get; set; }
+            public string ORDERKEY { get; set; }
         }
     }
-
 }
 
