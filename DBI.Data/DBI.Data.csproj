@@ -191,6 +191,9 @@
     <Compile Include="CUSTOMER_SURVEY_RELATION.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="CUSTOMER_SURVEY_THRESHOLDS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="DAILY_ACTIVITY_AUDIT.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>

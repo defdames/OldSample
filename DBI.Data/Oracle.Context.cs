@@ -59,7 +59,6 @@ namespace DBI.Data
         public DbSet<CUSTOMER_SURVEY_FORMS_ANS> CUSTOMER_SURVEY_FORMS_ANS { get; set; }
         public DbSet<CUSTOMER_SURVEY_FORMS_COMP> CUSTOMER_SURVEY_FORMS_COMP { get; set; }
         public DbSet<CUSTOMER_SURVEY_QUES_TYPES> CUSTOMER_SURVEY_QUES_TYPES { get; set; }
-        public DbSet<CUSTOMER_SURVEY_QUESTIONS> CUSTOMER_SURVEY_QUESTIONS { get; set; }
         public DbSet<CUSTOMER_SURVEY_RELATION> CUSTOMER_SURVEY_RELATION { get; set; }
         public DbSet<CROSSING_INSPECTION> CROSSING_INSPECTION { get; set; }
         public DbSet<CROSSING_SUPPLEMENTAL> CROSSING_SUPPLEMENTAL { get; set; }
@@ -120,5 +119,7 @@ namespace DBI.Data
         public DbSet<CROSSING_APPLICATION> CROSSING_APPLICATION { get; set; }
         public DbSet<CROSSING_INVOICE> CROSSING_INVOICE { get; set; }
         public DbSet<CROSSING_SUPP_INVOICE> CROSSING_SUPP_INVOICE { get; set; }
+        public DbSet<CUSTOMER_SURVEY_QUESTIONS> CUSTOMER_SURVEY_QUESTIONS { get; set; }
+        public DbSet<CUSTOMER_SURVEY_THRESHOLDS> CUSTOMER_SURVEY_THRESHOLDS { get; set; }
     }
 }
