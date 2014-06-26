@@ -31,6 +31,24 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Viewport uxAdminViewPort;
         
         /// <summary>
+        /// uxTabPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TabPanel uxTabPanel;
+        
+        /// <summary>
+        /// uxFormsTab control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Panel uxFormsTab;
+        
+        /// <summary>
         /// uxFormsGrid control.
         /// </summary>
         /// <remarks>

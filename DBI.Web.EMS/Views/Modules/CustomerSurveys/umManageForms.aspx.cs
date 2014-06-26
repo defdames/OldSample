@@ -158,7 +158,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             {
                 
             }
-            uxFormsStore.Reload();
+            uxFormsStore.CommitChanges();
         }
 
         protected void deSaveFieldsets(object sender, DirectEventArgs e)
@@ -184,7 +184,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 GenericData.Update<CUSTOMER_SURVEY_FIELDSETS>(UpdatedFieldset);
             }
 
-            uxFieldsetsStore.Reload();
+            uxFieldsetsStore.CommitChanges();
             uxQuestionFieldsetStore.Reload();
         }
 
@@ -249,8 +249,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                     uxAddOptionButton.Disabled = false;
                 }
             }
-
-            uxQuestionsStore.Reload();
+            uxQuestionsStore.CommitChanges();
         }
 
         protected void deSaveOptions(object sender, DirectEventArgs e)
@@ -281,7 +280,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 }
                 GenericData.Update<CUSTOMER_SURVEY_OPTIONS>(ToUpdate);
             }
-            uxOptionsStore.Reload();
+            uxOptionsStore.CommitChanges();
         }
 
         protected void deLoadOptions(object sender, DirectEventArgs e)
@@ -298,13 +297,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 uxSaveOptionButton.Disabled = true;
             }
             
-            uxOptionsStore.Reload(new Ext.Net.ParameterCollection(){
-                new Ext.Net.Parameter
-            {
-                Name = "QuestionId",
-                Value = "App.uxQuestionsGrid.getSelectionModel().getSelection()[0].data.QUESTION_ID",
-                Mode = ParameterMode.Raw
-            }});
+            uxOptionsStore.Reload();
         }
 
         protected void deLoadFormDetails(object sender, DirectEventArgs e)
@@ -321,39 +314,52 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
         protected void deViewForm(object sender, DirectEventArgs e)
         {
-            CreateWindow("/Views/Modules/CustomerSurveys/umViewSurvey.aspx?FormId=" + e.ExtraParams["FormId"]);
-        }
-
-        protected void CreateWindow(string LoaderUrl)
-        {
-            Window win = new Window()
+            Ext.Net.Panel uxSurveyPanel = new Ext.Net.Panel();
+            uxSurveyPanel.ID = "uxSurveyPanel";
+            uxSurveyPanel.Layout = "Fit";
+            uxSurveyPanel.Closable = true;
+            uxSurveyPanel.Title = "Preview Survey";
+            uxSurveyPanel.Loader = new ComponentLoader
             {
-                ID = "uxPlaceholderWindow",
-                Title = "View Survey",
-                Width = 800,
-                Modal = true,
-                Resizable = false,
-                AutoRender = false,
-                Y = 15,
-                Constrain = false,
-                CloseAction = CloseAction.Destroy,
-                Loader = new ComponentLoader
-                {
-                    Url = LoaderUrl,
-                    DisableCaching = true,
-                    Mode = LoadMode.Frame,
-                    AutoLoad = true,
-                    LoadMask =
-                    {
-                        ShowMask = true
-                    }
-                }
+                Url = "/Views/Modules/CustomerSurveys/umViewSurvey.aspx?FormId=" + e.ExtraParams["FormId"],
+                Mode = LoadMode.Frame,
+                AutoLoad = true
             };
-
-            this.Form.Controls.Add(win);
-            win.Render(this.Form);
-            win.Show();
+            
+            uxSurveyPanel.AddTo(this.uxTabPanel);
+            uxTabPanel.SetActiveTab(uxSurveyPanel);
         }
+
+        //protected void CreateWindow(string LoaderUrl)
+        //{
+        //    Window win = new Window()
+        //    {
+        //        ID = "uxPlaceholderWindow",
+        //        Title = "View Survey",
+        //        Width = 600,
+        //        Modal = true,
+        //        Resizable = false,
+        //        AutoRender = false,
+        //        Y = 15,
+        //        Constrain = false,
+        //        CloseAction = CloseAction.Destroy,
+        //        Loader = new ComponentLoader
+        //        {
+        //            Url = LoaderUrl,
+        //            DisableCaching = true,
+        //            Mode = LoadMode.Frame,
+        //            AutoLoad = true,
+        //            LoadMask =
+        //            {
+        //                ShowMask = true
+        //            }
+        //        }
+        //    };
+
+        //    this.Form.Controls.Add(win);
+        //    win.Render(this.Form);
+        //    win.Show();
+        //}
 
     }
 

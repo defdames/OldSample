@@ -39,5 +39,10 @@ namespace DBI.Data
                     where q.FIELDSET_ID == FieldSetId
                     select q.CUSTOMER_SURVEY_QUESTIONS);
         }
+
+        public static IQueryable<CUSTOMER_SURVEY_OPTIONS> GetQuestionOptions(decimal QuestionId, Entities _context)
+        {
+            return _context.CUSTOMER_SURVEY_OPTIONS.Where(x => x.QUESTION_ID == QuestionId);
+        }
     }
 }
