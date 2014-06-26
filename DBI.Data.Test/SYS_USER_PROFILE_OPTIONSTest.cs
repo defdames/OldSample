@@ -66,6 +66,15 @@ namespace DBI.Data.Test
 
 
 
-     
+        /// <summary>
+        ///A test for ProfileOptionsByType
+        ///</summary>
+        //[TestMethod()]
+        //public void ProfileOptionsByTypeTest()
+        //{
+        //    List<SYS_USER_PROFILE_OPTIONS.SYS_PROFILE_OPTIONS_V2> actual;
+        //    actual = SYS_USER_PROFILE_OPTIONS.ProfileOptionsByType();
+        //    Assert.IsTrue(actual.Count >= 0);
+        //}
     }
 }

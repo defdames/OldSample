@@ -68,6 +68,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                     APPROVED = "N",
                     COMPLETED = "N",
                     SUBMITTED = "N",
+                    DELETED = "N",
                     DAY_OF_WEEK = dow.DayOfWeek.ToString(),
                     SUPERVISOR_ID = data.SUPERVISOR_ID,
 
@@ -149,8 +150,8 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
             using (Entities _context = new Entities())
             {
                 var data = (from tc in _context.TIME_CLOCK
-                            where tc.PERSON_ID == person_id
-                            select new EmployeeTimeView {TIME_IN = (DateTime)tc.TIME_IN, TIME_OUT = tc.TIME_OUT, MODIFIED_BY = tc.MODIFIED_BY, TOTAL_HOURS = tc.APPROVED}).ToList();
+                            where tc.PERSON_ID == person_id && tc.DELETED =="N"
+                            select new EmployeeTimeView {TIME_IN = (DateTime)tc.TIME_IN, TIME_OUT = tc.TIME_OUT, MODIFIED_BY = tc.MODIFIED_BY, APPROVED = tc.APPROVED}).ToList();
                 
                 foreach (var item in data)
                 {
@@ -158,10 +159,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                     {
                         TimeSpan ts = (DateTime)item.TIME_OUT - item.TIME_IN;
                         item.TOTAL_HOURS = ts.ToString("hh\\:mm");
-                        
-
-                    }
-                    
+                    }                    
                 }
 
 

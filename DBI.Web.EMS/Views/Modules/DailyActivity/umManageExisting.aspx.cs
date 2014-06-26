@@ -1884,6 +1884,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 			uxPlaceholderWindow.Show();
 		}
 
+        [DirectMethod]
+        public void dmShowLunchTaskError(string ProjectName)
+        {
+            X.Msg.Alert("Error", string.Format(" Project {0} has no chargeable 9999 task.", ProjectName)).Show();
+        }
+
 	}
 
 	public class EquipmentDetails

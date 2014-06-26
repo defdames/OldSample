@@ -12,16 +12,16 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class OVERHEAD_BUDGET_TYPE
+    public partial class CUSTOMER_SURVEY_THRESHOLDS
     {
-        public long OVERHEAD_BUDGET_TYPE_ID { get; set; }
-        public string BUDGET_NAME { get; set; }
-        public string BUDGET_DESCRIPTION { get; set; }
-        public long LE_ORG_ID { get; set; }
-        public Nullable<System.DateTime> CREATE_DATE { get; set; }
-        public Nullable<System.DateTime> MODIFY_DATE { get; set; }
+        public decimal THRESHOLD_ID { get; set; }
+        public Nullable<long> ORG_ID { get; set; }
+        public Nullable<decimal> SMALL_THRESHOLD { get; set; }
+        public Nullable<decimal> LARGE_THRESHOLD1 { get; set; }
+        public Nullable<decimal> LARGE_THRESHOLD2 { get; set; }
         public string CREATED_BY { get; set; }
+        public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public string MODIFIED_BY { get; set; }
-        public Nullable<long> PARENT_BUDGET_TYPE_ID { get; set; }
+        public Nullable<System.DateTime> MODIFY_DATE { get; set; }
     }
 }

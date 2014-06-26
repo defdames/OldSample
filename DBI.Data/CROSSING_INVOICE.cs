@@ -12,16 +12,21 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class OVERHEAD_BUDGET_TYPE
+    public partial class CROSSING_INVOICE
     {
-        public long OVERHEAD_BUDGET_TYPE_ID { get; set; }
-        public string BUDGET_NAME { get; set; }
-        public string BUDGET_DESCRIPTION { get; set; }
-        public long LE_ORG_ID { get; set; }
+        public CROSSING_INVOICE()
+        {
+            this.CROSSING_APPLICATION = new HashSet<CROSSING_APPLICATION>();
+        }
+    
+        public decimal INVOICE_ID { get; set; }
+        public Nullable<System.DateTime> INVOICE_DATE { get; set; }
+        public string INVOICE_NUMBER { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
-        public Nullable<long> PARENT_BUDGET_TYPE_ID { get; set; }
+    
+        public virtual ICollection<CROSSING_APPLICATION> CROSSING_APPLICATION { get; set; }
     }
 }
