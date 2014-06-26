@@ -44,14 +44,33 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
                     string dataIndex = condition.DataIndex;
                     FilterType type = condition.Type;
                     string op = condition.Operator;
-                    object value = condition.Value<string>();
-                   _data = _data.AddContainsCondition(dataIndex, value);
+                    object value = null;
+                     
+                    switch(condition.Type)
+                    {
+                        case FilterType.String:
+                            value = condition.Value<string>();
+                            _data = _data.AddContainsCondition(dataIndex, value);
+                            break;
+                        case FilterType.Date:
+                            value = condition.Value<DateTime>();
+                            _data = _data.AddContainsCondition(dataIndex, value);
+                            break;
+                        case FilterType.Numeric:
+                            value = condition.Value<string>();
+                            _data = _data.AddContainsCondition(dataIndex, value);
+                            break;
+                    }
+                }  
 
-                }
             }
 
             e.Total = _data.Count();
-            uxGlAccountSecurityStore.DataSource = _data.Skip(e.Start).Take(10).AsEnumerable();
+            uxGlAccountSecurityStore.DataSource = _data.Skip(e.Start).Take(e.Limit).AsEnumerable();
+
+
+
+
         }
     
     
