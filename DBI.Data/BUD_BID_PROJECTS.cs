@@ -15,7 +15,7 @@ namespace DBI.Data
     public partial class BUD_BID_PROJECTS
     {
         public decimal BUD_BID_PROJECTS_ID { get; set; }
-        public long PROJECT_ID { get; set; }
+        public string PROJECT_ID { get; set; }
         public string PRJ_NAME { get; set; }
         public Nullable<long> ORG_ID { get; set; }
         public Nullable<decimal> YEAR_ID { get; set; }

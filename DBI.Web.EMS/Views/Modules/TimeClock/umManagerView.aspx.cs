@@ -45,8 +45,8 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                         item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("hh\\:mm");
 
                         TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
-                        item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");
-                        
+                        item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");                      
+                            
 
                     }
                     uxEmployeeHoursStore.DataSource = data;
@@ -171,13 +171,58 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
 
         }
+
+        protected void deDeleteTime(object sender, DirectEventArgs e)
+        {
+            try
+            {
+
+                string _tcId = e.ExtraParams["delId"];
+
+                string url = "/Views/Modules/TimeClock/Edit/umDeleteTime.aspx?tcID=" + _tcId;
+
+                Window win = new Window
+                {
+                    ID = "uxDeleteTime",
+                    Title = "Delete Time",
+                    Height = 350,
+                    Width = 500,
+                    Modal = true,
+                    Resizable = false,
+                    CloseAction = CloseAction.Destroy,
+                    Loader = new ComponentLoader
+                    {
+                        Mode = LoadMode.Frame,
+                        DisableCaching = true,
+                        Url = url,
+                        AutoLoad = true,
+                        LoadMask =
+                        {
+                            ShowMask = true
+                        }
+                    }
+
+
+                };
+                win.Listeners.Close.Handler = "#{uxEmployeeHoursGrid}.getStore().load();";
+
+                win.Render(this.Form);
+                win.Show();
+
+            }
+            catch (Exception ex)
+            {
+                e.Success = false;
+                e.ErrorMessage = ex.ToString();
+            }
+        }
         
         protected void deApproveTime(object sender, DirectEventArgs e)
         {
             
             List<TIME_CLOCK> ApprovedTime = JSON.Deserialize<List<TIME_CLOCK>>(e.ExtraParams["ApprovedTime"]);
             ChangeRecords<EmployeeTime> NewTime = new StoreDataHandler(e.ExtraParams["NewTime"]).BatchObjectData<EmployeeTime>();
-            string person_name = Authentication.GetClaimValue("EmployeeName", User as ClaimsPrincipal);
+            string person_name = User.Identity.Name;//Authentication.GetClaimValue("EmployeeName", User as ClaimsPrincipal);
 
 
             TIME_CLOCK.EmployeeTimeSelectionApproved(ApprovedTime);
