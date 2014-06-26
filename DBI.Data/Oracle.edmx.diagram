@@ -71,7 +71,6 @@
         <EntityTypeShape EntityType="OracleModel.SYS_USER_PERMS" Width="1.5" PointX="32.625" PointY="19.875" />
         <EntityTypeShape EntityType="OracleModel.SYS_MENU" Width="1.5" PointX="30.25" PointY="23.25" />
         <AssociationConnector Association="OracleModel.FK_MENU_MODULE_ID" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING_APPLICATION" Width="1.5" PointX="29.125" PointY="0.625" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_INCIDENT" Width="1.5" PointX="26.625" PointY="13.5" />
         <EntityTypeShape EntityType="OracleModel.EMPLOYEES_V" Width="1.5" PointX="7.25" PointY="8.625" />
         <EntityTypeShape EntityType="OracleModel.SYS_GROUPS" Width="1.5" PointX="36.125" PointY="27" />
@@ -148,6 +147,11 @@
         <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="0.625" PointY="31" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_PROJECTS" Width="1.5" PointX="19.75" PointY="86" />
         <AssociationConnector Association="OracleModel.FK_PROJECTS_STATUS_ID" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_APPLICATION" Width="1.5" PointX="29.5" PointY="0.75" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_INVOICE" Width="1.5" PointX="32.5" PointY="2.25" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_SUPP_INVOICE" Width="1.5" PointX="35.5" PointY="3.75" />
+        <AssociationConnector Association="OracleModel.FK_APPLICATION_INVOICE_ID" />
+        <AssociationConnector Association="OracleModel.FK_APPLICATION_SUPP_INVOICE_ID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
