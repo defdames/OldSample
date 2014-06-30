@@ -162,10 +162,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     if (EmployeeBusinessUnitFailures != null)
                     {
                         WarningList.Add(EmployeeBusinessUnitFailures);
-<<<<<<< HEAD
+
                         X.Js.Call("disableOnError");
-=======
->>>>>>> develop
                     }
                     WarningData EmployeeOver24 = ValidationChecks.checkEmployeeTime(24, item.PERSON_ID, (DateTime)item.DA_DATE);
                     if (EmployeeOver24 != null)
@@ -218,10 +216,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     if (BusinessUnitWarning != null)
                     {
                         WarningList.Add(BusinessUnitWarning);
-<<<<<<< HEAD
                         X.Js.Call("disableOnError");
-=======
->>>>>>> develop
                     }
                     WarningData MeterWarning = ValidationChecks.MeterCheck(item.EQUIPMENT_ID);
                     if (MeterWarning != null)
