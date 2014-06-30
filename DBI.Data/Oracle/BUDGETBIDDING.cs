@@ -7,15 +7,65 @@ using DBI.Data.Generic;
 
 namespace DBI.Data
 {
-    public class BUD_BID
+    public class BUDGETBIDDING
     {
+        /// <summary>
+        /// Returns a list of budget versions
+        /// </summary>
+        /// <returns></returns>
+        public static List<DoubleComboLongID> BudgetVersions()
+        {
+            using (Entities context = new Entities())
+            {
+                List<DoubleComboLongID> comboItem = new List<DoubleComboLongID>();
+                comboItem.Add(new DoubleComboLongID { ID = 1, ID_NAME = "Bid" });
+                comboItem.Add(new DoubleComboLongID { ID = 2, ID_NAME = "First Draft" });
+                comboItem.Add(new DoubleComboLongID { ID = 3, ID_NAME = "Final Draft" });
+                comboItem.Add(new DoubleComboLongID { ID = 4, ID_NAME = "1st Reforecast" });
+                comboItem.Add(new DoubleComboLongID { ID = 5, ID_NAME = "2nd Reforecast" });
+                comboItem.Add(new DoubleComboLongID { ID = 6, ID_NAME = "3rd Reforecast" });
+                comboItem.Add(new DoubleComboLongID { ID = 7, ID_NAME = "4th Reforecast" });
+                return comboItem;
+            }
+        }
+
+        /// <summary>
+        /// Returns a list of actions for the BudgetBidding main year summary
+        /// </summary>
+        /// <returns></returns>
+        public static List<SingleCombo> YearBudgetProjectActions()
+        {
+            using (Entities context = new Entities())
+            {
+                List<SingleCombo> comboItem = new List<SingleCombo>();
+                comboItem.Add(new SingleCombo { ID_NAME = "Add a New Project" });
+                comboItem.Add(new SingleCombo { ID_NAME = "Delete Selected Project" });
+                return comboItem;
+            }
+        }
+
+        /// <summary>
+        /// Returns list of available statuses
+        /// </summary>
+        /// <returns></returns>
+        public static List<DoubleComboLongID> Statuses()
+        {
+            using (Entities context = new Entities())
+            {
+                string sql = "SELECT STATUS_ID ID, STATUS ID_NAME FROM BUD_BID_STATUS ORDER BY STATUS";
+
+                List<DoubleComboLongID> data = context.Database.SqlQuery<DoubleComboLongID>(sql).ToList();
+                return data;
+            }
+        }   
+        
         /// <summary>
         /// Returns list of projects also containing org and override for a given org
         /// </summary>
         /// <param name="orgID"></param>
         /// <param name="orgName"></param>
         /// <returns></returns>
-        public static List<BUD_BID.BUD_SUMMARY_V> ProjectList(long orgID, string orgName)
+        public static List<BUD_SUMMARY_V> ProjectList(long orgID, string orgName)
         {
             using (Entities context = new Entities())
             {
@@ -46,7 +96,7 @@ namespace DBI.Data
                     GROUP BY CONCAT('Various - ', PA.PA_PROJECT_CLASSES.CLASS_CODE) 
                     ORDER BY ORDERKEY, PROJECT_NAME", orgName, orgID);
 
-                List<BUD_BID.BUD_SUMMARY_V> data = context.Database.SqlQuery<BUD_BID.BUD_SUMMARY_V>(sql).ToList();
+                List<BUD_SUMMARY_V> data = context.Database.SqlQuery<BUD_SUMMARY_V>(sql).ToList();
                 return data;
             }
         }
@@ -61,7 +111,7 @@ namespace DBI.Data
         /// <param name="prevYearID"></param>
         /// <param name="prevVerID"></param>
         /// <returns></returns>
-        public static List<BUD_BID.BUD_SUMMARY_V> SummaryProjectsWithLineInfo(string orgName, long orgID, long yearID, long verID, long prevYearID, long prevVerID)
+        public static List<BUD_SUMMARY_V> SummaryProjectsWithLineInfo(string orgName, long orgID, long yearID, long verID, long prevYearID, long prevVerID)
         {
             using (Entities context = new Entities())
             {
@@ -123,7 +173,7 @@ namespace DBI.Data
                     LEFT OUTER JOIN PREV_OP ON CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID = PREV_OP.PROJECT_ID
                     ORDER BY LOWER(PROJECT_NAME)", orgName, orgID, yearID, verID, prevYearID, prevVerID);
 
-                List<BUD_BID.BUD_SUMMARY_V> data = context.Database.SqlQuery<BUD_BID.BUD_SUMMARY_V>(sql).ToList();
+                List<BUD_SUMMARY_V> data = context.Database.SqlQuery<BUD_SUMMARY_V>(sql).ToList();
                 return data;
             }
         }
@@ -133,7 +183,7 @@ namespace DBI.Data
         /// </summary>
         /// <param name="projectID"></param>
         /// <returns></returns>
-        public static BUD_BID.BUD_SUMMARY_V SummaryProjectsDetail(long projectID)
+        public static BUD_SUMMARY_V SummaryProjectsDetail(long projectID)
         {
             using (Entities context = new Entities())
             {
@@ -146,7 +196,7 @@ namespace DBI.Data
                 ON BUD_BID_PROJECTS.STATUS_ID = BUD_BID_STATUS.STATUS_ID
                 WHERE BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = {0}", projectID);
 
-                return context.Database.SqlQuery<BUD_BID.BUD_SUMMARY_V>(sql).SingleOrDefault();
+                return context.Database.SqlQuery<BUD_SUMMARY_V>(sql).SingleOrDefault();
              }
         }
 
@@ -168,7 +218,7 @@ namespace DBI.Data
                 WHERE BUD_BID_PROJECTS.ORG_ID = {0} AND BUD_BID_PROJECTS.YEAR_ID  = {1} AND
                     BUD_BID_PROJECTS.VER_ID = {2} AND BUD_BID_PROJECTS.PROJECT_ID = {3}", orgID, yearID, verID, projectID);
 
-                long recCount = context.Database.SqlQuery<BUD_BID.BUD_SUMMARY_V>(sql).Count();
+                long recCount = context.Database.SqlQuery<BUD_SUMMARY_V>(sql).Count();
 
                 if (recCount == 0)
                 {

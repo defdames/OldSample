@@ -27,7 +27,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void deLoadActions(object sender, StoreReadDataEventArgs e)
         {
-            uxActionsStore.DataSource = StaticLists.YearBudgetProjectActions();
+            uxActionsStore.DataSource = BUDGETBIDDING.YearBudgetProjectActions();
         }
 
         protected void deChooseAction(object sender, DirectEventArgs e)
@@ -107,14 +107,14 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
             long prevYearID = Convert.ToInt64(uxHidPrevYear.Text);
             long prevVerID = Convert.ToInt64(uxHidPrevVer.Text);
-            uxSummaryGridStore.DataSource = BUD_BID.SummaryProjectsWithLineInfo(orgName, orgID, yearID, verID, prevYearID, prevVerID);
+            uxSummaryGridStore.DataSource = BUDGETBIDDING.SummaryProjectsWithLineInfo(orgName, orgID, yearID, verID, prevYearID, prevVerID);
         }
 
         protected void deLoadOrgProjects(object sender, StoreReadDataEventArgs e)
         {
             long orgID = long.Parse(Request.QueryString["orgID"]);
             string orgName = Request.QueryString["orgName"];
-            List<object> dataSource = BUD_BID.ProjectList(orgID, orgName).ToList<object>();
+            List<object> dataSource = BUDGETBIDDING.ProjectList(orgID, orgName).ToList<object>();
             int count;
 
             uxProjectNumStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataSource, out count);
@@ -123,21 +123,21 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void deLoadStatuses(object sender, StoreReadDataEventArgs e)
         {
-            uxStatusStore.DataSource = BUD_BID_STATUS.Statuses();
+            uxStatusStore.DataSource = BUDGETBIDDING.Statuses();
         }
 
         protected void deLoadJCDates(object sender, StoreReadDataEventArgs e)
         {
             long hierID = Convert.ToInt64(Request.QueryString["hierID"]);
-            uxJCDateStore.DataSource = XXDBI_DW.LoadedJcWeDates(hierID, true, 5);
+            uxJCDateStore.DataSource = XXDBI_DW.LoadedJCWeDates(hierID, true, 5);
         }       
 
         protected void deGetFormData(object sender, DirectEventArgs e)
         {
             if (uxProjectDetail.Enabled == true) { uxProjectDetail.Disable(); }
 
-            string projectID = e.ExtraParams["ProjectID"];            
-            BUD_BID.BUD_SUMMARY_V data = BUD_BID.SummaryProjectsDetail(Convert.ToInt64(projectID));
+            string projectID = e.ExtraParams["ProjectID"];
+            BUDGETBIDDING.BUD_SUMMARY_V data = BUDGETBIDDING.SummaryProjectsDetail(Convert.ToInt64(projectID));
 
             uxHidNewProject.Text = "";
             uxHidBudBidID.Text = projectID;
@@ -169,6 +169,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 //uxSGrossRev.ReadOnly = false;
                 uxSDirects.ReadOnly = false;
                 //uxSOP.ReadOnly = false;
+                uxHidProjectNumID.Text = DateTime.Now.ToString("yyMMddHHmmss");
             }
 
             else
@@ -223,19 +224,19 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     return;
 
                 case "OVERRIDE":
-                    jcLine = XXDBI_DW.JcSummaryLineAmounts(Convert.ToInt64("0"), jcDate);
+                    jcLine = XXDBI_DW.JCSummaryLineAmounts(Convert.ToInt64("0"), jcDate);
                     break;
 
                 case "ORG":
-                    jcLine = XXDBI_DW.JcSummaryLineAmounts(Convert.ToInt64(hierID), Convert.ToInt64(projectID), jcDate);
+                    jcLine = XXDBI_DW.JCSummaryLineAmounts(Convert.ToInt64(hierID), Convert.ToInt64(projectID), jcDate);
                     break;
 
                 case "PROJECT":
-                    jcLine = XXDBI_DW.JcSummaryLineAmounts(Convert.ToInt64(projectID), jcDate);
+                    jcLine = XXDBI_DW.JCSummaryLineAmounts(Convert.ToInt64(projectID), jcDate);
                     break;
 
                 case "ROLLUP":
-                    jcLine = XXDBI_DW.JcSummaryLineAmounts(Convert.ToInt64(orgID), projectID, jcDate);
+                    jcLine = XXDBI_DW.JCSummaryLineAmounts(Convert.ToInt64(orgID), projectID, jcDate);
                     break;
             }
 
@@ -302,7 +303,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
             if (uxHidProjectNumID.Text == "") { return; }
             long projectID = Convert.ToInt64(uxHidProjectNumID.Text);
-            bool exists = BUD_BID.ProjectExists(orgID, yearID, verID, projectID);
+            bool exists = BUDGETBIDDING.ProjectExists(orgID, yearID, verID, projectID);
 
             if (String.IsNullOrWhiteSpace(uxProjectName.Text) || uxStatus.SelectedItem.Value == null || exists == true)
             {

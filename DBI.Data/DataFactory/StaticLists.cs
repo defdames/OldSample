@@ -159,40 +159,5 @@ namespace DBI.Data.DataFactory
                 };
                  }
              }
-
-        /// <summary>
-        /// Returns a list of budget versions
-        /// </summary>
-        /// <returns></returns>
-        public static List<DoubleComboLongID> BudgetVersions()
-        {
-            using (Entities context = new Entities())
-            {
-                List<DoubleComboLongID> comboItem = new List<DoubleComboLongID>();
-                comboItem.Add(new DoubleComboLongID { ID = 1, ID_NAME = "Bid" });
-                comboItem.Add(new DoubleComboLongID { ID = 2, ID_NAME = "First Draft" });
-                comboItem.Add(new DoubleComboLongID { ID = 3, ID_NAME = "Final Draft" });
-                comboItem.Add(new DoubleComboLongID { ID = 4, ID_NAME = "1st Reforecast" });
-                comboItem.Add(new DoubleComboLongID { ID = 5, ID_NAME = "2nd Reforecast" });
-                comboItem.Add(new DoubleComboLongID { ID = 6, ID_NAME = "3rd Reforecast" });
-                comboItem.Add(new DoubleComboLongID { ID = 7, ID_NAME = "4th Reforecast" });
-                return comboItem;
-            }
-        }
-
-        /// <summary>
-        /// Returns a list of actions for the BudgetBidding main year summary
-        /// </summary>
-        /// <returns></returns>
-        public static List<SingleCombo> YearBudgetProjectActions()
-        {
-            using (Entities context = new Entities())
-            {
-                List<SingleCombo> comboItem = new List<SingleCombo>();
-                comboItem.Add(new SingleCombo { ID_NAME = "Add a New Project" });
-                comboItem.Add(new SingleCombo { ID_NAME = "Delete Selected Project" });
-                return comboItem;
-            }
-        }
     }
 }
