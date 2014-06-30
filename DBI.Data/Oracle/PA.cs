@@ -17,7 +17,6 @@ namespace DBI.Data
         /// <returns></returns>
         public static decimal LaborBurden(string buid, string fiscalYear)
         {
-
             using (Entities _context = new Entities())
             {
                 string sql = @" SELECT (Icm.Multiplier / 100) as labor_burden_rate
@@ -40,27 +39,20 @@ namespace DBI.Data
 
                 return _returnValue;
             }
-    
-
         }
 
         /// <summary>
-        /// Returns a list of loaded job cost week ending dates in EMS.
+        /// Returns a list of loaded job cost week ending dates in EMS
         /// </summary>
-        /// <param name="hierarchyId"></param>
-        /// <param name="organizationId"></param>
-        /// <param name="optionalNumOfReturnRecords"></param>
         /// <returns></returns>
         public static List<SingleCombo> AllFiscalYears()
         {
-
-                using (Entities context = new Entities())
-                {                    
-                    string sql = "SELECT DISTINCT TO_CHAR(END_DATE, 'YYYY') ID_NAME FROM APPS.PA_PERIODS_ALL ORDER BY 1";
-                    List<SingleCombo> data = context.Database.SqlQuery<SingleCombo>(sql).ToList();
-                    return data;
-                }
-           
+            using (Entities context = new Entities())
+            {                    
+                string sql = "SELECT DISTINCT TO_CHAR(END_DATE, 'YYYY') ID_NAME FROM APPS.PA_PERIODS_ALL ORDER BY 1";
+                List<SingleCombo> data = context.Database.SqlQuery<SingleCombo>(sql).ToList();
+                return data;
+            }
         }        
     }
 }
