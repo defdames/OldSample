@@ -30,49 +30,14 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
 
         protected void deReadGLSecurityCodes(object sender, StoreReadDataEventArgs e)
         {
-            Entities _context = new Entities();
-            IQueryable<GL_ACCOUNTS_V> _data = _context.GL_ACCOUNTS_V.OrderBy(x => x.CODE_COMBINATION_ID);
 
-            string filter = e.Parameters["filterheader"].ToString();
-
-            if (filter != "{}")
+            using (Entities _context = new Entities())
             {
-                FilterHeaderConditions fhc = new FilterHeaderConditions(filter);
-
-                foreach (FilterHeaderCondition condition in fhc.Conditions)
-                {
-                    string dataIndex = condition.DataIndex;
-                    FilterType type = condition.Type;
-                    string op = condition.Operator;
-                    object value = null;
-                     
-                    switch(condition.Type)
-                    {
-                        case FilterType.String:
-                            value = condition.Value<string>();
-                            _data = _data.AddContainsCondition(dataIndex, value);
-                            break;
-                        case FilterType.Date:
-                            value = condition.Value<DateTime>();
-                            _data = _data.AddContainsCondition(dataIndex, value);
-                            break;
-                        case FilterType.Numeric:
-                            value = condition.Value<string>();
-                            _data = _data.AddContainsCondition(dataIndex, value);
-                            break;
-                    }
-                }  
-
+                int count;
+                IQueryable<GL_ACCOUNTS_V> _data = _context.GL_ACCOUNTS_V;
+                uxGlAccountSecurityStore.DataSource = GenericData.ListFilterHeader<GL_ACCOUNTS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
+                e.Total = count;
             }
-
-            e.Total = _data.Count();
-            uxGlAccountSecurityStore.DataSource = _data.Skip(e.Start).Take(e.Limit).AsEnumerable();
-
-
-
-
-        }
-    
-    
+        }  
     }
 }

@@ -24,10 +24,8 @@ namespace DBI.Core
 
             public static IQueryable<T> AddEqualCondition<T, V>(this IQueryable<T> queryable, string propertyName, V propertyValue)
             {
-                try
-                {
-                    ParameterExpression pe = Expression.Parameter(typeof(T), "p");
 
+                    ParameterExpression pe = Expression.Parameter(typeof(T), "p");
                     var me = Expression.Property(pe, typeof(T).GetProperty(propertyName));
                     var ce = Expression.Constant(propertyValue, typeof(string));
                     MethodInfo method = typeof(string).GetMethod("Equal", new[] { typeof(string) });
@@ -36,11 +34,6 @@ namespace DBI.Core
 
                     IQueryable<T> x = queryable.Where<T>(lambda);
                     return (x);
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
             }
 
             public static IQueryable<T> AddContainsCondition<T, V>(this IQueryable<T> queryable, string propertyName, V propertyValue)
@@ -58,5 +51,19 @@ namespace DBI.Core
                     return (x);
             }
 
+
+            public static IQueryable<T> AddOrderByCondition<T>(this IQueryable<T> queryable, string ordering, string sortDirection)
+            {
+                var type = typeof(T);
+                var property = type.GetProperty(ordering);
+                var parameter = Expression.Parameter(type, "p");
+                var propertyAccess = Expression.MakeMemberAccess(parameter, property);
+                var orderByExp = Expression.Lambda(propertyAccess, parameter);
+                string direction = (sortDirection == "ASC") ? "OrderBy" : "OrderByDescending";
+                MethodCallExpression resultExp = Expression.Call(typeof(Queryable), direction, new Type[] { type, property.PropertyType }, queryable.Expression, Expression.Quote(orderByExp));
+                return queryable.Provider.CreateQuery<T>(resultExp);
+            }
+
+           
         }
     }

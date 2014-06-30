@@ -50,7 +50,7 @@
                                 <ext:PageProxy />
                             </Proxy>
                             <Sorters>
-                                <ext:DataSorter Direction="ASC" Property="SEGMENT5_DESC" />
+                                <ext:DataSorter Direction="ASC" Property="SEGMENT1" />
                             </Sorters>
 
                         </ext:Store>
