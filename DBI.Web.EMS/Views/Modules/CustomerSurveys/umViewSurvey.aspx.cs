@@ -22,12 +22,12 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         {
             using (Entities _context = new Entities())
             {
-                List<CUSTOMER_SURVEY_FORMS.CustomerSurveyFieldsets> Fieldsets = CUSTOMER_SURVEY_FORMS.GetFormFieldSets(FormId, _context).Where(x => x.IS_ACTIVE == true).ToList();
+                List<CUSTOMER_SURVEYS.CustomerSurveyFieldsets> Fieldsets = CUSTOMER_SURVEYS.GetFormFieldSets(FormId, _context).Where(x => x.IS_ACTIVE == true).ToList();
 
-                foreach (CUSTOMER_SURVEY_FORMS.CustomerSurveyFieldsets Fieldset in Fieldsets)
+                foreach (CUSTOMER_SURVEYS.CustomerSurveyFieldsets Fieldset in Fieldsets)
                 {
-                    var QuestionQuery = CUSTOMER_SURVEY_FORMS.GetFieldsetQuestions(Fieldset.FIELDSET_ID, _context).Where(x => x.IS_ACTIVE == true);
-                    List<CUSTOMER_SURVEY_FORMS.CustomerSurveyQuestions> Questions = QuestionQuery.ToList();
+                    var QuestionQuery = CUSTOMER_SURVEYS.GetFieldsetQuestions(Fieldset.FIELDSET_ID, _context).Where(x => x.IS_ACTIVE == true);
+                    List<CUSTOMER_SURVEYS.CustomerSurveyQuestions> Questions = QuestionQuery.ToList();
                     if (Questions.Count > 0)
                     {
                         FieldSet NewFieldset = new FieldSet();
@@ -35,7 +35,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                         NewFieldset.Title = Fieldset.TITLE;
                         NewFieldset.Margin = 5;
                         uxSurveyDisplay.Items.Add(NewFieldset);
-                        foreach (CUSTOMER_SURVEY_FORMS.CustomerSurveyQuestions Question in Questions)
+                        foreach (CUSTOMER_SURVEYS.CustomerSurveyQuestions Question in Questions)
                         {
                             switch ((long)Question.TYPE_ID)
                             {
@@ -64,7 +64,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     Combobox.TypeAhead = true;
                                     Combobox.ForceSelection = true;
                                     Combobox.QueryMode = DataLoadMode.Local;
-                                    List<CUSTOMER_SURVEY_OPTIONS> ComboOptions = CUSTOMER_SURVEY_FORMS.GetQuestionOptions(Question.QUESTION_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
+                                    List<CUSTOMER_SURVEY_OPTIONS> ComboOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
                                     foreach (CUSTOMER_SURVEY_OPTIONS Option in ComboOptions)
                                     {
                                         Combobox.Items.Add(new Ext.Net.ListItem
@@ -82,7 +82,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     RadioQuestion.AllowBlank = !Question.IS_REQUIRED;
                                     RadioQuestion.LabelWidth = 150;
                                     RadioQuestion.ColumnsNumber = 1;
-                                    List<CUSTOMER_SURVEY_OPTIONS> RadioOptions = CUSTOMER_SURVEY_FORMS.GetQuestionOptions(Question.QUESTION_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
+                                    List<CUSTOMER_SURVEY_OPTIONS> RadioOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
                                     foreach (CUSTOMER_SURVEY_OPTIONS Option in RadioOptions)
                                     {
                                         RadioQuestion.Items.Add(new Radio
@@ -102,7 +102,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     CheckQuestion.LabelWidth = 150;
                                     CheckQuestion.AllowBlank = !Question.IS_REQUIRED;
                                     CheckQuestion.ColumnsNumber = 1;
-                                    List<CUSTOMER_SURVEY_OPTIONS> CheckOptions = CUSTOMER_SURVEY_FORMS.GetQuestionOptions(Question.QUESTION_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
+                                    List<CUSTOMER_SURVEY_OPTIONS> CheckOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
                                     foreach (CUSTOMER_SURVEY_OPTIONS Option in CheckOptions)
                                     {
                                         CheckQuestion.Items.Add(new Checkbox

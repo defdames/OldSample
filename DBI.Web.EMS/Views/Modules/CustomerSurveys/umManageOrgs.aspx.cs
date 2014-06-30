@@ -27,15 +27,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 long _organizationID = GetOrgFromTree(_selectedRecordID);
                 using (Entities _context = new Entities())
                 {
-                    List<CUSTOMER_SURVEY_FORMS> FormData = CUSTOMER_SURVEY_FORMS.GetForms(_context).Where(x => x.ORG_ID == _organizationID).ToList();
-                    List<CUSTOMER_SURVEY_FORMS.CustomerSurveyForms> AllData = new List<CUSTOMER_SURVEY_FORMS.CustomerSurveyForms>();
+                    List<CUSTOMER_SURVEY_FORMS> FormData = CUSTOMER_SURVEYS.GetForms(_context).Where(x => x.ORG_ID == _organizationID).ToList();
+                    List<CUSTOMER_SURVEYS.CustomerSurveyForms> AllData = new List<CUSTOMER_SURVEYS.CustomerSurveyForms>();
                     foreach (CUSTOMER_SURVEY_FORMS ThisForm in FormData)
                     {
-                        CUSTOMER_SURVEY_FORMS.CustomerSurveyForms NewForm = new CUSTOMER_SURVEY_FORMS.CustomerSurveyForms();
+                        CUSTOMER_SURVEYS.CustomerSurveyForms NewForm = new CUSTOMER_SURVEYS.CustomerSurveyForms();
                         NewForm.FORMS_NAME = ThisForm.FORMS_NAME;
                         NewForm.ORG_ID = ThisForm.ORG_ID;
                         NewForm.FORM_ID = ThisForm.FORM_ID;
-                        //var NumQuestions = CUSTOMER_SURVEY_FORMS.NumberOfQuestionsInForm(ThisForm.FORM_ID);
+                        //var NumQuestions = CUSTOMER_SURVEYS.NumberOfQuestionsInForm(ThisForm.FORM_ID);
 
                         // NewForm.NUM_QUESTIONS = NumQuestions;
                         AllData.Add(NewForm);
@@ -153,7 +153,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 long OrgID = GetOrgFromTree(_selectedRecordID);
                 using (Entities _context = new Entities())
                 {
-                    CUSTOMER_SURVEY_THRESHOLDS Threshold = CUSTOMER_SURVEY_FORMS.GetOrganizationThreshold(OrgID, _context).SingleOrDefault();
+                    CUSTOMER_SURVEY_THRESHOLDS Threshold = CUSTOMER_SURVEYS.GetOrganizationThreshold(OrgID, _context).SingleOrDefault();
                     if (Threshold != null)
                     {
                         uxSmallThreshold.Value = Threshold.SMALL_THRESHOLD;
@@ -194,7 +194,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 CUSTOMER_SURVEY_THRESHOLDS UpdatedThreshold;
                 using (Entities _context = new Entities())
                 {
-                    UpdatedThreshold = CUSTOMER_SURVEY_FORMS.GetOrganizationThreshold(OrgId, _context).Single();
+                    UpdatedThreshold = CUSTOMER_SURVEYS.GetOrganizationThreshold(OrgId, _context).Single();
                 }
                 UpdatedThreshold.SMALL_THRESHOLD = decimal.Parse(uxSmallThreshold.Text);
                 UpdatedThreshold.LARGE_THRESHOLD1 = decimal.Parse(uxFirstLargeThreshold.Text);

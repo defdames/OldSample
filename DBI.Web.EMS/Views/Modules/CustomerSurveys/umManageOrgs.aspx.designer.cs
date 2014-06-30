@@ -49,6 +49,24 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.TreeSelectionModel uxCompanySelectionModel;
         
         /// <summary>
+        /// uxDollarGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridPanel uxDollarGrid;
+        
+        /// <summary>
+        /// uxDollarStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxDollarStore;
+        
+        /// <summary>
         /// uxOrganizationForm control.
         /// </summary>
         /// <remarks>

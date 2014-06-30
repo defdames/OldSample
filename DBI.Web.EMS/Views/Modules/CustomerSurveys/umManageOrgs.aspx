@@ -41,6 +41,39 @@
                         <ItemClick OnEvent="deLoadFormThresholds" />
                     </DirectEvents>
                 </ext:TreePanel>
+                <ext:GridPanel runat="server" ID="uxDollarGrid" Title="Dollar Threshold" Region="North">
+                    <Store>
+                        <ext:Store runat="server" ID="uxDollarStore" AutoLoad="false" AutoDataBind="true" OnReadData="deReadDollars" PageSize="10">
+                            <Model>
+                                <ext:Model runat="server">
+                                    <Fields>
+                                        <ext:ModelField Name="ORG_ID" />
+                                        <ext:ModelField Name="HIERARCHY_NAME" />
+                                        <ext:ModelField Name="LOW_THRESHOLD />
+                                        <ext:ModelField Name="HIGH_THRESHOLD" />
+                                    </Fields>
+                                </ext:Model>
+                            </Model>
+                            <Sorters>
+                                <ext:DataSorter Property="LOW_THRESHOLD" Direction="ASC" />
+                            </Sorters>
+                            <Proxy>
+                                <ext:PageProxy />
+                            </Proxy>
+                        </ext:Store>
+                    </Store>
+                    <ColumnModel>
+                        <Columns>
+                            <ext:Column runat="server" Text="Organization Name" DataIndex="HIERARCHY_NAME" />
+                            <ext:Column runat="server" Text="Lower Threshold" DataIndex="LOW_THRESHOLD">
+                                <Renderer Format="UsMoney" />
+                            </ext:Column>
+                            <ext:Column runat="server" Text="Upper Threshold" DataIndex="HIGH_THRESHOLD">
+                                <Renderer Format="UsMoney" />
+                            </ext:Column>
+                        </Columns>
+                    </ColumnModel>
+                </ext:GridPanel>
                 <ext:FormPanel runat="server" ID="uxOrganizationForm" BodyPadding="10" Region="Center">
                     <Items>
                         <ext:Hidden runat="server" ID="uxFormType" />

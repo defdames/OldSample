@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DBI.Data
 {
-    public partial class CUSTOMER_SURVEY_FORMS
+    public class CUSTOMER_SURVEYS
     {
         public static IQueryable<CUSTOMER_SURVEY_FORMS> GetForms(Entities _context)
         {
