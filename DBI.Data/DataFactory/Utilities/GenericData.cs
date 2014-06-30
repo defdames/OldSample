@@ -704,9 +704,11 @@ namespace DBI.Data
             //-- start sorting ------------------------------------------------------------
             if (sort.Length > 0)
             {
+                int counter = 0;
                 foreach (DataSorter s in sort)
                 {
-                    data = data.AddOrderByCondition(s.Property, s.Direction.ToString());
+                    data = data.AddOrderByCondition(s.Property, s.Direction.ToString(), counter);
+                    counter++;
                 }
             }
             else
