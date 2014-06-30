@@ -52,14 +52,22 @@ namespace DBI.Core
             }
 
 
-            public static IQueryable<T> AddOrderByCondition<T>(this IQueryable<T> queryable, string ordering, string sortDirection)
+            public static IQueryable<T> AddOrderByCondition<T>(this IQueryable<T> queryable, string ordering, string sortDirection, int count)
             {
                 var type = typeof(T);
                 var property = type.GetProperty(ordering);
                 var parameter = Expression.Parameter(type, "p");
                 var propertyAccess = Expression.MakeMemberAccess(parameter, property);
                 var orderByExp = Expression.Lambda(propertyAccess, parameter);
-                string direction = (sortDirection == "ASC") ? "OrderBy" : "OrderByDescending";
+                string direction;
+                if (count == 0)
+                {
+                    direction = (sortDirection == "ASC") ? "OrderBy" : "OrderByDescending";
+                }
+                else
+                {
+                    direction = (sortDirection == "ASC") ? "ThenBy" : "ThenByDescending";
+                }
                 MethodCallExpression resultExp = Expression.Call(typeof(Queryable), direction, new Type[] { type, property.PropertyType }, queryable.Expression, Expression.Quote(orderByExp));
                 return queryable.Provider.CreateQuery<T>(resultExp);
             }
