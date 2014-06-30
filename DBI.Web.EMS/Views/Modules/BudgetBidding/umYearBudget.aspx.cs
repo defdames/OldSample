@@ -25,25 +25,27 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             }
         }
 
-        protected void deLoadActions(object sender, StoreReadDataEventArgs e)
+        protected void deLoadSummaryActions(object sender, StoreReadDataEventArgs e)
         {
-            uxActionsStore.DataSource = BUDGETBIDDING.YearBudgetProjectActions();
+            uxActionsStore.DataSource = BUDGETBIDDING.YearBudgetSummaryProjectActions();
         }
 
-        protected void deChooseAction(object sender, DirectEventArgs e)
+        protected void deChooseSummaryAction(object sender, DirectEventArgs e)
         {
             string selectedAction = uxActions.Text;
+
+            switch (selectedAction)
+            {
+                case "Add a New Project":
+                    ActionAddNewProject();
+                    break;
+
+                case "Delete Selected Project":
+                    ActionDeleteSelectedProject();                    
+                    break;            
+            }
+
             uxActions.Text = null;
-
-            if (selectedAction == "Add a New Project")
-            {
-                ActionAddNewProject();
-            }
-
-            else if (selectedAction == "Delete Selected Project")
-            {
-                ActionDeleteSelectedProject();
-            }
         }
 
         protected void ActionAddNewProject()
@@ -51,7 +53,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             if (uxHidNewProject.Text == "True") { return; }
 
             uxGridRowModel.ClearSelection();
-            uxProjectDetail.Reset();
             uxProjectDetail.Enable();
             uxSave.Disable();
             uxHidNewProject.Text = "True";
@@ -61,7 +62,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         {
             if (uxHidNewProject.Text == "True") { return; }
 
-            else if (uxHidBudBidID.Text == "")
+            if (uxHidBudBidID.Text == "")
             {
                 StandardMsgBox("Delete", "A project must be selected before it can be deleted.", "INFO");
                 return;
@@ -77,14 +78,18 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         [DirectMethod]
         public void DeleteSelectedProject()
         {
-            BUD_BID_PROJECTS projectData = new BUD_BID_PROJECTS();
-            BUD_BID_ACTUAL_NUM actualData = new BUD_BID_ACTUAL_NUM();
-            BUD_BID_BUDGET_NUM budgetData = new BUD_BID_BUDGET_NUM();
             long budBidID = Convert.ToInt64(uxHidBudBidID.Text);
 
-            projectData.BUD_BID_PROJECTS_ID = budBidID;
-            actualData.PROJECT_ID = budBidID;
-            budgetData.PROJECT_ID = budBidID;
+            BUD_BID_PROJECTS projectData;
+            List<BUD_BID_ACTUAL_NUM> actualData;
+            List<BUD_BID_BUDGET_NUM> budgetData;
+
+            using (Entities _context = new Entities())
+            {
+                projectData = _context.BUD_BID_PROJECTS.Where(x => x.BUD_BID_PROJECTS_ID == budBidID).Single();
+                actualData = _context.BUD_BID_ACTUAL_NUM.Where(x => x.PROJECT_ID == budBidID).ToList();
+                budgetData = _context.BUD_BID_BUDGET_NUM.Where(x => x.PROJECT_ID == budBidID).ToList();
+            }
 
             GenericData.Delete<BUD_BID_PROJECTS>(projectData);
             GenericData.Delete<BUD_BID_ACTUAL_NUM>(actualData);

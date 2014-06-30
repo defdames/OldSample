@@ -33,7 +33,7 @@ namespace DBI.Data
         /// Returns a list of actions for the BudgetBidding main year summary
         /// </summary>
         /// <returns></returns>
-        public static List<SingleCombo> YearBudgetProjectActions()
+        public static List<SingleCombo> YearBudgetSummaryProjectActions()
         {
             using (Entities context = new Entities())
             {
