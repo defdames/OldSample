@@ -143,6 +143,9 @@
     <Compile Include="CROSSING_INSPECTION.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="CROSSING_INVOICE.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="CROSSING_PROJECT.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
@@ -159,6 +162,9 @@
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="CROSSING_SUPPLEMENTAL.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CROSSING_SUPP_INVOICE.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="CUSTOMER_SURVEY_FIELDSETS.cs">
@@ -183,6 +189,9 @@
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="CUSTOMER_SURVEY_RELATION.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CUSTOMER_SURVEY_THRESHOLDS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="DAILY_ACTIVITY_AUDIT.cs">
@@ -283,6 +292,7 @@
     <Compile Include="MTL_TRANSACTION_INT_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="Oracle\BUD_BID.cs" />
     <Compile Include="Oracle\GL.cs" />
     <Compile Include="Oracle\HR.cs" />
     <Compile Include="DataFactory\Interface\Interface.cs" />

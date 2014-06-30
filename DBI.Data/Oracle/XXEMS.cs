@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DBI.Data.Generic;
 
 
 namespace DBI.Data
@@ -118,8 +119,7 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<SYS_ORG_PROFILE_OPTIONS_V> OrganizationProfileOptions()
         {
-            try
-            {
+
                 using (Entities _context = new Entities())
                 {
                     var data = from a in _context.SYS_ORG_PROFILE_OPTIONS
@@ -128,12 +128,7 @@ namespace DBI.Data
                     return data.ToList();
 
                 }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+           
 
         }
 
@@ -145,8 +140,7 @@ namespace DBI.Data
         /// <returns></returns>
         public static string OrganizationProfileOption(string profileOptionName, long organizationId)
         {
-            try
-            {
+
                 SYS_ORG_PROFILE_OPTIONS_V _option = OrganizationProfileOptions().Where(x => x.PROFILE_KEY == profileOptionName && x.ORGANIZATION_ID == organizationId).SingleOrDefault();
                 string _value = string.Empty;
                 if (_option != null)
@@ -154,12 +148,7 @@ namespace DBI.Data
                     _value = _option.PROFILE_VALUE;
                 }
                 return _value;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+         
         }
 
 
@@ -172,19 +161,13 @@ namespace DBI.Data
         /// <returns></returns>
         public static SYS_ORG_PROFILE_OPTIONS OrganizationProfileOption(decimal profileOptionId, long organizationId)
         {
-            try
-            {
+
                 using (Entities _context = new Entities())
                 {
                     SYS_ORG_PROFILE_OPTIONS _option = _context.SYS_ORG_PROFILE_OPTIONS.Where(x => x.PROFILE_OPTION_ID == profileOptionId && x.ORGANIZATION_ID == organizationId).SingleOrDefault();
                     return _option;
                 }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+         
         }
 
         /// <summary>
@@ -195,8 +178,7 @@ namespace DBI.Data
         /// <param name="organizationId"></param>
         public static void SetOrganizationProfileOption(string profileOptionName, string keyValue, long organizationId)
         {
-            try
-            {
+
                 SYS_PROFILE_OPTIONS _option = SYS_PROFILE_OPTIONS.ProfileOption(profileOptionName);
                 SYS_USER_INFORMATION _loggedInUser = SYS_USER_INFORMATION.LoggedInUser();
 
@@ -231,11 +213,7 @@ namespace DBI.Data
                     _profileOption.PROFILE_VALUE = keyValue;
                     DBI.Data.GenericData.Insert<SYS_ORG_PROFILE_OPTIONS>(_profileOption);
                 }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            
 
 
         }
@@ -262,18 +240,13 @@ namespace DBI.Data
         /// <returns></returns>
         public static int GetCount(long profile_option_id)
         {
-            try
-            {
+
                 using (Entities _context = new Entities())
                 {
                     var data = _context.SYS_USER_PROFILE_OPTIONS.Where(x => x.PROFILE_OPTION_ID == profile_option_id).Count();
                     return data;
                 }
-            }
-            catch (Exception)
-            {  
-                throw;
-            }
+           
             
         }
 
@@ -284,8 +257,7 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<SYS_USER_PROFILE_OPTIONS_V> UserProfileOptions()
         {
-            try
-            {
+
                 using (Entities _context = new Entities())
                 {
                     var data = from a in _context.SYS_USER_PROFILE_OPTIONS.Include("SYS_PROFILE_OPTIONS")
@@ -293,12 +265,7 @@ namespace DBI.Data
                     return data.ToList();
 
                 }
-            }
-            catch (Exception)
-            {
-                
-                throw;
-            }
+            
            
         }
 
@@ -309,8 +276,7 @@ namespace DBI.Data
         /// <returns></returns>
         public static string UserProfileOption(string profileOptionName, long userId)
         {
-            try
-            {
+
                 SYS_USER_PROFILE_OPTIONS_V _option = UserProfileOptions().Where(x => x.PROFILE_KEY == profileOptionName && x.USER_ID == userId).SingleOrDefault();
                 string _value = string.Empty;
                 if (_option != null)
@@ -318,12 +284,7 @@ namespace DBI.Data
                     _value = _option.PROFILE_VALUE;
                 }
                 return _value;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+           
         }
 
         /// <summary>
@@ -333,8 +294,7 @@ namespace DBI.Data
         /// <returns></returns>
         public static string UserProfileOption(string profileOptionName)
         {
-            try
-            {
+
                 SYS_USER_INFORMATION _user = SYS_USER_INFORMATION.LoggedInUser();
                 SYS_USER_PROFILE_OPTIONS_V _option = UserProfileOptions().Where(x => x.PROFILE_KEY == profileOptionName && x.USER_ID == _user.USER_ID).SingleOrDefault();
                 string _value = string.Empty;
@@ -343,12 +303,7 @@ namespace DBI.Data
                     _value = _option.PROFILE_VALUE;
                 }
                 return _value;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+           
         }
 
         /// <summary>
@@ -358,19 +313,13 @@ namespace DBI.Data
         /// <returns></returns>
         public static SYS_USER_PROFILE_OPTIONS UserProfileOption(decimal profileOptionId, long userId)
         {
-            try
-            {
+
                 using (Entities _context = new Entities())
                 {
                     SYS_USER_PROFILE_OPTIONS _option = _context.SYS_USER_PROFILE_OPTIONS.Where(x => x.PROFILE_OPTION_ID == profileOptionId && x.USER_ID == userId).SingleOrDefault();
                     return _option;
                 }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+           
         }
 
         /// <summary>
@@ -381,9 +330,7 @@ namespace DBI.Data
         /// <param name="userId"></param>
         public static void SetProfileOption(string profileOptionName, string keyValue, long userId = 0)
         {
-            try
-            {
-             
+
                 SYS_USER_INFORMATION _loggedInUser = SYS_USER_INFORMATION.LoggedInUser();
                 SYS_PROFILE_OPTIONS _option = SYS_PROFILE_OPTIONS.ProfileOption(profileOptionName);
 
@@ -435,17 +382,6 @@ namespace DBI.Data
 
             }
 
-            catch (DBICustomException)
-            {
-                throw;
-            }
-
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
         public class SYS_USER_PROFILE_OPTIONS_V : SYS_USER_PROFILE_OPTIONS
         {
             public string PROFILE_KEY { get; set; }
@@ -467,19 +403,18 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<OVERHEAD_BUDGET_TYPE> BudgetTypes(long legalEntityOrganizationId)
         {
-            try
-            {
+
                 using (Entities _context = new Entities())
                 {
-                    List<OVERHEAD_BUDGET_TYPE> _returnList = _context.OVERHEAD_BUDGET_TYPE.Where(c => c.LE_ORG_ID == legalEntityOrganizationId).ToList();
+                    var sql = string.Format(@"select * from xxems.overhead_budget_type 
+                                where le_org_id = {0}
+                                start with parent_budget_type_id is null
+                                connect by prior overhead_budget_type_id = parent_budget_type_id",legalEntityOrganizationId);
+
+                    List<OVERHEAD_BUDGET_TYPE> _returnList = _context.Database.SqlQuery<OVERHEAD_BUDGET_TYPE>(sql).ToList();
                     return _returnList;
                 }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            
 
         }
 
@@ -490,19 +425,13 @@ namespace DBI.Data
         /// <returns></returns>
         public static OVERHEAD_BUDGET_TYPE BudgetType(long budgetTypeId)
         {
-            try
-            {
+
                 using (Entities _context = new Entities())
                 {
                     OVERHEAD_BUDGET_TYPE _returnData = _context.OVERHEAD_BUDGET_TYPE.Where(c => c.OVERHEAD_BUDGET_TYPE_ID == budgetTypeId).SingleOrDefault();
                     return _returnData;
                 }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+           
 
         }
 
@@ -524,8 +453,7 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<GL_ACCOUNTS_V2> AccountsByLegalEntity(long legalEntityOrganizationId)
         {
-            try
-            {
+
                 using (Entities _context = new Entities())
                 {
                     var data = (from gl in _context.OVERHEAD_GL_ACCOUNT.Where(c => c.OVERHEAD_ORG_ID == legalEntityOrganizationId)
@@ -552,12 +480,7 @@ namespace DBI.Data
 
                     return data;
                 }
-            }
-            catch (Exception)
-            {
-                
-                throw;
-            }
+            
            
         }
 
@@ -567,19 +490,13 @@ namespace DBI.Data
         /// <param name="overheadGlId"></param>
         public static void Delete(long overheadGlId)
         {
-            try
-            {
+
                 using (Entities _context = new Entities())
                 {
                     OVERHEAD_GL_ACCOUNT account = _context.OVERHEAD_GL_ACCOUNT.Where(a => a.OVERHEAD_GL_ID == overheadGlId).SingleOrDefault();
                     GenericData.Delete<OVERHEAD_GL_ACCOUNT>(account);
                 }
-            }
-            catch (Exception)
-            {
-                
-                throw;
-            }
+           
             
         }
 
@@ -590,19 +507,13 @@ namespace DBI.Data
         /// <returns></returns>
         public static int GetCount(long organizationId)
         {
-            try
-            {
+
                 using (Entities _context = new Entities())
                 {
                     int cnt = _context.OVERHEAD_GL_ACCOUNT.Where(a => a.OVERHEAD_ORG_ID == organizationId).Count();
                     return cnt;
                 }
-            }
-            catch (Exception)
-            {
-                
-                throw;
-            }
+           
            
         }
 
@@ -623,8 +534,7 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<Employee> EmployeeTime()
         {
-            try
-            {
+
                 using (Entities _context = new Entities())
                 {
 
@@ -653,12 +563,7 @@ namespace DBI.Data
                                  }).ToList();
                     return _data;
                 }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            
 
         }
 
@@ -670,16 +575,10 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<Employee> EmployeeTimeCompletedUnapproved(decimal supervisorId)
         {
-            try
-            {
+
                 var _data = EmployeeTime().Where(x => x.SUPERVISOR_ID == supervisorId && x.COMPLETED  == "Y" && x.APPROVED == "N" && x.DELETED =="N").ToList();
                 return _data;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+           
 
         }
         /// <summary>
@@ -688,15 +587,10 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<Employee> EmployeeTimeCompletedUnapprovedPayroll()
         {
-            try
-            {
+
                 var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "N" && x.DELETED == "N").ToList();
                 return _data;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            
         }
         /// <summary>
         /// Returns all employee time that has been completed by supervisor ID
@@ -705,15 +599,10 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<Employee> EmployeeTimeCompleted(decimal supervisorId)
         {
-            try
-            {
+
                 var _data = EmployeeTime().Where(x => x.SUPERVISOR_ID == supervisorId && x.COMPLETED == "Y" && x.DELETED == "N").ToList();
                 return _data;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            
 
         }
         /// <summary>
@@ -722,15 +611,9 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<Employee> EmployeeTimeCompletedPayroll()
         {
-            try
-            {
                 var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.DELETED == "N").ToList();
                 return _data;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+          
 
         }
         /// <summary>
@@ -841,8 +724,7 @@ namespace DBI.Data
         /// <param name="selection"></param>
         public static void EmployeeTimeSelectionApproved(List<TIME_CLOCK> selection)
         {
-            try
-            {
+
                 foreach (TIME_CLOCK selected in selection)
                 {
 
@@ -855,10 +737,20 @@ namespace DBI.Data
                     }
                     DBI.Data.GenericData.Update<TIME_CLOCK>(_data);
                 }
-            }
-            catch (Exception)
+           
+        }
+
+        public static void EmployeeTimeSelectionSubmitted(List<TIME_CLOCK> selection)
+        {
+            foreach (TIME_CLOCK selected in selection)
             {
-                throw;
+                TIME_CLOCK _data;
+                using (Entities _context = new Entities())
+                {
+                    _data = _context.TIME_CLOCK.Where(x => x.APPROVED == "Y" && x.TIME_CLOCK_ID == selected.TIME_CLOCK_ID).SingleOrDefault();
+                    _data.SUBMITTED = "Y";
+                }
+                DBI.Data.GenericData.Update <TIME_CLOCK>(_data);
             }
         }
 
@@ -927,8 +819,7 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<SYS_PROFILE_OPTIONS_V2> ProfileOptionsByType(decimal profileOptionId)
         {
-            try
-            {
+
                 List<DBI.Data.SYS_USER_PROFILE_OPTIONS.SYS_USER_PROFILE_OPTIONS_V> _userProfileOptions = SYS_USER_PROFILE_OPTIONS.UserProfileOptions().Where(x => x.PROFILE_OPTION_ID == profileOptionId).ToList();
                 List<DBI.Data.SYS_ORG_PROFILE_OPTIONS.SYS_ORG_PROFILE_OPTIONS_V> _orgProfileOptions = SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOptions().Where(x => x.PROFILE_OPTION_ID == profileOptionId).ToList();
 
@@ -955,16 +846,9 @@ namespace DBI.Data
                 }
 
                 return _options;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+           
 
         }
-
-
 
         public class SYS_PROFILE_OPTIONS_V2
         {
@@ -974,8 +858,27 @@ namespace DBI.Data
             public string PROFILE_VALUE { get; set; }
             public string PROFILE_OWNER_NAME { get; set; }
         }
-
     }
 
+    /// <summary>
+    /// Custom methods and functions over BUD_BID_STATUS Entity Object
+    /// </summary>
+    public partial class BUD_BID_STATUS
+    {
+        /// <summary>
+        /// Returns list of available statuses
+        /// </summary>
+        /// <returns></returns>
+        public static List<DoubleComboLongID> Statuses()
+        {
+            using (Entities context = new Entities())
+            {
+                string sql = "SELECT STATUS_ID ID, STATUS ID_NAME FROM BUD_BID_STATUS ORDER BY STATUS";
+
+                List<DoubleComboLongID> data = context.Database.SqlQuery<DoubleComboLongID>(sql).ToList();
+                return data;
+            }
+        }   
+    }
 }
 

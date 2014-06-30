@@ -121,57 +121,112 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         {
             uxVersionStore.DataSource = StaticLists.BudgetVersions();
         }
-        
-        protected void deLoadCorrectBudgetType(object sender, DirectEventArgs e)
-        {
-            long hierarchyID;
-            long orgID;
 
-            // Is an org selected, and is the org an org and not just a legal entity or hierarchy?
-            try
+        protected void deSelectOrg(object sender, DirectEventArgs e)
+        {
+            bool prevBlank = PreviouslyBlankBudget();     
+            string nodeID = uxOrgPanel.SelectedNodes[0].NodeID;
+            char[] delimChars = { ':' };
+            string[] selID = nodeID.Split(delimChars);
+
+            if (nodeID == "0" || selID.GetUpperBound(0) == 0)
+            {
+                uxHidOrgOK.Text = "";
+                uxYearVersionTitle.Text = "";
+                DisableYearAndVersionCombo();
+                LoadBudget(prevBlank);
+                return;
+            }
+
+            long orgID = long.Parse(selID[1].ToString());
+            
+            if (SYS_USER_ORGS.IsInOrg(SYS_USER_INFORMATION.UserID(User.Identity.Name), orgID) == false)
+            {
+                uxHidOrgOK.Text = "";
+                uxYearVersionTitle.Text = "";
+                DisableYearAndVersionCombo();
+                LoadBudget(prevBlank);
+            }
+
+            else
+            {
+                uxHidOrgOK.Text = "Y";
+                uxYearVersionTitle.Text = uxOrgPanel.SelectedNodes[0].Text;
+                EnableYearAndVersionCombo();
+                LoadBudget(prevBlank);
+            }     
+        }
+
+        protected void deSelectYear(object sender, DirectEventArgs e)
+        {
+            bool prevBlank = PreviouslyBlankBudget();
+
+            uxHidYearOK.Text = "Y";
+            LoadBudget(prevBlank);
+        }
+
+        protected void deSelectVersion(object sender, DirectEventArgs e)
+        {
+            bool prevBlank = PreviouslyBlankBudget();
+
+            uxHidVerOK.Text = "Y";
+            LoadBudget(prevBlank);            
+        }
+
+        protected bool PreviouslyBlankBudget()
+        {
+            string orgOK = uxHidOrgOK.Text;
+            string yearOK = uxHidYearOK.Text;
+            string verOK = uxHidVerOK.Text;
+            bool prevBlank = (orgOK == "" || yearOK == "" || verOK == "") ? true : false;
+
+            return prevBlank;
+        }
+
+        protected void LoadBudget(bool prevBlank)
+        {
+            string orgOK = uxHidOrgOK.Text;
+            string yearOK = uxHidYearOK.Text;
+            string verOK = uxHidVerOK.Text;
+            string url = "umBlankBudget.aspx";
+
+            if (orgOK == "Y" && yearOK == "Y" && verOK == "Y")
             {
                 string nodeID = uxOrgPanel.SelectedNodes[0].NodeID;
                 char[] delimChars = { ':' };
                 string[] selID = nodeID.Split(delimChars);
-                hierarchyID = long.Parse(selID[0].ToString());
-                orgID = long.Parse(selID[1].ToString());
+                string hierarchyID = selID[0].ToString();
+                string orgID = selID[1].ToString();
+
+                string nodeName = uxOrgPanel.SelectedNodes[0].Text;
+                string fiscalYear = uxFiscalYear.SelectedItem.Value;
+                string verID = uxVersion.SelectedItem.Value;
+
+                url = "umYearBudget.aspx?hierID=" + hierarchyID + "&orgID=" + orgID + "&orgName=" + nodeName + "&fiscalYear=" + fiscalYear + "&verID=" + verID;
             }
-            
-            catch (NullReferenceException)
+
+            else if (prevBlank == true)
             {
-                return;
+                return;            
             }
 
-            catch (IndexOutOfRangeException)
-            {
-                return;
-            }
-
-            // Is an org, year and version selected?
-            string fiscalYear = uxFiscalYear.SelectedItem.Value;
-            string verID = uxVersion.SelectedItem.Value;
-
-            if (SYS_USER_ORGS.IsInOrg(SYS_USER_INFORMATION.UserID(User.Identity.Name), orgID) == true)
-            {
-                if (!string.IsNullOrEmpty(fiscalYear))
-                {
-                    if (!string.IsNullOrEmpty(verID))
-                    {
-                        string nodeName = uxOrgPanel.SelectedNodes[0].Text;
-                        uxYearVersionTitle.Text = nodeName;
-                        LoadBudget("umYearBudget.aspx?hierID=" + hierarchyID + "&orgID=" + orgID + "&orgName=" + nodeName + "&fiscalYear=" + fiscalYear + "&verID=" + verID);
-                    }
-                }
-            }
-        }
-
-        protected void LoadBudget(string url)
-        {
             uxBudgetPanel.Loader.SuspendScripting();
             uxBudgetPanel.Loader.Url = url;
             uxBudgetPanel.Loader.Mode = LoadMode.Frame;
             uxBudgetPanel.Loader.DisableCaching = true;
             uxBudgetPanel.LoadContent();
-        }        
+        }
+      
+        protected void EnableYearAndVersionCombo()
+        {
+            uxFiscalYear.Enable();
+            uxVersion.Enable();
+        }
+
+        protected void DisableYearAndVersionCombo()
+        {
+            uxFiscalYear.Disable();
+            uxVersion.Disable();
+        }
     }
 }

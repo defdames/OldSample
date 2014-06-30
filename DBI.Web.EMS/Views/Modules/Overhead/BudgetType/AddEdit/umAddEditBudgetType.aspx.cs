@@ -64,7 +64,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.BudgetType.AddEdit
                 _recordId = Request.QueryString["recordId"].ToString();
             }
 
-            uxBudgetNameStore.DataSource = GL.BudgetTypesRemaining(long.Parse(_businessUnitId), 0);
+            uxBudgetNameStore.DataSource = GL.BudgetTypesRemaining(long.Parse(_businessUnitId));
             uxBudgetNameStore.DataBind();
 
         }

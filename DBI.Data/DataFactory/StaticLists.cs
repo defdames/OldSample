@@ -160,6 +160,10 @@ namespace DBI.Data.DataFactory
                  }
              }
 
+        /// <summary>
+        /// Returns a list of budget versions
+        /// </summary>
+        /// <returns></returns>
         public static List<DoubleComboLongID> BudgetVersions()
         {
             using (Entities context = new Entities())
@@ -176,6 +180,10 @@ namespace DBI.Data.DataFactory
             }
         }
 
+        /// <summary>
+        /// Returns a list of actions for the BudgetBidding main year summary
+        /// </summary>
+        /// <returns></returns>
         public static List<SingleCombo> YearBudgetProjectActions()
         {
             using (Entities context = new Entities())

@@ -74,7 +74,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 								   from empl in emp.DefaultIfEmpty()
 								   join empv in _context.EMPLOYEES_V on empl.PERSON_ID equals empv.PERSON_ID into emplv
 								   from withempl in emplv.DefaultIfEmpty()
-								   where OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains(proj.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains((long)withempl.ORGANIZATION_ID)
+								   where OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID)
 								   select new HeaderData{HEADER_ID = d.HEADER_ID, PROJECT_ID = d.PROJECT_ID, DA_DATE = d.DA_DATE, SEGMENT1 = p.SEGMENT1, LONG_NAME = p.LONG_NAME, STATUS_VALUE = s.STATUS_VALUE, DA_HEADER_ID = d.DA_HEADER_ID, STATUS = d.STATUS, ORG_ID = p.ORG_ID }).Distinct().ToList();
 					}
                     else if (uxToggleInactive.Checked)
@@ -90,7 +90,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                    from empl in emp.DefaultIfEmpty()
                                    join empv in _context.EMPLOYEES_V on empl.PERSON_ID equals empv.PERSON_ID into emplv
                                    from withempl in emplv.DefaultIfEmpty()
-                                   where d.STATUS != 4 && (OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains(proj.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains((long)withempl.ORGANIZATION_ID))
+                                   where d.STATUS != 4 && (OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID))
                                    select new HeaderData { HEADER_ID = d.HEADER_ID, PROJECT_ID = d.PROJECT_ID, DA_DATE = d.DA_DATE, SEGMENT1 = p.SEGMENT1, LONG_NAME = p.LONG_NAME, STATUS_VALUE = s.STATUS_VALUE, DA_HEADER_ID = d.DA_HEADER_ID, STATUS = d.STATUS, ORG_ID = p.ORG_ID }).Distinct().ToList();
                     }
                     else if (uxTogglePosted.Checked)
@@ -106,7 +106,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                    from empl in emp.DefaultIfEmpty()
                                    join empv in _context.EMPLOYEES_V on empl.PERSON_ID equals empv.PERSON_ID into emplv
                                    from withempl in emplv.DefaultIfEmpty()
-                                   where d.STATUS != 5 && (OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains(proj.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains((long)withempl.ORGANIZATION_ID))
+                                   where d.STATUS != 5 && (OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID))
                                    select new HeaderData { HEADER_ID = d.HEADER_ID, PROJECT_ID = d.PROJECT_ID, DA_DATE = d.DA_DATE, SEGMENT1 = p.SEGMENT1, LONG_NAME = p.LONG_NAME, STATUS_VALUE = s.STATUS_VALUE, DA_HEADER_ID = d.DA_HEADER_ID, STATUS = d.STATUS, ORG_ID = p.ORG_ID }).Distinct().ToList();
                     }
                     else
@@ -122,7 +122,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                    from empl in emp.DefaultIfEmpty()
                                    join empv in _context.EMPLOYEES_V on empl.PERSON_ID equals empv.PERSON_ID into emplv
                                    from withempl in emplv.DefaultIfEmpty()
-                                   where d.STATUS != 4 && d.STATUS != 5 && (OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains(proj.CARRYING_OUT_ORGANIZATION_ID) || OrgsList.Contains((long)withempl.ORGANIZATION_ID))
+                                   where d.STATUS != 4 && d.STATUS != 5 && (OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID))
                                    select new HeaderData { HEADER_ID = d.HEADER_ID, PROJECT_ID = d.PROJECT_ID, DA_DATE = d.DA_DATE, SEGMENT1 = p.SEGMENT1, LONG_NAME = p.LONG_NAME, STATUS_VALUE = s.STATUS_VALUE, DA_HEADER_ID = d.DA_HEADER_ID, STATUS = d.STATUS, ORG_ID = p.ORG_ID }).Distinct().ToList();
                     }
 				}
@@ -203,13 +203,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						}
 						if (ValidationChecks.EquipmentBusinessUnitCheck(record.HEADER_ID, "bool")){
 							{
-								Warning = "Error";
+								Warning = "Warning";
 								WarningType += "Contains Equipment outside of Business Unit.<br />";
 							}
 						}
 						if(ValidationChecks.EmployeeBusinessUnitCheck(record.HEADER_ID, "bool")){
 						
-								Warning = "Error";
+								Warning = "Warning";
 								WarningType += "Contains Employees outside of Business Unit.<br />";
 						}
 						foreach (EmployeeData OffendingProject in HoursOver24)
@@ -1802,6 +1802,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             win.Render(this.Form);
             win.Show();
         }
+
+        [DirectMethod]
+        public void dmShowLunchTaskError(string ProjectName)
+        {
+            X.Msg.Alert("Error", string.Format(" Project {0} has no chargeable 9999 task.", ProjectName)).Show();
+        }
+
 	}
 
 	public class EquipmentDetails
