@@ -25,8 +25,6 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<GL_ACCOUNTS_V> AccountsFiltered(string segment1, string segment2, string segment3, string segment4)
         {
-            try
-            {
                 using (Entities _context = new Entities())
                 {
                     var _data = _context.GL_ACCOUNTS_V.AsNoTracking().Where(a => a.SEGMENT1 == segment1);
@@ -36,12 +34,6 @@ namespace DBI.Data
 
                     return _data.ToList();
                 }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
 
         }
        
@@ -57,8 +49,6 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<GL_ACCOUNTS_V> AccountsFiltered(string segment1, string segment2, string segment3, string segment4, long organizationId)
         {
-            try
-            {
 
                 IQueryable<GL_ACCOUNTS_V> _data = AccountsFiltered(segment1, segment2, segment3, segment4).AsQueryable();
 
@@ -70,12 +60,7 @@ namespace DBI.Data
 
                     return _data.ToList();
                 }
-            }
-            catch (Exception)
-            {
-                
-                throw;
-            }
+           
            
         }
 
@@ -93,8 +78,7 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<BUDGET_TYPE> BudgetTypes()
         {
-            try
-            {
+          
                 using (Entities _context = new Entities())
                 {
                     string sql = @"select a.budget_name,a.Description,b.legal_entity_id as LE_ORG_ID, a.status
@@ -105,11 +89,7 @@ namespace DBI.Data
 
                     return _returnList;
                 }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+           
 
         }
 
@@ -120,16 +100,11 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<BUDGET_TYPE> BudgetTypes(long legalEntityOrganizationId)
         {
-            try
-            {
+           
                 string legalEntityString = legalEntityOrganizationId.ToString();
                 List<BUDGET_TYPE> _data = BudgetTypes().Where(x => x.STATUS == "O" && x.LE_ORG_ID == legalEntityString).ToList();
                 return _data;
-            }
-            catch (Exception)
-            {             
-                throw;
-            }
+           
         }
 
         /// <summary>
@@ -139,8 +114,7 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<BUDGET_TYPE> BudgetTypesRemaining(long legalEntityOrganizationId)
         {
-            try
-            {
+           
                 //Budget Types that are active by legal entity organization Id
                 IQueryable<BUDGET_TYPE> _data = BudgetTypes(legalEntityOrganizationId).AsQueryable();
 
@@ -151,26 +125,32 @@ namespace DBI.Data
                          where !_budgetTypes.Any(x => x.BUDGET_NAME == dups.BUDGET_NAME)
                          select dups);
 
-                return _data.ToList();
+                return _data.ToList();    
+        }
 
-            }
-            catch (Exception)
-            {
-                
-                throw;
-            }
+        public static List<OVERHEAD_BUDGET_TYPE> BudgetTypesEnteredAndAvailaible(long legalEntityOrganizationId)
+        {
+
+            IQueryable<OVERHEAD_BUDGET_TYPE> _data = OVERHEAD_BUDGET_TYPE.BudgetTypes(legalEntityOrganizationId).AsQueryable();
+
+            List<OVERHEAD_BUDGET_TYPE> _existingData = OVERHEAD_BUDGET_TYPE.BudgetTypes(legalEntityOrganizationId).ToList();
+
+            _data = (from dups in _data
+                     where !_existingData.Any(x => x.PARENT_BUDGET_TYPE_ID == dups.OVERHEAD_BUDGET_TYPE_ID)
+                     select dups);
+
+            return _data.ToList();
         }
 
         /// <summary>
         /// Returns a list of unused budget types by a legal entity. If they were used in the overhead system, they will not show in this returned list. This list will also filter out the same type so it can't be picked again.
         /// </summary>
         /// <param name="legalEntityOrganizationId"></param>
-        /// <param name="overheadBudgetTypeId"></param>
+        /// <param name="budgetType"></param>
         /// <returns></returns>
-        public static List<BUDGET_TYPE> BudgetTypesRemaining(long legalEntityOrganizationId, long overheadBudgetTypeId)
+        public static List<BUDGET_TYPE> BudgetTypesRemaining(long legalEntityOrganizationId, string budgetType)
         {
-            try
-            {
+           
                 //Budget Types that are active by legal entity organization Id
                 IQueryable<BUDGET_TYPE> _data = BudgetTypes(legalEntityOrganizationId).AsQueryable();
 
@@ -178,17 +158,12 @@ namespace DBI.Data
                 List<OVERHEAD_BUDGET_TYPE> _budgetTypes = OVERHEAD_BUDGET_TYPE.BudgetTypes(legalEntityOrganizationId);
 
                 _data = (from dups in _data
-                         where !_budgetTypes.Any(x => x.BUDGET_NAME == dups.BUDGET_NAME && x.OVERHEAD_BUDGET_TYPE_ID == overheadBudgetTypeId)
+                         where !_budgetTypes.Any(x => x.BUDGET_NAME == dups.BUDGET_NAME && x.BUDGET_NAME == budgetType)
                          select dups);
 
                 return _data.ToList();
 
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            
         }
         
 

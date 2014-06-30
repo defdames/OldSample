@@ -30,8 +30,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     long _hierarchyID = long.Parse(_selectedID[1].ToString());
                     long _organizationID = long.Parse(_selectedID[0].ToString());
 
-                    var data = HR.ActiveOverheadOrganizationsByHierarchy(_hierarchyID, _organizationID);
-
+                    //var data = HR.ActiveOverheadOrganizationsByHierarchy(_hierarchyID, _organizationID);
+                    var data = new List<HR.ORGANIZATION_V1>();
                     int count;
                     uxOrganizationSecurityStore.DataSource = GenericData.EnumerableFilterHeader<HR.ORGANIZATION_V1>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                     e.Total = count;
