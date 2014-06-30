@@ -70,7 +70,7 @@
                             EmptyText="-- Actions --"
                             Editable="false">
                             <Store>
-                                <ext:Store ID="uxActionsStore" runat="server" OnReadData="deLoadActions" AutoLoad="false">
+                                <ext:Store ID="uxActionsStore" runat="server" OnReadData="deLoadSummaryActions" AutoLoad="false">
                                     <Model>
                                         <ext:Model ID="Model4" runat="server">
                                             <Fields>
@@ -87,7 +87,7 @@
                                 <Activate Handler="#{uxActionsStore}.store.reload();" />
                             </Listeners>
                             <DirectEvents>
-                                <Select OnEvent="deChooseAction">
+                                <Select OnEvent="deChooseSummaryAction">
                                 </Select>
                             </DirectEvents>
                         </ext:ComboBox>
@@ -693,7 +693,7 @@
                             Layout="HBoxLayout">
                             <Items>
                                 <ext:Label ID="Label3" runat="server" Width="770" />
-                                <ext:Button ID="uxSave" runat="server" Text="Save" Icon="Add" Width="75" Disabled="true">
+                                <ext:Button ID="uxSave" runat="server" Text="Save" Icon="Add" Width="75">
                                     <DirectEvents>
                                         <Click OnEvent="deSave" />
                                     </DirectEvents>

@@ -727,7 +727,23 @@ namespace DBI.Data
             return data.ToList();
         }
 
-
+        /// <summary>
+        /// This deletes data using a list of objects.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entityCollection"></param>
+        public static void Delete<T>(List<T> entityCollection) where T : class
+        {
+            using (Entities _context = new Entities())
+            {
+                foreach (T item in entityCollection)
+                {
+                    _context.Set<T>().Attach(item);
+                    _context.Set<T>().Remove(item);
+                    _context.SaveChanges();
+                }
+            }
+        }
     }
 }
 
