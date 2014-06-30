@@ -127,7 +127,7 @@ namespace DBI.Data
                 return data;
             }
         }
-
+        
         /// <summary>
         /// Returns project detail information 
         /// </summary>
@@ -140,13 +140,45 @@ namespace DBI.Data
                 string sql = string.Format(@"
                 SELECT BUD_BID_PROJECTS.PROJECT_ID, BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID, BUD_BID_PROJECTS.TYPE, BUD_BID_PROJECTS.PRJ_NAME PROJECT_NAME, 
                     BUD_BID_STATUS.STATUS, BUD_BID_PROJECTS.ACRES, BUD_BID_PROJECTS.DAYS, BUD_BID_PROJECTS.APP_TYPE, BUD_BID_PROJECTS.CHEMICAL_MIX, BUD_BID_PROJECTS.COMMENTS,
-                    BUD_BID_PROJECTS.LIABILITY, BUD_BID_PROJECTS.LIABILITY_OP, BUD_BID_PROJECTS.COMPARE_PRJ_OVERRIDE, BUD_BID_PROJECTS.COMPARE_PRJ_AMOUNT FROM BUD_BID_PROJECTS
+                    BUD_BID_PROJECTS.LIABILITY, BUD_BID_PROJECTS.LIABILITY_OP, BUD_BID_PROJECTS.COMPARE_PRJ_OVERRIDE, BUD_BID_PROJECTS.COMPARE_PRJ_AMOUNT
+                FROM BUD_BID_PROJECTS
                 INNER JOIN BUD_BID_STATUS
                 ON BUD_BID_PROJECTS.STATUS_ID = BUD_BID_STATUS.STATUS_ID
                 WHERE BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = {0}", projectID);
 
                 return context.Database.SqlQuery<BUD_BID.BUD_SUMMARY_V>(sql).SingleOrDefault();
              }
+        }
+
+        /// <summary>
+        /// Returns true if a project exists for a given org, year and version
+        /// </summary>
+        /// <param name="orgID"></param>
+        /// <param name="yearID"></param>
+        /// <param name="verID"></param>
+        /// <param name="projectID"></param>
+        /// <returns></returns>
+        public static bool ProjectExists(long orgID, long yearID, long verID, long projectID)
+        {
+            using (Entities context = new Entities())
+            {
+                string sql = string.Format(@"
+                SELECT BUD_BID_PROJECTS.PROJECT_ID
+                FROM BUD_BID_PROJECTS
+                WHERE BUD_BID_PROJECTS.ORG_ID = {0} AND BUD_BID_PROJECTS.YEAR_ID  = {1} AND
+                    BUD_BID_PROJECTS.VER_ID = {2} AND BUD_BID_PROJECTS.PROJECT_ID = {3}", orgID, yearID, verID, projectID);
+
+                long recCount = context.Database.SqlQuery<BUD_BID.BUD_SUMMARY_V>(sql).Count();
+
+                if (recCount == 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
         }
 
         public class BUD_SUMMARY_V
