@@ -203,8 +203,7 @@
                     <DirectEvents>
                         <Select OnEvent="deGetFormData">
                             <ExtraParams>
-                                <%--<ext:Parameter Name="ProjectName" Value="#{uxSummaryGrid}.getSelectionModel().getSelection()[0].data.PROJECT_NAME" Mode="Raw" />--%>
-                                <ext:Parameter Name="RecordID" Value="#{uxSummaryGrid}.getSelectionModel().getSelection()[0].data.BUD_BID_PROJECTS_ID" Mode="Raw" />
+                                <ext:Parameter Name="ProjectID" Value="#{uxSummaryGrid}.getSelectionModel().getSelection()[0].data.BUD_BID_PROJECTS_ID" Mode="Raw" />
                             </ExtraParams>
                         </Select>
                         <ItemDblClick OnEvent="deAllowFormEditing" />
@@ -318,7 +317,6 @@
                                                     <EventMask ShowMask="true" />
                                                 </SelectionChange>
                                                 <SelectionChange OnEvent="deCheckAllowSave" />
-                                                <Select OnEvent="deProjectDropdownDeactivate" />
                                             </DirectEvents>
                                             <Plugins>
                                                 <ext:FilterHeader runat="server" ID="uxProjectFilter" Remote="true" />
@@ -328,9 +326,9 @@
                                 </ext:DropDownField>
                                 <ext:Label ID="Label5" runat="server" Width="320" />
 
-                                <ext:Checkbox ID="uxPrevOPOverrideCheckbox" runat="server" BoxLabel="Compare to Override" Width="200">
+                                <ext:Checkbox ID="uxCompareOverride" runat="server" BoxLabel="Compare to Override" Width="200">
                                     <DirectEvents>
-                                        <Change OnEvent="deLiabilityCheck" />
+                                        <%--<Change OnEvent="deLiabilityCheck" />--%>
                                     </DirectEvents>
                                 </ext:Checkbox>
                                 <ext:Label ID="Label6" runat="server" Width="50" />
@@ -548,6 +546,7 @@
                                             </Listeners>
                                             <DirectEvents>
                                                 <Blur OnEvent="deFormatNumber" />
+                                                <Blur OnEvent="deCalcGRandOP" />
                                             </DirectEvents>
                                         </ext:TextField>
                                         <ext:TextField ID="uxSMatUsage" runat="server" Width="110" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign">
@@ -556,15 +555,13 @@
                                             </Listeners>
                                             <DirectEvents>
                                                 <Blur OnEvent="deFormatNumber" />
+                                                <Blur OnEvent="deCalcGRandOP" />
                                             </DirectEvents>
                                         </ext:TextField>
                                         <ext:TextField ID="uxSGrossRev" runat="server" Width="110" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign">
                                             <Listeners>
                                                 <Focus Handler="this.setValue(this.getValue().replace(',', ''));" />
                                             </Listeners>
-                                            <DirectEvents>
-                                                <Blur OnEvent="deFormatNumber" />
-                                            </DirectEvents>
                                         </ext:TextField>
                                         <ext:TextField ID="uxSDirects" runat="server" Width="110" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign">
                                             <Listeners>
@@ -572,15 +569,13 @@
                                             </Listeners>
                                             <DirectEvents>
                                                 <Blur OnEvent="deFormatNumber" />
+                                                <Blur OnEvent="deCalcGRandOP" />
                                             </DirectEvents>
                                         </ext:TextField>
                                         <ext:TextField ID="uxSOP" runat="server" Width="110" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign">
                                             <Listeners>
                                                 <Focus Handler="this.setValue(this.getValue().replace(',', ''));" />
                                             </Listeners>
-                                            <DirectEvents>
-                                                <Blur OnEvent="deFormatNumber" />
-                                            </DirectEvents>
                                         </ext:TextField>
                                         <ext:Label ID="Label35" runat="server" Width="40" />
                                         <ext:ComboBox ID="uxSummaryActions"
@@ -729,11 +724,9 @@
                             Layout="HBoxLayout">
                             <Items>
                                 <ext:Label ID="Label19" runat="server" Width="100" Text="uxHidNewProject" Cls="labelCenterAlign" />
-                                <ext:Label ID="Label22" runat="server" Width="100" Text="uxHidProjectID" Cls="labelCenterAlign" />
-                                <ext:Label ID="Label24" runat="server" Width="100" Text="uxHidProjectNum" Cls="labelCenterAlign" />
-                                <ext:Label ID="Label33" runat="server" Width="100" Text="uxHidProjectName" Cls="labelCenterAlign" />
+                                <ext:Label ID="Label22" runat="server" Width="100" Text="uxHidBudBidID" Cls="labelCenterAlign" />
+                                <ext:Label ID="Label24" runat="server" Width="100" Text="uxHidProjectNumID" Cls="labelCenterAlign" />
                                 <ext:Label ID="Label38" runat="server" Width="100" Text="uxHidType" Cls="labelCenterAlign" />
-                                <ext:Label ID="Label39" runat="server" Width="100" Text="uxHidDate" Cls="labelCenterAlign" />
                                 <ext:Label ID="Label40" runat="server" Width="100" Text="uxHidPrevYear" Cls="labelCenterAlign" />
                                 <ext:Label ID="Label41" runat="server" Width="100" Text="uxHidPrevVer" Cls="labelCenterAlign" />
                             </Items>
@@ -743,11 +736,9 @@
                             Layout="HBoxLayout">
                             <Items>
                                 <ext:TextField ID="uxHidNewProject" runat="server" Width="100" />
-                                <ext:TextField ID="uxHidProjectID" runat="server" Width="100" />
-                                <ext:TextField ID="uxHidProjectNum" runat="server" Width="100" />
-                                <ext:TextField ID="uxHidProjectName" runat="server" Width="100" />
+                                <ext:TextField ID="uxHidBudBidID" runat="server" Width="100" />
+                                <ext:TextField ID="uxHidProjectNumID" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidType" runat="server" Width="100" />
-                                <ext:TextField ID="uxHidDate" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidPrevYear" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidPrevVer" runat="server" Width="100" />
                             </Items>
