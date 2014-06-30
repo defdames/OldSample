@@ -34,9 +34,10 @@ namespace DBI.Data
         public string MODIFIED_BY { get; set; }
         public string TYPE { get; set; }
         public string LIABILITY { get; set; }
-        public Nullable<short> LIABILITY_OP { get; set; }
+        public Nullable<decimal> LIABILITY_OP { get; set; }
         public string COMPARE_PRJ_OVERRIDE { get; set; }
-        public Nullable<short> COMPARE_PRJ_AMOUNT { get; set; }
+        public Nullable<decimal> COMPARE_PRJ_AMOUNT { get; set; }
+        public string WE_OVERRIDE { get; set; }
     
         public virtual BUD_BID_STATUS BUD_BID_STATUS { get; set; }
     }
