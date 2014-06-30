@@ -127,7 +127,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     if (EmployeeBusinessUnitFailures != null)
                     {
                         WarningList.Add(EmployeeBusinessUnitFailures);
-                        X.Js.Call("parent.App.uxTabPostButton.disable(); parent.App.uxPostActivityButton.disable(); parent.App.uxApproveActivityButton.disable(); parent.App.uxTabApproveButton.disable()");
                     }
                     WarningData EmployeeOver24 = ValidationChecks.checkEmployeeTime(24, item.PERSON_ID, item.TIME_IN);
                     if (EmployeeOver24 != null)
@@ -170,7 +169,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     if (BusinessUnitWarning != null)
                     {
                         WarningList.Add(BusinessUnitWarning);
-                        X.Js.Call("parent.App.uxTabPostButton.disable(); parent.App.uxPostActivityButton.disable(); parent.App.uxApproveActivityButton.disable(); parent.App.uxTabApproveButton.disable()");
                     }
                     WarningData MeterWarning = ValidationChecks.MeterCheck(item.EQUIPMENT_ID);
                     if (MeterWarning != null)
