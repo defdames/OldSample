@@ -58,6 +58,24 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.FormPanel uxOrganizationForm;
         
         /// <summary>
+        /// uxFormType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Hidden uxFormType;
+        
+        /// <summary>
+        /// uxSmallThreshold control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberField uxSmallThreshold;
+        
+        /// <summary>
         /// uxFirstLargeThreshold control.
         /// </summary>
         /// <remarks>

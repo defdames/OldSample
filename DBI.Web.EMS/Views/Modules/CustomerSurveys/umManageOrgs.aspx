@@ -37,42 +37,14 @@
                     <SelectionModel>
                         <ext:TreeSelectionModel ID="uxCompanySelectionModel" runat="server" Mode="Single" />
                     </SelectionModel>
-                    <Listeners>
-                        <ItemClick Handler="#{uxFormsGridStore}.reload()" />
-                    </Listeners>
-                </ext:TreePanel>
-                <%--<ext:GridPanel runat="server" ID="uxFormsGrid" Region="North">
-                    <Store>
-                        <ext:Store runat="server" ID="uxFormsGridStore" OnReadData="deReadForms" AutoDataBind="true">
-                            <Model>
-                                <ext:Model runat="server">
-                                    <Fields>
-                                        <ext:ModelField Name="FORM_ID" />
-                                        <ext:ModelField Name="FORMS_NAME" />
-                                        <ext:ModelField Name="NUM_QUESTIONS" />
-                                    </Fields>
-                                </ext:Model>
-                            </Model>
-                        </ext:Store>
-                    </Store>
-                    <ColumnModel>
-                        <Columns>
-                            <ext:Column runat="server" DataIndex="FORMS_NAME" Text="Form Name" Flex="50" />
-                            <ext:Column runat="server" DataIndex="NUM_QUESTIONS" Text="Number of Questions" Flex="50" />
-                        </Columns>
-                    </ColumnModel>
                     <DirectEvents>
-                        <Select OnEvent="deLoadFormThresholds">
-                            <ExtraParams>
-                                <ext:Parameter Name="FormId" Value="#{uxFormsGrid}.getSelectionModel().getSelection()[0].data.FORM_ID" Mode="Raw" />
-                                <ext:Parameter Name="OrgId" Value="#{uxOrgPanel}.getSelectionModel().getSelectedNode()" Mode="Raw" />
-                            </ExtraParams>
-                        </Select>
+                        <ItemClick OnEvent="deLoadFormThresholds" />
                     </DirectEvents>
-                </ext:GridPanel>--%>
+                </ext:TreePanel>
                 <ext:FormPanel runat="server" ID="uxOrganizationForm" BodyPadding="10" Region="Center">
                     <Items>
-                        <ext:NumberField runat="server" FieldLabel="Threshold for Small Jobs" Width="650" LabelWidth="150" InputWidth="50" MinValue="1" MaxValue="100" AllowBlank="false" AllowDecimals="false" AllowExponential="false" />
+                        <ext:Hidden runat="server" ID="uxFormType" />
+                        <ext:NumberField runat="server" ID="uxSmallThreshold" FieldLabel="Threshold for Small Jobs in %" Width="650" LabelWidth="150" InputWidth="50" MinValue="1" MaxValue="100" AllowBlank="false" AllowDecimals="false" AllowExponential="false" />
                         <ext:FieldSet runat="server" Title="Thresholds for Large Jobs" Width="650">
                             <Items>
                                 <ext:NumberField runat="server" ID="uxFirstLargeThreshold" FieldLabel="First Threshold in %" LabelWidth="150" InputWidth="50" MinValue="1" MaxValue="100" AllowBlank="false" AllowDecimals="false" AllowExponential="false" />

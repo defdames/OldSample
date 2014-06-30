@@ -147,6 +147,7 @@
                                                                 <ext:ModelField Name="FIELDSET_ID" Type="Int" />
                                                                 <ext:ModelField Name="TITLE" Type="String" />
                                                                 <ext:ModelField Name="SORT_ORDER" Type="Int" />
+                                                                <ext:ModelField Name="IS_ACTIVE" Type="Boolean" />
                                                             </Fields>
                                                         </ext:Model>
                                                     </Model>
@@ -170,6 +171,7 @@
                                                             <ext:NumberField runat="server" AllowBlank="false" />
                                                         </Editor>
                                                     </ext:Column>
+                                                    <ext:CheckColumn runat="server" DataIndex="IS_ACTIVE" Text="Active" Width="50" Editable="true" />
                                                 </Columns>
                                             </ColumnModel>
                                             <Plugins>

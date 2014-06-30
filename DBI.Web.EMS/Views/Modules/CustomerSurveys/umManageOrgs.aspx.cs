@@ -24,25 +24,33 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             string _selectedRecordID = uxCompanySelectionModel.SelectedRecordID;
             if (_selectedRecordID != "0" && _selectedRecordID.Contains(":"))
             {
-                char[] _delimiterChars = { ':' };
-                string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
-                long _hierarchyID = long.Parse(_selectedID[0].ToString());
-                long _organizationID = long.Parse(_selectedID[1].ToString());
-                List<CUSTOMER_SURVEY_FORMS> FormData = CUSTOMER_SURVEY_FORMS.GetForms().Where(x => x.ORG_ID == _organizationID).ToList();
-                List<CustomerSurveyForms> AllData = new List<CustomerSurveyForms>();
-                foreach (CUSTOMER_SURVEY_FORMS ThisForm in FormData)
+                long _organizationID = GetOrgFromTree(_selectedRecordID);
+                using (Entities _context = new Entities())
                 {
-                    CustomerSurveyForms NewForm = new CustomerSurveyForms();
-                    NewForm.FORMS_NAME = ThisForm.FORMS_NAME;
-                    NewForm.ORG_ID = ThisForm.ORG_ID;
-                    NewForm.FORM_ID = ThisForm.FORM_ID;
-                    //var NumQuestions = CUSTOMER_SURVEY_FORMS.NumberOfQuestionsInForm(ThisForm.FORM_ID);
+                    List<CUSTOMER_SURVEY_FORMS> FormData = CUSTOMER_SURVEY_FORMS.GetForms(_context).Where(x => x.ORG_ID == _organizationID).ToList();
+                    List<CUSTOMER_SURVEY_FORMS.CustomerSurveyForms> AllData = new List<CUSTOMER_SURVEY_FORMS.CustomerSurveyForms>();
+                    foreach (CUSTOMER_SURVEY_FORMS ThisForm in FormData)
+                    {
+                        CUSTOMER_SURVEY_FORMS.CustomerSurveyForms NewForm = new CUSTOMER_SURVEY_FORMS.CustomerSurveyForms();
+                        NewForm.FORMS_NAME = ThisForm.FORMS_NAME;
+                        NewForm.ORG_ID = ThisForm.ORG_ID;
+                        NewForm.FORM_ID = ThisForm.FORM_ID;
+                        //var NumQuestions = CUSTOMER_SURVEY_FORMS.NumberOfQuestionsInForm(ThisForm.FORM_ID);
 
-                   // NewForm.NUM_QUESTIONS = NumQuestions;
-                    AllData.Add(NewForm);
+                        // NewForm.NUM_QUESTIONS = NumQuestions;
+                        AllData.Add(NewForm);
+                    }
                 }
                 //  uxFormsGridStore.DataSource = AllData;
             }
+        }
+
+        protected long GetOrgFromTree(string _selectedRecordID)
+        {
+            char[] _delimiterChars = { ':' };
+            string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
+            long _hierarchyID = long.Parse(_selectedID[0].ToString());
+            return long.Parse(_selectedID[1].ToString());
         }
 
         protected void deLoadOrgTree(object sender, NodeLoadEventArgs e)
@@ -142,17 +150,60 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             string _selectedRecordID = uxCompanySelectionModel.SelectedRecordID;
             if (_selectedRecordID != "0" && _selectedRecordID.Contains(":"))
             {
-                char[] _delimiterChars = { ':' };
-                string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
-                long _hierarchyID = long.Parse(_selectedID[0].ToString());
-                long _organizationID = long.Parse(_selectedID[1].ToString());
+                long OrgID = GetOrgFromTree(_selectedRecordID);
+                using (Entities _context = new Entities())
+                {
+                    CUSTOMER_SURVEY_THRESHOLDS Threshold = CUSTOMER_SURVEY_FORMS.GetOrganizationThreshold(OrgID, _context).SingleOrDefault();
+                    if (Threshold != null)
+                    {
+                        uxSmallThreshold.Value = Threshold.SMALL_THRESHOLD;
+                        uxFirstLargeThreshold.Value = Threshold.LARGE_THRESHOLD1;
+                        uxSecondLargeThreshold.Value = Threshold.LARGE_THRESHOLD2;
+                        uxFormType.Value = "Edit";
+                    }
+                    else
+                    {
+                        uxFormType.Value = "Add";
+                        uxOrganizationForm.Reset();
+                    }
+                }
             }
-            long FormId = long.Parse(e.ExtraParams["FormId"]);
+            
         }
 
         protected void deSubmitThreshold(object sender, DirectEventArgs e)
         {
+            string _selectedRecordID = uxCompanySelectionModel.SelectedRecordID;
+            long OrgId = GetOrgFromTree(_selectedRecordID);
+            if (uxFormType.Value.ToString() == "Add")
+            {
+                CUSTOMER_SURVEY_THRESHOLDS NewThreshold = new CUSTOMER_SURVEY_THRESHOLDS();
+                NewThreshold.SMALL_THRESHOLD = decimal.Parse(uxSmallThreshold.Text);
+                NewThreshold.LARGE_THRESHOLD1 = decimal.Parse(uxFirstLargeThreshold.Text);
+                NewThreshold.LARGE_THRESHOLD2 = decimal.Parse(uxSecondLargeThreshold.Text);
+                NewThreshold.MODIFIED_BY = User.Identity.Name;
+                NewThreshold.CREATED_BY = User.Identity.Name;
+                NewThreshold.MODIFY_DATE = DateTime.Now;
+                NewThreshold.CREATE_DATE = DateTime.Now;
+                NewThreshold.ORG_ID = OrgId;
 
+                GenericData.Insert<CUSTOMER_SURVEY_THRESHOLDS>(NewThreshold);
+            }
+            else
+            {
+                CUSTOMER_SURVEY_THRESHOLDS UpdatedThreshold;
+                using (Entities _context = new Entities())
+                {
+                    UpdatedThreshold = CUSTOMER_SURVEY_FORMS.GetOrganizationThreshold(OrgId, _context).Single();
+                }
+                UpdatedThreshold.SMALL_THRESHOLD = decimal.Parse(uxSmallThreshold.Text);
+                UpdatedThreshold.LARGE_THRESHOLD1 = decimal.Parse(uxFirstLargeThreshold.Text);
+                UpdatedThreshold.LARGE_THRESHOLD2 = decimal.Parse(uxSecondLargeThreshold.Text);
+                UpdatedThreshold.MODIFY_DATE = DateTime.Now;
+                UpdatedThreshold.MODIFIED_BY = User.Identity.Name;
+
+                GenericData.Update<CUSTOMER_SURVEY_THRESHOLDS>(UpdatedThreshold);
+            }
         }
     }
 }

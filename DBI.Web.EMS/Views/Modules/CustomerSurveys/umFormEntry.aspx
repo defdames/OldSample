@@ -8,9 +8,10 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
-    
-    </div>
+    <ext:ResourceManager runat="server" IsDynamic="false" />
+        <ext:Viewport runat="server" Layout="BorderLayout">
+            
+        </ext:Viewport>
     </form>
 </body>
 </html>

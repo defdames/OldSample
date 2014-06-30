@@ -22,11 +22,12 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         {
             using (Entities _context = new Entities())
             {
-                List<CUSTOMER_SURVEY_FIELDSETS> Fieldsets = CUSTOMER_SURVEY_FORMS.GetFormFieldSets(FormId, _context).Where(x => x.IS_ACTIVE == "Y").ToList();
+                List<CUSTOMER_SURVEY_FORMS.CustomerSurveyFieldsets> Fieldsets = CUSTOMER_SURVEY_FORMS.GetFormFieldSets(FormId, _context).Where(x => x.IS_ACTIVE == true).ToList();
 
-                foreach (CUSTOMER_SURVEY_FIELDSETS Fieldset in Fieldsets)
+                foreach (CUSTOMER_SURVEY_FORMS.CustomerSurveyFieldsets Fieldset in Fieldsets)
                 {
-                    List<CUSTOMER_SURVEY_QUESTIONS> Questions = CUSTOMER_SURVEY_FORMS.GetFormQuestions(Fieldset.FIELDSET_ID, _context).Where(x => x.IS_ACTIVE == "Y").ToList();
+                    var QuestionQuery = CUSTOMER_SURVEY_FORMS.GetFieldsetQuestions(Fieldset.FIELDSET_ID, _context).Where(x => x.IS_ACTIVE == true);
+                    List<CUSTOMER_SURVEY_FORMS.CustomerSurveyQuestions> Questions = QuestionQuery.ToList();
                     if (Questions.Count > 0)
                     {
                         FieldSet NewFieldset = new FieldSet();
@@ -34,14 +35,14 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                         NewFieldset.Title = Fieldset.TITLE;
                         NewFieldset.Margin = 5;
                         uxSurveyDisplay.Items.Add(NewFieldset);
-                        foreach (CUSTOMER_SURVEY_QUESTIONS Question in Questions)
+                        foreach (CUSTOMER_SURVEY_FORMS.CustomerSurveyQuestions Question in Questions)
                         {
                             switch ((long)Question.TYPE_ID)
                             {
                                 case 1:
                                     TextField TextField = new TextField();
                                     TextField.ID = "question" + Question.QUESTION_ID.ToString();
-                                    TextField.AllowBlank = Question.IS_REQUIRED == "N" ? true : false;
+                                    TextField.AllowBlank = !Question.IS_REQUIRED;
                                     TextField.FieldLabel = Question.TEXT;
                                     TextField.LabelWidth = 150;
                                     NewFieldset.Items.Add(TextField);
@@ -49,7 +50,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                 case 2:
                                     TextArea TextArea = new TextArea();
                                     TextArea.ID = "question" + Question.QUESTION_ID.ToString();
-                                    TextArea.AllowBlank = Question.IS_REQUIRED == "N" ? true : false;
+                                    TextArea.AllowBlank = !Question.IS_REQUIRED;
                                     TextArea.FieldLabel = Question.TEXT;
                                     TextArea.LabelWidth = 150;
                                     NewFieldset.Items.Add(TextArea);
@@ -59,7 +60,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     Combobox.ID = "question" + Question.QUESTION_ID;
                                     Combobox.FieldLabel = Question.TEXT;
                                     Combobox.LabelWidth = 150;
-                                    Combobox.AllowBlank = Question.IS_REQUIRED == "N" ? true : false;
+                                    Combobox.AllowBlank = !Question.IS_REQUIRED;
                                     Combobox.TypeAhead = true;
                                     Combobox.ForceSelection = true;
                                     Combobox.QueryMode = DataLoadMode.Local;
@@ -78,7 +79,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     RadioGroup RadioQuestion = new RadioGroup();
                                     RadioQuestion.ID = "question" + Question.QUESTION_ID;
                                     RadioQuestion.FieldLabel = Question.TEXT;
-                                    RadioQuestion.AllowBlank = Question.IS_REQUIRED == "N" ? true : false;
+                                    RadioQuestion.AllowBlank = !Question.IS_REQUIRED;
                                     RadioQuestion.LabelWidth = 150;
                                     RadioQuestion.ColumnsNumber = 1;
                                     List<CUSTOMER_SURVEY_OPTIONS> RadioOptions = CUSTOMER_SURVEY_FORMS.GetQuestionOptions(Question.QUESTION_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
@@ -99,7 +100,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     CheckQuestion.ID = "question" + Question.QUESTION_ID;
                                     CheckQuestion.FieldLabel = Question.TEXT;
                                     CheckQuestion.LabelWidth = 150;
-                                    CheckQuestion.AllowBlank = Question.IS_REQUIRED == "N" ? true : false;
+                                    CheckQuestion.AllowBlank = !Question.IS_REQUIRED;
                                     CheckQuestion.ColumnsNumber = 1;
                                     List<CUSTOMER_SURVEY_OPTIONS> CheckOptions = CUSTOMER_SURVEY_FORMS.GetQuestionOptions(Question.QUESTION_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
                                     foreach (CUSTOMER_SURVEY_OPTIONS Option in CheckOptions)

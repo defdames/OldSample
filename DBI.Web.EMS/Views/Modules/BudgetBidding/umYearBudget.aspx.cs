@@ -189,7 +189,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 ORG_ID = orgID,
                 VER_ID = verID,
                 YEAR_ID = fiscalYear,
-                PROJECT_ID = projectNum,
+                PROJECT_ID = projectNum.ToString(),
                 PRJ_NAME = projectName
             };
 
