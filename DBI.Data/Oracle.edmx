@@ -678,10 +678,6 @@
             <End Role="CROSSING_INVOICE" EntitySet="CROSSING_INVOICE" />
             <End Role="CROSSING_APPLICATION" EntitySet="CROSSING_APPLICATION" />
           </AssociationSet>
-          <AssociationSet Name="FK_APPLICATION_SUPP_INVOICE_ID" Association="OracleModel.Store.FK_APPLICATION_SUPP_INVOICE_ID">
-            <End Role="CROSSING_SUPP_INVOICE" EntitySet="CROSSING_SUPP_INVOICE" />
-            <End Role="CROSSING_APPLICATION" EntitySet="CROSSING_APPLICATION" />
-          </AssociationSet>
           <AssociationSet Name="FK_AUDIT_HEADER_ID" Association="OracleModel.Store.FK_AUDIT_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_AUDIT" EntitySet="DAILY_ACTIVITY_AUDIT" />
@@ -1126,7 +1122,6 @@
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="FISCAL_YEAR" Type="date" />
           <Property Name="INVOICE_ID" Type="number" />
-          <Property Name="INVOICE_SUPP_ID" Type="number" />
         </EntityType>
         <EntityType Name="CROSSING_CONTACTS">
           <Key>
@@ -1318,6 +1313,7 @@
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="INVOICE_SUPP_ID" Type="number" />
         </EntityType>
         <EntityType Name="CROSSINGS">
           <Key>
@@ -3372,18 +3368,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_APPLICATION_SUPP_INVOICE_ID">
-          <End Role="CROSSING_SUPP_INVOICE" Type="OracleModel.Store.CROSSING_SUPP_INVOICE" Multiplicity="0..1" />
-          <End Role="CROSSING_APPLICATION" Type="OracleModel.Store.CROSSING_APPLICATION" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CROSSING_SUPP_INVOICE">
-              <PropertyRef Name="INVOICE_SUPP_ID" />
-            </Principal>
-            <Dependent Role="CROSSING_APPLICATION">
-              <PropertyRef Name="INVOICE_SUPP_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_AUDIT_HEADER_ID">
           <End Role="DAILY_ACTIVITY_HEADER" Type="OracleModel.Store.DAILY_ACTIVITY_HEADER" Multiplicity="1" />
           <End Role="DAILY_ACTIVITY_AUDIT" Type="OracleModel.Store.DAILY_ACTIVITY_AUDIT" Multiplicity="*" />
@@ -4001,7 +3985,6 @@
             <End Role="CUSTOMER_SURVEY_FORMS_ANS" EntitySet="CUSTOMER_SURVEY_FORMS_ANS" />
           </AssociationSet>
           <EntitySet Name="CROSSING_INSPECTION" EntityType="OracleModel.CROSSING_INSPECTION" />
-          <EntitySet Name="CROSSING_SUPPLEMENTAL" EntityType="OracleModel.CROSSING_SUPPLEMENTAL" />
           <EntitySet Name="CUSTOMER_SURVEY_OPTIONS" EntityType="OracleModel.CUSTOMER_SURVEY_OPTIONS" />
           <EntitySet Name="DAILY_ACTIVITY_FOOTER" EntityType="OracleModel.DAILY_ACTIVITY_FOOTER" />
           <AssociationSet Name="FK_FOOTER_HEADER_ID" Association="OracleModel.FK_FOOTER_HEADER_ID">
@@ -4181,23 +4164,10 @@
             <End Role="CROSSING_RAILROAD" EntitySet="CROSSING_RAILROAD" />
             <End Role="CROSSING" EntitySet="CROSSINGS" />
           </AssociationSet>
-          <AssociationSet Name="FK_SUPPLEMENTAL_CROSSING_ID" Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID">
-            <End Role="CROSSING" EntitySet="CROSSINGS" />
-            <End Role="CROSSING_SUPPLEMENTAL" EntitySet="CROSSING_SUPPLEMENTAL" />
-          </AssociationSet>
           <EntitySet Name="OVERHEAD_BUDGET_TYPE" EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" />
           <EntitySet Name="TIME_CLOCK" EntityType="OracleModel.TIME_CLOCK" />
-          <EntitySet Name="CROSSING_APPLICATION" EntityType="OracleModel.CROSSING_APPLICATION" />
           <EntitySet Name="CROSSING_INVOICE" EntityType="OracleModel.CROSSING_INVOICE" />
           <EntitySet Name="CROSSING_SUPP_INVOICE" EntityType="OracleModel.CROSSING_SUPP_INVOICE" />
-          <AssociationSet Name="FK_APPLICATION_INVOICE_ID" Association="OracleModel.FK_APPLICATION_INVOICE_ID">
-            <End Role="CROSSING_INVOICE" EntitySet="CROSSING_INVOICE" />
-            <End Role="CROSSING_APPLICATION" EntitySet="CROSSING_APPLICATION" />
-          </AssociationSet>
-          <AssociationSet Name="FK_APPLICATION_SUPP_INVOICE_ID" Association="OracleModel.FK_APPLICATION_SUPP_INVOICE_ID">
-            <End Role="CROSSING_SUPP_INVOICE" EntitySet="CROSSING_SUPP_INVOICE" />
-            <End Role="CROSSING_APPLICATION" EntitySet="CROSSING_APPLICATION" />
-          </AssociationSet>
           <EntitySet Name="CUSTOMER_SURVEY_QUESTIONS" EntityType="OracleModel.CUSTOMER_SURVEY_QUESTIONS" />
           <EntitySet Name="CUSTOMER_SURVEY_THRESHOLDS" EntityType="OracleModel.CUSTOMER_SURVEY_THRESHOLDS" />
           <AssociationSet Name="FK_FORMS_ANSWER_QUESTION_ID" Association="OracleModel.FK_FORMS_ANSWER_QUESTION_ID">
@@ -4220,6 +4190,16 @@
           <AssociationSet Name="FK_PROJECTS_STATUS_ID" Association="OracleModel.FK_PROJECTS_STATUS_ID">
             <End Role="BUD_BID_STATUS" EntitySet="BUD_BID_STATUS" />
             <End Role="BUD_BID_PROJECTS" EntitySet="BUD_BID_PROJECTS" />
+          </AssociationSet>
+          <EntitySet Name="CROSSING_APPLICATION" EntityType="OracleModel.CROSSING_APPLICATION" />
+          <EntitySet Name="CROSSING_SUPPLEMENTAL" EntityType="OracleModel.CROSSING_SUPPLEMENTAL" />
+          <AssociationSet Name="FK_APPLICATION_INVOICE_ID" Association="OracleModel.FK_APPLICATION_INVOICE_ID">
+            <End Role="CROSSING_INVOICE" EntitySet="CROSSING_INVOICE" />
+            <End Role="CROSSING_APPLICATION" EntitySet="CROSSING_APPLICATION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SUPPLEMENTAL_CROSSING_ID" Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID">
+            <End Role="CROSSING" EntitySet="CROSSINGS" />
+            <End Role="CROSSING_SUPPLEMENTAL" EntitySet="CROSSING_SUPPLEMENTAL" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
@@ -5923,34 +5903,6 @@
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="MODIFY_DATE" />
         </EntityType>
-        <EntityType Name="CROSSING_SUPPLEMENTAL">
-          <Key>
-            <PropertyRef Name="SUPPLEMENTAL_ID" />
-          </Key>
-          <Property Type="Int64" Name="SUPPLEMENTAL_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
-          <Property Type="String" Name="SERVICE_TYPE" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SERVICE_UNIT" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="RAILROAD" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SUB_DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="APPROVED_DATE" />
-          <Property Type="DateTime" Name="COMPLETED_DATE" />
-          <Property Type="String" Name="TRUCK_NUMBER" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="SQUARE_FEET" Precision="15" Scale="4" />
-          <Property Type="DateTime" Name="INSPECT_START" />
-          <Property Type="DateTime" Name="INSPECT_END" />
-          <Property Type="String" Name="SPRAY" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="CUT" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="MAINTAIN" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="INSPECT" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="RECURRING" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <NavigationProperty Name="CROSSING" Relationship="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" FromRole="CROSSING_SUPPLEMENTAL" ToRole="CROSSING" />
-        </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_OPTIONS">
           <Key>
             <PropertyRef Name="OPTION_ID" />
@@ -7228,18 +7180,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SUPPLEMENTAL_CROSSING_ID">
-          <End Type="OracleModel.CROSSING" Role="CROSSING" Multiplicity="1" />
-          <End Type="OracleModel.CROSSING_SUPPLEMENTAL" Role="CROSSING_SUPPLEMENTAL" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CROSSING">
-              <PropertyRef Name="CROSSING_ID" />
-            </Principal>
-            <Dependent Role="CROSSING_SUPPLEMENTAL">
-              <PropertyRef Name="CROSSING_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="OVERHEAD_BUDGET_TYPE">
           <Key>
             <PropertyRef Name="OVERHEAD_BUDGET_TYPE_ID" />
@@ -7276,33 +7216,6 @@
           <Property Type="String" Name="DELETED" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Type="String" Name="DELETED_COMMENTS" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="CROSSING_APPLICATION">
-          <Key>
-            <PropertyRef Name="APPLICATION_ID" />
-          </Key>
-          <Property Type="Int64" Name="APPLICATION_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Decimal" Name="APPLICATION_NUMBER" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
-          <Property Type="String" Name="APPLICATION_REQUESTED" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="APPLICATION_DATE" />
-          <Property Type="String" Name="RAILROAD" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SERVICE_UNIT" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SUB_DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="TRUCK_NUMBER" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SPRAY" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="CUT" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="INSPECT" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="DateTime" Name="FISCAL_YEAR" />
-          <Property Type="Decimal" Name="INVOICE_ID" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="INVOICE_SUPP_ID" Precision="38" Scale="0" />
-          <NavigationProperty Name="CROSSING_INVOICE" Relationship="OracleModel.FK_APPLICATION_INVOICE_ID" FromRole="CROSSING_APPLICATION" ToRole="CROSSING_INVOICE" />
-          <NavigationProperty Name="CROSSING_SUPP_INVOICE" Relationship="OracleModel.FK_APPLICATION_SUPP_INVOICE_ID" FromRole="CROSSING_APPLICATION" ToRole="CROSSING_SUPP_INVOICE" />
-        </EntityType>
         <EntityType Name="CROSSING_INVOICE">
           <Key>
             <PropertyRef Name="INVOICE_ID" />
@@ -7327,32 +7240,7 @@
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="CROSSING_APPLICATION" Relationship="OracleModel.FK_APPLICATION_SUPP_INVOICE_ID" FromRole="CROSSING_SUPP_INVOICE" ToRole="CROSSING_APPLICATION" />
         </EntityType>
-        <Association Name="FK_APPLICATION_INVOICE_ID">
-          <End Type="OracleModel.CROSSING_INVOICE" Role="CROSSING_INVOICE" Multiplicity="0..1" />
-          <End Type="OracleModel.CROSSING_APPLICATION" Role="CROSSING_APPLICATION" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CROSSING_INVOICE">
-              <PropertyRef Name="INVOICE_ID" />
-            </Principal>
-            <Dependent Role="CROSSING_APPLICATION">
-              <PropertyRef Name="INVOICE_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_APPLICATION_SUPP_INVOICE_ID">
-          <End Type="OracleModel.CROSSING_SUPP_INVOICE" Role="CROSSING_SUPP_INVOICE" Multiplicity="0..1" />
-          <End Type="OracleModel.CROSSING_APPLICATION" Role="CROSSING_APPLICATION" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CROSSING_SUPP_INVOICE">
-              <PropertyRef Name="INVOICE_SUPP_ID" />
-            </Principal>
-            <Dependent Role="CROSSING_APPLICATION">
-              <PropertyRef Name="INVOICE_SUPP_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="CUSTOMER_SURVEY_QUESTIONS">
           <Key>
             <PropertyRef Name="QUESTION_ID" />
@@ -7473,6 +7361,84 @@
             </Principal>
             <Dependent Role="BUD_BID_PROJECTS">
               <PropertyRef Name="STATUS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CROSSING_APPLICATION">
+          <Key>
+            <PropertyRef Name="APPLICATION_ID" />
+          </Key>
+          <Property Type="Int64" Name="APPLICATION_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="APPLICATION_NUMBER" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
+          <Property Type="String" Name="APPLICATION_REQUESTED" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="APPLICATION_DATE" />
+          <Property Type="String" Name="RAILROAD" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SERVICE_UNIT" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SUB_DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="TRUCK_NUMBER" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SPRAY" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="CUT" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="INSPECT" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="DateTime" Name="FISCAL_YEAR" />
+          <Property Type="Decimal" Name="INVOICE_ID" Precision="38" Scale="0" />
+          <NavigationProperty Name="CROSSING_INVOICE" Relationship="OracleModel.FK_APPLICATION_INVOICE_ID" FromRole="CROSSING_APPLICATION" ToRole="CROSSING_INVOICE" />
+        </EntityType>
+        <EntityType Name="CROSSING_SUPPLEMENTAL">
+          <Key>
+            <PropertyRef Name="SUPPLEMENTAL_ID" />
+          </Key>
+          <Property Type="Int64" Name="SUPPLEMENTAL_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
+          <Property Type="String" Name="SERVICE_TYPE" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SERVICE_UNIT" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="RAILROAD" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SUB_DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="APPROVED_DATE" />
+          <Property Type="DateTime" Name="COMPLETED_DATE" />
+          <Property Type="String" Name="TRUCK_NUMBER" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="SQUARE_FEET" Precision="15" Scale="4" />
+          <Property Type="DateTime" Name="INSPECT_START" />
+          <Property Type="DateTime" Name="INSPECT_END" />
+          <Property Type="String" Name="SPRAY" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="CUT" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="MAINTAIN" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="INSPECT" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="RECURRING" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="Decimal" Name="INVOICE_SUPP_ID" Precision="38" Scale="0" />
+          <NavigationProperty Name="CROSSING" Relationship="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" FromRole="CROSSING_SUPPLEMENTAL" ToRole="CROSSING" />
+        </EntityType>
+        <Association Name="FK_APPLICATION_INVOICE_ID">
+          <End Type="OracleModel.CROSSING_INVOICE" Role="CROSSING_INVOICE" Multiplicity="0..1" />
+          <End Type="OracleModel.CROSSING_APPLICATION" Role="CROSSING_APPLICATION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSING_INVOICE">
+              <PropertyRef Name="INVOICE_ID" />
+            </Principal>
+            <Dependent Role="CROSSING_APPLICATION">
+              <PropertyRef Name="INVOICE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SUPPLEMENTAL_CROSSING_ID">
+          <End Type="OracleModel.CROSSING" Role="CROSSING" Multiplicity="1" />
+          <End Type="OracleModel.CROSSING_SUPPLEMENTAL" Role="CROSSING_SUPPLEMENTAL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSING">
+              <PropertyRef Name="CROSSING_ID" />
+            </Principal>
+            <Dependent Role="CROSSING_SUPPLEMENTAL">
+              <PropertyRef Name="CROSSING_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8858,34 +8824,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CROSSING_SUPPLEMENTAL">
-            <EntityTypeMapping TypeName="OracleModel.CROSSING_SUPPLEMENTAL">
-              <MappingFragment StoreEntitySet="CROSSING_SUPPLEMENTAL">
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="REMARKS" ColumnName="REMARKS" />
-                <ScalarProperty Name="RECURRING" ColumnName="RECURRING" />
-                <ScalarProperty Name="INSPECT" ColumnName="INSPECT" />
-                <ScalarProperty Name="MAINTAIN" ColumnName="MAINTAIN" />
-                <ScalarProperty Name="CUT" ColumnName="CUT" />
-                <ScalarProperty Name="SPRAY" ColumnName="SPRAY" />
-                <ScalarProperty Name="INSPECT_END" ColumnName="INSPECT_END" />
-                <ScalarProperty Name="INSPECT_START" ColumnName="INSPECT_START" />
-                <ScalarProperty Name="SQUARE_FEET" ColumnName="SQUARE_FEET" />
-                <ScalarProperty Name="TRUCK_NUMBER" ColumnName="TRUCK_NUMBER" />
-                <ScalarProperty Name="COMPLETED_DATE" ColumnName="COMPLETED_DATE" />
-                <ScalarProperty Name="APPROVED_DATE" ColumnName="APPROVED_DATE" />
-                <ScalarProperty Name="SUB_DIVISION" ColumnName="SUB_DIVISION" />
-                <ScalarProperty Name="RAILROAD" ColumnName="RAILROAD" />
-                <ScalarProperty Name="SERVICE_UNIT" ColumnName="SERVICE_UNIT" />
-                <ScalarProperty Name="SERVICE_TYPE" ColumnName="SERVICE_TYPE" />
-                <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
-                <ScalarProperty Name="SUPPLEMENTAL_ID" ColumnName="SUPPLEMENTAL_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CUSTOMER_SURVEY_OPTIONS">
             <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_OPTIONS">
               <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_OPTIONS">
@@ -9799,32 +9737,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CROSSING_APPLICATION">
-            <EntityTypeMapping TypeName="OracleModel.CROSSING_APPLICATION">
-              <MappingFragment StoreEntitySet="CROSSING_APPLICATION">
-                <ScalarProperty Name="INVOICE_SUPP_ID" ColumnName="INVOICE_SUPP_ID" />
-                <ScalarProperty Name="INVOICE_ID" ColumnName="INVOICE_ID" />
-                <ScalarProperty Name="FISCAL_YEAR" ColumnName="FISCAL_YEAR" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="REMARKS" ColumnName="REMARKS" />
-                <ScalarProperty Name="INSPECT" ColumnName="INSPECT" />
-                <ScalarProperty Name="CUT" ColumnName="CUT" />
-                <ScalarProperty Name="SPRAY" ColumnName="SPRAY" />
-                <ScalarProperty Name="TRUCK_NUMBER" ColumnName="TRUCK_NUMBER" />
-                <ScalarProperty Name="SUB_DIVISION" ColumnName="SUB_DIVISION" />
-                <ScalarProperty Name="SERVICE_UNIT" ColumnName="SERVICE_UNIT" />
-                <ScalarProperty Name="RAILROAD" ColumnName="RAILROAD" />
-                <ScalarProperty Name="APPLICATION_DATE" ColumnName="APPLICATION_DATE" />
-                <ScalarProperty Name="APPLICATION_REQUESTED" ColumnName="APPLICATION_REQUESTED" />
-                <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
-                <ScalarProperty Name="APPLICATION_NUMBER" ColumnName="APPLICATION_NUMBER" />
-                <ScalarProperty Name="APPLICATION_ID" ColumnName="APPLICATION_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CROSSING_INVOICE">
             <EntityTypeMapping TypeName="OracleModel.CROSSING_INVOICE">
               <MappingFragment StoreEntitySet="CROSSING_INVOICE">
@@ -9909,6 +9821,60 @@
                 <ScalarProperty Name="PRJ_NAME" ColumnName="PRJ_NAME" />
                 <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
                 <ScalarProperty Name="BUD_BID_PROJECTS_ID" ColumnName="BUD_BID_PROJECTS_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CROSSING_APPLICATION">
+            <EntityTypeMapping TypeName="OracleModel.CROSSING_APPLICATION">
+              <MappingFragment StoreEntitySet="CROSSING_APPLICATION">
+                <ScalarProperty Name="INVOICE_ID" ColumnName="INVOICE_ID" />
+                <ScalarProperty Name="FISCAL_YEAR" ColumnName="FISCAL_YEAR" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="REMARKS" ColumnName="REMARKS" />
+                <ScalarProperty Name="INSPECT" ColumnName="INSPECT" />
+                <ScalarProperty Name="CUT" ColumnName="CUT" />
+                <ScalarProperty Name="SPRAY" ColumnName="SPRAY" />
+                <ScalarProperty Name="TRUCK_NUMBER" ColumnName="TRUCK_NUMBER" />
+                <ScalarProperty Name="SUB_DIVISION" ColumnName="SUB_DIVISION" />
+                <ScalarProperty Name="SERVICE_UNIT" ColumnName="SERVICE_UNIT" />
+                <ScalarProperty Name="RAILROAD" ColumnName="RAILROAD" />
+                <ScalarProperty Name="APPLICATION_DATE" ColumnName="APPLICATION_DATE" />
+                <ScalarProperty Name="APPLICATION_REQUESTED" ColumnName="APPLICATION_REQUESTED" />
+                <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
+                <ScalarProperty Name="APPLICATION_NUMBER" ColumnName="APPLICATION_NUMBER" />
+                <ScalarProperty Name="APPLICATION_ID" ColumnName="APPLICATION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CROSSING_SUPPLEMENTAL">
+            <EntityTypeMapping TypeName="OracleModel.CROSSING_SUPPLEMENTAL">
+              <MappingFragment StoreEntitySet="CROSSING_SUPPLEMENTAL">
+                <ScalarProperty Name="INVOICE_SUPP_ID" ColumnName="INVOICE_SUPP_ID" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="REMARKS" ColumnName="REMARKS" />
+                <ScalarProperty Name="RECURRING" ColumnName="RECURRING" />
+                <ScalarProperty Name="INSPECT" ColumnName="INSPECT" />
+                <ScalarProperty Name="MAINTAIN" ColumnName="MAINTAIN" />
+                <ScalarProperty Name="CUT" ColumnName="CUT" />
+                <ScalarProperty Name="SPRAY" ColumnName="SPRAY" />
+                <ScalarProperty Name="INSPECT_END" ColumnName="INSPECT_END" />
+                <ScalarProperty Name="INSPECT_START" ColumnName="INSPECT_START" />
+                <ScalarProperty Name="SQUARE_FEET" ColumnName="SQUARE_FEET" />
+                <ScalarProperty Name="TRUCK_NUMBER" ColumnName="TRUCK_NUMBER" />
+                <ScalarProperty Name="COMPLETED_DATE" ColumnName="COMPLETED_DATE" />
+                <ScalarProperty Name="APPROVED_DATE" ColumnName="APPROVED_DATE" />
+                <ScalarProperty Name="SUB_DIVISION" ColumnName="SUB_DIVISION" />
+                <ScalarProperty Name="RAILROAD" ColumnName="RAILROAD" />
+                <ScalarProperty Name="SERVICE_UNIT" ColumnName="SERVICE_UNIT" />
+                <ScalarProperty Name="SERVICE_TYPE" ColumnName="SERVICE_TYPE" />
+                <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
+                <ScalarProperty Name="SUPPLEMENTAL_ID" ColumnName="SUPPLEMENTAL_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
