@@ -113,6 +113,7 @@
     <Compile Include="SYS_USER_PROFILE_OPTIONSTest.cs" />
     <Compile Include="TIME_CLOCKTest.cs" />
     <Compile Include="ServiceUnitDataTest.cs" />
+    <Compile Include="UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DBI.Core\DBI.Core.csproj">

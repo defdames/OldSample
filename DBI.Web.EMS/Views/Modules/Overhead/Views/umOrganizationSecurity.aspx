@@ -95,7 +95,7 @@
                             <ext:Column ID="Column1" runat="server" DataIndex="ORGANIZATION_STATUS" Text="Current Status" Flex="1" />
                             <ext:CommandColumn ID="CommandColumn1" runat="server" flex="1">
                         <Commands>
-                               <ext:GridCommand Icon="NoteEdit" CommandName="EditStatus" Text="Modify Status" ToolTip-Text="Modify the status of this organization to either include or exclude it from the overhead budget system.">
+                               <ext:GridCommand Icon="NoteEdit" CommandName="EditStatus" Text="Change Status" ToolTip-Text="Modify the status of this organization to either include or exclude it from the overhead budget system.">
                             </ext:GridCommand>
                         </Commands>
                                 <DirectEvents>
