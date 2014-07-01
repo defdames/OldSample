@@ -12,23 +12,22 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class CUSTOMER_SURVEY_FORMS_COMP
+    public partial class CUSTOMER_SURVEY_THRESH_AMT
     {
-        public CUSTOMER_SURVEY_FORMS_COMP()
+        public CUSTOMER_SURVEY_THRESH_AMT()
         {
-            this.CUSTOMER_SURVEY_FORMS_ANS = new HashSet<CUSTOMER_SURVEY_FORMS_ANS>();
+            this.CUSTOMER_SURVEY_THRESHOLDS = new HashSet<CUSTOMER_SURVEY_THRESHOLDS>();
         }
     
-        public decimal COMPLETION_ID { get; set; }
-        public decimal FORM_ID { get; set; }
-        public string FILLED_BY { get; set; }
-        public Nullable<System.DateTime> FILLED_ON { get; set; }
-        public string CREATED_BY { get; set; }
+        public decimal AMOUNT_ID { get; set; }
+        public Nullable<decimal> LOW_DOLLAR_AMT { get; set; }
+        public Nullable<decimal> HIGH_DOLLAR_AMT { get; set; }
+        public Nullable<long> ORG_ID { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
-        public string MODIFIED_BY { get; set; }
+        public string CREATED_BY { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
+        public string MODIFIED_BY { get; set; }
     
-        public virtual ICollection<CUSTOMER_SURVEY_FORMS_ANS> CUSTOMER_SURVEY_FORMS_ANS { get; set; }
-        public virtual CUSTOMER_SURVEY_FORMS CUSTOMER_SURVEY_FORMS { get; set; }
+        public virtual ICollection<CUSTOMER_SURVEY_THRESHOLDS> CUSTOMER_SURVEY_THRESHOLDS { get; set; }
     }
 }
