@@ -15,7 +15,7 @@ namespace DBI.Data
         /// <param name="projectId"></param>
         /// <param name="weekEndingDate"></param>
         /// <returns></returns>
-        public static XXDBI_DW.JOB_COST_V JcSummaryLineAmounts(long projectId, string weekEndingDate)
+        public static XXDBI_DW.JOB_COST_V JCSummaryLineAmounts(long projectId, string weekEndingDate)
         {            
             string sql = string.Format("SELECT FY_GREC, FY_MU, FY_GREV, FY_TDE, FY_TOP FROM XXDBI_DW.JOB_COST WHERE LEVEL_SORT = 8 AND PROJECT_ID = {0} AND JC_WK_DATE = TO_DATE('{1}', 'DD-Mon-YYYY')", projectId, weekEndingDate);
             return GetJCNumbers(sql);            
@@ -28,7 +28,7 @@ namespace DBI.Data
         /// <param name="organizationId"></param>
         /// <param name="weekEndingDate"></param>
         /// <returns></returns>
-        public static XXDBI_DW.JOB_COST_V JcSummaryLineAmounts(long hierarchyId, long organizationId, string weekEndingDate)
+        public static XXDBI_DW.JOB_COST_V JCSummaryLineAmounts(long hierarchyId, long organizationId, string weekEndingDate)
         {
             string sql = string.Format("SELECT FY_GREC, FY_MU, FY_GREV, FY_TDE, FY_TOP FROM XXDBI_DW.JOB_COST WHERE HIERARCHY_ID = {0} AND DIVISION_ID = {1} AND (CLASS_CATEGORY = 'Job Cost Rollup' OR CLASS_CATEGORY IS NULL) AND JC_WK_DATE = TO_DATE('{2}', 'DD-Mon-YYYY')", hierarchyId, organizationId, weekEndingDate);
             return GetJCNumbers(sql);
@@ -41,11 +41,10 @@ namespace DBI.Data
         /// <param name="rollupName"></param>
         /// <param name="weekEndingDate"></param>
         /// <returns></returns>
-        public static XXDBI_DW.JOB_COST_V JcSummaryLineAmounts(long organizationId, string rollupName, string weekEndingDate)
+        public static XXDBI_DW.JOB_COST_V JCSummaryLineAmounts(long organizationId, string rollupName, string weekEndingDate)
         {
-
-                string sql = string.Format("SELECT FY_GREC, FY_MU, FY_GREV, FY_TDE, FY_TOP FROM XXDBI_DW.JOB_COST WHERE LEVEL_SORT = 10 AND DIVISION_ID = {0} AND PROJECT_LONG_NAME = '{1}' AND CLASS_CATEGORY = 'Job Cost Rollup' AND JC_WK_DATE = TO_DATE('{2}', 'DD-Mon-YYYY')", organizationId, rollupName, weekEndingDate);
-                return GetJCNumbers(sql);
+            string sql = string.Format("SELECT FY_GREC, FY_MU, FY_GREV, FY_TDE, FY_TOP FROM XXDBI_DW.JOB_COST WHERE LEVEL_SORT = 10 AND DIVISION_ID = {0} AND PROJECT_LONG_NAME = '{1}' AND CLASS_CATEGORY = 'Job Cost Rollup' AND JC_WK_DATE = TO_DATE('{2}', 'DD-Mon-YYYY')", organizationId, rollupName, weekEndingDate);
+            return GetJCNumbers(sql);
         }
 
         protected static XXDBI_DW.JOB_COST_V GetJCNumbers(string sql)
@@ -81,7 +80,7 @@ namespace DBI.Data
         /// <param name="organizationId"></param>
         /// <param name="optionalNumOfReturnRecords"></param>
         /// <returns></returns>
-        public static List<SingleCombo> LoadedJcWeDates(long hierarchyId, bool optionalsortDescending = false, long optionalNumOfReturnRecords = long.MaxValue)
+        public static List<SingleCombo> LoadedJCWeDates(long hierarchyId, bool optionalsortDescending = false, long optionalNumOfReturnRecords = long.MaxValue)
         {
             using (Entities context = new Entities())
             {

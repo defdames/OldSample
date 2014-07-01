@@ -14,11 +14,6 @@ namespace DBI.Data
     
     public partial class CROSSING_SUPP_INVOICE
     {
-        public CROSSING_SUPP_INVOICE()
-        {
-            this.CROSSING_APPLICATION = new HashSet<CROSSING_APPLICATION>();
-        }
-    
         public decimal INVOICE_SUPP_ID { get; set; }
         public Nullable<System.DateTime> INVOICE_SUPP_DATE { get; set; }
         public string INVOICE_SUPP_NUMBER { get; set; }
@@ -26,7 +21,5 @@ namespace DBI.Data
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
-    
-        public virtual ICollection<CROSSING_APPLICATION> CROSSING_APPLICATION { get; set; }
     }
 }

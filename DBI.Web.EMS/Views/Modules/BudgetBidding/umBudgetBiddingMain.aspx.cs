@@ -119,7 +119,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void deLoadBudgetVersions(object sender, StoreReadDataEventArgs e)
         {
-            uxVersionStore.DataSource = StaticLists.BudgetVersions();
+            uxVersionStore.DataSource = BUDGETBIDDING.BudgetVersions();
         }
 
         protected void deSelectOrg(object sender, DirectEventArgs e)

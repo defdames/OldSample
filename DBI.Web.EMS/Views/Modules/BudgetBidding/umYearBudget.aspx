@@ -70,7 +70,7 @@
                             EmptyText="-- Actions --"
                             Editable="false">
                             <Store>
-                                <ext:Store ID="uxActionsStore" runat="server" OnReadData="deLoadActions" AutoLoad="false">
+                                <ext:Store ID="uxActionsStore" runat="server" OnReadData="deLoadSummaryActions" AutoLoad="false">
                                     <Model>
                                         <ext:Model ID="Model4" runat="server">
                                             <Fields>
@@ -87,7 +87,7 @@
                                 <Activate Handler="#{uxActionsStore}.store.reload();" />
                             </Listeners>
                             <DirectEvents>
-                                <Select OnEvent="deChooseAction">
+                                <Select OnEvent="deChooseSummaryAction">
                                 </Select>
                             </DirectEvents>
                         </ext:ComboBox>
@@ -148,6 +148,9 @@
                                 <ext:Model ID="Model1" runat="server">
                                     <Fields>
                                         <ext:ModelField Name="BUD_BID_PROJECTS_ID" />
+                                        <ext:ModelField Name="PROJECT_ID" />
+                                        <ext:ModelField Name="PROJECT_NUM" />
+                                        <ext:ModelField Name="TYPE" />
                                         <ext:ModelField Name="PROJECT_NAME" />
                                         <ext:ModelField Name="STATUS" />
                                         <ext:ModelField Name="ACRES" />
@@ -203,7 +206,11 @@
                     <DirectEvents>
                         <Select OnEvent="deGetFormData">
                             <ExtraParams>
-                                <ext:Parameter Name="ProjectID" Value="#{uxSummaryGrid}.getSelectionModel().getSelection()[0].data.BUD_BID_PROJECTS_ID" Mode="Raw" />
+                                <ext:Parameter Name="BudBidProjectID" Value="#{uxSummaryGrid}.getSelectionModel().getSelection()[0].data.BUD_BID_PROJECTS_ID" Mode="Raw" />
+                                <ext:Parameter Name="ProjectNumID" Value="#{uxSummaryGrid}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
+                                <ext:Parameter Name="Type" Value="#{uxSummaryGrid}.getSelectionModel().getSelection()[0].data.TYPE" Mode="Raw" />
+                                <ext:Parameter Name="ProjectNum" Value="#{uxSummaryGrid}.getSelectionModel().getSelection()[0].data.PROJECT_NUM" Mode="Raw" />
+                                <ext:Parameter Name="ProjectName" Value="#{uxSummaryGrid}.getSelectionModel().getSelection()[0].data.PROJECT_NAME" Mode="Raw" />
                             </ExtraParams>
                         </Select>
                         <ItemDblClick OnEvent="deAllowFormEditing" />
@@ -693,7 +700,7 @@
                             Layout="HBoxLayout">
                             <Items>
                                 <ext:Label ID="Label3" runat="server" Width="770" />
-                                <ext:Button ID="uxSave" runat="server" Text="Save" Icon="Add" Width="75" Disabled="true">
+                                <ext:Button ID="uxSave" runat="server" Text="Save" Icon="Add" Width="75">
                                     <DirectEvents>
                                         <Click OnEvent="deSave" />
                                     </DirectEvents>
