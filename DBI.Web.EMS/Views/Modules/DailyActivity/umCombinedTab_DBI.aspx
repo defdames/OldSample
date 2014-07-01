@@ -638,8 +638,8 @@
 							<ext:Column ID="Column28" runat="server" DataIndex="GALLON_ACRE" Text="Gallons/Acre" Flex="8" />
 							<ext:Column ID="Column29" runat="server" DataIndex="GALLON_STARTING" Text="Gallons Starting" Flex="10" />
 							<ext:Column ID="Column30" runat="server" DataIndex="GALLON_MIXED" Text="Gallon Mixed" Flex="8" />
-							<ext:Column runat="server" DataIndex="GALLON_REMAINING" Text="Gallon Remaining" Flex="10" />
 							<ext:Column ID="Column31" runat="server" DataIndex="TOTAL" Text="Total Gallons" Flex="10" />
+                            <ext:Column ID="Column2" runat="server" DataIndex="GALLON_REMAINING" Text="Gallon Remaining" Flex="10" />
 							<ext:Column ID="Column32" runat="server" DataIndex="USED" Text="Gallons Used" Flex="10" />
 							<ext:Column ID="Column33" runat="server" DataIndex="ACRES_SPRAYED" Text="Acres Sprayed" Flex="10" />
 							<ext:Column ID="Column34" runat="server" DataIndex="STATE" Text="State" Flex="10" />
@@ -706,9 +706,9 @@
 					<ColumnModel>
 						<Columns>
 							<ext:Column ID="Column36" runat="server" DataIndex="CHEMICAL_MIX_NUMBER" Text="Mix #" Flex="4" />
-							<ext:Column runat="server" DataIndex="INV_NAME" Text="Inventory Org" Flex="13" />
+							<ext:Column ID="Column3" runat="server" DataIndex="SEGMENT1" Text="Item ID" Flex="5" />
+                            <ext:Column runat="server" DataIndex="INV_NAME" Text="Inventory Org" Flex="13" />
 							<ext:Column ID="Column37" runat="server" DataIndex="SUB_INVENTORY_SECONDARY_NAME" Text="Sub-Inv Name" Flex="10" />
-							<ext:Column runat="server" DataIndex="SEGMENT1" Text="Item ID" Flex="5" />
 							<ext:Column ID="Column38" runat="server" DataIndex="DESCRIPTION" Text="Item" Flex="23" />
 							<ext:Column ID="Column39" runat="server" DataIndex="RATE" Text="Rate" Flex="5" />
 							<ext:Column runat="server" DataIndex="TOTAL" Text="Total" Flex="5" />
