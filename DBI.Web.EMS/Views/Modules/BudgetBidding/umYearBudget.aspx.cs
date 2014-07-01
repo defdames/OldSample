@@ -387,7 +387,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     prjInfoData.PRJ_NAME = uxProjectName.Text;
                     prjInfoData.WE_OVERRIDE = "Y";
                 }
-
                 else
                 {
                     prjInfoData.WE_OVERRIDE = "N";

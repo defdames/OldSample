@@ -860,25 +860,50 @@ namespace DBI.Data
         }
     }
 
-    /// <summary>
-    /// Custom methods and functions over BUD_BID_STATUS Entity Object
-    /// </summary>
-    public partial class BUD_BID_STATUS
+    public partial class CROSSINGS
     {
-        /// <summary>
-        /// Returns list of available statuses
-        /// </summary>
-        /// <returns></returns>
-        public static List<DoubleComboLongID> Statuses()
+        public static void UpdateServiceUnits()
         {
-            using (Entities context = new Entities())
+            try
             {
-                string sql = "SELECT STATUS_ID ID, STATUS ID_NAME FROM BUD_BID_STATUS ORDER BY STATUS";
+                List<CROSSING> _crossings = new List<CROSSING>();
+                using (Entities _context = new Entities())
+                {
+                    _crossings = _context.CROSSINGS.Where(x => x.MODIFIED_DATE == null).Take(5000).ToList();
+                }
 
-                List<DoubleComboLongID> data = context.Database.SqlQuery<DoubleComboLongID>(sql).ToList();
-                return data;
+                //GMS Data
+                List<DBI.Data.GMS.ServiceUnitResponse> _gmsData = DBI.Data.GMS.ServiceUnitData.ServiceUnits();
+
+
+                foreach (var _crossing in _crossings)
+                {
+                    DBI.Data.GMS.ServiceUnitResponse _data = _gmsData.Where(x => x.sub_division.ToUpper() == _crossing.SUB_DIVISION).FirstOrDefault();
+
+                    if (_data != null)
+                    {
+
+                        System.Diagnostics.Debug.WriteLine(_crossing.CROSSING_ID);
+                        _crossing.SERVICE_UNIT = _data.service_unit;
+                        _crossing.MODIFIED_DATE = DateTime.Now;
+                        DBI.Data.GenericData.Update<CROSSING>(_crossing);
+                    }
+                    else
+                    {
+                        _crossing.MODIFIED_DATE = DateTime.Now;
+                        DBI.Data.GenericData.Update<CROSSING>(_crossing);
+                    }
+
+                }
             }
-        }   
+            catch (Oracle.ManagedDataAccess.Types.OracleTruncateException ex)
+            {
+
+                throw (ex);
+            }
+           
+        }
     }
+
 }
 

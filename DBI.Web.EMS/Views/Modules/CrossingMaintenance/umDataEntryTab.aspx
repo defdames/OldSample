@@ -198,7 +198,7 @@
                             <Items>
                                 <ext:ComboBox ID="uxAddAppReqeusted"
                                     runat="server"
-                                    FieldLabel="App Requested"
+                                    FieldLabel="Application #"
                                     LabelAlign="Right"
                                     DisplayField="type"
                                     ValueField="type"

@@ -133,6 +133,8 @@
     <Content Include="Views\Modules\BudgetBidding\umYearBudget.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\ManageKCS.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umAppDate.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umBillingInvoice.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umBillingMain.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingHome.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umDataEntryMain.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umIncident.aspx" />
@@ -150,7 +152,10 @@
     <Content Include="Views\Modules\CrossingMaintenance\umRailroadToolbar.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umReportsMain.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umStateCrossingsList.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umSuppBillingReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umSupplemental.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umSupplementalBilling.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umWeeklyWorkActivity.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umCustomerSurveyAdmin.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umManageForms.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umManageOrgs.aspx" />
@@ -292,6 +297,20 @@
     <Compile Include="Views\Modules\CrossingMaintenance\umAppDate.aspx.designer.cs">
       <DependentUpon>umAppDate.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umBillingInvoice.aspx.cs">
+      <DependentUpon>umBillingInvoice.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umBillingInvoice.aspx.designer.cs">
+      <DependentUpon>umBillingInvoice.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umBillingMain.aspx.cs">
+      <DependentUpon>umBillingMain.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umBillingMain.aspx.designer.cs">
+      <DependentUpon>umBillingMain.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umCrossingHome.aspx.cs">
       <DependentUpon>umCrossingHome.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -411,12 +430,33 @@
     <Compile Include="Views\Modules\CrossingMaintenance\umStateCrossingsList.aspx.designer.cs">
       <DependentUpon>umStateCrossingsList.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umSuppBillingReport.aspx.cs">
+      <DependentUpon>umSuppBillingReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umSuppBillingReport.aspx.designer.cs">
+      <DependentUpon>umSuppBillingReport.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umSupplemental.aspx.cs">
       <DependentUpon>umSupplemental.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umSupplemental.aspx.designer.cs">
       <DependentUpon>umSupplemental.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umSupplementalBilling.aspx.cs">
+      <DependentUpon>umSupplementalBilling.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umSupplementalBilling.aspx.designer.cs">
+      <DependentUpon>umSupplementalBilling.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umWeeklyWorkActivity.aspx.cs">
+      <DependentUpon>umWeeklyWorkActivity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umWeeklyWorkActivity.aspx.designer.cs">
+      <DependentUpon>umWeeklyWorkActivity.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CustomerSurveys\umCustomerSurveyAdmin.aspx.cs">
       <DependentUpon>umCustomerSurveyAdmin.aspx</DependentUpon>
