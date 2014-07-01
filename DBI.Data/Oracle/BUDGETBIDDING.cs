@@ -40,6 +40,7 @@ namespace DBI.Data
                 List<SingleCombo> comboItem = new List<SingleCombo>();
                 comboItem.Add(new SingleCombo { ID_NAME = "Add a New Project" });
                 comboItem.Add(new SingleCombo { ID_NAME = "Delete Selected Project" });
+                comboItem.Add(new SingleCombo { ID_NAME = "Edit Selected Project" });
                 return comboItem;
             }
         }
@@ -111,7 +112,7 @@ namespace DBI.Data
         /// <param name="prevYearID"></param>
         /// <param name="prevVerID"></param>
         /// <returns></returns>
-        public static List<BUD_SUMMARY_V> SummaryProjectsWithLineInfo(string orgName, long orgID, long yearID, long verID, long prevYearID, long prevVerID)
+        public static List<BUD_SUMMARY_V> SummaryGridData(string orgName, long orgID, long yearID, long verID, long prevYearID, long prevVerID)
         {
             using (Entities context = new Entities())
             {
@@ -124,16 +125,16 @@ namespace DBI.Data
                         WHERE BUD_BID_PROJECTS.ORG_ID = {1} AND BUD_BID_PROJECTS.YEAR_ID = {2} AND BUD_BID_PROJECTS.VER_ID = {3}
                     ),     
                     ORACLE_PROJECT_NAMES AS (
-                        SELECT '{1}' AS PROJECT_ID, '{0} (Org)' AS PROJECT_NAME, 'ORG' AS TYPE
+                        SELECT '{1}' AS PROJECT_ID, 'N/A' AS PROJECT_NUM, '{0} (Org)' AS PROJECT_NAME, 'ORG' AS TYPE
                         FROM DUAL
                             UNION ALL
-                        SELECT CAST(PROJECTS_V.PROJECT_ID AS varchar(20)) AS PROJECT_ID, PROJECTS_V.LONG_NAME AS PROJECT_NAME, 'PROJECT' AS TYPE
+                        SELECT CAST(PROJECTS_V.PROJECT_ID AS varchar(20)) AS PROJECT_ID, PROJECTS_V.SEGMENT1 AS PROJECT_NUM, PROJECTS_V.LONG_NAME AS PROJECT_NAME, 'PROJECT' AS TYPE
                         FROM PROJECTS_V
                         LEFT JOIN PA.PA_PROJECT_CLASSES
                         ON PROJECTS_V.PROJECT_ID = PA.PA_PROJECT_CLASSES.PROJECT_ID
                         WHERE PROJECTS_V.PROJECT_STATUS_CODE = 'APPROVED' AND PROJECTS_V.PROJECT_TYPE <> 'TRUCK ' || CHR(38) || ' EQUIPMENT' AND PA.PA_PROJECT_CLASSES.CLASS_CATEGORY = 'Job Cost Rollup' AND PROJECTS_V.CARRYING_OUT_ORGANIZATION_ID = {1}
                             UNION ALL
-                        SELECT CONCAT('Various - ', PA.PA_PROJECT_CLASSES.CLASS_CODE) AS PROJECT_ID, CONCAT('Various - ', PA.PA_PROJECT_CLASSES.CLASS_CODE) AS PROJECT_NAME, 'ROLLUP' AS TYPE
+                        SELECT CONCAT('Various - ', PA.PA_PROJECT_CLASSES.CLASS_CODE) AS PROJECT_ID, 'N/A' AS PROJECT_NUM, CONCAT('Various - ', PA.PA_PROJECT_CLASSES.CLASS_CODE) AS PROJECT_NAME, 'ROLLUP' AS TYPE
                         FROM PROJECTS_V
                         LEFT JOIN PA.PA_PROJECT_CLASSES
                         ON PROJECTS_V.PROJECT_ID = PA.PA_PROJECT_CLASSES.PROJECT_ID
@@ -149,8 +150,12 @@ namespace DBI.Data
                         LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_BUDGET_NUM.PROJECT_ID
                         WHERE BUD_BID_BUDGET_NUM.LINE_ID = 10 AND BUD_BID_PROJECTS.ORG_ID = {1} AND BUD_BID_PROJECTS.YEAR_ID = {4} AND BUD_BID_PROJECTS.VER_ID = {5}
                     )  
-                    SELECT CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID,
-                        CUR_PROJECT_INFO_WITH_STATUS.BUD_BID_PROJECTS_ID,
+                    SELECT CUR_PROJECT_INFO_WITH_STATUS.BUD_BID_PROJECTS_ID,
+                        CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID, 
+                        CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'OVERRIDE' THEN '-- OVERRIDE --'
+                            WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'ORG' THEN 'N/A'
+                            WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'ROLLUP' THEN 'N/A'
+                            ELSE ORACLE_PROJECT_NAMES.PROJECT_NUM END PROJECT_NUM,                       
                         CUR_PROJECT_INFO_WITH_STATUS.TYPE,
                         CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'OVERRIDE' THEN CUR_PROJECT_INFO_WITH_STATUS.PRJ_NAME ELSE ORACLE_PROJECT_NAMES.PROJECT_NAME END PROJECT_NAME,
                         CUR_PROJECT_INFO_WITH_STATUS.STATUS, 
@@ -199,7 +204,7 @@ namespace DBI.Data
                 return context.Database.SqlQuery<BUD_SUMMARY_V>(sql).SingleOrDefault();
              }
         }
-
+        
         /// <summary>
         /// Returns true if a project exists for a given org, year and version
         /// </summary>

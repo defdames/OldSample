@@ -42,7 +42,11 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
                 case "Delete Selected Project":
                     ActionDeleteSelectedProject();                    
-                    break;            
+                    break;
+
+                case "Edit Selected Project":
+                    EditSelectedProject();
+                    break;    
             }
 
             uxActions.Text = null;
@@ -53,9 +57,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             if (uxHidNewProject.Text == "True") { return; }
 
             uxGridRowModel.ClearSelection();
+            uxProjectDetail.Reset();            
+            uxHidNewProject.Text = "True";
+            uxHidBudBidID.Text = "";
+            uxHidProjectNumID.Text = "";
+            uxHidType.Text = "";
             uxProjectDetail.Enable();
             uxSave.Disable();
-            uxHidNewProject.Text = "True";
         }
 
         protected void ActionDeleteSelectedProject()
@@ -95,12 +103,32 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             GenericData.Delete<BUD_BID_ACTUAL_NUM>(actualData);
             GenericData.Delete<BUD_BID_BUDGET_NUM>(budgetData);
 
+            uxProjectDetail.Disable();
+            uxProjectDetail.Reset();
+            uxHidNewProject.Text = "";
+            uxHidBudBidID.Text = "";
+            uxHidProjectNumID.Text = "";
+            uxHidType.Text = "";
             uxSummaryGridStore.Reload();
         }
 
         protected void deAllowFormEditing(object sender, DirectEventArgs e)
         {
+            EditSelectedProject();
+        }
+
+        protected void EditSelectedProject()
+        {
+            if (uxHidNewProject.Text == "True") { return; }
+
+            if (uxHidBudBidID.Text == "")
+            {
+                StandardMsgBox("Edit", "A project must be selected before it can be edited.", "INFO");
+                return;
+            }
+
             uxProjectDetail.Enable();
+            uxSave.Enable();
         }
 
         protected void deReadSummaryGridData(object sender, StoreReadDataEventArgs e)
@@ -112,7 +140,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
             long prevYearID = Convert.ToInt64(uxHidPrevYear.Text);
             long prevVerID = Convert.ToInt64(uxHidPrevVer.Text);
-            uxSummaryGridStore.DataSource = BUDGETBIDDING.SummaryProjectsWithLineInfo(orgName, orgID, yearID, verID, prevYearID, prevVerID);
+            uxSummaryGridStore.DataSource = BUDGETBIDDING.SummaryGridData(orgName, orgID, yearID, verID, prevYearID, prevVerID);
         }
 
         protected void deLoadOrgProjects(object sender, StoreReadDataEventArgs e)
@@ -141,15 +169,31 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         {
             if (uxProjectDetail.Enabled == true) { uxProjectDetail.Disable(); }
 
-            string projectID = e.ExtraParams["ProjectID"];
-            BUDGETBIDDING.BUD_SUMMARY_V data = BUDGETBIDDING.SummaryProjectsDetail(Convert.ToInt64(projectID));
+            string budBidprojectID = e.ExtraParams["BudBidProjectID"];
+            string projectNumID = e.ExtraParams["ProjectNumID"];
+            string type = e.ExtraParams["Type"];
+            string projectNum = e.ExtraParams["ProjectNum"];            
+            string projectName = e.ExtraParams["ProjectName"];
+            BUDGETBIDDING.BUD_SUMMARY_V data = BUDGETBIDDING.SummaryProjectsDetail(Convert.ToInt64(budBidprojectID));
 
             uxHidNewProject.Text = "";
-            uxHidBudBidID.Text = projectID;
-            uxHidType.Text = data.TYPE;
-            //uxPrevOPOverrideCheckbox.Checked = data.COMPARE_PRJ_OVERRIDE == "Y" ? true : false;
+            uxHidBudBidID.Text = budBidprojectID;
+            uxHidProjectNumID.Text = projectNumID;
+            uxHidType.Text = type;
 
-
+            uxProjectNum.SetValue(projectNumID, projectNum);
+            uxProjectName.Text = projectName;
+            uxStatus.Text = data.STATUS;
+            uxComments.Text = data.COMMENTS;
+            uxCompareOverride.Checked = data.COMPARE_PRJ_OVERRIDE == "Y" ? true : false;
+            uxCompareOP.Text = String.Format("{0:N2}", data.COMPARE_PRJ_AMOUNT);
+            uxCompareVar.Text = "100";
+            uxAcres.Text = String.Format("{0:N2}", data.ACRES);
+            uxDays.Text = String.Format("{0:N2}", data.DAYS);
+            uxLiabilityCheckbox.Checked = data.LIABILITY == "Y" ? true : false;
+            uxLiabilityAmount.Text = String.Format("{0:N2}", data.LIABILITY_OP);
+            uxAppType.Text = data.APP_TYPE;
+            uxChemMix.Text = data.CHEMICAL_MIX;            
         }
 
         protected void deSelectProject(object sender, DirectEventArgs e)
@@ -325,8 +369,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         {
             // Write data to BUD_BID_PROJECTS
             BUD_BID_PROJECTS prjInfoData = new BUD_BID_PROJECTS();
-            prjInfoData.PROJECT_ID = uxHidProjectNumID.Text;
-            prjInfoData.PRJ_NAME = uxProjectName.Text;
+            prjInfoData.PROJECT_ID = uxHidProjectNumID.Text;            
             prjInfoData.ORG_ID = Convert.ToInt64(Request.QueryString["OrgID"]);
             prjInfoData.YEAR_ID = Convert.ToInt64(Request.QueryString["fiscalYear"]);
             prjInfoData.VER_ID = Convert.ToInt64(Request.QueryString["verID"]);
@@ -341,6 +384,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             {
                 if (uxJCDate.Text == "-- OVERRIDE --")
                 {
+                    prjInfoData.PRJ_NAME = uxProjectName.Text;
                     prjInfoData.WE_OVERRIDE = "Y";
                 }
 
@@ -428,11 +472,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         protected void deCancel(object sender, DirectEventArgs e)
         {            
             uxProjectDetail.Disable();
-            uxHidNewProject.Text = "";
-            uxHidBudBidID.Text = "";
-            uxHidProjectNumID.Text = "";
-            uxHidType.Text = "";
-            uxProjectDetail.Reset();
+            if (uxHidNewProject.Text == "True")
+            {
+                uxHidNewProject.Text = "";
+                uxHidBudBidID.Text = "";
+                uxHidProjectNumID.Text = "";
+                uxHidType.Text = "";
+            }
+
+            //uxProjectDetail.Reset();
         }
 
         protected void StandardMsgBox(string title, string msg, string msgIcon)
