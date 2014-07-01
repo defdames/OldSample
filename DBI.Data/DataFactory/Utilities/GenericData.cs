@@ -29,9 +29,12 @@ namespace DBI.Data
 
             try
             {
+
+
+
                 using (Entities _context = new Entities())
                 {
-                    _context.SYS_ACTIVITY.Count();
+                    int count = _context.SYS_ACTIVITY.Count();
                 }
                 isValid = true;
             }
@@ -744,6 +747,42 @@ namespace DBI.Data
                 }
             }
         }
+
+        /// <summary>
+        /// This updates data using a list of objects.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entityCollection"></param>
+        public static void Update<T>(List<T> entityCollection) where T : class
+        {
+            using (Entities _context = new Entities())
+            {
+                foreach (T item in entityCollection)
+                {
+                    _context.Set<T>().Attach(item);
+                    _context.Entry(item).State = System.Data.EntityState.Modified;
+                    _context.SaveChanges();
+                }
+            }
+        }
+
+         /// <summary>
+        /// This inserts data using a list of objects.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entityCollection"></param>
+        public static void Insert<T>(List<T> entityCollection) where T : class
+        {
+            using (Entities _context = new Entities())
+            {
+                foreach (T item in entityCollection)
+                {
+                    _context.Set<T>().Add(item);
+                    _context.SaveChanges();
+                }
+            }
+        }
+
     }
 }
 
