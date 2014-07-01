@@ -103,7 +103,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(Record);
             }
 
-            X.Js.Call("parent.App.uxPlaceholderWindow.hide(); parent.App.uxEmployeeTab.reload()");
+            X.Js.Call("parent.App.uxDetailsPanel.reload(); parent.App.uxPlaceholderWindow.close()");
 
         }
 
