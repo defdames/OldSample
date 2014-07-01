@@ -7,9 +7,9 @@
 	<title></title>
 	<script type="text/javascript">
 		var updateAddTotalAndUsed = function () {
-			App.uxAddChemicalGallonTotal.setValue(parseInt(App.uxAddChemicalGallonStart.value) + parseInt(App.uxAddChemicalGallonMixed.value));
-			App.uxAddChemicalGallonUsed.setValue(parseInt(App.uxAddChemicalGallonTotal.value) - parseInt(App.uxAddChemicalGallonRemain.value));
-			App.uxAddChemicalAcresSprayed.setValue(parseInt(App.uxAddChemicalGallonUsed.value) / parseInt(App.uxAddChemicalGallonAcre.value));
+			App.uxAddChemicalGallonTotal.setValue(parseFloat(App.uxAddChemicalGallonStart.value) + parseFloat(App.uxAddChemicalGallonMixed.value));
+			App.uxAddChemicalGallonUsed.setValue(parseFloat(App.uxAddChemicalGallonTotal.value) - parseFloat(App.uxAddChemicalGallonRemain.value));
+			App.uxAddChemicalAcresSprayed.setValue(parseFloat(App.uxAddChemicalGallonUsed.value) / parseFloat(App.uxAddChemicalGallonAcre.value));
 		};
 	</script>
 </head>
