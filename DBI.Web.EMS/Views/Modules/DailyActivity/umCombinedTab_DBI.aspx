@@ -716,7 +716,7 @@
 							<ext:Column ID="Column41" runat="server" DataIndex="EPA_NUMBER" Text="EPA Number" Flex="10" />
 							<ext:CheckColumn ID="CheckColumn1" runat="server"
 								DataIndex="CONTRACTOR_SUPPLIED"
-								Text="Contractor Supplied" Flex="15" />
+								Text="Customer Material" Flex="15" />
 						</Columns>
 					</ColumnModel>
 					<TopBar>

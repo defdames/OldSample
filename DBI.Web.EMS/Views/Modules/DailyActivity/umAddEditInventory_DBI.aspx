@@ -264,7 +264,7 @@
                     ID="uxAddInventoryEPA"
                     FieldLabel="EPA Number"
                     AllowBlank="false" Width="500" />
-                <ext:Checkbox runat="server" FieldLabel="Contracter Supplied" ID="uxAddInventoryContractor" />
+                <ext:Checkbox runat="server" FieldLabel="Customer Material" ID="uxAddInventoryContractor" />
             </Items>
             <Buttons>
                 <ext:Button runat="server"
