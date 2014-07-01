@@ -87,8 +87,68 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         protected void deAddInvoice(object sender, DirectEventArgs e)
         {
+            string InvoiceNum = uxInvoiceNumber.Value.ToString();
+            DateTime InvoiceDate = (DateTime)uxInvoiceDate.Value;
 
+            CROSSING_INVOICE data = new CROSSING_INVOICE()
+            {
+                INVOICE_DATE = InvoiceDate,
+                INVOICE_NUMBER = InvoiceNum,
+                CREATED_BY = User.Identity.Name,
+                CREATE_DATE = DateTime.Now,
+                MODIFIED_BY = User.Identity.Name,
+                MODIFY_DATE = DateTime.Now,
+                
+            };
+            GenericData.Insert<CROSSING_INVOICE>(data);
+
+            //  decimal SuppInvoiceId = data.INVOICE_SUPP_ID;
+
+            //CROSSING_APPLICATION invoice;
+            //string json = (e.ExtraParams["selectedSupps"]);
+            //List<SupplementalDetails> suppList = JSON.Deserialize<List<SupplementalDetails>>(json);
+            //foreach (SupplementalDetails supp in suppList)
+            //{
+
+            //    using (Entities _context = new Entities())
+            //    {
+            //        invoice = _context.CROSSING_APPLICATION.Where(x => x.APPLICATION_ID == supp.APPLICATION_ID).SingleOrDefault();
+            //        invoice.INVOICE_SUPP_ID = Convert.ToInt64(SuppInvoiceId);
+            //    }
+            //        GenericData.Update<CROSSING_SUPPLEMENTAL>(invoice);
+                
+            //    uxFilterForm.Reset();
+            //    uxInvoiceSupplementalStore.Reload();
+
+            //    Notification.Show(new NotificationConfig()
+            //    {
+            //        Title = "Success",
+            //        Html = "Invoice Added Successfully",
+            //        HideDelay = 1000,
+            //        AlignCfg = new NotificationAlignConfig
+            //        {
+            //            ElementAnchor = AnchorPoint.Center,
+            //            TargetAnchor = AnchorPoint.Center
+            //        }
+            //    });
+
+        
+        }
+        public class ApplicationDetails
+        {
+            public long APPLICATION_ID { get; set; }
+            public long CROSSING_ID { get; set; }
+            public Int64 INVOICE_SUPP_ID { get; set; }
+            public Int64 APPLICATION_NUMBER { get; set; }
+            public string APPLICATION_REQUESTED { get; set; }
+            public DateTime APPLICATION_DATE { get; set; }
+            public string TRUCK_NUMBER { get; set; }
+            public long FISCAL_YEAR { get; set; }
+            public string SPRAY { get; set; }
+            public string CUT { get; set; }
+            public string INSPECT { get; set; }
+            public string REMARKS { get; set; }
 
         }
+        }
     }
-}

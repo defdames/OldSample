@@ -130,9 +130,9 @@
                                 ID="Button1"
                                 Text="Invoice"
                                 Icon="PlayGreen">
-                         <%--<Listeners>
-                                <Click Handler="#{uxIncidentStore}.load()" />
-                            </Listeners>--%>
+                         <DirectEvents>
+                             <Click OnEvent="deAddInvoice" />
+                         </DirectEvents>
                             </ext:Button>
                             <ext:Button runat="server"
                                 ID="Button2"

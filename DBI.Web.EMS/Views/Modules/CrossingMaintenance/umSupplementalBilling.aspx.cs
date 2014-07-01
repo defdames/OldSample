@@ -26,14 +26,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-          
+
         }
 
-         protected void deInvoiceSupplementalGrid(object sender, StoreReadDataEventArgs e)
+        protected void deInvoiceSupplementalGrid(object sender, StoreReadDataEventArgs e)
         {
             DateTime StartDate = uxStartDate.SelectedDate;
             DateTime EndDate = uxEndDate.SelectedDate;
-         
+
             using (Entities _context = new Entities())
             {
 
@@ -55,12 +55,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                                    d.MILE_POST,
                                    a.TRUCK_NUMBER,
                                    a.SQUARE_FEET,
-                                   
                                    a.REMARKS,
                                });
 
                 //filter down specific information to show the incidents needed for report
-                
+
                 if (StartDate != DateTime.MinValue)
                 {
                     allData = allData.Where(x => x.APPROVED_DATE >= StartDate);
@@ -84,13 +83,80 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 e.Total = count;
             }
         }
-         protected void deClearFilters(object sender, DirectEventArgs e)
-         {
-             uxFilterForm.Reset();
-         }
-         protected void deAddInvoice(object sender, DirectEventArgs e)
-         {
-
-         }
+        protected void deClearFilters(object sender, DirectEventArgs e)
+        {
+            uxFilterForm.Reset();
         }
+        protected void deAddInvoice(object sender, DirectEventArgs e)
+        {
+            string InvoiceNum = uxInvoiceNumber.Value.ToString();
+            DateTime InvoiceDate = (DateTime)uxInvoiceDate.Value;
+
+            CROSSING_SUPP_INVOICE data = new CROSSING_SUPP_INVOICE()
+            {
+                INVOICE_SUPP_DATE = InvoiceDate,
+                INVOICE_SUPP_NUMBER = InvoiceNum,
+                CREATED_BY = User.Identity.Name,
+                CREATE_DATE = DateTime.Now,
+                MODIFIED_BY = User.Identity.Name,
+                MODIFY_DATE = DateTime.Now,
+
+            };
+            GenericData.Insert<CROSSING_SUPP_INVOICE>(data);
+
+            decimal SuppInvoiceId = data.INVOICE_SUPP_ID;
+
+            CROSSING_SUPPLEMENTAL invoice;
+            string json = (e.ExtraParams["selectedSupps"]);
+            List<SupplementalDetails> suppList = JSON.Deserialize<List<SupplementalDetails>>(json);
+            foreach (SupplementalDetails supp in suppList)
+            {
+
+                using (Entities _context = new Entities())
+                {
+                    invoice = _context.CROSSING_SUPPLEMENTAL.Where(x => x.SUPPLEMENTAL_ID == supp.SUPPLEMENTAL_ID).SingleOrDefault();
+                    //invoice.INVOICE_SUPP_ID = Convert.ToInt64(SuppInvoiceId);
+                }
+                    GenericData.Update<CROSSING_SUPPLEMENTAL>(invoice);
+                
+                uxFilterForm.Reset();
+                uxInvoiceSupplementalStore.Reload();
+
+                Notification.Show(new NotificationConfig()
+                {
+                    Title = "Success",
+                    Html = "Invoice Added Successfully",
+                    HideDelay = 1000,
+                    AlignCfg = new NotificationAlignConfig
+                    {
+                        ElementAnchor = AnchorPoint.Center,
+                        TargetAnchor = AnchorPoint.Center
+                    }
+                });
+
+            }
+        }
+        public class SupplementalDetails
+        {
+            public long SUPPLEMENTAL_ID { get; set; }
+            public long CROSSING_ID { get; set; }
+            public DateTime APPROVED_DATE { get; set; }
+            public DateTime COMPLETED_DATE { get; set; }
+            public string SERVICE_TYPE { get; set; }
+            public string TRUCK_NUMBER { get; set; }
+            public DateTime INSPECT_START { get; set; }
+            public DateTime INSPECT_END { get; set; }
+            public string SPRAY { get; set; }
+            public long SQUARE_FEET { get; set; }
+            public string CUT { get; set; }
+            public string MAINTAIN { get; set; }
+            public string INSPECT { get; set; }
+            public string RECURRING { get; set; }
+            public string REMARKS { get; set; }
+
+        }
+       
     }
+
+}
+

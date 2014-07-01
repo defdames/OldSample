@@ -61,7 +61,7 @@
 		  </Listeners>
             </ext:FormPanel>
 
-        <ext:GridPanel ID="uxApplicationEntryGrid" Title="Completed Crossings" runat="server" Region="North" Frame="false" Collapsible="true" MultiSelect="true" >
+        <ext:GridPanel ID="uxInvoiceGrid" Title="Completed Crossings" runat="server" Region="North" Frame="false" Collapsible="true" MultiSelect="true" >
                 <SelectionModel>
                     <ext:CheckboxselectionModel ID="CheckboxSelectionModel2" runat="server" AllowDeselect="true" Mode="Multi" />
                 </SelectionModel>
@@ -115,17 +115,20 @@
                                 ID="Button1"
                                 Text="Invoice"
                                 Icon="PlayGreen">
-                         <%--<Listeners>
-                                <Click Handler="#{uxIncidentStore}.load()" />
-                            </Listeners>--%>
+                        <DirectEvents>
+                            <Click OnEvent="deAddInvoice" >
+                                 <ExtraParams>
+                                    <ext:Parameter Name="selectedSupps" Value="Ext.encode(#{uxInvoiceGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+                                </ExtraParams>
+                                </Click>
+                        </DirectEvents>
+                     
                             </ext:Button>
                             <ext:Button runat="server"
                                 ID="Button2"
                                 Text="Undo Invoice"
                                 Icon="StopRed">
-                           <%--  <DirectEvents>
-                            <Click OnEvent="deClearFilters" />
-                            </DirectEvents>--%>
+                   
                             </ext:Button>
                         </Items>
                     </ext:Toolbar>

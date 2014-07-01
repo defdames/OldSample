@@ -130,13 +130,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Button Button3;
         
         /// <summary>
-        /// uxApplicationEntryGrid control.
+        /// uxInvoiceGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxApplicationEntryGrid;
+        protected global::Ext.Net.GridPanel uxInvoiceGrid;
         
         /// <summary>
         /// CheckboxSelectionModel2 control.
