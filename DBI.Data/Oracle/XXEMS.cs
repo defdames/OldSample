@@ -442,10 +442,6 @@ namespace DBI.Data
     /// </summary>
     public partial class OVERHEAD_GL_ACCOUNT
     {
-
-        
-
-
         /// <summary>
         /// Returns a list of Overhead GL Accounts by legal entity
         /// </summary>

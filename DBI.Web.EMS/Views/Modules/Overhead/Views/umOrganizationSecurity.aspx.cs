@@ -134,39 +134,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
                 }
         }
 
-        protected void deShowGLAccounts(object sender, DirectEventArgs e)
-        {
-                long OrganizationID;
-
-                RowSelectionModel selection = uxOrganizationSelectionModel;
-                Boolean checkOrganization = long.TryParse(selection.SelectedRecordID, out OrganizationID);
-
-                Window win = new Window
-                {
-                    ID = "uxGlAccounts",
-                    Title = "GL Accounts",
-                    Height = 650,
-                    Width = 750,
-                    Modal = true,
-                    CloseAction = CloseAction.Destroy,
-                    Loader = new ComponentLoader
-                    {
-                        Mode = LoadMode.Frame,
-                        DisableCaching = true,
-                        Url = "/Views/Modules/Overhead/Views/umGeneralLedgerAccounts.aspx?orgID=" + OrganizationID,
-                        AutoLoad = true,
-                        LoadMask =
-                        {
-                            ShowMask = true
-                        }
-                    }
-                };
-
-                win.Listeners.Close.Handler = "#{uxGlAccountSecurityGrid}.getStore().load();";
-
-                win.Render(this.Form);
-                win.Show(); 
-
-        }
+       
     }
 }

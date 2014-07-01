@@ -88,7 +88,7 @@ namespace DBI.Data
                         CONNECT BY PRIOR    c.organization_id_child = c.organization_id_parent AND a.organization_structure_id + 0 = " + hierarchyId.ToString() + @"
                         ORDER SIBLINGS BY   c.d_child_name";
 
-                    List<ORGANIZATION_V1> _data = _context.Database.SqlQuery<ORGANIZATION_V1>(sql).Select(a => new ORGANIZATION_V1 { ORGANIZATION_ID = a.ORGANIZATION_ID, ORGANIZATION_NAME = a.ORGANIZATION_NAME, HIER_LEVEL = a.HIER_LEVEL }).ToList();
+                    List<ORGANIZATION_V1> _data = _context.Database.SqlQuery<ORGANIZATION_V1>(sql).Select(a => new ORGANIZATION_V1 { TYPE = a.TYPE, DATE_FROM = a.DATE_FROM, DATE_TO = a.DATE_TO, ORGANIZATION_STATUS = null, ORGANIZATION_ID = a.ORGANIZATION_ID, ORGANIZATION_NAME = a.ORGANIZATION_NAME, HIER_LEVEL = a.HIER_LEVEL }).ToList();
                     return _data;
                 }
            
@@ -103,7 +103,7 @@ namespace DBI.Data
 
                 using (Entities _context = new Entities())
                 {
-                    string sql = @"select distinct a.organization_id_parent as organization_id,C.ORGANIZATION_STRUCTURE_ID,c.name as hierarchy_name, d.name as organization_name  from per_org_structure_elements_v a
+                    string sql = @"select distinct d.date_from, d.date_to, d.type, c.name as HIERARCHY_NAME, C.ORGANIZATION_STRUCTURE_ID AS ORGANIZATION_STRUCTURE_ID, a.organization_id_parent as ORGANIZATION_ID,d.name as ORGANIZATION_NAME   from per_org_structure_elements_v a
                 inner join per_org_structure_versions_v b on B.ORG_STRUCTURE_VERSION_ID = a.org_structure_version_id
                 inner join per_organization_structures_v c on C.ORGANIZATION_STRUCTURE_ID = B.ORGANIZATION_STRUCTURE_ID
                 inner join apps.hr_all_organization_units d on d.organization_id = a.organization_id_parent

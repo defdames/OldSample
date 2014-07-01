@@ -339,6 +339,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Oracle.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Oracle\OVERHEAD_BUDGET.cs" />
     <Compile Include="Oracle\XXDBI_DW.cs" />
     <Compile Include="Oracle\PA.cs" />
     <Compile Include="Oracle\XXEMS.cs" />
