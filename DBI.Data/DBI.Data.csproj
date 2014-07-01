@@ -167,6 +167,9 @@
     <Compile Include="CROSSING_SUPP_INVOICE.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="CUSTOMER_SURVEY_CAT.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="CUSTOMER_SURVEY_FIELDSETS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
@@ -192,6 +195,9 @@
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="CUSTOMER_SURVEY_THRESHOLDS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CUSTOMER_SURVEY_THRESH_AMT.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="DAILY_ACTIVITY_AUDIT.cs">
