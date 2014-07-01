@@ -90,13 +90,37 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void GetWarnings()
         {
+            int Status = GetStatus(long.Parse(Request.QueryString["HeaderId"]));
+
             if (WarningList.Count > 0)
             {
                 uxWarningStore.DataSource = WarningList;
+                if (!WarningList.Exists(x => x.WarningType == "Error"))
+                {
+                    switch (Status)
+                    {
+                        case 2:
+                            X.Js.Call("parent.App.uxApproveActivityButton.enable()");
+                            break;
+                        case 3:
+                            X.Js.Call("parent.App.uxPostActivityButton.enable()");
+                            break;
+                    }
+                }
             }
             else
             {
                 uxWarningGrid.Hide();
+                switch (Status)
+                {
+                    case 2:
+                        X.Js.Call("parent.App.uxApproveActivityButton.enable()");
+                        break;
+                    case 3:
+                        X.Js.Call("parent.App.uxPostActivityButton.enable()");
+                        break;
+                }
+
             }
         }
 
