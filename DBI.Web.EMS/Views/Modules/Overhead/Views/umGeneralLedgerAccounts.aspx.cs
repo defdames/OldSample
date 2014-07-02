@@ -30,5 +30,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
             uxOrganizationSecurityStore.DataSource = GenericData.EnumerableFilterHeader<HR.ORGANIZATION>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
             e.Total = count;
         }
+
+        protected void deViewOrganizationGlAccounts(object sender, DirectEventArgs e)
+        {
+            long _organizationSelected = long.Parse(uxOrganizationsGridRowSelection.SelectedRecordID);
+
+
+        }
+
     }
 }
