@@ -1526,6 +1526,7 @@
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="AMOUNT_ID" Type="number" Nullable="false" />
+          <Property Name="THERSHOLD" Type="number" Nullable="false" />
         </EntityType>
         <EntityType Name="DAILY_ACTIVITY_AUDIT">
           <Key>
@@ -4251,7 +4252,6 @@
           <EntitySet Name="CUSTOMER_SURVEY_CAT" EntityType="OracleModel.CUSTOMER_SURVEY_CAT" />
           <EntitySet Name="CUSTOMER_SURVEY_FORMS" EntityType="OracleModel.CUSTOMER_SURVEY_FORMS" />
           <EntitySet Name="CUSTOMER_SURVEY_THRESH_AMT" EntityType="OracleModel.CUSTOMER_SURVEY_THRESH_AMT" />
-          <EntitySet Name="CUSTOMER_SURVEY_THRESHOLDS" EntityType="OracleModel.CUSTOMER_SURVEY_THRESHOLDS" />
           <AssociationSet Name="FK_FORMS_CAT_ID" Association="OracleModel.FK_FORMS_CAT_ID">
             <End Role="CUSTOMER_SURVEY_CAT" EntitySet="CUSTOMER_SURVEY_CAT" />
             <End Role="CUSTOMER_SURVEY_FORMS" EntitySet="CUSTOMER_SURVEY_FORMS" />
@@ -4264,6 +4264,7 @@
             <End Role="CUSTOMER_SURVEY_FORMS" EntitySet="CUSTOMER_SURVEY_FORMS" />
             <End Role="CUSTOMER_SURVEY_FORMS_COMP" EntitySet="CUSTOMER_SURVEY_FORMS_COMP" />
           </AssociationSet>
+          <EntitySet Name="CUSTOMER_SURVEY_THRESHOLDS" EntityType="OracleModel.CUSTOMER_SURVEY_THRESHOLDS" />
           <AssociationSet Name="FK_THRSH_AMTS_FK" Association="OracleModel.FK_THRSH_AMTS_FK">
             <End Role="CUSTOMER_SURVEY_THRESH_AMT" EntitySet="CUSTOMER_SURVEY_THRESH_AMT" />
             <End Role="CUSTOMER_SURVEY_THRESHOLDS" EntitySet="CUSTOMER_SURVEY_THRESHOLDS" />
@@ -7500,18 +7501,6 @@
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CUSTOMER_SURVEY_THRESHOLDS" Relationship="OracleModel.FK_THRSH_AMTS_FK" FromRole="CUSTOMER_SURVEY_THRESH_AMT" ToRole="CUSTOMER_SURVEY_THRESHOLDS" />
         </EntityType>
-        <EntityType Name="CUSTOMER_SURVEY_THRESHOLDS">
-          <Key>
-            <PropertyRef Name="THRESHOLD_ID" />
-          </Key>
-          <Property Type="Decimal" Name="THRESHOLD_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="Decimal" Name="AMOUNT_ID" Nullable="false" Precision="38" Scale="0" />
-          <NavigationProperty Name="CUSTOMER_SURVEY_THRESH_AMT" Relationship="OracleModel.FK_THRSH_AMTS_FK" FromRole="CUSTOMER_SURVEY_THRESHOLDS" ToRole="CUSTOMER_SURVEY_THRESH_AMT" />
-        </EntityType>
         <Association Name="FK_FORMS_CAT_ID">
           <End Type="OracleModel.CUSTOMER_SURVEY_CAT" Role="CUSTOMER_SURVEY_CAT" Multiplicity="1" />
           <End Type="OracleModel.CUSTOMER_SURVEY_FORMS" Role="CUSTOMER_SURVEY_FORMS" Multiplicity="*" />
@@ -7548,6 +7537,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="CUSTOMER_SURVEY_THRESHOLDS">
+          <Key>
+            <PropertyRef Name="THRESHOLD_ID" />
+          </Key>
+          <Property Type="Decimal" Name="THRESHOLD_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="Decimal" Name="AMOUNT_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="THERSHOLD" Nullable="false" Precision="38" Scale="0" />
+          <NavigationProperty Name="CUSTOMER_SURVEY_THRESH_AMT" Relationship="OracleModel.FK_THRSH_AMTS_FK" FromRole="CUSTOMER_SURVEY_THRESHOLDS" ToRole="CUSTOMER_SURVEY_THRESH_AMT" />
+        </EntityType>
         <Association Name="FK_THRSH_AMTS_FK">
           <End Type="OracleModel.CUSTOMER_SURVEY_THRESH_AMT" Role="CUSTOMER_SURVEY_THRESH_AMT" Multiplicity="1" />
           <End Type="OracleModel.CUSTOMER_SURVEY_THRESHOLDS" Role="CUSTOMER_SURVEY_THRESHOLDS" Multiplicity="*" />
@@ -10012,6 +10014,7 @@
           <EntitySetMapping Name="CUSTOMER_SURVEY_THRESHOLDS">
             <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_THRESHOLDS">
               <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_THRESHOLDS">
+                <ScalarProperty Name="THERSHOLD" ColumnName="THERSHOLD" />
                 <ScalarProperty Name="AMOUNT_ID" ColumnName="AMOUNT_ID" />
                 <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
