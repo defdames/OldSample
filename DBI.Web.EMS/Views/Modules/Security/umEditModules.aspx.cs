@@ -171,6 +171,28 @@ namespace DBI.Web.EMS.Views.Modules.Security
             uxModuleStore.Reload();
         }
 
+        protected void deDeleteModule(object sender, DirectEventArgs e)
+        {
+            SYS_MODULES ModuleToDelete;
+            List<SYS_MENU> MenuItems;
+            decimal ModuleId = decimal.Parse(e.ExtraParams["ModuleId"]);
+            using (Entities _context = new Entities())
+            {
+                MenuItems = _context.SYS_MENU.Where(x => x.MODULE_ID == ModuleId ).ToList();
+                ModuleToDelete = _context.SYS_MODULES.Where(x => x.MODULE_ID == ModuleId).Single();
+            }
+            if (MenuItems.Count > 0)
+            {
+                X.Msg.Alert("Exisiting Menu Items", "This Module currently has Menu Items associated with it.  Please delete the existing Menu Items before deleting the Module").Show();
+            }
+            else
+            {
+                GenericData.Delete<SYS_MODULES>(ModuleToDelete);
+                uxModuleStore.Reload();
+                X.Msg.Alert("Log out", "Please log out and back in to see the menu changes").Show();
+            }
+        }
+
         protected void AddMenuItem()
         {
             SYS_MENU NewMenu = new SYS_MENU();
@@ -209,6 +231,19 @@ namespace DBI.Web.EMS.Views.Modules.Security
                 new Ext.Net.Parameter("ModuleId", uxMenuItemModule.Value.ToString())
             });
             
+        }
+
+        protected void deDeleteMenuItem(object sender, DirectEventArgs e)
+        {
+            SYS_MENU MenuItemToDelete;
+            decimal ItemId = decimal.Parse(e.ExtraParams["ItemId"]);
+            using (Entities _context = new Entities())
+            {
+                MenuItemToDelete = _context.SYS_MENU.Where(x => x.MENU_ID == ItemId ).Single();
+            }
+            GenericData.Delete<SYS_MENU>(MenuItemToDelete);
+            uxMenuItemsStore.Reload();
+            X.Msg.Alert("Log out", "Please log out and back in to see the menu changes").Show();
         }
 
         protected void GetPermissionsAtLevel(int level)
