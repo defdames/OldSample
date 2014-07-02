@@ -40,6 +40,24 @@ namespace DBI.Web.EMS.Views.Modules.Security {
         protected global::Ext.Net.Store uxModuleStore;
         
         /// <summary>
+        /// uxEditModuleButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxEditModuleButton;
+        
+        /// <summary>
+        /// uxDeleteModuleButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxDeleteModuleButton;
+        
+        /// <summary>
         /// uxMenuItemsGrid control.
         /// </summary>
         /// <remarks>
@@ -56,6 +74,24 @@ namespace DBI.Web.EMS.Views.Modules.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Store uxMenuItemsStore;
+        
+        /// <summary>
+        /// uxEditMenuItemButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxEditMenuItemButton;
+        
+        /// <summary>
+        /// uxDeleteMenuItemButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxDeleteMenuItemButton;
         
         /// <summary>
         /// uxModulesWindow control.

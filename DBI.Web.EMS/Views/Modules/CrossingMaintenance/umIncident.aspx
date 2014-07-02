@@ -76,19 +76,14 @@
                     <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true" />
                 </Plugins>
 
-
-
-                <%--    <Listeners>
-                    <Select Handler="#{uxIncidentStore}.reload()" />
-                </Listeners>--%>
                 <BottomBar>
                     <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True">
                     </ext:PagingToolbar>
                 </BottomBar>
                 <Listeners>
                     <Select Handler="#{uxIncidentStore}.reload(); #{uxAddIncident}.enable(); #{uxCloseIncident}.disable()" />
-
                 </Listeners>
+
             </ext:GridPanel>
             <ext:Toolbar ID="Toolbar1" runat="server">
                 <Items>

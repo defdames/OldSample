@@ -193,7 +193,7 @@ namespace DBI.Data
             using (Entities context = new Entities())
             {
                 string sql = string.Format(@"
-                SELECT BUD_BID_PROJECTS.PROJECT_ID, BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID, BUD_BID_PROJECTS.TYPE, BUD_BID_PROJECTS.PRJ_NAME PROJECT_NAME, 
+                SELECT BUD_BID_PROJECTS.PROJECT_ID, BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID, BUD_BID_PROJECTS.TYPE, BUD_BID_PROJECTS.PRJ_NAME PROJECT_NAME, BUD_BID_STATUS.STATUS_ID,
                     BUD_BID_STATUS.STATUS, BUD_BID_PROJECTS.ACRES, BUD_BID_PROJECTS.DAYS, BUD_BID_PROJECTS.APP_TYPE, BUD_BID_PROJECTS.CHEMICAL_MIX, BUD_BID_PROJECTS.COMMENTS,
                     BUD_BID_PROJECTS.LIABILITY, BUD_BID_PROJECTS.LIABILITY_OP, BUD_BID_PROJECTS.COMPARE_PRJ_OVERRIDE, BUD_BID_PROJECTS.COMPARE_PRJ_AMOUNT
                 FROM BUD_BID_PROJECTS
@@ -243,6 +243,7 @@ namespace DBI.Data
             public string TYPE { get; set; }
             public string PROJECT_NUM { get; set; }
             public string PROJECT_NAME { get; set; }
+            public long STATUS_ID { get; set; }
             public string STATUS { get; set; }
             public decimal ACRES { get; set; }
             public decimal DAYS { get; set; }

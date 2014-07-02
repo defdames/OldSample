@@ -173,13 +173,7 @@
                             ID="Button4"
                             Text="Run"
                             Icon="PlayGreen" Disabled="true">
-                        <%--    <DirectEvents>
-                                <Click OnEvent="deStateCrossingListGrid">
-                                    <%--<ExtraParams>
-                                        <ext:Parameter Name="selectedCrossings" Value="Ext.encode(#{GridPanel1}.getRowsValues())" Mode="Raw" />
-                                    </ExtraParams>
-                                </Click>
-                            </DirectEvents>--%>
+                      
                             <Listeners>
                                 <Click Handler="#{uxStateCrossingListStore}.load()" />
                             </Listeners>

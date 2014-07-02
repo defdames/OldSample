@@ -94,7 +94,7 @@
                     </ColumnModel>
                     <Plugins>
                         <ext:FilterHeader runat="server" Remote="true" />
-                        <ext:CellEditing runat="server" />
+                        <ext:RowEditing runat="server" AutoCancel="false" />
                     </Plugins>
                     <TopBar>
                         <ext:Toolbar runat="server">

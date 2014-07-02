@@ -15,13 +15,13 @@ namespace DBI.Data
     public partial class CUSTOMER_SURVEY_THRESHOLDS
     {
         public decimal THRESHOLD_ID { get; set; }
-        public Nullable<long> ORG_ID { get; set; }
-        public Nullable<decimal> SMALL_THRESHOLD { get; set; }
-        public Nullable<decimal> LARGE_THRESHOLD1 { get; set; }
-        public Nullable<decimal> LARGE_THRESHOLD2 { get; set; }
         public string CREATED_BY { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
+        public decimal AMOUNT_ID { get; set; }
+        public decimal THERSHOLD { get; set; }
+    
+        public virtual CUSTOMER_SURVEY_THRESH_AMT CUSTOMER_SURVEY_THRESH_AMT { get; set; }
     }
 }

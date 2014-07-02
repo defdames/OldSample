@@ -193,6 +193,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Button uxProjectListButton;
         
         /// <summary>
+        /// uxToggleClosed control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Checkbox uxToggleClosed;
+        
+        /// <summary>
         /// FieldSet1 control.
         /// </summary>
         /// <remarks>
@@ -209,15 +218,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.FieldContainer FieldContainer39;
-        
-        /// <summary>
-        /// uxCrossingNumCI control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxCrossingNumCI;
         
         /// <summary>
         /// FieldContainer1 control.
@@ -722,15 +722,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.FieldContainer FieldContainer38;
-        
-        /// <summary>
-        /// uxAddCrossingNumCI control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxAddCrossingNumCI;
         
         /// <summary>
         /// FieldContainer9 control.
@@ -1397,15 +1388,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.FieldSet FieldSet7;
-        
-        /// <summary>
-        /// uxEditCrossingNumCI control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxEditCrossingNumCI;
         
         /// <summary>
         /// FieldContainer21 control.
