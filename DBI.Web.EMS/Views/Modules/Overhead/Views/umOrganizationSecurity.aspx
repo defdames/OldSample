@@ -73,7 +73,22 @@
                     <TopBar>
                         <ext:Toolbar runat="server">
                             <Items>
-                                <ext:Button runat="server" Text="Modify Status" Icon="NoteEdit"></ext:Button>
+                                <ext:Button runat="server" Text="Enable" icon="Add" ID="uxEnableOrganizationButton" Disabled="true" >
+                                    <ToolTips>
+                                        <ext:ToolTip runat="server" UI="Info" Html="Enables an organization so it can be used for the budget overhead system."></ext:ToolTip>
+                                    </ToolTips>
+                                    <DirectEvents>
+                                        <Click OnEvent="deEnableOrganization"><Confirmation Message="Are you sure you want to enable these organizations for use in the overhead budget system?" ConfirmRequest="true"></Confirmation></Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                  <ext:Button runat="server" Text="Disable" icon="Decline" ID="uxDisableOrganizationButton" Disabled="true" >
+                                    <ToolTips>
+                                        <ext:ToolTip runat="server" UI="Info" Html="Disables an organization so that it can't be used for the budget overhead system."></ext:ToolTip>
+                                    </ToolTips>
+                                       <DirectEvents>
+                                        <Click OnEvent="deDisableOrganization"><Confirmation Message="Are you sure you want to disable these organizations for use in the overhead budget system?" ConfirmRequest="true"></Confirmation></Click>
+                                    </DirectEvents>
+                                </ext:Button>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
@@ -106,8 +121,12 @@
                         <ext:FilterHeader ID="uxOrganizationsGridFilter" runat="server" Remote="true" />
                     </Plugins>
                     <SelectionModel>
-                        <ext:RowSelectionModel runat="server" Mode="Single" ID="uxOrganizationSelectionModel" AllowDeselect="true"> 
-                        </ext:RowSelectionModel>
+                        <ext:CheckboxSelectionModel runat="server" Mode="Simple" ID="uxOrganizationsGridSelectionModel">
+                           <Listeners>
+                                <Select Handler="if(#{uxOrganizationsGridSelectionModel}.getCount() > 0){#{uxEnableOrganizationButton}.enable();#{uxDisableOrganizationButton}.enable();}else {#{uxEnableOrganizationButton}.disable();#{uxDisableOrganizationButton}.disable();}"></Select>
+                                <Deselect Handler="if(#{uxOrganizationsGridSelectionModel}.getCount() > 0){#{uxEnableOrganizationButton}.enable();#{uxDisableOrganizationButton}.enable();}else {#{uxEnableOrganizationButton}.disable();#{uxDisableOrganizationButton}.disable();}"></Deselect>
+                           </Listeners>
+                        </ext:CheckboxSelectionModel>
                     </SelectionModel>
                     <BottomBar>
                         <ext:PagingToolbar ID="uxOrganizationGridPageBar" runat="server" />
