@@ -415,8 +415,8 @@
                                         <Activate Handler="#{uxStatusStore}.store.reload();" />
                                     </Listeners>
                                     <DirectEvents>
-                                        <Select OnEvent="deCheckAllowSave">
-                                        </Select>
+                                        <Select OnEvent="deSelectStatus" />
+                                        <Select OnEvent="deCheckAllowSave" />
                                     </DirectEvents>
                                 </ext:ComboBox>
                                 <ext:Label ID="Label14" runat="server" Width="320" />
@@ -734,7 +734,8 @@
                                 <ext:Label ID="Label22" runat="server" Width="100" Text="uxHidBudBidID" Cls="labelCenterAlign" />
                                 <ext:Label ID="Label24" runat="server" Width="100" Text="uxHidProjectNumID" Cls="labelCenterAlign" />
                                 <ext:Label ID="Label38" runat="server" Width="100" Text="uxHidType" Cls="labelCenterAlign" />
-                                <ext:Label ID="Label40" runat="server" Width="100" Text="uxHidPrevYear" Cls="labelCenterAlign" />
+                                <ext:Label ID="Label40" runat="server" Width="100" Text="uxHidStatusID" Cls="labelCenterAlign" />
+                                <ext:Label ID="Label33" runat="server" Width="100" Text="uxHidPrevYear" Cls="labelCenterAlign" />
                                 <ext:Label ID="Label41" runat="server" Width="100" Text="uxHidPrevVer" Cls="labelCenterAlign" />
                             </Items>
                         </ext:FieldContainer>
@@ -746,6 +747,7 @@
                                 <ext:TextField ID="uxHidBudBidID" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidProjectNumID" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidType" runat="server" Width="100" />
+                                <ext:TextField ID="uxHidStatusID" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidPrevYear" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidPrevVer" runat="server" Width="100" />
                             </Items>
