@@ -167,6 +167,9 @@
     <Compile Include="CROSSING_SUPP_INVOICE.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="CUSTOMER_SURVEY_CAT.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="CUSTOMER_SURVEY_FIELDSETS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
@@ -192,6 +195,9 @@
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="CUSTOMER_SURVEY_THRESHOLDS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CUSTOMER_SURVEY_THRESH_AMT.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="DAILY_ACTIVITY_AUDIT.cs">
@@ -293,6 +299,7 @@
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="Oracle\CUSTOMER_SURVEYS.cs" />
+    <Compile Include="Oracle\BUDGETBIDDING.cs" />
     <Compile Include="Oracle\GL.cs" />
     <Compile Include="Oracle\HR.cs" />
     <Compile Include="DataFactory\Interface\Interface.cs" />
@@ -333,6 +340,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Oracle.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Oracle\OVERHEAD_BUDGET.cs" />
     <Compile Include="Oracle\XXDBI_DW.cs" />
     <Compile Include="Oracle\PA.cs" />
     <Compile Include="Oracle\XXEMS.cs" />

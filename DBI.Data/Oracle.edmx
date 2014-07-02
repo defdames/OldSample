@@ -66,6 +66,7 @@
           <EntitySet Name="CROSSING_SUPP_INVOICE" EntityType="OracleModel.Store.CROSSING_SUPP_INVOICE" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_SUPPLEMENTAL" EntityType="OracleModel.Store.CROSSING_SUPPLEMENTAL" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSINGS" EntityType="OracleModel.Store.CROSSINGS" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="CUSTOMER_SURVEY_CAT" EntityType="OracleModel.Store.CUSTOMER_SURVEY_CAT" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CUSTOMER_SURVEY_FIELDSETS" EntityType="OracleModel.Store.CUSTOMER_SURVEY_FIELDSETS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CUSTOMER_SURVEY_FORMS" EntityType="OracleModel.Store.CUSTOMER_SURVEY_FORMS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CUSTOMER_SURVEY_FORMS_ANS" EntityType="OracleModel.Store.CUSTOMER_SURVEY_FORMS_ANS" store:Type="Tables" Schema="XXEMS" />
@@ -74,6 +75,7 @@
           <EntitySet Name="CUSTOMER_SURVEY_QUES_TYPES" EntityType="OracleModel.Store.CUSTOMER_SURVEY_QUES_TYPES" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CUSTOMER_SURVEY_QUESTIONS" EntityType="OracleModel.Store.CUSTOMER_SURVEY_QUESTIONS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CUSTOMER_SURVEY_RELATION" EntityType="OracleModel.Store.CUSTOMER_SURVEY_RELATION" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="CUSTOMER_SURVEY_THRESH_AMT" EntityType="OracleModel.Store.CUSTOMER_SURVEY_THRESH_AMT" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CUSTOMER_SURVEY_THRESHOLDS" EntityType="OracleModel.Store.CUSTOMER_SURVEY_THRESHOLDS" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_AUDIT" EntityType="OracleModel.Store.DAILY_ACTIVITY_AUDIT" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="DAILY_ACTIVITY_CHEMICAL_MIX" EntityType="OracleModel.Store.DAILY_ACTIVITY_CHEMICAL_MIX" store:Type="Tables" Schema="XXEMS" />
@@ -678,10 +680,6 @@
             <End Role="CROSSING_INVOICE" EntitySet="CROSSING_INVOICE" />
             <End Role="CROSSING_APPLICATION" EntitySet="CROSSING_APPLICATION" />
           </AssociationSet>
-          <AssociationSet Name="FK_APPLICATION_SUPP_INVOICE_ID" Association="OracleModel.Store.FK_APPLICATION_SUPP_INVOICE_ID">
-            <End Role="CROSSING_SUPP_INVOICE" EntitySet="CROSSING_SUPP_INVOICE" />
-            <End Role="CROSSING_APPLICATION" EntitySet="CROSSING_APPLICATION" />
-          </AssociationSet>
           <AssociationSet Name="FK_AUDIT_HEADER_ID" Association="OracleModel.Store.FK_AUDIT_HEADER_ID">
             <End Role="DAILY_ACTIVITY_HEADER" EntitySet="DAILY_ACTIVITY_HEADER" />
             <End Role="DAILY_ACTIVITY_AUDIT" EntitySet="DAILY_ACTIVITY_AUDIT" />
@@ -737,6 +735,10 @@
           <AssociationSet Name="FK_FORMS_ANSWER_QUESTION_ID" Association="OracleModel.Store.FK_FORMS_ANSWER_QUESTION_ID">
             <End Role="CUSTOMER_SURVEY_QUESTIONS" EntitySet="CUSTOMER_SURVEY_QUESTIONS" />
             <End Role="CUSTOMER_SURVEY_FORMS_ANS" EntitySet="CUSTOMER_SURVEY_FORMS_ANS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FORMS_CAT_ID" Association="OracleModel.Store.FK_FORMS_CAT_ID">
+            <End Role="CUSTOMER_SURVEY_CAT" EntitySet="CUSTOMER_SURVEY_CAT" />
+            <End Role="CUSTOMER_SURVEY_FORMS" EntitySet="CUSTOMER_SURVEY_FORMS" />
           </AssociationSet>
           <AssociationSet Name="FK_FORMS_COMP_FORM_ID" Association="OracleModel.Store.FK_FORMS_COMP_FORM_ID">
             <End Role="CUSTOMER_SURVEY_FORMS" EntitySet="CUSTOMER_SURVEY_FORMS" />
@@ -849,6 +851,10 @@
           <AssociationSet Name="FK_TASK_TYPE_ID" Association="OracleModel.Store.FK_TASK_TYPE_ID">
             <End Role="JOB_COST_BALANCE_TYPE" EntitySet="JOB_COST_BALANCE_TYPE" />
             <End Role="JOB_COST_TASK" EntitySet="JOB_COST_TASK" />
+          </AssociationSet>
+          <AssociationSet Name="FK_THRSH_AMTS_FK" Association="OracleModel.Store.FK_THRSH_AMTS_FK">
+            <End Role="CUSTOMER_SURVEY_THRESH_AMT" EntitySet="CUSTOMER_SURVEY_THRESH_AMT" />
+            <End Role="CUSTOMER_SURVEY_THRESHOLDS" EntitySet="CUSTOMER_SURVEY_THRESHOLDS" />
           </AssociationSet>
           <AssociationSet Name="FK_USER_PERMS_PERM_ID" Association="OracleModel.Store.FK_USER_PERMS_PERM_ID">
             <End Role="SYS_PERMISSIONS" EntitySet="SYS_PERMISSIONS" />
@@ -1126,7 +1132,6 @@
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="FISCAL_YEAR" Type="date" />
           <Property Name="INVOICE_ID" Type="number" />
-          <Property Name="INVOICE_SUPP_ID" Type="number" />
         </EntityType>
         <EntityType Name="CROSSING_CONTACTS">
           <Key>
@@ -1318,6 +1323,7 @@
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="INVOICE_SUPP_ID" Type="number" />
         </EntityType>
         <EntityType Name="CROSSINGS">
           <Key>
@@ -1379,6 +1385,18 @@
           <Property Name="STATUS" Type="varchar2" MaxLength="30" />
           <Property Name="RAILROAD_ID" Type="number" />
         </EntityType>
+        <EntityType Name="CUSTOMER_SURVEY_CAT">
+          <Key>
+            <PropertyRef Name="CATEGORY_ID" />
+          </Key>
+          <Property Name="CATEGORY_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="varchar2" MaxLength="250" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="500" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFY_DATE" Type="date" />
+        </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_FIELDSETS">
           <Key>
             <PropertyRef Name="FIELDSET_ID" />
@@ -1404,6 +1422,7 @@
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CATEGORY_ID" Type="number" Nullable="false" />
         </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_FORMS_ANS">
           <Key>
@@ -1484,19 +1503,29 @@
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
         </EntityType>
+        <EntityType Name="CUSTOMER_SURVEY_THRESH_AMT">
+          <Key>
+            <PropertyRef Name="AMOUNT_ID" />
+          </Key>
+          <Property Name="AMOUNT_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="LOW_DOLLAR_AMT" Type="number" />
+          <Property Name="HIGH_DOLLAR_AMT" Type="number" />
+          <Property Name="ORG_ID" Type="number" Precision="15" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+        </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_THRESHOLDS">
           <Key>
             <PropertyRef Name="THRESHOLD_ID" />
           </Key>
           <Property Name="THRESHOLD_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="ORG_ID" Type="number" Precision="15" />
-          <Property Name="SMALL_THRESHOLD" Type="number" />
-          <Property Name="LARGE_THRESHOLD1" Type="number" />
-          <Property Name="LARGE_THRESHOLD2" Type="number" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="AMOUNT_ID" Type="number" Nullable="false" />
         </EntityType>
         <EntityType Name="DAILY_ACTIVITY_AUDIT">
           <Key>
@@ -3372,18 +3401,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_APPLICATION_SUPP_INVOICE_ID">
-          <End Role="CROSSING_SUPP_INVOICE" Type="OracleModel.Store.CROSSING_SUPP_INVOICE" Multiplicity="0..1" />
-          <End Role="CROSSING_APPLICATION" Type="OracleModel.Store.CROSSING_APPLICATION" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CROSSING_SUPP_INVOICE">
-              <PropertyRef Name="INVOICE_SUPP_ID" />
-            </Principal>
-            <Dependent Role="CROSSING_APPLICATION">
-              <PropertyRef Name="INVOICE_SUPP_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_AUDIT_HEADER_ID">
           <End Role="DAILY_ACTIVITY_HEADER" Type="OracleModel.Store.DAILY_ACTIVITY_HEADER" Multiplicity="1" />
           <End Role="DAILY_ACTIVITY_AUDIT" Type="OracleModel.Store.DAILY_ACTIVITY_AUDIT" Multiplicity="*" />
@@ -3549,6 +3566,18 @@
             </Principal>
             <Dependent Role="CUSTOMER_SURVEY_FORMS_ANS">
               <PropertyRef Name="QUESTION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FORMS_CAT_ID">
+          <End Role="CUSTOMER_SURVEY_CAT" Type="OracleModel.Store.CUSTOMER_SURVEY_CAT" Multiplicity="1" />
+          <End Role="CUSTOMER_SURVEY_FORMS" Type="OracleModel.Store.CUSTOMER_SURVEY_FORMS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CUSTOMER_SURVEY_CAT">
+              <PropertyRef Name="CATEGORY_ID" />
+            </Principal>
+            <Dependent Role="CUSTOMER_SURVEY_FORMS">
+              <PropertyRef Name="CATEGORY_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3888,6 +3917,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_THRSH_AMTS_FK">
+          <End Role="CUSTOMER_SURVEY_THRESH_AMT" Type="OracleModel.Store.CUSTOMER_SURVEY_THRESH_AMT" Multiplicity="1" />
+          <End Role="CUSTOMER_SURVEY_THRESHOLDS" Type="OracleModel.Store.CUSTOMER_SURVEY_THRESHOLDS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CUSTOMER_SURVEY_THRESH_AMT">
+              <PropertyRef Name="AMOUNT_ID" />
+            </Principal>
+            <Dependent Role="CUSTOMER_SURVEY_THRESHOLDS">
+              <PropertyRef Name="AMOUNT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_USER_PERMS_PERM_ID">
           <End Role="SYS_PERMISSIONS" Type="OracleModel.Store.SYS_PERMISSIONS" Multiplicity="1" />
           <End Role="SYS_USER_PERMS" Type="OracleModel.Store.SYS_USER_PERMS" Multiplicity="*" />
@@ -3979,29 +4020,19 @@
           <EntitySet Name="PA_TRANSACTION_INT_V" EntityType="OracleModel.PA_TRANSACTION_INT_V" />
           <EntitySet Name="DAILY_ACTIVITY_IMPORT" EntityType="OracleModel.DAILY_ACTIVITY_IMPORT" />
           <EntitySet Name="CUSTOMER_SURVEY_FIELDSETS" EntityType="OracleModel.CUSTOMER_SURVEY_FIELDSETS" />
-          <EntitySet Name="CUSTOMER_SURVEY_FORMS" EntityType="OracleModel.CUSTOMER_SURVEY_FORMS" />
           <EntitySet Name="CUSTOMER_SURVEY_FORMS_ANS" EntityType="OracleModel.CUSTOMER_SURVEY_FORMS_ANS" />
           <EntitySet Name="CUSTOMER_SURVEY_FORMS_COMP" EntityType="OracleModel.CUSTOMER_SURVEY_FORMS_COMP" />
           <EntitySet Name="CUSTOMER_SURVEY_QUES_TYPES" EntityType="OracleModel.CUSTOMER_SURVEY_QUES_TYPES" />
           <EntitySet Name="CUSTOMER_SURVEY_RELATION" EntityType="OracleModel.CUSTOMER_SURVEY_RELATION" />
-          <AssociationSet Name="FK_FIELDSETS_FORM_ID" Association="OracleModel.FK_FIELDSETS_FORM_ID">
-            <End Role="CUSTOMER_SURVEY_FORMS" EntitySet="CUSTOMER_SURVEY_FORMS" />
-            <End Role="CUSTOMER_SURVEY_FIELDSETS" EntitySet="CUSTOMER_SURVEY_FIELDSETS" />
-          </AssociationSet>
           <AssociationSet Name="FK_RELATION_FIELDSET_ID" Association="OracleModel.FK_RELATION_FIELDSET_ID">
             <End Role="CUSTOMER_SURVEY_FIELDSETS" EntitySet="CUSTOMER_SURVEY_FIELDSETS" />
             <End Role="CUSTOMER_SURVEY_RELATION" EntitySet="CUSTOMER_SURVEY_RELATION" />
-          </AssociationSet>
-          <AssociationSet Name="FK_FORMS_COMP_FORM_ID" Association="OracleModel.FK_FORMS_COMP_FORM_ID">
-            <End Role="CUSTOMER_SURVEY_FORMS" EntitySet="CUSTOMER_SURVEY_FORMS" />
-            <End Role="CUSTOMER_SURVEY_FORMS_COMP" EntitySet="CUSTOMER_SURVEY_FORMS_COMP" />
           </AssociationSet>
           <AssociationSet Name="FK_FORMS_ANS_COMPLETION_ID" Association="OracleModel.FK_FORMS_ANS_COMPLETION_ID">
             <End Role="CUSTOMER_SURVEY_FORMS_COMP" EntitySet="CUSTOMER_SURVEY_FORMS_COMP" />
             <End Role="CUSTOMER_SURVEY_FORMS_ANS" EntitySet="CUSTOMER_SURVEY_FORMS_ANS" />
           </AssociationSet>
           <EntitySet Name="CROSSING_INSPECTION" EntityType="OracleModel.CROSSING_INSPECTION" />
-          <EntitySet Name="CROSSING_SUPPLEMENTAL" EntityType="OracleModel.CROSSING_SUPPLEMENTAL" />
           <EntitySet Name="CUSTOMER_SURVEY_OPTIONS" EntityType="OracleModel.CUSTOMER_SURVEY_OPTIONS" />
           <EntitySet Name="DAILY_ACTIVITY_FOOTER" EntityType="OracleModel.DAILY_ACTIVITY_FOOTER" />
           <AssociationSet Name="FK_FOOTER_HEADER_ID" Association="OracleModel.FK_FOOTER_HEADER_ID">
@@ -4181,25 +4212,11 @@
             <End Role="CROSSING_RAILROAD" EntitySet="CROSSING_RAILROAD" />
             <End Role="CROSSING" EntitySet="CROSSINGS" />
           </AssociationSet>
-          <AssociationSet Name="FK_SUPPLEMENTAL_CROSSING_ID" Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID">
-            <End Role="CROSSING" EntitySet="CROSSINGS" />
-            <End Role="CROSSING_SUPPLEMENTAL" EntitySet="CROSSING_SUPPLEMENTAL" />
-          </AssociationSet>
           <EntitySet Name="OVERHEAD_BUDGET_TYPE" EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" />
           <EntitySet Name="TIME_CLOCK" EntityType="OracleModel.TIME_CLOCK" />
-          <EntitySet Name="CROSSING_APPLICATION" EntityType="OracleModel.CROSSING_APPLICATION" />
           <EntitySet Name="CROSSING_INVOICE" EntityType="OracleModel.CROSSING_INVOICE" />
           <EntitySet Name="CROSSING_SUPP_INVOICE" EntityType="OracleModel.CROSSING_SUPP_INVOICE" />
-          <AssociationSet Name="FK_APPLICATION_INVOICE_ID" Association="OracleModel.FK_APPLICATION_INVOICE_ID">
-            <End Role="CROSSING_INVOICE" EntitySet="CROSSING_INVOICE" />
-            <End Role="CROSSING_APPLICATION" EntitySet="CROSSING_APPLICATION" />
-          </AssociationSet>
-          <AssociationSet Name="FK_APPLICATION_SUPP_INVOICE_ID" Association="OracleModel.FK_APPLICATION_SUPP_INVOICE_ID">
-            <End Role="CROSSING_SUPP_INVOICE" EntitySet="CROSSING_SUPP_INVOICE" />
-            <End Role="CROSSING_APPLICATION" EntitySet="CROSSING_APPLICATION" />
-          </AssociationSet>
           <EntitySet Name="CUSTOMER_SURVEY_QUESTIONS" EntityType="OracleModel.CUSTOMER_SURVEY_QUESTIONS" />
-          <EntitySet Name="CUSTOMER_SURVEY_THRESHOLDS" EntityType="OracleModel.CUSTOMER_SURVEY_THRESHOLDS" />
           <AssociationSet Name="FK_FORMS_ANSWER_QUESTION_ID" Association="OracleModel.FK_FORMS_ANSWER_QUESTION_ID">
             <End Role="CUSTOMER_SURVEY_QUESTIONS" EntitySet="CUSTOMER_SURVEY_QUESTIONS" />
             <End Role="CUSTOMER_SURVEY_FORMS_ANS" EntitySet="CUSTOMER_SURVEY_FORMS_ANS" />
@@ -4220,6 +4237,36 @@
           <AssociationSet Name="FK_PROJECTS_STATUS_ID" Association="OracleModel.FK_PROJECTS_STATUS_ID">
             <End Role="BUD_BID_STATUS" EntitySet="BUD_BID_STATUS" />
             <End Role="BUD_BID_PROJECTS" EntitySet="BUD_BID_PROJECTS" />
+          </AssociationSet>
+          <EntitySet Name="CROSSING_APPLICATION" EntityType="OracleModel.CROSSING_APPLICATION" />
+          <EntitySet Name="CROSSING_SUPPLEMENTAL" EntityType="OracleModel.CROSSING_SUPPLEMENTAL" />
+          <AssociationSet Name="FK_APPLICATION_INVOICE_ID" Association="OracleModel.FK_APPLICATION_INVOICE_ID">
+            <End Role="CROSSING_INVOICE" EntitySet="CROSSING_INVOICE" />
+            <End Role="CROSSING_APPLICATION" EntitySet="CROSSING_APPLICATION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SUPPLEMENTAL_CROSSING_ID" Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID">
+            <End Role="CROSSING" EntitySet="CROSSINGS" />
+            <End Role="CROSSING_SUPPLEMENTAL" EntitySet="CROSSING_SUPPLEMENTAL" />
+          </AssociationSet>
+          <EntitySet Name="CUSTOMER_SURVEY_CAT" EntityType="OracleModel.CUSTOMER_SURVEY_CAT" />
+          <EntitySet Name="CUSTOMER_SURVEY_FORMS" EntityType="OracleModel.CUSTOMER_SURVEY_FORMS" />
+          <EntitySet Name="CUSTOMER_SURVEY_THRESH_AMT" EntityType="OracleModel.CUSTOMER_SURVEY_THRESH_AMT" />
+          <EntitySet Name="CUSTOMER_SURVEY_THRESHOLDS" EntityType="OracleModel.CUSTOMER_SURVEY_THRESHOLDS" />
+          <AssociationSet Name="FK_FORMS_CAT_ID" Association="OracleModel.FK_FORMS_CAT_ID">
+            <End Role="CUSTOMER_SURVEY_CAT" EntitySet="CUSTOMER_SURVEY_CAT" />
+            <End Role="CUSTOMER_SURVEY_FORMS" EntitySet="CUSTOMER_SURVEY_FORMS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FIELDSETS_FORM_ID" Association="OracleModel.FK_FIELDSETS_FORM_ID">
+            <End Role="CUSTOMER_SURVEY_FORMS" EntitySet="CUSTOMER_SURVEY_FORMS" />
+            <End Role="CUSTOMER_SURVEY_FIELDSETS" EntitySet="CUSTOMER_SURVEY_FIELDSETS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FORMS_COMP_FORM_ID" Association="OracleModel.FK_FORMS_COMP_FORM_ID">
+            <End Role="CUSTOMER_SURVEY_FORMS" EntitySet="CUSTOMER_SURVEY_FORMS" />
+            <End Role="CUSTOMER_SURVEY_FORMS_COMP" EntitySet="CUSTOMER_SURVEY_FORMS_COMP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_THRSH_AMTS_FK" Association="OracleModel.FK_THRSH_AMTS_FK">
+            <End Role="CUSTOMER_SURVEY_THRESH_AMT" EntitySet="CUSTOMER_SURVEY_THRESH_AMT" />
+            <End Role="CUSTOMER_SURVEY_THRESHOLDS" EntitySet="CUSTOMER_SURVEY_THRESHOLDS" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
@@ -5778,23 +5825,9 @@
           <Property Type="DateTime" Name="CREATE_DATE" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="MODIFY_DATE" />
-          <NavigationProperty Name="CUSTOMER_SURVEY_FORMS" Relationship="OracleModel.FK_FIELDSETS_FORM_ID" FromRole="CUSTOMER_SURVEY_FIELDSETS" ToRole="CUSTOMER_SURVEY_FORMS" />
           <NavigationProperty Name="CUSTOMER_SURVEY_RELATION" Relationship="OracleModel.FK_RELATION_FIELDSET_ID" FromRole="CUSTOMER_SURVEY_FIELDSETS" ToRole="CUSTOMER_SURVEY_RELATION" />
           <Property Type="String" Name="IS_ACTIVE" MaxLength="1" FixedLength="true" Unicode="false" />
-        </EntityType>
-        <EntityType Name="CUSTOMER_SURVEY_FORMS">
-          <Key>
-            <PropertyRef Name="FORM_ID" />
-          </Key>
-          <Property Type="Decimal" Name="FORM_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="FORMS_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="ORG_ID" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <NavigationProperty Name="CUSTOMER_SURVEY_FIELDSETS" Relationship="OracleModel.FK_FIELDSETS_FORM_ID" FromRole="CUSTOMER_SURVEY_FORMS" ToRole="CUSTOMER_SURVEY_FIELDSETS" />
-          <NavigationProperty Name="CUSTOMER_SURVEY_FORMS_COMP" Relationship="OracleModel.FK_FORMS_COMP_FORM_ID" FromRole="CUSTOMER_SURVEY_FORMS" ToRole="CUSTOMER_SURVEY_FORMS_COMP" />
+          <NavigationProperty Name="CUSTOMER_SURVEY_FORMS" Relationship="OracleModel.FK_FIELDSETS_FORM_ID" FromRole="CUSTOMER_SURVEY_FIELDSETS" ToRole="CUSTOMER_SURVEY_FORMS" />
         </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_FORMS_ANS">
           <Key>
@@ -5823,8 +5856,8 @@
           <Property Type="DateTime" Name="CREATE_DATE" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="MODIFY_DATE" />
-          <NavigationProperty Name="CUSTOMER_SURVEY_FORMS" Relationship="OracleModel.FK_FORMS_COMP_FORM_ID" FromRole="CUSTOMER_SURVEY_FORMS_COMP" ToRole="CUSTOMER_SURVEY_FORMS" />
           <NavigationProperty Name="CUSTOMER_SURVEY_FORMS_ANS" Relationship="OracleModel.FK_FORMS_ANS_COMPLETION_ID" FromRole="CUSTOMER_SURVEY_FORMS_COMP" ToRole="CUSTOMER_SURVEY_FORMS_ANS" />
+          <NavigationProperty Name="CUSTOMER_SURVEY_FORMS" Relationship="OracleModel.FK_FORMS_COMP_FORM_ID" FromRole="CUSTOMER_SURVEY_FORMS_COMP" ToRole="CUSTOMER_SURVEY_FORMS" />
         </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_QUES_TYPES">
           <Key>
@@ -5853,18 +5886,6 @@
           <NavigationProperty Name="CUSTOMER_SURVEY_FIELDSETS" Relationship="OracleModel.FK_RELATION_FIELDSET_ID" FromRole="CUSTOMER_SURVEY_RELATION" ToRole="CUSTOMER_SURVEY_FIELDSETS" />
           <NavigationProperty Name="CUSTOMER_SURVEY_QUESTIONS" Relationship="OracleModel.FK_RELATION_QUESTION_ID" FromRole="CUSTOMER_SURVEY_RELATION" ToRole="CUSTOMER_SURVEY_QUESTIONS" />
         </EntityType>
-        <Association Name="FK_FIELDSETS_FORM_ID">
-          <End Type="OracleModel.CUSTOMER_SURVEY_FORMS" Role="CUSTOMER_SURVEY_FORMS" Multiplicity="1" />
-          <End Type="OracleModel.CUSTOMER_SURVEY_FIELDSETS" Role="CUSTOMER_SURVEY_FIELDSETS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CUSTOMER_SURVEY_FORMS">
-              <PropertyRef Name="FORM_ID" />
-            </Principal>
-            <Dependent Role="CUSTOMER_SURVEY_FIELDSETS">
-              <PropertyRef Name="FORM_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_RELATION_FIELDSET_ID">
           <End Type="OracleModel.CUSTOMER_SURVEY_FIELDSETS" Role="CUSTOMER_SURVEY_FIELDSETS" Multiplicity="1" />
           <End Type="OracleModel.CUSTOMER_SURVEY_RELATION" Role="CUSTOMER_SURVEY_RELATION" Multiplicity="*" />
@@ -5874,18 +5895,6 @@
             </Principal>
             <Dependent Role="CUSTOMER_SURVEY_RELATION">
               <PropertyRef Name="FIELDSET_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_FORMS_COMP_FORM_ID">
-          <End Type="OracleModel.CUSTOMER_SURVEY_FORMS" Role="CUSTOMER_SURVEY_FORMS" Multiplicity="1" />
-          <End Type="OracleModel.CUSTOMER_SURVEY_FORMS_COMP" Role="CUSTOMER_SURVEY_FORMS_COMP" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CUSTOMER_SURVEY_FORMS">
-              <PropertyRef Name="FORM_ID" />
-            </Principal>
-            <Dependent Role="CUSTOMER_SURVEY_FORMS_COMP">
-              <PropertyRef Name="FORM_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5922,34 +5931,6 @@
           <Property Type="DateTime" Name="CREATE_DATE" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="MODIFY_DATE" />
-        </EntityType>
-        <EntityType Name="CROSSING_SUPPLEMENTAL">
-          <Key>
-            <PropertyRef Name="SUPPLEMENTAL_ID" />
-          </Key>
-          <Property Type="Int64" Name="SUPPLEMENTAL_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
-          <Property Type="String" Name="SERVICE_TYPE" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SERVICE_UNIT" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="RAILROAD" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SUB_DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="APPROVED_DATE" />
-          <Property Type="DateTime" Name="COMPLETED_DATE" />
-          <Property Type="String" Name="TRUCK_NUMBER" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="SQUARE_FEET" Precision="15" Scale="4" />
-          <Property Type="DateTime" Name="INSPECT_START" />
-          <Property Type="DateTime" Name="INSPECT_END" />
-          <Property Type="String" Name="SPRAY" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="CUT" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="MAINTAIN" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="INSPECT" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="RECURRING" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <NavigationProperty Name="CROSSING" Relationship="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" FromRole="CROSSING_SUPPLEMENTAL" ToRole="CROSSING" />
         </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_OPTIONS">
           <Key>
@@ -7228,18 +7209,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SUPPLEMENTAL_CROSSING_ID">
-          <End Type="OracleModel.CROSSING" Role="CROSSING" Multiplicity="1" />
-          <End Type="OracleModel.CROSSING_SUPPLEMENTAL" Role="CROSSING_SUPPLEMENTAL" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CROSSING">
-              <PropertyRef Name="CROSSING_ID" />
-            </Principal>
-            <Dependent Role="CROSSING_SUPPLEMENTAL">
-              <PropertyRef Name="CROSSING_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="OVERHEAD_BUDGET_TYPE">
           <Key>
             <PropertyRef Name="OVERHEAD_BUDGET_TYPE_ID" />
@@ -7276,33 +7245,6 @@
           <Property Type="String" Name="DELETED" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Type="String" Name="DELETED_COMMENTS" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="CROSSING_APPLICATION">
-          <Key>
-            <PropertyRef Name="APPLICATION_ID" />
-          </Key>
-          <Property Type="Int64" Name="APPLICATION_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Decimal" Name="APPLICATION_NUMBER" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
-          <Property Type="String" Name="APPLICATION_REQUESTED" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="APPLICATION_DATE" />
-          <Property Type="String" Name="RAILROAD" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SERVICE_UNIT" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SUB_DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="TRUCK_NUMBER" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SPRAY" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="CUT" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="INSPECT" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="DateTime" Name="FISCAL_YEAR" />
-          <Property Type="Decimal" Name="INVOICE_ID" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="INVOICE_SUPP_ID" Precision="38" Scale="0" />
-          <NavigationProperty Name="CROSSING_INVOICE" Relationship="OracleModel.FK_APPLICATION_INVOICE_ID" FromRole="CROSSING_APPLICATION" ToRole="CROSSING_INVOICE" />
-          <NavigationProperty Name="CROSSING_SUPP_INVOICE" Relationship="OracleModel.FK_APPLICATION_SUPP_INVOICE_ID" FromRole="CROSSING_APPLICATION" ToRole="CROSSING_SUPP_INVOICE" />
-        </EntityType>
         <EntityType Name="CROSSING_INVOICE">
           <Key>
             <PropertyRef Name="INVOICE_ID" />
@@ -7327,32 +7269,7 @@
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="CROSSING_APPLICATION" Relationship="OracleModel.FK_APPLICATION_SUPP_INVOICE_ID" FromRole="CROSSING_SUPP_INVOICE" ToRole="CROSSING_APPLICATION" />
         </EntityType>
-        <Association Name="FK_APPLICATION_INVOICE_ID">
-          <End Type="OracleModel.CROSSING_INVOICE" Role="CROSSING_INVOICE" Multiplicity="0..1" />
-          <End Type="OracleModel.CROSSING_APPLICATION" Role="CROSSING_APPLICATION" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CROSSING_INVOICE">
-              <PropertyRef Name="INVOICE_ID" />
-            </Principal>
-            <Dependent Role="CROSSING_APPLICATION">
-              <PropertyRef Name="INVOICE_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_APPLICATION_SUPP_INVOICE_ID">
-          <End Type="OracleModel.CROSSING_SUPP_INVOICE" Role="CROSSING_SUPP_INVOICE" Multiplicity="0..1" />
-          <End Type="OracleModel.CROSSING_APPLICATION" Role="CROSSING_APPLICATION" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CROSSING_SUPP_INVOICE">
-              <PropertyRef Name="INVOICE_SUPP_ID" />
-            </Principal>
-            <Dependent Role="CROSSING_APPLICATION">
-              <PropertyRef Name="INVOICE_SUPP_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="CUSTOMER_SURVEY_QUESTIONS">
           <Key>
             <PropertyRef Name="QUESTION_ID" />
@@ -7371,20 +7288,6 @@
           <NavigationProperty Name="CUSTOMER_SURVEY_OPTIONS" Relationship="OracleModel.FK_OPTION_QUES_ID" FromRole="CUSTOMER_SURVEY_QUESTIONS" ToRole="CUSTOMER_SURVEY_OPTIONS" />
           <NavigationProperty Name="CUSTOMER_SURVEY_QUES_TYPES" Relationship="OracleModel.FK_QUESTION_TYPE_ID" FromRole="CUSTOMER_SURVEY_QUESTIONS" ToRole="CUSTOMER_SURVEY_QUES_TYPES" />
           <NavigationProperty Name="CUSTOMER_SURVEY_RELATION" Relationship="OracleModel.FK_RELATION_QUESTION_ID" FromRole="CUSTOMER_SURVEY_QUESTIONS" ToRole="CUSTOMER_SURVEY_RELATION" />
-        </EntityType>
-        <EntityType Name="CUSTOMER_SURVEY_THRESHOLDS">
-          <Key>
-            <PropertyRef Name="THRESHOLD_ID" />
-          </Key>
-          <Property Type="Decimal" Name="THRESHOLD_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int64" Name="ORG_ID" />
-          <Property Type="Decimal" Name="SMALL_THRESHOLD" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="LARGE_THRESHOLD1" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="LARGE_THRESHOLD2" Precision="38" Scale="0" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
         </EntityType>
         <Association Name="FK_FORMS_ANSWER_QUESTION_ID">
           <End Type="OracleModel.CUSTOMER_SURVEY_QUESTIONS" Role="CUSTOMER_SURVEY_QUESTIONS" Multiplicity="1" />
@@ -7473,6 +7376,187 @@
             </Principal>
             <Dependent Role="BUD_BID_PROJECTS">
               <PropertyRef Name="STATUS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CROSSING_APPLICATION">
+          <Key>
+            <PropertyRef Name="APPLICATION_ID" />
+          </Key>
+          <Property Type="Int64" Name="APPLICATION_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="APPLICATION_NUMBER" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
+          <Property Type="String" Name="APPLICATION_REQUESTED" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="APPLICATION_DATE" />
+          <Property Type="String" Name="RAILROAD" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SERVICE_UNIT" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SUB_DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="TRUCK_NUMBER" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SPRAY" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="CUT" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="INSPECT" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="DateTime" Name="FISCAL_YEAR" />
+          <Property Type="Decimal" Name="INVOICE_ID" Precision="38" Scale="0" />
+          <NavigationProperty Name="CROSSING_INVOICE" Relationship="OracleModel.FK_APPLICATION_INVOICE_ID" FromRole="CROSSING_APPLICATION" ToRole="CROSSING_INVOICE" />
+        </EntityType>
+        <EntityType Name="CROSSING_SUPPLEMENTAL">
+          <Key>
+            <PropertyRef Name="SUPPLEMENTAL_ID" />
+          </Key>
+          <Property Type="Int64" Name="SUPPLEMENTAL_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
+          <Property Type="String" Name="SERVICE_TYPE" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SERVICE_UNIT" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="RAILROAD" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SUB_DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="APPROVED_DATE" />
+          <Property Type="DateTime" Name="COMPLETED_DATE" />
+          <Property Type="String" Name="TRUCK_NUMBER" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="SQUARE_FEET" Precision="15" Scale="4" />
+          <Property Type="DateTime" Name="INSPECT_START" />
+          <Property Type="DateTime" Name="INSPECT_END" />
+          <Property Type="String" Name="SPRAY" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="CUT" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="MAINTAIN" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="INSPECT" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="RECURRING" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="Decimal" Name="INVOICE_SUPP_ID" Precision="38" Scale="0" />
+          <NavigationProperty Name="CROSSING" Relationship="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" FromRole="CROSSING_SUPPLEMENTAL" ToRole="CROSSING" />
+        </EntityType>
+        <Association Name="FK_APPLICATION_INVOICE_ID">
+          <End Type="OracleModel.CROSSING_INVOICE" Role="CROSSING_INVOICE" Multiplicity="0..1" />
+          <End Type="OracleModel.CROSSING_APPLICATION" Role="CROSSING_APPLICATION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSING_INVOICE">
+              <PropertyRef Name="INVOICE_ID" />
+            </Principal>
+            <Dependent Role="CROSSING_APPLICATION">
+              <PropertyRef Name="INVOICE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SUPPLEMENTAL_CROSSING_ID">
+          <End Type="OracleModel.CROSSING" Role="CROSSING" Multiplicity="1" />
+          <End Type="OracleModel.CROSSING_SUPPLEMENTAL" Role="CROSSING_SUPPLEMENTAL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSING">
+              <PropertyRef Name="CROSSING_ID" />
+            </Principal>
+            <Dependent Role="CROSSING_SUPPLEMENTAL">
+              <PropertyRef Name="CROSSING_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CUSTOMER_SURVEY_CAT">
+          <Key>
+            <PropertyRef Name="CATEGORY_ID" />
+          </Key>
+          <Property Type="Decimal" Name="CATEGORY_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="NAME" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DESCRIPTION" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <NavigationProperty Name="CUSTOMER_SURVEY_FORMS" Relationship="OracleModel.FK_FORMS_CAT_ID" FromRole="CUSTOMER_SURVEY_CAT" ToRole="CUSTOMER_SURVEY_FORMS" />
+        </EntityType>
+        <EntityType Name="CUSTOMER_SURVEY_FORMS">
+          <Key>
+            <PropertyRef Name="FORM_ID" />
+          </Key>
+          <Property Type="Decimal" Name="FORM_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="FORMS_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="ORG_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="Decimal" Name="CATEGORY_ID" Nullable="false" Precision="38" Scale="0" />
+          <NavigationProperty Name="CUSTOMER_SURVEY_CAT" Relationship="OracleModel.FK_FORMS_CAT_ID" FromRole="CUSTOMER_SURVEY_FORMS" ToRole="CUSTOMER_SURVEY_CAT" />
+          <NavigationProperty Name="CUSTOMER_SURVEY_FIELDSETS" Relationship="OracleModel.FK_FIELDSETS_FORM_ID" FromRole="CUSTOMER_SURVEY_FORMS" ToRole="CUSTOMER_SURVEY_FIELDSETS" />
+          <NavigationProperty Name="CUSTOMER_SURVEY_FORMS_COMP" Relationship="OracleModel.FK_FORMS_COMP_FORM_ID" FromRole="CUSTOMER_SURVEY_FORMS" ToRole="CUSTOMER_SURVEY_FORMS_COMP" />
+        </EntityType>
+        <EntityType Name="CUSTOMER_SURVEY_THRESH_AMT">
+          <Key>
+            <PropertyRef Name="AMOUNT_ID" />
+          </Key>
+          <Property Type="Decimal" Name="AMOUNT_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="LOW_DOLLAR_AMT" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="HIGH_DOLLAR_AMT" Precision="38" Scale="0" />
+          <Property Type="Int64" Name="ORG_ID" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CUSTOMER_SURVEY_THRESHOLDS" Relationship="OracleModel.FK_THRSH_AMTS_FK" FromRole="CUSTOMER_SURVEY_THRESH_AMT" ToRole="CUSTOMER_SURVEY_THRESHOLDS" />
+        </EntityType>
+        <EntityType Name="CUSTOMER_SURVEY_THRESHOLDS">
+          <Key>
+            <PropertyRef Name="THRESHOLD_ID" />
+          </Key>
+          <Property Type="Decimal" Name="THRESHOLD_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="Decimal" Name="AMOUNT_ID" Nullable="false" Precision="38" Scale="0" />
+          <NavigationProperty Name="CUSTOMER_SURVEY_THRESH_AMT" Relationship="OracleModel.FK_THRSH_AMTS_FK" FromRole="CUSTOMER_SURVEY_THRESHOLDS" ToRole="CUSTOMER_SURVEY_THRESH_AMT" />
+        </EntityType>
+        <Association Name="FK_FORMS_CAT_ID">
+          <End Type="OracleModel.CUSTOMER_SURVEY_CAT" Role="CUSTOMER_SURVEY_CAT" Multiplicity="1" />
+          <End Type="OracleModel.CUSTOMER_SURVEY_FORMS" Role="CUSTOMER_SURVEY_FORMS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CUSTOMER_SURVEY_CAT">
+              <PropertyRef Name="CATEGORY_ID" />
+            </Principal>
+            <Dependent Role="CUSTOMER_SURVEY_FORMS">
+              <PropertyRef Name="CATEGORY_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FIELDSETS_FORM_ID">
+          <End Type="OracleModel.CUSTOMER_SURVEY_FORMS" Role="CUSTOMER_SURVEY_FORMS" Multiplicity="1" />
+          <End Type="OracleModel.CUSTOMER_SURVEY_FIELDSETS" Role="CUSTOMER_SURVEY_FIELDSETS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CUSTOMER_SURVEY_FORMS">
+              <PropertyRef Name="FORM_ID" />
+            </Principal>
+            <Dependent Role="CUSTOMER_SURVEY_FIELDSETS">
+              <PropertyRef Name="FORM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FORMS_COMP_FORM_ID">
+          <End Type="OracleModel.CUSTOMER_SURVEY_FORMS" Role="CUSTOMER_SURVEY_FORMS" Multiplicity="1" />
+          <End Type="OracleModel.CUSTOMER_SURVEY_FORMS_COMP" Role="CUSTOMER_SURVEY_FORMS_COMP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CUSTOMER_SURVEY_FORMS">
+              <PropertyRef Name="FORM_ID" />
+            </Principal>
+            <Dependent Role="CUSTOMER_SURVEY_FORMS_COMP">
+              <PropertyRef Name="FORM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_THRSH_AMTS_FK">
+          <End Type="OracleModel.CUSTOMER_SURVEY_THRESH_AMT" Role="CUSTOMER_SURVEY_THRESH_AMT" Multiplicity="1" />
+          <End Type="OracleModel.CUSTOMER_SURVEY_THRESHOLDS" Role="CUSTOMER_SURVEY_THRESHOLDS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CUSTOMER_SURVEY_THRESH_AMT">
+              <PropertyRef Name="AMOUNT_ID" />
+            </Principal>
+            <Dependent Role="CUSTOMER_SURVEY_THRESHOLDS">
+              <PropertyRef Name="AMOUNT_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8768,19 +8852,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CUSTOMER_SURVEY_FORMS">
-            <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_FORMS">
-              <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_FORMS">
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
-                <ScalarProperty Name="FORMS_NAME" ColumnName="FORMS_NAME" />
-                <ScalarProperty Name="FORM_ID" ColumnName="FORM_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CUSTOMER_SURVEY_FORMS_ANS">
             <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_FORMS_ANS">
               <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_FORMS_ANS">
@@ -8855,34 +8926,6 @@
                 <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
                 <ScalarProperty Name="INSPECTION_NUMBER" ColumnName="INSPECTION_NUMBER" />
                 <ScalarProperty Name="INSPECTION_ID" ColumnName="INSPECTION_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CROSSING_SUPPLEMENTAL">
-            <EntityTypeMapping TypeName="OracleModel.CROSSING_SUPPLEMENTAL">
-              <MappingFragment StoreEntitySet="CROSSING_SUPPLEMENTAL">
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="REMARKS" ColumnName="REMARKS" />
-                <ScalarProperty Name="RECURRING" ColumnName="RECURRING" />
-                <ScalarProperty Name="INSPECT" ColumnName="INSPECT" />
-                <ScalarProperty Name="MAINTAIN" ColumnName="MAINTAIN" />
-                <ScalarProperty Name="CUT" ColumnName="CUT" />
-                <ScalarProperty Name="SPRAY" ColumnName="SPRAY" />
-                <ScalarProperty Name="INSPECT_END" ColumnName="INSPECT_END" />
-                <ScalarProperty Name="INSPECT_START" ColumnName="INSPECT_START" />
-                <ScalarProperty Name="SQUARE_FEET" ColumnName="SQUARE_FEET" />
-                <ScalarProperty Name="TRUCK_NUMBER" ColumnName="TRUCK_NUMBER" />
-                <ScalarProperty Name="COMPLETED_DATE" ColumnName="COMPLETED_DATE" />
-                <ScalarProperty Name="APPROVED_DATE" ColumnName="APPROVED_DATE" />
-                <ScalarProperty Name="SUB_DIVISION" ColumnName="SUB_DIVISION" />
-                <ScalarProperty Name="RAILROAD" ColumnName="RAILROAD" />
-                <ScalarProperty Name="SERVICE_UNIT" ColumnName="SERVICE_UNIT" />
-                <ScalarProperty Name="SERVICE_TYPE" ColumnName="SERVICE_TYPE" />
-                <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
-                <ScalarProperty Name="SUPPLEMENTAL_ID" ColumnName="SUPPLEMENTAL_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -9799,32 +9842,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CROSSING_APPLICATION">
-            <EntityTypeMapping TypeName="OracleModel.CROSSING_APPLICATION">
-              <MappingFragment StoreEntitySet="CROSSING_APPLICATION">
-                <ScalarProperty Name="INVOICE_SUPP_ID" ColumnName="INVOICE_SUPP_ID" />
-                <ScalarProperty Name="INVOICE_ID" ColumnName="INVOICE_ID" />
-                <ScalarProperty Name="FISCAL_YEAR" ColumnName="FISCAL_YEAR" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="REMARKS" ColumnName="REMARKS" />
-                <ScalarProperty Name="INSPECT" ColumnName="INSPECT" />
-                <ScalarProperty Name="CUT" ColumnName="CUT" />
-                <ScalarProperty Name="SPRAY" ColumnName="SPRAY" />
-                <ScalarProperty Name="TRUCK_NUMBER" ColumnName="TRUCK_NUMBER" />
-                <ScalarProperty Name="SUB_DIVISION" ColumnName="SUB_DIVISION" />
-                <ScalarProperty Name="SERVICE_UNIT" ColumnName="SERVICE_UNIT" />
-                <ScalarProperty Name="RAILROAD" ColumnName="RAILROAD" />
-                <ScalarProperty Name="APPLICATION_DATE" ColumnName="APPLICATION_DATE" />
-                <ScalarProperty Name="APPLICATION_REQUESTED" ColumnName="APPLICATION_REQUESTED" />
-                <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
-                <ScalarProperty Name="APPLICATION_NUMBER" ColumnName="APPLICATION_NUMBER" />
-                <ScalarProperty Name="APPLICATION_ID" ColumnName="APPLICATION_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CROSSING_INVOICE">
             <EntityTypeMapping TypeName="OracleModel.CROSSING_INVOICE">
               <MappingFragment StoreEntitySet="CROSSING_INVOICE">
@@ -9867,21 +9884,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CUSTOMER_SURVEY_THRESHOLDS">
-            <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_THRESHOLDS">
-              <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_THRESHOLDS">
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="LARGE_THRESHOLD2" ColumnName="LARGE_THRESHOLD2" />
-                <ScalarProperty Name="LARGE_THRESHOLD1" ColumnName="LARGE_THRESHOLD1" />
-                <ScalarProperty Name="SMALL_THRESHOLD" ColumnName="SMALL_THRESHOLD" />
-                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
-                <ScalarProperty Name="THRESHOLD_ID" ColumnName="THRESHOLD_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="BUD_BID_PROJECTS">
             <EntityTypeMapping TypeName="OracleModel.BUD_BID_PROJECTS">
               <MappingFragment StoreEntitySet="BUD_BID_PROJECTS">
@@ -9909,6 +9911,113 @@
                 <ScalarProperty Name="PRJ_NAME" ColumnName="PRJ_NAME" />
                 <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
                 <ScalarProperty Name="BUD_BID_PROJECTS_ID" ColumnName="BUD_BID_PROJECTS_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CROSSING_APPLICATION">
+            <EntityTypeMapping TypeName="OracleModel.CROSSING_APPLICATION">
+              <MappingFragment StoreEntitySet="CROSSING_APPLICATION">
+                <ScalarProperty Name="INVOICE_ID" ColumnName="INVOICE_ID" />
+                <ScalarProperty Name="FISCAL_YEAR" ColumnName="FISCAL_YEAR" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="REMARKS" ColumnName="REMARKS" />
+                <ScalarProperty Name="INSPECT" ColumnName="INSPECT" />
+                <ScalarProperty Name="CUT" ColumnName="CUT" />
+                <ScalarProperty Name="SPRAY" ColumnName="SPRAY" />
+                <ScalarProperty Name="TRUCK_NUMBER" ColumnName="TRUCK_NUMBER" />
+                <ScalarProperty Name="SUB_DIVISION" ColumnName="SUB_DIVISION" />
+                <ScalarProperty Name="SERVICE_UNIT" ColumnName="SERVICE_UNIT" />
+                <ScalarProperty Name="RAILROAD" ColumnName="RAILROAD" />
+                <ScalarProperty Name="APPLICATION_DATE" ColumnName="APPLICATION_DATE" />
+                <ScalarProperty Name="APPLICATION_REQUESTED" ColumnName="APPLICATION_REQUESTED" />
+                <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
+                <ScalarProperty Name="APPLICATION_NUMBER" ColumnName="APPLICATION_NUMBER" />
+                <ScalarProperty Name="APPLICATION_ID" ColumnName="APPLICATION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CROSSING_SUPPLEMENTAL">
+            <EntityTypeMapping TypeName="OracleModel.CROSSING_SUPPLEMENTAL">
+              <MappingFragment StoreEntitySet="CROSSING_SUPPLEMENTAL">
+                <ScalarProperty Name="INVOICE_SUPP_ID" ColumnName="INVOICE_SUPP_ID" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="REMARKS" ColumnName="REMARKS" />
+                <ScalarProperty Name="RECURRING" ColumnName="RECURRING" />
+                <ScalarProperty Name="INSPECT" ColumnName="INSPECT" />
+                <ScalarProperty Name="MAINTAIN" ColumnName="MAINTAIN" />
+                <ScalarProperty Name="CUT" ColumnName="CUT" />
+                <ScalarProperty Name="SPRAY" ColumnName="SPRAY" />
+                <ScalarProperty Name="INSPECT_END" ColumnName="INSPECT_END" />
+                <ScalarProperty Name="INSPECT_START" ColumnName="INSPECT_START" />
+                <ScalarProperty Name="SQUARE_FEET" ColumnName="SQUARE_FEET" />
+                <ScalarProperty Name="TRUCK_NUMBER" ColumnName="TRUCK_NUMBER" />
+                <ScalarProperty Name="COMPLETED_DATE" ColumnName="COMPLETED_DATE" />
+                <ScalarProperty Name="APPROVED_DATE" ColumnName="APPROVED_DATE" />
+                <ScalarProperty Name="SUB_DIVISION" ColumnName="SUB_DIVISION" />
+                <ScalarProperty Name="RAILROAD" ColumnName="RAILROAD" />
+                <ScalarProperty Name="SERVICE_UNIT" ColumnName="SERVICE_UNIT" />
+                <ScalarProperty Name="SERVICE_TYPE" ColumnName="SERVICE_TYPE" />
+                <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
+                <ScalarProperty Name="SUPPLEMENTAL_ID" ColumnName="SUPPLEMENTAL_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CUSTOMER_SURVEY_CAT">
+            <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_CAT">
+              <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_CAT">
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="CATEGORY_ID" ColumnName="CATEGORY_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CUSTOMER_SURVEY_FORMS">
+            <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_FORMS">
+              <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_FORMS">
+                <ScalarProperty Name="CATEGORY_ID" ColumnName="CATEGORY_ID" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="FORMS_NAME" ColumnName="FORMS_NAME" />
+                <ScalarProperty Name="FORM_ID" ColumnName="FORM_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CUSTOMER_SURVEY_THRESH_AMT">
+            <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_THRESH_AMT">
+              <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_THRESH_AMT">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="HIGH_DOLLAR_AMT" ColumnName="HIGH_DOLLAR_AMT" />
+                <ScalarProperty Name="LOW_DOLLAR_AMT" ColumnName="LOW_DOLLAR_AMT" />
+                <ScalarProperty Name="AMOUNT_ID" ColumnName="AMOUNT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CUSTOMER_SURVEY_THRESHOLDS">
+            <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_THRESHOLDS">
+              <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_THRESHOLDS">
+                <ScalarProperty Name="AMOUNT_ID" ColumnName="AMOUNT_ID" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="THRESHOLD_ID" ColumnName="THRESHOLD_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

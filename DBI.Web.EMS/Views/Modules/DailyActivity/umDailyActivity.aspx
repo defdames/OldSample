@@ -11,7 +11,7 @@
 	<ext:ResourceManager ID="ResourceManager1" runat="server"  IsDynamic="False" RethrowAjaxExceptions="true">
 	</ext:ResourceManager>
 	<form id="form1" runat="server">
-		<ext:FormPanel ID="uxFormPanel" runat="server" Layout="FormLayout" BodyPadding="5" MaxWidth="1000" DefaultButton="uxFormSubmit">
+		<ext:FormPanel ID="uxFormPanel" runat="server" Layout="FormLayout" BodyPadding="5" MaxWidth="1000" DefaultButton="uxFormSubmit" Height="550">
 			<Items>
 				<ext:DropDownField runat="server" Editable="false" 
 					ID="uxFormProject"
@@ -237,8 +237,8 @@
 					Handler="var win = parentAutoLoadControl.target || parentAutoLoadControl, //you can use just 'parentAutoLoadControl' after update to Ext.NET v2 beta.
 									size = this.getSize();
  
-								size.height += 175;
-								size.width += 12;
+								size.height += 34;
+								size.width += 24;
 								win.setSize(size);" 
 					Delay="100" />
 			</Listeners>

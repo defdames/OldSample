@@ -17,17 +17,28 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             if (!X.IsAjaxRequest)
             {
-                if (Request.QueryString["type"] == "Add")
+                uxAddStateList.Data = StaticLists.StateList;
+                if (Request.QueryString["type"] == "Edit")
                 {
-                    uxAddChemicalForm.Show();
-                    uxAddStateList.Data = StaticLists.StateList;
+                    LoadEditChemicalForm();
+                    uxFormType.Value = "Edit";
                 }
                 else
                 {
-                    uxEditChemicalForm.Show();
-                    uxEditStateList.Data = StaticLists.StateList;
-                    LoadEditChemicalForm();
+                    uxFormType.Value = "Add";
                 }
+            }
+        }
+
+        protected void deProcessForm(object sender, DirectEventArgs e)
+        {
+            if (uxFormType.Value.ToString() == "Add")
+            {
+                deAddChemical(sender, e);
+            }
+            else
+            {
+                deEditChemical(sender, e);
             }
         }
 
@@ -78,21 +89,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             //Write to db
             GenericData.Insert<DAILY_ACTIVITY_CHEMICAL_MIX>(data);
-            X.Js.Call("parent.App.uxPlaceholderWindow.hide(); parent.App.uxChemicalTab.reload()");
-            uxAddChemicalForm.Reset();
-
-            //Show notification
-            Notification.Show(new NotificationConfig()
-            {
-                Title = "Success",
-                Html = "Chemical Mix Added Successfully",
-                HideDelay = 1000,
-                AlignCfg = new NotificationAlignConfig
-                {
-                    ElementAnchor = AnchorPoint.Center,
-                    TargetAnchor = AnchorPoint.Center
-                }
-            });
+            X.Js.Call("parent.App.uxDetailsPanel.reload(); parent.App.uxPlaceholderWindow.hide()");
         }
 
         /// <summary>
@@ -109,71 +106,71 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                                     select d).Single();
                 try
                 {
-                    uxEditChemicalTargetAre.SetValue(data.TARGET_AREA.ToString());
+                    uxAddChemicalTargetAre.SetValue(data.TARGET_AREA.ToString());
                 }
                 catch
                 {
                 }
                 try
                 {
-                    uxEditChemicalGallonAcre.SetValue(data.GALLON_ACRE.ToString());
+                    uxAddChemicalGallonAcre.SetValue(data.GALLON_ACRE.ToString());
                 }
                 catch 
                 { 
                 }
                 try
                 {
-                    uxEditChemicalGallonStart.SetValue(data.GALLON_STARTING.ToString());
+                    uxAddChemicalGallonStart.SetValue(data.GALLON_STARTING.ToString());
                 }
                 catch
                 {
                 }
                 try
                 {
-                    uxEditChemicalGallonMixed.SetValue(data.GALLON_MIXED.ToString());
+                    uxAddChemicalGallonMixed.SetValue(data.GALLON_MIXED.ToString());
                 }
                 catch
                 {
                 }
                 try
                 {
-                    uxEditChemicalGallonTotal.Value = int.Parse(data.GALLON_MIXED.ToString()) + int.Parse(data.GALLON_STARTING.ToString());
+                    uxAddChemicalGallonTotal.Value = int.Parse(data.GALLON_MIXED.ToString()) + int.Parse(data.GALLON_STARTING.ToString());
                 }
                 catch { }
                 try
                 {
-                    uxEditChemicalGallonRemain.SetValue(data.GALLON_REMAINING.ToString());
+                    uxAddChemicalGallonRemain.SetValue(data.GALLON_REMAINING.ToString());
                 }
                 catch
                 {
                 }
                 try
                 {
-                    uxEditChemicalGallonUsed.Value = int.Parse(data.GALLON_MIXED.ToString()) + int.Parse(data.GALLON_STARTING.ToString()) - int.Parse(data.GALLON_REMAINING.ToString());
+                    uxAddChemicalGallonUsed.Value = int.Parse(data.GALLON_MIXED.ToString()) + int.Parse(data.GALLON_STARTING.ToString()) - int.Parse(data.GALLON_REMAINING.ToString());
                 }
                 catch { }
                 try
                 {
-                    uxEditChemicalAcresSprayed.Value = int.Parse(uxEditChemicalGallonUsed.Value.ToString()) * decimal.Parse(uxEditChemicalGallonAcre.Value.ToString());
+                    uxAddChemicalAcresSprayed.Value = int.Parse(uxAddChemicalGallonUsed.Value.ToString()) * decimal.Parse(uxAddChemicalGallonAcre.Value.ToString());
                 }
                 catch { }
                 try
                 {
-                    uxEditChemicalAcresSprayed.SetValue(data.ACRES_SPRAYED.ToString());
+                    uxAddChemicalAcresSprayed.SetValue(data.ACRES_SPRAYED.ToString());
                 }
                 catch
                 {
                 }
                 try
                 {
-                    uxEditChemicalState.SetValue(data.STATE);
+                    uxAddChemicalState.SetValue(data.STATE);
                 }
                 catch
                 {
                 }
                 try
                 {
-                    uxEditChemicalCounty.SetValue(data.COUNTY);
+                    uxAddChemicalCounty.SetValue(data.COUNTY);
                 }
                 catch
                 {
@@ -189,11 +186,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void deEditChemical(object sender, DirectEventArgs e)
         {
             long ChemicalId = long.Parse(Request.QueryString["ChemicalMixId"]);
-            decimal GallonAcre = decimal.Parse(uxEditChemicalGallonAcre.Value.ToString());
-            decimal GallonStart = decimal.Parse(uxEditChemicalGallonStart.Value.ToString());
-            decimal GallonMixed = decimal.Parse(uxEditChemicalGallonMixed.Value.ToString());
-            decimal GallonRemain = decimal.Parse(uxEditChemicalGallonRemain.Value.ToString());
-            decimal AcresSprayed = decimal.Parse(uxEditChemicalAcresSprayed.Value.ToString());
+            decimal GallonAcre = decimal.Parse(uxAddChemicalGallonAcre.Value.ToString());
+            decimal GallonStart = decimal.Parse(uxAddChemicalGallonStart.Value.ToString());
+            decimal GallonMixed = decimal.Parse(uxAddChemicalGallonMixed.Value.ToString());
+            decimal GallonRemain = decimal.Parse(uxAddChemicalGallonRemain.Value.ToString());
+            decimal AcresSprayed = decimal.Parse(uxAddChemicalAcresSprayed.Value.ToString());
             DAILY_ACTIVITY_CHEMICAL_MIX data;
             List<DAILY_ACTIVITY_INVENTORY> inventoryData;
 
@@ -209,14 +206,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                  select i).ToList();
             }
 
-            data.TARGET_AREA = uxEditChemicalTargetAre.Value.ToString();
+            data.TARGET_AREA = uxAddChemicalTargetAre.Value.ToString();
             data.GALLON_ACRE = GallonAcre;
             data.GALLON_STARTING = GallonStart;
             data.GALLON_MIXED = GallonMixed;
             data.GALLON_REMAINING = GallonRemain;
             data.ACRES_SPRAYED = AcresSprayed;
-            data.STATE = uxEditChemicalState.Value.ToString();
-            data.COUNTY = uxEditChemicalCounty.Value.ToString();
+            data.STATE = uxAddChemicalState.Value.ToString();
+            data.COUNTY = uxAddChemicalCounty.Value.ToString();
             data.MODIFIED_BY = User.Identity.Name;
             data.MODIFY_DATE = DateTime.Now;
 
@@ -228,34 +225,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             //Set update to database
             GenericData.Update<DAILY_ACTIVITY_CHEMICAL_MIX>(data);
-            
 
-            X.MessageBox.Confirm("Inventory Updated", "The associated Inventory item totals have been updated.  Go to the Inventory tab?", new MessageBoxButtonsConfig
-            {
-                Yes = new MessageBoxButtonConfig
-                {
-                    Handler = "parent.App.uxTabPanel.setActiveTab(parent.App.uxInventoryTab); parent.App.uxPlaceholderWindow.hide();",
-                    Text = "Yes"
-                },
-                No = new MessageBoxButtonConfig
-                {
-                    Handler = "parent.App.uxPlaceholderWindow.hide(); parent.App.uxChemicalTab.reload()",
-                    Text = "No"
-                }
-            }).Show();
+            X.MessageBox.Alert("Inventory Updated", "The associated Inventory item totals have been updated.", "parent.App.uxDetailsPanel.reload(); parent.App.uxPlaceholderWindow.close()").Show();
             
-
-            Notification.Show(new NotificationConfig()
-            {
-                Title = "Success",
-                Html = "Chemical Mix Edited Successfully",
-                HideDelay = 1000,
-                AlignCfg = new NotificationAlignConfig
-                {
-                    ElementAnchor = AnchorPoint.Center,
-                    TargetAnchor = AnchorPoint.Center
-                }
-            });
         }
     }
 }

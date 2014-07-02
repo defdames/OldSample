@@ -108,7 +108,66 @@ namespace DBI.Data.DataFactory
             };
             }
         }
-
+        public static object CrossingStateList
+        {
+            get
+            {
+                return new object[]
+            {
+                new object[] { "AL", "AL" },
+                new object[] { "AK", "AK" },
+                new object[] { "AZ", "AZ" },
+                new object[] { "AR", "AR" },
+                new object[] { "CA", "CA" },
+                new object[] { "CO", "CO" },
+                new object[] { "CT", "CT" },
+                new object[] { "DE", "DE" },
+                new object[] { "DC", "DC" },
+                new object[] { "FL", "FL" },
+                new object[] { "GA", "GA" },
+                new object[] { "HI", "HI" },
+                new object[] { "ID", "ID" },
+                new object[] { "IL", "IL" },
+                new object[] { "IN", "IN" },
+                new object[] { "IA", "IA" },
+                new object[] { "KS", "KS" },
+                new object[] { "KY", "KY" },
+                new object[] { "LA", "LA" },
+                new object[] { "ME", "ME" },
+                new object[] { "MD", "MD" },
+                new object[] { "MA", "MA" },
+                new object[] { "MI", "MI" },
+                new object[] { "MN", "MN" },
+                new object[] { "MS", "MS" },
+                new object[] { "MO", "MO" },
+                new object[] { "MT", "MT" },
+                new object[] { "NE", "NE" },
+                new object[] { "NV", "NV" },
+                new object[] { "NH", "NH" },
+                new object[] { "NJ", "NJ" },
+                new object[] { "NM", "NM" },
+                new object[] { "NY", "NY" },
+                new object[] { "NC", "NC" },
+                new object[] { "ND", "ND" },
+                new object[] { "OH", "OH" },
+                new object[] { "OK", "OK" },
+                new object[] { "OR", "OR" },
+                new object[] { "PA", "PA" },
+                new object[] { "RI", "RI" },
+                new object[] { "SC", "SC" },
+                new object[] { "SD", "SD" },
+                new object[] { "TN", "TN" },
+                new object[] { "TX", "TX" },
+                new object[] { "UT", "UT" },
+                new object[] { "VT", "VT" },
+                new object[] { "VA", "VA" },
+                new object[] { "WA", "WA" },
+                new object[] { "WV", "WV" },
+                new object[] { "WI", "WI" },
+                new object[] { "WY", "WY" } 
+            };
+            }
+        }
         public static object SurfaceTypes
         {
             get
@@ -153,38 +212,11 @@ namespace DBI.Data.DataFactory
                  get
                  {
                      return new object[]{
-                    new object[]{"Public", "Public"},
-                    new object[]{"Private", "Private"},
+                    new object[]{"PUB", "PUB"},
+                    new object[]{"PRI", "PRI"},
                  
                 };
                  }
              }
-
-        public static List<DoubleComboLongID> BudgetVersions()
-        {
-            using (Entities context = new Entities())
-            {
-                List<DoubleComboLongID> comboItem = new List<DoubleComboLongID>();
-                comboItem.Add(new DoubleComboLongID { ID = 1, ID_NAME = "Bid" });
-                comboItem.Add(new DoubleComboLongID { ID = 2, ID_NAME = "First Draft" });
-                comboItem.Add(new DoubleComboLongID { ID = 3, ID_NAME = "Final Draft" });
-                comboItem.Add(new DoubleComboLongID { ID = 4, ID_NAME = "1st Reforecast" });
-                comboItem.Add(new DoubleComboLongID { ID = 5, ID_NAME = "2nd Reforecast" });
-                comboItem.Add(new DoubleComboLongID { ID = 6, ID_NAME = "3rd Reforecast" });
-                comboItem.Add(new DoubleComboLongID { ID = 7, ID_NAME = "4th Reforecast" });
-                return comboItem;
-            }
-        }
-
-        public static List<SingleCombo> YearBudgetProjectActions()
-        {
-            using (Entities context = new Entities())
-            {
-                List<SingleCombo> comboItem = new List<SingleCombo>();
-                comboItem.Add(new SingleCombo { ID_NAME = "Add a New Project" });
-                comboItem.Add(new SingleCombo { ID_NAME = "Delete Selected Project" });
-                return comboItem;
-            }
-        }
     }
 }
