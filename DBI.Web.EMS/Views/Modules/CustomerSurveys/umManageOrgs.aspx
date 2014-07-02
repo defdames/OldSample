@@ -37,9 +37,9 @@
                     <SelectionModel>
                         <ext:TreeSelectionModel ID="uxCompanySelectionModel" runat="server" Mode="Single" />
                     </SelectionModel>
-                    <DirectEvents>
-                        <ItemClick OnEvent="deLoadFormThresholds" />
-                    </DirectEvents>
+                    <Listeners>
+                        <ItemClick Handler="#{uxDollarStore}.reload()" />
+                    </Listeners>
                 </ext:TreePanel>
                 <ext:GridPanel runat="server" ID="uxDollarGrid" Title="Dollar Threshold" Region="North">
                     <Store>
@@ -47,9 +47,10 @@
                             <Model>
                                 <ext:Model runat="server">
                                     <Fields>
+                                        <ext:ModelField Name="AMOUNT_ID" />
                                         <ext:ModelField Name="ORG_ID" />
                                         <ext:ModelField Name="HIERARCHY_NAME" />
-                                        <ext:ModelField Name="LOW_THRESHOLD />
+                                        <ext:ModelField Name="LOW_THRESHOLD" />
                                         <ext:ModelField Name="HIGH_THRESHOLD" />
                                     </Fields>
                                 </ext:Model>
@@ -73,6 +74,14 @@
                             </ext:Column>
                         </Columns>
                     </ColumnModel>
+                    <DirectEvents>
+                        <Select OnEvent="deLoadFormThreshold">
+                            <ExtraParams>
+                                <ext:Parameter Name="AmountId" Value="#{uxDollarGrid}.getSelectionModel().getSelection()[0].data.AMOUNT_ID" Mode="Raw" />
+                            </ExtraParams>
+                            <EventMask ShowMask="true" />
+                        </Select>
+                    </DirectEvents>
                 </ext:GridPanel>
                 <ext:FormPanel runat="server" ID="uxOrganizationForm" BodyPadding="10" Region="Center">
                     <Items>

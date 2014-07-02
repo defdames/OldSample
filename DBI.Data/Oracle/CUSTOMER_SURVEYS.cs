@@ -79,9 +79,14 @@ namespace DBI.Data
             return _context.CUSTOMER_SURVEY_OPTIONS.Where(x => x.OPTION_ID == OptionId).Single();
         }
 
-        public static IQueryable<CUSTOMER_SURVEY_THRESHOLDS> GetOrganizationThreshold(long OrgID, Entities _context)
+        public static IQueryable<CUSTOMER_SURVEY_THRESH_AMT> GetOrganizationThresholdAmounts(long OrgID, Entities _context)
         {
-            return _context.CUSTOMER_SURVEY_THRESHOLDS.Where(x => x.ORG_ID == OrgID);
+            return _context.CUSTOMER_SURVEY_THRESH_AMT.Where(x => x.ORG_ID == OrgID);
+        }
+
+        public static IQueryable<CUSTOMER_SURVEY_THRESHOLDS> GetThresholdPercentages(decimal AmountID, Entities _context)
+        {
+            return _context.CUSTOMER_SURVEY_THRESHOLDS.Where(x => x.AMOUNT_ID == AmountID);
         }
 
         public class CustomerSurveyForms

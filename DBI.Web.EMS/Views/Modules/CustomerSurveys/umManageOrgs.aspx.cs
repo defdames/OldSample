@@ -45,6 +45,21 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
         }
 
+        protected void deReadDollars(object sender, StoreReadDataEventArgs e)
+        {
+            string _selectedRecordID = uxCompanySelectionModel.SelectedRecordID;
+            if (_selectedRecordID != "0" && _selectedRecordID.Contains(":"))
+            {
+                long OrgID = GetOrgFromTree(_selectedRecordID);
+                using (Entities _context = new Entities())
+                {
+                    IQueryable<CUSTOMER_SURVEY_THRESH_AMT> Amounts = CUSTOMER_SURVEYS.GetOrganizationThresholdAmounts(OrgID, _context);
+                    int count;
+                    uxDollarStore.DataSource = GenericData.ListFilterHeader(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], Amounts, out count);
+                }
+            }
+        }
+
         protected long GetOrgFromTree(string _selectedRecordID)
         {
             char[] _delimiterChars = { ':' };
@@ -145,60 +160,53 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
         }
 
-        protected void deLoadFormThresholds(object sender, DirectEventArgs e)
+        protected void deLoadFormThreshold(object sender, DirectEventArgs e)
         {
-            string _selectedRecordID = uxCompanySelectionModel.SelectedRecordID;
-            if (_selectedRecordID != "0" && _selectedRecordID.Contains(":"))
+            using (Entities _context = new Entities())
             {
-                long OrgID = GetOrgFromTree(_selectedRecordID);
-                using (Entities _context = new Entities())
+                decimal AmountId = decimal.Parse(e.ExtraParams["AmountId"]);
+                CUSTOMER_SURVEY_THRESHOLDS Threshold = CUSTOMER_SURVEYS.GetThresholdPercentages(AmountId, _context).Single();
+                if (Threshold != null)
                 {
-                    CUSTOMER_SURVEY_THRESHOLDS Threshold = CUSTOMER_SURVEYS.GetOrganizationThreshold(OrgID, _context).SingleOrDefault();
-                    if (Threshold != null)
-                    {
-                        uxSmallThreshold.Value = Threshold.SMALL_THRESHOLD;
-                        uxFirstLargeThreshold.Value = Threshold.LARGE_THRESHOLD1;
-                        uxSecondLargeThreshold.Value = Threshold.LARGE_THRESHOLD2;
-                        uxFormType.Value = "Edit";
-                    }
-                    else
-                    {
-                        uxFormType.Value = "Add";
-                        uxOrganizationForm.Reset();
-                    }
+                    //uxSmallThreshold.Value = Threshold
+                    //uxFirstLargeThreshold.Value = Threshold.LARGE_THRESHOLD1;
+                    //uxSecondLargeThreshold.Value = Threshold.LARGE_THRESHOLD2;
+                    //uxFormType.Value = "Edit";
+                }
+                else
+                {
+                    uxFormType.Value = "Add";
+                    uxOrganizationForm.Reset();
                 }
             }
-            
         }
 
         protected void deSubmitThreshold(object sender, DirectEventArgs e)
         {
-            string _selectedRecordID = uxCompanySelectionModel.SelectedRecordID;
-            long OrgId = GetOrgFromTree(_selectedRecordID);
             if (uxFormType.Value.ToString() == "Add")
             {
                 CUSTOMER_SURVEY_THRESHOLDS NewThreshold = new CUSTOMER_SURVEY_THRESHOLDS();
-                NewThreshold.SMALL_THRESHOLD = decimal.Parse(uxSmallThreshold.Text);
-                NewThreshold.LARGE_THRESHOLD1 = decimal.Parse(uxFirstLargeThreshold.Text);
-                NewThreshold.LARGE_THRESHOLD2 = decimal.Parse(uxSecondLargeThreshold.Text);
+                //NewThreshold.SMALL_THRESHOLD = decimal.Parse(uxSmallThreshold.Text);
+                //NewThreshold.LARGE_THRESHOLD1 = decimal.Parse(uxFirstLargeThreshold.Text);
+                //NewThreshold.LARGE_THRESHOLD2 = decimal.Parse(uxSecondLargeThreshold.Text);
                 NewThreshold.MODIFIED_BY = User.Identity.Name;
                 NewThreshold.CREATED_BY = User.Identity.Name;
                 NewThreshold.MODIFY_DATE = DateTime.Now;
                 NewThreshold.CREATE_DATE = DateTime.Now;
-                NewThreshold.ORG_ID = OrgId;
 
                 GenericData.Insert<CUSTOMER_SURVEY_THRESHOLDS>(NewThreshold);
             }
             else
             {
+                decimal ThresholdID = decimal.Parse(e.ExtraParams["ThresholdId"]);
                 CUSTOMER_SURVEY_THRESHOLDS UpdatedThreshold;
                 using (Entities _context = new Entities())
                 {
-                    UpdatedThreshold = CUSTOMER_SURVEYS.GetOrganizationThreshold(OrgId, _context).Single();
+                    UpdatedThreshold = CUSTOMER_SURVEYS.GetThresholdPercentages(ThresholdID, _context).Single();
                 }
-                UpdatedThreshold.SMALL_THRESHOLD = decimal.Parse(uxSmallThreshold.Text);
-                UpdatedThreshold.LARGE_THRESHOLD1 = decimal.Parse(uxFirstLargeThreshold.Text);
-                UpdatedThreshold.LARGE_THRESHOLD2 = decimal.Parse(uxSecondLargeThreshold.Text);
+                //UpdatedThreshold.SMALL_THRESHOLD = decimal.Parse(uxSmallThreshold.Text);
+                //UpdatedThreshold.LARGE_THRESHOLD1 = decimal.Parse(uxFirstLargeThreshold.Text);
+                //UpdatedThreshold.LARGE_THRESHOLD2 = decimal.Parse(uxSecondLargeThreshold.Text);
                 UpdatedThreshold.MODIFY_DATE = DateTime.Now;
                 UpdatedThreshold.MODIFIED_BY = User.Identity.Name;
 
