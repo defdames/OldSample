@@ -151,10 +151,10 @@
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_CAT" Width="1.5" PointX="47.75" PointY="54.875" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_FORMS" Width="1.5" PointX="49.625" PointY="58.875" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_THRESH_AMT" Width="1.5" PointX="41.625" PointY="54.25" />
-        <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_THRESHOLDS" Width="1.5" PointX="44.125" PointY="55.75" />
         <AssociationConnector Association="OracleModel.FK_FORMS_CAT_ID" />
         <AssociationConnector Association="OracleModel.FK_FIELDSETS_FORM_ID" />
         <AssociationConnector Association="OracleModel.FK_FORMS_COMP_FORM_ID" />
+        <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_THRESHOLDS" Width="1.5" PointX="39.25" PointY="54.375" />
         <AssociationConnector Association="OracleModel.FK_THRSH_AMTS_FK" />
         </Diagram>
     </edmx:Diagrams>
