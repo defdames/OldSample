@@ -115,17 +115,19 @@
                                     <LoadMask ShowMask="true" />
                                 </Loader>
                             </ext:Panel>
-                             <ext:Panel runat="server"
+                               <ext:Panel runat="server"
                                 Title="Incidents"
                                 ID="uxIncident"
-                                Disabled="false">
+                                Disabled="false" >
                                 <Loader runat="server"
                                     ID="Loader1" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umIncident.aspx">
                                     <LoadMask ShowMask="true" />
                                 </Loader>
+                              
                             </ext:Panel>
 
                         </Items>
+                               
                     </ext:TabPanel>
 
                 </Items>
