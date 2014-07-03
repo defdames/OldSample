@@ -10,7 +10,7 @@ using Ext.Net;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
-    public partial class umDataEntryMain : System.Web.UI.Page
+    public partial class umDataEntryMain : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -42,7 +42,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     {
                         uxChangeDataEntryWindow.Show();
                     }
-
+                    
+                    
                 }
             
         }

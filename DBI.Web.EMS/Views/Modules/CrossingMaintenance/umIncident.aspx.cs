@@ -17,7 +17,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!validateComponentSecurity("SYS.CrossingMaintenance.DataEntryView"))
+            if (!validateComponentSecurity("SYS.CrossingMaintenance.DataEntryView") && !validateComponentSecurity("SYS.DailyActivity.IncidentView"))
             {
                 X.Redirect("~/Views/uxDefault.aspx");
 
