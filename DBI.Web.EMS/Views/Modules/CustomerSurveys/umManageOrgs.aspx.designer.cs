@@ -67,66 +67,210 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Store uxDollarStore;
         
         /// <summary>
-        /// uxOrganizationForm control.
+        /// uxAddDollarButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FormPanel uxOrganizationForm;
+        protected global::Ext.Net.Button uxAddDollarButton;
         
         /// <summary>
-        /// uxFormType control.
+        /// uxEditDollarButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Hidden uxFormType;
+        protected global::Ext.Net.Button uxEditDollarButton;
         
         /// <summary>
-        /// uxSmallThreshold control.
+        /// uxDeleteDollarButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField uxSmallThreshold;
+        protected global::Ext.Net.Button uxDeleteDollarButton;
         
         /// <summary>
-        /// uxFirstLargeThreshold control.
+        /// uxThresholdGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField uxFirstLargeThreshold;
+        protected global::Ext.Net.GridPanel uxThresholdGrid;
         
         /// <summary>
-        /// uxSecondLargeThreshold control.
+        /// uxThresholdStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField uxSecondLargeThreshold;
+        protected global::Ext.Net.Store uxThresholdStore;
         
         /// <summary>
-        /// uxOrganizationSubmitButton control.
+        /// uxAddThresholdButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxOrganizationSubmitButton;
+        protected global::Ext.Net.Button uxAddThresholdButton;
         
         /// <summary>
-        /// uxOrganizationCancelButton control.
+        /// uxEditThresholdButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxOrganizationCancelButton;
+        protected global::Ext.Net.Button uxEditThresholdButton;
+        
+        /// <summary>
+        /// uxDeleteThresholdButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxDeleteThresholdButton;
+        
+        /// <summary>
+        /// uxAddEditDollarWindow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Window uxAddEditDollarWindow;
+        
+        /// <summary>
+        /// uxDollarForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FormPanel uxDollarForm;
+        
+        /// <summary>
+        /// uxDollarFormType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Hidden uxDollarFormType;
+        
+        /// <summary>
+        /// uxDollarAmountId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Hidden uxDollarAmountId;
+        
+        /// <summary>
+        /// uxLowDollar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberField uxLowDollar;
+        
+        /// <summary>
+        /// uxHighDollar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberField uxHighDollar;
+        
+        /// <summary>
+        /// uxSaveDollarButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxSaveDollarButton;
+        
+        /// <summary>
+        /// uxCancelDollarButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxCancelDollarButton;
+        
+        /// <summary>
+        /// uxAddEditThresholdWindow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Window uxAddEditThresholdWindow;
+        
+        /// <summary>
+        /// uxThresholdForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FormPanel uxThresholdForm;
+        
+        /// <summary>
+        /// uxThresholdFormType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Hidden uxThresholdFormType;
+        
+        /// <summary>
+        /// uxThresholdId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Hidden uxThresholdId;
+        
+        /// <summary>
+        /// uxThreshold control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberField uxThreshold;
+        
+        /// <summary>
+        /// uxSaveThresholdButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxSaveThresholdButton;
+        
+        /// <summary>
+        /// uxCancelThresholdButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxCancelThresholdButton;
     }
 }

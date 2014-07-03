@@ -79,14 +79,26 @@ namespace DBI.Data
             return _context.CUSTOMER_SURVEY_OPTIONS.Where(x => x.OPTION_ID == OptionId).Single();
         }
 
-        public static IQueryable<CUSTOMER_SURVEY_THRESH_AMT> GetOrganizationThresholdAmounts(long OrgID, Entities _context)
+        public static IQueryable<CustomerSurveyThresholdStore> GetOrganizationThresholdAmounts(long OrgID, Entities _context)
         {
-            return _context.CUSTOMER_SURVEY_THRESH_AMT.Where(x => x.ORG_ID == OrgID);
+            return (from c in _context.CUSTOMER_SURVEY_THRESH_AMT
+                    join o in _context.ORG_HIER_V on c.ORG_ID equals o.ORG_ID
+                    where c.ORG_ID == OrgID
+                    select new CustomerSurveyThresholdStore { AMOUNT_ID = c.AMOUNT_ID, HIGH_DOLLAR_AMT = c.HIGH_DOLLAR_AMT, LOW_DOLLAR_AMT = c.LOW_DOLLAR_AMT, ORG_HIER = o.ORG_HIER }).Distinct();
         }
 
+        public static CUSTOMER_SURVEY_THRESH_AMT GetOrganizationThresholdAmount(decimal AmountId, Entities _context)
+        {
+            return _context.CUSTOMER_SURVEY_THRESH_AMT.Where(x => x.AMOUNT_ID == AmountId).Single();
+        }
         public static IQueryable<CUSTOMER_SURVEY_THRESHOLDS> GetThresholdPercentages(decimal AmountID, Entities _context)
         {
             return _context.CUSTOMER_SURVEY_THRESHOLDS.Where(x => x.AMOUNT_ID == AmountID);
+        }
+
+        public static CUSTOMER_SURVEY_THRESHOLDS GetThreshold(decimal ThresholdId, Entities _context)
+        {
+            return _context.CUSTOMER_SURVEY_THRESHOLDS.Where(x => x.THRESHOLD_ID == ThresholdId).Single();
         }
 
         public class CustomerSurveyForms
@@ -127,6 +139,14 @@ namespace DBI.Data
             public string TEXT { get; set; }
             public decimal SORT_ORDER { get; set; }
             public bool IS_ACTIVE { get; set; }
+        }
+
+        public class CustomerSurveyThresholdStore
+        {
+            public decimal AMOUNT_ID { get; set; }
+            public decimal? LOW_DOLLAR_AMT { get; set; }
+            public decimal? HIGH_DOLLAR_AMT { get; set; }
+            public string ORG_HIER { get; set; }
         }
     }
 }
