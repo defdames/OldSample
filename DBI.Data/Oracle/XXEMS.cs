@@ -442,6 +442,15 @@ namespace DBI.Data
     /// </summary>
     public partial class OVERHEAD_GL_ACCOUNT
     {
+
+        public static IQueryable<OVERHEAD_GL_ACCOUNT> OverheadGLAccountsByOrganization(Entities _context, long organizationId)
+        {
+            IQueryable<OVERHEAD_GL_ACCOUNT> _data = _context.OVERHEAD_GL_ACCOUNT.Where(x => x.ORGANIZATION_ID == organizationId);
+            return _data;
+        }
+
+
+
         /// <summary>
         /// Returns a list of Overhead GL Accounts by legal entity
         /// </summary>

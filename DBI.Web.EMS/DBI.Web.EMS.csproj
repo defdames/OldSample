@@ -194,6 +194,7 @@
     <Content Include="Views\Modules\Overhead\Backup\umOrganizationBudgetSecurity.aspx" />
     <Content Include="Views\Modules\Overhead\Backup\GLSecurity\umGLSecurity.aspx" />
     <Content Include="Views\Modules\Overhead\Backup\umViewBudgets.aspx" />
+    <Content Include="Views\Modules\Overhead\Views\umAddGLAccountRange.aspx" />
     <Content Include="Views\Modules\Overhead\Views\umAddRemoveBudgetType.aspx" />
     <Content Include="Views\Modules\Overhead\Views\umBudgetTypesByLegalEntity.aspx" />
     <Content Include="Views\Modules\Overhead\Views\umGeneralLedgerAccounts.aspx" />
@@ -742,6 +743,13 @@
     </Compile>
     <Compile Include="Views\Modules\Overhead\Backup\umViewBudgets.aspx.designer.cs">
       <DependentUpon>umViewBudgets.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\Views\umAddGLAccountRange.aspx.cs">
+      <DependentUpon>umAddGLAccountRange.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\Views\umAddGLAccountRange.aspx.designer.cs">
+      <DependentUpon>umAddGLAccountRange.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\Overhead\Views\umAddRemoveBudgetType.aspx.cs">
       <DependentUpon>umAddRemoveBudgetType.aspx</DependentUpon>
