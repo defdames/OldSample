@@ -153,9 +153,9 @@
         <AssociationConnector Association="OracleModel.FK_FORMS_CAT_ID" />
         <AssociationConnector Association="OracleModel.FK_FIELDSETS_FORM_ID" />
         <AssociationConnector Association="OracleModel.FK_FORMS_COMP_FORM_ID" />
-        <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_THRESHOLDS" Width="1.5" PointX="39.25" PointY="54.375" />
-        <AssociationConnector Association="OracleModel.FK_THRSH_AMTS_FK" />
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="1.5" PointX="9.63839427644312" PointY="12.019527932638082" />
+        <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_THRESHOLDS" Width="1.5" PointX="44" PointY="54.375" />
+        <AssociationConnector Association="OracleModel.FK_THRSH_AMTS_FK" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
