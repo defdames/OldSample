@@ -31,6 +31,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                     IQueryable<CUSTOMER_SURVEYS.CustomerSurveyThresholdStore> Amounts = CUSTOMER_SURVEYS.GetOrganizationThresholdAmounts(OrgID, _context);
                     int count;
                     uxDollarStore.DataSource = GenericData.ListFilterHeader(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], Amounts, out count);
+                    e.Total = count;
                 }
             }
         }

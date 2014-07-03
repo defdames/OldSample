@@ -101,6 +101,16 @@ namespace DBI.Data
             return _context.CUSTOMER_SURVEY_THRESHOLDS.Where(x => x.THRESHOLD_ID == ThresholdId).Single();
         }
 
+        public static IQueryable<CustomerSurveyCategoryStore> GetCategories(Entities _context)
+        {
+            return _context.CUSTOMER_SURVEY_CAT.Select(x => new CustomerSurveyCategoryStore{CATEGORY_ID = x.CATEGORY_ID, DESCRIPTION = x.DESCRIPTION, NAME = x.NAME, NUM_FORMS = x.CUSTOMER_SURVEY_FORMS.Count});
+        }
+
+        public static CUSTOMER_SURVEY_CAT GetCategory(decimal CategoryId, Entities _context)
+        {
+            return _context.CUSTOMER_SURVEY_CAT.Where(x => x.CATEGORY_ID == CategoryId).Single();
+        }
+
         public class CustomerSurveyForms
         {
             public decimal FORM_ID { get; set; }
@@ -147,6 +157,14 @@ namespace DBI.Data
             public decimal? LOW_DOLLAR_AMT { get; set; }
             public decimal? HIGH_DOLLAR_AMT { get; set; }
             public string ORG_HIER { get; set; }
+        }
+
+        public class CustomerSurveyCategoryStore
+        {
+            public decimal CATEGORY_ID { get; set; }
+            public string NAME { get; set; }
+            public string DESCRIPTION { get; set; }
+            public int NUM_FORMS { get; set; }
         }
     }
 }

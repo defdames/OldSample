@@ -74,6 +74,9 @@
                             </ext:Column>
                         </Columns>
                     </ColumnModel>
+                    <Plugins>
+                        <ext:FilterHeader runat="server" Remote="true" />
+                    </Plugins>
                     <Listeners>
                         <Select Handler="#{uxEditDollarButton}.enable(); #{uxDeleteDollarButton}.enable(); #{uxAddThresholdButton}.enable(); #{uxThresholdStore}.reload();" />
                     </Listeners>
