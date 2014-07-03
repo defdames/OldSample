@@ -76,7 +76,7 @@
                                 <Fields>
                                     <ext:ModelField Name="CROSSING_ID" />  
                                     <ext:ModelField Name="CROSSING_NUMBER" />                                
-                                    <ext:ModelField Name="SUPLLEMENTAL_ID" />
+                                    <ext:ModelField Name="SUPPLEMENTAL_ID" />
                                     <ext:ModelField Name="APPROVED_DATE" /> 
                                     <ext:ModelField Name="MILE_POST" />
                                     <ext:ModelField Name="SERVICE_TYPE" />
@@ -99,7 +99,7 @@
                     <Columns>
                          <ext:Column ID="Column1" runat="server" DataIndex="CROSSING_NUMBER" Text="DOT Number" Flex="1" />
                         <ext:Column ID="Column2" runat="server" DataIndex="MILE_POST" Text="MP" Flex="1" />
-                        <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" Format="MM/dd/yyyy" />
+                        <ext:Column ID="Column12" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
                         <ext:Column ID="Column3" runat="server" DataIndex="SUB_DIVISION" Text="Sub Division" Flex="1" />                     
                         <ext:DateColumn ID="DateColumn1" runat="server" DataIndex="APPROVED_DATE" Text="Approved Date" Flex="1" Format="MM/dd/yyyy" />
                     <ext:Column ID="Column6" runat="server" DataIndex="SERVICE_TYPE" Text="Service Type" Flex="1" />
@@ -118,7 +118,7 @@
                         <DirectEvents>
                             <Click OnEvent="deAddInvoice" >
                                  <ExtraParams>
-                                    <ext:Parameter Name="selectedSupps" Value="Ext.encode(#{uxInvoiceGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+                                    <ext:Parameter Name="selectedSupp" Value="Ext.encode(#{uxInvoiceGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
                                 </ExtraParams>
                                 </Click>
                         </DirectEvents>

@@ -49,12 +49,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                                    d.CROSSING_ID,
                                    a.APPLICATION_ID,
                                    a.APPLICATION_DATE,
+                                   a.APPLICATION_REQUESTED,
                                    d.CROSSING_NUMBER,
                                    d.SUB_DIVISION,
                                    d.SERVICE_UNIT,
                                    d.STATE,
                                    d.MILE_POST,
-                                   a.REMARKS,
+                                   //a.REMARKS,
                                });
 
                 //filter down specific information to show the incidents needed for report
@@ -79,6 +80,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 int count;
                 uxInvoiceFormStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
                 e.Total = count;
+               
             }
         }
         protected void deClearFilters(object sender, DirectEventArgs e)
@@ -98,57 +100,99 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 CREATE_DATE = DateTime.Now,
                 MODIFIED_BY = User.Identity.Name,
                 MODIFY_DATE = DateTime.Now,
-                
+
             };
             GenericData.Insert<CROSSING_INVOICE>(data);
 
-            //  decimal SuppInvoiceId = data.INVOICE_SUPP_ID;
+            decimal InvoiceId = data.INVOICE_ID;
 
-            //CROSSING_APPLICATION invoice;
-            //string json = (e.ExtraParams["selectedSupps"]);
-            //List<SupplementalDetails> suppList = JSON.Deserialize<List<SupplementalDetails>>(json);
-            //foreach (SupplementalDetails supp in suppList)
-            //{
+            CROSSING_APPLICATION invoice;
+            string json = (e.ExtraParams["selectedApps"]);
+            List<ApplicationDetails> appList = JSON.Deserialize<List<ApplicationDetails>>(json);
+            foreach (ApplicationDetails app in appList)
+            {
 
-            //    using (Entities _context = new Entities())
-            //    {
-            //        invoice = _context.CROSSING_APPLICATION.Where(x => x.APPLICATION_ID == supp.APPLICATION_ID).SingleOrDefault();
-            //        invoice.INVOICE_SUPP_ID = Convert.ToInt64(SuppInvoiceId);
-            //    }
-            //        GenericData.Update<CROSSING_SUPPLEMENTAL>(invoice);
-                
-            //    uxFilterForm.Reset();
-            //    uxInvoiceSupplementalStore.Reload();
+                using (Entities _context = new Entities())
+                {
+                    invoice = _context.CROSSING_APPLICATION.Where(x => x.APPLICATION_ID == app.APPLICATION_ID).SingleOrDefault();
 
-            //    Notification.Show(new NotificationConfig()
-            //    {
-            //        Title = "Success",
-            //        Html = "Invoice Added Successfully",
-            //        HideDelay = 1000,
-            //        AlignCfg = new NotificationAlignConfig
-            //        {
-            //            ElementAnchor = AnchorPoint.Center,
-            //            TargetAnchor = AnchorPoint.Center
-            //        }
-            //    });
+                }
 
-        
+                invoice.INVOICE_ID = InvoiceId;
+              
+                GenericData.Update<CROSSING_APPLICATION>(invoice);
+            }
+            
+                //uxFilterForm.Reset();
+                //uxInvoiceFormStore.Reload();
+           
+               
+                uxBillingReportWindow.Show();
+                //uxInvoiceReportStore.Reload();
+               
+        }
+        protected void deInvoiceReportGrid(object sender, StoreReadDataEventArgs e)
+        {
+            List<object> allData;
+          
+            string json = (e.Parameters["selectedApps"]);
+            List<ApplicationDetails> appList = JSON.Deserialize<List<ApplicationDetails>>(json);
+            List<long> ReportList = new List<long>();
+            foreach (ApplicationDetails app in appList)
+            {
+                ReportList.Add(app.APPLICATION_ID);
+            }
+                using (Entities _context = new Entities())
+                {
+
+                    //Get List of all incidents open and closed 
+
+                    allData = (from a in _context.CROSSING_APPLICATION
+                               join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
+                               join v in _context.CROSSING_INVOICE on a.INVOICE_ID equals v.INVOICE_ID
+                               where ReportList.Contains(a.APPLICATION_ID)
+                               select new
+                               {
+                                   v.INVOICE_NUMBER,
+                                   v.INVOICE_DATE,
+                                   d.CROSSING_ID,
+                                   a.APPLICATION_ID,
+                                   a.APPLICATION_DATE,
+                                   a.APPLICATION_REQUESTED,
+                                   d.CROSSING_NUMBER,
+                                   d.SUB_DIVISION,
+                                   d.MILE_POST,
+                                   d.SERVICE_UNIT,
+
+                               }).ToList<object>();
+
+                    
+                    //uxInvoiceNumber.Text = allData.INVOICE_NUMBER;
+            }
+                    uxInvoiceReportStore.DataSource = allData;
+                    uxInvoiceDate.SetValue(DateTime.Now);
+
+
+                   
+            
         }
         public class ApplicationDetails
         {
+            public decimal INVOICE_ID { get; set; }
             public long APPLICATION_ID { get; set; }
             public long CROSSING_ID { get; set; }
-            public Int64 INVOICE_SUPP_ID { get; set; }
-            public Int64 APPLICATION_NUMBER { get; set; }
             public string APPLICATION_REQUESTED { get; set; }
             public DateTime APPLICATION_DATE { get; set; }
-            public string TRUCK_NUMBER { get; set; }
-            public long FISCAL_YEAR { get; set; }
-            public string SPRAY { get; set; }
-            public string CUT { get; set; }
-            public string INSPECT { get; set; }
-            public string REMARKS { get; set; }
+          
+        }
+        public class ReportDetails
+        {
+            public decimal INVOICE_ID { get; set; }
+            public long APPLICATION_ID { get; set; }
+            public long CROSSING_ID { get; set; }
+            public string APPLICATION_REQUESTED { get; set; }
+            public DateTime APPLICATION_DATE { get; set; }
 
         }
-        }
     }
+}
