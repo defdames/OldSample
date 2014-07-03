@@ -153,7 +153,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             if (uxThresholdFormType.Text == "Add")
             {
                 Threshold = new CUSTOMER_SURVEY_THRESHOLDS();
-                Threshold.THERSHOLD = decimal.Parse(uxThreshold.Text);
+                Threshold.THRESHOLD = decimal.Parse(uxThreshold.Text);
                 Threshold.AMOUNT_ID = AmountId;
                 Threshold.CREATE_DATE = DateTime.Now;
                 Threshold.MODIFY_DATE = DateTime.Now;
@@ -168,7 +168,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 {
                     decimal ThresholdId = decimal.Parse(uxThresholdId.Text);
                     Threshold = CUSTOMER_SURVEYS.GetThreshold(ThresholdId, _context);
-                    Threshold.THERSHOLD = decimal.Parse(uxThreshold.Text);
+                    Threshold.THRESHOLD = decimal.Parse(uxThreshold.Text);
                     Threshold.MODIFIED_BY = User.Identity.Name;
                     Threshold.MODIFY_DATE = DateTime.Now;
                 }
@@ -272,6 +272,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
 
             GenericData.Delete<CUSTOMER_SURVEY_THRESHOLDS>(ToBeDeleted);
+            uxThresholdStore.Reload();
         }
 
         protected void deLoadThresholdForm(object sender, DirectEventArgs e)
@@ -280,7 +281,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             List<CUSTOMER_SURVEY_THRESHOLDS> Threshold = JSON.Deserialize<List<CUSTOMER_SURVEY_THRESHOLDS>>(e.ExtraParams["RowValues"]);
             foreach (CUSTOMER_SURVEY_THRESHOLDS ThresholdToEdit in Threshold)
             {
-                uxThreshold.Value = ThresholdToEdit.THERSHOLD;
+                uxThreshold.Value = ThresholdToEdit.THRESHOLD;
                 uxThresholdId.Value = ThresholdToEdit.THRESHOLD_ID;
                 uxAddEditThresholdWindow.Show();
             }

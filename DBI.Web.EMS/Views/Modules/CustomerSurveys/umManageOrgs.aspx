@@ -95,7 +95,15 @@
                                     </DirectEvents>
                                 </ext:Button>
                                 <ext:Button runat="server" ID="uxDeleteDollarButton" Icon="ApplicationDelete" Text="Delete" Disabled="true">
-
+                                    <DirectEvents>
+                                        <Click OnEvent="deDeleteDollar">
+                                            <EventMask ShowMask="true" />
+                                            <ExtraParams>
+                                                <ext:Parameter Name="AmountId" Value="#{uxDollarGrid}.getSelectionModel().getSelection()[0].data.AMOUNT_ID" Mode="Raw" />
+                                            </ExtraParams>
+                                            <Confirmation ConfirmRequest="true" Title="Really Delete?" Message="Do you really want to delete this entry?" />
+                                        </Click>
+                                    </DirectEvents>
                                 </ext:Button>
                             </Items>
                         </ext:Toolbar>                       
@@ -113,7 +121,7 @@
                                         <ext:ModelField Name="AMOUNT_ID" />
                                         <ext:ModelField Name="LOW_DOLLAR" ServerMapping="CUSTOMER_SURVEY_THRESH_AMT.LOW_DOLLAR_AMT" />
                                         <ext:ModelField Name="HIGH_DOLLAR" ServerMapping="CUSTOMER_SURVEY_THRESH_AMT.HIGH_DOLLAR_AMT" />
-                                        <ext:ModelField Name="THERSHOLD" />
+                                        <ext:ModelField Name="THRESHOLD" />
                                         <ext:ModelField Name="THRESHOLD_ID" />
                                     </Fields>
                                 </ext:Model>
@@ -130,7 +138,7 @@
                         <Columns>
                             <ext:Column runat="server" Text="Low Dollar" DataIndex="LOW_DOLLAR" />
                             <ext:Column runat="server" Text="High Dollar" DataIndex="HIGH_DOLLAR" />
-                            <ext:Column runat="server" Text="% Threshold" DataIndex="THERSHOLD" />
+                            <ext:Column runat="server" Text="% Threshold" DataIndex="THRESHOLD" />
                         </Columns>
                     </ColumnModel>
                     <TopBar>
