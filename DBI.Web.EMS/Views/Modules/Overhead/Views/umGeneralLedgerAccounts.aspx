@@ -55,7 +55,9 @@
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
                                 <ext:Button runat="server" ID="uxShowGLAccoutsWindow" Text="Assign" Icon="Add" Disabled="true">
-                                   
+                                   <DirectEvents>
+                                       <Click OnEvent="deShowGlAccountFilter"></Click>
+                                   </DirectEvents>
                                 </ext:Button>
                                 <ext:Button runat="server" ID="uxGlAccountDelete" Text="Unassign" Icon="Delete" Disabled="true">
                                      
@@ -66,26 +68,18 @@
                     <Store>
                         <ext:Store runat="server"
                             ID="uxGlAccountSecurityStore"
-                            AutoDataBind="true" RemoteSort="true"  AutoLoad="false">
+                            AutoDataBind="true" RemoteSort="true" OnReadData="deLoadGLAccounts"  AutoLoad="false">
                             <Model>
-                                <ext:Model ID="Model1" runat="server" IDProperty="OVERHEAD_GL_ID">
+                                <ext:Model ID="Model1" runat="server" IDProperty="GL_ACCOUNT_ID">
                                     <Fields>
-                                        <ext:ModelField Name="OVERHEAD_GL_ID" />
-                                        <ext:ModelField Name="CODE_COMBINATION_ID" />
+                                        <ext:ModelField Name="ORGANIZATION_ID" />
                                         <ext:ModelField Name="SEGMENT1" />
                                         <ext:ModelField Name="SEGMENT2" />
                                         <ext:ModelField Name="SEGMENT3" />
                                         <ext:ModelField Name="SEGMENT4" />
                                         <ext:ModelField Name="SEGMENT5" />
-                                        <ext:ModelField Name="SEGMENT5_DESC" />
                                         <ext:ModelField Name="SEGMENT6" />
                                         <ext:ModelField Name="SEGMENT7" />
-                                        <ext:ModelField Name="SEGMENT1_DESC" />
-                                        <ext:ModelField Name="SEGMENT2_DESC" />
-                                        <ext:ModelField Name="SEGMENT3_DESC" />
-                                        <ext:ModelField Name="SEGMENT4_DESC" />
-                                        <ext:ModelField Name="SEGMENT6_DESC" />
-                                        <ext:ModelField Name="SEGMENT7_DESC" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -93,7 +87,7 @@
                                 <ext:PageProxy />
                             </Proxy>
                             <Sorters>
-                                <ext:DataSorter Property="SEGMENT5_DESC" Direction="ASC" />
+                                <ext:DataSorter Property="ORGANIZATION_ID" Direction="ASC" />
                             </Sorters>
                             <Listeners><Load Handler="#{uxGlAccountDelete}.disable();"></Load></Listeners>
                         </ext:Store>
