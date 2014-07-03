@@ -81,36 +81,27 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
         }
 
 
-        protected void deModifyOverheadStatus(object sender, DirectEventArgs e)
+        protected void deEnableOrganization(object sender, DirectEventArgs e)
         {
-            long _organizationID = 0;
-            Boolean checkParse = long.TryParse(e.ExtraParams["orgID"].ToString(), out _organizationID);
+            RowSelectionModel model = uxOrganizationsGridSelectionModel;
 
-          //Lets see if we need to change the organization status
-            string _orgProfileOptionValue = SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetOrganization", _organizationID);
-
-            if (_orgProfileOptionValue == null)
+            foreach (SelectedRow row in model.SelectedRows)
             {
-                SYS_ORG_PROFILE_OPTIONS.SetOrganizationProfileOption("OverheadBudgetOrganization", "Y", _organizationID);
-                uxOrganizationSecurityStore.Reload();
-                return;
+               SYS_ORG_PROFILE_OPTIONS.SetOrganizationProfileOption("OverheadBudgetOrganization", "Y", long.Parse(row.RecordID));
             }
+            uxOrganizationsGridSelectionModel.ClearSelection();
+            uxOrganizationSecurityStore.Reload();
+        }
 
-            if (_orgProfileOptionValue == "")
+        protected void deDisableOrganization(object sender, DirectEventArgs e)
+        {
+            RowSelectionModel model = uxOrganizationsGridSelectionModel;
+
+            foreach (SelectedRow row in model.SelectedRows)
             {
-                SYS_ORG_PROFILE_OPTIONS.SetOrganizationProfileOption("OverheadBudgetOrganization", "Y", _organizationID);
-                uxOrganizationSecurityStore.Reload();
-                return;
+                SYS_ORG_PROFILE_OPTIONS.SetOrganizationProfileOption("OverheadBudgetOrganization", "N", long.Parse(row.RecordID));
             }
-
-            if (_orgProfileOptionValue == "N")
-            {
-                SYS_ORG_PROFILE_OPTIONS.SetOrganizationProfileOption("OverheadBudgetOrganization", "Y", _organizationID);
-                uxOrganizationSecurityStore.Reload();
-                return;
-            }
-
-            SYS_ORG_PROFILE_OPTIONS.SetOrganizationProfileOption("OverheadBudgetOrganization", "N", _organizationID);
+            uxOrganizationsGridSelectionModel.ClearSelection();
             uxOrganizationSecurityStore.Reload();
         }
 

@@ -85,6 +85,24 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views {
         protected global::Ext.Net.GridPanel uxOrganizationsGrid;
         
         /// <summary>
+        /// uxEnableOrganizationButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxEnableOrganizationButton;
+        
+        /// <summary>
+        /// uxDisableOrganizationButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxDisableOrganizationButton;
+        
+        /// <summary>
         /// uxOrganizationSecurityStore control.
         /// </summary>
         /// <remarks>
@@ -121,15 +139,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views {
         protected global::Ext.Net.Column Column1;
         
         /// <summary>
-        /// CommandColumn1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.CommandColumn CommandColumn1;
-        
-        /// <summary>
         /// uxOrganizationsGridFilter control.
         /// </summary>
         /// <remarks>
@@ -139,13 +148,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views {
         protected global::Ext.Net.FilterHeader uxOrganizationsGridFilter;
         
         /// <summary>
-        /// uxOrganizationSelectionModel control.
+        /// uxOrganizationsGridSelectionModel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.RowSelectionModel uxOrganizationSelectionModel;
+        protected global::Ext.Net.CheckboxSelectionModel uxOrganizationsGridSelectionModel;
         
         /// <summary>
         /// uxOrganizationGridPageBar control.

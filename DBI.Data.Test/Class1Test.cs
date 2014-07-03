@@ -1,4 +1,4 @@
-﻿using DBI.Data.Oracle;
+﻿using DBI.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -64,14 +64,6 @@ namespace DBI.Data.Test
         #endregion
 
 
-        /// <summary>
-        ///A test for test
-        ///</summary>
-        [TestMethod()]
-        public void testTest()
-        {
-            Class1.test();
-            Assert.IsTrue(1 == 1);
-        }
+       
     }
 }
