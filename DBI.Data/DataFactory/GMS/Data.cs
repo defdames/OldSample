@@ -64,7 +64,7 @@ namespace DBI.Data.GMS
         public static List<ServiceUnitResponse> ServiceUnitDivisions(string unit)
         {
            List<ServiceUnitResponse> results = (from s in ServiceUnits() group s by s.sub_division into x select x.First()).Where(a => a.service_unit == unit).ToList();
- 
+           results.Add(new ServiceUnitResponse { sub_division = "N / A" });
               long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
              
             if (results.Count() == 0 && RailroadId == 21)
@@ -83,7 +83,7 @@ namespace DBI.Data.GMS
                         results.Add(_sur);
                     }
                 }
-                
+              
             }
                  return results;
                 
