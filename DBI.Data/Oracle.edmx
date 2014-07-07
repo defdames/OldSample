@@ -5828,7 +5828,7 @@
           <Property Type="Decimal" Name="FIELDSET_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Decimal" Name="FORM_ID" Nullable="false" Precision="38" Scale="0" />
           <Property Type="String" Name="TITLE" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="SORT_ORDER" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="SORT_ORDER" Precision="38" Scale="0" Nullable="false" />
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="CREATE_DATE" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -7279,7 +7279,7 @@
           <Property Type="DateTime" Name="CREATE_DATE" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="Decimal" Name="SORT_ORDER" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="SORT_ORDER" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="CUSTOMER_SURVEY_FORMS_ANS" Relationship="OracleModel.FK_FORMS_ANSWER_QUESTION_ID" FromRole="CUSTOMER_SURVEY_QUESTIONS" ToRole="CUSTOMER_SURVEY_FORMS_ANS" />
           <NavigationProperty Name="CUSTOMER_SURVEY_OPTIONS" Relationship="OracleModel.FK_OPTION_QUES_ID" FromRole="CUSTOMER_SURVEY_QUESTIONS" ToRole="CUSTOMER_SURVEY_OPTIONS" />
           <NavigationProperty Name="CUSTOMER_SURVEY_QUES_TYPES" Relationship="OracleModel.FK_QUESTION_TYPE_ID" FromRole="CUSTOMER_SURVEY_QUESTIONS" ToRole="CUSTOMER_SURVEY_QUES_TYPES" />
