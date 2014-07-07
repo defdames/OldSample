@@ -76,6 +76,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Store uxAddFormOrgStore;
         
         /// <summary>
+        /// uxAddFormCatStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxAddFormCatStore;
+        
+        /// <summary>
         /// uxAddFormButton control.
         /// </summary>
         /// <remarks>

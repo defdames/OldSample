@@ -8,6 +8,7 @@ using DBI.Core.Web;
 using DBI.Core.Security;
 using DBI.Data;
 using Ext.Net;
+using System.Data.Entity;
 
 namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 {
@@ -23,14 +24,12 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         {
             using (Entities _context = new Entities())
             {
-                List<CUSTOMER_SURVEY_FORMS> FormData = _context.CUSTOMER_SURVEY_FORMS.ToList();
-                List<CUSTOMER_SURVEYS.CustomerSurveyForms> AllData = new List<CUSTOMER_SURVEYS.CustomerSurveyForms>();
-                foreach (CUSTOMER_SURVEY_FORMS ThisForm in FormData)
+                IQueryable<CUSTOMER_SURVEY_FORMS> FormData = CUSTOMER_SURVEYS.GetForms(_context);
+                int count;
+                IQueryable<CUSTOMER_SURVEYS.CustomerSurveyForms> AllData = FormData.Select(x => new CUSTOMER_SURVEYS.CustomerSurveyForms { FORM_ID = x.FORM_ID, FORMS_NAME = x.FORMS_NAME, ORG_ID = x.ORG_ID, CATEGORY_ID = x.CATEGORY_ID });
+                List<CUSTOMER_SURVEYS.CustomerSurveyForms> Data = GenericData.ListFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyForms>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], AllData, out count);
+                foreach (CUSTOMER_SURVEYS.CustomerSurveyForms ThisForm in Data)
                 {
-                    CUSTOMER_SURVEYS.CustomerSurveyForms NewForm = new CUSTOMER_SURVEYS.CustomerSurveyForms();
-                    NewForm.FORMS_NAME = ThisForm.FORMS_NAME;
-                    NewForm.ORG_ID = ThisForm.ORG_ID;
-                    NewForm.FORM_ID = ThisForm.FORM_ID;
                     var NumQuestions = (from f in _context.CUSTOMER_SURVEY_FORMS
                                         join fs in _context.CUSTOMER_SURVEY_FIELDSETS on f.FORM_ID equals fs.FORM_ID
                                         join r in _context.CUSTOMER_SURVEY_RELATION on fs.FIELDSET_ID equals r.FIELDSET_ID
@@ -38,11 +37,9 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                         where f.FORM_ID == ThisForm.FORM_ID
                                         select q.QUESTION_ID).Count();
                                        
-                    NewForm.NUM_QUESTIONS = NumQuestions;
-                    AllData.Add(NewForm);
+                    ThisForm.NUM_QUESTIONS = NumQuestions;
                 }
-                int count;
-                uxFormsStore.DataSource = GenericData.EnumerableFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyForms>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], AllData, out count);
+                uxFormsStore.DataSource = Data;
                 e.Total = count;
             }
         }
@@ -57,9 +54,9 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                     FormId = long.Parse(e.Parameters["FormId"]);
                 }
 
-                List<CUSTOMER_SURVEYS.CustomerSurveyQuestions> data = CUSTOMER_SURVEYS.GetFormQuestions(FormId, _context).ToList();
+                IQueryable<CUSTOMER_SURVEYS.CustomerSurveyQuestions> data = CUSTOMER_SURVEYS.GetFormQuestions(FormId, _context);
                 int count;
-                uxQuestionsStore.DataSource = GenericData.EnumerableFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyQuestions>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                uxQuestionsStore.DataSource = GenericData.ListFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyQuestions>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 e.Total = count;
             }
         }
@@ -69,9 +66,9 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             using (Entities _context = new Entities())
             {
                 decimal QuestionId = decimal.Parse(e.Parameters["QuestionId"]);
-                List<CUSTOMER_SURVEYS.CustomerSurveyOptions> data = CUSTOMER_SURVEYS.GetQuestionOptions(QuestionId, _context).Select(d => new CUSTOMER_SURVEYS.CustomerSurveyOptions{OPTION_ID = d.OPTION_ID, QUESTION_ID = d.QUESTION_ID, TEXT = d.CUSTOMER_SURVEY_QUESTIONS.TEXT, IS_ACTIVE = (d.IS_ACTIVE == "Y" ? true : false), OPTION_NAME = d.OPTION_NAME, SORT_ORDER = d.SORT_ORDER}).ToList();
+                IQueryable<CUSTOMER_SURVEYS.CustomerSurveyOptions> data = CUSTOMER_SURVEYS.GetQuestionOptions(QuestionId, _context).Select(d => new CUSTOMER_SURVEYS.CustomerSurveyOptions{OPTION_ID = d.OPTION_ID, QUESTION_ID = d.QUESTION_ID, TEXT = d.CUSTOMER_SURVEY_QUESTIONS.TEXT, IS_ACTIVE = (d.IS_ACTIVE == "Y" ? true : false), OPTION_NAME = d.OPTION_NAME, SORT_ORDER = d.SORT_ORDER});
                 int count;
-                uxOptionsStore.DataSource = GenericData.EnumerableFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyOptions>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                uxOptionsStore.DataSource = GenericData.ListFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyOptions>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 e.Total = count;
             }
         }
@@ -81,10 +78,10 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             using (Entities _context = new Entities())
             {
                 long FormId = long.Parse(e.Parameters["FormId"]);
-                List<CUSTOMER_SURVEYS.CustomerSurveyFieldsets> data = CUSTOMER_SURVEYS.GetFormFieldSets(FormId, _context).ToList();
+                IQueryable<CUSTOMER_SURVEYS.CustomerSurveyFieldsets> data = CUSTOMER_SURVEYS.GetFormFieldSets(FormId, _context);
 
                 int count;
-                uxFieldsetsStore.DataSource = GenericData.EnumerableFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyFieldsets>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                uxFieldsetsStore.DataSource = GenericData.ListFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyFieldsets>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 e.Total = count;
             }
         }
@@ -115,6 +112,14 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
         }
 
+        protected void deReadCategories(object sender, StoreReadDataEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                uxAddFormCatStore.DataSource = _context.CUSTOMER_SURVEY_CAT.ToList();
+            }
+        }
+
         protected void deSaveForms(object sender, DirectEventArgs e)
         {
             ChangeRecords<CUSTOMER_SURVEYS.CustomerSurveyForms> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<CUSTOMER_SURVEYS.CustomerSurveyForms>();
@@ -123,6 +128,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 CUSTOMER_SURVEY_FORMS NewForm = new CUSTOMER_SURVEY_FORMS();
                 NewForm.FORMS_NAME = CreatedForm.FORMS_NAME;
                 NewForm.ORG_ID = CreatedForm.ORG_ID;
+                NewForm.CATEGORY_ID = CreatedForm.CATEGORY_ID;
                 NewForm.CREATE_DATE = DateTime.Now;
                 NewForm.MODIFY_DATE = DateTime.Now;
                 NewForm.CREATED_BY = User.Identity.Name;
@@ -141,6 +147,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 }
                 ToBeUpdated.FORMS_NAME = UpdatedForm.FORMS_NAME;
                 ToBeUpdated.ORG_ID = UpdatedForm.ORG_ID;
+                ToBeUpdated.CATEGORY_ID = UpdatedForm.CATEGORY_ID;
                 ToBeUpdated.MODIFIED_BY = User.Identity.Name;
                 ToBeUpdated.MODIFY_DATE = DateTime.Now;
 

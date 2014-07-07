@@ -116,6 +116,7 @@ namespace DBI.Data
             public decimal FORM_ID { get; set; }
             public string FORMS_NAME { get; set; }
             public int NUM_QUESTIONS { get; set; }
+            public decimal CATEGORY_ID { get; set; }
             public decimal ORG_ID { get; set; }
         }
 

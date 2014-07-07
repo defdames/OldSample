@@ -91,6 +91,8 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             {
                 GenericData.Delete<CUSTOMER_SURVEY_CAT>(ToBeDeleted);
             }
+
+            uxCategoriesStore.Reload();
         }
     }
 }
