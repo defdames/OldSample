@@ -33,11 +33,11 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
 
         protected void deViewOrganizationGlAccounts(object sender, DirectEventArgs e)
         {
-            uxGlAccountSecurityStore.Reload();
-            uxShowGLAccoutsWindow.Enable();
+            uxGLAccountRangeStore.Reload();
+            uxShowGLRangeWindow.Enable();
         }
 
-        protected void deLoadGLAccounts(object sender, StoreReadDataEventArgs e)
+        protected void deLoadGLAccountRange(object sender, StoreReadDataEventArgs e)
         {
             long _organizationSelected = long.Parse(uxOrganizationsGridRowSelection.SelectedRecordID);
 
@@ -52,15 +52,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
 
         }
 
-        protected void deShowGlAccountFilter(object sender, DirectEventArgs e)
+        protected void deShowRangeWindow(object sender, DirectEventArgs e)
         {
             string url = "/Views/Modules/Overhead/Views/umAddGlAccountRange.aspx";
             Window win = new Window
             {
-                ID = "uxShowAccountFilterWindow",
+                ID = "uxShowAccountRangeWindow",
                 Title = "GL Accounts",
-                Height = 500,
-                Width = 550,
+                Height = 600,
+                Width = 750,
                 Modal = true,
                 Resizable = false,
                 CloseAction = CloseAction.Destroy,
