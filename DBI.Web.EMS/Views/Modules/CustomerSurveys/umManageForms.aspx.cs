@@ -119,8 +119,8 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 uxAddFormCatStore.DataSource = _context.CUSTOMER_SURVEY_CAT.ToList();
             }
         }
-
-        protected void deSaveForms(object sender, DirectEventArgs e)
+        
+        protected void deSaveForm(object sender, DirectEventArgs e)
         {
             ChangeRecords<CUSTOMER_SURVEYS.CustomerSurveyForms> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<CUSTOMER_SURVEYS.CustomerSurveyForms>();
             foreach (CUSTOMER_SURVEYS.CustomerSurveyForms CreatedForm in data.Created)
@@ -136,6 +136,10 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
                 GenericData.Insert<CUSTOMER_SURVEY_FORMS>(NewForm);
 
+                ModelProxy Record = uxFormsStore.GetByInternalId(CreatedForm.PhantomId);
+                Record.CreateVariable = true;
+                Record.SetId(NewForm.FORM_ID);
+                Record.Commit();
             }
 
             foreach (CUSTOMER_SURVEYS.CustomerSurveyForms UpdatedForm in data.Updated)
@@ -152,11 +156,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 ToBeUpdated.MODIFY_DATE = DateTime.Now;
 
                 GenericData.Update<CUSTOMER_SURVEY_FORMS>(ToBeUpdated);
-            }
-
-            foreach (CUSTOMER_SURVEYS.CustomerSurveyForms DeletedForm in data.Deleted)
-            {
-                
+                uxFormsStore.GetById(ToBeUpdated.FORM_ID).Commit();
             }
             uxFormsStore.CommitChanges();
         }
@@ -173,10 +173,16 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 ToBeAdded.CREATED_BY = User.Identity.Name;
                 ToBeAdded.TITLE = NewFieldset.TITLE;
                 ToBeAdded.MODIFIED_BY = User.Identity.Name;
+                ToBeAdded.SORT_ORDER = NewFieldset.SORT_ORDER;
                 ToBeAdded.FORM_ID = decimal.Parse(e.ExtraParams["FormId"]);
                 ToBeAdded.IS_ACTIVE = (NewFieldset.IS_ACTIVE == true ? "Y" : "N");
 
                 GenericData.Insert<CUSTOMER_SURVEY_FIELDSETS>(ToBeAdded);
+
+                ModelProxy Record = uxFieldsetsStore.GetByInternalId(NewFieldset.PhantomId);
+                Record.CreateVariable = true;
+                Record.SetId(ToBeAdded.FIELDSET_ID);
+                Record.Commit();
             }
 
             foreach (CUSTOMER_SURVEYS.CustomerSurveyFieldsets UpdatedFieldset in data.Updated)
@@ -187,6 +193,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                     ToBeUpdated = CUSTOMER_SURVEYS.GetFieldsets(_context).Where(x => x.FIELDSET_ID == UpdatedFieldset.FIELDSET_ID).Single();
                     ToBeUpdated.TITLE = UpdatedFieldset.TITLE;
                     ToBeUpdated.IS_ACTIVE = (UpdatedFieldset.IS_ACTIVE == true ? "Y" : "N");
+                    ToBeUpdated.SORT_ORDER = UpdatedFieldset.SORT_ORDER;
                     ToBeUpdated.FORM_ID = decimal.Parse(e.ExtraParams["FormId"]);
                     ToBeUpdated.MODIFIED_BY = User.Identity.Name;
                     ToBeUpdated.MODIFY_DATE = DateTime.Now;
@@ -208,11 +215,12 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 CUSTOMER_SURVEY_QUESTIONS ToBeAdded = new CUSTOMER_SURVEY_QUESTIONS();
                 ToBeAdded.TEXT = NewQuestion.TEXT;
                 ToBeAdded.TYPE_ID = NewQuestion.TYPE_ID;
+                ToBeAdded.SORT_ORDER = NewQuestion.SORT_ORDER;
                 ToBeAdded.CREATED_BY = User.Identity.Name;
                 ToBeAdded.CREATE_DATE = DateTime.Now;
                 ToBeAdded.MODIFIED_BY = User.Identity.Name;
                 ToBeAdded.MODIFY_DATE = DateTime.Now;
-                ToBeAdded.IS_ACTIVE = "Y";
+                ToBeAdded.IS_ACTIVE = (NewQuestion.IS_ACTIVE == true ? "Y" : "N");
                 ToBeAdded.IS_REQUIRED = (NewQuestion.IS_REQUIRED == true ? "Y" : "N");
                 GenericData.Insert<CUSTOMER_SURVEY_QUESTIONS>(ToBeAdded);
 
@@ -225,10 +233,14 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 FieldsetToAdd.CREATE_DATE = DateTime.Now;
                 GenericData.Insert<CUSTOMER_SURVEY_RELATION>(FieldsetToAdd);
 
+                ModelProxy Record = uxFormsStore.GetByInternalId(NewQuestion.PhantomId);
+                Record.CreateVariable = true;
+                Record.SetId(ToBeAdded.QUESTION_ID);
+                Record.Commit();
+
                 if(ToBeAdded.TYPE_ID == 5 || ToBeAdded.TYPE_ID == 6 || ToBeAdded.TYPE_ID == 7)
                 {
                     uxAddOptionButton.Disabled = false;
-                    uxSaveOptionButton.Disabled = false;
                 }
             }
 
@@ -240,11 +252,12 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 {
                     ToBeUpdated = CUSTOMER_SURVEYS.GetQuestion(UpdatedQuestion.QUESTION_ID, _context);
                     ToBeUpdated.IS_REQUIRED = (UpdatedQuestion.IS_REQUIRED == true ? "Y" : "N");
+                    ToBeUpdated.SORT_ORDER = UpdatedQuestion.SORT_ORDER;
                     ToBeUpdated.TEXT = UpdatedQuestion.TEXT;
                     ToBeUpdated.MODIFIED_BY = User.Identity.Name;
                     ToBeUpdated.MODIFY_DATE = DateTime.Now;
                     ToBeUpdated.TYPE_ID = UpdatedQuestion.TYPE_ID;
-                    ToBeUpdated.IS_ACTIVE = "Y";
+                    ToBeUpdated.IS_ACTIVE = (UpdatedQuestion.IS_ACTIVE == true ? "Y" : "N");
 
                     FieldsetToUpdate = CUSTOMER_SURVEYS.GetRelationshipEntry(UpdatedQuestion.QUESTION_ID, _context);
                     FieldsetToUpdate.FIELDSET_ID = UpdatedQuestion.FIELDSET_ID;
@@ -273,11 +286,17 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 ToBeAdded.OPTION_NAME = NewOption.OPTION_NAME;
                 ToBeAdded.SORT_ORDER = NewOption.SORT_ORDER;
                 ToBeAdded.CREATE_DATE = DateTime.Now;
+                ToBeAdded.IS_ACTIVE = (NewOption.IS_ACTIVE == true ? "Y" : "N");
                 ToBeAdded.MODIFY_DATE = DateTime.Now;
                 ToBeAdded.CREATED_BY = User.Identity.Name;
                 ToBeAdded.MODIFIED_BY = User.Identity.Name;
 
                 GenericData.Insert<CUSTOMER_SURVEY_OPTIONS>(ToBeAdded);
+
+                ModelProxy Record = uxOptionsStore.GetByInternalId(NewOption.PhantomId);
+                Record.CreateVariable = true;
+                Record.SetId(ToBeAdded.OPTION_ID);
+                Record.Commit();
             }
             foreach (CUSTOMER_SURVEYS.CustomerSurveyOptions UpdatedOption in data.Updated)
             {
@@ -285,6 +304,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 using (Entities _context = new Entities())
                 {
                     ToUpdate = CUSTOMER_SURVEYS.GetQuestionOption(UpdatedOption.OPTION_ID, _context);
+                    ToUpdate.IS_ACTIVE = (UpdatedOption.IS_ACTIVE == true ? "Y" : "N");
                     ToUpdate.OPTION_NAME = ToUpdate.OPTION_NAME;
                     ToUpdate.MODIFIED_BY = User.Identity.Name;
                     ToUpdate.MODIFY_DATE = DateTime.Now;
@@ -300,15 +320,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             if (TypeId == 5 || TypeId == 6 || TypeId == 7)
             {
                 uxAddOptionButton.Disabled = false;
-                uxSaveOptionButton.Disabled = false;
             }
             else
             {
                 uxAddOptionButton.Disabled = true;
-                uxSaveOptionButton.Disabled = true;
             }
-            
-            uxOptionsStore.Reload();
+            if (TypeId != 0)
+            {
+                uxOptionsStore.Reload();
+            }
         }
 
         protected void deLoadFormDetails(object sender, DirectEventArgs e)
@@ -318,8 +338,6 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             uxFieldsetsStore.Reload();
             uxAddFieldsetButton.Disabled = false;
             uxAddQuestionButton.Disabled = false;
-            uxSaveFieldsetButton.Disabled = false;
-            uxSaveQuestionButton.Disabled = false;
             uxOptionsStore.RemoveAll();
         }
 

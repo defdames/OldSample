@@ -22,11 +22,11 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         {
             using (Entities _context = new Entities())
             {
-                List<CUSTOMER_SURVEYS.CustomerSurveyFieldsets> Fieldsets = CUSTOMER_SURVEYS.GetFormFieldSets(FormId, _context).Where(x => x.IS_ACTIVE == true).ToList();
+                List<CUSTOMER_SURVEYS.CustomerSurveyFieldsets> Fieldsets = CUSTOMER_SURVEYS.GetFormFieldSets(FormId, _context).Where(x => x.IS_ACTIVE == true).OrderBy(x => x.SORT_ORDER).ToList();
 
                 foreach (CUSTOMER_SURVEYS.CustomerSurveyFieldsets Fieldset in Fieldsets)
                 {
-                    var QuestionQuery = CUSTOMER_SURVEYS.GetFieldsetQuestions(Fieldset.FIELDSET_ID, _context).Where(x => x.IS_ACTIVE == true);
+                    var QuestionQuery = CUSTOMER_SURVEYS.GetFieldsetQuestions(Fieldset.FIELDSET_ID, _context).Where(x => x.IS_ACTIVE == true).OrderBy(x => x.SORT_ORDER);
                     List<CUSTOMER_SURVEYS.CustomerSurveyQuestions> Questions = QuestionQuery.ToList();
                     if (Questions.Count > 0)
                     {

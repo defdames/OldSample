@@ -67,6 +67,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Store uxFormsStore;
         
         /// <summary>
+        /// Model2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model Model2;
+        
+        /// <summary>
         /// uxAddFormOrgStore control.
         /// </summary>
         /// <remarks>
@@ -74,6 +83,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Store uxAddFormOrgStore;
+        
+        /// <summary>
+        /// Model3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model Model3;
         
         /// <summary>
         /// uxAddFormCatStore control.
@@ -94,15 +112,6 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Button uxAddFormButton;
         
         /// <summary>
-        /// Button1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button Button1;
-        
-        /// <summary>
         /// uxViewFormButton control.
         /// </summary>
         /// <remarks>
@@ -110,15 +119,6 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxViewFormButton;
-        
-        /// <summary>
-        /// uxBottomPanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxBottomPanel;
         
         /// <summary>
         /// uxFieldsetsGrid control.
@@ -193,15 +193,6 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Button uxAddFieldsetButton;
         
         /// <summary>
-        /// uxSaveFieldsetButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxSaveFieldsetButton;
-        
-        /// <summary>
         /// uxQuestionsGrid control.
         /// </summary>
         /// <remarks>
@@ -247,15 +238,6 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Button uxAddQuestionButton;
         
         /// <summary>
-        /// uxSaveQuestionButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxSaveQuestionButton;
-        
-        /// <summary>
         /// uxOptionsGrid control.
         /// </summary>
         /// <remarks>
@@ -281,14 +263,5 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxAddOptionButton;
-        
-        /// <summary>
-        /// uxSaveOptionButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxSaveOptionButton;
     }
 }

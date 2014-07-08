@@ -51,7 +51,7 @@ namespace DBI.Data
                     join q in _context.CUSTOMER_SURVEY_QUESTIONS on fsr.QUESTION_ID equals q.QUESTION_ID
                     join qt in _context.CUSTOMER_SURVEY_QUES_TYPES on q.TYPE_ID equals qt.TYPE_ID
                     where fs.FORM_ID == FormId
-                    select new CustomerSurveyQuestions { QUESTION_ID = q.QUESTION_ID, TEXT = q.TEXT, TYPE_ID = qt.TYPE_ID, QUESTION_TYPE_NAME = qt.QUESTION_TYPE_NAME, IS_REQUIRED = (q.IS_REQUIRED == "Y" ? true : false), FIELDSET_ID = fs.FIELDSET_ID, TITLE = fs.TITLE, IS_ACTIVE = (q.IS_ACTIVE == "Y" ? true: false) });
+                    select new CustomerSurveyQuestions { QUESTION_ID = q.QUESTION_ID, TEXT = q.TEXT, TYPE_ID = qt.TYPE_ID, QUESTION_TYPE_NAME = qt.QUESTION_TYPE_NAME, IS_REQUIRED = (q.IS_REQUIRED == "Y" ? true : false), FIELDSET_ID = fs.FIELDSET_ID, TITLE = fs.TITLE, SORT_ORDER = q.SORT_ORDER, IS_ACTIVE = (q.IS_ACTIVE == "Y" ? true: false) });
         }
 
         public static IQueryable<CUSTOMER_SURVEY_QUES_TYPES> GetQuestionTypes(Entities _context)
@@ -118,6 +118,7 @@ namespace DBI.Data
             public int NUM_QUESTIONS { get; set; }
             public decimal CATEGORY_ID { get; set; }
             public decimal ORG_ID { get; set; }
+            public int PhantomId { get; set; }
         }
 
         public class CustomerSurveyQuestions
@@ -129,8 +130,9 @@ namespace DBI.Data
             public decimal FIELDSET_ID { get; set; }
             public string TITLE { get; set; }
             public bool IS_REQUIRED { get; set; }
-            public decimal? SORT_ORDER { get; set; }
+            public decimal SORT_ORDER { get; set; }
             public bool IS_ACTIVE { get; set; }
+            public int PhantomId { get; set; }
         }
 
         public class CustomerSurveyFieldsets
@@ -138,8 +140,9 @@ namespace DBI.Data
             public decimal FIELDSET_ID { get; set; }
             public decimal FORM_ID { get; set; }
             public string TITLE { get; set; }
-            public decimal? SORT_ORDER { get; set; }
+            public decimal SORT_ORDER { get; set; }
             public bool IS_ACTIVE { get; set; }
+            public int PhantomId { get; set; }
         }
 
         public class CustomerSurveyOptions
@@ -150,6 +153,7 @@ namespace DBI.Data
             public string TEXT { get; set; }
             public decimal SORT_ORDER { get; set; }
             public bool IS_ACTIVE { get; set; }
+            public int PhantomId { get; set; }
         }
 
         public class CustomerSurveyThresholdStore
