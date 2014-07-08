@@ -49,58 +49,58 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views {
         protected global::Ext.Net.FormPanel FormPanel2;
         
         /// <summary>
-        /// Panel1 control.
+        /// FieldSet1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel Panel1;
+        protected global::Ext.Net.FieldSet FieldSet1;
         
         /// <summary>
-        /// uxSegment1 control.
+        /// uxSRSegment1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ComboBox uxSegment1;
+        protected global::Ext.Net.ComboBox uxSRSegment1;
         
         /// <summary>
-        /// uxCompanyNameStore control.
+        /// uxSRSegment1Store control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxCompanyNameStore;
+        protected global::Ext.Net.Store uxSRSegment1Store;
         
         /// <summary>
-        /// Model6 control.
+        /// Model1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Model Model6;
+        protected global::Ext.Net.Model Model1;
         
         /// <summary>
-        /// ComboBox2 control.
+        /// uxSRSegment2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ComboBox ComboBox2;
+        protected global::Ext.Net.ComboBox uxSRSegment2;
         
         /// <summary>
-        /// Store2 control.
+        /// uxSRSegment2Store control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store Store2;
+        protected global::Ext.Net.Store uxSRSegment2Store;
         
         /// <summary>
         /// Model3 control.
@@ -112,31 +112,166 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views {
         protected global::Ext.Net.Model Model3;
         
         /// <summary>
-        /// Panel2 control.
+        /// uxSRSegment3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel Panel2;
+        protected global::Ext.Net.ComboBox uxSRSegment3;
         
         /// <summary>
-        /// ComboBox1 control.
+        /// uxSRSegment3Store control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ComboBox ComboBox1;
+        protected global::Ext.Net.Store uxSRSegment3Store;
         
         /// <summary>
-        /// Store1 control.
+        /// Model5 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store Store1;
+        protected global::Ext.Net.Model Model5;
+        
+        /// <summary>
+        /// uxSRSegment4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ComboBox uxSRSegment4;
+        
+        /// <summary>
+        /// uxSRSegment4Store control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxSRSegment4Store;
+        
+        /// <summary>
+        /// Model6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model Model6;
+        
+        /// <summary>
+        /// uxSRSegment5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ComboBox uxSRSegment5;
+        
+        /// <summary>
+        /// uxSRSegment5Store control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxSRSegment5Store;
+        
+        /// <summary>
+        /// Model7 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model Model7;
+        
+        /// <summary>
+        /// uxSRSegment6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ComboBox uxSRSegment6;
+        
+        /// <summary>
+        /// uxSRSegment6Store control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxSRSegment6Store;
+        
+        /// <summary>
+        /// Model8 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model Model8;
+        
+        /// <summary>
+        /// uxSRSegment7 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ComboBox uxSRSegment7;
+        
+        /// <summary>
+        /// uxSRSegment7Store control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxSRSegment7Store;
+        
+        /// <summary>
+        /// Model9 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model Model9;
+        
+        /// <summary>
+        /// FieldSet2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldSet FieldSet2;
+        
+        /// <summary>
+        /// uxERSegment1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ComboBox uxERSegment1;
+        
+        /// <summary>
+        /// uxERSegment1Store control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxERSegment1Store;
         
         /// <summary>
         /// Model2 control.
@@ -175,192 +310,174 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views {
         protected global::Ext.Net.Model Model4;
         
         /// <summary>
-        /// Button1 control.
+        /// ComboBox9 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button1;
+        protected global::Ext.Net.ComboBox ComboBox9;
         
         /// <summary>
-        /// Button2 control.
+        /// Store9 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button2;
+        protected global::Ext.Net.Store Store9;
         
         /// <summary>
-        /// uxGlAccountSecurityGrid control.
+        /// Model10 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxGlAccountSecurityGrid;
+        protected global::Ext.Net.Model Model10;
         
         /// <summary>
-        /// uxGlAccountSecurityStore control.
+        /// ComboBox10 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxGlAccountSecurityStore;
+        protected global::Ext.Net.ComboBox ComboBox10;
         
         /// <summary>
-        /// Model1 control.
+        /// Store10 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Model Model1;
+        protected global::Ext.Net.Store Store10;
         
         /// <summary>
-        /// Column1 control.
+        /// Model11 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column1;
+        protected global::Ext.Net.Model Model11;
         
         /// <summary>
-        /// Column2 control.
+        /// ComboBox11 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column2;
+        protected global::Ext.Net.ComboBox ComboBox11;
         
         /// <summary>
-        /// Column3 control.
+        /// Store11 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column3;
+        protected global::Ext.Net.Store Store11;
         
         /// <summary>
-        /// Column4 control.
+        /// Model12 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column4;
+        protected global::Ext.Net.Model Model12;
         
         /// <summary>
-        /// Column5 control.
+        /// ComboBox12 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column5;
+        protected global::Ext.Net.ComboBox ComboBox12;
         
         /// <summary>
-        /// Column10 control.
+        /// Store12 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column10;
+        protected global::Ext.Net.Store Store12;
         
         /// <summary>
-        /// Column11 control.
+        /// Model13 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column11;
+        protected global::Ext.Net.Model Model13;
         
         /// <summary>
-        /// Column12 control.
+        /// ComboBox13 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column12;
+        protected global::Ext.Net.ComboBox ComboBox13;
         
         /// <summary>
-        /// uxGlAccountSecurityGridFilter control.
+        /// Store13 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FilterHeader uxGlAccountSecurityGridFilter;
+        protected global::Ext.Net.Store Store13;
         
         /// <summary>
-        /// uxGlAccountSecurityGridSelectionModel control.
+        /// Model14 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.RowSelectionModel uxGlAccountSecurityGridSelectionModel;
+        protected global::Ext.Net.Model Model14;
         
         /// <summary>
-        /// PagingToolbar2 control.
+        /// uxShowAccounts control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.PagingToolbar PagingToolbar2;
+        protected global::Ext.Net.Button uxShowAccounts;
         
         /// <summary>
-        /// Toolbar1 control.
+        /// uxCloseForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Toolbar Toolbar1;
+        protected global::Ext.Net.Button uxCloseForm;
         
         /// <summary>
-        /// uxAddGLCodeButton control.
+        /// uxClearFilter control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxAddGLCodeButton;
+        protected global::Ext.Net.Button uxClearFilter;
         
         /// <summary>
-        /// uxExcludeGLCodeButton control.
+        /// uxSaveRange control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxExcludeGLCodeButton;
-        
-        /// <summary>
-        /// GridView1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.GridView GridView1;
-        
-        /// <summary>
-        /// uxToolTip control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ToolTip uxToolTip;
+        protected global::Ext.Net.Button uxSaveRange;
     }
 }

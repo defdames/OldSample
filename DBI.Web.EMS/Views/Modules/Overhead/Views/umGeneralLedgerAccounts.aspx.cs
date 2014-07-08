@@ -58,9 +58,9 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
             Window win = new Window
             {
                 ID = "uxShowAccountRangeWindow",
-                Title = "GL Accounts",
-                Height = 600,
-                Width = 750,
+                Title = "General Ledger Account Range Filter",
+                Height = 350,
+                Width = 550,
                 Modal = true,
                 Resizable = false,
                 CloseAction = CloseAction.Destroy,
@@ -77,7 +77,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
                 }
             };
 
-            win.Listeners.Close.Handler = "#{uxGlAccountSecurityGrid}.getStore().load();";
+            win.Listeners.Close.Handler = "#{uxGLAccountRangeGridPanel}.getStore().load();";
 
             win.Render(this.Form);
             win.Show();
