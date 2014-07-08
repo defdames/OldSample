@@ -103,7 +103,6 @@ namespace DBI.Data
         public DbSet<JOB_COST_TASK> JOB_COST_TASK { get; set; }
         public DbSet<CROSSING_SERVICE_UNIT> CROSSING_SERVICE_UNIT { get; set; }
         public DbSet<CROSSING_SUB_DIVISION> CROSSING_SUB_DIVISION { get; set; }
-        public DbSet<BUD_BID_ADJUSTMENT> BUD_BID_ADJUSTMENT { get; set; }
         public DbSet<BUD_BID_ACTUAL_NUM> BUD_BID_ACTUAL_NUM { get; set; }
         public DbSet<BUD_BID_BUDGET_NUM> BUD_BID_BUDGET_NUM { get; set; }
         public DbSet<BUD_BID_DETAIL_SHEET> BUD_BID_DETAIL_SHEET { get; set; }

@@ -43,7 +43,6 @@
       FROM "XXDBI"."XXPJ_PREV_WAGE_RATES" "XXPJ_PREV_WAGE_RATES"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="BUD_BID_ACTUAL_NUM" EntityType="OracleModel.Store.BUD_BID_ACTUAL_NUM" store:Type="Tables" Schema="XXEMS" />
-          <EntitySet Name="BUD_BID_ADJUSTMENT" EntityType="OracleModel.Store.BUD_BID_ADJUSTMENT" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="BUD_BID_BUDGET_NUM" EntityType="OracleModel.Store.BUD_BID_BUDGET_NUM" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="BUD_BID_DETAIL_SHEET" EntityType="OracleModel.Store.BUD_BID_DETAIL_SHEET" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="BUD_BID_DETAIL_TASK" EntityType="OracleModel.Store.BUD_BID_DETAIL_TASK" store:Type="Tables" Schema="XXEMS" />
@@ -950,20 +949,6 @@
           <Property Name="AUG" Type="number" Precision="15" Scale="4" />
           <Property Name="SEP" Type="number" Precision="15" Scale="4" />
           <Property Name="OCT" Type="number" Precision="15" Scale="4" />
-          <Property Name="CREATE_DATE" Type="date" />
-          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
-          <Property Name="MODIFY_DATE" Type="date" />
-          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
-        </EntityType>
-        <EntityType Name="BUD_BID_ADJUSTMENT">
-          <Key>
-            <PropertyRef Name="ADJ_ID" />
-          </Key>
-          <Property Name="ADJ_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="ORG_ID" Type="number" Nullable="false" Precision="15" />
-          <Property Name="MAT_ADJ" Type="number" Precision="15" Scale="4" />
-          <Property Name="WEATHER_ADJ" Type="number" Precision="15" Scale="4" />
-          <Property Name="OVERHEAD" Type="number" Precision="15" Scale="4" />
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
@@ -2820,7 +2805,7 @@
           <Key>
             <PropertyRef Name="ROWNUM" />
           </Key>
-          <Property Name="ROWNUM" Type="number" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ROWNUM" Type="number" Nullable="false" />
           <Property Name="PROJECT_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="PROJECT_ROLE_TYPE" Type="varchar2" Nullable="false" MaxLength="20" />
           <Property Name="STATE" Type="char" MaxLength="2" />
@@ -4176,7 +4161,6 @@
             <End Role="CROSSING_SERVICE_UNIT" EntitySet="CROSSING_SERVICE_UNIT" />
             <End Role="CROSSING_SUB_DIVISION" EntitySet="CROSSING_SUB_DIVISION" />
           </AssociationSet>
-          <EntitySet Name="BUD_BID_ADJUSTMENT" EntityType="OracleModel.BUD_BID_ADJUSTMENT" />
           <EntitySet Name="BUD_BID_ACTUAL_NUM" EntityType="OracleModel.BUD_BID_ACTUAL_NUM" />
           <EntitySet Name="BUD_BID_BUDGET_NUM" EntityType="OracleModel.BUD_BID_BUDGET_NUM" />
           <AssociationSet Name="FK_ACTUAL_NUM_LINES_ID" Association="OracleModel.FK_ACTUAL_NUM_LINES_ID">
@@ -5995,7 +5979,7 @@
           <Key>
             <PropertyRef Name="ROWNUM" />
           </Key>
-          <Property Type="Decimal" Name="ROWNUM" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="ROWNUM" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
           <Property Type="String" Name="PROJECT_ROLE_TYPE" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="STATE" MaxLength="2" FixedLength="true" Unicode="false" />
@@ -6911,20 +6895,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="BUD_BID_ADJUSTMENT">
-          <Key>
-            <PropertyRef Name="ADJ_ID" />
-          </Key>
-          <Property Type="Decimal" Name="ADJ_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int64" Name="ORG_ID" Nullable="false" />
-          <Property Type="Decimal" Name="MAT_ADJ" Precision="15" Scale="4" />
-          <Property Type="Decimal" Name="WEATHER_ADJ" Precision="15" Scale="4" />
-          <Property Type="Decimal" Name="OVERHEAD" Precision="15" Scale="4" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="BUD_BID_ACTUAL_NUM">
           <Key>
             <PropertyRef Name="ACTUAL_NUM_ID" />
@@ -9627,21 +9597,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="BUD_BID_ADJUSTMENT">
-            <EntityTypeMapping TypeName="OracleModel.BUD_BID_ADJUSTMENT">
-              <MappingFragment StoreEntitySet="BUD_BID_ADJUSTMENT">
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="OVERHEAD" ColumnName="OVERHEAD" />
-                <ScalarProperty Name="WEATHER_ADJ" ColumnName="WEATHER_ADJ" />
-                <ScalarProperty Name="MAT_ADJ" ColumnName="MAT_ADJ" />
-                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
-                <ScalarProperty Name="ADJ_ID" ColumnName="ADJ_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="BUD_BID_ACTUAL_NUM">
             <EntityTypeMapping TypeName="OracleModel.BUD_BID_ACTUAL_NUM">
               <MappingFragment StoreEntitySet="BUD_BID_ACTUAL_NUM">
@@ -10062,6 +10017,7 @@
         <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="True" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

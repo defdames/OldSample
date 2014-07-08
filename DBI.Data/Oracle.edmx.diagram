@@ -116,7 +116,6 @@
         <EntityTypeShape EntityType="OracleModel.CROSSING_SERVICE_UNIT" Width="1.5" PointX="19.125" PointY="17.5" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_SUB_DIVISION" Width="1.5" PointX="19" PointY="14.25" />
         <AssociationConnector Association="OracleModel.FK_SUB_SERVICE_ID" />
-        <EntityTypeShape EntityType="OracleModel.BUD_BID_ADJUSTMENT" Width="1.5" PointX="17.125" PointY="91.375" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_ACTUAL_NUM" Width="1.5" PointX="28.5" PointY="77.25" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_BUDGET_NUM" Width="1.5" PointX="32" PointY="83.5" />
         <AssociationConnector Association="OracleModel.FK_ACTUAL_NUM_LINES_ID" />
