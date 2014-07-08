@@ -103,13 +103,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views {
         protected global::Ext.Net.PagingToolbar uxOrganizationGridPageBar;
         
         /// <summary>
-        /// uxGlAccountSecurityGrid control.
+        /// uxGLAccountRangeGridPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxGlAccountSecurityGrid;
+        protected global::Ext.Net.GridPanel uxGLAccountRangeGridPanel;
         
         /// <summary>
         /// Toolbar1 control.
@@ -121,31 +121,31 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views {
         protected global::Ext.Net.Toolbar Toolbar1;
         
         /// <summary>
-        /// uxShowGLAccoutsWindow control.
+        /// uxShowGLRangeWindow control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxShowGLAccoutsWindow;
+        protected global::Ext.Net.Button uxShowGLRangeWindow;
         
         /// <summary>
-        /// uxGlAccountDelete control.
+        /// uxDeleteGLRangeDelete control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxGlAccountDelete;
+        protected global::Ext.Net.Button uxDeleteGLRangeDelete;
         
         /// <summary>
-        /// uxGlAccountSecurityStore control.
+        /// uxGLAccountRangeStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxGlAccountSecurityStore;
+        protected global::Ext.Net.Store uxGLAccountRangeStore;
         
         /// <summary>
         /// Model1 control.
@@ -155,15 +155,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Model Model1;
-        
-        /// <summary>
-        /// Column7 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column Column7;
         
         /// <summary>
         /// Column4 control.
@@ -193,58 +184,22 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views {
         protected global::Ext.Net.Column Column5;
         
         /// <summary>
-        /// Column6 control.
+        /// uxGLAccountRangeFilter control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column6;
+        protected global::Ext.Net.FilterHeader uxGLAccountRangeFilter;
         
         /// <summary>
-        /// Column10 control.
+        /// uxGLAccountRangeSelectionModel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column10;
-        
-        /// <summary>
-        /// Column11 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column Column11;
-        
-        /// <summary>
-        /// Column12 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column Column12;
-        
-        /// <summary>
-        /// uxGlAccountSecurityGridFilter control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FilterHeader uxGlAccountSecurityGridFilter;
-        
-        /// <summary>
-        /// uxGlAccountSecurityGridSelectionModel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.RowSelectionModel uxGlAccountSecurityGridSelectionModel;
+        protected global::Ext.Net.RowSelectionModel uxGLAccountRangeSelectionModel;
         
         /// <summary>
         /// PagingToolbar1 control.
@@ -256,21 +211,12 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views {
         protected global::Ext.Net.PagingToolbar PagingToolbar1;
         
         /// <summary>
-        /// GridView1 control.
+        /// uxGLAccountRangeGridView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridView GridView1;
-        
-        /// <summary>
-        /// uxToolTip control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ToolTip uxToolTip;
+        protected global::Ext.Net.GridView uxGLAccountRangeGridView;
     }
 }
