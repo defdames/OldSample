@@ -759,7 +759,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             long prevVerID = Convert.ToInt64(uxHidPrevVer.Text);
 
 
-            BUDGETBIDDING.BUD_SUMMARY_V activeData = BUDGETBIDDING.ActiveTotals(orgID, yearID, verID, prevYearID, prevVerID);
+            BUDGETBIDDING.BUD_SUMMARY_V activeData = BUDGETBIDDING.SummaryGridSubtotals(true, orgID, yearID, verID, prevYearID, prevVerID);
             decimal aGrossRec = activeData.GROSS_REC;
             decimal aMatUsage = activeData.MAT_USAGE;
             decimal aGrossRev = activeData.GROSS_REV;
@@ -776,7 +776,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxAOPPerc.Text = String.Format("{0:P2}", aOPPerc);  //  FIX
             uxAOPPlusMinus.Text = String.Format("{0:N2}", aOPPlusMinus);
 
-            BUDGETBIDDING.BUD_SUMMARY_V inactiveData = BUDGETBIDDING.InactiveTotals(orgID, yearID, verID, prevYearID, prevVerID);
+            BUDGETBIDDING.BUD_SUMMARY_V inactiveData = BUDGETBIDDING.SummaryGridSubtotals(false, orgID, yearID, verID, prevYearID, prevVerID);
             decimal iGrossRec = inactiveData.GROSS_REC;
             decimal iMatUsage = inactiveData.MAT_USAGE;
             decimal iGrossRev = inactiveData.GROSS_REV;
@@ -793,7 +793,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxIOPPerc.Text = String.Format("{0:P2}", iOPPerc);   //  FIX
             uxIOPPlusMinus.Text = String.Format("{0:N2}", iOPPlusMinus);
 
-            //BUDGETBIDDING.BUD_SUMMARY_V adjustmentData = BUDGETBIDDING.AdjustmentTotals(orgID, yearID, verID);
+            //BUDGETBIDDING.BUD_SUMMARY_V adjustmentData = BUDGETBIDDING.AdjustmentGridSubtotals(orgID, yearID, verID);
             //decimal adjGrossRec = 0;
             //decimal adjMatUsage = adjustmentData.MAT_ADJ ?? 0;
             //decimal adjGrossRev = adjGrossRec - adjMatUsage;
@@ -819,30 +819,30 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxTOPPlusMinus.Text = String.Format("{0:N2}", tOPPlusMinus);          
         }
 
-        [DirectMethod(Namespace = "SaveRecord")]
-        public void deSaveAdjustments(long id, string field, decimal newValue)
-        {
-            BUD_BID_ADJUSTMENT data;
+        //[DirectMethod(Namespace = "SaveRecord")]
+        //public void deSaveAdjustments(long id, string field, decimal newValue)
+        //{
+        //    BUD_BID_ADJUSTMENT data;
 
-            using (Entities _context = new Entities())
-            {
-                data = _context.BUD_BID_ADJUSTMENT.Where(x => x.ADJ_ID == id).Single();
-            }
+        //    using (Entities _context = new Entities())
+        //    {
+        //        data = _context.BUD_BID_ADJUSTMENT.Where(x => x.ADJ_ID == id).Single();
+        //    }
 
-            if (field == "WEATHER_ADJ")
-            {
-                data.WEATHER_ADJ = newValue;
-            }
+        //    if (field == "WEATHER_ADJ")
+        //    {
+        //        data.WEATHER_ADJ = newValue;
+        //    }
 
-            else if (field == "MAT_ADJ")
-            {
-                data.MAT_ADJ = newValue;
-            }
+        //    else if (field == "MAT_ADJ")
+        //    {
+        //        data.MAT_ADJ = newValue;
+        //    }
             
 
-            GenericData.Update<BUD_BID_ADJUSTMENT>(data);
-            uxAdjustmentGridStore.CommitChanges();
-            StandardMsgBox("Updated", "The adjustment has been updated.", "INFO");
-        }
+        //    GenericData.Update<BUD_BID_ADJUSTMENT>(data);
+        //    uxAdjustmentGridStore.CommitChanges();
+        //    StandardMsgBox("Updated", "The adjustment has been updated.", "INFO");
+        //}
     }
 }

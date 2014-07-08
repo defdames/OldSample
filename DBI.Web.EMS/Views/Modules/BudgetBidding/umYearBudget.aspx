@@ -19,17 +19,17 @@
         }
 
         .activeForeground .x-form-display-field {
-            font-weight: bold;
+            /*font-weight: bold;*/
             color: white;
         }
 
         .inactiveForeground .x-form-display-field {
-            font-weight: bold;
+            /*font-weight: bold;*/
             color: black;
         }
 
         .grandTotalForeground .x-form-display-field {
-            font-weight: bold;
+            /*font-weight: bold;*/
             color: white;
         }
 
@@ -66,7 +66,7 @@
         }
         var editAdjustment = function (editor, e) {
             SaveRecord.deSaveAdjustments(e.record.data.ADJ_ID, e.field, e.value);
-        }     
+        }
     </script>
 </head>
 <body>
@@ -153,7 +153,7 @@
 
 
                 <%-------------------------------------------------- Top Summary Panel --------------------------------------------------%>
-                <ext:GridPanel ID="uxSummaryGrid" runat="server" Region="North" Flex="3">
+                <ext:GridPanel ID="uxSummaryGrid" runat="server" Region="North" Flex="4">
                     <SelectionModel>
                         <ext:RowSelectionModel ID="uxGridRowModel" runat="server" AllowDeselect="false" Mode="Single" />
                     </SelectionModel>
@@ -223,10 +223,27 @@
                         </ItemDblClick>
                     </DirectEvents>
                     <DockedItems>
+                        <ext:FieldContainer ID="uxTotal" runat="server" Layout="HBoxLayout" Dock="Bottom" Cls="grandTotalBackground">
+                            <Items>
+                                <ext:DisplayField ID="DisplayField6" runat="server" Width="10" />
+                                <ext:DisplayField ID="DisplayField7" runat="server" Text="Total Combined:" Flex="6" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="DisplayField8" runat="server" Text="" Flex="2" />
+                                <ext:DisplayField ID="DisplayField9" runat="server" Text="" Flex="1" />
+                                <ext:DisplayField ID="DisplayField10" runat="server" Text="" Flex="1" />
+                                <ext:DisplayField ID="uxTGrossRec" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="uxTMatUsage" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="uxTGrossRev" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="uxTDirects" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="uxTOP" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="uxTOPPerc" runat="server" Text="0.00 %" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="uxTOPPlusMinus" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="DisplayField24" runat="server" Width="20" />
+                            </Items>
+                        </ext:FieldContainer>
                         <ext:FieldContainer ID="uxInactiveTotal" runat="server" Layout="HBoxLayout" Dock="Bottom" Cls="inactiveBackground">
                             <Items>
                                 <ext:DisplayField ID="DisplayField1" runat="server" Width="10" />
-                                <ext:DisplayField ID="DisplayField2" runat="server" Text="Total Inactive" Flex="6" Cls="inactiveForeground" />
+                                <ext:DisplayField ID="DisplayField2" runat="server" Text="Total Inactive:" Flex="6" Cls="inactiveForeground" />
                                 <ext:DisplayField ID="DisplayField3" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField4" runat="server" Text="" Flex="1" />
                                 <ext:DisplayField ID="DisplayField5" runat="server" Text="" Flex="1" />
@@ -243,7 +260,7 @@
                         <ext:FieldContainer ID="uxActiveTotal" runat="server" Layout="HBoxLayout" Dock="Bottom" Cls="activeBackground">
                             <Items>
                                 <ext:DisplayField ID="DisplayField14" runat="server" Width="10" />
-                                <ext:DisplayField ID="DisplayField15" runat="server" Text="Total Active" Flex="6" Cls="activeForeground" />
+                                <ext:DisplayField ID="DisplayField15" runat="server" Text="Total Active:" Flex="6" Cls="activeForeground" />
                                 <ext:DisplayField ID="DisplayField16" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField17" runat="server" Text="" Flex="1" />
                                 <ext:DisplayField ID="DisplayField18" runat="server" Text="" Flex="1" />
@@ -276,7 +293,7 @@
                                         <ext:ModelField Name="ADJ_ID" />
                                         <ext:ModelField Name="ADJUSTMENT" />
                                         <ext:ModelField Name="MAT_ADJ" />
-                                        <ext:ModelField Name="DIRECT_ADJ" />
+                                        <ext:ModelField Name="WEATHER_ADJ" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -298,7 +315,7 @@
                                 </Editor>
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="Column26" runat="server" DataIndex="GROSS_REV" Text="Gross Revenue" Flex="2" Align="Right" />
-                            <ext:NumberColumn ID="Column27" runat="server" DataIndex="DIRECT_ADJ" Text="Direct Expenses" Flex="2" Align="Right">
+                            <ext:NumberColumn ID="Column27" runat="server" DataIndex="WEATHER_ADJ" Text="Direct Expenses" Flex="2" Align="Right">
                                 <Editor>
                                     <ext:NumberField ID="NumberField1" runat="server" AllowBlank="false" />
                                 </Editor>
@@ -322,19 +339,19 @@
                     <DockedItems>
                         <ext:FieldContainer ID="uxGrandTotal" runat="server" Layout="HBoxLayout" Dock="Bottom" Cls="grandTotalBackground">
                             <Items>
-                                <ext:DisplayField ID="DisplayField6" runat="server" Width="10" />
-                                <ext:DisplayField ID="DisplayField7" runat="server" Text="Grand Total" Flex="6" Cls="grandTotalForeground" />
-                                <ext:DisplayField ID="DisplayField8" runat="server" Text="" Flex="2" />
-                                <ext:DisplayField ID="DisplayField9" runat="server" Text="" Flex="1" />
-                                <ext:DisplayField ID="DisplayField10" runat="server" Text="" Flex="1" />
-                                <ext:DisplayField ID="uxTGrossRec" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
-                                <ext:DisplayField ID="uxTMatUsage" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
-                                <ext:DisplayField ID="uxTGrossRev" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
-                                <ext:DisplayField ID="uxTDirects" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
-                                <ext:DisplayField ID="uxTOP" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
-                                <ext:DisplayField ID="uxTOPPerc" runat="server" Text="0.00 %" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
-                                <ext:DisplayField ID="uxTOPPlusMinus" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
-                                <ext:DisplayField ID="DisplayField24" runat="server" Width="20" />
+                                <ext:DisplayField ID="DisplayField11" runat="server" Width="10" />
+                                <ext:DisplayField ID="DisplayField12" runat="server" Text="Grand Total:" Flex="6" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="DisplayField19" runat="server" Text="" Flex="2" />
+                                <ext:DisplayField ID="DisplayField20" runat="server" Text="" Flex="1" />
+                                <ext:DisplayField ID="DisplayField21" runat="server" Text="" Flex="1" />
+                                <ext:DisplayField ID="DisplayField22" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="DisplayField23" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="DisplayField25" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="DisplayField27" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="DisplayField28" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="DisplayField29" runat="server" Text="0.00 %" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="DisplayField30" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="DisplayField31" runat="server" Width="20" />
                             </Items>
                         </ext:FieldContainer>
                     </DockedItems>
