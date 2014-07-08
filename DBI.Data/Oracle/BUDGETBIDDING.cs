@@ -118,8 +118,9 @@ namespace DBI.Data
             {
                 string sql = string.Format(@"WITH
                     CUR_PROJECT_INFO_WITH_STATUS AS(
-                        SELECT BUD_BID_PROJECTS.PROJECT_ID, BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID, BUD_BID_PROJECTS.TYPE, BUD_BID_PROJECTS.PRJ_NAME, BUD_BID_STATUS.STATUS,
-                            BUD_BID_PROJECTS.ACRES, BUD_BID_PROJECTS.DAYS FROM BUD_BID_PROJECTS
+                        SELECT BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID, BUD_BID_PROJECTS.PROJECT_ID, BUD_BID_PROJECTS.TYPE, BUD_BID_PROJECTS.PRJ_NAME, BUD_BID_STATUS.STATUS,
+                            BUD_BID_PROJECTS.ACRES, BUD_BID_PROJECTS.DAYS
+                        FROM BUD_BID_PROJECTS
                         INNER JOIN BUD_BID_STATUS
                         ON BUD_BID_PROJECTS.STATUS_ID = BUD_BID_STATUS.STATUS_ID
                         WHERE BUD_BID_PROJECTS.ORG_ID = {1} AND BUD_BID_PROJECTS.YEAR_ID = {2} AND BUD_BID_PROJECTS.VER_ID = {3}
@@ -146,7 +147,8 @@ namespace DBI.Data
                         SELECT * FROM (SELECT PROJECT_ID, LINE_ID, SUM(NOV) NOV FROM BUD_BID_BUDGET_NUM GROUP BY PROJECT_ID, LINE_ID) PIVOT (SUM(NOV) FOR LINE_ID IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
                     ),
                     PREV_OP AS (
-                        SELECT BUD_BID_PROJECTS.PROJECT_ID, NOV PREV_OP FROM BUD_BID_PROJECTS    
+                        SELECT BUD_BID_PROJECTS.PROJECT_ID, NOV PREV_OP
+                        FROM BUD_BID_PROJECTS    
                         LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_BUDGET_NUM.PROJECT_ID
                         WHERE BUD_BID_BUDGET_NUM.LINE_ID = 10 AND BUD_BID_PROJECTS.ORG_ID = {1} AND BUD_BID_PROJECTS.YEAR_ID = {4} AND BUD_BID_PROJECTS.VER_ID = {5}
                     )  
@@ -236,6 +238,152 @@ namespace DBI.Data
             }
         }
 
+        /// <summary>
+        /// Returns summary totals for active projects only
+        /// </summary>
+        /// <param name="orgID"></param>
+        /// <param name="yearID"></param>
+        /// <param name="verID"></param>
+        /// <param name="prevYearID"></param>
+        /// <param name="prevVerID"></param>
+        /// <returns></returns>
+        public static BUD_SUMMARY_V ActiveTotals(long orgID, long yearID, long verID, long prevYearID, long prevVerID)
+        {
+            using (Entities context = new Entities())
+            {
+                string sql = string.Format(@"
+                WITH
+                    CUR_PROJECT_INFO AS(
+                        SELECT BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID, BUD_BID_PROJECTS.PROJECT_ID, BUD_BID_PROJECTS.STATUS_ID
+                        FROM BUD_BID_PROJECTS
+                        WHERE BUD_BID_PROJECTS.ORG_ID = {0} AND BUD_BID_PROJECTS.YEAR_ID = {1} AND BUD_BID_PROJECTS.VER_ID = {2}
+                    ),     
+                    BUDGET_LINE_AMOUNTS AS (
+                        SELECT * FROM (SELECT PROJECT_ID, LINE_ID, SUM(NOV) NOV FROM BUD_BID_BUDGET_NUM GROUP BY PROJECT_ID, LINE_ID) PIVOT (SUM(NOV) FOR LINE_ID IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                    ),
+                    PREV_OP AS (
+                        SELECT BUD_BID_PROJECTS.PROJECT_ID, NOV PREV_OP FROM BUD_BID_PROJECTS    
+                        LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_BUDGET_NUM.PROJECT_ID
+                        WHERE BUD_BID_BUDGET_NUM.LINE_ID = 10 AND BUD_BID_PROJECTS.ORG_ID = {0} AND BUD_BID_PROJECTS.YEAR_ID = {3} AND BUD_BID_PROJECTS.VER_ID = {4}
+                    )  
+                    SELECT CASE WHEN SUM(BUDGET_LINE_AMOUNTS.GROSS_REC) IS NULL THEN 0 ELSE SUM(BUDGET_LINE_AMOUNTS.GROSS_REC) END GROSS_REC,
+                        CASE WHEN SUM(BUDGET_LINE_AMOUNTS.MAT_USAGE) IS NULL THEN 0 ELSE SUM(BUDGET_LINE_AMOUNTS.MAT_USAGE) END MAT_USAGE,
+                        CASE WHEN SUM(BUDGET_LINE_AMOUNTS.GROSS_REV) IS NULL THEN 0 ELSE SUM(BUDGET_LINE_AMOUNTS.GROSS_REV) END GROSS_REV,
+                        CASE WHEN SUM(BUDGET_LINE_AMOUNTS.DIR_EXP) IS NULL THEN 0 ELSE SUM(BUDGET_LINE_AMOUNTS.DIR_EXP) END DIR_EXP,
+                        CASE WHEN SUM(BUDGET_LINE_AMOUNTS.OP) IS NULL THEN 0 ELSE SUM(BUDGET_LINE_AMOUNTS.OP) END OP,                        
+                        CASE WHEN SUM(CASE WHEN PREV_OP.PREV_OP IS NULL THEN 0 ELSE PREV_OP.PREV_OP END) IS NULL THEN 0 ELSE SUM(CASE WHEN PREV_OP.PREV_OP IS NULL THEN 0 ELSE PREV_OP.PREV_OP END) END PREV_OP, 
+                        CASE WHEN SUM(CASE WHEN PREV_OP.PREV_OP IS NULL THEN BUDGET_LINE_AMOUNTS.OP ELSE (BUDGET_LINE_AMOUNTS.OP - PREV_OP.PREV_OP) END) IS NULL THEN 0 ELSE SUM(CASE WHEN PREV_OP.PREV_OP IS NULL THEN BUDGET_LINE_AMOUNTS.OP ELSE (BUDGET_LINE_AMOUNTS.OP - PREV_OP.PREV_OP) END) END OP_VAR  
+                    FROM CUR_PROJECT_INFO
+                    LEFT OUTER JOIN BUDGET_LINE_AMOUNTS ON CUR_PROJECT_INFO.BUD_BID_PROJECTS_ID = BUDGET_LINE_AMOUNTS.PROJECT_ID
+                    LEFT OUTER JOIN PREV_OP ON CUR_PROJECT_INFO.PROJECT_ID = PREV_OP.PROJECT_ID
+                    WHERE CUR_PROJECT_INFO.STATUS_ID <> 45", orgID, yearID, verID, prevYearID, prevVerID);
+
+                return context.Database.SqlQuery<BUD_SUMMARY_V>(sql).SingleOrDefault();
+            }
+        }
+
+        /// <summary>
+        /// Returns summary totals for inactive projects only
+        /// </summary>
+        /// <param name="orgID"></param>
+        /// <param name="yearID"></param>
+        /// <param name="verID"></param>
+        /// <param name="prevYearID"></param>
+        /// <param name="prevVerID"></param>
+        /// <returns></returns>
+        public static BUD_SUMMARY_V InactiveTotals(long orgID, long yearID, long verID, long prevYearID, long prevVerID)
+        {
+            using (Entities context = new Entities())
+            {
+                string sql = string.Format(@"
+                WITH
+                    CUR_PROJECT_INFO AS(
+                        SELECT BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID, BUD_BID_PROJECTS.PROJECT_ID, BUD_BID_PROJECTS.STATUS_ID
+                        FROM BUD_BID_PROJECTS
+                        WHERE BUD_BID_PROJECTS.ORG_ID = {0} AND BUD_BID_PROJECTS.YEAR_ID = {1} AND BUD_BID_PROJECTS.VER_ID = {2}
+                    ),     
+                    BUDGET_LINE_AMOUNTS AS (
+                        SELECT * FROM (SELECT PROJECT_ID, LINE_ID, SUM(NOV) NOV FROM BUD_BID_BUDGET_NUM GROUP BY PROJECT_ID, LINE_ID) PIVOT (SUM(NOV) FOR LINE_ID IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                    ),
+                    PREV_OP AS (
+                        SELECT BUD_BID_PROJECTS.PROJECT_ID, NOV PREV_OP FROM BUD_BID_PROJECTS    
+                        LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_BUDGET_NUM.PROJECT_ID
+                        WHERE BUD_BID_BUDGET_NUM.LINE_ID = 10 AND BUD_BID_PROJECTS.ORG_ID = {0} AND BUD_BID_PROJECTS.YEAR_ID = {3} AND BUD_BID_PROJECTS.VER_ID = {4}
+                    )  
+                    SELECT CASE WHEN SUM(BUDGET_LINE_AMOUNTS.GROSS_REC) IS NULL THEN 0 ELSE SUM(BUDGET_LINE_AMOUNTS.GROSS_REC) END GROSS_REC,
+                        CASE WHEN SUM(BUDGET_LINE_AMOUNTS.MAT_USAGE) IS NULL THEN 0 ELSE SUM(BUDGET_LINE_AMOUNTS.MAT_USAGE) END MAT_USAGE,
+                        CASE WHEN SUM(BUDGET_LINE_AMOUNTS.GROSS_REV) IS NULL THEN 0 ELSE SUM(BUDGET_LINE_AMOUNTS.GROSS_REV) END GROSS_REV,
+                        CASE WHEN SUM(BUDGET_LINE_AMOUNTS.DIR_EXP) IS NULL THEN 0 ELSE SUM(BUDGET_LINE_AMOUNTS.DIR_EXP) END DIR_EXP,
+                        CASE WHEN SUM(BUDGET_LINE_AMOUNTS.OP) IS NULL THEN 0 ELSE SUM(BUDGET_LINE_AMOUNTS.OP) END OP,                        
+                        CASE WHEN SUM(CASE WHEN PREV_OP.PREV_OP IS NULL THEN 0 ELSE PREV_OP.PREV_OP END) IS NULL THEN 0 ELSE SUM(CASE WHEN PREV_OP.PREV_OP IS NULL THEN 0 ELSE PREV_OP.PREV_OP END) END PREV_OP, 
+                        CASE WHEN SUM(CASE WHEN PREV_OP.PREV_OP IS NULL THEN BUDGET_LINE_AMOUNTS.OP ELSE (BUDGET_LINE_AMOUNTS.OP - PREV_OP.PREV_OP) END) IS NULL THEN 0 ELSE SUM(CASE WHEN PREV_OP.PREV_OP IS NULL THEN BUDGET_LINE_AMOUNTS.OP ELSE (BUDGET_LINE_AMOUNTS.OP - PREV_OP.PREV_OP) END) END OP_VAR  
+                    FROM CUR_PROJECT_INFO
+                    LEFT OUTER JOIN BUDGET_LINE_AMOUNTS ON CUR_PROJECT_INFO.BUD_BID_PROJECTS_ID = BUDGET_LINE_AMOUNTS.PROJECT_ID
+                    LEFT OUTER JOIN PREV_OP ON CUR_PROJECT_INFO.PROJECT_ID = PREV_OP.PROJECT_ID
+                    WHERE CUR_PROJECT_INFO.STATUS_ID = 45", orgID, yearID, verID, prevYearID, prevVerID);
+
+                return context.Database.SqlQuery<BUD_SUMMARY_V>(sql).SingleOrDefault();
+            }
+        }
+
+        /// <summary>
+        /// Data for adjustment gridpanel
+        /// </summary>
+        /// <param name="orgID"></param>
+        /// <param name="yearID"></param>
+        /// <param name="verID"></param>
+        /// <returns></returns>
+        public static List<BUD_SUMMARY_V> AdjustmentGridData(long orgID, long yearID, long verID)
+        {
+            using (Entities context = new Entities())
+            {
+                string sql = string.Format(@"
+                    SELECT ADJ_ID,
+                        CASE WHEN MAT_ADJ IS NOT NULL THEN 'Material Adjustment' ELSE 'Weather Adjustment' END ADJUSTMENT,
+                        MAT_ADJ,
+                        WEATHER_ADJ,
+                        'ID1' AS ORDERKEY
+                    FROM BUD_BID_ADJUSTMENT
+                    WHERE ORG_ID = 1607 AND YEAR_ID = 2005 AND VER_ID = 1
+                            UNION ALL
+                    SELECT 9999 ADJ_ID,
+                        'Overhead' AS ADJUSTMENT,
+                        NULL MAT_ADJ, 50000 WEATHER_ADJ,
+                        'ID2' AS ORDERKEY
+                    FROM DUAL
+                    ORDER BY ORDERKEY, ADJUSTMENT", orgID, yearID, verID);
+
+                List<BUD_SUMMARY_V> data = context.Database.SqlQuery<BUD_SUMMARY_V>(sql).ToList();
+                return data;
+            }
+        }
+
+        /// <summary>
+        /// Returns totals for all org adjustments
+        /// </summary>
+        /// <param name="orgID"></param>
+        /// <param name="yearID"></param>
+        /// <param name="verID"></param>
+        /// <returns></returns>
+        public static List<BUD_SUMMARY_V> AdjustmentTotals(long orgID, long yearID, long verID)
+        {
+            using (Entities context = new Entities())
+            {
+                string sql = string.Format(@"SELECT ID, SUM(MAT_ADJ) MAT_ADJ, SUM(DIRECT_ADJ) DIRECT_ADJ
+                FROM 
+                    (SELECT ADJ_ID ID, MAT_ADJ, WEATHER_ADJ DIRECT_ADJ
+                    FROM BUD_BID_ADJUSTMENT
+                    WHERE ORG_ID = {0} AND WEATHER_ADJ = {1} AND OVERHEAD = {2}
+                        UNION ALL
+                    SELECT 9999 ID, NULL MAT_ADJ, 50000 DIRECT_ADJ
+                    FROM DUAL)
+                    GROUP BY ID", orgID, yearID, verID);
+
+                List<BUD_SUMMARY_V> data = context.Database.SqlQuery<BUD_SUMMARY_V>(sql).ToList();
+                return data;
+            }
+        }
+
         public class BUD_SUMMARY_V
         {
             public long BUD_BID_PROJECTS_ID { get; set; }
@@ -266,6 +414,10 @@ namespace DBI.Data
             public decimal OP_PERC { get; set; }
             public decimal OP_VAR { get; set; }
             public string ORDERKEY { get; set; }
+            public long ADJ_ID { get; set; }
+            public string ADJUSTMENT { get; set; }
+            public decimal? MAT_ADJ { get; set; }
+            public decimal? DIRECT_ADJ { get; set; }
         }
     }
 }

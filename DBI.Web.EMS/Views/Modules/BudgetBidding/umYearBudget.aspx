@@ -11,6 +11,10 @@
         }
 
         .inactiveBackground {
+            background-color: gray;
+        }
+
+        .grandTotalBackground {
             background-color: black;
         }
 
@@ -20,6 +24,11 @@
         }
 
         .inactiveForeground .x-form-display-field {
+            font-weight: bold;
+            color: black;
+        }
+
+        .grandTotalForeground .x-form-display-field {
             font-weight: bold;
             color: white;
         }
@@ -49,6 +58,16 @@
             text-align: center;
         }
     </style>
+    <script type="text/javascript">
+        var isEditAdjustmentAllowed = function (e) {
+            if (e.originalValue == null || e.record.data.ADJUSTMENT == "Overhead") {
+                return false;
+            }
+        }
+        var editAdjustment = function (editor, e) {
+            SaveRecord.deSaveAdjustments(e.record.data.ADJ_ID, e.field, e.value);
+        }     
+    </script>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -134,7 +153,7 @@
 
 
                 <%-------------------------------------------------- Top Summary Panel --------------------------------------------------%>
-                <ext:GridPanel ID="uxSummaryGrid" runat="server" Region="North" Flex="2">
+                <ext:GridPanel ID="uxSummaryGrid" runat="server" Region="North" Flex="3">
                     <SelectionModel>
                         <ext:RowSelectionModel ID="uxGridRowModel" runat="server" AllowDeselect="false" Mode="Single" />
                     </SelectionModel>
@@ -174,33 +193,17 @@
                         <Columns>
                             <ext:Column ID="Column1" runat="server" DataIndex="PROJECT_NAME" Text="Project Name" Flex="6" />
                             <ext:Column ID="Column2" runat="server" DataIndex="STATUS" Text="Status" Flex="2" />
-                            <ext:Column ID="Column3" runat="server" DataIndex="ACRES" Text="Acres" Flex="1" Align="Right">
-                                <Renderer Fn="Ext.util.Format.numberRenderer('0,000.00')" />
-                            </ext:Column>
-                            <ext:Column ID="Column4" runat="server" DataIndex="DAYS" Text="Days" Flex="1" Align="Right">
-                                <Renderer Fn="Ext.util.Format.numberRenderer('0,000.00')" />
-                            </ext:Column>
-                            <ext:Column ID="Column5" runat="server" DataIndex="GROSS_REC" Text="Gross Receipts" Flex="2" Align="Right">
-                                <Renderer Fn="Ext.util.Format.numberRenderer('0,000.00')" />
-                            </ext:Column>
-                            <ext:Column ID="Column6" runat="server" DataIndex="MAT_USAGE" Text="Material Usage" Flex="2" Align="Right">
-                                <Renderer Fn="Ext.util.Format.numberRenderer('0,000.00')" />
-                            </ext:Column>
-                            <ext:Column ID="Column7" runat="server" DataIndex="GROSS_REV" Text="Gross Revenue" Flex="2" Align="Right">
-                                <Renderer Fn="Ext.util.Format.numberRenderer('0,000.00')" />
-                            </ext:Column>
-                            <ext:Column ID="Column8" runat="server" DataIndex="DIR_EXP" Text="Direct Expenses" Flex="2" Align="Right">
-                                <Renderer Fn="Ext.util.Format.numberRenderer('0,000.00')" />
-                            </ext:Column>
-                            <ext:Column ID="Column9" runat="server" DataIndex="OP" Text="OP" Flex="2" Align="Right">
-                                <Renderer Fn="Ext.util.Format.numberRenderer('0,000.00')" />
-                            </ext:Column>
+                            <ext:NumberColumn ID="Column3" runat="server" DataIndex="ACRES" Text="Acres" Flex="1" Align="Right" />
+                            <ext:NumberColumn ID="Column4" runat="server" DataIndex="DAYS" Text="Days" Flex="1" Align="Right" />
+                            <ext:NumberColumn ID="Column5" runat="server" DataIndex="GROSS_REC" Text="Gross Receipts" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="Column6" runat="server" DataIndex="MAT_USAGE" Text="Material Usage" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="Column7" runat="server" DataIndex="GROSS_REV" Text="Gross Revenue" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="Column8" runat="server" DataIndex="DIR_EXP" Text="Direct Expenses" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="Column9" runat="server" DataIndex="OP" Text="OP" Flex="2" Align="Right" />
                             <ext:Column ID="Column10" runat="server" DataIndex="OP_PERC" Text="OP %" Flex="2" Align="Right">
                                 <Renderer Fn="Ext.util.Format.numberRenderer('0,000.00 %')" />
                             </ext:Column>
-                            <ext:Column ID="Column11" runat="server" DataIndex="OP_VAR" Text="OP +/-" Flex="2" Align="Right">
-                                <Renderer Fn="Ext.util.Format.numberRenderer('0,000.00')" />
-                            </ext:Column>
+                            <ext:NumberColumn ID="Column11" runat="server" DataIndex="OP_VAR" Text="OP +/-" Flex="2" Align="Right" />
                         </Columns>
                     </ColumnModel>
                     <DirectEvents>
@@ -213,7 +216,11 @@
                                 <ext:Parameter Name="ProjectName" Value="#{uxSummaryGrid}.getSelectionModel().getSelection()[0].data.PROJECT_NAME" Mode="Raw" />
                             </ExtraParams>
                         </Select>
-                        <ItemDblClick OnEvent="deAllowFormEditing" />
+                        <ItemDblClick OnEvent="deAllowFormEditing">
+                            <ExtraParams>
+                                <ext:Parameter Name="BudBidProjectID" Value="#{uxSummaryGrid}.getSelectionModel().getSelection()[0].data.BUD_BID_PROJECTS_ID" Mode="Raw" />
+                            </ExtraParams>
+                        </ItemDblClick>
                     </DirectEvents>
                     <DockedItems>
                         <ext:FieldContainer ID="uxInactiveTotal" runat="server" Layout="HBoxLayout" Dock="Bottom" Cls="inactiveBackground">
@@ -223,13 +230,13 @@
                                 <ext:DisplayField ID="DisplayField3" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField4" runat="server" Text="" Flex="1" />
                                 <ext:DisplayField ID="DisplayField5" runat="server" Text="" Flex="1" />
-                                <ext:DisplayField ID="DisplayField6" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
-                                <ext:DisplayField ID="DisplayField7" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
-                                <ext:DisplayField ID="DisplayField8" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
-                                <ext:DisplayField ID="DisplayField9" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
-                                <ext:DisplayField ID="DisplayField10" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
-                                <ext:DisplayField ID="DisplayField11" runat="server" Text="10.5%" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
-                                <ext:DisplayField ID="DisplayField12" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
+                                <ext:DisplayField ID="uxIGrossRec" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
+                                <ext:DisplayField ID="uxIMatUsage" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
+                                <ext:DisplayField ID="uxIGrossRev" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
+                                <ext:DisplayField ID="uxIDirects" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
+                                <ext:DisplayField ID="uxIOP" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
+                                <ext:DisplayField ID="uxIOPPerc" runat="server" Text="0.00 %" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
+                                <ext:DisplayField ID="uxIOPPlusMinus" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
                                 <ext:DisplayField ID="DisplayField13" runat="server" Width="20" />
                             </Items>
                         </ext:FieldContainer>
@@ -240,14 +247,94 @@
                                 <ext:DisplayField ID="DisplayField16" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField17" runat="server" Text="" Flex="1" />
                                 <ext:DisplayField ID="DisplayField18" runat="server" Text="" Flex="1" />
-                                <ext:DisplayField ID="DisplayField19" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
-                                <ext:DisplayField ID="DisplayField20" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
-                                <ext:DisplayField ID="DisplayField21" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
-                                <ext:DisplayField ID="DisplayField22" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
-                                <ext:DisplayField ID="DisplayField23" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
-                                <ext:DisplayField ID="DisplayField24" runat="server" Text="10.5%" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
-                                <ext:DisplayField ID="DisplayField25" runat="server" Text="$3,000.00" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
+                                <ext:DisplayField ID="uxAGrossRec" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
+                                <ext:DisplayField ID="uxAMatUsage" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
+                                <ext:DisplayField ID="uxAGrossRev" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
+                                <ext:DisplayField ID="uxADirects" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
+                                <ext:DisplayField ID="uxAOP" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
+                                <ext:DisplayField ID="uxAOPPerc" runat="server" Text="0.00 %" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
+                                <ext:DisplayField ID="uxAOPPlusMinus" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
                                 <ext:DisplayField ID="DisplayField26" runat="server" Width="20" />
+                            </Items>
+                        </ext:FieldContainer>
+                    </DockedItems>
+                </ext:GridPanel>
+
+                <ext:GridPanel ID="uxAdjustmentsGrid" runat="server" Region="North" HideHeaders="true" Flex="2">
+                    <SelectionModel>
+                        <ext:RowSelectionModel ID="uxAdjustmentGridRowModel" runat="server" AllowDeselect="false" Mode="Single" />
+                    </SelectionModel>
+                    <Store>
+                        <ext:Store runat="server"
+                            ID="uxAdjustmentGridStore"
+                            OnReadData="deReadAdjustmentGridData"
+                            AutoDataBind="true"
+                            WarningOnDirty="false">
+                            <Model>
+                                <ext:Model ID="Model8" runat="server">
+                                    <Fields>
+                                        <ext:ModelField Name="ADJ_ID" />
+                                        <ext:ModelField Name="ADJUSTMENT" />
+                                        <ext:ModelField Name="MAT_ADJ" />
+                                        <ext:ModelField Name="DIRECT_ADJ" />
+                                    </Fields>
+                                </ext:Model>
+                            </Model>
+                            <Proxy>
+                                <ext:PageProxy />
+                            </Proxy>
+                        </ext:Store>
+                    </Store>
+                    <ColumnModel>
+                        <Columns>
+                            <ext:Column ID="Column15" runat="server" DataIndex="ADJUSTMENT" Text="Project Name" Flex="6" />
+                            <ext:Column ID="Column21" runat="server" DataIndex="STATUS" Text="Status" Flex="2" />
+                            <ext:NumberColumn ID="Column22" runat="server" DataIndex="ACRES" Text="Acres" Flex="1" Align="Right" />
+                            <ext:NumberColumn ID="Column23" runat="server" DataIndex="DAYS" Text="Days" Flex="1" Align="Right" />
+                            <ext:NumberColumn ID="Column24" runat="server" DataIndex="GROSS_REC" Text="Gross Receipts" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="Column25" runat="server" DataIndex="MAT_ADJ" Text="Material Usage" Flex="2" Align="Right">
+                                <Editor>
+                                    <ext:NumberField ID="NumberField2" runat="server" AllowBlank="false" />
+                                </Editor>
+                            </ext:NumberColumn>
+                            <ext:NumberColumn ID="Column26" runat="server" DataIndex="GROSS_REV" Text="Gross Revenue" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="Column27" runat="server" DataIndex="DIRECT_ADJ" Text="Direct Expenses" Flex="2" Align="Right">
+                                <Editor>
+                                    <ext:NumberField ID="NumberField1" runat="server" AllowBlank="false" />
+                                </Editor>
+                            </ext:NumberColumn>
+                            <ext:NumberColumn ID="Column28" runat="server" DataIndex="OP" Text="OP" Flex="2" Align="Right" />
+                            <ext:Column ID="Column29" runat="server" DataIndex="OP_PERC" Text="OP %" Flex="2" Align="Right">
+                                <Renderer Fn="Ext.util.Format.numberRenderer('0,000.00 %')" />
+                            </ext:Column>
+                            <ext:NumberColumn ID="Column30" runat="server" DataIndex="OP_VAR" Text="OP +/-" Flex="2" Align="Right" />
+                        </Columns>
+                    </ColumnModel>
+                    <Plugins>
+                        <ext:CellEditing ID="CellEditing1" runat="server">
+                            <Listeners>
+                                <%--new new new--%>
+                                <BeforeEdit Handler="return isEditAdjustmentAllowed(e);" />
+                                <Edit Fn="editAdjustment" />
+                            </Listeners>
+                        </ext:CellEditing>
+                    </Plugins>
+                    <DockedItems>
+                        <ext:FieldContainer ID="uxGrandTotal" runat="server" Layout="HBoxLayout" Dock="Bottom" Cls="grandTotalBackground">
+                            <Items>
+                                <ext:DisplayField ID="DisplayField6" runat="server" Width="10" />
+                                <ext:DisplayField ID="DisplayField7" runat="server" Text="Grand Total" Flex="6" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="DisplayField8" runat="server" Text="" Flex="2" />
+                                <ext:DisplayField ID="DisplayField9" runat="server" Text="" Flex="1" />
+                                <ext:DisplayField ID="DisplayField10" runat="server" Text="" Flex="1" />
+                                <ext:DisplayField ID="uxTGrossRec" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="uxTMatUsage" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="uxTGrossRev" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="uxTDirects" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="uxTOP" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="uxTOPPerc" runat="server" Text="0.00 %" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="uxTOPPlusMinus" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="DisplayField24" runat="server" Width="20" />
                             </Items>
                         </ext:FieldContainer>
                     </DockedItems>
@@ -258,7 +345,7 @@
                 <ext:FormPanel ID="uxProjectDetail"
                     runat="server"
                     Region="Center"
-                    Flex="6"
+                    Flex="10"
                     AutoScroll="true"
                     BodyPadding="20"
                     Disabled="true">
@@ -646,11 +733,11 @@
                                             <ColumnModel>
                                                 <Columns>
                                                     <ext:Column ID="Column12" runat="server" DataIndex="SHEET_NAME" Text="Detail Sheet" Width="160" />
-                                                    <ext:Column ID="Column16" runat="server" DataIndex="GROSS_REC" Text="Gross Receipts" Width="110" Align="Right" />
-                                                    <ext:Column ID="Column17" runat="server" DataIndex="MAT_USAGE" Text="Material Usage" Width="110" Align="Right" />
-                                                    <ext:Column ID="Column18" runat="server" DataIndex="GROSS_REV" Text="Gross Revenue" Width="110" Align="Right" />
-                                                    <ext:Column ID="Column19" runat="server" DataIndex="DIR_EXP" Text="Direct Expenses" Width="110" Align="Right" />
-                                                    <ext:Column ID="Column20" runat="server" DataIndex="OP" Text="OP" Width="110" Align="Right" />
+                                                    <ext:NumberColumn ID="Column16" runat="server" DataIndex="GROSS_REC" Text="Gross Receipts" Width="110" Align="Right" />
+                                                    <ext:NumberColumn ID="Column17" runat="server" DataIndex="MAT_USAGE" Text="Material Usage" Width="110" Align="Right" />
+                                                    <ext:NumberColumn ID="Column18" runat="server" DataIndex="GROSS_REV" Text="Gross Revenue" Width="110" Align="Right" />
+                                                    <ext:NumberColumn ID="Column19" runat="server" DataIndex="DIR_EXP" Text="Direct Expenses" Width="110" Align="Right" />
+                                                    <ext:NumberColumn ID="Column20" runat="server" DataIndex="OP" Text="OP" Width="110" Align="Right" />
                                                 </Columns>
                                             </ColumnModel>
                                             <DirectEvents>
@@ -718,13 +805,13 @@
 
 
                 <%-------------------------------------------------- Diagnostic Panel --------------------------------------------------%>
+                <%-- Uncomment to Use --%>
                 <ext:FormPanel ID="uxDiagnostic"
                     runat="server"
                     Region="South"
-                    Flex="1"
+                    Flex="2"
                     AutoScroll="true"
-                    BodyPadding="20"
-                    Visible="true">
+                    BodyPadding="20">
                     <Items>
                         <ext:FieldContainer ID="FieldContainer2"
                             runat="server"
@@ -754,6 +841,18 @@
                         </ext:FieldContainer>
                     </Items>
                 </ext:FormPanel>
+                <%-- Uncomment to Use --%>
+
+                <%-- Comment to Use --%>
+                <%--<ext:Hidden ID="uxHidNewProject" runat="server" />
+                <ext:Hidden ID="uxHidBudBidID" runat="server" />
+                <ext:Hidden ID="uxHidProjectNumID" runat="server" />
+                <ext:Hidden ID="uxHidType" runat="server" />
+                <ext:Hidden ID="uxHidStatusID" runat="server" />
+                <ext:Hidden ID="uxHidPrevYear" runat="server" />
+                <ext:Hidden ID="uxHidPrevVer" runat="server" />--%>
+                <%-- Comment to Use --%>
+                <%-------------------------------------------------- Diagnostic Panel --------------------------------------------------%>
             </Items>
         </ext:Viewport>
     </form>
