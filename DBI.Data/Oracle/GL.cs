@@ -47,22 +47,22 @@ namespace DBI.Data
         /// <param name="segment4"></param>
         /// <param name="organizationId"></param>
         /// <returns></returns>
-        public static List<GL_ACCOUNTS_V> AccountsFiltered(string segment1, string segment2, string segment3, string segment4, long organizationId)
-        {
+        //public static List<GL_ACCOUNTS_V> AccountsFiltered(string segment1, string segment2, string segment3, string segment4, long organizationId)
+        //{
 
-                IQueryable<GL_ACCOUNTS_V> _data = AccountsFiltered(segment1, segment2, segment3, segment4).AsQueryable();
+        //        IQueryable<GL_ACCOUNTS_V> _data = AccountsFiltered(segment1, segment2, segment3, segment4).AsQueryable();
 
-                using (Entities _context = new Entities())
-                {
-                    _data = (from dups in _data
-                             where !_context.OVERHEAD_GL_ACCOUNT.Where(ac => ac.OVERHEAD_ORG_ID == organizationId).Any(c => c.CODE_COMBO_ID == dups.CODE_COMBINATION_ID)
-                             select dups);
+        //        using (Entities _context = new Entities())
+        //        {
+        //            _data = (from dups in _data
+        //                     where !_context.OVERHEAD_GL_ACCOUNT.Where(ac => ac.OVERHEAD_ORG_ID == organizationId).Any(c => c.CODE_COMBO_ID == dups.CODE_COMBINATION_ID)
+        //                     select dups);
 
-                    return _data.ToList();
-                }
+        //            return _data.ToList();
+        //        }
            
            
-        }
+        //}
 
     }
 

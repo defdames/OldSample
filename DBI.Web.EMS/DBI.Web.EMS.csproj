@@ -188,8 +188,10 @@
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
+    <Content Include="Views\Modules\Overhead\Views\umAddGLAccountRange.aspx" />
     <Content Include="Views\Modules\Overhead\Views\umAddRemoveBudgetType.aspx" />
     <Content Include="Views\Modules\Overhead\Views\umBudgetTypesByLegalEntity.aspx" />
+    <Content Include="Views\Modules\Overhead\Views\umGeneralLedgerAccounts.aspx" />
     <Content Include="Views\Modules\Overhead\Views\umOrganizationSecurity.aspx" />
     <Content Include="Views\Modules\Security\Options\AddEdit\umAddEditProfileOptions.aspx" />
     <Content Include="Views\Modules\Security\umEditGroups.aspx" />
@@ -215,8 +217,6 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\Modules\Overhead\Backup\GenericHandlers\ghBudgetCodes.ashx" />
-    <Content Include="Views\Modules\Overhead\Backup\GenericHandlers\ghBudgetParentCodes.ashx" />
     <None Include="Web.APPDEV.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -676,6 +676,13 @@
       <DependentUpon>umWeatherTab.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\ValidationChecks.cs" />
+    <Compile Include="Views\Modules\Overhead\Views\umAddGLAccountRange.aspx.cs">
+      <DependentUpon>umAddGLAccountRange.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\Views\umAddGLAccountRange.aspx.designer.cs">
+      <DependentUpon>umAddGLAccountRange.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\Overhead\Views\umAddRemoveBudgetType.aspx.cs">
       <DependentUpon>umAddRemoveBudgetType.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -689,6 +696,13 @@
     </Compile>
     <Compile Include="Views\Modules\Overhead\Views\umBudgetTypesByLegalEntity.aspx.designer.cs">
       <DependentUpon>umBudgetTypesByLegalEntity.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\Views\umGeneralLedgerAccounts.aspx.cs">
+      <DependentUpon>umGeneralLedgerAccounts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\Views\umGeneralLedgerAccounts.aspx.designer.cs">
+      <DependentUpon>umGeneralLedgerAccounts.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\Overhead\Views\umOrganizationSecurity.aspx.cs">
       <DependentUpon>umOrganizationSecurity.aspx</DependentUpon>
@@ -849,10 +863,6 @@
     <Content Include="Resources\Scripts\jquery-2.0.1.min.map" />
     <Content Include="Views\Handlers\SystemUsers.ashx" />
     <Content Include="Views\Handlers\WebProjects.ashx" />
-    <Content Include="Views\Modules\Overhead\Backup\GenericHandlers\GLCompanyCodes.ashx" />
-    <Content Include="Views\Modules\Overhead\Backup\GenericHandlers\GLLocationCodes.ashx" />
-    <Content Include="Views\Modules\Overhead\Backup\GenericHandlers\GLDivisionCodes.ashx" />
-    <Content Include="Views\Modules\Overhead\Backup\GenericHandlers\GLBranchCodes.ashx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DBI.Core\DBI.Core.csproj">

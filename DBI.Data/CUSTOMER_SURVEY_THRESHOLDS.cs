@@ -20,6 +20,7 @@ namespace DBI.Data
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public decimal AMOUNT_ID { get; set; }
+        public decimal THRESHOLD { get; set; }
     
         public virtual CUSTOMER_SURVEY_THRESH_AMT CUSTOMER_SURVEY_THRESH_AMT { get; set; }
     }

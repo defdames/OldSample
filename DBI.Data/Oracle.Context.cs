@@ -80,7 +80,6 @@ namespace DBI.Data
         public DbSet<XXDBI_PAYROLL_AUDIT_V> XXDBI_PAYROLL_AUDIT_V { get; set; }
         public DbSet<HIERARCHY_ID_V> HIERARCHY_ID_V { get; set; }
         public DbSet<SYS_USER_ORGS> SYS_USER_ORGS { get; set; }
-        public DbSet<OVERHEAD_GL_ACCOUNT> OVERHEAD_GL_ACCOUNT { get; set; }
         public DbSet<GL_ACCOUNTS_V> GL_ACCOUNTS_V { get; set; }
         public DbSet<ORG_HIER_V> ORG_HIER_V { get; set; }
         public DbSet<DAILY_ACTIVITY_PRODUCTION> DAILY_ACTIVITY_PRODUCTION { get; set; }
@@ -104,7 +103,6 @@ namespace DBI.Data
         public DbSet<JOB_COST_TASK> JOB_COST_TASK { get; set; }
         public DbSet<CROSSING_SERVICE_UNIT> CROSSING_SERVICE_UNIT { get; set; }
         public DbSet<CROSSING_SUB_DIVISION> CROSSING_SUB_DIVISION { get; set; }
-        public DbSet<BUD_BID_ADJUSTMENT> BUD_BID_ADJUSTMENT { get; set; }
         public DbSet<BUD_BID_ACTUAL_NUM> BUD_BID_ACTUAL_NUM { get; set; }
         public DbSet<BUD_BID_BUDGET_NUM> BUD_BID_BUDGET_NUM { get; set; }
         public DbSet<BUD_BID_DETAIL_SHEET> BUD_BID_DETAIL_SHEET { get; set; }
@@ -122,6 +120,7 @@ namespace DBI.Data
         public DbSet<CUSTOMER_SURVEY_CAT> CUSTOMER_SURVEY_CAT { get; set; }
         public DbSet<CUSTOMER_SURVEY_FORMS> CUSTOMER_SURVEY_FORMS { get; set; }
         public DbSet<CUSTOMER_SURVEY_THRESH_AMT> CUSTOMER_SURVEY_THRESH_AMT { get; set; }
+        public DbSet<OVERHEAD_GL_ACCOUNT> OVERHEAD_GL_ACCOUNT { get; set; }
         public DbSet<CUSTOMER_SURVEY_THRESHOLDS> CUSTOMER_SURVEY_THRESHOLDS { get; set; }
     }
 }

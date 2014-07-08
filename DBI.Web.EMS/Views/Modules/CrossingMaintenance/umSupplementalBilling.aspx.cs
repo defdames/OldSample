@@ -107,18 +107,20 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             decimal SuppInvoiceId = data.INVOICE_SUPP_ID;
 
             CROSSING_SUPPLEMENTAL invoice;
-            string json = (e.ExtraParams["selectedSupps"]);
+            string json = (e.ExtraParams["selectedSupp"]);
             List<SupplementalDetails> suppList = JSON.Deserialize<List<SupplementalDetails>>(json);
             foreach (SupplementalDetails supp in suppList)
             {
 
                 using (Entities _context = new Entities())
                 {
+
                     invoice = _context.CROSSING_SUPPLEMENTAL.Where(x => x.SUPPLEMENTAL_ID == supp.SUPPLEMENTAL_ID).SingleOrDefault();
-                    //invoice.INVOICE_SUPP_ID = Convert.ToInt64(SuppInvoiceId);
+
                 }
-                    GenericData.Update<CROSSING_SUPPLEMENTAL>(invoice);
-                
+                invoice.INVOICE_SUPP_ID = SuppInvoiceId;
+                GenericData.Update<CROSSING_SUPPLEMENTAL>(invoice);
+            } 
                 uxFilterForm.Reset();
                 uxInvoiceSupplementalStore.Reload();
 
@@ -134,25 +136,28 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     }
                 });
 
-            }
+            
         }
         public class SupplementalDetails
         {
-            public long SUPPLEMENTAL_ID { get; set; }
+            public decimal INVOICE_SUPP_ID { get; set; }
+            public decimal SUPPLEMENTAL_ID { get; set; }
             public long CROSSING_ID { get; set; }
             public DateTime APPROVED_DATE { get; set; }
-            public DateTime COMPLETED_DATE { get; set; }
+            //public DateTime COMPLETED_DATE { get; set; }
             public string SERVICE_TYPE { get; set; }
             public string TRUCK_NUMBER { get; set; }
-            public DateTime INSPECT_START { get; set; }
-            public DateTime INSPECT_END { get; set; }
-            public string SPRAY { get; set; }
+            //public string CROSSING_NUMBER { get; set; }
+            //public string SERVICE_UNIT { get; set; }
+            //public string MILE_POST { get; set; }
+            //public string SUB_DIVISION { get; set; }
+            //public string SPRAY { get; set; }
             public long SQUARE_FEET { get; set; }
-            public string CUT { get; set; }
-            public string MAINTAIN { get; set; }
-            public string INSPECT { get; set; }
-            public string RECURRING { get; set; }
-            public string REMARKS { get; set; }
+            //public string CUT { get; set; }
+            //public string MAINTAIN { get; set; }
+            //public string INSPECT { get; set; }
+            //public string RECURRING { get; set; }
+            //public string REMARKS { get; set; }
 
         }
        

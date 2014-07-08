@@ -77,7 +77,11 @@ namespace DBI.Data
                 {
                     string sql = @"SELECT              c.organization_id_child ORGANIZATION_ID,
                         c.d_child_name ORGANIZATION_NAME,
-                        level as HIER_LEVEL
+                        level as HIER_LEVEL,
+                        haou.type,
+                        haou.date_from,
+                        haou.date_to,
+                        ' ' as organization_status
                         FROM                per_organization_structures_v a
                         INNER JOIN          per_org_structure_versions_v b on a.organization_structure_id = b.organization_structure_id
                         INNER JOIN          per_org_structure_elements_v c on b.org_structure_version_id = c.org_structure_version_id
@@ -88,10 +92,9 @@ namespace DBI.Data
                         CONNECT BY PRIOR    c.organization_id_child = c.organization_id_parent AND a.organization_structure_id + 0 = " + hierarchyId.ToString() + @"
                         ORDER SIBLINGS BY   c.d_child_name";
 
-                    List<ORGANIZATION_V1> _data = _context.Database.SqlQuery<ORGANIZATION_V1>(sql).Select(a => new ORGANIZATION_V1 { TYPE = a.TYPE, DATE_FROM = a.DATE_FROM, DATE_TO = a.DATE_TO, ORGANIZATION_STATUS = null, ORGANIZATION_ID = a.ORGANIZATION_ID, ORGANIZATION_NAME = a.ORGANIZATION_NAME, HIER_LEVEL = a.HIER_LEVEL }).ToList();
+                    List<ORGANIZATION_V1> _data = _context.Database.SqlQuery<ORGANIZATION_V1>(sql).ToList();
                     return _data;
                 }
-           
         }
 
         /// <summary>
@@ -130,6 +133,29 @@ namespace DBI.Data
                         view.ORGANIZATION_STATUS = (SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetOrganization", view.ORGANIZATION_ID) == "Y" ? "Allowed" : "Not Active");
                     }
                     return _data;
+        }
+
+        /// <summary>
+        /// Shows active organization in oracle and that are being used for the overhead system based on the organization profile option
+        /// </summary>
+        /// <param name="hierarchyId"></param>
+        /// <param name="organizationId"></param>
+        /// <returns></returns>
+        public static List<HR.ORGANIZATION> ActiveOverheadOrganizations()
+        {
+            SYS_PROFILE_OPTIONS profileOption = SYS_PROFILE_OPTIONS.ProfileOption("OverheadBudgetOrganization");
+            List<SYS_ORG_PROFILE_OPTIONS.SYS_ORG_PROFILE_OPTIONS_V> _data =  SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOptions().Where(x => x.PROFILE_OPTION_ID == profileOption.PROFILE_OPTION_ID && x.PROFILE_VALUE == "Y").ToList();
+            List<HR.ORGANIZATION> _returnData = new List<HR.ORGANIZATION>();
+
+            foreach (var orgOption in _data)
+            {
+                HR.ORGANIZATION _org = new HR.ORGANIZATION();
+                _org.ORGANIZATION_ID = orgOption.ORGANIZATION_ID;
+                _org.ORGANIZATION_NAME = HR.Organization(orgOption.ORGANIZATION_ID).ORGANIZATION_NAME;
+                _returnData.Add(_org);
+            }
+
+            return _returnData;          
         }
 
 

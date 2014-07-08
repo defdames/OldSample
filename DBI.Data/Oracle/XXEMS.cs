@@ -442,76 +442,85 @@ namespace DBI.Data
     /// </summary>
     public partial class OVERHEAD_GL_ACCOUNT
     {
+
+        public static IQueryable<OVERHEAD_GL_ACCOUNT> OverheadGLAccountsByOrganization(Entities _context, long organizationId)
+        {
+            IQueryable<OVERHEAD_GL_ACCOUNT> _data = _context.OVERHEAD_GL_ACCOUNT.Where(x => x.ORGANIZATION_ID == organizationId);
+            return _data;
+        }
+
+
+
         /// <summary>
         /// Returns a list of Overhead GL Accounts by legal entity
         /// </summary>
         /// <param name="legalEntity"></param>
         /// <returns></returns>
-        public static List<GL_ACCOUNTS_V2> AccountsByLegalEntity(long legalEntityOrganizationId)
-        {
+        //public static List<GL_ACCOUNTS_V2> AccountsByLegalEntity(long legalEntityOrganizationId)
+        //{
 
-                using (Entities _context = new Entities())
-                {
-                    var data = (from gl in _context.OVERHEAD_GL_ACCOUNT.Where(c => c.OVERHEAD_ORG_ID == legalEntityOrganizationId)
-                                join gla in _context.GL_ACCOUNTS_V on gl.CODE_COMBO_ID equals gla.CODE_COMBINATION_ID
-                                select new GL_ACCOUNTS_V2
-                                {
-                                    OVERHEAD_GL_ID = (long)gl.OVERHEAD_GL_ID,
-                                    CODE_COMBINATION_ID = gla.CODE_COMBINATION_ID,
-                                    SEGMENT1 = gla.SEGMENT1,
-                                    SEGMENT2 = gla.SEGMENT2,
-                                    SEGMENT3 = gla.SEGMENT3,
-                                    SEGMENT4 = gla.SEGMENT4,
-                                    SEGMENT5 = gla.SEGMENT5,
-                                    SEGMENT6 = gla.SEGMENT6,
-                                    SEGMENT7 = gla.SEGMENT7,
-                                    SEGMENT5_DESC = gla.SEGMENT5_DESC,
-                                    SEGMENT1_DESC = gla.SEGMENT1_DESC,
-                                    SEGMENT2_DESC = gla.SEGMENT2_DESC,
-                                    SEGMENT3_DESC = gla.SEGMENT3_DESC,
-                                    SEGMENT4_DESC = gla.SEGMENT4_DESC,
-                                    SEGMENT6_DESC = gla.SEGMENT5_DESC,
-                                    SEGMENT7_DESC = gla.SEGMENT7_DESC
-                                }).ToList();
+        //        using (Entities _context = new Entities())
+        //        {
+        //            var data = (from gl in _context.OVERHEAD_GL_ACCOUNT.Where(c => c.OVERHEAD_ORG_ID == legalEntityOrganizationId)
+        //                        join gla in _context.GL_ACCOUNTS_V on gl.CODE_COMBO_ID equals gla.CODE_COMBINATION_ID
+        //                        select new GL_ACCOUNTS_V2
+        //                        {
+        //                            OVERHEAD_GL_ID = (long)gl.OVERHEAD_GL_ID,
+        //                            CODE_COMBINATION_ID = gla.CODE_COMBINATION_ID,
+        //                            SEGMENT1 = gla.SEGMENT1,
+        //                            SEGMENT2 = gla.SEGMENT2,
+        //                            SEGMENT3 = gla.SEGMENT3,
+        //                            SEGMENT4 = gla.SEGMENT4,
+        //                            SEGMENT5 = gla.SEGMENT5,
+        //                            SEGMENT6 = gla.SEGMENT6,
+        //                            SEGMENT7 = gla.SEGMENT7,
+        //                            SEGMENT5_DESC = gla.SEGMENT5_DESC,
+        //                            SEGMENT1_DESC = gla.SEGMENT1_DESC,
+        //                            SEGMENT2_DESC = gla.SEGMENT2_DESC,
+        //                            SEGMENT3_DESC = gla.SEGMENT3_DESC,
+        //                            SEGMENT4_DESC = gla.SEGMENT4_DESC,
+        //                            SEGMENT6_DESC = gla.SEGMENT5_DESC,
+        //                            SEGMENT7_DESC = gla.SEGMENT7_DESC
+        //                        }).ToList();
 
-                    return data;
-                }
+        //            return data;
+        //        }
             
            
-        }
+        //}
 
         /// <summary>
         /// Allows the user to delete an overhead Gl account that has been assigned.
         /// </summary>
         /// <param name="overheadGlId"></param>
-        public static void Delete(long overheadGlId)
-        {
+        //public static void Delete(long overheadGlId)
+        //{
 
-                using (Entities _context = new Entities())
-                {
-                    OVERHEAD_GL_ACCOUNT account = _context.OVERHEAD_GL_ACCOUNT.Where(a => a.OVERHEAD_GL_ID == overheadGlId).SingleOrDefault();
-                    GenericData.Delete<OVERHEAD_GL_ACCOUNT>(account);
-                }
+        //        using (Entities _context = new Entities())
+        //        {
+        //            OVERHEAD_GL_ACCOUNT account = _context.OVERHEAD_GL_ACCOUNT.Where(a => a.OVERHEAD_GL_ID == overheadGlId).SingleOrDefault();
+        //            GenericData.Delete<OVERHEAD_GL_ACCOUNT>(account);
+        //        }
            
             
-        }
+        //}
 
         /// <summary>
         /// Returns a count of how many OVERHEAD_GL_ACCOUNTS are assigned by an organization Id
         /// </summary>
         /// <param name="organizationId"></param>
         /// <returns></returns>
-        public static int GetCount(long organizationId)
-        {
+        //public static int GetCount(long organizationId)
+        //{
 
-                using (Entities _context = new Entities())
-                {
-                    int cnt = _context.OVERHEAD_GL_ACCOUNT.Where(a => a.OVERHEAD_ORG_ID == organizationId).Count();
-                    return cnt;
-                }
+        //        using (Entities _context = new Entities())
+        //        {
+        //            int cnt = _context.OVERHEAD_GL_ACCOUNT.Where(a => a.OVERHEAD_ORG_ID == organizationId).Count();
+        //            return cnt;
+        //        }
            
            
-        }
+        //}
 
         public class GL_ACCOUNTS_V2 : GL_ACCOUNTS_V
         {

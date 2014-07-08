@@ -184,13 +184,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Column Column2;
         
         /// <summary>
-        /// DateColumn2 control.
+        /// Column12 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateColumn DateColumn2;
+        protected global::Ext.Net.Column Column12;
         
         /// <summary>
         /// Column3 control.

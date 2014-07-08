@@ -43,7 +43,6 @@
       FROM "XXDBI"."XXPJ_PREV_WAGE_RATES" "XXPJ_PREV_WAGE_RATES"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="BUD_BID_ACTUAL_NUM" EntityType="OracleModel.Store.BUD_BID_ACTUAL_NUM" store:Type="Tables" Schema="XXEMS" />
-          <EntitySet Name="BUD_BID_ADJUSTMENT" EntityType="OracleModel.Store.BUD_BID_ADJUSTMENT" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="BUD_BID_BUDGET_NUM" EntityType="OracleModel.Store.BUD_BID_BUDGET_NUM" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="BUD_BID_DETAIL_SHEET" EntityType="OracleModel.Store.BUD_BID_DETAIL_SHEET" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="BUD_BID_DETAIL_TASK" EntityType="OracleModel.Store.BUD_BID_DETAIL_TASK" store:Type="Tables" Schema="XXEMS" />
@@ -955,20 +954,6 @@
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
-        <EntityType Name="BUD_BID_ADJUSTMENT">
-          <Key>
-            <PropertyRef Name="ADJ_ID" />
-          </Key>
-          <Property Name="ADJ_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="ORG_ID" Type="number" Nullable="false" Precision="15" />
-          <Property Name="MAT_ADJ" Type="number" Precision="15" Scale="4" />
-          <Property Name="WEATHER_ADJ" Type="number" Precision="15" Scale="4" />
-          <Property Name="OVERHEAD" Type="number" Precision="15" Scale="4" />
-          <Property Name="CREATE_DATE" Type="date" />
-          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
-          <Property Name="MODIFY_DATE" Type="date" />
-          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
-        </EntityType>
         <EntityType Name="BUD_BID_BUDGET_NUM">
           <Key>
             <PropertyRef Name="BUDGET_NUM_ID" />
@@ -1526,6 +1511,7 @@
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="AMOUNT_ID" Type="number" Nullable="false" />
+          <Property Name="THRESHOLD" Type="number" Nullable="false" />
         </EntityType>
         <EntityType Name="DAILY_ACTIVITY_AUDIT">
           <Key>
@@ -1853,11 +1839,18 @@
         </EntityType>
         <EntityType Name="OVERHEAD_GL_ACCOUNT">
           <Key>
-            <PropertyRef Name="OVERHEAD_GL_ID" />
+            <PropertyRef Name="GL_ACCOUNT_ID" />
           </Key>
-          <Property Name="OVERHEAD_GL_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="OVERHEAD_ORG_ID" Type="number" Nullable="false" />
-          <Property Name="CODE_COMBO_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="GL_ACCOUNT_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ORGANIZATION_ID" Type="number" Nullable="false" />
+          <Property Name="INCLUDE_EXCLUDE_FLAG" Type="char" MaxLength="1" />
+          <Property Name="SEGMENT1" Type="varchar2" MaxLength="200" />
+          <Property Name="SEGMENT2" Type="varchar2" MaxLength="200" />
+          <Property Name="SEGMENT3" Type="varchar2" MaxLength="200" />
+          <Property Name="SEGMENT4" Type="varchar2" MaxLength="200" />
+          <Property Name="SEGMENT5" Type="varchar2" MaxLength="200" />
+          <Property Name="SEGMENT6" Type="varchar2" MaxLength="200" />
+          <Property Name="SEGMENT7" Type="varchar2" MaxLength="200" />
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
@@ -2812,7 +2805,7 @@
           <Key>
             <PropertyRef Name="ROWNUM" />
           </Key>
-          <Property Name="ROWNUM" Type="number" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ROWNUM" Type="number" Nullable="false" />
           <Property Name="PROJECT_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="PROJECT_ROLE_TYPE" Type="varchar2" Nullable="false" MaxLength="20" />
           <Property Name="STATE" Type="char" MaxLength="2" />
@@ -4085,7 +4078,6 @@
           <EntitySet Name="XXDBI_PAYROLL_AUDIT_V" EntityType="OracleModel.XXDBI_PAYROLL_AUDIT_V" />
           <EntitySet Name="HIERARCHY_ID_V" EntityType="OracleModel.HIERARCHY_ID_V" />
           <EntitySet Name="SYS_USER_ORGS" EntityType="OracleModel.SYS_USER_ORGS" />
-          <EntitySet Name="OVERHEAD_GL_ACCOUNT" EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" />
           <EntitySet Name="GL_ACCOUNTS_V" EntityType="OracleModel.GL_ACCOUNTS_V" />
           <EntitySet Name="ORG_HIER_V" EntityType="OracleModel.ORG_HIER_V" />
           <EntitySet Name="DAILY_ACTIVITY_PRODUCTION" EntityType="OracleModel.DAILY_ACTIVITY_PRODUCTION" />
@@ -4169,7 +4161,6 @@
             <End Role="CROSSING_SERVICE_UNIT" EntitySet="CROSSING_SERVICE_UNIT" />
             <End Role="CROSSING_SUB_DIVISION" EntitySet="CROSSING_SUB_DIVISION" />
           </AssociationSet>
-          <EntitySet Name="BUD_BID_ADJUSTMENT" EntityType="OracleModel.BUD_BID_ADJUSTMENT" />
           <EntitySet Name="BUD_BID_ACTUAL_NUM" EntityType="OracleModel.BUD_BID_ACTUAL_NUM" />
           <EntitySet Name="BUD_BID_BUDGET_NUM" EntityType="OracleModel.BUD_BID_BUDGET_NUM" />
           <AssociationSet Name="FK_ACTUAL_NUM_LINES_ID" Association="OracleModel.FK_ACTUAL_NUM_LINES_ID">
@@ -4251,7 +4242,6 @@
           <EntitySet Name="CUSTOMER_SURVEY_CAT" EntityType="OracleModel.CUSTOMER_SURVEY_CAT" />
           <EntitySet Name="CUSTOMER_SURVEY_FORMS" EntityType="OracleModel.CUSTOMER_SURVEY_FORMS" />
           <EntitySet Name="CUSTOMER_SURVEY_THRESH_AMT" EntityType="OracleModel.CUSTOMER_SURVEY_THRESH_AMT" />
-          <EntitySet Name="CUSTOMER_SURVEY_THRESHOLDS" EntityType="OracleModel.CUSTOMER_SURVEY_THRESHOLDS" />
           <AssociationSet Name="FK_FORMS_CAT_ID" Association="OracleModel.FK_FORMS_CAT_ID">
             <End Role="CUSTOMER_SURVEY_CAT" EntitySet="CUSTOMER_SURVEY_CAT" />
             <End Role="CUSTOMER_SURVEY_FORMS" EntitySet="CUSTOMER_SURVEY_FORMS" />
@@ -4264,6 +4254,8 @@
             <End Role="CUSTOMER_SURVEY_FORMS" EntitySet="CUSTOMER_SURVEY_FORMS" />
             <End Role="CUSTOMER_SURVEY_FORMS_COMP" EntitySet="CUSTOMER_SURVEY_FORMS_COMP" />
           </AssociationSet>
+          <EntitySet Name="OVERHEAD_GL_ACCOUNT" EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" />
+          <EntitySet Name="CUSTOMER_SURVEY_THRESHOLDS" EntityType="OracleModel.CUSTOMER_SURVEY_THRESHOLDS" />
           <AssociationSet Name="FK_THRSH_AMTS_FK" Association="OracleModel.FK_THRSH_AMTS_FK">
             <End Role="CUSTOMER_SURVEY_THRESH_AMT" EntitySet="CUSTOMER_SURVEY_THRESH_AMT" />
             <End Role="CUSTOMER_SURVEY_THRESHOLDS" EntitySet="CUSTOMER_SURVEY_THRESHOLDS" />
@@ -5820,7 +5812,7 @@
           <Property Type="Decimal" Name="FIELDSET_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Decimal" Name="FORM_ID" Nullable="false" Precision="38" Scale="0" />
           <Property Type="String" Name="TITLE" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="SORT_ORDER" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="SORT_ORDER" Precision="38" Scale="0" Nullable="false" />
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="CREATE_DATE" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -5987,7 +5979,7 @@
           <Key>
             <PropertyRef Name="ROWNUM" />
           </Key>
-          <Property Type="Decimal" Name="ROWNUM" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="ROWNUM" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Type="Int64" Name="PROJECT_ID" Nullable="false" />
           <Property Type="String" Name="PROJECT_ROLE_TYPE" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="STATE" MaxLength="2" FixedLength="true" Unicode="false" />
@@ -6356,18 +6348,6 @@
           <Property Type="Decimal" Name="SYS_ORG_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int64" Name="USER_ID" Nullable="false" />
           <Property Type="Int64" Name="ORG_ID" Nullable="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="OVERHEAD_GL_ACCOUNT">
-          <Key>
-            <PropertyRef Name="OVERHEAD_GL_ID" />
-          </Key>
-          <Property Type="Decimal" Name="OVERHEAD_GL_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Decimal" Name="OVERHEAD_ORG_ID" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="Int64" Name="CODE_COMBO_ID" Nullable="false" />
           <Property Type="DateTime" Name="CREATE_DATE" />
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -6915,20 +6895,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="BUD_BID_ADJUSTMENT">
-          <Key>
-            <PropertyRef Name="ADJ_ID" />
-          </Key>
-          <Property Type="Decimal" Name="ADJ_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int64" Name="ORG_ID" Nullable="false" />
-          <Property Type="Decimal" Name="MAT_ADJ" Precision="15" Scale="4" />
-          <Property Type="Decimal" Name="WEATHER_ADJ" Precision="15" Scale="4" />
-          <Property Type="Decimal" Name="OVERHEAD" Precision="15" Scale="4" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="BUD_BID_ACTUAL_NUM">
           <Key>
             <PropertyRef Name="ACTUAL_NUM_ID" />
@@ -7283,7 +7249,7 @@
           <Property Type="DateTime" Name="CREATE_DATE" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="Decimal" Name="SORT_ORDER" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="SORT_ORDER" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="CUSTOMER_SURVEY_FORMS_ANS" Relationship="OracleModel.FK_FORMS_ANSWER_QUESTION_ID" FromRole="CUSTOMER_SURVEY_QUESTIONS" ToRole="CUSTOMER_SURVEY_FORMS_ANS" />
           <NavigationProperty Name="CUSTOMER_SURVEY_OPTIONS" Relationship="OracleModel.FK_OPTION_QUES_ID" FromRole="CUSTOMER_SURVEY_QUESTIONS" ToRole="CUSTOMER_SURVEY_OPTIONS" />
           <NavigationProperty Name="CUSTOMER_SURVEY_QUES_TYPES" Relationship="OracleModel.FK_QUESTION_TYPE_ID" FromRole="CUSTOMER_SURVEY_QUESTIONS" ToRole="CUSTOMER_SURVEY_QUES_TYPES" />
@@ -7500,18 +7466,6 @@
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CUSTOMER_SURVEY_THRESHOLDS" Relationship="OracleModel.FK_THRSH_AMTS_FK" FromRole="CUSTOMER_SURVEY_THRESH_AMT" ToRole="CUSTOMER_SURVEY_THRESHOLDS" />
         </EntityType>
-        <EntityType Name="CUSTOMER_SURVEY_THRESHOLDS">
-          <Key>
-            <PropertyRef Name="THRESHOLD_ID" />
-          </Key>
-          <Property Type="Decimal" Name="THRESHOLD_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="Decimal" Name="AMOUNT_ID" Nullable="false" Precision="38" Scale="0" />
-          <NavigationProperty Name="CUSTOMER_SURVEY_THRESH_AMT" Relationship="OracleModel.FK_THRSH_AMTS_FK" FromRole="CUSTOMER_SURVEY_THRESHOLDS" ToRole="CUSTOMER_SURVEY_THRESH_AMT" />
-        </EntityType>
         <Association Name="FK_FORMS_CAT_ID">
           <End Type="OracleModel.CUSTOMER_SURVEY_CAT" Role="CUSTOMER_SURVEY_CAT" Multiplicity="1" />
           <End Type="OracleModel.CUSTOMER_SURVEY_FORMS" Role="CUSTOMER_SURVEY_FORMS" Multiplicity="*" />
@@ -7548,6 +7502,38 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="OVERHEAD_GL_ACCOUNT">
+          <Key>
+            <PropertyRef Name="GL_ACCOUNT_ID" />
+          </Key>
+          <Property Type="Decimal" Name="GL_ACCOUNT_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="ORGANIZATION_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="INCLUDE_EXCLUDE_FLAG" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="SEGMENT1" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT2" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT3" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT4" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT5" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT6" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEGMENT7" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="CUSTOMER_SURVEY_THRESHOLDS">
+          <Key>
+            <PropertyRef Name="THRESHOLD_ID" />
+          </Key>
+          <Property Type="Decimal" Name="THRESHOLD_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="Decimal" Name="AMOUNT_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="THRESHOLD" Nullable="false" Precision="38" Scale="0" />
+          <NavigationProperty Name="CUSTOMER_SURVEY_THRESH_AMT" Relationship="OracleModel.FK_THRSH_AMTS_FK" FromRole="CUSTOMER_SURVEY_THRESHOLDS" ToRole="CUSTOMER_SURVEY_THRESH_AMT" />
+        </EntityType>
         <Association Name="FK_THRSH_AMTS_FK">
           <End Type="OracleModel.CUSTOMER_SURVEY_THRESH_AMT" Role="CUSTOMER_SURVEY_THRESH_AMT" Multiplicity="1" />
           <End Type="OracleModel.CUSTOMER_SURVEY_THRESHOLDS" Role="CUSTOMER_SURVEY_THRESHOLDS" Multiplicity="*" />
@@ -9262,19 +9248,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="OVERHEAD_GL_ACCOUNT">
-            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_GL_ACCOUNT">
-              <MappingFragment StoreEntitySet="OVERHEAD_GL_ACCOUNT">
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="CODE_COMBO_ID" ColumnName="CODE_COMBO_ID" />
-                <ScalarProperty Name="OVERHEAD_ORG_ID" ColumnName="OVERHEAD_ORG_ID" />
-                <ScalarProperty Name="OVERHEAD_GL_ID" ColumnName="OVERHEAD_GL_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="GL_ACCOUNTS_V">
             <EntityTypeMapping TypeName="OracleModel.GL_ACCOUNTS_V">
               <MappingFragment StoreEntitySet="GL_ACCOUNTS_V">
@@ -9621,21 +9594,6 @@
                 <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="SUB_DIVISION_NAME" ColumnName="SUB_DIVISION_NAME" />
                 <ScalarProperty Name="SUB_DIVISION_ID" ColumnName="SUB_DIVISION_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BUD_BID_ADJUSTMENT">
-            <EntityTypeMapping TypeName="OracleModel.BUD_BID_ADJUSTMENT">
-              <MappingFragment StoreEntitySet="BUD_BID_ADJUSTMENT">
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="OVERHEAD" ColumnName="OVERHEAD" />
-                <ScalarProperty Name="WEATHER_ADJ" ColumnName="WEATHER_ADJ" />
-                <ScalarProperty Name="MAT_ADJ" ColumnName="MAT_ADJ" />
-                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
-                <ScalarProperty Name="ADJ_ID" ColumnName="ADJ_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -10009,9 +9967,30 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="OVERHEAD_GL_ACCOUNT">
+            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_GL_ACCOUNT">
+              <MappingFragment StoreEntitySet="OVERHEAD_GL_ACCOUNT">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="SEGMENT7" ColumnName="SEGMENT7" />
+                <ScalarProperty Name="SEGMENT6" ColumnName="SEGMENT6" />
+                <ScalarProperty Name="SEGMENT5" ColumnName="SEGMENT5" />
+                <ScalarProperty Name="SEGMENT4" ColumnName="SEGMENT4" />
+                <ScalarProperty Name="SEGMENT3" ColumnName="SEGMENT3" />
+                <ScalarProperty Name="SEGMENT2" ColumnName="SEGMENT2" />
+                <ScalarProperty Name="SEGMENT1" ColumnName="SEGMENT1" />
+                <ScalarProperty Name="INCLUDE_EXCLUDE_FLAG" ColumnName="INCLUDE_EXCLUDE_FLAG" />
+                <ScalarProperty Name="ORGANIZATION_ID" ColumnName="ORGANIZATION_ID" />
+                <ScalarProperty Name="GL_ACCOUNT_ID" ColumnName="GL_ACCOUNT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="CUSTOMER_SURVEY_THRESHOLDS">
             <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_THRESHOLDS">
               <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_THRESHOLDS">
+                <ScalarProperty Name="THRESHOLD" ColumnName="THRESHOLD" />
                 <ScalarProperty Name="AMOUNT_ID" ColumnName="AMOUNT_ID" />
                 <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
@@ -10038,6 +10017,7 @@
         <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="True" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

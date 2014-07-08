@@ -55,13 +55,24 @@
                                         </Click>
                                     </DirectEvents>
                                 </ext:Button>
-                                <ext:Button runat="server" Text="Edit Module" Icon="ApplicationEdit">
+                                <ext:Button runat="server" Text="Edit Module" Icon="ApplicationEdit" Disabled="true" ID="uxEditModuleButton">
                                     <DirectEvents>
                                         <Click OnEvent="deLoadEditModuleWindow">
                                             <ExtraParams>
                                                 <ext:Parameter Name="ModuleId" Value="#{uxModuleGrid}.getSelectionModel().getSelection()[0].data.MODULE_ID" Mode="Raw" />
                                             </ExtraParams>
                                             <EventMask ShowMask="true" />
+                                        </Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:Button runat="server" Text="Delete Module" Icon="ApplicationDelete" Disabled="true" ID="uxDeleteModuleButton">
+                                    <DirectEvents>
+                                        <Click OnEvent="deDeleteModule">
+                                            <Confirmation Message="Do you really want to delete this Module?" ConfirmRequest="true" />
+                                            <EventMask ShowMask="true" />
+                                            <ExtraParams>
+                                                <ext:Parameter Name="ModuleId" Value="#{uxModuleGrid}.getSelectionModel().getSelection()[0].data.MODULE_ID" Mode="Raw" />
+                                            </ExtraParams>
                                         </Click>
                                     </DirectEvents>
                                 </ext:Button>
@@ -78,6 +89,9 @@
                             </ExtraParams>
                         </SelectionChange>
                     </DirectEvents>
+                    <Listeners>
+                        <SelectionChange Handler="#{uxEditModuleButton}.enable(); #{uxDeleteModuleButton}.enable(); #{uxEditMenuItemButton}.disable(); #{uxDeleteMenuItemButton}.disable()" />
+                    </Listeners>
                 </ext:GridPanel>
                 <ext:GridPanel runat="server" ID="uxMenuItemsGrid" Region="Center">
                     <Store>
@@ -117,13 +131,24 @@
                                         </Click>
                                     </DirectEvents>
                                 </ext:Button>
-                                <ext:Button runat="server" Text="Edit Menu Item" Icon="ApplicationEdit">
+                                <ext:Button runat="server" Text="Edit Menu Item" ID="uxEditMenuItemButton" Icon="ApplicationEdit" Disabled="true">
                                     <DirectEvents>
                                         <Click OnEvent="deLoadEditItemWindow">
                                             <ExtraParams>
                                                 <ext:Parameter Name="ItemId" Value="#{uxMenuItemsGrid}.getSelectionModel().getSelection()[0].data.MENU_ID" Mode="Raw" />
                                             </ExtraParams>
                                             <EventMask ShowMask="true" />
+                                        </Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:Button runat="server" Text="Delete Menu Item" ID="uxDeleteMenuItemButton" Icon="ApplicationDelete" Disabled="true">
+                                     <DirectEvents>
+                                        <Click OnEvent="deDeleteMenuItem">
+                                            <Confirmation Message="Do you really want to delete this Menu Item?" ConfirmRequest="true" />
+                                            <EventMask ShowMask="true" />
+                                            <ExtraParams>
+                                                <ext:Parameter Name="ItemId" Value="#{uxMenuItemsGrid}.getSelectionModel().getSelection()[0].data.MENU_ID" Mode="Raw" />
+                                            </ExtraParams>
                                         </Click>
                                     </DirectEvents>
                                 </ext:Button>
@@ -136,6 +161,9 @@
                     <BottomBar>
                         <ext:PagingToolbar runat="server" />
                     </BottomBar>
+                    <Listeners>
+                        <Select Handler="#{uxEditMenuItemButton}.enable(); #{uxDeleteMenuItemButton}.enable()" />
+                    </Listeners>
                 </ext:GridPanel>
             </Items>
         </ext:Viewport>

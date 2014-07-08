@@ -22,7 +22,7 @@ namespace DBI.Data
         public decimal FIELDSET_ID { get; set; }
         public decimal FORM_ID { get; set; }
         public string TITLE { get; set; }
-        public Nullable<decimal> SORT_ORDER { get; set; }
+        public decimal SORT_ORDER { get; set; }
         public string CREATED_BY { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public string MODIFIED_BY { get; set; }

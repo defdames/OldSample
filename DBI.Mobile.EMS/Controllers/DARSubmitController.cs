@@ -131,7 +131,7 @@ namespace DBI.Mobile.EMS.Controllers
                         e.WORK_AREA = j.work_area;
                         e.POLE_FROM = j.pole_from;
                         e.POLE_TO = j.pole_to;
-                        e.ACRES_MILE = (long)j.acres_mile;
+                        e.ACRES_MILE = j.acres_mile;
                         e.QUANTITY = j.quantity;
                         e.UNIT_OF_MEASURE = j.uom;
                         e.BILL_RATE = (Decimal)j.bill_rate;
