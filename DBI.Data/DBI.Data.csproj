@@ -95,6 +95,9 @@
     <Compile Include="BUD_BID_ACTUAL_NUM.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="BUD_BID_ADJUSTMENT.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="BUD_BID_BUDGET_NUM.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
