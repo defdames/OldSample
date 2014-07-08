@@ -14,7 +14,7 @@ namespace DBI.Data
     
     public partial class PA_ROLES_V
     {
-        public decimal ROWNUM { get; set; }
+        public Nullable<decimal> ROWNUM { get; set; }
         public long PROJECT_ID { get; set; }
         public string PROJECT_ROLE_TYPE { get; set; }
         public string STATE { get; set; }
