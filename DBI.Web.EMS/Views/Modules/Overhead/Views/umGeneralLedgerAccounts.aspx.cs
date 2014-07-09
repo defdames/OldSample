@@ -59,10 +59,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
             {
                 ID = "uxShowAccountRangeWindow",
                 Title = "General Ledger Account Range Filter",
-                Height = 350,
-                Width = 550,
+                Height = 700,
+                Width = 900,
                 Modal = true,
-                Resizable = false,
+                Resizable = true,
                 CloseAction = CloseAction.Destroy,
                 Loader = new ComponentLoader
                 {
@@ -82,6 +82,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
             win.Render(this.Form);
             win.Show();
         }
+
+
 
     }
 }
