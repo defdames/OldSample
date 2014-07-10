@@ -11,8 +11,13 @@
         <ext:ResourceManager runat="server" IsDynamic="false" />
         <ext:Viewport runat="server">
             <Items>
-                <ext:FormPanel runat="server" ID="uxSurveyDisplay" Width="1000" Layout="FormLayout">
+                <ext:FormPanel runat="server" ID="uxSurveyDisplay" Width="1000" Layout="FormLayout" BodyPadding="10">
                     <Items>
+                        <ext:FieldSet runat="server" Title="Form Code Entry" Margin="5">
+                            <Items>
+                                <ext:TextField runat="server" ID="uxFormCode" FieldLabel="Form Entry Code" LabelWidth="150" />
+                            </Items>
+                        </ext:FieldSet>
                     </Items>
                     <Buttons>
                         <ext:Button runat="server" ID="uxSubmitSurveyButton" Text="Submit" Icon="Add" Disabled="true">

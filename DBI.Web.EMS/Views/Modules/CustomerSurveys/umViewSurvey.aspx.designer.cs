@@ -31,6 +31,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.FormPanel uxSurveyDisplay;
         
         /// <summary>
+        /// uxFormCode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxFormCode;
+        
+        /// <summary>
         /// uxSubmitSurveyButton control.
         /// </summary>
         /// <remarks>
