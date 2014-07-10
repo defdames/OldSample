@@ -722,6 +722,10 @@ namespace DBI.Data
 
             count = data.Count();
 
+            //Override Limit to count, if limit = 0 adjust pagesize to count size
+            if (limit == 0)
+                limit = count;
+
             //-- start paging ------------------------------------------------------------
             data = data.Skip(start).Take(limit);
             //-- end paging ------------------------------------------------------------

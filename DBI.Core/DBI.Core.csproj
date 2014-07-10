@@ -82,6 +82,7 @@
     </Compile>
     <Compile Include="Web\ExtensionMethods\DateTime_xm.cs" />
     <Compile Include="Web\ExtensionMethods\IQueryable_xm.cs" />
+    <Compile Include="Web\ExtensionMethods\String_xm.cs" />
     <Compile Include="Web\Mailer.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -7,7 +7,7 @@
     <title></title>
 </head>
 <body>
-     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
+     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" Namespace="App" />
     <form id="form1" runat="server">
    <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
             <Items>
