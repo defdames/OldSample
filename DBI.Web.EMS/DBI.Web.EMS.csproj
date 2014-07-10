@@ -111,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\EMSV2 - Production.pubxml" />
     <None Include="Properties\PublishProfiles\EMSV2.pubxml" />
     <None Include="Resources\Scripts\jquery-2.0.1.intellisense.js" />
     <Content Include="Global.asax" />
