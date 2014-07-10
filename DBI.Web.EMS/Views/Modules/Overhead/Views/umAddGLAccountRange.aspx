@@ -660,6 +660,9 @@
                                     <ToolTips>
                                         <ext:ToolTip runat="server" Html="Excludes a general ledger account from the range." UI="Info"></ext:ToolTip>
                                     </ToolTips>
+                                    <DirectEvents>
+                                        <click OnEvent="deExcludeGlAccounts"><Confirmation ConfirmRequest="true" Message="Are you sure you want the mark the selected accounts as excluded from this range? The user will not be able to budget for these accounts. Exclude selected accounts?" /><EventMask ShowMask="true"></EventMask></click>
+                                    </DirectEvents>
                                 </ext:Button>
                             </Items>
                         </ext:Toolbar>
