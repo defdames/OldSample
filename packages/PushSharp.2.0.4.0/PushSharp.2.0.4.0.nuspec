@@ -39,12 +39,5 @@ This release will have breaking changes, please see the project site's README fo
     <dependencies>
       <dependency id="Newtonsoft.Json" version="4.5.10" />
     </dependencies>
-    <references>
-      <reference file="PushSharp.Android.dll" />
-      <reference file="PushSharp.Apple.dll" />
-      <reference file="PushSharp.Core.dll" />
-      <reference file="PushSharp.Windows.dll" />
-      <reference file="PushSharp.WindowsPhone.dll" />
-    </references>
   </metadata>
 </package>

@@ -123,5 +123,6 @@ namespace DBI.Data
         public DbSet<CUSTOMER_SURVEY_THRESHOLDS> CUSTOMER_SURVEY_THRESHOLDS { get; set; }
         public DbSet<BUD_BID_ADJUSTMENT> BUD_BID_ADJUSTMENT { get; set; }
         public DbSet<PA_ROLES_V> PA_ROLES_V { get; set; }
+        public DbSet<JOB_COST> JOB_COST { get; set; }
     }
 }

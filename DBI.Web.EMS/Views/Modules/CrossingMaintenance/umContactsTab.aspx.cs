@@ -392,6 +392,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                         join r in _context.CROSSING_RAILROAD on d.RAILROAD_ID equals r.RAILROAD_ID
                         where d.CONTACT_ID == null && d.RAILROAD_ID == RailroadId
                         select new { d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, r.RAILROAD, d.SUB_DIVISION }).ToList<object>();
+              
 
                 int count;
                 uxAssignContactCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);

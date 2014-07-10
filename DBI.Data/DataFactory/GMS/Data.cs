@@ -42,21 +42,26 @@ namespace DBI.Data.GMS
         {
             CROSSING data = new CROSSING();
             List<ServiceUnitResponse> results = (from s in ServiceUnits() group s by s.service_unit into x select x.First()).Where(a => a.project == proj).ToList();
-            results.Add(new ServiceUnitResponse { service_unit = "N / A" });   
-            
-            using (Entities _context = new Entities())
+            long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+            if (RailroadId == 20 || RailroadId == 22)
             {
-                CROSSING_RAILROAD _cr = _context.CROSSING_RAILROAD.Where(x => x.RAILROAD == proj).SingleOrDefault();
-                List<CROSSING_SERVICE_UNIT> _csu = _context.CROSSING_SERVICE_UNIT.Where(x => x.RAILROAD_ID == _cr.RAILROAD_ID).ToList();
-
-                foreach (var _serviceUnit in _csu)
-                {
-                    ServiceUnitResponse _sur = new ServiceUnitResponse();
-                    _sur.project = _cr.RAILROAD;
-                    _sur.service_unit = _serviceUnit.SERVICE_UNIT_NAME;
-                    results.Add(_sur);
-                }
+                results.Add(new ServiceUnitResponse { service_unit = "N / A" });
             }
+
+                  using (Entities _context = new Entities())
+                  {
+                      CROSSING_RAILROAD _cr = _context.CROSSING_RAILROAD.Where(x => x.RAILROAD == proj).SingleOrDefault();
+                      List<CROSSING_SERVICE_UNIT> _csu = _context.CROSSING_SERVICE_UNIT.Where(x => x.RAILROAD_ID == _cr.RAILROAD_ID).ToList();
+
+                      foreach (var _serviceUnit in _csu)
+                      {
+                          ServiceUnitResponse _sur = new ServiceUnitResponse();
+                          _sur.project = _cr.RAILROAD;
+                          _sur.service_unit = _serviceUnit.SERVICE_UNIT_NAME;
+                          results.Add(_sur);
+                      }
+                  }
+              
 
 
             return results;
@@ -64,9 +69,12 @@ namespace DBI.Data.GMS
         public static List<ServiceUnitResponse> ServiceUnitDivisions(string unit)
         {
            List<ServiceUnitResponse> results = (from s in ServiceUnits() group s by s.sub_division into x select x.First()).Where(a => a.service_unit == unit).ToList();
-           results.Add(new ServiceUnitResponse { sub_division = "N / A" });
               long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-             
+              if (RailroadId == 20 || RailroadId == 22)
+              {
+                  results.Add(new ServiceUnitResponse { sub_division = "N / A" });
+              }
+
             if (results.Count() == 0 && RailroadId == 21)
             {
                 using (Entities _context = new Entities())

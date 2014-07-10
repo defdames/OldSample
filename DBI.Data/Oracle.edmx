@@ -68,6 +68,193 @@ warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primar
           <Property Name="LAST_UPDATE_LOGIN" Type="number" Precision="15" Scale="0" Nullable="false" />
           <Property Name="PROJECT_ID" Type="number" Precision="15" Scale="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="JOB_COST">
+          <Key>
+            <PropertyRef Name="JC_ID" />
+          </Key>
+          <Property Name="JC_ID" Type="number" Precision="15" Scale="0" Nullable="false" />
+          <Property Name="JC_WK_DATE" Type="date" />
+          <Property Name="LEVEL_SORT" Type="number" Precision="15" Scale="0" />
+          <Property Name="PROJECT_ID" Type="number" Precision="15" Scale="0" />
+          <Property Name="PROJECT_NUMBER" Type="varchar2" MaxLength="25" />
+          <Property Name="PROJECT_NAME" Type="varchar2" MaxLength="30" />
+          <Property Name="PROJECT_LONG_NAME" Type="varchar2" MaxLength="250" />
+          <Property Name="COMPLETION_DATE" Type="date" />
+          <Property Name="TASK_ID" Type="number" Precision="15" Scale="0" />
+          <Property Name="TASK_NUMBER" Type="varchar2" MaxLength="25" />
+          <Property Name="TASK_NAME" Type="varchar2" MaxLength="30" />
+          <Property Name="TASK_DESCRIPTION" Type="varchar2" MaxLength="250" />
+          <Property Name="TASK_START_DATE" Type="date" />
+          <Property Name="TASK_COMPLETION_DATE" Type="date" />
+          <Property Name="CLASS_CODE" Type="varchar2" MaxLength="30" />
+          <Property Name="CLASS_CATEGORY" Type="varchar2" MaxLength="30" />
+          <Property Name="DIVISION_ID" Type="number" Precision="15" Scale="0" />
+          <Property Name="DIVISION_NAME" Type="varchar2" MaxLength="250" />
+          <Property Name="DIVISION_SORT" Type="varchar2" MaxLength="30" />
+          <Property Name="CUSTOMER_NAME" Type="varchar2" MaxLength="250" />
+          <Property Name="CUSTOMER_ID" Type="varchar2" MaxLength="200" />
+          <Property Name="COMPANY_NAME" Type="varchar2" MaxLength="250" />
+          <Property Name="COMPANY_ID" Type="number" Precision="15" Scale="0" />
+          <Property Name="REGION_NAME" Type="varchar2" MaxLength="250" />
+          <Property Name="REGION_ID" Type="number" Precision="15" Scale="0" />
+          <Property Name="BRANCH_NAME" Type="varchar2" MaxLength="250" />
+          <Property Name="BRANCH_ID" Type="number" Precision="15" Scale="0" />
+          <Property Name="INVOICE_NAME" Type="varchar2" MaxLength="250" />
+          <Property Name="INVOICE_ID" Type="number" Precision="15" Scale="0" />
+          <Property Name="ORG_ID" Type="number" Precision="15" Scale="0" />
+          <Property Name="WK_RI" Type="number" Precision="38" Scale="2" />
+          <Property Name="WK_RNB" Type="number" Precision="38" Scale="2" />
+          <Property Name="WK_RNI" Type="number" Precision="38" Scale="2" />
+          <Property Name="WK_GREC" Type="number" Precision="38" Scale="2" />
+          <Property Name="WK_MU" Type="number" Precision="38" Scale="2" />
+          <Property Name="WK_GREV" Type="number" Precision="38" Scale="2" />
+          <Property Name="WK_DP" Type="number" Precision="38" Scale="2" />
+          <Property Name="WK_LB" Type="number" Precision="38" Scale="2" />
+          <Property Name="WK_TU" Type="number" Precision="38" Scale="2" />
+          <Property Name="WK_EU" Type="number" Precision="38" Scale="2" />
+          <Property Name="WK_SC" Type="number" Precision="38" Scale="2" />
+          <Property Name="WK_ESC" Type="number" Precision="38" Scale="2" />
+          <Property Name="WK_T" Type="number" Precision="38" Scale="2" />
+          <Property Name="WK_FE" Type="number" Precision="38" Scale="2" />
+          <Property Name="WK_PD" Type="number" Precision="38" Scale="2" />
+          <Property Name="WK_PB" Type="number" Precision="38" Scale="2" />
+          <Property Name="WK_RRPL" Type="number" Precision="38" Scale="2" />
+          <Property Name="WK_ME" Type="number" Precision="38" Scale="2" />
+          <Property Name="WK_TDE" Type="number" Precision="38" Scale="2" />
+          <Property Name="WK_TOP" Type="number" Precision="38" Scale="2" />
+          <Property Name="MTD_RI" Type="number" Precision="38" Scale="2" />
+          <Property Name="MTD_RNB" Type="number" Precision="38" Scale="2" />
+          <Property Name="MTD_RNI" Type="number" Precision="38" Scale="2" />
+          <Property Name="MTD_GREC" Type="number" Precision="38" Scale="2" />
+          <Property Name="MTD_MU" Type="number" Precision="38" Scale="2" />
+          <Property Name="MTD_GREV" Type="number" Precision="38" Scale="2" />
+          <Property Name="MTD_DP" Type="number" Precision="38" Scale="2" />
+          <Property Name="MTD_LB" Type="number" Precision="38" Scale="2" />
+          <Property Name="MTD_TU" Type="number" Precision="38" Scale="2" />
+          <Property Name="MTD_EU" Type="number" Precision="38" Scale="2" />
+          <Property Name="MTD_SC" Type="number" Precision="38" Scale="2" />
+          <Property Name="MTD_ESC" Type="number" Precision="38" Scale="2" />
+          <Property Name="MTD_T" Type="number" Precision="38" Scale="2" />
+          <Property Name="MTD_FE" Type="number" Precision="38" Scale="2" />
+          <Property Name="MTD_PD" Type="number" Precision="38" Scale="2" />
+          <Property Name="MTD_PB" Type="number" Precision="38" Scale="2" />
+          <Property Name="MTD_RRPL" Type="number" Precision="38" Scale="2" />
+          <Property Name="MTD_ME" Type="number" Precision="38" Scale="2" />
+          <Property Name="MTD_TDE" Type="number" Precision="38" Scale="2" />
+          <Property Name="MTD_TOP" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_RI" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_RNB" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_RNI" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_GREC" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_MU" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_MU_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_GREV" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_GREV_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_DP" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_DP_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_LB" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_LB_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_TU" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_TU_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_EU" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_EU_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_SC" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_SC_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_ESC" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_ESC_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_T" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_T_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_FE" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_FE_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_PD" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_PD_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_PB" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_PB_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_RRPL" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_RRPL_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_ME" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_ME_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_TDE" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_TDE_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_TOP" Type="number" Precision="38" Scale="2" />
+          <Property Name="FY_TOP_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_RI" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_RNB" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_RNI" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_GREC" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_MU" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_MU_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_GREV" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_GREV_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_DP" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_DP_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_LB" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_LB_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_TU" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_TU_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_EU" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_EU_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_SC" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_SC_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_ESC" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_ESC_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_T" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_T_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_FE" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_FE_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_PD" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_PD_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_PB" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_PB_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_RRPL" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_RRPL_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_ME" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_ME_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_TDE" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_TDE_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_TOP" Type="number" Precision="38" Scale="2" />
+          <Property Name="BGT_TOP_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_RI" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_RNB" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_RNI" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_GREC" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_MU" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_MU_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_GREV" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_GREV_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_DP" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_DP_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_LB" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_LB_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_TU" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_TU_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_EU" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_EU_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_SC" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_SC_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_ESC" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_ESC_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_T" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_T_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_FE" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_FE_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_PD" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_PD_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_PB" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_PB_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_RRPL" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_RRPL_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_ME" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_ME_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_TDE" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_TDE_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_TOP" Type="number" Precision="38" Scale="2" />
+          <Property Name="PYTD_TOP_P" Type="number" Precision="38" Scale="2" />
+          <Property Name="DATE_CREATED" Type="date" />
+          <Property Name="HIERARCHY_ID" Type="number" Precision="15" Scale="0" />
+          <Property Name="LEVEL_TYPE" Type="varchar2" MaxLength="25" />
+          <Property Name="PRINT_HEADER" Type="varchar2" MaxLength="4000" />
+        </EntityType>
         <EntityType Name="BUD_BID_ACTUAL_NUM">
           <Key>
             <PropertyRef Name="ACTUAL_NUM_ID" />
@@ -3094,6 +3281,7 @@ warning 6002: The table/view 'XXEMS.UNIT_OF_MEASURE_V' does not have a primary k
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="OracleModelStoreContainer">
+          <EntitySet Name="JOB_COST" EntityType="Self.JOB_COST" Schema="XXDBI_DW" store:Type="Tables" />
           <EntitySet Name="BUD_BID_ACTUAL_NUM" EntityType="Self.BUD_BID_ACTUAL_NUM" Schema="XXEMS" store:Type="Tables" />
           <EntitySet Name="BUD_BID_ADJUSTMENT" EntityType="Self.BUD_BID_ADJUSTMENT" Schema="XXEMS" store:Type="Tables" />
           <EntitySet Name="BUD_BID_BUDGET_NUM" EntityType="Self.BUD_BID_BUDGET_NUM" Schema="XXEMS" store:Type="Tables" />
@@ -4281,6 +4469,7 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           </AssociationSet>
           <EntitySet Name="BUD_BID_ADJUSTMENT" EntityType="OracleModel.BUD_BID_ADJUSTMENT" />
           <EntitySet Name="PA_ROLES_V" EntityType="OracleModel.PA_ROLES_V" />
+          <EntitySet Name="JOB_COST" EntityType="OracleModel.JOB_COST" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -7587,6 +7776,193 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Property Name="LAST_UPDATE_DATE" Type="DateTime" Nullable="false" />
           <Property Name="PROJECT_STATUS_CODE" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="JOB_COST">
+          <Key>
+            <PropertyRef Name="JC_ID" />
+          </Key>
+          <Property Name="JC_ID" Type="Int64" Nullable="false" />
+          <Property Name="JC_WK_DATE" Type="DateTime" />
+          <Property Name="LEVEL_SORT" Type="Int64" />
+          <Property Name="PROJECT_ID" Type="Int64" />
+          <Property Name="PROJECT_NUMBER" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="PROJECT_NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PROJECT_LONG_NAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="COMPLETION_DATE" Type="DateTime" />
+          <Property Name="TASK_ID" Type="Int64" />
+          <Property Name="TASK_NUMBER" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="TASK_NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="TASK_DESCRIPTION" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="TASK_START_DATE" Type="DateTime" />
+          <Property Name="TASK_COMPLETION_DATE" Type="DateTime" />
+          <Property Name="CLASS_CODE" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CLASS_CATEGORY" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="DIVISION_ID" Type="Int64" />
+          <Property Name="DIVISION_NAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="DIVISION_SORT" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CUSTOMER_NAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="CUSTOMER_ID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="COMPANY_NAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="COMPANY_ID" Type="Int64" />
+          <Property Name="REGION_NAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="REGION_ID" Type="Int64" />
+          <Property Name="BRANCH_NAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="BRANCH_ID" Type="Int64" />
+          <Property Name="INVOICE_NAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="INVOICE_ID" Type="Int64" />
+          <Property Name="ORG_ID" Type="Int64" />
+          <Property Name="WK_RI" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="WK_RNB" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="WK_RNI" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="WK_GREC" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="WK_MU" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="WK_GREV" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="WK_DP" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="WK_LB" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="WK_TU" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="WK_EU" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="WK_SC" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="WK_ESC" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="WK_T" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="WK_FE" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="WK_PD" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="WK_PB" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="WK_RRPL" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="WK_ME" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="WK_TDE" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="WK_TOP" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="MTD_RI" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="MTD_RNB" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="MTD_RNI" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="MTD_GREC" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="MTD_MU" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="MTD_GREV" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="MTD_DP" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="MTD_LB" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="MTD_TU" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="MTD_EU" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="MTD_SC" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="MTD_ESC" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="MTD_T" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="MTD_FE" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="MTD_PD" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="MTD_PB" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="MTD_RRPL" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="MTD_ME" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="MTD_TDE" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="MTD_TOP" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_RI" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_RNB" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_RNI" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_GREC" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_MU" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_MU_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_GREV" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_GREV_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_DP" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_DP_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_LB" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_LB_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_TU" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_TU_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_EU" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_EU_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_SC" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_SC_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_ESC" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_ESC_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_T" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_T_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_FE" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_FE_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_PD" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_PD_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_PB" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_PB_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_RRPL" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_RRPL_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_ME" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_ME_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_TDE" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_TDE_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_TOP" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="FY_TOP_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_RI" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_RNB" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_RNI" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_GREC" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_MU" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_MU_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_GREV" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_GREV_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_DP" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_DP_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_LB" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_LB_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_TU" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_TU_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_EU" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_EU_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_SC" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_SC_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_ESC" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_ESC_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_T" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_T_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_FE" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_FE_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_PD" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_PD_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_PB" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_PB_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_RRPL" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_RRPL_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_ME" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_ME_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_TDE" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_TDE_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_TOP" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="BGT_TOP_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_RI" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_RNB" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_RNI" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_GREC" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_MU" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_MU_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_GREV" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_GREV_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_DP" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_DP_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_LB" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_LB_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_TU" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_TU_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_EU" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_EU_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_SC" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_SC_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_ESC" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_ESC_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_T" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_T_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_FE" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_FE_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_PD" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_PD_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_PB" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_PB_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_RRPL" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_RRPL_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_ME" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_ME_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_TDE" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_TDE_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_TOP" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PYTD_TOP_P" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="DATE_CREATED" Type="DateTime" />
+          <Property Name="HIERARCHY_ID" Type="Int64" />
+          <Property Name="LEVEL_TYPE" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="PRINT_HEADER" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -10054,6 +10430,194 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
                 <ScalarProperty Name="PROJECT_ROLE_TYPE" ColumnName="PROJECT_ROLE_TYPE" />
                 <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
                 <ScalarProperty Name="ROWNUM" ColumnName="ROWNUM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JOB_COST">
+            <EntityTypeMapping TypeName="OracleModel.JOB_COST">
+              <MappingFragment StoreEntitySet="JOB_COST">
+                <ScalarProperty Name="PRINT_HEADER" ColumnName="PRINT_HEADER" />
+                <ScalarProperty Name="LEVEL_TYPE" ColumnName="LEVEL_TYPE" />
+                <ScalarProperty Name="HIERARCHY_ID" ColumnName="HIERARCHY_ID" />
+                <ScalarProperty Name="DATE_CREATED" ColumnName="DATE_CREATED" />
+                <ScalarProperty Name="PYTD_TOP_P" ColumnName="PYTD_TOP_P" />
+                <ScalarProperty Name="PYTD_TOP" ColumnName="PYTD_TOP" />
+                <ScalarProperty Name="PYTD_TDE_P" ColumnName="PYTD_TDE_P" />
+                <ScalarProperty Name="PYTD_TDE" ColumnName="PYTD_TDE" />
+                <ScalarProperty Name="PYTD_ME_P" ColumnName="PYTD_ME_P" />
+                <ScalarProperty Name="PYTD_ME" ColumnName="PYTD_ME" />
+                <ScalarProperty Name="PYTD_RRPL_P" ColumnName="PYTD_RRPL_P" />
+                <ScalarProperty Name="PYTD_RRPL" ColumnName="PYTD_RRPL" />
+                <ScalarProperty Name="PYTD_PB_P" ColumnName="PYTD_PB_P" />
+                <ScalarProperty Name="PYTD_PB" ColumnName="PYTD_PB" />
+                <ScalarProperty Name="PYTD_PD_P" ColumnName="PYTD_PD_P" />
+                <ScalarProperty Name="PYTD_PD" ColumnName="PYTD_PD" />
+                <ScalarProperty Name="PYTD_FE_P" ColumnName="PYTD_FE_P" />
+                <ScalarProperty Name="PYTD_FE" ColumnName="PYTD_FE" />
+                <ScalarProperty Name="PYTD_T_P" ColumnName="PYTD_T_P" />
+                <ScalarProperty Name="PYTD_T" ColumnName="PYTD_T" />
+                <ScalarProperty Name="PYTD_ESC_P" ColumnName="PYTD_ESC_P" />
+                <ScalarProperty Name="PYTD_ESC" ColumnName="PYTD_ESC" />
+                <ScalarProperty Name="PYTD_SC_P" ColumnName="PYTD_SC_P" />
+                <ScalarProperty Name="PYTD_SC" ColumnName="PYTD_SC" />
+                <ScalarProperty Name="PYTD_EU_P" ColumnName="PYTD_EU_P" />
+                <ScalarProperty Name="PYTD_EU" ColumnName="PYTD_EU" />
+                <ScalarProperty Name="PYTD_TU_P" ColumnName="PYTD_TU_P" />
+                <ScalarProperty Name="PYTD_TU" ColumnName="PYTD_TU" />
+                <ScalarProperty Name="PYTD_LB_P" ColumnName="PYTD_LB_P" />
+                <ScalarProperty Name="PYTD_LB" ColumnName="PYTD_LB" />
+                <ScalarProperty Name="PYTD_DP_P" ColumnName="PYTD_DP_P" />
+                <ScalarProperty Name="PYTD_DP" ColumnName="PYTD_DP" />
+                <ScalarProperty Name="PYTD_GREV_P" ColumnName="PYTD_GREV_P" />
+                <ScalarProperty Name="PYTD_GREV" ColumnName="PYTD_GREV" />
+                <ScalarProperty Name="PYTD_MU_P" ColumnName="PYTD_MU_P" />
+                <ScalarProperty Name="PYTD_MU" ColumnName="PYTD_MU" />
+                <ScalarProperty Name="PYTD_GREC" ColumnName="PYTD_GREC" />
+                <ScalarProperty Name="PYTD_RNI" ColumnName="PYTD_RNI" />
+                <ScalarProperty Name="PYTD_RNB" ColumnName="PYTD_RNB" />
+                <ScalarProperty Name="PYTD_RI" ColumnName="PYTD_RI" />
+                <ScalarProperty Name="BGT_TOP_P" ColumnName="BGT_TOP_P" />
+                <ScalarProperty Name="BGT_TOP" ColumnName="BGT_TOP" />
+                <ScalarProperty Name="BGT_TDE_P" ColumnName="BGT_TDE_P" />
+                <ScalarProperty Name="BGT_TDE" ColumnName="BGT_TDE" />
+                <ScalarProperty Name="BGT_ME_P" ColumnName="BGT_ME_P" />
+                <ScalarProperty Name="BGT_ME" ColumnName="BGT_ME" />
+                <ScalarProperty Name="BGT_RRPL_P" ColumnName="BGT_RRPL_P" />
+                <ScalarProperty Name="BGT_RRPL" ColumnName="BGT_RRPL" />
+                <ScalarProperty Name="BGT_PB_P" ColumnName="BGT_PB_P" />
+                <ScalarProperty Name="BGT_PB" ColumnName="BGT_PB" />
+                <ScalarProperty Name="BGT_PD_P" ColumnName="BGT_PD_P" />
+                <ScalarProperty Name="BGT_PD" ColumnName="BGT_PD" />
+                <ScalarProperty Name="BGT_FE_P" ColumnName="BGT_FE_P" />
+                <ScalarProperty Name="BGT_FE" ColumnName="BGT_FE" />
+                <ScalarProperty Name="BGT_T_P" ColumnName="BGT_T_P" />
+                <ScalarProperty Name="BGT_T" ColumnName="BGT_T" />
+                <ScalarProperty Name="BGT_ESC_P" ColumnName="BGT_ESC_P" />
+                <ScalarProperty Name="BGT_ESC" ColumnName="BGT_ESC" />
+                <ScalarProperty Name="BGT_SC_P" ColumnName="BGT_SC_P" />
+                <ScalarProperty Name="BGT_SC" ColumnName="BGT_SC" />
+                <ScalarProperty Name="BGT_EU_P" ColumnName="BGT_EU_P" />
+                <ScalarProperty Name="BGT_EU" ColumnName="BGT_EU" />
+                <ScalarProperty Name="BGT_TU_P" ColumnName="BGT_TU_P" />
+                <ScalarProperty Name="BGT_TU" ColumnName="BGT_TU" />
+                <ScalarProperty Name="BGT_LB_P" ColumnName="BGT_LB_P" />
+                <ScalarProperty Name="BGT_LB" ColumnName="BGT_LB" />
+                <ScalarProperty Name="BGT_DP_P" ColumnName="BGT_DP_P" />
+                <ScalarProperty Name="BGT_DP" ColumnName="BGT_DP" />
+                <ScalarProperty Name="BGT_GREV_P" ColumnName="BGT_GREV_P" />
+                <ScalarProperty Name="BGT_GREV" ColumnName="BGT_GREV" />
+                <ScalarProperty Name="BGT_MU_P" ColumnName="BGT_MU_P" />
+                <ScalarProperty Name="BGT_MU" ColumnName="BGT_MU" />
+                <ScalarProperty Name="BGT_GREC" ColumnName="BGT_GREC" />
+                <ScalarProperty Name="BGT_RNI" ColumnName="BGT_RNI" />
+                <ScalarProperty Name="BGT_RNB" ColumnName="BGT_RNB" />
+                <ScalarProperty Name="BGT_RI" ColumnName="BGT_RI" />
+                <ScalarProperty Name="FY_TOP_P" ColumnName="FY_TOP_P" />
+                <ScalarProperty Name="FY_TOP" ColumnName="FY_TOP" />
+                <ScalarProperty Name="FY_TDE_P" ColumnName="FY_TDE_P" />
+                <ScalarProperty Name="FY_TDE" ColumnName="FY_TDE" />
+                <ScalarProperty Name="FY_ME_P" ColumnName="FY_ME_P" />
+                <ScalarProperty Name="FY_ME" ColumnName="FY_ME" />
+                <ScalarProperty Name="FY_RRPL_P" ColumnName="FY_RRPL_P" />
+                <ScalarProperty Name="FY_RRPL" ColumnName="FY_RRPL" />
+                <ScalarProperty Name="FY_PB_P" ColumnName="FY_PB_P" />
+                <ScalarProperty Name="FY_PB" ColumnName="FY_PB" />
+                <ScalarProperty Name="FY_PD_P" ColumnName="FY_PD_P" />
+                <ScalarProperty Name="FY_PD" ColumnName="FY_PD" />
+                <ScalarProperty Name="FY_FE_P" ColumnName="FY_FE_P" />
+                <ScalarProperty Name="FY_FE" ColumnName="FY_FE" />
+                <ScalarProperty Name="FY_T_P" ColumnName="FY_T_P" />
+                <ScalarProperty Name="FY_T" ColumnName="FY_T" />
+                <ScalarProperty Name="FY_ESC_P" ColumnName="FY_ESC_P" />
+                <ScalarProperty Name="FY_ESC" ColumnName="FY_ESC" />
+                <ScalarProperty Name="FY_SC_P" ColumnName="FY_SC_P" />
+                <ScalarProperty Name="FY_SC" ColumnName="FY_SC" />
+                <ScalarProperty Name="FY_EU_P" ColumnName="FY_EU_P" />
+                <ScalarProperty Name="FY_EU" ColumnName="FY_EU" />
+                <ScalarProperty Name="FY_TU_P" ColumnName="FY_TU_P" />
+                <ScalarProperty Name="FY_TU" ColumnName="FY_TU" />
+                <ScalarProperty Name="FY_LB_P" ColumnName="FY_LB_P" />
+                <ScalarProperty Name="FY_LB" ColumnName="FY_LB" />
+                <ScalarProperty Name="FY_DP_P" ColumnName="FY_DP_P" />
+                <ScalarProperty Name="FY_DP" ColumnName="FY_DP" />
+                <ScalarProperty Name="FY_GREV_P" ColumnName="FY_GREV_P" />
+                <ScalarProperty Name="FY_GREV" ColumnName="FY_GREV" />
+                <ScalarProperty Name="FY_MU_P" ColumnName="FY_MU_P" />
+                <ScalarProperty Name="FY_MU" ColumnName="FY_MU" />
+                <ScalarProperty Name="FY_GREC" ColumnName="FY_GREC" />
+                <ScalarProperty Name="FY_RNI" ColumnName="FY_RNI" />
+                <ScalarProperty Name="FY_RNB" ColumnName="FY_RNB" />
+                <ScalarProperty Name="FY_RI" ColumnName="FY_RI" />
+                <ScalarProperty Name="MTD_TOP" ColumnName="MTD_TOP" />
+                <ScalarProperty Name="MTD_TDE" ColumnName="MTD_TDE" />
+                <ScalarProperty Name="MTD_ME" ColumnName="MTD_ME" />
+                <ScalarProperty Name="MTD_RRPL" ColumnName="MTD_RRPL" />
+                <ScalarProperty Name="MTD_PB" ColumnName="MTD_PB" />
+                <ScalarProperty Name="MTD_PD" ColumnName="MTD_PD" />
+                <ScalarProperty Name="MTD_FE" ColumnName="MTD_FE" />
+                <ScalarProperty Name="MTD_T" ColumnName="MTD_T" />
+                <ScalarProperty Name="MTD_ESC" ColumnName="MTD_ESC" />
+                <ScalarProperty Name="MTD_SC" ColumnName="MTD_SC" />
+                <ScalarProperty Name="MTD_EU" ColumnName="MTD_EU" />
+                <ScalarProperty Name="MTD_TU" ColumnName="MTD_TU" />
+                <ScalarProperty Name="MTD_LB" ColumnName="MTD_LB" />
+                <ScalarProperty Name="MTD_DP" ColumnName="MTD_DP" />
+                <ScalarProperty Name="MTD_GREV" ColumnName="MTD_GREV" />
+                <ScalarProperty Name="MTD_MU" ColumnName="MTD_MU" />
+                <ScalarProperty Name="MTD_GREC" ColumnName="MTD_GREC" />
+                <ScalarProperty Name="MTD_RNI" ColumnName="MTD_RNI" />
+                <ScalarProperty Name="MTD_RNB" ColumnName="MTD_RNB" />
+                <ScalarProperty Name="MTD_RI" ColumnName="MTD_RI" />
+                <ScalarProperty Name="WK_TOP" ColumnName="WK_TOP" />
+                <ScalarProperty Name="WK_TDE" ColumnName="WK_TDE" />
+                <ScalarProperty Name="WK_ME" ColumnName="WK_ME" />
+                <ScalarProperty Name="WK_RRPL" ColumnName="WK_RRPL" />
+                <ScalarProperty Name="WK_PB" ColumnName="WK_PB" />
+                <ScalarProperty Name="WK_PD" ColumnName="WK_PD" />
+                <ScalarProperty Name="WK_FE" ColumnName="WK_FE" />
+                <ScalarProperty Name="WK_T" ColumnName="WK_T" />
+                <ScalarProperty Name="WK_ESC" ColumnName="WK_ESC" />
+                <ScalarProperty Name="WK_SC" ColumnName="WK_SC" />
+                <ScalarProperty Name="WK_EU" ColumnName="WK_EU" />
+                <ScalarProperty Name="WK_TU" ColumnName="WK_TU" />
+                <ScalarProperty Name="WK_LB" ColumnName="WK_LB" />
+                <ScalarProperty Name="WK_DP" ColumnName="WK_DP" />
+                <ScalarProperty Name="WK_GREV" ColumnName="WK_GREV" />
+                <ScalarProperty Name="WK_MU" ColumnName="WK_MU" />
+                <ScalarProperty Name="WK_GREC" ColumnName="WK_GREC" />
+                <ScalarProperty Name="WK_RNI" ColumnName="WK_RNI" />
+                <ScalarProperty Name="WK_RNB" ColumnName="WK_RNB" />
+                <ScalarProperty Name="WK_RI" ColumnName="WK_RI" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="INVOICE_ID" ColumnName="INVOICE_ID" />
+                <ScalarProperty Name="INVOICE_NAME" ColumnName="INVOICE_NAME" />
+                <ScalarProperty Name="BRANCH_ID" ColumnName="BRANCH_ID" />
+                <ScalarProperty Name="BRANCH_NAME" ColumnName="BRANCH_NAME" />
+                <ScalarProperty Name="REGION_ID" ColumnName="REGION_ID" />
+                <ScalarProperty Name="REGION_NAME" ColumnName="REGION_NAME" />
+                <ScalarProperty Name="COMPANY_ID" ColumnName="COMPANY_ID" />
+                <ScalarProperty Name="COMPANY_NAME" ColumnName="COMPANY_NAME" />
+                <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+                <ScalarProperty Name="CUSTOMER_NAME" ColumnName="CUSTOMER_NAME" />
+                <ScalarProperty Name="DIVISION_SORT" ColumnName="DIVISION_SORT" />
+                <ScalarProperty Name="DIVISION_NAME" ColumnName="DIVISION_NAME" />
+                <ScalarProperty Name="DIVISION_ID" ColumnName="DIVISION_ID" />
+                <ScalarProperty Name="CLASS_CATEGORY" ColumnName="CLASS_CATEGORY" />
+                <ScalarProperty Name="CLASS_CODE" ColumnName="CLASS_CODE" />
+                <ScalarProperty Name="TASK_COMPLETION_DATE" ColumnName="TASK_COMPLETION_DATE" />
+                <ScalarProperty Name="TASK_START_DATE" ColumnName="TASK_START_DATE" />
+                <ScalarProperty Name="TASK_DESCRIPTION" ColumnName="TASK_DESCRIPTION" />
+                <ScalarProperty Name="TASK_NAME" ColumnName="TASK_NAME" />
+                <ScalarProperty Name="TASK_NUMBER" ColumnName="TASK_NUMBER" />
+                <ScalarProperty Name="TASK_ID" ColumnName="TASK_ID" />
+                <ScalarProperty Name="COMPLETION_DATE" ColumnName="COMPLETION_DATE" />
+                <ScalarProperty Name="PROJECT_LONG_NAME" ColumnName="PROJECT_LONG_NAME" />
+                <ScalarProperty Name="PROJECT_NAME" ColumnName="PROJECT_NAME" />
+                <ScalarProperty Name="PROJECT_NUMBER" ColumnName="PROJECT_NUMBER" />
+                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
+                <ScalarProperty Name="LEVEL_SORT" ColumnName="LEVEL_SORT" />
+                <ScalarProperty Name="JC_WK_DATE" ColumnName="JC_WK_DATE" />
+                <ScalarProperty Name="JC_ID" ColumnName="JC_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

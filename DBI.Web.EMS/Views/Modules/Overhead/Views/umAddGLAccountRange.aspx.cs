@@ -157,7 +157,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
             CheckboxSelectionModel sm = uxGlAccountSecurityGridSelectionModel;
             List<SelectedRow> src = sm.SelectedRows.ToList();
 
-            foreach(SelectedRow 
+            //foreach(SelectedRow 
 
         }
 
