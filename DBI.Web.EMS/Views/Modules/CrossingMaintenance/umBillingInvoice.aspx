@@ -91,7 +91,7 @@
                             </ext:Button>
                             <ext:Button runat="server"
                                 ID="Button3"
-                                Text="Cancel"
+                                Text="Undo Invoice"
                                 Icon="StopRed">
                              <DirectEvents>
                             <Click OnEvent="deClearFilters" />
@@ -111,9 +111,7 @@
                 <Store>
                     <ext:Store runat="server"
                         ID="uxInvoiceFormStore" OnReadData="deInvoiceGrid" AutoDataBind="true" AutoLoad="false" >
-                       <%-- <Parameters>
-                              <ext:StoreParameter Name="crossingId" Value="Ext.encode(#{uxApplicationCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
-                        </Parameters>--%>
+                      
                         <Model>
                             <ext:Model ID="Model1" runat="server">
                                 <Fields>
@@ -169,11 +167,11 @@
                             </ext:Button>
                             <ext:Button runat="server"
                                 ID="Button2"
-                                Text="Undo Invoice"
+                                Text="Cancel Selection"
                                 Icon="StopRed">
-                           <%--  <DirectEvents>
-                            <Click OnEvent="deClearFilters" />
-                            </DirectEvents>--%>
+                             <DirectEvents>
+                            <Click OnEvent="deResetInvoice" />
+                            </DirectEvents>
                             </ext:Button>
                         </Items>
                     </ext:Toolbar>
@@ -187,12 +185,12 @@
             Height="550" Width="650" Modal="true" Closable="false">
             <Items>
                 
-                 <ext:FormPanel ID="uxAddApplicationForm" runat="server" Height="30" Layout="FormLayout">
+                 <ext:FormPanel ID="uxViewInvoiceForm" runat="server" Height="30" Layout="FormLayout">
                     <Items>
                  <ext:FieldContainer runat="server" Layout="HBoxLayout" >
                 <Items>
-                <ext:TextField ID="InvoiceDateTextField" runat="server" FieldLabel="Invoice #" LabelAlign="Right" ReadOnly="true" />
-                <ext:DateField ID="InvoiceNumDateField" runat="server" FieldLabel="Date" LabelAlign="Right" ReadOnly="true" Format="MM/dd/yyyy"/>
+                <ext:TextField ID="InvoiceNumTextField" runat="server" FieldLabel="Invoice #" LabelAlign="Right" ReadOnly="true" />
+                <ext:TextField ID="InvoiceDateTextField" runat="server" FieldLabel="Date" LabelAlign="Right" ReadOnly="true"  />
                 </Items>
                 </ext:FieldContainer>
        
@@ -249,13 +247,19 @@
                     <ext:Toolbar ID="Toolbar3" runat="server">
                         <Items>
                           
-                            <ext:Button runat="server"
-                                ID="Button6"
+                           <ext:Button runat="server"
+                                ID="Button5"
                                 Text="Close Invoice Report"
-                                Icon="StopRed">
-                           <%--  <DirectEvents>
+                                Icon="BinClosed">
+                             <DirectEvents>
+                            <Click OnEvent="deCloseInvoice" />
+                            </DirectEvents>
+                                 <DirectEvents>
+                            <Click OnEvent="deResetInvoice" />
+                            </DirectEvents>
+                                 <DirectEvents>
                             <Click OnEvent="deClearFilters" />
-                            </DirectEvents>--%>
+                            </DirectEvents>
                             </ext:Button>
                         </Items>
                     </ext:Toolbar>

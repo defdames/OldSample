@@ -119,6 +119,20 @@
                                  <BeforeActivate Handler="#{Toolbar1}.hide()" />                            
                              </Listeners>
                             </ext:Panel>
+
+                             <ext:Panel runat="server"
+                                Title="Crossing Information"
+                                ID="uxCrossingInfoTab"
+                                Disabled="false">
+                                <Loader runat="server"
+                                    ID="uxHeaderLoader" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umCrossingInfoTab.aspx">
+                                    <LoadMask ShowMask="true" />
+                                </Loader>
+                                 <Listeners>
+                                 <BeforeActivate Handler="#{Toolbar1}.show()" />                            
+                                </Listeners>
+                            </ext:Panel>
+
                             <ext:Panel runat="server"
                                 Title="Crossing Security"
                                 ID="uxCrossingSecurity"
@@ -132,18 +146,7 @@
                                 </Listeners>
                             </ext:Panel>
 
-                            <ext:Panel runat="server"
-                                Title="Crossing Information"
-                                ID="uxCrossingInfoTab"
-                                Disabled="false">
-                                <Loader runat="server"
-                                    ID="uxHeaderLoader" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umCrossingInfoTab.aspx">
-                                    <LoadMask ShowMask="true" />
-                                </Loader>
-                                 <Listeners>
-                                 <BeforeActivate Handler="#{Toolbar1}.show()" />                            
-                                </Listeners>
-                            </ext:Panel>
+                           
                             <ext:Panel runat="server"
                                 Title="Contacts"
                                 ID="uxContactsTab"

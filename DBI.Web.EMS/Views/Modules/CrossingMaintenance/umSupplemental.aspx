@@ -73,18 +73,9 @@
                 </Columns>
             </ColumnModel>
             <Plugins>
-                <ext:FilterHeader ID="FilterHeader1" runat="server" />
+                <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true" />
             </Plugins>
-           <%-- <DirectEvents>
-                <SelectionChange OnEvent="GetSupplementalGridData">
-                
-                     <ExtraParams>
-                      <ext:Parameter Name="crossingId" Value="Ext.encode(#{uxSupplementalCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
-                     </ExtraParams>
-                </SelectionChange>
-            </DirectEvents>--%>
-
-
+         
             <BottomBar>
                 <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True">
                 </ext:PagingToolbar>

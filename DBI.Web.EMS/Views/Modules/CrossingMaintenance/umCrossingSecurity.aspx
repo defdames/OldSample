@@ -5,6 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title></title>
+      <script type="text/javascript" src="../../../Resources/Scripts/functions.js"></script>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -171,7 +172,7 @@
                 </Columns>
             </ColumnModel>
             <Plugins>
-                <ext:FilterHeader ID="FilterHeader3" runat="server"  />
+                <ext:FilterHeader ID="FilterHeader3" runat="server" Remote="true" />
             </Plugins>
             <SelectionModel>
                 <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" Mode="Single" />
