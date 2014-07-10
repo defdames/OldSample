@@ -25,7 +25,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            uxInvoiceChoiceStore.Data = StaticLists.InvoiceChoice;
+            //uxInvoiceChoiceStore.Data = StaticLists.InvoiceChoice;
         }
 
         //protected void deStateCrossingListGrid(object sender, StoreReadDataEventArgs e)
