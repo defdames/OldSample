@@ -54,7 +54,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
 
         protected void deShowRangeWindow(object sender, DirectEventArgs e)
         {
-            string url = "/Views/Modules/Overhead/Views/umAddGlAccountRange.aspx";
+
+            string url = "/Views/Modules/Overhead/Views/umAddGlAccountRange.aspx?org_id=" + uxOrganizationsGridRowSelection.SelectedRecordID;
             Window win = new Window
             {
                 ID = "uxShowAccountRangeWindow",

@@ -722,6 +722,10 @@
                                 <Select Handler="if(#{uxGlAccountSecurityGridSelectionModel}.getCount() > 0){#{uxGlAccountDelete}.enable();}else {#{uxGlAccountDelete}.disable();}"></Select>
                                 <Deselect Handler="if(#{uxGlAccountSecurityGridSelectionModel}.getCount() > 0){#{uxGlAccountDelete}.enable();} else {#{uxGlAccountDelete}.disable();}"></Deselect>
                             </Listeners>
+                            <DirectEvents>
+                                <Select OnEvent="deExcludeAccount"><EventMask ShowMask="true"></EventMask></Select>
+                                <Deselect OnEvent="deIncludeAccount"><EventMask ShowMask="true"></EventMask></Deselect>
+                            </DirectEvents>
                         </ext:CheckboxSelectionModel>
                     </SelectionModel>
                     <BottomBar>

@@ -161,5 +161,34 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
 
         }
 
+        protected void deExcludeAccount(object sender, DirectEventArgs e)
+        {
+            CheckboxSelectionModel sm = uxGlAccountSecurityGridSelectionModel;
+
+            //Return data for selected code_combination_id
+            GL_ACCOUNTS_V _accountDetails =  GL_ACCOUNTS_V.AccountInformation(long.Parse(sm.SelectedRecordID));
+            string _org_id = Request.QueryString["org_id"];
+
+            OVERHEAD_GL_ACCOUNT _data = new OVERHEAD_GL_ACCOUNT();
+            _data.INCLUDE_EXCLUDE_FLAG = "E";
+            _data.ORGANIZATION_ID = decimal.Parse(_org_id);
+            _data.SEGMENT1 = _accountDetails.SEGMENT1;
+            _data.SEGMENT2 = _accountDetails.SEGMENT2;
+            _data.SEGMENT3 = _accountDetails.SEGMENT3;
+            _data.SEGMENT4 = _accountDetails.SEGMENT4;
+            _data.SEGMENT5 = _accountDetails.SEGMENT5;
+            _data.SEGMENT6 = _accountDetails.SEGMENT6;
+            _data.SEGMENT7 = _accountDetails.SEGMENT7;
+            GenericData.Insert<OVERHEAD_GL_ACCOUNT>(_data);
+
+            sm.SelectedRows.Clear();
+        }
+
+        protected void deIncludeAccount(object sender, DirectEventArgs e)
+        {
+
+
+        }
+
     }
 }  
