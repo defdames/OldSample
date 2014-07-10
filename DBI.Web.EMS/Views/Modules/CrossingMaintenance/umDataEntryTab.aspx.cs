@@ -59,68 +59,44 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             }
         }
-        //protected void GetApplicationGridData(object sender, DirectEventArgs e)
-        //{
-        //    //Get application data and set datasource
-         
-        //        List<object> data;
-                            
-        //        string json = (e.ExtraParams["crossingId"]);
-        //        List<CrossingForApplicationDetails> crossingList = JSON.Deserialize<List<CrossingForApplicationDetails>>(json);
-        //        List<long>crossingIdList = new List<long>();
-        //        foreach (CrossingForApplicationDetails crossing in crossingList)
-        //        {
-        //            crossingIdList.Add(crossing.CROSSING_ID);
-                   
-        //        }        
-        //                using (Entities _context = new Entities())
-        //                {
 
-        //                    data = (from a in _context.CROSSING_APPLICATION
-        //                            join c in _context.CROSSINGS on a.CROSSING_ID equals c.CROSSING_ID
-        //                            where  crossingIdList.Contains(a.CROSSING_ID)
-        //                            select new { c.CROSSING_NUMBER, a.CROSSING_ID, a.APPLICATION_ID, a.APPLICATION_NUMBER, a.APPLICATION_REQUESTED, a.APPLICATION_DATE, a.TRUCK_NUMBER, a.SPRAY, a.CUT, a.INSPECT, a.REMARKS }).ToList<object>();
+        protected void deLoadData(object sender, DirectEventArgs e)
+        {
+            uxApplicationStore.Reload();
+            uxAddAppButton.Enable();
+        }
 
-
-        //                    uxApplicationEntryGrid.Store.Primary.DataSource = data;
-        //                    uxApplicationEntryGrid.Store.Primary.DataBind();
-
-        //                }
-                  
-                
-            
-        //}
         protected void GetApplicationGridData(object sender, StoreReadDataEventArgs e)
         {
-            //Get application data and set datasource
 
+            //Get application data and set datasource
+            CheckboxSelectionModel sm = CheckboxSelectionModel1;
             List<object> data;
 
-            string json = (e.Parameters["crossingId"]);
-            List<CrossingForApplicationDetails> crossingList = JSON.Deserialize<List<CrossingForApplicationDetails>>(json);
+      
             List<long> crossingIdList = new List<long>();
-            foreach (CrossingForApplicationDetails crossing in crossingList)
+          
+            foreach (SelectedRow sr in sm.SelectedRows)
             {
-                crossingIdList.Add(crossing.CROSSING_ID);
+                {
+                    crossingIdList.Add(long.Parse(sr.RecordID));
+                }
+                using (Entities _context = new Entities())
+                {
+
+                    data = (from a in _context.CROSSING_APPLICATION
+                            join c in _context.CROSSINGS on a.CROSSING_ID equals c.CROSSING_ID
+                            where crossingIdList.Contains(a.CROSSING_ID)
+                            select new { c.CROSSING_NUMBER, a.CROSSING_ID, a.APPLICATION_ID, a.APPLICATION_NUMBER, a.APPLICATION_REQUESTED, a.APPLICATION_DATE, a.TRUCK_NUMBER, a.SPRAY, a.CUT, a.INSPECT, a.REMARKS }).ToList<object>();
+
+
+                    int count;
+                    uxApplicationStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                    e.Total = count;
+
+                }
 
             }
-            using (Entities _context = new Entities())
-            {
-
-                data = (from a in _context.CROSSING_APPLICATION
-                        join c in _context.CROSSINGS on a.CROSSING_ID equals c.CROSSING_ID
-                        where crossingIdList.Contains(a.CROSSING_ID)
-                        select new { c.CROSSING_NUMBER, a.CROSSING_ID, a.APPLICATION_ID, a.APPLICATION_NUMBER, a.APPLICATION_REQUESTED, a.APPLICATION_DATE, a.TRUCK_NUMBER, a.SPRAY, a.CUT, a.INSPECT, a.REMARKS }).ToList<object>();
-
-
-                int count;
-                uxApplicationStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-                e.Total = count;
-
-            }
-
-
-
         }
         protected void deReadGrid(object sender, StoreReadDataEventArgs e)
         {
@@ -158,8 +134,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
       
         protected void deAddApplication(object sender, DirectEventArgs e)
         {
+            CheckboxSelectionModel sm = CheckboxSelectionModel1;
 
-           
                 CROSSING_APPLICATION data;
 
                 //do type conversions
@@ -169,7 +145,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 string Spray = uxAddEntrySprayBox.Value.ToString();
                 string Cut = uxAddEntryCutBox.Value.ToString();
                 string Inspect = uxAddEntryInspectBox.Value.ToString();
-
+            
                 if (uxAddEntrySprayBox.Checked)
                 {
                     Spray = "Y";
@@ -197,10 +173,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     Inspect = "N";
                 }
 
-                string json = (e.ExtraParams["selectedCrossings"]);
-                List<CrossingForApplicationDetails> crossingList = JSON.Deserialize<List<CrossingForApplicationDetails>>(json);
-                foreach (CrossingForApplicationDetails crossing in crossingList)
-                {
+                //string json = (e.ExtraParams["selectedCrossings"]);
+                //List<CrossingForApplicationDetails> crossingList = JSON.Deserialize<List<CrossingForApplicationDetails>>(json);
+                //foreach (CrossingForApplicationDetails crossing in crossingList)
+                foreach (SelectedRow sr in sm.SelectedRows)
+                {   
                     //check for if application requested has been duplicated in the same fiscal year.
 
                     DateTime AppDate = uxAddEntryDate.SelectedDate;
@@ -235,7 +212,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                             data.SPRAY = Spray;
                             data.CUT = Cut;
                             data.INSPECT = Inspect;
-                            data.CROSSING_ID = crossing.CROSSING_ID;
+                            data.CROSSING_ID = long.Parse(sr.RecordID);
+                            //data.CROSSING_ID = crossing.CROSSING_ID;
                             data.CREATE_DATE = DateTime.Now;
                             data.MODIFY_DATE = DateTime.Now;
                             data.CREATED_BY = User.Identity.Name;

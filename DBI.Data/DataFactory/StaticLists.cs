@@ -207,6 +207,18 @@ namespace DBI.Data.DataFactory
                 };
                  }
              }
+        public static object InvoiceChoice
+        {
+            get
+            {
+                return new object[]{
+                    new object[]{"1st Application", "1st Application"},
+                    new object[]{"2nd Application", "2nd Application"},
+                    new object[]{"3rd Application", "3rd Application"},
+                    new object[]{"Supplemental", "Supplemental"},
+                };
+            }
+        }
         public static object PropertyType
              {
                  get
