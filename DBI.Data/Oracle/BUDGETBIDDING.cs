@@ -9,6 +9,9 @@ namespace DBI.Data
 {
     public class BUDGETBIDDING
     {
+        // GOOD
+        #region Main
+
         /// <summary>
         /// Returns a list of budget versions
         /// </summary>
@@ -29,21 +32,26 @@ namespace DBI.Data
             }
         }
 
+        #endregion
+
+        #region Summary
+
         /// <summary>
-        /// Returns a list of actions for the BudgetBidding main year summary
+        /// Returns a list of actions for the year summary
         /// </summary>
         /// <returns></returns>
-        public static List<SingleCombo> YearBudgetSummaryProjectActions()
+        public static List<SingleCombo> YearSummaryProjectActions()
         {
             using (Entities context = new Entities())
             {
                 List<SingleCombo> comboItem = new List<SingleCombo>();
                 comboItem.Add(new SingleCombo { ID_NAME = "Add a New Project" });
-                comboItem.Add(new SingleCombo { ID_NAME = "Delete Selected Project" });
-                comboItem.Add(new SingleCombo { ID_NAME = "Edit Selected Project" });
+                comboItem.Add(new SingleCombo { ID_NAME = "Edit Selected Project" });                 
+                comboItem.Add(new SingleCombo { ID_NAME = "Copy Selected Project" });
+                comboItem.Add(new SingleCombo { ID_NAME = "Delete Selected Project" });            
                 return comboItem;
             }
-        }
+        }                                                                                   //GOOD
 
         /// <summary>
         /// Returns list of projects along with project summary line info for a given org
@@ -190,17 +198,10 @@ namespace DBI.Data
                     SELECT ADJ_ID,
                         CASE WHEN MAT_ADJ IS NOT NULL THEN 'Material Adjustment' ELSE 'Weather Adjustment' END ADJUSTMENT,
                         MAT_ADJ,
-                        WEATHER_ADJ,
-                        'ID1' AS ORDERKEY
+                        WEATHER_ADJ
                     FROM BUD_BID_ADJUSTMENT
-                    WHERE ORG_ID = 1607 AND YEAR_ID = 2005 AND VER_ID = 1
-                            UNION ALL
-                    SELECT 9999 ADJ_ID,
-                        'Overhead' AS ADJUSTMENT,
-                        NULL MAT_ADJ, 50000 WEATHER_ADJ,
-                        'ID2' AS ORDERKEY
-                    FROM DUAL
-                    ORDER BY ORDERKEY, ADJUSTMENT", orgID, yearID, verID);
+                    WHERE ORG_ID = {0} AND YEAR_ID = {1} AND VER_ID = {2}
+                    ORDER BY ADJUSTMENT", orgID, yearID, verID);
 
                 List<BUD_SUMMARY_V> data = context.Database.SqlQuery<BUD_SUMMARY_V>(sql).ToList();
                 return data;
@@ -237,6 +238,31 @@ namespace DBI.Data
                 return data;
             }
         }
+
+        /// <summary>
+        /// Data for overhead gridpanel
+        /// </summary>
+        /// <param name="orgID"></param>
+        /// <param name="yearID"></param>
+        /// <param name="verID"></param>
+        /// <returns></returns>
+        public static List<BUD_SUMMARY_V> OverheadGridData(long orgID, long yearID, long verID)
+        {
+            using (Entities context = new Entities())
+            {
+                string sql = string.Format(@"
+                    SELECT 'Overhead' ADJUSTMENT,
+                        50000 OH
+                    FROM DUAL", orgID, yearID, verID);
+
+                List<BUD_SUMMARY_V> data = context.Database.SqlQuery<BUD_SUMMARY_V>(sql).ToList();
+                return data;
+            }
+        }
+
+        #endregion
+
+        #region Project Detail
 
         /// <summary>
         /// Returns list of projects also containing org and override for a given org
@@ -281,7 +307,7 @@ namespace DBI.Data
         }
 
         /// <summary>
-        /// Returns list of available statuses
+        /// Returns list of statuses
         /// </summary>
         /// <returns></returns>
         public static List<DoubleComboLongID> Statuses()
@@ -289,25 +315,25 @@ namespace DBI.Data
             using (Entities context = new Entities())
             {
                 string sql = "SELECT STATUS_ID ID, STATUS ID_NAME FROM BUD_BID_STATUS ORDER BY STATUS";
-
                 List<DoubleComboLongID> data = context.Database.SqlQuery<DoubleComboLongID>(sql).ToList();
                 return data;
             }
-        }      
+        }                                                                                               //GOOD
         
         /// <summary>
         /// Returns project detail information 
         /// </summary>
         /// <param name="projectID"></param>
         /// <returns></returns>
-        public static BUD_SUMMARY_V SummaryProjectsDetail(long projectID)
+        public static BUD_SUMMARY_V ProjectDetail(long projectID)
         {
             using (Entities context = new Entities())
             {
                 string sql = string.Format(@"
                 SELECT BUD_BID_PROJECTS.PROJECT_ID, BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID, BUD_BID_PROJECTS.TYPE, BUD_BID_PROJECTS.PRJ_NAME PROJECT_NAME, BUD_BID_STATUS.STATUS_ID,
                     BUD_BID_STATUS.STATUS, BUD_BID_PROJECTS.ACRES, BUD_BID_PROJECTS.DAYS, BUD_BID_PROJECTS.APP_TYPE, BUD_BID_PROJECTS.CHEMICAL_MIX, BUD_BID_PROJECTS.COMMENTS,
-                    BUD_BID_PROJECTS.LIABILITY, BUD_BID_PROJECTS.LIABILITY_OP, BUD_BID_PROJECTS.COMPARE_PRJ_OVERRIDE, BUD_BID_PROJECTS.COMPARE_PRJ_AMOUNT
+                    BUD_BID_PROJECTS.LIABILITY, BUD_BID_PROJECTS.LIABILITY_OP, BUD_BID_PROJECTS.COMPARE_PRJ_OVERRIDE, BUD_BID_PROJECTS.COMPARE_PRJ_AMOUNT, BUD_BID_PROJECTS.WE_DATE,
+                    BUD_BID_PROJECTS.WE_OVERRIDE
                 FROM BUD_BID_PROJECTS
                 INNER JOIN BUD_BID_STATUS
                 ON BUD_BID_PROJECTS.STATUS_ID = BUD_BID_STATUS.STATUS_ID
@@ -316,7 +342,12 @@ namespace DBI.Data
                 return context.Database.SqlQuery<BUD_SUMMARY_V>(sql).SingleOrDefault();
              }
         }
-        
+
+        #endregion
+
+        // GOOD
+        #region Other
+
         /// <summary>
         /// Returns true if a project exists for a given org, year and version
         /// </summary>
@@ -325,15 +356,14 @@ namespace DBI.Data
         /// <param name="verID"></param>
         /// <param name="projectID"></param>
         /// <returns></returns>
-        public static bool ProjectExists(long orgID, long yearID, long verID, long projectID)
+        public static bool doesProjectExist(long orgID, long yearID, long verID, long projectID)
         {
             using (Entities context = new Entities())
             {
                 string sql = string.Format(@"
-                SELECT BUD_BID_PROJECTS.PROJECT_ID
-                FROM BUD_BID_PROJECTS
-                WHERE BUD_BID_PROJECTS.ORG_ID = {0} AND BUD_BID_PROJECTS.YEAR_ID  = {1} AND
-                    BUD_BID_PROJECTS.VER_ID = {2} AND BUD_BID_PROJECTS.PROJECT_ID = {3}", orgID, yearID, verID, projectID);
+                    SELECT PROJECT_ID
+                    FROM BUD_BID_PROJECTS
+                    WHERE ORG_ID = {0} AND YEAR_ID = {1} AND VER_ID = {2} AND PROJECT_ID = {3}", orgID, yearID, verID, projectID);
 
                 long recCount = context.Database.SqlQuery<BUD_SUMMARY_V>(sql).Count();
 
@@ -345,6 +375,61 @@ namespace DBI.Data
                 {
                     return true;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Returns true if adjustments exist for a given org, year and version
+        /// </summary>
+        /// <param name="orgID"></param>
+        /// <param name="yearID"></param>
+        /// <param name="verID"></param>
+        /// <returns></returns>
+        public static bool doAdjustmentsExist(long orgID, long yearID, long verID)
+        {
+            using (Entities context = new Entities())
+            {
+                string sql = string.Format(@"
+                    SELECT ADJ_ID
+                    FROM BUD_BID_ADJUSTMENT
+                    WHERE ORG_ID = {0} AND YEAR_ID  = {1} AND VER_ID = {2}", orgID, yearID, verID);
+
+                long recCount = context.Database.SqlQuery<BUD_SUMMARY_V>(sql).Count();
+
+                if (recCount == 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+
+        #endregion
+
+
+
+
+
+
+        // DO!!!!
+        public static BUD_START_OR_END_NUMS_V SummaryProjectsStartOrEndNums(string tableName, long projectID)
+        {
+            using (Entities context = new Entities())
+            {
+                string sql = string.Format(@"
+                SELECT * FROM (
+                    SELECT {0}.PROJECT_ID, LINE_ID, NOV
+                    FROM {0}
+                    LEFT JOIN BUD_BID_DETAIL_TASK ON {0}.DETAIL_TASK_ID = BUD_BID_DETAIL_TASK.DETAIL_TASK_ID
+                    WHERE BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT' AND {0}.PROJECT_ID = {1})
+                PIVOT(
+                    SUM(NOV) FOR (LINE_ID)
+                    IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))", tableName, projectID);
+
+                return context.Database.SqlQuery<BUD_START_OR_END_NUMS_V>(sql).SingleOrDefault();
             }
         }
 
@@ -381,7 +466,20 @@ namespace DBI.Data
             public long ADJ_ID { get; set; }
             public string ADJUSTMENT { get; set; }
             public decimal? MAT_ADJ { get; set; }
-            public decimal? DIRECT_ADJ { get; set; }
+            public decimal? WEATHER_ADJ { get; set; }
+            public decimal? OH { get; set; }
+            public DateTime? WE_DATE { get; set; }
+            public string WE_OVERRIDE { get; set; }
+        }
+
+        public class BUD_START_OR_END_NUMS_V
+        {
+            public long PROJECT_ID { get; set; }
+            public decimal GROSS_REC { get; set; }
+            public decimal MAT_USAGE { get; set; }
+            public decimal GROSS_REV { get; set; }
+            public decimal DIR_EXP { get; set; }
+            public decimal OP { get; set; }            
         }
     }
 }

@@ -60,12 +60,14 @@
     </style>
     <script type="text/javascript">
         var isEditAdjustmentAllowed = function (e) {
-            if (e.originalValue == null || e.record.data.ADJUSTMENT == "Overhead") {
+            if (e.originalValue == null) {
                 return false;
             }
         }
         var editAdjustment = function (editor, e) {
-            SaveRecord.deSaveAdjustments(e.record.data.ADJ_ID, e.field, e.value);
+            if (e.originalValue != e.value) {
+                SaveRecord.deSaveAdjustments(e.record.data.ADJ_ID, e.field, e.value);
+            }
         }
     </script>
 </head>
@@ -102,11 +104,9 @@
                                     </Proxy>
                                 </ext:Store>
                             </Store>
-                            <Listeners>
-                                <Activate Handler="#{uxActionsStore}.store.reload();" />
-                            </Listeners>
                             <DirectEvents>
                                 <Select OnEvent="deChooseSummaryAction">
+                                    <EventMask ShowMask="true" Msg="Please wait..." />
                                 </Select>
                             </DirectEvents>
                         </ext:ComboBox>
@@ -136,11 +136,9 @@
                                     </Proxy>
                                 </ext:Store>
                             </Store>
-                            <Listeners>
-                                <Activate Handler="#{uxSummaryReportsStore}.store.reload();" />
-                            </Listeners>
                             <%--<DirectEvents>
                                 <Select OnEvent="deChooseReport">
+                                <EventMask ShowMask="true" Msg="Please wait..." />
                                 </Select>
                             </DirectEvents>--%>
                         </ext:ComboBox>
@@ -215,11 +213,13 @@
                                 <ext:Parameter Name="ProjectNum" Value="#{uxSummaryGrid}.getSelectionModel().getSelection()[0].data.PROJECT_NUM" Mode="Raw" />
                                 <ext:Parameter Name="ProjectName" Value="#{uxSummaryGrid}.getSelectionModel().getSelection()[0].data.PROJECT_NAME" Mode="Raw" />
                             </ExtraParams>
+                            <EventMask ShowMask="true" />
                         </Select>
-                        <ItemDblClick OnEvent="deAllowFormEditing">
+                        <ItemDblClick OnEvent="deFormEditingAllowed">
                             <ExtraParams>
                                 <ext:Parameter Name="BudBidProjectID" Value="#{uxSummaryGrid}.getSelectionModel().getSelection()[0].data.BUD_BID_PROJECTS_ID" Mode="Raw" />
                             </ExtraParams>
+                            <EventMask ShowMask="true" Msg="Opening..." />
                         </ItemDblClick>
                     </DirectEvents>
                     <DockedItems>
@@ -304,27 +304,25 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column15" runat="server" DataIndex="ADJUSTMENT" Text="Project Name" Flex="6" />
-                            <ext:Column ID="Column21" runat="server" DataIndex="STATUS" Text="Status" Flex="2" />
-                            <ext:NumberColumn ID="Column22" runat="server" DataIndex="ACRES" Text="Acres" Flex="1" Align="Right" />
-                            <ext:NumberColumn ID="Column23" runat="server" DataIndex="DAYS" Text="Days" Flex="1" Align="Right" />
-                            <ext:NumberColumn ID="Column24" runat="server" DataIndex="GROSS_REC" Text="Gross Receipts" Flex="2" Align="Right" />
-                            <ext:NumberColumn ID="Column25" runat="server" DataIndex="MAT_ADJ" Text="Material Usage" Flex="2" Align="Right">
+                            <ext:Column ID="Column15" runat="server" DataIndex="ADJUSTMENT" Text="Adjustment" Flex="6" />
+                            <ext:Column ID="Column21" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" />
+                            <ext:NumberColumn ID="Column22" runat="server" DataIndex="BLANK" Text="Blank" Flex="1" Align="Right" />
+                            <ext:NumberColumn ID="Column23" runat="server" DataIndex="BLANK" Text="Blank" Flex="1" Align="Right" />
+                            <ext:NumberColumn ID="Column24" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="Column25" runat="server" DataIndex="MAT_ADJ" Text="Material" Flex="2" Align="Right">
                                 <Editor>
                                     <ext:NumberField ID="NumberField2" runat="server" AllowBlank="false" />
                                 </Editor>
                             </ext:NumberColumn>
-                            <ext:NumberColumn ID="Column26" runat="server" DataIndex="GROSS_REV" Text="Gross Revenue" Flex="2" Align="Right" />
-                            <ext:NumberColumn ID="Column27" runat="server" DataIndex="WEATHER_ADJ" Text="Direct Expenses" Flex="2" Align="Right">
+                            <ext:NumberColumn ID="Column26" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="Column27" runat="server" DataIndex="WEATHER_ADJ" Text="Weather" Flex="2" Align="Right">
                                 <Editor>
                                     <ext:NumberField ID="NumberField1" runat="server" AllowBlank="false" />
                                 </Editor>
                             </ext:NumberColumn>
-                            <ext:NumberColumn ID="Column28" runat="server" DataIndex="OP" Text="OP" Flex="2" Align="Right" />
-                            <ext:Column ID="Column29" runat="server" DataIndex="OP_PERC" Text="OP %" Flex="2" Align="Right">
-                                <Renderer Fn="Ext.util.Format.numberRenderer('0,000.00 %')" />
-                            </ext:Column>
-                            <ext:NumberColumn ID="Column30" runat="server" DataIndex="OP_VAR" Text="OP +/-" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="Column28" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
+                            <ext:Column ID="Column29" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="Column30" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                         </Columns>
                     </ColumnModel>
                     <Plugins>
@@ -357,9 +355,70 @@
                     </DockedItems>
                 </ext:GridPanel>
 
+                <ext:GridPanel ID="uxOverheadGrid" runat="server" Region="North" HideHeaders="true" Flex="1">
+                    <SelectionModel>
+                        <ext:RowSelectionModel ID="uxOverheadGridRowModel" runat="server" AllowDeselect="false" Mode="Single" />
+                    </SelectionModel>
+                    <Store>
+                        <ext:Store runat="server"
+                            ID="uxOverheadGridStore"
+                            OnReadData="deReadOverheadGridData"
+                            AutoDataBind="true"
+                            WarningOnDirty="false">
+                            <Model>
+                                <ext:Model ID="Model10" runat="server">
+                                    <Fields>
+                                        <ext:ModelField Name="ADJUSTMENT" />
+                                        <ext:ModelField Name="OH" />
+                                    </Fields>
+                                </ext:Model>
+                            </Model>
+                            <Proxy>
+                                <ext:PageProxy />
+                            </Proxy>
+                        </ext:Store>
+                    </Store>
+                    <ColumnModel>
+                        <Columns>
+                            <ext:Column ID="Column31" runat="server" DataIndex="ADJUSTMENT" Text="Adjustment" Flex="6" />
+                            <ext:Column ID="Column32" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" />
+                            <ext:NumberColumn ID="NumberColumn1" runat="server" DataIndex="BLANK" Text="Blank" Flex="1" Align="Right" />
+                            <ext:NumberColumn ID="NumberColumn2" runat="server" DataIndex="BLANK" Text="Blank" Flex="1" Align="Right" />
+                            <ext:NumberColumn ID="NumberColumn3" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="NumberColumn4" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right">
+                            </ext:NumberColumn>
+                            <ext:NumberColumn ID="NumberColumn5" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="NumberColumn6" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right">
+                            </ext:NumberColumn>
+                            <ext:NumberColumn ID="NumberColumn7" runat="server" DataIndex="OH" Text="Overhead" Flex="2" Align="Right" />
+                            <ext:Column ID="Column33" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="NumberColumn8" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
+                        </Columns>
+                    </ColumnModel>
+                    <DockedItems>
+                        <ext:FieldContainer ID="FieldContainer19" runat="server" Layout="HBoxLayout" Dock="Bottom" Cls="grandTotalBackground">
+                            <Items>
+                                <ext:DisplayField ID="DisplayField32" runat="server" Width="10" />
+                                <ext:DisplayField ID="DisplayField33" runat="server" Text="Net Contribution:" Flex="6" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="DisplayField34" runat="server" Text="" Flex="2" />
+                                <ext:DisplayField ID="DisplayField35" runat="server" Text="" Flex="1" />
+                                <ext:DisplayField ID="DisplayField36" runat="server" Text="" Flex="1" />
+                                <ext:DisplayField ID="DisplayField37" runat="server" Text="" Flex="2" />
+                                <ext:DisplayField ID="DisplayField38" runat="server" Text="" Flex="2" />
+                                <ext:DisplayField ID="DisplayField39" runat="server" Text="" Flex="2" />
+                                <ext:DisplayField ID="DisplayField40" runat="server" Text="" Flex="2" />
+                                <ext:DisplayField ID="DisplayField41" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="DisplayField42" runat="server" Text="" Flex="2" />
+                                <ext:DisplayField ID="DisplayField43" runat="server" Text="" Flex="2" />
+                                <ext:DisplayField ID="DisplayField44" runat="server" Width="20" />
+                            </Items>
+                        </ext:FieldContainer>
+                    </DockedItems>
+                </ext:GridPanel>
+
 
                 <%-------------------------------------------------- Bottom Form Panel --------------------------------------------------%>
-                <ext:FormPanel ID="uxProjectDetail"
+                <ext:FormPanel ID="uxProjectInfo"
                     runat="server"
                     Region="Center"
                     Flex="10"
@@ -378,7 +437,7 @@
                                     </Listeners>
                                     <Component>
                                         <ext:GridPanel runat="server"
-                                            ID="uxProjectInfo"
+                                            ID="uxProjectList"
                                             Width="500"
                                             Layout="HBoxLayout"
                                             Frame="true"
@@ -420,10 +479,10 @@
                                             <DirectEvents>
                                                 <SelectionChange OnEvent="deSelectProject">
                                                     <ExtraParams>
-                                                        <ext:Parameter Name="ProjectID" Value="#{uxProjectInfo}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
-                                                        <ext:Parameter Name="ProjectNum" Value="#{uxProjectInfo}.getSelectionModel().getSelection()[0].data.PROJECT_NUM" Mode="Raw" />
-                                                        <ext:Parameter Name="ProjectName" Value="#{uxProjectInfo}.getSelectionModel().getSelection()[0].data.PROJECT_NAME" Mode="Raw" />
-                                                        <ext:Parameter Name="Type" Value="#{uxProjectInfo}.getSelectionModel().getSelection()[0].data.TYPE" Mode="Raw" />
+                                                        <ext:Parameter Name="ProjectID" Value="#{uxProjectList}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
+                                                        <ext:Parameter Name="ProjectNum" Value="#{uxProjectList}.getSelectionModel().getSelection()[0].data.PROJECT_NUM" Mode="Raw" />
+                                                        <ext:Parameter Name="ProjectName" Value="#{uxProjectList}.getSelectionModel().getSelection()[0].data.PROJECT_NAME" Mode="Raw" />
+                                                        <ext:Parameter Name="Type" Value="#{uxProjectList}.getSelectionModel().getSelection()[0].data.TYPE" Mode="Raw" />
                                                     </ExtraParams>
                                                     <EventMask ShowMask="true" />
                                                 </SelectionChange>
@@ -515,9 +574,6 @@
                                             </Proxy>
                                         </ext:Store>
                                     </Store>
-                                    <Listeners>
-                                        <Activate Handler="#{uxStatusStore}.store.reload();" />
-                                    </Listeners>
                                     <DirectEvents>
                                         <Select OnEvent="deSelectStatus" />
                                         <Select OnEvent="deCheckAllowSave" />
@@ -641,9 +697,6 @@
                                                     </Proxy>
                                                 </ext:Store>
                                             </Store>
-                                            <Listeners>
-                                                <Activate Handler="#{uxJCDateStore}.store.reload();" />
-                                            </Listeners>
                                             <DirectEvents>
                                                 <Select OnEvent="deSelectJCDate">
                                                     <EventMask ShowMask="true" />
@@ -806,13 +859,17 @@
                                 <ext:Label ID="Label3" runat="server" Width="770" />
                                 <ext:Button ID="uxSave" runat="server" Text="Save" Icon="Add" Width="75">
                                     <DirectEvents>
-                                        <Click OnEvent="deSave" />
+                                        <Click OnEvent="deSave">
+                                            <EventMask ShowMask="true" Msg="Saving..." />
+                                        </Click>
                                     </DirectEvents>
                                 </ext:Button>
                                 <ext:Label ID="Label16" runat="server" Width="5" />
                                 <ext:Button ID="uxCancel" runat="server" Text="Cancel" Icon="Delete" Width="75">
                                     <DirectEvents>
-                                        <Click OnEvent="deCancel" />
+                                        <Click OnEvent="deCancel">
+                                            <EventMask ShowMask="true" Msg="Cancelling..." />
+                                        </Click>
                                     </DirectEvents>
                                 </ext:Button>
                             </Items>
@@ -834,6 +891,7 @@
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
+                                <ext:Label ID="Label39" runat="server" Width="100" Text="uxHidInfoEnabled" Cls="labelCenterAlign" />
                                 <ext:Label ID="Label19" runat="server" Width="100" Text="uxHidNewProject" Cls="labelCenterAlign" />
                                 <ext:Label ID="Label22" runat="server" Width="100" Text="uxHidBudBidID" Cls="labelCenterAlign" />
                                 <ext:Label ID="Label24" runat="server" Width="100" Text="uxHidProjectNumID" Cls="labelCenterAlign" />
@@ -847,6 +905,7 @@
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
+                                <ext:TextField ID="uxHidInfoEnabled" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidNewProject" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidBudBidID" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidProjectNumID" runat="server" Width="100" />
@@ -861,7 +920,8 @@
                 <%-- Uncomment to Use --%>
 
                 <%-- Comment to Use --%>
-                <%--<ext:Hidden ID="uxHidNewProject" runat="server" />
+                <%--<ext:Hidden ID="uxHidInfoEnabled" runat="server" />
+                <ext:Hidden ID="uxHidNewProject" runat="server" />
                 <ext:Hidden ID="uxHidBudBidID" runat="server" />
                 <ext:Hidden ID="uxHidProjectNumID" runat="server" />
                 <ext:Hidden ID="uxHidType" runat="server" />

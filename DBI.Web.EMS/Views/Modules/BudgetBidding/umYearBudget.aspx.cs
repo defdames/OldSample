@@ -13,24 +13,48 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 {
     public partial class umYearBudget : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e)        
+        protected void Page_Load(object sender, EventArgs e)
         {
             if (!X.IsAjaxRequest)
             {
+                long orgID = long.Parse(Request.QueryString["OrgID"]);
                 long yearID = long.Parse(Request.QueryString["fiscalYear"]);
                 long verID = long.Parse(Request.QueryString["verID"]);
 
                 uxHidPrevYear.Text = CalcPrevYear(yearID, verID).ToString();
-                uxHidPrevVer.Text = CalcPrevVer(yearID, verID).ToString();
+                uxHidPrevVer.Text = CalcPrevVer(yearID, verID).ToString(); 
+  
+                // Create adjustment records for org if currently do not exist
+                if (BUDGETBIDDING.doAdjustmentsExist(orgID, yearID, verID) == false)
+                {
+                    BUD_BID_ADJUSTMENT data = new BUD_BID_ADJUSTMENT();
 
-                CalcSummaryTotals();
+                    data.ORG_ID = orgID;
+                    data.YEAR_ID = yearID;
+                    data.VER_ID = verID;
+                    data.MAT_ADJ = 0;
+                    data.WEATHER_ADJ = null;
+                    data.CREATE_DATE = DateTime.Now;
+                    data.CREATED_BY = User.Identity.Name;
+                    data.MODIFY_DATE = DateTime.Now;
+                    data.MODIFIED_BY = User.Identity.Name;
+                    GenericData.Insert<BUD_BID_ADJUSTMENT>(data);
+
+                    data.MAT_ADJ = null;
+                    data.WEATHER_ADJ = 0;
+                    GenericData.Insert<BUD_BID_ADJUSTMENT>(data);
+                }
+
+                //CalcSummaryTotals();
             }
-        }
+        }                                           // GOOD
+
+        #region Actions
 
         protected void deLoadSummaryActions(object sender, StoreReadDataEventArgs e)
         {
-            uxActionsStore.DataSource = BUDGETBIDDING.YearBudgetSummaryProjectActions();
-        }
+            uxActionsStore.DataSource = BUDGETBIDDING.YearSummaryProjectActions();
+        }                           // GOOD
 
         protected void deChooseSummaryAction(object sender, DirectEventArgs e)
         {
@@ -42,32 +66,44 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     ActionAddNewProject();
                     break;
 
+                case "Edit Selected Project":
+                    EditSelectedProject(false);
+                    break;
+
+                case "Copy Selected Project":                    
+                    break;    
+
                 case "Delete Selected Project":
                     ActionDeleteSelectedProject();                    
                     break;
-
-                case "Edit Selected Project":
-                    EditSelectedProject(false);
-                    break;    
             }
 
             uxActions.Text = null;
-        }
+        }                               // GOOD
 
         protected void ActionAddNewProject()
         {
-            if (uxHidNewProject.Text == "True") { return; }
+            if (uxHidInfoEnabled.Text == "True") { return; }  //  Must do this since Ext Enabled/Disabled property doesn't work correctly.
 
             uxGridRowModel.ClearSelection();
-            uxProjectDetail.Reset();            
+
+            uxProjectInfo.Reset();
+            uxProjectName.ReadOnly = true;
+            uxJCDate.Enable();
+            uxSGrossRec.ReadOnly = true;
+            uxSMatUsage.ReadOnly = true;
+            uxSDirects.ReadOnly = true;
+            uxSave.Disable();
+
             uxHidNewProject.Text = "True";
             uxHidBudBidID.Text = "";
             uxHidProjectNumID.Text = "";
             uxHidType.Text = "";
             uxHidStatusID.Text = "";
-            uxProjectDetail.Enable();
-            uxSave.Disable();
-        }
+            
+            uxProjectInfo.Enable();
+            uxHidInfoEnabled.Text = "True";
+        }                                                               // GOOD
 
         protected void ActionDeleteSelectedProject()
         {
@@ -84,7 +120,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 Yes = new MessageBoxButtonConfig { Handler = "App.direct.DeleteSelectedProject()", Text = "Yes" },
                 No = new MessageBoxButtonConfig { Text = "No" }
             }).Show();
-        }
+        }                                                       // GOOD
 
         [DirectMethod]
         public void DeleteSelectedProject()
@@ -92,6 +128,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             long budBidID = Convert.ToInt64(uxHidBudBidID.Text);
 
             BUD_BID_PROJECTS projectData;
+            BUD_BID_DETAIL_TASK taskData;
             List<BUD_BID_ACTUAL_NUM> actualData;
             List<BUD_BID_BUDGET_NUM> budgetData;
 
@@ -100,43 +137,49 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 projectData = _context.BUD_BID_PROJECTS.Where(x => x.BUD_BID_PROJECTS_ID == budBidID).Single();
                 actualData = _context.BUD_BID_ACTUAL_NUM.Where(x => x.PROJECT_ID == budBidID).ToList();
                 budgetData = _context.BUD_BID_BUDGET_NUM.Where(x => x.PROJECT_ID == budBidID).ToList();
+                taskData = _context.BUD_BID_DETAIL_TASK.Where(x => x.PROJECT_ID == budBidID).Single();
             }
 
             GenericData.Delete<BUD_BID_PROJECTS>(projectData);
             GenericData.Delete<BUD_BID_ACTUAL_NUM>(actualData);
             GenericData.Delete<BUD_BID_BUDGET_NUM>(budgetData);
+            GenericData.Delete<BUD_BID_DETAIL_TASK>(taskData);
 
-            uxProjectDetail.Disable();
-            uxProjectDetail.Reset();
+            uxProjectInfo.Disable();
+            uxHidInfoEnabled.Text = "";
+            uxProjectInfo.Reset();
             uxHidNewProject.Text = "";
             uxHidBudBidID.Text = "";
             uxHidProjectNumID.Text = "";
             uxHidType.Text = "";
             uxHidStatusID.Text = "";
             uxSummaryGridStore.Reload();
-            CalcSummaryTotals();
-        }
+            
+            //CalcSummaryTotals();
+        }                                                                      
 
-        protected void deAllowFormEditing(object sender, DirectEventArgs e)
-        {
+        protected void deFormEditingAllowed(object sender, DirectEventArgs e)
+        {            
             string budBidprojectID = e.ExtraParams["BudBidProjectID"];
-
+            uxHidBudBidID.Text = budBidprojectID;
             EditSelectedProject(true);
-        }
+        }                               // GOOD
 
         protected void EditSelectedProject(bool doubleClick)
         {
-            if (uxHidNewProject.Text == "True") { return; }
-
             if (doubleClick == false && uxHidBudBidID.Text == "")
             {
                 StandardMsgBox("Edit", "A project must be selected before it can be edited.", "INFO");
                 return;
-            }
+            }            
+            
+            uxProjectInfo.Enable();
+            uxHidInfoEnabled.Text = "True";
+        }                                             
 
-            uxProjectDetail.Enable();
-            uxSave.Enable();
-        }
+        #endregion
+
+        #region Load Summary
 
         protected void deReadSummaryGridData(object sender, StoreReadDataEventArgs e)
         {
@@ -158,6 +201,19 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
             uxAdjustmentGridStore.DataSource = BUDGETBIDDING.AdjustmentGridData(orgID, yearID, verID);
         }
+
+        protected void deReadOverheadGridData(object sender, StoreReadDataEventArgs e)
+        {
+            long orgID = long.Parse(Request.QueryString["OrgID"]);
+            long yearID = long.Parse(Request.QueryString["fiscalYear"]);
+            long verID = long.Parse(Request.QueryString["verID"]);
+
+            uxOverheadGridStore.DataSource = BUDGETBIDDING.OverheadGridData(orgID, yearID, verID);
+        }
+        
+        #endregion
+        
+        #region Load Project Info
 
         protected void deLoadOrgProjects(object sender, StoreReadDataEventArgs e)
         {
@@ -183,14 +239,43 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void deGetFormData(object sender, DirectEventArgs e)
         {
-            if (uxProjectDetail.Enabled == true) { uxProjectDetail.Disable(); }
+            uxProjectInfo.Disable();
+            uxHidInfoEnabled.Text = "";
 
             string budBidprojectID = e.ExtraParams["BudBidProjectID"];
             string projectNumID = e.ExtraParams["ProjectNumID"];
             string type = e.ExtraParams["Type"];
-            string projectNum = e.ExtraParams["ProjectNum"];            
+            string projectNum = e.ExtraParams["ProjectNum"];
             string projectName = e.ExtraParams["ProjectName"];
-            BUDGETBIDDING.BUD_SUMMARY_V data = BUDGETBIDDING.SummaryProjectsDetail(Convert.ToInt64(budBidprojectID));
+            BUDGETBIDDING.BUD_SUMMARY_V data = BUDGETBIDDING.ProjectDetail(Convert.ToInt64(budBidprojectID));
+            string weOverride = data.WE_OVERRIDE;
+
+            // Enable or disable fields based on loaded field values
+            if (projectNum == "-- OVERRIDE --")
+            {
+                uxProjectName.ReadOnly = false;
+                uxJCDate.Disable();
+                uxSGrossRec.ReadOnly = false;
+                uxSMatUsage.ReadOnly = false;
+                uxSDirects.ReadOnly = false;
+            }
+            else
+            {
+                uxProjectName.ReadOnly = true;
+                uxJCDate.Enable();
+                if (weOverride == "Y")
+                {
+                    uxSGrossRec.ReadOnly = false;
+                    uxSMatUsage.ReadOnly = false;
+                    uxSDirects.ReadOnly = false;
+                }
+                else
+                {
+                    uxSGrossRec.ReadOnly = true;
+                    uxSMatUsage.ReadOnly = true;
+                    uxSDirects.ReadOnly = true;
+                }
+            }
 
             uxHidNewProject.Text = "";
             uxHidBudBidID.Text = budBidprojectID;
@@ -210,8 +295,68 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxLiabilityCheckbox.Checked = data.LIABILITY == "Y" ? true : false;
             uxLiabilityAmount.Text = String.Format("{0:N2}", data.LIABILITY_OP);
             uxAppType.Text = data.APP_TYPE;
-            uxChemMix.Text = data.CHEMICAL_MIX;       
+            uxChemMix.Text = data.CHEMICAL_MIX;            
+            if (weOverride == "Y")
+            {
+                uxJCDate.Text = "-- OVERRIDE --";
+            }
+            else
+            {
+                uxJCDate.Text = data.WE_DATE == null ? null : data.WE_DATE.Value.ToString("dd-MMM-yyyy");
+            }            
+
+            BUDGETBIDDING.BUD_START_OR_END_NUMS_V data1 = BUDGETBIDDING.SummaryProjectsStartOrEndNums("BUD_BID_ACTUAL_NUM", Convert.ToInt64(budBidprojectID));
+            uxSGrossRec.Text = String.Format("{0:N2}", data1.GROSS_REC);
+            uxSMatUsage.Text = String.Format("{0:N2}", data1.MAT_USAGE);
+            uxSGrossRev.Text = String.Format("{0:N2}", data1.GROSS_REV);
+            uxSDirects.Text = String.Format("{0:N2}", data1.DIR_EXP);
+            uxSOP.Text = String.Format("{0:N2}", data1.OP);
+
+            BUDGETBIDDING.BUD_START_OR_END_NUMS_V data2 = BUDGETBIDDING.SummaryProjectsStartOrEndNums("BUD_BID_BUDGET_NUM", Convert.ToInt64(budBidprojectID));
+            uxEGrossRec.Text = String.Format("{0:N2}", data2.GROSS_REC);
+            uxEMatUsage.Text = String.Format("{0:N2}", data2.MAT_USAGE);
+            uxEGrossRev.Text = String.Format("{0:N2}", data2.GROSS_REV);
+            uxEDirects.Text = String.Format("{0:N2}", data2.DIR_EXP);
+            uxEOP.Text = String.Format("{0:N2}", data2.OP);
         }
+
+        protected void deReadDetailGridData(object sender, StoreReadDataEventArgs e)
+        {
+            List<DetailStruct> list = new List<DetailStruct> 
+            {
+                    new DetailStruct(1, "Test Sheet 1", 10000, 2000, 8000, 1000, 7000),
+                    new DetailStruct(2, "Test Sheet 2", 10000, 2000, 8000, 1000, 7000),
+                    new DetailStruct(3, "Test Sheet 3", 10000, 2000, 8000, 1000, 7000),
+                    new DetailStruct(4, "Test Sheet 4", 10000, 2000, 8000, 1000, 7000)
+            };
+            uxSummaryDetailStore.DataSource = list;
+        }
+
+        class DetailStruct  // DELETE WHEN GETTING DATA FROM CORRECT SOURCE
+        {
+            public long DETAIL_SHEET_ID { get; set; }
+            public string SHEET_NAME { get; set; }
+            public decimal GROSS_REC { get; set; }
+            public decimal MAT_USAGE { get; set; }
+            public decimal GROSS_REV { get; set; }
+            public decimal DIR_EXP { get; set; }
+            public decimal OP { get; set; }
+
+            public DetailStruct(long id, string sheet, decimal grRec, decimal mat, decimal grRev, decimal dirs, decimal proOP)
+            {
+                DETAIL_SHEET_ID = id;
+                SHEET_NAME = sheet;
+                GROSS_REC = grRec;
+                MAT_USAGE = mat;
+                GROSS_REV = grRev;
+                DIR_EXP = dirs;
+                OP = proOP;
+            }
+        }
+
+        #endregion
+
+        #region Project Form
 
         protected void deSelectProject(object sender, DirectEventArgs e)
         {
@@ -325,40 +470,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxEOP.Text = String.Format("{0:N2}", jcLine.FY_TOP);
         }
 
-        protected void deReadDetailGridData(object sender, StoreReadDataEventArgs e)
-        {
-            List<DetailStruct> list = new List<DetailStruct> 
-            {
-                    new DetailStruct(1, "Test Sheet 1", 10000, 2000, 8000, 1000, 7000),
-                    new DetailStruct(2, "Test Sheet 2", 10000, 2000, 8000, 1000, 7000),
-                    new DetailStruct(3, "Test Sheet 3", 10000, 2000, 8000, 1000, 7000),
-                    new DetailStruct(4, "Test Sheet 4", 10000, 2000, 8000, 1000, 7000)
-            };
-            uxSummaryDetailStore.DataSource = list;
-        }
-
-        class DetailStruct  // DELETE WHEN GETTING DATA FROM CORRECT SOURCE
-        {
-            public long DETAIL_SHEET_ID { get; set; }
-            public string SHEET_NAME { get; set; }
-            public decimal GROSS_REC { get; set; }
-            public decimal MAT_USAGE { get; set; }
-            public decimal GROSS_REV { get; set; }
-            public decimal DIR_EXP { get; set; }
-            public decimal OP { get; set; }
-
-            public DetailStruct(long id, string sheet, decimal grRec, decimal mat, decimal grRev, decimal dirs, decimal proOP)
-            {
-                DETAIL_SHEET_ID = id;
-                SHEET_NAME = sheet;
-                GROSS_REC = grRec;
-                MAT_USAGE = mat;
-                GROSS_REV = grRev;
-                DIR_EXP = dirs;
-                OP = proOP;
-            }
-        }
-
         protected void deLiabilityCheck(object sender, DirectEventArgs e)
         {
             if (uxLiabilityCheckbox.Checked == true)
@@ -385,7 +496,11 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 uxSave.Enable();
             }
         }
-   
+
+        #endregion
+
+        #region Save Project
+
         protected void deSave(object sender, DirectEventArgs e)
         {
             long orgID = long.Parse(Request.QueryString["OrgID"]);
@@ -395,7 +510,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
             if (uxHidNewProject.Text == "True")
             {
-                if (BUDGETBIDDING.ProjectExists(orgID, yearID, verID, projectID) == false)
+                if (BUDGETBIDDING.doesProjectExist(orgID, yearID, verID, projectID) == false)
                 {
                     SaveInsertNewRecord();
                 }
@@ -412,9 +527,9 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 SaveUpdateExistingRecord();
             }
 
-            NotificationMsg("Save", "Project has been saved.", Icon.DiskBlack);
             //uxProjectFilter.ClearFilter();  //  FIX
-            uxProjectDetail.Disable();
+            uxProjectInfo.Disable();
+            uxHidInfoEnabled.Text = "";
             uxSummaryGridStore.Reload();
             CalcSummaryTotals();
             uxHidNewProject.Text = "";
@@ -422,22 +537,29 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxHidProjectNumID.Text = "";
             uxHidType.Text = "";
             uxHidStatusID.Text = "";
-            uxProjectDetail.Reset();
+            uxProjectInfo.Reset();
         }
-
+   
         protected void SaveInsertNewRecord()
         {
-            BUD_BID_PROJECTS projectData = ProjectFormDetailData(true);
-
+            BUD_BID_PROJECTS projectData = ProjectFormDetailData(true);     
             GenericData.Insert<BUD_BID_PROJECTS>(projectData);            
 
-            // Get created project id from BUD_BID_PROJECTS table
+            // Get newly created project id from BUD_BID_PROJECTS table
             long budBidID = Convert.ToInt64(projectData.BUD_BID_PROJECTS_ID);
             uxHidBudBidID.Text = budBidID.ToString();
 
-            GenericData.Insert<BUD_BID_DETAIL_TASK>(ProjectDetailSheetData(budBidID));
-            GenericData.Insert<BUD_BID_ACTUAL_NUM>(ProjectFormStartData(true, budBidID));
-            GenericData.Insert<BUD_BID_BUDGET_NUM>(ProjectFormEndData(true, budBidID));
+            BUD_BID_DETAIL_TASK taskData = ProjectDetailSheetData(budBidID);
+            GenericData.Insert<BUD_BID_DETAIL_TASK>(taskData);
+
+            // Get newly created task id from BUD_BID_DETAIL_TASK table
+            long detailTaskID = Convert.ToInt64(taskData.DETAIL_TASK_ID);
+
+            List<BUD_BID_ACTUAL_NUM> startData = ProjectFormStartData(true, budBidID, detailTaskID);
+            GenericData.Insert<BUD_BID_ACTUAL_NUM>(startData);
+
+            List<BUD_BID_BUDGET_NUM> endData = ProjectFormEndData(true, budBidID, detailTaskID);
+            GenericData.Insert<BUD_BID_BUDGET_NUM>(endData);
         }
 
         protected void SaveUpdateExistingRecord()
@@ -451,7 +573,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             GenericData.Update<BUD_BID_ACTUAL_NUM>(startData);
             GenericData.Update<BUD_BID_BUDGET_NUM>(endData);          
         }
-
+        
         protected BUD_BID_PROJECTS ProjectFormDetailData(bool insert, long budBidID = 0)
         {
             BUD_BID_PROJECTS data;
@@ -501,6 +623,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             data.LIABILITY_OP = Convert.ToDecimal(uxLiabilityAmount.Text);
             data.COMPARE_PRJ_OVERRIDE = uxCompareOverride.Checked == true ? "Y" : "N";
             data.COMPARE_PRJ_AMOUNT = Convert.ToDecimal(uxCompareOP.Text);
+            if (insert == true)
+            {
+                data.CREATE_DATE = DateTime.Now;
+                data.CREATED_BY = User.Identity.Name;
+            }
+            data.MODIFY_DATE = DateTime.Now;
+            data.MODIFIED_BY = User.Identity.Name;
 
             return data;
         }
@@ -510,13 +639,17 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             BUD_BID_DETAIL_TASK data = new BUD_BID_DETAIL_TASK();
             
             data.PROJECT_ID = Convert.ToInt64(uxHidBudBidID.Text);
-            data.DETAIL_NAME = "SYS_PROJECT";
+            data.DETAIL_NAME = "SYS_PROJECT";            
             data.SHEET_ORDER = 0;
+            data.CREATE_DATE = DateTime.Now;
+            data.CREATED_BY = User.Identity.Name;
+            data.MODIFY_DATE = DateTime.Now;
+            data.MODIFIED_BY = User.Identity.Name;
 
             return data;
         }
 
-        protected List<BUD_BID_ACTUAL_NUM> ProjectFormStartData(bool insert, long budBidID)
+        protected List<BUD_BID_ACTUAL_NUM> ProjectFormStartData(bool insert, long budBidID, long detailTaskID = 0)
         {
             List<BUD_BID_ACTUAL_NUM> data;
 
@@ -543,9 +676,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     data.Add(new BUD_BID_ACTUAL_NUM
                     {
                         PROJECT_ID = budBidID,
-                        DETAIL_TASK_ID = 9999,
+                        DETAIL_TASK_ID = detailTaskID,
                         LINE_ID = arrLineNum[i],
-                        NOV = Convert.ToDecimal(arrControl[i].Text)
+                        NOV = Convert.ToDecimal(arrControl[i].Text),
+                        CREATE_DATE = DateTime.Now,
+                        CREATED_BY = User.Identity.Name,
+                        MODIFY_DATE = DateTime.Now,
+                        MODIFIED_BY = User.Identity.Name
                     });
                 }
             }
@@ -556,6 +693,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 foreach (BUD_BID_ACTUAL_NUM field in data)
                 {
                     field.NOV = Convert.ToDecimal(arrControl[a].Text);
+                    field.MODIFY_DATE = DateTime.Now;
+                    field.MODIFIED_BY = User.Identity.Name;
                     a++;
                 }
             }
@@ -563,7 +702,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             return data;
         }  //FIX DETAIL ID
 
-        protected List<BUD_BID_BUDGET_NUM> ProjectFormEndData(bool insert, long budBidID)
+        protected List<BUD_BID_BUDGET_NUM> ProjectFormEndData(bool insert, long budBidID, long detailTaskID = 0)
         {
             List<BUD_BID_BUDGET_NUM> data;
 
@@ -590,9 +729,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     data.Add(new BUD_BID_BUDGET_NUM
                         {
                             PROJECT_ID = budBidID,
-                            DETAIL_TASK_ID = 9999,
+                            DETAIL_TASK_ID = detailTaskID,
                             LINE_ID = arrLineNum[i],
-                            NOV = Convert.ToDecimal(arrControl[i].Text)
+                            NOV = Convert.ToDecimal(arrControl[i].Text),
+                            CREATE_DATE = DateTime.Now,
+                            CREATED_BY = User.Identity.Name,
+                            MODIFY_DATE = DateTime.Now,
+                            MODIFIED_BY = User.Identity.Name
                         });
                 }
             }
@@ -603,6 +746,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 foreach (BUD_BID_BUDGET_NUM field in data)
                 {
                     field.NOV = Convert.ToDecimal(arrControl[a].Text);
+                    field.MODIFY_DATE = DateTime.Now;
+                    field.MODIFIED_BY = User.Identity.Name;
                     a++;
                 }
             }
@@ -610,10 +755,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             return data;
         }     //FIX DETAIL ID
 
+        #endregion
+
+        #region Other
+
         protected void deCancel(object sender, DirectEventArgs e)
         {            
-            uxProjectDetail.Disable();           
-            uxProjectDetail.Reset();
+            uxProjectInfo.Disable();
+            uxHidInfoEnabled.Text = "";
+            uxProjectInfo.Reset();
             uxGridRowModel.ClearSelection();
             uxHidNewProject.Text = "";
             uxHidBudBidID.Text = "";
@@ -819,30 +969,32 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxTOPPlusMinus.Text = String.Format("{0:N2}", tOPPlusMinus);          
         }
 
-        //[DirectMethod(Namespace = "SaveRecord")]
-        //public void deSaveAdjustments(long id, string field, decimal newValue)
-        //{
-        //    BUD_BID_ADJUSTMENT data;
+        [DirectMethod(Namespace = "SaveRecord")]
+        public void deSaveAdjustments(long id, string field, decimal newValue)
+        {
+            BUD_BID_ADJUSTMENT data;
 
-        //    using (Entities _context = new Entities())
-        //    {
-        //        data = _context.BUD_BID_ADJUSTMENT.Where(x => x.ADJ_ID == id).Single();
-        //    }
+            using (Entities _context = new Entities())
+            {
+                data = _context.BUD_BID_ADJUSTMENT.Where(x => x.ADJ_ID == id).Single();
+            }
 
-        //    if (field == "WEATHER_ADJ")
-        //    {
-        //        data.WEATHER_ADJ = newValue;
-        //    }
+            if (field == "WEATHER_ADJ")
+            {
+                data.WEATHER_ADJ = newValue;
+            }
 
-        //    else if (field == "MAT_ADJ")
-        //    {
-        //        data.MAT_ADJ = newValue;
-        //    }
-            
+            else if (field == "MAT_ADJ")
+            {
+                data.MAT_ADJ = newValue;
+            }
 
-        //    GenericData.Update<BUD_BID_ADJUSTMENT>(data);
-        //    uxAdjustmentGridStore.CommitChanges();
-        //    StandardMsgBox("Updated", "The adjustment has been updated.", "INFO");
-        //}
+
+            GenericData.Update<BUD_BID_ADJUSTMENT>(data);
+            uxAdjustmentGridStore.CommitChanges();
+            StandardMsgBox("Updated", "The adjustment has been updated.", "INFO");
+        }
+
+        #endregion       
     }
 }
