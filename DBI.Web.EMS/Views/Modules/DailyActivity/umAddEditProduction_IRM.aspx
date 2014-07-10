@@ -150,7 +150,7 @@
 						<ext:TextField runat="server"
 							ID="uxAddProductionStation"
 							FieldLabel="Station"
-							AllowBlank="false" Width="500" />
+							Width="500" />
 						<ext:TextField runat="server"
 							ID="uxAddProductionQuantity"
 							FieldLabel="Quantity"
