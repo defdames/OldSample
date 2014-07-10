@@ -255,6 +255,9 @@
     <Compile Include="INVENTORY_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="JOB_COST.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="JOB_COST_BALANCE_TYPE.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
