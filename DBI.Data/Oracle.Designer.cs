@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\ljankowski\Desktop\Gitbucket\EMSv2\DBI.Data\Oracle.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\ljankowski\Desktop\Gitbucket\EMS_V2\DBI.Data\Oracle.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.
