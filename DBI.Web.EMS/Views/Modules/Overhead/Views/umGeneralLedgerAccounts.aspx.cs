@@ -33,11 +33,11 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
 
         protected void deViewOrganizationGlAccounts(object sender, DirectEventArgs e)
         {
-            uxGlAccountSecurityStore.Reload();
-            uxShowGLAccoutsWindow.Enable();
+            uxGLAccountRangeStore.Reload();
+            uxShowGLRangeWindow.Enable();
         }
 
-        protected void deLoadGLAccounts(object sender, StoreReadDataEventArgs e)
+        protected void deLoadGLAccountRange(object sender, StoreReadDataEventArgs e)
         {
             long _organizationSelected = long.Parse(uxOrganizationsGridRowSelection.SelectedRecordID);
 
@@ -52,17 +52,17 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
 
         }
 
-        protected void deShowGlAccountFilter(object sender, DirectEventArgs e)
+        protected void deShowRangeWindow(object sender, DirectEventArgs e)
         {
             string url = "/Views/Modules/Overhead/Views/umAddGlAccountRange.aspx";
             Window win = new Window
             {
-                ID = "uxShowAccountFilterWindow",
-                Title = "GL Accounts",
-                Height = 500,
-                Width = 550,
+                ID = "uxShowAccountRangeWindow",
+                Title = "General Ledger Account Range Filter",
+                Height = 750,
+                Width = 900,
                 Modal = true,
-                Resizable = false,
+                Resizable = true,
                 CloseAction = CloseAction.Destroy,
                 Loader = new ComponentLoader
                 {
@@ -77,11 +77,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
                 }
             };
 
-            win.Listeners.Close.Handler = "#{uxGlAccountSecurityGrid}.getStore().load();";
+            win.Listeners.Close.Handler = "#{uxGLAccountRangeGridPanel}.getStore().load();";
 
             win.Render(this.Form);
             win.Show();
         }
+
+
 
     }
 }

@@ -13,7 +13,7 @@
             <Items>
 
                 <ext:FormPanel ID="FormPanel1" runat="server" Header="false" BodyPadding="10" DefaultButton="uxAddBudgetType"
-                    Margins="5 5 5 5" Region="Center">
+                    Margins="5 5 5 5" Region="Center" >
                     <Items>
                         <ext:FieldContainer ID="FieldContainer1" 
                         runat="server"
@@ -46,8 +46,7 @@
                             </ext:ComboBox>
                         </Items>
                     </ext:FieldContainer>
-
-                         <ext:FieldContainer ID="FieldContainer2" 
+                        <ext:FieldContainer ID="FieldContainer2" 
                         runat="server"
                         LabelStyle="font-weight:bold;padding:0;"
                         Layout="HBoxLayout">
@@ -55,8 +54,7 @@
                          <ext:TextField runat="server" ID="uxBudgetDescription" FieldLabel="Description" AnchorHorizontal="55%" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" />  
                         </Items>
                     </ext:FieldContainer>
-
-                          <ext:FieldContainer ID="FieldContainer3" 
+                        <ext:FieldContainer ID="FieldContainer3" 
                         runat="server"
                         LabelStyle="font-weight:bold;padding:0;"
                         Layout="HBoxLayout">
@@ -83,7 +81,6 @@
                             </ext:ComboBox>
                         </Items>
                     </ext:FieldContainer>
-
                     </Items>
                     <Buttons>
                         <ext:Button runat="server" ID="uxAddBudgetType" Text="Save" Disabled="true" icon="ApplicationAdd">
@@ -94,6 +91,8 @@
                         <ext:Button ID="uxCloseButton" runat="server" Text="Close Form"><Listeners><Click Handler="parent.Ext.getCmp('uxAddEditBudgetType').close();"></Click></Listeners></ext:Button>
                     </Buttons>
                 </ext:FormPanel>
+
+                
             </Items>
         </ext:Viewport>
     </form>

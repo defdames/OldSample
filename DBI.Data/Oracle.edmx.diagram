@@ -53,7 +53,6 @@
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_OPTIONS" Width="1.5" PointX="36.75" PointY="66.375" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_FOOTER" Width="1.5" PointX="3.5" PointY="21.625" />
         <AssociationConnector Association="OracleModel.FK_FOOTER_HEADER_ID" />
-        <EntityTypeShape EntityType="OracleModel.PA_ROLES_V" Width="1.5" PointX="15.875" PointY="19" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_STATUS" Width="1.5" PointX="7.25" PointY="6.625" />
         <EntityTypeShape EntityType="OracleModel.SYS_GROUPS_PERMS" Width="1.5" PointX="34" PointY="30" />
         <EntityTypeShape EntityType="OracleModel.SYS_MODULES" Width="1.5" PointX="29.375" PointY="29.75" />
@@ -116,7 +115,6 @@
         <EntityTypeShape EntityType="OracleModel.CROSSING_SERVICE_UNIT" Width="1.5" PointX="19.125" PointY="17.5" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_SUB_DIVISION" Width="1.5" PointX="19" PointY="14.25" />
         <AssociationConnector Association="OracleModel.FK_SUB_SERVICE_ID" />
-        <EntityTypeShape EntityType="OracleModel.BUD_BID_ADJUSTMENT" Width="1.5" PointX="17.125" PointY="91.375" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_ACTUAL_NUM" Width="1.5" PointX="28.5" PointY="77.25" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_BUDGET_NUM" Width="1.5" PointX="32" PointY="83.5" />
         <AssociationConnector Association="OracleModel.FK_ACTUAL_NUM_LINES_ID" />
@@ -156,6 +154,8 @@
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="1.5" PointX="9.63839427644312" PointY="12.019527932638082" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_THRESHOLDS" Width="1.5" PointX="44" PointY="54.375" />
         <AssociationConnector Association="OracleModel.FK_THRSH_AMTS_FK" />
+        <EntityTypeShape EntityType="OracleModel.BUD_BID_ADJUSTMENT" Width="1.5" PointX="21.375" PointY="14.75" />
+        <EntityTypeShape EntityType="OracleModel.PA_ROLES_V" Width="1.5" PointX="21.375" PointY="18.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

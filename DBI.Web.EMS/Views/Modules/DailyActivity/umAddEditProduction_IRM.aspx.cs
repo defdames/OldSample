@@ -107,25 +107,20 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             decimal Quantity = decimal.Parse(uxAddProductionQuantity.Text);
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
 
-            using (Entities _context = new Entities())
-            {
-                data = new DAILY_ACTIVITY_PRODUCTION()
-                {
-                    HEADER_ID = HeaderId,
-                    TASK_ID = TaskId,
-                    EXPENDITURE_TYPE = uxAddProductionExpenditureType.Value.ToString(),
-                    BILL_RATE = BillRate,
-                    COMMENTS = uxAddProductionComments.Text,
-                    STATION = uxAddProductionStation.Text,
-                    UNIT_OF_MEASURE = uxAddProductionUOM.Value.ToString(),
-                    QUANTITY = Quantity,
-                    SURFACE_TYPE = uxAddProductionSurfaceType.SelectedItem.Value,
-                    CREATE_DATE = DateTime.Now,
-                    MODIFY_DATE = DateTime.Now,
-                    CREATED_BY = User.Identity.Name,
-                    MODIFIED_BY = User.Identity.Name
-                };
-            }
+            data = new DAILY_ACTIVITY_PRODUCTION();
+            data.HEADER_ID = HeaderId;
+            data.TASK_ID = TaskId;
+            data.EXPENDITURE_TYPE = uxAddProductionExpenditureType.Value.ToString();
+            data.BILL_RATE = BillRate;
+            data.COMMENTS = uxAddProductionComments.Text;
+            data.STATION = uxAddProductionStation.Text;
+            data.UNIT_OF_MEASURE = uxAddProductionUOM.Text;
+            data.QUANTITY = Quantity;
+            data.SURFACE_TYPE = uxAddProductionSurfaceType.Text;
+            data.CREATE_DATE = DateTime.Now;
+            data.MODIFY_DATE = DateTime.Now;
+            data.CREATED_BY = User.Identity.Name;
+            data.MODIFIED_BY = User.Identity.Name;
 
             //Write to DB
             GenericData.Insert<DAILY_ACTIVITY_PRODUCTION>(data);

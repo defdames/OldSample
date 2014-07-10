@@ -18,10 +18,11 @@ namespace DBI.Data
         public long ORG_ID { get; set; }
         public Nullable<decimal> MAT_ADJ { get; set; }
         public Nullable<decimal> WEATHER_ADJ { get; set; }
-        public Nullable<decimal> OVERHEAD { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string MODIFIED_BY { get; set; }
+        public Nullable<long> YEAR_ID { get; set; }
+        public Nullable<long> VER_ID { get; set; }
     }
 }

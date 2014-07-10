@@ -8,238 +8,671 @@
 </head>
 <body>
        <form id="form1" runat="server">
-    <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False"  />         
+    <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" Namespace="App"  />         
         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
             <Items>
 
-                <ext:FormPanel ID="FormPanel1" runat="server" Title="Account Filters" BodyPadding="10"
-                    Margins="5 5 5 0" Region="North" Height="175">
+                <ext:FormPanel ID="uxAccountFormPanel" 
+            runat="server"
+            BodyPadding="10"
+                     Region="Center" Margins="5 5 5 5" Flex="1" 
+            Layout="ColumnLayout" Collapsible="true">
+            
+            <FieldDefaults LabelAlign="Left" MsgTarget="Side" />
                     <Items>
-                        <ext:FieldContainer ID="FieldContainer1" 
-                        runat="server"
-                        LabelStyle="font-weight:bold;padding:0;"
-                        Layout="HBoxLayout">
-                        <Items>
-                             <ext:ComboBox runat="server" ID="uxSegment1" Editable="false" TypeAhead="false"
-                                FieldLabel="Company" AnchorHorizontal="55%" DisplayField="ID_NAME" ValueField="ID" 
-                                MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true" >
-                                  <Triggers>
-                                    <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
+                        <ext:FieldSet ID="FieldSet1"
+                    runat="server" 
+                    ColumnWidth="0.5"
+                    Title="Low" 
+                    MarginSpec="0 0 0 10">
+                    <Defaults>
+                        <ext:Parameter Name="Width" Value="250" />
+                        <ext:Parameter Name="LabelWidth" Value="90" />
+                    </Defaults>
+                    <Items>
+                                <ext:ComboBox FieldLabel="Company" runat="server" ID="uxSRSegment1" Editable="true" TypeAhead="true"
+                                     AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                    MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
+                                    <Triggers>
+                                        <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
                                     </Triggers>
-                                <Store>
-                                    <ext:Store runat="server" ID="uxCompanyNameStore" AutoLoad="false" >
-                                        <Proxy>
-                                            <ext:PageProxy />
-                                        </Proxy>
-                                        <Model>
-                                            <ext:Model ID="Model6" runat="server" IDProperty="ID">
-                                                  <Fields>
-                                                <ext:ModelField Name="ID" />
-                                                <ext:ModelField Name="ID_NAME" />
-                                                <ext:ModelField Name="DESCRIPTION" />
-                                                </Fields>
-                                            </ext:Model>
-                                        </Model>
-                                    </ext:Store>
-                                </Store>
-                                <Listeners>
-                                    <Select Handler="this.getTrigger(0).show();#{uxSegment1Description}.setText(#{uxSegment1}.getStore().getAt(#{uxSegment1}.getStore().findExact('ID',#{uxSegment1}.getValue())).get('DESCRIPTION'));#{uxSegment2}.clearValue(); #{uxSegment2Store}.reload();#{uxSegment3}.clearValue(); #{uxSegment3Store}.reload();#{uxSegment4}.clearValue(); #{uxSegment4Store}.reload();if(#{uxGlAccountSecurityStore}.getCount() > 0){#{uxGlAccountSecurityStore}.reload();#{uxGlAccountSecurityGrid}.getView().refresh();#{uxGlAccountSecurityGridFilter}.clearFilter();}#{uxSegment2Description}.setText('');#{uxSegment3Description}.setText('');#{uxSegment4Description}.setText('');"></Select>
-                                    <BeforeQuery Handler="this.getTrigger(0)[this.getRawValue().toString().length == 0 ? 'hide' : 'show']();" />
-                                    <TriggerClick Handler="if (index == 0) { 
-                                           this.clearValue(); 
-                                           this.getTrigger(0).hide();
-                                        #{uxSegment1Description}.setText('');
-                                       }" />
-                                </Listeners>
-                            </ext:ComboBox>
-                            <ext:Label runat="server" ID="uxSegment1Description" Margins="0 0 0 5" StyleSpec="color:green;" Flex="1"></ext:Label>
-                             <ext:ComboBox runat="server" ID="ComboBox1" Editable="false" TypeAhead="false"
-                                FieldLabel="Company" AnchorHorizontal="55%" DisplayField="ID_NAME" ValueField="ID" 
-                                MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true" >
-                                  <Triggers>
-                                    <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
+                                    <Store>
+                                        <ext:Store runat="server" ID="uxSRSegment1Store" AutoLoad="false" OnReadData="deLoadSegment" AutoDataBind="true">
+                                            <Proxy>
+                                                <ext:PageProxy />
+                                            </Proxy>
+                                            <Model>
+                                                <ext:Model ID="Model1" runat="server" IDProperty="ID">
+                                                    <Fields>
+                                                        <ext:ModelField Name="ID" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                        </ext:Store>
+                                    </Store>
+                                    <Listeners>
+                                        <Select Handler="#{uxSRSegment2}.enable();
+                                            #{uxSRSegment3}.disable();
+                                            #{uxSRSegment4}.disable();
+                                            #{uxSRSegment5}.disable();
+                                            #{uxSRSegment6}.disable();
+                                            #{uxSRSegment7}.disable();
+                                            #{uxERSegment1}.disable();
+                                            #{uxERSegment2}.disable();
+                                            #{uxERSegment3}.disable();
+                                            #{uxERSegment4}.disable();
+                                            #{uxERSegment5}.disable();
+                                            #{uxERSegment6}.disable();
+                                            #{uxERSegment7}.disable();
+                                            #{uxSRSegment2}.clearValue();
+                                            #{uxSRSegment2Store}.removeAll(true);
+                                            #{uxSRSegment2Store}.reload();
+                                            #{uxSRSegment3}.clearValue();
+                                            #{uxSRSegment3Store}.removeAll(true);
+                                            #{uxSRSegment4}.clearValue();
+                                            #{uxSRSegment4Store}.removeAll(true);
+                                            #{uxSRSegment5}.clearValue();
+                                            #{uxSRSegment5Store}.removeAll(true);
+                                            #{uxSRSegment6}.clearValue();
+                                            #{uxSRSegment6Store}.removeAll(true);
+                                            #{uxSRSegment7}.clearValue();
+                                            #{uxSRSegment7Store}.removeAll(true);
+                                            #{uxERSegment1}.clearValue();
+                                            #{uxERSegment1Store}.removeAll(true);
+                                            #{uxERSegment2}.clearValue();
+                                            #{uxERSegment2Store}.removeAll(true);
+                                            #{uxERSegment3}.clearValue();
+                                            #{uxERSegment3Store}.removeAll(true);
+                                            #{uxERSegment4}.clearValue();
+                                            #{uxERSegment4Store}.removeAll(true);
+                                            #{uxERSegment5}.clearValue();
+                                            #{uxERSegment5Store}.removeAll(true);
+                                            #{uxERSegment6}.clearValue();
+                                            #{uxERSegment6Store}.removeAll(true);
+                                            #{uxERSegment7}.clearValue();
+                                            #{uxERSegment7Store}.removeAll(true);
+                                            #{uxERSegment1}.disable();
+                                            #{uxERSegment2}.disable();
+                                            #{uxERSegment3}.disable();
+                                            #{uxERSegment4}.disable();
+                                            #{uxERSegment5}.disable();
+                                            #{uxERSegment6}.disable();
+                                            #{uxERSegment7}.disable();
+                                            #{uxShowAccounts}.disable();" />
+                                    </Listeners>
+                                </ext:ComboBox>
+                                <ext:ComboBox FieldLabel="Location" runat="server" ID="uxSRSegment2" Editable="true" TypeAhead="true" Disabled="true"
+                                     AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                    MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
+                                    <Triggers>
+                                        <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
                                     </Triggers>
-                                <Store>
-                                    <ext:Store runat="server" ID="Store1" AutoLoad="false" >
-                                        <Proxy>
-                                            <ext:PageProxy />
-                                        </Proxy>
-                                        <Model>
-                                            <ext:Model ID="Model5" runat="server" IDProperty="ID">
-                                                  <Fields>
-                                                <ext:ModelField Name="ID" />
-                                                <ext:ModelField Name="ID_NAME" />
-                                                <ext:ModelField Name="DESCRIPTION" />
-                                                </Fields>
-                                            </ext:Model>
-                                        </Model>
-                                    </ext:Store>
-                                </Store>
-                                <Listeners>
-                                    <Select Handler="this.getTrigger(0).show();#{uxSegment1Description}.setText(#{uxSegment1}.getStore().getAt(#{uxSegment1}.getStore().findExact('ID',#{uxSegment1}.getValue())).get('DESCRIPTION'));#{uxSegment2}.clearValue(); #{uxSegment2Store}.reload();#{uxSegment3}.clearValue(); #{uxSegment3Store}.reload();#{uxSegment4}.clearValue(); #{uxSegment4Store}.reload();if(#{uxGlAccountSecurityStore}.getCount() > 0){#{uxGlAccountSecurityStore}.reload();#{uxGlAccountSecurityGrid}.getView().refresh();#{uxGlAccountSecurityGridFilter}.clearFilter();}#{uxSegment2Description}.setText('');#{uxSegment3Description}.setText('');#{uxSegment4Description}.setText('');"></Select>
-                                    <BeforeQuery Handler="this.getTrigger(0)[this.getRawValue().toString().length == 0 ? 'hide' : 'show']();" />
-                                    <TriggerClick Handler="if (index == 0) { 
-                                           this.clearValue(); 
-                                           this.getTrigger(0).hide();
-                                        #{uxSegment1Description}.setText('');
-                                       }" />
-                                </Listeners>
-                            </ext:ComboBox>
-                            <ext:Label runat="server" ID="Label1" Margins="0 0 0 5" StyleSpec="color:green;" Flex="1"></ext:Label>
-                        </Items>
-                        </ext:FieldContainer>
-
-                         <ext:FieldContainer ID="FieldContainer2" 
-                        runat="server"
-                        LabelStyle="font-weight:bold;padding:0;"
-                        Layout="HBoxLayout">
-                        <Items>
-                         <ext:ComboBox runat="server" ID="uxSegment2" Editable="true" TypeAhead="true"
-                            FieldLabel="Location" AnchorHorizontal="45%" DisplayField="Name" LoadingText="Searching..."
-                            ValueField="ID" ForceSelection="true" HideTrigger="false"
-                            MinChars="1" TabIndex="2" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1">
-                            <Store>
-                                <ext:Store ID="uxSegment2Store" runat="server" AutoLoad="false">
-                                    <Proxy>
-                                        <ext:AjaxProxy Url="~/Views/Modules/Overhead/GenericHandlers/GLLocationCodes.ashx">
-                                            <ActionMethods Read="POST" />
-                                            <Reader>
-                                                <ext:JsonReader Root="glcodes" TotalProperty="total" />
-                                            </Reader>
-                                        </ext:AjaxProxy>
-                                    </Proxy>
-                                    <Model>
-                                        <ext:Model ID="Model2" runat="server">
-                                            <Fields>
-                                                <ext:ModelField Name="ID" />
-                                                <ext:ModelField Name="Name" />
-                                                <ext:ModelField Name="Description" />
-                                            </Fields>
-                                        </ext:Model>
-                                    </Model>
-                                    <Parameters>                                       
-                                        <ext:StoreParameter Name="SEGMENT1" Value="#{uxSegment1}.getValue()" Mode="Raw">
-                                                </ext:StoreParameter>
-                                    </Parameters>
-                                </ext:Store>
-                            </Store>
-                              <Listeners>
-                                     <Select Handler="#{uxSegment2Description}.setText(#{uxSegment2}.getStore().getAt(#{uxSegment2}.getStore().findExact('ID',#{uxSegment2}.getValue())).get('Description'));#{uxSegment3}.clearValue(); #{uxSegment3Store}.reload();#{uxSegment4}.clearValue(); #{uxSegment4Store}.reload();if(#{uxGlAccountSecurityStore}.getCount() > 0){#{uxGlAccountSecurityStore}.reload();#{uxGlAccountSecurityGrid}.getView().refresh();#{uxGlAccountSecurityGridFilter}.clearFilter();}#{uxSegment3Description}.setText('');#{uxSegment4Description}.setText('');"></Select>
-                            </Listeners> 
-                        </ext:ComboBox>
-                                <ext:Label runat="server" ID="uxSegment2Description" Margins="0 0 0 5" StyleSpec="color:green;" Flex="1"></ext:Label>
-                        </Items>
-                    </ext:FieldContainer>
-
-                        <ext:FieldContainer ID="FieldContainer3" 
-                        runat="server"
-                        LabelStyle="font-weight:bold;padding:0;"
-                        Layout="HBoxLayout">
-                        <Items>
-                         <ext:ComboBox runat="server" ID="uxSegment3" Editable="true" TypeAhead="true"
-                            FieldLabel="Division" AnchorHorizontal="45%" DisplayField="Name" LoadingText="Searching..."
-                            ValueField="ID" ForceSelection="true" HideTrigger="false"
-                            MinChars="1" TabIndex="3" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1">
-                            <Store>
-                                <ext:Store ID="uxSegment3Store" runat="server" AutoLoad="false">
-                                    <Proxy>
-                                        <ext:AjaxProxy Url="~/Views/Modules/Overhead/GenericHandlers/GLDivisionCodes.ashx">
-                                            <ActionMethods Read="POST" />
-                                            <Reader>
-                                                <ext:JsonReader Root="glcodes" TotalProperty="total" />
-                                            </Reader>
-                                        </ext:AjaxProxy>
-                                    </Proxy>
-                                    <Model>
-                                        <ext:Model ID="Model3" runat="server">
-                                            <Fields>
-                                                <ext:ModelField Name="ID" />
-                                                <ext:ModelField Name="Name" />
-                                                <ext:ModelField Name="Description" />
-                                            </Fields>
-                                        </ext:Model>
-                                    </Model>
-                                    <Parameters>                                       
-                                        <ext:StoreParameter Name="SEGMENT1" Value="#{uxSegment1}.getValue()" Mode="Raw">
-                                                </ext:StoreParameter>
-                                        <ext:StoreParameter Name="SEGMENT2" Value="#{uxSegment2}.getValue()" Mode="Raw">
-                                                </ext:StoreParameter>
-                                    </Parameters>
-                                </ext:Store>
-                            </Store>
-                              <Listeners>
-                                   <Select Handler="#{uxSegment3Description}.setText(#{uxSegment3}.getStore().getAt(#{uxSegment3}.getStore().findExact('ID',#{uxSegment3}.getValue())).get('Description'));#{uxSegment4}.clearValue(); #{uxSegment4Store}.reload();if(#{uxGlAccountSecurityStore}.getCount() > 0){#{uxGlAccountSecurityStore}.reload();#{uxGlAccountSecurityGrid}.getView().refresh();#{uxGlAccountSecurityGridFilter}.clearFilter();}#{uxSegment4Description}.setText('');"></Select>
-                            </Listeners> 
-                        </ext:ComboBox>
-                              <ext:Label runat="server" ID="uxSegment3Description" Margins="0 0 0 5" StyleSpec="color:green;" Flex="1"></ext:Label>
-                        </Items>
-                    </ext:FieldContainer>
-
-                          <ext:FieldContainer ID="FieldContainer4" 
-                        runat="server"
-                        LabelStyle="font-weight:bold;padding:0;"
-                        Layout="HBoxLayout">
-                        <Items>
-                         <ext:ComboBox runat="server" ID="uxSegment4" Editable="true" TypeAhead="true"
-                            FieldLabel="Branch" AnchorHorizontal="45%" DisplayField="Name" LoadingText="Searching..."
-                            ValueField="ID" ForceSelection="true" HideTrigger="false"
-                            MinChars="1" TabIndex="4" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1">
-                            <Store>
-                                <ext:Store ID="uxSegment4Store" runat="server" AutoLoad="false">
-                                    <Proxy>
-                                        <ext:AjaxProxy Url="~/Views/Modules/Overhead/GenericHandlers/GLBranchCodes.ashx">
-                                            <ActionMethods Read="POST" />
-                                            <Reader>
-                                                <ext:JsonReader Root="glcodes" TotalProperty="total" />
-                                            </Reader>
-                                        </ext:AjaxProxy>
-                                    </Proxy>
-                                    <Model>
-                                        <ext:Model ID="Model4" runat="server">
-                                            <Fields>
-                                                <ext:ModelField Name="ID" />
-                                                <ext:ModelField Name="Name" />
-                                                <ext:ModelField Name="Description" />
-                                            </Fields>
-                                        </ext:Model>
-                                    </Model>
-                                    <Parameters>                                       
-                                         <ext:StoreParameter Name="SEGMENT1" Value="#{uxSegment1}.getValue()" Mode="Raw">
-                                                </ext:StoreParameter>
-                                        <ext:StoreParameter Name="SEGMENT2" Value="#{uxSegment2}.getValue()" Mode="Raw">
-                                                </ext:StoreParameter>
-                                         <ext:StoreParameter Name="SEGMENT3" Value="#{uxSegment3}.getValue()" Mode="Raw">
-                                                </ext:StoreParameter>
-                                    </Parameters>
-                                </ext:Store>
-                            </Store>
-                             <Listeners>
-                                   <Select Handler="#{uxSegment4Description}.setText(#{uxSegment4}.getStore().getAt(#{uxSegment4}.getStore().findExact('ID',#{uxSegment4}.getValue())).get('Description'));#{uxFilterAccounts}.enable();if(#{uxGlAccountSecurityStore}.getCount() > 0){#{uxGlAccountSecurityStore}.reload();#{uxGlAccountSecurityGrid}.getView().refresh();#{uxGlAccountSecurityGridFilter}.clearFilter();}"></Select>
-                            </Listeners> 
-                        </ext:ComboBox>
-                                 <ext:Label runat="server" ID="uxSegment4Description" Margins="0 0 0 5" StyleSpec="color:green;" Flex="1"></ext:Label>
-                        </Items>
-                    </ext:FieldContainer>
-
+                                   <Store>
+                                        <ext:Store runat="server" ID="uxSRSegment2Store" AutoLoad="false" OnReadData="deLoadSegment" AutoDataBind="true">
+                                            <Proxy>
+                                                <ext:PageProxy />
+                                            </Proxy>
+                                            <Model>
+                                                <ext:Model ID="Model3" runat="server" IDProperty="ID">
+                                                    <Fields>
+                                                        <ext:ModelField Name="ID" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                        </ext:Store>
+                                    </Store>
+                                    <Listeners>
+                                        <Select Handler="#{uxSRSegment3}.enable();
+                                            #{uxSRSegment4}.disable();
+                                            #{uxSRSegment5}.disable();
+                                            #{uxSRSegment6}.disable();
+                                            #{uxSRSegment7}.disable();
+                                            #{uxSRSegment3}.clearValue();
+                                            #{uxSRSegment3Store}.removeAll(true);
+                                            #{uxSRSegment3Store}.reload();
+                                            #{uxSRSegment4}.clearValue();
+                                            #{uxSRSegment4Store}.removeAll(true);
+                                            #{uxSRSegment5}.clearValue();
+                                            #{uxSRSegment5Store}.removeAll(true);
+                                            #{uxSRSegment6}.clearValue();
+                                            #{uxSRSegment6Store}.removeAll(true);
+                                            #{uxSRSegment7}.clearValue();
+                                            #{uxSRSegment7Store}.removeAll(true);
+                                            #{uxERSegment1}.clearValue();
+                                            #{uxERSegment1Store}.removeAll(true);
+                                            #{uxERSegment2}.clearValue();
+                                            #{uxERSegment2Store}.removeAll(true);
+                                            #{uxERSegment3}.clearValue();
+                                            #{uxERSegment3Store}.removeAll(true);
+                                            #{uxERSegment4}.clearValue();
+                                            #{uxERSegment4Store}.removeAll(true);
+                                            #{uxERSegment5}.clearValue();
+                                            #{uxERSegment5Store}.removeAll(true);
+                                            #{uxERSegment6}.clearValue();
+                                            #{uxERSegment6Store}.removeAll(true);
+                                            #{uxERSegment7}.clearValue();
+                                            #{uxERSegment7Store}.removeAll(true);
+                                            #{uxERSegment1}.disable();
+                                            #{uxERSegment2}.disable();
+                                            #{uxERSegment3}.disable();
+                                            #{uxERSegment4}.disable();
+                                            #{uxERSegment5}.disable();
+                                            #{uxERSegment6}.disable();
+                                            #{uxERSegment7}.disable();
+                                            #{uxShowAccounts}.disable();" />
+                                    </Listeners>
+                                </ext:ComboBox>
+                                <ext:ComboBox FieldLabel="Division" runat="server" ID="uxSRSegment3" Editable="true" TypeAhead="true" Disabled="true"
+                                     AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                    MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
+                                    <Triggers>
+                                        <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
+                                    </Triggers>
+                                     <Store>
+                                        <ext:Store runat="server" ID="uxSRSegment3Store" AutoLoad="false" OnReadData="deLoadSegment" AutoDataBind="true">
+                                            <Proxy>
+                                                <ext:PageProxy />
+                                            </Proxy>
+                                            <Model>
+                                                <ext:Model ID="Model5" runat="server" IDProperty="ID">
+                                                    <Fields>
+                                                        <ext:ModelField Name="ID" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                        </ext:Store>
+                                    </Store>
+                                    <Listeners>
+                                        <Select Handler="#{uxSRSegment4}.enable();
+                                            #{uxSRSegment5}.disable();
+                                            #{uxSRSegment6}.disable();
+                                            #{uxSRSegment7}.disable();
+                                            #{uxSRSegment4}.clearValue();
+                                            #{uxSRSegment4Store}.removeAll(true);
+                                            #{uxSRSegment4Store}.reload();
+                                            #{uxSRSegment5}.clearValue();
+                                            #{uxSRSegment5Store}.removeAll(true);
+                                            #{uxSRSegment6}.clearValue();
+                                            #{uxSRSegment6Store}.removeAll(true);
+                                            #{uxSRSegment7}.clearValue();
+                                            #{uxSRSegment7Store}.removeAll(true);
+                                            #{uxERSegment1}.clearValue();
+                                            #{uxERSegment1Store}.removeAll(true);
+                                            #{uxERSegment2}.clearValue();
+                                            #{uxERSegment2Store}.removeAll(true);
+                                            #{uxERSegment3}.clearValue();
+                                            #{uxERSegment3Store}.removeAll(true);
+                                            #{uxERSegment4}.clearValue();
+                                            #{uxERSegment4Store}.removeAll(true);
+                                            #{uxERSegment5}.clearValue();
+                                            #{uxERSegment5Store}.removeAll(true);
+                                            #{uxERSegment6}.clearValue();
+                                            #{uxERSegment6Store}.removeAll(true);
+                                            #{uxERSegment7}.clearValue();
+                                            #{uxERSegment7Store}.removeAll(true);
+                                            #{uxERSegment1}.disable();
+                                            #{uxERSegment2}.disable();
+                                            #{uxERSegment3}.disable();
+                                            #{uxERSegment4}.disable();
+                                            #{uxERSegment5}.disable();
+                                            #{uxERSegment6}.disable();
+                                            #{uxERSegment7}.disable();
+                                            #{uxShowAccounts}.disable();" />
+                                    </Listeners>
+                                </ext:ComboBox>
+                                <ext:ComboBox FieldLabel="Branch" runat="server" ID="uxSRSegment4" Editable="true" TypeAhead="true" Disabled="true"
+                                     AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                    MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
+                                    <Triggers>
+                                        <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
+                                    </Triggers>
+                                     <Store>
+                                        <ext:Store runat="server" ID="uxSRSegment4Store" AutoLoad="false" OnReadData="deLoadSegment" AutoDataBind="true">
+                                            <Proxy>
+                                                <ext:PageProxy />
+                                            </Proxy>
+                                            <Model>
+                                                <ext:Model ID="Model6" runat="server" IDProperty="ID">
+                                                    <Fields>
+                                                        <ext:ModelField Name="ID" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                        </ext:Store>
+                                    </Store>
+                                    <Listeners>
+                                        <Select Handler="#{uxSRSegment5}.enable();
+                                            #{uxSRSegment6}.disable();
+                                            #{uxSRSegment7}.disable();
+                                            #{uxSRSegment5}.clearValue();
+                                            #{uxSRSegment5Store}.removeAll(true);
+                                            #{uxSRSegment5Store}.reload();
+                                            #{uxSRSegment6}.clearValue();
+                                            #{uxSRSegment6Store}.removeAll(true);
+                                            #{uxSRSegment7}.clearValue();
+                                            #{uxSRSegment7Store}.removeAll(true);
+                                            #{uxERSegment1}.clearValue();
+                                            #{uxERSegment1Store}.removeAll(true);
+                                            #{uxERSegment2}.clearValue();
+                                            #{uxERSegment2Store}.removeAll(true);
+                                            #{uxERSegment3}.clearValue();
+                                            #{uxERSegment3Store}.removeAll(true);
+                                            #{uxERSegment4}.clearValue();
+                                            #{uxERSegment4Store}.removeAll(true);
+                                            #{uxERSegment5}.clearValue();
+                                            #{uxERSegment5Store}.removeAll(true);
+                                            #{uxERSegment6}.clearValue();
+                                            #{uxERSegment6Store}.removeAll(true);
+                                            #{uxERSegment7}.clearValue();
+                                            #{uxERSegment7Store}.removeAll(true);
+                                            #{uxERSegment1}.disable();
+                                            #{uxERSegment2}.disable();
+                                            #{uxERSegment3}.disable();
+                                            #{uxERSegment4}.disable();
+                                            #{uxERSegment5}.disable();
+                                            #{uxERSegment6}.disable();
+                                            #{uxERSegment7}.disable();
+                                            #{uxShowAccounts}.disable();" />
+                                    </Listeners>
+                                </ext:ComboBox>
+                                <ext:ComboBox FieldLabel="Account" runat="server" ID="uxSRSegment5" Editable="true" TypeAhead="true" Disabled="true"
+                                    AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                    MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
+                                    <Triggers>
+                                        <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
+                                    </Triggers>
+                                    <Store>
+                                        <ext:Store runat="server" ID="uxSRSegment5Store" AutoLoad="false" OnReadData="deLoadSegment" AutoDataBind="true">
+                                            <Proxy>
+                                                <ext:PageProxy />
+                                            </Proxy>
+                                            <Model>
+                                                <ext:Model ID="Model7" runat="server" IDProperty="ID">
+                                                    <Fields>
+                                                        <ext:ModelField Name="ID" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                        </ext:Store>
+                                    </Store>
+                                    <Listeners>
+                                        <Select Handler="#{uxSRSegment6}.enable();
+                                              #{uxSRSegment7}.disable();
+                                              #{uxSRSegment6}.clearValue();
+                                              #{uxSRSegment6Store}.removeAll(true);
+                                              #{uxSRSegment6Store}.reload();
+                                              #{uxSRSegment7}.clearValue();
+                                            #{uxSRSegment7Store}.removeAll(true);
+                                            #{uxERSegment1}.clearValue();
+                                            #{uxERSegment1Store}.removeAll(true);
+                                            #{uxERSegment2}.clearValue();
+                                            #{uxERSegment2Store}.removeAll(true);
+                                            #{uxERSegment3}.clearValue();
+                                            #{uxERSegment3Store}.removeAll(true);
+                                            #{uxERSegment4}.clearValue();
+                                            #{uxERSegment4Store}.removeAll(true);
+                                            #{uxERSegment5}.clearValue();
+                                            #{uxERSegment5Store}.removeAll(true);
+                                            #{uxERSegment6}.clearValue();
+                                            #{uxERSegment6Store}.removeAll(true);
+                                            #{uxERSegment7}.clearValue();
+                                            #{uxERSegment7Store}.removeAll(true);
+                                            #{uxERSegment1}.disable();
+                                            #{uxERSegment2}.disable();
+                                            #{uxERSegment3}.disable();
+                                            #{uxERSegment4}.disable();
+                                            #{uxERSegment5}.disable();
+                                            #{uxERSegment6}.disable();
+                                            #{uxERSegment7}.disable();
+                                            #{uxShowAccounts}.disable();" />
+                                    </Listeners>
+                                </ext:ComboBox>
+                                <ext:ComboBox FieldLabel="Type" runat="server" ID="uxSRSegment6" Editable="true" TypeAhead="true" Disabled="true"
+                                   AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                    MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
+                                    <Triggers>
+                                        <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
+                                    </Triggers>
+                                    <Store>
+                                        <ext:Store runat="server" ID="uxSRSegment6Store" AutoLoad="false" OnReadData="deLoadSegment" AutoDataBind="true">
+                                            <Proxy>
+                                                <ext:PageProxy />
+                                            </Proxy>
+                                            <Model>
+                                                <ext:Model ID="Model8" runat="server" IDProperty="ID">
+                                                    <Fields>
+                                                        <ext:ModelField Name="ID" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                        </ext:Store>
+                                    </Store>
+                                    <Listeners>
+                                         <Select Handler="#{uxSRSegment7}.enable();
+                                             #{uxSRSegment7}.clearValue();
+                                             #{uxSRSegment7Store}.removeAll(true);
+                                             #{uxSRSegment7Store}.reload();
+                                             #{uxERSegment1}.clearValue();
+                                             #{uxERSegment1Store}.removeAll(true);
+                                             #{uxERSegment2}.clearValue();
+                                             #{uxERSegment2Store}.removeAll(true);
+                                             #{uxERSegment3}.clearValue();
+                                             #{uxERSegment3Store}.removeAll(true);
+                                             #{uxERSegment4}.clearValue();
+                                             #{uxERSegment4Store}.removeAll(true);
+                                             #{uxERSegment5}.clearValue();
+                                             #{uxERSegment5Store}.removeAll(true);
+                                             #{uxERSegment6}.clearValue();
+                                             #{uxERSegment6Store}.removeAll(true);
+                                             #{uxERSegment7}.clearValue();
+                                             #{uxERSegment7Store}.removeAll(true);
+                                             #{uxERSegment1}.disable();
+                                             #{uxERSegment2}.disable();
+                                             #{uxERSegment3}.disable();
+                                             #{uxERSegment4}.disable();
+                                             #{uxERSegment5}.disable();
+                                             #{uxERSegment6}.disable();
+                                             #{uxERSegment7}.disable();
+                                             #{uxShowAccounts}.disable();" />
+                                    </Listeners>
+                                </ext:ComboBox>
+                                <ext:ComboBox FieldLabel="Future" runat="server" ID="uxSRSegment7" Editable="true" TypeAhead="true" Disabled="true"
+                                     AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                    TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
+                                    <Triggers>
+                                        <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
+                                    </Triggers>
+                                     <Store>
+                                        <ext:Store runat="server" ID="uxSRSegment7Store" AutoLoad="false" OnReadData="deLoadSegment" AutoDataBind="true">
+                                            <Proxy>
+                                                <ext:PageProxy />
+                                            </Proxy>
+                                            <Model>
+                                                <ext:Model ID="Model9" runat="server" IDProperty="ID">
+                                                    <Fields>
+                                                        <ext:ModelField Name="ID" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                        </ext:Store>
+                                    </Store>
+                                    <Listeners>
+                                        <Select Handler="#{uxERSegment1}.enable();
+                                            #{uxERSegment2}.disable();
+                                            #{uxERSegment3}.disable();
+                                            #{uxERSegment4}.disable();
+                                            #{uxERSegment5}.disable();
+                                            #{uxERSegment6}.disable();
+                                            #{uxERSegment7}.disable();
+                                            #{uxERSegment1}.clearValue();
+                                            #{uxERSegment1Store}.removeAll(true);
+                                            #{uxERSegment1Store}.reload();
+                                            #{uxERSegment2}.clearValue();
+                                            #{uxERSegment2Store}.removeAll(true);
+                                            #{uxERSegment3}.clearValue();
+                                            #{uxERSegment3Store}.removeAll(true);
+                                            #{uxERSegment4}.clearValue();
+                                            #{uxERSegment4Store}.removeAll(true);
+                                            #{uxERSegment5}.clearValue();
+                                            #{uxERSegment5Store}.removeAll(true);
+                                            #{uxERSegment6}.clearValue();
+                                            #{uxERSegment6Store}.removeAll(true);
+                                            #{uxERSegment7}.clearValue();
+                                            #{uxERSegment7Store}.removeAll(true);
+                                            #{uxShowAccounts}.disable();"></Select>
+                                    </Listeners>
+                                </ext:ComboBox>
+                    </Items>                    
+                </ext:FieldSet>
+                        <ext:FieldSet ID="FieldSet2"
+                    runat="server" 
+                    ColumnWidth="0.5"
+                    Title="High" 
+                    MarginSpec="0 0 0 10">
+                    <Defaults>
+                        <ext:Parameter Name="Width" Value="250" />
+                        <ext:Parameter Name="LabelWidth" Value="90" />
+                    </Defaults>
+                    <Items>
+                           <ext:ComboBox FieldLabel="Company" runat="server" ID="uxERSegment1" Editable="true" TypeAhead="true" Disabled="true"
+                                     AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                    MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
+                                    <Triggers>
+                                        <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
+                                    </Triggers>
+                                    <Store>
+                                        <ext:Store runat="server" ID="uxERSegment1Store" AutoLoad="false" OnReadData="deLoadSegment" AutoDataBind="true">
+                                            <Proxy>
+                                                <ext:PageProxy />
+                                            </Proxy>
+                                            <Model>
+                                                <ext:Model ID="Model2" runat="server" IDProperty="ID">
+                                                    <Fields>
+                                                        <ext:ModelField Name="ID" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                        </ext:Store>
+                                    </Store>
+                                    <Listeners>
+                                        <Select Handler="#{uxERSegment2}.enable();
+                                            #{uxERSegment3}.disable();
+                                            #{uxERSegment4}.disable();
+                                            #{uxERSegment5}.disable();
+                                            #{uxERSegment6}.disable();
+                                            #{uxERSegment7}.disable();
+                                            #{uxERSegment2}.clearValue();
+                                            #{uxERSegment2Store}.removeAll(true);
+                                            #{uxERSegment2Store}.reload();
+                                            #{uxERSegment3}.clearValue();
+                                            #{uxERSegment3Store}.removeAll(true);
+                                            #{uxERSegment4}.clearValue();
+                                            #{uxERSegment4Store}.removeAll(true);
+                                            #{uxERSegment5}.clearValue();
+                                            #{uxERSegment5Store}.removeAll(true);
+                                            #{uxERSegment6}.clearValue();
+                                            #{uxERSegment6Store}.removeAll(true);
+                                            #{uxERSegment7}.clearValue();
+                                            #{uxERSegment7Store}.removeAll(true);
+                                            #{uxShowAccounts}.disable();" />
+                                    </Listeners>
+                                </ext:ComboBox>
+                                <ext:ComboBox FieldLabel="Location" runat="server" ID="uxERSegment2" Editable="true" TypeAhead="true" Disabled="true"
+                                     AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                    MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
+                                    <Triggers>
+                                        <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
+                                    </Triggers>
+                                   <Store>
+                                        <ext:Store runat="server" ID="uxERSegment2Store" AutoLoad="false" OnReadData="deLoadSegment" AutoDataBind="true">
+                                            <Proxy>
+                                                <ext:PageProxy />
+                                            </Proxy>
+                                            <Model>
+                                                <ext:Model ID="Model4" runat="server" IDProperty="ID">
+                                                    <Fields>
+                                                        <ext:ModelField Name="ID" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                        </ext:Store>
+                                    </Store>
+                                    <Listeners>
+                                        <Select Handler="#{uxShowAccounts}.disable();#{uxERSegment3}.enable();#{uxERSegment4}.disable();#{uxERSegment5}.disable();#{uxERSegment6}.disable();#{uxERSegment7}.disable();#{uxERSegment3}.clearValue();#{uxERSegment3Store}.removeAll(true);#{uxERSegment3Store}.reload();#{uxERSegment4}.clearValue();#{uxERSegment4Store}.removeAll(true);#{uxERSegment5}.clearValue();#{uxERSegment5Store}.removeAll(true);#{uxERSegment6}.clearValue();#{uxERSegment6Store}.removeAll(true);#{uxERSegment7}.clearValue();#{uxERSegment7Store}.removeAll(true);" />
+                                    </Listeners>
+                                </ext:ComboBox>
+                                <ext:ComboBox FieldLabel="Division" runat="server" ID="uxERSegment3" Editable="true" TypeAhead="true" Disabled="true"
+                                     AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                    MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
+                                    <Triggers>
+                                        <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
+                                    </Triggers>
+                                     <Store>
+                                        <ext:Store runat="server" ID="uxERSegment3Store" AutoLoad="false" OnReadData="deLoadSegment" AutoDataBind="true">
+                                            <Proxy>
+                                                <ext:PageProxy />
+                                            </Proxy>
+                                            <Model>
+                                                <ext:Model ID="Model10" runat="server" IDProperty="ID">
+                                                    <Fields>
+                                                        <ext:ModelField Name="ID" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                        </ext:Store>
+                                    </Store>
+                                    <Listeners>
+                                        <Select Handler="#{uxShowAccounts}.disable();#{uxERSegment4}.enable();#{uxERSegment5}.disable();#{uxERSegment6}.disable();#{uxERSegment7}.disable();#{uxERSegment4}.clearValue();#{uxERSegment4Store}.removeAll(true);#{uxERSegment4Store}.reload();#{uxERSegment5}.clearValue();#{uxERSegment5Store}.removeAll(true);#{uxERSegment6}.clearValue();#{uxERSegment6Store}.removeAll(true);#{uxERSegment7}.clearValue();#{uxERSegment7Store}.removeAll(true);" />
+                                    </Listeners>
+                                </ext:ComboBox>
+                                <ext:ComboBox FieldLabel="Branch" runat="server" ID="uxERSegment4" Editable="true" TypeAhead="true" Disabled="true"
+                                     AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                    MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
+                                    <Triggers>
+                                        <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
+                                    </Triggers>
+                                     <Store>
+                                        <ext:Store runat="server" ID="uxERSegment4Store" AutoLoad="false" OnReadData="deLoadSegment" AutoDataBind="true">
+                                            <Proxy>
+                                                <ext:PageProxy />
+                                            </Proxy>
+                                            <Model>
+                                                <ext:Model ID="Model11" runat="server" IDProperty="ID">
+                                                    <Fields>
+                                                        <ext:ModelField Name="ID" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                        </ext:Store>
+                                    </Store>
+                                    <Listeners>
+                                        <Select Handler="#{uxShowAccounts}.disable();#{uxERSegment5}.enable();#{uxERSegment6}.disable();#{uxERSegment7}.disable();#{uxERSegment5}.clearValue();#{uxERSegment5Store}.removeAll(true);#{uxERSegment5Store}.reload();#{uxERSegment6}.clearValue();#{uxERSegment6Store}.removeAll(true);#{uxERSegment7}.clearValue();#{uxERSegment7Store}.removeAll(true);" />
+                                    </Listeners>
+                                </ext:ComboBox>
+                                <ext:ComboBox FieldLabel="Account" runat="server" ID="uxERSegment5" Editable="true" TypeAhead="true" Disabled="true"
+                                    AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                    MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
+                                    <Triggers>
+                                        <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
+                                    </Triggers>
+                                    <Store>
+                                        <ext:Store runat="server" ID="uxERSegment5Store" AutoLoad="false" OnReadData="deLoadSegment" AutoDataBind="true">
+                                            <Proxy>
+                                                <ext:PageProxy />
+                                            </Proxy>
+                                            <Model>
+                                                <ext:Model ID="Model12" runat="server" IDProperty="ID">
+                                                    <Fields>
+                                                        <ext:ModelField Name="ID" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                        </ext:Store>
+                                    </Store>
+                                    <Listeners>
+                                          <Select Handler="#{uxShowAccounts}.disable();#{uxERSegment6}.enable();#{uxERSegment7}.disable();#{uxERSegment6}.clearValue();#{uxERSegment6Store}.removeAll(true);#{uxERSegment6Store}.reload();#{uxERSegment7}.clearValue();#{uxERSegment7Store}.removeAll(true);" />
+                                    </Listeners>
+                                </ext:ComboBox>
+                                <ext:ComboBox FieldLabel="Type" runat="server" ID="uxERSegment6" Editable="true" TypeAhead="true" Disabled="true"
+                                   AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                    MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
+                                    <Triggers>
+                                        <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
+                                    </Triggers>
+                                    <Store>
+                                        <ext:Store runat="server" ID="uxERSegment6Store" AutoLoad="false" OnReadData="deLoadSegment" AutoDataBind="true">
+                                            <Proxy>
+                                                <ext:PageProxy />
+                                            </Proxy>
+                                            <Model>
+                                                <ext:Model ID="Model13" runat="server" IDProperty="ID">
+                                                    <Fields>
+                                                        <ext:ModelField Name="ID" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                        </ext:Store>
+                                    </Store>
+                                    <Listeners>
+                                         <Select Handler="#{uxERSegment7}.enable();#{uxERSegment7}.clearValue();#{uxERSegment7Store}.removeAll(true);#{uxERSegment7Store}.reload();#{uxShowAccounts}.disable();" />
+                                    </Listeners>
+                                </ext:ComboBox>
+                                <ext:ComboBox FieldLabel="Future" runat="server" ID="uxERSegment7" Editable="true" TypeAhead="true" Disabled="true"
+                                     AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                    TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
+                                    <Triggers>
+                                        <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
+                                    </Triggers>
+                                     <Store>
+                                        <ext:Store runat="server" ID="uxERSegment7Store" AutoLoad="false" OnReadData="deLoadSegment" AutoDataBind="true">
+                                            <Proxy>
+                                                <ext:PageProxy />
+                                            </Proxy>
+                                            <Model>
+                                                <ext:Model ID="Model14" runat="server" IDProperty="ID">
+                                                    <Fields>
+                                                        <ext:ModelField Name="ID" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                        </ext:Store>
+                                    </Store>
+                                    <Listeners>
+                                        <Select Handler="#{uxShowAccounts}.enable();"></Select>
+                                    </Listeners>
+                                </ext:ComboBox>
+                    </Items>                    
+                </ext:FieldSet>
                     </Items>
-                    <Buttons>
-                        <ext:Button runat="server" ID="uxFilterAccounts" Text="Filter" Disabled="true" Icon="Zoom">
-                        </ext:Button>
-                        <ext:Button runat="server" ID="uxClearFilterAccounts" Text="Clear Filter">
-                            <Listeners>
-                                <Click Handler="#{uxFilterAccounts}.disable();#{uxSegment1}.clearValue(); #{uxSegment1Store}.reload();#{uxSegment2}.clearValue(); #{uxSegment2Store}.reload();#{uxSegment3}.clearValue(); #{uxSegment3Store}.reload();#{uxSegment4}.clearValue(); #{uxSegment4Store}.reload();#{uxGlAccountSecurityStore}.reload();#{uxGlAccountSecurityGrid}.getView().refresh();#{uxGlAccountSecurityGridFilter}.clearFilter();#{uxSegment1Description}.setText('');#{uxSegment2Description}.setText('');#{uxSegment3Description}.setText('');#{uxSegment4Description}.setText('');"></Click>
-                            </Listeners>
-                        </ext:Button>
-                        <ext:Button ID="uxCloseButton" runat="server" Text="Close Form"><Listeners><Click Handler="parent.Ext.getCmp('uxGlAccounts').close();"></Click></Listeners></ext:Button>
-                    </Buttons>
-                </ext:FormPanel>
-                <ext:GridPanel ID="uxGlAccountSecurityGrid" runat="server" Flex="1" SimpleSelect="true" Title="GL Accounts By Filter" Padding="5" Region="Center" Height="400">
-                   <Store>
-                        <ext:Store runat="server"
+            <Buttons>
+                <ext:Button ID="uxShowAccounts" runat="server" Text="Accounts View" Icon="Find" Disabled="true" >
+                    <Listeners>
+                        <Click Handler ="#{uxGlAccountSecurityStore}.reload();#{uxAccountFormPanel}.collapse();" />
+                    </Listeners>
+                </ext:Button>
+                               <ext:Button ID="uxClearFilter" runat="server" Text="Clear Filter" >
+                                   <Listeners><Click Handler="#{FormPanel2}.reset();
+                                             #{uxERSegment1}.disable();
+                                             #{uxERSegment2}.disable();
+                                             #{uxERSegment3}.disable();
+                                             #{uxERSegment4}.disable();
+                                             #{uxERSegment5}.disable();
+                                             #{uxERSegment6}.disable();
+                                             #{uxERSegment7}.disable();
+                                             #{uxShowAccounts}.disable();
+                                             #{uxSRSegment2}.disable();
+                                             #{uxSRSegment3}.disable();
+                                             #{uxSRSegment4}.disable();
+                                             #{uxSRSegment5}.disable();
+                                             #{uxSRSegment6}.disable();
+                                             #{uxSRSegment7}.disable();"></Click></Listeners>
+                                   </ext:Button>
+                <ext:Button ID="uxCloseForm" runat="server" Text="Close Form" >
+                    <Listeners><Click Handler="parent.Ext.getCmp('uxShowAccountRangeWindow').close();"></Click></Listeners>
+                </ext:Button>
+              </Buttons>
+        </ext:FormPanel>
+     <ext:GridPanel ID="uxGlAccountSecurityGrid" runat="server" Flex="1" Title="General Ledger Accounts" Margin="5" Region="South" SelectionMemory="true" >
+                    <TopBar>
+                        <ext:Toolbar ID="Toolbar1" runat="server">
+                            <Items>
+                                <ext:Button runat="server" ID="uxExclude" Text="Exclude Account" Icon="Delete" Disabled="true">
+                                    <ToolTips>
+                                        <ext:ToolTip runat="server" Html="Excludes a general ledger account from the range." UI="Info"></ext:ToolTip>
+                                    </ToolTips>
+                                    <DirectEvents>
+                                        <click OnEvent="deExcludeGlAccounts"><Confirmation ConfirmRequest="true" Message="Are you sure you want the mark the selected accounts as excluded from this range? The user will not be able to budget for these accounts. Exclude selected accounts?" /><EventMask ShowMask="true"></EventMask></click>
+                                    </DirectEvents>
+                                </ext:Button>
+                            </Items>
+                        </ext:Toolbar>
+                    </TopBar>
+                    <Store>
+                       <ext:Store runat="server"
                             ID="uxGlAccountSecurityStore"
-                            AutoDataBind="true" OnReadData="deReadGLSecurityCodes" RemoteSort="true" PageSize="10" AutoLoad="false">
+                            AutoDataBind="true" OnReadData="deReadGLSecurityCodes" RemoteSort="true" PageSize="25" AutoLoad="false">
                             <Model>
-                                <ext:Model ID="Model1" runat="server" IDProperty="CODE_COMBINATION_ID">
+                                <ext:Model ID="Model15" runat="server" IDProperty="CODE_COMBINATION_ID">
                                     <Fields>
                                         <ext:ModelField Name="CODE_COMBINATION_ID" />
                                         <ext:ModelField Name="SEGMENT1" />
@@ -262,30 +695,19 @@
                             <Proxy>
                                 <ext:PageProxy />
                             </Proxy>
-                            <Parameters>
-                                <ext:StoreParameter Name="SEGMENT1" Value="#{uxSegment1}.getValue()" Mode="Raw">
-                                </ext:StoreParameter>
-                                <ext:StoreParameter Name="SEGMENT2" Value="#{uxSegment2}.getValue()" Mode="Raw">
-                                </ext:StoreParameter>
-                                <ext:StoreParameter Name="SEGMENT3" Value="#{uxSegment3}.getValue()" Mode="Raw">
-                                </ext:StoreParameter>
-                                <ext:StoreParameter Name="SEGMENT4" Value="#{uxSegment4}.getValue()" Mode="Raw">
-                                </ext:StoreParameter>
-                            </Parameters>
-                             <Listeners><Load Handler="#{uxAddGLCodeButton}.disable();"></Load></Listeners>
                             <Sorters>
-                                <ext:DataSorter Direction="ASC" Property="SEGMENT5_DESC" />
+                                <ext:DataSorter Direction="ASC" Property="SEGMENT1" />
                             </Sorters>
-
                         </ext:Store>
-                   </Store>
+                    </Store>
+                   
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column1" runat="server" DataIndex="SEGMENT5_DESC" Text="Account Description" Flex="3" />
-                            <ext:Column ID="Column2" runat="server" DataIndex="SEGMENT1" Text="Company" Flex="1" />
+                             <ext:Column ID="Column7" runat="server" DataIndex="SEGMENT5_DESC" Text="Account Name" Flex="2" />
+                            <ext:Column ID="Column4" runat="server" DataIndex="SEGMENT1" Text="Company" Flex="1" />
                             <ext:Column ID="Column3" runat="server" DataIndex="SEGMENT2" Text="Location" Flex="1" />
-                            <ext:Column ID="Column4" runat="server" DataIndex="SEGMENT3" Text="Division" Flex="1" />
-                            <ext:Column ID="Column5" runat="server" DataIndex="SEGMENT4" Text="Branch" Flex="1" />
+                            <ext:Column ID="Column5" runat="server" DataIndex="SEGMENT3" Text="Division" Flex="1" />
+                            <ext:Column ID="Column6" runat="server" DataIndex="SEGMENT4" Text="Branch" Flex="1" />
                             <ext:Column ID="Column10" runat="server" DataIndex="SEGMENT5" Text="Account" Flex="1" />
                             <ext:Column ID="Column11" runat="server" DataIndex="SEGMENT6" Text="Type" Flex="1" />
                             <ext:Column ID="Column12" runat="server" DataIndex="SEGMENT7" Text="Future" Flex="1" />
@@ -294,55 +716,21 @@
                     <Plugins>
                         <ext:FilterHeader ID="uxGlAccountSecurityGridFilter" runat="server" Remote="true" />
                     </Plugins>
-                      <SelectionModel>
-                               <ext:RowSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Simple">
-                                   <Listeners>
-                                <Select Handler="if(#{uxGlAccountSecurityGridSelectionModel}.getCount() > 0){#{uxAddGLCodeButton}.enable();}else {#{uxAddGLCodeButton}.disable();}"></Select>
-                                       <Deselect Handler="if(#{uxGlAccountSecurityGridSelectionModel}.getCount() > 0){#{uxAddGLCodeButton}.enable();}else {#{uxAddGLCodeButton}.disable();}"></Deselect>
+                    <SelectionModel>
+                        <ext:CheckboxSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Simple" ShowHeaderCheckbox="false" AllowDeselect="true">
+                            <Listeners>
+                                <Select Handler="if(#{uxGlAccountSecurityGridSelectionModel}.getCount() > 0){#{uxGlAccountDelete}.enable();}else {#{uxGlAccountDelete}.disable();}"></Select>
+                                <Deselect Handler="if(#{uxGlAccountSecurityGridSelectionModel}.getCount() > 0){#{uxGlAccountDelete}.enable();} else {#{uxGlAccountDelete}.disable();}"></Deselect>
                             </Listeners>
-                               </ext:RowSelectionModel>
+                        </ext:CheckboxSelectionModel>
                     </SelectionModel>
                     <BottomBar>
-                        <ext:PagingToolbar ID="PagingToolbar2" runat="server" />
+                        <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
                     </BottomBar>
-                    <TopBar>
-                        <ext:Toolbar ID="Toolbar1" runat="server">
-                            <Items>
-                                <ext:Button ID="uxAddGLCodeButton" runat="server" Text="Include" Icon="Add" Disabled="true">
-                                    <DirectEvents>
-                                        <Click OnEvent="deAddSelectedGlCodes">
-                                            <EventMask ShowMask="true"></EventMask>
-                                        </Click>
-                                    </DirectEvents>
-                                </ext:Button>
-                                 <ext:Button ID="uxExcludeGLCodeButton" runat="server" Text="Exclude" Icon="Delete" Disabled="true">
-                                    <DirectEvents>
-                                        <Click OnEvent="deAddSelectedGlCodes">
-                                            <EventMask ShowMask="true"></EventMask>
-                                        </Click>
-                                    </DirectEvents>
-                                </ext:Button>
-                                
-                            </Items>
-                        </ext:Toolbar>
-                    </TopBar>
-                                         <View>
+                     <View>
                         <ext:GridView ID="GridView1" StripeRows="true" runat="server" TrackOver="true">
                         </ext:GridView>
                     </View> 
-                    <ToolTips>
-                        <ext:ToolTip ID="uxToolTip"
-            runat="server"
-            Target="uxGlAccountSecurityGrid"
-            Delegate=".x-grid-row"
-            TrackMouse="true"
-                            UI="Info"
-                           Width="300">
-            <Listeners>
-                <Show Handler="onShow(this, #{uxGlAccountSecurityGrid});" /> 
-            </Listeners>
-        </ext:ToolTip>  
-                    </ToolTips>
                 </ext:GridPanel>
             </Items>
         </ext:Viewport>
