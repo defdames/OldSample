@@ -12,11 +12,11 @@
         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
             <Items>
 
-                <ext:FormPanel ID="FormPanel2" 
+                <ext:FormPanel ID="uxAccountFormPanel" 
             runat="server"
             BodyPadding="10"
                      Region="Center" Margins="5 5 5 5" Flex="1" 
-            Layout="ColumnLayout">
+            Layout="ColumnLayout" Collapsible="true">
             
             <FieldDefaults LabelAlign="Left" MsgTarget="Side" />
                     <Items>
@@ -627,7 +627,7 @@
             <Buttons>
                 <ext:Button ID="uxShowAccounts" runat="server" Text="Accounts View" Icon="Find" Disabled="true" >
                     <Listeners>
-                        <Click Handler ="#{uxGlAccountSecurityStore}.reload();" />
+                        <Click Handler ="#{uxGlAccountSecurityStore}.reload();#{uxAccountFormPanel}.collapse();" />
                     </Listeners>
                 </ext:Button>
                                <ext:Button ID="uxClearFilter" runat="server" Text="Clear Filter" >
@@ -652,15 +652,14 @@
                 </ext:Button>
               </Buttons>
         </ext:FormPanel>
-     <ext:GridPanel ID="uxGlAccountSecurityGrid" runat="server" Flex="1" Title="General Ledger Accounts" Margin="5" Region="South" >
+     <ext:GridPanel ID="uxGlAccountSecurityGrid" runat="server" Flex="1" Title="General Ledger Accounts" Margin="5" Region="South" SelectionMemory="true" >
                     <TopBar>
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
-                                <ext:Button runat="server" ID="uxShowGLAccoutsWindow" Text="Assign" Icon="Add" Disabled="true">
-                                    
-                                </ext:Button>
-                                <ext:Button runat="server" ID="uxGlAccountDelete" Text="Unassign" Icon="Delete" Disabled="true">
-                                    
+                                <ext:Button runat="server" ID="uxExclude" Text="Exclude Account" Icon="Delete" Disabled="true">
+                                    <ToolTips>
+                                        <ext:ToolTip runat="server" Html="Excludes a general ledger account from the range." UI="Info"></ext:ToolTip>
+                                    </ToolTips>
                                 </ext:Button>
                             </Items>
                         </ext:Toolbar>
@@ -668,7 +667,7 @@
                     <Store>
                        <ext:Store runat="server"
                             ID="uxGlAccountSecurityStore"
-                            AutoDataBind="true" OnReadData="deReadGLSecurityCodes" RemoteSort="true" PageSize="10" AutoLoad="false">
+                            AutoDataBind="true" OnReadData="deReadGLSecurityCodes" RemoteSort="true" PageSize="25" AutoLoad="false">
                             <Model>
                                 <ext:Model ID="Model15" runat="server" IDProperty="CODE_COMBINATION_ID">
                                     <Fields>
@@ -715,12 +714,12 @@
                         <ext:FilterHeader ID="uxGlAccountSecurityGridFilter" runat="server" Remote="true" />
                     </Plugins>
                     <SelectionModel>
-                        <ext:RowSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Simple">
+                        <ext:CheckboxSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Simple" ShowHeaderCheckbox="false" AllowDeselect="true">
                             <Listeners>
                                 <Select Handler="if(#{uxGlAccountSecurityGridSelectionModel}.getCount() > 0){#{uxGlAccountDelete}.enable();}else {#{uxGlAccountDelete}.disable();}"></Select>
                                 <Deselect Handler="if(#{uxGlAccountSecurityGridSelectionModel}.getCount() > 0){#{uxGlAccountDelete}.enable();} else {#{uxGlAccountDelete}.disable();}"></Deselect>
                             </Listeners>
-                        </ext:RowSelectionModel>
+                        </ext:CheckboxSelectionModel>
                     </SelectionModel>
                     <BottomBar>
                         <ext:PagingToolbar ID="PagingToolbar1" runat="server" />

@@ -40,13 +40,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views {
         protected global::Ext.Net.Viewport Viewport1;
         
         /// <summary>
-        /// FormPanel2 control.
+        /// uxAccountFormPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FormPanel FormPanel2;
+        protected global::Ext.Net.FormPanel uxAccountFormPanel;
         
         /// <summary>
         /// FieldSet1 control.
@@ -490,22 +490,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views {
         protected global::Ext.Net.Toolbar Toolbar1;
         
         /// <summary>
-        /// uxShowGLAccoutsWindow control.
+        /// uxExclude control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxShowGLAccoutsWindow;
-        
-        /// <summary>
-        /// uxGlAccountDelete control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxGlAccountDelete;
+        protected global::Ext.Net.Button uxExclude;
         
         /// <summary>
         /// uxGlAccountSecurityStore control.
@@ -613,7 +604,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.RowSelectionModel uxGlAccountSecurityGridSelectionModel;
+        protected global::Ext.Net.CheckboxSelectionModel uxGlAccountSecurityGridSelectionModel;
         
         /// <summary>
         /// PagingToolbar1 control.

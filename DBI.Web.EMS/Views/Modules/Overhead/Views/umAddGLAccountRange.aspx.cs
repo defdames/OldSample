@@ -147,7 +147,18 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
                 uxGlAccountSecurityStore.DataSource = GenericData.ListFilterHeader<GL_ACCOUNTS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
                 e.Total = count;
             }
-        }  
+
+
+
+        }
+
+        protected void deSelectionMemoryTest(object sender, DirectEventArgs e)
+        {
+            CheckboxSelectionModel sm = uxGlAccountSecurityGridSelectionModel;
+            List<SelectedRow> src = sm.SelectedRows.ToList();
+
+
+        }
 
     }
 }
