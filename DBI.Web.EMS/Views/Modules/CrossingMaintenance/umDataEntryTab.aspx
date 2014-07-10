@@ -31,16 +31,16 @@
     <form id="form1" runat="server">
         <ext:ResourceManager runat="server" />
         <div></div>
-        <ext:GridPanel ID="uxApplicationCrossingGrid" Title="CROSSING LIST FOR APPLICATION ENTRY" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true">
+        <ext:GridPanel ID="uxApplicationCrossingGrid" Title="CROSSING LIST FOR APPLICATION ENTRY" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true" SelectionMemory="true" >
            
             <Store>
                 <ext:Store runat="server"
                     ID="uxAppEntryCrossingStore"
                     OnReadData="deApplicationGridData"
-                    PageSize="20"
+                    PageSize="10"
                     AutoDataBind="true" WarningOnDirty="false">
                     <Model>
-                        <ext:Model ID="Model2" runat="server">
+                        <ext:Model ID="Model2" runat="server" IDProperty="CROSSING_ID" >
                             <Fields>
                                 <ext:ModelField Name="CROSSING_ID" />
                                 <ext:ModelField Name="CONTACT_ID" />
@@ -72,12 +72,12 @@
                 <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true" />
             </Plugins>
             <SelectionModel>
-                <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi" />
+                <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Simple" AllowDeselect="true" />
                 
             </SelectionModel>
-            <Listeners>
-                <SelectionChange Handler="#{uxApplicationStore}.reload(); #{uxAddAppButton}.enable();" />
-            </Listeners>
+            <DirectEvents>
+                <SelectionChange OnEvent="deLoadData"></SelectionChange>
+            </DirectEvents>
 
             <%-- <DirectEvents>
                     <SelectionChange OnEvent="GetApplicationGridData">
@@ -120,18 +120,18 @@
                 </ext:Button>
             </Items>
         </ext:Toolbar>
-        <ext:GridPanel ID="uxApplicationEntryGrid" Title="APPLICATION ENTRIES" runat="server" Region="North" Frame="false" Collapsible="true" MultiSelect="true" >
+        <ext:GridPanel ID="uxApplicationEntryGrid" Title="APPLICATION ENTRIES" runat="server" Region="North" Frame="false" Collapsible="true" SelectionMemory="true" >
                 <SelectionModel>
                     <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" AllowDeselect="true" Mode="Single" />
                 </SelectionModel>
                 <Store>
                     <ext:Store runat="server"
                         ID="uxApplicationStore" OnReadData="GetApplicationGridData" AutoDataBind="true" AutoLoad="false" GroupField="CROSSING_NUMBER">
-                        <Parameters>
+                        <%--<Parameters>
                               <ext:StoreParameter Name="crossingId" Value="Ext.encode(#{uxApplicationCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
-                        </Parameters>
+                        </Parameters>--%>
                         <Model>
-                            <ext:Model ID="Model1" runat="server">
+                            <ext:Model ID="Model1" runat="server" IDProperty="CROSSING_ID">
                                 <Fields>
                                     <ext:ModelField Name="CROSSING_ID" />  
                                     <ext:ModelField Name="CROSSING_NUMBER" />                                

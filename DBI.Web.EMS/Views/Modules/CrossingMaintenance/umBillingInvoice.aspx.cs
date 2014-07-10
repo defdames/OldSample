@@ -87,6 +87,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         {
             uxFilterForm.Reset();
         }
+        protected void deResetInvoice(object sender, DirectEventArgs e)
+        {
+            uxInvoiceFormStore.Reload();
+        }
         protected void deAddInvoice(object sender, DirectEventArgs e)
         {
             string InvoiceNum = uxInvoiceNumber.Value.ToString();
@@ -101,9 +105,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 MODIFIED_BY = User.Identity.Name,
                 MODIFY_DATE = DateTime.Now,
 
+
             };
             GenericData.Insert<CROSSING_INVOICE>(data);
-
+            InvoiceDateTextField.Text = DateTime.Now.ToString("MM/dd/yyyy");
+            InvoiceNumTextField.Text = (data.INVOICE_NUMBER);
+           
             decimal InvoiceId = data.INVOICE_ID;
 
             CROSSING_APPLICATION invoice;
@@ -122,15 +129,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
               
                 GenericData.Update<CROSSING_APPLICATION>(invoice);
             }
-            
-                //uxFilterForm.Reset();
-                //uxInvoiceFormStore.Reload();
-           
-               
-                uxBillingReportWindow.Show();
-                //uxInvoiceReportStore.Reload();
-               
+            //uxFilterForm.Reset();
+            //uxInvoiceFormStore.Reload();
+            uxBillingReportWindow.Show();    
         }
+
         protected void deInvoiceReportGrid(object sender, StoreReadDataEventArgs e)
         {
             List<object> allData;
@@ -166,15 +169,17 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                                }).ToList<object>();
 
-                    
+                  
                     //uxInvoiceNumber.Text = allData.INVOICE_NUMBER;
             }
                     uxInvoiceReportStore.DataSource = allData;
-                    uxInvoiceDate.SetValue(DateTime.Now);
-
-
                    
             
+        }
+        protected void deCloseInvoice(object sender, DirectEventArgs e)
+        {
+            uxBillingReportWindow.Hide();
+          
         }
         public class ApplicationDetails
         {

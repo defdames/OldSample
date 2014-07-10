@@ -104,6 +104,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             };
             GenericData.Insert<CROSSING_SUPP_INVOICE>(data);
 
+            InvoiceDateTextField.Text = DateTime.Now.ToString("MM/dd/yyyy");
+            InvoiceNumTextField.Text = (data.INVOICE_SUPP_NUMBER);
+
             decimal SuppInvoiceId = data.INVOICE_SUPP_ID;
 
             CROSSING_SUPPLEMENTAL invoice;
@@ -124,19 +127,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxFilterForm.Reset();
                 uxInvoiceSupplementalStore.Reload();
 
-                Notification.Show(new NotificationConfig()
-                {
-                    Title = "Success",
-                    Html = "Invoice Added Successfully",
-                    HideDelay = 1000,
-                    AlignCfg = new NotificationAlignConfig
-                    {
-                        ElementAnchor = AnchorPoint.Center,
-                        TargetAnchor = AnchorPoint.Center
-                    }
-                });
-
+              
+                uxBillingReportWindow.Show();
             
+        }
+        protected void deResetInvoice(object sender, DirectEventArgs e)
+        {
+            uxInvoiceSupplementalStore.Reload();
         }
         protected void deInvoiceReportGrid(object sender, StoreReadDataEventArgs e)
         {
@@ -178,14 +175,16 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                            }).ToList<object>();
 
 
-                //uxInvoiceNumber.Text = allData.INVOICE_NUMBER;
+               
             }
             uxInvoiceReportStore.DataSource = allData;
-            uxInvoiceDate.SetValue(DateTime.Now);
+        
 
-
-
-
+        }
+        protected void deCloseInvoice(object sender, DirectEventArgs e)
+        {
+            uxBillingReportWindow.Hide();
+           
         }
         public class SupplementalDetails
         {

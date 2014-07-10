@@ -21,7 +21,7 @@
             return buf.join("");
         };
     </script>
-
+      <script type="text/javascript" src="../../../Resources/Scripts/functions.js"></script>
 
 </head>
 <body>
@@ -64,6 +64,9 @@
                         <ext:Column ID="uxRRCON" runat="server" DataIndex="RAILROAD" Text="RR" Flex="1" />
                     </Columns>
                 </ColumnModel>
+                  <Plugins>
+                     <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true" />
+                  </Plugins>
                 <DirectEvents>
                     <Select OnEvent="GetContactGridData">
                         <ExtraParams>
@@ -371,7 +374,7 @@
                                     </ext:RowSelectionModel>
                                 </SelectionModel>
                                 <Plugins>
-                                    <ext:FilterHeader ID="FilterHeader2" runat="server" />
+                                    <ext:FilterHeader ID="FilterHeader2" runat="server" Remote="true" />
                                 </Plugins>
 
                                

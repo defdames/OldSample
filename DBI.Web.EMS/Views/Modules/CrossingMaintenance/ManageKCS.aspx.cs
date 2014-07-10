@@ -91,6 +91,104 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         {
             uxSubDivStore.Reload();
         }
+        protected void deLoadServiceUnitStores(object sender, DirectEventArgs e)
+        {
+            uxCurrentServiceUnitStore.Reload();
+            uxNewServiceUnitStore.Reload();
+        }
+        protected void deCurrentServiceUnitGrid(object sender, StoreReadDataEventArgs e)
+        {
+
+            //Get Contacts
+            using (Entities _context = new Entities())
+            {             
+                List<object> data;
+                data = (from d in _context.CROSSING_SERVICE_UNIT
+                        select new { d.SERVICE_UNIT_ID, d.SERVICE_UNIT_NAME, }).ToList<object>();
+                int count;
+                uxCurrentServiceUnitStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                e.Total = count;
+            }
+        }
+        protected void deNewServiceUnitGrid(object sender, StoreReadDataEventArgs e)
+        {
+
+            //Get Contacts
+            using (Entities _context = new Entities())
+            {   
+                List<object> data;
+                data = (from d in _context.CROSSING_SERVICE_UNIT
+                        select new { d.SERVICE_UNIT_ID, d.SERVICE_UNIT_NAME }).ToList<object>();
+                int count;
+                uxNewServiceUnitStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                e.Total = count;
+            }
+        }
+        protected void deShowGrid(object sender, DirectEventArgs e)
+        {
+            long ServiceUnitId = long.Parse(uxCurrentServiceUnit.Value.ToString());
+
+            using (Entities _context = new Entities())
+            {
+                List<object> list;
+                list = (from d in _context.CROSSING_SUB_DIVISION
+                        where d.SERVICE_UNIT_ID == ServiceUnitId
+                        select d).ToList<object>();
+
+                uxCurrentSubDivStore.DataSource = list;
+                uxCurrentSubDivStore.DataBind();
+
+                uxTransferSubDivWindow.Show();
+            }
+        }
+        protected void AssociateTransfer(object sender, DirectEventArgs e)
+        {
+            CROSSING_SUB_DIVISION data;
+
+            //do type conversions
+
+            long ServiceUnitId = long.Parse(uxNewServiceUnit.Value.ToString());
+
+            string json = (e.ExtraParams["selectedSubdivs"]);
+            List<SelectedSubDiv> subdivList = JSON.Deserialize<List<SelectedSubDiv>>(json);
+            foreach (SelectedSubDiv subdiv in subdivList)
+            {
+                //Get record to be edited
+                using (Entities _context = new Entities())
+                {
+                    
+                    data = (from d in _context.CROSSING_SUB_DIVISION
+                            where d.SUB_DIVISION_ID == subdiv.SUB_DIVISION_ID 
+                            select d).SingleOrDefault();
+
+
+                    data.SERVICE_UNIT_ID = ServiceUnitId;
+
+                }
+                GenericData.Update<CROSSING_SUB_DIVISION>(data);
+            }
+
+            uxTransferSubDivWindow.Hide();
+            uxUpdateSubDivWindow.Hide();
+            uxUpdateSubDivForm.Reset();
+            uxCurrentServiceUnitStore.Reload();
+            uxTransferNewServiceUnitStore.Reload();         
+            uxServiceUnitStore.Reload();
+            uxSubDivStore.Reload();
+
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Subdivision(s) Transferred Successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
+        }
+       
         //protected void deRemoveServiceUnit(object sender, DirectEventArgs e)
         //{
         //    CROSSING_SERVICE_UNIT data;
@@ -173,6 +271,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             public int SUB_DIVISION_ID { get; set; }
             public string SUB_DIVISION_NAME { get; set; }
             public long? SERVICE_UNIT_ID { get; set; }
+        }
+        public class SelectedSubDiv
+        {
+            public long SUB_DIVISION_ID { get; set; }
+            public string SUB_DIVISION_NAME { get; set; }
+            public long SERVICE_UNIT_ID { get; set; }
         }
         public class RemoveSubDiv
         {

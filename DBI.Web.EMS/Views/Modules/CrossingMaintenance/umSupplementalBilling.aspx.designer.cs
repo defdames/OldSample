@@ -274,13 +274,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Window uxBillingReportWindow;
         
         /// <summary>
-        /// uxAddApplicationForm control.
+        /// uxViewInvoiceForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FormPanel uxAddApplicationForm;
+        protected global::Ext.Net.FormPanel uxViewInvoiceForm;
         
         /// <summary>
         /// FieldContainer3 control.
@@ -301,13 +301,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.TextField InvoiceDateTextField;
         
         /// <summary>
-        /// InvoiceNumDateField control.
+        /// InvoiceNumTextField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DateField InvoiceNumDateField;
+        protected global::Ext.Net.TextField InvoiceNumTextField;
         
         /// <summary>
         /// GridPanel1 control.
@@ -409,12 +409,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Toolbar Toolbar3;
         
         /// <summary>
-        /// Button6 control.
+        /// Button5 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button6;
+        protected global::Ext.Net.Button Button5;
     }
 }

@@ -26,6 +26,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
       
         protected void deSecurityProjectGrid(object sender, StoreReadDataEventArgs e)
         {
+           
             using (Entities _context = new Entities())
             {
                 if (validateComponentSecurity("SYS.CrossingMaintenance.InformationView"))
@@ -41,7 +42,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                                 select new { v.PROJECT_ID, v.LONG_NAME, v.ORGANIZATION_NAME, v.SEGMENT1 }).ToList<object>();
 
 
-                    uxProjectGrid.Store.Primary.DataSource = data;
+                    //uxProjectGrid.Store.Primary.DataSource = data;
+                    int count;
+                    uxProjectGrid.Store.Primary.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                    e.Total = count;
+                    ;
                 }
             }
         }
@@ -71,22 +76,24 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         protected void deAssociateProject(object sender, DirectEventArgs e)
         {
+            CheckboxSelectionModel sm = CheckboxSelectionModel2;
+
             long RailroadId = long.Parse(e.ExtraParams["RailroadId"]);
 
-            string json = (e.ExtraParams["selectedProjects"]);
-            List<ProjectDetails> projectList = JSON.Deserialize<List<ProjectDetails>>(json);
-            foreach (ProjectDetails project in projectList)
+            foreach (SelectedRow sr in sm.SelectedRows)
             {
                 CROSSING_PROJECT ProjectToAdd = new CROSSING_PROJECT
                 {
-                    PROJECT_ID = project.PROJECT_ID,
+                    PROJECT_ID = long.Parse(sr.RecordID),
                     RAILROAD_ID = RailroadId,
                 };
 
                 GenericData.Insert<CROSSING_PROJECT>(ProjectToAdd);
                 uxCurrentSecurityProjectStore.Reload();
                 Store2.Reload();
+
             }
+            
             Notification.Show(new NotificationConfig()
             {
                 Title = "Success",
