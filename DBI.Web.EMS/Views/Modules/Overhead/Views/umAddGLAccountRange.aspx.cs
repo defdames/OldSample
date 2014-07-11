@@ -144,29 +144,22 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
                 _data = _data.Where(x => String.Compare(x.SEGMENT5, uxSRSegment5.SelectedItem.Value) >= 0 && String.Compare(x.SEGMENT5, uxERSegment5.SelectedItem.Value) <= 0);
                 _data = _data.Where(x => String.Compare(x.SEGMENT6, uxSRSegment6.SelectedItem.Value) >= 0 && String.Compare(x.SEGMENT6, uxERSegment6.SelectedItem.Value) <= 0);
                 _data = _data.Where(x => String.Compare(x.SEGMENT7, uxSRSegment7.SelectedItem.Value) >= 0 && String.Compare(x.SEGMENT7, uxERSegment7.SelectedItem.Value) <= 0);
+
+                 decimal _org_id = decimal.Parse(Request.QueryString["org_id"]);
+               
                 uxGlAccountSecurityStore.DataSource = GenericData.ListFilterHeader<GL_ACCOUNTS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
                 e.Total = count;
             }
-
-
-
         }
+
 
         protected void deExcludeGlAccounts(object sender, DirectEventArgs e)
         {
             CheckboxSelectionModel sm = uxGlAccountSecurityGridSelectionModel;
-            List<SelectedRow> src = sm.SelectedRows.ToList();
+            List<SelectedRow> sr = sm.SelectedRows.ToList();
 
-            //foreach(SelectedRow 
+            GL_ACCOUNTS_V _accountDetails = GL_ACCOUNTS_V.AccountInformation(long.Parse(sr.Single().RecordID));
 
-        }
-
-        protected void deExcludeAccount(object sender, DirectEventArgs e)
-        {
-            CheckboxSelectionModel sm = uxGlAccountSecurityGridSelectionModel;
-
-            //Return data for selected code_combination_id
-            GL_ACCOUNTS_V _accountDetails =  GL_ACCOUNTS_V.AccountInformation(long.Parse(sm.SelectedRecordID));
             string _org_id = Request.QueryString["org_id"];
 
             OVERHEAD_GL_ACCOUNT _data = new OVERHEAD_GL_ACCOUNT();
@@ -181,7 +174,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
             _data.SEGMENT7 = _accountDetails.SEGMENT7;
             GenericData.Insert<OVERHEAD_GL_ACCOUNT>(_data);
 
-            sm.SelectedRows.Clear();
+            sm.DeselectAll(true);
+
         }
 
         protected void deIncludeAccount(object sender, DirectEventArgs e)
@@ -190,5 +184,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
 
         }
 
+    }
+
+    public class GL_ACCOUNTS_V2 : GL_ACCOUNTS_V
+    {
+        string ENABLED_FLAG { get; set; }
     }
 }  

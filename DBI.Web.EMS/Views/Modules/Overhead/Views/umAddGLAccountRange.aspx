@@ -659,10 +659,7 @@
                                 <ext:Button runat="server" ID="uxExclude" Text="Exclude Account" Icon="Delete" Disabled="true">
                                     <ToolTips>
                                         <ext:ToolTip runat="server" Html="Excludes a general ledger account from the range." UI="Info"></ext:ToolTip>
-                                    </ToolTips>
-                                    <DirectEvents>
-                                        <click OnEvent="deExcludeGlAccounts"><Confirmation ConfirmRequest="true" Message="Are you sure you want the mark the selected accounts as excluded from this range? The user will not be able to budget for these accounts. Exclude selected accounts?" /><EventMask ShowMask="true"></EventMask></click>
-                                    </DirectEvents>
+                                    </ToolTips> 
                                 </ext:Button>
                             </Items>
                         </ext:Toolbar>
@@ -716,21 +713,18 @@
                     <Plugins>
                         <ext:FilterHeader ID="uxGlAccountSecurityGridFilter" runat="server" Remote="true" />
                     </Plugins>
-                    <SelectionModel>
-                        <ext:CheckboxSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Simple" ShowHeaderCheckbox="false" AllowDeselect="true">
-                            <Listeners>
-                                <Select Handler="if(#{uxGlAccountSecurityGridSelectionModel}.getCount() > 0){#{uxGlAccountDelete}.enable();}else {#{uxGlAccountDelete}.disable();}"></Select>
-                                <Deselect Handler="if(#{uxGlAccountSecurityGridSelectionModel}.getCount() > 0){#{uxGlAccountDelete}.enable();} else {#{uxGlAccountDelete}.disable();}"></Deselect>
-                            </Listeners>
-                            <DirectEvents>
-                                <Select OnEvent="deExcludeAccount"><EventMask ShowMask="true"></EventMask></Select>
-                                <Deselect OnEvent="deIncludeAccount"><EventMask ShowMask="true"></EventMask></Deselect>
-                            </DirectEvents>
-                        </ext:CheckboxSelectionModel>
-                    </SelectionModel>
-                    <BottomBar>
-                        <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
-                    </BottomBar>
+         <SelectionModel>
+             <ext:CheckboxSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Simple" ShowHeaderCheckbox="false" AllowDeselect="true">
+                 <DirectEvents>
+                     <Select OnEvent="deExcludeGlAccounts">
+                         <EventMask ShowMask="true"></EventMask>
+                     </Select>
+                 </DirectEvents>
+             </ext:CheckboxSelectionModel>
+         </SelectionModel>
+         <BottomBar>
+             <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
+         </BottomBar>
                      <View>
                         <ext:GridView ID="GridView1" StripeRows="true" runat="server" TrackOver="true">
                         </ext:GridView>
