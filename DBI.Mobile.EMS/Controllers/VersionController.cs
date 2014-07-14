@@ -19,10 +19,10 @@ namespace DBI.Mobile.EMS.Controllers
             if (id == "production")
             {
                 Version ver = new Version();
-                ver.number = "1.0.T140626";
+                ver.number = "1.0.R140714";
                 ver.mandatory = true;
                 ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobiletest.dbiservices.com/iems/iEMS.plist";
-                ver.descriptionText = "Database refresh after each submit and contractor chemical process enabled.";
+                ver.descriptionText = "Corrected edits with equipment and employee edit screens.";
 
                 RootObject root = new RootObject();
                 root.version = ver;
