@@ -104,6 +104,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             };
             GenericData.Insert<CROSSING_SUPP_INVOICE>(data);
 
+            InvoiceDateTextField.Text = DateTime.Now.ToString("MM/dd/yyyy");
+            InvoiceNumTextField.Text = (data.INVOICE_SUPP_NUMBER);
+
             decimal SuppInvoiceId = data.INVOICE_SUPP_ID;
 
             CROSSING_SUPPLEMENTAL invoice;
@@ -124,40 +127,75 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxFilterForm.Reset();
                 uxInvoiceSupplementalStore.Reload();
 
-                Notification.Show(new NotificationConfig()
-                {
-                    Title = "Success",
-                    Html = "Invoice Added Successfully",
-                    HideDelay = 1000,
-                    AlignCfg = new NotificationAlignConfig
-                    {
-                        ElementAnchor = AnchorPoint.Center,
-                        TargetAnchor = AnchorPoint.Center
-                    }
-                });
-
+              
+                uxBillingReportWindow.Show();
             
+        }
+        protected void deResetInvoice(object sender, DirectEventArgs e)
+        {
+            uxInvoiceSupplementalStore.Reload();
+        }
+        protected void deInvoiceReportGrid(object sender, StoreReadDataEventArgs e)
+        {
+            List<object> allData;
+
+            string json = (e.Parameters["selectedSupp"]);
+            List<SupplementalDetails> suppList = JSON.Deserialize<List<SupplementalDetails>>(json);
+            List<decimal> ReportList = new List<decimal>();
+            foreach (SupplementalDetails supp in suppList)
+            {
+                ReportList.Add(supp.SUPPLEMENTAL_ID);
+            }
+            using (Entities _context = new Entities())
+            {
+
+                //Get List of all incidents open and closed 
+
+                allData = (from a in _context.CROSSING_SUPPLEMENTAL
+                           join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
+                           join v in _context.CROSSING_INVOICE on a.INVOICE_SUPP_ID equals v.INVOICE_ID
+                           where ReportList.Contains(a.SUPPLEMENTAL_ID)
+                           select new
+                           {
+                               v.INVOICE_NUMBER,
+                               v.INVOICE_DATE,
+                               d.CROSSING_ID,
+                               a.SUPPLEMENTAL_ID,
+                               a.APPROVED_DATE,
+                               d.CROSSING_NUMBER,
+                               d.SUB_DIVISION,
+                               d.SERVICE_UNIT,
+                               d.STATE,
+                               a.SERVICE_TYPE,
+                               d.MILE_POST,
+                               a.TRUCK_NUMBER,
+                               a.SQUARE_FEET,
+                             
+
+                           }).ToList<object>();
+
+
+               
+            }
+            uxInvoiceReportStore.DataSource = allData;
+        
+
+        }
+        protected void deCloseInvoice(object sender, DirectEventArgs e)
+        {
+            uxBillingReportWindow.Hide();
+           
         }
         public class SupplementalDetails
         {
             public decimal INVOICE_SUPP_ID { get; set; }
             public decimal SUPPLEMENTAL_ID { get; set; }
             public long CROSSING_ID { get; set; }
-            public DateTime APPROVED_DATE { get; set; }
-            //public DateTime COMPLETED_DATE { get; set; }
+            public DateTime APPROVED_DATE { get; set; }          
             public string SERVICE_TYPE { get; set; }
-            public string TRUCK_NUMBER { get; set; }
-            //public string CROSSING_NUMBER { get; set; }
-            //public string SERVICE_UNIT { get; set; }
-            //public string MILE_POST { get; set; }
-            //public string SUB_DIVISION { get; set; }
-            //public string SPRAY { get; set; }
+            public string TRUCK_NUMBER { get; set; }         
             public long SQUARE_FEET { get; set; }
-            //public string CUT { get; set; }
-            //public string MAINTAIN { get; set; }
-            //public string INSPECT { get; set; }
-            //public string RECURRING { get; set; }
-            //public string REMARKS { get; set; }
+           
 
         }
        

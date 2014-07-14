@@ -1444,7 +1444,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     new PdfPCell(new Phrase("Total", HeaderFont)),
                     new PdfPCell(new Phrase("Units", HeaderFont)),                    
 					new PdfPCell(new Phrase("EPA \n Number", HeaderFont)),
-                    new PdfPCell(new Phrase("Contractor Supplied", HeaderFont))
+                    new PdfPCell(new Phrase("Customer Material", HeaderFont))
 				};
                         Row = new PdfPRow(Cells);
                         InventoryTable.Rows.Add(Row);
@@ -1880,7 +1880,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         [DirectMethod]
         public void dmShowLunchTaskError(string ProjectName)
         {
-            X.Msg.Alert("Error", string.Format(" Project {0} has no chargeable 9999 task.", ProjectName)).Show();
+            X.Msg.Alert("Error", string.Format(" Project {0} has no chargeable task.", ProjectName)).Show();
         }
 
     }

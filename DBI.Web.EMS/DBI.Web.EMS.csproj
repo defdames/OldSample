@@ -114,6 +114,7 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\EMSV2 - Development.pubxml" />
+    <None Include="Properties\PublishProfiles\EMSV2 - Production.pubxml" />
     <None Include="Properties\PublishProfiles\EMSV2.pubxml" />
     <None Include="Resources\Scripts\jquery-2.0.1.intellisense.js" />
     <Content Include="Global.asax" />
@@ -149,6 +150,7 @@
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingSecurity.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umDataEntryTab.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umInspectionReport.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umInvoiceReview.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umMissingROW.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umPrivateCrossingReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umRailRoadProject.aspx" />
@@ -384,6 +386,13 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umInspectionReport.aspx.designer.cs">
       <DependentUpon>umInspectionReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umInvoiceReview.aspx.cs">
+      <DependentUpon>umInvoiceReview.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umInvoiceReview.aspx.designer.cs">
+      <DependentUpon>umInvoiceReview.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umMissingROW.aspx.cs">
       <DependentUpon>umMissingROW.aspx</DependentUpon>
