@@ -477,10 +477,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 DAILY_ACTIVITY_EMPLOYEE EmployeeInfo = _context.DAILY_ACTIVITY_EMPLOYEE.Where(x => x.EMPLOYEE_ID == EmployeeId).Single();
                 List<DAILY_ACTIVITY_EMPLOYEE> HeaderList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                                             join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                                                            where d.PERSON_ID == EmployeeInfo.PERSON_ID && h.DA_DATE == EmployeeInfo.DAILY_ACTIVITY_HEADER.DA_DATE && d.PER_DIEM == "Y" && h.HEADER_ID != EmployeeInfo.HEADER_ID && h.STATUS != 5
+                                                            where d.PERSON_ID == EmployeeInfo.PERSON_ID && h.DA_DATE == EmployeeInfo.DAILY_ACTIVITY_HEADER.DA_DATE && d.PER_DIEM == "Y" && h.STATUS != 5
                                                             select d).ToList();
                 List<WarningData> Warnings = new List<WarningData>();
-                if (HeaderList.Count > 0)
+                if (HeaderList.Count > 1)
                 {
                     foreach (DAILY_ACTIVITY_EMPLOYEE Header in HeaderList)
                     {
