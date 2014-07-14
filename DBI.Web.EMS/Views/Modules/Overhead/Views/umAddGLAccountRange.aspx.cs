@@ -152,14 +152,14 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
 
         }
 
-        protected void deExcludeGlAccounts(object sender, DirectEventArgs e)
-        {
-            CheckboxSelectionModel sm = uxGlAccountSecurityGridSelectionModel;
-            List<SelectedRow> src = sm.SelectedRows.ToList();
+        //protected void deExcludeGlAccounts(object sender, DirectEventArgs e)
+        //{
+        //    CheckboxSelectionModel sm = uxGlAccountSecurityGridSelectionModel;
+        //    List<SelectedRow> src = sm.SelectedRows.ToList();
 
-            //foreach(SelectedRow 
+        //    foreach(SelectedRow 
 
-        }
+        //}
 
     }
 }  
