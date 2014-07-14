@@ -1852,7 +1852,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             Window win = new Window()
             {
                 ID = "uxPlaceholderWindow",
-                Width = Unit.Pixel(600),
+                
                 Modal = true,
                 Resizable = false,
                 AutoRender = false,

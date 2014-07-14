@@ -57,7 +57,7 @@
         </ext:Store>
         <ext:FormPanel runat="server"
             ID="uxAddInventoryForm"
-            DefaultButton="uxAddInventorySubmit">
+            DefaultButton="uxAddInventorySubmit" Width="600">
             <Items>
                 <ext:Hidden runat="server" ID="uxFormType" />
                 <ext:DropDownField runat="server" Editable="false"

@@ -87,6 +87,7 @@
                 <ext:TextArea runat="server"
                     ID="uxAddProductionWorkArea"
                     FieldLabel="Spray/Work Area"
+                    Rows="5"
                     AllowBlank="false" Width="500" />
                 <ext:TextField runat="server"
                     ID="uxAddProductionPoleFrom"
