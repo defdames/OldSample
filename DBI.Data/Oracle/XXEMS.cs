@@ -855,6 +855,11 @@ namespace DBI.Data
 
         }
 
+        public static IQueryable<PROJECTS_V> ProjectsByOrgHierarchy(List<long> OrgsList, Entities _context)
+        {
+            return _context.PROJECTS_V.Where(x => OrgsList.Contains(x.CARRYING_OUT_ORGANIZATION_ID));
+        }
+
         public class SYS_PROFILE_OPTIONS_V2
         {
             public decimal USER_PROFILE_OPTION_ID { get; set; }

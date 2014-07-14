@@ -23,8 +23,14 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         {
             char[] _delimiterChars = { ':' };
             string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
-            long _hierarchyID = long.Parse(_selectedID[0].ToString());
             return long.Parse(_selectedID[1].ToString());
+        }
+
+        protected long GetHierarchyFromTree(string _selectedRecordID)
+        {
+            char[] _delimiterChars = { ':' };
+            string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
+            return long.Parse(_selectedID[0].ToString());
         }
 
         protected void deLoadOrgTree(object sender, NodeLoadEventArgs e)
@@ -121,16 +127,42 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
         protected void deReadDashboard(object sender, StoreReadDataEventArgs e)
         {
-            List<SYS_USER_ORGS> OrgsList = SYS_USER_ORGS.GetUserOrgs(long.Parse(Authentication.GetClaimValue("UserId", User as ClaimsPrincipal)));
-
-            using (Entities _context = new Entities())
+            string _selectedRecordID = uxCompanySelectionModel.SelectedRecordID;
+            List<long> OrgsList;
+            if (_selectedRecordID != string.Empty)
             {
-                
+                List<long> ProjectList;
+                long SelectedOrgId = GetOrgFromTree(_selectedRecordID);
+                long HierId = GetHierarchyFromTree(_selectedRecordID);
+                //Get Orgs list
+                using (Entities _context = new Entities())
+                {
+                    OrgsList = HR.ActiveOrganizationsByHierarchy(HierId, SelectedOrgId, _context).Select(x => x.ORGANIZATION_ID).ToList();
+                    //ProjectList = XXEMS.ProjectsByOrgHierarchy(OrgsList, _context).Select(x => x.PROJECT_ID).ToList();
+
+                    var data = XXDBI_DW.JobCostbyProjectList(OrgsList, HierId, _context);//.Join(_context.CUSTOMER_SURVEY_THRESH_AMT, jc => jc.ORG_ID, tham => tham.ORG_ID, (jc, tham) => new { job_cost = jc, threshold = tham }).Where(x => x.job_cost.LEVEL_SORT == 8).Select(x => new Threshold { PROJECT_NAME = x.job_cost.PROJECT_NAME, PROJECT_NUMBER = x.job_cost.PROJECT_NUMBER, PERCENTAGE = (x.job_cost.BGT_GREC == 0 ? 0 : Math.Round((double)(x.job_cost.FY_GREC / x.job_cost.BGT_GREC * 100))) });
+                    int count;
+
+                    var Source = GenericData.ListFilterHeader<XXDBI_DW.Threshold>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                    uxDashboardStore.DataSource = Source;
+                    e.Total = count;
+                }
             }
+
         }
 
         protected void deEmailLink(object sender, DirectEventArgs e)
         {
+            List<XXDBI_DW.Threshold> RowData = JSON.Deserialize<List<XXDBI_DW.Threshold>>(e.ExtraParams["RowValues"]);
+
+            //generate code to tie back to customer
+
+            //generate link
+
+            //get contact to email the link to
+
+            //send email with link
+            
 
         }
 
@@ -144,4 +176,6 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
         }
     }
+
+    
 }

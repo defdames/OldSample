@@ -241,7 +241,6 @@
     </Compile>
     <Compile Include="QRCodeGenerator.aspx.cs">
       <DependentUpon>QRCodeGenerator.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="QRCodeGenerator.aspx.designer.cs">
       <DependentUpon>QRCodeGenerator.aspx</DependentUpon>

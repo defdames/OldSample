@@ -5,6 +5,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    <script type="text/javascript">
+        var percentage = function (value) {
+            return value + "%";
+        };
+    </script>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -38,7 +43,7 @@
                         <ext:TreeSelectionModel ID="uxCompanySelectionModel" runat="server" Mode="Single" />
                     </SelectionModel>
                     <Listeners>
-                        <ItemClick Handler="#{uxDollarStore}.reload(); #{uxAddDollarButton}.enable();" />
+                        <ItemClick Handler="#{uxDashboardStore}.reload()" />
                     </Listeners>
                 </ext:TreePanel>
                 <ext:GridPanel runat="server" ID="uxDashboardGrid" Layout="HBoxLayout" Region="Center">
@@ -47,12 +52,12 @@
                             <Model>
                                 <ext:Model runat="server">
                                     <Fields>
-                                        <ext:ModelField Name="ProjectNumber" />
-                                        <ext:ModelField Name="ProjectName" />
-                                        <ext:ModelField Name="CurrentPercentage" />
-                                        <ext:ModelField Name="ThresholdPercentage" />
-                                        <ext:ModelField Name="Difference" />
-                                        <ext:ModelField Name="Upcoming" />
+                                        <ext:ModelField Name="PROJECT_NUMBER" />
+                                        <ext:ModelField Name="PROJECT_NAME" />
+                                        <ext:ModelField Name="PERCENTAGE" />
+                                        <ext:ModelField Name="THRESHOLD" />
+                                        <ext:ModelField Name="PROJECT_ID" />
+                                        <ext:ModelField Name="ORG_ID" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -60,16 +65,23 @@
                                 <ext:PageProxy />
                             </Proxy>
                             <Sorters>
-                                <ext:DataSorter Property="Difference" Direction="DESC" />
+                                <ext:DataSorter Property="PROJECT_NAME" Direction="DESC" />
                             </Sorters>
                         </ext:Store>
                     </Store>
+                    <SelectionModel>
+                        <ext:RowSelectionModel runat="server" />
+                    </SelectionModel>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column runat="server" Text="Project Number" DataIndex="ProjectNumber" Flex="20" />
-                            <ext:Column runat="server" Text="Project Name" DataIndex="ProjectName" Flex="40" />
-                            <ext:Column runat="server" Text="Current %" DataIndex="CurrentPercentage" Flex="30" />
-                            <ext:Column runat="server" Text="Threshold %" DataIndex="ThresholdPercentage" Flex="30" />
+                            <ext:Column runat="server" Text="Project Number" DataIndex="PROJECT_NUMBER" Flex="20" />
+                            <ext:Column runat="server" Text="Project Name" DataIndex="PROJECT_NAME" Flex="40" />
+                            <ext:Column runat="server" Text="Current %" DataIndex="PERCENTAGE" Flex="30">
+                                <Renderer Fn="percentage" />
+                            </ext:Column>
+                            <ext:Column runat="server" Text="Threshold %" DataIndex="THRESHOLD" Flex="30">
+                                <Renderer Fn="percentage" />
+                            </ext:Column>
                         </Columns>
                     </ColumnModel>
                     <Plugins>
@@ -82,7 +94,7 @@
                                     <DirectEvents>
                                         <Click OnEvent="deEmailLink">
                                             <ExtraParams>
-                                                <ext:Parameter Name="PROJECT_ID" />
+                                                <ext:Parameter Name="RowValues" Value="Ext.encode(#{uxDashboardGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
                                             </ExtraParams>
                                             <EventMask ShowMask="true" />
                                         </Click>
