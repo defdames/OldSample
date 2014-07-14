@@ -454,6 +454,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views {
         protected global::Ext.Net.Button uxShowAccounts;
         
         /// <summary>
+        /// uxAddRange control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxAddRange;
+        
+        /// <summary>
         /// uxClearFilter control.
         /// </summary>
         /// <remarks>

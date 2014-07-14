@@ -635,7 +635,8 @@
                         <Click Handler ="#{uxGlAccountSecurityStore}.reload();#{uxAccountFormPanel}.collapse();" />
                     </Listeners>
                 </ext:Button>
-                               <ext:Button ID="uxClearFilter" runat="server" Text="Clear Filter" >
+                <ext:Button ID="uxAddRange" runat="server" Icon="ApplicationAdd"><DirectEvents><Click OnEvent="deAddRange"><EventMask ShowMask="true"></EventMask></Click></DirectEvents></ext:Button>
+                <ext:Button ID="uxClearFilter" runat="server" Text="Clear Filter" >
                                    <Listeners><Click Handler="#{FormPanel2}.reset();
                                              #{uxERSegment1}.disable();
                                              #{uxERSegment2}.disable();
