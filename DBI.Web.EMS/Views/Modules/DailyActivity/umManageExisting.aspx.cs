@@ -1880,7 +1880,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         [DirectMethod]
         public void dmShowLunchTaskError(string ProjectName)
         {
-            X.Msg.Alert("Error", string.Format(" Project {0} has no chargeable 9999 task.", ProjectName)).Show();
+            X.Msg.Alert("Error", string.Format(" Project {0} has no chargeable task.", ProjectName)).Show();
         }
 
     }
