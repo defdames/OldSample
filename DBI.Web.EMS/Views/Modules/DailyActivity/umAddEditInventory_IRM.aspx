@@ -44,7 +44,7 @@
         </ext:Store>
         <ext:FormPanel runat="server"
             ID="uxAddInventoryForm"
-            DefaultButton="uxAddInventorySubmit" Height="500">
+            DefaultButton="uxAddInventorySubmit" Height="500" Width="600">
             <Items>
                 <ext:Hidden runat="server" ID="uxFormType" />
                 <ext:ComboBox runat="server"

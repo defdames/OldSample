@@ -30,7 +30,7 @@
         <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
         <ext:FormPanel runat="server"
             ID="uxAddProductionForm"
-            DefaultButton="uxAddProductionSubmit" Height="300">
+            DefaultButton="uxAddProductionSubmit" Height="300" Width="600">
             <Items>
                 <ext:Hidden ID="uxFormType" runat="server" />
                 <ext:DropDownField runat="server" Editable="false"
@@ -178,7 +178,7 @@
                 </ext:ComboBox>
                 <ext:TextArea runat="server"
                     ID="uxAddProductionComments"
-                    FieldLabel="Comments" Width="500" />
+                    FieldLabel="Comments" Width="500" Rows="5" />
             </Items>
             <Buttons>
                 <ext:Button runat="server"
