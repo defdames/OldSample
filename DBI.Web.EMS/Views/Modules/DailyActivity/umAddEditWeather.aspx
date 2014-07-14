@@ -12,7 +12,7 @@
 				<ext:FormPanel runat="server"
 					ID="uxAddWeatherForm"
 					DefaultButton="uxAddWeatherSubmit"
-					Border="false">
+					Border="false" Width="600">
 					<Items>
                         <ext:Hidden runat="server" ID="uxFormType" />
 						<ext:FieldContainer runat="server"

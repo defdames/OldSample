@@ -158,6 +158,9 @@
         <EntityTypeShape EntityType="OracleModel.PA_ROLES_V" Width="1.5" PointX="21.375" PointY="18.75" />
         <EntityTypeShape EntityType="OracleModel.JOB_COST" Width="1.5" PointX="21.375" PointY="22.75" />
         </Diagram>
+      <Diagram DiagramId="e84dee89c5a844eb84c350f94a998eb6" Name="OVERHEAD" >
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_RANGE" Width="1.5" PointX="0.75" PointY="0.75" />
+      </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>
