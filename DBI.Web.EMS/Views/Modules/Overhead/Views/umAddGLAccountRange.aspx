@@ -5,6 +5,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+     <script type="text/javascript">
+         var prepareExclude = function (value, record) {
+             return record.ORGANIZATION_ID.City;
+         };
+     </script>
 </head>
 <body>
        <form id="form1" runat="server">
@@ -671,6 +676,9 @@
                             <Model>
                                 <ext:Model ID="Model15" runat="server" IDProperty="CODE_COMBINATION_ID">
                                     <Fields>
+                                        <ext:ModelField Name="EXCLUDED_FLAG">
+                                            <Convert Fn="prepareExclude"></Convert>
+                                        </ext:ModelField>
                                         <ext:ModelField Name="CODE_COMBINATION_ID" />
                                         <ext:ModelField Name="SEGMENT1" />
                                         <ext:ModelField Name="SEGMENT2" />
