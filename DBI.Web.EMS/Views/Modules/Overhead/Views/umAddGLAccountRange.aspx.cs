@@ -182,6 +182,34 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
 
         }
 
+        protected void deAddRange(object sender, DirectEventArgs e)
+        {
+
+             string _org_id = Request.QueryString["org_id"];
+
+            OVERHEAD_GL_RANGE _data = new OVERHEAD_GL_RANGE();
+            _data.ORGANIZATION_ID = long.Parse(_org_id);
+            _data.SRSEGMENT1 = uxSRSegment1.SelectedItem.Value;
+            _data.SRSEGMENT2 = uxSRSegment2.SelectedItem.Value;
+            _data.SRSEGMENT3 = uxSRSegment3.SelectedItem.Value;
+            _data.SRSEGMENT4 = uxSRSegment4.SelectedItem.Value;
+            _data.SRSEGMENT5 = uxSRSegment5.SelectedItem.Value;
+            _data.SRSEGMENT6 = uxSRSegment6.SelectedItem.Value;
+            _data.SRSEGMENT7 = uxSRSegment7.SelectedItem.Value;
+
+            _data.ERSEGMENT1 = uxERSegment1.SelectedItem.Value;
+            _data.ERSEGMENT2 = uxERSegment2.SelectedItem.Value;
+            _data.ERSEGMENT3 = uxERSegment3.SelectedItem.Value;
+            _data.ERSEGMENT4 = uxERSegment4.SelectedItem.Value;
+            _data.ERSEGMENT5 = uxERSegment5.SelectedItem.Value;
+            _data.ERSEGMENT6 = uxERSegment6.SelectedItem.Value;
+            _data.ERSEGMENT7 = uxERSegment7.SelectedItem.Value;
+            _data.CREATE_DATE = DateTime.Now;
+            _data.MODIFY_DATE = DateTime.Now;
+            _data.CREATED_BY = User.Identity.Name;
+            _data.MODIFIED_BY = User.Identity.Name;
+        }
+
     }
 
 }  

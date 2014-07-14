@@ -21,7 +21,7 @@
             runat="server"
             BodyPadding="10"
                      Region="Center" Margins="5 5 5 5" Flex="1" 
-            Layout="ColumnLayout" Collapsible="true">
+            Layout="ColumnLayout">
             
             <FieldDefaults LabelAlign="Left" MsgTarget="Side" />
                     <Items>
@@ -630,12 +630,12 @@
                 </ext:FieldSet>
                     </Items>
             <Buttons>
-                <ext:Button ID="uxShowAccounts" runat="server" Text="Accounts View" Icon="Find" Disabled="true" >
+                <ext:Button ID="uxShowAccounts" runat="server" Text="View Accounts" Icon="Find" Disabled="true" >
                     <Listeners>
-                        <Click Handler ="#{uxGlAccountSecurityStore}.reload();#{uxAccountFormPanel}.collapse();" />
+                        <Click Handler ="#{uxGlAccountSecurityStore}.reload();" />
                     </Listeners>
                 </ext:Button>
-                <ext:Button ID="uxAddRange" runat="server" Icon="ApplicationAdd"><DirectEvents><Click OnEvent="deAddRange"><EventMask ShowMask="true"></EventMask></Click></DirectEvents></ext:Button>
+                <ext:Button ID="uxAddRange" runat="server" Icon="ApplicationAdd" Text="Add Range"><DirectEvents><Click OnEvent="deAddRange"><EventMask ShowMask="true"></EventMask></Click></DirectEvents></ext:Button>
                 <ext:Button ID="uxClearFilter" runat="server" Text="Clear Filter" >
                                    <Listeners><Click Handler="#{FormPanel2}.reset();
                                              #{uxERSegment1}.disable();
@@ -658,7 +658,7 @@
                 </ext:Button>
               </Buttons>
         </ext:FormPanel>
-     <ext:GridPanel ID="uxGlAccountSecurityGrid" runat="server" Flex="1" Title="General Ledger Accounts" Margin="5" Region="South" SelectionMemory="true" >
+     <ext:GridPanel ID="uxGlAccountSecurityGrid" runat="server" Flex="1" Title="General Ledger Accounts" Margin="5" Region="South" SelectionMemory="true"  >
                     <TopBar>
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
