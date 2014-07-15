@@ -227,7 +227,7 @@
                 <ext:NumberField runat="server"
                     ID="uxAddInventoryRate"
                     FieldLabel="Rate"
-                    AllowBlank="false" Width="500">
+                    AllowBlank="false" Width="500" AllowDecimals="true">
                     <Listeners>
                         <Change Fn="doAddMath" />
                     </Listeners>

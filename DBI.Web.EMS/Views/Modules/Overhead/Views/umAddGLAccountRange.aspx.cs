@@ -144,72 +144,22 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
                 _data = _data.Where(x => String.Compare(x.SEGMENT5, uxSRSegment5.SelectedItem.Value) >= 0 && String.Compare(x.SEGMENT5, uxERSegment5.SelectedItem.Value) <= 0);
                 _data = _data.Where(x => String.Compare(x.SEGMENT6, uxSRSegment6.SelectedItem.Value) >= 0 && String.Compare(x.SEGMENT6, uxERSegment6.SelectedItem.Value) <= 0);
                 _data = _data.Where(x => String.Compare(x.SEGMENT7, uxSRSegment7.SelectedItem.Value) >= 0 && String.Compare(x.SEGMENT7, uxERSegment7.SelectedItem.Value) <= 0);
-              
                 uxGlAccountSecurityStore.DataSource = GenericData.ListFilterHeader<GL_ACCOUNTS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
                 e.Total = count;
             }
-        }
 
-
-        protected void deExcludeGlAccounts(object sender, DirectEventArgs e)
-        {
-            CheckboxSelectionModel sm = uxGlAccountSecurityGridSelectionModel;
-            List<SelectedRow> sr = sm.SelectedRows.ToList();
-
-            GL_ACCOUNTS_V _accountDetails = GL_ACCOUNTS_V.AccountInformation(long.Parse(sr.Single().RecordID));
-
-            string _org_id = Request.QueryString["org_id"];
-
-            OVERHEAD_GL_ACCOUNT _data = new OVERHEAD_GL_ACCOUNT();
-            _data.INCLUDE_EXCLUDE_FLAG = "E";
-            _data.ORGANIZATION_ID = decimal.Parse(_org_id);
-            _data.SEGMENT1 = _accountDetails.SEGMENT1;
-            _data.SEGMENT2 = _accountDetails.SEGMENT2;
-            _data.SEGMENT3 = _accountDetails.SEGMENT3;
-            _data.SEGMENT4 = _accountDetails.SEGMENT4;
-            _data.SEGMENT5 = _accountDetails.SEGMENT5;
-            _data.SEGMENT6 = _accountDetails.SEGMENT6;
-            _data.SEGMENT7 = _accountDetails.SEGMENT7;
-            GenericData.Insert<OVERHEAD_GL_ACCOUNT>(_data);
-
-            sm.DeselectAll(true);
-
-        }
-
-        protected void deIncludeAccount(object sender, DirectEventArgs e)
-        {
 
 
         }
 
-        protected void deAddRange(object sender, DirectEventArgs e)
-        {
+        //protected void deExcludeGlAccounts(object sender, DirectEventArgs e)
+        //{
+        //    CheckboxSelectionModel sm = uxGlAccountSecurityGridSelectionModel;
+        //    List<SelectedRow> src = sm.SelectedRows.ToList();
 
-             string _org_id = Request.QueryString["org_id"];
+        //    foreach(SelectedRow 
 
-            OVERHEAD_GL_RANGE _data = new OVERHEAD_GL_RANGE();
-            _data.ORGANIZATION_ID = long.Parse(_org_id);
-            _data.SRSEGMENT1 = uxSRSegment1.SelectedItem.Value;
-            _data.SRSEGMENT2 = uxSRSegment2.SelectedItem.Value;
-            _data.SRSEGMENT3 = uxSRSegment3.SelectedItem.Value;
-            _data.SRSEGMENT4 = uxSRSegment4.SelectedItem.Value;
-            _data.SRSEGMENT5 = uxSRSegment5.SelectedItem.Value;
-            _data.SRSEGMENT6 = uxSRSegment6.SelectedItem.Value;
-            _data.SRSEGMENT7 = uxSRSegment7.SelectedItem.Value;
-
-            _data.ERSEGMENT1 = uxERSegment1.SelectedItem.Value;
-            _data.ERSEGMENT2 = uxERSegment2.SelectedItem.Value;
-            _data.ERSEGMENT3 = uxERSegment3.SelectedItem.Value;
-            _data.ERSEGMENT4 = uxERSegment4.SelectedItem.Value;
-            _data.ERSEGMENT5 = uxERSegment5.SelectedItem.Value;
-            _data.ERSEGMENT6 = uxERSegment6.SelectedItem.Value;
-            _data.ERSEGMENT7 = uxERSegment7.SelectedItem.Value;
-            _data.CREATE_DATE = DateTime.Now;
-            _data.MODIFY_DATE = DateTime.Now;
-            _data.CREATED_BY = User.Identity.Name;
-            _data.MODIFIED_BY = User.Identity.Name;
-        }
+        //}
 
     }
-
 }  

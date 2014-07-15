@@ -73,6 +73,24 @@ namespace DBI.Data
             }            
         }
 
+        public static IQueryable<Threshold> JobCostbyProjectList(List<long> OrgsList, long HierarchyId, Entities _context)
+        {
+            string sql = string.Format(@"
+                SELECT JC_WK_DATE FROM(SELECT JC_WK_DATE FROM APPS.XX_JOBCOST_DATES_MV WHERE HIERARCHY_ID = {0} ORDER BY JC_WK_DATE DESC) WHERE ROWNUM = 1", HierarchyId);
+            DateTime JCDate = _context.Database.SqlQuery<DateTime>(sql).Single();
+            var data = _context.JOB_COST
+                .Join(_context.CUSTOMER_SURVEY_THRESH_AMT, jc => jc.DIVISION_ID, tham => tham.ORG_ID, (jc, tham) => new { job_cost = jc, threshold = tham })
+                .Where(x => x.job_cost.JC_WK_DATE == JCDate)
+                .Where(x => OrgsList.Contains((long)x.job_cost.DIVISION_ID))
+                .Where(x => x.job_cost.LEVEL_SORT == 8)
+                .Where(x => x.job_cost.BGT_GREC >= x.threshold.LOW_DOLLAR_AMT && x.job_cost.BGT_GREC <= x.threshold.HIGH_DOLLAR_AMT)
+                .Join(_context.CUSTOMER_SURVEY_THRESHOLDS, tham => tham.threshold.AMOUNT_ID, th => th.AMOUNT_ID, (tham, th) => new { job_cost = tham, threshold = th })
+                .Select(x => new Threshold { PROJECT_NAME = x.job_cost.job_cost.PROJECT_NAME, PROJECT_NUMBER = x.job_cost.job_cost.PROJECT_NUMBER, PERCENTAGE = (x.job_cost.job_cost.BGT_GREC == 0 ? 0 : Math.Round((double)(x.job_cost.job_cost.FY_GREC / x.job_cost.job_cost.BGT_GREC * 100))), THRESHOLD = (double)x.threshold.THRESHOLD, ORG_ID = (long)x.job_cost.job_cost.DIVISION_ID, PROJECT_ID = (long)x.job_cost.job_cost.PROJECT_ID })
+                .Where(x => x.PERCENTAGE >( x.THRESHOLD - 5));
+            return data;
+            
+                
+        }
         /// <summary>
         /// Returns a list of loaded job cost week ending dates in EMS
         /// </summary>
@@ -116,6 +134,16 @@ namespace DBI.Data
             public decimal FY_GREV { get; set; }
             public decimal FY_TDE { get; set; }
             public decimal FY_TOP { get; set; }
+        }
+
+        public class Threshold
+        {
+            public string PROJECT_NUMBER { get; set; }
+            public double PERCENTAGE { get; set; }
+            public string PROJECT_NAME { get; set; }
+            public double THRESHOLD { get; set; }
+            public long PROJECT_ID { get; set; }
+            public long ORG_ID { get; set; }
         }
     }
 }

@@ -44,6 +44,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 if (GetStatus(long.Parse(Request.QueryString["HeaderId"])) != 2)
                 {
+                    uxEmployeeToolbar.Hidden = true;
+                    uxEquipmentToolbar.Hidden = true;
+                    uxProductionToolbar.Hidden = true;
+                    uxWeatherToolbar.Hidden = true;
+                    uxInventoryToolbar.Hidden = true;
+
                     uxEmployeeToolbar.Hide();
                     uxEquipmentToolbar.Hide();
                     uxProductionToolbar.Hide();
