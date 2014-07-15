@@ -87,6 +87,7 @@
                 <ext:TextArea runat="server"
                     ID="uxAddProductionWorkArea"
                     FieldLabel="Spray/Work Area"
+                    Rows="5"
                     AllowBlank="false" Width="500" />
                 <ext:TextField runat="server"
                     ID="uxAddProductionPoleFrom"
@@ -96,7 +97,7 @@
                     FieldLabel="Pole/MP To" Width="500" />
                 <ext:NumberField runat="server"
                     ID="uxAddProductionAcresPerMile"
-                    FieldLabel="Acres/Mile"
+                    FieldLabel="Acres/Mile" DecimalPrecision="3"
                     AllowBlank="false" Width="500" MinValue="0" />
                 <ext:NumberField runat="server"
                     ID="uxAddProductionGallons"

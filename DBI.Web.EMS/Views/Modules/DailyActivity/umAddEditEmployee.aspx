@@ -337,6 +337,7 @@
 				<ext:TextArea runat="server"
 					FieldLabel="Comments"
 					ID="uxAddEmployeeComments" Width="500"
+                    Rows="5"
 					AllowBlank="true" />
 				<ext:DropDownField runat="server"
 					ID="uxAddEmployeeRole" Editable="false"

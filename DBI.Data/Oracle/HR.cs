@@ -97,6 +97,29 @@ namespace DBI.Data
                 }
         }
 
+        public static IQueryable<ORGANIZATION_V1> ActiveOrganizationsByHierarchy(long hierarchyId, long organizationId, Entities _context)
+        {
+                string sql = @"SELECT              c.organization_id_child ORGANIZATION_ID,
+                        c.d_child_name ORGANIZATION_NAME,
+                        level as HIER_LEVEL,
+                        haou.type,
+                        haou.date_from,
+                        haou.date_to,
+                        ' ' as organization_status
+                        FROM                per_organization_structures_v a
+                        INNER JOIN          per_org_structure_versions_v b on a.organization_structure_id = b.organization_structure_id
+                        INNER JOIN          per_org_structure_elements_v c on b.org_structure_version_id = c.org_structure_version_id
+                        INNER JOIN          apps.hr_all_organization_units haou on haou.organization_id = c.organization_id_child
+                        WHERE               SYSDATE BETWEEN b.date_from and nvl(b.date_to,'31-DEC-4712')
+                        AND                 a.organization_structure_id = " + hierarchyId.ToString() + @"
+                        START WITH          c.organization_id_parent = " + organizationId.ToString() + @" AND a.organization_structure_id + 0 = " + hierarchyId.ToString() + @"
+                        CONNECT BY PRIOR    c.organization_id_child = c.organization_id_parent AND a.organization_structure_id + 0 = " + hierarchyId.ToString() + @"
+                        ORDER SIBLINGS BY   c.d_child_name";
+
+                IQueryable<ORGANIZATION_V1> _data = _context.Database.SqlQuery<ORGANIZATION_V1>(sql).AsQueryable();
+                return _data;
+        }
+
         /// <summary>
         /// Returns a list of valid hierarchies in the system, it will return a list of hierarcies by legal entity.
         /// </summary>

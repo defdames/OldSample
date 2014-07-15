@@ -36,6 +36,18 @@ namespace DBI.Data
                 }
 
         }
+
+
+        public static GL_ACCOUNTS_V AccountInformation(long code_combination_id)
+        {
+            using (Entities _context = new Entities())
+            {
+                var _data = _context.GL_ACCOUNTS_V.AsNoTracking().Where(a => a.CODE_COMBINATION_ID == code_combination_id);
+                return _data.SingleOrDefault();
+            }
+
+        }
+       
        
 
         /// <summary>
