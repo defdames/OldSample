@@ -99,7 +99,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long ChemicalMix = long.Parse(uxAddInventoryMix.Value.ToString());
             long SubInventoryOrg = long.Parse(uxAddInventorySub.SelectedItem.Value);
             long ItemId = long.Parse(uxAddInventoryItem.Value.ToString());
-            long Rate = long.Parse(uxAddInventoryRate.Text);
+            decimal Rate = decimal.Parse(uxAddInventoryRate.Text);
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             decimal Total = decimal.Parse(uxAddInventoryTotal.Text);
             string ContractorSupplied;
