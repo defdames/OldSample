@@ -5,11 +5,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-     <script type="text/javascript">
-         var prepareExclude = function (value, record) {
-             return record.ORGANIZATION_ID.City;
-         };
-     </script>
 </head>
 <body>
        <form id="form1" runat="server">
@@ -635,7 +630,7 @@
                         <Click Handler ="#{uxGlAccountSecurityStore}.reload();" />
                     </Listeners>
                 </ext:Button>
-                <ext:Button ID="uxAddRange" runat="server" Icon="ApplicationAdd" Text="Add Range"><DirectEvents><Click OnEvent="deAddRange"><EventMask ShowMask="true"></EventMask></Click></DirectEvents></ext:Button>
+                <ext:Button ID="uxAddRange" runat="server" Icon="ApplicationAdd" Text="Add Range"></ext:Button>
                 <ext:Button ID="uxClearFilter" runat="server" Text="Clear Filter" >
                                    <Listeners><Click Handler="#{FormPanel2}.reset();
                                              #{uxERSegment1}.disable();
@@ -677,9 +672,6 @@
                             <Model>
                                 <ext:Model ID="Model15" runat="server" IDProperty="CODE_COMBINATION_ID">
                                     <Fields>
-                                        <ext:ModelField Name="EXCLUDED_FLAG">
-                                            <Convert Fn="prepareExclude"></Convert>
-                                        </ext:ModelField>
                                         <ext:ModelField Name="CODE_COMBINATION_ID" />
                                         <ext:ModelField Name="SEGMENT1" />
                                         <ext:ModelField Name="SEGMENT2" />
@@ -725,7 +717,7 @@
          <SelectionModel>
              <ext:CheckboxSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Simple" ShowHeaderCheckbox="false" AllowDeselect="true">
                  <DirectEvents>
-                     <Select OnEvent="deExcludeGlAccounts">
+                     <Select >
                          <EventMask ShowMask="true"></EventMask>
                      </Select>
                  </DirectEvents>
