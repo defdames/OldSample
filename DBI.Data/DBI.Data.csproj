@@ -361,6 +361,9 @@
     <Compile Include="OVERHEAD_GL_ACCOUNT.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="OVERHEAD_GL_RANGE.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="PA_LOCATIONS_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>

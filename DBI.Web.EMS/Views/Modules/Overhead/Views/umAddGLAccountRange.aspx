@@ -16,7 +16,7 @@
             runat="server"
             BodyPadding="10"
                      Region="Center" Margins="5 5 5 5" Flex="1" 
-            Layout="ColumnLayout" Collapsible="true">
+            Layout="ColumnLayout">
             
             <FieldDefaults LabelAlign="Left" MsgTarget="Side" />
                     <Items>
@@ -625,12 +625,13 @@
                 </ext:FieldSet>
                     </Items>
             <Buttons>
-                <ext:Button ID="uxShowAccounts" runat="server" Text="Accounts View" Icon="Find" Disabled="true" >
+                <ext:Button ID="uxShowAccounts" runat="server" Text="View Accounts" Icon="Find" Disabled="true" >
                     <Listeners>
-                        <Click Handler ="#{uxGlAccountSecurityStore}.reload();#{uxAccountFormPanel}.collapse();" />
+                        <Click Handler ="#{uxGlAccountSecurityStore}.reload();" />
                     </Listeners>
                 </ext:Button>
-                               <ext:Button ID="uxClearFilter" runat="server" Text="Clear Filter" >
+                <ext:Button ID="uxAddRange" runat="server" Icon="ApplicationAdd" Text="Add Range"></ext:Button>
+                <ext:Button ID="uxClearFilter" runat="server" Text="Clear Filter" >
                                    <Listeners><Click Handler="#{FormPanel2}.reset();
                                              #{uxERSegment1}.disable();
                                              #{uxERSegment2}.disable();
@@ -652,17 +653,14 @@
                 </ext:Button>
               </Buttons>
         </ext:FormPanel>
-     <ext:GridPanel ID="uxGlAccountSecurityGrid" runat="server" Flex="1" Title="General Ledger Accounts" Margin="5" Region="South" SelectionMemory="true" >
+     <ext:GridPanel ID="uxGlAccountSecurityGrid" runat="server" Flex="1" Title="General Ledger Accounts" Margin="5" Region="South" SelectionMemory="true"  >
                     <TopBar>
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
                                 <ext:Button runat="server" ID="uxExclude" Text="Exclude Account" Icon="Delete" Disabled="true">
                                     <ToolTips>
                                         <ext:ToolTip runat="server" Html="Excludes a general ledger account from the range." UI="Info"></ext:ToolTip>
-                                    </ToolTips>
-                                    <DirectEvents>
-                                        <click OnEvent="deExcludeGlAccounts"><Confirmation ConfirmRequest="true" Message="Are you sure you want the mark the selected accounts as excluded from this range? The user will not be able to budget for these accounts. Exclude selected accounts?" /><EventMask ShowMask="true"></EventMask></click>
-                                    </DirectEvents>
+                                    </ToolTips> 
                                 </ext:Button>
                             </Items>
                         </ext:Toolbar>
@@ -716,17 +714,18 @@
                     <Plugins>
                         <ext:FilterHeader ID="uxGlAccountSecurityGridFilter" runat="server" Remote="true" />
                     </Plugins>
-                    <SelectionModel>
-                        <ext:CheckboxSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Simple" ShowHeaderCheckbox="false" AllowDeselect="true">
-                            <Listeners>
-                                <Select Handler="if(#{uxGlAccountSecurityGridSelectionModel}.getCount() > 0){#{uxGlAccountDelete}.enable();}else {#{uxGlAccountDelete}.disable();}"></Select>
-                                <Deselect Handler="if(#{uxGlAccountSecurityGridSelectionModel}.getCount() > 0){#{uxGlAccountDelete}.enable();} else {#{uxGlAccountDelete}.disable();}"></Deselect>
-                            </Listeners>
-                        </ext:CheckboxSelectionModel>
-                    </SelectionModel>
-                    <BottomBar>
-                        <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
-                    </BottomBar>
+         <SelectionModel>
+             <ext:CheckboxSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Simple" ShowHeaderCheckbox="false" AllowDeselect="true">
+                 <DirectEvents>
+                     <Select >
+                         <EventMask ShowMask="true"></EventMask>
+                     </Select>
+                 </DirectEvents>
+             </ext:CheckboxSelectionModel>
+         </SelectionModel>
+         <BottomBar>
+             <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
+         </BottomBar>
                      <View>
                         <ext:GridView ID="GridView1" StripeRows="true" runat="server" TrackOver="true">
                         </ext:GridView>
