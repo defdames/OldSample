@@ -24,7 +24,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock.Edit
             string _TimeClockId = Request.QueryString["tcID"].ToString();
             string comment = txtDelComment.Text;
 
-            TIME_CLOCK.DeleteEmployeeTime(decimal.Parse(_TimeClockId), comment, person_name);
+            TIMECLOCK.DeleteEmployeeTime(decimal.Parse(_TimeClockId), comment, person_name);
 
         }
     }

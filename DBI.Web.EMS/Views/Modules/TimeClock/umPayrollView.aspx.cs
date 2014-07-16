@@ -28,7 +28,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
             { 
             if (validateComponentSecurity("SYS.TimeClock.Payroll"))
             {
-                var data = TIME_CLOCK.EmployeeTimeCompletedApprovedPayroll();
+                var data = TIMECLOCK.EmployeeTimeCompletedApprovedPayroll();
 
                 foreach (var item in data)
                 {
@@ -50,7 +50,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
              if ((uxToggleSubmitted.Checked) && (validateComponentSecurity("SYS.TimeClock.Payroll")))
             {
-                var data = TIME_CLOCK.EmployeeTimeCompletedApprovedSubmittedPayroll();
+                var data = TIMECLOCK.EmployeeTimeCompletedApprovedSubmittedPayroll();
                 foreach (var item in data)
                 {
                     TimeSpan ts = (DateTime)item.TIME_OUT - (DateTime)item.TIME_IN;
@@ -208,7 +208,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                     List<TIME_CLOCK> SubmittedTime = JSON.Deserialize<List<TIME_CLOCK>>(e.ExtraParams["SubmittedTime"]);
                     long person_id = Convert.ToInt64(Authentication.GetClaimValue("PersonId", User as ClaimsPrincipal));
 
-                    TIME_CLOCK.EmployeeTimeSelectionSubmitted(SubmittedTime);
+                    TIMECLOCK.EmployeeTimeSelectionSubmitted(SubmittedTime);
                     
             foreach (TIME_CLOCK Submitted in SubmittedTime)
             {
