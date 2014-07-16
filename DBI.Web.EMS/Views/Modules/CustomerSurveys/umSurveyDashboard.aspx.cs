@@ -156,19 +156,35 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             List<XXDBI_DW.Threshold> RowData = JSON.Deserialize<List<XXDBI_DW.Threshold>>(e.ExtraParams["RowValues"]);
 
             //generate code to tie back to customer
+            CUSTOMER_SURVEY_FORMS_COMP NewFormToSubmit = new CUSTOMER_SURVEY_FORMS_COMP();
+            using (Entities _context = new Entities())
+            {
+                NewFormToSubmit.FORM_ID = CUSTOMER_SURVEYS.GetFormIdByOrg(RowData[0].ORG_ID, _context);
+                NewFormToSubmit.CREATE_DATE = DateTime.Now;
+                NewFormToSubmit.MODIFY_DATE = DateTime.Now;
+                NewFormToSubmit.CREATED_BY = User.Identity.Name;
+                NewFormToSubmit.MODIFIED_BY = User.Identity.Name;
+            }
+
+            GenericData.Insert<CUSTOMER_SURVEY_FORMS_COMP>(NewFormToSubmit);
 
             //generate link
+
+            string QueryString = RSAClass.Encrypt(NewFormToSubmit.COMPLETION_ID.ToString());
 
             //get contact to email the link to
 
             //send email with link
             
-
         }
 
         protected void deEmailPDF(object sender, DirectEventArgs e)
         {
+            //Get form for Organization
+            
 
+            //Get questions
+            
         }
 
         protected void dePrintPDF(object sender, DirectEventArgs e)
