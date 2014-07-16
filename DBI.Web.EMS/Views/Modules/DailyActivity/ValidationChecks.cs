@@ -189,7 +189,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     List<DAILY_ACTIVITY_EMPLOYEE> EmployeeData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                                                   join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
                                                                   orderby d.TIME_IN ascending
-                                                                  where d.PERSON_ID == Person.PERSON_ID && EntityFunctions.TruncateTime(Person.TIME_IN) == EntityFunctions.TruncateTime(HeaderDate) && h.STATUS != 5
+                                                                  where d.PERSON_ID == Person.PERSON_ID && EntityFunctions.TruncateTime(Person.TIME_IN) == EntityFunctions.TruncateTime(HeaderDate) && h.STATUS != 5 && h.DA_DATE == HeaderDate
                                                                   select d).ToList();
                     DateTime PreviousTimeIn = DateTime.Parse("1/11/1955");
                     DateTime PreviousTimeOut = DateTime.Parse("1/11/1955");

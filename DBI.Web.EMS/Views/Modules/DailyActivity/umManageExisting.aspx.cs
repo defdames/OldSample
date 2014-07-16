@@ -361,7 +361,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         }
                     }
                 }
-                if (BadHeader)
+                if (BadHeader && e.ExtraParams["Status"] == "APPROVED")
+                {
+
+                    uxPostActivityButton.Disabled = true;
+                }
+                else if (BadHeader)
                 {
                     uxApproveActivityButton.Disabled = true;
                     uxPostActivityButton.Disabled = true;

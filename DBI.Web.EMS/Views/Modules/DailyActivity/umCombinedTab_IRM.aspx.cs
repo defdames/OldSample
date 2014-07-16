@@ -175,7 +175,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
                             from projects in proj.DefaultIfEmpty()
                             where d.HEADER_ID == HeaderId
-                            select new EmployeeDetails{PERSON_ID = e.PERSON_ID, EMPLOYEE_ID = d.EMPLOYEE_ID,EMPLOYEE_NAME = e.EMPLOYEE_NAME, FOREMAN_LICENSE = d.FOREMAN_LICENSE, NAME = projects.NAME,TIME_IN =  (DateTime)d.TIME_IN, TIME_OUT =  (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), SHOPTIME_AM = (d.SHOPTIME_AM == null ? 0 : d.SHOPTIME_AM), SHOPTIME_PM = (d.SHOPTIME_PM == null ? 0 : d.SHOPTIME_PM), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS, ROLE_TYPE = d.ROLE_TYPE }).ToList();
+                            select new EmployeeDetails{PERSON_ID = e.PERSON_ID, EMPLOYEE_ID = d.EMPLOYEE_ID,EMPLOYEE_NAME = e.EMPLOYEE_NAME, FOREMAN_LICENSE = d.FOREMAN_LICENSE, NAME = projects.NAME,TIME_IN =  (DateTime)d.TIME_IN, TIME_OUT =  (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), SHOPTIME_AM = (d.SHOPTIME_AM == null ? 0 : d.SHOPTIME_AM), SHOPTIME_PM = (d.SHOPTIME_PM == null ? 0 : d.SHOPTIME_PM), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS, ROLE_TYPE = d.ROLE_TYPE, STATUS = d.DAILY_ACTIVITY_HEADER.STATUS }).ToList();
 
                 foreach (var item in data)
                 {
@@ -200,14 +200,29 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     if (Overlaps.Count > 0)
                     {
                         WarningList.AddRange(Overlaps);
+                        if (item.STATUS == 3)
+                        {
+                            X.Js.Call("disablePostOnError");
+                            
+                        }
+                        else
+                        {
+                            X.Js.Call("disableOnError");
+                        }
                     }
                     
                     WarningData EmployeeBusinessUnitFailures = ValidationChecks.EmployeeBusinessUnitCheck(item.EMPLOYEE_ID);
                     if (EmployeeBusinessUnitFailures != null)
                     {
                         WarningList.Add(EmployeeBusinessUnitFailures);
-
-                        X.Js.Call("disableOnError");
+                        if (item.STATUS == 3 && EmployeeBusinessUnitFailures.WarningType == "Warning")
+                        {
+                            X.Js.Call("disablePostOnError");
+                        }
+                        else
+                        {
+                            X.Js.Call("disableOnError");
+                        }
                     }
                     WarningData EmployeeOver24 = ValidationChecks.checkEmployeeTime(24, item.PERSON_ID, item.TIME_IN);
                     if (EmployeeOver24 != null)
@@ -226,7 +241,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     if (DuplicatePerDiems.Count > 0)
                     {
                         WarningList.AddRange(DuplicatePerDiems);
-                        X.Js.Call("disableOnError");
+                        if (item.STATUS == 3)
+                        {
+                            X.Js.Call("disablePostOnError");
+                        }
+                        else
+                        {
+                            X.Js.Call("disableOnError");
+                        }
                     }
 
                 }
@@ -244,14 +266,21 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 var data = (from e in _context.DAILY_ACTIVITY_EQUIPMENT
                             join p in _context.CLASS_CODES_V on e.PROJECT_ID equals p.PROJECT_ID
                             where e.HEADER_ID == HeaderId
-                            select new { p.CLASS_CODE, p.SEGMENT1, p.ORGANIZATION_NAME, e.ODOMETER_START, e.ODOMETER_END, e.PROJECT_ID, e.EQUIPMENT_ID, p.NAME, e.HEADER_ID }).ToList();
+                            select new { p.CLASS_CODE, p.SEGMENT1, p.ORGANIZATION_NAME, e.ODOMETER_START, e.ODOMETER_END, e.PROJECT_ID, e.EQUIPMENT_ID, p.NAME, e.HEADER_ID, STATUS = e.DAILY_ACTIVITY_HEADER.STATUS }).ToList();
                 foreach (var item in data)
                 {
                     WarningData BusinessUnitWarning = ValidationChecks.EquipmentBusinessUnitCheck(item.EQUIPMENT_ID);
                     if (BusinessUnitWarning != null)
                     {
                         WarningList.Add(BusinessUnitWarning);
-                        X.Js.Call("disableOnError");
+                        if (item.STATUS == 3 && BusinessUnitWarning.WarningType == "Warning")
+                        {
+                            X.Js.Call("disablePostOnError");
+                        }
+                        else
+                        {
+                            X.Js.Call("disableOnError");
+                        }
                     }
                     WarningData MeterWarning = ValidationChecks.MeterCheck(item.EQUIPMENT_ID);
                     if (MeterWarning != null)
