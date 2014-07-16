@@ -303,6 +303,7 @@
     <Compile Include="MTL_TRANSACTION_INT_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="Oracle\TIMECLOCK.cs" />
     <Compile Include="Oracle\CUSTOMER_SURVEYS.cs" />
     <Compile Include="Oracle\BUDGETBIDDING.cs" />
     <Compile Include="Oracle\GL.cs" />
@@ -359,6 +360,9 @@
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="OVERHEAD_GL_ACCOUNT.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OVERHEAD_GL_RANGE.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="PA_LOCATIONS_V.cs">

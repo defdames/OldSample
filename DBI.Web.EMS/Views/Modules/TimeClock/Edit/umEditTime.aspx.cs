@@ -20,11 +20,11 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock.Edit
             {
 
                 string _TimeClockId = Request.QueryString["tcID"].ToString();
-                DateTime dataDateIn = TIME_CLOCK.ManagerDateInEditScreen(decimal.Parse(_TimeClockId));
-                TimeSpan dataTimeIn = TIME_CLOCK.ManagerTimeInEditScreen(decimal.Parse(_TimeClockId));
+                DateTime dataDateIn = TIMECLOCK.ManagerDateInEditScreen(decimal.Parse(_TimeClockId));
+                TimeSpan dataTimeIn = TIMECLOCK.ManagerTimeInEditScreen(decimal.Parse(_TimeClockId));
 
-                DateTime dataDateOut = TIME_CLOCK.ManagerDateOutEditScreen(decimal.Parse(_TimeClockId));
-                TimeSpan dataTimeOut = TIME_CLOCK.ManagerTimeOutEditScreen(decimal.Parse(_TimeClockId));
+                DateTime dataDateOut = TIMECLOCK.ManagerDateOutEditScreen(decimal.Parse(_TimeClockId));
+                TimeSpan dataTimeOut = TIMECLOCK.ManagerTimeOutEditScreen(decimal.Parse(_TimeClockId));
 
 
 
@@ -48,7 +48,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock.Edit
              DateTime updateTimeIn = uxDateInField.SelectedDate + uxTimeInField.SelectedTime;
              DateTime updateTimeOut = uxDateOutField.SelectedDate + uxTimeOutField.SelectedTime;
 
-             TIME_CLOCK.InsertEditedEmployeeTime(decimal.Parse(_TimeClockId), updateTimeIn, updateTimeOut, person_name);
+             TIMECLOCK.InsertEditedEmployeeTime(decimal.Parse(_TimeClockId), updateTimeIn, updateTimeOut, person_name);
             
         }
     }
