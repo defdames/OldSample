@@ -14,6 +14,11 @@ namespace DBI.Data
     
     public partial class CUSTOMER_SURVEY_THRESHOLDS
     {
+        public CUSTOMER_SURVEY_THRESHOLDS()
+        {
+            this.CUSTOMER_SURVEY_FORMS_COMP = new HashSet<CUSTOMER_SURVEY_FORMS_COMP>();
+        }
+    
         public decimal THRESHOLD_ID { get; set; }
         public string CREATED_BY { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
@@ -23,5 +28,6 @@ namespace DBI.Data
         public decimal THRESHOLD { get; set; }
     
         public virtual CUSTOMER_SURVEY_THRESH_AMT CUSTOMER_SURVEY_THRESH_AMT { get; set; }
+        public virtual ICollection<CUSTOMER_SURVEY_FORMS_COMP> CUSTOMER_SURVEY_FORMS_COMP { get; set; }
     }
 }
