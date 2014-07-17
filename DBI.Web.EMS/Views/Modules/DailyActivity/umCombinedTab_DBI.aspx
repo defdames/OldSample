@@ -35,9 +35,13 @@
 			App.uxSaveHeaderButton.enable();
 		};
 
+		var disablePostOnError = function () {
+		    parent.App.uxPostActivityButton.disable();
+		};
+
 		var disableOnError = function () {
-			parent.App.uxPostActivityButton.disable();
-			parent.App.uxApproveActivityButton.disable();
+		    parent.App.uxPostActivityButton.disable();
+		    parent.App.uxApproveActivityButton.disable();
 		};
 	</script>
 </head>

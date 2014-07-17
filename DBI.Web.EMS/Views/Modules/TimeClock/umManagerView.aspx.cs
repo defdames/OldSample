@@ -33,7 +33,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                 if (validateComponentSecurity("SYS.TimeClock.Manager"))
                 {
 
-                    var data = TIME_CLOCK.EmployeeTimeCompletedUnapproved(person_id);
+                    var data = TIMECLOCK.EmployeeTimeCompletedUnapproved(person_id);
 
 
                     foreach (var item in data)
@@ -56,7 +56,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                 else if (validateComponentSecurity("SYS.TimeClock.Payroll"))
                 {   //Payroll query
 
-                    var data = TIME_CLOCK.EmployeeTimeCompletedUnapprovedPayroll();
+                    var data = TIMECLOCK.EmployeeTimeCompletedUnapprovedPayroll();
 
                     foreach (var item in data)
                     {
@@ -79,7 +79,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
                 if ((uxToggleApproved.Checked) && (validateComponentSecurity("SYS.TimeClock.Manager")))
                 {
-                    var data = TIME_CLOCK.EmployeeTimeCompleted(person_id);
+                    var data = TIMECLOCK.EmployeeTimeCompleted(person_id);
 
 
                     foreach (var item in data)
@@ -101,7 +101,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
                 else if ((uxToggleApproved.Checked) && (validateComponentSecurity("SYS.TimeClock.Payroll")))
                 {   //Payroll query
-                    var data = TIME_CLOCK.EmployeeTimeCompletedPayroll();
+                    var data = TIMECLOCK.EmployeeTimeCompletedPayroll();
 
 
                     foreach (var item in data)
@@ -225,7 +225,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
             string person_name = User.Identity.Name;//Authentication.GetClaimValue("EmployeeName", User as ClaimsPrincipal);
 
 
-            TIME_CLOCK.EmployeeTimeSelectionApproved(ApprovedTime);
+            TIMECLOCK.EmployeeTimeSelectionApproved(ApprovedTime);
             
             //foreach (TIME_CLOCK Approved in ApprovedTime)
             //{

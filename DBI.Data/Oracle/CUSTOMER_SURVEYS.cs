@@ -111,6 +111,11 @@ namespace DBI.Data
             return _context.CUSTOMER_SURVEY_CAT.Where(x => x.CATEGORY_ID == CategoryId).Single();
         }
 
+        public static decimal GetFormIdByOrg(long OrgId, Entities _context)
+        {
+            return _context.CUSTOMER_SURVEY_FORMS.Where(x => x.ORG_ID == OrgId).Select(x => x.FORM_ID).SingleOrDefault();
+        }
+
         public class CustomerSurveyForms
         {
             public decimal FORM_ID { get; set; }
