@@ -4,6 +4,11 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
+    <script type="text/javascript">
+        function clearNodes(node) {
+            node.removeChild(node.firstChild);
+        }
+    </script>
     <title></title>
 </head>
 <body>
@@ -39,6 +44,9 @@
                     <Root>
                         <ext:Node NodeID="0" Expanded="true" />
                     </Root>
+                      <Listeners>
+                          <ItemCollapse Fn="clearNodes" />
+                      </Listeners>
                     <SelectionModel>
                         <ext:TreeSelectionModel runat="server" Mode="Single" AllowDeselect="true">
                         </ext:TreeSelectionModel>
