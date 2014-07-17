@@ -194,6 +194,7 @@
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
+    <Content Include="Views\Modules\Overhead\umOverheadSecurity.aspx" />
     <Content Include="Views\Modules\Overhead\Views\umAddGLAccountRange.aspx" />
     <Content Include="Views\Modules\Overhead\Views\umAddRemoveBudgetType.aspx" />
     <Content Include="Views\Modules\Overhead\Views\umBudgetTypesByLegalEntity.aspx" />
@@ -696,6 +697,13 @@
       <DependentUpon>umWeatherTab.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\ValidationChecks.cs" />
+    <Compile Include="Views\Modules\Overhead\umOverheadSecurity.aspx.cs">
+      <DependentUpon>umOverheadSecurity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umOverheadSecurity.aspx.designer.cs">
+      <DependentUpon>umOverheadSecurity.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\Overhead\Views\umAddGLAccountRange.aspx.cs">
       <DependentUpon>umAddGLAccountRange.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

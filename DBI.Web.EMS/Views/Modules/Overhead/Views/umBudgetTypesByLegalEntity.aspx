@@ -61,8 +61,8 @@
                         </ItemClick>
                     </DirectEvents>
                 </ext:TreePanel>
-
-                 <ext:GridPanel ID="uxBudgetTypeGridPanel" runat="server" Flex="1" SimpleSelect="true" Title="Budget Types By Legal Entity" Padding="5" Region="Center">
+                
+                <ext:GridPanel ID="uxBudgetTypeGridPanel" runat="server" Flex="1" SimpleSelect="true" Title="Budget Types By Legal Entity" Padding="5" Region="Center">
                     <TopBar>
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>

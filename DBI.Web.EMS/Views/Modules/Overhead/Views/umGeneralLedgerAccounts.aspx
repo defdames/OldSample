@@ -11,6 +11,37 @@
     <form id="form1" runat="server">
    <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
             <Items>
+
+                <ext:TreePanel
+                    ID="uxOrgPanel"
+                    runat="server"
+                    Title="Organizations"
+                    BodyPadding="6"
+                    Region="West"
+                    Weight="100"
+                    Width="300"
+                    AutoScroll="true"
+                    RootVisible="true"
+                    SingleExpand="true"
+                    Lines="false"
+                    UseArrows="true">
+                    <Store>
+                        <ext:TreeStore ID="TreeStore1" runat="server" OnReadData="deLoadOrgTree">
+                            <Proxy>
+                                <ext:PageProxy></ext:PageProxy>
+                            </Proxy>
+                        </ext:TreeStore>
+                    </Store>
+                    <Root>
+                        <ext:Node NodeID="0" Text="All Companies" Expanded="true" />
+                    </Root>
+                    <SelectionModel>
+                        <ext:TreeSelectionModel ID="uxCompanySelectionModel" runat="server" Mode="Single"></ext:TreeSelectionModel>
+                    </SelectionModel>
+                </ext:TreePanel>
+
+
+
                 <ext:GridPanel ID="uxOrganizationsGrid" runat="server" Flex="1" SimpleSelect="true" Title="Overhead Organizations" Padding="5" Region="North">
                     
                     <Store>
