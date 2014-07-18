@@ -444,6 +444,42 @@
       FROM "XXEMS"."PA_TASKS_V" "PA_TASKS_V"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="PA_TRANSACTION_INT_V" EntityType="OracleModel.Store.PA_TRANSACTION_INT_V" store:Type="Views" Schema="XXEMS" />
+          <EntitySet Name="PROJECT_CONTACTS_V" EntityType="OracleModel.Store.PROJECT_CONTACTS_V" store:Type="Views" store:Schema="XXEMS" store:Name="PROJECT_CONTACTS_V">
+            <DefiningQuery>SELECT 
+      "PROJECT_CONTACTS_V"."PARTY_ID" AS "PARTY_ID", 
+      "PROJECT_CONTACTS_V"."OBJECT_ID" AS "OBJECT_ID", 
+      "PROJECT_CONTACTS_V"."PARTY_RELATIONSHIP_ID" AS "PARTY_RELATIONSHIP_ID", 
+      "PROJECT_CONTACTS_V"."PERSON_PRE_NAME_ADJUNCT" AS "PERSON_PRE_NAME_ADJUNCT", 
+      "PROJECT_CONTACTS_V"."PERSON_FIRST_NAME" AS "PERSON_FIRST_NAME", 
+      "PROJECT_CONTACTS_V"."PERSON_MIDDLE_NAME" AS "PERSON_MIDDLE_NAME", 
+      "PROJECT_CONTACTS_V"."PERSON_LAST_NAME" AS "PERSON_LAST_NAME", 
+      "PROJECT_CONTACTS_V"."PERSON_NAME_SUFFIX" AS "PERSON_NAME_SUFFIX", 
+      "PROJECT_CONTACTS_V"."ORG_CONTACT_ID" AS "ORG_CONTACT_ID", 
+      "PROJECT_CONTACTS_V"."JOB_TITLE" AS "JOB_TITLE", 
+      "PROJECT_CONTACTS_V"."DEPARTMENT" AS "DEPARTMENT", 
+      "PROJECT_CONTACTS_V"."COUNTRY" AS "COUNTRY", 
+      "PROJECT_CONTACTS_V"."ADDRESS1" AS "ADDRESS1", 
+      "PROJECT_CONTACTS_V"."ADDRESS2" AS "ADDRESS2", 
+      "PROJECT_CONTACTS_V"."ADDRESS3" AS "ADDRESS3", 
+      "PROJECT_CONTACTS_V"."ADDRESS4" AS "ADDRESS4", 
+      "PROJECT_CONTACTS_V"."CITY" AS "CITY", 
+      "PROJECT_CONTACTS_V"."POSTAL_CODE" AS "POSTAL_CODE", 
+      "PROJECT_CONTACTS_V"."STATE" AS "STATE", 
+      "PROJECT_CONTACTS_V"."COUNTY" AS "COUNTY", 
+      "PROJECT_CONTACTS_V"."URL" AS "URL", 
+      "PROJECT_CONTACTS_V"."EMAIL_ADDRESS" AS "EMAIL_ADDRESS", 
+      "PROJECT_CONTACTS_V"."PRIMARY_PHONE_PURPOSE" AS "PRIMARY_PHONE_PURPOSE", 
+      "PROJECT_CONTACTS_V"."PRIMARY_PHONE_LINE_TYPE" AS "PRIMARY_PHONE_LINE_TYPE", 
+      "PROJECT_CONTACTS_V"."PRIMARY_PHONE_COUNTRY_CODE" AS "PRIMARY_PHONE_COUNTRY_CODE", 
+      "PROJECT_CONTACTS_V"."PRIMARY_PHONE_AREA_CODE" AS "PRIMARY_PHONE_AREA_CODE", 
+      "PROJECT_CONTACTS_V"."PRIMARY_PHONE_NUMBER" AS "PRIMARY_PHONE_NUMBER", 
+      "PROJECT_CONTACTS_V"."PRIMARY_PHONE_EXTENSION" AS "PRIMARY_PHONE_EXTENSION", 
+      "PROJECT_CONTACTS_V"."CUST_SURVEY" AS "CUST_SURVEY", 
+      "PROJECT_CONTACTS_V"."CUST_SURVEY_PROJECT_ID" AS "CUST_SURVEY_PROJECT_ID", 
+      "PROJECT_CONTACTS_V"."BILL_TO" AS "BILL_TO", 
+      "PROJECT_CONTACTS_V"."EMS_CUST" AS "EMS_CUST"
+      FROM "XXEMS"."PROJECT_CONTACTS_V" "PROJECT_CONTACTS_V"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="PROJECTS_V" EntityType="OracleModel.Store.PROJECTS_V" store:Type="Views" store:Schema="XXEMS" store:Name="PROJECTS_V">
             <DefiningQuery>SELECT 
       "PROJECTS_V"."ORGANIZATION_NAME" AS "ORGANIZATION_NAME", 
@@ -2624,7 +2660,7 @@
           <Property Name="EMPLOYEE_NAME" Type="varchar2" MaxLength="362" />
           <Property Name="CURRENT_EMPLOYEE_FLAG" Type="varchar2" MaxLength="30" />
           <Property Name="EMPLOYEE_NUMBER" Type="varchar2" MaxLength="30" />
-          <Property Name="JOB_ID" Type="number" Precision="15" Nullable="false" />
+          <Property Name="JOB_ID" Type="number" Nullable="false" />
           <Property Name="JOB_NAME" Type="varchar2" MaxLength="700" />
           <Property Name="ORGANIZATION_ID" Type="number" Precision="15" />
           <Property Name="ORGANIZATION_NAME" Type="varchar2" Nullable="false" MaxLength="240" />
@@ -3201,6 +3237,48 @@
           <Property Name="PO_PRICE_TYPE" Type="varchar2" MaxLength="30" />
         </EntityType>
         <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXEMS.PROJECT_CONTACTS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="PROJECT_CONTACTS_V">
+          <Key>
+            <PropertyRef Name="OBJECT_ID" />
+            <PropertyRef Name="PARTY_RELATIONSHIP_ID" />
+            <PropertyRef Name="ORG_CONTACT_ID" />
+          </Key>
+          <Property Name="PARTY_ID" Type="number" Precision="15" />
+          <Property Name="OBJECT_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="PARTY_RELATIONSHIP_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="PERSON_PRE_NAME_ADJUNCT" Type="varchar2" MaxLength="30" />
+          <Property Name="PERSON_FIRST_NAME" Type="varchar2" MaxLength="150" />
+          <Property Name="PERSON_MIDDLE_NAME" Type="varchar2" MaxLength="60" />
+          <Property Name="PERSON_LAST_NAME" Type="varchar2" MaxLength="150" />
+          <Property Name="PERSON_NAME_SUFFIX" Type="varchar2" MaxLength="30" />
+          <Property Name="ORG_CONTACT_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="JOB_TITLE" Type="varchar2" MaxLength="100" />
+          <Property Name="DEPARTMENT" Type="varchar2" MaxLength="60" />
+          <Property Name="COUNTRY" Type="varchar2" MaxLength="60" />
+          <Property Name="ADDRESS1" Type="varchar2" MaxLength="240" />
+          <Property Name="ADDRESS2" Type="varchar2" MaxLength="240" />
+          <Property Name="ADDRESS3" Type="varchar2" MaxLength="240" />
+          <Property Name="ADDRESS4" Type="varchar2" MaxLength="240" />
+          <Property Name="CITY" Type="varchar2" MaxLength="60" />
+          <Property Name="POSTAL_CODE" Type="varchar2" MaxLength="60" />
+          <Property Name="STATE" Type="varchar2" MaxLength="60" />
+          <Property Name="COUNTY" Type="varchar2" MaxLength="60" />
+          <Property Name="URL" Type="varchar2" MaxLength="2000" />
+          <Property Name="EMAIL_ADDRESS" Type="varchar2" MaxLength="2000" />
+          <Property Name="PRIMARY_PHONE_PURPOSE" Type="varchar2" MaxLength="30" />
+          <Property Name="PRIMARY_PHONE_LINE_TYPE" Type="varchar2" MaxLength="30" />
+          <Property Name="PRIMARY_PHONE_COUNTRY_CODE" Type="varchar2" MaxLength="10" />
+          <Property Name="PRIMARY_PHONE_AREA_CODE" Type="varchar2" MaxLength="10" />
+          <Property Name="PRIMARY_PHONE_NUMBER" Type="varchar2" MaxLength="40" />
+          <Property Name="PRIMARY_PHONE_EXTENSION" Type="varchar2" MaxLength="20" />
+          <Property Name="CUST_SURVEY" Type="char" MaxLength="1" />
+          <Property Name="CUST_SURVEY_PROJECT_ID" Type="number" Precision="15" />
+          <Property Name="BILL_TO" Type="char" MaxLength="1" />
+          <Property Name="EMS_CUST" Type="char" MaxLength="1" />
+        </EntityType>
+        <!--Errors Found During Generation:
       warning 6002: The table/view 'XXEMS.PROJECTS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="PROJECTS_V">
@@ -3451,7 +3529,7 @@
           <Property Name="PERSON_ID" Type="number" Nullable="false" Precision="10" />
           <Property Name="EMAIL_ADDRESS" Type="varchar2" MaxLength="240" />
           <Property Name="JOB_NAME" Type="varchar2" MaxLength="700" />
-          <Property Name="JOB_ID" Type="number" Precision="15" Nullable="false" />
+          <Property Name="JOB_ID" Type="number" Nullable="false" />
           <Property Name="CURRENT_ORGANIZATION" Type="varchar2" Nullable="false" MaxLength="240" />
           <Property Name="CURRENT_ORG_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="ORACLE_ACCOUNT_STATUS" Type="char" MaxLength="1" />
@@ -4537,6 +4615,7 @@
             <End Role="CUSTOMER_SURVEY_THRESHOLDS" EntitySet="CUSTOMER_SURVEY_THRESHOLDS" />
             <End Role="CUSTOMER_SURVEY_FORMS_COMP" EntitySet="CUSTOMER_SURVEY_FORMS_COMP" />
           </AssociationSet>
+          <EntitySet Name="PROJECT_CONTACTS_V" EntityType="OracleModel.PROJECT_CONTACTS_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -8072,6 +8151,45 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="PROJECT_CONTACTS_V">
+          <Key>
+            <PropertyRef Name="OBJECT_ID" />
+            <PropertyRef Name="PARTY_RELATIONSHIP_ID" />
+            <PropertyRef Name="ORG_CONTACT_ID" />
+          </Key>
+          <Property Type="Int64" Name="PARTY_ID" />
+          <Property Type="Int64" Name="OBJECT_ID" Nullable="false" />
+          <Property Type="Int64" Name="PARTY_RELATIONSHIP_ID" Nullable="false" />
+          <Property Type="String" Name="PERSON_PRE_NAME_ADJUNCT" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PERSON_FIRST_NAME" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PERSON_MIDDLE_NAME" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PERSON_LAST_NAME" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PERSON_NAME_SUFFIX" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="ORG_CONTACT_ID" Nullable="false" />
+          <Property Type="String" Name="JOB_TITLE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DEPARTMENT" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="COUNTRY" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ADDRESS1" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ADDRESS2" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ADDRESS3" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ADDRESS4" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CITY" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="POSTAL_CODE" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STATE" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="COUNTY" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="URL" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EMAIL_ADDRESS" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PRIMARY_PHONE_PURPOSE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PRIMARY_PHONE_LINE_TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PRIMARY_PHONE_COUNTRY_CODE" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PRIMARY_PHONE_AREA_CODE" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PRIMARY_PHONE_NUMBER" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PRIMARY_PHONE_EXTENSION" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CUST_SURVEY" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="Int64" Name="CUST_SURVEY_PROJECT_ID" />
+          <Property Type="String" Name="BILL_TO" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="EMS_CUST" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -10756,6 +10874,44 @@
                 <ScalarProperty Name="FILLED_BY" ColumnName="FILLED_BY" />
                 <ScalarProperty Name="FORM_ID" ColumnName="FORM_ID" />
                 <ScalarProperty Name="COMPLETION_ID" ColumnName="COMPLETION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PROJECT_CONTACTS_V">
+            <EntityTypeMapping TypeName="OracleModel.PROJECT_CONTACTS_V">
+              <MappingFragment StoreEntitySet="PROJECT_CONTACTS_V">
+                <ScalarProperty Name="EMS_CUST" ColumnName="EMS_CUST" />
+                <ScalarProperty Name="BILL_TO" ColumnName="BILL_TO" />
+                <ScalarProperty Name="CUST_SURVEY_PROJECT_ID" ColumnName="CUST_SURVEY_PROJECT_ID" />
+                <ScalarProperty Name="CUST_SURVEY" ColumnName="CUST_SURVEY" />
+                <ScalarProperty Name="PRIMARY_PHONE_EXTENSION" ColumnName="PRIMARY_PHONE_EXTENSION" />
+                <ScalarProperty Name="PRIMARY_PHONE_NUMBER" ColumnName="PRIMARY_PHONE_NUMBER" />
+                <ScalarProperty Name="PRIMARY_PHONE_AREA_CODE" ColumnName="PRIMARY_PHONE_AREA_CODE" />
+                <ScalarProperty Name="PRIMARY_PHONE_COUNTRY_CODE" ColumnName="PRIMARY_PHONE_COUNTRY_CODE" />
+                <ScalarProperty Name="PRIMARY_PHONE_LINE_TYPE" ColumnName="PRIMARY_PHONE_LINE_TYPE" />
+                <ScalarProperty Name="PRIMARY_PHONE_PURPOSE" ColumnName="PRIMARY_PHONE_PURPOSE" />
+                <ScalarProperty Name="EMAIL_ADDRESS" ColumnName="EMAIL_ADDRESS" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+                <ScalarProperty Name="POSTAL_CODE" ColumnName="POSTAL_CODE" />
+                <ScalarProperty Name="CITY" ColumnName="CITY" />
+                <ScalarProperty Name="ADDRESS4" ColumnName="ADDRESS4" />
+                <ScalarProperty Name="ADDRESS3" ColumnName="ADDRESS3" />
+                <ScalarProperty Name="ADDRESS2" ColumnName="ADDRESS2" />
+                <ScalarProperty Name="ADDRESS1" ColumnName="ADDRESS1" />
+                <ScalarProperty Name="COUNTRY" ColumnName="COUNTRY" />
+                <ScalarProperty Name="DEPARTMENT" ColumnName="DEPARTMENT" />
+                <ScalarProperty Name="JOB_TITLE" ColumnName="JOB_TITLE" />
+                <ScalarProperty Name="ORG_CONTACT_ID" ColumnName="ORG_CONTACT_ID" />
+                <ScalarProperty Name="PERSON_NAME_SUFFIX" ColumnName="PERSON_NAME_SUFFIX" />
+                <ScalarProperty Name="PERSON_LAST_NAME" ColumnName="PERSON_LAST_NAME" />
+                <ScalarProperty Name="PERSON_MIDDLE_NAME" ColumnName="PERSON_MIDDLE_NAME" />
+                <ScalarProperty Name="PERSON_FIRST_NAME" ColumnName="PERSON_FIRST_NAME" />
+                <ScalarProperty Name="PERSON_PRE_NAME_ADJUNCT" ColumnName="PERSON_PRE_NAME_ADJUNCT" />
+                <ScalarProperty Name="PARTY_RELATIONSHIP_ID" ColumnName="PARTY_RELATIONSHIP_ID" />
+                <ScalarProperty Name="OBJECT_ID" ColumnName="OBJECT_ID" />
+                <ScalarProperty Name="PARTY_ID" ColumnName="PARTY_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

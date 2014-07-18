@@ -383,6 +383,9 @@
     <Compile Include="PROJECTS_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="PROJECT_CONTACTS_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SUBINVENTORY_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>

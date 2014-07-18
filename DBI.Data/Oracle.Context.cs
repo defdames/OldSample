@@ -125,5 +125,6 @@ namespace DBI.Data
         public DbSet<JOB_COST> JOB_COST { get; set; }
         public DbSet<OVERHEAD_GL_RANGE> OVERHEAD_GL_RANGE { get; set; }
         public DbSet<CUSTOMER_SURVEY_FORMS_COMP> CUSTOMER_SURVEY_FORMS_COMP { get; set; }
+        public DbSet<PROJECT_CONTACTS_V> PROJECT_CONTACTS_V { get; set; }
     }
 }

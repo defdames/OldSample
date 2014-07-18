@@ -63,7 +63,7 @@
         <EntityTypeShape EntityType="OracleModel.EMPLOYEES_V" Width="1.5" PointX="7.25" PointY="8.625" />
         <EntityTypeShape EntityType="OracleModel.SYS_GROUPS" Width="1.5" PointX="36.125" PointY="27" />
         <AssociationConnector Association="OracleModel.FK_GRP_PERMS_GROUP_ID" />
-        <EntityTypeShape EntityType="OracleModel.JOB_TITLE_V" Width="1.5" PointX="7.75" PointY="23.75" />
+        <EntityTypeShape EntityType="OracleModel.JOB_TITLE_V" Width="1.5" PointX="15.5" PointY="20.625" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_RELATIONSHIP" Width="1.5" PointX="29.125" PointY="9.875" />
         <EntityTypeShape EntityType="OracleModel.SYS_PERMISSIONS" Width="1.5" PointX="33.125" PointY="26" />
         <AssociationConnector Association="OracleModel.FK_GRP_PERMS_PERM_ID" />
@@ -148,7 +148,7 @@
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_THRESH_AMT" Width="1.5" PointX="41.625" PointY="54.25" />
         <AssociationConnector Association="OracleModel.FK_FORMS_CAT_ID" />
         <AssociationConnector Association="OracleModel.FK_FIELDSETS_FORM_ID" />
-        <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="1.5" PointX="9.63839427644312" PointY="12.019527932638082" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="1.5" PointX="17.125" PointY="18.875" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_THRESHOLDS" Width="1.5" PointX="44" PointY="54.375" />
         <AssociationConnector Association="OracleModel.FK_THRSH_AMTS_FK" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_ADJUSTMENT" Width="1.5" PointX="21.375" PointY="14.75" />
@@ -158,6 +158,7 @@
         <AssociationConnector Association="OracleModel.FK_FORMS_COMP_FORM_ID" />
         <AssociationConnector Association="OracleModel.FK_FORMS_ANS_COMPLETION_ID" />
         <AssociationConnector Association="OracleModel.FK_FORMS_COMP_THRESH_ID" />
+        <EntityTypeShape EntityType="OracleModel.PROJECT_CONTACTS_V" Width="1.5" PointX="0.75444998068476554" PointY="22.724045793863034" />
         </Diagram>
       <Diagram DiagramId="e84dee89c5a844eb84c350f94a998eb6" Name="OVERHEAD" >
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_RANGE" Width="1.5" PointX="0.75" PointY="0.75" />
