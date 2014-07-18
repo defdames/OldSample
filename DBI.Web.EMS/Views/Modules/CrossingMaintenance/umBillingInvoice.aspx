@@ -85,6 +85,7 @@
                                 ID="Button4"
                                 Text="View"
                                 Icon="ApplicationViewList" Disabled="true">
+                                
                          <Listeners>
                                 <Click Handler="#{uxInvoiceFormStore}.load(); #{uxBillingReportWindow}.Show()" />
                             </Listeners>
@@ -146,14 +147,16 @@
 
                     </Columns>
                 </ColumnModel> 
-                
+                   <DirectEvents>
+                       <SelectionChange OnEvent="deValidationInvoiceButton" />
+                     </DirectEvents>
                <BottomBar>
                     <ext:Toolbar ID="Toolbar2" runat="server">
                         <Items>
                             <ext:Button runat="server"
                                 ID="Button1"
                                 Text="Invoice"
-                                Icon="PlayGreen">
+                                Icon="PlayGreen" Disabled="true">
                          <DirectEvents>
                              <Click OnEvent="deAddInvoice" >
                                    <ExtraParams>
@@ -167,8 +170,8 @@
                             </ext:Button>
                             <ext:Button runat="server"
                                 ID="Button2"
-                                Text="Cancel Selection"
-                                Icon="StopRed">
+                                Text="Cancel Selections"
+                                Icon="StopRed" Disabled="true">
                              <DirectEvents>
                             <Click OnEvent="deResetInvoice" />
                             </DirectEvents>
@@ -264,6 +267,7 @@
                         </Items>
                     </ext:Toolbar>
                 </BottomBar>
+                  
             </ext:GridPanel>
         </Items>
              </ext:Window>
