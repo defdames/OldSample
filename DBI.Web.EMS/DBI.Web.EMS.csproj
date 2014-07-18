@@ -113,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\EMSV2 - Test.pubxml" />
     <None Include="Properties\PublishProfiles\EMSV2 - Development.pubxml" />
     <None Include="Properties\PublishProfiles\EMSV2 - Production.pubxml" />
     <None Include="Properties\PublishProfiles\EMSV2.pubxml" />
