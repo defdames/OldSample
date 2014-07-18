@@ -4,12 +4,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <script type="text/javascript">
-        function clearNodes(node) {
-            node.removeChild(node.firstChild);
-        }
-    </script>
     <title></title>
+    
 </head>
 <body>
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
@@ -20,7 +16,7 @@
                   <ext:TreePanel
                     ID="uxOrganizationTreePanel"
                     runat="server"
-                    Title="Oracle Business Units"
+                    Title="Business Units and Hierarchies"
                     Region="West"
                     Width="300"
                     AutoScroll="true"
@@ -44,11 +40,11 @@
                     <Root>
                         <ext:Node NodeID="0" Expanded="true" />
                     </Root>
-                      <Listeners>
-                          <ItemCollapse Fn="clearNodes" />
-                      </Listeners>
                     <SelectionModel>
                         <ext:TreeSelectionModel runat="server" Mode="Single" AllowDeselect="true">
+                            <DirectEvents>
+                                <Select OnEvent="deSelectNode" ><EventMask ShowMask="true"></EventMask></Select>
+                            </DirectEvents>
                         </ext:TreeSelectionModel>
                     </SelectionModel>
                        <View>
@@ -57,7 +53,9 @@
                     </View>
                 </ext:TreePanel>
 
+                <ext:TabPanel runat="server" DeferredRender="true" Region="Center" ID="uxCenterTabPanel" Padding="5" >
 
+                </ext:TabPanel>
                 
             </Items>
         </ext:Viewport>

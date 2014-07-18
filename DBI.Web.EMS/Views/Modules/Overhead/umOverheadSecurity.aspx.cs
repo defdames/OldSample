@@ -11,7 +11,7 @@ using DBI.Data;
 
 namespace DBI.Web.EMS.Views.Modules.Overhead
 {
-    public partial class umOverheadSecurity :BasePage
+    public partial class umOverheadSecurity : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -47,7 +47,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     e.Nodes.Add(node);
                 }
             }
-            else if (!e.NodeID.Contains(":"))
+            else
             {
                 long nodeID = long.Parse(e.NodeID);
 
@@ -59,39 +59,62 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 {
                     //Create the Hierarchy Levels
                     Node node = new Node();
+                    node.Icon = Icon.BulletMagnify;
                     node.Text = view.HIERARCHY_NAME;
                     node.NodeID = string.Format("{0}:{1}", view.ORGANIZATION_ID.ToString(), view.ORGANIZATION_STRUCTURE_ID.ToString());
-                    node.Leaf = false;
+                    node.Leaf = true;
                     e.Nodes.Add(node);
                 }
-
             }
-            else // Load the lower levels
-            {
-                 char[] delimiterChars = { ':' };
-                 string[] selectedID = e.NodeID.Split(delimiterChars);
-                 long hierarchyID = long.Parse(selectedID[1].ToString());
-                 long organizationID = long.Parse(selectedID[0].ToString());
 
-                //Load Hierarchies for LE
-                 var data = HR.ActiveOrganizationsByHierarchy(hierarchyID, organizationID);
-
-                //Build the treepanel
-                foreach (var view in data)
-                {
-                    if (view.HIER_LEVEL == 1)
-                    {
-                        //Create the Hierarchy Levels
-                        Node node = new Node();
-                        node.Text = view.ORGANIZATION_NAME;
-                        node.NodeID = view.ORGANIZATION_ID.ToString();
-                        node.Leaf = false;
-                        e.Nodes.Add(node);
-                    }
-                }
-            }
         }
 
 
-    }
+
+        protected void deSelectNode(object sender, DirectEventArgs e)
+        {
+            TreeSelectionModel sm = uxOrganizationTreePanel.GetSelectionModel() as TreeSelectionModel;
+
+            uxCenterTabPanel.RemoveAll();
+
+            if (!sm.SelectedRecordID.Contains(":"))
+            {
+                AddTab(sm.SelectedRecordID, "Budget Type By Business Unit", "umOverheadBudgetTypes.aspx?leid=" + sm.SelectedRecordID, true, true);
+            }
+            else
+            {
+                AddTab(sm.SelectedRecordID, "Organizations By Hierarchy", "umOverheadOrganizationSecurity.aspx?orgid=" + sm.SelectedRecordID, true, true);
+            }
+        }
+
+        /// <summary>
+        /// Adds a tab to the tabpanel
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="title"></param>
+        /// <param name="url"></param>
+        /// <param name="loadContent"></param>
+        /// <param name="setActive"></param>
+        protected void AddTab(string id, string title, string url, Boolean loadContent = false, Boolean setActive = false)
+        {
+
+            Ext.Net.Panel pan = new Ext.Net.Panel();
+
+            pan.ID = "Tab" + id.Replace(":","_");
+            pan.Title = title;
+            pan.CloseAction = CloseAction.Destroy;
+            pan.Loader = new ComponentLoader();
+            pan.Loader.ID = "loader" + id.Replace(":", "_");
+            pan.Loader.Url = url;
+            pan.Loader.Mode = LoadMode.Frame;
+            pan.Loader.LoadMask.ShowMask = true;
+            pan.Loader.DisableCaching = loadContent;
+            pan.AddTo(uxCenterTabPanel);
+
+            if(setActive)
+                uxCenterTabPanel.SetActiveTab("Tab" + id.Replace(":", "_"));
+
+            pan.LoadContent();
+        }
+    }    
 }

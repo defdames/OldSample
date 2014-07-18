@@ -194,9 +194,12 @@
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
+    <Content Include="Views\Modules\Overhead\umGeneralLedgerByOrganization.aspx" />
+    <Content Include="Views\Modules\Overhead\umOverheadBudgetTypes.aspx" />
+    <Content Include="Views\Modules\Overhead\umOverheadOrganizationSecurity.aspx" />
     <Content Include="Views\Modules\Overhead\umOverheadSecurity.aspx" />
     <Content Include="Views\Modules\Overhead\Views\umAddGLAccountRange.aspx" />
-    <Content Include="Views\Modules\Overhead\Views\umAddRemoveBudgetType.aspx" />
+    <Content Include="Views\Modules\Overhead\umAddRemoveBudgetType.aspx" />
     <Content Include="Views\Modules\Overhead\Views\umBudgetTypesByLegalEntity.aspx" />
     <Content Include="Views\Modules\Overhead\Views\umGeneralLedgerAccounts.aspx" />
     <Content Include="Views\Modules\Overhead\Views\umOrganizationSecurity.aspx" />
@@ -697,6 +700,27 @@
       <DependentUpon>umWeatherTab.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\ValidationChecks.cs" />
+    <Compile Include="Views\Modules\Overhead\umGeneralLedgerByOrganization.aspx.cs">
+      <DependentUpon>umGeneralLedgerByOrganization.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umGeneralLedgerByOrganization.aspx.designer.cs">
+      <DependentUpon>umGeneralLedgerByOrganization.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umOverheadBudgetTypes.aspx.cs">
+      <DependentUpon>umOverheadBudgetTypes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umOverheadBudgetTypes.aspx.designer.cs">
+      <DependentUpon>umOverheadBudgetTypes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umOverheadOrganizationSecurity.aspx.cs">
+      <DependentUpon>umOverheadOrganizationSecurity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umOverheadOrganizationSecurity.aspx.designer.cs">
+      <DependentUpon>umOverheadOrganizationSecurity.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\Overhead\umOverheadSecurity.aspx.cs">
       <DependentUpon>umOverheadSecurity.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -711,11 +735,11 @@
     <Compile Include="Views\Modules\Overhead\Views\umAddGLAccountRange.aspx.designer.cs">
       <DependentUpon>umAddGLAccountRange.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\Overhead\Views\umAddRemoveBudgetType.aspx.cs">
+    <Compile Include="Views\Modules\Overhead\umAddRemoveBudgetType.aspx.cs">
       <DependentUpon>umAddRemoveBudgetType.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\Overhead\Views\umAddRemoveBudgetType.aspx.designer.cs">
+    <Compile Include="Views\Modules\Overhead\umAddRemoveBudgetType.aspx.designer.cs">
       <DependentUpon>umAddRemoveBudgetType.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\Overhead\Views\umBudgetTypesByLegalEntity.aspx.cs">
