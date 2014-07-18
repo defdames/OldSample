@@ -303,6 +303,7 @@
     <Compile Include="MTL_TRANSACTION_INT_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="Oracle\TIMECLOCK.cs" />
     <Compile Include="Oracle\CUSTOMER_SURVEYS.cs" />
     <Compile Include="Oracle\BUDGETBIDDING.cs" />
     <Compile Include="Oracle\GL.cs" />
@@ -380,6 +381,9 @@
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="PROJECTS_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PROJECT_CONTACTS_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

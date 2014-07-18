@@ -56,6 +56,7 @@
                                         <ext:ModelField Name="PROJECT_NAME" />
                                         <ext:ModelField Name="PERCENTAGE" />
                                         <ext:ModelField Name="THRESHOLD" />
+                                        <ext:ModelField Name="THRESHOLD_ID" />
                                         <ext:ModelField Name="PROJECT_ID" />
                                         <ext:ModelField Name="ORG_ID" />
                                     </Fields>

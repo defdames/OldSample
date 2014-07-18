@@ -24,7 +24,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
         protected void deGetEmployeeHoursData(object sender, StoreReadDataEventArgs e)
         {
 
-            var data = TIME_CLOCK.EmployeeTimeCompletedUnapprovedPayroll();
+            var data = TIMECLOCK.EmployeeTimeCompletedUnapprovedPayroll();
 
             foreach (var item in data)
             {
