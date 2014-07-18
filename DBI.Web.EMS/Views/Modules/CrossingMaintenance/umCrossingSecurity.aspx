@@ -5,6 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title></title>
+      <script type="text/javascript" src="../../../Resources/Scripts/functions.js"></script>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -101,9 +102,10 @@
 
                 <ext:Button ID="Button1" runat="server" Text="Assign New Crossings to Project" Icon="ApplicationAdd" Disabled="true">
                     <Listeners>
-                       <Click Handler="#{uxAssignCrossingWindow}.show()" />
+                       <Click Handler="#{uxAssignCrossingWindow}.show() " />
                       </Listeners>
-                 <DirectEvents>
+                   
+                 <%--<DirectEvents>
                 
                 <CLick OnEvent="deSecurityCrossingGridData">
                     <ExtraParams>
@@ -111,7 +113,7 @@
                     </ExtraParams>
                 </CLick>
             </DirectEvents>
-           
+           --%>
                    
                 </ext:Button>
                 <ext:Button ID="Button2" runat="server" Text="Remove Crossing From Project" Icon="ApplicationDelete" Disabled="true">
@@ -134,15 +136,66 @@
             </Listeners>
         </ext:GridPanel>
 
-         <ext:Window runat="server" ID="uxAssignCrossingWindow" Hidden="true" Width="650" Height="450" Modal="true">
-           
+         <ext:Window runat="server" ID="uxAssignCrossingWindow" Hidden="true" Width="800" Layout="FormLayout" Height="620" Modal="true">
+             <Items>
+                  <ext:Panel ID="uxTransferCrossingPanel" runat="server" Width="790" Height="553">
+                   <LayoutConfig>
+                            <ext:HBoxLayoutConfig Align="Stretch" Padding="5" />
+                        </LayoutConfig>
+
+                        <Items>
+
+          <ext:GridPanel ID="uxSubDivGrid" runat="server" Title="Select Subdivision" Margin="5" Flex="1" >
+            <Store>
+                <ext:Store runat="server"
+                    ID="uxSubDivStore" OnReadData="deReadSubDiv" AutoDataBind="true" PageSize="20"
+                    WarningOnDirty="false">
+                   
+                    <Model>
+                        <ext:Model ID="Model4" runat="server">
+                            <Fields>
+                                <ext:ModelField Name="CROSSING_ID" />
+                                <ext:ModelField Name="SUB_DIVISION" />
+
+                            </Fields>
+                        </ext:Model>
+                    </Model>
+                     <Proxy>
+                       <ext:PageProxy />
+                     </Proxy>
+                </ext:Store>
+            </Store>
+            <ColumnModel>
+                <Columns>
+                    <ext:Column ID="Column14" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
+
+                </Columns>
+            </ColumnModel>
+            <Plugins>
+                <ext:FilterHeader ID="FilterHeader3" runat="server" Remote="true" />
+            </Plugins>
+            <SelectionModel>
+                <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" Mode="Single" />
+            </SelectionModel>
+             <Listeners>
+                <Select Handler="#{uxCurrentSecurityCrossingStore}.load() " />
+            </Listeners>
+            <BottomBar>
+                    <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True" DisplayInfo="false">
+                    </ext:PagingToolbar>
+                </BottomBar>
+        </ext:GridPanel>  
               
-                    <Items>
-        <ext:GridPanel ID="uxCrossingGrid" runat="server" Title="Apply Selected Crossing to Project" Height="390" >
+                
+        <ext:GridPanel ID="uxCrossingGrid" runat="server" Title="Apply Selected Crossing to Project" Flex="2" Margin="5" >
             <Store>
                 <ext:Store runat="server"
                     ID="uxCurrentSecurityCrossingStore"
-                    WarningOnDirty="false">
+                    WarningOnDirty="false" AutoLoad="false" OnReadData="deSecurityCrossingGridData" AutoDataBind="true">
+                    <Parameters>                           
+                        <ext:StoreParameter Name="ProjectId" Value="#{uxProjectGrid}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
+                         <ext:StoreParameter Name="SubDiv" Value="#{uxSubDivGrid}.getSelectionModel().getSelection()[0].data.SUB_DIVISION" Mode="Raw" />
+                    </Parameters>
                     <Model>
                         <ext:Model ID="Model1" runat="server">
                             <Fields>
@@ -156,7 +209,9 @@
                             </Fields>
                         </ext:Model>
                     </Model>
-                   
+                      <Proxy>
+                       <ext:PageProxy />
+                     </Proxy>
                 </ext:Store>
             </Store>
             <ColumnModel>
@@ -178,10 +233,11 @@
              <Listeners>
                 <Select Handler="#{uxApplyButtonCS}.enable() " />
             </Listeners>
-           
+        
         </ext:GridPanel>
 
-               
+               </Items>
+             </ext:Panel>
                 
                  <ext:StatusBar ID="StatusBar1" runat="server">
             <Items>
@@ -202,16 +258,16 @@
                     </DirectEvents>
                 </ext:Button>
                 <ext:Button runat="server" ID="CancelCrossing" Text="Cancel" Icon="Delete">
-                                <Listeners>
-                                    <Click Handler="#{uxCurrentSecurityCrossingStore}.reload();
-									#{uxAssignCrossingWindow}.hide()" />
-                                </Listeners>
+                    <DirectEvents>
+                        <Click OnEvent="deCloseAssignScreen" />
+                    </DirectEvents>
                             </ext:Button>
                  
             </Items>
         </ext:StatusBar>
-             
+              
             </Items>
+
         </ext:Window>
 
 

@@ -44,12 +44,28 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             }
         }
-     
-        protected void deSecurityCrossingGridData(object sender, DirectEventArgs e)
+        protected void deReadSubDiv(object sender, StoreReadDataEventArgs e)
         {
-                //long RailroadId = long.Parse(Session["rrType"].ToString());
-                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-              long ProjectId = long.Parse(e.ExtraParams["ProjectId"]);
+            List<SubDivDetails> data;
+             long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+             using (Entities _context = new Entities())
+             {
+                 data = (from d in _context.CROSSINGS
+                         where d.RAILROAD_ID == RailroadId
+                         select new SubDivDetails { SUB_DIVISION = d.SUB_DIVISION }).Distinct().ToList();
+                 //uxSubDivStore.DataSource = data; 
+                 int count;
+                 uxSubDivStore.DataSource = GenericData.EnumerableFilterHeader<SubDivDetails>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                 e.Total = count;
+             }
+        }
+        protected void deSecurityCrossingGridData(object sender, StoreReadDataEventArgs e)
+        {
+            
+              //long RailroadId = long.Parse(Session["rrType"].ToString());
+              long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+              long ProjectId = long.Parse(e.Parameters["ProjectId"]);
+              string SubDiv = (e.Parameters["SubDiv"]);
               List<object> data;
             using (Entities _context = new Entities())
             {
@@ -59,10 +75,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                                 where d.CROSSING_ID == r.CROSSING_ID && r.PROJECT_ID == ProjectId
                                  select r.CROSSING_ID)
                                  .Contains(d.CROSSING_ID)
-                                 where d.RAILROAD_ID == RailroadId
+                                 where d.RAILROAD_ID == RailroadId && d.SUB_DIVISION == SubDiv
                      select new { d.CROSSING_ID, d.CROSSING_NUMBER, i.RAILROAD, d.SERVICE_UNIT, d.PROJECT_ID, d.SUB_DIVISION }).ToList<object>();
-            uxCurrentSecurityCrossingStore.DataSource = data;
-            uxCurrentSecurityCrossingStore.DataBind();
+                uxCurrentSecurityCrossingStore.DataSource = data;
+            //int count;
+            //uxCurrentSecurityCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+          
 
               
             }
@@ -141,7 +159,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
           
            
         }
-     
+        protected void deCloseAssignScreen(object sender, DirectEventArgs e)
+        {
+            uxAssignCrossingWindow.Close();
+            uxSubDivStore.Reload();
+            uxCurrentSecurityCrossingStore.RemoveAll();
+        }
         protected void deRemoveCrossingFromProject(object sender, DirectEventArgs e)
         {
 
@@ -184,6 +207,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 public string SUB_DIVISION { get; set; }
                 public string CONTACT_ID { get; set; }
             }
+        public class SubDivDetails
+        {
+            public long CROSSING_ID { get; set; }
+            public string SUB_DIVISION { get; set; }
+         
+        }
          public class ProjectDetails
             {
                 public long PROJECT_ID { get; set; }

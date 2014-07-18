@@ -52,10 +52,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     new ReportListStruct(2, "Application Date"),
                     new ReportListStruct(3, "Inspection Date"),
                     new ReportListStruct(4, "Incidents"),
-                    //new ReportListStruct(5, "Supplemental Billing"),
-                    //new ReportListStruct(6, "Complete Crossings"),
+                    new ReportListStruct(5, "Supplemental Billing"),
                     //new ReportListStruct(7, "Weekly Crossing Summary"),
-                    //new ReportListStruct(8, "Weekly Work Activity"),
+                    new ReportListStruct(8, "Weekly Work Activity"),
                     new ReportListStruct(9, "Private Crossing List"),
                     new ReportListStruct(10, "ROW Missing") 
                 };
@@ -107,6 +106,16 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             case "ROW Missing":
             string ROWUrl = string.Format("umMissingROW.aspx?");
             uxReportMainPanel.LoadContent(ROWUrl);
+            break;
+
+            case "Weekly Work Activity":
+            string WWAUrl = string.Format("umWeeklyWorkActivity.aspx?");
+            uxReportMainPanel.LoadContent(WWAUrl);
+            break;
+
+            case "Supplemental Billing":
+            string SUPUrl = string.Format("umSuppBillingReport.aspx?");
+            uxReportMainPanel.LoadContent(SUPUrl);
             break;
             } 
             

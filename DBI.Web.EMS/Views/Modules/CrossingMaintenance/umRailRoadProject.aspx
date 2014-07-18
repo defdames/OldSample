@@ -5,16 +5,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+     <script type="text/javascript" src="../../../Resources/Scripts/functions.js"></script>
 </head>
 <body>
     <form id="form1" runat="server">
         <ext:ResourceManager ID="ResourceManager2" runat="server" />
       
         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
-            <Items>
-                       
-                        
-                    
+            <Items>                    
                 <ext:GridPanel ID="uxRailRoadGridPanel" runat="server" Region="West" Width="225" Margin="5" Layout="FitLayout">
                     <Store>
                         <ext:Store runat="server"
@@ -83,7 +81,7 @@
                 </ext:GridPanel>
 
 
-                <ext:GridPanel ID="uxProjectGrid" runat="server" Region="Center" Flex="10" Margin="5">
+                <ext:GridPanel ID="uxProjectGrid" runat="server" Region="Center" Flex="8" Margin="5" SelectionMemory="true">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxCurrentSecurityProjectStore"
@@ -95,7 +93,7 @@
                             <ext:StoreParameter Name="RailroadId" Value="#{uxRailRoadGridPanel}.getSelectionModel().getSelection()[0].data.RAILROAD_ID" Mode="Raw" />
                         </Parameters>
                             <Model>
-                                <ext:Model ID="Model2" runat="server">
+                                <ext:Model ID="Model2" runat="server" IDProperty="PROJECT_ID">
                                     <Fields>
                                         
                                         <ext:ModelField Name="PROJECT_ID" />
@@ -121,7 +119,7 @@
                         <ext:FilterHeader ID="FilterHeader2" runat="server" Remote="true" />
                     </Plugins>
                     <SelectionModel>
-                        <ext:CheckboxSelectionModel ID="CheckboxSelectionModel2" runat="server" Mode="Multi" />
+                        <ext:CheckboxSelectionModel ID="CheckboxSelectionModel2" runat="server" Mode="Simple" AllowDeselect="true" />
                     </SelectionModel>
 
                     <TopBar>
@@ -145,7 +143,10 @@
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
-                   
+                    <BottomBar>
+                    <ext:PagingToolbar ID="PagingToolbar11" runat="server" HideRefresh="True">
+                    </ext:PagingToolbar>
+                </BottomBar>
                     <Listeners>
                         <Select Handler="#{uxAddProjectButton}.enable()" />
                     </Listeners>

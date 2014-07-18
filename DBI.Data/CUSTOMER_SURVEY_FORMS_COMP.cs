@@ -27,8 +27,11 @@ namespace DBI.Data
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
+        public Nullable<decimal> THRESHOLD_ID { get; set; }
+        public Nullable<long> PROJECT_ID { get; set; }
     
         public virtual CUSTOMER_SURVEY_FORMS CUSTOMER_SURVEY_FORMS { get; set; }
         public virtual ICollection<CUSTOMER_SURVEY_FORMS_ANS> CUSTOMER_SURVEY_FORMS_ANS { get; set; }
+        public virtual CUSTOMER_SURVEY_THRESHOLDS CUSTOMER_SURVEY_THRESHOLDS { get; set; }
     }
 }

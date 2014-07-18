@@ -19,14 +19,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 if (Request.QueryString["type"] == "Add")
                 {
-                    uxAddInventoryForm.Show();
-                    GetInventory("Add");
+                    uxFormType.Value = "Add";
+                    GetInventory();
                 }
                 else
                 {
-                    uxEditInventoryForm.Show();
+                    uxFormType.Value = "Edit";
                     LoadEditInventoryForm();
-                    GetInventory("Edit");
                 }
             }
         }
@@ -54,7 +53,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void GetInventory(string FormType)
+        protected void GetInventory()
         {
             //Get inventory regions from db and set datasource for either add or edit
             using (Entities _context = new Entities())
@@ -63,19 +62,23 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 var data = (from d in _context.INVENTORY_V
                             where d.LE == ProjectOrg
                             select new { d.ORGANIZATION_ID, d.INV_NAME }).Distinct().OrderBy(x => x.INV_NAME).ToList();
-                if (FormType == "Add")
-                {
-                    uxAddInventoryRegionStore.DataSource = data;
-                    uxAddInventoryRegionStore.DataBind();
-                }
-                else
-                {
-                    uxEditInventoryRegionStore.DataSource = data;
-                    uxEditInventoryRegionStore.DataBind();
-                }
+                uxAddInventoryRegionStore.DataSource = data;
+                uxAddInventoryRegionStore.DataBind();
+
             }
         }
 
+        protected void deProcessForm(object sender, DirectEventArgs e)
+        {
+            if (uxFormType.Value.ToString() == "Add")
+            {
+                deAddInventory(sender, e);
+            }
+            else
+            {
+                deEditInventory(sender, e);
+            }
+        }
         /// <summary>
         /// Store Inventory entry to DB
         /// </summary>
@@ -86,9 +89,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             DAILY_ACTIVITY_INVENTORY data;
 
             //do type conversions
-            long SubInventoryOrg = long.Parse(uxAddInventorySub.Value.ToString());
+            long SubInventoryOrg = long.Parse(uxAddInventorySub.SelectedItem.Value);
             long ItemId = long.Parse(uxAddInventoryItem.Value.ToString());
-            long Rate = long.Parse(uxAddInventoryRate.Value.ToString());
+            long Rate = long.Parse(uxAddInventoryRate.Text);
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
 
             //Add to Db
@@ -100,7 +103,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     SUB_INVENTORY_ORG_ID = SubInventoryOrg,
                     ITEM_ID = ItemId,
                     RATE = Rate,
-                    UNIT_OF_MEASURE = uxAddInventoryMeasure.Value.ToString(),
+                    UNIT_OF_MEASURE = uxAddInventoryMeasure.SelectedItem.Value,
                     CREATE_DATE = DateTime.Now,
                     MODIFY_DATE = DateTime.Now,
                     CREATED_BY = User.Identity.Name,
@@ -113,19 +116,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GenericData.Insert<DAILY_ACTIVITY_INVENTORY>(data);
 
             uxAddInventoryForm.Reset();
-            X.Js.Call("parent.App.uxPlaceholderWindow.hide(); parent.App.uxInventoryTab.reload()");
-
-            Notification.Show(new NotificationConfig()
-            {
-                Title = "Success",
-                Html = "Inventory Added Successfully",
-                HideDelay = 1000,
-                AlignCfg = new NotificationAlignConfig
-                {
-                    ElementAnchor = AnchorPoint.Center,
-                    TargetAnchor = AnchorPoint.Center
-                }
-            });
+            X.Js.Call("parent.App.uxDetailsPanel.reload(); parent.App.uxPlaceholderWindow.close()");
         }
 
         /// <summary>
@@ -135,7 +126,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void LoadEditInventoryForm()
         {
-            uxEditInventoryForm.Reset();
             long InventoryID = long.Parse(Request.QueryString["InventoryId"]);
                         
                 SUBINVENTORY_V SubData;
@@ -156,25 +146,28 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                where s.ORG_ID == OrgId && s.SECONDARY_INV_NAME == InvName
                                select s).SingleOrDefault();
 
-                    GetInventory("Edit");
-                    uxEditInventoryRegion.SelectedItems.Clear();
-                    uxEditInventoryRegion.SetValueAndFireSelect(Inventory.SUB_INVENTORY_ORG_ID);
-                    uxEditInventoryRegion.SelectedItems.Add(new Ext.Net.ListItem(Inventory.INV_NAME, Inventory.SUB_INVENTORY_ORG_ID));
-                    uxEditInventoryRegion.UpdateSelectedItems();
-                    GetSubInventory((decimal)OrgId, "Edit");
-                    uxEditInventorySub.SelectedItems.Clear();
-                    uxEditInventorySub.SetValueAndFireSelect(SubData.DESCRIPTION);
-                    uxEditInventorySub.SelectedItems.Add(new Ext.Net.ListItem(SubData.SECONDARY_INV_NAME, SubData.DESCRIPTION));
-                    uxEditInventorySub.UpdateSelectedItems();
-                    GetUnitOfMeasure("Edit", Inventory.UOM_CODE);
-                    uxEditInventoryMeasure.SelectedItems.Clear();
-                    uxEditInventoryMeasure.SelectedItems.Add(new Ext.Net.ListItem(Inventory.UNIT_OF_MEASURE, Inventory.UOM_CODE));
-                    uxEditInventoryMeasure.UpdateSelectedItems();
-                    uxEditInventoryItem.SetValue(Inventory.ITEM_ID.ToString(), Inventory.DESCRIPTION);
-                    uxEditInventoryRate.SetValue(Inventory.RATE);
-                }
+                    GetInventory();
+                    uxAddInventoryRegion.SelectedItems.Clear();
+                    uxAddInventoryRegion.SetRawValue(Inventory.SUB_INVENTORY_ORG_ID);
+                    //uxAddInventoryRegion.SetValueAndFireSelect(Inventory.SUB_INVENTORY_ORG_ID);
+                    uxAddInventoryRegion.SelectedItems.Add(new Ext.Net.ListItem(Inventory.INV_NAME, Inventory.SUB_INVENTORY_ORG_ID));
+                    uxAddInventoryRegion.UpdateSelectedItems();
 
-                
+                    GetSubInventory((decimal)OrgId);
+                    uxAddInventorySub.SelectedItems.Clear();
+                    uxAddInventorySub.SetRawValue(SubData.ORG_ID);
+                    uxAddInventorySub.SetValueAndFireSelect(SubData.ORG_ID);
+                    uxAddInventorySub.SelectedItems.Add(new Ext.Net.ListItem(SubData.SECONDARY_INV_NAME, SubData.ORG_ID));
+                    uxAddInventorySub.UpdateSelectedItems();
+
+                    GetUnitOfMeasure(Inventory.UOM_CODE);
+                    uxAddInventoryMeasure.SelectedItems.Clear();
+                    uxAddInventoryMeasure.SelectedItems.Add(new Ext.Net.ListItem(Inventory.UNIT_OF_MEASURE));
+                    uxAddInventoryMeasure.UpdateSelectedItems();
+                    uxAddInventoryItem.SetValue(Inventory.ITEM_ID.ToString(), Inventory.DESCRIPTION);
+
+                    uxAddInventoryRate.SetValue(Inventory.RATE);
+                }
             }
 
         /// <summary>
@@ -188,9 +181,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             //Do type conversions
             long InventoryId = long.Parse(Request.QueryString["InventoryId"]);
-            long OrgId = long.Parse(uxEditInventoryRegion.Value.ToString());
-            decimal ItemId = decimal.Parse(uxEditInventoryItem.Value.ToString());
-            decimal Rate = decimal.Parse(uxEditInventoryRate.Value.ToString());
+            long OrgId = long.Parse(uxAddInventoryRegion.SelectedItem.Value);
+            decimal ItemId = decimal.Parse(uxAddInventoryItem.Value.ToString());
+            decimal Rate = decimal.Parse(uxAddInventoryRate.Text);
 
             //Get record to be updated
             using (Entities _context = new Entities())
@@ -203,27 +196,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             data.SUB_INVENTORY_ORG_ID = OrgId;
             data.ITEM_ID = ItemId;
             data.RATE = Rate;
-            data.UNIT_OF_MEASURE = uxEditInventoryMeasure.Value.ToString();
+            data.UNIT_OF_MEASURE = uxAddInventoryMeasure.SelectedItem.Value;
             data.MODIFIED_BY = User.Identity.Name;
             data.MODIFY_DATE = DateTime.Now;
 
             //Write to DB
             GenericData.Update<DAILY_ACTIVITY_INVENTORY>(data);
 
-            uxEditInventoryForm.Reset();
-            X.Js.Call("parent.App.uxPlaceholderWindow.hide(); parent.App.uxInventoryTab.reload()");
+            X.Js.Call("parent.App.uxDetailsPanel.reload(); parent.App.uxPlaceholderWindow.close()");
 
-            Notification.Show(new NotificationConfig()
-            {
-                Title = "Success",
-                Html = "Inventory Edited Successfully",
-                HideDelay = 1000,
-                AlignCfg = new NotificationAlignConfig
-                {
-                    ElementAnchor = AnchorPoint.Center,
-                    TargetAnchor = AnchorPoint.Center
-                }
-            });
         }
 
         /// <summary>
@@ -234,21 +215,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void deLoadSubinventory(object sender, DirectEventArgs e)
         {
             decimal OrgId;
-            if (e.ExtraParams["Type"] == "Add")
-            {
-                OrgId = decimal.Parse(uxAddInventoryRegion.Value.ToString());
-                GetSubInventory(OrgId, "Add");
-            }
-            else
-            {
-                OrgId = decimal.Parse(uxEditInventoryRegion.Value.ToString());
-                GetSubInventory(OrgId, "Edit");
-            }
-
             
+            OrgId = decimal.Parse(uxAddInventoryRegion.Value.ToString());
+            GetSubInventory(OrgId);
         }
 
-        protected void GetSubInventory(decimal OrgId, string FormType)
+        protected void GetSubInventory(decimal OrgId)
         {
             //Get list of subinventories
             using (Entities _context = new Entities())
@@ -259,19 +231,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             select s).ToList();
 
                 //Set datasource for add/edit
-                if (FormType == "Add")
-                {
-                    uxAddInventorySub.Clear();
-                    uxAddInventoryItem.Clear();
-                    uxAddInventorySubStore.DataSource = data;
-                    uxAddInventorySubStore.DataBind();
-                }
-                else
-                {
-                    uxEditInventorySubStore.DataSource = data;
-                    uxEditInventorySubStore.DataBind();
-
-                }
+                uxAddInventorySub.Clear();
+                uxAddInventoryItem.Clear();
+                uxAddInventorySubStore.DataSource = data;
+                uxAddInventorySubStore.DataBind();
             }
         }
         /// <summary>
@@ -291,18 +254,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             //Get paged, filterable list of inventory
             List<INVENTORY_V> data = GenericData.EnumerableFilterHeader<INVENTORY_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
-            if (e.Parameters["Type"] == "Add")
-            {
-                uxAddInventoryItemStore.DataSource = data;
-                uxAddInventoryItemStore.DataBind();
-                e.Total = count;
-            }
-            else
-            {
-                uxEditInventoryItemStore.DataSource = data;
-                uxEditInventoryItemStore.DataBind();
-                e.Total = count;
-            }
+            uxAddInventoryItemStore.DataSource = data;
+            uxAddInventoryItemStore.DataBind();
+            e.Total = count;
         }
 
         /// <summary>
@@ -312,22 +266,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deStoreGridValue(object sender, DirectEventArgs e)
         {
-            if (e.ExtraParams["Type"] == "Add")
-            {
-                uxAddInventoryItem.SetValue(e.ExtraParams["ItemId"], e.ExtraParams["Description"]);
-                uxAddInventoryItemStore.ClearFilter();
-
-            }
-            else
-            {
-                uxEditInventoryItem.SetValue(e.ExtraParams["ItemId"], e.ExtraParams["Description"]);
-                uxEditInventoryItemStore.ClearFilter();
-            }
+            uxAddInventoryItem.SetValue(e.ExtraParams["ItemId"], e.ExtraParams["Description"]);
+            uxAddInventoryItemStore.ClearFilter();
         }
 
         protected void deGetUnitOfMeasure(object sender, DirectEventArgs e)
         {
-            GetUnitOfMeasure(e.ExtraParams["Type"], e.ExtraParams["uomCode"]);
+            GetUnitOfMeasure(e.ExtraParams["uomCode"]);
         }
 
         /// <summary>
@@ -335,7 +280,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void GetUnitOfMeasure(string FormType, string uomCode)
+        protected void GetUnitOfMeasure(string uomCode)
         {
             //Query Db for units of measure based on uom_code
             using (Entities _context = new Entities())
@@ -350,17 +295,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         select u).ToList();
 
                 //Set datasource for store add/edit
-                if (FormType == "Add")
-                {
-                    uxAddInventoryMeasureStore.DataSource = data;
-                    uxAddInventoryMeasureStore.DataBind();
-                }
-                else
-                {
-                    uxEditInventoryMeasureStore.DataSource = data;
-                    uxEditInventoryMeasureStore.DataBind();
-                }
-
+                uxAddInventoryMeasureStore.DataSource = data;
+                uxAddInventoryMeasureStore.DataBind();
             }
         }
     }

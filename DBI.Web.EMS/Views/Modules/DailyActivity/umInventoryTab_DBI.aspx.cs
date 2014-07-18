@@ -99,6 +99,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
     public class InventoryDetails
     {
+        public long INVENTORY_ID { get; set; }
         public string ENABLED_FLAG { get; set; }
         public decimal ITEM_ID { get; set; }
         public string ACTIVE { get; set; }
@@ -110,7 +111,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public bool CONTRACTOR_SUPPLIED { get; set; }
         public decimal? TOTAL { get; set; }
         public string INV_NAME { get; set; }
-        public long INVENTORY_ID { get; set; }
         public long? CHEMICAL_MIX_ID { get; set; }
         public long CHEMICAL_MIX_NUMBER { get; set; }
         public string SUB_INVENTORY_SECONDARY_NAME { get; set; }

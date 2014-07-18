@@ -58,19 +58,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\EXT\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NinjaNye.SearchExtensions">
-      <HintPath>..\packages\NinjaNye.SearchExtensions.0.6.5193.24776\lib\net40\NinjaNye.SearchExtensions.dll</HintPath>
-    </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccessDTC, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=x86" />
-    <Reference Include="PushSharp.Apple">
-      <HintPath>..\..\PushSharp\PushSharp.Apple\bin\Release\PushSharp.Apple.dll</HintPath>
-    </Reference>
-    <Reference Include="PushSharp.Core">
-      <HintPath>..\..\PushSharp\PushSharp.Apple\bin\Release\PushSharp.Core.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -115,10 +106,15 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="GLTest.cs" />
+    <Compile Include="OVERHEAD_BUDGET_TYPETest.cs" />
+    <Compile Include="Class1Test.cs" />
+    <Compile Include="CROSSINGSTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SYS_USER_PROFILE_OPTIONSTest.cs" />
     <Compile Include="TIME_CLOCKTest.cs" />
     <Compile Include="ServiceUnitDataTest.cs" />
+    <Compile Include="UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DBI.Core\DBI.Core.csproj">

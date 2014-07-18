@@ -32,5 +32,8 @@ namespace DBI.Data
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public Nullable<System.DateTime> FISCAL_YEAR { get; set; }
+        public Nullable<decimal> INVOICE_ID { get; set; }
+    
+        public virtual CROSSING_INVOICE CROSSING_INVOICE { get; set; }
     }
 }

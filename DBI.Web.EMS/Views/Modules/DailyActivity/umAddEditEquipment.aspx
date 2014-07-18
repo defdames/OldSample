@@ -39,22 +39,21 @@
 <body>
 	<form id="form1" runat="server">
 	<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
-        <ext:Panel runat="server">
-            <Items>
 		<ext:FormPanel runat="server"
 			ID="uxAddEquipmentForm"
-			Layout="FormLayout"
-			Hidden="false" Width="600" DefaultButton="uxAddEquipmentSubmit">
+            Border="false"
+			Width="600" Height="400" DefaultButton="uxAddEquipmentSubmit" Padding="0">
 			<Items>
+                <ext:Hidden runat="server" ID="uxFormType" />
 				<ext:DropDownField runat="server" Editable="false"
 					ID="uxAddEquipmentDropDown"
 					FieldLabel="Choose Equipment"
 					Mode="ValueText"
-					AllowBlank="false" Width="500">
+					AllowBlank="false" Width="500" >
 					<Component>
 						<ext:GridPanel runat="server"
 							ID="uxEquipmentGrid" 
-							Layout="HBoxLayout">
+							Layout="HBoxLayout" Floatable="true" Floating="true">
 							<Store>
 								<ext:Store runat="server"
 									ID="uxEquipmentStore"
@@ -164,7 +163,7 @@
 					Icon="Add"
 					Disabled="true">
 					<DirectEvents>
-						<Click OnEvent="deAddEquipment">
+						<Click OnEvent="deProcessForm">
 							<EventMask ShowMask="true" />
 						</Click>
 					</DirectEvents>
@@ -174,169 +173,22 @@
 					Text="Cancel"
 					Icon="Delete">
 					<Listeners>
-						<Click Handler ="#{uxAddEquipmentForm}.reset();
-							parentAutoLoadControl.hide();" />
+						<Click Handler ="
+							parentAutoLoadControl.close();" />
 					</Listeners>
 				</ext:Button>
 			</Buttons>
 			<Listeners>
 				<ValidityChange Handler="#{uxAddEquipmentSubmit}.setDisabled(!valid);" />
-				
-			</Listeners>
-		</ext:FormPanel>
-		<ext:FormPanel runat="server"
-			ID="uxEditEquipmentForm"
-			Layout="FormLayout"
-			Hidden="true" Width="600" DefaultButton="uxEditEquipmentSubmit">
-			<Items>
-				<ext:DropDownField runat="server" Editable="false"
-					ID="uxEditEquipmentProject"
-					FieldLabel="Choose Equipment"
-					Mode="ValueText"
-					AllowBlank="false" Width="500">
-					<Component>
-						<ext:GridPanel runat="server"
-							ID="uxEditEquipmentProjectGrid">
-							<Store>
-								<ext:Store runat="server"
-									ID="uxEditEquipmentProjectStore"
-									OnReadData="deReadGrid"
-									PageSize="10"
-									RemoteSort="true"
-									AutoDataBind="true">
-									<Model>
-										<ext:Model ID="Model2" runat="server">
-											<Fields>
-												<ext:ModelField Name="CLASS_CODE" Type="String"/>
-												<ext:ModelField Name="NAME" Type="String"/>
-												<ext:ModelField Name="HEADER_ID" />
-												<ext:ModelField Name="ORG_ID" />
-												<ext:ModelField Name="ORGANIZATION_ID" Type="Int" />
-												<ext:ModelField Name="ORGANIZATION_NAME" Type="String" />
-												<ext:ModelField Name="PROJECT_ID" Type="Int" />
-												<ext:ModelField Name="PROJECT_STATUS_CODE" />
-												<ext:ModelField Name="SEGMENT1" Type="Int" />
-											</Fields>
-										</ext:Model>
-									</Model>
-									<Proxy>
-										<ext:PageProxy />
-									</Proxy>
-									<Parameters>
-										<ext:StoreParameter Name="Form" Value="Edit" />
-									</Parameters>
-								</ext:Store>
-							</Store>
-							<ColumnModel>
-								<Columns>
-									<ext:Column runat="server"
-										ID="Column1"
-										DataIndex="CLASS_CODE"
-										Text="Class Code" />
-									<ext:Column runat="server"
-										ID="Column2"
-										DataIndex="NAME" 
-										Text="Equipment Name"/>
-									<ext:Column runat="server"
-										ID="Column3"
-										DataIndex="ORGANIZATION_NAME"
-										Text="Organization Name" />                           
-									<ext:Column runat="server"
-										ID="Column5"
-										DataIndex="SEGMENT1"
-										Text="Project Number" />
-								</Columns>
-							</ColumnModel>
-							<Plugins>
-								<ext:FilterHeader runat="server" ID="uxEditEquipmentFilter" Remote="true" />
-							</Plugins>
-							<TopBar>
-								<ext:Toolbar ID="Toolbar1" runat="server">
-									<Items>
-										<ext:Button runat="server"
-											ID="uxEditRegion"
-											EnableToggle="true"
-											Text="All Regions">
-											<DirectEvents>
-												<Toggle OnEvent="deReloadStore">
-													<ExtraParams>
-														<ext:Parameter Name="Type" Value="Edit" />
-													</ExtraParams>
-												</Toggle>
-											</DirectEvents>
-										</ext:Button>
-									</Items>
-								</ext:Toolbar>
-							</TopBar>
-							<BottomBar>
-								<ext:PagingToolbar ID="PagingToolbar1" runat="server" />
-							</BottomBar>
-							<DirectEvents>
-								<SelectionChange OnEvent="deStoreGridValue">
-									<ExtraParams>
-										<ext:Parameter Name="ProjectId" Value="#{uxEditEquipmentProjectGrid}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
-										<ext:Parameter Name="EquipmentName" Value="#{uxEditEquipmentProjectGrid}.getSelectionModel().getSelection()[0].data.NAME" Mode="Raw" />
-										<ext:Parameter Name="Form" Value="Edit" />
-									</ExtraParams>
-								</SelectionChange>
-							</DirectEvents>
-						</ext:GridPanel>
-					</Component>
-				</ext:DropDownField>
-				<ext:NumberField runat="server"
-					ID="uxEditEquipmentStart"
-					FieldLabel="Starting Units"
-					AllowBlank="true"
-					Vtype="numberrange" Width="500"
-					EndNumberField="uxEditEquipmentEnd" />
-				<ext:NumberField runat="server"
-					ID="uxEditEquipmentEnd"
-					FieldLabel="Ending Units"
-					AllowBlank="true"
-					Vtype="numberrange" Width="500"
-					StartNumberField="uxEditEquipmentStart" />
-			</Items>
-			<Listeners>
-		<Show Handler="#{uxEditEquipmentProject}.focus()" />
-	</Listeners>
-			<Buttons>
-				<ext:Button runat="server"
-					ID="uxEditEquipmentSubmit"
-					Icon="Add"
-					Text="Save"
-					Disabled="true">
-					<DirectEvents>
-						<Click OnEvent="deEditEquipment">
-							<EventMask ShowMask="true" />
-						</Click>
-					</DirectEvents>
-				</ext:Button>
-				<ext:Button runat="server"
-					ID="uxEditEquipmentCancel"
-					Icon="Delete"
-					Text="Cancel">
-					<Listeners>
-						<Click Handler="#{uxEditEquipmentForm}.reset();
-							parentAutoLoadControl.hide();" />
-					</Listeners>
-				</ext:Button>
-			</Buttons>
-			<Listeners>
-				<ValidityChange Handler="#{uxEditEquipmentSubmit}.setDisabled(!valid);" />
-			</Listeners>
-		</ext:FormPanel>		 
-            </Items>
-            <Listeners>
-                <AfterRender
+				<AfterRender
 					Handler="var win = parentAutoLoadControl.target || parentAutoLoadControl, //you can use just 'parentAutoLoadControl' after update to Ext.NET v2 beta.
 									size = this.getSize();
- 
-								size.height += 250;
-								size.width += 12;
+                                size.height += 34;
+								size.width += 24;
 								win.setSize(size);"
 					Delay="100" />
-            </Listeners>
-        </ext:Panel>
+			</Listeners>
+		</ext:FormPanel>
 	</form>
 </body>
 </html>

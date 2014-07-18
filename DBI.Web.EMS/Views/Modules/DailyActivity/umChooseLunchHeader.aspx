@@ -9,7 +9,7 @@
 <body>
 	<form id="form1" runat="server">
 	<ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
-				<ext:FormPanel runat="server" ID="uxChooseLunchForm" Layout="FormLayout" DefaultButton="uxStoreLunchButton">
+				<ext:FormPanel runat="server" ID="uxChooseLunchForm" Layout="FormLayout" DefaultButton="uxStoreLunchButton" Height="250" Width="600">
 					<Items>
                         <ext:DropDownField runat="server" ID="uxLunchDRS" Mode="ValueText" Editable="false" FieldLabel="Choose a DRS" AllowBlank="false">
                             <Component>
@@ -65,8 +65,7 @@
 						</ext:Button>
 						<ext:Button runat="server" Text="Cancel" Icon="Delete">
 							<Listeners>
-								<Click Handler="#{uxChooseLunchForm}.reset();
-									parentAutoLoadControl.hide()" />
+								<Click Handler="parentAutoLoadControl.close()" />
 							</Listeners>
 						</ext:Button>
 					</Buttons>
@@ -74,7 +73,7 @@
 						<AfterRender
 							Handler="var win = parentAutoLoadControl.target || parentAutoLoadControl, //you can use just 'parentAutoLoadControl' after update to Ext.NET v2 beta.
 							size = this.getSize();
-							size.height += 250;
+							size.height += 34;
 							size.width += 12;
 							win.setSize(size);"
 						Delay="100" />

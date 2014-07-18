@@ -134,8 +134,8 @@
 										<ExtraParams>
 											<%--<ext:Parameter Name="TimeClockId" Value="#{uxEmployeeHoursGrid}.getSelectionModel().getSelection()[0].data.TIME_CLOCK_ID" Mode="Raw" />
 											<ext:Parameter Name="AdjustedHoursGrid" Value="#{uxEmployeeHoursGrid}.getSelectionModel().getSelection()[0].data.ADJUSTED_HOURS_GRID" Mode="Raw" />--%>
-											<ext:Parameter Name="ApprovedTime" Value="Ext.encode(#{uxEmployeeHoursGrid}.getRowsValues({selectedOnly : true}))" Mode="Raw" />
-											<ext:Parameter Name="NewTime" Value="#{uxEmployeeHoursStore}.getChangedData()" Mode="Raw" Encode="true" />
+											<ext:Parameter Name="SubmittedTime" Value="Ext.encode(#{uxPayrollAuditGrid}.getRowsValues({selectedOnly : true}))" Mode="Raw" />
+											<%--<ext:Parameter Name="NewTime" Value="#{uxEmployeeHoursStore}.getChangedData()" Mode="Raw" Encode="true" />--%>
 										</ExtraParams>
 							   </Click> 
 						</DirectEvents>
