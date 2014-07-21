@@ -268,7 +268,7 @@
 						</ext:ComboBox>
 					</Items>
 					<Buttons>
-						<ext:Button runat="server" ID="uxSaveHeaderButton" Icon="Add" Text="Save" Hidden="true" Disabled="true" Enabled="false">
+						<ext:Button runat="server" ID="uxSaveHeaderButton" Icon="Add" Text="Save" Disabled="true">
 							<DirectEvents>
 								<Click OnEvent="deUpdateHeader">
 									<EventMask ShowMask="true" />
@@ -722,7 +722,7 @@
 						</ext:FieldContainer>
 					</Items>
 					<Buttons>
-						<ext:Button runat="server" ID="uxSaveFooterButton" Text="Save" Icon="Add" Hidden="true">
+						<ext:Button runat="server" ID="uxSaveFooterButton" Text="Save" Icon="Add">
 							<DirectEvents>
 								<Click OnEvent="deUpdateFooter">
 									<EventMask ShowMask="true" />
