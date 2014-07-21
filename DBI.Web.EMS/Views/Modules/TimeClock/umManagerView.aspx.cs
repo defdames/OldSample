@@ -42,10 +42,10 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                         DateTime dow = (DateTime)item.TIME_IN;
 
                         TimeSpan adjustedhours = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_HOURS.Value));
-                        item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("hh\\:mm");
+                        item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("dd\\.hh\\:mm");
 
                         TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
-                        item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");                      
+                        item.ACTUAL_HOURS_GRID = actualhours.ToString("dd\\.hh\\:mm");                      
                             
 
                     }
@@ -65,11 +65,11 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
 
                         TimeSpan adjustedhours = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_HOURS.Value));
-                        item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("hh\\:mm");
+                        item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("dd\\.hh\\:mm");
 
 
                         TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
-                        item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");
+                        item.ACTUAL_HOURS_GRID = actualhours.ToString("dd\\.hh\\:mm");
                        
 
 
@@ -88,10 +88,10 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                         DateTime dow = (DateTime)item.TIME_IN;
 
                         TimeSpan adjustedhours = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_HOURS.Value));
-                        item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("hh\\:mm");
+                        item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("dd\\.hh\\:mm");
 
                         TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
-                        item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");
+                        item.ACTUAL_HOURS_GRID = actualhours.ToString("dd\\.hh\\:mm");
                         
 
                     }
@@ -110,10 +110,10 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                         DateTime dow = (DateTime)item.TIME_IN;
 
                         TimeSpan adjustedhours = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_HOURS.Value));
-                        item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("hh\\:mm");
+                        item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("dd\\.hh\\:mm");
 
                         TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
-                        item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");
+                        item.ACTUAL_HOURS_GRID = actualhours.ToString("dd\\.hh\\:mm");
                         
 
 
