@@ -50,12 +50,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxWeatherToolbar.Hidden = true;
                 uxChemicalToolbar.Hidden = true;
                 uxInventoryToolbar.Hidden = true;
-                uxEmployeeToolbar.Hide();
-                uxEquipmentToolbar.Hide();
-                uxProductionToolbar.Hide();
-                uxWeatherToolbar.Hide();
-                uxChemicalToolbar.Hide();
-                uxInventoryToolbar.Hide();
+                uxSaveHeaderButton.Hidden = true;
+                uxSaveFooterButton.Hidden = true;
 
                 uxDateField.ReadOnly = true;
                 uxProjectField.ReadOnly = true;
@@ -76,10 +72,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxForemanImageField.Hide();
                 uxContractNameField.ReadOnly = true;
                 uxContractImageField.Hide();
-            }
-            else
-            {
-                X.Js.Call("showButtons");
             }
         }
 
