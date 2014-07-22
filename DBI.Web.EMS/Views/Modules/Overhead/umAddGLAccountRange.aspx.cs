@@ -148,18 +148,39 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 e.Total = count;
             }
 
-
-
+            uxExclude.Disabled = false;
         }
 
-        //protected void deExcludeGlAccounts(object sender, DirectEventArgs e)
-        //{
-        //    CheckboxSelectionModel sm = uxGlAccountSecurityGridSelectionModel;
-        //    List<SelectedRow> src = sm.SelectedRows.ToList();
+        protected void deExcludeGlAccounts(object sender, DirectEventArgs e)
+        {
+            //Exclude any selected accounts from the range and add them excluded list, and remove them from the list
+            CheckboxSelectionModel sm = uxGlAccountSecurityGridSelectionModel;
+            List<SelectedRow> src = sm.SelectedRows.ToList();
+             string organizationID = Request.QueryString["orgID"];
 
-        //    foreach(SelectedRow 
+            foreach (SelectedRow row in src)
+            {
+                OVERHEAD_GL_ACCOUNT _gla = new OVERHEAD_GL_ACCOUNT();
+                _gla.INCLUDE_EXCLUDE_FLAG = "E";
+                _gla.ORGANIZATION_ID = long.Parse(organizationID);
+                _gla.SEGMENT1 = e.ExtraParams["SEGMENT1"];
+                _gla.SEGMENT2 = e.ExtraParams["SEGMENT2"];
+                _gla.SEGMENT3 = e.ExtraParams["SEGMENT3"];
+                _gla.SEGMENT4 = e.ExtraParams["SEGMENT4"];
+                _gla.SEGMENT5 = e.ExtraParams["SEGMENT5"];
+                _gla.SEGMENT6 = e.ExtraParams["SEGMENT6"];
+                _gla.SEGMENT7 = e.ExtraParams["SEGMENT7"];
+                _gla.CREATE_DATE = DateTime.Now;
+                _gla.MODIFY_DATE = DateTime.Now;
+                _gla.CREATED_BY = User.Identity.Name;
+                _gla.MODIFIED_BY = User.Identity.Name;
+                GenericData.Insert<OVERHEAD_GL_ACCOUNT>(_gla);
+            }
 
-        //}
+            sm.SelectedRows.Clear();
+
+            //uxGlAccountSecurityStore.Reload();
+        }
 
     }
 }  

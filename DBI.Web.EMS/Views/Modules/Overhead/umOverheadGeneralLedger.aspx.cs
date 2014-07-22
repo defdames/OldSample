@@ -30,7 +30,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                 string organizationID = Request.QueryString["orgID"];
 
-                string url = "/Views/Modules/Overhead/umAddGlAccountRange.aspx?org_id=" + organizationID;
+                string url = "/Views/Modules/Overhead/umAddGlAccountRange.aspx?orgID=" + organizationID;
                 Window win = new Window
                 {
                     ID = "uxShowAccountRangeWindow",

@@ -98,7 +98,8 @@
                                             #{uxERSegment5}.disable();
                                             #{uxERSegment6}.disable();
                                             #{uxERSegment7}.disable();
-                                            #{uxShowAccounts}.disable();" />
+                                            #{uxShowAccounts}.disable();
+                                            #{uxERSegment1}.setValue(this.first().data.ID);" />
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Location" runat="server" ID="uxSRSegment2" Editable="true" TypeAhead="true" Disabled="true"
@@ -661,6 +662,19 @@
                                     <ToolTips>
                                         <ext:ToolTip runat="server" Html="Excludes a general ledger account from the range." UI="Info"></ext:ToolTip>
                                     </ToolTips> 
+                                    <DirectEvents>
+                                        <Click OnEvent="deExcludeGlAccounts">
+                                        <ExtraParams>
+                                            <ext:Parameter Mode="Raw" Name="SEGMENT1" Value="this.uxGlAccountSecurityGridSelectionModel.getSelected().data.SEGMENT1"></ext:Parameter>
+                                             <ext:Parameter Mode="Raw" Name="SEGMENT2" Value="this.uxGlAccountSecurityGridSelectionModel.getSelected().data.SEGMENT2"></ext:Parameter>
+                                             <ext:Parameter Mode="Raw" Name="SEGMENT3" Value="this.uxGlAccountSecurityGridSelectionModel.getSelected().data.SEGMENT3"></ext:Parameter>
+                                             <ext:Parameter Mode="Raw" Name="SEGMENT4" Value="this.uxGlAccountSecurityGridSelectionModel.getSelected().data.SEGMENT4"></ext:Parameter>
+                                             <ext:Parameter Mode="Raw" Name="SEGMENT5" Value="this.uxGlAccountSecurityGridSelectionModel.getSelected().data.SEGMENT5"></ext:Parameter>
+                                             <ext:Parameter Mode="Raw" Name="SEGMENT6" Value="this.uxGlAccountSecurityGridSelectionModel.getSelected().data.SEGMENT6"></ext:Parameter>
+                                             <ext:Parameter Mode="Raw" Name="SEGMENT7" Value="this.uxGlAccountSecurityGridSelectionModel.getSelected().data.SEGMENT7"></ext:Parameter>
+                                        </ExtraParams>
+                                            <Confirmation ConfirmRequest="true" Message="Are you sure you want to exclude the selected accounts?"></Confirmation></Click>
+                                    </DirectEvents>
                                 </ext:Button>
                             </Items>
                         </ext:Toolbar>
