@@ -80,9 +80,6 @@
                                     </Proxy>
                                 </ext:Store>
                             </Store>
-                            <Listeners>
-                                <Activate Handler="#{uxFiscalYearStore}.store.reload();" />
-                            </Listeners>
                             <DirectEvents>
                                 <Select OnEvent="deSelectYear">
                                 </Select>
@@ -114,9 +111,6 @@
                                     </Proxy>
                                 </ext:Store>
                             </Store>
-                            <Listeners>
-                                <Activate Handler="#{uxVersionStore}.store.reload();" />
-                            </Listeners>
                             <DirectEvents>
                                 <Select OnEvent="deSelectVersion">
                                 </Select>

@@ -6,7 +6,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Ext.Net;
 using DBI.Data;
-using DBI.Data.DataFactory;
 
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 {
@@ -14,10 +13,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (!X.IsAjaxRequest)
-            //{
-                // PUT CODE IN HERE THAT YOU ONLY WANT TO EXECUTE ONE TIME AND NOT EVERYTIME SOMETHING IS CLICKED (POST BACK)
-            //}
+
         }
 
         protected void deLoadOrgTree(object sender, NodeLoadEventArgs e)
