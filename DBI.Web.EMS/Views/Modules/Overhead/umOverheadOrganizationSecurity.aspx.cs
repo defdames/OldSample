@@ -23,6 +23,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 }
 
                 uxOrganizationsGrid.GetStore().Reload();
+
             }
         }
 
@@ -65,6 +66,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 int count;
                 uxOrganizationSecurityStore.DataSource = GenericData.EnumerableFilterHeader<HR.ORGANIZATION_V1>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 e.Total = count;
+        }
+
+        protected void testEvent(object sender, DirectEventArgs e)
+        {
+            string organizationName = e.ExtraParams["Name"];
+            string organizationID = e.ExtraParams["ID"];
+
+            X.Js.Call("parent.App.direct.AddTabPanel", "gla_" + organizationID, organizationName + " - " +"General Ledger Accounts", "~/Views/Modules/Overhead/umOverheadGeneralLedger.aspx");
+            
         }
     }
 }

@@ -10,7 +10,7 @@
 namespace DBI.Web.EMS.Views.Modules.Overhead {
     
     
-    public partial class umGeneralLedgerByOrganization {
+    public partial class umOverheadGeneralLedger {
         
         /// <summary>
         /// ResourceManager1 control.

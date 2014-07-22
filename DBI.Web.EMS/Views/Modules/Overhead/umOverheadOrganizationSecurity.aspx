@@ -70,8 +70,22 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column2" runat="server" DataIndex="ORGANIZATION_NAME" Text="Name" Flex="4" />
+                            <ext:Column ID="Column2" runat="server" DataIndex="ORGANIZATION_NAME" Text="Name" Flex="1" />
                             <ext:Column ID="Column1" runat="server" DataIndex="ORGANIZATION_STATUS" Text="Current Status" Flex="1" />
+                            <ext:CommandColumn ID="CommandColumn1" runat="server" Flex="1">
+                                <Commands>
+                                    <ext:GridCommand Icon="NoteEdit" CommandName="ViewAccounts" Text="Accounts" ></ext:GridCommand>
+                                </Commands>
+                                <DirectEvents>
+                                    <Command OnEvent="testEvent">
+                                        <ExtraParams>
+                                            <ext:Parameter Mode="Raw" Name="Name" Value="record.data.ORGANIZATION_NAME"></ext:Parameter>
+                                              <ext:Parameter Mode="Raw" Name="ID" Value="record.data.ORGANIZATION_ID"></ext:Parameter>
+                                        </ExtraParams>
+                                    </Command>
+                                </DirectEvents>
+
+                            </ext:CommandColumn>
                         </Columns>
                     </ColumnModel>
                     <Plugins>
@@ -94,9 +108,6 @@
                         </ext:GridView>
                     </View>
                 </ext:GridPanel>
-
-                    
-                   
                 </Items>
             </ext:Viewport>
         </form>

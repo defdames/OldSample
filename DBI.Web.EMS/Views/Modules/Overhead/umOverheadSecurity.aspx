@@ -5,12 +5,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-    
+     
 </head>
 <body>
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
     <form id="form1" runat="server">
-        <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout" Namespace="App">
+        <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout" Namespace="App" IDMode="Explicit">
             <Items>
 
                   <ext:TreePanel

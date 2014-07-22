@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umGeneralLedgerByOrganization.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.Overhead.umGeneralLedgerByOrganization" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umOverheadGeneralLedger.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.Overhead.umOverheadGeneralLedger" %>
 
 <!DOCTYPE html>
 
@@ -15,8 +15,11 @@
                     <TopBar>
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
-                                <ext:Button runat="server" ID="uxShowGLRangeWindow" Text="Add Range" Icon="Add" Disabled="true">
-                                  
+                                <ext:Button runat="server" ID="uxShowGLRangeWindow" Text="Add Range" Icon="Add" Disabled="false">
+                                    <DirectEvents>
+                                        <Click OnEvent="deAddGLRange">
+                                        <EventMask ShowMask="true"></EventMask></Click>
+                                    </DirectEvents>
                                 </ext:Button>
                                 <ext:Button runat="server" ID="uxDeleteGLRangeDelete" Text="Delete Range" Icon="Delete" Disabled="true">                        
                                 </ext:Button>

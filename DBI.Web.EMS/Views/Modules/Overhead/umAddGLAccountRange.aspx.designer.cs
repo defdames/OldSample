@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DBI.Web.EMS.Views.Modules.Overhead.Views {
+namespace DBI.Web.EMS.Views.Modules.Overhead {
     
     
     public partial class umAddGLAccountRange {

@@ -9,7 +9,7 @@ using Ext.Net;
 using DBI.Data;
 using DBI.Core;
 
-namespace DBI.Web.EMS.Views.Modules.Overhead.Views
+namespace DBI.Web.EMS.Views.Modules.Overhead
 {
     public partial class umAddGLAccountRange : DBI.Core.Web.BasePage
     {

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umAddGLAccountRange.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.Overhead.Views.umAddGLAccountRange" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umAddGLAccountRange.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.Overhead.umAddGLAccountRange" %>
 
 <!DOCTYPE html>
 

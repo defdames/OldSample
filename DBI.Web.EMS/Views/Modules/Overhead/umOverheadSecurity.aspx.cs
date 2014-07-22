@@ -79,11 +79,11 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             if (!sm.SelectedRecordID.Contains(":"))
             {
-                AddTab(sm.SelectedRecordID, "Budget Type By Business Unit", "umOverheadBudgetTypes.aspx?leid=" + sm.SelectedRecordID, true, true);
+                AddTab(sm.SelectedRecordID, "Budget Types", "umOverheadBudgetTypes.aspx?leid=" + sm.SelectedRecordID, false, true);
             }
             else
             {
-                AddTab(sm.SelectedRecordID, "Organizations By Hierarchy", "umOverheadOrganizationSecurity.aspx?orgid=" + sm.SelectedRecordID, true, true);
+                AddTab(sm.SelectedRecordID, "Organizations", "umOverheadOrganizationSecurity.aspx?orgid=" + sm.SelectedRecordID, false, true);
             }
         }
 
@@ -108,13 +108,36 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             pan.Loader.Url = url;
             pan.Loader.Mode = LoadMode.Frame;
             pan.Loader.LoadMask.ShowMask = true;
-            pan.Loader.DisableCaching = loadContent;
+            pan.Loader.DisableCaching = true;
             pan.AddTo(uxCenterTabPanel);
 
             if(setActive)
                 uxCenterTabPanel.SetActiveTab("Tab" + id.Replace(":", "_"));
 
-            pan.LoadContent();
+            if (loadContent)
+                pan.LoadContent();
         }
+
+        [DirectMethod]
+        public void AddTabPanel(string id, string title, string url)
+        {
+
+            Ext.Net.Panel pan = new Ext.Net.Panel();
+
+            pan.ID = "Tab" + id.Replace(":", "_");
+            pan.Title = title;
+            pan.CloseAction = CloseAction.Destroy;
+            pan.Closable = true;
+            pan.Loader = new ComponentLoader();
+            pan.Loader.ID = "loader" + id.Replace(":", "_");
+            pan.Loader.Url = url;
+            pan.Loader.Mode = LoadMode.Frame;
+            pan.Loader.LoadMask.ShowMask = true;
+            pan.Loader.DisableCaching = true;
+            pan.AddTo(uxCenterTabPanel);
+            
+            uxCenterTabPanel.SetActiveTab("Tab" + id.Replace(":", "_"));
+        }
+
     }    
 }
