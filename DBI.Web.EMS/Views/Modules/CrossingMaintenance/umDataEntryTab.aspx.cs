@@ -173,9 +173,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     Inspect = "N";
                 }
 
-                //string json = (e.ExtraParams["selectedCrossings"]);
-                //List<CrossingForApplicationDetails> crossingList = JSON.Deserialize<List<CrossingForApplicationDetails>>(json);
-                //foreach (CrossingForApplicationDetails crossing in crossingList)
                 foreach (SelectedRow sr in sm.SelectedRows)
                 {   
                     //check for if application requested has been duplicated in the same fiscal year.

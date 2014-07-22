@@ -31,6 +31,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.ResourceManager ResourceManager1;
         
         /// <summary>
+        /// Hidden1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Hidden Hidden1;
+        
+        /// <summary>
         /// FilterForm control.
         /// </summary>
         /// <remarks>
@@ -337,31 +346,31 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Toolbar Toolbar2;
         
         /// <summary>
-        /// Button1 control.
+        /// Button6 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button1;
+        protected global::Ext.Net.Button Button6;
         
         /// <summary>
-        /// uxExportToPDF control.
+        /// Button7 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxExportToPDF;
+        protected global::Ext.Net.Button Button7;
         
         /// <summary>
-        /// uxEmailPdf control.
+        /// Button8 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxEmailPdf;
+        protected global::Ext.Net.Button Button8;
         
         /// <summary>
         /// PagingToolbar1 control.

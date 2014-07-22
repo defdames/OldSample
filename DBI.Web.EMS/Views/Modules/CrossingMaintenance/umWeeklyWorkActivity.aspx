@@ -26,11 +26,18 @@
         }
           
     </style>
+      <script>
+          var saveData = function () {
+              App.Hidden1.setValue(Ext.encode(App.GridPanel1.getRowsValues({ selectedOnly: false })));
+          };
+    </script>
 </head>
 <body>
     <form id="form1" runat="server">
     <div>
      <ext:ResourceManager ID="ResourceManager1" runat="server" />
+         <ext:Hidden ID="Hidden1" runat="server" Hidden="true" />
+
          <ext:FormPanel ID="uxFilterForm" runat="server" Margin="5" Title="Filter Weekly Work Activity">
                 <Items>
                     <ext:FieldSet ID="FieldSet1" runat="server" Title="Filter">
@@ -132,6 +139,11 @@
                                 ID="Button4"
                                 Text="Run"
                                 Icon="PlayGreen">
+                                <DirectEvents>
+                                    <Click OnEvent="deLaunchGrid" >
+                                        <EventMask ShowMask="true" Msg="Loading..." />
+                                        </Click>
+                                </DirectEvents>
                          <Listeners>
                                 <Click Handler="#{uxWeeklyActivityStore}.load()" />
                             </Listeners>
@@ -151,13 +163,14 @@
           
        
         <ext:GridPanel
-            ID="uxIncidentGrid"
+            ID="GridPanel1"
             runat="server"
             Title="Weekly Work Activity"
             Icon="Report"
             Frame="false"
             Resizable="false"
-            Collapsible="false">
+            Collapsible="false" 
+            Hidden="true">
             <Store>
                 <ext:Store ID="uxWeeklyActivityStore"
                     runat="server"
@@ -214,45 +227,28 @@
                     runat="server"
                     HideGroupedHeader="true" Collapsible="false"  Cls="x-grid-group-title; x-grid-group-hd" />
             </Features>
-
-            
-            
-          
+                     
             <TopBar>
                 <ext:Toolbar ID="Toolbar2" runat="server">
                     <Items>
                        
-                        <ext:Button ID="Button2"
-                    runat="server"
-                    Text="Print"
-                    Icon="Printer"
-                    OnClientClick="window.print();" />
-              
-                          <ext:Button runat="server"
-                    ID="uxExportToPDF"
-                    Text="Export to PDF"
-                    Icon="PageWhiteAcrobat">
-                    <%--<DirectEvents>
-                        <Click OnEvent="deExportToPDF" IsUpload="true">
-                            <ExtraParams>
-                                <ext:Parameter Name="CrossingId" Value="#{GridPanel1}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                            </ExtraParams>
-                        </Click>
-                    </DirectEvents>--%>
-                </ext:Button>
-                        <ext:Button runat="server"
-									ID="uxEmailPdf"
-									Text="Email Copy"
-									Icon ="EmailAttach"
-									Disabled="false">
-									<%--<DirectEvents>
-										<Click OnEvent="deSendPDF" IsUpload="true">
-											<ExtraParams>
-												<ext:Parameter Name="CrossingId" Value="#{GridPanel1}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-											</ExtraParams>
-										</Click>
-									</DirectEvents>--%>
-								</ext:Button>
+                      <ext:Button ID="Button6" runat="server" Text="To XML" AutoPostBack="true" OnClick="ToXml" Icon="PageCode">
+                            <Listeners>
+                                <Click Fn="saveData" />
+                            </Listeners>
+                        </ext:Button>
+                        
+                        <ext:Button ID="Button7" runat="server" Text="To Excel" AutoPostBack="true" OnClick="ToExcel" Icon="PageExcel">
+                            <Listeners>
+                                <Click Fn="saveData" />
+                            </Listeners>
+                        </ext:Button>
+                        
+                        <ext:Button ID="Button8" runat="server" Text="To CSV" AutoPostBack="true" OnClick="ToCsv" Icon="PageAttach">
+                            <Listeners>
+                                <Click Fn="saveData" />
+                            </Listeners>
+                        </ext:Button>
                     </Items>
                 </ext:Toolbar>
             </TopBar>

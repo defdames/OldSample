@@ -212,9 +212,9 @@ namespace DBI.Data.DataFactory
             get
             {
                 return new object[]{
-                    new object[]{"1st Application", "1st Application"},
-                    new object[]{"2nd Application", "2nd Application"},
-                    new object[]{"3rd Application", "3rd Application"},
+                    new object[]{"1", "1"},
+                    new object[]{"2", "2"},
+                    new object[]{"3", "3"},
                     new object[]{"Supplemental", "Supplemental"},
                 };
             }

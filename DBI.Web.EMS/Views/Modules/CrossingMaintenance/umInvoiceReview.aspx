@@ -39,31 +39,30 @@
                                     </Reader>
                                 </ext:Store>
                             </Store>
+                                <DirectEvents>
+                                    <Select OnEvent="deChooseType" />
+                                </DirectEvents>
                         </ext:ComboBox>
                                                    
                         </Items>
                     </ext:FieldSet>
                     
                 </Items>
-            
+          
             </ext:FormPanel>
-        <ext:GridPanel ID="uxInvoiceApplicationGrid" Title="Completed Crossings" runat="server" Region="North" Frame="false" Collapsible="true" >
+        <ext:GridPanel ID="uxInvoiceApplicationGrid" Title="Completed Crossings" runat="server" Region="North" Hidden="true" Frame="false" Collapsible="true" >
               
                 <Store>
                     <ext:Store runat="server"
-                        ID="uxInvoiceApplicationStore" OnReadData="deInvoiceGrid" AutoDataBind="true" AutoLoad="false" >
+                        ID="uxInvoiceApplicationStore" OnReadData="deApplicationReviewGrid" AutoDataBind="true" AutoLoad="false" >
                       
                         <Model>
                             <ext:Model ID="Model4" runat="server">
                                 <Fields>
                                     <ext:ModelField Name="APPLICATION_ID" />
-                                    <ext:ModelField Name="APPLICATION_DATE" />
-                                    <ext:ModelField Name="CROSSING_ID" />  
-                                    <ext:ModelField Name="CROSSING_NUMBER" /> 
-                                    <ext:ModelField Name="APPLICATION_REQUESTED" />                               
-                                    <ext:ModelField Name="MILE_POST" />
-                                    <ext:ModelField Name="SERVICE_UNIT" />
-                                    <ext:ModelField Name="SUB_DIVISION" />
+                                    <ext:ModelField Name="INVOICE_ID" />
+                                    <ext:ModelField Name="INVOICE_DATE" />
+                                    <ext:ModelField Name="INVOICE_NUMBER" />
                                   
 
                                 </Fields>
@@ -78,62 +77,28 @@
 
                 <ColumnModel>
                     <Columns>
-                         <ext:Column ID="Column2" runat="server" DataIndex="CROSSING_NUMBER" Text="DOT Number" Flex="1" />
-                        <ext:Column ID="Column4" runat="server" DataIndex="MILE_POST" Text="MP" Flex="1" />
-                        <ext:Column ID="Column5" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
-                        <ext:DateColumn ID="DateColumn3" runat="server" DataIndex="APPLICATION_DATE" Text="Application Date" Flex="1" Format="MM/dd/yyyy" />
-                        <ext:Column ID="Column6" runat="server" DataIndex="SUB_DIVISION" Text="Sub Division" Flex="1" />                     
+                         <ext:Column ID="Column2" runat="server" DataIndex="INVOICE_NUMBER" Text="Invoice Number" Flex="1" />
+                        <ext:DateColumn ID="DateColumn3" runat="server" DataIndex="INVOICE_DATE" Text="Invoice Date" Flex="1" Format="MM/dd/yyyy" />
+                                      
                        
 
                     </Columns>
                 </ColumnModel> 
                 
-               <BottomBar>
-                    <ext:Toolbar ID="Toolbar2" runat="server">
-                        <Items>
-                            <ext:Button runat="server"
-                                ID="Button1"
-                                Text="Invoice"
-                                Icon="PlayGreen">
-                         <DirectEvents>
-                             <Click OnEvent="deAddInvoice" >
-                                   <ExtraParams>
-                                    <ext:Parameter Name="selectedApps" Value="Ext.encode(#{uxApplicationEntryGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
-                                </ExtraParams>
-                                 </Click>
-                         </DirectEvents>
-                                <Listeners>
-                                    <Click Handler="#{uxInvoiceReportStore}.reload()" />
-                                </Listeners>
-                            </ext:Button>
-                            <ext:Button runat="server"
-                                ID="Button2"
-                                Text="Cancel Selection"
-                                Icon="StopRed">
-                             <DirectEvents>
-                            <Click OnEvent="deResetInvoice" />
-                            </DirectEvents>
-                            </ext:Button>
-                        </Items>
-                    </ext:Toolbar>
-                </BottomBar>
             </ext:GridPanel>
-        <ext:GridPanel ID="uxInvoiceGrid" Title="Invoiced Items" runat="server" Region="North" Frame="false" Collapsible="true" MultiSelect="true" >
-                <SelectionModel>
-                    <ext:CheckboxselectionModel ID="CheckboxSelectionModel2" runat="server" AllowDeselect="true" Mode="Multi" />
-                </SelectionModel>
+        <ext:GridPanel ID="uxSupplementalInvoiceGrid" Title="Supplemental Invoiced Items" runat="server" Region="North" Frame="false" Hidden="true" Collapsible="true" MultiSelect="true" >
+                
                 <Store>
                     <ext:Store runat="server"
-                        ID="uxInvoiceSupplementalStore"  AutoDataBind="true" AutoLoad="false" >
-                       <%-- <Parameters>
-                              <ext:StoreParameter Name="crossingId" Value="Ext.encode(#{uxApplicationCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
-                        </Parameters>--%>
+                        ID="uxInvoiceSupplementalStore" OnReadData="deSupplementalReviewGrid"  AutoDataBind="true" AutoLoad="false" >
+                    
                         <Model>
                             <ext:Model ID="Model1" runat="server">
                                 <Fields>
-                                    <ext:ModelField Name="INVOICE_ID" />  
-                                    <ext:ModelField Name="INVOICE_NUMBER" />                                
-                                    <ext:ModelField Name="INVOICE_DATE" /> 
+                                    <ext:ModelField Name="SUPPLEMENTAL_ID" />
+                                    <ext:ModelField Name="INVOICE_SUPP_ID" />  
+                                    <ext:ModelField Name="INVOICE_SUPP_NUMBER" />                                
+                                    <ext:ModelField Name="INVOICE_SUPP_DATE" /> 
                                
 
                                 </Fields>
@@ -148,17 +113,16 @@
 
                 <ColumnModel>
                     <Columns>
-                         <ext:Column ID="Column1" runat="server" DataIndex="INVOICE_NUMBER" Text="Invoice #" Flex="1" />
-                        <ext:DateColumn ID="DateColumn1" runat="server" DataIndex="INVOICE_DATE" Text="Invoice Date" Flex="1" Format="MM/dd/yyyy" />
-                        <ext:Column ID="Column12" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
-                        <ext:Column ID="Column3" runat="server" DataIndex="SUB_DIVISION" Text="Sub Division" Flex="1" />                     
+                         <ext:Column ID="Column1" runat="server" DataIndex="INVOICE_SUPP_NUMBER" Text="Invoice #" Flex="1" />
+                        <ext:DateColumn ID="DateColumn1" runat="server" DataIndex="INVOICE_SUPP_DATE" Text="Invoice Date" Flex="1" Format="MM/dd/yyyy" />
+                                         
                       
 
                     </Columns>
                 </ColumnModel> 
               
             </ext:GridPanel>
-        <ext:Window runat="server"
+      <%--  <ext:Window runat="server"
             ID="uxBillingReportWindow"
             Layout="FormLayout"
             Hidden="true"
@@ -182,9 +146,7 @@
                 <Store>
                     <ext:Store runat="server"
                         ID="uxInvoiceReportStore" AutoDataBind="true" AutoLoad="false" GroupField="SUB_DIVISION">
-                       <%-- <Parameters>
-                              <ext:StoreParameter Name="selectedSupp" Value="Ext.encode(#{uxInvoiceGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
-                        </Parameters>--%>
+                     
                         <Model>
                             <ext:Model ID="Model2" runat="server">
                                 <Fields>
@@ -234,22 +196,14 @@
                                 ID="Button5"
                                 Text="Close Invoice Report"
                                 Icon="BinClosed">
-                           <%--  <DirectEvents>
-                            <Click OnEvent="deCloseInvoice" />
-                            </DirectEvents>
-                               <DirectEvents>
-                            <Click OnEvent="deClearFilters" />
-                            </DirectEvents>
-                               <DirectEvents>
-                            <Click OnEvent="deResetInvoice" />
-                            </DirectEvents>--%>
+                       
                             </ext:Button>
                         </Items>
                     </ext:Toolbar>
                 </BottomBar>
             </ext:GridPanel>
                 </Items>
-            </ext:Window>
+            </ext:Window>--%>
     </div>
     </form>
 </body>
