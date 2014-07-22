@@ -305,7 +305,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 {
                     ToUpdate = CUSTOMER_SURVEYS.GetQuestionOption(UpdatedOption.OPTION_ID, _context);
                     ToUpdate.IS_ACTIVE = (UpdatedOption.IS_ACTIVE == true ? "Y" : "N");
-                    ToUpdate.OPTION_NAME = ToUpdate.OPTION_NAME;
+                    ToUpdate.OPTION_NAME = UpdatedOption.OPTION_NAME;
                     ToUpdate.MODIFIED_BY = User.Identity.Name;
                     ToUpdate.MODIFY_DATE = DateTime.Now;
                 }
