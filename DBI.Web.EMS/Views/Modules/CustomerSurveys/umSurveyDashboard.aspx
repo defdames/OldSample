@@ -103,9 +103,9 @@
                                 </ext:Button>
                                 <ext:Button runat="server" ID="uxEmailPDFSurveyButton" Text="Email PDF Survey" Icon="EmailAttach">
                                     <DirectEvents>
-                                        <Click OnEvent="deEmailPDF">
+                                        <Click OnEvent="deEmailPDF" IsUpload="true">
                                             <ExtraParams>
-                                                <ext:Parameter Name="PROJECT_ID" />
+                                                <ext:Parameter Name="RowValues" Value="Ext.encode(#{uxDashboardGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
                                             </ExtraParams>
                                             <EventMask ShowMask="true" />
                                         </Click>
@@ -115,7 +115,7 @@
                                     <DirectEvents>
                                         <Click OnEvent="dePrintPDF">
                                             <ExtraParams>
-                                                <ext:Parameter Name="PROJECT_ID" />
+                                                <ext:Parameter Name="RowValues" Value="Ext.encode(#{uxDashboardGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
                                             </ExtraParams>
                                             <EventMask ShowMask="true" />
                                         </Click>
