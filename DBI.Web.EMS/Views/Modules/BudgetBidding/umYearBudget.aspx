@@ -189,7 +189,7 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column1" runat="server" DataIndex="PROJECT_NAME" Text="Project Name" Flex="6" />
+                            <ext:Column ID="Column1" runat="server" DataIndex="PROJECT_NAME" Text="Project Long Name" Flex="6" />
                             <ext:Column ID="Column2" runat="server" DataIndex="STATUS" Text="Status" Flex="2" />
                             <ext:NumberColumn ID="Column3" runat="server" DataIndex="ACRES" Text="Acres" Flex="1" Align="Right" />
                             <ext:NumberColumn ID="Column4" runat="server" DataIndex="DAYS" Text="Days" Flex="1" Align="Right" />
@@ -215,12 +215,6 @@
                             </ExtraParams>
                             <EventMask ShowMask="true" />
                         </Select>
-                        <ItemDblClick OnEvent="deFormEditingAllowed">
-                            <ExtraParams>
-                                <ext:Parameter Name="BudBidProjectID" Value="#{uxSummaryGrid}.getSelectionModel().getSelection()[0].data.BUD_BID_PROJECTS_ID" Mode="Raw" />
-                            </ExtraParams>
-                            <EventMask ShowMask="true" Msg="Opening..." />
-                        </ItemDblClick>
                     </DirectEvents>
                     <DockedItems>
                         <ext:FieldContainer ID="uxTotal" runat="server" Layout="HBoxLayout" Dock="Bottom" Cls="grandTotalBackground">
@@ -328,7 +322,6 @@
                     <Plugins>
                         <ext:CellEditing ID="CellEditing1" runat="server">
                             <Listeners>
-                                <%--new new new--%>
                                 <BeforeEdit Handler="return isEditAdjustmentAllowed(e);" />
                                 <Edit Fn="editAdjustment" />
                             </Listeners>
@@ -342,13 +335,13 @@
                                 <ext:DisplayField ID="DisplayField19" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField20" runat="server" Text="" Flex="1" />
                                 <ext:DisplayField ID="DisplayField21" runat="server" Text="" Flex="1" />
-                                <ext:DisplayField ID="DisplayField22" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
-                                <ext:DisplayField ID="DisplayField23" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
-                                <ext:DisplayField ID="DisplayField25" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
-                                <ext:DisplayField ID="DisplayField27" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
-                                <ext:DisplayField ID="DisplayField28" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
-                                <ext:DisplayField ID="DisplayField29" runat="server" Text="0.00 %" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
-                                <ext:DisplayField ID="DisplayField30" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="uxGTGrossRec" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="uxGTMatUsage" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="uxGTGrossRev" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="uxGTDirects" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="uxGTOP" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="uxGTOPPerc" runat="server" Text="0.00 %" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="uxGTOPPlusMinus" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
                                 <ext:DisplayField ID="DisplayField31" runat="server" Width="20" />
                             </Items>
                         </ext:FieldContainer>
@@ -390,7 +383,7 @@
                             <ext:NumberColumn ID="NumberColumn5" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn6" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right">
                             </ext:NumberColumn>
-                            <ext:NumberColumn ID="NumberColumn7" runat="server" DataIndex="OH" Text="Overhead" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="uxOH" runat="server" DataIndex="OH" Text="Overhead" Flex="2" Align="Right" />
                             <ext:Column ID="Column33" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn8" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                         </Columns>
@@ -407,7 +400,7 @@
                                 <ext:DisplayField ID="DisplayField38" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField39" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField40" runat="server" Text="" Flex="2" />
-                                <ext:DisplayField ID="DisplayField41" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="uxNetCont" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
                                 <ext:DisplayField ID="DisplayField42" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField43" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField44" runat="server" Width="20" />
@@ -421,7 +414,7 @@
                 <ext:FormPanel ID="uxProjectInfo"
                     runat="server"
                     Region="Center"
-                    Flex="10"
+                    Flex="12"
                     AutoScroll="true"
                     BodyPadding="20"
                     Disabled="true">
@@ -430,7 +423,7 @@
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
-                                <ext:Label ID="Label1" runat="server" Width="100" Text="Project Number:" />
+                                <ext:Label ID="Label1" runat="server" Width="120" Text="Project Number:" />
                                 <ext:DropDownField ID="uxProjectNum" runat="server" Width="110" Mode="ValueText" Editable="false">
                                     <Listeners>
                                         <Expand Handler="this.picker.setWidth(500);" />
@@ -447,7 +440,7 @@
                                                     ID="uxProjectNumStore"
                                                     PageSize="10"
                                                     RemoteSort="true"
-                                                    OnReadData="deLoadOrgProjects">
+                                                    OnReadData="deLoadProjectDropdown">
                                                     <Model>
                                                         <ext:Model ID="Model7" runat="server">
                                                             <Fields>
@@ -494,11 +487,11 @@
                                         </ext:GridPanel>
                                     </Component>
                                 </ext:DropDownField>
-                                <ext:Label ID="Label5" runat="server" Width="320" />
+                                <ext:Label ID="Label5" runat="server" Width="300" />
 
                                 <ext:Checkbox ID="uxCompareOverride" runat="server" BoxLabel="Compare to Override" Width="200">
                                     <DirectEvents>
-                                        <%--<Change OnEvent="deLiabilityCheck" />--%>
+                                        <Change OnEvent="deCompareCheck" />
                                     </DirectEvents>
                                 </ext:Checkbox>
                                 <ext:Label ID="Label6" runat="server" Width="50" />
@@ -518,20 +511,20 @@
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
-                                <ext:Label ID="Label7" runat="server" Width="100" Text="Project Name:" />
-                                <ext:TextField ID="uxProjectName" runat="server" Width="400" ReadOnly="true">
+                                <ext:Label ID="Label7" runat="server" Width="120" Text="Project Long Name:" />
+                                <ext:TextField ID="uxProjectName" runat="server" Width="380" ReadOnly="true">
                                     <DirectEvents>
                                         <Change OnEvent="deCheckAllowSave" />
                                     </DirectEvents>
                                 </ext:TextField>
                                 <ext:Label ID="Label8" runat="server" Width="30" />
-                                <ext:Label ID="Label9" runat="server" Width="100" Text="Final Draft OP:" />
-                                <ext:TextField ID="uxCompareOP" runat="server" Width="110" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign">
+                                <ext:Label ID="uxVersionLabel" runat="server" Width="100" Text="Final Draft OP:" />
+                                <ext:TextField ID="uxCompareOP" runat="server" Width="110" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" Disabled="true">
                                     <Listeners>
                                         <Focus Handler="this.setValue(this.getValue().replace(',', ''));" />
                                     </Listeners>
                                     <DirectEvents>
-                                        <Blur OnEvent="deFormatNumber" />
+                                        <Blur OnEvent="deUpdateCompareNums" />
                                     </DirectEvents>
                                 </ext:TextField>
                                 <ext:Label ID="Label10" runat="server" Width="40" />
@@ -551,7 +544,7 @@
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
-                                <ext:Label ID="Label13" runat="server" Width="100" Text="Status:" />
+                                <ext:Label ID="Label13" runat="server" Width="120" Text="Status:" />
                                 <ext:ComboBox ID="uxStatus"
                                     runat="server"
                                     ValueField="ID"
@@ -560,7 +553,7 @@
                                     EmptyText="-- Select --"
                                     Editable="false">
                                     <Store>
-                                        <ext:Store ID="uxStatusStore" runat="server" OnReadData="deLoadStatuses" AutoLoad="false">
+                                        <ext:Store ID="uxStatusStore" runat="server" OnReadData="deLoadStatusDropdown" AutoLoad="false">
                                             <Model>
                                                 <ext:Model ID="Model9" runat="server">
                                                     <Fields>
@@ -579,7 +572,7 @@
                                         <Select OnEvent="deCheckAllowSave" />
                                     </DirectEvents>
                                 </ext:ComboBox>
-                                <ext:Label ID="Label14" runat="server" Width="320" />
+                                <ext:Label ID="Label14" runat="server" Width="300" />
                                 <ext:Label ID="Label15" runat="server" Width="100" Text="Variance:" />
                                 <ext:Label ID="uxCompareVar" runat="server" Width="106" Text="0.00" Cls="labelRightAlign" />
                                 <ext:Label ID="Label2" runat="server" Width="194" />
@@ -590,8 +583,8 @@
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
-                                <ext:Label ID="Label18" runat="server" Width="100" Text="Comments:" />
-                                <ext:TextArea ID="uxComments" runat="server" Width="550" />
+                                <ext:Label ID="Label18" runat="server" Width="120" Text="Comments:" />
+                                <ext:TextArea ID="uxComments" runat="server" Width="530" />
                                 <ext:Label ID="Label20" runat="server" Width="60" Text="" />
                                 <ext:FieldContainer ID="FieldContainer7"
                                     runat="server"
@@ -684,7 +677,7 @@
                                             EmptyText="-- Select --"
                                             Editable="false">
                                             <Store>
-                                                <ext:Store ID="uxJCDateStore" runat="server" OnReadData="deLoadJCDates" AutoLoad="false">
+                                                <ext:Store ID="uxJCDateStore" runat="server" OnReadData="deLoadJCDateDropdown" AutoLoad="false">
                                                     <Model>
                                                         <ext:Model ID="Model5" runat="server">
                                                             <Fields>
@@ -742,29 +735,32 @@
                                             </Listeners>
                                         </ext:TextField>
                                         <ext:Label ID="Label35" runat="server" Width="40" />
-                                        <ext:ComboBox ID="uxSummaryActions"
+                                        <ext:ComboBox ID="uxDetailActions"
                                             runat="server"
-                                            DisplayField="name"
+                                            ValueField="ID_NAME"
+                                            DisplayField="ID_NAME"
                                             Width="150"
                                             EmptyText="-- Actions --"
-                                            QueryMode="Local"
-                                            TypeAhead="true">
+                                            Editable="false">
                                             <Store>
-                                                <ext:Store ID="Store3" runat="server" AutoDataBind="true">
+                                                <ext:Store ID="uxDetailActionsStore" runat="server" OnReadData="deLoadDetailActions" AutoLoad="false">
                                                     <Model>
                                                         <ext:Model ID="Model3" runat="server">
                                                             <Fields>
-                                                                <ext:ModelField Name="abbr" />
-                                                                <ext:ModelField Name="name" />
-                                                                <ext:ModelField Name="slogan" />
+                                                                <ext:ModelField Name="ID_NAME" />
                                                             </Fields>
                                                         </ext:Model>
                                                     </Model>
-                                                    <Reader>
-                                                        <ext:ArrayReader />
-                                                    </Reader>
+                                                    <Proxy>
+                                                        <ext:PageProxy />
+                                                    </Proxy>
                                                 </ext:Store>
                                             </Store>
+                                            <DirectEvents>
+                                                <Select OnEvent="deChooseDetailAction">
+                                                    <EventMask ShowMask="true" Msg="Please wait..." />
+                                                </Select>
+                                            </DirectEvents>
                                         </ext:ComboBox>
                                     </Items>
                                 </ext:FieldContainer>
@@ -781,12 +777,14 @@
                                                 <ext:Store runat="server"
                                                     ID="uxSummaryDetailStore"
                                                     OnReadData="deReadDetailGridData"
-                                                    AutoDataBind="true" WarningOnDirty="false">
+                                                    AutoDataBind="true"
+                                                    WarningOnDirty="false">
                                                     <Model>
                                                         <ext:Model ID="Model2" runat="server">
                                                             <Fields>
-                                                                <ext:ModelField Name="DETAIL_SHEET_ID" />
-                                                                <ext:ModelField Name="SHEET_NAME" />
+                                                                <ext:ModelField Name="DETAIL_TASK_ID" />
+                                                                <ext:ModelField Name="DETAIL_NAME" />
+                                                                <ext:ModelField Name="SHEET_ORDER" />
                                                                 <ext:ModelField Name="GROSS_REC" />
                                                                 <ext:ModelField Name="MAT_USAGE" />
                                                                 <ext:ModelField Name="GROSS_REV" />
@@ -802,7 +800,7 @@
                                             </Store>
                                             <ColumnModel>
                                                 <Columns>
-                                                    <ext:Column ID="Column12" runat="server" DataIndex="SHEET_NAME" Text="Detail Sheet" Width="160" />
+                                                    <ext:Column ID="Column12" runat="server" DataIndex="DETAIL_NAME" Text="Detail Sheet" Width="160" />
                                                     <ext:NumberColumn ID="Column16" runat="server" DataIndex="GROSS_REC" Text="Gross Receipts" Width="110" Align="Right" />
                                                     <ext:NumberColumn ID="Column17" runat="server" DataIndex="MAT_USAGE" Text="Material Usage" Width="110" Align="Right" />
                                                     <ext:NumberColumn ID="Column18" runat="server" DataIndex="GROSS_REV" Text="Gross Revenue" Width="110" Align="Right" />
@@ -811,11 +809,12 @@
                                                 </Columns>
                                             </ColumnModel>
                                             <DirectEvents>
-                                                <ItemDblClick OnEvent="Test">
+                                                <Select OnEvent="deSelectDetailSheet">
                                                     <ExtraParams>
-                                                        <ext:Parameter Name="SheetName" Value="#{GridPanel1}.getSelectionModel().getSelection()[0].data.SHEET_NAME" Mode="Raw" />
+                                                        <ext:Parameter Name="DetailSheetID" Value="#{uxDetailSheets}.getSelectionModel().getSelection()[0].data.DETAIL_TASK_ID" Mode="Raw" />
                                                     </ExtraParams>
-                                                </ItemDblClick>
+                                                    <EventMask ShowMask="true" />
+                                                </Select>
                                             </DirectEvents>
                                         </ext:GridPanel>
                                     </Items>
@@ -868,7 +867,7 @@
                                 <ext:Button ID="uxCancel" runat="server" Text="Cancel" Icon="Delete" Width="75">
                                     <DirectEvents>
                                         <Click OnEvent="deCancel">
-                                            <EventMask ShowMask="true" Msg="Cancelling..." />
+                                            <EventMask ShowMask="true" Msg="Please wait..." />
                                         </Click>
                                     </DirectEvents>
                                 </ext:Button>
@@ -877,58 +876,57 @@
                     </Items>
                 </ext:FormPanel>
 
-
                 <%-------------------------------------------------- Diagnostic Panel --------------------------------------------------%>
                 <%-- Uncomment to Use --%>
-                <ext:FormPanel ID="uxDiagnostic"
+                <ext:FormPanel ID="FormPanel1"
                     runat="server"
-                    Region="South"
-                    Flex="2"
+                    Region="East"
+                    Width="130"
                     AutoScroll="true"
-                    BodyPadding="20">
+                    BodyPadding="10">
                     <Items>
-                        <ext:FieldContainer ID="FieldContainer2"
+                        <ext:FieldContainer ID="FieldContainer20"
                             runat="server"
-                            Layout="HBoxLayout">
+                            Layout="VBoxLayout">
                             <Items>
-                                <ext:Label ID="Label39" runat="server" Width="100" Text="uxHidInfoEnabled" Cls="labelCenterAlign" />
-                                <ext:Label ID="Label19" runat="server" Width="100" Text="uxHidNewProject" Cls="labelCenterAlign" />
-                                <ext:Label ID="Label22" runat="server" Width="100" Text="uxHidBudBidID" Cls="labelCenterAlign" />
-                                <ext:Label ID="Label24" runat="server" Width="100" Text="uxHidProjectNumID" Cls="labelCenterAlign" />
-                                <ext:Label ID="Label38" runat="server" Width="100" Text="uxHidType" Cls="labelCenterAlign" />
-                                <ext:Label ID="Label40" runat="server" Width="100" Text="uxHidStatusID" Cls="labelCenterAlign" />
-                                <ext:Label ID="Label33" runat="server" Width="100" Text="uxHidPrevYear" Cls="labelCenterAlign" />
-                                <ext:Label ID="Label41" runat="server" Width="100" Text="uxHidPrevVer" Cls="labelCenterAlign" />
-                            </Items>
-                        </ext:FieldContainer>
-                        <ext:FieldContainer ID="FieldContainer1"
-                            runat="server"
-                            Layout="HBoxLayout">
-                            <Items>
-                                <ext:TextField ID="uxHidInfoEnabled" runat="server" Width="100" />
+                                <ext:Label ID="Label39" runat="server" Width="100" Text="uxHidNewProject" Cls="labelCenterAlign" />
                                 <ext:TextField ID="uxHidNewProject" runat="server" Width="100" />
+                                <ext:Label ID="Label42" runat="server" Width="100" Text="uxHidBudBidID" Cls="labelCenterAlign" />
                                 <ext:TextField ID="uxHidBudBidID" runat="server" Width="100" />
+                                <ext:Label ID="Label43" runat="server" Width="100" Text="uxHidProjectNumID" Cls="labelCenterAlign" />
                                 <ext:TextField ID="uxHidProjectNumID" runat="server" Width="100" />
+                                <ext:Label ID="Label44" runat="server" Width="100" Text="uxHidType" Cls="labelCenterAlign" />
                                 <ext:TextField ID="uxHidType" runat="server" Width="100" />
+                                <ext:Label ID="Label45" runat="server" Width="100" Text="uxHidStatusID" Cls="labelCenterAlign" />
                                 <ext:TextField ID="uxHidStatusID" runat="server" Width="100" />
+                                <ext:Label ID="Label46" runat="server" Width="100" Text="uxHidPrevYear" Cls="labelCenterAlign" />
                                 <ext:TextField ID="uxHidPrevYear" runat="server" Width="100" />
+                                <ext:Label ID="Label47" runat="server" Width="100" Text="uxHidPrevVer" Cls="labelCenterAlign" />
                                 <ext:TextField ID="uxHidPrevVer" runat="server" Width="100" />
+                                <ext:Label ID="Label19" runat="server" Width="100" Text="uxHidFormEnabled" Cls="labelCenterAlign" />
+                                <ext:TextField ID="uxHidFormEnabled" runat="server" Width="100" />
+                                <ext:Label ID="Label9" runat="server" Width="100" Text="uxHidOldBudBidID" Cls="labelCenterAlign" />
+                                <ext:TextField ID="uxHidOldBudBidID" runat="server" Width="100" />
+                                <ext:Label ID="Label22" runat="server" Width="100" Text="uxHidDetailSheetID" Cls="labelCenterAlign" />
+                                <ext:TextField ID="uxHidDetailSheetID" runat="server" Width="100" />
                             </Items>
                         </ext:FieldContainer>
                     </Items>
                 </ext:FormPanel>
                 <%-- Uncomment to Use --%>
 
-                <%-- Comment to Use --%>
-                <%--<ext:Hidden ID="uxHidInfoEnabled" runat="server" />
-                <ext:Hidden ID="uxHidNewProject" runat="server" />
+                <%-- Uncomment to Use --%>
+                <%--<ext:Hidden ID="uxHidNewProject" runat="server" />
                 <ext:Hidden ID="uxHidBudBidID" runat="server" />
                 <ext:Hidden ID="uxHidProjectNumID" runat="server" />
                 <ext:Hidden ID="uxHidType" runat="server" />
                 <ext:Hidden ID="uxHidStatusID" runat="server" />
                 <ext:Hidden ID="uxHidPrevYear" runat="server" />
-                <ext:Hidden ID="uxHidPrevVer" runat="server" />--%>
-                <%-- Comment to Use --%>
+                <ext:Hidden ID="uxHidPrevVer" runat="server" />
+                <ext:Hidden ID="uxHidOldBudBidID" runat="server" />
+                <ext:Hidden ID="uxHidDetailSheetID" runat="server" />
+                <ext:Hidden ID="uxHidFormEnabled" runat="server" />--%>
+                <%-- Uncomment to Use --%>
                 <%-------------------------------------------------- Diagnostic Panel --------------------------------------------------%>
             </Items>
         </ext:Viewport>
