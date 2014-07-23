@@ -37,7 +37,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                 //item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("hh\\:mm");
 
                 TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
-                item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");
+                item.ACTUAL_HOURS_GRID = actualhours.ToString("dd\\.hh\\:mm");
 
             }
 
