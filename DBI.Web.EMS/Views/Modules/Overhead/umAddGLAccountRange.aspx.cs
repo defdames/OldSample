@@ -21,6 +21,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 {
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
+
             }
         }
 
@@ -31,10 +32,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                if (_storeDetails.ID == "uxSRSegment1Store")
                {
-
                    IQueryable<object> _data = _context.GL_ACCOUNTS_V.Select(x => new { ID = x.SEGMENT1 }).Distinct().OrderBy(x => x.ID);
                    uxSRSegment1Store.DataSource = _data.ToList();
-                   _context.Dispose();
                }
 
                if (_storeDetails.ID == "uxSRSegment2Store")
@@ -147,39 +146,66 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 uxGlAccountSecurityStore.DataSource = GenericData.ListFilterHeader<GL_ACCOUNTS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
                 e.Total = count;
             }
-
-            uxExclude.Disabled = false;
         }
 
-        protected void deExcludeGlAccounts(object sender, DirectEventArgs e)
+        protected void deAddAccountRange(object sender, DirectEventArgs e)
         {
-            //Exclude any selected accounts from the range and add them excluded list, and remove them from the list
-            CheckboxSelectionModel sm = uxGlAccountSecurityGridSelectionModel;
-            List<SelectedRow> src = sm.SelectedRows.ToList();
-             string organizationID = Request.QueryString["orgID"];
 
-            foreach (SelectedRow row in src)
+            //validate the range being added and make sure it doesn't overlap
+            bool duplicateRange = false;
+
+            using (Entities _context = new Entities())
             {
-                OVERHEAD_GL_ACCOUNT _gla = new OVERHEAD_GL_ACCOUNT();
-                _gla.INCLUDE_EXCLUDE_FLAG = "E";
-                _gla.ORGANIZATION_ID = long.Parse(organizationID);
-                _gla.SEGMENT1 = e.ExtraParams["SEGMENT1"];
-                _gla.SEGMENT2 = e.ExtraParams["SEGMENT2"];
-                _gla.SEGMENT3 = e.ExtraParams["SEGMENT3"];
-                _gla.SEGMENT4 = e.ExtraParams["SEGMENT4"];
-                _gla.SEGMENT5 = e.ExtraParams["SEGMENT5"];
-                _gla.SEGMENT6 = e.ExtraParams["SEGMENT6"];
-                _gla.SEGMENT7 = e.ExtraParams["SEGMENT7"];
-                _gla.CREATE_DATE = DateTime.Now;
-                _gla.MODIFY_DATE = DateTime.Now;
-                _gla.CREATED_BY = User.Identity.Name;
-                _gla.MODIFIED_BY = User.Identity.Name;
-                GenericData.Insert<OVERHEAD_GL_ACCOUNT>(_gla);
+                long _organizationID = long.Parse(Request.QueryString["orgID"]);
+                IQueryable<OVERHEAD_GL_RANGE> _data = _context.OVERHEAD_GL_RANGE.Where(x => x.ORGANIZATION_ID == _organizationID);
+                foreach (OVERHEAD_GL_RANGE _range in _data)
+                {
+                    string startingRange = _range.SRSEGMENT1 + _range.SRSEGMENT2 + _range.SRSEGMENT3 + _range.SRSEGMENT4 + _range.SRSEGMENT5 + _range.SRSEGMENT6 + _range.SRSEGMENT7;
+                    string endingRange = _range.ERSEGMENT1 + _range.ERSEGMENT2 + _range.ERSEGMENT3 + _range.ERSEGMENT4 + _range.ERSEGMENT5 + _range.ERSEGMENT6 + _range.ERSEGMENT7;
+
+                    string validateSR = uxSRSegment1.SelectedItem.Value + uxSRSegment2.SelectedItem.Value + uxSRSegment3.SelectedItem.Value + uxSRSegment4.SelectedItem.Value + uxSRSegment5.SelectedItem.Value + uxSRSegment6.SelectedItem.Value + uxSRSegment7.SelectedItem.Value;
+                    string validateER = uxERSegment1.SelectedItem.Value + uxERSegment2.SelectedItem.Value + uxERSegment3.SelectedItem.Value + uxERSegment4.SelectedItem.Value + uxERSegment5.SelectedItem.Value + uxERSegment6.SelectedItem.Value + uxERSegment7.SelectedItem.Value;
+
+                    if(string.Compare(validateSR,startingRange) >= 0 && string.Compare(validateER, endingRange) <= 0)
+                    {
+                        duplicateRange = true;
+                        break;
+                    }
+                }
+
             }
-
-            sm.SelectedRows.Clear();
-
-            //uxGlAccountSecurityStore.Reload();
+  
+            if (!duplicateRange)
+            {
+                //Add the range to the database
+                OVERHEAD_GL_RANGE _ogr = new OVERHEAD_GL_RANGE();
+                _ogr.ORGANIZATION_ID = long.Parse(Request.QueryString["orgID"]);
+                _ogr.SRSEGMENT1 = uxSRSegment1.SelectedItem.Value;
+                _ogr.SRSEGMENT2 = uxSRSegment2.SelectedItem.Value;
+                _ogr.SRSEGMENT3 = uxSRSegment3.SelectedItem.Value;
+                _ogr.SRSEGMENT4 = uxSRSegment4.SelectedItem.Value;
+                _ogr.SRSEGMENT5 = uxSRSegment5.SelectedItem.Value;
+                _ogr.SRSEGMENT6 = uxSRSegment6.SelectedItem.Value;
+                _ogr.SRSEGMENT7 = uxSRSegment7.SelectedItem.Value;
+                _ogr.ERSEGMENT1 = uxERSegment1.SelectedItem.Value;
+                _ogr.ERSEGMENT2 = uxERSegment2.SelectedItem.Value;
+                _ogr.ERSEGMENT3 = uxERSegment3.SelectedItem.Value;
+                _ogr.ERSEGMENT4 = uxERSegment4.SelectedItem.Value;
+                _ogr.ERSEGMENT5 = uxERSegment5.SelectedItem.Value;
+                _ogr.ERSEGMENT6 = uxERSegment6.SelectedItem.Value;
+                _ogr.ERSEGMENT7 = uxERSegment7.SelectedItem.Value;
+                _ogr.INCLUDE_EXCLUDE_FLAG = uxIncludeExcludeFlag.SelectedItem.Value;
+                _ogr.CREATE_DATE = DateTime.Now;
+                _ogr.MODIFY_DATE = DateTime.Now;
+                _ogr.CREATED_BY = User.Identity.Name;
+                _ogr.MODIFIED_BY = User.Identity.Name;
+                GenericData.Insert<OVERHEAD_GL_RANGE>(_ogr);
+            }
+            else
+            {
+                e.ErrorMessage = "Duplicate range detected. This account already exists, please select a different range of accounts";
+                e.Success = false;
+            }
         }
 
     }

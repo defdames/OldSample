@@ -98,8 +98,7 @@
                                             #{uxERSegment5}.disable();
                                             #{uxERSegment6}.disable();
                                             #{uxERSegment7}.disable();
-                                            #{uxShowAccounts}.disable();
-                                            #{uxERSegment1}.setValue(this.first().data.ID);" />
+                                            #{uxShowAccounts}.disable();" />
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Location" runat="server" ID="uxSRSegment2" Editable="true" TypeAhead="true" Disabled="true"
@@ -435,7 +434,7 @@
                         <ext:Parameter Name="LabelWidth" Value="90" />
                     </Defaults>
                     <Items>
-                           <ext:ComboBox FieldLabel="Company" runat="server" ID="uxERSegment1" Editable="true" TypeAhead="true" Disabled="true"
+                                <ext:ComboBox FieldLabel="Company" runat="server" ID="uxERSegment1" Editable="true" TypeAhead="true" Disabled="true" AlwaysMergeItems="false"
                                      AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
                                     MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
                                     <Triggers>
@@ -619,21 +618,71 @@
                                         </ext:Store>
                                     </Store>
                                     <Listeners>
-                                        <Select Handler="#{uxShowAccounts}.enable();"></Select>
+                                        <Select Handler="#{uxShowAccounts}.enable();#{uxIncludeExcludeFlag}.enable();"></Select>
                                     </Listeners>
                                 </ext:ComboBox>
-                    </Items>                    
-                </ext:FieldSet>
+
+
+                        
                     </Items>
-            <Buttons>
-                <ext:Button ID="uxShowAccounts" runat="server" Text="View Accounts" Icon="Find" Disabled="true" >
-                    <Listeners>
-                        <Click Handler ="#{uxGlAccountSecurityStore}.reload();" />
-                    </Listeners>
+                        </ext:FieldSet>
+
+                         <ext:FieldSet ID="uxPlaceHolderFieldSet"
+                            runat="server"
+                            Border="false"
+                            ColumnWidth=".5"
+                            MarginSpec="0 0 0 10">
+                            <Defaults>
+                                <ext:Parameter Name="Width" Value="250" />
+                                <ext:Parameter Name="LabelWidth" Value="90" />
+                            </Defaults>  
+                             <Items>
+                                 <ext:Image runat="server"></ext:Image>
+                             </Items>
+                        </ext:FieldSet>
+
+
+                        <ext:FieldSet ID="FieldSet4"
+                            runat="server"
+                            Title="Include / Exclude Toggle"
+                            ColumnWidth=".5"
+                            MarginSpec="0 0 0 10">
+                            <Defaults>
+                                <ext:Parameter Name="Width" Value="250" />
+                                <ext:Parameter Name="LabelWidth" Value="90" />
+                            </Defaults>
+                            <Items>
+                                <ext:ComboBox
+                                    ID="uxIncludeExcludeFlag"
+                                    runat="server" Editable="true" TypeAhead="true" Disabled="true"
+                                    AnchorHorizontal="-5"
+                                    TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true" FieldLabel="Include/Exclude">
+                                    <Items>
+                                        <ext:ListItem Text="Included" Value="I" />
+                                        <ext:ListItem Text="Excluded" Value="E" />
+                                    </Items>
+                                    <Listeners>
+                                        <Select Handler="#{uxAddRange}.enable();"></Select>
+                                    </Listeners>
+                                </ext:ComboBox>
+                            </Items>
+                        </ext:FieldSet>
+
+
+                    </Items>
+                    <Buttons>
+                        <ext:Button ID="uxShowAccounts" runat="server" Text="View Accounts" Icon="Find" Disabled="true">
+                            <Listeners>
+                                <Click Handler="#{uxGlAccountSecurityStore}.reload();" />
+                            </Listeners>
+                        </ext:Button>
+                        <ext:Button ID="uxAddRange" runat="server" Icon="ApplicationAdd" Text="Add Range" Disabled="true">
+                    <DirectEvents>
+                        <Click OnEvent="deAddAccountRange" Success="parent.Ext.getCmp('uxShowAccountRangeWindow').close();"><EventMask ShowMask="true"></EventMask><Confirmation ConfirmRequest="true" Message="Are you sure you want to add this account range to this organization?"></Confirmation></Click>
+                    </DirectEvents>
                 </ext:Button>
-                <ext:Button ID="uxAddRange" runat="server" Icon="ApplicationAdd" Text="Add Range"></ext:Button>
                 <ext:Button ID="uxClearFilter" runat="server" Text="Clear Filter" >
-                                   <Listeners><Click Handler="#{FormPanel2}.reset();
+                                   <Listeners><Click Handler="#{uxAccountFormPanel}.reset();
                                              #{uxERSegment1}.disable();
                                              #{uxERSegment2}.disable();
                                              #{uxERSegment3}.disable();
@@ -647,38 +696,15 @@
                                              #{uxSRSegment4}.disable();
                                              #{uxSRSegment5}.disable();
                                              #{uxSRSegment6}.disable();
-                                             #{uxSRSegment7}.disable();"></Click></Listeners>
+                                             #{uxSRSegment7}.disable();
+                                       #{uxAddRange}.disable();"></Click></Listeners>
                                    </ext:Button>
                 <ext:Button ID="uxCloseForm" runat="server" Text="Close Form" >
                     <Listeners><Click Handler="parent.Ext.getCmp('uxShowAccountRangeWindow').close();"></Click></Listeners>
                 </ext:Button>
               </Buttons>
         </ext:FormPanel>
-     <ext:GridPanel ID="uxGlAccountSecurityGrid" runat="server" Flex="1" Title="General Ledger Accounts" Margin="5" Region="South" SelectionMemory="true"  >
-                    <TopBar>
-                        <ext:Toolbar ID="Toolbar1" runat="server">
-                            <Items>
-                                <ext:Button runat="server" ID="uxExclude" Text="Exclude Account" Icon="Delete" Disabled="true">
-                                    <ToolTips>
-                                        <ext:ToolTip runat="server" Html="Excludes a general ledger account from the range." UI="Info"></ext:ToolTip>
-                                    </ToolTips> 
-                                    <DirectEvents>
-                                        <Click OnEvent="deExcludeGlAccounts">
-                                        <ExtraParams>
-                                            <ext:Parameter Mode="Raw" Name="SEGMENT1" Value="this.uxGlAccountSecurityGridSelectionModel.getSelected().data.SEGMENT1"></ext:Parameter>
-                                             <ext:Parameter Mode="Raw" Name="SEGMENT2" Value="this.uxGlAccountSecurityGridSelectionModel.getSelected().data.SEGMENT2"></ext:Parameter>
-                                             <ext:Parameter Mode="Raw" Name="SEGMENT3" Value="this.uxGlAccountSecurityGridSelectionModel.getSelected().data.SEGMENT3"></ext:Parameter>
-                                             <ext:Parameter Mode="Raw" Name="SEGMENT4" Value="this.uxGlAccountSecurityGridSelectionModel.getSelected().data.SEGMENT4"></ext:Parameter>
-                                             <ext:Parameter Mode="Raw" Name="SEGMENT5" Value="this.uxGlAccountSecurityGridSelectionModel.getSelected().data.SEGMENT5"></ext:Parameter>
-                                             <ext:Parameter Mode="Raw" Name="SEGMENT6" Value="this.uxGlAccountSecurityGridSelectionModel.getSelected().data.SEGMENT6"></ext:Parameter>
-                                             <ext:Parameter Mode="Raw" Name="SEGMENT7" Value="this.uxGlAccountSecurityGridSelectionModel.getSelected().data.SEGMENT7"></ext:Parameter>
-                                        </ExtraParams>
-                                            <Confirmation ConfirmRequest="true" Message="Are you sure you want to exclude the selected accounts?"></Confirmation></Click>
-                                    </DirectEvents>
-                                </ext:Button>
-                            </Items>
-                        </ext:Toolbar>
-                    </TopBar>
+     <ext:GridPanel ID="uxGlAccountSecurityGrid" runat="server" Flex="1" Title="General Ledger Accounts" Margin="5" Region="South">
                     <Store>
                        <ext:Store runat="server"
                             ID="uxGlAccountSecurityStore"
@@ -728,15 +754,6 @@
                     <Plugins>
                         <ext:FilterHeader ID="uxGlAccountSecurityGridFilter" runat="server" Remote="true" />
                     </Plugins>
-         <SelectionModel>
-             <ext:CheckboxSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Simple" ShowHeaderCheckbox="false" AllowDeselect="true">
-                 <DirectEvents>
-                     <Select >
-                         <EventMask ShowMask="true"></EventMask>
-                     </Select>
-                 </DirectEvents>
-             </ext:CheckboxSelectionModel>
-         </SelectionModel>
          <BottomBar>
              <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
          </BottomBar>
