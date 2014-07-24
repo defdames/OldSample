@@ -136,15 +136,46 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             using (Entities _context = new Entities())
             {
                 int count;
-                IQueryable<GL_ACCOUNTS_V> _data = _context.GL_ACCOUNTS_V.Where(x => String.Compare(x.SEGMENT1, uxSRSegment1.SelectedItem.Value) >= 0 && String.Compare(x.SEGMENT1, uxERSegment1.SelectedItem.Value) <= 0);
+                var _data = _context.GL_ACCOUNTS_V.Where(x => String.Compare(x.SEGMENT1, uxSRSegment1.SelectedItem.Value) >= 0 && String.Compare(x.SEGMENT1, uxERSegment1.SelectedItem.Value) <= 0);
                 _data = _data.Where(x => String.Compare(x.SEGMENT2, uxSRSegment2.SelectedItem.Value) >= 0 && String.Compare(x.SEGMENT2, uxERSegment2.SelectedItem.Value) <= 0);
                 _data = _data.Where(x => String.Compare(x.SEGMENT3, uxSRSegment3.SelectedItem.Value) >= 0 && String.Compare(x.SEGMENT3, uxERSegment3.SelectedItem.Value) <= 0);
                 _data = _data.Where(x => String.Compare(x.SEGMENT4, uxSRSegment4.SelectedItem.Value) >= 0 && String.Compare(x.SEGMENT4, uxERSegment4.SelectedItem.Value) <= 0);
                 _data = _data.Where(x => String.Compare(x.SEGMENT5, uxSRSegment5.SelectedItem.Value) >= 0 && String.Compare(x.SEGMENT5, uxERSegment5.SelectedItem.Value) <= 0);
                 _data = _data.Where(x => String.Compare(x.SEGMENT6, uxSRSegment6.SelectedItem.Value) >= 0 && String.Compare(x.SEGMENT6, uxERSegment6.SelectedItem.Value) <= 0);
                 _data = _data.Where(x => String.Compare(x.SEGMENT7, uxSRSegment7.SelectedItem.Value) >= 0 && String.Compare(x.SEGMENT7, uxERSegment7.SelectedItem.Value) <= 0);
-                uxGlAccountSecurityStore.DataSource = GenericData.ListFilterHeader<GL_ACCOUNTS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
+
+                List<GL_ACCOUNTS_V> _temp = _data.ToList();
+                List<DBI.Web.EMS.Views.Modules.Overhead.umOverheadGeneralLedger.GL_ACCOUNTS_V2> _newTemp = new List<DBI.Web.EMS.Views.Modules.Overhead.umOverheadGeneralLedger.GL_ACCOUNTS_V2>();
+
+                foreach (GL_ACCOUNTS_V _acc in _temp)
+                {
+                    DBI.Web.EMS.Views.Modules.Overhead.umOverheadGeneralLedger.GL_ACCOUNTS_V2 _new = new DBI.Web.EMS.Views.Modules.Overhead.umOverheadGeneralLedger.GL_ACCOUNTS_V2();
+                    _new.CODE_COMBINATION_ID = _acc.CODE_COMBINATION_ID;
+                    _new.SEGMENT1 = _acc.SEGMENT1;
+                    _new.SEGMENT1_DESC = _acc.SEGMENT1_DESC;
+                    _new.SEGMENT2 = _acc.SEGMENT2;
+                    _new.SEGMENT2_DESC = _acc.SEGMENT2_DESC;
+                    _new.SEGMENT3 = _acc.SEGMENT3;
+                    _new.SEGMENT3_DESC = _acc.SEGMENT3_DESC;
+                    _new.SEGMENT4 = _acc.SEGMENT4;
+                    _new.SEGMENT4_DESC = _acc.SEGMENT4_DESC;
+                    _new.SEGMENT5 = _acc.SEGMENT5;
+                    _new.SEGMENT5_DESC = _acc.SEGMENT5_DESC;
+                    _new.SEGMENT6 = _acc.SEGMENT6;
+                    _new.SEGMENT6_DESC = _acc.SEGMENT6_DESC;
+                    _new.SEGMENT7 = _acc.SEGMENT7;
+                    _new.SEGMENT7_DESC = _acc.SEGMENT7_DESC;
+                    _new.INCLUDED_EXCLUDED = (uxIncludeExcludeFlag.SelectedItem.Value == "E") ? "Excluded" : "Included";
+                    _newTemp.Add(_new);
+                }
+
+                uxGlAccountSecurityStore.DataSource = GenericData.ListFilterHeader<DBI.Web.EMS.Views.Modules.Overhead.umOverheadGeneralLedger.GL_ACCOUNTS_V2>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _newTemp.AsQueryable(), out count);
                 e.Total = count;
+
+
+
+
+
             }
         }
 

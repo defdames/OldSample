@@ -26,7 +26,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 long _businessUnitId = 0;
                     _businessUnitId = long.Parse(Request.QueryString["leid"]);
 
-                    int _cnt = GL.BudgetTypesRemaining(_businessUnitId).Count();
+                int _cnt = OVERHEAD_BUDGET_TYPE.BudgetTypes(_businessUnitId).Count();
+                
                 if(_cnt == 0)
                 {
                     HR.ORGANIZATION _orgInfo = HR.Organization(_businessUnitId);

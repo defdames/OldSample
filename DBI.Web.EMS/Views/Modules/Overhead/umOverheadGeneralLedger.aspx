@@ -98,7 +98,9 @@
                         <ext:RowSelectionModel ID="uxGLAccountRangeSelectionModel" runat="server" Mode="Single">
                             <DirectEvents>
                                 <Select OnEvent="deSelectRange">
-
+                                    <ExtraParams>
+                                        <ext:Parameter Mode="Raw" Name="INCLUDE_EXCLUDE" Value="record.data.INCLUDE_EXCLUDE" />
+                                    </ExtraParams>
                                 </Select>
                                 <Deselect OnEvent="deDeSelectRange"></Deselect>
                             </DirectEvents>
@@ -120,6 +122,9 @@
                         <ext:Toolbar ID="Toolbar2" runat="server">
                             <Items>
                                 <ext:Button runat="server" ID="uxIncludeAccount" Text="Include Account" icon="Add" Disabled="true">
+                                    <DirectEvents>
+                                        <Click OnEvent="deIncludeAccount"><Confirmation ConfirmRequest="true" Message="Are you sure you want to include this account from this account range?"></Confirmation></Click>
+                                    </DirectEvents>
                                 </ext:Button>
                                 <ext:Button runat="server" ID="uxExcludeAccount" Text="Exclude Account" Icon="Delete" Disabled="true">
                                     <DirectEvents>
@@ -161,7 +166,7 @@
                                 <ext:DataSorter Property="SEGMENT5_DESC" Direction="ASC" />
                             </Sorters>
                             <Listeners>
-                                <Load Handler="#{uxExcludeAccount}.disable();"></Load>
+                                <Load Handler="#{uxExcludeAccount}.disable();#{uxIncludeAccount}.disable();"></Load>
                             </Listeners>
                         </ext:Store>
                     </Store>
@@ -182,7 +187,7 @@
                         <ext:FilterHeader ID="uxGlAccountSecurityGridFilter" runat="server" Remote="true" />
                     </Plugins>
                     <SelectionModel>
-                        <ext:RowSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Single">
+                        <ext:RowSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Simple">
                             <DirectEvents>
                                 <Select OnEvent="deSelectAccount">
                                 </Select>

@@ -84,15 +84,21 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     GenericData.Delete<OVERHEAD_GL_RANGE>(_record);
                 }
 
-                uxGLAccountRangeStore.Reload();
+                uxGLAccountRangeStore.Reload(true);
                 _rsm.DeselectAll(true);
                 uxDeleteGLRangeDelete.Disabled = true;
 
+                uxGlAccountSecurityGridSelectionModel.DeselectAll();
+                uxGlAccountSecurityStore.RemoveAll();
+
             }
+
+        
+
 
             protected void deSelectRange(object sender, DirectEventArgs e)
             {
-                if(uxGLAccountRangeSelectionModel.SelectedRows.Count() > 0)
+                if (uxGLAccountRangeSelectionModel.SelectedRows.Count() > 0)
                 {
                     uxDeleteGLRangeDelete.Enable();
                 }
@@ -101,24 +107,33 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     uxDeleteGLRangeDelete.Disable();
                 }
 
-               uxGlAccountSecurityStore.Reload();
+                Ext.Net.ParameterCollection ps = new Ext.Net.ParameterCollection();
+
+                Ext.Net.StoreParameter _p = new Ext.Net.StoreParameter();
+                _p.Mode = ParameterMode.Value;
+                _p.Name = "INCLUDE_EXCLUDE";
+                _p.Value = e.ExtraParams["INCLUDE_EXCLUDE"];
+                ps.Add(_p);
+
+                uxGlAccountSecurityStore.Reload(ps);
             }
 
             protected void deDeSelectRange(object sender, DirectEventArgs e)
             {
                 uxDeleteGLRangeDelete.Disable();
-                uxGlAccountSecurityStore.Reload();
+                uxGLAccountRangeSelectionModel.DeselectAll(true);
+                uxGlAccountSecurityStore.Reload(true);
             }
 
             public static string IsGLAccountExcluded(long organizationID, string seg1, string seg2, string seg3, string seg4, string seg5, string seg6, string seg7)
             {
                 using(Entities _context = new Entities())
                 {
-                  OVERHEAD_GL_ACCOUNT _acc = _context.OVERHEAD_GL_ACCOUNT.Where(a => a.ORGANIZATION_ID == organizationID && a.SEGMENT1 == seg1 && a.SEGMENT2 == seg2 && a.SEGMENT3 == seg3 && a.SEGMENT4 == seg4
-                      && a.SEGMENT5 == seg5 && a.SEGMENT6 == seg6 && a.SEGMENT7 == seg7).SingleOrDefault();
+                    List<OVERHEAD_GL_ACCOUNT> _acc = _context.OVERHEAD_GL_ACCOUNT.Where(a => a.ORGANIZATION_ID == organizationID && a.SEGMENT1 == seg1 && a.SEGMENT2 == seg2 && a.SEGMENT3 == seg3 && a.SEGMENT4 == seg4
+                        && a.SEGMENT5 == seg5 && a.SEGMENT6 == seg6 && a.SEGMENT7 == seg7).ToList();
                   string _returnValue = "Included";
                     
-                    if(_acc != null)
+                    if(_acc.Count() > 0)
                         _returnValue = "Excluded";
 
                     return _returnValue;
@@ -152,6 +167,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                         List<GL_ACCOUNTS_V> _temp = _data.ToList();
                         List<GL_ACCOUNTS_V2> _newTemp = new List<GL_ACCOUNTS_V2>();
 
+                        string IncludeExclude = e.Parameters["INCLUDE_EXCLUDE"];
+
                         foreach (GL_ACCOUNTS_V _acc in _temp)
                         {
                             GL_ACCOUNTS_V2 _new = new GL_ACCOUNTS_V2();
@@ -170,7 +187,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                             _new.SEGMENT6_DESC = _acc.SEGMENT6_DESC;
                             _new.SEGMENT7 = _acc.SEGMENT7;
                             _new.SEGMENT7_DESC = _acc.SEGMENT7_DESC;
-                            _new.INCLUDED_EXCLUDED = IsGLAccountExcluded(_organizationID, _acc.SEGMENT1, _acc.SEGMENT2, _acc.SEGMENT3, _acc.SEGMENT4, _acc.SEGMENT5, _acc.SEGMENT6, _acc.SEGMENT7);
+                            _new.INCLUDED_EXCLUDED = (IncludeExclude == "Excluded") ? "Excluded" : IsGLAccountExcluded(_organizationID, _acc.SEGMENT1, _acc.SEGMENT2, _acc.SEGMENT3, _acc.SEGMENT4, _acc.SEGMENT5, _acc.SEGMENT6, _acc.SEGMENT7);
                             _newTemp.Add(_new);
                         }
 
@@ -190,47 +207,97 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
                 RowSelectionModel _rsm = uxGlAccountSecurityGridSelectionModel;
 
-                GL_ACCOUNTS_V _account = GL_ACCOUNTS_V.AccountInformation(long.Parse(_rsm.SelectedRow.RecordID));
-
                  long _organizationID = long.Parse(Request.QueryString["orgID"]);
 
-                OVERHEAD_GL_ACCOUNT _data = new OVERHEAD_GL_ACCOUNT();
-                _data.INCLUDE_EXCLUDE_FLAG = "E";
-                _data.ORGANIZATION_ID = _organizationID;
-                _data.SEGMENT1 = _account.SEGMENT1;
-                _data.SEGMENT2 = _account.SEGMENT2;
-                _data.SEGMENT3 = _account.SEGMENT3;
-                _data.SEGMENT4 = _account.SEGMENT4;
-                _data.SEGMENT5 = _account.SEGMENT5;
-                _data.SEGMENT6 = _account.SEGMENT6;
-                _data.SEGMENT7 = _account.SEGMENT7;
-                _data.CREATED_BY = User.Identity.Name;
-                _data.MODIFIED_BY = User.Identity.Name;
-                _data.CREATE_DATE = DateTime.Now;
-                _data.MODIFY_DATE = DateTime.Now;
-                GenericData.Insert<OVERHEAD_GL_ACCOUNT>(_data);
+                 foreach (SelectedRow _row in _rsm.SelectedRows)
+                 {
+
+                     GL_ACCOUNTS_V _account = GL_ACCOUNTS_V.AccountInformation(long.Parse(_row.RecordID));
+
+                     OVERHEAD_GL_ACCOUNT _data = new OVERHEAD_GL_ACCOUNT();
+                     _data.INCLUDE_EXCLUDE_FLAG = "E";
+                     _data.ORGANIZATION_ID = _organizationID;
+                     _data.SEGMENT1 = _account.SEGMENT1;
+                     _data.SEGMENT2 = _account.SEGMENT2;
+                     _data.SEGMENT3 = _account.SEGMENT3;
+                     _data.SEGMENT4 = _account.SEGMENT4;
+                     _data.SEGMENT5 = _account.SEGMENT5;
+                     _data.SEGMENT6 = _account.SEGMENT6;
+                     _data.SEGMENT7 = _account.SEGMENT7;
+                     _data.CREATED_BY = User.Identity.Name;
+                     _data.MODIFIED_BY = User.Identity.Name;
+                     _data.CREATE_DATE = DateTime.Now;
+                     _data.MODIFY_DATE = DateTime.Now;
+                     GenericData.Insert<OVERHEAD_GL_ACCOUNT>(_data);
+
+                 }
 
                 uxGlAccountSecurityGridSelectionModel.DeselectAll(true);
-                uxGlAccountSecurityStore.Reload();
+                uxGlAccountSecurityStore.Reload(true);
+
+            }
+
+            protected void deIncludeAccount(object sender, DirectEventArgs e)
+            {
+                RowSelectionModel _rsm = uxGlAccountSecurityGridSelectionModel;
+
+                long _organizationID = long.Parse(Request.QueryString["orgID"]);
+
+                using (Entities _context = new Entities())
+                {
+
+                    foreach (SelectedRow _row in _rsm.SelectedRows)
+                    {
+                        GL_ACCOUNTS_V _account = GL_ACCOUNTS_V.AccountInformation(long.Parse(_row.RecordID));
+
+                        List<OVERHEAD_GL_ACCOUNT> _data = _context.OVERHEAD_GL_ACCOUNT.Where(x => x.ORGANIZATION_ID == _organizationID && x.SEGMENT1 == _account.SEGMENT1 &&
+                            x.SEGMENT2 == _account.SEGMENT2 && x.SEGMENT3 == _account.SEGMENT3 && x.SEGMENT4 == _account.SEGMENT4 && x.SEGMENT5 == _account.SEGMENT5
+                            && x.SEGMENT6 == _account.SEGMENT6 && x.SEGMENT7 == _account.SEGMENT7).ToList();
+
+                        if (_data.Count() > 0)
+                            GenericData.Delete<OVERHEAD_GL_ACCOUNT>(_data);
+                    }
+                }
+
+                uxGlAccountSecurityGridSelectionModel.DeselectAll();
+                uxGlAccountSecurityStore.Reload(true);
 
             }
 
 
+
           protected void deSelectAccount(object sender, DirectEventArgs e)
             {
-                if(uxGlAccountSecurityGridSelectionModel.SelectedRows.Count() > 0)
+                if (uxGlAccountSecurityGridSelectionModel.SelectedRows.Count() > 0)
                 {
-                    uxExcludeAccount.Enable();
+
+                    SelectedRow _ssr = uxGLAccountRangeSelectionModel.SelectedRow;
+                    long _recordID = long.Parse(_ssr.RecordID);
+
+                    Boolean showButtons = true;
+                    using (Entities _context = new Entities())
+                    {
+                        string check = _context.OVERHEAD_GL_RANGE.Where(x => x.GL_RANGE_ID == _recordID).SingleOrDefault().INCLUDE_EXCLUDE_FLAG;
+                        showButtons = (check == "E") ? false : true;
+                    }
+
+                    if (showButtons)
+                    {
+                        uxExcludeAccount.Enable();
+                        uxIncludeAccount.Enable();
+                    }
                 }
                 else
                 {
                     uxExcludeAccount.Disable();
+                    uxIncludeAccount.Disable();
                 }
             }
 
             protected void deDeSelectAccount(object sender, DirectEventArgs e)
             {
                 uxExcludeAccount.Disable();
+                uxIncludeAccount.Disable();
             }
 
     }

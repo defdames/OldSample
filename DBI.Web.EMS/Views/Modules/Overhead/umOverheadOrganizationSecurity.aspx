@@ -10,6 +10,9 @@
             color: #0042A3 !important;
 		}
 
+        .my-btn .x-btn-inner {
+            color: blue;
+            }
 
 	</style>
 
@@ -70,22 +73,25 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column2" runat="server" DataIndex="ORGANIZATION_NAME" Text="Name" Flex="3" />
-                            <ext:Column ID="Column1" runat="server" DataIndex="ORGANIZATION_STATUS" Text="Current Status" Flex="1" />
-                            <ext:CommandColumn ID="CommandColumn1" runat="server" Width="100" Text="View Accounts">
+                            <ext:CommandColumn ID="CommandColumn1" runat="server" Width="100">
                                 <Commands>
-                                    <ext:GridCommand Icon="NoteEdit" CommandName="ViewAccounts"></ext:GridCommand>
+                                    <ext:GridCommand Text="View Accounts" CommandName="View" Cls="my-btn"></ext:GridCommand>
                                 </Commands>
                                 <DirectEvents>
                                     <Command OnEvent="deViewAccounts">
                                         <ExtraParams>
                                             <ext:Parameter Mode="Raw" Name="Name" Value="record.data.ORGANIZATION_NAME"></ext:Parameter>
-                                              <ext:Parameter Mode="Raw" Name="ID" Value="record.data.ORGANIZATION_ID"></ext:Parameter>
+                                            <ext:Parameter Mode="Raw" Name="ID" Value="record.data.ORGANIZATION_ID"></ext:Parameter>
                                         </ExtraParams>
                                     </Command>
                                 </DirectEvents>
-
                             </ext:CommandColumn>
+
+
+                            <ext:Column ID="Column2" runat="server" DataIndex="ORGANIZATION_NAME" Text="Name" Flex="3" />
+                            <ext:Column ID="Column1" runat="server" DataIndex="ORGANIZATION_STATUS" Text="Current Status" Flex="1" />
+                            
+                            
                             
                         </Columns>
                     </ColumnModel>

@@ -5,10 +5,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    <style type="text/css">
+		.red-row .x-grid-cell, .red-row .x-grid-rowwrap-div .red-row .myBoldClass.x-grid3-row td  {
+            color: red !important;
+		}
+
+
+	</style>
+
+      <script type="text/javascript">
+          var getRowClass = function (record, rowIndex, rowParams, store) {
+              if (record.data.INCLUDED_EXCLUDED == "Excluded") {
+                  return "red-row";
+              };
+          }
+      </script>
 </head>
 <body>
        <form id="form1" runat="server">
-    <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" Namespace="App"  />         
+    <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" Namespace="App" ClientIDMode="Static" />         
         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
             <Items>
 
@@ -98,7 +113,9 @@
                                             #{uxERSegment5}.disable();
                                             #{uxERSegment6}.disable();
                                             #{uxERSegment7}.disable();
-                                            #{uxShowAccounts}.disable();" />
+                                            #{uxGlAccountSecurityStore}.removeAll();
+                                            #{uxIncludeExcludeFlag}.disable();
+                                            " />
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Location" runat="server" ID="uxSRSegment2" Editable="true" TypeAhead="true" Disabled="true"
@@ -159,7 +176,9 @@
                                             #{uxERSegment5}.disable();
                                             #{uxERSegment6}.disable();
                                             #{uxERSegment7}.disable();
-                                            #{uxShowAccounts}.disable();" />
+                                            #{uxGlAccountSecurityStore}.removeAll();
+                                            #{uxIncludeExcludeFlag}.disable();
+                                            " />
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Division" runat="server" ID="uxSRSegment3" Editable="true" TypeAhead="true" Disabled="true"
@@ -217,7 +236,9 @@
                                             #{uxERSegment5}.disable();
                                             #{uxERSegment6}.disable();
                                             #{uxERSegment7}.disable();
-                                            #{uxShowAccounts}.disable();" />
+                                            #{uxGlAccountSecurityStore}.removeAll();
+                                            #{uxIncludeExcludeFlag}.disable();
+                                            " />
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Branch" runat="server" ID="uxSRSegment4" Editable="true" TypeAhead="true" Disabled="true"
@@ -272,7 +293,9 @@
                                             #{uxERSegment5}.disable();
                                             #{uxERSegment6}.disable();
                                             #{uxERSegment7}.disable();
-                                            #{uxShowAccounts}.disable();" />
+                                            #{uxGlAccountSecurityStore}.removeAll();
+                                            #{uxIncludeExcludeFlag}.disable();
+                                            " />
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Account" runat="server" ID="uxSRSegment5" Editable="true" TypeAhead="true" Disabled="true"
@@ -324,7 +347,9 @@
                                             #{uxERSegment5}.disable();
                                             #{uxERSegment6}.disable();
                                             #{uxERSegment7}.disable();
-                                            #{uxShowAccounts}.disable();" />
+                                            #{uxGlAccountSecurityStore}.removeAll();
+                                            #{uxIncludeExcludeFlag}.disable();
+                                            " />
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Type" runat="server" ID="uxSRSegment6" Editable="true" TypeAhead="true" Disabled="true"
@@ -373,7 +398,9 @@
                                              #{uxERSegment5}.disable();
                                              #{uxERSegment6}.disable();
                                              #{uxERSegment7}.disable();
-                                             #{uxShowAccounts}.disable();" />
+                                             #{uxGlAccountSecurityStore}.removeAll();
+                                             #{uxIncludeExcludeFlag}.disable();
+                                             " />
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Future" runat="server" ID="uxSRSegment7" Editable="true" TypeAhead="true" Disabled="true"
@@ -419,7 +446,9 @@
                                             #{uxERSegment6Store}.removeAll(true);
                                             #{uxERSegment7}.clearValue();
                                             #{uxERSegment7Store}.removeAll(true);
-                                            #{uxShowAccounts}.disable();"></Select>
+                                            #{uxGlAccountSecurityStore}.removeAll();
+                                            #{uxIncludeExcludeFlag}.disable();
+                                            "></Select>
                                     </Listeners>
                                 </ext:ComboBox>
                     </Items>                    
@@ -474,7 +503,9 @@
                                             #{uxERSegment6Store}.removeAll(true);
                                             #{uxERSegment7}.clearValue();
                                             #{uxERSegment7Store}.removeAll(true);
-                                            #{uxShowAccounts}.disable();" />
+                                            #{uxGlAccountSecurityStore}.removeAll();
+                                            #{uxIncludeExcludeFlag}.disable();
+                                            " />
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Location" runat="server" ID="uxERSegment2" Editable="true" TypeAhead="true" Disabled="true"
@@ -498,7 +529,7 @@
                                         </ext:Store>
                                     </Store>
                                     <Listeners>
-                                        <Select Handler="#{uxShowAccounts}.disable();#{uxERSegment3}.enable();#{uxERSegment4}.disable();#{uxERSegment5}.disable();#{uxERSegment6}.disable();#{uxERSegment7}.disable();#{uxERSegment3}.clearValue();#{uxERSegment3Store}.removeAll(true);#{uxERSegment3Store}.reload();#{uxERSegment4}.clearValue();#{uxERSegment4Store}.removeAll(true);#{uxERSegment5}.clearValue();#{uxERSegment5Store}.removeAll(true);#{uxERSegment6}.clearValue();#{uxERSegment6Store}.removeAll(true);#{uxERSegment7}.clearValue();#{uxERSegment7Store}.removeAll(true);" />
+                                        <Select Handler="#{uxGlAccountSecurityStore}.removeAll();#{uxERSegment3}.enable();#{uxERSegment4}.disable();#{uxERSegment5}.disable();#{uxERSegment6}.disable();#{uxERSegment7}.disable();#{uxERSegment3}.clearValue();#{uxERSegment3Store}.removeAll(true);#{uxERSegment3Store}.reload();#{uxERSegment4}.clearValue();#{uxERSegment4Store}.removeAll(true);#{uxERSegment5}.clearValue();#{uxERSegment5Store}.removeAll(true);#{uxERSegment6}.clearValue();#{uxERSegment6Store}.removeAll(true);#{uxERSegment7}.clearValue();#{uxERSegment7Store}.removeAll(true);#{uxIncludeExcludeFlag}.disable();" />
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Division" runat="server" ID="uxERSegment3" Editable="true" TypeAhead="true" Disabled="true"
@@ -522,7 +553,7 @@
                                         </ext:Store>
                                     </Store>
                                     <Listeners>
-                                        <Select Handler="#{uxShowAccounts}.disable();#{uxERSegment4}.enable();#{uxERSegment5}.disable();#{uxERSegment6}.disable();#{uxERSegment7}.disable();#{uxERSegment4}.clearValue();#{uxERSegment4Store}.removeAll(true);#{uxERSegment4Store}.reload();#{uxERSegment5}.clearValue();#{uxERSegment5Store}.removeAll(true);#{uxERSegment6}.clearValue();#{uxERSegment6Store}.removeAll(true);#{uxERSegment7}.clearValue();#{uxERSegment7Store}.removeAll(true);" />
+                                        <Select Handler="#{uxGlAccountSecurityStore}.removeAll();#{uxERSegment4}.enable();#{uxERSegment5}.disable();#{uxERSegment6}.disable();#{uxERSegment7}.disable();#{uxERSegment4}.clearValue();#{uxERSegment4Store}.removeAll(true);#{uxERSegment4Store}.reload();#{uxERSegment5}.clearValue();#{uxERSegment5Store}.removeAll(true);#{uxERSegment6}.clearValue();#{uxERSegment6Store}.removeAll(true);#{uxERSegment7}.clearValue();#{uxERSegment7Store}.removeAll(true);#{uxIncludeExcludeFlag}.disable();" />
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Branch" runat="server" ID="uxERSegment4" Editable="true" TypeAhead="true" Disabled="true"
@@ -546,7 +577,7 @@
                                         </ext:Store>
                                     </Store>
                                     <Listeners>
-                                        <Select Handler="#{uxShowAccounts}.disable();#{uxERSegment5}.enable();#{uxERSegment6}.disable();#{uxERSegment7}.disable();#{uxERSegment5}.clearValue();#{uxERSegment5Store}.removeAll(true);#{uxERSegment5Store}.reload();#{uxERSegment6}.clearValue();#{uxERSegment6Store}.removeAll(true);#{uxERSegment7}.clearValue();#{uxERSegment7Store}.removeAll(true);" />
+                                        <Select Handler="#{uxGlAccountSecurityStore}.removeAll();#{uxERSegment5}.enable();#{uxERSegment6}.disable();#{uxERSegment7}.disable();#{uxERSegment5}.clearValue();#{uxERSegment5Store}.removeAll(true);#{uxERSegment5Store}.reload();#{uxERSegment6}.clearValue();#{uxERSegment6Store}.removeAll(true);#{uxERSegment7}.clearValue();#{uxERSegment7Store}.removeAll(true);#{uxIncludeExcludeFlag}.disable();" />
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Account" runat="server" ID="uxERSegment5" Editable="true" TypeAhead="true" Disabled="true"
@@ -570,7 +601,7 @@
                                         </ext:Store>
                                     </Store>
                                     <Listeners>
-                                          <Select Handler="#{uxShowAccounts}.disable();#{uxERSegment6}.enable();#{uxERSegment7}.disable();#{uxERSegment6}.clearValue();#{uxERSegment6Store}.removeAll(true);#{uxERSegment6Store}.reload();#{uxERSegment7}.clearValue();#{uxERSegment7Store}.removeAll(true);" />
+                                          <Select Handler="#{uxGlAccountSecurityStore}.removeAll();#{uxERSegment6}.enable();#{uxERSegment7}.disable();#{uxERSegment6}.clearValue();#{uxERSegment6Store}.removeAll(true);#{uxERSegment6Store}.reload();#{uxERSegment7}.clearValue();#{uxERSegment7Store}.removeAll(true);#{uxIncludeExcludeFlag}.disable();" />
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Type" runat="server" ID="uxERSegment6" Editable="true" TypeAhead="true" Disabled="true"
@@ -594,7 +625,7 @@
                                         </ext:Store>
                                     </Store>
                                     <Listeners>
-                                         <Select Handler="#{uxERSegment7}.enable();#{uxERSegment7}.clearValue();#{uxERSegment7Store}.removeAll(true);#{uxERSegment7Store}.reload();#{uxShowAccounts}.disable();" />
+                                         <Select Handler="#{uxERSegment7}.enable();#{uxERSegment7}.clearValue();#{uxERSegment7Store}.removeAll(true);#{uxERSegment7Store}.reload(); #{uxGlAccountSecurityStore}.removeAll();#{uxIncludeExcludeFlag}.disable();" />
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Future" runat="server" ID="uxERSegment7" Editable="true" TypeAhead="true" Disabled="true"
@@ -618,7 +649,7 @@
                                         </ext:Store>
                                     </Store>
                                     <Listeners>
-                                        <Select Handler="#{uxShowAccounts}.enable();#{uxIncludeExcludeFlag}.enable();"></Select>
+                                        <Select Handler="#{uxIncludeExcludeFlag}.enable();"></Select>
                                     </Listeners>
                                 </ext:ComboBox>
 
@@ -662,7 +693,7 @@
                                         <ext:ListItem Text="Excluded" Value="E" />
                                     </Items>
                                     <Listeners>
-                                        <Select Handler="#{uxAddRange}.enable();"></Select>
+                                        <Select Handler="#{uxAddRange}.enable();#{uxGlAccountSecurityStore}.reload();"></Select>
                                     </Listeners>
                                 </ext:ComboBox>
                             </Items>
@@ -671,11 +702,6 @@
 
                     </Items>
                     <Buttons>
-                        <ext:Button ID="uxShowAccounts" runat="server" Text="View Accounts" Icon="Find" Disabled="true">
-                            <Listeners>
-                                <Click Handler="#{uxGlAccountSecurityStore}.reload();" />
-                            </Listeners>
-                        </ext:Button>
                         <ext:Button ID="uxAddRange" runat="server" Icon="ApplicationAdd" Text="Add Range" Disabled="true">
                     <DirectEvents>
                         <Click OnEvent="deAddAccountRange" Success="parent.Ext.getCmp('uxShowAccountRangeWindow').close();"><EventMask ShowMask="true"></EventMask><Confirmation ConfirmRequest="true" Message="Are you sure you want to add this account range to this organization?"></Confirmation></Click>
@@ -690,14 +716,16 @@
                                              #{uxERSegment5}.disable();
                                              #{uxERSegment6}.disable();
                                              #{uxERSegment7}.disable();
-                                             #{uxShowAccounts}.disable();
+                                             
                                              #{uxSRSegment2}.disable();
                                              #{uxSRSegment3}.disable();
                                              #{uxSRSegment4}.disable();
                                              #{uxSRSegment5}.disable();
                                              #{uxSRSegment6}.disable();
                                              #{uxSRSegment7}.disable();
-                                       #{uxAddRange}.disable();"></Click></Listeners>
+                                       #{uxAddRange}.disable();
+                                       #{uxIncludeExcludeFlag}.disable();
+                                       #{uxGlAccountSecurityStore}.removeAll();"></Click></Listeners>
                                    </ext:Button>
                 <ext:Button ID="uxCloseForm" runat="server" Text="Close Form" >
                     <Listeners><Click Handler="parent.Ext.getCmp('uxShowAccountRangeWindow').close();"></Click></Listeners>
@@ -727,6 +755,7 @@
                                         <ext:ModelField Name="SEGMENT4_DESC" />
                                         <ext:ModelField Name="SEGMENT5_DESC" />
                                         <ext:ModelField Name="SEGMENT6_DESC" />
+                                        <ext:ModelField Name="INCLUDED_EXCLUDED" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -738,7 +767,6 @@
                             </Sorters>
                         </ext:Store>
                     </Store>
-                   
                     <ColumnModel>
                         <Columns>
                              <ext:Column ID="Column7" runat="server" DataIndex="SEGMENT5_DESC" Text="Account Name" Flex="2" />
@@ -759,6 +787,7 @@
          </BottomBar>
                      <View>
                         <ext:GridView ID="GridView1" StripeRows="true" runat="server" TrackOver="true">
+                            <GetRowClass Fn="getRowClass"></GetRowClass>
                         </ext:GridView>
                     </View> 
                 </ext:GridPanel>

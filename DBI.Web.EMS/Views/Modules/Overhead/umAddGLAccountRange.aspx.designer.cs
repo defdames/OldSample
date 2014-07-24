@@ -445,13 +445,22 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Model Model14;
         
         /// <summary>
-        /// FieldSet3 control.
+        /// uxPlaceHolderFieldSet control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldSet FieldSet3;
+        protected global::Ext.Net.FieldSet uxPlaceHolderFieldSet;
+        
+        /// <summary>
+        /// FieldSet4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldSet FieldSet4;
         
         /// <summary>
         /// uxIncludeExcludeFlag control.
@@ -461,15 +470,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.ComboBox uxIncludeExcludeFlag;
-        
-        /// <summary>
-        /// uxShowAccounts control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxShowAccounts;
         
         /// <summary>
         /// uxAddRange control.

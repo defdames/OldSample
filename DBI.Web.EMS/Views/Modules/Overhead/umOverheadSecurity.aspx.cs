@@ -39,11 +39,23 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 //Build the treepanel
                 foreach (var view in data)
                 {
+
+                    //Check for incomplete setup 
+                    int _cnt = OVERHEAD_BUDGET_TYPE.BudgetTypes(view.ORGANIZATION_ID).Count();
+
+
                     //Create the Hierarchy Levels
                     Node node = new Node();
                     node.Text = view.ORGANIZATION_NAME;
                     node.NodeID = view.ORGANIZATION_ID.ToString();
-                    node.Icon = Icon.BulletEarth;
+                    if (_cnt > 0)
+                    {
+                        node.Icon = Icon.BulletGreen;
+                    }
+                    else
+                    {
+                        node.Icon = Icon.BulletRed;
+                    }
                     e.Nodes.Add(node);
                 }
             }
@@ -79,7 +91,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             if (!sm.SelectedRecordID.Contains(":"))
             {
-                AddTab(sm.SelectedRecordID, "Budget Types", "umOverheadBudgetTypes.aspx?leid=" + sm.SelectedRecordID, false, true);
+                AddTab(sm.SelectedRecordID + "BT", "Budget Types", "umOverheadBudgetTypes.aspx?leid=" + sm.SelectedRecordID, false, true);
+                AddTab(sm.SelectedRecordID + "PM", "Open / Close Periods", "umOverheadPeriods.aspx?leid=" + sm.SelectedRecordID, false, false);
             }
             else
             {
