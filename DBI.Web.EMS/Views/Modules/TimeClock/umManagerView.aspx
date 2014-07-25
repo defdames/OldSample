@@ -26,6 +26,12 @@
 		        firstButton.setTooltip("Disabled");
 		    }
 		};
+		var colorErrors = function (value, metadata, record) {
+		    if (record.data.ACTUAL_HOURS >= 12) {
+		        metadata.style = "color: red;";
+		    }
+		    return value;
+		};
 	</script>
 </head>
 <body>
@@ -69,8 +75,12 @@
 				<Columns>
 					<ext:DateColumn runat="server" Text="Time In" DataIndex="TIME_IN" Flex="1" Format="M/d/yyyy h:mm tt"/>
 					<ext:DateColumn runat="server" Text="Time Out" DataIndex="TIME_OUT" Flex="1" Format="M/d/yyyy h:mm tt"/>
-					<ext:Column ID="ActualTime" runat="server" Text="Actual Time" Flex="1" DataIndex="ACTUAL_HOURS_GRID"/>
-					<ext:Column ID="AdjustedTime" runat="server" Text="Adjusted Time" Flex="1" DataIndex="ADJUSTED_HOURS_GRID"/>
+					<ext:Column ID="ActualTime" runat="server" Text="Actual Time" Flex="1" DataIndex="ACTUAL_HOURS_GRID">
+                        <Renderer Fn="colorErrors" />
+                    </ext:Column>
+					<ext:Column ID="AdjustedTime" runat="server" Text="Adjusted Time" Flex="1" DataIndex="ADJUSTED_HOURS_GRID">
+                        <Renderer Fn="colorErrors" />
+                    </ext:Column>
 					<ext:Column ID="Approved" runat="server" Text="Approved" Flex="1" DataIndex="APPROVED" />
 					<ext:Column ID="Submitted" runat="server" Text="Submitted" Flex="1" DataIndex="SUBMITTED" />
 					<ext:CommandColumn ID="ccEditTime" runat="server">
