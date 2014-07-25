@@ -96,7 +96,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             }
             else
             {
-                AddTab(sm.SelectedRecordID, "Organizations", "umOverheadOrganizationSecurity.aspx?orgid=" + sm.SelectedRecordID, false, true);
+                AddTab(sm.SelectedRecordID, "Organization Security / Account Maintenance", "umOverheadOrganizationSecurity.aspx?orgid=" + sm.SelectedRecordID, false, true);
             }
         }
 

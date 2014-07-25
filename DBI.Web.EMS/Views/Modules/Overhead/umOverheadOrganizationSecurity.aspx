@@ -73,9 +73,15 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:CommandColumn ID="CommandColumn1" runat="server" Width="100">
+                           
+
+
+                            <ext:Column ID="Column2" runat="server" DataIndex="ORGANIZATION_NAME" Text="Name" Flex="3" />
+                            <ext:Column ID="Column1" runat="server" DataIndex="ORGANIZATION_STATUS" Text="Current Status" Flex="1" />
+                            
+                             <ext:CommandColumn ID="CommandColumn1" runat="server" Width="125">
                                 <Commands>
-                                    <ext:GridCommand Text="View Accounts" CommandName="View" Cls="my-btn"></ext:GridCommand>
+                                    <ext:GridCommand Text="Account Maintenance" CommandName="View" Cls="my-btn"></ext:GridCommand>
                                 </Commands>
                                 <DirectEvents>
                                     <Command OnEvent="deViewAccounts">
@@ -86,12 +92,6 @@
                                     </Command>
                                 </DirectEvents>
                             </ext:CommandColumn>
-
-
-                            <ext:Column ID="Column2" runat="server" DataIndex="ORGANIZATION_NAME" Text="Name" Flex="3" />
-                            <ext:Column ID="Column1" runat="server" DataIndex="ORGANIZATION_STATUS" Text="Current Status" Flex="1" />
-                            
-                            
                             
                         </Columns>
                     </ColumnModel>

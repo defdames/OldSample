@@ -15,17 +15,20 @@
                     <TopBar>
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
+                                <ext:Button runat="server" Icon="BookOpen" Text="Open Period"></ext:Button>
+                                <ext:Button ID="Button1" runat="server" Icon="Book" Text="Close Period"></ext:Button>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
                     <Store>
                         <ext:Store runat="server"
                             ID="uxOrganizationSecurityStore"
-                            AutoDataBind="true" RemoteSort="true" PageSize="25" OnReadData="deLoadAllowedBudgetOrganizations" AutoLoad="false">
+                            AutoDataBind="true" RemoteSort="true" PageSize="25" OnReadData="deLoadAllowedBudgetOrganizations" AutoLoad="true">
                             <Model>
                                 <ext:Model ID="Model2" runat="server" IDProperty="ORGANIZATION_ID">
                                     <Fields>
                                         <ext:ModelField Name="ORGANIZATION_ID" />
+                                        <ext:ModelField Name="ORGANIZATION_NAME" />
                                         <ext:ModelField Name="CURRENT_BUDGET" />
                                         <ext:ModelField Name="STATUS" />
                                     </Fields>
