@@ -11,7 +11,9 @@
     <form id="form1" runat="server">
         <ext:ResourceManager ID="ResourceManager1" runat="server" />
         <div></div>
-        <ext:GridPanel ID="uxProjectGrid" runat="server" Flex="1" SimpleSelect="true" Title="Select Project" Margins="0 2 0 0">
+         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
+                <Items>
+        <ext:GridPanel ID="uxProjectGrid" runat="server" SimpleSelect="true" Region="North" Title="Select Project" Margins="0 2 0 0">
             <Store>
                 <ext:Store runat="server"
                     ID="uxCurrentSecurityProjectStore"
@@ -31,6 +33,9 @@
                     <Proxy>
                         <ext:PageProxy />
                     </Proxy>
+                    <Sorters>
+                        <ext:DataSorter Direction="ASC" Property="ORGANIZATION_NAME" />
+                    </Sorters>
                 </ext:Store>
             </Store>
             <ColumnModel>
@@ -46,15 +51,17 @@
             <SelectionModel>
                 <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" Mode="Single" />
             </SelectionModel>
-
-            <DirectEvents>
+           
+          <%--  <DirectEvents>
                 <Select OnEvent="GetCrossingsGridData">
                     <ExtraParams>
                         <ext:Parameter Name="ProjectId" Value="#{uxProjectGrid}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
                     </ExtraParams>
                 </Select>
-            </DirectEvents>
-          
+            </DirectEvents>--%>
+          <DirectEvents>
+              <SelectionChange OnEvent="deLoadStore" />
+          </DirectEvents>
             <BottomBar>
                 <ext:PagingToolbar ID="PagingToolbar2" runat="server" />
             </BottomBar>
@@ -63,11 +70,13 @@
             </Listeners>
         </ext:GridPanel>
         <%--  ---------------------------------------------------------------------------------------------------------------------%>
-         <ext:GridPanel ID="uxAssignedCrossingGrid" runat="server" Margins="0 2 0 0" >
+         <ext:GridPanel ID="uxAssignedCrossingGrid" runat="server" Margins="0 2 0 0"  Region="Center">
             <Store>
                 <ext:Store runat="server"
-                    ID="uxAssignedCrossingStore"
-                  >
+                    ID="uxAssignedCrossingStore" OnReadData="GetCrossingsGridData" AutoDataBind="true" AutoLoad="false" PageSize="20">
+                     <Parameters>
+                        <ext:StoreParameter Name="ProjectId" Value="#{uxProjectGrid}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
+                    </Parameters>
                     <Model>
                         <ext:Model ID="Model3" runat="server">
                             <Fields>
@@ -81,7 +90,12 @@
                             </Fields>
                         </ext:Model>
                     </Model>
-                   
+                   <Proxy>
+                       <ext:PageProxy />
+                   </Proxy>
+                    <Sorters>
+                        <ext:DataSorter Direction="ASC" Property="SERVICE_UNIT" />
+                    </Sorters>
                 </ext:Store>
             </Store>
             <ColumnModel>
@@ -99,7 +113,7 @@
                  <ext:Toolbar ID="Toolbar2" runat="server">
             <Items>
               
-
+                
                 <ext:Button ID="Button1" runat="server" Text="Assign New Crossings to Project" Icon="ApplicationAdd" Disabled="true">
                     <Listeners>
                        <Click Handler="#{uxAssignCrossingWindow}.show() " />
@@ -131,6 +145,9 @@
             </Items>
         </ext:Toolbar>
              </TopBar>
+              <BottomBar>
+                <ext:PagingToolbar ID="PagingToolbar3" runat="server" />
+            </BottomBar>
               <Listeners>
                 <Select Handler="#{Button2}.enable()" />
             </Listeners>
@@ -154,7 +171,7 @@
                     <Model>
                         <ext:Model ID="Model4" runat="server">
                             <Fields>
-                                <ext:ModelField Name="CROSSING_ID" />
+                                
                                 <ext:ModelField Name="SUB_DIVISION" />
 
                             </Fields>
@@ -163,6 +180,9 @@
                      <Proxy>
                        <ext:PageProxy />
                      </Proxy>
+                    <Sorters>
+                        <ext:DataSorter Direction="ASC" Property="SUB_DIVISION" /> 
+                    </Sorters>
                 </ext:Store>
             </Store>
             <ColumnModel>
@@ -269,7 +289,8 @@
             </Items>
 
         </ext:Window>
-
+        </Items>
+             </ext:Viewport>
 
     </form>
 </body>

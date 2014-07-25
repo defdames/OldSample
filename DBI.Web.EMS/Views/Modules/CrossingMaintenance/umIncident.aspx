@@ -30,8 +30,10 @@
 <body>
     <form id="form1" runat="server">
         <ext:ResourceManager ID="ResourceManager1" runat="server" />
-
-        <div>
+         <div></div>
+          <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
+                <Items>
+       
             <ext:GridPanel ID="uxCrossingIncidentGrid" Title="CROSSING INFORMATION" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true">
                 <SelectionModel>
                     <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="false" Mode="Single" />
@@ -60,6 +62,9 @@
                         <Proxy>
                             <ext:PageProxy />
                         </Proxy>
+                        <Sorters>
+                            <ext:DataSorter Direction="ASC" Property="SERVICE_UNIT" />
+                        </Sorters>
                     </ext:Store>
                 </Store>
                 <ColumnModel>
@@ -85,28 +90,9 @@
                 </Listeners>
 
             </ext:GridPanel>
-            <ext:Toolbar ID="Toolbar1" runat="server">
-                <Items>
-                    <ext:Button ID="uxAddIncident" runat="server" Text="Add Incident" Icon="ApplicationAdd" Disabled="true">
-                        <Listeners>
-                            <Click Handler="#{uxIncidentWindow}.show()" />
-                        </Listeners>
-                    </ext:Button>
-                    <ext:Button ID="uxCloseIncident" runat="server" Text="Close Incident" Icon="BinClosed" Disabled="true">
-                        <Listeners>
-                            <Click Handler="#{uxCloseIncidentWindow}.show()" />
-                        </Listeners>
-                    </ext:Button>
-                    <ext:Checkbox runat="server" ID="uxToggleClosed" BoxLabel="Include Closed Incidents" BoxLabelAlign="After">
-                        <Listeners>
-                            <Change Handler="#{uxIncidentStore}.reload()" />
-                        </Listeners>
-                    </ext:Checkbox>
+            
 
-                </Items>
-            </ext:Toolbar>
-
-            <ext:GridPanel ID="uxIncidentGrid" Title="INCIDENT ENTRIES" runat="server" Layout="FitLayout">
+            <ext:GridPanel ID="uxIncidentGrid" Title="INCIDENT ENTRIES" runat="server" Region="Center" Layout="FitLayout">
 
                 <Store>
                     <ext:Store runat="server"
@@ -156,7 +142,27 @@
                         </ExtraParams>
                     </Select>
                 </DirectEvents>
-
+                <TopBar>
+                <ext:Toolbar ID="Toolbar1" runat="server">
+                <Items>
+                    <ext:Button ID="uxAddIncident" runat="server" Text="Add Incident" Icon="ApplicationAdd" Disabled="true">
+                        <Listeners>
+                            <Click Handler="#{uxIncidentWindow}.show()" />
+                        </Listeners>
+                    </ext:Button>
+                    <ext:Button ID="uxCloseIncident" runat="server" Text="Close Incident" Icon="BinClosed" Disabled="true">
+                        <Listeners>
+                            <Click Handler="#{uxCloseIncidentWindow}.show()" />
+                        </Listeners>
+                    </ext:Button>
+                    <ext:Checkbox runat="server" ID="uxToggleClosed" BoxLabel="Include Closed Incidents" BoxLabelAlign="After">
+                        <Listeners>
+                            <Change Handler="#{uxIncidentStore}.reload()" />
+                        </Listeners>
+                    </ext:Checkbox>
+               </Items>
+            </ext:Toolbar>
+                    </TopBar>
                 <Listeners>
                     <Select Handler="#{uxCloseIncident}.enable()" />
                     <Deselect Handler="#{uxCloseIncident}.disable()" />
@@ -271,7 +277,10 @@
                     </ext:FormPanel>
                 </Items>
             </ext:Window>
-        </div>
+      
+                    </Items>
+              </ext:Viewport>
+    
     </form>
 </body>
 </html>

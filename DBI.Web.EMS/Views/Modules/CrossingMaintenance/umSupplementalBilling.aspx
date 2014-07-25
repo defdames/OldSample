@@ -39,9 +39,10 @@
      <ext:ResourceManager ID="ResourceManager1" runat="server" />
           <div></div>
         <ext:Hidden ID="Hidden1" runat="server" Hidden="true" />
+        <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
+                <Items>
 
-
-      <ext:FormPanel ID="uxFilterForm" runat="server" Margin="5" Title="Supplemental Invoice Form">
+      <ext:FormPanel ID="uxFilterForm" runat="server" Margin="5" Region="North" Title="Supplemental Invoice Form">
                 <Items>
                     <ext:FieldSet ID="FieldSet1" runat="server" Title=" Supplemental Invoicing Form">
                         <Items>
@@ -91,7 +92,7 @@
 		  </Listeners>
             </ext:FormPanel>
 
-        <ext:GridPanel ID="uxInvoiceGrid" Title="Completed Crossings" runat="server" Region="North" Frame="false" Collapsible="true" MultiSelect="true" >
+        <ext:GridPanel ID="uxInvoiceGrid" Title="Completed Crossings" runat="server" Region="Center" Frame="false" Collapsible="true" MultiSelect="true" >
                 <SelectionModel>
                     <ext:CheckboxselectionModel ID="CheckboxSelectionModel2" runat="server" AllowDeselect="true" Mode="Multi" />
                 </SelectionModel>
@@ -121,7 +122,9 @@
                         <Proxy>
                             <ext:PageProxy />
                         </Proxy>
-
+                        <Sorters>
+                            <ext:DataSorter Direction="ASC" Property="APPROVED_DATE" />
+                        </Sorters>
                     </ext:Store>
                 </Store>
 
@@ -243,7 +246,9 @@
                         <Proxy>
                             <ext:PageProxy />
                         </Proxy>
-
+                        <Sorters>
+                            <ext:DataSorter Direction="ASC" Property="APPROVED_DATE" />
+                        </Sorters>
                     </ext:Store>
                 </Store>
 
@@ -288,6 +293,9 @@
             </ext:GridPanel>
                 </Items>
             </ext:Window>
+                    </Items>
+            </ext:Viewport>
+
     </div>
     </form>
 </body>

@@ -45,6 +45,9 @@
                         <Proxy>
                             <ext:PageProxy />
                         </Proxy>
+                         <Sorters>
+                            <ext:DataSorter Direction="ASC" Property="SERVICE_UNIT" />
+                         </Sorters>
                     </ext:Store>
                 </Store>
                 <ColumnModel>

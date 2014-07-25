@@ -216,6 +216,9 @@
                                             </Fields>
                                         </ext:Model>
                                     </Model>
+                                      <Sorters>
+                                        <ext:DataSorter Direction="ASC" Property="SERVICE_UNIT_NAME" />
+                                    </Sorters>
                                 </ext:Store>
                             </Store>
                             
@@ -238,6 +241,9 @@
                                             </Fields>
                                         </ext:Model>
                                     </Model>
+                                    <Sorters>
+                                        <ext:DataSorter Direction="ASC" Property="SERVICE_UNIT_NAME" />
+                                    </Sorters>
                                 </ext:Store>
                             </Store>
                             
