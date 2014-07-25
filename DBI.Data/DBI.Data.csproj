@@ -353,6 +353,9 @@
     <Compile Include="ORG_HIER_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="OVERHEAD_BUDGET_DETAIL.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="OVERHEAD_BUDGET_TYPE.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
@@ -363,6 +366,9 @@
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="OVERHEAD_GL_RANGE.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OVERHEAD_ORG_BUDGETS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="PA_LOCATIONS_V.cs">
