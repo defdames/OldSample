@@ -185,7 +185,6 @@
                                                         <ext:ModelField Name="TITLE" Type="String" />
                                                         <ext:ModelField Name="SORT_ORDER" Type="Int" />
                                                         <ext:ModelField Name="IS_ACTIVE" Type="Boolean" />
-                                                        <ext:ModelField Name="PhantomId" Type="Int" />
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>
@@ -250,7 +249,7 @@
                                             <Model>
                                                 <ext:Model runat="server" Name="Question" IDProperty="QUESTION_ID" ClientIdProperty="PhantomId">
                                                     <Fields>
-                                                        <ext:ModelField Name="QUESTION_ID" UseNull="true" />
+                                                        <ext:ModelField Name="QUESTION_ID" Type="Int" />
                                                         <ext:ModelField Name="TEXT" Type="String" />
                                                         <ext:ModelField Name="QUESTION_TYPE_NAME" Type="String" />
                                                         <ext:ModelField Name="TYPE_ID" Type="Int" />
@@ -258,7 +257,6 @@
                                                         <ext:ModelField Name="TITLE" Type="String" />
                                                         <ext:ModelField Name="IS_REQUIRED" Type="Boolean" />
                                                         <ext:ModelField Name="SORT_ORDER" Type="Int" />
-                                                        <ext:ModelField Name="PhantomId" Type="Int" />
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>
@@ -382,7 +380,6 @@
                                                         <ext:ModelField Name="OPTION_NAME" Type="String" />
                                                         <ext:ModelField Name="SORT_ORDER" Type="Int" />
                                                         <ext:ModelField Name="IS_ACTIVE" Type="Boolean" />
-                                                        <ext:ModelField Name="PhantomId" Type="Int" />
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>

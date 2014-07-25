@@ -33,6 +33,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         protected void deInvoiceGrid(object sender, StoreReadDataEventArgs e)
         {
+           
             DateTime StartDate = uxStartDate.SelectedDate;
             DateTime EndDate = uxEndDate.SelectedDate;
             string Application = uxAddAppReqeusted.SelectedItem.Value;
@@ -83,6 +84,21 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                
             }
         }
+        protected void deValidationInvoiceButton(object sender, DirectEventArgs e)
+        {
+            CheckboxSelectionModel sm = CheckboxSelectionModel2;
+
+            if (sm.SelectedRows.Count() != 0)
+            {
+                Button1.Enable();
+                Button2.Enable();
+            }
+            else
+            {
+                Button1.Disable();
+                Button2.Disable();
+            }
+        }
         protected void deClearFilters(object sender, DirectEventArgs e)
         {
             uxFilterForm.Reset();
@@ -93,8 +109,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         protected void deAddInvoice(object sender, DirectEventArgs e)
         {
+          
             string InvoiceNum = uxInvoiceNumber.Value.ToString();
             DateTime InvoiceDate = (DateTime)uxInvoiceDate.Value;
+
+
+          
+
 
             CROSSING_INVOICE data = new CROSSING_INVOICE()
             {

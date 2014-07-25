@@ -26,15 +26,24 @@
             cursor: pointer;
         }
     </style>
+   
+   <script>
+       var saveData = function () {
+           App.Hidden1.setValue(Ext.encode(App.GridPanel1.getRowsValues({ selectedOnly: false })));
+       };
+    </script>
 </head>
 <body>
     <form id="form1" runat="server">
     <div>
      <ext:ResourceManager ID="ResourceManager1" runat="server" />
           <div></div>
+        <ext:Hidden ID="Hidden1" runat="server" Hidden="true" />
+
+
       <ext:FormPanel ID="uxFilterForm" runat="server" Margin="5" Title="Supplemental Invoice Form">
                 <Items>
-                    <ext:FieldSet ID="FieldSet1" runat="server" Title=" Supplement Invoicing Form">
+                    <ext:FieldSet ID="FieldSet1" runat="server" Title=" Supplemental Invoicing Form">
                         <Items>
                           
                             <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
@@ -95,10 +104,10 @@
                         <Model>
                             <ext:Model ID="Model1" runat="server">
                                 <Fields>
-                                    <ext:ModelField Name="CROSSING_ID" />  
+                                    <ext:ModelField Name="CROSSING_ID"  />  
                                     <ext:ModelField Name="CROSSING_NUMBER" />                                
                                     <ext:ModelField Name="SUPPLEMENTAL_ID" />
-                                    <ext:ModelField Name="APPROVED_DATE" /> 
+                                    <ext:ModelField Name="APPROVED_DATE" DateFormat="MM/dd/yyyy" /> 
                                     <ext:ModelField Name="MILE_POST" />
                                     <ext:ModelField Name="SERVICE_TYPE" />
                                     <ext:ModelField Name="TRUCK_NUMBER" />
@@ -129,13 +138,16 @@
 
                     </Columns>
                 </ColumnModel> 
+             <DirectEvents>
+                  <SelectionChange OnEvent="deValidationInvoiceButton" />
+               </DirectEvents>
                <BottomBar>
                     <ext:Toolbar ID="Toolbar2" runat="server">
                         <Items>
                             <ext:Button runat="server"
                                 ID="Button1"
                                 Text="Invoice"
-                                Icon="PlayGreen">
+                                Icon="PlayGreen" Disabled="true">
                         <DirectEvents>
                             <Click OnEvent="deAddInvoice" >
                                  <ExtraParams>
@@ -149,8 +161,8 @@
                             </ext:Button>
                             <ext:Button runat="server"
                                 ID="Button2"
-                                Text="Cancel Selection"
-                                Icon="StopRed">
+                                Text="Cancel Selections"
+                                Icon="StopRed" Disabled="true">
                             <DirectEvents>
                                 <Click OnEvent="deResetInvoice" />
                             </DirectEvents>
@@ -173,13 +185,38 @@
                 <Items>
                 <ext:TextField ID="InvoiceNumTextField" runat="server" FieldLabel="Invoice #" LabelAlign="Right" ReadOnly="true" />
                 <ext:TextField ID="InvoiceDateTextField" runat="server" FieldLabel="Date" LabelAlign="Right" ReadOnly="true" />
+                     
                 </Items>
                 </ext:FieldContainer>
-       
+                  
                         </Items>
                         </ext:FormPanel>
                  <ext:GridPanel ID="GridPanel1" Title="Invoiced Items" Height="485" runat="server" Frame="false" Collapsible="true" >
-               
+               <TopBar>
+                <ext:Toolbar ID="Toolbar4" runat="server">
+                    <Items>
+                        <ext:ToolbarFill ID="ToolbarFill1" runat="server" />
+                        
+                        <ext:Button ID="Button6" runat="server" Text="To XML" AutoPostBack="true" OnClick="ToXml" Icon="PageCode">
+                            <Listeners>
+                                <Click Fn="saveData" />
+                            </Listeners>
+                        </ext:Button>
+                        
+                        <ext:Button ID="Button7" runat="server" Text="To Excel" AutoPostBack="true" OnClick="ToExcel" Icon="PageExcel">
+                            <Listeners>
+                                <Click Fn="saveData" />
+                            </Listeners>
+                        </ext:Button>
+                        
+                        <ext:Button ID="Button8" runat="server" Text="To CSV" AutoPostBack="true" OnClick="ToCsv" Icon="PageAttach">
+                            <Listeners>
+                                <Click Fn="saveData" />
+                            </Listeners>
+                        </ext:Button>
+                    </Items>
+                </ext:Toolbar>
+            </TopBar>
                 <Store>
                     <ext:Store runat="server"
                         ID="uxInvoiceReportStore" OnReadData="deInvoiceReportGrid" AutoDataBind="true" AutoLoad="false" GroupField="SUB_DIVISION">

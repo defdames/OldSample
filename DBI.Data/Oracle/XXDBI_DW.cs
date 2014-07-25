@@ -116,9 +116,7 @@ namespace DBI.Data
 
                 string sql = string.Format(@"
                     SELECT '-- OVERRIDE --' AS ID_NAME FROM DUAL
-
                         UNION ALL
-
                     SELECT TO_CHAR(JC_WK_DATE,'DD-Mon-YYYY') ID_NAME
                     FROM (SELECT DISTINCT JC_WK_DATE FROM APPS.XX_JOBCOST_DATES_MV WHERE HIERARCHY_ID = {0} ORDER BY JC_WK_DATE {1}) JC_DATES
                     WHERE ROWNUM <= {2}", hierarchyId, sortOrder, optionalNumOfReturnRecords);
@@ -126,7 +124,6 @@ namespace DBI.Data
                 return data;
             }
         }              
-
         public class JOB_COST_V
         {
             public decimal FY_GREC { get; set; }

@@ -40,11 +40,17 @@
             };
         };
     </script>
+     <script>
+         var saveData = function () {
+             App.Hidden1.setValue(Ext.encode(App.GridPanel1.getRowsValues({ selectedOnly: false })));
+         };
+    </script>
 </head>
 <body>
     <form id="form1" runat="server">
     <div>
       <ext:ResourceManager ID="ResourceManager1" runat="server" />
+         <ext:Hidden ID="Hidden1" runat="server" Hidden="true" />
         <ext:FormPanel runat="server" ID="FilterForm" Margin="5" Title="Filter Private Crossings">
             <Items>
                 <ext:FieldSet ID="FieldSet1" runat="server" Title="Filter">
@@ -146,13 +152,12 @@
                             ID="Button4"
                             Text="Run"
                             Icon="PlayGreen">
-                           <%-- <DirectEvents>
-                                <Click OnEvent="dePrivateCrossingListGrid">
-                                    <%--<ExtraParams>
-                                        <ext:Parameter Name="selectedCrossings" Value="Ext.encode(#{GridPanel1}.getRowsValues())" Mode="Raw" />
-                                    </ExtraParams>
-                                </Click>
-                            </DirectEvents>--%>
+                            <DirectEvents>
+                                <Click OnEvent="deLaunchGrid" >  
+                                <EventMask ShowMask="true" Msg="Loading..." >  
+                                    </EventMask>
+                                    </Click>                           
+                            </DirectEvents>
                             <Listeners>
                                 <Click Handler="#{uxPrivateCrossingListStore}.load()" />
                             </Listeners>
@@ -177,11 +182,11 @@
             Icon="Report"
             Frame="false"
             Resizable="false"
-            Collapsible="false" Cls="my.grouped-header">
+            Collapsible="false" Cls="my.grouped-header" Hidden="true" >
             <Store>
                 <ext:Store ID="uxPrivateCrossingListStore"
                     runat="server"
-                    GroupField="SUB_DIVISION" AutoLoad="false" AutoDataBind="true" OnReadData="dePrivateCrossingListGrid" PageSize="7">
+                    GroupField="SUB_DIVISION" AutoLoad="false" AutoDataBind="true" OnReadData="dePrivateCrossingListGrid" PageSize="20" >
                     <Model>
                         <ext:Model ID="Model1" runat="server">
                             <Fields>
@@ -217,7 +222,7 @@
                     <%--<ext:Column ID="uxMainCrossingNum" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing #" Flex="1" />--%>
                     <ext:Column ID="uxSubDiv" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
                     <ext:Column ID="Column1" runat="server" Text="MP" Flex="1" DataIndex="MILE_POST" />
-                    <ext:Column ID="Column3" runat="server" Text="DOT" Flex="1" DataIndex="DOT" />
+                    <ext:Column ID="Column3" runat="server" Text="DOT #" Flex="1" DataIndex="CROSSING_NUMBER" />
                     <ext:Column ID="Column2" runat="server" Text="State" Flex="1" DataIndex="STATE" />
                     <ext:Column ID="Column4" runat="server" Text="City" Flex="1" DataIndex="CITY" />
                     <ext:Column ID="Column5" runat="server" Text="Street" Flex="1" DataIndex="STREET" />
@@ -225,12 +230,7 @@
 
                 </Columns>
             </ColumnModel>
-           <%-- <Features>
-                <ext:RowBody ID="RowBody1" runat="server" RowBodyCls="rowBodyCls">
-
-                    <GetAdditionalData Fn="GetAdditionalData" />
-                </ext:RowBody>
-            </Features>--%>
+     
             <Features>
                 <ext:Grouping ID="Grouping1"
                     runat="server"
@@ -240,40 +240,23 @@
             <TopBar>
                 <ext:Toolbar ID="Toolbar2" runat="server">
                     <Items>
-
-                        <ext:Button ID="Button1"
-                            runat="server"
-                            Text="Print"
-                            Icon="Printer"
-                            OnClientClick="window.print();" />
-
-                     <%--   <ext:Button runat="server"
-                            ID="uxExportToPDF"
-                            Text="Export to PDF"
-                            Icon="PageWhiteAcrobat">
-                            <DirectEvents>
-                                <Click OnEvent="deExportToPDF" IsUpload="true">
-                                    <ExtraParams>
-                                        <ext:Parameter Name="CrossingId" Value="#{GridPanel1}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                                        <ext:Parameter Name="selectedCrossings" Value="Ext.encode(#{GridPanel1}.getRowsValues())" Mode="Raw" />
-                                    </ExtraParams>
-                                </Click>
-                            </DirectEvents>
+                        <ext:Button ID="Button6" runat="server" Text="To XML" AutoPostBack="true" OnClick="ToXml" Icon="PageCode">
+                            <Listeners>
+                                <Click Fn="saveData" />
+                            </Listeners>
                         </ext:Button>
-                        <ext:Button runat="server"
-                            ID="uxEmailPdf"
-                            Text="Email Copy"
-                            Icon="EmailAttach"
-                            Disabled="false">
-                            <DirectEvents>
-                                <Click OnEvent="deSendPDF" IsUpload="true">
-                                    <ExtraParams>
-                                        <ext:Parameter Name="CrossingId" Value="#{GridPanel1}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                                        <%--<ext:Parameter Name="CrossingId" Value="Ext.encode(#{GridPanel1}.getRowsValues())" Mode="Raw" />
-                                    </ExtraParams>
-                                </Click>
-                            </DirectEvents>
-                        </ext:Button>--%>
+                        
+                        <ext:Button ID="Button7" runat="server" Text="To Excel" AutoPostBack="true" OnClick="ToExcel" Icon="PageExcel">
+                            <Listeners>
+                                <Click Fn="saveData" />
+                            </Listeners>
+                        </ext:Button>
+                        
+                        <ext:Button ID="Button8" runat="server" Text="To CSV" AutoPostBack="true" OnClick="ToCsv" Icon="PageAttach">
+                            <Listeners>
+                                <Click Fn="saveData" />
+                            </Listeners>
+                        </ext:Button>
                     </Items>
                 </ext:Toolbar>
             </TopBar>

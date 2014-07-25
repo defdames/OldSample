@@ -135,7 +135,10 @@
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
     <Content Include="Views\Modules\BudgetBidding\umBlankBudget.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umBudgetBiddingMain.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\umDetailSheet.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umYearBudget.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Csv.xsl" />
+    <Content Include="Views\Modules\CrossingMaintenance\Excel.xsl" />
     <Content Include="Views\Modules\CrossingMaintenance\ManageKCS.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umAppDate.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umBillingInvoice.aspx" />
@@ -278,6 +281,13 @@
     </Compile>
     <Compile Include="Views\Modules\BudgetBidding\umBudgetBiddingMain.aspx.designer.cs">
       <DependentUpon>umBudgetBiddingMain.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umDetailSheet.aspx.cs">
+      <DependentUpon>umDetailSheet.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umDetailSheet.aspx.designer.cs">
+      <DependentUpon>umDetailSheet.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\BudgetBidding\umYearBudget.aspx.cs">
       <DependentUpon>umYearBudget.aspx</DependentUpon>
@@ -937,7 +947,10 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Modules\Overhead\Backup\BudgetType\AddEdit\" />
+    <Folder Include="Views\Modules\Overhead\Backup\GLSecurity\Add\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
