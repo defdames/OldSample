@@ -17,7 +17,7 @@ namespace DBI.Data
         public long ORG_BUDGET_ID { get; set; }
         public long ORGANIZATION_ID { get; set; }
         public short FISCAL_YEAR { get; set; }
-        public string OVERHEAD_BUDGET_TYPE_ID { get; set; }
+        public long OVERHEAD_BUDGET_TYPE_ID { get; set; }
         public string STATUS { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
