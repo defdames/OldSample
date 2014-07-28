@@ -25,8 +25,12 @@
 		        firstButton.setDisabled(true);
 		        firstButton.setTooltip("Disabled");
 		    }
-
-
+		};
+		var colorErrors = function (value, metadata, record) {
+		    if (record.data.ACTUAL_HOURS >= 12) {
+		        metadata.style = "background-color: red;";
+		    }
+		    return value;
 		};
 	</script>
 </head>
@@ -74,8 +78,12 @@
 					<Columns>
 						<ext:DateColumn ID="DateColumn1" runat="server" Text="Time In" DataIndex="TIME_IN" Flex="1" Format="M/d/yyyy h:mm tt"/>
 						<ext:DateColumn ID="DateColumn2" runat="server" Text="Time Out" DataIndex="TIME_OUT" Flex="1" Format="M/d/yyyy h:mm tt"/>
-						<ext:Column ID="Column1" runat="server" Text="Actual Time" Flex="1" DataIndex="ACTUAL_HOURS_GRID"/>
-						<ext:Column ID="Column2" runat="server" Text="Adjusted Time" Flex="1" DataIndex="ADJUSTED_HOURS_GRID"/>
+						<ext:Column ID="Column1" runat="server" Text="Actual Time" Flex="1" DataIndex="ACTUAL_HOURS_GRID">
+                            <Renderer Fn="colorErrors" />
+                        </ext:Column>
+						<ext:Column ID="Column2" runat="server" Text="Adjusted Time" Flex="1" DataIndex="ADJUSTED_HOURS_GRID">
+                            <Renderer Fn="colorErrors" />
+                        </ext:Column>
 						<ext:Column ID="Approved" runat="server" Text="Approved" Flex="1" DataIndex="APPROVED" />
 						<ext:Column ID="Submitted" runat="server" Text="Submitted" Flex="1" DataIndex="SUBMITTED" />
 						<ext:CommandColumn ID="ccEditTime" runat="server">
