@@ -88,12 +88,45 @@ namespace DBI.Data
 
     public partial class OVERHEAD_ORG_BUDGETS
     {
-        public static IQueryable<OVERHEAD_ORG_BUDGETS> BudgetListByOrganizationID(long organizationID, Entities context)
+        public static IQueryable<OVERHEAD_ORG_BUDGETS_V> BudgetListByOrganizationID(long organizationID, Entities context)
         {
             var data = context.OVERHEAD_ORG_BUDGETS.Where(x => x.ORGANIZATION_ID == organizationID);
+            List<OVERHEAD_ORG_BUDGETS_V> _rdata = new List<OVERHEAD_ORG_BUDGETS_V>();
+
+            foreach (OVERHEAD_ORG_BUDGETS _budget in data)
+            {
+                OVERHEAD_ORG_BUDGETS_V _r = new OVERHEAD_ORG_BUDGETS_V();
+                _r.OVERHEAD_BUDGET_TYPE = OVERHEAD_BUDGET_TYPE.GetTypeByID(_budget.OVERHEAD_BUDGET_TYPE_ID);
+                _r.STATUS = (_budget.STATUS == "O") ? "Open" : (_budget.STATUS == "C") ? "Closed" : (_budget.STATUS == "P") ? "Pending" : "Never Opened";
+                _r.ORG_BUDGET_ID = _budget.ORG_BUDGET_ID;
+                _r.ORGANIZATION_ID = _budget.ORGANIZATION_ID;
+                _r.FISCAL_YEAR = _budget.FISCAL_YEAR;
+                _rdata.Add(_r);
+            }
+
+            return _rdata.AsQueryable();
+
         }
     }
 
+    public partial class OVERHEAD_BUDGET_TYPES
+    {
+
+        public static List<OVERHEAD_BUDGET_TYPE> NextAvailBudgetTypeByOrganization(long organizationID, long fiscalYear)
+        {
+            using(Entities _context = new Entities())
+            {
+                IQueryable<OVERHEAD_BUDGET_TYPE> _data = OVERHEAD_BUDGET_TYPE.BudgetTypes(organizationID).AsQueryable();
+
+                _data = (from dups in _data
+                         where !_context.OVERHEAD_ORG_BUDGETS.Any(x => x.OVERHEAD_BUDGET_TYPE_ID == dups.OVERHEAD_BUDGET_TYPE_ID && x.FISCAL_YEAR == fiscalYear && x.ORGANIZATION_ID == organizationID)
+                         select dups);
+
+                var _rdata = _data.OrderBy(x => x.LE_ORG_ID).Take(1).ToList();
+                return _rdata;
+            }
+        }
+    }
 
 
 }

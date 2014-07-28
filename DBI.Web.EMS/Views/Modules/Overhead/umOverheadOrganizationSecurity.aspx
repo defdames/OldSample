@@ -99,11 +99,11 @@
                         <ext:FilterHeader ID="uxOrganizationsGridFilter" runat="server" Remote="true" />
                     </Plugins>
                     <SelectionModel>
-                        <ext:CheckboxSelectionModel runat="server" Mode="Simple" ID="uxOrganizationsGridSelectionModel">
-                           <Listeners>
-                                <Select Handler="if(#{uxOrganizationsGridSelectionModel}.getCount() > 0){#{uxEnableOrganizationButton}.enable();#{uxDisableOrganizationButton}.enable();}else {#{uxEnableOrganizationButton}.disable();#{uxDisableOrganizationButton}.disable();}"></Select>
-                                <Deselect Handler="if(#{uxOrganizationsGridSelectionModel}.getCount() > 0){#{uxEnableOrganizationButton}.enable();#{uxDisableOrganizationButton}.enable();}else {#{uxEnableOrganizationButton}.disable();#{uxDisableOrganizationButton}.disable();}"></Deselect>
-                           </Listeners>
+                        <ext:CheckboxSelectionModel runat="server" Mode="Single" ID="uxOrganizationsGridSelectionModel" AllowDeselect="true">
+                            <DirectEvents>
+                                <Select OnEvent="deSelectOrganization"></Select>
+                                <Deselect OnEvent="deSelectOrganization"></Deselect>
+                            </DirectEvents>
                         </ext:CheckboxSelectionModel>
                     </SelectionModel>
                     <BottomBar>
@@ -117,11 +117,30 @@
                 </ext:GridPanel>
 
 
-                 <ext:GridPanel ID="GridPanel1" runat="server" Flex="1" SimpleSelect="true" Header="true" Title="Forecast Periods By Organization" Padding="5" Region="South">
+                 <ext:GridPanel ID="uxForecastPeriodsByOrganizationGridPanel" runat="server" Flex="1" SimpleSelect="true" Header="true" Title="Forecast Periods By Organization" Padding="5" Region="South">
+                      <TopBar>
+                        <ext:Toolbar ID="Toolbar2" runat="server">
+                            <Items>
+                                <ext:Button runat="server" Text="Open" Icon="BookOpen" ID="uxOpenPeriod" Disabled="true" >
+                                    <ToolTips>
+                                        <ext:ToolTip ID="ToolTip3" runat="server" UI="Info" Html="Opens a period for an organization so it can be used for the budget overhead system."></ext:ToolTip>
+                                    </ToolTips>
+                                    <DirectEvents>
+                                        <Click OnEvent="deOpenPeriod"></Click>
+                                    </DirectEvents>      
+                                </ext:Button>
+                                  <ext:Button runat="server" Text="Close"  Icon="Book" ID="uxClosePeriod" Disabled="true" >
+                                    <ToolTips>
+                                        <ext:ToolTip ID="ToolTip4" runat="server" UI="Info" Html="Close a period an organization so that it can't be used for the budget overhead system."></ext:ToolTip>
+                                    </ToolTips>
+                                </ext:Button>
+                            </Items>
+                        </ext:Toolbar>
+                    </TopBar>
                     <Store>
                         <ext:Store runat="server"
-                            ID="Store1"
-                            AutoDataBind="true" RemoteSort="true" PageSize="25" AutoLoad="true" OnReadData="deLoadForcastPeriodsByOrganization">
+                            ID="uxForecastPeriodsByOrganization"
+                            AutoDataBind="true" RemoteSort="true" PageSize="25" AutoLoad="false" OnReadData="deLoadForcastPeriodsByOrganization">
                             <Model>
                                 <ext:Model ID="Model1" runat="server" IDProperty="ORG_BUDGET_ID">
                                     <Fields>
@@ -146,6 +165,11 @@
                     <Plugins>
                         <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true" />
                     </Plugins>
+                     <SelectionModel><ext:CheckboxSelectionModel runat="server" Mode="Single" AllowDeselect="true">
+                         <DirectEvents>
+                         </DirectEvents>
+                                     </ext:CheckboxSelectionModel>
+                     </SelectionModel>
                     <BottomBar>
                         <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
                     </BottomBar>

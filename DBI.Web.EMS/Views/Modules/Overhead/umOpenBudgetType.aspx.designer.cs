@@ -10,7 +10,7 @@
 namespace DBI.Web.EMS.Views.Modules.Overhead {
     
     
-    public partial class umOverheadPeriods {
+    public partial class umOpenBudgetType {
         
         /// <summary>
         /// ResourceManager1 control.
@@ -40,93 +40,102 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Viewport Viewport1;
         
         /// <summary>
-        /// uxOrganizationsGrid control.
+        /// FormPanel1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxOrganizationsGrid;
+        protected global::Ext.Net.FormPanel FormPanel1;
         
         /// <summary>
-        /// uxOrganizationSecurityStore control.
+        /// FieldContainer1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxOrganizationSecurityStore;
+        protected global::Ext.Net.FieldContainer FieldContainer1;
         
         /// <summary>
-        /// Model2 control.
+        /// uxFiscalYear control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Model Model2;
+        protected global::Ext.Net.ComboBox uxFiscalYear;
         
         /// <summary>
-        /// Column2 control.
+        /// uxFiscalYearsStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column2;
+        protected global::Ext.Net.Store uxFiscalYearsStore;
         
         /// <summary>
-        /// Column1 control.
+        /// Model5 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column1;
+        protected global::Ext.Net.Model Model5;
         
         /// <summary>
-        /// Column3 control.
+        /// FieldContainer3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column3;
+        protected global::Ext.Net.FieldContainer FieldContainer3;
         
         /// <summary>
-        /// uxOrganizationsGridFilter control.
+        /// uxBudgetName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FilterHeader uxOrganizationsGridFilter;
+        protected global::Ext.Net.ComboBox uxBudgetName;
         
         /// <summary>
-        /// uxOrganizationsGridSelectionModel control.
+        /// uxBudgetNameStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.CheckboxSelectionModel uxOrganizationsGridSelectionModel;
+        protected global::Ext.Net.Store uxBudgetNameStore;
         
         /// <summary>
-        /// uxOrganizationGridPageBar control.
+        /// Model1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.PagingToolbar uxOrganizationGridPageBar;
+        protected global::Ext.Net.Model Model1;
         
         /// <summary>
-        /// uxOrganizationsGridView control.
+        /// uxOpenPeriod control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridView uxOrganizationsGridView;
+        protected global::Ext.Net.Button uxOpenPeriod;
+        
+        /// <summary>
+        /// uxCloseButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxCloseButton;
     }
 }

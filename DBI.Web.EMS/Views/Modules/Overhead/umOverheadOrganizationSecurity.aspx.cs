@@ -35,6 +35,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
                 SYS_ORG_PROFILE_OPTIONS.SetOrganizationProfileOption("OverheadBudgetOrganization", "Y", long.Parse(row.RecordID));
             }
+
             uxOrganizationsGridSelectionModel.ClearSelection();
             uxOrganizationSecurityStore.Reload();
         }
@@ -79,7 +80,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         protected void deLoadForcastPeriodsByOrganization(object sender, StoreReadDataEventArgs e)
         {
 
-            List<OVERHEAD_ORG_BUDGETS> _budgetsByOrganizationIDList = new List<OVERHEAD_ORG_BUDGETS>();
+            List<OVERHEAD_ORG_BUDGETS_V> _budgetsByOrganizationIDList = new List<OVERHEAD_ORG_BUDGETS_V>();
 
             using (Entities _context = new Entities())
             {
@@ -91,18 +92,91 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 }
             }
 
-            
-
-
-
-
-
             int count;
-            uxOrganizationSecurityStore.DataSource = GenericData.EnumerableFilterHeader<HR.ORGANIZATION_V1>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _budgets, out count);
+            uxOrganizationSecurityStore.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_ORG_BUDGETS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _budgetsByOrganizationIDList, out count);
             e.Total = count;
 
+            if (_budgetsByOrganizationIDList.Count == 0)
+            {
+                uxOpenPeriod.Enable();
+            }
+            else
+            {
+                uxOpenPeriod.Disable();
+            }
         }
 
+
+        protected void deSelectOrganization(object sender, DirectEventArgs e)
+        {
+           
+            if(uxOrganizationsGridSelectionModel.SelectedRows.Count() > 0)
+            {
+                uxEnableOrganizationButton.Enable();
+                uxDisableOrganizationButton.Enable();
+            }
+            else
+            {
+                uxEnableOrganizationButton.Disable();
+                uxDisableOrganizationButton.Disable();
+            }
+
+            uxForecastPeriodsByOrganization.Reload();
+           
+        }
+
+        protected void deDeSelectOrganization(object sender, DirectEventArgs e)
+        {
+            if (uxOrganizationsGridSelectionModel.SelectedRows.Count() > 0)
+            {
+                uxEnableOrganizationButton.Enable();
+                uxDisableOrganizationButton.Enable();
+            }
+            else
+            {
+                uxEnableOrganizationButton.Disable();
+                uxDisableOrganizationButton.Disable();
+            }
+
+            uxForecastPeriodsByOrganization.Reload();
+        }
+
+        protected void deOpenPeriod(object sender, DirectEventArgs e)
+        {
+            string _selectedRecordID = Request.QueryString["orgid"];
+
+            char[] _delimiterChars = { ':' };
+            string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
+
+            string url = "umOpenBudgetType.aspx?leID=" + _selectedID[0].ToString();
+
+            Window win = new Window
+            {
+                ID = "uxOpenBudgetTypeWindow",
+                Title = "Open Budget Type",
+                Height = 250,
+                Width = 550,
+                Modal = true,
+                Resizable = false,
+                CloseAction = CloseAction.Destroy,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
+
+            win.Listeners.Close.Handler = "#{uxForecastPeriodsByOrganizationGridPanel}.getStore().load();";
+
+            win.Render(this.Form);
+            win.Show();
+        }
 
     }
 }

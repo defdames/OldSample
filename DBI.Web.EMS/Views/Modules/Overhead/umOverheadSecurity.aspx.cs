@@ -92,7 +92,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             if (!sm.SelectedRecordID.Contains(":"))
             {
                 AddTab(sm.SelectedRecordID + "BT", "Budget Types", "umOverheadBudgetTypes.aspx?leid=" + sm.SelectedRecordID, false, true);
-                //AddTab(sm.SelectedRecordID + "PM", "Open / Close Periods", "umOverheadPeriods.aspx?leid=" + sm.SelectedRecordID, false, false);
             }
             else
             {

@@ -198,11 +198,11 @@
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
+    <Content Include="Views\Modules\Overhead\umOpenBudgetType.aspx" />
     <Content Include="Views\Modules\Overhead\umOverheadGeneralLedger.aspx" />
     <Content Include="Views\Modules\Overhead\umOverheadBudgetTypes.aspx" />
     <Content Include="Views\Modules\Overhead\umOverheadMaintainBudgets.aspx" />
     <Content Include="Views\Modules\Overhead\umOverheadOrganizationSecurity.aspx" />
-    <Content Include="Views\Modules\Overhead\umOverheadPeriods.aspx" />
     <Content Include="Views\Modules\Overhead\umOverheadSecurity.aspx" />
     <Content Include="Views\Modules\Overhead\umAddGLAccountRange.aspx" />
     <Content Include="Views\Modules\Overhead\umAddRemoveBudgetType.aspx" />
@@ -710,6 +710,13 @@
       <DependentUpon>umWeatherTab.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\ValidationChecks.cs" />
+    <Compile Include="Views\Modules\Overhead\umOpenBudgetType.aspx.cs">
+      <DependentUpon>umOpenBudgetType.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umOpenBudgetType.aspx.designer.cs">
+      <DependentUpon>umOpenBudgetType.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\Overhead\umOverheadGeneralLedger.aspx.cs">
       <DependentUpon>umOverheadGeneralLedger.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -737,13 +744,6 @@
     </Compile>
     <Compile Include="Views\Modules\Overhead\umOverheadOrganizationSecurity.aspx.designer.cs">
       <DependentUpon>umOverheadOrganizationSecurity.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\Overhead\umOverheadPeriods.aspx.cs">
-      <DependentUpon>umOverheadPeriods.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Modules\Overhead\umOverheadPeriods.aspx.designer.cs">
-      <DependentUpon>umOverheadPeriods.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\Overhead\umOverheadSecurity.aspx.cs">
       <DependentUpon>umOverheadSecurity.aspx</DependentUpon>
