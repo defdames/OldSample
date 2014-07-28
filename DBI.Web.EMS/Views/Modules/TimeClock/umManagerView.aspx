@@ -28,7 +28,7 @@
 		};
 		var colorErrors = function (value, metadata, record) {
 		    if (record.data.ACTUAL_HOURS >= 12) {
-		        metadata.style = "color: red;";
+		        metadata.style = "background-color: red;";
 		    }
 		    return value;
 		};
