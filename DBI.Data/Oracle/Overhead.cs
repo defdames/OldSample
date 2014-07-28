@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DBI.Data
 {
-    public class OVERHEAD
+    public class OVERHEAD_MODULE
     {
         /// <summary>
         /// Returns the gl account ranges for a selected organization.
@@ -23,16 +23,19 @@ namespace DBI.Data
                 INCLUDE_EXCLUDE = (x.INCLUDE_EXCLUDE_FLAG == "I") ? "Included" : "Excluded"});
             return _data;        
         }
-
-      
-
-
-
-
-
-
     }
 
+    public partial class OVERHEAD_BUDGET_TYPE
+    {
+
+        public static string GetTypeByID(long budgetTypeID)
+        {
+            using (Entities _context = new Entities())
+            {
+                return _context.OVERHEAD_BUDGET_TYPE.Where(x => x.OVERHEAD_BUDGET_TYPE_ID == budgetTypeID).SingleOrDefault().BUDGET_NAME;
+            }
+        }
+    }
   
 
     public class OVERHEAD_GL_RANGE_V : OVERHEAD_GL_RANGE
@@ -41,6 +44,12 @@ namespace DBI.Data
             public string ERSEGMENTS { get; set; }
             public string INCLUDE_EXCLUDE { get; set; }
         }
+
+    public class OVERHEAD_ORG_BUDGETS_V : OVERHEAD_ORG_BUDGETS
+    {
+        public string OVERHEAD_BUDGET_TYPE { get; set; }
+        public string BUDGET_STATUS { get; set; }
+    }
 
     public partial class OVERHEAD_GL_RANGE
     {
@@ -76,6 +85,15 @@ namespace DBI.Data
         }
 
     }
+
+    public partial class OVERHEAD_ORG_BUDGETS
+    {
+        public static IQueryable<OVERHEAD_ORG_BUDGETS> BudgetListByOrganizationID(long organizationID, Entities context)
+        {
+            var data = context.OVERHEAD_ORG_BUDGETS.Where(x => x.ORGANIZATION_ID == organizationID);
+        }
+    }
+
 
 
 }

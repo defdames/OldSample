@@ -33,7 +33,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
                 using (Entities _context = new Entities())
                 {
-                    var _rangeList = OVERHEAD.OverheadGLRangeByOrganizationId(_org,_context).ToList();
+                    var _rangeList = OVERHEAD_MODULE.OverheadGLRangeByOrganizationId(_org,_context).ToList();
 
                     foreach (OVERHEAD_GL_RANGE_V _range in _rangeList)
                     {

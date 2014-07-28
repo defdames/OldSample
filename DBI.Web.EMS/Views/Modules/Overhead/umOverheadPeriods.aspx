@@ -12,14 +12,6 @@
         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout" Namespace="App" IDMode="Explicit">
             <Items>
                 <ext:GridPanel ID="uxOrganizationsGrid" runat="server" Flex="1" SimpleSelect="true" Header="false" Padding="5" Region="Center">
-                    <TopBar>
-                        <ext:Toolbar ID="Toolbar1" runat="server">
-                            <Items>
-                                <ext:Button runat="server" Icon="BookOpen" Text="Open Period"></ext:Button>
-                                <ext:Button ID="Button1" runat="server" Icon="Book" Text="Close Period"></ext:Button>
-                            </Items>
-                        </ext:Toolbar>
-                    </TopBar>
                     <Store>
                         <ext:Store runat="server"
                             ID="uxOrganizationSecurityStore"

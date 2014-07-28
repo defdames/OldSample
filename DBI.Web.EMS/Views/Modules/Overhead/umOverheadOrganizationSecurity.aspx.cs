@@ -73,8 +73,36 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             string organizationName = e.ExtraParams["Name"];
             string organizationID = e.ExtraParams["ID"];
 
-            X.Js.Call("parent.App.direct.AddTabPanel", "gla_" + organizationID, organizationName + " - " +"General Ledger Accounts", "~/Views/Modules/Overhead/umOverheadGeneralLedger.aspx?orgID=" + organizationID);
-            
+            X.Js.Call("parent.App.direct.AddTabPanel", "gla_" + organizationID, organizationName + " - " +"General Ledger Accounts", "~/Views/Modules/Overhead/umOverheadGeneralLedger.aspx?orgID=" + organizationID);         
         }
+
+        protected void deLoadForcastPeriodsByOrganization(object sender, StoreReadDataEventArgs e)
+        {
+
+            List<OVERHEAD_ORG_BUDGETS> _budgetsByOrganizationIDList = new List<OVERHEAD_ORG_BUDGETS>();
+
+            using (Entities _context = new Entities())
+            {
+                RowSelectionModel model = uxOrganizationsGridSelectionModel;
+                foreach (SelectedRow row in model.SelectedRows)
+                {
+                long _selectedRowID = long.Parse(row.RecordID);
+                _budgetsByOrganizationIDList = OVERHEAD_ORG_BUDGETS.BudgetListByOrganizationID(_selectedRowID, _context).ToList();
+                }
+            }
+
+            
+
+
+
+
+
+            int count;
+            uxOrganizationSecurityStore.DataSource = GenericData.EnumerableFilterHeader<HR.ORGANIZATION_V1>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _budgets, out count);
+            e.Total = count;
+
+        }
+
+
     }
 }

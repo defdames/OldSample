@@ -67,7 +67,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 {
                     long _organizationID = long.Parse(Request.QueryString["orgID"]);
                     int count;
-                    IQueryable<OVERHEAD_GL_RANGE_V> _data = OVERHEAD.OverheadGLRangeByOrganizationId(_organizationID, _context);
+                    IQueryable<OVERHEAD_GL_RANGE_V> _data = OVERHEAD_MODULE.OverheadGLRangeByOrganizationId(_organizationID, _context);
                     uxGLAccountRangeStore.DataSource = GenericData.ListFilterHeader<OVERHEAD_GL_RANGE_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
                     e.Total = count;
                 }

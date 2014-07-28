@@ -40,10 +40,26 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             //Clean Up data
             _returnData = _returnData.Distinct().ToList();
 
+            List<OVERHEAD_PERIODS_V> _dataView = new List<OVERHEAD_PERIODS_V>();
+
+
+
 
             int count;
             uxOrganizationSecurityStore.DataSource = GenericData.EnumerableFilterHeader<HR.ORGANIZATION_V1>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _returnData, out count);
             e.Total = count;
         }
+
+
+        public class OVERHEAD_PERIODS_V
+        {
+            public long ORGANIZATION_ID { get; set; }
+            public string ORGNAIZATION_NAME { get; set; }
+            public string CURRENT_BUDGET_TYPE { get; set; }
+            public string STATUS { get; set; }
+        }
+
+
+
     }
 }

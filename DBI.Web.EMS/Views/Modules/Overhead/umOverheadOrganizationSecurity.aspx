@@ -115,6 +115,45 @@
                         </ext:GridView>
                     </View>
                 </ext:GridPanel>
+
+
+                 <ext:GridPanel ID="GridPanel1" runat="server" Flex="1" SimpleSelect="true" Header="true" Title="Forecast Periods By Organization" Padding="5" Region="South">
+                    <Store>
+                        <ext:Store runat="server"
+                            ID="Store1"
+                            AutoDataBind="true" RemoteSort="true" PageSize="25" AutoLoad="true" OnReadData="deLoadForcastPeriodsByOrganization">
+                            <Model>
+                                <ext:Model ID="Model1" runat="server" IDProperty="ORG_BUDGET_ID">
+                                    <Fields>
+                                        <ext:ModelField Name="FISCAL_YEAR" />
+                                        <ext:ModelField Name="BUDGET_TYPE" />
+                                        <ext:ModelField Name="STATUS" />
+                                    </Fields>
+                                </ext:Model>
+                            </Model>
+                            <Proxy>
+                                <ext:PageProxy />
+                            </Proxy>
+                        </ext:Store>
+                    </Store>
+                    <ColumnModel>
+                        <Columns>
+                            <ext:Column ID="Column3" runat="server" DataIndex="FISCAL_YEAR" Text="Fiscal Year" Flex="1" />
+                            <ext:Column ID="Column4" runat="server" DataIndex="BUDGET_TYPE" Text="Budget Forecast" Flex="1" />
+                            <ext:Column ID="Column5" runat="server" DataIndex="STATUS" Text="Status" Flex="1" />
+                        </Columns>
+                    </ColumnModel>
+                    <Plugins>
+                        <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true" />
+                    </Plugins>
+                    <BottomBar>
+                        <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
+                    </BottomBar>
+                    <View>
+                        <ext:GridView ID="GridView1" StripeRows="true" runat="server">
+                        </ext:GridView>
+                    </View>
+                </ext:GridPanel>
                 </Items>
             </ext:Viewport>
         </form>
