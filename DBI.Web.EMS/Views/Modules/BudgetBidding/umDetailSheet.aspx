@@ -70,7 +70,7 @@
                             <Items>
                                 <ext:Label ID="uxYearVersion" runat="server" Width="200" Text="2014 2nd Reforecast" />
                                 <ext:Label ID="Label1" runat="server" Width="225" />
-                                <ext:Label ID="uxWeekEnding" runat="server" Width="200" Text="Week Ending N/A" Cls="labelRightAlign" />
+                                <ext:Label ID="uxWeekEnding" runat="server" Width="200" Text="Week Ending:  N/A" Cls="labelRightAlign" />
                             </Items>
                         </ext:FieldContainer>
                         <ext:FieldContainer ID="FieldContainer6"
@@ -84,7 +84,7 @@
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
-                                <ext:Label ID="Label2" runat="server" Width="200" Text="Project Name:  " />
+                                <ext:Label ID="Label2" runat="server" Width="200" Text="BBProject Name:  " />
                                 <ext:Label ID="uxProjectName" runat="server" Width="425" Text="" />
                             </Items>
                         </ext:FieldContainer>
@@ -185,22 +185,22 @@
                                                 <Columns>
                                                     <ext:Column ID="Column4" runat="server" DataIndex="DESC_1" Text="Material" Flex="2">
                                                         <Editor>
-                                                            <ext:TextField ID="TextField6" runat="server" EmptyText="Material" />
+                                                            <ext:TextField ID="TextField6" runat="server" />
                                                         </Editor>
                                                     </ext:Column>
                                                     <ext:NumberColumn ID="Column1" runat="server" DataIndex="AMT_1" Text="Unit Cost" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:TextField ID="TextField7" runat="server" EmptyText="Unit Cost" />
+                                                            <ext:TextField ID="TextField7" runat="server" />
                                                         </Editor>
                                                     </ext:NumberColumn>
                                                     <ext:Column ID="Column2" runat="server" DataIndex="DESC_2" Text="UOM" Flex="1">
                                                         <Editor>
-                                                            <ext:TextField ID="TextField8" runat="server" EmptyText="UOM" />
+                                                            <ext:TextField ID="TextField8" runat="server" />
                                                         </Editor>
                                                     </ext:Column>
                                                     <ext:NumberColumn ID="Column3" runat="server" DataIndex="AMT_2" Text="Qty" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:TextField ID="TextField9" runat="server" EmptyText="Qty" />
+                                                            <ext:TextField ID="TextField9" runat="server" />
                                                         </Editor>
                                                     </ext:NumberColumn>
                                                     <ext:NumberColumn ID="Column5" runat="server" DataIndex="TOTAL" Text="Total" Flex="1" Align="Right">
@@ -210,16 +210,15 @@
                                                 </Columns>
                                             </ColumnModel>
                                             <Plugins>
-                                                <ext:CellEditing ID="CellEditing1" runat="server" ClicksToEdit="2">
+                                                <ext:CellEditing ID="CellEditing2" runat="server">
                                                     <Listeners>
                                                         <Edit Fn="editMaterial" />
                                                     </Listeners>
                                                 </ext:CellEditing>
                                             </Plugins>
                                             <SelectionModel>
-                                                <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" Mode="Single" />
+                                                <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" />
                                             </SelectionModel>
-
                                             <TopBar>
                                                 <ext:Toolbar ID="Toolbar2" runat="server" Region="North">
                                                     <Items>
@@ -229,30 +228,30 @@
                                                             </Listeners>
                                                         </ext:Button>
                                                         <ext:Button ID="uxDeleteMaterial" runat="server" Text="Delete Selected" Icon="Delete">
-                                                            <Listeners>
-                                                                <Click Handler="#{uxMaterialGridPanel}.deleteSelected(); #{UserForm}.getForm().reset();" />
-                                                            </Listeners>
-                                                        </ext:Button>
-                                                        <%--<ext:Button ID="uxSaveRRButton" runat="server" Text="Save Railroad" Icon="Add">--%>
-
-                                                        <%--                                                            <DirectEvents>
-                                                                <Click OnEvent="deSaveRailRoad" Before="#{uxMaterialGridStore}.isDirty()">
+                                                            <DirectEvents>
+                                                                <Click OnEvent="deDeleteRecord">
                                                                     <ExtraParams>
-                                                                        <ext:Parameter Name="rrdata" Value="#{uxMaterialGridStore}.getChangedData()" Mode="Raw" Encode="true" />
+                                                                        <ext:Parameter Name="RecordID" Value="#{uxMaterialGridPanel}.getSelectionModel().getSelection()[0].data.DETAIL_SHEET_ID" Mode="Raw" />
                                                                     </ExtraParams>
+                                                                    <EventMask ShowMask="true" Msg="Deleting..." />
                                                                 </Click>
                                                             </DirectEvents>
-                                                        </ext:Button>--%>
+                                                        </ext:Button>
                                                     </Items>
                                                 </ext:Toolbar>
                                             </TopBar>
-                                            <%--                                            <DirectEvents>
-                                                <Select OnEvent="deLoadStores">
-                                                    <ExtraParams>
-                                                        <ext:Parameter Name="RailroadId" Value="#{uxMaterialGridPanel}.getSelectionModel().getSelection()[0].data.RAILROAD_ID" Mode="Raw" />
-                                                    </ExtraParams>
-                                                </Select>
-                                            </DirectEvents>--%>
+                                            <DockedItems>
+                                                <ext:FieldContainer ID="uxTotalMaterialBar" runat="server" Layout="HBoxLayout" Dock="Bottom" Cls="grandTotalBackground">
+                                                    <Items>
+                                                        <ext:DisplayField ID="DisplayField8" runat="server" Width="10" />
+                                                        <ext:DisplayField ID="DisplayField7" runat="server" Text="Total Material:" Flex="2" Cls="grandTotalForeground" />
+                                                        <ext:DisplayField ID="DisplayField6" runat="server" Flex="1" />
+                                                        <ext:DisplayField ID="DisplayField1" runat="server" Flex="1" />
+                                                        <ext:DisplayField ID="DisplayField2" runat="server" Flex="1" />
+                                                        <ext:DisplayField ID="uxTotalMaterial" runat="server" Text="0.00" Flex="1" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                                    </Items>
+                                                </ext:FieldContainer>
+                                            </DockedItems>
                                         </ext:GridPanel>
                                     </Items>
                                 </ext:FieldContainer>
@@ -351,11 +350,11 @@
                                     Layout="HBoxLayout">
                                     <Items>
                                         <ext:Label ID="Label19" runat="server" Width="52" />
-                                        <ext:TextField ID="TextField1" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" />
-                                        <ext:TextField ID="TextField2" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" />
-                                        <ext:TextField ID="TextField3" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" />
-                                        <ext:TextField ID="TextField4" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" />
-                                        <ext:TextField ID="TextField5" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" />
+                                        <ext:TextField ID="uxEGrossRec" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" />
+                                        <ext:TextField ID="uxEMatUsage" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" />
+                                        <ext:TextField ID="uxEGrossRev" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" />
+                                        <ext:TextField ID="uxEDirects" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" />
+                                        <ext:TextField ID="uxEOP" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" />
                                         <ext:Label ID="Label20" runat="server" Width="52" />
                                     </Items>
                                 </ext:FieldContainer>
