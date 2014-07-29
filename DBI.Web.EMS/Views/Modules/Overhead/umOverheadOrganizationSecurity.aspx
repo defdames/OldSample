@@ -73,33 +73,30 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                           
-
-
                             <ext:Column ID="Column2" runat="server" DataIndex="ORGANIZATION_NAME" Text="Name" Flex="3" />
-                            <ext:Column ID="Column1" runat="server" DataIndex="ORGANIZATION_STATUS" Text="Current Status" Flex="1" />
-                            
-                             <ext:CommandColumn ID="CommandColumn1" runat="server" Width="125">
+                            <ext:Column ID="Column1" runat="server" DataIndex="ORGANIZATION_STATUS" Text="Current Status" Flex="1" />   
+                             <ext:CommandColumn ID="CommandColumn1" runat="server" Width="250">
                                 <Commands>
-                                    <ext:GridCommand Text="Account Maintenance" CommandName="View" Cls="my-btn"></ext:GridCommand>
+                                    <ext:GridCommand Text="Ledger Accounts" CommandName="Accounts" Icon="BookMagnify" Cls="my-btn"></ext:GridCommand>
+                                    <ext:GridCommand Text ="Forecast Periods" CommandName="Periods" Icon="BookMagnify" Cls="my-btn"></ext:GridCommand>
                                 </Commands>
                                 <DirectEvents>
                                     <Command OnEvent="deViewAccounts">
                                         <ExtraParams>
                                             <ext:Parameter Mode="Raw" Name="Name" Value="record.data.ORGANIZATION_NAME"></ext:Parameter>
                                             <ext:Parameter Mode="Raw" Name="ID" Value="record.data.ORGANIZATION_ID"></ext:Parameter>
+                                            <ext:Parameter Name="command" Value="command" Mode="Raw" />
                                         </ExtraParams>
                                     </Command>
                                 </DirectEvents>
-                            </ext:CommandColumn>
-                            
+                            </ext:CommandColumn>     
                         </Columns>
                     </ColumnModel>
                     <Plugins>
                         <ext:FilterHeader ID="uxOrganizationsGridFilter" runat="server" Remote="true" />
                     </Plugins>
                     <SelectionModel>
-                        <ext:CheckboxSelectionModel runat="server" Mode="Single" ID="uxOrganizationsGridSelectionModel" AllowDeselect="true">
+                        <ext:CheckboxSelectionModel runat="server" Mode="Simple" ID="uxOrganizationsGridSelectionModel" AllowDeselect="true">
                             <DirectEvents>
                                 <Select OnEvent="deSelectOrganization"></Select>
                                 <Deselect OnEvent="deSelectOrganization"></Deselect>
@@ -117,67 +114,7 @@
                 </ext:GridPanel>
 
 
-                 <ext:GridPanel ID="uxForecastPeriodsByOrganizationGridPanel" runat="server" Flex="1" SimpleSelect="true" Header="true" Title="Forecast Periods By Organization" Padding="5" Region="South">
-                      <TopBar>
-                        <ext:Toolbar ID="Toolbar2" runat="server">
-                            <Items>
-                                <ext:Button runat="server" Text="Open" Icon="BookOpen" ID="uxOpenPeriod" Disabled="true" >
-                                    <ToolTips>
-                                        <ext:ToolTip ID="ToolTip3" runat="server" UI="Info" Html="Opens a period for an organization so it can be used for the budget overhead system."></ext:ToolTip>
-                                    </ToolTips>
-                                    <DirectEvents>
-                                        <Click OnEvent="deOpenPeriod"></Click>
-                                    </DirectEvents>      
-                                </ext:Button>
-                                  <ext:Button runat="server" Text="Close"  Icon="Book" ID="uxClosePeriod" Disabled="true" >
-                                    <ToolTips>
-                                        <ext:ToolTip ID="ToolTip4" runat="server" UI="Info" Html="Close a period an organization so that it can't be used for the budget overhead system."></ext:ToolTip>
-                                    </ToolTips>
-                                </ext:Button>
-                            </Items>
-                        </ext:Toolbar>
-                    </TopBar>
-                    <Store>
-                        <ext:Store runat="server"
-                            ID="uxForecastPeriodsByOrganization"
-                            AutoDataBind="true" RemoteSort="true" PageSize="25" AutoLoad="false" OnReadData="deLoadForcastPeriodsByOrganization">
-                            <Model>
-                                <ext:Model ID="Model1" runat="server" IDProperty="ORG_BUDGET_ID">
-                                    <Fields>
-                                        <ext:ModelField Name="FISCAL_YEAR" />
-                                        <ext:ModelField Name="BUDGET_TYPE" />
-                                        <ext:ModelField Name="STATUS" />
-                                    </Fields>
-                                </ext:Model>
-                            </Model>
-                            <Proxy>
-                                <ext:PageProxy />
-                            </Proxy>
-                        </ext:Store>
-                    </Store>
-                    <ColumnModel>
-                        <Columns>
-                            <ext:Column ID="Column3" runat="server" DataIndex="FISCAL_YEAR" Text="Fiscal Year" Flex="1" />
-                            <ext:Column ID="Column4" runat="server" DataIndex="BUDGET_TYPE" Text="Budget Forecast" Flex="1" />
-                            <ext:Column ID="Column5" runat="server" DataIndex="STATUS" Text="Status" Flex="1" />
-                        </Columns>
-                    </ColumnModel>
-                    <Plugins>
-                        <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true" />
-                    </Plugins>
-                     <SelectionModel><ext:CheckboxSelectionModel runat="server" Mode="Single" AllowDeselect="true">
-                         <DirectEvents>
-                         </DirectEvents>
-                                     </ext:CheckboxSelectionModel>
-                     </SelectionModel>
-                    <BottomBar>
-                        <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
-                    </BottomBar>
-                    <View>
-                        <ext:GridView ID="GridView1" StripeRows="true" runat="server">
-                        </ext:GridView>
-                    </View>
-                </ext:GridPanel>
+             
                 </Items>
             </ext:Viewport>
         </form>

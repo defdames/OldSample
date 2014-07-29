@@ -29,7 +29,7 @@
                                             <ext:PageProxy />
                                         </Proxy>
                                         <Model>
-                                            <ext:Model ID="Model5" runat="server">
+                                            <ext:Model ID="Model5" runat="server" IDProperty="ID_NAME">
                                                 <Fields>
                                                     <ext:ModelField Name="ID_NAME" />
                                                 </Fields>
@@ -37,6 +37,12 @@
                                         </Model>
                                     </ext:Store>
                                 </Store>
+                                <Listeners>
+                                    <Select Handler="#{uxBudgetName}.clearValue();
+                                        #{uxBudgetNameStore}.removeAll(true);
+                                        #{uxBudgetName}.enable();
+                                        #{uxBudgetNameStore}.reload();" />
+                                </Listeners>
                             </ext:ComboBox>
 
                         </Items>
@@ -46,9 +52,9 @@
                         LabelStyle="font-weight:bold;padding:0;"
                         Layout="HBoxLayout">
                         <Items>
-                           <ext:ComboBox runat="server" ID="uxBudgetName" Editable="true" TypeAhead="true"
-                                FieldLabel="Budget Name" AnchorHorizontal="55%" DisplayField="BUDGET_NAME"
-                                ValueField="BUDGET_NAME" TriggerAction="All" 
+                           <ext:ComboBox runat="server" ID="uxBudgetName" Editable="true" TypeAhead="true" Disabled="true"
+                                FieldLabel="Budget Name" AnchorHorizontal="55%" DisplayField="BUDGET_DESCRIPTION"
+                                ValueField="OVERHEAD_BUDGET_TYPE_ID" TriggerAction="All" 
                                 MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" >
                                 <Store>
                                     <ext:Store runat="server" ID="uxBudgetNameStore" OnReadData="deLoadBudgetNames" AutoLoad="false" AutoDataBind="true" >
@@ -56,11 +62,10 @@
                                             <ext:PageProxy />
                                         </Proxy>
                                         <Model>
-                                            <ext:Model ID="Model1" runat="server" IDProperty="BUDGET_NAME">
+                                            <ext:Model ID="Model1" runat="server" IDProperty="OVERHEAD_BUDGET_TYPE_ID">
                                                 <Fields>
                                                     <ext:ModelField Name="BUDGET_NAME" />
-                                                    <ext:ModelField Name="DESCRIPTION" />
-                                                    <ext:ModelField Name="LE_ORG_ID" />
+                                                    <ext:ModelField Name="BUDGET_DESCRIPTION" />
                                                 </Fields>
                                             </ext:Model>
                                         </Model>
@@ -72,7 +77,9 @@
                     </Items>
                     <Buttons>
                         <ext:Button runat="server" ID="uxOpenPeriod" Text="Open Period" Disabled="true" icon="ApplicationAdd">
-                          
+                          <DirectEvents>
+                              <Click OnEvent="deOpenPeriod" Success="parent.Ext.getCmp('uxOpenBudgetTypeWindow').close();" ><Confirmation ConfirmRequest="true" Message="Are you sure you want to open this budget period?"></Confirmation><EventMask ShowMask="true"></EventMask></Click>
+                          </DirectEvents>
                         </ext:Button>
                         <ext:Button ID="uxCloseButton" runat="server" Text="Close Form"><Listeners><Click Handler="parent.Ext.getCmp('uxOpenBudgetTypeWindow').close();"></Click></Listeners></ext:Button>
                     </Buttons>

@@ -28,11 +28,11 @@ namespace DBI.Data
     public partial class OVERHEAD_BUDGET_TYPE
     {
 
-        public static string GetTypeByID(long budgetTypeID)
+        public static string GetDescriptionByTypeId(long budgetTypeID)
         {
             using (Entities _context = new Entities())
             {
-                return _context.OVERHEAD_BUDGET_TYPE.Where(x => x.OVERHEAD_BUDGET_TYPE_ID == budgetTypeID).SingleOrDefault().BUDGET_NAME;
+                return _context.OVERHEAD_BUDGET_TYPE.Where(x => x.OVERHEAD_BUDGET_TYPE_ID == budgetTypeID).SingleOrDefault().BUDGET_DESCRIPTION;
             }
         }
     }
@@ -47,9 +47,10 @@ namespace DBI.Data
 
     public class OVERHEAD_ORG_BUDGETS_V : OVERHEAD_ORG_BUDGETS
     {
-        public string OVERHEAD_BUDGET_TYPE { get; set; }
+        public string BUDGET_DESCRIPTION { get; set; }
         public string BUDGET_STATUS { get; set; }
     }
+
 
     public partial class OVERHEAD_GL_RANGE
     {
@@ -96,8 +97,8 @@ namespace DBI.Data
             foreach (OVERHEAD_ORG_BUDGETS _budget in data)
             {
                 OVERHEAD_ORG_BUDGETS_V _r = new OVERHEAD_ORG_BUDGETS_V();
-                _r.OVERHEAD_BUDGET_TYPE = OVERHEAD_BUDGET_TYPE.GetTypeByID(_budget.OVERHEAD_BUDGET_TYPE_ID);
-                _r.STATUS = (_budget.STATUS == "O") ? "Open" : (_budget.STATUS == "C") ? "Closed" : (_budget.STATUS == "P") ? "Pending" : "Never Opened";
+                _r.BUDGET_DESCRIPTION = OVERHEAD_BUDGET_TYPE.GetDescriptionByTypeId(_budget.OVERHEAD_BUDGET_TYPE_ID);
+                _r.BUDGET_STATUS = (_budget.STATUS == "O") ? "Open" : (_budget.STATUS == "C") ? "Closed" : (_budget.STATUS == "P") ? "Pending" : "Never Opened";
                 _r.ORG_BUDGET_ID = _budget.ORG_BUDGET_ID;
                 _r.ORGANIZATION_ID = _budget.ORGANIZATION_ID;
                 _r.FISCAL_YEAR = _budget.FISCAL_YEAR;
@@ -105,18 +106,17 @@ namespace DBI.Data
             }
 
             return _rdata.AsQueryable();
-
         }
     }
 
     public partial class OVERHEAD_BUDGET_TYPES
     {
 
-        public static List<OVERHEAD_BUDGET_TYPE> NextAvailBudgetTypeByOrganization(long organizationID, long fiscalYear)
+        public static List<OVERHEAD_BUDGET_TYPE> NextAvailBudgetTypeByOrganization(long organizationID, long legalEntityID, long fiscalYear)
         {
             using(Entities _context = new Entities())
             {
-                IQueryable<OVERHEAD_BUDGET_TYPE> _data = OVERHEAD_BUDGET_TYPE.BudgetTypes(organizationID).AsQueryable();
+                IQueryable<OVERHEAD_BUDGET_TYPE> _data = OVERHEAD_BUDGET_TYPE.BudgetTypes(legalEntityID).AsQueryable();
 
                 _data = (from dups in _data
                          where !_context.OVERHEAD_ORG_BUDGETS.Any(x => x.OVERHEAD_BUDGET_TYPE_ID == dups.OVERHEAD_BUDGET_TYPE_ID && x.FISCAL_YEAR == fiscalYear && x.ORGANIZATION_ID == organizationID)

@@ -73,44 +73,23 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         {
             string organizationName = e.ExtraParams["Name"];
             string organizationID = e.ExtraParams["ID"];
+            string command = e.ExtraParams["command"];
 
-            X.Js.Call("parent.App.direct.AddTabPanel", "gla_" + organizationID, organizationName + " - " +"General Ledger Accounts", "~/Views/Modules/Overhead/umOverheadGeneralLedger.aspx?orgID=" + organizationID);         
+            string _selectedRecordID = Request.QueryString["orgid"];
+            char[] _delimiterChars = { ':' };
+            string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
+
+            if(command == "Accounts")
+                X.Js.Call("parent.App.direct.AddTabPanel", "gla_" + organizationID, organizationName + " - " +"General Ledger Accounts", "~/Views/Modules/Overhead/umOverheadGeneralLedger.aspx?orgID=" + organizationID);
+
+            if (command == "Periods")
+                X.Js.Call("parent.App.direct.AddTabPanel", "orgp_" + organizationID, organizationName + " - " + "Budget Periods", "~/Views/Modules/Overhead/umOverheadBudgetPeriods.aspx?orgID=" + organizationID + "&leID=" + _selectedID[0].ToString());  
         }
-
-        protected void deLoadForcastPeriodsByOrganization(object sender, StoreReadDataEventArgs e)
-        {
-
-            List<OVERHEAD_ORG_BUDGETS_V> _budgetsByOrganizationIDList = new List<OVERHEAD_ORG_BUDGETS_V>();
-
-            using (Entities _context = new Entities())
-            {
-                RowSelectionModel model = uxOrganizationsGridSelectionModel;
-                foreach (SelectedRow row in model.SelectedRows)
-                {
-                long _selectedRowID = long.Parse(row.RecordID);
-                _budgetsByOrganizationIDList = OVERHEAD_ORG_BUDGETS.BudgetListByOrganizationID(_selectedRowID, _context).ToList();
-                }
-            }
-
-            int count;
-            uxOrganizationSecurityStore.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_ORG_BUDGETS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _budgetsByOrganizationIDList, out count);
-            e.Total = count;
-
-            if (_budgetsByOrganizationIDList.Count == 0)
-            {
-                uxOpenPeriod.Enable();
-            }
-            else
-            {
-                uxOpenPeriod.Disable();
-            }
-        }
-
 
         protected void deSelectOrganization(object sender, DirectEventArgs e)
         {
-           
-            if(uxOrganizationsGridSelectionModel.SelectedRows.Count() > 0)
+
+            if (uxOrganizationsGridSelectionModel.SelectedRows.Count() > 0)
             {
                 uxEnableOrganizationButton.Enable();
                 uxDisableOrganizationButton.Enable();
@@ -121,8 +100,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 uxDisableOrganizationButton.Disable();
             }
 
-            uxForecastPeriodsByOrganization.Reload();
-           
         }
 
         protected void deDeSelectOrganization(object sender, DirectEventArgs e)
@@ -137,45 +114,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 uxEnableOrganizationButton.Disable();
                 uxDisableOrganizationButton.Disable();
             }
-
-            uxForecastPeriodsByOrganization.Reload();
-        }
-
-        protected void deOpenPeriod(object sender, DirectEventArgs e)
-        {
-            string _selectedRecordID = Request.QueryString["orgid"];
-
-            char[] _delimiterChars = { ':' };
-            string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
-
-            string url = "umOpenBudgetType.aspx?leID=" + _selectedID[0].ToString();
-
-            Window win = new Window
-            {
-                ID = "uxOpenBudgetTypeWindow",
-                Title = "Open Budget Type",
-                Height = 250,
-                Width = 550,
-                Modal = true,
-                Resizable = false,
-                CloseAction = CloseAction.Destroy,
-                Loader = new ComponentLoader
-                {
-                    Mode = LoadMode.Frame,
-                    DisableCaching = true,
-                    Url = url,
-                    AutoLoad = true,
-                    LoadMask =
-                    {
-                        ShowMask = true
-                    }
-                }
-            };
-
-            win.Listeners.Close.Handler = "#{uxForecastPeriodsByOrganizationGridPanel}.getStore().load();";
-
-            win.Render(this.Form);
-            win.Show();
         }
 
     }

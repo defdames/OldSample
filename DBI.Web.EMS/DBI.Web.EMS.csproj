@@ -199,6 +199,7 @@
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
     <Content Include="Views\Modules\Overhead\umOpenBudgetType.aspx" />
+    <Content Include="Views\Modules\Overhead\umOverheadBudgetPeriods.aspx" />
     <Content Include="Views\Modules\Overhead\umOverheadGeneralLedger.aspx" />
     <Content Include="Views\Modules\Overhead\umOverheadBudgetTypes.aspx" />
     <Content Include="Views\Modules\Overhead\umOverheadMaintainBudgets.aspx" />
@@ -717,6 +718,13 @@
     <Compile Include="Views\Modules\Overhead\umOpenBudgetType.aspx.designer.cs">
       <DependentUpon>umOpenBudgetType.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\Overhead\umOverheadBudgetPeriods.aspx.cs">
+      <DependentUpon>umOverheadBudgetPeriods.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umOverheadBudgetPeriods.aspx.designer.cs">
+      <DependentUpon>umOverheadBudgetPeriods.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\Overhead\umOverheadGeneralLedger.aspx.cs">
       <DependentUpon>umOverheadGeneralLedger.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -947,10 +955,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Modules\Overhead\Backup\BudgetType\AddEdit\" />
-    <Folder Include="Views\Modules\Overhead\Backup\GLSecurity\Add\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
