@@ -8,11 +8,11 @@ namespace DBI.Data.Test
     
     
     /// <summary>
-    ///This is a test class for TIME_CLOCKTest and is intended
-    ///to contain all TIME_CLOCKTest Unit Tests
+    ///This is a test class for OVERHEAD_BUDGET_TYPESTest and is intended
+    ///to contain all OVERHEAD_BUDGET_TYPESTest Unit Tests
     ///</summary>
     [TestClass()]
-    public class TIME_CLOCKTest
+    public class OVERHEAD_BUDGET_TYPESTest
     {
 
 
@@ -65,41 +65,17 @@ namespace DBI.Data.Test
         #endregion
 
 
-        ///// <summary>
-        /////A test for EmployeeTime
-        /////</summary>
-        //[TestMethod()]
-        //public void EmployeeTimeTest()
-        //{
-        //    List<TIME_CLOCK.Employee> actual;
-        //    actual = TIME_CLOCK.EmployeeTime();
-        //    Assert.IsTrue(actual.Count > 0);
-        //}
-
-        ///// <summary>
-        /////A test for EmployeeTimeCompletedUnapproved
-        /////</summary>
-        //[TestMethod()]
-        //public void EmployeeTimeCompletedUnapprovedTest()
-        //{
-        //    Decimal supervisorId = new Decimal(301); // TODO: Initialize to an appropriate value
-           
-        //    List<TIME_CLOCK.Employee> actual;
-        //    actual = TIME_CLOCK.EmployeeTimeCompletedUnapproved(supervisorId);
-        //    Assert.IsTrue(actual.Count > 0);
-        //}
-
-        ///// <summary>
-        /////A test for EmployeeTimeCompletedUnapprovedPayroll
-        /////</summary>
-        //[TestMethod()]
-        //public void EmployeeTimeCompletedUnapprovedPayrollTest()
-        //{
-        
-        //    List<TIME_CLOCK.Employee> actual;
-        //    actual = TIME_CLOCK.EmployeeTimeCompletedUnapprovedPayroll();
-        //    Assert.IsTrue(actual.Count > 0);
-            
-        //}
+        /// <summary>
+        ///A test for NextAvailBudgetTypeByOrganization
+        ///</summary>
+        [TestMethod()]
+        public void NextAvailBudgetTypeByOrganizationTest()
+        {
+            long organizationID = 121; // TODO: Initialize to an appropriate value
+            long fiscalYear = 2014; // TODO: Initialize to an appropriate value
+            List<OVERHEAD_BUDGET_TYPE> actual;
+            actual = OVERHEAD_BUDGET_TYPES.NextAvailBudgetTypeByOrganization(organizationID, fiscalYear);
+            Assert.IsTrue(actual.Count >= 0);
+        }
     }
 }
