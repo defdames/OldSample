@@ -1,18 +1,18 @@
 ﻿using DBI.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 
-namespace DBI.Data.Test
+namespace TestProject1
 {
     
     
     /// <summary>
-    ///This is a test class for TIME_CLOCKTest and is intended
-    ///to contain all TIME_CLOCKTest Unit Tests
+    ///This is a test class for OVERHEADTest and is intended
+    ///to contain all OVERHEADTest Unit Tests
     ///</summary>
     [TestClass()]
-    public class TIME_CLOCKTest
+    public class OVERHEADTest
     {
 
 
@@ -65,41 +65,19 @@ namespace DBI.Data.Test
         #endregion
 
 
-        ///// <summary>
-        /////A test for EmployeeTime
-        /////</summary>
-        //[TestMethod()]
-        //public void EmployeeTimeTest()
-        //{
-        //    List<TIME_CLOCK.Employee> actual;
-        //    actual = TIME_CLOCK.EmployeeTime();
-        //    Assert.IsTrue(actual.Count > 0);
-        //}
-
-        ///// <summary>
-        /////A test for EmployeeTimeCompletedUnapproved
-        /////</summary>
-        //[TestMethod()]
-        //public void EmployeeTimeCompletedUnapprovedTest()
-        //{
-        //    Decimal supervisorId = new Decimal(301); // TODO: Initialize to an appropriate value
-           
-        //    List<TIME_CLOCK.Employee> actual;
-        //    actual = TIME_CLOCK.EmployeeTimeCompletedUnapproved(supervisorId);
-        //    Assert.IsTrue(actual.Count > 0);
-        //}
-
-        ///// <summary>
-        /////A test for EmployeeTimeCompletedUnapprovedPayroll
-        /////</summary>
-        //[TestMethod()]
-        //public void EmployeeTimeCompletedUnapprovedPayrollTest()
-        //{
-        
-        //    List<TIME_CLOCK.Employee> actual;
-        //    actual = TIME_CLOCK.EmployeeTimeCompletedUnapprovedPayroll();
-        //    Assert.IsTrue(actual.Count > 0);
-            
-        //}
+        /// <summary>
+        ///A test for OverheadGLRangeByOrganizationId
+        ///</summary>
+        [TestMethod()]
+        public void OverheadGLRangeByOrganizationIdTest()
+        {
+            long organizationID = 0; // TODO: Initialize to an appropriate value
+            Entities context = null; // TODO: Initialize to an appropriate value
+            IQueryable<OVERHEAD_GL_RANGE_V> expected = null; // TODO: Initialize to an appropriate value
+            IQueryable<OVERHEAD_GL_RANGE_V> actual;
+            actual = OVERHEAD.OverheadGLRangeByOrganizationId(organizationID, context);
+            Assert.AreEqual(expected, actual);
+            Assert.Inconclusive("Verify the correctness of this test method.");
+        }
     }
 }
