@@ -32,6 +32,24 @@
 		    }
 		    return value;
 		};
+
+		var onShow = function (toolTip, grid) {
+		    var view = grid.getView(),
+                store = grid.getStore(),
+                record = view.getRecord(view.findItemByChild(toolTip.triggerElement)),
+                column = view.getHeaderByCell(toolTip.triggerElement),
+                data = "Over 12 hours";
+
+		        toolTip.update(data);
+		    
+		};
+
+		//var onBeforeShow = function () {
+		//    if (record.data.ACTUAL_HOURS >= 12) {
+		//        //toolTip.body.dom.innerHTML = null;
+		//        return false;
+		//    }
+		//};
 	</script>
 </head>
 <body>
@@ -164,6 +182,16 @@
 				<ext:CheckboxSelectionModel ID="uxTimeClockSelectionModel" runat="server" Mode="Multi"/>
 			</SelectionModel>
 		</ext:GridPanel>
+           <ext:ToolTip ID="ToolTip1" 
+            runat="server" 
+            Target="={#{uxEmployeeHoursGrid}.getView().el}"
+            Delegate=".x-grid-cell"
+            TrackMouse="true">
+            <Listeners>
+                <Show Handler="onShow(this, #{uxEmployeeHoursGrid});" />
+                <BeforeShow Handler="return onBeforeShow(this, #{uxEmployeeHoursGrid});" />
+            </Listeners>
+        </ext:ToolTip>
 		   </Items>
 		</ext:viewport>
 		</form>
