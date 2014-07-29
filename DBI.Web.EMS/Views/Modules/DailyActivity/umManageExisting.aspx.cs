@@ -766,6 +766,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
 
+
             using (MemoryStream PdfStream = new MemoryStream(generatePDF(HeaderId).ToArray()))
             {
                 string Subject = "Copy of Daily Activity Report";
@@ -773,10 +774,27 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 string Message = "Please find attached the Daily Activity Report you requested.";
 
                 PdfStream.Position = 0;
+                string ProjectName;
+                using (Entities _context = new Entities())
+                {
+                    ProjectName = (from d in _context.DAILY_ACTIVITY_HEADER
+                                   join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                                   where d.HEADER_ID == HeaderId
+                                   select p.LONG_NAME).Single();
+                }
 
-                Attachment MailAttachment = new Attachment(PdfStream, HeaderId.ToString() + "-export.pdf");
+                Attachment MailAttachment = new Attachment(PdfStream, string.Format("{0}{1}-export.pdf", HeaderId.ToString(), RemoveSpecialCharacters(ProjectName)));
+                var smtp = new SmtpClient("owa.dbiservices.com");
+#if DEBUG
+                smtp.Credentials = new System.Net.NetworkCredential("gene.lapointe@dbiservices.com", "password");
+#endif
+                MailMessage EmailMessage = new MailMessage(User.Identity.Name + "@dbiservices.com", User.Identity.Name + "@dbiservices.com", Subject, Message);
+                EmailMessage.Attachments.Add(MailAttachment);
+                EmailMessage.IsBodyHtml = true;
+                //smtp.SendMessage(User.Identity.Name + "@dbiservices.com", Subject, Message, IsHtml, MailAttachment);
+                smtp.Send(EmailMessage);
+                X.Msg.Alert("Email sent", string.Format("Message has been sent to {0}@dbiservices.com", User.Identity.Name.ToLower())).Show();
 
-                Mailer.SendMessage(User.Identity.Name + "@dbiservices.com", Subject, Message, IsHtml, MailAttachment);
             }
         }
 
