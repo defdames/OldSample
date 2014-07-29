@@ -116,6 +116,15 @@ namespace DBI.Data
             return _context.CUSTOMER_SURVEY_FORMS.Where(x => x.ORG_ID == OrgId).Select(x => x.FORM_ID).SingleOrDefault();
         }
 
+        public static IQueryable<PROJECT_CONTACTS_V> GetProjectContacts(long ProjectId, Entities _context)
+        {
+            return _context.PROJECT_CONTACTS_V.Where(x => x.CUST_SURVEY_PROJECT_ID == ProjectId);
+        }
+
+        public static IQueryable<CUSTOMER_SURVEY_FORMS_COMP> GetFormCompletion(Entities _context)
+        {
+            return _context.CUSTOMER_SURVEY_FORMS_COMP;
+        }
         public class CustomerSurveyForms
         {
             public decimal FORM_ID { get; set; }

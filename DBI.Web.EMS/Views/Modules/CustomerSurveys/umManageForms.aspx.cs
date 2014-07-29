@@ -16,9 +16,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            if (!X.IsAjaxRequest || !IsPostBack)
+            {
+                uxAddFormCatStore.Reload();
+                uxAddFormOrgStore.Reload();
+                uxQuestionFieldsetStore.Reload();
+            }
             
         }
+
 
         protected void deReadForms(object sender, StoreReadDataEventArgs e)
         {
@@ -92,7 +98,6 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             {
                 long FormId = long.Parse(e.Parameters["FormId"]);
                 uxQuestionFieldsetStore.DataSource = CUSTOMER_SURVEYS.GetFormFieldSets(FormId, _context).Select(x => new { x.FIELDSET_ID, x.TITLE }).ToList();
-                
             }
         }
 
@@ -103,7 +108,6 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 uxAddFormOrgStore.DataSource = _context.ORG_HIER_V.Distinct().ToList();
             }
         }
-
         protected void deReadQuestionTypes(object sender, StoreReadDataEventArgs e)
         {
             using (Entities _context = new Entities())
@@ -359,36 +363,36 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             uxTabPanel.SetActiveTab(uxSurveyPanel);
         }
 
-        //protected void CreateWindow(string LoaderUrl)
-        //{
-        //    Window win = new Window()
-        //    {
-        //        ID = "uxPlaceholderWindow",
-        //        Title = "View Survey",
-        //        Width = 600,
-        //        Modal = true,
-        //        Resizable = false,
-        //        AutoRender = false,
-        //        Y = 15,
-        //        Constrain = false,
-        //        CloseAction = CloseAction.Destroy,
-        //        Loader = new ComponentLoader
-        //        {
-        //            Url = LoaderUrl,
-        //            DisableCaching = true,
-        //            Mode = LoadMode.Frame,
-        //            AutoLoad = true,
-        //            LoadMask =
-        //            {
-        //                ShowMask = true
-        //            }
-        //        }
-        //    };
+        protected void CreateWindow(string LoaderUrl)
+        {
+            Window win = new Window()
+            {
+                ID = "uxPlaceholderWindow",
+                Title = "View Survey",
+                Width = 600,
+                Modal = true,
+                Resizable = false,
+                AutoRender = false,
+                Y = 15,
+                Constrain = false,
+                CloseAction = CloseAction.Destroy,
+                Loader = new ComponentLoader
+                {
+                    Url = LoaderUrl,
+                    DisableCaching = true,
+                    Mode = LoadMode.Frame,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
 
-        //    this.Form.Controls.Add(win);
-        //    win.Render(this.Form);
-        //    win.Show();
-        //}
+            this.Form.Controls.Add(win);
+            win.Render(this.Form);
+            win.Show();
+        }
 
     }
 }

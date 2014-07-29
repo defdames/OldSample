@@ -122,7 +122,9 @@
     <Content Include="QRCodeGenerator.aspx" />
     <Content Include="Resources\Images\1pixel.jpg" />
     <Content Include="Resources\Images\bgimage.jpg" />
+    <Content Include="Resources\Images\dbis_black_logo.png" />
     <Content Include="Resources\Scripts\functions.js" />
+    <Content Include="Public\umViewSurvey.aspx" />
     <Content Include="uxLogin.aspx" />
     <Content Include="Resources\Images\background.jpg" />
     <Content Include="Resources\Images\dbis_logo.png" />
@@ -249,6 +251,13 @@
     </Compile>
     <Compile Include="QRCodeGenerator.aspx.designer.cs">
       <DependentUpon>QRCodeGenerator.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Public\umViewSurvey.aspx.cs">
+      <DependentUpon>umViewSurvey.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Public\umViewSurvey.aspx.designer.cs">
+      <DependentUpon>umViewSurvey.aspx</DependentUpon>
     </Compile>
     <Compile Include="uxLogin.aspx.cs">
       <DependentUpon>uxLogin.aspx</DependentUpon>

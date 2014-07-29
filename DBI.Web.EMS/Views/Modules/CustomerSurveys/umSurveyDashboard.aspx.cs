@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Net.Mail;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Security.Claims;
@@ -157,31 +158,55 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         protected void deEmailLink(object sender, DirectEventArgs e)
         {
             List<XXDBI_DW.Threshold> RowData = JSON.Deserialize<List<XXDBI_DW.Threshold>>(e.ExtraParams["RowValues"]);
-
-            //generate code to tie back to customer
-            CUSTOMER_SURVEY_FORMS_COMP NewFormToSubmit = new CUSTOMER_SURVEY_FORMS_COMP();
+            decimal FormId;
+            string ToAddress;
+            //Get form for Organization
             using (Entities _context = new Entities())
             {
-                NewFormToSubmit.FORM_ID = CUSTOMER_SURVEYS.GetFormIdByOrg(RowData[0].ORG_ID, _context);
-                NewFormToSubmit.CREATE_DATE = DateTime.Now;
-                NewFormToSubmit.MODIFY_DATE = DateTime.Now;
-                NewFormToSubmit.CREATED_BY = User.Identity.Name;
-                NewFormToSubmit.MODIFIED_BY = User.Identity.Name;
+                ToAddress = CUSTOMER_SURVEYS.GetProjectContacts(RowData[0].PROJECT_ID, _context).Select(x => x.EMAIL_ADDRESS).SingleOrDefault();
             }
 
-            GenericData.Insert<CUSTOMER_SURVEY_FORMS_COMP>(NewFormToSubmit);
+            if (ToAddress != null)
+            {
 
-            //generate link
+                //generate code to tie back to customer
+                CUSTOMER_SURVEY_FORMS_COMP NewFormToSubmit = new CUSTOMER_SURVEY_FORMS_COMP();
+                using (Entities _context = new Entities())
+                {
+                    NewFormToSubmit.FORM_ID = CUSTOMER_SURVEYS.GetFormIdByOrg(RowData[0].ORG_ID, _context);
+                    NewFormToSubmit.CREATE_DATE = DateTime.Now;
+                    NewFormToSubmit.MODIFY_DATE = DateTime.Now;
+                    NewFormToSubmit.CREATED_BY = User.Identity.Name;
+                    NewFormToSubmit.MODIFIED_BY = User.Identity.Name;
+                }
 
-            string QueryString = RSAClass.Encrypt(NewFormToSubmit.COMPLETION_ID.ToString());
+                GenericData.Insert<CUSTOMER_SURVEY_FORMS_COMP>(NewFormToSubmit);
 
-            //get contact to email the link to
+                //generate link
 
-            //send email with link
+                string QueryString = RSAClass.Encrypt(NewFormToSubmit.COMPLETION_ID.ToString());
 
+
+                //send email with link
+                string Subject = "DBi Services Customer Satisfaction Survey Invitation";
+                string Message = string.Format(@"<html><body><p>Dear Valued Customer,</p><p>I would like to take this opportunity to thank you again personally for selecting DBi Services to service your account.  We highly value your feedback, so please 
+take a few moments to complete this brief survey to help us help you.</p><p>Please click on the link below to complete this brief survey:</p><p><a href ='http://emsv2.dbiservices.com/Public/umViewSurvey.aspx?FormId={0}'>Start Survey</a></p>
+<p>We sincerely appreciate your time to assist us.  Thank you for helping us to serve you better.</p>
+<p>Paul D. DeAngelo<br />President</p></body></html>", QueryString);
+
+                var smtp = new SmtpClient("owa.dbiservices.com");
+#if DEBUG
+                smtp.Credentials = new System.Net.NetworkCredential("gene.lapointe@dbiservices.com", "Monkey1!");
+#endif
+                MailMessage EmailMessage = new MailMessage(User.Identity.Name + "@dbiservices.com", User.Identity.Name + "@dbiservices.com", Subject, Message);
+                EmailMessage.IsBodyHtml = true;
+                //smtp.SendMessage(User.Identity.Name + "@dbiservices.com", Subject, Message, IsHtml, MailAttachment);
+                smtp.Send(EmailMessage);
+                X.Msg.Alert("Email sent", string.Format("Message has been sent to {0}", ToAddress)).Show();
+            }
         }
 
-        protected void deEmailPDF(object sender, DirectEventArgs e)
+        protected void dePrintPDF(object sender, DirectEventArgs e)
         {
             List<XXDBI_DW.Threshold> RowData = JSON.Deserialize<List<XXDBI_DW.Threshold>>(e.ExtraParams["RowValues"]);
             decimal FormId;
@@ -241,20 +266,21 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
                         case "singletext":
                             Table.AddCell(new Phrase(Question.TEXT + ":", TableFont));
-                            Cell = new PdfPCell();
-                            iTextSharp.text.pdf.TextField TextField = new iTextSharp.text.pdf.TextField(ExportWriter, new Rectangle(10, 20), "field" + Question.QUESTION_ID.ToString());
-                            Events = new iTextSharp.text.pdf.events.FieldPositioningEvents(ExportWriter, TextField.GetTextField());
-                            Cell.CellEvent = Events;
+                            Cell = new PdfPCell(new Phrase("____________________________________________________________________", TableFont));
+                            //iTextSharp.text.pdf.TextField TextField = new iTextSharp.text.pdf.TextField(ExportWriter, new Rectangle(10, 20), "field" + Question.QUESTION_ID.ToString());
+                            //Events = new iTextSharp.text.pdf.events.FieldPositioningEvents(ExportWriter, TextField.GetTextField());
+                            //Cell.CellEvent = Events;
+
                             Table.AddCell(Cell);
                             break;
                         case "multitext":
                             Table.AddCell(new Phrase(Question.TEXT + ":", TableFont));
-                            Cell = new PdfPCell();
-                            TextField = new iTextSharp.text.pdf.TextField(ExportWriter, new Rectangle(10, 20), "field" + Question.QUESTION_ID.ToString());
-                            TextField.Options = iTextSharp.text.pdf.TextField.MULTILINE;
-                            Events = new iTextSharp.text.pdf.events.FieldPositioningEvents(ExportWriter, TextField.GetTextField());
-                            Cell.CellEvent = Events;
-                            Cell.MinimumHeight = 50;
+                            Cell = new PdfPCell(new Phrase("______________________________________________________________________________________________________________________________________________________________________________", TableFont));
+                            //TextField = new iTextSharp.text.pdf.TextField(ExportWriter, new Rectangle(10, 20), "field" + Question.QUESTION_ID.ToString());
+                            //TextField.Options = iTextSharp.text.pdf.TextField.MULTILINE;
+                            //Events = new iTextSharp.text.pdf.events.FieldPositioningEvents(ExportWriter, TextField.GetTextField());
+                            //Cell.CellEvent = Events;
+                            //Cell.MinimumHeight = 50;
                             Table.AddCell(Cell);
                             break;
                         case "dropdown":
@@ -297,38 +323,37 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                             foreach (CUSTOMER_SURVEY_OPTIONS Option in QuestionOptions)
                             {
                                 var root = PdfFormField.CreateEmpty(ExportWriter);
-                                root.FieldName = "root";
+                                root.FieldName = "root" + Option.OPTION_ID.ToString();
 
                                 Radio = new RadioCheckField(ExportWriter, new Rectangle(40, 806 - count * 40, 60, 788 - count * 40), Option.OPTION_NAME, "option" + Option.OPTION_ID.ToString());
                                 Radio.BackgroundColor = new GrayColor(0.8f);
-                                Radio.CheckType = RadioCheckField.TYPE_CIRCLE;
-                                RadioField = Radio.RadioField;
-                                RadioField.SetWidget(new Rectangle(10, 20), PdfAnnotation.HIGHLIGHT_INVERT);
+                                Radio.CheckType = RadioCheckField.TYPE_CROSS;
+                                RadioField = Radio.CheckField;
+                                
                                 RadioGroup.AddKid(RadioField);
-                                //var Widths = new int[QuestionOptions.Count * 2];
-                                //for (int i = 0; i < QuestionOptions.Count * 2; i++)
-                                //{
-                                //    if (i % 2 == 1)
-                                //    {
-                                //        Widths[i] = 5;
-                                //    }
-                                //    else
-                                //    {
-                                //        Widths[i] = 20;
-                                //    }
-                                //}
-                                //RadioTable.SetWidths(Widths);
-                                ExportWriter.AddAnnotation(RadioGroup);
+                                var Widths = new int[QuestionOptions.Count * 2];
+                                for (int i = 0; i < QuestionOptions.Count * 2; i++)
+                                {
+                                    if (i % 2 == 1)
+                                    {
+                                        Widths[i] = 5;
+                                    }
+                                    else
+                                    {
+                                        Widths[i] = 20;
+                                    }
+                                }
+                                RadioTable.SetWidths(Widths);
+                                
                                 RadioTable.AddCell(new Phrase(Option.OPTION_NAME + ":", TableFont));
                                 
                                 Cell = new PdfPCell();
                                 Cell.Border = PdfPCell.NO_BORDER;
 
-                                Events = new iTextSharp.text.pdf.events.FieldPositioningEvents(ExportWriter, RadioField);
                                 Cell.CellEvent = new ChildFieldEvent(root, RadioField, 0);
                                 RadioTable.AddCell(Cell);
                             }
-                            
+                            ExportWriter.AddAnnotation(RadioGroup);
                             Table.AddCell(RadioTable);
                             break;
                         case "checkbox":
@@ -347,13 +372,12 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                             foreach (CUSTOMER_SURVEY_OPTIONS Option in QuestionOptions)
                             {
                                 var root = PdfFormField.CreateEmpty(ExportWriter);
-                                root.FieldName = "root";
+                                root.FieldName = "root" + Option.OPTION_ID.ToString();
 
                                 Check = new RadioCheckField(ExportWriter, new Rectangle(40, 806 - count * 40, 60, 788 - count * 40), Option.OPTION_NAME, "option" + Option.OPTION_ID.ToString());
                                 Check.BackgroundColor = new GrayColor(0.8f);
                                 Check.CheckType = RadioCheckField.TYPE_CROSS;
                                 CheckField = Check.CheckField;
-                                CheckField.SetWidget(new Rectangle(10, 20), PdfAnnotation.HIGHLIGHT_INVERT);
                                 CheckGroup.AddKid(CheckField);
                                 var Widths = new int[QuestionOptions.Count * 2];
                                 for (int i = 0; i < QuestionOptions.Count * 2; i++)
@@ -368,17 +392,16 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     }
                                 }
                                 CheckTable.SetWidths(Widths);
-                                ExportWriter.AddAnnotation(CheckGroup);
+                                
                                 CheckTable.AddCell(new Phrase(Option.OPTION_NAME + ":", TableFont));
                                 
                                 Cell = new PdfPCell();
                                 Cell.Border = PdfPCell.NO_BORDER;
                                 
-                                Events = new iTextSharp.text.pdf.events.FieldPositioningEvents(ExportWriter, CheckField);
                                 Cell.CellEvent = new ChildFieldEvent(root, CheckField, 0);
                                 CheckTable.AddCell(Cell);
                             }
-                            
+                            ExportWriter.AddAnnotation(CheckGroup);
                             Table.AddCell(CheckTable);
                             break;
                     }
@@ -390,9 +413,44 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
             return result;
         }
-        protected void dePrintPDF(object sender, DirectEventArgs e)
-        {
 
+        protected void deEmailPDF(object sender, DirectEventArgs e)
+        {
+            List<XXDBI_DW.Threshold> RowData = JSON.Deserialize<List<XXDBI_DW.Threshold>>(e.ExtraParams["RowValues"]);
+            decimal FormId;
+            string ToAddress;
+            //Get form for Organization
+            using (Entities _context = new Entities())
+            {
+                FormId = CUSTOMER_SURVEYS.GetFormIdByOrg(RowData[0].ORG_ID, _context);
+                ToAddress = CUSTOMER_SURVEYS.GetProjectContacts(RowData[0].PROJECT_ID, _context).Select(x => x.EMAIL_ADDRESS).SingleOrDefault();
+            }
+
+            if (ToAddress != null)
+            {
+                //Get questions
+                byte[] PdfStream = generatePDF(FormId);
+
+                string Subject = "Customer Satisfaction Survey";
+                string Message = "Please find attached the following Customer satisfaction survey.";
+
+
+                Attachment MailAttachment = new Attachment(new MemoryStream(PdfStream), "customer-satisfaction-survey.pdf");
+                var smtp = new SmtpClient("owa.dbiservices.com");
+#if DEBUG
+                smtp.Credentials = new System.Net.NetworkCredential("gene.lapointe@dbiservices.com", "Monkey1!");
+#endif
+                MailMessage EmailMessage = new MailMessage(User.Identity.Name + "@dbiservices.com", User.Identity.Name + "@dbiservices.com", Subject, Message);
+                EmailMessage.Attachments.Add(MailAttachment);
+                EmailMessage.IsBodyHtml = true;
+                //smtp.SendMessage(User.Identity.Name + "@dbiservices.com", Subject, Message, IsHtml, MailAttachment);
+                smtp.Send(EmailMessage);
+                X.Msg.Alert("Email sent", string.Format("Message has been sent to {0}", ToAddress)).Show();
+            }
+            else
+            {
+                X.Msg.Alert("No Email Address", "The selected project does not have an associated email address").Show();
+            }
         }
     }
 
@@ -425,13 +483,13 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         {
             parent.AddKid(kid);
             kid.SetWidget(new iTextSharp.text.Rectangle(
-                                                        rect.GetLeft(padding),
-                                                        rect.GetBottom(padding),
-                                                        rect.GetRight(padding),
-                                                        rect.GetTop(padding)
-                                                        ),
-                                                        PdfAnnotation.HIGHLIGHT_INVERT
-                                                        );
+                rect.GetLeft(padding),
+                rect.GetBottom(padding),
+                rect.GetRight(padding),
+                rect.GetTop(padding)
+                ),
+                PdfAnnotation.HIGHLIGHT_INVERT
+                );
         }
     }
 }

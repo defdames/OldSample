@@ -9,16 +9,21 @@ using DBI.Core.Security;
 using DBI.Data;
 using Ext.Net;
 
-namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
+namespace DBI.Web.EMS.PublicPages
 {
     public partial class umViewSurvey : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            LoadForm(long.Parse(Request.QueryString["FormId"]));
+            decimal CompletionId = decimal.Parse(RSAClass.Decrypt(Request.QueryString["FormId"]));
+            decimal FormId;
+            using(Entities _context = new Entities()){
+                FormId = CUSTOMER_SURVEYS.GetFormCompletion(_context).Where(x => x.COMPLETION_ID == CompletionId).Select(x=> x.FORM_ID).Single();
+            }
+            LoadForm(FormId);
         }
 
-        protected void LoadForm(long FormId)
+        protected void LoadForm(decimal FormId)
         {
             using (Entities _context = new Entities())
             {
@@ -34,6 +39,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                         NewFieldset.ID = "fieldset" + Fieldset.FIELDSET_ID;
                         NewFieldset.Title = Fieldset.TITLE;
                         NewFieldset.Margin = 5;
+                        
                         uxSurveyDisplay.Items.Add(NewFieldset);
                         foreach (CUSTOMER_SURVEYS.CustomerSurveyQuestions Question in Questions)
                         {
@@ -77,6 +83,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     break;
                                 case 6:
                                     RadioGroup RadioQuestion = new RadioGroup();
+                                    RadioQuestion.Layout = "HBoxLayout";
                                     RadioQuestion.ID = "question" + Question.QUESTION_ID;
                                     RadioQuestion.FieldLabel = Question.TEXT;
                                     RadioQuestion.AllowBlank = !Question.IS_REQUIRED;
@@ -90,6 +97,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                             BoxLabelAlign = BoxLabelAlign.After,
                                             BoxLabel = Option.OPTION_NAME,
                                             Value = Option.OPTION_NAME,
+                                            Flex = 1
                                         });
                                     }
                                     NewFieldset.Items.Add(RadioQuestion);
@@ -109,7 +117,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                         {
                                             BoxLabelAlign = BoxLabelAlign.After,
                                             BoxLabel = Option.OPTION_NAME,
-                                            Value = Option.OPTION_NAME
+                                            Value = Option.OPTION_NAME,
                                         });
                                     }
                                     NewFieldset.Items.Add(CheckQuestion);

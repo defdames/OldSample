@@ -106,6 +106,9 @@
                                                                 <Proxy>
                                                                     <ext:PageProxy />
                                                                 </Proxy>
+                                                                <Listeners>
+                                                                    <Load Handler="#{uxFormsGrid}.getView().refresh()" />
+                                                                </Listeners>
                                                             </ext:Store>
                                                         </Store>
                                                     </ext:ComboBox>
@@ -128,6 +131,9 @@
                                                                 <Proxy>
                                                                     <ext:PageProxy />
                                                                 </Proxy>
+                                                                <Listeners>
+                                                                    <Load Handler="#{uxFormsGrid}.getView().refresh()" />
+                                                                </Listeners>
                                                             </ext:Store>
                                                         </Store>
                                                     </ext:ComboBox>
@@ -295,6 +301,9 @@
                                                                 <Proxy>
                                                                     <ext:PageProxy />
                                                                 </Proxy>
+                                                                <Listeners>
+                                                                    <Load Handler="#{uxQuestionsGrid}.getView().refresh()" />
+                                                                </Listeners>
                                                             </ext:Store>
                                                         </Store>
                                                     </ext:ComboBox>
@@ -320,6 +329,9 @@
                                                                 <Proxy>
                                                                     <ext:PageProxy />
                                                                 </Proxy>
+                                                                <Listeners>
+                                                                    <Load Handler="#{uxQuestionsGrid}.getView().refresh()" />
+                                                                </Listeners>
                                                             </ext:Store>
                                                         </Store>
                                                     </ext:ComboBox>
