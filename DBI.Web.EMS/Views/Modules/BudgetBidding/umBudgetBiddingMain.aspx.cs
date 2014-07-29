@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Ext.Net;
 using DBI.Data;
+using DBI.Core.Security;
 
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 {
@@ -115,7 +116,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void deLoadBudgetVersions(object sender, StoreReadDataEventArgs e)
         {
-            uxVersionStore.DataSource = BUDGETBIDDING.BudgetVersions();
+            uxVersionStore.DataSource = BB.BudgetVersions();
         }
 
         protected void deSelectOrg(object sender, DirectEventArgs e)
@@ -129,7 +130,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             {
                 uxHidOrgOK.Text = "";
                 uxYearVersionTitle.Text = "";
-                DisableYearAndVersionCombo();
+                DisableToolbar();
                 LoadBudget(prevBlank);
                 return;
             }
@@ -140,7 +141,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             {
                 uxHidOrgOK.Text = "";
                 uxYearVersionTitle.Text = "";
-                DisableYearAndVersionCombo();
+                DisableToolbar();
                 LoadBudget(prevBlank);
             }
 
@@ -148,7 +149,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             {
                 uxHidOrgOK.Text = "Y";
                 uxYearVersionTitle.Text = uxOrgPanel.SelectedNodes[0].Text;
-                EnableYearAndVersionCombo();
+                EnableToolbar();
                 LoadBudget(prevBlank);
             }     
         }
@@ -194,11 +195,12 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 string hierarchyID = selID[0].ToString();
                 string orgID = selID[1].ToString();
 
-                string nodeName = uxOrgPanel.SelectedNodes[0].Text;
+                string orgName = uxOrgPanel.SelectedNodes[0].Text;
                 string fiscalYear = uxFiscalYear.SelectedItem.Value;
                 string verID = uxVersion.SelectedItem.Value;
+                string verName = uxVersion.SelectedItem.Text;
 
-                url = "umYearBudget.aspx?hierID=" + hierarchyID + "&orgID=" + orgID + "&orgName=" + nodeName + "&fiscalYear=" + fiscalYear + "&verID=" + verID;
+                url = "umYearBudget.aspx?hierID=" + hierarchyID + "&orgID=" + orgID + "&orgName=" + orgName + "&fiscalYear=" + fiscalYear + "&verID=" + verID + "&verName=" + verName;
             }
 
             else if (prevBlank == true)
@@ -213,16 +215,18 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxBudgetPanel.LoadContent();
         }
       
-        protected void EnableYearAndVersionCombo()
+        protected void EnableToolbar()
         {
             uxFiscalYear.Enable();
             uxVersion.Enable();
+            uxOrgSettings.Enable();
         }
 
-        protected void DisableYearAndVersionCombo()
+        protected void DisableToolbar()
         {
             uxFiscalYear.Disable();
             uxVersion.Disable();
+            uxOrgSettings.Disable();
         }
     }
 }

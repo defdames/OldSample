@@ -10,7 +10,7 @@
     <form id="form1" runat="server">
         <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
         <ext:GridPanel runat="server" ID="uxHeaderPostGrid"
-            Layout="HBoxLayout" Height="400">
+            Layout="HBoxLayout" Height="400" Width="700">
             <Store>
                 <ext:Store runat="server" ID="uxHeaderPostStore"
                     AutoDataBind="true"
@@ -34,9 +34,10 @@
             </Store>
             <ColumnModel>
                 <Columns>
+                    <ext:Column runat="server" Text="DRS Id" DataIndex="HEADER_ID" Flex="10" />
                     <ext:DateColumn runat="server" DataIndex="DA_DATE" Format="MM-dd-yyyy" Text="Activity Date" Flex="15" />
-                    <ext:Column runat="server" DataIndex="SEGMENT1" Text="Project" Flex="15" />
-                    <ext:Column runat="server" DataIndex="LONG_NAME" Text="Project Name" Flex="70" />
+                    <ext:Column runat="server" DataIndex="SEGMENT1" Text="Project" Flex="10" />
+                    <ext:Column runat="server" DataIndex="LONG_NAME" Text="Project Name" Flex="65" />
                 </Columns>
             </ColumnModel>
             <SelectionModel>
