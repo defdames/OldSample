@@ -47,12 +47,15 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<SingleCombo> AllFiscalYears()
         {
+            string sql = "SELECT DISTINCT TO_CHAR(END_DATE, 'YYYY') ID_NAME FROM APPS.PA_PERIODS_ALL ORDER BY ID_NAME";
+
+            List<SingleCombo> data;
             using (Entities context = new Entities())
-            {                    
-                string sql = "SELECT DISTINCT TO_CHAR(END_DATE, 'YYYY') ID_NAME FROM APPS.PA_PERIODS_ALL ORDER BY 1";
-                List<SingleCombo> data = context.Database.SqlQuery<SingleCombo>(sql).ToList();
-                return data;
+            {
+                data = context.Database.SqlQuery<SingleCombo>(sql).ToList();                
             }
+
+            return data;
         }        
     }
 }

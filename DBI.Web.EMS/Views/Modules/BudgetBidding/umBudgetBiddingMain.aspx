@@ -31,7 +31,8 @@
                     RootVisible="true"
                     SingleExpand="true"
                     Lines="false"
-                    UseArrows="true">
+                    UseArrows="true"
+                    Collapsible="true">
                     <Store>
                         <ext:TreeStore ID="TreeStore1" runat="server" OnReadData="deLoadOrgTree">
                             <Proxy>
@@ -123,7 +124,7 @@
 
                         <ext:ToolbarFill />
 
-                        <ext:Button ID="uxOrgSettings" runat="server" Text="Org Settings" Icon="Cog">
+                        <ext:Button ID="uxOrgSettings" runat="server" Text="Org Settings" Icon="Cog" Disabled="true">
                             <DirectEvents>
                             </DirectEvents>
                         </ext:Button>

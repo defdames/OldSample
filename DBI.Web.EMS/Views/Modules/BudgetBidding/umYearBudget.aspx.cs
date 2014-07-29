@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Ext.Net;
 using DBI.Data;
+using DBI.Core.Security;
 
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 {
@@ -23,9 +24,9 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 uxHidPrevYear.Text = CalcPrevYear(yearID, verID).ToString();
                 uxHidPrevVer.Text = CalcPrevVer(yearID, verID).ToString();
 
-                if (BUDGETBIDDING.AdjRecordCount(orgID, yearID, verID) == 0)
+                if (BBAdjustments.Count(orgID, yearID, verID) == 0)
                 {
-                    BUDGETBIDDING.CreateAdjRecords(orgID, yearID, verID);
+                    BBAdjustments.Create(orgID, yearID, verID);
                 }
 
                 CalcSummaryTotals();
@@ -44,7 +45,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
             long prevYearID = Convert.ToInt64(uxHidPrevYear.Text);
             long prevVerID = Convert.ToInt64(uxHidPrevVer.Text);
-            uxSummaryGridStore.DataSource = BUDGETBIDDING.SummaryGridData(orgName, orgID, yearID, verID, prevYearID, prevVerID);
+            uxSummaryGridStore.DataSource = BBSummary.Grid.Data(orgName, orgID, yearID, verID, prevYearID, prevVerID);
         }                         
         protected void deReadAdjustmentGridData(object sender, StoreReadDataEventArgs e)
         {
@@ -52,7 +53,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             long yearID = long.Parse(Request.QueryString["fiscalYear"]);
             long verID = long.Parse(Request.QueryString["verID"]);
 
-            uxAdjustmentGridStore.DataSource = BUDGETBIDDING.AdjustmentGridData(orgID, yearID, verID);
+            uxAdjustmentGridStore.DataSource = BBAdjustments.Data(orgID, yearID, verID);
         }              
         protected void deReadOverheadGridData(object sender, StoreReadDataEventArgs e)
         {
@@ -60,7 +61,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             long yearID = long.Parse(Request.QueryString["fiscalYear"]);
             long verID = long.Parse(Request.QueryString["verID"]);
 
-            uxOverheadGridStore.DataSource = BUDGETBIDDING.OverheadGridData(orgID, yearID, verID);
+            uxOverheadGridStore.DataSource = BBOH.Data(orgID, yearID, verID);
         }
 
 
@@ -68,7 +69,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         // Summary Actions                          
         protected void deLoadSummaryActions(object sender, StoreReadDataEventArgs e)
         {
-            uxActionsStore.DataSource = BUDGETBIDDING.YearSummaryProjectActions();
+            uxActionsStore.DataSource = BB.YearSummaryProjectActions();
         }                           
         protected void deChooseSummaryAction(object sender, DirectEventArgs e)
         {
@@ -76,19 +77,19 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
             switch (selectedAction)
             {
-                case "Add a New Project":
+                case "Add a New BBProject":
                     AddNewProject();
                     break;
 
-                case "Edit Selected Project":
+                case "Edit Selected BBProject":
                     EditSelectedProject();
                     break;
 
-                case "Copy Selected Project":
+                case "Copy Selected BBProject":
                     CopySelectedProject();
                     break;
 
-                case "Delete Selected Project":
+                case "Delete Selected BBProject":
                     DeleteSelectedProject();
                     break;
             }
@@ -121,6 +122,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxHidFormEnabled.Text = "True";
             uxHidOldBudBidID.Text = "";
             uxHidDetailSheetID.Text = "";
+            uxHidDetailSheetOrder.Text = "";
+            uxHidDetailSheetName.Text = "";
 
             uxProjectInfo.Enable();
         }                                                             
@@ -139,7 +142,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxOH.Disable();
 
             long budBidID = Convert.ToInt64(uxHidBudBidID.Text);
-            long newBudBidID = BUDGETBIDDING.CopyAllProjectDataAsTemp(budBidID);
+            long newBudBidID = BB.CopyAllProjectDataAsTemp(budBidID);
 
             uxHidBudBidID.Text = newBudBidID.ToString();
             uxHidOldBudBidID.Text = budBidID.ToString();
@@ -170,7 +173,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         {
             long budBidID = Convert.ToInt64(uxHidBudBidID.Text);
 
-            BUDGETBIDDING.DeleteProjectData(budBidID);
+            BBProject.DBDelete(budBidID);
 
             uxProjectInfo.Disable();
             uxProjectInfo.Reset();
@@ -184,6 +187,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxHidFormEnabled.Text = "";
             uxHidOldBudBidID.Text = "";
             uxHidDetailSheetID.Text = "";
+            uxHidDetailSheetOrder.Text = "";
+            uxHidDetailSheetName.Text = "";
             uxSummaryGrid.Enable();
             uxAdjustmentsGrid.Enable();
             uxOH.Enable();
@@ -196,12 +201,12 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
 
 
-        // Load Project Info                        
+        // Load BBProject Info                        
         protected void deLoadProjectDropdown(object sender, StoreReadDataEventArgs e)
         {
             long orgID = long.Parse(Request.QueryString["orgID"]);
             string orgName = Request.QueryString["orgName"];
-            List<object> dataSource = BUDGETBIDDING.OrgProjectList(orgID, orgName).ToList<object>();
+            List<object> dataSource = BBProject.Listing.Data(orgID, orgName).ToList<object>();
             int count;
 
             uxProjectNumStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataSource, out count);
@@ -209,7 +214,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         }
         protected void deLoadStatusDropdown(object sender, StoreReadDataEventArgs e)
         {
-            uxStatusStore.DataSource = BUDGETBIDDING.Statuses();
+            uxStatusStore.DataSource = BBProject.Statuses();
         }
         protected void deLoadJCDateDropdown(object sender, StoreReadDataEventArgs e)
         {
@@ -230,7 +235,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             string type = e.ExtraParams["Type"];
             string projectNum = e.ExtraParams["ProjectNum"];
             string projectName = e.ExtraParams["ProjectName"];
-            BUDGETBIDDING.BUD_PROJECT_INFO_DETAIL_V data = BUDGETBIDDING.ProjectDetail(Convert.ToInt64(budBidprojectID));
+            BBProject.Detail.Fields data = BBProject.Detail.Data(Convert.ToInt64(budBidprojectID));
             string weOverride = data.WE_OVERRIDE;
 
             // Enable or disable fields based on loaded field values
@@ -268,6 +273,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxHidFormEnabled.Text = "";
             uxHidOldBudBidID.Text = "";
             uxHidDetailSheetID.Text = "";
+            uxHidDetailSheetOrder.Text = "";
+            uxHidDetailSheetName.Text = "";
 
             uxProjectNum.SetValue(projectNumID, projectNum);
             uxProjectName.Text = projectName;
@@ -288,7 +295,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 uxJCDate.Text = data.WE_DATE == null ? null : data.WE_DATE.Value.ToString("dd-MMM-yyyy");
             }
 
-            BUDGETBIDDING.BUD_START_OR_END_NUMS_V dataStart = BUDGETBIDDING.SummaryProjectsStartOrEndNums("BUD_BID_ACTUAL_NUM", Convert.ToInt64(budBidprojectID));
+            BBProject.StartNumbers.Fields dataStart = BBProject.StartNumbers.Data(Convert.ToInt64(budBidprojectID));
             uxSGrossRec.Text = String.Format("{0:N2}", dataStart.GROSS_REC);
             uxSMatUsage.Text = String.Format("{0:N2}", dataStart.MAT_USAGE);
             uxSGrossRev.Text = String.Format("{0:N2}", dataStart.GROSS_REV);
@@ -297,7 +304,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
             uxSummaryDetailStore.Reload();
 
-            BUDGETBIDDING.BUD_START_OR_END_NUMS_V dataEnd = BUDGETBIDDING.SummaryProjectsStartOrEndNums("BUD_BID_BUDGET_NUM", Convert.ToInt64(budBidprojectID));
+            BBProject.EndNumbers.Fields dataEnd = BBProject.EndNumbers.Data(Convert.ToInt64(budBidprojectID));
             decimal endOP = dataEnd.OP;
             uxEGrossRec.Text = String.Format("{0:N2}", dataEnd.GROSS_REC);
             uxEMatUsage.Text = String.Format("{0:N2}", dataEnd.MAT_USAGE);
@@ -343,7 +350,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     if (manuallyEdited == false)
                     {
                         long budBidprojectID = Convert.ToInt64(uxHidBudBidID.Text);
-                        BUDGETBIDDING.BUD_PROJECT_INFO_OVERRIDEN_OP_V dataOverridenOP = BUDGETBIDDING.OverridenOP(budBidprojectID);
+                        BBProject.OP.Fields dataOverridenOP = BBProject.OP.OverridenOP(budBidprojectID);
                         prevOP = dataOverridenOP.OP;
                     }
                     else
@@ -365,7 +372,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     long prevVer = Convert.ToInt64(uxHidPrevVer.Text);
                     long projectNumID = Convert.ToInt64(uxHidProjectNumID.Text);
 
-                    BUDGETBIDDING.BUD_PROJECT_INFO_OP_V dataPrevOP = BUDGETBIDDING.PreviousOP(orgID, prevYear, prevVer, projectNumID);
+                    BBProject.OP.Fields dataPrevOP = BBProject.OP.Data(orgID, prevYear, prevVer, projectNumID);
                     prevOP = dataPrevOP.OP;
                 }
             }
@@ -379,12 +386,12 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
             long budBidID = Convert.ToInt64(uxHidBudBidID.Text);
 
-            uxSummaryDetailStore.DataSource = BUDGETBIDDING.DetailSheetGridData(budBidID);
+            uxSummaryDetailStore.DataSource = BBDetail.Grid.Data(budBidID);
         }
 
 
 
-        // Project Form Other                       
+        // BBProject Form Other                       
         protected void deSelectProject(object sender, DirectEventArgs e)
         {
             string projectID = e.ExtraParams["ProjectID"];
@@ -480,12 +487,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxSDirects.Text = String.Format("{0:N2}", jcLine.FY_TDE);
             uxSOP.Text = String.Format("{0:N2}", jcLine.FY_TOP);
 
-            //  FIX
-            uxEGrossRec.Text = String.Format("{0:N2}", jcLine.FY_GREC);
-            uxEMatUsage.Text = String.Format("{0:N2}", jcLine.FY_MU);
-            uxEGrossRev.Text = String.Format("{0:N2}", jcLine.FY_GREV);
-            uxEDirects.Text = String.Format("{0:N2}", jcLine.FY_TDE);
-            uxEOP.Text = String.Format("{0:N2}", jcLine.FY_TOP);
+            PopulateProjectEndNumbers();
+            uxSummaryDetailStore.Reload();  
         }
         protected void deCompareCheck(object sender, DirectEventArgs e)
         {
@@ -535,16 +538,16 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
 
 
-        // Save Project                             
+        // Save BBProject                             
         protected void deSave(object sender, DirectEventArgs e)
         {
             long orgID = long.Parse(Request.QueryString["OrgID"]);
             long yearID = long.Parse(Request.QueryString["fiscalYear"]);
             long verID = long.Parse(Request.QueryString["verID"]);
-            long projectID = Convert.ToInt64(uxHidProjectNumID.Text);
+            string projectID = uxHidProjectNumID.Text;
             long curBudBidID = uxHidOldBudBidID.Text == "" ? 0 : Convert.ToInt64(uxHidOldBudBidID.Text);
 
-            if (BUDGETBIDDING.ProjectRecordCount(orgID, yearID, verID, projectID, curBudBidID) == 0)
+            if (BBProject.Count(orgID, yearID, verID, projectID, curBudBidID) == 0)
             {
                 if (uxHidNewProject.Text == "True")
                 {
@@ -552,7 +555,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 }
                 else
                 {
-                    BUDGETBIDDING.DeleteProjectData(Convert.ToInt64(uxHidOldBudBidID.Text));
+                    BBProject.DBDelete(Convert.ToInt64(uxHidOldBudBidID.Text));
                     SaveUpdateExistingRecord();
                 }
             }
@@ -577,6 +580,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxHidFormEnabled.Text = "";
             uxHidOldBudBidID.Text = "";
             uxHidDetailSheetID.Text = "";
+            uxHidDetailSheetOrder.Text = "";
+            uxHidDetailSheetName.Text = "";
             uxProjectInfo.Reset();
             uxSummaryDetailStore.RemoveAll();
             uxCompareVar.Text = "0.00";
@@ -880,7 +885,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxProjectInfo.Disable();
             if (uxHidBudBidID.Text != "")
             {
-                BUDGETBIDDING.DeleteProjectData(Convert.ToInt64(uxHidBudBidID.Text));
+                BBProject.DBDelete(Convert.ToInt64(uxHidBudBidID.Text));
             }
             uxProjectInfo.Reset();
             uxSummaryDetailStore.RemoveAll();
@@ -893,6 +898,9 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxHidFormEnabled.Text = "";
             uxHidOldBudBidID.Text = "";
             uxHidDetailSheetID.Text = "";
+            uxHidDetailSheetOrder.Text = "";
+            uxHidDetailSheetName.Text = "";
+            uxHidDetailSheetOrder.Text = "";
             uxSummaryGrid.Enable();
             uxAdjustmentsGrid.Enable();
             uxOH.Enable();
@@ -1014,6 +1022,9 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxSOP.Text = String.Format("{0:N2}", sOP);
 
             UpdateCompareNums(uxCompareOverride.Checked);
+
+            PopulateProjectEndNumbers();
+            uxSummaryDetailStore.Reload();  
         }
         protected void CalcSummaryTotals()
         {
@@ -1024,7 +1035,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             long prevVerID = Convert.ToInt64(uxHidPrevVer.Text);
 
             // Active
-            BUDGETBIDDING.BUD_SUMMARY_SUBTOTALS_V activeData = BUDGETBIDDING.SummaryGridSubtotals(true, orgID, yearID, verID, prevYearID, prevVerID);
+            BBSummary.Subtotals.Fields activeData = BBSummary.Subtotals.Data(true, orgID, yearID, verID, prevYearID, prevVerID);
             decimal aGrossRec = activeData.GROSS_REC;
             decimal aMatUsage = activeData.MAT_USAGE;
             decimal aGrossRev = activeData.GROSS_REV;
@@ -1041,7 +1052,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxAOPPlusMinus.Text = String.Format("{0:N2}", aOPPlusMinus);
             
             // Inactive
-            BUDGETBIDDING.BUD_SUMMARY_SUBTOTALS_V inactiveData = BUDGETBIDDING.SummaryGridSubtotals(false, orgID, yearID, verID, prevYearID, prevVerID);
+            BBSummary.Subtotals.Fields inactiveData = BBSummary.Subtotals.Data(false, orgID, yearID, verID, prevYearID, prevVerID);
             decimal iGrossRec = inactiveData.GROSS_REC;
             decimal iMatUsage = inactiveData.MAT_USAGE;
             decimal iGrossRev = inactiveData.GROSS_REV;
@@ -1073,15 +1084,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxTOPPerc.Text = String.Format("{0:P2}", tOPPerc);
             uxTOPPlusMinus.Text = String.Format("{0:N2}", tOPPlusMinus);
 
-            // Adjustments
-            BUDGETBIDDING.BUD_SUMMARY_ADJ_SUBTOTALS_V adjustmentData = BUDGETBIDDING.AdjustmentGridSubtotal(orgID, yearID, verID);
-            decimal adjMatUsage = adjustmentData.MAT_ADJ ?? 0;          
-            decimal adjDirects = adjustmentData.WEATHER_ADJ ?? 0;
+            // BBAdjustments
+            BBAdjustments.Subtotal.Fields adjustmentData = BBAdjustments.Subtotal.Data(orgID, yearID, verID);
+            decimal adjMatUsage = adjustmentData.MAT_ADJ;          
+            decimal adjDirects = adjustmentData.WEATHER_ADJ;
 
             // Previous adjustments for grand total +/-
-            BUDGETBIDDING.BUD_SUMMARY_ADJ_SUBTOTALS_V prevAdjustmentData = BUDGETBIDDING.AdjustmentGridSubtotal(orgID, prevYearID, prevVerID);
-            decimal prevAdjMatUsage = prevAdjustmentData.MAT_ADJ ?? 0;
-            decimal prevAdjDirects = prevAdjustmentData.WEATHER_ADJ ?? 0;
+            BBAdjustments.Subtotal.Fields prevAdjustmentData = BBAdjustments.Subtotal.Data(orgID, prevYearID, prevVerID);
+            decimal prevAdjMatUsage = prevAdjustmentData.MAT_ADJ;
+            decimal prevAdjDirects = prevAdjustmentData.WEATHER_ADJ;
             decimal prevOPIncludingAdj = (tOP - tOPPlusMinus) - (prevAdjMatUsage + prevAdjDirects);
 
             // Grand total
@@ -1101,7 +1112,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxGTOPPlusMinus.Text = String.Format("{0:N2}", gtOPPlusMinus);
 
             // Net contribution
-            BUDGETBIDDING.BUD_SUMMARY_OH_SUBTOTALS_V ohData = BUDGETBIDDING.OverheadGridSubtotal(orgID, yearID, verID);
+            BBOH.Subtotal.Fields ohData = BBOH.Subtotal.Data(orgID, yearID, verID);
             decimal oh = ohData.OH;
             decimal netCont = gtOP - oh;
             uxNetCont.Text = String.Format("{0:N2}", netCont);
@@ -1137,7 +1148,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         // Detail                                   
         protected void deLoadDetailActions(object sender, StoreReadDataEventArgs e)
         {
-            uxDetailActionsStore.DataSource = BUDGETBIDDING.YearSummaryDetailActions();
+            uxDetailActionsStore.DataSource = BB.YearSummaryDetailActions();
         }
         protected void deChooseDetailAction(object sender, DirectEventArgs e)
         {
@@ -1178,8 +1189,10 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             }
 
             long budBidProjectID = Convert.ToInt64(uxHidBudBidID.Text);
-            long maxSheets = BUDGETBIDDING.GetMaxDetailSheetOrderForProject(budBidProjectID);
-            uxHidDetailSheetID.Text = BUDGETBIDDING.CreateBlankDetailSheetAndBudNums(budBidProjectID, maxSheets + 1).ToString();
+            long newOrder = BBDetail.Sheets.MaxOrder(budBidProjectID) + 1;
+            uxHidDetailSheetID.Text = BBDetail.Sheet.DBAdd(budBidProjectID, newOrder).ToString();
+            uxHidDetailSheetOrder.Text = newOrder.ToString();
+            uxHidDetailSheetName.Text = "SYS_DETAIL_" + newOrder;
             LoadDetailSheet();
         }
         protected void DeleteDetailSheet()
@@ -1200,15 +1213,27 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         public void DeleteDetailSheetContiued()
         {
             long detailSheetID = Convert.ToInt64(uxHidDetailSheetID.Text);
+            long budBidProjectID = Convert.ToInt64(uxHidBudBidID.Text);
 
-            BUDGETBIDDING.DeleteDetailSheetData(detailSheetID);
-            uxSummaryDetailStore.Reload();
-            //CalcSummaryTotals();
+            BBDetail.Sheet.DBDelete(detailSheetID);
+            BBDetail.Sheets.DBResetOrder(budBidProjectID);
+
+            uxHidDetailSheetID.Text = "";
+            uxHidDetailSheetOrder.Text = "";
+            uxHidDetailSheetName.Text = "";            
+
+            PopulateProjectEndNumbers();
+            uxSummaryDetailStore.Reload();            
         }
         protected void deSelectDetailSheet(object sender, DirectEventArgs e)
         {
             string detailSheetID = e.ExtraParams["DetailSheetID"];
+            string detailSheetOrder = e.ExtraParams["DetailSheetOrder"];
+            string detailSheetName = e.ExtraParams["DetailSheetName"];
+
             uxHidDetailSheetID.Text = detailSheetID;
+            uxHidDetailSheetOrder.Text = detailSheetOrder;
+            uxHidDetailSheetName.Text = detailSheetName;
         }
         protected void LoadDetailSheet()
         {
@@ -1218,10 +1243,23 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 return;
             }
 
-            long budBidProjectID = Convert.ToInt64(uxHidBudBidID.Text);
-            long detailSheetID = Convert.ToInt64(uxHidDetailSheetID.Text);
+            string budBidProjectID = uxHidBudBidID.Text;
+            string detailSheetID = uxHidDetailSheetID.Text;
+            string yearID = Request.QueryString["fiscalYear"];
+            string verName = Request.QueryString["verName"];
+            string weDate = uxJCDate.Text;
+            string projectName = RSAClass.Encrypt(uxProjectName.Text);
+            string sheetNum = uxHidDetailSheetOrder.Text;
+            string detailSheetName = RSAClass.Encrypt(uxHidDetailSheetName.Text);
+            string sGrossRec = uxSGrossRec.Text;
+            string sMatUsage = uxSMatUsage.Text;
+            string sGrossRev = uxSGrossRev.Text;
+            string sDirects = uxSDirects.Text;
+            string sOP = uxSOP.Text;
 
-            string url = "/Views/Modules/BudgetBidding/umDetailSheet.aspx?projectID=" + budBidProjectID + "&detailSheetID=" + detailSheetID;
+            string url = "/Views/Modules/BudgetBidding/umDetailSheet.aspx?projectID=" + budBidProjectID + "&detailSheetID=" + detailSheetID + "&yearID=" + yearID +
+                "&verName=" + verName + "&weDate=" + weDate + "&projectName=" + projectName + "&sheetNum=" + sheetNum + "&detailSheetName=" + detailSheetName + 
+                "&sGrossRec=" + sGrossRec + "&sMatUsage=" + sMatUsage + "&sGrossRev=" + sGrossRev + "&sDirects=" + sDirects + "&sOP=" + sOP;
 
             Window win = new Window
             {
@@ -1251,10 +1289,42 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         public void CloseDetailWindow(string sheetName)
         {
             long detailSheetID = Convert.ToInt64(uxHidDetailSheetID.Text);
+            BBDetail.Sheet.DBUpdateName(detailSheetID, sheetName);
 
-            BUDGETBIDDING.UpdateDetailSheetName(detailSheetID, sheetName);
             uxHidDetailSheetID.Text = "";
-            uxSummaryDetailStore.Reload();
+            uxHidDetailSheetOrder.Text = "";
+            uxHidDetailSheetName.Text = "";
+
+            PopulateProjectEndNumbers();
+            uxSummaryDetailStore.Reload();  
+        }
+        protected void PopulateProjectEndNumbers()
+        {
+            long budBidProjectID = uxHidBudBidID.Text == "" ? 0 :Convert.ToInt64(uxHidBudBidID.Text);
+
+            decimal sGrossRec = Convert.ToDecimal(uxSGrossRec.Text);
+            decimal sMatUsage = Convert.ToDecimal(uxSMatUsage.Text);
+            decimal sGrossRev = Convert.ToDecimal(uxSGrossRev.Text);
+            decimal sDirects = Convert.ToDecimal(uxSDirects.Text);
+            decimal sOP = Convert.ToDecimal(uxSOP.Text);
+            BBDetail.Sheets.EndNumbers.DBCalculate(budBidProjectID, sGrossRec, sMatUsage, sGrossRev, sDirects, sOP);
+
+            long maxOrder = BBDetail.Sheets.MaxOrder(budBidProjectID);
+            long lastID = BBDetail.Sheet.ID(budBidProjectID, maxOrder);
+            BBDetail.Sheet.EndNumbers.Fields data = BBDetail.Sheet.EndNumbers.Get(lastID);
+            decimal eGrossRec = data.GROSS_REC;
+            decimal eMatUsage = data.MAT_USAGE;
+            decimal eGrossRev = data.GROSS_REV;
+            decimal eDirects = data.DIR_EXP;
+            decimal eOP = data.OP;
+            BBProject.EndNumbersW0.DBUpdate(budBidProjectID, eGrossRec, eMatUsage, eGrossRev, eDirects, eOP);
+
+            BBProject.EndNumbersW0.Fields dataEnd = BBProject.EndNumbersW0.Data(budBidProjectID);
+            uxEGrossRec.Text = String.Format("{0:N2}", dataEnd.GROSS_REC);
+            uxEMatUsage.Text = String.Format("{0:N2}", dataEnd.MAT_USAGE);
+            uxEGrossRev.Text = String.Format("{0:N2}", dataEnd.GROSS_REV);
+            uxEDirects.Text = String.Format("{0:N2}", dataEnd.DIR_EXP);
+            uxEOP.Text = String.Format("{0:N2}", dataEnd.OP);
         }
     }
 }
