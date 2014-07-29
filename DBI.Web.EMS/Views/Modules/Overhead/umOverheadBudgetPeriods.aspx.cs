@@ -34,18 +34,83 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             using (Entities _context = new Entities())
             {
                 long _selectedRowID = long.Parse(_selectedOrganizationId);
-                _budgetsByOrganizationIDList = OVERHEAD_ORG_BUDGETS.BudgetListByOrganizationID(_selectedRowID, _context).ToList();
+                _budgetsByOrganizationIDList = OVERHEAD_ORG_BUDGETS.BudgetListByOrganizationID(_selectedRowID, _context).OrderBy(x => x.ORG_BUDGET_ID).ToList();
             }
 
             int count;
             uxForecastPeriodsByOrganization.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_ORG_BUDGETS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _budgetsByOrganizationIDList, out count);
             e.Total = count;
-            uxOpenPeriod.Enable();
 
+            if (_budgetsByOrganizationIDList.Count() == 0)
+            {
+                uxCreateBudget.Enable();
+            }
+            else
+            {
+                uxCreateBudget.Disable();
+            }
         }
 
 
         protected void deOpenPeriod(object sender, DirectEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                foreach (SelectedRow row in uxForecastPeriodsByOrganizationSelectionModel.SelectedRows)
+                {
+                    long _budgetID = long.Parse(row.RecordID);
+
+                    OVERHEAD_ORG_BUDGETS _budget = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.ORG_BUDGET_ID == _budgetID).SingleOrDefault();
+
+                    if (_budget != null)
+                    {
+                        if (_budget.STATUS != "O")
+                        {
+                            _budget.STATUS = "O";
+                            GenericData.Update<OVERHEAD_ORG_BUDGETS>(_budget);
+                        }
+                    }
+                }
+            }
+
+            uxForecastPeriodsByOrganization.Reload();
+            uxForecastPeriodsByOrganizationSelectionModel.DeselectAll(true);
+            uxOpenPeriod.Disable();
+            uxClosePeriod.Disable();
+
+        }       
+
+        protected void deClosePeriod(object sender, DirectEventArgs e)
+        {
+
+            using (Entities _context = new Entities())
+            {
+                foreach (SelectedRow row in uxForecastPeriodsByOrganizationSelectionModel.SelectedRows)
+                {
+                    long _budgetID = long.Parse(row.RecordID);
+
+                    OVERHEAD_ORG_BUDGETS _budget = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.ORG_BUDGET_ID == _budgetID).SingleOrDefault();
+
+                    if (_budget != null)
+                    {
+                        if (_budget.STATUS != "C")
+                        {
+                            _budget.STATUS = "C";
+                            GenericData.Update<OVERHEAD_ORG_BUDGETS>(_budget);
+                        }
+                    }
+                }
+            }
+
+            uxForecastPeriodsByOrganization.Reload();
+            uxForecastPeriodsByOrganizationSelectionModel.DeselectAll(true);
+            uxOpenPeriod.Disable();
+            uxClosePeriod.Disable();
+        }       
+
+
+
+        protected void deCreateBudgetPeriod(object sender, DirectEventArgs e)
         {
             string _selectedRecordID = Request.QueryString["orgid"];
             string _selectedLeID = Request.QueryString["leID"];
@@ -80,5 +145,35 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             win.Show();
         }
 
+
+        protected void deSelectForecast(object sender, DirectEventArgs e)
+        {
+
+            if (uxForecastPeriodsByOrganizationSelectionModel.SelectedRows.Count() > 0)
+            {
+                uxOpenPeriod.Enable();
+                uxClosePeriod.Enable();
+            }
+            else
+            {
+                uxOpenPeriod.Disable();
+                uxClosePeriod.Disable();
+            }
+
+        }
+
+        protected void deDeSelectForecast(object sender, DirectEventArgs e)
+        {
+            if (uxForecastPeriodsByOrganizationSelectionModel.SelectedRows.Count() > 0)
+            {
+                uxOpenPeriod.Enable();
+                uxClosePeriod.Enable();
+            }
+            else
+            {
+                uxOpenPeriod.Disable();
+                uxClosePeriod.Disable();
+            }
+        }
     }
 }

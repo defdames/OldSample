@@ -15,18 +15,29 @@
                       <TopBar>
                         <ext:Toolbar ID="Toolbar2" runat="server">
                             <Items>
+                                 <ext:Button runat="server" Text="Create Budget" Icon="BookAdd" ID="uxCreateBudget" Disabled="true" >
+                                    <ToolTips>
+                                        <ext:ToolTip ID="ToolTip1" runat="server" UI="Info" Html="Creates a new period for an organization so it can be used for the budget overhead system."></ext:ToolTip>
+                                    </ToolTips>
+                                    <DirectEvents>
+                                        <Click OnEvent="deCreateBudgetPeriod"></Click>
+                                    </DirectEvents>      
+                                </ext:Button>
                                 <ext:Button runat="server" Text="Open" Icon="BookOpen" ID="uxOpenPeriod" Disabled="true" >
                                     <ToolTips>
                                         <ext:ToolTip ID="ToolTip3" runat="server" UI="Info" Html="Opens a period for an organization so it can be used for the budget overhead system."></ext:ToolTip>
                                     </ToolTips>
                                     <DirectEvents>
-                                        <Click OnEvent="deOpenPeriod"></Click>
+                                        <Click OnEvent="deOpenPeriod"><EventMask ShowMask="true"></EventMask><Confirmation ConfirmRequest="true" Message="Are you sure you want to open these budget(s)?"></Confirmation></Click>
                                     </DirectEvents>      
                                 </ext:Button>
                                   <ext:Button runat="server" Text="Close"  Icon="Book" ID="uxClosePeriod" Disabled="true" >
                                     <ToolTips>
                                         <ext:ToolTip ID="ToolTip4" runat="server" UI="Info" Html="Close a period an organization so that it can't be used for the budget overhead system."></ext:ToolTip>
                                     </ToolTips>
+                                      <DirectEvents>
+                                        <Click OnEvent="deClosePeriod"><EventMask ShowMask="true"></EventMask><Confirmation ConfirmRequest="true" Message="Are you sure you want to close these budget(s)?"></Confirmation></Click>
+                                    </DirectEvents> 
                                 </ext:Button>
                             </Items>
                         </ext:Toolbar>
@@ -59,7 +70,11 @@
                     <Plugins>
                         <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true" />
                     </Plugins>
-                     <SelectionModel><ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Single" AllowDeselect="true">
+                     <SelectionModel><ext:CheckboxSelectionModel ID="uxForecastPeriodsByOrganizationSelectionModel" runat="server" Mode="Simple" AllowDeselect="true">
+                         <DirectEvents>
+                             <Select OnEvent="deSelectForecast"></Select>
+                             <Deselect OnEvent="deDeSelectForecast" />
+                         </DirectEvents>
                      </ext:CheckboxSelectionModel>
                      </SelectionModel>
                     <BottomBar>
