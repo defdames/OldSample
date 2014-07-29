@@ -65,17 +65,6 @@ namespace DBI.Data.Test
         #endregion
 
 
-        /// <summary>
-        ///A test for NextAvailBudgetTypeByOrganization
-        ///</summary>
-        [TestMethod()]
-        public void NextAvailBudgetTypeByOrganizationTest()
-        {
-            long organizationID = 121; // TODO: Initialize to an appropriate value
-            long fiscalYear = 2014; // TODO: Initialize to an appropriate value
-            List<OVERHEAD_BUDGET_TYPE> actual;
-            actual = OVERHEAD_BUDGET_TYPES.NextAvailBudgetTypeByOrganization(organizationID, fiscalYear);
-            Assert.IsTrue(actual.Count >= 0);
-        }
+      
     }
 }

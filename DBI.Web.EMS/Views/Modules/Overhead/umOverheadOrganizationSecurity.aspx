@@ -49,10 +49,13 @@
                                         <Click OnEvent="deDisableOrganization"><Confirmation Message="Are you sure you want to disable these organizations for use in the overhead budget system?" ConfirmRequest="true"></Confirmation></Click>
                                     </DirectEvents>
                                 </ext:Button>
+                                <ext:ToolbarSeparator runat="server">
+                                </ext:ToolbarSeparator>
+                                
                                 <ext:ToolbarFill runat="server">
 
                                 </ext:ToolbarFill>
-                                <ext:Button runat="server" Text="Hide InActive" EnableToggle="true" ID="uxActiveToggle" Icon="FolderMagnify">
+                                <ext:Button runat="server" Text="Hide Not Active" EnableToggle="true" ID="uxActiveToggle" Icon="FolderMagnify">
                                     <DirectEvents>
                                         <Toggle OnEvent="deToggleInActive" />
                                     </DirectEvents>
