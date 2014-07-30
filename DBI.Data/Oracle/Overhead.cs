@@ -37,22 +37,6 @@ namespace DBI.Data
         }
     }
   
-
-    public class OVERHEAD_GL_RANGE_V : OVERHEAD_GL_RANGE
-        {
-            public string SRSEGMENTS { get; set; }
-            public string ERSEGMENTS { get; set; }
-            public string INCLUDE_EXCLUDE { get; set; }
-        }
-
-    public class OVERHEAD_ORG_BUDGETS_V : OVERHEAD_ORG_BUDGETS
-    {
-        public string BUDGET_DESCRIPTION { get; set; }
-        public string BUDGET_STATUS { get; set; }
-        public string ORGANIZATION_NAME { get; set; }
-    }
-
-
     public partial class OVERHEAD_GL_RANGE
     {
 
@@ -130,5 +114,29 @@ namespace DBI.Data
         }
     }
 
+
+    public class OVERHEAD_GL_RANGE_V : OVERHEAD_GL_RANGE
+    {
+        public string SRSEGMENTS { get; set; }
+        public string ERSEGMENTS { get; set; }
+        public string INCLUDE_EXCLUDE { get; set; }
+    }
+
+    public class OVERHEAD_ORG_BUDGETS_V : OVERHEAD_ORG_BUDGETS
+    {
+        public string BUDGET_DESCRIPTION { get; set; }
+        public string BUDGET_STATUS { get; set; }
+        public string ORGANIZATION_NAME { get; set; }
+    }
+
+    public class GL_PERIODS_V
+    {
+        public string ENTERED_PERIOD_NAME { get; set; }
+        public short PERIOD_YEAR { get; set; }
+        public short PERIOD_NUM { get; set; }
+        public string PERIOD_TYPE { get; set; }
+        public DateTime START_DATE { get; set; }
+        public DateTime END_DATE { get; set; }
+    }
 
 }

@@ -198,6 +198,7 @@
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
+    <Content Include="Views\Modules\Overhead\umAddOverheadDetailLine.aspx" />
     <Content Include="Views\Modules\Overhead\umOpenBudgetType.aspx" />
     <Content Include="Views\Modules\Overhead\umOverheadBudgetPeriods.aspx" />
     <Content Include="Views\Modules\Overhead\umOverheadGeneralLedger.aspx" />
@@ -711,6 +712,13 @@
       <DependentUpon>umWeatherTab.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\ValidationChecks.cs" />
+    <Compile Include="Views\Modules\Overhead\umAddOverheadDetailLine.aspx.cs">
+      <DependentUpon>umAddOverheadDetailLine.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umAddOverheadDetailLine.aspx.designer.cs">
+      <DependentUpon>umAddOverheadDetailLine.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\Overhead\umOpenBudgetType.aspx.cs">
       <DependentUpon>umOpenBudgetType.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
