@@ -225,7 +225,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 _ogr.ERSEGMENT5 = uxERSegment5.SelectedItem.Value;
                 _ogr.ERSEGMENT6 = uxERSegment6.SelectedItem.Value;
                 _ogr.ERSEGMENT7 = uxERSegment7.SelectedItem.Value;
-                _ogr.INCLUDE_EXCLUDE_FLAG = uxIncludeExcludeFlag.SelectedItem.Value;
                 _ogr.CREATE_DATE = DateTime.Now;
                 _ogr.MODIFY_DATE = DateTime.Now;
                 _ogr.CREATED_BY = User.Identity.Name;

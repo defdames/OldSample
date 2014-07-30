@@ -16,7 +16,6 @@ namespace DBI.Data
     {
         public long GL_RANGE_ID { get; set; }
         public long ORGANIZATION_ID { get; set; }
-        public string INCLUDE_EXCLUDE_FLAG { get; set; }
         public string SRSEGMENT1 { get; set; }
         public string SRSEGMENT2 { get; set; }
         public string SRSEGMENT3 { get; set; }
