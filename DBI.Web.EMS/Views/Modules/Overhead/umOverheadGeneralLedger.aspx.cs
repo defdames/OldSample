@@ -107,15 +107,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     uxDeleteGLRangeDelete.Disable();
                 }
 
-                Ext.Net.ParameterCollection ps = new Ext.Net.ParameterCollection();
-
-                Ext.Net.StoreParameter _p = new Ext.Net.StoreParameter();
-                _p.Mode = ParameterMode.Value;
-                _p.Name = "INCLUDE_EXCLUDE";
-                _p.Value = e.ExtraParams["INCLUDE_EXCLUDE"];
-                ps.Add(_p);
-
-                uxGlAccountSecurityStore.Reload(ps);
+                uxGlAccountSecurityStore.Reload();
             }
 
             protected void deDeSelectRange(object sender, DirectEventArgs e)
@@ -167,8 +159,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                         List<GL_ACCOUNTS_V> _temp = _data.ToList();
                         List<GL_ACCOUNTS_V2> _newTemp = new List<GL_ACCOUNTS_V2>();
 
-                        string IncludeExclude = e.Parameters["INCLUDE_EXCLUDE"];
-
                         foreach (GL_ACCOUNTS_V _acc in _temp)
                         {
                             GL_ACCOUNTS_V2 _new = new GL_ACCOUNTS_V2();
@@ -187,7 +177,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                             _new.SEGMENT6_DESC = _acc.SEGMENT6_DESC;
                             _new.SEGMENT7 = _acc.SEGMENT7;
                             _new.SEGMENT7_DESC = _acc.SEGMENT7_DESC;
-                            _new.INCLUDED_EXCLUDED = (IncludeExclude == "Excluded") ? "Excluded" : IsGLAccountExcluded(_organizationID, _acc.SEGMENT1, _acc.SEGMENT2, _acc.SEGMENT3, _acc.SEGMENT4, _acc.SEGMENT5, _acc.SEGMENT6, _acc.SEGMENT7);
+                            _new.INCLUDED_EXCLUDED = IsGLAccountExcluded(_organizationID, _acc.SEGMENT1, _acc.SEGMENT2, _acc.SEGMENT3, _acc.SEGMENT4, _acc.SEGMENT5, _acc.SEGMENT6, _acc.SEGMENT7);
                             _newTemp.Add(_new);
                         }
 

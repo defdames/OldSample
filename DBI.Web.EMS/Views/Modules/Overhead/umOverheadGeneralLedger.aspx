@@ -69,7 +69,6 @@
                                         <ext:ModelField Name="ORGANIZATION_ID" />
                                         <ext:ModelField Name="SRSEGMENTS" Type="String" />
                                         <ext:ModelField Name="ERSEGMENTS" Type="String" />
-                                        <ext:ModelField Name="INCLUDE_EXCLUDE" Type="String" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -86,7 +85,6 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column5" runat="server" DataIndex="INCLUDE_EXCLUDE" Text="Status" Flex="1" />
                             <ext:Column ID="Column4" runat="server" DataIndex="SRSEGMENTS" Text="Starting Account Range" Flex="1" />
                             <ext:Column ID="Column3" runat="server" DataIndex="ERSEGMENTS" Text="Ending Account Range" Flex="1" />
                         </Columns>
@@ -98,9 +96,6 @@
                         <ext:RowSelectionModel ID="uxGLAccountRangeSelectionModel" runat="server" Mode="Single">
                             <DirectEvents>
                                 <Select OnEvent="deSelectRange">
-                                    <ExtraParams>
-                                        <ext:Parameter Mode="Raw" Name="INCLUDE_EXCLUDE" Value="record.data.INCLUDE_EXCLUDE" />
-                                    </ExtraParams>
                                 </Select>
                                 <Deselect OnEvent="deDeSelectRange"></Deselect>
                             </DirectEvents>

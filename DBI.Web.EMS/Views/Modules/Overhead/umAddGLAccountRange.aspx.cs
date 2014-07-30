@@ -165,7 +165,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     _new.SEGMENT6_DESC = _acc.SEGMENT6_DESC;
                     _new.SEGMENT7 = _acc.SEGMENT7;
                     _new.SEGMENT7_DESC = _acc.SEGMENT7_DESC;
-                    _new.INCLUDED_EXCLUDED = (uxIncludeExcludeFlag.SelectedItem.Value == "E") ? "Excluded" : "Included";
                     _newTemp.Add(_new);
                 }
 
@@ -225,7 +224,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 _ogr.ERSEGMENT5 = uxERSegment5.SelectedItem.Value;
                 _ogr.ERSEGMENT6 = uxERSegment6.SelectedItem.Value;
                 _ogr.ERSEGMENT7 = uxERSegment7.SelectedItem.Value;
-                _ogr.INCLUDE_EXCLUDE_FLAG = uxIncludeExcludeFlag.SelectedItem.Value;
                 _ogr.CREATE_DATE = DateTime.Now;
                 _ogr.MODIFY_DATE = DateTime.Now;
                 _ogr.CREATED_BY = User.Identity.Name;

@@ -51,62 +51,86 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             uxBudgetVersionByOrganizationStore.Reload();
         }
 
-        protected void deOrganizationList(object sender, StoreReadDataEventArgs e)
+        protected void deLoadOrganizationAccounts(object sender, StoreReadDataEventArgs e)
         {
 
-            long _orgID;
-            bool checkOrgId = long.TryParse(e.Parameters["ORGANIZATION_ID"], out _orgID);
+            long _organizationID;
+            bool checkOrgId = long.TryParse(e.Parameters["ORGANIZATION_ID"], out _organizationID);
 
-            short _fiscalYear;
-            bool checkYear = short.TryParse(e.Parameters["FISCAL_YEAR"], out _fiscalYear);
+            List<OVERHEAD_BUDGET_DETAIL_V> _accountList = new List<OVERHEAD_BUDGET_DETAIL_V>();
 
-            long _budgetID = long.Parse(uxBudgetVersionByOrganizationSelectionModel.SelectedRow.RecordID);
-            
-            List<GL_ACCOUNTS_V> _organizationAccountList = new List<GL_ACCOUNTS_V>();
+            //First we need a list of accont ranges
 
-                using (Entities _context = new Entities())
+            using (Entities _context = new Entities())
+            {
+
+                List<GL_ACCOUNTS_V> _rangeOfAccounts = new List<GL_ACCOUNTS_V>();
+
+                var _data = _context.OVERHEAD_GL_RANGE.Where(x => x.ORGANIZATION_ID == _organizationID);
+
+                foreach (OVERHEAD_GL_RANGE _range in _data)
                 {
-                    var _rangeList = OVERHEAD_MODULE.OverheadGLRangeByOrganizationId(_orgID,_context).ToList();
-
-                    //We have to make sure all the budgets exist in the system for each period.
-                    string sql = "select entered_period_name,period_year,period_num,period_type,start_date,end_date from gl.gl_periods where period_set_name = 'DBI Calendar' order by period_num";
-                    List<GL_PERIODS_V> _glPeriods = _context.Database.SqlQuery<GL_PERIODS_V>(sql).Where(x => x.PERIOD_TYPE == "Month" & x.PERIOD_YEAR == _fiscalYear).ToList();
-
-                    foreach (OVERHEAD_GL_RANGE_V _range in _rangeList)
-                    {                          
-                        var _accountList = GL_ACCOUNTS_V.AccountListByRange(_range.GL_RANGE_ID, _context);
-
-                        foreach(GL_ACCOUNTS_V _account in _accountList)
-                        {
-                            foreach (GL_PERIODS_V _period in _glPeriods)
-                            {
-
-                                int cnt = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.CODE_COMBINATION_ID == _account.CODE_COMBINATION_ID & x.ORG_BUDGET_ID == _budgetID & x.PERIOD == _period.ENTERED_PERIOD_NAME).Count();
-
-                                //Does period already exist?
-                                if (cnt == 0)
-                                {
-                                    //Create the record because it doesn't exits
-                                    OVERHEAD_BUDGET_DETAIL _data = new OVERHEAD_BUDGET_DETAIL();
-                                    _data.ORG_BUDGET_ID = _budgetID;
-                                    _data.PERIOD = _period.ENTERED_PERIOD_NAME;
-                                    _data.CREATE_DATE = DateTime.Now;
-                                    _data.MODIFY_DATE = DateTime.Now;
-                                    _data.AMOUNT = 0;
-                                    _data.CODE_COMBINATION_ID = _account.CODE_COMBINATION_ID;
-                                    _data.CREATED_BY = User.Identity.Name;
-                                    _data.MODIFIED_BY = User.Identity.Name;
-                                    GenericData.Insert<OVERHEAD_BUDGET_DETAIL>(_data);
-                                }
-                            } 
-                        }
-
-                        _organizationAccountList.AddRange(_accountList.ToList());
-                    }
+                        var _adata = _context.GL_ACCOUNTS_V.Where(x => String.Compare(x.SEGMENT1, _range.SRSEGMENT1) >= 0 && String.Compare(x.SEGMENT1, _range.ERSEGMENT1) <= 0);
+                        _adata = _adata.Where(x => String.Compare(x.SEGMENT2, _range.SRSEGMENT2) >= 0 && String.Compare(x.SEGMENT2, _range.ERSEGMENT2) <= 0);
+                        _adata = _adata.Where(x => String.Compare(x.SEGMENT3, _range.SRSEGMENT3) >= 0 && String.Compare(x.SEGMENT3, _range.ERSEGMENT3) <= 0);
+                        _adata = _adata.Where(x => String.Compare(x.SEGMENT4, _range.SRSEGMENT4) >= 0 && String.Compare(x.SEGMENT4, _range.ERSEGMENT4) <= 0);
+                        _adata = _adata.Where(x => String.Compare(x.SEGMENT5, _range.SRSEGMENT5) >= 0 && String.Compare(x.SEGMENT5, _range.ERSEGMENT5) <= 0);
+                        _adata = _adata.Where(x => String.Compare(x.SEGMENT6, _range.SRSEGMENT6) >= 0 && String.Compare(x.SEGMENT6, _range.ERSEGMENT6) <= 0);
+                        _adata = _adata.Where(x => String.Compare(x.SEGMENT7, _range.SRSEGMENT7) >= 0 && String.Compare(x.SEGMENT7, _range.ERSEGMENT7) <= 0);
+                        List<GL_ACCOUNTS_V> _accountRange = _adata.ToList();
+                        _rangeOfAccounts.AddRange(_accountRange);
+                   
                 }
 
+                //Exclude any accounts added to the list of excluded accounts
+                List<OVERHEAD_GL_ACCOUNT> _excludedAccounts = _context.OVERHEAD_GL_ACCOUNT.Where(x => x.ORGANIZATION_ID == _organizationID & x.INCLUDE_EXCLUDE_FLAG == "E").ToList();
+
+                //Create a list of accounts matching up with GL_ACCOUNTS_V
+                List<GL_ACCOUNTS_V> _eAccountList = new List<GL_ACCOUNTS_V>();
+
+                foreach (OVERHEAD_GL_ACCOUNT _eaccount in _excludedAccounts)
+                {
+                    var _adata = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT1 == _eaccount.SEGMENT1 & x.SEGMENT2 == _eaccount.SEGMENT2 & x.SEGMENT3 == _eaccount.SEGMENT3 & x.SEGMENT4 == _eaccount.SEGMENT4 & x.SEGMENT5 == _eaccount.SEGMENT5 & x.SEGMENT6 == _eaccount.SEGMENT6 & x.SEGMENT7 == _eaccount.SEGMENT7).Single();
+                    _rangeOfAccounts.Remove(_adata);
+                }
+
+                foreach (GL_ACCOUNTS_V _validAccount in _rangeOfAccounts)
+                {
+                    OVERHEAD_BUDGET_DETAIL_V _row = new OVERHEAD_BUDGET_DETAIL_V();
+                    _row.CODE_COMBINATION_ID = _validAccount.CODE_COMBINATION_ID;
+                    _row.ACCOUNT_DESCRIPTION = _validAccount.SEGMENT5_DESC;
+                    _row.BUDGET_AMOUNT1 = 0;
+                    _row.ACTUAL_AMOUNT1 = 0;
+                    _row.BUDGET_AMOUNT2 = 0;
+                    _row.ACTUAL_AMOUNT2 = 0;
+                    _row.BUDGET_AMOUNT3 = 0;
+                    _row.ACTUAL_AMOUNT3 = 0;
+                    _row.BUDGET_AMOUNT4 = 0;
+                    _row.ACTUAL_AMOUNT4 = 0;
+                    _row.BUDGET_AMOUNT5 = 0;
+                    _row.ACTUAL_AMOUNT5 = 0;
+                    _row.BUDGET_AMOUNT6 = 0;
+                    _row.ACTUAL_AMOUNT6 = 0;
+                    _row.BUDGET_AMOUNT7 = 0;
+                    _row.ACTUAL_AMOUNT7 = 0;
+                    _row.BUDGET_AMOUNT8 = 0;
+                    _row.ACTUAL_AMOUNT8 = 0;
+                    _row.BUDGET_AMOUNT9 = 0;
+                    _row.ACTUAL_AMOUNT9 = 0;
+                    _row.BUDGET_AMOUNT10 = 0;
+                    _row.ACTUAL_AMOUNT10 = 0;
+                    _row.BUDGET_AMOUNT11 = 0;
+                    _row.ACTUAL_AMOUNT11 = 0;
+                    _row.BUDGET_AMOUNT12 = 0;
+                    _row.ACTUAL_AMOUNT12 = 0;
+
+                    _accountList.Add(_row);
+                }
+                
+            }
+  
             int count;
-            uxOrganizationAccountStore.DataSource = GenericData.ListFilterHeader<GL_ACCOUNTS_V>(e.Start, 1000, e.Sort, e.Parameters["filterheader"], _organizationAccountList.AsQueryable(), out count);
+            uxOrganizationAccountStore.DataSource = GenericData.ListFilterHeader<OVERHEAD_BUDGET_DETAIL_V>(e.Start, 1000, e.Sort, e.Parameters["filterheader"], _accountList.AsQueryable(), out count);
             e.Total = count;
 
         }
@@ -145,8 +169,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             uxOrganizationAccountStore.Reload();
         }
 
-
-
         protected void deItemMaintenance(object sender, DirectEventArgs e)
         {
             string _budgetSelectedID = uxBudgetVersionByOrganizationSelectionModel.SelectedRow.RecordID;
@@ -183,5 +205,37 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         }
 
+
+
+
+        public class OVERHEAD_BUDGET_DETAIL_V
+        {
+            public long CODE_COMBINATION_ID {get; set;}
+            public string ACCOUNT_DESCRIPTION {get; set;}
+            public decimal BUDGET_AMOUNT1 {get; set;}
+            public decimal ACTUAL_AMOUNT1 {get; set;}
+            public decimal BUDGET_AMOUNT2 { get; set; }
+            public decimal ACTUAL_AMOUNT2 { get; set; }
+            public decimal BUDGET_AMOUNT3 { get; set; }
+            public decimal ACTUAL_AMOUNT3 { get; set; }
+            public decimal BUDGET_AMOUNT4 { get; set; }
+            public decimal ACTUAL_AMOUNT4 { get; set; }
+            public decimal BUDGET_AMOUNT5 { get; set; }
+            public decimal ACTUAL_AMOUNT5 { get; set; }
+            public decimal BUDGET_AMOUNT6 { get; set; }
+            public decimal ACTUAL_AMOUNT6 { get; set; }
+            public decimal BUDGET_AMOUNT7 { get; set; }
+            public decimal ACTUAL_AMOUNT7 { get; set; }
+            public decimal BUDGET_AMOUNT8 { get; set; }
+            public decimal ACTUAL_AMOUNT8 { get; set; }
+            public decimal BUDGET_AMOUNT9 { get; set; }
+            public decimal ACTUAL_AMOUNT9 { get; set; }
+            public decimal BUDGET_AMOUNT10 { get; set; }
+            public decimal ACTUAL_AMOUNT10 { get; set; }
+            public decimal BUDGET_AMOUNT11 { get; set; }
+            public decimal ACTUAL_AMOUNT11 { get; set; }
+            public decimal BUDGET_AMOUNT12 { get; set; }
+            public decimal ACTUAL_AMOUNT12 { get; set; }
+        }
     }
 }

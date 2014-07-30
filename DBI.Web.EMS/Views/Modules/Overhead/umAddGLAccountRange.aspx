@@ -649,7 +649,7 @@
                                         </ext:Store>
                                     </Store>
                                     <Listeners>
-                                        <Select Handler="#{uxIncludeExcludeFlag}.enable();"></Select>
+                                        <Select Handler="#{uxAddRange}.enable();#{uxGlAccountSecurityStore}.reload();"></Select>
                                     </Listeners>
                                 </ext:ComboBox>
 
@@ -662,7 +662,7 @@
                             runat="server"
                             Border="false"
                             ColumnWidth=".5"
-                            MarginSpec="0 0 0 10">
+                            MarginSpec="0 0 0 10" Hidden="true">
                             <Defaults>
                                 <ext:Parameter Name="Width" Value="250" />
                                 <ext:Parameter Name="LabelWidth" Value="90" />
@@ -724,7 +724,6 @@
                                              #{uxSRSegment6}.disable();
                                              #{uxSRSegment7}.disable();
                                        #{uxAddRange}.disable();
-                                       #{uxIncludeExcludeFlag}.disable();
                                        #{uxGlAccountSecurityStore}.removeAll();"></Click></Listeners>
                                    </ext:Button>
                 <ext:Button ID="uxCloseForm" runat="server" Text="Close Form" >
