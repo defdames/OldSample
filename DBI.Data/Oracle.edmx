@@ -1160,6 +1160,7 @@ warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primar
           <Property Name="PERIOD" Type="varchar2" MaxLength="250" />
           <Property Name="AMOUNT" Type="number" Precision="38" Scale="2" />
           <Property Name="ORG_BUDGET_ID" Type="number" Precision="15" Scale="0" />
+          <Property Name="DETAIL_TYPE" Type="varchar2" MaxLength="1" />
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
@@ -1179,39 +1180,17 @@ warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primar
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="PARENT_BUDGET_TYPE_ID" Type="number" Precision="15" Scale="0" />
         </EntityType>
-        <EntityType Name="OVERHEAD_BUDGET_VERSION">
-          <Key>
-            <PropertyRef Name="OVERHEAD_BUDGET_VER_ID" />
-          </Key>
-          <Property Name="OVERHEAD_BUDGET_VER_ID" Type="number" Precision="15" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="OVERHEAD_ORG_ID" Type="number" Precision="15" Scale="0" Nullable="false" />
-          <Property Name="PARENT_BUDGET_VER_ID" Type="number" Precision="15" Scale="0" Nullable="false" />
-          <Property Name="OVERHEAD_BUDGET_TYPE_ID" Type="number" Precision="15" Scale="0" Nullable="false" />
-          <Property Name="FISCAL_YEAR" Type="number" Precision="4" Scale="0" Nullable="false" />
-          <Property Name="STATUS" Type="char" MaxLength="1" Nullable="false" />
-          <Property Name="CREATE_DATE" Type="date" />
-          <Property Name="MODIFY_DATE" Type="date" />
-          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
-          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
-        </EntityType>
         <EntityType Name="OVERHEAD_GL_ACCOUNT">
           <Key>
             <PropertyRef Name="GL_ACCOUNT_ID" />
           </Key>
-          <Property Name="GL_ACCOUNT_ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="GL_ACCOUNT_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ORGANIZATION_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="INCLUDE_EXCLUDE_FLAG" Type="char" MaxLength="1" />
-          <Property Name="SEGMENT1" Type="varchar2" MaxLength="200" />
-          <Property Name="SEGMENT2" Type="varchar2" MaxLength="200" />
-          <Property Name="SEGMENT3" Type="varchar2" MaxLength="200" />
-          <Property Name="SEGMENT4" Type="varchar2" MaxLength="200" />
-          <Property Name="SEGMENT5" Type="varchar2" MaxLength="200" />
-          <Property Name="SEGMENT6" Type="varchar2" MaxLength="200" />
-          <Property Name="SEGMENT7" Type="varchar2" MaxLength="200" />
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="CODE_COMBINATION_ID" Type="number" Precision="15" Scale="0" />
         </EntityType>
         <EntityType Name="OVERHEAD_GL_RANGE">
           <Key>
@@ -1219,7 +1198,6 @@ warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primar
           </Key>
           <Property Name="GL_RANGE_ID" Type="number" Precision="15" Scale="0" Nullable="false" />
           <Property Name="ORGANIZATION_ID" Type="number" Precision="15" Scale="0" Nullable="false" />
-          <Property Name="INCLUDE_EXCLUDE_FLAG" Type="varchar2" MaxLength="1" />
           <Property Name="SRSEGMENT1" Type="varchar2" MaxLength="250" />
           <Property Name="SRSEGMENT2" Type="varchar2" MaxLength="250" />
           <Property Name="SRSEGMENT3" Type="varchar2" MaxLength="250" />
@@ -3445,7 +3423,6 @@ warning 6002: The table/view 'XXEMS.UNIT_OF_MEASURE_V' does not have a primary k
           <EntitySet Name="JOB_COST_TASK" EntityType="Self.JOB_COST_TASK" Schema="XXEMS" store:Type="Tables" />
           <EntitySet Name="OVERHEAD_BUDGET_DETAIL" EntityType="Self.OVERHEAD_BUDGET_DETAIL" Schema="XXEMS" store:Type="Tables" />
           <EntitySet Name="OVERHEAD_BUDGET_TYPE" EntityType="Self.OVERHEAD_BUDGET_TYPE" Schema="XXEMS" store:Type="Tables" />
-          <EntitySet Name="OVERHEAD_BUDGET_VERSION" EntityType="Self.OVERHEAD_BUDGET_VERSION" Schema="XXEMS" store:Type="Tables" />
           <EntitySet Name="OVERHEAD_GL_ACCOUNT" EntityType="Self.OVERHEAD_GL_ACCOUNT" Schema="XXEMS" store:Type="Tables" />
           <EntitySet Name="OVERHEAD_GL_RANGE" EntityType="Self.OVERHEAD_GL_RANGE" Schema="XXEMS" store:Type="Tables" />
           <EntitySet Name="OVERHEAD_ORG_BUDGETS" EntityType="Self.OVERHEAD_ORG_BUDGETS" Schema="XXEMS" store:Type="Tables" />
@@ -4443,7 +4420,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <EntitySet Name="CROSSING_RAILROAD" EntityType="OracleModel.CROSSING_RAILROAD" />
           <EntitySet Name="DAILY_ACTIVITY_INVENTORY" EntityType="OracleModel.DAILY_ACTIVITY_INVENTORY" />
           <EntitySet Name="JOB_COST_CLASSES" EntityType="OracleModel.JOB_COST_CLASSES" />
-          <EntitySet Name="OVERHEAD_BUDGET_VERSION" EntityType="OracleModel.OVERHEAD_BUDGET_VERSION" />
           <AssociationSet Name="FK_CONTACTS_RAILROAD_ID" Association="OracleModel.FK_CONTACTS_RAILROAD_ID">
             <End Role="CROSSING_RAILROAD" EntitySet="CROSSING_RAILROAD" />
             <End Role="CROSSING_CONTACTS" EntitySet="CROSSING_CONTACTS" />
@@ -4604,7 +4580,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
             <End Role="CUSTOMER_SURVEY_FORMS" EntitySet="CUSTOMER_SURVEY_FORMS" />
             <End Role="CUSTOMER_SURVEY_FIELDSETS" EntitySet="CUSTOMER_SURVEY_FIELDSETS" />
           </AssociationSet>
-          <EntitySet Name="OVERHEAD_GL_ACCOUNT" EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" />
           <EntitySet Name="CUSTOMER_SURVEY_THRESHOLDS" EntityType="OracleModel.CUSTOMER_SURVEY_THRESHOLDS" />
           <AssociationSet Name="FK_THRSH_AMTS_FK" Association="OracleModel.FK_THRSH_AMTS_FK">
             <End Role="CUSTOMER_SURVEY_THRESH_AMT" EntitySet="CUSTOMER_SURVEY_THRESH_AMT" />
@@ -4613,7 +4588,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <EntitySet Name="BUD_BID_ADJUSTMENT" EntityType="OracleModel.BUD_BID_ADJUSTMENT" />
           <EntitySet Name="PA_ROLES_V" EntityType="OracleModel.PA_ROLES_V" />
           <EntitySet Name="JOB_COST" EntityType="OracleModel.JOB_COST" />
-          <EntitySet Name="OVERHEAD_GL_RANGE" EntityType="OracleModel.OVERHEAD_GL_RANGE" />
           <EntitySet Name="CUSTOMER_SURVEY_FORMS_COMP" EntityType="OracleModel.CUSTOMER_SURVEY_FORMS_COMP" />
           <AssociationSet Name="FK_FORMS_COMP_FORM_ID" Association="OracleModel.FK_FORMS_COMP_FORM_ID">
             <End Role="CUSTOMER_SURVEY_FORMS" EntitySet="CUSTOMER_SURVEY_FORMS" />
@@ -4628,8 +4602,10 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
             <End Role="CUSTOMER_SURVEY_FORMS_COMP" EntitySet="CUSTOMER_SURVEY_FORMS_COMP" />
           </AssociationSet>
           <EntitySet Name="PROJECT_CONTACTS_V" EntityType="OracleModel.PROJECT_CONTACTS_V" />
-          <EntitySet Name="OVERHEAD_BUDGET_DETAIL" EntityType="OracleModel.OVERHEAD_BUDGET_DETAIL" />
           <EntitySet Name="OVERHEAD_ORG_BUDGETS" EntityType="OracleModel.OVERHEAD_ORG_BUDGETS" />
+          <EntitySet Name="OVERHEAD_BUDGET_DETAIL" EntityType="OracleModel.OVERHEAD_BUDGET_DETAIL" />
+          <EntitySet Name="OVERHEAD_GL_ACCOUNT" EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" />
+          <EntitySet Name="OVERHEAD_GL_RANGE" EntityType="OracleModel.OVERHEAD_GL_RANGE" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -6824,21 +6800,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Property Type="DateTime" Name="JOB_COST_DATE" />
           <Property Type="Int64" Name="BUID" />
         </EntityType>
-        <EntityType Name="OVERHEAD_BUDGET_VERSION">
-          <Key>
-            <PropertyRef Name="OVERHEAD_BUDGET_VER_ID" />
-          </Key>
-          <Property Type="Int64" Name="OVERHEAD_BUDGET_VER_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int64" Name="OVERHEAD_ORG_ID" Nullable="false" />
-          <Property Type="Int64" Name="PARENT_BUDGET_VER_ID" Nullable="false" />
-          <Property Type="Int64" Name="OVERHEAD_BUDGET_TYPE_ID" Nullable="false" />
-          <Property Type="Int16" Name="FISCAL_YEAR" Nullable="false" />
-          <Property Type="String" Name="STATUS" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <Association Name="FK_CONTACTS_RAILROAD_ID">
           <End Type="OracleModel.CROSSING_RAILROAD" Role="CROSSING_RAILROAD" Multiplicity="0..1" />
           <End Type="OracleModel.CROSSING_CONTACTS" Role="CROSSING_CONTACTS" Multiplicity="*" />
@@ -7818,25 +7779,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="OVERHEAD_GL_ACCOUNT">
-          <Key>
-            <PropertyRef Name="GL_ACCOUNT_ID" />
-          </Key>
-          <Property Type="Decimal" Name="GL_ACCOUNT_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Decimal" Name="ORGANIZATION_ID" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="String" Name="INCLUDE_EXCLUDE_FLAG" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="SEGMENT1" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT2" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT3" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT4" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT5" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT6" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SEGMENT7" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_THRESHOLDS">
           <Key>
             <PropertyRef Name="THRESHOLD_ID" />
@@ -8085,32 +8027,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Property Name="LEVEL_TYPE" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Name="PRINT_HEADER" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="OVERHEAD_GL_RANGE">
-          <Key>
-            <PropertyRef Name="GL_RANGE_ID" />
-          </Key>
-          <Property Name="GL_RANGE_ID" Type="Int64" Nullable="false" />
-          <Property Name="ORGANIZATION_ID" Type="Int64" Nullable="false" />
-          <Property Name="INCLUDE_EXCLUDE_FLAG" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="SRSEGMENT1" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="SRSEGMENT2" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="SRSEGMENT3" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="SRSEGMENT4" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="SRSEGMENT5" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="SRSEGMENT6" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="SRSEGMENT7" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="ERSEGMENT1" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="ERSEGMENT2" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="ERSEGMENT3" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="ERSEGMENT4" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="ERSEGMENT5" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="ERSEGMENT6" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="ERSEGMENT7" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="CREATE_DATE" Type="DateTime" />
-          <Property Name="MODIFY_DATE" Type="DateTime" />
-          <Property Name="CREATED_BY" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="MODIFIED_BY" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_FORMS_COMP">
           <Key>
             <PropertyRef Name="COMPLETION_ID" />
@@ -8204,20 +8120,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Property Type="String" Name="BILL_TO" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Type="String" Name="EMS_CUST" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
-        <EntityType Name="OVERHEAD_BUDGET_DETAIL">
-          <Key>
-            <PropertyRef Name="BUDGET_DETAIL_ID" />
-          </Key>
-          <Property Name="BUDGET_DETAIL_ID" Type="Int64" Nullable="false" />
-          <Property Name="CODE_COMBINATION_ID" Type="Int64" />
-          <Property Name="PERIOD" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="AMOUNT" Type="Decimal" Precision="38" Scale="2" />
-          <Property Name="ORG_BUDGET_ID" Type="Int64" />
-          <Property Name="CREATE_DATE" Type="DateTime" />
-          <Property Name="MODIFY_DATE" Type="DateTime" />
-          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="OVERHEAD_ORG_BUDGETS">
           <Key>
             <PropertyRef Name="ORG_BUDGET_ID" />
@@ -8231,6 +8133,58 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Property Name="MODIFY_DATE" Type="DateTime" />
           <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="OVERHEAD_BUDGET_DETAIL">
+          <Key>
+            <PropertyRef Name="BUDGET_DETAIL_ID" />
+          </Key>
+          <Property Name="BUDGET_DETAIL_ID" Type="Int64" Nullable="false" />
+          <Property Name="CODE_COMBINATION_ID" Type="Int64" />
+          <Property Name="PERIOD" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="AMOUNT" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="ORG_BUDGET_ID" Type="Int64" />
+          <Property Name="DETAIL_TYPE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="CREATE_DATE" Type="DateTime" />
+          <Property Name="MODIFY_DATE" Type="DateTime" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="OVERHEAD_GL_ACCOUNT">
+          <Key>
+            <PropertyRef Name="GL_ACCOUNT_ID" />
+          </Key>
+          <Property Name="GL_ACCOUNT_ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="ORGANIZATION_ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="CREATE_DATE" Type="DateTime" />
+          <Property Name="MODIFY_DATE" Type="DateTime" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CODE_COMBINATION_ID" Type="Int64" />
+        </EntityType>
+        <EntityType Name="OVERHEAD_GL_RANGE">
+          <Key>
+            <PropertyRef Name="GL_RANGE_ID" />
+          </Key>
+          <Property Name="GL_RANGE_ID" Type="Int64" Nullable="false" />
+          <Property Name="ORGANIZATION_ID" Type="Int64" Nullable="false" />
+          <Property Name="SRSEGMENT1" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="SRSEGMENT2" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="SRSEGMENT3" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="SRSEGMENT4" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="SRSEGMENT5" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="SRSEGMENT6" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="SRSEGMENT7" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="ERSEGMENT1" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="ERSEGMENT2" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="ERSEGMENT3" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="ERSEGMENT4" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="ERSEGMENT5" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="ERSEGMENT6" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="ERSEGMENT7" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="CREATE_DATE" Type="DateTime" />
+          <Property Name="MODIFY_DATE" Type="DateTime" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -10028,22 +9982,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="OVERHEAD_BUDGET_VERSION">
-            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_BUDGET_VERSION">
-              <MappingFragment StoreEntitySet="OVERHEAD_BUDGET_VERSION">
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
-                <ScalarProperty Name="FISCAL_YEAR" ColumnName="FISCAL_YEAR" />
-                <ScalarProperty Name="OVERHEAD_BUDGET_TYPE_ID" ColumnName="OVERHEAD_BUDGET_TYPE_ID" />
-                <ScalarProperty Name="PARENT_BUDGET_VER_ID" ColumnName="PARENT_BUDGET_VER_ID" />
-                <ScalarProperty Name="OVERHEAD_ORG_ID" ColumnName="OVERHEAD_ORG_ID" />
-                <ScalarProperty Name="OVERHEAD_BUDGET_VER_ID" ColumnName="OVERHEAD_BUDGET_VER_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="BUD_BID_LINES">
             <EntityTypeMapping TypeName="OracleModel.BUD_BID_LINES">
               <MappingFragment StoreEntitySet="BUD_BID_LINES">
@@ -10623,26 +10561,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="OVERHEAD_GL_ACCOUNT">
-            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_GL_ACCOUNT">
-              <MappingFragment StoreEntitySet="OVERHEAD_GL_ACCOUNT">
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="SEGMENT7" ColumnName="SEGMENT7" />
-                <ScalarProperty Name="SEGMENT6" ColumnName="SEGMENT6" />
-                <ScalarProperty Name="SEGMENT5" ColumnName="SEGMENT5" />
-                <ScalarProperty Name="SEGMENT4" ColumnName="SEGMENT4" />
-                <ScalarProperty Name="SEGMENT3" ColumnName="SEGMENT3" />
-                <ScalarProperty Name="SEGMENT2" ColumnName="SEGMENT2" />
-                <ScalarProperty Name="SEGMENT1" ColumnName="SEGMENT1" />
-                <ScalarProperty Name="INCLUDE_EXCLUDE_FLAG" ColumnName="INCLUDE_EXCLUDE_FLAG" />
-                <ScalarProperty Name="ORGANIZATION_ID" ColumnName="ORGANIZATION_ID" />
-                <ScalarProperty Name="GL_ACCOUNT_ID" ColumnName="GL_ACCOUNT_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CUSTOMER_SURVEY_THRESHOLDS">
             <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_THRESHOLDS">
               <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_THRESHOLDS">
@@ -10876,33 +10794,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="OVERHEAD_GL_RANGE">
-            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_GL_RANGE">
-              <MappingFragment StoreEntitySet="OVERHEAD_GL_RANGE">
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="ERSEGMENT7" ColumnName="ERSEGMENT7" />
-                <ScalarProperty Name="ERSEGMENT6" ColumnName="ERSEGMENT6" />
-                <ScalarProperty Name="ERSEGMENT5" ColumnName="ERSEGMENT5" />
-                <ScalarProperty Name="ERSEGMENT4" ColumnName="ERSEGMENT4" />
-                <ScalarProperty Name="ERSEGMENT3" ColumnName="ERSEGMENT3" />
-                <ScalarProperty Name="ERSEGMENT2" ColumnName="ERSEGMENT2" />
-                <ScalarProperty Name="ERSEGMENT1" ColumnName="ERSEGMENT1" />
-                <ScalarProperty Name="SRSEGMENT7" ColumnName="SRSEGMENT7" />
-                <ScalarProperty Name="SRSEGMENT6" ColumnName="SRSEGMENT6" />
-                <ScalarProperty Name="SRSEGMENT5" ColumnName="SRSEGMENT5" />
-                <ScalarProperty Name="SRSEGMENT4" ColumnName="SRSEGMENT4" />
-                <ScalarProperty Name="SRSEGMENT3" ColumnName="SRSEGMENT3" />
-                <ScalarProperty Name="SRSEGMENT2" ColumnName="SRSEGMENT2" />
-                <ScalarProperty Name="SRSEGMENT1" ColumnName="SRSEGMENT1" />
-                <ScalarProperty Name="INCLUDE_EXCLUDE_FLAG" ColumnName="INCLUDE_EXCLUDE_FLAG" />
-                <ScalarProperty Name="ORGANIZATION_ID" ColumnName="ORGANIZATION_ID" />
-                <ScalarProperty Name="GL_RANGE_ID" ColumnName="GL_RANGE_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CUSTOMER_SURVEY_FORMS_COMP">
             <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_FORMS_COMP">
               <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_FORMS_COMP">
@@ -10957,21 +10848,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="OVERHEAD_BUDGET_DETAIL">
-            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_BUDGET_DETAIL">
-              <MappingFragment StoreEntitySet="OVERHEAD_BUDGET_DETAIL">
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="ORG_BUDGET_ID" ColumnName="ORG_BUDGET_ID" />
-                <ScalarProperty Name="AMOUNT" ColumnName="AMOUNT" />
-                <ScalarProperty Name="PERIOD" ColumnName="PERIOD" />
-                <ScalarProperty Name="CODE_COMBINATION_ID" ColumnName="CODE_COMBINATION_ID" />
-                <ScalarProperty Name="BUDGET_DETAIL_ID" ColumnName="BUDGET_DETAIL_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="OVERHEAD_ORG_BUDGETS">
             <EntityTypeMapping TypeName="OracleModel.OVERHEAD_ORG_BUDGETS">
               <MappingFragment StoreEntitySet="OVERHEAD_ORG_BUDGETS">
@@ -10984,6 +10860,61 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
                 <ScalarProperty Name="FISCAL_YEAR" ColumnName="FISCAL_YEAR" />
                 <ScalarProperty Name="ORGANIZATION_ID" ColumnName="ORGANIZATION_ID" />
                 <ScalarProperty Name="ORG_BUDGET_ID" ColumnName="ORG_BUDGET_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OVERHEAD_BUDGET_DETAIL">
+            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_BUDGET_DETAIL">
+              <MappingFragment StoreEntitySet="OVERHEAD_BUDGET_DETAIL">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="DETAIL_TYPE" ColumnName="DETAIL_TYPE" />
+                <ScalarProperty Name="ORG_BUDGET_ID" ColumnName="ORG_BUDGET_ID" />
+                <ScalarProperty Name="AMOUNT" ColumnName="AMOUNT" />
+                <ScalarProperty Name="PERIOD" ColumnName="PERIOD" />
+                <ScalarProperty Name="CODE_COMBINATION_ID" ColumnName="CODE_COMBINATION_ID" />
+                <ScalarProperty Name="BUDGET_DETAIL_ID" ColumnName="BUDGET_DETAIL_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OVERHEAD_GL_ACCOUNT">
+            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_GL_ACCOUNT">
+              <MappingFragment StoreEntitySet="OVERHEAD_GL_ACCOUNT">
+                <ScalarProperty Name="CODE_COMBINATION_ID" ColumnName="CODE_COMBINATION_ID" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="ORGANIZATION_ID" ColumnName="ORGANIZATION_ID" />
+                <ScalarProperty Name="GL_ACCOUNT_ID" ColumnName="GL_ACCOUNT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OVERHEAD_GL_RANGE">
+            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_GL_RANGE">
+              <MappingFragment StoreEntitySet="OVERHEAD_GL_RANGE">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="ERSEGMENT7" ColumnName="ERSEGMENT7" />
+                <ScalarProperty Name="ERSEGMENT6" ColumnName="ERSEGMENT6" />
+                <ScalarProperty Name="ERSEGMENT5" ColumnName="ERSEGMENT5" />
+                <ScalarProperty Name="ERSEGMENT4" ColumnName="ERSEGMENT4" />
+                <ScalarProperty Name="ERSEGMENT3" ColumnName="ERSEGMENT3" />
+                <ScalarProperty Name="ERSEGMENT2" ColumnName="ERSEGMENT2" />
+                <ScalarProperty Name="ERSEGMENT1" ColumnName="ERSEGMENT1" />
+                <ScalarProperty Name="SRSEGMENT7" ColumnName="SRSEGMENT7" />
+                <ScalarProperty Name="SRSEGMENT6" ColumnName="SRSEGMENT6" />
+                <ScalarProperty Name="SRSEGMENT5" ColumnName="SRSEGMENT5" />
+                <ScalarProperty Name="SRSEGMENT4" ColumnName="SRSEGMENT4" />
+                <ScalarProperty Name="SRSEGMENT3" ColumnName="SRSEGMENT3" />
+                <ScalarProperty Name="SRSEGMENT2" ColumnName="SRSEGMENT2" />
+                <ScalarProperty Name="SRSEGMENT1" ColumnName="SRSEGMENT1" />
+                <ScalarProperty Name="ORGANIZATION_ID" ColumnName="ORGANIZATION_ID" />
+                <ScalarProperty Name="GL_RANGE_ID" ColumnName="GL_RANGE_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

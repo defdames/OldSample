@@ -117,13 +117,12 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 uxGlAccountSecurityStore.Reload(true);
             }
 
-            public static string IsGLAccountExcluded(long organizationID, string seg1, string seg2, string seg3, string seg4, string seg5, string seg6, string seg7)
+            public static string IsGLAccountExcluded(long organizationID, long code_combination_id)
             {
                 using(Entities _context = new Entities())
                 {
-                    List<OVERHEAD_GL_ACCOUNT> _acc = _context.OVERHEAD_GL_ACCOUNT.Where(a => a.ORGANIZATION_ID == organizationID && a.SEGMENT1 == seg1 && a.SEGMENT2 == seg2 && a.SEGMENT3 == seg3 && a.SEGMENT4 == seg4
-                        && a.SEGMENT5 == seg5 && a.SEGMENT6 == seg6 && a.SEGMENT7 == seg7).ToList();
-                  string _returnValue = "Included";
+                    List<OVERHEAD_GL_ACCOUNT> _acc = _context.OVERHEAD_GL_ACCOUNT.Where(a => a.ORGANIZATION_ID == organizationID && a.CODE_COMBINATION_ID == code_combination_id).ToList();
+                    string _returnValue = "Included";
                     
                     if(_acc.Count() > 0)
                         _returnValue = "Excluded";
@@ -177,7 +176,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                             _new.SEGMENT6_DESC = _acc.SEGMENT6_DESC;
                             _new.SEGMENT7 = _acc.SEGMENT7;
                             _new.SEGMENT7_DESC = _acc.SEGMENT7_DESC;
-                            _new.INCLUDED_EXCLUDED = IsGLAccountExcluded(_organizationID, _acc.SEGMENT1, _acc.SEGMENT2, _acc.SEGMENT3, _acc.SEGMENT4, _acc.SEGMENT5, _acc.SEGMENT6, _acc.SEGMENT7);
                             _newTemp.Add(_new);
                         }
 
@@ -205,15 +203,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                      GL_ACCOUNTS_V _account = GL_ACCOUNTS_V.AccountInformation(long.Parse(_row.RecordID));
 
                      OVERHEAD_GL_ACCOUNT _data = new OVERHEAD_GL_ACCOUNT();
-                     _data.INCLUDE_EXCLUDE_FLAG = "E";
-                     _data.ORGANIZATION_ID = _organizationID;
-                     _data.SEGMENT1 = _account.SEGMENT1;
-                     _data.SEGMENT2 = _account.SEGMENT2;
-                     _data.SEGMENT3 = _account.SEGMENT3;
-                     _data.SEGMENT4 = _account.SEGMENT4;
-                     _data.SEGMENT5 = _account.SEGMENT5;
-                     _data.SEGMENT6 = _account.SEGMENT6;
-                     _data.SEGMENT7 = _account.SEGMENT7;
+                     _data.CODE_COMBINATION_ID = _account.CODE_COMBINATION_ID;
                      _data.CREATED_BY = User.Identity.Name;
                      _data.MODIFIED_BY = User.Identity.Name;
                      _data.CREATE_DATE = DateTime.Now;
@@ -240,9 +230,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     {
                         GL_ACCOUNTS_V _account = GL_ACCOUNTS_V.AccountInformation(long.Parse(_row.RecordID));
 
-                        List<OVERHEAD_GL_ACCOUNT> _data = _context.OVERHEAD_GL_ACCOUNT.Where(x => x.ORGANIZATION_ID == _organizationID && x.SEGMENT1 == _account.SEGMENT1 &&
-                            x.SEGMENT2 == _account.SEGMENT2 && x.SEGMENT3 == _account.SEGMENT3 && x.SEGMENT4 == _account.SEGMENT4 && x.SEGMENT5 == _account.SEGMENT5
-                            && x.SEGMENT6 == _account.SEGMENT6 && x.SEGMENT7 == _account.SEGMENT7).ToList();
+                        List<OVERHEAD_GL_ACCOUNT> _data = _context.OVERHEAD_GL_ACCOUNT.Where(x => x.ORGANIZATION_ID == _organizationID && x.CODE_COMBINATION_ID == _account.CODE_COMBINATION_ID).ToList();
 
                         if (_data.Count() > 0)
                             GenericData.Delete<OVERHEAD_GL_ACCOUNT>(_data);
@@ -264,18 +252,9 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     SelectedRow _ssr = uxGLAccountRangeSelectionModel.SelectedRow;
                     long _recordID = long.Parse(_ssr.RecordID);
 
-                    Boolean showButtons = true;
-                    using (Entities _context = new Entities())
-                    {
-                        string check = _context.OVERHEAD_GL_RANGE.Where(x => x.GL_RANGE_ID == _recordID).SingleOrDefault().INCLUDE_EXCLUDE_FLAG;
-                        showButtons = (check == "E") ? false : true;
-                    }
+                    uxExcludeAccount.Enable();
+                    uxIncludeAccount.Enable();
 
-                    if (showButtons)
-                    {
-                        uxExcludeAccount.Enable();
-                        uxIncludeAccount.Enable();
-                    }
                 }
                 else
                 {
