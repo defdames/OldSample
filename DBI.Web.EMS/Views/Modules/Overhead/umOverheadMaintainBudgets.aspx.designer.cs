@@ -49,6 +49,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.GridPanel uxGlAccountSecurityGrid;
         
         /// <summary>
+        /// uxViewAllToggleButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxViewAllToggleButton;
+        
+        /// <summary>
         /// uxBudgetVersionByOrganizationStore control.
         /// </summary>
         /// <remarks>
@@ -112,6 +121,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.FilterHeader uxGlAccountSecurityGridFilter;
         
         /// <summary>
+        /// uxBudgetVersionByOrganizationSelectionModel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxBudgetVersionByOrganizationSelectionModel;
+        
+        /// <summary>
         /// PagingToolbar1 control.
         /// </summary>
         /// <remarks>
@@ -157,13 +175,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Button Button1;
         
         /// <summary>
-        /// Store1 control.
+        /// uxOrganizationAccountStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store Store1;
+        protected global::Ext.Net.Store uxOrganizationAccountStore;
         
         /// <summary>
         /// Model2 control.

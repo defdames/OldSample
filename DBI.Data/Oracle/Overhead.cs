@@ -49,6 +49,7 @@ namespace DBI.Data
     {
         public string BUDGET_DESCRIPTION { get; set; }
         public string BUDGET_STATUS { get; set; }
+        public string ORGANIZATION_NAME { get; set; }
     }
 
 
@@ -101,6 +102,7 @@ namespace DBI.Data
                 _r.BUDGET_STATUS = (_budget.STATUS == "O") ? "Open" : (_budget.STATUS == "C") ? "Closed" : (_budget.STATUS == "P") ? "Pending" : "Never Opened";
                 _r.ORG_BUDGET_ID = _budget.ORG_BUDGET_ID;
                 _r.ORGANIZATION_ID = _budget.ORGANIZATION_ID;
+                _r.ORGANIZATION_NAME = HR.Organization(_budget.ORGANIZATION_ID).ORGANIZATION_NAME;
                 _r.FISCAL_YEAR = _budget.FISCAL_YEAR;
                 _rdata.Add(_r);
             }

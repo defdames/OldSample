@@ -41,7 +41,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             uxForecastPeriodsByOrganization.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_ORG_BUDGETS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _budgetsByOrganizationIDList, out count);
             e.Total = count;
 
-            if (_budgetsByOrganizationIDList.Count() != 0)
                 uxCreateBudget.Enable();
         }
 
