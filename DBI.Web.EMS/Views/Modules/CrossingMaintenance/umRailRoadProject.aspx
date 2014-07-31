@@ -78,6 +78,9 @@
                     </ExtraParams>
                 </Select>
             </DirectEvents>
+                    <DirectEvents>
+                        <SelectionChange OnEvent="deValidateRemoveButton" />
+                    </DirectEvents>
                 </ext:GridPanel>
 
 

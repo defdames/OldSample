@@ -28,7 +28,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             if (!X.IsAjaxRequest)
             {
                 uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
-              
+                CheckboxSelectionModel sm = CheckboxSelectionModel1;
+                sm.ClearSelection();
             }
           
         }
@@ -67,20 +68,17 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
           
             foreach (SelectedRow sr in sm.SelectedRows)
             {
-                {
-                    crossingIdList.Add(long.Parse(sr.RecordID));
-                }
+              crossingIdList.Add(long.Parse(sr.RecordID));
+            }
                 using (Entities _context = new Entities())
                 {
                     IQueryable<CROSSING_MAINTENANCE.ApplicationList> data = CROSSING_MAINTENANCE.GetApplications(_context).Where(s => crossingIdList.Contains(s.CROSSING_ID));
                    
                     int count;
                     uxApplicationStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.ApplicationList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-                    e.Total = count;
+                    e.Total = count;               
 
-                }
-
-            }
+                 }
         }
         protected void deReadGrid(object sender, StoreReadDataEventArgs e)
         {

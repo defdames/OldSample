@@ -102,7 +102,7 @@
                               <ext:StoreParameter Name="crossingId" Value="Ext.encode(#{uxApplicationCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
                         </Parameters>--%>
                         <Model>
-                            <ext:Model ID="Model1" runat="server" IDProperty="CROSSING_ID">
+                            <ext:Model ID="Model1" runat="server" IDProperty="APPLICATION_ID">
                                 <Fields>
                                     <ext:ModelField Name="CROSSING_ID" />  
                                     <ext:ModelField Name="CROSSING_NUMBER" />                                

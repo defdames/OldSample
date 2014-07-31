@@ -51,6 +51,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
             
         }
+        protected void deValidateRemoveButton(object sender, DirectEventArgs e)
+        {
+            CheckboxSelectionModel sm = CheckboxSelectionModel2;
+
+            Button2.Disable();
+
+            sm.ClearSelection();
+        }
         protected void deSaveRailRoad(object sender, DirectEventArgs e)
         {
             ChangeRecords<AddRailRoad> data = new StoreDataHandler(e.ExtraParams["rrdata"]).BatchObjectData<AddRailRoad>();
@@ -80,7 +88,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 GenericData.Insert<CROSSING_PROJECT>(ProjectToAdd);
                 uxCurrentSecurityProjectStore.Reload();
                 Store2.Reload();
-
             }
             
             Notification.Show(new NotificationConfig()

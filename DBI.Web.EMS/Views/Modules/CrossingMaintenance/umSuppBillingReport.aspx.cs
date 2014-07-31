@@ -48,34 +48,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string State = uxAddStateComboBox.SelectedItem.Value;
             using (Entities _context = new Entities())
             {
-
-                //Get List of all incidents open and closed 
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-                var allData = (from d in _context.CROSSINGS
-                               join a in _context.CROSSING_SUPPLEMENTAL on d.CROSSING_ID equals a.CROSSING_ID
-                               join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
-                               join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID
-                               where d.RAILROAD_ID == RailroadId 
-                               select new
-                               {
-                                   d.CROSSING_ID,
-                                   a.SUPPLEMENTAL_ID,
-                                   d.CROSSING_NUMBER,
-                                   d.SUB_DIVISION,
-                                   d.SERVICE_UNIT,
-                                   d.STATE,
-                                   d.MILE_POST,
-                                   a.SERVICE_TYPE,
-                                   a.SQUARE_FEET,
-                                   a.APPROVED_DATE,
-                                   a.SPRAY,
-                                   a.CUT,
-                                   a.INSPECT,
-                                   p.SEGMENT1,
-                                  
-                                  
-                               });
 
+                IQueryable<CROSSING_MAINTENANCE.SupplementalBillingList> allData = CROSSING_MAINTENANCE.GetSupplementalBillingReport(RailroadId, _context);
+               
                 //filter down specific information to show the work done needed for report
                 if (StartDate != DateTime.MinValue)
                 {

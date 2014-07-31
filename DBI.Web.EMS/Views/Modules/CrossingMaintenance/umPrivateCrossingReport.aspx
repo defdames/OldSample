@@ -51,7 +51,9 @@
     <div>
       <ext:ResourceManager ID="ResourceManager1" runat="server" />
          <ext:Hidden ID="Hidden1" runat="server" Hidden="true" />
-        <ext:FormPanel runat="server" ID="FilterForm" Margin="5" Title="Filter Private Crossings">
+         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
+                <Items>
+        <ext:FormPanel runat="server" ID="FilterForm" Margin="5" Region="North" Title="Filter Private Crossings">
             <Items>
                 <ext:FieldSet ID="FieldSet1" runat="server" Title="Filter">
                     <Items>
@@ -182,6 +184,7 @@
             Icon="Report"
             Frame="false"
             Resizable="false"
+            Region="Center"
             Collapsible="false" Cls="my.grouped-header" Hidden="true" >
             <Store>
                 <ext:Store ID="uxPrivateCrossingListStore"
@@ -264,6 +267,8 @@
                 <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
             </BottomBar>
             </ext:GridPanel>
+                    </Items>
+             </ext:Viewport>
     </div>
     </form>
 </body>

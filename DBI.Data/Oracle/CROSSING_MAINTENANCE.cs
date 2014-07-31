@@ -165,7 +165,289 @@ namespace DBI.Data
                       });
 
           }
+          public static IQueryable<StateCrossingList> GetStateCrossingList(decimal RailroadId, string Application, Entities _context)
+          {
+              return (from d in _context.CROSSINGS
+                      join a in _context.CROSSING_APPLICATION on d.CROSSING_ID equals a.CROSSING_ID
+                      where d.RAILROAD_ID == RailroadId && a.APPLICATION_REQUESTED == Application
+                      select new StateCrossingList
+                            {
+                                CROSSING_ID = d.CROSSING_ID,
+                                CROSSING_NUMBER = d.CROSSING_NUMBER,
+                                SUB_DIVISION = d.SUB_DIVISION,
+                                STATE = d.STATE,
+                                COUNTY = d.COUNTY,
+                                SERVICE_UNIT = d.SERVICE_UNIT,
+                                CITY = d.CITY,
+                                MILE_POST = d.MILE_POST,
+                                ROWNE = d.ROWNE,
+                                ROWNW = d.ROWNW,
+                                ROWSE = d.ROWSE,
+                                ROWSW = d.ROWSW,
+                                STREET = d.STREET,
+                                SUB_CONTRACTED = d.SUB_CONTRACTED,
+                                LONGITUDE = d.LONGITUDE,
+                                LATITUDE = d.LATITUDE,
+                                SPECIAL_INSTRUCTIONS = d.SPECIAL_INSTRUCTIONS,
+                                SPRAY = a.SPRAY,
+                                CUT = a.CUT,
+                                INSPECT = a.INSPECT,
+                                APPLICATION_ID = a.APPLICATION_ID,
+                                APPLICATION_REQUESTED = a.APPLICATION_REQUESTED
+                            });
+          }
+          public static IQueryable<ApplicationDateList> GetAppDate(decimal RailroadId, string Application, Entities _context)
+          {
+              return (from d in _context.CROSSING_APPLICATION
+                      join c in _context.CROSSINGS on d.CROSSING_ID equals c.CROSSING_ID
+                      where c.RAILROAD_ID == RailroadId && d.APPLICATION_REQUESTED == Application
+                      select new ApplicationDateList
+                      {
+                         CROSSING_ID = d.CROSSING_ID,
+                         CROSSING_NUMBER = c.CROSSING_NUMBER,
+                         SUB_DIVISION = c.SUB_DIVISION,
+                         SERVICE_UNIT = c.SERVICE_UNIT,
+                         STATE = c.STATE,
+                         MILE_POST = c.MILE_POST,
+                         REMARKS = d.REMARKS,
+                         APPLICATION_DATE = d.APPLICATION_DATE,
+                         TRUCK_NUMBER = d.TRUCK_NUMBER,
+                         APPLICATION_ID = d.APPLICATION_ID,
+                         APPLICATION_REQUESTED = d.APPLICATION_REQUESTED,
+                      });
+          }
+          public static IQueryable<ApplicationDateList> GetInspections(decimal RailroadId, string Application, Entities _context)
+          {
+              return (from d in _context.CROSSING_APPLICATION
+                      join c in _context.CROSSINGS on d.CROSSING_ID equals c.CROSSING_ID
+                      where c.RAILROAD_ID == RailroadId && d.APPLICATION_REQUESTED == Application && d.INSPECT == "Y"
+                      select new ApplicationDateList
+                      {
+                          CROSSING_ID = d.CROSSING_ID,
+                          CROSSING_NUMBER = c.CROSSING_NUMBER,
+                          SUB_DIVISION = c.SUB_DIVISION,
+                          SERVICE_UNIT = c.SERVICE_UNIT,
+                          STATE = c.STATE,
+                          MILE_POST = c.MILE_POST,
+                          REMARKS = d.REMARKS,
+                          APPLICATION_DATE = d.APPLICATION_DATE,
+                          TRUCK_NUMBER = d.TRUCK_NUMBER,
+                          APPLICATION_ID = d.APPLICATION_ID,
+                          APPLICATION_REQUESTED = d.APPLICATION_REQUESTED,
+                      });
+          }
           
+          public static IQueryable<IncidentReportList> GetIncidentReport(decimal RailroadId, Entities _context)
+          {
+              return (from d in _context.CROSSINGS
+                      join i in _context.CROSSING_INCIDENT on d.CROSSING_ID equals i.CROSSING_ID
+                      where d.RAILROAD_ID == RailroadId
+                      select new IncidentReportList
+                      {
+                         CROSSING_ID = d.CROSSING_ID,
+                         INCIDENT_ID = i.INCIDENT_ID,
+                         CROSSING_NUMBER = d.CROSSING_NUMBER,
+                         SUB_DIVISION = d.SUB_DIVISION,
+                         SERVICE_UNIT = d.SERVICE_UNIT,
+                         STATE = d.STATE,
+                         MILE_POST = d.MILE_POST,
+                         REMARKS = i.REMARKS,
+                         SLOW_ORDER = i.SLOW_ORDER,
+                         INCIDENT_NUMBER = i.INCIDENT_NUMBER,
+                         DATE_REPORTED = i.DATE_REPORTED,
+                         DATE_CLOSED = i.DATE_CLOSED,
+                      });
+
+          }
+          public static IQueryable<SupplementalBillingList> GetSupplementalBillingReport(decimal RailroadId, Entities _context)
+          {
+              return (from d in _context.CROSSINGS
+                      join a in _context.CROSSING_SUPPLEMENTAL on d.CROSSING_ID equals a.CROSSING_ID
+                      join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
+                      join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID
+                      where d.RAILROAD_ID == RailroadId
+                      select new SupplementalBillingList
+                      {
+                         CROSSING_ID = d.CROSSING_ID,
+                         SUPPLEMENTAL_ID = a.SUPPLEMENTAL_ID,
+                         CROSSING_NUMBER = d.CROSSING_NUMBER,
+                         SUB_DIVISION = d.SUB_DIVISION,
+                         SERVICE_UNIT = d.SERVICE_UNIT,
+                         STATE = d.STATE,
+                         MILE_POST = d.MILE_POST,
+                         SERVICE_TYPE = a.SERVICE_TYPE,
+                         SQUARE_FEET = a.SQUARE_FEET,
+                         APPROVED_DATE = a.APPROVED_DATE,
+                         SPRAY = a.SPRAY,
+                         CUT = a.CUT,
+                         INSPECT = a.INSPECT,
+                         SEGMENT1 = p.SEGMENT1,
+
+
+                      });
+
+          }
+          public static IQueryable<WeeklyWorkList> GetWeeklyWork(decimal RailroadId, Entities _context)
+          {
+              return (from d in _context.CROSSINGS
+                               join a in _context.CROSSING_APPLICATION on d.CROSSING_ID equals a.CROSSING_ID
+                               where d.RAILROAD_ID == RailroadId 
+                               select new WeeklyWorkList
+                               {
+                                  CROSSING_ID = d.CROSSING_ID,
+                                  APPLICATION_ID = a.APPLICATION_ID,
+                                  CROSSING_NUMBER = d.CROSSING_NUMBER,
+                                  SUB_DIVISION = d.SUB_DIVISION,
+                                  SERVICE_UNIT = d.SERVICE_UNIT,
+                                  STATE = d.STATE,
+                                  MILE_POST = d.MILE_POST,
+                                  APPLICATION_DATE = a.APPLICATION_DATE,
+                                  SPRAY = a.SPRAY,
+                                  CUT = a.CUT,
+                                  INSPECT = a.INSPECT,                                  
+                               });
+          }
+          public static IQueryable<StateCrossingList> GetPrivateCrossings(decimal RailroadId, Entities _context)
+          {
+              return (from d in _context.CROSSINGS
+                      where d.RAILROAD_ID == RailroadId && d.PROPERTY_TYPE == "PRI"
+                      select new StateCrossingList
+                      {
+                         CROSSING_ID = d.CROSSING_ID,
+                         CROSSING_NUMBER = d.CROSSING_NUMBER,
+                         SUB_DIVISION = d.SUB_DIVISION,
+                         STATE = d.STATE,
+                         SERVICE_UNIT = d.SERVICE_UNIT,
+                         COUNTY = d.COUNTY,
+                         CITY = d.CITY,
+                         MILE_POST = d.MILE_POST,
+                         ROWNE = d.ROWNE,
+                         ROWNW = d.ROWNW,
+                         ROWSE = d.ROWSE,
+                         ROWSW = d.ROWSW,
+                         STREET = d.STREET,
+                         SUB_CONTRACTED = d.SUB_CONTRACTED,
+                         LONGITUDE = d.LONGITUDE,
+                         LATITUDE = d.LATITUDE,
+                         SPECIAL_INSTRUCTIONS = d.SPECIAL_INSTRUCTIONS,
+                      });
+
+          }
+          public static IQueryable<StateCrossingList> GetMissingROW(decimal RailroadId, Entities _context)
+          {
+              return (from d in _context.CROSSINGS
+                      where d.RAILROAD_ID == RailroadId && d.ROWNE == 0 && d.ROWNW == 0 && d.ROWSE == 0 && d.ROWSW == 0
+                      select new StateCrossingList
+                      {
+                          CROSSING_ID = d.CROSSING_ID,
+                          CROSSING_NUMBER = d.CROSSING_NUMBER,
+                          SUB_DIVISION = d.SUB_DIVISION,
+                          STATE = d.STATE,
+                          SERVICE_UNIT = d.SERVICE_UNIT,
+                          COUNTY = d.COUNTY,
+                          CITY = d.CITY,
+                          MILE_POST = d.MILE_POST,
+                          ROWNE = d.ROWNE,
+                          ROWNW = d.ROWNW,
+                          ROWSE = d.ROWSE,
+                          ROWSW = d.ROWSW,
+                          STREET = d.STREET,
+                          SUB_CONTRACTED = d.SUB_CONTRACTED,
+                          LONGITUDE = d.LONGITUDE,
+                          LATITUDE = d.LATITUDE,
+                          SPECIAL_INSTRUCTIONS = d.SPECIAL_INSTRUCTIONS,
+                      });
+
+          }
+            public class WeeklyWorkList
+          {
+              public string CROSSING_NUMBER { get; set; }
+              public long APPLICATION_ID { get; set; }
+              public long CROSSING_ID { get; set; }
+              public DateTime? APPLICATION_DATE { get; set; }
+              public string SERVICE_UNIT { get; set; }
+              public string SUB_DIVISION { get; set; }
+              public string STATE { get; set; }
+              public decimal? MILE_POST { get; set; }
+              public string SPRAY { get; set; }
+              public string CUT { get; set; }
+              public string INSPECT { get; set; }
+          }
+          public class SupplementalBillingList
+          {
+              public long SUPPLEMENTAL_ID { get; set; }
+              public long CROSSING_ID { get; set; }
+              public string CROSSING_NUMBER { get; set; }
+              public DateTime? APPROVED_DATE { get; set; }
+              public string SERVICE_TYPE { get; set; }
+              public string SERVICE_UNIT { get; set; }
+              public string SPRAY { get; set; }
+              public decimal? SQUARE_FEET { get; set; }
+              public string CUT { get; set; }
+              public string MAINTAIN { get; set; }
+              public string INSPECT { get; set; }
+              public decimal? MILE_POST { get; set; }
+              public string SUB_DIVISION { get; set; }
+              public string SEGMENT1 { get; set; }
+              public string STATE { get; set; }
+          }
+
+          public class IncidentReportList
+          {
+              public long CROSSING_ID { get; set; }
+              public string CROSSING_NUMBER { get; set; }
+              public long INCIDENT_ID { get; set; }
+              public DateTime? DATE_CLOSED { get; set; }
+              public string REMARKS { get; set; }
+              public long INCIDENT_NUMBER { get; set; }
+              public DateTime? DATE_REPORTED { get; set; }
+              public string SLOW_ORDER { get; set; }
+              public string SERVICE_UNIT { get; set; }
+              public string SUB_DIVISION { get; set; }
+              public string STATE { get; set; }
+              public decimal? MILE_POST { get; set; }
+
+          }
+          public class ApplicationDateList
+          {
+              public string CROSSING_NUMBER { get; set; }
+              public long APPLICATION_ID { get; set; }
+              public long CROSSING_ID { get; set; }
+              public string APPLICATION_REQUESTED { get; set; }
+              public DateTime? APPLICATION_DATE { get; set; }
+              public string SERVICE_UNIT { get; set; }
+              public string SUB_DIVISION { get; set; }
+              public string REMARKS { get; set; }
+              public string TRUCK_NUMBER { get; set; }
+              public string STATE { get; set; }
+              public decimal? MILE_POST { get; set; }
+          }
+          public class StateCrossingList
+          {
+              public long? APPLICATION_ID { get; set; }
+              public decimal? ROWNE { get; set; }
+              public decimal? ROWNW { get; set; }
+              public decimal? ROWSE { get; set; }
+              public decimal? ROWSW { get; set; }
+              public string STATE { get; set; }
+              public long CROSSING_ID { get; set; }
+              public string CROSSING_NUMBER { get; set; }
+              public string SERVICE_UNIT { get; set; }
+              public string SUB_DIVISION { get; set; }
+              public decimal? MILE_POST { get; set; }
+              public string SPRAY { get; set; }
+              public string CUT { get; set; }
+              public string INSPECT { get; set; }
+              public string SUB_CONTRACTED { get; set; }
+              public decimal? LONGITUDE { get; set; }
+              public decimal? LATITUDE { get; set; }
+              public string SPECIAL_INSTRUCTIONS { get; set; }
+              public string APPLICATION_REQUESTED { get; set; }
+              public string COUNTY { get; set; }
+              public string CITY { get; set; }
+              public string STREET { get; set; }
+
+          }
           public class CompletedCrossingsSupplemental
           {
               public string CROSSING_NUMBER { get; set; }

@@ -50,27 +50,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string State = uxAddStateComboBox.SelectedItem.Value;
             using (Entities _context = new Entities())
             {
-               
-
-                //Get List of all new crossings
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-               var allData = (from d in _context.CROSSING_APPLICATION
-                        join c in _context.CROSSINGS on d.CROSSING_ID equals c.CROSSING_ID
-                        where c.RAILROAD_ID == RailroadId && d.APPLICATION_REQUESTED == Application
-                        select new
-                        {
-                            d.CROSSING_ID,
-                            c.CROSSING_NUMBER,
-                            c.SUB_DIVISION,
-                            c.SERVICE_UNIT,
-                            c.STATE,
-                            c.MILE_POST,
-                            c.DOT,
-                            d.REMARKS,
-                            d.APPLICATION_DATE,
-                            d.TRUCK_NUMBER
-                        });
-              
+                IQueryable<CROSSING_MAINTENANCE.ApplicationDateList> allData = CROSSING_MAINTENANCE.GetAppDate(RailroadId, Application, _context);
                
                if (StartDate != DateTime.MinValue)
                {
