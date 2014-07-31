@@ -10,6 +10,30 @@ namespace DBI.Data
 {
     public class BB
     {
+        public static void CleanOldTempRecords(int numOfDaysOld)
+        {
+            DateTime delDate = DateTime.Today.AddDays(- numOfDaysOld);
+            List<BUD_BID_PROJECTS> projectData;
+            List<BUD_BID_ACTUAL_NUM> actualData;
+            List<BUD_BID_BUDGET_NUM> budgetData;
+            List<BUD_BID_DETAIL_SHEET> detailSheetData;
+            List<BUD_BID_DETAIL_TASK> taskInfoData;
+
+            using (Entities context = new Entities())
+            {
+                projectData = context.BUD_BID_PROJECTS.Where(x => x.MODIFIED_BY == "TEMP" && x.MODIFY_DATE <= delDate).ToList();
+                actualData = context.BUD_BID_ACTUAL_NUM.Where(x => x.MODIFIED_BY == "TEMP" && x.MODIFY_DATE <= delDate).ToList();
+                budgetData = context.BUD_BID_BUDGET_NUM.Where(x => x.MODIFIED_BY == "TEMP" && x.MODIFY_DATE <= delDate).ToList();
+                detailSheetData = context.BUD_BID_DETAIL_SHEET.Where(x => x.MODIFIED_BY == "TEMP" && x.MODIFY_DATE <= delDate).ToList();
+                taskInfoData = context.BUD_BID_DETAIL_TASK.Where(x => x.MODIFIED_BY == "TEMP" && x.MODIFY_DATE <= delDate).ToList();
+            }
+
+            GenericData.Delete<BUD_BID_PROJECTS>(projectData);
+            GenericData.Delete<BUD_BID_ACTUAL_NUM>(actualData);
+            GenericData.Delete<BUD_BID_BUDGET_NUM>(budgetData);
+            GenericData.Delete<BUD_BID_DETAIL_SHEET>(detailSheetData);
+            GenericData.Delete<BUD_BID_DETAIL_TASK>(taskInfoData);
+        }
         public static List<DoubleComboLongID> BudgetVersions()
         {
             List<DoubleComboLongID> comboItem = new List<DoubleComboLongID>();
@@ -25,10 +49,10 @@ namespace DBI.Data
         public static List<SingleCombo> YearSummaryProjectActions()
         {
             List<SingleCombo> comboItems = new List<SingleCombo>();
-            comboItems.Add(new SingleCombo { ID_NAME = "Add a New BBProject" });
-            comboItems.Add(new SingleCombo { ID_NAME = "Edit Selected BBProject" });
-            comboItems.Add(new SingleCombo { ID_NAME = "Copy Selected BBProject" });
-            comboItems.Add(new SingleCombo { ID_NAME = "Delete Selected BBProject" });
+            comboItems.Add(new SingleCombo { ID_NAME = "Add a New Project" });
+            comboItems.Add(new SingleCombo { ID_NAME = "Edit Selected Project" });
+            comboItems.Add(new SingleCombo { ID_NAME = "Copy Selected Project" });
+            comboItems.Add(new SingleCombo { ID_NAME = "Delete Selected Project" });
             return comboItems;
         }
         public static List<SingleCombo> YearSummaryDetailActions()
@@ -131,18 +155,16 @@ namespace DBI.Data
             public string REC_TYPE { get; set; }
             public string DESC_1 { get; set; }
             public string DESC_2 { get; set; }
-            public decimal? AMT_1 { get; set; }
-            public decimal? AMT_2 { get; set; }
-            public decimal? AMT_3 { get; set; }
-            public decimal? AMT_4 { get; set; }
-            public decimal? AMT_5 { get; set; }
-            public decimal? TOTAL { get; set; }
+            public string AMT_1 { get; set; }
+            public string AMT_2 { get; set; }
+            public string AMT_3 { get; set; }
+            public string AMT_4 { get; set; }
+            public string AMT_5 { get; set; }
+            public string TOTAL { get; set; }
         }
         #endregion
     }
-
-
-
+    
     public class BBSummary
     {
         public class Grid
@@ -175,78 +197,78 @@ namespace DBI.Data
             public static List<Fields> Data(string orgName, long orgID, long yearID, long verID, long prevYearID, long prevVerID)
             {
                 string sql = string.Format(@"
-                        WITH
-                            CUR_PROJECT_INFO_WITH_STATUS AS(
-                                SELECT BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID, BUD_BID_PROJECTS.PROJECT_ID, BUD_BID_PROJECTS.TYPE, BUD_BID_PROJECTS.PRJ_NAME, BUD_BID_STATUS.STATUS,
-                                    BUD_BID_PROJECTS.ACRES, BUD_BID_PROJECTS.DAYS, BUD_BID_PROJECTS.COMPARE_PRJ_OVERRIDE, BUD_BID_PROJECTS.COMPARE_PRJ_AMOUNT
-                                FROM BUD_BID_PROJECTS
-                                INNER JOIN BUD_BID_STATUS
-                                ON BUD_BID_PROJECTS.STATUS_ID = BUD_BID_STATUS.STATUS_ID
-                                WHERE BUD_BID_PROJECTS.ORG_ID = {1} AND BUD_BID_PROJECTS.YEAR_ID = {2} AND BUD_BID_PROJECTS.VER_ID = {3} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP'
-                            ),     
-                            ORACLE_PROJECT_NAMES AS (
-                                SELECT '{1}' AS PROJECT_ID, 'N/A' AS PROJECT_NUM, '{0} (Org)' AS PROJECT_NAME, 'ORG' AS TYPE
-                                FROM DUAL
-                                    UNION ALL
-                                SELECT CAST(PROJECTS_V.PROJECT_ID AS varchar(20)) AS PROJECT_ID, PROJECTS_V.SEGMENT1 AS PROJECT_NUM, PROJECTS_V.LONG_NAME AS PROJECT_NAME, 'PROJECT' AS TYPE
-                                FROM PROJECTS_V
-                                LEFT JOIN PA.PA_PROJECT_CLASSES
-                                ON PROJECTS_V.PROJECT_ID = PA.PA_PROJECT_CLASSES.PROJECT_ID
-                                WHERE PROJECTS_V.PROJECT_STATUS_CODE = 'APPROVED' AND PROJECTS_V.PROJECT_TYPE <> 'TRUCK ' || CHR(38) || ' EQUIPMENT' AND PA.PA_PROJECT_CLASSES.CLASS_CATEGORY = 'Job Cost Rollup' AND PROJECTS_V.CARRYING_OUT_ORGANIZATION_ID = {1}
-                                    UNION ALL
-                                SELECT CONCAT('Various - ', PA.PA_PROJECT_CLASSES.CLASS_CODE) AS PROJECT_ID, 'N/A' AS PROJECT_NUM, CONCAT('Various - ', PA.PA_PROJECT_CLASSES.CLASS_CODE) AS PROJECT_NAME, 'ROLLUP' AS TYPE
-                                FROM PROJECTS_V
-                                LEFT JOIN PA.PA_PROJECT_CLASSES
-                                ON PROJECTS_V.PROJECT_ID = PA.PA_PROJECT_CLASSES.PROJECT_ID
-                                WHERE PROJECTS_V.PROJECT_STATUS_CODE = 'APPROVED' AND PROJECTS_V.PROJECT_TYPE <> 'TRUCK ' || CHR(38) || ' EQUIPMENT' AND PA.PA_PROJECT_CLASSES.CLASS_CATEGORY = 'Job Cost Rollup'
-                                AND PA.PA_PROJECT_CLASSES.CLASS_CODE <> 'None' AND PROJECTS_V.CARRYING_OUT_ORGANIZATION_ID = {1}
-                                GROUP BY CONCAT('Various - ', PA.PA_PROJECT_CLASSES.CLASS_CODE) 
-                            ),
-                            BUDGET_LINE_AMOUNTS AS (
-                                SELECT * FROM (           
-                                    SELECT BUD_BID_BUDGET_NUM.PROJECT_ID, BUD_BID_BUDGET_NUM.LINE_ID, BUD_BID_BUDGET_NUM.NOV
-                                    FROM BUD_BID_PROJECTS
-                                    LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
-                                    LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
-                                    WHERE BUD_BID_PROJECTS.ORG_ID = {1} AND BUD_BID_PROJECTS.YEAR_ID = {2} AND BUD_BID_PROJECTS.VER_ID = {3} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
-                                PIVOT(
-                                    SUM(NOV) FOR (LINE_ID)
-                                    IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
-                            ),
-                            PREV_OP AS (                        
-                                SELECT BUD_BID_PROJECTS.PROJECT_ID, NOV PREV_OP  
+                    WITH
+                        CUR_PROJECT_INFO_WITH_STATUS AS(
+                            SELECT BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID, BUD_BID_PROJECTS.PROJECT_ID, BUD_BID_PROJECTS.TYPE, BUD_BID_PROJECTS.PRJ_NAME, BUD_BID_STATUS.STATUS,
+                                BUD_BID_PROJECTS.ACRES, BUD_BID_PROJECTS.DAYS, BUD_BID_PROJECTS.COMPARE_PRJ_OVERRIDE, BUD_BID_PROJECTS.COMPARE_PRJ_AMOUNT
+                            FROM BUD_BID_PROJECTS
+                            INNER JOIN BUD_BID_STATUS
+                            ON BUD_BID_PROJECTS.STATUS_ID = BUD_BID_STATUS.STATUS_ID
+                            WHERE BUD_BID_PROJECTS.ORG_ID = {1} AND BUD_BID_PROJECTS.YEAR_ID = {2} AND BUD_BID_PROJECTS.VER_ID = {3} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP'
+                        ),     
+                        ORACLE_PROJECT_NAMES AS (
+                            SELECT '{1}' AS PROJECT_ID, 'N/A' AS PROJECT_NUM, '{0} (Org)' AS PROJECT_NAME, 'ORG' AS TYPE
+                            FROM DUAL
+                                UNION ALL
+                            SELECT CAST(PROJECTS_V.PROJECT_ID AS varchar(20)) AS PROJECT_ID, PROJECTS_V.SEGMENT1 AS PROJECT_NUM, PROJECTS_V.LONG_NAME AS PROJECT_NAME, 'PROJECT' AS TYPE
+                            FROM PROJECTS_V
+                            LEFT JOIN PA.PA_PROJECT_CLASSES
+                            ON PROJECTS_V.PROJECT_ID = PA.PA_PROJECT_CLASSES.PROJECT_ID
+                            WHERE PROJECTS_V.PROJECT_STATUS_CODE = 'APPROVED' AND PROJECTS_V.PROJECT_TYPE <> 'TRUCK ' || CHR(38) || ' EQUIPMENT' AND PA.PA_PROJECT_CLASSES.CLASS_CATEGORY = 'Job Cost Rollup' AND PROJECTS_V.CARRYING_OUT_ORGANIZATION_ID = {1}
+                                UNION ALL
+                            SELECT CONCAT('Various - ', PA.PA_PROJECT_CLASSES.CLASS_CODE) AS PROJECT_ID, 'N/A' AS PROJECT_NUM, CONCAT('Various - ', PA.PA_PROJECT_CLASSES.CLASS_CODE) AS PROJECT_NAME, 'ROLLUP' AS TYPE
+                            FROM PROJECTS_V
+                            LEFT JOIN PA.PA_PROJECT_CLASSES
+                            ON PROJECTS_V.PROJECT_ID = PA.PA_PROJECT_CLASSES.PROJECT_ID
+                            WHERE PROJECTS_V.PROJECT_STATUS_CODE = 'APPROVED' AND PROJECTS_V.PROJECT_TYPE <> 'TRUCK ' || CHR(38) || ' EQUIPMENT' AND PA.PA_PROJECT_CLASSES.CLASS_CATEGORY = 'Job Cost Rollup'
+                            AND PA.PA_PROJECT_CLASSES.CLASS_CODE <> 'None' AND PROJECTS_V.CARRYING_OUT_ORGANIZATION_ID = {1}
+                            GROUP BY CONCAT('Various - ', PA.PA_PROJECT_CLASSES.CLASS_CODE) 
+                        ),
+                        BUDGET_LINE_AMOUNTS AS (
+                            SELECT * FROM (           
+                                SELECT BUD_BID_BUDGET_NUM.PROJECT_ID, BUD_BID_BUDGET_NUM.LINE_ID, BUD_BID_BUDGET_NUM.NOV
                                 FROM BUD_BID_PROJECTS
                                 LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
                                 LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
-                                WHERE BUD_BID_PROJECTS.ORG_ID = {1} AND BUD_BID_PROJECTS.YEAR_ID = {4} AND BUD_BID_PROJECTS.VER_ID = {5} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT' AND BUD_BID_BUDGET_NUM.LINE_ID = 10        
-                            ) 
-                        SELECT CUR_PROJECT_INFO_WITH_STATUS.BUD_BID_PROJECTS_ID,
-                            CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID, 
-                            CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'OVERRIDE' THEN '-- OVERRIDE --'
-                                WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'ORG' THEN 'N/A'
-                                WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'ROLLUP' THEN 'N/A'
-                                ELSE ORACLE_PROJECT_NAMES.PROJECT_NUM END PROJECT_NUM,                       
-                            CUR_PROJECT_INFO_WITH_STATUS.TYPE,
-                            CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'OVERRIDE' THEN CUR_PROJECT_INFO_WITH_STATUS.PRJ_NAME ELSE ORACLE_PROJECT_NAMES.PROJECT_NAME END PROJECT_NAME,
-                            CUR_PROJECT_INFO_WITH_STATUS.STATUS, 
-                            CUR_PROJECT_INFO_WITH_STATUS.ACRES, 
-                            CUR_PROJECT_INFO_WITH_STATUS.DAYS,
-                            BUDGET_LINE_AMOUNTS.GROSS_REC,
-                            BUDGET_LINE_AMOUNTS.MAT_USAGE,
-                            BUDGET_LINE_AMOUNTS.GROSS_REV,
-                            BUDGET_LINE_AMOUNTS.DIR_EXP,
-                            BUDGET_LINE_AMOUNTS.OP,                        
-                            CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_OVERRIDE = 'Y' THEN CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_AMOUNT ELSE (CASE WHEN PREV_OP.PREV_OP IS NULL THEN 0 ELSE PREV_OP.PREV_OP END) END PREV_OP,
-                            CASE WHEN BUDGET_LINE_AMOUNTS.GROSS_REC = 0 THEN 0 ELSE ROUND(BUDGET_LINE_AMOUNTS.MAT_USAGE/BUDGET_LINE_AMOUNTS.GROSS_REC,2)*100 END MAT_PERC,
-                            CASE WHEN BUDGET_LINE_AMOUNTS.GROSS_REV = 0 THEN 0 ELSE ROUND(BUDGET_LINE_AMOUNTS.GROSS_REC/BUDGET_LINE_AMOUNTS.GROSS_REV,2)*100 END GR_PERC,
-                            CASE WHEN BUDGET_LINE_AMOUNTS.GROSS_REV = 0 THEN 0 ELSE ROUND(BUDGET_LINE_AMOUNTS.DIR_EXP/BUDGET_LINE_AMOUNTS.GROSS_REV,2)*100 END DIRECTS_PERC,
-                            CASE WHEN BUDGET_LINE_AMOUNTS.GROSS_REV = 0 THEN 0 ELSE ROUND(BUDGET_LINE_AMOUNTS.OP/BUDGET_LINE_AMOUNTS.GROSS_REV,2)*100 END OP_PERC,       
-                            BUDGET_LINE_AMOUNTS.OP - (CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_OVERRIDE = 'Y' THEN CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_AMOUNT ELSE (CASE WHEN PREV_OP.PREV_OP IS NULL THEN 0 ELSE PREV_OP.PREV_OP END) END) OP_VAR    
-                        FROM CUR_PROJECT_INFO_WITH_STATUS
-                        LEFT OUTER JOIN ORACLE_PROJECT_NAMES ON CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID = ORACLE_PROJECT_NAMES.PROJECT_ID AND CUR_PROJECT_INFO_WITH_STATUS.TYPE = ORACLE_PROJECT_NAMES.TYPE
-                        LEFT OUTER JOIN BUDGET_LINE_AMOUNTS ON CUR_PROJECT_INFO_WITH_STATUS.BUD_BID_PROJECTS_ID = BUDGET_LINE_AMOUNTS.PROJECT_ID
-                        LEFT OUTER JOIN PREV_OP ON CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID = PREV_OP.PROJECT_ID
-                        ORDER BY LOWER(PROJECT_NAME)", orgName, orgID, yearID, verID, prevYearID, prevVerID);
+                                WHERE BUD_BID_PROJECTS.ORG_ID = {1} AND BUD_BID_PROJECTS.YEAR_ID = {2} AND BUD_BID_PROJECTS.VER_ID = {3} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
+                            PIVOT(
+                                SUM(NOV) FOR (LINE_ID)
+                                IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                        ),
+                        PREV_OP AS (                        
+                            SELECT BUD_BID_PROJECTS.PROJECT_ID, NOV PREV_OP  
+                            FROM BUD_BID_PROJECTS
+                            LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
+                            LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
+                            WHERE BUD_BID_PROJECTS.ORG_ID = {1} AND BUD_BID_PROJECTS.YEAR_ID = {4} AND BUD_BID_PROJECTS.VER_ID = {5} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT' AND BUD_BID_BUDGET_NUM.LINE_ID = 10        
+                        ) 
+                    SELECT CUR_PROJECT_INFO_WITH_STATUS.BUD_BID_PROJECTS_ID,
+                        CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID, 
+                        CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'OVERRIDE' THEN '-- OVERRIDE --'
+                            WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'ORG' THEN 'N/A'
+                            WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'ROLLUP' THEN 'N/A'
+                            ELSE ORACLE_PROJECT_NAMES.PROJECT_NUM END PROJECT_NUM,                       
+                        CUR_PROJECT_INFO_WITH_STATUS.TYPE,
+                        CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'OVERRIDE' THEN CUR_PROJECT_INFO_WITH_STATUS.PRJ_NAME ELSE ORACLE_PROJECT_NAMES.PROJECT_NAME END PROJECT_NAME,
+                        CUR_PROJECT_INFO_WITH_STATUS.STATUS, 
+                        CUR_PROJECT_INFO_WITH_STATUS.ACRES, 
+                        CUR_PROJECT_INFO_WITH_STATUS.DAYS,
+                        BUDGET_LINE_AMOUNTS.GROSS_REC,
+                        BUDGET_LINE_AMOUNTS.MAT_USAGE,
+                        BUDGET_LINE_AMOUNTS.GROSS_REV,
+                        BUDGET_LINE_AMOUNTS.DIR_EXP,
+                        BUDGET_LINE_AMOUNTS.OP,                        
+                        CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_OVERRIDE = 'Y' THEN CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_AMOUNT ELSE (CASE WHEN PREV_OP.PREV_OP IS NULL THEN 0 ELSE PREV_OP.PREV_OP END) END PREV_OP,
+                        CASE WHEN BUDGET_LINE_AMOUNTS.GROSS_REC = 0 THEN 0 ELSE ROUND(BUDGET_LINE_AMOUNTS.MAT_USAGE/BUDGET_LINE_AMOUNTS.GROSS_REC,2)*100 END MAT_PERC,
+                        CASE WHEN BUDGET_LINE_AMOUNTS.GROSS_REV = 0 THEN 0 ELSE ROUND(BUDGET_LINE_AMOUNTS.GROSS_REC/BUDGET_LINE_AMOUNTS.GROSS_REV,2)*100 END GR_PERC,
+                        CASE WHEN BUDGET_LINE_AMOUNTS.GROSS_REV = 0 THEN 0 ELSE ROUND(BUDGET_LINE_AMOUNTS.DIR_EXP/BUDGET_LINE_AMOUNTS.GROSS_REV,2)*100 END DIRECTS_PERC,
+                        CASE WHEN BUDGET_LINE_AMOUNTS.GROSS_REV = 0 THEN 0 ELSE ROUND(BUDGET_LINE_AMOUNTS.OP/BUDGET_LINE_AMOUNTS.GROSS_REV,2)*100 END OP_PERC,       
+                        BUDGET_LINE_AMOUNTS.OP - (CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_OVERRIDE = 'Y' THEN CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_AMOUNT ELSE (CASE WHEN PREV_OP.PREV_OP IS NULL THEN 0 ELSE PREV_OP.PREV_OP END) END) OP_VAR    
+                    FROM CUR_PROJECT_INFO_WITH_STATUS
+                    LEFT OUTER JOIN ORACLE_PROJECT_NAMES ON CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID = ORACLE_PROJECT_NAMES.PROJECT_ID AND CUR_PROJECT_INFO_WITH_STATUS.TYPE = ORACLE_PROJECT_NAMES.TYPE
+                    LEFT OUTER JOIN BUDGET_LINE_AMOUNTS ON CUR_PROJECT_INFO_WITH_STATUS.BUD_BID_PROJECTS_ID = BUDGET_LINE_AMOUNTS.PROJECT_ID
+                    LEFT OUTER JOIN PREV_OP ON CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID = PREV_OP.PROJECT_ID
+                    ORDER BY LOWER(PROJECT_NAME)", orgName, orgID, yearID, verID, prevYearID, prevVerID);
 
                 using (Entities context = new Entities())
                 {
@@ -319,9 +341,7 @@ namespace DBI.Data
             }
         } 
     }
-
-
-
+    
     public class BBAdjustments
     {
         #region Fields
@@ -410,8 +430,6 @@ namespace DBI.Data
         }  
     }
 
-
-
     public class BBOH
     {
         #region Fields
@@ -460,8 +478,6 @@ namespace DBI.Data
         }  
     }
 
-
-
     public class BBProject
     {
         public static long Count(long orgID, long yearID, long verID, string projectID, long curBudBidID)
@@ -479,13 +495,13 @@ namespace DBI.Data
             List<BUD_BID_DETAIL_SHEET> detailSheetData;
             List<BUD_BID_DETAIL_TASK> taskInfoData;
 
-            using (Entities _context = new Entities())
+            using (Entities context = new Entities())
             {
-                projectData = _context.BUD_BID_PROJECTS.Where(x => x.BUD_BID_PROJECTS_ID == budBidID).Single();
-                actualData = _context.BUD_BID_ACTUAL_NUM.Where(x => x.PROJECT_ID == budBidID).ToList();
-                budgetData = _context.BUD_BID_BUDGET_NUM.Where(x => x.PROJECT_ID == budBidID).ToList();
-                detailSheetData = _context.BUD_BID_DETAIL_SHEET.Where(x => x.PROJECT_ID == budBidID).ToList();
-                taskInfoData = _context.BUD_BID_DETAIL_TASK.Where(x => x.PROJECT_ID == budBidID).ToList();
+                projectData = context.BUD_BID_PROJECTS.Where(x => x.BUD_BID_PROJECTS_ID == budBidID).Single();
+                actualData = context.BUD_BID_ACTUAL_NUM.Where(x => x.PROJECT_ID == budBidID).ToList();
+                budgetData = context.BUD_BID_BUDGET_NUM.Where(x => x.PROJECT_ID == budBidID).ToList();
+                detailSheetData = context.BUD_BID_DETAIL_SHEET.Where(x => x.PROJECT_ID == budBidID).ToList();
+                taskInfoData = context.BUD_BID_DETAIL_TASK.Where(x => x.PROJECT_ID == budBidID).ToList();
             }
 
             GenericData.Delete<BUD_BID_PROJECTS>(projectData);
@@ -592,11 +608,13 @@ namespace DBI.Data
 
                 if (data == null)
                 {
-                    data.GROSS_REC = 0;
-                    data.MAT_USAGE = 0;
-                    data.GROSS_REV = 0;
-                    data.DIR_EXP = 0;
-                    data.OP = 0;
+                    Fields nullData = new Fields();
+                    nullData.GROSS_REC = 0;
+                    nullData.MAT_USAGE = 0;
+                    nullData.GROSS_REV = 0;
+                    nullData.DIR_EXP = 0;
+                    nullData.OP = 0;
+                    data = nullData;
                 }
 
                 return data;
@@ -711,7 +729,9 @@ namespace DBI.Data
 
                 if (data == null)
                 {
-                    data.OP = 0;
+                    Fields nullData = new Fields();
+                    nullData.OP = 0;
+                    data = nullData;
                 }
 
                 return data;
@@ -731,7 +751,9 @@ namespace DBI.Data
 
                 if (data == null)
                 {
-                    data.OP = 0;
+                    Fields nullData = new Fields();
+                    nullData.OP = 0;
+                    data = nullData;
                 }
                     
                 return data;                    
@@ -782,12 +804,10 @@ namespace DBI.Data
             }
         }
     }
-
-
-
+    
     public class BBDetail
     {
-        public class Grid
+        public class MainGrid
         {
             #region Fields
             public class Fields
@@ -866,12 +886,12 @@ namespace DBI.Data
                 List<BUD_BID_DETAIL_SHEET> detailSheetData;
                 List<BUD_BID_DETAIL_TASK> taskInfoData;
 
-                using (Entities _context = new Entities())
+                using (Entities context = new Entities())
                 {
-                    actualData = _context.BUD_BID_ACTUAL_NUM.Where(x => x.DETAIL_TASK_ID == detailSheetID).ToList();
-                    budgetData = _context.BUD_BID_BUDGET_NUM.Where(x => x.DETAIL_TASK_ID == detailSheetID).ToList();
-                    detailSheetData = _context.BUD_BID_DETAIL_SHEET.Where(x => x.DETAIL_TASK_ID == detailSheetID).ToList();
-                    taskInfoData = _context.BUD_BID_DETAIL_TASK.Where(x => x.DETAIL_TASK_ID == detailSheetID).ToList();
+                    actualData = context.BUD_BID_ACTUAL_NUM.Where(x => x.DETAIL_TASK_ID == detailSheetID).ToList();
+                    budgetData = context.BUD_BID_BUDGET_NUM.Where(x => x.DETAIL_TASK_ID == detailSheetID).ToList();
+                    detailSheetData = context.BUD_BID_DETAIL_SHEET.Where(x => x.DETAIL_TASK_ID == detailSheetID).ToList();
+                    taskInfoData = context.BUD_BID_DETAIL_TASK.Where(x => x.DETAIL_TASK_ID == detailSheetID).ToList();
                 }
 
                 GenericData.Delete<BUD_BID_ACTUAL_NUM>(actualData);
@@ -927,6 +947,85 @@ namespace DBI.Data
                 GenericData.Update<BUD_BID_DETAIL_TASK>(data);
             }
 
+            public class MainTabField
+            {
+
+                public static Fields Data(long detailSheetID)
+                {
+                    string sql = string.Format(@"
+                        SELECT * FROM (
+                            SELECT DETAIL_TASK_ID, REC_TYPE, TOTAL
+                            FROM BUD_BID_DETAIL_SHEET
+                            WHERE DETAIL_TASK_ID = {0})
+                        PIVOT(
+                            SUM(TOTAL) FOR (REC_TYPE)
+                            IN ('RECREMAIN' RECREMAIN, 'DAYSREMAIN' DAYSREMAIN, 'UNITREMAIN' UNITREMAIN, 'DAYSWORKED' DAYSWORKED))", detailSheetID);
+
+                    Fields data;
+                    using (Entities context = new Entities())
+                    {
+                        data = context.Database.SqlQuery<Fields>(sql).SingleOrDefault();
+                    }
+
+                    if (data == null)
+                    {
+                        Fields nullData = new Fields();
+                        nullData.RECREMAIN = 0;
+                        nullData.DAYSREMAIN = 0;
+                        nullData.UNITREMAIN = 0;
+                        nullData.DAYSWORKED = 0;
+                        return nullData;
+                    }
+
+                    return data;
+                }
+                public static void DBUpdate(long budBidProjectID, long detailSheetID, string recType, decimal amount)
+                {
+                    BUD_BID_DETAIL_SHEET data;
+                    using (Entities context = new Entities())
+                    {
+                        data = context.BUD_BID_DETAIL_SHEET.Where(x => x.DETAIL_TASK_ID == detailSheetID && x.REC_TYPE == recType).SingleOrDefault();
+                    }
+
+                    if (data == null)
+                    {
+                        data = new BUD_BID_DETAIL_SHEET();
+                        data.PROJECT_ID = budBidProjectID;
+                        data.REC_TYPE = recType;
+                        data.AMT_1 = 0;
+                        data.AMT_2 = 0;
+                        data.AMT_3 = 0;
+                        data.AMT_4 = 0;
+                        data.AMT_5 = 0;
+                        data.TOTAL = amount;
+                        data.CREATE_DATE = DateTime.Now;
+                        data.CREATED_BY = HttpContext.Current.User.Identity.Name;
+                        data.MODIFY_DATE = DateTime.Now;
+                        data.MODIFIED_BY = HttpContext.Current.User.Identity.Name;
+                        data.DETAIL_TASK_ID = detailSheetID;
+                        GenericData.Insert<BUD_BID_DETAIL_SHEET>(data);
+                    }
+
+                    else
+                    {
+                        data.TOTAL = amount;
+                        data.MODIFY_DATE = DateTime.Now;
+                        data.MODIFIED_BY = HttpContext.Current.User.Identity.Name;
+                        GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    }
+                }
+
+                #region Fields
+                public class Fields
+                {
+                    public decimal? RECREMAIN { get; set; }
+                    public decimal? DAYSREMAIN { get; set; }
+                    public decimal? UNITREMAIN { get; set; }
+                    public decimal? DAYSWORKED { get; set; }
+                }
+                #endregion
+            }
+
             public class Subtotals
             {
 
@@ -939,7 +1038,8 @@ namespace DBI.Data
                             WHERE DETAIL_TASK_ID = {0})
                         PIVOT(
                             SUM(TOTAL) FOR (REC_TYPE)
-                            IN ('MATERIAL' MATERIAL))", detailSheetID);
+                            IN ('MATERIAL' MATERIAL, 'EQUIPMENT' EQUIPMENT, 'PERSONNEL' PERSONNEL, 'PERDIEM' PERDIEM,
+                                'TRAVEL' TRAVEL, 'MOTELS' MOTELS, 'MISC' MISC, 'LUMPSUM' LUMPSUM))", detailSheetID);
 
                     Fields data;
                     using (Entities context = new Entities())
@@ -951,6 +1051,13 @@ namespace DBI.Data
                     {
                         Fields nullData = new Fields();
                         nullData.MATERIAL = 0;
+                        nullData.EQUIPMENT = 0;
+                        nullData.PERSONNEL = 0;
+                        nullData.PERDIEM = 0;
+                        nullData.TRAVEL = 0;
+                        nullData.MOTELS = 0;
+                        nullData.MISC = 0;
+                        nullData.LUMPSUM = 0;
                         return nullData;
                     }
 
@@ -960,7 +1067,60 @@ namespace DBI.Data
                 #region Fields
                 public class Fields
                 {
-                    public decimal MATERIAL { get; set; }
+                    public decimal? MATERIAL { get; set; }
+                    public decimal? EQUIPMENT { get; set; }
+                    public decimal? PERSONNEL { get; set; }
+                    public decimal? PERDIEM { get; set; }
+                    public decimal? TRAVEL { get; set; }
+                    public decimal? MOTELS { get; set; }
+                    public decimal? MISC { get; set; }
+                    public decimal? LUMPSUM { get; set; }
+                }
+                #endregion
+            }
+
+            public class BottomNumbers
+            {
+                public static Fields Calculate(long detailSheetID, decimal sGrossRec, decimal sMaterial, decimal sGrossRev, decimal sDirects, decimal sOP, decimal totalDaysRemain, 
+                    decimal totalUnitsRemain, decimal totalDaysWorked)
+                {
+                    BBDetail.Sheet.Subtotals.Fields subtotal = BBDetail.Sheet.Subtotals.Get(detailSheetID);
+                    decimal totalMaterial = subtotal.MATERIAL ?? 0;
+                    decimal totalEquipment = subtotal.EQUIPMENT ?? 0;
+                    decimal totalPersonnel = subtotal.PERSONNEL ?? 0;
+                    decimal totalPerDiem = subtotal.PERDIEM ?? 0;
+                    decimal totalTravel = subtotal.TRAVEL ?? 0;
+                    decimal totalMotels = subtotal.MOTELS ?? 0;
+                    decimal totalMisc = subtotal.MISC ?? 0;
+                    decimal totalLumpSum = subtotal.LUMPSUM ?? 0;
+
+                    decimal laborBurdenRate = .40M;  //FIX
+                    decimal laborBurden = (totalPersonnel + totalTravel) * laborBurdenRate;
+                    decimal totalWklyDirects = totalEquipment + totalPersonnel + totalPerDiem + totalTravel + totalMotels + totalMisc + laborBurden;
+                    decimal totalDirectsPerDay = totalDaysWorked == 0 ? 0 : totalWklyDirects / totalDaysWorked;
+                    decimal avgUnitsPerDay = totalDaysRemain == 0 ? 0 : totalUnitsRemain / totalDaysRemain;
+                    decimal totalDirectsLeft = (totalDirectsPerDay * totalDaysRemain) + totalLumpSum;
+                    decimal totalMaterialLeft = totalMaterial * totalUnitsRemain;
+
+                    Fields returnData = new Fields();
+                    returnData.LABOR_BURDEN = laborBurden;
+                    returnData.TOTAL_WKLY_DIRECTS = totalWklyDirects;
+                    returnData.TOTAL_DIRECTS_PER_DAY = totalDirectsPerDay;
+                    returnData.AVG_UNITS_PER_DAY = avgUnitsPerDay;
+                    returnData.TOTAL_DIRECTS_LEFT = totalDirectsLeft;
+                    returnData.TOTAL_MATERIAL_LEFT = totalMaterialLeft;
+                    return returnData;
+                }
+
+                #region Fields
+                public class Fields
+                {
+                    public decimal LABOR_BURDEN { get; set; }
+                    public decimal TOTAL_WKLY_DIRECTS { get; set; }
+                    public decimal TOTAL_DIRECTS_PER_DAY { get; set; }
+                    public decimal AVG_UNITS_PER_DAY { get; set; }
+                    public decimal TOTAL_DIRECTS_LEFT { get; set; }
+                    public decimal TOTAL_MATERIAL_LEFT { get; set; }
                 }
                 #endregion
             }
@@ -1020,17 +1180,26 @@ namespace DBI.Data
 
                     GenericData.Update<BUD_BID_BUDGET_NUM>(data);
                 }
-                public static Fields Calculate(long detailSheetID, decimal sGrossRec, decimal sMaterial, decimal sGrossRev, decimal sDirects, decimal sOP)
+                public static Fields Calculate(long detailSheetID, decimal sGrossRec, decimal sMaterial, decimal sGrossRev, decimal sDirects, decimal sOP,  decimal totalReceiptsRemain, 
+                    decimal totalDaysRemain, decimal totalUnitsRemain, decimal totalDaysWorked)
                 {
-                    Subtotals.Fields data = Subtotals.Get(detailSheetID);
-                    decimal materialSubtotal = data.MATERIAL;
+                    BBDetail.Sheet.BottomNumbers.Fields data = BBDetail.Sheet.BottomNumbers.Calculate(detailSheetID, sGrossRec, sMaterial, sGrossRev, sDirects, sOP, 
+                        totalDaysRemain, totalUnitsRemain, totalDaysWorked);
+                    decimal totalMatLeft = data.TOTAL_MATERIAL_LEFT;
+                    decimal totalDirectsLeft = data.TOTAL_DIRECTS_LEFT;
+
+                    decimal eGrossRec = sGrossRec + totalReceiptsRemain;
+                    decimal eMaterial = sMaterial + totalMatLeft;
+                    decimal eGrossRev = eGrossRec - eMaterial;
+                    decimal eDirects = sDirects + totalDirectsLeft;
+                    decimal eOP = eGrossRev - eDirects;
 
                     Fields endNums = new Fields();
-                    endNums.GROSS_REC = sGrossRec;
-                    endNums.MAT_USAGE = sMaterial + materialSubtotal;
-                    endNums.GROSS_REV = sGrossRev;
-                    endNums.DIR_EXP = sDirects;
-                    endNums.OP = sOP;
+                    endNums.GROSS_REC = eGrossRec;
+                    endNums.MAT_USAGE = eMaterial;
+                    endNums.GROSS_REV = eGrossRev;
+                    endNums.DIR_EXP = eDirects;
+                    endNums.OP = eOP;
                     return endNums;
                 }
                 
@@ -1096,11 +1265,6 @@ namespace DBI.Data
                         data = context.BUD_BID_DETAIL_TASK.Where(x => x.PROJECT_ID == budBidProjectID && x.DETAIL_NAME != "SYS_PROJECT").OrderBy(y => y.SHEET_ORDER).ToList();
                     }
 
-                    if (data == null)
-                    {
-                        return;
-                    }
-
                     long detailSheetID;
                     decimal eGrossRec = sGrossRec;
                     decimal eMatUsage = sMaterial;
@@ -1110,7 +1274,15 @@ namespace DBI.Data
                     foreach (BUD_BID_DETAIL_TASK field in data)
                     {
                         detailSheetID = Convert.ToInt64(field.DETAIL_TASK_ID);
-                        BBDetail.Sheet.EndNumbers.Fields endNums = BBDetail.Sheet.EndNumbers.Calculate(detailSheetID, sGrossRec, sMaterial, sGrossRev, sDirects, sOP);
+
+                        BBDetail.Sheet.MainTabField.Fields mainTabData = BBDetail.Sheet.MainTabField.Data(detailSheetID);
+                        decimal totalReceiptsRemain = mainTabData.RECREMAIN ?? 0;
+                        decimal totalDaysRemain = mainTabData.DAYSREMAIN ?? 0;
+                        decimal totalUnitsRemain = mainTabData.UNITREMAIN ?? 0;
+                        decimal totalDaysWorked = mainTabData.DAYSWORKED ?? 0;
+
+                        BBDetail.Sheet.EndNumbers.Fields endNums = BBDetail.Sheet.EndNumbers.Calculate(detailSheetID, sGrossRec, sMaterial, sGrossRev, sDirects, sOP,  
+                            totalReceiptsRemain, totalDaysRemain,  totalUnitsRemain,  totalDaysWorked);
                         eGrossRec = endNums.GROSS_REC;
                         eMatUsage = endNums.MAT_USAGE;
                         eGrossRev = endNums.GROSS_REV;
@@ -1156,7 +1328,7 @@ namespace DBI.Data
 
             public class Data
             {
-                public static List<Fields> Get(long projectID, long detailSheetID)
+                public static List<Fields> Get(long projectID, long detailSheetID, string recType)
                 {
                     string sql = string.Format(@"
                             SELECT DETAIL_SHEET_ID,
@@ -1172,8 +1344,8 @@ namespace DBI.Data
                                 AMT_5,
                                 TOTAL
                             FROM BUD_BID_DETAIL_SHEET 
-                            WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND REC_TYPE = 'MATERIAL'
-                            ORDER BY DETAIL_SHEET_ID DESC", projectID, detailSheetID);
+                            WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND REC_TYPE = '{2}'
+                            ORDER BY DETAIL_SHEET_ID DESC", projectID, detailSheetID, recType);
 
                     List<Fields> data;
                     using (Entities context = new Entities())

@@ -14,7 +14,10 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!X.IsAjaxRequest)
+            {
+                BB.CleanOldTempRecords(2);
+            }
         }
 
         protected void deLoadOrgTree(object sender, NodeLoadEventArgs e)

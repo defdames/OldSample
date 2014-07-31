@@ -189,7 +189,7 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column1" runat="server" DataIndex="PROJECT_NAME" Text="BBProject Long Name" Flex="6" />
+                            <ext:Column ID="Column1" runat="server" DataIndex="PROJECT_NAME" Text="Project Long Name" Flex="6" />
                             <ext:Column ID="Column2" runat="server" DataIndex="STATUS" Text="Status" Flex="2" />
                             <ext:NumberColumn ID="Column3" runat="server" DataIndex="ACRES" Text="Acres" Flex="1" Align="Right" />
                             <ext:NumberColumn ID="Column4" runat="server" DataIndex="DAYS" Text="Days" Flex="1" Align="Right" />
@@ -362,7 +362,7 @@
                                 <ext:Model ID="Model10" runat="server">
                                     <Fields>
                                         <ext:ModelField Name="ADJUSTMENT" />
-                                        <ext:ModelField Name="BBOH" />
+                                        <ext:ModelField Name="OH" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -383,7 +383,7 @@
                             <ext:NumberColumn ID="NumberColumn5" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn6" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right">
                             </ext:NumberColumn>
-                            <ext:NumberColumn ID="uxOH" runat="server" DataIndex="BBOH" Text="Overhead" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="uxOH" runat="server" DataIndex="OH" Text="Overhead" Flex="2" Align="Right" />
                             <ext:Column ID="Column33" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn8" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                         </Columns>
@@ -423,7 +423,7 @@
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
-                                <ext:Label ID="Label1" runat="server" Width="120" Text="BBProject Number:" />
+                                <ext:Label ID="Label1" runat="server" Width="120" Text="Project Number:" />
                                 <ext:DropDownField ID="uxProjectNum" runat="server" Width="110" Mode="ValueText" Editable="false">
                                     <Listeners>
                                         <Expand Handler="this.picker.setWidth(500);" />
@@ -459,8 +459,8 @@
                                             </Store>
                                             <ColumnModel>
                                                 <Columns>
-                                                    <ext:Column ID="Column13" runat="server" Text="BBProject Number" DataIndex="PROJECT_NUM" Flex="1" />
-                                                    <ext:Column ID="Column14" runat="server" Text="BBProject Long Name" DataIndex="PROJECT_NAME" Flex="3" />
+                                                    <ext:Column ID="Column13" runat="server" Text="Project Number" DataIndex="PROJECT_NUM" Flex="1" />
+                                                    <ext:Column ID="Column14" runat="server" Text="Project Long Name" DataIndex="PROJECT_NAME" Flex="3" />
                                                 </Columns>
                                             </ColumnModel>
                                             <BottomBar>
@@ -511,7 +511,7 @@
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
-                                <ext:Label ID="Label7" runat="server" Width="120" Text="BBProject Long Name:" />
+                                <ext:Label ID="Label7" runat="server" Width="120" Text="Project Long Name:" />
                                 <ext:TextField ID="uxProjectName" runat="server" Width="380" ReadOnly="true">
                                     <DirectEvents>
                                         <Change OnEvent="deCheckAllowSave" />
@@ -880,7 +880,7 @@
 
                 <%-------------------------------------------------- Diagnostic Panel --------------------------------------------------%>
                 <%-- Uncomment to Use --%>
-                <ext:FormPanel ID="FormPanel1"
+                <%--<ext:FormPanel ID="FormPanel1"
                     runat="server"
                     Region="East"
                     Width="130"
@@ -918,11 +918,11 @@
                             </Items>
                         </ext:FieldContainer>
                     </Items>
-                </ext:FormPanel>
+                </ext:FormPanel>--%>
                 <%-- Uncomment to Use --%>
 
                 <%-- Uncomment to Use --%>
-                <%--<ext:Hidden ID="uxHidNewProject" runat="server" />
+                <ext:Hidden ID="uxHidNewProject" runat="server" />
                 <ext:Hidden ID="uxHidBudBidID" runat="server" />
                 <ext:Hidden ID="uxHidProjectNumID" runat="server" />
                 <ext:Hidden ID="uxHidType" runat="server" />
@@ -933,7 +933,7 @@
                 <ext:Hidden ID="uxHidOldBudBidID" runat="server" />
                 <ext:Hidden ID="uxHidDetailSheetID" runat="server" />
                 <ext:Hidden ID="uxHidDetailSheetOrder" runat="server" />
-                <ext:Hidden ID="uxHidDetailSheetName" runat="server" />--%>
+                <ext:Hidden ID="uxHidDetailSheetName" runat="server" />
                 <%-- Uncomment to Use --%>
                 <%-------------------------------------------------- Diagnostic Panel --------------------------------------------------%>
             </Items>
