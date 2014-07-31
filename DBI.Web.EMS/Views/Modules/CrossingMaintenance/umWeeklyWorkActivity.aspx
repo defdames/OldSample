@@ -37,8 +37,9 @@
     <div>
      <ext:ResourceManager ID="ResourceManager1" runat="server" />
          <ext:Hidden ID="Hidden1" runat="server" Hidden="true" />
-
-         <ext:FormPanel ID="uxFilterForm" runat="server" Margin="5" Title="Filter Weekly Work Activity">
+         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
+                <Items>
+         <ext:FormPanel ID="uxFilterForm" runat="server" Margin="5" Region="North" Title="Filter Weekly Work Activity">
                 <Items>
                     <ext:FieldSet ID="FieldSet1" runat="server" Title="Filter">
                         <Items>
@@ -169,12 +170,13 @@
             Icon="Report"
             Frame="false"
             Resizable="false"
-            Collapsible="false" 
+            Collapsible="false"
+            Region="Center" 
             Hidden="true">
             <Store>
                 <ext:Store ID="uxWeeklyActivityStore"
                     runat="server"
-                    GroupField="SUB_DIVISION" OnReadData="deWeeklyActivityGrid" AutoLoad="false">
+                    GroupField="SUB_DIVISION" OnReadData="deWeeklyActivityGrid" AutoLoad="false" PageSize="15">
                     <Model>
                         <ext:Model ID="Model1" runat="server">
                             <Fields>
@@ -188,10 +190,7 @@
                                 <ext:ModelField Name="APPLICATION_DATE" />
                                 <ext:ModelField Name="SPRAY" />
                                 <ext:ModelField Name="CUT" />
-                                <ext:ModelField Name="INSPECT" />
-                          
-                               
-                               
+                                <ext:ModelField Name="INSPECT" />                           
 
                             </Fields>
                         </ext:Model>
@@ -256,6 +255,8 @@
                 <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
             </BottomBar>
         </ext:GridPanel>
+                    </Items>
+             </ext:Viewport>
     </div>
     </form>
 </body>

@@ -28,15 +28,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                     List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
                     using (Entities _context = new Entities())
-                    {                        
-                        var data = (from v in _context.PROJECTS_V
-                                    where v.PROJECT_TYPE == "CUSTOMER BILLING" && v.TEMPLATE_FLAG == "N" && v.PROJECT_STATUS_CODE == "APPROVED" && OrgsList.Contains(v.CARRYING_OUT_ORGANIZATION_ID) && v.ORGANIZATION_NAME.Contains(" RR") && RailroadId != null
-                                    select new { v.PROJECT_ID, v.LONG_NAME, v.ORGANIZATION_NAME, v.SEGMENT1 }).ToList<object>();
+                    {
+                        IQueryable<CROSSING_MAINTENANCE.ProjectList> data = CROSSING_MAINTENANCE.GetCrossingSecurityProjectList(RailroadId, _context).Where(v => v.PROJECT_TYPE == "CUSTOMER BILLING" && v.TEMPLATE_FLAG == "N" && v.PROJECT_STATUS_CODE == "APPROVED" && v.ORGANIZATION_NAME.Contains(" RR") && OrgsList.Contains(v.CARRYING_OUT_ORGANIZATION_ID) && RailroadId != null);
 
-
-                        //uxProjectGrid.Store.Primary.DataSource = data;
                         int count;
-                        uxCurrentSecurityProjectStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                        uxCurrentSecurityProjectStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.ProjectList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                         e.Total = count;
                         
                     }
@@ -46,17 +42,16 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         protected void deReadSubDiv(object sender, StoreReadDataEventArgs e)
         {
-            List<SubDivDetails> data;
+         
              long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
              using (Entities _context = new Entities())
              {
-                 data = (from d in _context.CROSSINGS
-                         where d.RAILROAD_ID == RailroadId
-                         select new SubDivDetails { SUB_DIVISION = d.SUB_DIVISION }).Distinct().ToList();
-                 //uxSubDivStore.DataSource = data; 
+                 IQueryable<CROSSING_MAINTENANCE.SubDivisionList> data = CROSSING_MAINTENANCE.GetSubDivison(RailroadId, _context);
+               
                  int count;
-                 uxSubDivStore.DataSource = GenericData.EnumerableFilterHeader<SubDivDetails>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                 uxSubDivStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.SubDivisionList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                  e.Total = count;
+                        
              }
         }
         protected void deSecurityCrossingGridData(object sender, StoreReadDataEventArgs e)
@@ -85,46 +80,22 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
               
             }
         }
-        protected void GetCrossingsGridData(object sender, DirectEventArgs e)
+        protected void GetCrossingsGridData(object sender, StoreReadDataEventArgs e)
         {
             
             using (Entities _context = new Entities())
             {
-                //long RailroadId = long.Parse(Session["rrType"].ToString());
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-                long ProjectId = long.Parse(e.ExtraParams["ProjectId"]);
-                var data = (from r in _context.CROSSING_RELATIONSHIP
-                            join d in _context.CROSSINGS on r.CROSSING_ID equals d.CROSSING_ID
-                            join i in _context.CROSSING_RAILROAD on d.RAILROAD_ID equals i.RAILROAD_ID
-                            where r.PROJECT_ID == ProjectId && d.RAILROAD_ID == RailroadId 
+                long ProjectId = long.Parse(e.Parameters["ProjectId"]);
+                IQueryable<CROSSING_MAINTENANCE.CrossingAssignedList> data = CROSSING_MAINTENANCE.GetCrossingsAssigned(RailroadId, _context).Where(x => x.PROJECT_ID == ProjectId);
 
-                            select new { r.CROSSING_ID, r.PROJECT_ID, d.CROSSING_NUMBER, i.RAILROAD, d.SERVICE_UNIT, d.SUB_DIVISION }).ToList<object>();
-
-
-                uxAssignedCrossingGrid.Store.Primary.DataSource = data;
-                uxAssignedCrossingGrid.Store.Primary.DataBind();
-
-
+                int count;
+                uxAssignedCrossingGrid.Store.Primary.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.CrossingAssignedList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                 e.Total = count;
+             
             }
         }
-        //protected void deUnassignedCrossings(object sender, DirectEventArgs e)
-        //{
-        //       using (Entities _context = new Entities())
-        //    {
-        //        //long RailroadId = long.Parse(Session["rrType"].ToString());
-        //        long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-              
-        //        var data = (from d in _context.CROSSINGS
-        //                    join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
-        //                    join i in _context.CROSSING_RAILROAD on d.RAILROAD_ID equals i.RAILROAD_ID
-        //                    where d.RAILROAD_ID == RailroadId 
-
-        //                    select new { r.CROSSING_ID, r.PROJECT_ID, d.CROSSING_NUMBER, i.RAILROAD, d.SERVICE_UNIT, d.SUB_DIVISION }).ToList<object>();
-
-
-        //        uxAssignedCrossingGrid.Store.Primary.DataSource = data;
-        //        uxAssignedCrossingGrid.Store.Primary.DataBind();
-        //}
+      
         protected void deAssociateCrossings(object sender, DirectEventArgs e)
         {       
             long ProjectId = long.Parse(e.ExtraParams["projectId"]);
@@ -158,6 +129,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             uxAssignedCrossingStore.Reload();
           
            
+        }
+        protected void deLoadStore(object sender, DirectEventArgs e)
+        {
+            uxAssignedCrossingStore.Reload();
         }
         protected void deCloseAssignScreen(object sender, DirectEventArgs e)
         {
@@ -199,7 +174,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 });
             }
         }
-        public class CrossingDetails
+  
+            public class CrossingDetails
             {
                 public long CROSSING_ID { get; set; }
                 public string CROSSING_NUMBER { get; set; }              
@@ -207,13 +183,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 public string SUB_DIVISION { get; set; }
                 public string CONTACT_ID { get; set; }
             }
-        public class SubDivDetails
-        {
-            public long CROSSING_ID { get; set; }
-            public string SUB_DIVISION { get; set; }
-         
-        }
-         public class ProjectDetails
+       
+            public class ProjectDetails
             {
                 public long PROJECT_ID { get; set; }
                 public string SEGMENT1 { get; set; }              
@@ -221,17 +192,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 public string LONG_NAME { get; set; }
                 public string CROSSING_ID { get; set; }
             }
-         public class GetSelectedCrossings
-         {
-             public long? PROJECT_ID { get; set; }
-             public long? CROSSING_ID { get; set; }
-             public decimal RELATIONSHIP_ID { get; set; }
-             public string CROSSING_NUMBER { get; set; }
-             public string SERVICE_UNIT { get; set; }
-             public string SUB_DIVISION { get; set; }
-             public long? CONTACT_ID { get; set; }
-         }
-
+   
     }
          
 

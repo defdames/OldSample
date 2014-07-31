@@ -48,29 +48,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string State = uxAddStateComboBox.SelectedItem.Value;
             using (Entities _context = new Entities())
             {
-
-                //Get List of all incidents open and closed 
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-                var allData = (from d in _context.CROSSINGS
-                               join a in _context.CROSSING_APPLICATION on d.CROSSING_ID equals a.CROSSING_ID
-                               where d.RAILROAD_ID == RailroadId 
-                               select new
-                               {
-                                   d.CROSSING_ID,
-                                   a.APPLICATION_ID,
-                                   d.CROSSING_NUMBER,
-                                   d.SUB_DIVISION,
-                                   d.SERVICE_UNIT,
-                                   d.STATE,
-                                   d.MILE_POST,
-                                   a.APPLICATION_DATE,
-                                   a.SPRAY,
-                                   a.CUT,
-                                   a.INSPECT,
-                                  
-                                  
-                               });
 
+                IQueryable<CROSSING_MAINTENANCE.WeeklyWorkList> allData = CROSSING_MAINTENANCE.GetWeeklyWork(RailroadId, _context);
+               
                 //filter down specific information to show the work done needed for report
                 if (StartDate != DateTime.MinValue)
                 {

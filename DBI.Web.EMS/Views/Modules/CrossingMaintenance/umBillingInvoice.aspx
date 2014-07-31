@@ -32,7 +32,9 @@
   
       <ext:ResourceManager ID="ResourceManager1" runat="server" />
           <div></div>
-      <ext:FormPanel ID="uxFilterForm" runat="server" Margin="5" Title="Crossing Invoice Form">
+        <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
+                <Items>
+      <ext:FormPanel ID="uxFilterForm" runat="server" Margin="5" Region="North" Title="Crossing Invoice Form">
                 <Items>
                     <ext:FieldSet ID="FieldSet1" runat="server" Title="Invoicing Form">
                         <Items>
@@ -105,7 +107,7 @@
 			 <ValidityChange Handler="#{Button4}.setDisabled(!valid);" />
 		  </Listeners>
             </ext:FormPanel>
-             <ext:GridPanel ID="uxApplicationEntryGrid" Title="Completed Crossings" runat="server" Region="North" Frame="false" Collapsible="true" MultiSelect="true" >
+             <ext:GridPanel ID="uxApplicationEntryGrid" Title="Completed Crossings" runat="server" Region="Center" Frame="false" Collapsible="true" MultiSelect="true" >
                 <SelectionModel>
                     <ext:CheckboxselectionModel ID="CheckboxSelectionModel2" runat="server" AllowDeselect="true" Mode="Multi" />
                 </SelectionModel>
@@ -271,6 +273,8 @@
             </ext:GridPanel>
         </Items>
              </ext:Window>
+                    </Items>
+            </ext:Viewport>
     </form>
 </body>
 </html>

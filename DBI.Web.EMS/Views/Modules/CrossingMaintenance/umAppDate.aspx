@@ -51,7 +51,9 @@
         <div>
             <ext:ResourceManager ID="ResourceManager1" runat="server" />
             <ext:Hidden ID="Hidden1" runat="server" Hidden="true" />
-            <ext:FormPanel ID="uxFilterForm" runat="server" Margin="5" Title="Filter Application Date">
+             <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
+                <Items>
+            <ext:FormPanel ID="uxFilterForm" runat="server" Margin="5" Region="North" Title="Filter Application Date">
                 <Items>
                     <ext:FieldSet ID="FieldSet1" runat="server" Title="Filter">
                         <Items>
@@ -209,11 +211,11 @@
                 Frame="false"
                 Resizable="false"
                 Collapsible="false"
-                Hidden="true">
+                Hidden="true" Region="Center">
                 <Store>
                     <ext:Store ID="uxAppDateStore"
                         runat="server"
-                        GroupField="SUB_DIVISION" AutoDataBind="true" OnReadData="deAppDateGrid" AutoLoad="false" PageSize="20">
+                        GroupField="SUB_DIVISION" AutoDataBind="true" OnReadData="deAppDateGrid" AutoLoad="false" PageSize="10">
                         <Model>
                             <ext:Model ID="Model1" runat="server">
                                 <Fields>
@@ -296,6 +298,8 @@
                     <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
                 </BottomBar>
             </ext:GridPanel>
+                    </Items>
+                 </ext:Viewport>
         </div>
     </form>
 </body>

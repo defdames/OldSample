@@ -53,37 +53,37 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
 
                 //var allData = _context.CROSSINGS.Join(_context.CROSSING_APPLICATION, d => d.CROSSING_ID, a => a.CROSSING_ID, (d, a) => new { d, a }).Where(r => r.d.RAILROAD_ID == RailroadId);//.CROSSING_ID, d.CROSSING_NUMBER,
+                IQueryable<CROSSING_MAINTENANCE.StateCrossingList> allData = CROSSING_MAINTENANCE.GetStateCrossingList(RailroadId, Application, _context);
 
-
-                var allData = (from d in _context.CROSSINGS
-                            join a in _context.CROSSING_APPLICATION on d.CROSSING_ID equals a.CROSSING_ID
-                            where d.RAILROAD_ID == RailroadId && a.APPLICATION_REQUESTED == Application
-                            select new
-                            {
-                                d.CROSSING_ID,
-                                d.CROSSING_NUMBER,
-                                d.SUB_DIVISION,
-                                d.STATE,
-                                d.COUNTY,
-                                d.SERVICE_UNIT,
-                                d.CITY,
-                                d.MILE_POST,
-                                d.DOT,
-                                d.ROWNE,
-                                d.ROWNW,
-                                d.ROWSE,
-                                d.ROWSW,
-                                d.STREET,
-                                d.SUB_CONTRACTED,
-                                d.LONGITUDE,
-                                d.LATITUDE,
-                                d.SPECIAL_INSTRUCTIONS,
-                                a.SPRAY,
-                                a.CUT,
-                                a.INSPECT,
-                                a.APPLICATION_ID,
-                                a.APPLICATION_REQUESTED
-                            });
+                //var allData = (from d in _context.CROSSINGS
+                //            join a in _context.CROSSING_APPLICATION on d.CROSSING_ID equals a.CROSSING_ID
+                //            where d.RAILROAD_ID == RailroadId && a.APPLICATION_REQUESTED == Application
+                //            select new
+                //            {
+                //                d.CROSSING_ID,
+                //                d.CROSSING_NUMBER,
+                //                d.SUB_DIVISION,
+                //                d.STATE,
+                //                d.COUNTY,
+                //                d.SERVICE_UNIT,
+                //                d.CITY,
+                //                d.MILE_POST,
+                //                d.DOT,
+                //                d.ROWNE,
+                //                d.ROWNW,
+                //                d.ROWSE,
+                //                d.ROWSW,
+                //                d.STREET,
+                //                d.SUB_CONTRACTED,
+                //                d.LONGITUDE,
+                //                d.LATITUDE,
+                //                d.SPECIAL_INSTRUCTIONS,
+                //                a.SPRAY,
+                //                a.CUT,
+                //                a.INSPECT,
+                //                a.APPLICATION_ID,
+                //                a.APPLICATION_REQUESTED
+                //            });
 
 
                 if (ServiceUnit != null)

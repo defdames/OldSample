@@ -55,8 +55,9 @@
         <div></div>
         <ext:ResourceManager ID="ResourceManager1" runat="server" />
          <ext:Hidden ID="Hidden1" runat="server" Hidden="true" />
-
-        <ext:FormPanel runat="server" ID="FilterForm" Margin="5" Title="Filter State Crossing List">
+         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
+                <Items>
+        <ext:FormPanel runat="server" ID="FilterForm" Margin="5" Region="North" Title="Filter State Crossing List">
             <Items>
                 <ext:FieldSet runat="server" Title="Filter">
                     <Items>
@@ -211,6 +212,7 @@
             Title="State Crossing List Report"
             Icon="Report"
             Resizable="true"
+            Region="Center"
             Collapsible="false" Cls="my.grouped-header" Hidden="true">
             <Store>
                 <ext:Store ID="uxStateCrossingListStore"
@@ -338,7 +340,8 @@
             </BottomBar>
 
         </ext:GridPanel>
-
+                </Items>
+             </ext:Viewport>
     </form>
 </body>
 </html>
