@@ -199,6 +199,8 @@
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
     <Content Include="Views\Modules\Overhead\umAddOverheadDetailLine.aspx" />
+    <Content Include="Views\Modules\Overhead\umBudgetMain.aspx" />
+    <Content Include="Views\Modules\Overhead\umEditBudget.aspx" />
     <Content Include="Views\Modules\Overhead\umOpenBudgetType.aspx" />
     <Content Include="Views\Modules\Overhead\umOverheadBudgetPeriods.aspx" />
     <Content Include="Views\Modules\Overhead\umOverheadGeneralLedger.aspx" />
@@ -718,6 +720,20 @@
     </Compile>
     <Compile Include="Views\Modules\Overhead\umAddOverheadDetailLine.aspx.designer.cs">
       <DependentUpon>umAddOverheadDetailLine.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umBudgetMain.aspx.cs">
+      <DependentUpon>umBudgetMain.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umBudgetMain.aspx.designer.cs">
+      <DependentUpon>umBudgetMain.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umEditBudget.aspx.cs">
+      <DependentUpon>umEditBudget.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umEditBudget.aspx.designer.cs">
+      <DependentUpon>umEditBudget.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\Overhead\umOpenBudgetType.aspx.cs">
       <DependentUpon>umOpenBudgetType.aspx</DependentUpon>
