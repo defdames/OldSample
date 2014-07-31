@@ -5,13 +5,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+  
 </head>
 <body>
     <form id="form1" runat="server">
 
         <ext:ResourceManager ID="ResourceManager1" runat="server" />
-
-        <div>
+           <div></div>
+       
+         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
+                <Items>
+     
             <%----------------------------------------------------- <CrossingInfo Tab>----------------------------------------------------------------------%>
             <ext:GridPanel ID="uxCrossingMainGrid" Title="CROSSING INFORMATION" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true">
                 <SelectionModel>
@@ -45,6 +49,9 @@
                         <Proxy>
                             <ext:PageProxy />
                         </Proxy>
+                         <Sorters>
+                            <ext:DataSorter Direction="ASC" Property="SERVICE_UNIT" />
+                         </Sorters>
                     </ext:Store>
                 </Store>
                 <ColumnModel>
@@ -88,7 +95,7 @@
             </ext:GridPanel>
 
             <%-- -----------------------------------------------------------------------------------------------------------------------  --%>
-            <ext:FormPanel runat="server" ID="uxCrossingForm" Layout="FormLayout">
+            <ext:FormPanel runat="server" ID="uxCrossingForm" Region="Center" Layout="FormLayout" AutoScroll="true">
                 <Items>
                     <ext:Toolbar ID="Toolbar1" runat="server">
                         <Items>
@@ -235,7 +242,6 @@
                                     <ext:TextField ID="uxNWCI" runat="server" FieldLabel="NW" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
                                     <ext:TextField ID="uxNWextCI" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
                                     <ext:TextField ID="uxSurfaceCI" runat="server" FieldLabel="Surface" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
-
                                 </Items>
                             </ext:FieldContainer>
 
@@ -244,7 +250,6 @@
                                     <ext:TextField ID="uxSECI" runat="server" FieldLabel="SE" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
                                     <ext:TextField ID="uxSEextCI" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
                                     <ext:TextField ID="uxCrossingWarningDevice" runat="server" FieldLabel="Warning Device" LabelAlign="Right" ReadOnly="true" />
-
                                 </Items>
                             </ext:FieldContainer>
 
@@ -253,7 +258,6 @@
                                     <ext:TextField ID="uxSWCI" runat="server" FieldLabel="SW" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
                                     <ext:TextField ID="uxSWextCI" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
                                     <ext:TextField ID="uxPropertyTypeCI" runat="server" FieldLabel="Property Type" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
-
                                 </Items>
                             </ext:FieldContainer>
                         </Items>
@@ -274,7 +278,6 @@
                                       <ext:Label ID="Label10" runat="server" Text="" Width="25" />
                                     <ext:Checkbox ID="uxSubConCI" runat="server" BoxLabel="Subcontracted" BoxLabelAlign="After" Width="110" ReadOnly="true" />
                                     <ext:Checkbox ID="uxRestrictedBoxCI" runat="server" BoxLabel="Restricted" BoxLabelAlign="After" ReadOnly="true" />
-
                                 </Items>
                             </ext:FieldContainer>
 
@@ -291,9 +294,8 @@
                                     <ext:TextField ID="uxMaxSpeedCI" runat="server" FieldLabel="Max Speed" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
                                 </Items>
                             </ext:FieldContainer>
-
                             <ext:TextArea ID="uxSpecialInstructCI" runat="server" FieldLabel="Special Instructions" AnchorHorizontal="92%" LabelAlign="Right" ReadOnly="true" />
-                        </Items>
+                               </Items>
                     </ext:FieldSet>
 
                 </Items>
@@ -312,20 +314,12 @@
                         <Items>
                             <ext:FieldSet ID="FieldSet4" runat="server" Title="Crossing Details">
                                 <Items>
-                                     <ext:FieldContainer ID="FieldContainer38" runat="server">
-                                        <Items>
-                                    <%--<ext:TextField ID="uxAddCrossingNumCI" runat="server" FieldLabel="Crossing #" LabelAlign="Right" AnchorHorizontal="100%" TabIndex="1" AllowBlank="false" Width="300"/>--%>
-                                        </Items>
-                                         </ext:FieldContainer>
+                                   
                                     <ext:FieldContainer ID="FieldContainer9" runat="server" Layout="HBoxLayout">
                                         <Items>
-                                            <ext:TextField runat="server" ID="uxAddRailRoadCITextField" LabelAlign="Right" FieldLabel="Railroad" AnchorHorizontal="100%" />
-                                       
-                                           
-                                        
+                                           <ext:TextField runat="server" ID="uxAddRailRoadCITextField" LabelAlign="Right" FieldLabel="Railroad" AnchorHorizontal="100%" />                                                                               
                                            <ext:TextField ID="uxAddRouteCI" runat="server" FieldLabel="Route" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="6" />
                                            <ext:TextField ID="uxAddDotCI" runat="server" FieldLabel="DOT #" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="10" AllowBlank="false" />
-
                                         </Items>
                                     </ext:FieldContainer>
 
@@ -457,10 +451,8 @@
                                         <Items>
                                             <ext:NumberField ID="uxAddNWCINumberField" runat="server" FieldLabel="NW" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="15" />
                                             <ext:NumberField ID="uxAddNWextCINumberField" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="19" />
-                                            <ext:TextField ID="uxAddSurfaceCI" runat="server" FieldLabel="Surface" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="24" />
-                                         
-                                            
-                                             </Items>
+                                            <ext:TextField ID="uxAddSurfaceCI" runat="server" FieldLabel="Surface" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="24" />                                            
+                                       </Items>
                                     </ext:FieldContainer>
 
                                     <ext:FieldContainer ID="FieldContainer16" runat="server" Layout="HBoxLayout">
@@ -468,7 +460,6 @@
                                             <ext:NumberField ID="uxAddSECINumberField" runat="server" FieldLabel="SE" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="16" />
                                             <ext:NumberField ID="uxAddSEextCINumberField" runat="server" FieldLabel="" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="20" />
                                             <ext:TextField ID="uxAddWarningDeviceCI" runat="server" FieldLabel="Warning Device" LabelAlign="Right" TabIndex="25" />
-
                                         </Items>
                                     </ext:FieldContainer>
 
@@ -977,7 +968,10 @@
         </ext:GridPanel>
              </Items>
            </ext:Window>
-        </div>
+            
+        
+                    </Items>
+             </ext:Viewport>
     </form>
 </body>
 </html>

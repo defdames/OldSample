@@ -51,25 +51,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                 //Get List of all incidents open and closed 
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-                var allData = (from d in _context.CROSSINGS
-                               join i in _context.CROSSING_INCIDENT on d.CROSSING_ID equals i.CROSSING_ID
-                               where d.RAILROAD_ID == RailroadId 
-                               select new
-                               {
-                                   d.CROSSING_ID,
-                                   i.INCIDENT_ID,
-                                   d.CROSSING_NUMBER,
-                                   d.SUB_DIVISION,
-                                   d.SERVICE_UNIT,
-                                   d.STATE,
-                                   d.MILE_POST,
-                                   d.DOT,
-                                   i.REMARKS,
-                                   i.SLOW_ORDER,
-                                   i.INCIDENT_NUMBER,
-                                   i.DATE_REPORTED,
-                                   i.DATE_CLOSED,
-                               });
+
+                IQueryable<CROSSING_MAINTENANCE.IncidentReportList> allData = CROSSING_MAINTENANCE.GetIncidentReport(RailroadId, _context);
 
                 //filter down specific information to show the incidents needed for report
                 if (StartDate != DateTime.MinValue)

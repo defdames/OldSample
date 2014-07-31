@@ -78,6 +78,9 @@
                     </ExtraParams>
                 </Select>
             </DirectEvents>
+                    <DirectEvents>
+                        <SelectionChange OnEvent="deValidateRemoveButton" />
+                    </DirectEvents>
                 </ext:GridPanel>
 
 
@@ -106,6 +109,10 @@
                             <Proxy>
                                 <ext:PageProxy />
                             </Proxy>
+                             <Sorters>
+                                <ext:DataSorter Direction="ASC" Property="SEGMENT1" />
+                            </Sorters>
+
                         </ext:Store>
                     </Store>
                     <ColumnModel>
@@ -159,7 +166,6 @@
                             OnReadData="GetProjectsGridData"
                             AutoLoad="false"
                             AutoDataBind="true"
-                            PageSize="15"
                             WarningOnDirty="false">
                              <Parameters>
                             <ext:StoreParameter Name="RailroadId" Value="#{uxRailRoadGridPanel}.getSelectionModel().getSelection()[0].data.RAILROAD_ID" Mode="Raw" />
@@ -211,9 +217,7 @@
                        </Items>
                     </ext:Toolbar>
                      </TopBar>
-                    <BottomBar>
-                        <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
-                    </BottomBar>
+                  
                     <Listeners>
                         <Select Handler="#{Button2}.enable()" />
                     </Listeners>

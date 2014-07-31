@@ -32,8 +32,9 @@
     <form id="form1" runat="server">
         <ext:ResourceManager ID="ResourceManager1" runat="server" />
         <div></div>
-        
-        <ext:GridPanel ID="uxSupplementalCrossingGrid" Title="CROSSING LIST FOR SUPPLEMENTAL ENTRY" runat="server" Layout="HBoxLayout" Collapsible="true">
+        <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
+                <Items>
+        <ext:GridPanel ID="uxSupplementalCrossingGrid" Title="CROSSING LIST FOR SUPPLEMENTAL ENTRY" Region="North" runat="server" Layout="HBoxLayout" Collapsible="true">
             <SelectionModel>
                 <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="true" Mode="Multi" />
             </SelectionModel>
@@ -60,6 +61,9 @@
                     <Proxy>
                         <ext:PageProxy />
                     </Proxy>
+                    <Sorters>
+                        <ext:DataSorter Direction="ASC" Property="SERVICE_UNIT" />
+                    </Sorters>
                 </ext:Store>
             </Store>
             <ColumnModel>
@@ -84,35 +88,11 @@
                 <Select Handler="#{uxSupplementalStore}.reload(); #{uxAddSuppButton}.enable()" />
                 <Deselect Handler="#{uxAddSuppButton}.disable();" />
             </Listeners>
-
+           
         </ext:GridPanel>
-        <ext:Toolbar ID="Toolbar1" runat="server">
-            <Items>
-                <ext:Button ID="uxAddSuppButton" runat="server" Text="Add Supplemental" Icon="ApplicationAdd" Disabled="true">
-                    <Listeners>
-                        <Click Handler="#{uxAddNewSupplementalWindow}.show()" />
-                    </Listeners>
-                </ext:Button>
-               
-                <ext:Button ID="uxRemoveSuppButton" runat="server" Text="Delete Supplemental" Icon="ApplicationDelete" Disabled="true">
-                    <DirectEvents>
-                        <Click OnEvent="deRemoveSupplemental">
-                            <Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete this supplemental entry?" />
+       
 
-                            <ExtraParams>
-                                <ext:Parameter Name="SupplementalInfo" Value="Ext.encode(#{uxSupplementalGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
-                            </ExtraParams>
-                          <%--    <ExtraParams>
-                                    <ext:Parameter Name="SupplementalId" Value="#{uxSupplementalCrossingGrid}.getSelectionModel().getSelection()[0].data.SUPPLEMENTAL_ID" Mode="Raw" />
-                                </ExtraParams>--%>
-                        </Click>
-                    </DirectEvents>
-
-                </ext:Button>
-            </Items>
-        </ext:Toolbar>
-
-        <ext:GridPanel ID="uxSupplementalGrid" Title="SUPPLEMENTAL ENTRIES" runat="server" Layout="FitLayout">
+        <ext:GridPanel ID="uxSupplementalGrid" Title="SUPPLEMENTAL ENTRIES" runat="server" Region="Center" Layout="FitLayout">
 
             <Store>
                 <ext:Store runat="server"
@@ -159,7 +139,33 @@
             <SelectionModel>
                 <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" AllowDeselect="true" Mode="Single" />
             </SelectionModel>
-            
+             <TopBar>
+             <ext:Toolbar ID="Toolbar1" runat="server">
+            <Items>
+                <ext:Button ID="uxAddSuppButton" runat="server" Text="Add Supplemental" Icon="ApplicationAdd" Disabled="true">
+                    <Listeners>
+                        <Click Handler="#{uxAddNewSupplementalWindow}.show()" />
+                    </Listeners>
+                </ext:Button>
+               
+                <ext:Button ID="uxRemoveSuppButton" runat="server" Text="Delete Supplemental" Icon="ApplicationDelete" Disabled="true">
+                    <DirectEvents>
+                        <Click OnEvent="deRemoveSupplemental">
+                            <Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete this supplemental entry?" />
+
+                            <ExtraParams>
+                                <ext:Parameter Name="SupplementalInfo" Value="Ext.encode(#{uxSupplementalGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+                            </ExtraParams>
+                          <%--    <ExtraParams>
+                                    <ext:Parameter Name="SupplementalId" Value="#{uxSupplementalCrossingGrid}.getSelectionModel().getSelection()[0].data.SUPPLEMENTAL_ID" Mode="Raw" />
+                                </ExtraParams>--%>
+                        </Click>
+                    </DirectEvents>
+
+                </ext:Button>
+            </Items>
+        </ext:Toolbar>
+                </TopBar>
             <Listeners>
                 <Select Handler="#{uxRemoveSuppButton}.enable();" />
                 <Deselect Handler="#{uxRemoveSuppButton}.disable();" />
@@ -356,7 +362,8 @@
         </ext:Window>
 
         <%---------------------------------------------------------------------------------------------------------%>
-      
+      </Items>
+        </ext:Viewport>
 
     </form>
 </body>

@@ -28,15 +28,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             using (Entities _context = new Entities())
             {
-                List<object> data;
+                //List<object> data;
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-                data = (from d in _context.CROSSINGS
-                        where d.RAILROAD_ID == RailroadId
-                        select new { d.CONTACT_ID, d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.SUB_DIVISION, d.CROSSING_CONTACTS.CONTACT_NAME, d.PROJECT_ID }).ToList<object>();
-
-
+                IQueryable<CROSSING_MAINTENANCE.CrossingList> data = CROSSING_MAINTENANCE.GetCrossingProjectList(RailroadId, _context);
+              
                 int count;
-                uxCurrentCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                uxCurrentCrossingStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.CrossingList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 e.Total = count;
             }
         }
@@ -45,31 +42,20 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             using (Entities _context = new Entities())
             {
-
-                List<object> data;
                 long CrossingId = long.Parse(e.Parameters["CrossingId"]);
+                IQueryable<CROSSING_MAINTENANCE.IncidentList> data;
                 if (uxToggleClosed.Checked)
                 {
-                    data = (from i in _context.CROSSING_INCIDENT
-                            join c in _context.CROSSINGS on i.CROSSING_ID equals c.CROSSING_ID
-                            where i.CROSSING_ID == CrossingId
-
-                            select new {c.CROSSING_NUMBER, i.CROSSING_ID, i.INCIDENT_ID, i.INCIDENT_NUMBER, i.DATE_REPORTED, i.DATE_CLOSED, i.SLOW_ORDER, i.REMARKS }).ToList<object>();
-
-
+                    data = CROSSING_MAINTENANCE.GetIncidents(CrossingId, _context);
                 }
                 else
                 {
-                    data = (from i in _context.CROSSING_INCIDENT
-                            join c in _context.CROSSINGS on i.CROSSING_ID equals c.CROSSING_ID
-                            where i.CROSSING_ID == CrossingId && i.DATE_CLOSED == null
-
-                            select new {c.CROSSING_NUMBER, i.CROSSING_ID, i.INCIDENT_ID, i.INCIDENT_NUMBER, i.DATE_REPORTED, i.DATE_CLOSED, i.SLOW_ORDER, i.REMARKS }).ToList<object>();
-
+                    data = CROSSING_MAINTENANCE.GetIncidents(CrossingId, _context).Where(i => i.DATE_CLOSED == null);
                 }
-
-                uxIncidentStore.DataSource = data;
-             
+         
+                int count;
+                uxIncidentStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.IncidentList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                e.Total = count;
             }
         }
         protected void deAddIncident(object sender, DirectEventArgs e)
@@ -222,8 +208,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             public string SLOW_ORDER { get; set; }
 
         }
-            
-            }
-        }
+    }
+}
     
 

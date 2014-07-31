@@ -48,31 +48,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+
+                IQueryable<CROSSING_MAINTENANCE.StateCrossingList> allData = CROSSING_MAINTENANCE.GetMissingROW(RailroadId, _context);
               
-                var allData = (from d in _context.CROSSINGS
-                        where  d.RAILROAD_ID == RailroadId && d.ROWNE == 0 && d.ROWNW == 0 && d.ROWSE == 0 && d.ROWSW == 0
-                        select new
-                        {
-                            d.CROSSING_ID,
-                            d.CROSSING_NUMBER,
-                            d.SUB_DIVISION,
-                            d.STATE,
-                            d.COUNTY,
-                            d.CITY,
-                            d.MILE_POST,
-                            d.DOT,
-                            d.SERVICE_UNIT,
-                            d.ROWNE,
-                            d.ROWNW,
-                            d.ROWSE,
-                            d.ROWSW,
-                            d.STREET,
-                            d.SUB_CONTRACTED,
-                            d.LONGITUDE,
-                            d.LATITUDE,
-                            d.SPECIAL_INSTRUCTIONS,
-                         
-                        });
                 if (ServiceUnit != null)
                 {
                     allData = allData.Where(x => x.SERVICE_UNIT == ServiceUnit);

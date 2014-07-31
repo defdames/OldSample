@@ -13,6 +13,7 @@ using DBI.Data.DataFactory;
 using DBI.Core.Security;
 using System.Security.Claims;
 using System.IO;
+using System.Data.Entity;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
@@ -39,33 +40,25 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
         protected void deCrossingGridData(object sender, StoreReadDataEventArgs e)
         {
-
-            using (Entities _context = new Entities())
-            {
-                List<object> data;
-                
+            
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+                using (Entities _context = new Entities())
+                {
                 //Get List of all new crossings
+                     IQueryable<CROSSING_MAINTENANCE.CrossingList> data;
                 if (uxToggleClosed.Checked)
                 {
-                    data = (from d in _context.CROSSINGS 
-                            //join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
-                              where !(from r in _context.CROSSING_RELATIONSHIP 
-                                where d.CROSSING_ID == r.CROSSING_ID
-                                 select r.CROSSING_ID)
-                                 .Contains(d.CROSSING_ID)
-                                 where d.RAILROAD_ID == RailroadId
-                            select new { d.RAILROAD_ID, d.RAILROAD, d.CONTACT_ID, d.STATUS, d.STATE, d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.SUB_DIVISION, d.CROSSING_CONTACTS.CONTACT_NAME }).ToList<object>();  
+
+                   data = CROSSING_MAINTENANCE.GetCrossingProjectList(RailroadId, _context);
                 }
                 else
                 {
-                    data = (from d in _context.CROSSINGS
-                            where d.RAILROAD_ID == RailroadId
-                            select new { d.RAILROAD_ID, d.RAILROAD, d.CONTACT_ID, d.STATE, d.STATUS, d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.SUB_DIVISION, d.CROSSING_CONTACTS.CONTACT_NAME }).ToList<object>();
+                    
+                    data = CROSSING_MAINTENANCE.GetCrossingNoProjectList(RailroadId, _context);
                 }
-
+               
                 int count;
-                uxCurrentCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                uxCurrentCrossingStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.CrossingList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 e.Total = count;
             
             }
@@ -198,7 +191,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 
             }
         }
-        
         /// <summary>
         /// Add Crossing to Database
         /// </summary>
@@ -1105,22 +1097,16 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         
         protected void deGetProjectList(object sender, DirectEventArgs e)
         {
-            long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
-            List<object> data;
-            using (Entities _context = new Entities())
-            {
-                data = (from r in _context.CROSSING_RELATIONSHIP
-                        join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID
-                        where r.CROSSING_ID == CrossingId
-                        select new { r.PROJECT_ID, p.LONG_NAME, p.SEGMENT1, p.ORGANIZATION_NAME }).ToList<object>();
+                long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+
+                var data = CROSSING_MAINTENANCE.CrossingsProjectList(CrossingId);
+
                 uxProjectListStore.DataSource = data;
                 uxProjectListStore.DataBind();
-
-
-            }
         }
     }
 }
+
     
 
             
