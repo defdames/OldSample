@@ -54,7 +54,10 @@
                 </ext:TreePanel>
 
                 <ext:TabPanel runat="server" DeferredRender="true" Region="Center" ID="uxCenterTabPanel" Padding="5" >
-
+                    <Items>
+                        <ext:Panel runat="server" Title="Dashboard" Html="This is for a future release that allows a dashboard view for the system admin. Uncompleted budgets, notifications etc.">
+                        </ext:Panel>
+                    </Items>
                 </ext:TabPanel>
                 
             </Items>

@@ -67,6 +67,7 @@
                                         <ext:Parameter Mode="Raw" Name="ORGANIZATION_ID" Value="record.data.ORGANIZATION_ID"></ext:Parameter>
                                          <ext:Parameter Mode="Raw" Name="FISCAL_YEAR" Value="record.data.FISCAL_YEAR"></ext:Parameter>
                                         <ext:Parameter Mode="Raw" Name="ORGANIZATION_NAME" Value="record.data.ORGANIZATION_NAME"></ext:Parameter>
+                                        <ext:Parameter Mode="Raw" Name="BUDGET_DESCRIPTION" Value="record.data.BUDGET_DESCRIPTION"></ext:Parameter>
                                     </ExtraParams>
                                 </Select>
                             </DirectEvents>

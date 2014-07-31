@@ -57,9 +57,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             string _organization_id = e.ExtraParams["ORGANIZATION_ID"];
             string _organization_name = e.ExtraParams["ORGANIZATION_NAME"];
             string _fiscalYear = e.ExtraParams["FISCAL_YEAR"];
+            string _description = e.ExtraParams["BUDGET_DESCRIPTION"];
             string _budget_id = uxBudgetVersionByOrganizationSelectionModel.SelectedRow.RecordID;
 
-            X.Js.Call("parent.App.direct.AddTabPanel", "bmw" + _organization_id, _organization_name + " - " + "Budget Maintenance", "~/Views/Modules/Overhead/umEditBudget.aspx?orgid=" + _organization_id + "&fiscalyear=" + _fiscalYear + "&budget_id=" + _budget_id);
+            X.Js.Call("parent.App.direct.AddTabPanel", "bmw" + _organization_id, _organization_name + " - " + "Budget Maintenance / " + _fiscalYear + " / " + _description, "~/Views/Modules/Overhead/umEditBudget.aspx?orgid=" + _organization_id + "&fiscalyear=" + _fiscalYear + "&budget_id=" + _budget_id);
 
         }
 
