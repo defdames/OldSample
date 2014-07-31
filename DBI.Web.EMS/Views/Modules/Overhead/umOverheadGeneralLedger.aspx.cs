@@ -122,10 +122,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 using(Entities _context = new Entities())
                 {
                     List<OVERHEAD_GL_ACCOUNT> _acc = _context.OVERHEAD_GL_ACCOUNT.Where(a => a.ORGANIZATION_ID == organizationID && a.CODE_COMBINATION_ID == code_combination_id).ToList();
-                    string _returnValue = "Included";
+                    string _returnValue = "I";
                     
                     if(_acc.Count() > 0)
-                        _returnValue = "Excluded";
+                        _returnValue = "E";
 
                     return _returnValue;
 
@@ -176,6 +176,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                             _new.SEGMENT6_DESC = _acc.SEGMENT6_DESC;
                             _new.SEGMENT7 = _acc.SEGMENT7;
                             _new.SEGMENT7_DESC = _acc.SEGMENT7_DESC;
+                            _new.INCLUDED_EXCLUDED = IsGLAccountExcluded(_organizationID, _acc.CODE_COMBINATION_ID);
                             _newTemp.Add(_new);
                         }
 
@@ -208,6 +209,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                      _data.MODIFIED_BY = User.Identity.Name;
                      _data.CREATE_DATE = DateTime.Now;
                      _data.MODIFY_DATE = DateTime.Now;
+                     _data.ORGANIZATION_ID = _organizationID;
                      GenericData.Insert<OVERHEAD_GL_ACCOUNT>(_data);
 
                  }

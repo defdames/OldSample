@@ -677,7 +677,7 @@
                             runat="server"
                             Title="Include / Exclude Toggle"
                             ColumnWidth=".5"
-                            MarginSpec="0 0 0 10">
+                            MarginSpec="0 0 0 10" Hidden="true">
                             <Defaults>
                                 <ext:Parameter Name="Width" Value="250" />
                                 <ext:Parameter Name="LabelWidth" Value="90" />

@@ -14,14 +14,9 @@
 	</style>
 
       <script type="text/javascript">
-          var getRowClass = function (record, rowIndex, rowParams, store) {
-              if (record.data.INCLUDE_EXCLUDE == "Excluded") {
-                  return "red-row";
-              };
-          }
 
           var getAccountRowClass = function (record, rowIndex, rowParams, store) {
-              if (record.data.INCLUDED_EXCLUDED == "Excluded") {
+              if (record.data.INCLUDED_EXCLUDED == "E") {
                   return "red-row";
               };
           }
@@ -106,7 +101,6 @@
                     </BottomBar>
                     <View>
                         <ext:GridView ID="uxGLAccountRangeGridView" StripeRows="true" runat="server" TrackOver="true">
-                                   <GetRowClass Fn="getRowClass" />
                         </ext:GridView>
                     </View>
                 </ext:GridPanel>
@@ -182,7 +176,7 @@
                         <ext:FilterHeader ID="uxGlAccountSecurityGridFilter" runat="server" Remote="true" />
                     </Plugins>
                     <SelectionModel>
-                        <ext:RowSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Simple">
+                        <ext:RowSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Multi" AllowDeselect="true">
                             <DirectEvents>
                                 <Select OnEvent="deSelectAccount">
                                 </Select>

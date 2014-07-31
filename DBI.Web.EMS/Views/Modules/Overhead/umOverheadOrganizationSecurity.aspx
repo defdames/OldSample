@@ -11,7 +11,8 @@
 		}
 
         .my-btn .x-btn-inner {
-            color: blue;
+            color: #0042A3;
+            text-decoration: underline;
             }
 
 	</style>
@@ -84,12 +85,10 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column2" runat="server" DataIndex="ORGANIZATION_NAME" Text="Name" Flex="3" />
-                            <ext:Column ID="Column1" runat="server" DataIndex="ORGANIZATION_STATUS" Text="Current Status" Flex="1" />   
-                             <ext:CommandColumn ID="CommandColumn1" runat="server" Width="250">
+                             <ext:CommandColumn ID="CommandColumn1" runat="server" Width="180">
                                 <Commands>
-                                    <ext:GridCommand Text="Ledger Accounts" CommandName="Accounts" Icon="BookMagnify" Cls="my-btn"></ext:GridCommand>
-                                    <ext:GridCommand Text ="Forecast Periods" CommandName="Periods" Icon="BookMagnify" Cls="my-btn"></ext:GridCommand>
+                                    <ext:GridCommand Text="Accounts" CommandName="Accounts" Icon="ReportMagnify" Cls="my-btn"></ext:GridCommand>
+                                    <ext:GridCommand Text ="Periods" CommandName="Periods" Icon="Time" Cls="my-btn"></ext:GridCommand>
                                 </Commands>
                                 <DirectEvents>
                                     <Command OnEvent="deViewAccounts">
@@ -100,19 +99,21 @@
                                         </ExtraParams>
                                     </Command>
                                 </DirectEvents>
-                            </ext:CommandColumn>     
+                            </ext:CommandColumn>    
+                            <ext:Column ID="Column2" runat="server" DataIndex="ORGANIZATION_NAME" Text="Name" Flex="2" />
+                            <ext:Column ID="Column1" runat="server" DataIndex="ORGANIZATION_STATUS" Text="Current Status" Flex="1" />   
                         </Columns>
                     </ColumnModel>
                     <Plugins>
                         <ext:FilterHeader ID="uxOrganizationsGridFilter" runat="server" Remote="true" />
                     </Plugins>
                     <SelectionModel>
-                        <ext:CheckboxSelectionModel runat="server" Mode="Simple" ID="uxOrganizationsGridSelectionModel" AllowDeselect="true">
+                        <ext:RowSelectionModel runat="server" Mode="Multi" ID="uxOrganizationsGridSelectionModel" AllowDeselect="true">
                             <DirectEvents>
                                 <Select OnEvent="deSelectOrganization"></Select>
                                 <Deselect OnEvent="deSelectOrganization"></Deselect>
                             </DirectEvents>
-                        </ext:CheckboxSelectionModel>
+                        </ext:RowSelectionModel>
                     </SelectionModel>
                     <BottomBar>
                         <ext:PagingToolbar ID="uxOrganizationGridPageBar" runat="server" />

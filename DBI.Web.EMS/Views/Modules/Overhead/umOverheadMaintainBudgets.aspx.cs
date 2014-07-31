@@ -83,14 +83,14 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 }
 
                 //Exclude any accounts added to the list of excluded accounts
-                List<OVERHEAD_GL_ACCOUNT> _excludedAccounts = _context.OVERHEAD_GL_ACCOUNT.Where(x => x.ORGANIZATION_ID == _organizationID & x.INCLUDE_EXCLUDE_FLAG == "E").ToList();
+                List<OVERHEAD_GL_ACCOUNT> _excludedAccounts = _context.OVERHEAD_GL_ACCOUNT.Where(x => x.ORGANIZATION_ID == _organizationID).ToList();
 
                 //Create a list of accounts matching up with GL_ACCOUNTS_V
                 List<GL_ACCOUNTS_V> _eAccountList = new List<GL_ACCOUNTS_V>();
 
                 foreach (OVERHEAD_GL_ACCOUNT _eaccount in _excludedAccounts)
                 {
-                    var _adata = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT1 == _eaccount.SEGMENT1 & x.SEGMENT2 == _eaccount.SEGMENT2 & x.SEGMENT3 == _eaccount.SEGMENT3 & x.SEGMENT4 == _eaccount.SEGMENT4 & x.SEGMENT5 == _eaccount.SEGMENT5 & x.SEGMENT6 == _eaccount.SEGMENT6 & x.SEGMENT7 == _eaccount.SEGMENT7).Single();
+                    var _adata = _context.GL_ACCOUNTS_V.Where(x => x.CODE_COMBINATION_ID == _eaccount.CODE_COMBINATION_ID).Single();
                     _rangeOfAccounts.Remove(_adata);
                 }
 
