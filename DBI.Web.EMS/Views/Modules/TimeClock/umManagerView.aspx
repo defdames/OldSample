@@ -33,24 +33,7 @@
 		    return value;
 		};
 
-		var onBeforeShow = function (toolTip, grid) {
-		    //var grid = App.uxEmployeeHoursGrid,
-		    view = grid.getView(),
-		    //store = grid.getStore('uxEmployeeHoursStore'),
-            record = view.getRecord(toolTip.triggerElement),
-            data = Ext.encode(record.get('ACTUAL_HOURS'))
-                //column = view.getHeaderByCell(toolTip.triggerElement),
-            text = "Over 12 hours";
-		    if (data < 12) {
-
-		        return false;
-		        //toolTip.update("OVER 12 HOURS");
-		   } 
-
-		    toolTip.update(text);
-		    
-		    
-		};
+		
 
 		var onShow = function (toolTip, grid) {
 		        var view = grid.getView(),
@@ -65,7 +48,7 @@
 
 		        return false;
 		    }
-		    //toolTip.update(data);
+		    
 		};
 	</script>
 </head>
@@ -210,8 +193,6 @@
             Delegate=".x-grid-cell"
             TrackMouse="true">
             <Listeners>
-               <%--<Show Handler="onShow(this, #{uxEmployeeHoursGrid});" />--%>
-               <%-- <BeforeShow Handler="return onBeforeShow(this, #{uxEmployeeHoursGrid});" />--%>
                 <BeforeShow Handler="return onShow(this, #{uxEmployeeHoursGrid});" />
             </Listeners>
         </ext:ToolTip>
