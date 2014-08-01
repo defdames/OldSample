@@ -889,8 +889,6 @@
                             runat="server"
                             Layout="VBoxLayout">
                             <Items>
-                                <ext:Label ID="Label39" runat="server" Width="100" Text="uxHidNewProject" Cls="labelCenterAlign" />
-                                <ext:TextField ID="uxHidNewProject" runat="server" Width="100" />
                                 <ext:Label ID="Label42" runat="server" Width="100" Text="uxHidBudBidID" Cls="labelCenterAlign" />
                                 <ext:TextField ID="uxHidBudBidID" runat="server" Width="100" />
                                 <ext:Label ID="Label43" runat="server" Width="100" Text="uxHidProjectNumID" Cls="labelCenterAlign" />
@@ -920,7 +918,6 @@
                 <%-- Uncomment to Use --%>
 
                 <%-- Uncomment to Use --%>
-                <ext:Hidden ID="uxHidNewProject" runat="server" />
                 <ext:Hidden ID="uxHidBudBidID" runat="server" />
                 <ext:Hidden ID="uxHidProjectNumID" runat="server" />
                 <ext:Hidden ID="uxHidType" runat="server" />

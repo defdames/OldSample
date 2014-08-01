@@ -2101,15 +2101,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Button uxCancel;
         
         /// <summary>
-        /// uxHidNewProject control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Hidden uxHidNewProject;
-        
-        /// <summary>
         /// uxHidBudBidID control.
         /// </summary>
         /// <remarks>

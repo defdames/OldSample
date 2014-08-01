@@ -306,29 +306,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
             if (overriden == true)
             {
-                if (uxHidBudBidID.Text == "")
+                if (manuallyEdited == false)
                 {
-                    if (uxHidNewProject.Text == "True")
-                    {
-                        prevOP = Convert.ToDecimal(uxCompareOP.Text);
-                    }
-                    else
-                    {
-                        prevOP = 0;
-                    }
+                    long budBidprojectID = Convert.ToInt64(uxHidBudBidID.Text);
+                    BBProject.OP.Fields dataOverridenOP = BBProject.OP.OverridenOP(budBidprojectID);
+                    prevOP = dataOverridenOP.OP;
                 }
                 else
                 {
-                    if (manuallyEdited == false)
-                    {
-                        long budBidprojectID = Convert.ToInt64(uxHidBudBidID.Text);
-                        BBProject.OP.Fields dataOverridenOP = BBProject.OP.OverridenOP(budBidprojectID);
-                        prevOP = dataOverridenOP.OP;
-                    }
-                    else
-                    {
-                        prevOP = Convert.ToDecimal(uxCompareOP.Text);
-                    }
+                    prevOP = Convert.ToDecimal(uxCompareOP.Text);
                 }
             }
             else
