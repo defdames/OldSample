@@ -33,23 +33,40 @@
 		    return value;
 		};
 
-		var onShow = function (toolTip, grid) {
-		    var view = grid.getView(),
-                store = grid.getStore(),
-                record = view.getRecord(view.findItemByChild(toolTip.triggerElement)),
-                column = view.getHeaderByCell(toolTip.triggerElement),
-                data = "Over 12 hours";
+		var onBeforeShow = function (toolTip, grid) {
+		    //var grid = App.uxEmployeeHoursGrid,
+		    view = grid.getView(),
+		    //store = grid.getStore('uxEmployeeHoursStore'),
+            record = view.getRecord(toolTip.triggerElement),
+            data = Ext.encode(record.get('ACTUAL_HOURS'))
+                //column = view.getHeaderByCell(toolTip.triggerElement),
+            text = "Over 12 hours";
+		    if (data < 12) {
 
-		        toolTip.update(data);
+		        return false;
+		        //toolTip.update("OVER 12 HOURS");
+		   } 
+
+		    toolTip.update(text);
+		    
 		    
 		};
 
-		//var onBeforeShow = function () {
-		//    if (record.data.ACTUAL_HOURS >= 12) {
-		//        //toolTip.body.dom.innerHTML = null;
-		//        return false;
-		//    }
-		//};
+		var onShow = function (toolTip, grid) {
+		        var view = grid.getView(),
+                store = grid.getStore(),
+                record = view.getRecord(view.findItemByChild(toolTip.triggerElement)),
+                data = record.data.ACTUAL_HOURS;
+                
+		    if (data >= 12) {
+
+		        toolTip.update("OVER 12 HOURS");
+		    } else {
+
+		        return false;
+		    }
+		    //toolTip.update(data);
+		};
 	</script>
 </head>
 <body>
@@ -171,6 +188,7 @@
 						</Items>
 				</ext:Toolbar>
 			</TopBar>
+            
 			<Features>
 				<ext:Grouping
 					runat="server"
@@ -181,15 +199,20 @@
 			<SelectionModel>
 				<ext:CheckboxSelectionModel ID="uxTimeClockSelectionModel" runat="server" Mode="Multi"/>
 			</SelectionModel>
+            <View>
+                <ext:GridView ID="GridView1" runat="server" StripeRows="true" TrackOver="true" />
+            </View>
 		</ext:GridPanel>
-           <ext:ToolTip ID="ToolTip1" 
+           <ext:ToolTip
+               ID="ToolTip1" 
             runat="server" 
             Target="={#{uxEmployeeHoursGrid}.getView().el}"
             Delegate=".x-grid-cell"
             TrackMouse="true">
             <Listeners>
-                <Show Handler="onShow(this, #{uxEmployeeHoursGrid});" />
-                <BeforeShow Handler="return onBeforeShow(this, #{uxEmployeeHoursGrid});" />
+               <%--<Show Handler="onShow(this, #{uxEmployeeHoursGrid});" />--%>
+               <%-- <BeforeShow Handler="return onBeforeShow(this, #{uxEmployeeHoursGrid});" />--%>
+                <BeforeShow Handler="return onShow(this, #{uxEmployeeHoursGrid});" />
             </Listeners>
         </ext:ToolTip>
 		   </Items>
