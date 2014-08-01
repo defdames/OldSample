@@ -198,9 +198,7 @@
                             <ext:NumberColumn ID="Column7" runat="server" DataIndex="GROSS_REV" Text="Gross Revenue" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="Column8" runat="server" DataIndex="DIR_EXP" Text="Direct Expenses" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="Column9" runat="server" DataIndex="OP" Text="OP" Flex="2" Align="Right" />
-                            <ext:Column ID="Column10" runat="server" DataIndex="OP_PERC" Text="OP %" Flex="2" Align="Right">
-                                <Renderer Fn="Ext.util.Format.numberRenderer('0,000.00 %')" />
-                            </ext:Column>
+                            <ext:Column ID="Column10" runat="server" DataIndex="OP_PERC" Text="OP %" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="Column11" runat="server" DataIndex="OP_VAR" Text="OP +/-" Flex="2" Align="Right" />
                         </Columns>
                     </ColumnModel>
@@ -305,13 +303,13 @@
                             <ext:NumberColumn ID="Column24" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="Column25" runat="server" DataIndex="MAT_ADJ" Text="Material" Flex="2" Align="Right">
                                 <Editor>
-                                    <ext:NumberField ID="NumberField2" runat="server" AllowBlank="false" />
+                                    <ext:NumberField ID="NumberField2" runat="server" AllowBlank="false" SelectOnFocus="true" />
                                 </Editor>
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="Column26" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="Column27" runat="server" DataIndex="WEATHER_ADJ" Text="Weather" Flex="2" Align="Right">
                                 <Editor>
-                                    <ext:NumberField ID="NumberField1" runat="server" AllowBlank="false" />
+                                    <ext:NumberField ID="NumberField1" runat="server" AllowBlank="false" SelectOnFocus="true" />
                                 </Editor>
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="Column28" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
@@ -496,7 +494,7 @@
                                 </ext:Checkbox>
                                 <ext:Label ID="Label6" runat="server" Width="50" />
                                 <ext:Label ID="Label4" runat="server" Width="40" Text="Acres:" />
-                                <ext:TextField ID="uxAcres" runat="server" Width="110" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign">
+                                <ext:TextField ID="uxAcres" runat="server" Width="110" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" SelectOnFocus="true">
                                     <Listeners>
                                         <Focus Handler="this.setValue(this.getValue().replace(',', ''));" />
                                     </Listeners>
