@@ -71,6 +71,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 long _fiscalyear = long.Parse(Request.QueryString["fiscalyear"]);
                 long _budgetid = long.Parse(Request.QueryString["budget_id"]);
 
+                //pull budget detail data
+                List<OVERHEAD_BUDGET_DETAIL> _budgetLineList = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budgetid).ToList();
+
+
                 foreach (GL_ACCOUNTS_V _validAccount in _rangeOfAccounts)
                 {
                     try
@@ -78,18 +82,18 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                         OVERHEAD_BUDGET_DETAIL_V _row = new OVERHEAD_BUDGET_DETAIL_V();
                     _row.CODE_COMBINATION_ID = _validAccount.CODE_COMBINATION_ID;
                     _row.ACCOUNT_DESCRIPTION = _validAccount.SEGMENT5_DESC;
-                    _row.BUDGET_AMOUNT1 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID,"NOV", "B");
-                    _row.BUDGET_AMOUNT2 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID,"DEC", "B");
-                    _row.BUDGET_AMOUNT3 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID,"JAN", "B");
-                    _row.BUDGET_AMOUNT4 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID,"FEB", "B");
-                    _row.BUDGET_AMOUNT5 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID,"MAR", "B");                   
-                    _row.BUDGET_AMOUNT6 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID,"APR", "B");
-                    _row.BUDGET_AMOUNT7 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID,"MAY", "B");
-                    _row.BUDGET_AMOUNT8 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID,"JUN", "B");
-                    _row.BUDGET_AMOUNT9 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID,"JUL", "B");                  
-                    _row.BUDGET_AMOUNT10 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID,"AUG", "B");
-                    _row.BUDGET_AMOUNT11 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID,"SEP", "B");
-                    _row.BUDGET_AMOUNT12 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID,"OCT", "B");
+                    _row.BUDGET_AMOUNT1 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 1, "B");
+                    _row.BUDGET_AMOUNT2 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 2, "B");
+                    _row.BUDGET_AMOUNT3 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 3, "B");
+                    _row.BUDGET_AMOUNT4 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 4, "B");
+                    _row.BUDGET_AMOUNT5 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 5, "B");
+                    _row.BUDGET_AMOUNT6 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 6, "B");
+                    _row.BUDGET_AMOUNT7 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 7, "B");
+                    _row.BUDGET_AMOUNT8 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 8, "B");
+                    _row.BUDGET_AMOUNT9 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 9, "B");
+                    _row.BUDGET_AMOUNT10 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 10, "B");
+                    _row.BUDGET_AMOUNT11 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 11, "B");
+                    _row.BUDGET_AMOUNT12 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 12, "B");
                     _row.BUDGET_TOTAL = (_row.BUDGET_AMOUNT1 + _row.BUDGET_AMOUNT2 + _row.BUDGET_AMOUNT3 + _row.BUDGET_AMOUNT4 + _row.BUDGET_AMOUNT5 + _row.BUDGET_AMOUNT6 + _row.BUDGET_AMOUNT7 + _row.BUDGET_AMOUNT8 + _row.BUDGET_AMOUNT9 + _row.BUDGET_AMOUNT10 + _row.BUDGET_AMOUNT11 + _row.BUDGET_AMOUNT12);
  
 
@@ -127,20 +131,18 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         }
 
-        protected decimal ReturnLineTotal(long budget_id, long code_combination_id, string period_name, string type)
+        protected decimal ReturnLineTotal(List<OVERHEAD_BUDGET_DETAIL> budgetList, long budget_id, long code_combination_id, long period_num, string type)
         {
             decimal returnvalue = 0;
-            using (Entities _context = new Entities())
-            {
-                OVERHEAD_BUDGET_DETAIL _detail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == budget_id & x.CODE_COMBINATION_ID == code_combination_id & x.DETAIL_TYPE == type & x.PERIOD == period_name).SingleOrDefault();
-                if (_detail != null)
+
+                OVERHEAD_BUDGET_DETAIL _line = budgetList.Where(x => x.ORG_BUDGET_ID == budget_id & x.CODE_COMBINATION_ID == code_combination_id & x.DETAIL_TYPE == type & x.PERIOD_NUM == period_num).SingleOrDefault();
+                if(_line != null)
                 {
-                    returnvalue = (decimal)_detail.AMOUNT;
+                    returnvalue =(decimal) _line.AMOUNT; 
                 }
                 return returnvalue;
-            }
+       }
 
-        }
 
         protected void deItemMaintenance(object sender, DirectEventArgs e)
         {
@@ -154,8 +156,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
                 ID = "uxDetailLineMaintenance",
                 Title = "Account Details",
-                Height = 300,
-                Width = 450,
+                Height = 350,
+                Width = 500,
                 Modal = true,
                 Resizable = false,
                 CloseAction = CloseAction.Destroy,

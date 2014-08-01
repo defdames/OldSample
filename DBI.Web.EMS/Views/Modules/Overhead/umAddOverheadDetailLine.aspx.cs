@@ -33,7 +33,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             using (Entities _context = new Entities())
             {
-                List<OVERHEAD_BUDGET_DETAIL> _detail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id & x.DETAIL_TYPE == "B").ToList();
+                List<OVERHEAD_BUDGET_DETAIL> _detail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id & x.DETAIL_TYPE == "B").OrderBy(x => x.PERIOD_NUM).ToList();
 
                 if (_detail.Count() == 0)
                 {
@@ -45,7 +45,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     {
                         OVERHEAD_BUDGET_DETAIL _record = new OVERHEAD_BUDGET_DETAIL();
                         _record.ORG_BUDGET_ID = _budget_id;
-                        _record.PERIOD = _period.ENTERED_PERIOD_NAME;
+                        _record.PERIOD_NAME = _period.ENTERED_PERIOD_NAME;
+                        _record.PERIOD_NUM = _period.PERIOD_NUM;
                         _record.DETAIL_TYPE = "B";
                         _record.CODE_COMBINATION_ID = _account_id;
                         _record.AMOUNT = 0;
@@ -56,7 +57,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                         GenericData.Insert<OVERHEAD_BUDGET_DETAIL>(_record);
                     }
 
-                    _detail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id & x.DETAIL_TYPE == "B").ToList();
+                    _detail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id & x.DETAIL_TYPE == "B").OrderBy(x => x.PERIOD_NUM).ToList();
                 }
 
                 int count;
@@ -75,6 +76,16 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             public string PERIOD_TYPE { get; set; }
             public DateTime START_DATE { get; set; }
             public DateTime? END_DATE { get; set; }
+        }
+
+        protected void deSaveDetailLine(object sender, DirectEventArgs e)
+        {
+            string json = e.ExtraParams["Values"];
+
+            List<OVERHEAD_BUDGET_DETAIL> _gridValues = JSON.Deserialize<List<OVERHEAD_BUDGET_DETAIL>>(json);
+
+            GenericData.Update<OVERHEAD_BUDGET_DETAIL>(_gridValues);
+
         }
 
     }
