@@ -19,9 +19,28 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
         
         protected void Page_Load(object sender, EventArgs e)
         {
-            
-            
+            //ToolTip t = new ToolTip()
+            //{
+            //    ID = "ToolTip1",
+            //    Target = this.uxEmployeeHoursGrid.ClientID + ".getView().mainBody",
+            //    Delegate = ".x-grid3-cell",
+            //    Html = "Hello!",
+            //    Listeners =
+            //    {
+            //        BeforeShow =
+            //        {
+            //            Handler = "return false;",
+            //            Single = true // for testing purpose
+            //        }
+            //    }
+            //};
+             
+            //this.Form.Controls.Add(t);
+             
+            //this.ResourceManager1.Listeners.DocumentReady.Handler = t.ClientID + ".render(Ext.getBody());";
         }
+            
+        
 
         protected void deGetEmployeeHoursData(object sender, StoreReadDataEventArgs e)
         {
