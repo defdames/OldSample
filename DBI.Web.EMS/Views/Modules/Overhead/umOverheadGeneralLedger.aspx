@@ -166,7 +166,7 @@
                             <ext:Column ID="Column1" runat="server" DataIndex="SEGMENT1" Text="Company" Flex="1" />
                             <ext:Column ID="Column2" runat="server" DataIndex="SEGMENT2" Text="Location" Flex="1" />
                             <ext:Column ID="Column6" runat="server" DataIndex="SEGMENT3" Text="Division" Flex="1" />
-                            <ext:Column ID="Column8" runat="server" DataIndex="SEGMENT4" Text="Branch" Flex="1" />
+                            <ext:Column ID="Column8" runat="server" DataIndex="SEGMENT4" Text="Department" Flex="1" />
                             <ext:Column ID="Column10" runat="server" DataIndex="SEGMENT5" Text="Account" Flex="1" />
                             <ext:Column ID="Column11" runat="server" DataIndex="SEGMENT6" Text="Type" Flex="1" />
                             <ext:Column ID="Column12" runat="server" DataIndex="SEGMENT7" Text="Future" Flex="1" />

@@ -103,21 +103,21 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.GridView GridView4;
         
         /// <summary>
-        /// uxSaveDetailLine control.
+        /// uxSaveDetailLineButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxSaveDetailLine;
+        protected global::Ext.Net.Button uxSaveDetailLineButton;
         
         /// <summary>
-        /// uxCancelDetailLine control.
+        /// uxCloseDetailLineButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxCancelDetailLine;
+        protected global::Ext.Net.Button uxCloseDetailLineButton;
     }
 }

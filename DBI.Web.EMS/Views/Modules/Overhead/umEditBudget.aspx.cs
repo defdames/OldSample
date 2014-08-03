@@ -82,36 +82,19 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                         OVERHEAD_BUDGET_DETAIL_V _row = new OVERHEAD_BUDGET_DETAIL_V();
                     _row.CODE_COMBINATION_ID = _validAccount.CODE_COMBINATION_ID;
                     _row.ACCOUNT_DESCRIPTION = _validAccount.SEGMENT5_DESC;
-                    _row.BUDGET_AMOUNT1 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 1, "B");
-                    _row.BUDGET_AMOUNT2 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 2, "B");
-                    _row.BUDGET_AMOUNT3 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 3, "B");
-                    _row.BUDGET_AMOUNT4 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 4, "B");
-                    _row.BUDGET_AMOUNT5 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 5, "B");
-                    _row.BUDGET_AMOUNT6 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 6, "B");
-                    _row.BUDGET_AMOUNT7 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 7, "B");
-                    _row.BUDGET_AMOUNT8 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 8, "B");
-                    _row.BUDGET_AMOUNT9 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 9, "B");
-                    _row.BUDGET_AMOUNT10 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 10, "B");
-                    _row.BUDGET_AMOUNT11 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 11, "B");
-                    _row.BUDGET_AMOUNT12 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 12, "B");
-                    _row.BUDGET_TOTAL = (_row.BUDGET_AMOUNT1 + _row.BUDGET_AMOUNT2 + _row.BUDGET_AMOUNT3 + _row.BUDGET_AMOUNT4 + _row.BUDGET_AMOUNT5 + _row.BUDGET_AMOUNT6 + _row.BUDGET_AMOUNT7 + _row.BUDGET_AMOUNT8 + _row.BUDGET_AMOUNT9 + _row.BUDGET_AMOUNT10 + _row.BUDGET_AMOUNT11 + _row.BUDGET_AMOUNT12);
- 
-
-                    //_row.ACTUAL_AMOUNT1 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID, "NOV", "A");
-                    //_row.ACTUAL_AMOUNT2 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID, "DEC", "A");
-                    //_row.ACTUAL_AMOUNT3 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID, "JAN", "A");
-                    //_row.ACTUAL_AMOUNT4 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID, "FEB", "A");
-                    //_row.ACTUAL_AMOUNT5 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID, "MAR", "A");
-                    //_row.ACTUAL_AMOUNT6 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID, "APR", "A");
-                    //_row.ACTUAL_AMOUNT7 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID, "MAY", "A");
-                    //_row.ACTUAL_AMOUNT8 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID, "JUN", "A");
-                    //_row.ACTUAL_AMOUNT9 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID, "JUL", "A");
-                    //_row.ACTUAL_AMOUNT10 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID, "AUG", "A");
-                    //_row.ACTUAL_AMOUNT11 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID, "SEP", "A");
-                    //_row.ACTUAL_AMOUNT12 = ReturnLineTotal(_budgetid, _validAccount.CODE_COMBINATION_ID, "OCT", "A");
-
-                   
-                    //_row.ACTUAL_TOTAL = (_row.ACTUAL_AMOUNT1 + _row.ACTUAL_AMOUNT2 + _row.ACTUAL_AMOUNT3 + _row.ACTUAL_AMOUNT4 + _row.ACTUAL_AMOUNT5 + _row.ACTUAL_AMOUNT6 + _row.ACTUAL_AMOUNT7 + _row.ACTUAL_AMOUNT8 + _row.ACTUAL_AMOUNT9 + _row.ACTUAL_AMOUNT10 + _row.ACTUAL_AMOUNT11 + _row.ACTUAL_AMOUNT12);
+                    _row.AMOUNT1 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 1, "B");
+                    _row.AMOUNT2 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 2, "B");
+                    _row.AMOUNT3 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 3, "B");
+                    _row.AMOUNT4 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 4, "B");
+                    _row.AMOUNT5 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 5, "B");
+                    _row.AMOUNT6 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 6, "B");
+                    _row.AMOUNT7 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 7, "B");
+                    _row.AMOUNT8 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 8, "B");
+                    _row.AMOUNT9 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 9, "B");
+                    _row.AMOUNT10 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 10, "B");
+                    _row.AMOUNT11 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 11, "B");
+                    _row.AMOUNT12 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 12, "B");
+                    _row.TOTAL = (_row.AMOUNT1 + _row.AMOUNT2 + _row.AMOUNT3 + _row.AMOUNT4 + _row.AMOUNT5 + _row.AMOUNT6 + _row.AMOUNT7 + _row.AMOUNT8 + _row.AMOUNT9 + _row.AMOUNT10 + _row.AMOUNT11 + _row.AMOUNT12);
 
                     _accountList.Add(_row);
                     }
@@ -188,32 +171,19 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         {
             public long CODE_COMBINATION_ID { get; set; }
             public string ACCOUNT_DESCRIPTION { get; set; }
-            public decimal BUDGET_TOTAL { get; set; }
-            public decimal ACTUAL_TOTAL { get; set; }
-            public decimal BUDGET_AMOUNT1 { get; set; }
-            public decimal ACTUAL_AMOUNT1 { get; set; }
-            public decimal BUDGET_AMOUNT2 { get; set; }
-            public decimal ACTUAL_AMOUNT2 { get; set; }
-            public decimal BUDGET_AMOUNT3 { get; set; }
-            public decimal ACTUAL_AMOUNT3 { get; set; }
-            public decimal BUDGET_AMOUNT4 { get; set; }
-            public decimal ACTUAL_AMOUNT4 { get; set; }
-            public decimal BUDGET_AMOUNT5 { get; set; }
-            public decimal ACTUAL_AMOUNT5 { get; set; }
-            public decimal BUDGET_AMOUNT6 { get; set; }
-            public decimal ACTUAL_AMOUNT6 { get; set; }
-            public decimal BUDGET_AMOUNT7 { get; set; }
-            public decimal ACTUAL_AMOUNT7 { get; set; }
-            public decimal BUDGET_AMOUNT8 { get; set; }
-            public decimal ACTUAL_AMOUNT8 { get; set; }
-            public decimal BUDGET_AMOUNT9 { get; set; }
-            public decimal ACTUAL_AMOUNT9 { get; set; }
-            public decimal BUDGET_AMOUNT10 { get; set; }
-            public decimal ACTUAL_AMOUNT10 { get; set; }
-            public decimal BUDGET_AMOUNT11 { get; set; }
-            public decimal ACTUAL_AMOUNT11 { get; set; }
-            public decimal BUDGET_AMOUNT12 { get; set; }
-            public decimal ACTUAL_AMOUNT12 { get; set; }
+            public decimal TOTAL { get; set; }
+            public decimal AMOUNT1 { get; set; }
+            public decimal AMOUNT2 { get; set; }
+            public decimal AMOUNT3 { get; set; }
+            public decimal AMOUNT4 { get; set; }
+            public decimal AMOUNT5 { get; set; }
+            public decimal AMOUNT6 { get; set; }
+            public decimal AMOUNT7 { get; set; }
+            public decimal AMOUNT8 { get; set; }
+            public decimal AMOUNT9 { get; set; }
+            public decimal AMOUNT10 { get; set; }
+            public decimal AMOUNT11 { get; set; }
+            public decimal AMOUNT12 { get; set; }
         }
     }
 }

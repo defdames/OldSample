@@ -241,7 +241,7 @@
                                             " />
                                     </Listeners>
                                 </ext:ComboBox>
-                                <ext:ComboBox FieldLabel="Branch" runat="server" ID="uxSRSegment4" Editable="true" TypeAhead="true" Disabled="true"
+                                <ext:ComboBox FieldLabel="Department" runat="server" ID="uxSRSegment4" Editable="true" TypeAhead="true" Disabled="true"
                                      AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
                                     MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
                                     <Triggers>
@@ -556,7 +556,7 @@
                                         <Select Handler="#{uxGlAccountSecurityStore}.removeAll();#{uxERSegment4}.enable();#{uxERSegment5}.disable();#{uxERSegment6}.disable();#{uxERSegment7}.disable();#{uxERSegment4}.clearValue();#{uxERSegment4Store}.removeAll(true);#{uxERSegment4Store}.reload();#{uxERSegment5}.clearValue();#{uxERSegment5Store}.removeAll(true);#{uxERSegment6}.clearValue();#{uxERSegment6Store}.removeAll(true);#{uxERSegment7}.clearValue();#{uxERSegment7Store}.removeAll(true);#{uxIncludeExcludeFlag}.disable();" />
                                     </Listeners>
                                 </ext:ComboBox>
-                                <ext:ComboBox FieldLabel="Branch" runat="server" ID="uxERSegment4" Editable="true" TypeAhead="true" Disabled="true"
+                                <ext:ComboBox FieldLabel="Department" runat="server" ID="uxERSegment4" Editable="true" TypeAhead="true" Disabled="true"
                                      AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
                                     MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
                                     <Triggers>

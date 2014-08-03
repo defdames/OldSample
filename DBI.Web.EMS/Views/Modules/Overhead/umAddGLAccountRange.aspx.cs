@@ -40,6 +40,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                {
                    IQueryable<object> _data = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT1 == uxSRSegment1.SelectedItem.Value).Select(x => new { ID = x.SEGMENT2 }).Distinct().OrderBy(x => x.ID);
                    uxSRSegment2Store.DataSource = _data.ToList();
+                   if (_data.Count() == 1)
+                   {
+                       uxSRSegment1.SelectedItem.Index = -1;
+                   }
                    _context.Dispose();
                }
 
@@ -47,6 +51,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                {
                    IQueryable<object> _data = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT1 == uxSRSegment1.SelectedItem.Value && x.SEGMENT2 == uxSRSegment2.SelectedItem.Value).Select(x => new { ID = x.SEGMENT3 }).Distinct().OrderBy(x => x.ID);
                    uxSRSegment3Store.DataSource = _data.ToList();
+                   if (_data.Count() == 1)
+                   {
+                       uxSRSegment3.SelectedItem.Index = -1;
+                   }
                    _context.Dispose();
                }
 
@@ -54,6 +62,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                {
                    IQueryable<object> _data = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT1 == uxSRSegment1.SelectedItem.Value && x.SEGMENT2 == uxSRSegment2.SelectedItem.Value && x.SEGMENT3 == uxSRSegment3.SelectedItem.Value).Select(x => new { ID = x.SEGMENT4 }).Distinct().OrderBy(x => x.ID);
                    uxSRSegment4Store.DataSource = _data.ToList();
+                   if (_data.Count() == 1)
+                   {
+                       uxSRSegment4.SelectedItem.Index = -1;
+                   }
                    _context.Dispose();
                }
 
@@ -61,6 +73,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                {
                    IQueryable<object> _data = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT1 == uxSRSegment1.SelectedItem.Value && x.SEGMENT2 == uxSRSegment2.SelectedItem.Value && x.SEGMENT3 == uxSRSegment3.SelectedItem.Value && x.SEGMENT4 == uxSRSegment4.SelectedItem.Value).Select(x => new { ID = x.SEGMENT5 }).Distinct().OrderBy(x => x.ID);
                    uxSRSegment5Store.DataSource = _data.ToList();
+                   if (_data.Count() == 1)
+                   {
+                       uxSRSegment5.SelectedItem.Index = -1;
+                   }
                    _context.Dispose();
                }
 
@@ -68,6 +84,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                {
                    IQueryable<object> _data = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT1 == uxSRSegment1.SelectedItem.Value && x.SEGMENT2 == uxSRSegment2.SelectedItem.Value && x.SEGMENT3 == uxSRSegment3.SelectedItem.Value && x.SEGMENT4 == uxSRSegment4.SelectedItem.Value && x.SEGMENT5 == uxSRSegment5.SelectedItem.Value).Select(x => new { ID = x.SEGMENT6 }).Distinct().OrderBy(x => x.ID);
                    uxSRSegment6Store.DataSource = _data.ToList();
+                   if (_data.Count() == 1)
+                   {
+                       uxSRSegment6.SelectedItem.Index = -1;
+                   }
                    _context.Dispose();
                }
 
