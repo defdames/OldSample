@@ -126,7 +126,7 @@ namespace DBI.Data
         public DbSet<OVERHEAD_GL_ACCOUNT> OVERHEAD_GL_ACCOUNT { get; set; }
         public DbSet<OVERHEAD_GL_RANGE> OVERHEAD_GL_RANGE { get; set; }
         public DbSet<OVERHEAD_ORG_BUDGETS> OVERHEAD_ORG_BUDGETS { get; set; }
-        public DbSet<OVERHEAD_ACCOUNT_COMMENT> OVERHEAD_ACCOUNT_COMMENT { get; set; }
         public DbSet<OVERHEAD_BUDGET_DETAIL> OVERHEAD_BUDGET_DETAIL { get; set; }
+        public DbSet<OVERHEAD_ACCOUNT_COMMENT> OVERHEAD_ACCOUNT_COMMENT { get; set; }
     }
 }

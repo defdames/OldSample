@@ -162,8 +162,8 @@
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="4.25" PointX="2.75" PointY="0.75" />
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_RANGE" Width="2.375" PointX="1.125" PointY="3.5" />
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_ORG_BUDGETS" Width="2.875" PointX="6.375" PointY="3.75" />
-        <EntityTypeShape EntityType="OracleModel.OVERHEAD_ACCOUNT_COMMENT" Width="1.5" PointX="4.375" PointY="7.75" />
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_DETAIL" Width="1.5" PointX="6.375" PointY="7.75" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_ACCOUNT_COMMENT" Width="1.5" PointX="8.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

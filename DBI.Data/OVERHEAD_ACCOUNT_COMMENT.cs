@@ -21,5 +21,6 @@ namespace DBI.Data
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
+        public Nullable<long> ORG_BUDGET_ID { get; set; }
     }
 }
