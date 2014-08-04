@@ -85,7 +85,7 @@
                         LabelStyle="font-weight:bold;padding:0;"
                         Layout="HBoxLayout">
                         <Items>
-             <ext:TextArea ID="TextArea1" runat="server" FieldLabel="Comments" Height="175"  Flex="1"></ext:TextArea>
+             <ext:TextArea ID="uxAccountComments" runat="server" FieldLabel="Comments" Height="175"  Flex="1"></ext:TextArea>
                         </Items>
                     </ext:FieldContainer>  
 

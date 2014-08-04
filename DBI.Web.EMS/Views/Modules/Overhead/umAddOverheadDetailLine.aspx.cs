@@ -60,6 +60,16 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     _detail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id & x.DETAIL_TYPE == "B").OrderBy(x => x.PERIOD_NUM).ToList();
                 }
 
+                //Add comments if they were displayed
+                OVERHEAD_ACCOUNT_COMMENT _newCommentRecord = new OVERHEAD_ACCOUNT_COMMENT();
+                _newCommentRecord.CODE_COMBINATION_ID = _account_id;
+                _newCommentRecord.COMMENTS = uxAccountComments.Text;
+                _newCommentRecord.b
+                _newCommentRecord.CREATE_DATE = DateTime.Now;
+                _newCommentRecord.MODIFY_DATE = DateTime.Now;
+                _newCommentRecord.CREATED_BY = User.Identity.Name;
+                _newCommentRecord.MODIFIED_BY = User.Identity.Name;
+
                 int count;
                 uxDetailStore.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_BUDGET_DETAIL>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _detail, out count);
                 e.Total = count;
