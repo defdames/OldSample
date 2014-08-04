@@ -1166,6 +1166,7 @@ warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primar
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="COMMENTS" Type="clob" />
         </EntityType>
         <EntityType Name="OVERHEAD_BUDGET_TYPE">
           <Key>
@@ -1231,6 +1232,7 @@ warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primar
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="COMMENTS" Type="clob" />
         </EntityType>
         <EntityType Name="SYS_ACTIVITY">
           <Key>
@@ -4603,10 +4605,10 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
             <End Role="CUSTOMER_SURVEY_FORMS_COMP" EntitySet="CUSTOMER_SURVEY_FORMS_COMP" />
           </AssociationSet>
           <EntitySet Name="PROJECT_CONTACTS_V" EntityType="OracleModel.PROJECT_CONTACTS_V" />
-          <EntitySet Name="OVERHEAD_ORG_BUDGETS" EntityType="OracleModel.OVERHEAD_ORG_BUDGETS" />
           <EntitySet Name="OVERHEAD_GL_ACCOUNT" EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" />
           <EntitySet Name="OVERHEAD_GL_RANGE" EntityType="OracleModel.OVERHEAD_GL_RANGE" />
           <EntitySet Name="OVERHEAD_BUDGET_DETAIL" EntityType="OracleModel.OVERHEAD_BUDGET_DETAIL" />
+          <EntitySet Name="OVERHEAD_ORG_BUDGETS" EntityType="OracleModel.OVERHEAD_ORG_BUDGETS" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -8121,20 +8123,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Property Type="String" Name="BILL_TO" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Type="String" Name="EMS_CUST" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
-        <EntityType Name="OVERHEAD_ORG_BUDGETS">
-          <Key>
-            <PropertyRef Name="ORG_BUDGET_ID" />
-          </Key>
-          <Property Name="ORG_BUDGET_ID" Type="Int64" Nullable="false" />
-          <Property Name="ORGANIZATION_ID" Type="Int64" Nullable="false" />
-          <Property Name="FISCAL_YEAR" Type="Int16" Nullable="false" />
-          <Property Name="OVERHEAD_BUDGET_TYPE_ID" Type="Int64" Nullable="false" />
-          <Property Name="STATUS" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="CREATE_DATE" Type="DateTime" />
-          <Property Name="MODIFY_DATE" Type="DateTime" />
-          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="OVERHEAD_GL_ACCOUNT">
           <Key>
             <PropertyRef Name="GL_ACCOUNT_ID" />
@@ -8187,6 +8175,22 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Property Name="MODIFY_DATE" Type="DateTime" />
           <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="COMMENTS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="OVERHEAD_ORG_BUDGETS">
+          <Key>
+            <PropertyRef Name="ORG_BUDGET_ID" />
+          </Key>
+          <Property Name="ORG_BUDGET_ID" Type="Int64" Nullable="false" />
+          <Property Name="ORGANIZATION_ID" Type="Int64" Nullable="false" />
+          <Property Name="FISCAL_YEAR" Type="Int16" Nullable="false" />
+          <Property Name="OVERHEAD_BUDGET_TYPE_ID" Type="Int64" Nullable="false" />
+          <Property Name="STATUS" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="CREATE_DATE" Type="DateTime" />
+          <Property Name="MODIFY_DATE" Type="DateTime" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="COMMENTS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -10850,21 +10854,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="OVERHEAD_ORG_BUDGETS">
-            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_ORG_BUDGETS">
-              <MappingFragment StoreEntitySet="OVERHEAD_ORG_BUDGETS">
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
-                <ScalarProperty Name="OVERHEAD_BUDGET_TYPE_ID" ColumnName="OVERHEAD_BUDGET_TYPE_ID" />
-                <ScalarProperty Name="FISCAL_YEAR" ColumnName="FISCAL_YEAR" />
-                <ScalarProperty Name="ORGANIZATION_ID" ColumnName="ORGANIZATION_ID" />
-                <ScalarProperty Name="ORG_BUDGET_ID" ColumnName="ORG_BUDGET_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="OVERHEAD_GL_ACCOUNT">
             <EntityTypeMapping TypeName="OracleModel.OVERHEAD_GL_ACCOUNT">
               <MappingFragment StoreEntitySet="OVERHEAD_GL_ACCOUNT">
@@ -10907,6 +10896,7 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <EntitySetMapping Name="OVERHEAD_BUDGET_DETAIL">
             <EntityTypeMapping TypeName="OracleModel.OVERHEAD_BUDGET_DETAIL">
               <MappingFragment StoreEntitySet="OVERHEAD_BUDGET_DETAIL">
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
                 <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
                 <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
@@ -10918,6 +10908,22 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
                 <ScalarProperty Name="PERIOD_NAME" ColumnName="PERIOD_NAME" />
                 <ScalarProperty Name="CODE_COMBINATION_ID" ColumnName="CODE_COMBINATION_ID" />
                 <ScalarProperty Name="BUDGET_DETAIL_ID" ColumnName="BUDGET_DETAIL_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OVERHEAD_ORG_BUDGETS">
+            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_ORG_BUDGETS">
+              <MappingFragment StoreEntitySet="OVERHEAD_ORG_BUDGETS">
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="OVERHEAD_BUDGET_TYPE_ID" ColumnName="OVERHEAD_BUDGET_TYPE_ID" />
+                <ScalarProperty Name="FISCAL_YEAR" ColumnName="FISCAL_YEAR" />
+                <ScalarProperty Name="ORGANIZATION_ID" ColumnName="ORGANIZATION_ID" />
+                <ScalarProperty Name="ORG_BUDGET_ID" ColumnName="ORG_BUDGET_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
