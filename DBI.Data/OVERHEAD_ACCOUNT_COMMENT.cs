@@ -12,15 +12,11 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class OVERHEAD_BUDGET_DETAIL
+    public partial class OVERHEAD_ACCOUNT_COMMENT
     {
-        public long BUDGET_DETAIL_ID { get; set; }
+        public long ACCOUNT_COMMENT_ID { get; set; }
         public Nullable<long> CODE_COMBINATION_ID { get; set; }
-        public string PERIOD_NAME { get; set; }
-        public Nullable<long> PERIOD_NUM { get; set; }
-        public Nullable<decimal> AMOUNT { get; set; }
-        public Nullable<long> ORG_BUDGET_ID { get; set; }
-        public string DETAIL_TYPE { get; set; }
+        public string COMMENTS { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
