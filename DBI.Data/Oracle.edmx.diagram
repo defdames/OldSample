@@ -157,12 +157,12 @@
         <AssociationConnector Association="OracleModel.FK_FORMS_ANS_COMPLETION_ID" />
         <AssociationConnector Association="OracleModel.FK_FORMS_COMP_THRESH_ID" />
         <EntityTypeShape EntityType="OracleModel.PROJECT_CONTACTS_V" Width="1.5" PointX="0.75444998068476554" PointY="22.724045793863034" />
-        <EntityTypeShape EntityType="OracleModel.OVERHEAD_ORG_BUDGETS" Width="2.5" PointX="22.375" PointY="6.75" />
         </Diagram>
       <Diagram DiagramId="e84dee89c5a844eb84c350f94a998eb6" Name="OVERHEAD" >
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="4.25" PointX="2.75" PointY="0.75" />
-        <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_RANGE" Width="1.5" PointX="2.75" PointY="3.75" />
-        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_DETAIL" Width="1.5" PointX="5.375" PointY="3.75" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_RANGE" Width="2.375" PointX="1.125" PointY="3.5" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_DETAIL" Width="1.5" PointX="4.375" PointY="3.75" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_ORG_BUDGETS" Width="1.5" PointX="6.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
