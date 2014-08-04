@@ -1162,6 +1162,7 @@ warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primar
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="ORG_BUDGET_ID" Type="number" Precision="15" Scale="0" />
         </EntityType>
         <EntityType Name="OVERHEAD_BUDGET_DETAIL">
           <Key>
@@ -4620,8 +4621,8 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <EntitySet Name="OVERHEAD_GL_ACCOUNT" EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" />
           <EntitySet Name="OVERHEAD_GL_RANGE" EntityType="OracleModel.OVERHEAD_GL_RANGE" />
           <EntitySet Name="OVERHEAD_ORG_BUDGETS" EntityType="OracleModel.OVERHEAD_ORG_BUDGETS" />
-          <EntitySet Name="OVERHEAD_ACCOUNT_COMMENT" EntityType="OracleModel.OVERHEAD_ACCOUNT_COMMENT" />
           <EntitySet Name="OVERHEAD_BUDGET_DETAIL" EntityType="OracleModel.OVERHEAD_BUDGET_DETAIL" />
+          <EntitySet Name="OVERHEAD_ACCOUNT_COMMENT" EntityType="OracleModel.OVERHEAD_ACCOUNT_COMMENT" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -8188,18 +8189,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="COMMENTS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="OVERHEAD_ACCOUNT_COMMENT">
-          <Key>
-            <PropertyRef Name="ACCOUNT_COMMENT_ID" />
-          </Key>
-          <Property Name="ACCOUNT_COMMENT_ID" Type="Int64" Nullable="false" />
-          <Property Name="CODE_COMBINATION_ID" Type="Int64" />
-          <Property Name="COMMENTS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="CREATE_DATE" Type="DateTime" />
-          <Property Name="MODIFY_DATE" Type="DateTime" />
-          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="OVERHEAD_BUDGET_DETAIL">
           <Key>
             <PropertyRef Name="BUDGET_DETAIL_ID" />
@@ -8215,6 +8204,19 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Property Name="MODIFY_DATE" Type="DateTime" />
           <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="OVERHEAD_ACCOUNT_COMMENT">
+          <Key>
+            <PropertyRef Name="ACCOUNT_COMMENT_ID" />
+          </Key>
+          <Property Name="ACCOUNT_COMMENT_ID" Type="Int64" Nullable="false" />
+          <Property Name="CODE_COMBINATION_ID" Type="Int64" />
+          <Property Name="COMMENTS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CREATE_DATE" Type="DateTime" />
+          <Property Name="MODIFY_DATE" Type="DateTime" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ORG_BUDGET_ID" Type="Int64" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -10933,19 +10935,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="OVERHEAD_ACCOUNT_COMMENT">
-            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_ACCOUNT_COMMENT">
-              <MappingFragment StoreEntitySet="OVERHEAD_ACCOUNT_COMMENT">
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
-                <ScalarProperty Name="CODE_COMBINATION_ID" ColumnName="CODE_COMBINATION_ID" />
-                <ScalarProperty Name="ACCOUNT_COMMENT_ID" ColumnName="ACCOUNT_COMMENT_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="OVERHEAD_BUDGET_DETAIL">
             <EntityTypeMapping TypeName="OracleModel.OVERHEAD_BUDGET_DETAIL">
               <MappingFragment StoreEntitySet="OVERHEAD_BUDGET_DETAIL">
@@ -10960,6 +10949,20 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
                 <ScalarProperty Name="PERIOD_NAME" ColumnName="PERIOD_NAME" />
                 <ScalarProperty Name="CODE_COMBINATION_ID" ColumnName="CODE_COMBINATION_ID" />
                 <ScalarProperty Name="BUDGET_DETAIL_ID" ColumnName="BUDGET_DETAIL_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OVERHEAD_ACCOUNT_COMMENT">
+            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_ACCOUNT_COMMENT">
+              <MappingFragment StoreEntitySet="OVERHEAD_ACCOUNT_COMMENT">
+                <ScalarProperty Name="ORG_BUDGET_ID" ColumnName="ORG_BUDGET_ID" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
+                <ScalarProperty Name="CODE_COMBINATION_ID" ColumnName="CODE_COMBINATION_ID" />
+                <ScalarProperty Name="ACCOUNT_COMMENT_ID" ColumnName="ACCOUNT_COMMENT_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
