@@ -16,11 +16,22 @@ namespace DBI.Web.EMS.PublicPages
         protected void Page_Load(object sender, EventArgs e)
         {
             decimal CompletionId = decimal.Parse(RSAClass.Decrypt(Request.QueryString["FormId"]));
+            
             decimal FormId;
             using(Entities _context = new Entities()){
-                FormId = CUSTOMER_SURVEYS.GetFormCompletion(_context).Where(x => x.COMPLETION_ID == CompletionId).Select(x=> x.FORM_ID).Single();
+                if (CUSTOMER_SURVEYS.GetFormAnswersByCompletion(CompletionId, _context).ToList().Count == 0)
+                {
+                    FormId = CUSTOMER_SURVEYS.GetFormCompletion(_context).Where(x => x.COMPLETION_ID == CompletionId).Select(x => x.FORM_ID).Single();
+                    LoadForm(FormId);
+                    uxSurveyContainer.Show();
+                }
+                else
+                {
+                    uxSurveyContainer.Hide();
+                    uxCompletedContainer.Show();
+                }
             }
-            LoadForm(FormId);
+            
         }
 
         protected void LoadForm(decimal FormId)
@@ -31,7 +42,7 @@ namespace DBI.Web.EMS.PublicPages
 
                 foreach (CUSTOMER_SURVEYS.CustomerSurveyFieldsets Fieldset in Fieldsets)
                 {
-                    var QuestionQuery = CUSTOMER_SURVEYS.GetFieldsetQuestions(Fieldset.FIELDSET_ID, _context).OrderBy(x => x.SORT_ORDER);
+                    var QuestionQuery = CUSTOMER_SURVEYS.GetFieldsetQuestionsForGrid(Fieldset.FIELDSET_ID, _context).OrderBy(x => x.SORT_ORDER);
                     List<CUSTOMER_SURVEYS.CustomerSurveyQuestions> Questions = QuestionQuery.ToList();
                     if (Questions.Count > 0)
                     {
@@ -83,6 +94,7 @@ namespace DBI.Web.EMS.PublicPages
                                     break;
                                 case 6:
                                     RadioGroup RadioQuestion = new RadioGroup();
+                                    RadioQuestion.GroupName = "question" + Question.QUESTION_ID;
                                     RadioQuestion.Layout = "HBoxLayout";
                                     RadioQuestion.ID = "question" + Question.QUESTION_ID;
                                     RadioQuestion.FieldLabel = Question.TEXT;
@@ -94,9 +106,12 @@ namespace DBI.Web.EMS.PublicPages
                                     {
                                         RadioQuestion.Items.Add(new Radio
                                         {
+                                            ID = "option" + Option.OPTION_ID,
+                                            Name = "question" + Question.QUESTION_ID,
                                             BoxLabelAlign = BoxLabelAlign.After,
                                             BoxLabel = Option.OPTION_NAME,
                                             Value = Option.OPTION_NAME,
+                                            InputValue = Option.OPTION_NAME,
                                             Flex = 1
                                         });
                                     }
@@ -113,11 +128,14 @@ namespace DBI.Web.EMS.PublicPages
                                     List<CUSTOMER_SURVEY_OPTIONS> CheckOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
                                     foreach (CUSTOMER_SURVEY_OPTIONS Option in CheckOptions)
                                     {
-                                        CheckQuestion.Items.Add(new Checkbox
+                                        CheckQuestion.Add(new Checkbox
                                         {
+                                            ID="option" + Option.OPTION_ID,
+                                            Name = "question" + Question.QUESTION_ID,
                                             BoxLabelAlign = BoxLabelAlign.After,
                                             BoxLabel = Option.OPTION_NAME,
                                             Value = Option.OPTION_NAME,
+                                            InputValue = Option.OPTION_NAME,
                                         });
                                     }
                                     NewFieldset.Items.Add(CheckQuestion);
@@ -126,6 +144,88 @@ namespace DBI.Web.EMS.PublicPages
                         }
                     }
                 }
+            }
+        }
+
+        protected void deSaveSurvey(object sender, DirectEventArgs e)
+        {
+            decimal CompletionId = decimal.Parse(RSAClass.Decrypt(Request.QueryString["FormId"]));
+            decimal FormId;
+            List<CUSTOMER_SURVEYS.CustomerSurveyQuestions> QuestionList;
+            using (Entities _context = new Entities())
+            {
+                FormId = CUSTOMER_SURVEYS.GetFormCompletion(_context).Where(x => x.COMPLETION_ID == CompletionId).Select(x => x.FORM_ID).Single();
+                QuestionList = CUSTOMER_SURVEYS.GetFormQuestions(FormId, _context).ToList();
+            }
+
+            foreach (CUSTOMER_SURVEYS.CustomerSurveyQuestions Question in QuestionList)
+            {
+                TextField TextValue;
+                TextArea AreaValue;
+                ComboBox ComboValue;
+                CUSTOMER_SURVEY_FORMS_ANS AnswerToAdd;
+
+                switch (Question.QUESTION_TYPE_NAME)
+                {
+                    case "singletext":
+                        TextValue = form1.FindControl("question" + Question.QUESTION_ID.ToString()) as TextField;
+                        AnswerToAdd = new CUSTOMER_SURVEY_FORMS_ANS();
+                        AnswerToAdd.COMPLETION_ID = CompletionId;
+                        AnswerToAdd.QUESTION_ID = Question.QUESTION_ID;
+                        AnswerToAdd.ANSWER = TextValue.Text;
+                        AnswerToAdd.CREATE_DATE = DateTime.Now;
+                        AnswerToAdd.MODIFY_DATE = DateTime.Now;
+                        AnswerToAdd.CREATED_BY = "Customer";
+                        AnswerToAdd.MODIFIED_BY = "Customer";
+                        break;
+                    case "multitext":
+                        AreaValue = form1.FindControl("question" + Question.QUESTION_ID.ToString()) as TextArea;
+                        AnswerToAdd = new CUSTOMER_SURVEY_FORMS_ANS();
+                        AnswerToAdd.COMPLETION_ID = CompletionId;
+                        AnswerToAdd.QUESTION_ID = Question.QUESTION_ID;
+                        AnswerToAdd.ANSWER = AreaValue.Text;
+                        AnswerToAdd.CREATE_DATE = DateTime.Now;
+                        AnswerToAdd.MODIFY_DATE = DateTime.Now;
+                        AnswerToAdd.CREATED_BY = "Customer";
+                        AnswerToAdd.MODIFIED_BY = "Customer";
+                        break;
+                    case "dropdown":
+                        ComboValue = form1.FindControl("question" + Question.QUESTION_ID.ToString()) as ComboBox;
+                        AnswerToAdd = new CUSTOMER_SURVEY_FORMS_ANS();
+                        AnswerToAdd.COMPLETION_ID = CompletionId;
+                        AnswerToAdd.QUESTION_ID = Question.QUESTION_ID;
+                        AnswerToAdd.ANSWER = ComboValue.Text;
+                        AnswerToAdd.CREATE_DATE = DateTime.Now;
+                        AnswerToAdd.MODIFY_DATE = DateTime.Now;
+                        AnswerToAdd.CREATED_BY = "Customer";
+                        AnswerToAdd.MODIFIED_BY = "Customer";
+                        break;
+                    case "radio":
+                        AnswerToAdd = new CUSTOMER_SURVEY_FORMS_ANS();
+                        AnswerToAdd.COMPLETION_ID = CompletionId;
+                        AnswerToAdd.QUESTION_ID = Question.QUESTION_ID;
+                        AnswerToAdd.ANSWER = Request["question" + Question.QUESTION_ID.ToString()];
+                        AnswerToAdd.CREATE_DATE = DateTime.Now;
+                        AnswerToAdd.MODIFY_DATE = DateTime.Now;
+                        AnswerToAdd.CREATED_BY = "Customer";
+                        AnswerToAdd.MODIFIED_BY = "Customer";
+                        break;
+                    case "checkbox":
+                        AnswerToAdd = new CUSTOMER_SURVEY_FORMS_ANS();
+                        AnswerToAdd.COMPLETION_ID = CompletionId;
+                        AnswerToAdd.QUESTION_ID = Question.QUESTION_ID;
+                        AnswerToAdd.ANSWER = Request["question" + Question.QUESTION_ID.ToString()];
+                        AnswerToAdd.CREATE_DATE = DateTime.Now;
+                        AnswerToAdd.MODIFY_DATE = DateTime.Now;
+                        AnswerToAdd.CREATED_BY = "Customer";
+                        AnswerToAdd.MODIFIED_BY = "Customer";
+                        break;
+                    default:
+                        AnswerToAdd = null;
+                        break;
+                }
+
+                GenericData.Insert<CUSTOMER_SURVEY_FORMS_ANS>(AnswerToAdd);
             }
         }
     }

@@ -162,7 +162,18 @@
                                                         <Click Handler="#{uxFormsStore}.insert(0, new Form());" />
                                                     </Listeners>
                                                 </ext:Button>
-                                                <ext:Button runat="server" ID="uxViewFormButton" Text="View Form" Icon="ApplicationViewDetail">
+                                                <ext:Button runat="server" Text="Delete Form" ID="uxDeleteFormButton" Icon="ApplicationDelete" Disabled="true">
+                                                    <DirectEvents>
+                                                        <Click OnEvent="deDeleteForm">
+                                                            <Confirmation Title="Really Delete?" Message="Do you really want to delete this form?" ConfirmRequest="true" />
+                                                            <EventMask ShowMask="true" />
+                                                            <ExtraParams>
+                                                                <ext:Parameter Name="FormId" Value="#{uxFormsGrid}.getSelectionModel().getSelection()[0].data.FORM_ID" Mode="Raw" />
+                                                            </ExtraParams>
+                                                        </Click>
+                                                    </DirectEvents>
+                                                </ext:Button>
+                                                <ext:Button runat="server" ID="uxViewFormButton" Text="View Form" Icon="ApplicationViewDetail" Disabled="true">
                                                     <DirectEvents>
                                                         <Click OnEvent="deViewForm">
                                                             <ExtraParams>
@@ -170,6 +181,11 @@
                                                             </ExtraParams>
                                                         </Click>
                                                     </DirectEvents>
+                                                </ext:Button>
+                                                <ext:Button runat="server" Text="Copy Existing" ID="uxCopyFormButton" Icon="PageCopy" Disabled="true">
+                                                    <Listeners>
+                                                        <Click Handler="#{uxCopyFormWindow}.show()" />
+                                                    </Listeners>
                                                 </ext:Button>
                                             </Items>
                                         </ext:Toolbar>
@@ -180,6 +196,9 @@
                                     <DirectEvents>
                                         <Select OnEvent="deLoadFormDetails" />
                                     </DirectEvents>
+                                    <Listeners>
+                                        <Select Handler="#{uxDeleteFormButton}.enable(); #{uxViewFormButton}.enable(); #{uxCopyFormButton}.enable()" />
+                                    </Listeners>
                                 </ext:GridPanel>
                                 <ext:GridPanel runat="server" Title="Fieldsets" ID="uxFieldsetsGrid" MaxWidth="1100" Margin="5" MinHeight="250">
                                     <Store>
@@ -245,15 +264,29 @@
                                                         <Click Handler="#{uxFieldSetsStore}.insert(0, new Fieldset());" />
                                                     </Listeners>
                                                 </ext:Button>
+                                                <ext:Button runat="server" ID="uxDeleteFieldsetButton" Icon="ApplicationDelete" Text="Delete Fieldset" Disabled="true">
+                                                    <DirectEvents>
+                                                        <Click OnEvent="deDeleteFieldset">
+                                                            <Confirmation ConfirmRequest="true" Title="Really Delete?" Message="Do you really want to delete this fieldset?" />
+                                                            <EventMask ShowMask="true" />
+                                                            <ExtraParams>
+                                                                <ext:Parameter Name="FieldsetId" Value="#{uxFieldsetsGrid}.getSelectionModel().getSelection()[0].data.FIELDSET_ID" Mode="Raw" />
+                                                            </ExtraParams>
+                                                        </Click>
+                                                    </DirectEvents>
+                                                </ext:Button>
                                             </Items>
                                         </ext:Toolbar>
                                     </TopBar>
+                                    <Listeners>
+                                        <Select Handler="#{uxDeleteFieldsetButton}.enable()" />
+                                    </Listeners>
                                 </ext:GridPanel>
                                 <ext:GridPanel runat="server" ID="uxQuestionsGrid" Title="Form Questions" MaxWidth="1100" Margin="5" MinHeight="250">
                                     <Store>
                                         <ext:Store runat="server" ID="uxQuestionsStore" RemoteSort="true" PageSize="5" AutoDataBind="true" AutoLoad="false" OnReadData="deReadQuestions" WarningOnDirty="true">
                                             <Model>
-                                                <ext:Model runat="server" Name="Question" IDProperty="QUESTION_ID" ClientIdProperty="PhantomId">
+                                                <ext:Model ID="Model6" runat="server" Name="Question" IDProperty="QUESTION_ID" ClientIdProperty="PhantomId">
                                                     <Fields>
                                                         <ext:ModelField Name="QUESTION_ID" Type="Int" />
                                                         <ext:ModelField Name="TEXT" Type="String" />
@@ -376,9 +409,23 @@
                                                         <Click Handler="#{uxQuestionsStore}.insert(0, new Question());" />
                                                     </Listeners>
                                                 </ext:Button>
+                                                <ext:Button runat="server" ID="uxDeleteQuestionButton" Icon="ApplicationDelete" Text="Delete Question" Disabled="true">
+                                                    <DirectEvents>
+                                                        <Click OnEvent="deDeleteQuestion">
+                                                            <Confirmation ConfirmRequest="true" Title="Really Delete" Message="Do you really want to delete this question?" />
+                                                            <EventMask ShowMask="true" />
+                                                            <ExtraParams>
+                                                                <ext:Parameter Name="QuestionId" Value="#{uxQuestionsGrid}.getSelectionModel().getSelection()[0].data.QUESTION_ID" Mode="Raw" />
+                                                            </ExtraParams>
+                                                        </Click>
+                                                    </DirectEvents>
+                                                </ext:Button>
                                             </Items>
                                         </ext:Toolbar>
                                     </TopBar>
+                                    <Listeners>
+                                        <Select Handler="#{uxDeleteQuestionButton}.enable()" />
+                                    </Listeners>
                                 </ext:GridPanel>
                                 <ext:GridPanel runat="server" Title="Question Options" ID="uxOptionsGrid" MaxWidth="1100" Margin="5" MinHeight="250">
                                     <Store>
@@ -447,14 +494,91 @@
                                                         <Click Fn="AddOption" />
                                                     </Listeners>
                                                 </ext:Button>
+                                                <ext:Button ID="uxDeleteOptionButton" runat="server" Icon="ApplicationDelete" Text="Delete Option" Disabled="true">
+                                                    <DirectEvents>
+                                                        <Click OnEvent="deDeleteOption">
+                                                            <Confirmation ConfirmRequest="true" Title="Really Delete" Message="Do you really want to delete this option" />
+                                                            <EventMask ShowMask="true" />
+                                                            <ExtraParams>
+                                                                <ext:Parameter Name="OptionId" Value="#{uxOptionsGrid}.getSelectionModel().getSelection()[0].data.OPTION_ID" Mode="Raw" />
+                                                            </ExtraParams>
+                                                        </Click>
+                                                    </DirectEvents>
+                                                </ext:Button>
                                             </Items>
                                         </ext:Toolbar>
                                     </TopBar>
+                                    <Listeners>
+                                        <Select Handler="#{uxDeleteOptionButton}.enable()" />
+                                    </Listeners>
                                 </ext:GridPanel>
                             </Items>
                         </ext:Panel>
                     </Items>
                 </ext:TabPanel>
+                <ext:Window runat="server" ID="uxCopyFormWindow" Title="Copy Form" Hidden="true" Width="650">
+                    <Items>
+                        <ext:FormPanel runat="server" ID="uxCopyForm" Layout="FormLayout">
+                            <Items>
+                                <ext:TextField runat="server" ID="uxCopyFormName" FieldLabel="Form Name" />
+                                <ext:ComboBox ID="uxCopyFormOrg" runat="server" ForceSelection="true" TypeAhead="true" QueryMode="Local" ValueField="ORG_ID" DisplayField="ORG_HIER" AllowBlank="false" EmptyText="Choose Organization" FieldLabel="Organization">
+                                    <Store>
+                                        <ext:Store ID="uxCopyFormOrgStore" runat="server" OnReadData="deReadOrgs" AutoDataBind="true">
+                                            <Model>
+                                                <ext:Model ID="Model4" runat="server" IDProperty="ORG_ID">
+                                                    <Fields>
+                                                        <ext:ModelField Name="ORG_ID" Type="Int" />
+                                                        <ext:ModelField Name="ORG_HIER" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                            <Proxy>
+                                                <ext:PageProxy />
+                                            </Proxy>
+                                        </ext:Store>
+                                    </Store>
+                                </ext:ComboBox>
+                                <ext:ComboBox ID="uxCopyFormCategory" runat="server" ForceSelection="true" TypeAhead="true" QueryMode="Local" ValueField="CATEGORY_ID" DisplayField="NAME" AllowBlank="false" EmptyText="Choose Category" FieldLabel="Category">
+                                    <Store>
+                                        <ext:Store runat="server" ID="uxCopyFormCategoryStore" OnReadData="deReadCategories" AutoDataBind="true">
+                                            <Model>
+                                                <ext:Model ID="Model5" runat="server" IDProperty="CATEGORY_ID">
+                                                    <Fields>
+                                                        <ext:ModelField Name="CATEGORY_ID" />
+                                                        <ext:ModelField Name="NAME" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                            <Proxy>
+                                                <ext:PageProxy />
+                                            </Proxy>
+                                            <Listeners>
+                                                <Load Handler="#{uxFormsGrid}.getView().refresh()" />
+                                            </Listeners>
+                                        </ext:Store>
+                                    </Store>
+                                </ext:ComboBox>
+                            </Items>
+                            <Buttons>
+                                <ext:Button runat="server" ID="uxCopyFormSubmit" Text="Submit" Icon="Add">
+                                    <DirectEvents>
+                                        <Click OnEvent="deCopyForm">
+                                            <ExtraParams>
+                                                <ext:Parameter Name="FormId" Value="#{uxFormsGrid}.getSelectionModel().getSelection()[0].data.FORM_ID" Mode="Raw" />
+                                            </ExtraParams>
+                                            <EventMask ShowMask="true" />
+                                        </Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:Button runat="server" Text="Cancel" Icon="Delete">
+                                    <Listeners>
+                                        <Click Handler="#{uxCopyFormWindow}.hide(); #{uxCopyForm}.reset()" />
+                                    </Listeners>
+                                </ext:Button>
+                            </Buttons>
+                        </ext:FormPanel>
+                    </Items>
+                </ext:Window>
             </Items>
         </ext:Viewport>
     </form>

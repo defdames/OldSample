@@ -174,6 +174,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 using (Entities _context = new Entities())
                 {
                     NewFormToSubmit.FORM_ID = CUSTOMER_SURVEYS.GetFormIdByOrg(RowData[0].ORG_ID, _context);
+                    NewFormToSubmit.PROJECT_ID = RowData[0].PROJECT_ID;
                     NewFormToSubmit.CREATE_DATE = DateTime.Now;
                     NewFormToSubmit.MODIFY_DATE = DateTime.Now;
                     NewFormToSubmit.CREATED_BY = User.Identity.Name;
@@ -233,181 +234,214 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
         protected byte[] generatePDF(decimal FormId)
         {
             List<CUSTOMER_SURVEYS.CustomerSurveyQuestions> FormToGenerate;
+            List<CUSTOMER_SURVEYS.CustomerSurveyFieldsets> Fieldsets;
             byte[] result;
             using (Entities _context = new Entities())
             {
-                FormToGenerate = CUSTOMER_SURVEYS.GetFormQuestions(FormId, _context).ToList();
-
+                Fieldsets = CUSTOMER_SURVEYS.GetFormFieldSets(FormId, _context).Where(x => x.IS_ACTIVE == true).OrderBy(x => x.SORT_ORDER).ToList();
+                
             }
             using (MemoryStream PdfStream = new MemoryStream())
             {
 
                 Document ExportedPDF = new Document(iTextSharp.text.PageSize.LETTER, 0f, 0f, 42f, 42f);
                 PdfWriter ExportWriter = PdfWriter.GetInstance(ExportedPDF, PdfStream);
-                Font TableFont = FontFactory.GetFont("Verdana", 10);
-                
+                Font TableFont = GetTahoma();
+                TableFont.Size = 10;
+                Rectangle Page = ExportedPDF.PageSize;
+                Font TableHeaderFont = GetTahoma();
+                TableHeaderFont.Size = 12;
+                TableHeaderFont.IsBold();
 
 
                 ExportedPDF.Open();
-                foreach (CUSTOMER_SURVEYS.CustomerSurveyQuestions Question in FormToGenerate)
+                PdfPTable HeaderTable = new PdfPTable(1);
+                HeaderTable.WidthPercentage = 25;
+                
+                PdfPCell HeaderImage = new PdfPCell(iTextSharp.text.Image.GetInstance(Server.MapPath("/Resources/Images/dbis_black_logo.png")), true);
+                HeaderImage.Border = PdfPCell.NO_BORDER;
+                HeaderImage.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                HeaderTable.AddCell(HeaderImage);
+                ExportedPDF.Add(HeaderTable);
+
+                foreach (CUSTOMER_SURVEYS.CustomerSurveyFieldsets Fieldset in Fieldsets)
                 {
-                    PdfPTable Table = new PdfPTable(2);
-                    Table.DefaultCell.Border = PdfPCell.NO_BORDER;
-                    Table.SpacingBefore = 5f;
-                    Table.SpacingAfter = 5f;
-                    Table.SetWidths(new float[] { .65f, .35f });
-                    PdfPCell Cell;
-                    iTextSharp.text.pdf.events.FieldPositioningEvents Events;
-                    List<CUSTOMER_SURVEY_OPTIONS> QuestionOptions;
-                    string[] Options;
-                    int count = 0;
-                    switch (Question.QUESTION_TYPE_NAME)
+                    PdfPTable FieldsetTable = new PdfPTable(1);
+                    FieldsetTable.SpacingBefore = 5f;
+                    FieldsetTable.SpacingAfter = 5f;
+                    FieldsetTable.DefaultCell.Border = PdfPCell.NO_BORDER;
+                    PdfPCell TitleCell = new PdfPCell(new Phrase(Fieldset.TITLE, TableHeaderFont));
+                    TitleCell.BorderWidthLeft = 0f;
+                    TitleCell.BorderWidthRight = 0f;
+                    TitleCell.BorderWidthBottom = 1f;
+                    TitleCell.BorderWidthTop = 0f;
+                    FieldsetTable.AddCell(TitleCell);
+                    
+                    using (Entities _context = new Entities())
                     {
-
-                        case "singletext":
-                            Table.AddCell(new Phrase(Question.TEXT + ":", TableFont));
-                            Cell = new PdfPCell(new Phrase("____________________________________________________________________", TableFont));
-                            //iTextSharp.text.pdf.TextField TextField = new iTextSharp.text.pdf.TextField(ExportWriter, new Rectangle(10, 20), "field" + Question.QUESTION_ID.ToString());
-                            //Events = new iTextSharp.text.pdf.events.FieldPositioningEvents(ExportWriter, TextField.GetTextField());
-                            //Cell.CellEvent = Events;
-
-                            Table.AddCell(Cell);
-                            break;
-                        case "multitext":
-                            Table.AddCell(new Phrase(Question.TEXT + ":", TableFont));
-                            Cell = new PdfPCell(new Phrase("______________________________________________________________________________________________________________________________________________________________________________", TableFont));
-                            //TextField = new iTextSharp.text.pdf.TextField(ExportWriter, new Rectangle(10, 20), "field" + Question.QUESTION_ID.ToString());
-                            //TextField.Options = iTextSharp.text.pdf.TextField.MULTILINE;
-                            //Events = new iTextSharp.text.pdf.events.FieldPositioningEvents(ExportWriter, TextField.GetTextField());
-                            //Cell.CellEvent = Events;
-                            //Cell.MinimumHeight = 50;
-                            Table.AddCell(Cell);
-                            break;
-                        case "dropdown":
-                            using (Entities _context = new Entities())
-                            {
-                                QuestionOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).ToList();
-                            }
-                            Options = new string[QuestionOptions.Count];
-
-                            foreach (CUSTOMER_SURVEY_OPTIONS Option in QuestionOptions)
-                            {
-                                Options[count] = Option.OPTION_NAME;
-                                count++;
-                            }
-                            Table.AddCell(new Phrase(Question.TEXT + ":", TableFont));
-                            PdfFormField DropDown = iTextSharp.text.pdf.PdfFormField.CreateCombo(ExportWriter, true, Options, 0);
-
-                            DropDown.SetWidget(new Rectangle(10, 20), PdfAnnotation.HIGHLIGHT_INVERT);
-                            DropDown.FieldName = "field" + Question.QUESTION_ID;
-                            Cell = new PdfPCell();
-                            Events = new iTextSharp.text.pdf.events.FieldPositioningEvents(ExportWriter, DropDown);
-                            Cell.CellEvent = Events;
-                            Table.AddCell(Cell);
-                            break;
-                        case "radio":
-                            
-
-                            Table.AddCell(new Phrase(Question.TEXT + ":", TableFont));
-                            PdfFormField RadioGroup = PdfFormField.CreateRadioButton(ExportWriter, true);
-                            RadioGroup.FieldName = "field" + Question.QUESTION_ID;
-                            using (Entities _context = new Entities())
-                            {
-                                QuestionOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).ToList();
-                            }
-                            PdfPTable RadioTable = new PdfPTable(QuestionOptions.Count * 2);
-                            RadioTable.DefaultCell.Border = PdfPCell.NO_BORDER;
-                            RadioCheckField Radio;
-                            PdfFormField RadioField = null;
-
-                            foreach (CUSTOMER_SURVEY_OPTIONS Option in QuestionOptions)
-                            {
-                                var root = PdfFormField.CreateEmpty(ExportWriter);
-                                root.FieldName = "root" + Option.OPTION_ID.ToString();
-
-                                Radio = new RadioCheckField(ExportWriter, new Rectangle(40, 806 - count * 40, 60, 788 - count * 40), Option.OPTION_NAME, "option" + Option.OPTION_ID.ToString());
-                                Radio.BackgroundColor = new GrayColor(0.8f);
-                                Radio.CheckType = RadioCheckField.TYPE_CROSS;
-                                RadioField = Radio.CheckField;
-                                
-                                RadioGroup.AddKid(RadioField);
-                                var Widths = new int[QuestionOptions.Count * 2];
-                                for (int i = 0; i < QuestionOptions.Count * 2; i++)
-                                {
-                                    if (i % 2 == 1)
-                                    {
-                                        Widths[i] = 5;
-                                    }
-                                    else
-                                    {
-                                        Widths[i] = 20;
-                                    }
-                                }
-                                RadioTable.SetWidths(Widths);
-                                
-                                RadioTable.AddCell(new Phrase(Option.OPTION_NAME + ":", TableFont));
-                                
-                                Cell = new PdfPCell();
-                                Cell.Border = PdfPCell.NO_BORDER;
-
-                                Cell.CellEvent = new ChildFieldEvent(root, RadioField, 0);
-                                RadioTable.AddCell(Cell);
-                            }
-                            ExportWriter.AddAnnotation(RadioGroup);
-                            Table.AddCell(RadioTable);
-                            break;
-                        case "checkbox":
-                            Table.AddCell(new Phrase(Question.TEXT + ":", TableFont));
-                            PdfFormField CheckGroup = PdfFormField.CreateRadioButton(ExportWriter, true);
-                            CheckGroup.FieldName = "field" + Question.QUESTION_ID;
-                            using (Entities _context = new Entities())
-                            {
-                                QuestionOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).ToList();
-                            }
-                            PdfPTable CheckTable = new PdfPTable(QuestionOptions.Count * 2);
-                            CheckTable.DefaultCell.Border = PdfPCell.NO_BORDER;
-                            RadioCheckField Check;
-                            PdfFormField CheckField = null;
-
-                            foreach (CUSTOMER_SURVEY_OPTIONS Option in QuestionOptions)
-                            {
-                                var root = PdfFormField.CreateEmpty(ExportWriter);
-                                root.FieldName = "root" + Option.OPTION_ID.ToString();
-
-                                Check = new RadioCheckField(ExportWriter, new Rectangle(40, 806 - count * 40, 60, 788 - count * 40), Option.OPTION_NAME, "option" + Option.OPTION_ID.ToString());
-                                Check.BackgroundColor = new GrayColor(0.8f);
-                                Check.CheckType = RadioCheckField.TYPE_CROSS;
-                                CheckField = Check.CheckField;
-                                CheckGroup.AddKid(CheckField);
-                                var Widths = new int[QuestionOptions.Count * 2];
-                                for (int i = 0; i < QuestionOptions.Count * 2; i++)
-                                {
-                                    if (i % 2 == 1)
-                                    {
-                                        Widths[i] = 5;
-                                    }
-                                    else
-                                    {
-                                        Widths[i] = 20;
-                                    }
-                                }
-                                CheckTable.SetWidths(Widths);
-                                
-                                CheckTable.AddCell(new Phrase(Option.OPTION_NAME + ":", TableFont));
-                                
-                                Cell = new PdfPCell();
-                                Cell.Border = PdfPCell.NO_BORDER;
-                                
-                                Cell.CellEvent = new ChildFieldEvent(root, CheckField, 0);
-                                CheckTable.AddCell(Cell);
-                            }
-                            ExportWriter.AddAnnotation(CheckGroup);
-                            Table.AddCell(CheckTable);
-                            break;
+                        FormToGenerate = CUSTOMER_SURVEYS.GetFieldsetQuestionsForGrid(Fieldset.FIELDSET_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
                     }
-                    ExportedPDF.Add(Table);
-                }
+                    foreach (CUSTOMER_SURVEYS.CustomerSurveyQuestions Question in FormToGenerate)
+                    {
+                        PdfPTable Table = new PdfPTable(2);
+                        Table.DefaultCell.Border = PdfPCell.NO_BORDER;
+                        Table.WidthPercentage = 100;
+                        Table.SpacingBefore = 5f;
+                        Table.SpacingAfter = 5f;
+                        //Table.SetWidths(new float[] { .65f, .35f });
+                        PdfPCell Cell;
+                        iTextSharp.text.pdf.events.FieldPositioningEvents Events;
+                        List<CUSTOMER_SURVEY_OPTIONS> QuestionOptions;
+                        string[] Options;
+                        int count = 0;
+                        switch (Question.QUESTION_TYPE_NAME)
+                        {
 
+                            case "singletext":
+                                Table.AddCell(new Phrase(Question.TEXT + ":", TableFont));
+                                Cell = new PdfPCell();
+                                iTextSharp.text.pdf.TextField TextField = new iTextSharp.text.pdf.TextField(ExportWriter, new Rectangle(10, 20), "field" + Question.QUESTION_ID.ToString());
+                                Events = new iTextSharp.text.pdf.events.FieldPositioningEvents(ExportWriter, TextField.GetTextField());
+                                Cell.CellEvent = Events;
+
+                                Table.AddCell(Cell);
+                                break;
+                            case "multitext":
+                                Table.AddCell(new Phrase(Question.TEXT + ":", TableFont));
+                                Cell = new PdfPCell();
+                                TextField = new iTextSharp.text.pdf.TextField(ExportWriter, new Rectangle(10, 20), "field" + Question.QUESTION_ID.ToString());
+                                TextField.Options = iTextSharp.text.pdf.TextField.MULTILINE;
+                                Events = new iTextSharp.text.pdf.events.FieldPositioningEvents(ExportWriter, TextField.GetTextField());
+                                Cell.CellEvent = Events;
+                                Cell.MinimumHeight = 50;
+                                Table.AddCell(Cell);
+                                break;
+                            case "dropdown":
+                                using (Entities _context = new Entities())
+                                {
+                                    QuestionOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).ToList();
+                                }
+                                Options = new string[QuestionOptions.Count];
+
+                                foreach (CUSTOMER_SURVEY_OPTIONS Option in QuestionOptions)
+                                {
+                                    Options[count] = Option.OPTION_NAME;
+                                    count++;
+                                }
+                                Table.AddCell(new Phrase(Question.TEXT + ":", TableFont));
+                                PdfFormField DropDown = iTextSharp.text.pdf.PdfFormField.CreateCombo(ExportWriter, true, Options, 0);
+
+                                DropDown.SetWidget(new Rectangle(10, 20), PdfAnnotation.HIGHLIGHT_INVERT);
+                                DropDown.FieldName = "field" + Question.QUESTION_ID;
+                                Cell = new PdfPCell();
+                                Events = new iTextSharp.text.pdf.events.FieldPositioningEvents(ExportWriter, DropDown);
+                                Cell.CellEvent = Events;
+                                Table.AddCell(Cell);
+                                break;
+                            case "radio":
+
+
+                                Table.AddCell(new Phrase(Question.TEXT + ":", TableFont));
+                                PdfFormField RadioGroup = PdfFormField.CreateRadioButton(ExportWriter, true);
+                                RadioGroup.FieldName = "field" + Question.QUESTION_ID;
+                                using (Entities _context = new Entities())
+                                {
+                                    QuestionOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).ToList();
+                                }
+                                PdfPTable RadioTable = new PdfPTable(QuestionOptions.Count * 2);
+                                RadioTable.DefaultCell.Border = PdfPCell.NO_BORDER;
+                                RadioCheckField Radio;
+                                PdfFormField RadioField = null;
+
+                                foreach (CUSTOMER_SURVEY_OPTIONS Option in QuestionOptions)
+                                {
+                                    var root = PdfFormField.CreateEmpty(ExportWriter);
+                                    root.FieldName = "root" + Option.OPTION_ID.ToString();
+
+                                    Radio = new RadioCheckField(ExportWriter, new Rectangle(40, 806 - count * 40, 60, 788 - count * 40), Option.OPTION_NAME, "option" + Option.OPTION_ID.ToString());
+                                    Radio.BackgroundColor = new GrayColor(0.8f);
+                                    Radio.CheckType = RadioCheckField.TYPE_CIRCLE;
+                                    RadioField = Radio.CheckField;
+
+                                    RadioGroup.AddKid(RadioField);
+                                    var Widths = new int[QuestionOptions.Count * 2];
+                                    for (int i = 0; i < QuestionOptions.Count * 2; i++)
+                                    {
+                                        if (i % 2 == 1)
+                                        {
+                                            Widths[i] = 10;
+                                        }
+                                        else
+                                        {
+                                            Widths[i] = 20;
+                                        }
+                                    }
+                                    RadioTable.SetWidths(Widths);
+
+                                    RadioTable.AddCell(new Phrase(Option.OPTION_NAME + ":", TableFont));
+
+                                    Cell = new PdfPCell();
+                                    Cell.Border = PdfPCell.NO_BORDER;
+
+                                    Cell.CellEvent = new ChildFieldEvent(root, RadioField, 0);
+                                    RadioTable.AddCell(Cell);
+                                }
+                                ExportWriter.AddAnnotation(RadioGroup);
+                                Table.AddCell(RadioTable);
+                                break;
+                            case "checkbox":
+                                Table.AddCell(new Phrase(Question.TEXT + ":", TableFont));
+                                PdfFormField CheckGroup = PdfFormField.CreateRadioButton(ExportWriter, true);
+                                CheckGroup.FieldName = "field" + Question.QUESTION_ID;
+                                using (Entities _context = new Entities())
+                                {
+                                    QuestionOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).ToList();
+                                }
+                                PdfPTable CheckTable = new PdfPTable(QuestionOptions.Count * 2);
+                                CheckTable.DefaultCell.Border = PdfPCell.NO_BORDER;
+                                RadioCheckField Check;
+                                PdfFormField CheckField = null;
+
+                                foreach (CUSTOMER_SURVEY_OPTIONS Option in QuestionOptions)
+                                {
+                                    var root = PdfFormField.CreateEmpty(ExportWriter);
+                                    root.FieldName = "root" + Option.OPTION_ID.ToString();
+
+                                    Check = new RadioCheckField(ExportWriter, new Rectangle(40, 806 - count * 40, 60, 788 - count * 40), Option.OPTION_NAME, "option" + Option.OPTION_ID.ToString());
+                                    Check.BackgroundColor = new GrayColor(0.8f);
+                                    Check.CheckType = RadioCheckField.TYPE_CROSS;
+                                    CheckField = Check.CheckField;
+                                    CheckGroup.AddKid(CheckField);
+                                    var Widths = new int[QuestionOptions.Count * 2];
+                                    for (int i = 0; i < QuestionOptions.Count * 2; i++)
+                                    {
+                                        if (i % 2 == 1)
+                                        {
+                                            Widths[i] = 5;
+                                        }
+                                        else
+                                        {
+                                            Widths[i] = 20;
+                                        }
+                                    }
+                                    CheckTable.SetWidths(Widths);
+
+                                    CheckTable.AddCell(new Phrase(Option.OPTION_NAME + ":", TableFont));
+
+                                    Cell = new PdfPCell();
+                                    Cell.Border = PdfPCell.NO_BORDER;
+
+                                    Cell.CellEvent = new ChildFieldEvent(root, CheckField, 0);
+                                    CheckTable.AddCell(Cell);
+                                }
+                                ExportWriter.AddAnnotation(CheckGroup);
+                                Table.AddCell(CheckTable);
+                                break;
+                        }
+                        FieldsetTable.AddCell(Table);
+                    }
+                    ExportedPDF.Add(FieldsetTable);
+                }
                 ExportedPDF.Close();
                 result = PdfStream.GetBuffer();
             }
@@ -452,6 +486,17 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
                 X.Msg.Alert("No Email Address", "The selected project does not have an associated email address").Show();
             }
         }
+
+        public static iTextSharp.text.Font GetTahoma()
+        {
+            var fontName = "Tahoma";
+            if (!FontFactory.IsRegistered(fontName))
+            {
+                var fontPath = Environment.GetEnvironmentVariable("SystemRoot") + "\\fonts\\tahoma.ttf";
+                FontFactory.Register(fontPath);
+            }
+            return FontFactory.GetFont(fontName, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        }
     }
 
     public class ChildFieldEvent : IPdfPCellEvent
@@ -491,5 +536,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
                 PdfAnnotation.HIGHLIGHT_INVERT
                 );
         }
+
+
     }
 }

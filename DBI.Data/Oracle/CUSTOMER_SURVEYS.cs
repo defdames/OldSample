@@ -31,12 +31,19 @@ namespace DBI.Data
                     select new CustomerSurveyFieldsets { FIELDSET_ID = f.FIELDSET_ID, FORM_ID = f.FORM_ID, IS_ACTIVE = (f.IS_ACTIVE == "Y" ? true : false), SORT_ORDER = f.SORT_ORDER, TITLE = f.TITLE });
         }
 
-        public static IQueryable<CustomerSurveyQuestions> GetFieldsetQuestions(decimal FieldSetId, Entities _context)
+        public static IQueryable<CustomerSurveyQuestions> GetFieldsetQuestionsForGrid(decimal FieldSetId, Entities _context)
         {
             return (from q in _context.CUSTOMER_SURVEY_RELATION
                     orderby q.SORT_ORDER ascending
                     where q.FIELDSET_ID == FieldSetId
-                    select new CustomerSurveyQuestions { QUESTION_ID = q.CUSTOMER_SURVEY_QUESTIONS.QUESTION_ID, TEXT = q.CUSTOMER_SURVEY_QUESTIONS.TEXT, IS_ACTIVE = (q.CUSTOMER_SURVEY_QUESTIONS.IS_ACTIVE == "Y" ? true : false), IS_REQUIRED = (q.CUSTOMER_SURVEY_QUESTIONS.IS_REQUIRED == "Y" ? true : false), TYPE_ID = q.CUSTOMER_SURVEY_QUESTIONS.TYPE_ID, SORT_ORDER = q.CUSTOMER_SURVEY_QUESTIONS.SORT_ORDER });
+                    select new CustomerSurveyQuestions { QUESTION_ID = q.CUSTOMER_SURVEY_QUESTIONS.QUESTION_ID, TEXT = q.CUSTOMER_SURVEY_QUESTIONS.TEXT, IS_ACTIVE = (q.CUSTOMER_SURVEY_QUESTIONS.IS_ACTIVE == "Y" ? true : false), IS_REQUIRED = (q.CUSTOMER_SURVEY_QUESTIONS.IS_REQUIRED == "Y" ? true : false), TYPE_ID = q.CUSTOMER_SURVEY_QUESTIONS.TYPE_ID, SORT_ORDER = q.CUSTOMER_SURVEY_QUESTIONS.SORT_ORDER, QUESTION_TYPE_NAME = q.CUSTOMER_SURVEY_QUESTIONS.CUSTOMER_SURVEY_QUES_TYPES.QUESTION_TYPE_NAME });
+        }
+
+        public static IQueryable<CUSTOMER_SURVEY_QUESTIONS> GetFieldsetQuestions(decimal FieldsetId, Entities _context)
+        {
+            return (from q in _context.CUSTOMER_SURVEY_RELATION
+                    where q.FIELDSET_ID == FieldsetId
+                    select q.CUSTOMER_SURVEY_QUESTIONS);
         }
 
         public static IQueryable<CUSTOMER_SURVEY_OPTIONS> GetQuestionOptions(decimal QuestionId, Entities _context)
@@ -91,6 +98,7 @@ namespace DBI.Data
         {
             return _context.CUSTOMER_SURVEY_THRESH_AMT.Where(x => x.AMOUNT_ID == AmountId).Single();
         }
+
         public static IQueryable<CUSTOMER_SURVEY_THRESHOLDS> GetThresholdPercentages(decimal AmountID, Entities _context)
         {
             return _context.CUSTOMER_SURVEY_THRESHOLDS.Where(x => x.AMOUNT_ID == AmountID);
@@ -125,6 +133,36 @@ namespace DBI.Data
         {
             return _context.CUSTOMER_SURVEY_FORMS_COMP;
         }
+
+        public static IQueryable<CUSTOMER_SURVEY_FORMS_ANS> GetFormAnswersByCompletion(decimal CompletionId, Entities _context)
+        {
+            return _context.CUSTOMER_SURVEY_FORMS_ANS.Where(x => x.COMPLETION_ID == CompletionId);
+        }
+
+        public static IQueryable<CUSTOMER_SURVEY_RELATION> GetRelationEntries(Entities _context)
+        {
+            return _context.CUSTOMER_SURVEY_RELATION;
+        }
+
+        public static bool HasQuestionBeenFilledOut(decimal QuestionId, Entities _context)
+        {
+            List<CUSTOMER_SURVEY_FORMS_ANS> Answers = _context.CUSTOMER_SURVEY_FORMS_ANS.Where(x => x.QUESTION_ID == QuestionId).ToList();
+            if (Answers.Count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static IQueryable<CustomerSurveyCompletions> GetCompletionStore(List<long> OrgsList, Entities _context)
+        {
+            return (from d in _context.CUSTOMER_SURVEY_FORMS_COMP
+                    join f in _context.CUSTOMER_SURVEY_FORMS on d.FORM_ID equals f.FORM_ID
+                    join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                    where OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID)
+                    select new CustomerSurveyCompletions { COMPLETION_ID = d.COMPLETION_ID, LONG_NAME = p.LONG_NAME, FILLED_BY = d.FILLED_BY, FILLED_ON = d.FILLED_ON, FORMS_NAME = f.FORMS_NAME });
+        }
+
         public class CustomerSurveyForms
         {
             public decimal FORM_ID { get; set; }
@@ -184,6 +222,15 @@ namespace DBI.Data
             public string NAME { get; set; }
             public string DESCRIPTION { get; set; }
             public int NUM_FORMS { get; set; }
+        }
+
+        public class CustomerSurveyCompletions
+        {
+            public decimal COMPLETION_ID { get; set; }
+            public DateTime? FILLED_ON { get; set; }
+            public string FORMS_NAME { get; set; }
+            public string FILLED_BY { get; set; }
+            public string LONG_NAME { get; set; }
         }
     }
 }
