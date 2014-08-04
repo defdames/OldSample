@@ -77,33 +77,44 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                 foreach (GL_ACCOUNTS_V _validAccount in _rangeOfAccounts)
                 {
-                    try
-                    {
-                        OVERHEAD_BUDGET_DETAIL_V _row = new OVERHEAD_BUDGET_DETAIL_V();
-                    _row.CODE_COMBINATION_ID = _validAccount.CODE_COMBINATION_ID;
-                    _row.ACCOUNT_DESCRIPTION = _validAccount.SEGMENT5_DESC;
-                    _row.AMOUNT1 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 1, "B");
-                    _row.AMOUNT2 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 2, "B");
-                    _row.AMOUNT3 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 3, "B");
-                    _row.AMOUNT4 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 4, "B");
-                    _row.AMOUNT5 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 5, "B");
-                    _row.AMOUNT6 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 6, "B");
-                    _row.AMOUNT7 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 7, "B");
-                    _row.AMOUNT8 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 8, "B");
-                    _row.AMOUNT9 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 9, "B");
-                    _row.AMOUNT10 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 10, "B");
-                    _row.AMOUNT11 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 11, "B");
-                    _row.AMOUNT12 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 12, "B");
-                    _row.TOTAL = (_row.AMOUNT1 + _row.AMOUNT2 + _row.AMOUNT3 + _row.AMOUNT4 + _row.AMOUNT5 + _row.AMOUNT6 + _row.AMOUNT7 + _row.AMOUNT8 + _row.AMOUNT9 + _row.AMOUNT10 + _row.AMOUNT11 + _row.AMOUNT12);
 
-                    _accountList.Add(_row);
-                    }
-                    catch (Exception ex)
-                    {
-                        
-                        throw(ex);
-                    }
-                  
+                        OVERHEAD_BUDGET_DETAIL_V _row = new OVERHEAD_BUDGET_DETAIL_V();
+                        _row.CODE_COMBINATION_ID = _validAccount.CODE_COMBINATION_ID;
+                        _row.ACCOUNT_DESCRIPTION = _validAccount.SEGMENT5_DESC;
+                        _row.AMOUNT1 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 1, "B");
+                        _row.AMOUNT2 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 2, "B");
+                        _row.AMOUNT3 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 3, "B");
+                        _row.AMOUNT4 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 4, "B");
+                        _row.AMOUNT5 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 5, "B");
+                        _row.AMOUNT6 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 6, "B");
+                        _row.AMOUNT7 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 7, "B");
+                        _row.AMOUNT8 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 8, "B");
+                        _row.AMOUNT9 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 9, "B");
+                        _row.AMOUNT10 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 10, "B");
+                        _row.AMOUNT11 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 11, "B");
+                        _row.AMOUNT12 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 12, "B");
+                        _row.TOTAL = (_row.AMOUNT1 + _row.AMOUNT2 + _row.AMOUNT3 + _row.AMOUNT4 + _row.AMOUNT5 + _row.AMOUNT6 + _row.AMOUNT7 + _row.AMOUNT8 + _row.AMOUNT9 + _row.AMOUNT10 + _row.AMOUNT11 + _row.AMOUNT12);
+
+                        //Check toggle button if button is active, hide zero lines (zero total)
+                        if (!uxHideBlankLinesButton.Pressed)
+                        {
+                            _accountList.Add(_row);
+                        }
+                        else
+                        {
+
+                            if (e.Parameters["TOGGLE_ACTIVE"] == "N")
+                            {
+                                _accountList.Add(_row);
+                            }
+                            else
+                            {
+                                if (_row.TOTAL > 0 || _row.TOTAL < 0)
+                                    _accountList.Add(_row);
+
+                            }
+                        }
+
                 }
 
             }
@@ -111,6 +122,24 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             int count;
             uxOrganizationAccountStore.DataSource = GenericData.ListFilterHeader<OVERHEAD_BUDGET_DETAIL_V>(e.Start, 1000, e.Sort, e.Parameters["filterheader"], _accountList.AsQueryable(), out count);
             e.Total = count;
+
+        }
+
+        protected void deHideBlankLines(object sender, DirectEventArgs e)
+        {
+            Ext.Net.ParameterCollection ps = new Ext.Net.ParameterCollection();
+
+            Ext.Net.StoreParameter _p = new Ext.Net.StoreParameter();
+            _p.Mode = ParameterMode.Value;
+            _p.Name = "TOGGLE_ACTIVE";
+            _p.Value = "N";
+
+            if (uxHideBlankLinesButton.Pressed)
+                _p.Value = "Y";
+
+            ps.Add(_p);
+
+            uxOrganizationAccountStore.Reload(ps);
 
         }
 

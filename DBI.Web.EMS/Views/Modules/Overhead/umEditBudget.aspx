@@ -43,7 +43,11 @@
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
                                 <ext:ToolbarFill ID="ToolbarFill1" runat="server"></ext:ToolbarFill>
-                               <ext:Button Icon="MagifierZoomOut" Text="Hide Blank Lines" runat="server" ID="uxHideBlankLinesButton" EnableToggle="true" ></ext:Button>
+                               <ext:Button Icon="MagifierZoomOut" Text="Hide Blank Lines" runat="server" ID="uxHideBlankLinesButton" EnableToggle="true" >
+                                   <DirectEvents>
+                                       <Toggle OnEvent="deHideBlankLines"><EventMask ShowMask="true"></EventMask></Toggle>
+                                   </DirectEvents>
+                               </ext:Button>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
