@@ -161,15 +161,16 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             string _budgetSelectedID = Request.QueryString["budget_id"];
             string _AccountSelectedID = uxOrganizationAccountSelectionModel.SelectedRow.RecordID;
             string _fiscal_year = Request.QueryString["fiscalyear"];
+            string _accountDescription = e.ExtraParams["ACCOUNT_DESCRIPTION"];
 
             string url = "umAddOverheadDetailLine.aspx?budgetID=" + _budgetSelectedID + "&accountID=" + _AccountSelectedID + "&fiscalyear=" + _fiscal_year;
 
             Window win = new Window
             {
                 ID = "uxDetailLineMaintenance",
-                Title = "Account Details",
-                Height = 350,
-                Width = 500,
+                Title = "Account Details - " + _accountDescription,
+                Height = 650,
+                Width = 650,
                 Modal = true,
                 Resizable = false,
                 CloseAction = CloseAction.Destroy,

@@ -32,6 +32,14 @@
             };
         };
     </script>
+
+    <style>
+        .x-grid-row-summary .x-grid-cell-inner {
+            font-weight      : bold;
+            font-size        : 11px;
+            background-color : #9EC3E8;
+        } 
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -86,54 +94,75 @@
 
               <ColumnModel>
                   <Columns>
-                      <ext:Column ID="Column14" runat="server" DataIndex="ACCOUNT_DESCRIPTION" Text="Account Name" Width="250" Locked="true" />
-                      <ext:Column ID="Column54" runat="server" Text="Totals" Flex="1" Align="Center" DataIndex="TOTAL">
+                      <ext:Column ID="Column14" runat="server" DataIndex="ACCOUNT_DESCRIPTION" Text="Account Name" Width="250" Locked="true" >
+                          <SummaryRenderer Handler="return ('Budget Totals');" />                            
+                      </ext:Column>
+                      <ext:Column ID="Column54" runat="server" Text="Totals" Flex="1" Align="Center" DataIndex="TOTAL" SummaryType="Sum">
                           <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
+                          <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                      <ext:Column ID="Column1" runat="server" Text="November" Flex="1" Align="Center" DataIndex="AMOUNT1">
+                      <ext:Column ID="Column1" runat="server" Text="November" Flex="1" Align="Center" DataIndex="AMOUNT1" SummaryType="Sum">
                               <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
+                          <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column2" runat="server" Text="December" Flex="1" Align="Center" DataIndex="AMOUNT2">
+                       <ext:Column ID="Column2" runat="server" Text="December" Flex="1" Align="Center" DataIndex="AMOUNT2" SummaryType="Sum">
                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
+                           <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column3" runat="server" Text="January" Flex="1" Align="Center" DataIndex="AMOUNT3">
+                       <ext:Column ID="Column3" runat="server" Text="January" Flex="1" Align="Center" DataIndex="AMOUNT3" SummaryType="Sum">
                               <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
+                           <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column4" runat="server" Text="February" Flex="1" Align="Center" DataIndex="AMOUNT4">
+                       <ext:Column ID="Column4" runat="server" Text="February" Flex="1" Align="Center" DataIndex="AMOUNT4" SummaryType="Sum">
                               <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
+                           <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column5" runat="server" Text="March" Flex="1" Align="Center" DataIndex="AMOUNT5">
+                       <ext:Column ID="Column5" runat="server" Text="March" Flex="1" Align="Center" DataIndex="AMOUNT5" SummaryType="Sum">
                               <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
+                           <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column6" runat="server" Text="April" Flex="1" Align="Center" DataIndex="AMOUNT6">
+                       <ext:Column ID="Column6" runat="server" Text="April" Flex="1" Align="Center" DataIndex="AMOUNT6" SummaryType="Sum">
                                 <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
+                           <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column7" runat="server" Text="May" Flex="1" Align="Center" DataIndex="AMOUNT7">
+                       <ext:Column ID="Column7" runat="server" Text="May" Flex="1" Align="Center" DataIndex="AMOUNT7" SummaryType="Sum">
                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
+                           <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column8" runat="server" Text="June" Flex="1" Align="Center" DataIndex="AMOUNT8">
+                       <ext:Column ID="Column8" runat="server" Text="June" Flex="1" Align="Center" DataIndex="AMOUNT8" SummaryType="Sum">
                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
+                           <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column9" runat="server" Text="July" Flex="1" Align="Center" DataIndex="AMOUNT9">
+                       <ext:Column ID="Column9" runat="server" Text="July" Flex="1" Align="Center" DataIndex="AMOUNT9" SummaryType="Sum">
                                 <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
+                           <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column10" runat="server" Text="August" Flex="1" Align="Center" DataIndex="AMOUNT10">
+                       <ext:Column ID="Column10" runat="server" Text="August" Flex="1" Align="Center" DataIndex="AMOUNT10" SummaryType="Sum">
                                 <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
+                           <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column11" runat="server" Text="September" Flex="1" Align="Center" DataIndex="AMOUNT11">
+                       <ext:Column ID="Column11" runat="server" Text="September" Flex="1" Align="Center" DataIndex="AMOUNT11" SummaryType="Sum">
                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
+                           <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column12" runat="server" Text="October" Flex="1" Align="Center" DataIndex="AMOUNT12">
+                       <ext:Column ID="Column12" runat="server" Text="October" Flex="1" Align="Center" DataIndex="AMOUNT12" SummaryType="Sum"> 
                                 <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
+                                <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
                   </Columns>
               </ColumnModel>
+                <Features>               
+                     <ext:Summary ID="Summary1" runat="server" Dock="Bottom" />
+            </Features>  
               <SelectionModel>
                         <ext:RowSelectionModel runat="server" ID="uxOrganizationAccountSelectionModel">
                         </ext:RowSelectionModel>
                     </SelectionModel>
                     <DirectEvents>
                         <ItemDblClick OnEvent="deItemMaintenance">
+                            <ExtraParams>
+                                <ext:Parameter Value="#{uxOrganizationAccountGridPanel}.getView().getSelectionModel().getSelection()[0].data.ACCOUNT_DESCRIPTION" Mode="Raw" Name="ACCOUNT_DESCRIPTION"></ext:Parameter>
+                            </ExtraParams>
                         </ItemDblClick>
                     </DirectEvents>
                      <View>

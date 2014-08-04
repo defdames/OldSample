@@ -36,6 +36,67 @@
         </ext:ResourceManager>         
         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
             <Items>
+                   <ext:FormPanel ID="FormPanel1" runat="server" Header="false" BodyPadding="10" DefaultButton="uxAddBudgetType"
+                    Margins="5 5 5 5" Region="North" >
+                    <Items>
+                        <ext:FieldContainer ID="FieldContainer1" 
+                        runat="server"
+                        LabelStyle="font-weight:bold;padding:0;"
+                        Layout="HBoxLayout">
+                        <Items>
+                            <ext:ComboBox runat="server" ID="uxFiscalYear" Editable="true" TypeAhead="true"
+                                FieldLabel="Spread Type" AnchorHorizontal="55%" DisplayField="ID_NAME"
+                                ValueField="ID_NAME" TriggerAction="All" 
+                                MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" >
+                                <Store>
+                                    <ext:Store runat="server" ID="uxFiscalYearsStore" AutoLoad="false" AutoDataBind="true" >
+                                        <Proxy>
+                                            <ext:PageProxy />
+                                        </Proxy>
+                                        <Model>
+                                            <ext:Model ID="Model5" runat="server" IDProperty="ID_NAME">
+                                                <Fields>
+                                                    <ext:ModelField Name="ID_NAME" />
+                                                </Fields>
+                                            </ext:Model>
+                                        </Model>
+                                    </ext:Store>
+                                </Store>
+                                <Listeners>
+                                    <Select Handler="#{uxBudgetName}.clearValue();
+                                        #{uxBudgetNameStore}.removeAll(true);
+                                        #{uxBudgetName}.enable();
+                                        #{uxBudgetNameStore}.reload();" />
+                                </Listeners>
+                            </ext:ComboBox>
+
+                        </Items>
+                    </ext:FieldContainer>
+                        <ext:FieldContainer ID="FieldContainer3" 
+                        runat="server"
+                        LabelStyle="font-weight:bold;padding:0;"
+                        Layout="HBoxLayout">
+                        <Items>
+                          <ext:TextField runat="server" FieldLabel="Spread Amount" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1"></ext:TextField>
+                        </Items>
+                    </ext:FieldContainer>  
+                           <ext:FieldContainer ID="FieldContainer2" 
+                        runat="server"
+                        LabelStyle="font-weight:bold;padding:0;"
+                        Layout="HBoxLayout">
+                        <Items>
+             <ext:TextArea ID="TextArea1" runat="server" FieldLabel="Comments" Height="175"  Flex="1"></ext:TextArea>
+                        </Items>
+                    </ext:FieldContainer>  
+
+                    </Items>
+                    <Buttons>
+                        <ext:Button runat="server" ID="uxSpread" Text="Spread" Disabled="true" icon="CalculatorEdit">
+                        </ext:Button>
+                    </Buttons>
+                </ext:FormPanel>
+
+
                 <ext:GridPanel ID="GridPanel3" runat="server" Flex="1" Title="Line Detail" Header="false" Padding="5" Region="Center">
                     <KeyMap runat="server">
                         <Binding>
@@ -60,6 +121,8 @@
                                         <ext:ModelField Name="PERIOD_NUM"></ext:ModelField>
                                         <ext:ModelField Name="ORG_BUDGET_ID"></ext:ModelField>
                                         <ext:ModelField Name="DETAIL_TYPE"></ext:ModelField>
+                                         <ext:ModelField Name="CREATED_BY"></ext:ModelField>
+                                        <ext:ModelField Name="CREATE_DATE"></ext:ModelField>
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -109,7 +172,6 @@
                                     </ext:Button>
                        </Buttons> 
                 </ext:GridPanel>
-
                 </Items>
             </ext:Viewport>
     </form>

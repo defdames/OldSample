@@ -17,7 +17,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         {
             if (!X.IsAjaxRequest)
             {
-                if (!validateComponentSecurity("SYS.OverheadBudget.Security"))
+                if (!validateComponentSecurity("SYS.OverheadBudget.Maintenance"))
                 {
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
@@ -83,6 +83,12 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             string json = e.ExtraParams["Values"];
 
             List<OVERHEAD_BUDGET_DETAIL> _gridValues = JSON.Deserialize<List<OVERHEAD_BUDGET_DETAIL>>(json);
+
+            foreach (OVERHEAD_BUDGET_DETAIL _detail in _gridValues)
+            {
+                _detail.MODIFIED_BY = User.Identity.Name;
+                _detail.MODIFY_DATE = DateTime.Now;
+            }
 
             GenericData.Update<OVERHEAD_BUDGET_DETAIL>(_gridValues);
 
