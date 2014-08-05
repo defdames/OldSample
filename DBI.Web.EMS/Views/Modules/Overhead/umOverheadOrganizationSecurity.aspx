@@ -56,7 +56,7 @@
                                 <ext:ToolbarFill runat="server">
 
                                 </ext:ToolbarFill>
-                                <ext:Button runat="server" Text="Hide Not Active" EnableToggle="true" ID="uxActiveToggle" Icon="FolderMagnify">
+                                <ext:Button runat="server" Text="Show Active" EnableToggle="true" ID="uxActiveToggle" Icon="Find">
                                     <DirectEvents>
                                         <Toggle OnEvent="deToggleInActive" />
                                     </DirectEvents>
