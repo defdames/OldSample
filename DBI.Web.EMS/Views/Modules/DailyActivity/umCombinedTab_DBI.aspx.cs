@@ -97,7 +97,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             where d.HEADER_ID == HeaderId
                             select new {d.HEADER_ID, d.PROJECT_ID, p.SEGMENT1, p.LONG_NAME, d.DA_DATE, d.SUBDIVISION, d.CONTRACTOR, d.PERSON_ID, e.EMPLOYEE_NAME, d.LICENSE, d.STATE, d.APPLICATION_TYPE, d.DENSITY, d.DA_HEADER_ID }).Single();
                 DateTime Da_date = DateTime.Parse(data.DA_DATE.ToString());
-                uxProjectField.SetValue(data.PROJECT_ID.ToString(), data.LONG_NAME);
+                uxProjectField.SetValue(data.PROJECT_ID.ToString(), string.Format("({0}) - {1}", data.SEGMENT1, data.LONG_NAME));
                 uxDateField.SelectedDate = Da_date;
                 uxDensityField.SetValue(data.DENSITY);
                 uxSubDivisionField.Value = data.SUBDIVISION;
@@ -167,6 +167,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 {
                     double Hours = Math.Truncate((double)item.TRAVEL_TIME);
                     double Minutes = Math.Round(((double)item.TRAVEL_TIME - Hours) * 60);
+                    item.TOTAL_HOURS = (item.TIME_OUT - item.TIME_IN).ToString("hh\\:mm");
                     TimeSpan TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
                     item.TRAVEL_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
                     Hours = Math.Truncate((double)item.DRIVE_TIME);
@@ -597,7 +598,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void deStoreProjectValue(object sender, DirectEventArgs e)
         {
             //Set value and text
-            uxProjectField.SetValue(e.ExtraParams["ProjectId"], e.ExtraParams["LongName"]);
+            uxProjectField.SetValue(e.ExtraParams["ProjectId"],string.Format("({0}) - {1}", e.ExtraParams["ProjectNumber"], e.ExtraParams["LongName"]));
             //Clear existing filters
             uxFormProjectFilter.ClearFilter();
         }
