@@ -73,10 +73,10 @@
                                 </Store>
                             </ext:ComboBox>
                         </Items>
-                    </ext:FieldContainer>
+                    </ext:FieldContainer>  
                     </Items>
                     <Buttons>
-                        <ext:Button runat="server" ID="uxOpenPeriod" Text="Open Period" Disabled="true" icon="ApplicationAdd">
+                        <ext:Button runat="server" ID="uxOpenPeriod" Text="Create Period" Disabled="true" icon="ApplicationAdd">
                           <DirectEvents>
                               <Click OnEvent="deOpenPeriod" Success="parent.Ext.getCmp('uxOpenBudgetTypeWindow').close();" ><Confirmation ConfirmRequest="true" Message="Are you sure you want to create this budget period?"></Confirmation><EventMask ShowMask="true"></EventMask></Click>
                           </DirectEvents>

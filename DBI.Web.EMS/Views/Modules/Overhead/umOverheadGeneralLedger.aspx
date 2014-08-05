@@ -14,14 +14,9 @@
 	</style>
 
       <script type="text/javascript">
-          var getRowClass = function (record, rowIndex, rowParams, store) {
-              if (record.data.INCLUDE_EXCLUDE == "Excluded") {
-                  return "red-row";
-              };
-          }
 
           var getAccountRowClass = function (record, rowIndex, rowParams, store) {
-              if (record.data.INCLUDED_EXCLUDED == "Excluded") {
+              if (record.data.INCLUDED_EXCLUDED == "E") {
                   return "red-row";
               };
           }
@@ -69,7 +64,6 @@
                                         <ext:ModelField Name="ORGANIZATION_ID" />
                                         <ext:ModelField Name="SRSEGMENTS" Type="String" />
                                         <ext:ModelField Name="ERSEGMENTS" Type="String" />
-                                        <ext:ModelField Name="INCLUDE_EXCLUDE" Type="String" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -86,7 +80,6 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column5" runat="server" DataIndex="INCLUDE_EXCLUDE" Text="Status" Flex="1" />
                             <ext:Column ID="Column4" runat="server" DataIndex="SRSEGMENTS" Text="Starting Account Range" Flex="1" />
                             <ext:Column ID="Column3" runat="server" DataIndex="ERSEGMENTS" Text="Ending Account Range" Flex="1" />
                         </Columns>
@@ -98,9 +91,6 @@
                         <ext:RowSelectionModel ID="uxGLAccountRangeSelectionModel" runat="server" Mode="Single">
                             <DirectEvents>
                                 <Select OnEvent="deSelectRange">
-                                    <ExtraParams>
-                                        <ext:Parameter Mode="Raw" Name="INCLUDE_EXCLUDE" Value="record.data.INCLUDE_EXCLUDE" />
-                                    </ExtraParams>
                                 </Select>
                                 <Deselect OnEvent="deDeSelectRange"></Deselect>
                             </DirectEvents>
@@ -111,7 +101,6 @@
                     </BottomBar>
                     <View>
                         <ext:GridView ID="uxGLAccountRangeGridView" StripeRows="true" runat="server" TrackOver="true">
-                                   <GetRowClass Fn="getRowClass" />
                         </ext:GridView>
                     </View>
                 </ext:GridPanel>
@@ -177,7 +166,7 @@
                             <ext:Column ID="Column1" runat="server" DataIndex="SEGMENT1" Text="Company" Flex="1" />
                             <ext:Column ID="Column2" runat="server" DataIndex="SEGMENT2" Text="Location" Flex="1" />
                             <ext:Column ID="Column6" runat="server" DataIndex="SEGMENT3" Text="Division" Flex="1" />
-                            <ext:Column ID="Column8" runat="server" DataIndex="SEGMENT4" Text="Branch" Flex="1" />
+                            <ext:Column ID="Column8" runat="server" DataIndex="SEGMENT4" Text="Department" Flex="1" />
                             <ext:Column ID="Column10" runat="server" DataIndex="SEGMENT5" Text="Account" Flex="1" />
                             <ext:Column ID="Column11" runat="server" DataIndex="SEGMENT6" Text="Type" Flex="1" />
                             <ext:Column ID="Column12" runat="server" DataIndex="SEGMENT7" Text="Future" Flex="1" />
@@ -187,7 +176,7 @@
                         <ext:FilterHeader ID="uxGlAccountSecurityGridFilter" runat="server" Remote="true" />
                     </Plugins>
                     <SelectionModel>
-                        <ext:RowSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Simple">
+                        <ext:RowSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Multi" AllowDeselect="true">
                             <DirectEvents>
                                 <Select OnEvent="deSelectAccount">
                                 </Select>

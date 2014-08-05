@@ -40,6 +40,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views {
         protected global::Ext.Net.Viewport Viewport1;
         
         /// <summary>
+        /// Panel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Panel Panel1;
+        
+        /// <summary>
         /// FormPanel1 control.
         /// </summary>
         /// <remarks>

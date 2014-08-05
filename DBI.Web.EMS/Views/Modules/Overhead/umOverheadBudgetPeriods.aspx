@@ -20,7 +20,11 @@
                                         <ext:ToolTip ID="ToolTip1" runat="server" UI="Info" Html="Creates a new period for an organization so it can be used for the budget overhead system."></ext:ToolTip>
                                     </ToolTips>
                                     <DirectEvents>
-                                        <Click OnEvent="deCreateBudgetPeriod"></Click>
+                                        <Click OnEvent="deCreateBudgetPeriod">
+                                            <ExtraParams>
+                                            <ext:Parameter Value="#{uxForecastPeriodsByOrganizationGridPanel}.getView().getSelectionModel().getSelection()[0].data.ORG_BUDGET_ID" Mode="Raw" Name="ORG_BUDGET_ID"></ext:Parameter>
+                                            </ExtraParams>
+                                        </Click>
                                     </DirectEvents>      
                                 </ext:Button>
                                 <ext:Button runat="server" Text="Open" Icon="BookOpen" ID="uxOpenPeriod" Disabled="true" >
@@ -51,6 +55,7 @@
                                     <Fields>
                                         <ext:ModelField Name="FISCAL_YEAR" />
                                         <ext:ModelField Name="BUDGET_DESCRIPTION" />
+                                        <ext:ModelField Name="OVERHEAD_BUDGET_TYPE_ID" />
                                         <ext:ModelField Name="BUDGET_STATUS" />
                                     </Fields>
                                 </ext:Model>

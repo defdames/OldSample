@@ -241,7 +241,7 @@
                                             " />
                                     </Listeners>
                                 </ext:ComboBox>
-                                <ext:ComboBox FieldLabel="Branch" runat="server" ID="uxSRSegment4" Editable="true" TypeAhead="true" Disabled="true"
+                                <ext:ComboBox FieldLabel="Department" runat="server" ID="uxSRSegment4" Editable="true" TypeAhead="true" Disabled="true"
                                      AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
                                     MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
                                     <Triggers>
@@ -556,7 +556,7 @@
                                         <Select Handler="#{uxGlAccountSecurityStore}.removeAll();#{uxERSegment4}.enable();#{uxERSegment5}.disable();#{uxERSegment6}.disable();#{uxERSegment7}.disable();#{uxERSegment4}.clearValue();#{uxERSegment4Store}.removeAll(true);#{uxERSegment4Store}.reload();#{uxERSegment5}.clearValue();#{uxERSegment5Store}.removeAll(true);#{uxERSegment6}.clearValue();#{uxERSegment6Store}.removeAll(true);#{uxERSegment7}.clearValue();#{uxERSegment7Store}.removeAll(true);#{uxIncludeExcludeFlag}.disable();" />
                                     </Listeners>
                                 </ext:ComboBox>
-                                <ext:ComboBox FieldLabel="Branch" runat="server" ID="uxERSegment4" Editable="true" TypeAhead="true" Disabled="true"
+                                <ext:ComboBox FieldLabel="Department" runat="server" ID="uxERSegment4" Editable="true" TypeAhead="true" Disabled="true"
                                      AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
                                     MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
                                     <Triggers>
@@ -649,7 +649,7 @@
                                         </ext:Store>
                                     </Store>
                                     <Listeners>
-                                        <Select Handler="#{uxIncludeExcludeFlag}.enable();"></Select>
+                                        <Select Handler="#{uxAddRange}.enable();#{uxGlAccountSecurityStore}.reload();"></Select>
                                     </Listeners>
                                 </ext:ComboBox>
 
@@ -662,7 +662,7 @@
                             runat="server"
                             Border="false"
                             ColumnWidth=".5"
-                            MarginSpec="0 0 0 10">
+                            MarginSpec="0 0 0 10" Hidden="true">
                             <Defaults>
                                 <ext:Parameter Name="Width" Value="250" />
                                 <ext:Parameter Name="LabelWidth" Value="90" />
@@ -677,7 +677,7 @@
                             runat="server"
                             Title="Include / Exclude Toggle"
                             ColumnWidth=".5"
-                            MarginSpec="0 0 0 10">
+                            MarginSpec="0 0 0 10" Hidden="true">
                             <Defaults>
                                 <ext:Parameter Name="Width" Value="250" />
                                 <ext:Parameter Name="LabelWidth" Value="90" />
@@ -724,7 +724,6 @@
                                              #{uxSRSegment6}.disable();
                                              #{uxSRSegment7}.disable();
                                        #{uxAddRange}.disable();
-                                       #{uxIncludeExcludeFlag}.disable();
                                        #{uxGlAccountSecurityStore}.removeAll();"></Click></Listeners>
                                    </ext:Button>
                 <ext:Button ID="uxCloseForm" runat="server" Text="Close Form" >

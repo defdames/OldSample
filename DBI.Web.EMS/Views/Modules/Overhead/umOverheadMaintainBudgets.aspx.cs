@@ -16,7 +16,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         {
             if (!X.IsAjaxRequest)
             {
-                if (!validateComponentSecurity("SYS.OverheadBudget.ViewAndMaintain"))
+                if (!validateComponentSecurity("SYS.OverheadBudget.Maintenance"))
                 {
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
@@ -24,31 +24,55 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             }
         }
 
-        protected void deOrganizationList(object sender, StoreReadDataEventArgs e)
+        protected void deLoadOrganizationsForUser(object sender, StoreReadDataEventArgs e)
         {
             List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
-            List<GL_ACCOUNTS_V> _organizationAccountList = new List<GL_ACCOUNTS_V>();
 
-            foreach(var _org in OrgsList)
+            List<OVERHEAD_ORG_BUDGETS_V> _budgetsByOrganizationIDList = new List<OVERHEAD_ORG_BUDGETS_V>();
+
+            using (Entities _context = new Entities())
             {
-                using (Entities _context = new Entities())
+                foreach(long _orgID in OrgsList)
                 {
-                    var _rangeList = OVERHEAD_MODULE.OverheadGLRangeByOrganizationId(_org,_context).ToList();
-
-                    foreach (OVERHEAD_GL_RANGE_V _range in _rangeList)
-                    {
-                        var _accountList = GL_ACCOUNTS_V.AccountListByRange(_range.GL_RANGE_ID, _context);
-                        _organizationAccountList.AddRange(_accountList.ToList());
-                    }
+                 _budgetsByOrganizationIDList.AddRange(OVERHEAD_ORG_BUDGETS.BudgetListByOrganizationID(_orgID, _context).OrderBy(x => x.ORG_BUDGET_ID).ToList());
                 }
             }
 
+            if (uxViewAllToggleButton.Pressed)
+                _budgetsByOrganizationIDList = _budgetsByOrganizationIDList.Where(x => x.BUDGET_STATUS == "Open" || x.BUDGET_STATUS == "Pending").ToList();
+
             int count;
-            Store1.DataSource = GenericData.ListFilterHeader<GL_ACCOUNTS_V>(e.Start, 1000, e.Sort, e.Parameters["filterheader"], _organizationAccountList.AsQueryable(), out count);
+            uxBudgetVersionByOrganizationStore.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_ORG_BUDGETS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _budgetsByOrganizationIDList, out count);
             e.Total = count;
+        }
+
+        protected void deToggleView(object sender, DirectEventArgs e)
+        {
+            uxBudgetVersionByOrganizationStore.Reload();
+        }
+
+      
+        protected void deSelectOrganization(object sender, DirectEventArgs e)
+        {
+            string _organization_id = e.ExtraParams["ORGANIZATION_ID"];
+            string _organization_name = e.ExtraParams["ORGANIZATION_NAME"];
+            string _fiscalYear = e.ExtraParams["FISCAL_YEAR"];
+            string _description = e.ExtraParams["BUDGET_DESCRIPTION"];
+            string _budget_id = uxBudgetVersionByOrganizationSelectionModel.SelectedRow.RecordID;
+
+            X.Js.Call("parent.App.direct.AddTabPanel", "bmw" + _organization_id, _organization_name + " - " + "Budget Maintenance / " + _fiscalYear + " / " + _description, "~/Views/Modules/Overhead/umEditBudget.aspx?orgid=" + _organization_id + "&fiscalyear=" + _fiscalYear + "&budget_id=" + _budget_id);
 
         }
 
-     
+        public class GL_PERIODS_V
+        {
+            public string ENTERED_PERIOD_NAME { get; set; }
+            public short PERIOD_YEAR { get; set; }
+            public short PERIOD_NUM { get; set; }
+            public string PERIOD_TYPE { get; set; }
+            public DateTime START_DATE { get; set; }
+            public DateTime END_DATE { get; set; }
+        }
+
     }
 }

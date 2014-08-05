@@ -28,13 +28,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                 int _cnt = OVERHEAD_BUDGET_TYPE.BudgetTypes(_businessUnitId).Count();
                 
-                if(_cnt == 0)
-                {
-                    HR.ORGANIZATION _orgInfo = HR.Organization(_businessUnitId);
-                    X.Msg.Alert("Invalid business unit", string.Format("The {0} busineess unit is not vaild and does not have any oracle budget types assigned. You will not be able to complete the setup of this organization until a budget type is created.", _orgInfo.ORGANIZATION_NAME)).Show();
-                    uxBudgetTypeGridPanel.Disabled = true;
-                    return;
-                }
+                //if(_cnt == 0)
+                //{
+                //    HR.ORGANIZATION _orgInfo = HR.Organization(_businessUnitId);
+                //    X.Msg.Alert("Invalid business unit", string.Format("The {0} busineess unit is not vaild and does not have any oracle budget types assigned. You will not be able to complete the setup of this organization until a budget type is created.", _orgInfo.ORGANIZATION_NAME)).Show();
+                //    uxBudgetTypeGridPanel.Disabled = true;
+                //    return;
+                //}
 
                 uxBudgetTypeGridPanel.GetStore().Reload();
             }
@@ -92,7 +92,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 {
                     ID = "uxAddEditBudgetType",
                     Title = "Budget Types",
-                    Height = 250,
+                    Height = 350,
                     Width = 550,
                     Modal = true,
                     Resizable = false,

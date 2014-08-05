@@ -2076,8 +2076,8 @@
           <Key>
             <PropertyRef Name="ACCOUNT_COMMENT_ID" />
           </Key>
-          <Property Name="ACCOUNT_COMMENT_ID" Type="number" Nullable="false" Precision="15" />
-          <Property Name="CODE_COMBINATION_ID" Type="number" Precision="15" />
+           <Property Name="ACCOUNT_COMMENT_ID" Type="number" Precision="15" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CODE_COMBINATION_ID" Type="number" Precision="15" Scale="0" />
           <Property Name="COMMENTS" Type="clob" />
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFY_DATE" Type="date" />
@@ -2089,8 +2089,8 @@
           <Key>
             <PropertyRef Name="BUDGET_DETAIL_ID" />
           </Key>
-          <Property Name="BUDGET_DETAIL_ID" Type="number" Nullable="false" Precision="15" />
-          <Property Name="CODE_COMBINATION_ID" Type="number" Precision="15" />
+          <Property Name="BUDGET_DETAIL_ID" Type="number" Precision="15" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CODE_COMBINATION_ID" Type="number" Precision="15" Scale="0" />
           <Property Name="PERIOD_NAME" Type="varchar2" MaxLength="250" />
           <Property Name="PERIOD_NUM" Type="number" Precision="15" />
           <Property Name="AMOUNT" Type="number" Scale="2" />
@@ -2119,8 +2119,8 @@
           <Key>
             <PropertyRef Name="GL_ACCOUNT_ID" />
           </Key>
-          <Property Name="GL_ACCOUNT_ID" Type="number" Nullable="false" />
-          <Property Name="ORGANIZATION_ID" Type="number" Nullable="false" />
+          <Property Name="GL_ACCOUNT_ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ORGANIZATION_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
@@ -2131,8 +2131,8 @@
           <Key>
             <PropertyRef Name="GL_RANGE_ID" />
           </Key>
-          <Property Name="GL_RANGE_ID" Type="number" Nullable="false" Precision="15" />
-          <Property Name="ORGANIZATION_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="GL_RANGE_ID" Type="number" Precision="15" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ORGANIZATION_ID" Type="number" Precision="15" Scale="0" Nullable="false" />
           <Property Name="SRSEGMENT1" Type="varchar2" MaxLength="250" />
           <Property Name="SRSEGMENT2" Type="varchar2" MaxLength="250" />
           <Property Name="SRSEGMENT3" Type="varchar2" MaxLength="250" />
@@ -2156,11 +2156,11 @@
           <Key>
             <PropertyRef Name="ORG_BUDGET_ID" />
           </Key>
-          <Property Name="ORG_BUDGET_ID" Type="number" Nullable="false" Precision="15" />
-          <Property Name="ORGANIZATION_ID" Type="number" Nullable="false" Precision="15" />
-          <Property Name="FISCAL_YEAR" Type="number" Nullable="false" Precision="4" />
-          <Property Name="OVERHEAD_BUDGET_TYPE_ID" Type="number" Nullable="false" Precision="15" />
-          <Property Name="STATUS" Type="varchar2" Nullable="false" MaxLength="1" />
+          <Property Name="ORG_BUDGET_ID" Type="number" Precision="15" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ORGANIZATION_ID" Type="number" Precision="15" Scale="0" Nullable="false" />
+          <Property Name="FISCAL_YEAR" Type="number" Precision="4" Scale="0" Nullable="false" />
+          <Property Name="OVERHEAD_BUDGET_TYPE_ID" Type="number" Precision="15" Scale="0" Nullable="false" />
+          <Property Name="STATUS" Type="varchar2" MaxLength="1" Nullable="false" />
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
@@ -8120,7 +8120,7 @@
           <Key>
             <PropertyRef Name="GL_ACCOUNT_ID" />
           </Key>
-          <Property Name="GL_ACCOUNT_ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="GL_ACCOUNT_ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ORGANIZATION_ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="CREATE_DATE" Type="DateTime" />
           <Property Name="MODIFY_DATE" Type="DateTime" />
@@ -8132,7 +8132,7 @@
           <Key>
             <PropertyRef Name="GL_RANGE_ID" />
           </Key>
-          <Property Name="GL_RANGE_ID" Type="Int64" Nullable="false" />
+          <Property Name="GL_RANGE_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ORGANIZATION_ID" Type="Int64" Nullable="false" />
           <Property Name="SRSEGMENT1" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="SRSEGMENT2" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
@@ -8157,7 +8157,7 @@
           <Key>
             <PropertyRef Name="ORG_BUDGET_ID" />
           </Key>
-          <Property Name="ORG_BUDGET_ID" Type="Int64" Nullable="false" />
+          <Property Name="ORG_BUDGET_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ORGANIZATION_ID" Type="Int64" Nullable="false" />
           <Property Name="FISCAL_YEAR" Type="Int16" Nullable="false" />
           <Property Name="OVERHEAD_BUDGET_TYPE_ID" Type="Int64" Nullable="false" />
@@ -8172,7 +8172,7 @@
           <Key>
             <PropertyRef Name="BUDGET_DETAIL_ID" />
           </Key>
-          <Property Name="BUDGET_DETAIL_ID" Type="Int64" Nullable="false" />
+          <Property Name="BUDGET_DETAIL_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CODE_COMBINATION_ID" Type="Int64" />
           <Property Name="PERIOD_NAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="PERIOD_NUM" Type="Int64" />
@@ -8188,7 +8188,7 @@
           <Key>
             <PropertyRef Name="ACCOUNT_COMMENT_ID" />
           </Key>
-          <Property Name="ACCOUNT_COMMENT_ID" Type="Int64" Nullable="false" />
+          <Property Name="ACCOUNT_COMMENT_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CODE_COMBINATION_ID" Type="Int64" />
           <Property Name="COMMENTS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="CREATE_DATE" Type="DateTime" />
