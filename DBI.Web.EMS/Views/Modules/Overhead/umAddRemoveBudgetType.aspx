@@ -12,6 +12,21 @@
         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
             <Items>
 
+                  <ext:Panel ID="Panel1" 
+                    runat="server" 
+                    Region="North"
+                    Margins="5 5 5 5"
+                    Title="Information" 
+                    Height="100" 
+                    BodyPadding="5"
+                    Frame="true" 
+                    Icon="Information">
+                    <Content>
+                        <b>Oracle Budget Types</b>
+                        <p>These budget types must first be created in Oracle before they can be assigned. If there are no budget names listed you have to create them first.</p>
+                    </Content>
+                </ext:Panel>
+
                 <ext:FormPanel ID="FormPanel1" runat="server" Header="false" BodyPadding="10" DefaultButton="uxAddBudgetType"
                     Margins="5 5 5 5" Region="Center" >
                     <Items>
@@ -20,6 +35,7 @@
                         LabelStyle="font-weight:bold;padding:0;"
                         Layout="HBoxLayout">
                         <Items>
+                            
                             <ext:ComboBox runat="server" ID="uxBudgetName" Editable="true" TypeAhead="true"
                                 FieldLabel="Budget Name" AnchorHorizontal="55%" DisplayField="BUDGET_NAME"
                                 ValueField="BUDGET_NAME" TriggerAction="All" 

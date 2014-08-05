@@ -36,68 +36,17 @@
         </ext:ResourceManager>         
         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
             <Items>
-                   <ext:FormPanel ID="FormPanel1" runat="server" Header="false" BodyPadding="10" DefaultButton="uxAddBudgetType"
-                    Margins="5 5 5 5" Region="North" >
+                <ext:Toolbar runat="server" Region="North" Padding="5" Margins="5 5 5 5">
                     <Items>
-                        <ext:FieldContainer ID="FieldContainer1" 
-                        runat="server"
-                        LabelStyle="font-weight:bold;padding:0;"
-                        Layout="HBoxLayout">
-                        <Items>
-                            <ext:ComboBox runat="server" ID="uxFiscalYear" Editable="true" TypeAhead="true"
-                                FieldLabel="Spread Type" AnchorHorizontal="55%" DisplayField="ID_NAME"
-                                ValueField="ID_NAME" TriggerAction="All" 
-                                MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" >
-                                <Store>
-                                    <ext:Store runat="server" ID="uxFiscalYearsStore" AutoLoad="false" AutoDataBind="true" >
-                                        <Proxy>
-                                            <ext:PageProxy />
-                                        </Proxy>
-                                        <Model>
-                                            <ext:Model ID="Model5" runat="server" IDProperty="ID_NAME">
-                                                <Fields>
-                                                    <ext:ModelField Name="ID_NAME" />
-                                                </Fields>
-                                            </ext:Model>
-                                        </Model>
-                                    </ext:Store>
-                                </Store>
-                                <Listeners>
-                                    <Select Handler="#{uxBudgetName}.clearValue();
-                                        #{uxBudgetNameStore}.removeAll(true);
-                                        #{uxBudgetName}.enable();
-                                        #{uxBudgetNameStore}.reload();" />
-                                </Listeners>
-                            </ext:ComboBox>
-
-                        </Items>
-                    </ext:FieldContainer>
-                        <ext:FieldContainer ID="FieldContainer3" 
-                        runat="server"
-                        LabelStyle="font-weight:bold;padding:0;"
-                        Layout="HBoxLayout">
-                        <Items>
-                          <ext:TextField runat="server" FieldLabel="Spread Amount" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1"></ext:TextField>
-                        </Items>
-                    </ext:FieldContainer>  
-                           <ext:FieldContainer ID="FieldContainer2" 
-                        runat="server"
-                        LabelStyle="font-weight:bold;padding:0;"
-                        Layout="HBoxLayout">
-                        <Items>
-             <ext:TextArea ID="uxAccountComments" runat="server" FieldLabel="Comments" Height="175"  Flex="1"></ext:TextArea>
-                        </Items>
-                    </ext:FieldContainer>  
-
-                    </Items>
-                    <Buttons>
-                        <ext:Button runat="server" ID="uxSpread" Text="Spread" Disabled="true" icon="CalculatorEdit">
+                        <ext:Button runat="server" Icon="CalculatorEdit" Text="Calcuator">
+                            <Listeners>
+                                <Click Handler="#{uxDispersementForm}.reset();#{uxDisbursementDetailsWindow}.show();"></Click>
+                            </Listeners>
                         </ext:Button>
-                    </Buttons>
-                </ext:FormPanel>
+                    </Items>
+                </ext:Toolbar>
 
-
-                <ext:GridPanel ID="GridPanel3" runat="server" Flex="1" Title="Line Detail" Header="false" Padding="5" Region="Center">
+                <ext:GridPanel ID="GridPanel3" runat="server" Flex="1" Title="Account Totals" Header="true" Padding="5" Region="East" Frame="true"   Margins="5 5 5 0">
                     <KeyMap runat="server">
                         <Binding>
                             <ext:KeyBinding Handler="#{uxSaveDetailLineButton}.fireEvent('click');">
@@ -172,8 +121,73 @@
                                     </ext:Button>
                        </Buttons> 
                 </ext:GridPanel>
+
+                <ext:FormPanel ID="FormPanel2" runat="server" Header="true" BodyPadding="5" Frame="true"
+                    Margins="5 5 5 5" Region="Center" Title="Comments" Layout="FitLayout" Flex="1" >
+                    <Items>
+                      <ext:FieldContainer ID="FieldContainer2" 
+                        runat="server"
+                        LabelStyle="font-weight:bold;padding:0;"
+                        Layout="FitLayout">
+                        <Items>
+                         <ext:TextArea ID="uxAccountComments" runat="server" Flex="1" Grow="true">
+                         </ext:TextArea>
+                        </Items>
+                    </ext:FieldContainer> 
+                    </Items>
+                    </ext:FormPanel>
+
                 </Items>
             </ext:Viewport>
+
+        <ext:Window runat="server" Width="350" Height="150" Title="Disbursement Details" Layout="FitLayout" Header="true" Hidden="true" ID="uxDisbursementDetailsWindow" CloseAction="Hide" Closable="true" Modal="true">
+            <Items>
+                <ext:FormPanel ID="uxDispersementForm" runat="server" Header="false" BodyPadding="10" DefaultButton="uxAddBudgetType" Frame="true"
+                    Margins="5 5 5 5" >
+                    <Items>
+                        
+                         <ext:FieldContainer ID="FieldContainer1" 
+                        runat="server"
+                        LabelStyle="font-weight:bold;padding:0;"
+                        Layout="FitLayout">
+                        <Items>
+                         <ext:ComboBox runat="server" ID="uxDispersementType" Editable="true" TypeAhead="true"
+                                FieldLabel="Type" TriggerAction="All" 
+                                MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;"  >
+                                <Items>
+                                    <ext:ListItem Text="Annual (By Month)" Value="A" />
+                                    <ext:ListItem Text="Annual (By Week)" Value="AW" />
+                                    <ext:ListItem Text="Monthly" Value="M" />
+                                    <ext:ListItem Text="Weekly" Value="W" />
+                                </Items>
+                             <Listeners >
+                                 <Select Handler=" #{uxAmountCalculator}.enable();#{uxCalculate}.enable();"></Select>
+                             </Listeners>
+                            </ext:ComboBox>
+                        </Items>
+                    </ext:FieldContainer> 
+
+                             <ext:FieldContainer ID="FieldContainer3" 
+                        runat="server"
+                        LabelStyle="font-weight:bold;padding:0;"
+                        Layout="FitLayout">
+                        <Items>
+                         <ext:Numberfield AllowDecimals="true" ID="uxAmountCalculator" runat="server" FieldLabel="Amount" FieldStyle="background-color: #EFF7FF; background-image: none;" Disabled="true" >
+                         </ext:Numberfield>
+                        </Items>
+                    </ext:FieldContainer>
+
+                    </Items>
+                    <Buttons>
+                        <ext:Button runat="server" ID="uxCalculate" Text="Disperse Amount" Disabled="true" icon="CalculatorEdit">
+                            <DirectEvents>
+                                <Click OnEvent="deCalcuateAmount"><EventMask ShowMask="true"></EventMask></Click>
+                            </DirectEvents>
+                        </ext:Button>
+                    </Buttons>
+                </ext:FormPanel>
+            </Items>
+        </ext:Window>
     </form>
 </body>
 </html>

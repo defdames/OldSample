@@ -1155,7 +1155,7 @@ warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primar
           <Key>
             <PropertyRef Name="ACCOUNT_COMMENT_ID" />
           </Key>
-          <Property Name="ACCOUNT_COMMENT_ID" Type="number" Precision="15" Scale="0" Nullable="false" />
+          <Property Name="ACCOUNT_COMMENT_ID" Type="number" Precision="15" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CODE_COMBINATION_ID" Type="number" Precision="15" Scale="0" />
           <Property Name="COMMENTS" Type="clob" />
           <Property Name="CREATE_DATE" Type="date" />
@@ -1168,7 +1168,7 @@ warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primar
           <Key>
             <PropertyRef Name="BUDGET_DETAIL_ID" />
           </Key>
-          <Property Name="BUDGET_DETAIL_ID" Type="number" Precision="15" Scale="0" Nullable="false" />
+          <Property Name="BUDGET_DETAIL_ID" Type="number" Precision="15" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CODE_COMBINATION_ID" Type="number" Precision="15" Scale="0" />
           <Property Name="PERIOD_NAME" Type="varchar2" MaxLength="250" />
           <Property Name="PERIOD_NUM" Type="number" Precision="15" Scale="0" />
@@ -1198,7 +1198,7 @@ warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primar
           <Key>
             <PropertyRef Name="GL_ACCOUNT_ID" />
           </Key>
-          <Property Name="GL_ACCOUNT_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="GL_ACCOUNT_ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="ORGANIZATION_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFY_DATE" Type="date" />
@@ -1210,7 +1210,7 @@ warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primar
           <Key>
             <PropertyRef Name="GL_RANGE_ID" />
           </Key>
-          <Property Name="GL_RANGE_ID" Type="number" Precision="15" Scale="0" Nullable="false" />
+          <Property Name="GL_RANGE_ID" Type="number" Precision="15" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="ORGANIZATION_ID" Type="number" Precision="15" Scale="0" Nullable="false" />
           <Property Name="SRSEGMENT1" Type="varchar2" MaxLength="250" />
           <Property Name="SRSEGMENT2" Type="varchar2" MaxLength="250" />
@@ -1235,7 +1235,7 @@ warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primar
           <Key>
             <PropertyRef Name="ORG_BUDGET_ID" />
           </Key>
-          <Property Name="ORG_BUDGET_ID" Type="number" Precision="15" Scale="0" Nullable="false" />
+          <Property Name="ORG_BUDGET_ID" Type="number" Precision="15" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="ORGANIZATION_ID" Type="number" Precision="15" Scale="0" Nullable="false" />
           <Property Name="FISCAL_YEAR" Type="number" Precision="4" Scale="0" Nullable="false" />
           <Property Name="OVERHEAD_BUDGET_TYPE_ID" Type="number" Precision="15" Scale="0" Nullable="false" />
@@ -8141,7 +8141,7 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Key>
             <PropertyRef Name="GL_ACCOUNT_ID" />
           </Key>
-          <Property Name="GL_ACCOUNT_ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="GL_ACCOUNT_ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ORGANIZATION_ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="CREATE_DATE" Type="DateTime" />
           <Property Name="MODIFY_DATE" Type="DateTime" />
@@ -8153,7 +8153,7 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Key>
             <PropertyRef Name="GL_RANGE_ID" />
           </Key>
-          <Property Name="GL_RANGE_ID" Type="Int64" Nullable="false" />
+          <Property Name="GL_RANGE_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ORGANIZATION_ID" Type="Int64" Nullable="false" />
           <Property Name="SRSEGMENT1" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="SRSEGMENT2" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
@@ -8178,7 +8178,7 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Key>
             <PropertyRef Name="ORG_BUDGET_ID" />
           </Key>
-          <Property Name="ORG_BUDGET_ID" Type="Int64" Nullable="false" />
+          <Property Name="ORG_BUDGET_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ORGANIZATION_ID" Type="Int64" Nullable="false" />
           <Property Name="FISCAL_YEAR" Type="Int16" Nullable="false" />
           <Property Name="OVERHEAD_BUDGET_TYPE_ID" Type="Int64" Nullable="false" />
@@ -8193,7 +8193,7 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Key>
             <PropertyRef Name="BUDGET_DETAIL_ID" />
           </Key>
-          <Property Name="BUDGET_DETAIL_ID" Type="Int64" Nullable="false" />
+          <Property Name="BUDGET_DETAIL_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CODE_COMBINATION_ID" Type="Int64" />
           <Property Name="PERIOD_NAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="PERIOD_NUM" Type="Int64" />
@@ -8209,7 +8209,7 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Key>
             <PropertyRef Name="ACCOUNT_COMMENT_ID" />
           </Key>
-          <Property Name="ACCOUNT_COMMENT_ID" Type="Int64" Nullable="false" />
+          <Property Name="ACCOUNT_COMMENT_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CODE_COMBINATION_ID" Type="Int64" />
           <Property Name="COMMENTS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="CREATE_DATE" Type="DateTime" />

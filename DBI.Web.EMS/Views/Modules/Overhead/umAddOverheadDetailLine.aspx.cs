@@ -21,6 +21,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 {
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
+
             }
         }
 
@@ -33,6 +34,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             using (Entities _context = new Entities())
             {
+
                 List<OVERHEAD_BUDGET_DETAIL> _detail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id & x.DETAIL_TYPE == "B").OrderBy(x => x.PERIOD_NUM).ToList();
 
                 if (_detail.Count() == 0)
@@ -60,15 +62,64 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     _detail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id & x.DETAIL_TYPE == "B").OrderBy(x => x.PERIOD_NUM).ToList();
                 }
 
-                //Add comments if they were displayed
-                OVERHEAD_ACCOUNT_COMMENT _newCommentRecord = new OVERHEAD_ACCOUNT_COMMENT();
-                _newCommentRecord.CODE_COMBINATION_ID = _account_id;
-                _newCommentRecord.COMMENTS = uxAccountComments.Text;
-                _newCommentRecord.b
-                _newCommentRecord.CREATE_DATE = DateTime.Now;
-                _newCommentRecord.MODIFY_DATE = DateTime.Now;
-                _newCommentRecord.CREATED_BY = User.Identity.Name;
-                _newCommentRecord.MODIFIED_BY = User.Identity.Name;
+
+                foreach (OVERHEAD_BUDGET_DETAIL _item in _detail)
+                {
+                    if (e.Parameters["DISPERSE_AMOUNT"] != null)
+                    {
+                        string _type = e.Parameters["DISPERSE_TYPE"];
+
+                        string sql = "select entered_period_name,period_year,period_num,period_type,start_date,end_date from gl.gl_periods where period_set_name = 'DBI Calendar' order by period_num";
+                        List<GL_PERIODS> _periodList = _context.Database.SqlQuery<GL_PERIODS>(sql).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Week").ToList();
+
+                        //Anually Disperse
+                        if (_type == "A")
+                        {
+                            decimal _total = decimal.Parse(e.Parameters["DISPERSE_AMOUNT"]);
+                            decimal _distAmount = (_total / 12);
+                            _item.AMOUNT =  _distAmount;
+                        }
+
+                        //Monthly Disperse
+                        if (_type == "M")
+                        {
+                            decimal _total = decimal.Parse(e.Parameters["DISPERSE_AMOUNT"]);
+                            _item.AMOUNT = _total;
+                        }
+
+                        //Weekly Disperse
+                        if (_type == "W")
+                        {
+                            _periodList = _periodList.Where(x => x.ENTERED_PERIOD_NAME.Contains(_item.PERIOD_NAME)).ToList();
+                            int periodCount = _periodList.Count();
+                            
+                            decimal _total = decimal.Parse(e.Parameters["DISPERSE_AMOUNT"]);
+                            decimal _distAmount = ((_total) * periodCount);
+                            _item.AMOUNT = _distAmount;
+                        }
+
+                        //Anually by 445 Disperse
+                        if (_type == "AW")
+                        {
+                            int _periodsPerPeriod = _periodList.Count();
+                            
+                            _periodList = _periodList.Where(x => x.ENTERED_PERIOD_NAME.Contains(_item.PERIOD_NAME)).ToList();
+                            int periodCount = _periodList.Count();
+
+                            decimal _total = decimal.Parse(e.Parameters["DISPERSE_AMOUNT"]);
+                            decimal _distAmount = (_total / _periodsPerPeriod);
+                            _distAmount = ((_distAmount) * periodCount);
+                            _item.AMOUNT = _distAmount;
+                        }
+
+                    }
+
+                }
+
+
+                OVERHEAD_ACCOUNT_COMMENT _commentR = _context.OVERHEAD_ACCOUNT_COMMENT.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id).SingleOrDefault();
+                if (_commentR != null)
+                    uxAccountComments.Text = _commentR.COMMENTS;
 
                 int count;
                 uxDetailStore.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_BUDGET_DETAIL>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _detail, out count);
@@ -76,6 +127,29 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             }
 
+        }
+
+        protected void deCalcuateAmount(object sender, DirectEventArgs e)
+        {
+
+            Ext.Net.ParameterCollection ps = new Ext.Net.ParameterCollection();
+
+            Ext.Net.StoreParameter _p = new Ext.Net.StoreParameter();
+            _p.Mode = ParameterMode.Value;
+            _p.Name = "DISPERSE_AMOUNT";
+            _p.Value = uxAmountCalculator.Text;
+            ps.Add(_p);
+
+            Ext.Net.StoreParameter _p2 = new Ext.Net.StoreParameter();
+            _p2.Mode = ParameterMode.Value;
+            _p2.Name = "DISPERSE_TYPE";
+            _p2.Value = uxDispersementType.SelectedItem.Value;
+            ps.Add(_p2);
+
+            uxDetailStore.Reload(ps);
+
+
+            uxDisbursementDetailsWindow.Close();
         }
 
         public class GL_PERIODS
@@ -101,6 +175,38 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             }
 
             GenericData.Update<OVERHEAD_BUDGET_DETAIL>(_gridValues);
+
+            long _budget_id = long.Parse(Request.QueryString["budgetID"]);
+            long _account_id = long.Parse(Request.QueryString["accountID"]);
+
+            using (Entities _context = new Entities())
+            {
+                //Add comments if they were displayed
+
+                OVERHEAD_ACCOUNT_COMMENT _record = _context.OVERHEAD_ACCOUNT_COMMENT.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id).SingleOrDefault();
+
+                if (_record == null)
+                {
+                    OVERHEAD_ACCOUNT_COMMENT _newCommentRecord = new OVERHEAD_ACCOUNT_COMMENT();
+                    _newCommentRecord.CODE_COMBINATION_ID = _account_id;
+                    _newCommentRecord.ORG_BUDGET_ID = _budget_id;
+                    _newCommentRecord.CREATE_DATE = DateTime.Now;
+                    _newCommentRecord.CREATED_BY = User.Identity.Name;
+                    _newCommentRecord.MODIFY_DATE = DateTime.Now;
+                    _newCommentRecord.MODIFIED_BY = User.Identity.Name;
+                    _newCommentRecord.COMMENTS = uxAccountComments.Text;
+                    GenericData.Insert<OVERHEAD_ACCOUNT_COMMENT>(_newCommentRecord);
+                }
+                else
+                {
+                    OVERHEAD_ACCOUNT_COMMENT _newCommentRecord = _newCommentRecord = _context.OVERHEAD_ACCOUNT_COMMENT.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id).SingleOrDefault();
+                    _newCommentRecord.COMMENTS = uxAccountComments.Text;
+                    _newCommentRecord.MODIFY_DATE = DateTime.Now;
+                    _newCommentRecord.MODIFIED_BY = User.Identity.Name;
+                    GenericData.Update<OVERHEAD_ACCOUNT_COMMENT>(_newCommentRecord);
+                }
+
+            }
 
         }
 

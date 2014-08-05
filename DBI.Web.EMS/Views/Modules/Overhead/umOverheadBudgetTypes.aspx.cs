@@ -92,7 +92,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 {
                     ID = "uxAddEditBudgetType",
                     Title = "Budget Types",
-                    Height = 250,
+                    Height = 350,
                     Width = 550,
                     Modal = true,
                     Resizable = false,

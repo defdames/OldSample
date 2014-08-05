@@ -107,8 +107,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         {
             string _selectedRecordID = Request.QueryString["orgid"];
             string _selectedLeID = Request.QueryString["leID"];
+           string _budgetID  = e.ExtraParams["ORG_BUDGET_ID"];
+            
 
-            string url = "umOpenBudgetType.aspx?leID=" + _selectedLeID + "&orgID=" + _selectedRecordID;
+            string url = "umOpenBudgetType.aspx?leID=" + _selectedLeID + "&orgID=" + _selectedRecordID +"&budget_id=" + _budgetID;
 
             Window win = new Window
             {

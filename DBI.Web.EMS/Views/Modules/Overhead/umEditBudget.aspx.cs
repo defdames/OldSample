@@ -24,6 +24,38 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             }
         }
 
+        protected void deEditBudgetNotes(object sender, DirectEventArgs e)
+        {
+            using(Entities _context = new Entities())
+            {
+
+               long _budgetid = long.Parse(Request.QueryString["budget_id"]);
+
+                //pull budget detail data
+                OVERHEAD_ORG_BUDGETS _budgetDetail = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.ORG_BUDGET_ID == _budgetid).SingleOrDefault();
+                uxBudgetComments.Text = _budgetDetail.COMMENTS;
+            }
+            uxBudgetNotesWindow.Center();
+            uxBudgetNotesWindow.Show();
+         
+        }
+
+        protected void deSaveBudgetNotes(object sender, DirectEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+
+                long _budgetid = long.Parse(Request.QueryString["budget_id"]);
+
+                //pull budget detail data
+                OVERHEAD_ORG_BUDGETS _budgetDetail = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.ORG_BUDGET_ID == _budgetid).SingleOrDefault();
+                _budgetDetail.COMMENTS = uxBudgetComments.Text;
+                GenericData.Update<OVERHEAD_ORG_BUDGETS>(_budgetDetail);
+            }
+            uxBudgetNotesWindow.Close();
+
+        }
+
         protected void deLoadOrganizationAccounts(object sender, StoreReadDataEventArgs e)
         {
 
@@ -70,6 +102,18 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                 long _fiscalyear = long.Parse(Request.QueryString["fiscalyear"]);
                 long _budgetid = long.Parse(Request.QueryString["budget_id"]);
+
+
+                //pull budget detail data
+                OVERHEAD_ORG_BUDGETS _budgetDetail = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.ORG_BUDGET_ID == _budgetid).SingleOrDefault();
+
+                if (_budgetDetail.STATUS == "P")
+                {
+                    uxCompleteBudget.Disable();
+                    uxCompleteBudget.Text = "Budget Pending";
+                    uxCompleteBudget.Icon = Icon.FlagChecked;
+                }
+
 
                 //pull budget detail data
                 List<OVERHEAD_BUDGET_DETAIL> _budgetLineList = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budgetid).ToList();
@@ -163,14 +207,28 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             string _fiscal_year = Request.QueryString["fiscalyear"];
             string _accountDescription = e.ExtraParams["ACCOUNT_DESCRIPTION"];
 
+            long _budgetID = long.Parse(_budgetSelectedID);
+
+
+            using (Entities _context = new Entities())
+            {
+                //pull budget detail data
+                OVERHEAD_ORG_BUDGETS _budgetDetail = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.ORG_BUDGET_ID == _budgetID).SingleOrDefault();
+
+                if (_budgetDetail.STATUS == "P")
+                {
+                    return;
+                }
+
+            }
             string url = "umAddOverheadDetailLine.aspx?budgetID=" + _budgetSelectedID + "&accountID=" + _AccountSelectedID + "&fiscalyear=" + _fiscal_year;
 
             Window win = new Window
             {
                 ID = "uxDetailLineMaintenance",
                 Title = "Account Details - " + _accountDescription,
-                Height = 650,
-                Width = 650,
+                Height = 450,
+                Width = 850,
                 Modal = true,
                 Resizable = false,
                 CloseAction = CloseAction.Destroy,
@@ -194,7 +252,25 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         }
 
+        protected void deCompleteBudget(object sender, DirectEventArgs e)
+        {
+            uxCompleteBudget.Disable();
+            uxCompleteBudget.Text = "Budget Pending";
+            uxCompleteBudget.Icon = Icon.FlagChecked;
 
+            using (Entities _context = new Entities())
+            {
+                long _budgetSelectedID = long.Parse(Request.QueryString["budget_id"]);
+                //pull budget detail data
+                OVERHEAD_ORG_BUDGETS _budgetDetail = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.ORG_BUDGET_ID == _budgetSelectedID).SingleOrDefault();
+
+                _budgetDetail.STATUS = "P";
+                GenericData.Update<OVERHEAD_ORG_BUDGETS>(_budgetDetail);
+            }
+
+            uxOrganizationAccountStore.Reload();
+
+        }
 
 
         public class OVERHEAD_BUDGET_DETAIL_V

@@ -38,7 +38,8 @@
             font-weight      : bold;
             font-size        : 11px;
             background-color : #9EC3E8;
-        } 
+        }
+
     </style>
 </head>
 <body>
@@ -51,6 +52,18 @@
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
                                 <ext:ToolbarFill ID="ToolbarFill1" runat="server"></ext:ToolbarFill>
+                                <ext:Button runat="server" Icon="Accept" Text="Complete Budget" ID="uxCompleteBudget">
+                                    <DirectEvents>
+                                        <Click OnEvent="deCompleteBudget"><Confirmation ConfirmRequest="true" Message="Are you sure you want to complete this budget? This will lock your budget for this forecast and only finance will be allowed to unlock it." /><EventMask ShowMask="true"></EventMask></Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:ToolbarSeparator ID="ToolbarSeparator1" runat="server"></ext:ToolbarSeparator>
+                                 <ext:Button runat="server" Icon="NoteEdit" Text="Budget Notes" ID="uxBudgetNotes">
+                                    <DirectEvents>
+                                        <Click OnEvent="deEditBudgetNotes"></Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:ToolbarSeparator runat="server"></ext:ToolbarSeparator>
                                <ext:Button Icon="MagifierZoomOut" Text="Hide Blank Lines" runat="server" ID="uxHideBlankLinesButton" EnableToggle="true" >
                                    <DirectEvents>
                                        <Toggle OnEvent="deHideBlankLines"><EventMask ShowMask="true"></EventMask></Toggle>
@@ -173,6 +186,37 @@
                 </ext:GridPanel>
             </Items>
         </ext:Viewport>
+
+        <ext:Window runat="server" Stateful="false" Width="550" Height="450" Title="Budget Notes" Layout="FitLayout" Header="true" Resizable="false" Frame="true" Hidden="true" ID="uxBudgetNotesWindow" CloseAction="Hide" Closable="true" Modal="true">
+            <Items>
+                 <ext:FormPanel ID="FormPanel2" runat="server" Header="false" BodyPadding="5"
+                    Margins="5 5 5 5" Region="Center" Title="Comments" Layout="FitLayout" Flex="1" >
+                    <Items>
+                      <ext:FieldContainer ID="FieldContainer2" 
+                        runat="server"
+                        LabelStyle="font-weight:bold;padding:0;"
+                        Layout="FitLayout">
+                        <Items>
+                         <ext:TextArea ID="uxBudgetComments" runat="server" Flex="1" Grow="true">
+                         </ext:TextArea>
+                        </Items>
+                    </ext:FieldContainer> 
+                    </Items>
+                    </ext:FormPanel>
+            </Items>
+            <Buttons>
+                <ext:Button runat="server" ID="uxSaveBudgetNote" Icon="Accept" Text="Save">
+                    <DirectEvents>
+                        <Click OnEvent="deSaveBudgetNotes"><EventMask ShowMask="true"></EventMask></Click>
+                    </DirectEvents>
+                </ext:Button>
+                  <ext:Button runat="server" ID="uxCancelSaveBudgetNote" Icon="Cancel" Text="Cancel">
+                      <Listeners>
+                          <Click Handler="#{uxBudgetNotesWindow}.close();"></Click>
+                      </Listeners>
+                  </ext:Button>
+            </Buttons>
+        </ext:Window>
     </form>
 </body>
 </html>

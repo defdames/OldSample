@@ -67,6 +67,33 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.ToolbarFill ToolbarFill1;
         
         /// <summary>
+        /// uxCompleteBudget control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxCompleteBudget;
+        
+        /// <summary>
+        /// ToolbarSeparator1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ToolbarSeparator ToolbarSeparator1;
+        
+        /// <summary>
+        /// uxBudgetNotes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxBudgetNotes;
+        
+        /// <summary>
         /// uxHideBlankLinesButton control.
         /// </summary>
         /// <remarks>
@@ -245,5 +272,59 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.GridView GridView2;
+        
+        /// <summary>
+        /// uxBudgetNotesWindow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Window uxBudgetNotesWindow;
+        
+        /// <summary>
+        /// FormPanel2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FormPanel FormPanel2;
+        
+        /// <summary>
+        /// FieldContainer2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer FieldContainer2;
+        
+        /// <summary>
+        /// uxBudgetComments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextArea uxBudgetComments;
+        
+        /// <summary>
+        /// uxSaveBudgetNote control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxSaveBudgetNote;
+        
+        /// <summary>
+        /// uxCancelSaveBudgetNote control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxCancelSaveBudgetNote;
     }
 }

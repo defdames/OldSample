@@ -81,7 +81,7 @@
                               <Click OnEvent="deOpenPeriod" Success="parent.Ext.getCmp('uxOpenBudgetTypeWindow').close();" ><Confirmation ConfirmRequest="true" Message="Are you sure you want to create this budget period?"></Confirmation><EventMask ShowMask="true"></EventMask></Click>
                           </DirectEvents>
                         </ext:Button>
-                        <ext:Button ID="uxCloseButton" runat="server" Text="Close Form"><Listeners><Click Handler="parent.Ext.getCmp('uxBudgetForecastMaintenance').close();"></Click></Listeners></ext:Button>
+                        <ext:Button ID="uxCloseButton" runat="server" Text="Close Form"><Listeners><Click Handler="parent.Ext.getCmp('uxOpenBudgetTypeWindow').close();"></Click></Listeners></ext:Button>
                     </Buttons>
                 </ext:FormPanel>
                 </Items>
