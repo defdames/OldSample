@@ -113,7 +113,6 @@ namespace DBI.Data
         public DbSet<CUSTOMER_SURVEY_QUESTIONS> CUSTOMER_SURVEY_QUESTIONS { get; set; }
         public DbSet<BUD_BID_PROJECTS> BUD_BID_PROJECTS { get; set; }
         public DbSet<CROSSING_APPLICATION> CROSSING_APPLICATION { get; set; }
-        public DbSet<CROSSING_SUPPLEMENTAL> CROSSING_SUPPLEMENTAL { get; set; }
         public DbSet<CUSTOMER_SURVEY_CAT> CUSTOMER_SURVEY_CAT { get; set; }
         public DbSet<CUSTOMER_SURVEY_FORMS> CUSTOMER_SURVEY_FORMS { get; set; }
         public DbSet<CUSTOMER_SURVEY_THRESH_AMT> CUSTOMER_SURVEY_THRESH_AMT { get; set; }
@@ -128,5 +127,6 @@ namespace DBI.Data
         public DbSet<OVERHEAD_ORG_BUDGETS> OVERHEAD_ORG_BUDGETS { get; set; }
         public DbSet<OVERHEAD_BUDGET_DETAIL> OVERHEAD_BUDGET_DETAIL { get; set; }
         public DbSet<OVERHEAD_ACCOUNT_COMMENT> OVERHEAD_ACCOUNT_COMMENT { get; set; }
+        public DbSet<CROSSING_SUPPLEMENTAL> CROSSING_SUPPLEMENTAL { get; set; }
     }
 }
