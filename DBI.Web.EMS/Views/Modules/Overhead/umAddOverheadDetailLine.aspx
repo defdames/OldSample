@@ -28,6 +28,15 @@
              };
          };
     </script>
+
+    <style>
+        .x-grid-row-summary .x-grid-cell-inner {
+            font-weight      : bold;
+            font-size        : 11px;
+            background-color : #9EC3E8;
+        }
+
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -83,8 +92,10 @@
                     </Store>                   
                     <ColumnModel>
                        <Columns>
-                            <ext:Column ID="Column116" runat="server" DataIndex="PERIOD_NAME" Text="Period" Flex="1" />
-                            <ext:Column ID="Column117" runat="server" DataIndex="AMOUNT" Text="Amount" Flex="1" >
+                            <ext:Column ID="Column116" runat="server" DataIndex="PERIOD_NAME" Text="Period" Flex="1"  >
+                                <SummaryRenderer Handler="return ('Total');" />  
+                            </ext:Column>
+                            <ext:Column ID="Column117" runat="server" DataIndex="AMOUNT" Text="Amount" Flex="1" SummaryType="Sum">
                                 <Editor>
                                     <ext:NumberField runat="server" AllowBlank="false" ID="uxEditAmount" SelectOnFocus="true" TabIndex="1">
                                          <Listeners>
@@ -93,6 +104,7 @@
                                       </ext:NumberField>
                                 </Editor>
                                 <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
+                                <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                             </ext:Column>
                         </Columns>
                     </ColumnModel>
@@ -100,6 +112,9 @@
                         <ext:GridView ID="GridView4" StripeRows="true" runat="server" TrackOver="true">
                         </ext:GridView>
                     </View> 
+                    <Features>               
+                     <ext:Summary ID="Summary1" runat="server" Dock="Bottom" />
+            </Features>  
                     <Plugins>
                            <ext:CellEditing runat="server" ClicksToEdit="1">
                               </ext:CellEditing>
