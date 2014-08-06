@@ -41,7 +41,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             uxForecastPeriodsByOrganization.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_ORG_BUDGETS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _budgetsByOrganizationIDList, out count);
             e.Total = count;
 
-                uxCreateBudget.Enable();
         }
 
 
@@ -106,11 +105,9 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         protected void deCreateBudgetPeriod(object sender, DirectEventArgs e)
         {
             string _selectedRecordID = Request.QueryString["orgid"];
-            string _selectedLeID = Request.QueryString["leID"];
-           string _budgetID  = e.ExtraParams["ORG_BUDGET_ID"];
-            
+            string _selectedLeID = Request.QueryString["leID"];           
 
-            string url = "umOpenBudgetType.aspx?leID=" + _selectedLeID + "&orgID=" + _selectedRecordID +"&budget_id=" + _budgetID;
+            string url = "umOpenBudgetType.aspx?leID=" + _selectedLeID + "&orgID=" + _selectedRecordID;
 
             Window win = new Window
             {
