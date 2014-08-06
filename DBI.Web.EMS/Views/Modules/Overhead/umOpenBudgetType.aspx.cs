@@ -49,7 +49,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         protected void deLoadFiscalYears(object sender, StoreReadDataEventArgs e)
         {
-            uxFiscalYearsStore.DataSource = PA.AllFiscalYears().OrderByDescending(x => x.ID_NAME).Take(3);
+            uxFiscalYearsStore.DataSource = PA.FiscalYearsGL().OrderByDescending(x => x.ID_NAME);
         }
 
         protected void deOpenPeriod(object sender, DirectEventArgs e)
