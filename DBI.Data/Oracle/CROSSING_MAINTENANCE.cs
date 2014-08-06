@@ -63,12 +63,12 @@ namespace DBI.Data
                 return data;
             }
         }
-        public static IQueryable<SubDivisionList> GetSubDivison(decimal RailroadId, Entities _context)
+        public static IQueryable<StateList> GetState(decimal RailroadId, Entities _context)
         {
 
             return (from d in _context.CROSSINGS
                            where d.RAILROAD_ID == RailroadId
-                           select new SubDivisionList { SUB_DIVISION = d.SUB_DIVISION,  }).Distinct();
+                           select new StateList { STATE = d.STATE  }).Distinct();
         }
         public static IQueryable<CrossingAssignedList> GetCrossingsAssigned(decimal RailroadId, Entities _context)
         {
@@ -85,21 +85,46 @@ namespace DBI.Data
             return (from d in _context.CROSSING_SERVICE_UNIT
                     select new ServiceUnitList { SERVICE_UNIT_ID = d.SERVICE_UNIT_ID, SERVICE_UNIT_NAME = d.SERVICE_UNIT_NAME });
         }
-        public static IQueryable<CrossingData> GetCrossingList(decimal RailroadId, Entities _context)
+        public static IQueryable<CrossingData> GetAppCrossingList(decimal RailroadId, string Application, Entities _context)
+        {
+            return (from d in _context.CROSSINGS
+                    join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
+                    join a in _context.CROSSING_APPLICATION on d.CROSSING_ID equals a.CROSSING_ID
+                    join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID
+                    where d.RAILROAD_ID == RailroadId && d.STATUS == "ACTIVE"
+                    select new CrossingData {APPLICATION_REQUESTED = a.APPLICATION_REQUESTED, RAILROAD_ID = d.RAILROAD_ID, CONTACT_ID = d.CONTACT_ID,CROSSING_ID = d.CROSSING_ID, STATUS = d.STATUS, STATE = d.STATE,
+                    CROSSING_NUMBER = d.CROSSING_NUMBER, SERVICE_UNIT = d.SERVICE_UNIT,SUB_DIVISION = d.SUB_DIVISION, CONTACT_NAME = d.CROSSING_CONTACTS.CONTACT_NAME,
+                    PROJECT_TYPE = p.PROJECT_TYPE, CARRYING_OUT_ORGANIZATION_ID = p.CARRYING_OUT_ORGANIZATION_ID, PROJECT_STATUS_CODE = p.PROJECT_STATUS_CODE, TEMPLATE_FLAG = p.TEMPLATE_FLAG, PROJECT_ID = p.PROJECT_ID, ORGANIZATION_NAME = p.ORGANIZATION_NAME }).Distinct();
+        }
+        public static IQueryable<CrossingData> GetSuppCrossingList(decimal RailroadId, Entities _context)
         {
             return (from d in _context.CROSSINGS
                     join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
                     join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID
                     where d.RAILROAD_ID == RailroadId
-                    select new CrossingData {RAILROAD_ID = d.RAILROAD_ID, CONTACT_ID = d.CONTACT_ID,CROSSING_ID = d.CROSSING_ID,
-                    CROSSING_NUMBER = d.CROSSING_NUMBER, SERVICE_UNIT = d.SERVICE_UNIT,SUB_DIVISION = d.SUB_DIVISION, CONTACT_NAME = d.CROSSING_CONTACTS.CONTACT_NAME,
-                    PROJECT_TYPE = p.PROJECT_TYPE, CARRYING_OUT_ORGANIZATION_ID = p.CARRYING_OUT_ORGANIZATION_ID, PROJECT_STATUS_CODE = p.PROJECT_STATUS_CODE, TEMPLATE_FLAG = p.TEMPLATE_FLAG, PROJECT_ID = p.PROJECT_ID, ORGANIZATION_NAME = p.ORGANIZATION_NAME }).Distinct();
+                    select new CrossingData
+                    {
+                        RAILROAD_ID = d.RAILROAD_ID,
+                        CONTACT_ID = d.CONTACT_ID,
+                        CROSSING_ID = d.CROSSING_ID,
+                        CROSSING_NUMBER = d.CROSSING_NUMBER,
+                        SERVICE_UNIT = d.SERVICE_UNIT,
+                        SUB_DIVISION = d.SUB_DIVISION,
+                        CONTACT_NAME = d.CROSSING_CONTACTS.CONTACT_NAME,
+                        PROJECT_TYPE = p.PROJECT_TYPE,
+                        CARRYING_OUT_ORGANIZATION_ID = p.CARRYING_OUT_ORGANIZATION_ID,
+                        PROJECT_STATUS_CODE = p.PROJECT_STATUS_CODE,
+                        TEMPLATE_FLAG = p.TEMPLATE_FLAG,
+                        PROJECT_ID = p.PROJECT_ID,
+                        STATE = d.STATE,
+                        ORGANIZATION_NAME = p.ORGANIZATION_NAME
+                    }).Distinct();
         }
         public static IQueryable<ApplicationList> GetApplications( Entities _context)
         {
            
             return (from a in _context.CROSSING_APPLICATION
-                    join c in _context.CROSSINGS on a.CROSSING_ID equals c.CROSSING_ID    
+                    join c in _context.CROSSINGS on a.CROSSING_ID equals c.CROSSING_ID
                     select new ApplicationList { CROSSING_NUMBER = c.CROSSING_NUMBER, CROSSING_ID = a.CROSSING_ID, APPLICATION_ID = a.APPLICATION_ID, APPLICATION_NUMBER = a.APPLICATION_NUMBER,
                     APPLICATION_REQUESTED = a.APPLICATION_REQUESTED, APPLICATION_DATE = a.APPLICATION_DATE, TRUCK_NUMBER = a.TRUCK_NUMBER, SPRAY = a.SPRAY, CUT = a.CUT, INSPECT = a.INSPECT,
                     REMARKS = a.REMARKS });
@@ -534,6 +559,7 @@ namespace DBI.Data
             public string PROJECT_STATUS_CODE { get; set; }
             public string ORGANIZATION_NAME { get; set; }
             public long CARRYING_OUT_ORGANIZATION_ID { get; set; }
+            public long CROSSING_ID { get; set; }
         }
         public class CrossingList
         {
@@ -564,10 +590,10 @@ namespace DBI.Data
             public string LONG_NAME { get; set; }
             public string SEGMENT1 { get; set; }
         }
-        public class SubDivisionList
+        public class StateList
         {
            
-            public string SUB_DIVISION { get; set; }
+            public string STATE { get; set; }
 
         }
         public class ServiceUnitList
@@ -593,7 +619,9 @@ namespace DBI.Data
             public string TEMPLATE_FLAG { get; set; }
             public string PROJECT_STATUS_CODE { get; set; }
             public string ORGANIZATION_NAME { get; set; }
+            public string STATUS { get; set; }
             public long CARRYING_OUT_ORGANIZATION_ID { get; set; }
+            public string APPLICATION_REQUESTED { get; set; }
         }
     }
 }

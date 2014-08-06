@@ -31,36 +31,36 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
       
             }
         }
-        protected void deReadGrid(object sender, StoreReadDataEventArgs e)
-        {
-            List<WEB_EQUIPMENT_V> dataIn;
+        //protected void deReadGrid(object sender, StoreReadDataEventArgs e)
+        //{
+        //    List<WEB_EQUIPMENT_V> dataIn;
 
-            if (e.Parameters["Form"] == "Add")
-            {
-                if (uxAddEquipmentToggleOrg.Pressed)
-                {
-                    //Get All Projects
-                    dataIn = WEB_EQUIPMENT_V.ListEquipment();
-                }
-                else
-                {
-                    int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
-                    //Get projects for my org only
-                    dataIn = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
-                }
-                int count;
+        //    if (e.Parameters["Form"] == "Add")
+        //    {
+        //        if (uxAddEquipmentToggleOrg.Pressed)
+        //        {
+        //            //Get All Projects
+        //            dataIn = WEB_EQUIPMENT_V.ListEquipment();
+        //        }
+        //        else
+        //        {
+        //            int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+        //            //Get projects for my org only
+        //            dataIn = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
+        //        }
+        //        int count;
 
-                //Get paged, filterable list of Equipment
-                List<WEB_EQUIPMENT_V> data = GenericData.EnumerableFilterHeader<WEB_EQUIPMENT_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
+        //        //Get paged, filterable list of Equipment
+        //        List<WEB_EQUIPMENT_V> data = GenericData.EnumerableFilterHeader<WEB_EQUIPMENT_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
 
-                e.Total = count;
-                if (e.Parameters["Form"] == "Add")
-                {
-                    uxEquipmentStore.DataSource = data;
-                }
+        //        e.Total = count;
+        //        if (e.Parameters["Form"] == "Add")
+        //        {
+        //            uxEquipmentStore.DataSource = data;
+        //        }
 
-            }
-        }
+        //    }
+        //}
         protected void deSupplementalGridData(object sender, StoreReadDataEventArgs e)
         {
 
@@ -70,7 +70,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 {
                     long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                     List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
-                    IQueryable<CROSSING_MAINTENANCE.CrossingData> data = CROSSING_MAINTENANCE.GetCrossingList(RailroadId, _context).Where(v => v.PROJECT_TYPE == "CUSTOMER BILLING" && v.TEMPLATE_FLAG == "N" && v.PROJECT_STATUS_CODE == "APPROVED" && v.ORGANIZATION_NAME.Contains(" RR") && OrgsList.Contains(v.CARRYING_OUT_ORGANIZATION_ID));
+                    IQueryable<CROSSING_MAINTENANCE.CrossingData> data = CROSSING_MAINTENANCE.GetSuppCrossingList(RailroadId, _context).Where(v => v.PROJECT_TYPE == "CUSTOMER BILLING" && v.TEMPLATE_FLAG == "N" && v.PROJECT_STATUS_CODE == "APPROVED" && v.ORGANIZATION_NAME.Contains(" RR") && OrgsList.Contains(v.CARRYING_OUT_ORGANIZATION_ID));
 
                     int count;
                     uxSupplementalCrossingStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.CrossingData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -112,22 +112,22 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             public string CONTACT_NAME { get; set; }
             public decimal? RAILROAD_ID { get; set; }
         }
-        protected void deReloadStore(object sender, DirectEventArgs e)
-        {
-            string type = e.ExtraParams["Type"];
-            if (type == "Equipment")
-            {
-                uxEquipmentStore.Reload();
-                if (uxAddEquipmentToggleOrg.Pressed)
-                {
-                    uxAddEquipmentToggleOrg.Text = "My Region";
-                }
-                else
-                {
-                    uxAddEquipmentToggleOrg.Text = "All Regions";
-                }
-            }
-        }
+        //protected void deReloadStore(object sender, DirectEventArgs e)
+        //{
+        //    string type = e.ExtraParams["Type"];
+        //    if (type == "Equipment")
+        //    {
+        //        uxEquipmentStore.Reload();
+        //        if (uxAddEquipmentToggleOrg.Pressed)
+        //        {
+        //            uxAddEquipmentToggleOrg.Text = "My Region";
+        //        }
+        //        else
+        //        {
+        //            uxAddEquipmentToggleOrg.Text = "All Regions";
+        //        }
+        //    }
+        //}
         protected void deAddSupplemental(object sender, DirectEventArgs e)
         {
             CROSSING_SUPPLEMENTAL data;
@@ -137,7 +137,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             //do type conversions
             DateTime ApprovedDate = (DateTime)uxAddApprovedDateField.Value;
             decimal SquareFeet = Convert.ToDecimal(uxAddSquareFeet.Value);
-            string TruckNumber = uxAddEquipmentDropDown.Value.ToString();
+            //string TruckNumber = uxAddEquipmentDropDown.Value.ToString();
             string ServiceType = uxAddServiceType.Value.ToString();
             string Recurring = uxAddRecurringBox.Value.ToString();
 
@@ -158,7 +158,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                     APPROVED_DATE = ApprovedDate,
                     SERVICE_TYPE = ServiceType,
-                    TRUCK_NUMBER = TruckNumber,
+                    //TRUCK_NUMBER = TruckNumber,
                     SQUARE_FEET = SquareFeet,
                     RECURRING = Recurring,
                     CREATE_DATE = DateTime.Now,
@@ -285,17 +285,17 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         //            }
         //        });
         //    }
-        protected void deStoreGridValue(object sender, DirectEventArgs e)
-        {
-            if (e.ExtraParams["Form"] == "Add")
-            {
-                //Set value and text for equipment
-                uxAddEquipmentDropDown.SetValue(e.ExtraParams["EquipmentName"], e.ExtraParams["EquipmentName"]);
+        //protected void deStoreGridValue(object sender, DirectEventArgs e)
+        //{
+        //    if (e.ExtraParams["Form"] == "Add")
+        //    {
+        //        //Set value and text for equipment
+        //        uxAddEquipmentDropDown.SetValue(e.ExtraParams["EquipmentName"], e.ExtraParams["EquipmentName"]);
 
-                //Clear existing filters
-                uxAddEquipmentFilter.ClearFilter();
-            }
-        }
+        //        //Clear existing filters
+        //        uxAddEquipmentFilter.ClearFilter();
+        //    }
+        //}
        
         public class CrossingForSupplementalDetails
         {

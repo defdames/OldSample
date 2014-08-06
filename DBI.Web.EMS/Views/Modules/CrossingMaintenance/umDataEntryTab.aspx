@@ -33,12 +33,44 @@
         <div></div>
          <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
                 <Items>
+                    <ext:Toolbar ID="Toolbar1" runat="server" Region="North">
+                        <Items>
+                            <ext:ComboBox ID="ComboBox1"
+                                    runat="server"
+                                    FieldLabel="Application #"
+                                    LabelAlign="Right"
+                                    DisplayField="type"
+                                    ValueField="type"
+                                    QueryMode="Local"
+                                    TypeAhead="true" Width="300" AllowBlank="false" ForceSelection="true" TabIndex="1">
+                                    <Store>
+                                        <ext:Store runat="server"
+                                            ID="Store1" AutoDataBind="true">
+                                            <Model>
+                                                <ext:Model ID="Model5" runat="server">
+                                                    <Fields>
+                                                        <ext:ModelField Name="type" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                            <Reader>
+                                                <ext:ArrayReader />
+                                            </Reader>
+                                           
+                                        </ext:Store>
+                                    </Store>
+                                <Listeners>
+                                    <Select Handler="#{uxAppEntryCrossingStore}.reload()" />
+                                </Listeners>
+                                </ext:ComboBox>
+                        </Items>
+                    </ext:Toolbar>
         <ext:GridPanel ID="uxApplicationCrossingGrid" Title="CROSSING LIST FOR APPLICATION ENTRY" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true" SelectionMemory="true" >
            
             <Store>
                 <ext:Store runat="server"
                     ID="uxAppEntryCrossingStore"
-                    OnReadData="deApplicationGridData"
+                    OnReadData="deApplicationGridData" AutoLoad="false"
                     PageSize="10"
                     AutoDataBind="true" WarningOnDirty="false">
                     <Model>

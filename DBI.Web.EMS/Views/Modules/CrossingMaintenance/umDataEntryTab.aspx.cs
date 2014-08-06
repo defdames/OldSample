@@ -28,6 +28,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             if (!X.IsAjaxRequest)
             {
                 uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
+                Store1.Data = StaticLists.ApplicationRequested;
                 CheckboxSelectionModel sm = CheckboxSelectionModel1;
                 sm.ClearSelection();
             }
@@ -41,9 +42,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 if (validateComponentSecurity("SYS.CrossingMaintenance.DataEntryView"))
                 {
                     long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-
+                    string Application = ComboBox1.SelectedItem.Value;
                     List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
-                    IQueryable<CROSSING_MAINTENANCE.CrossingData> data = CROSSING_MAINTENANCE.GetCrossingList(RailroadId, _context).Where(v => v.PROJECT_TYPE == "CUSTOMER BILLING" && v.TEMPLATE_FLAG == "N" && v.PROJECT_STATUS_CODE == "APPROVED" && v.ORGANIZATION_NAME.Contains(" RR") && OrgsList.Contains(v.CARRYING_OUT_ORGANIZATION_ID));
+                    IQueryable<CROSSING_MAINTENANCE.CrossingData> data = CROSSING_MAINTENANCE.GetAppCrossingList(RailroadId, Application, _context).Where(v => v.PROJECT_TYPE == "CUSTOMER BILLING" && v.STATUS == "ACTIVE" && v.TEMPLATE_FLAG == "N" && v.PROJECT_STATUS_CODE == "APPROVED" && v.ORGANIZATION_NAME.Contains(" RR") && OrgsList.Contains(v.CARRYING_OUT_ORGANIZATION_ID));
 
                     int count;
                     uxAppEntryCrossingStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.CrossingData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);

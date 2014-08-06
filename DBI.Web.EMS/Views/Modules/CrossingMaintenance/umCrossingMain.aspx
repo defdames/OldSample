@@ -147,7 +147,7 @@
                             </ext:Panel>
 
                            
-                            <ext:Panel runat="server"
+                         <%--   <ext:Panel runat="server"
                                 Title="Contacts"
                                 ID="uxContactsTab"
                                 Disabled="false">
@@ -158,7 +158,7 @@
                                  <Listeners>
                                  <BeforeActivate Handler="#{Toolbar1}.show()" />                            
                                 </Listeners>
-                            </ext:Panel>
+                            </ext:Panel>--%>
                              <ext:Panel runat="server"
                                 Title="Manage KCS"
                                 ID="uxManageKCS"

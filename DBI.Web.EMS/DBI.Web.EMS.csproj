@@ -164,6 +164,7 @@
     <Content Include="Views\Modules\CrossingMaintenance\umSuppBillingReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umSupplemental.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umSupplementalBilling.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umViewCrossings.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umWeeklyWorkActivity.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umManageForms.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umManageOrgs.aspx" />
@@ -471,6 +472,13 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umSupplementalBilling.aspx.designer.cs">
       <DependentUpon>umSupplementalBilling.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umViewCrossings.aspx.cs">
+      <DependentUpon>umViewCrossings.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umViewCrossings.aspx.designer.cs">
+      <DependentUpon>umViewCrossings.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umWeeklyWorkActivity.aspx.cs">
       <DependentUpon>umWeeklyWorkActivity.aspx</DependentUpon>
