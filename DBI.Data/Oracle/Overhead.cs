@@ -79,7 +79,7 @@ namespace DBI.Data
     {
         public static IQueryable<OVERHEAD_ORG_BUDGETS_V> BudgetListByOrganizationID(long organizationID, Entities context)
         {
-            var data = context.OVERHEAD_ORG_BUDGETS.Where(x => x.ORGANIZATION_ID == organizationID);
+            var data = context.OVERHEAD_ORG_BUDGETS.Where(x => x.ORGANIZATION_ID == organizationID).ToList();
             List<OVERHEAD_ORG_BUDGETS_V> _rdata = new List<OVERHEAD_ORG_BUDGETS_V>();
 
             foreach (OVERHEAD_ORG_BUDGETS _budget in data)

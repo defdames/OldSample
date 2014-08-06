@@ -15,15 +15,12 @@
                       <TopBar>
                         <ext:Toolbar ID="Toolbar2" runat="server">
                             <Items>
-                                 <ext:Button runat="server" Text="Create Budget" Icon="BookAdd" ID="uxCreateBudget" Disabled="true" >
+                                 <ext:Button runat="server" Text="New Budget" Icon="CalculatorEdit" ID="uxCreateBudget"  >
                                     <ToolTips>
                                         <ext:ToolTip ID="ToolTip1" runat="server" UI="Info" Html="Creates a new period for an organization so it can be used for the budget overhead system."></ext:ToolTip>
                                     </ToolTips>
                                     <DirectEvents>
                                         <Click OnEvent="deCreateBudgetPeriod">
-                                            <ExtraParams>
-                                            <ext:Parameter Value="#{uxForecastPeriodsByOrganizationGridPanel}.getView().getSelectionModel().getSelection()[0].data.ORG_BUDGET_ID" Mode="Raw" Name="ORG_BUDGET_ID"></ext:Parameter>
-                                            </ExtraParams>
                                         </Click>
                                     </DirectEvents>      
                                 </ext:Button>
