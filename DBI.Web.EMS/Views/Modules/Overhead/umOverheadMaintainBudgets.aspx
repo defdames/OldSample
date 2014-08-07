@@ -36,6 +36,7 @@
                                         <ext:ModelField Name="FISCAL_YEAR" />
                                         <ext:ModelField Name="BUDGET_DESCRIPTION" />
                                         <ext:ModelField Name="BUDGET_STATUS" />
+                                        <ext:ModelField Name="ACCOUNT_RANGE" />
                                         <ext:ModelField Name="ORGANIZATION_NAME" />
                                         <ext:ModelField Name="ORGANIZATION_ID" />
                                     </Fields>
@@ -54,6 +55,7 @@
                             <ext:Column ID="Column4" runat="server" DataIndex="FISCAL_YEAR" Text="Fiscal Year" Flex="1" />
                             <ext:Column ID="Column3" runat="server" DataIndex="BUDGET_DESCRIPTION" Text="Budget Draft" Flex="1" />
                              <ext:Column ID="Column5" runat="server" DataIndex="BUDGET_STATUS" Text="Status" Flex="1" />
+                            <ext:Column ID="Column1" runat="server" DataIndex="ACCOUNT_RANGE" Text="Account Range" Flex="1" />
                         </Columns>
                     </ColumnModel>
                     <Plugins>
@@ -68,6 +70,7 @@
                                          <ext:Parameter Mode="Raw" Name="FISCAL_YEAR" Value="record.data.FISCAL_YEAR"></ext:Parameter>
                                         <ext:Parameter Mode="Raw" Name="ORGANIZATION_NAME" Value="record.data.ORGANIZATION_NAME"></ext:Parameter>
                                         <ext:Parameter Mode="Raw" Name="BUDGET_DESCRIPTION" Value="record.data.BUDGET_DESCRIPTION"></ext:Parameter>
+                                         <ext:Parameter Mode="Raw" Name="ACCOUNT_RANGE" Value="record.data.ACCOUNT_RANGE"></ext:Parameter>
                                     </ExtraParams>
                                 </Select>
                             </DirectEvents>

@@ -118,13 +118,12 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 //pull budget detail data
                 List<OVERHEAD_BUDGET_DETAIL> _budgetLineList = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budgetid).ToList();
 
-
                 foreach (GL_ACCOUNTS_V _validAccount in _rangeOfAccounts)
                 {
 
                         OVERHEAD_BUDGET_DETAIL_V _row = new OVERHEAD_BUDGET_DETAIL_V();
                         _row.CODE_COMBINATION_ID = _validAccount.CODE_COMBINATION_ID;
-                        _row.ACCOUNT_DESCRIPTION = _validAccount.SEGMENT5_DESC;
+                        _row.ACCOUNT_DESCRIPTION = _validAccount.SEGMENT5_DESC + " (" + _validAccount.SEGMENT5 + ")";
                         _row.AMOUNT1 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 1, "B");
                         _row.AMOUNT2 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 2, "B");
                         _row.AMOUNT3 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 3, "B");
@@ -162,6 +161,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 }
 
             }
+
+            //Quick check hide summary column
+            foreach (OVERHEAD_BUDGET_DETAIL_V _item in _accountList)
+            {
+                if (_item.TOTAL > 0)
+                    uxSummary.ToggleSummaryRow(true);
+                    break;
+            }
+
 
             int count;
             uxOrganizationAccountStore.DataSource = GenericData.ListFilterHeader<OVERHEAD_BUDGET_DETAIL_V>(e.Start, 1000, e.Sort, e.Parameters["filterheader"], _accountList.AsQueryable(), out count);

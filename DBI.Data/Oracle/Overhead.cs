@@ -131,6 +131,7 @@ namespace DBI.Data
         public string BUDGET_DESCRIPTION { get; set; }
         public string BUDGET_STATUS { get; set; }
         public string ORGANIZATION_NAME { get; set; }
+        public string ACCOUNT_RANGE { get; set; }
     }
 
     public class GL_PERIODS_V

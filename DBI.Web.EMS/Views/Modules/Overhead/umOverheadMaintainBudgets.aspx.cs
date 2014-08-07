@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using DBI.Data;
 using Ext.Net;
 using DBI.Core.Web;
+using System.Text;
 
 namespace DBI.Web.EMS.Views.Modules.Overhead
 {
@@ -30,12 +31,31 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             List<OVERHEAD_ORG_BUDGETS_V> _budgetsByOrganizationIDList = new List<OVERHEAD_ORG_BUDGETS_V>();
 
+            StringBuilder _rangeString = new StringBuilder();
+
             using (Entities _context = new Entities())
             {
-                foreach(long _orgID in OrgsList)
+                foreach (long _orgID in OrgsList)
                 {
-                 _budgetsByOrganizationIDList.AddRange(OVERHEAD_ORG_BUDGETS.BudgetListByOrganizationID(_orgID, _context).OrderBy(x => x.ORG_BUDGET_ID).ToList());
+                    _rangeString.Clear();
+
+                    List<OVERHEAD_ORG_BUDGETS_V> _budgetList = OVERHEAD_ORG_BUDGETS.BudgetListByOrganizationID(_orgID, _context).OrderBy(x => x.ORG_BUDGET_ID).ToList();
+
+                    foreach (OVERHEAD_ORG_BUDGETS_V _item in _budgetList)
+                    {
+                        List<OVERHEAD_GL_RANGE> _accountRanges = _context.OVERHEAD_GL_RANGE.Where(x => x.ORGANIZATION_ID == _item.ORGANIZATION_ID).ToList();
+                        foreach (OVERHEAD_GL_RANGE _range in _accountRanges)
+                        {
+                            if(!_rangeString.ToString().Contains(_range.SRSEGMENT1.ToString() + "." + _range.SRSEGMENT2.ToString() + "." + _range.SRSEGMENT3.ToString() + "." + _range.SRSEGMENT4.ToString()))
+                                _rangeString.AppendLine(_range.SRSEGMENT1.ToString() + "." + _range.SRSEGMENT2.ToString() + "." + _range.SRSEGMENT3.ToString() + "." + _range.SRSEGMENT4.ToString());
+                        }
+
+                        _item.ACCOUNT_RANGE = _rangeString.ToString();
+                    }
+
+                    _budgetsByOrganizationIDList.AddRange(_budgetList);
                 }
+
             }
 
             if (uxViewAllToggleButton.Pressed)
@@ -58,9 +78,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             string _organization_name = e.ExtraParams["ORGANIZATION_NAME"];
             string _fiscalYear = e.ExtraParams["FISCAL_YEAR"];
             string _description = e.ExtraParams["BUDGET_DESCRIPTION"];
+            string _accountRange = e.ExtraParams["ACCOUNT_RANGE"];
             string _budget_id = uxBudgetVersionByOrganizationSelectionModel.SelectedRow.RecordID;
 
-            X.Js.Call("parent.App.direct.AddTabPanel", "bmw" + _organization_id, _organization_name + " - " + "Budget Maintenance / " + _fiscalYear + " / " + _description, "~/Views/Modules/Overhead/umEditBudget.aspx?orgid=" + _organization_id + "&fiscalyear=" + _fiscalYear + "&budget_id=" + _budget_id);
+            X.Js.Call("parent.App.direct.AddTabPanel", "bmw" + _organization_id + _fiscalYear + _budget_id, _organization_name + " - " + "Budget Maintenance / " + _fiscalYear + " / " + _description + " (" + _accountRange + ")", "~/Views/Modules/Overhead/umEditBudget.aspx?orgid=" + _organization_id + "&fiscalyear=" + _fiscalYear + "&budget_id=" + _budget_id);
 
         }
 

@@ -95,7 +95,7 @@
                             <ext:Column ID="Column116" runat="server" DataIndex="PERIOD_NAME" Text="Period" Flex="1"  >
                                 <SummaryRenderer Handler="return ('Total');" />  
                             </ext:Column>
-                            <ext:Column ID="Column117" runat="server" DataIndex="AMOUNT" Text="Amount" Flex="1" SummaryType="Sum">
+                            <ext:Column ID="Column117" runat="server" DataIndex="AMOUNT" Text="Amount" Flex="1" SummaryType="Sum" >
                                 <Editor>
                                     <ext:NumberField runat="server" AllowBlank="false" ID="uxEditAmount" SelectOnFocus="true" TabIndex="1">
                                          <Listeners>
@@ -112,12 +112,17 @@
                         <ext:GridView ID="GridView4" StripeRows="true" runat="server" TrackOver="true">
                         </ext:GridView>
                     </View> 
+                    
                     <Features>               
                      <ext:Summary ID="Summary1" runat="server" Dock="Bottom" />
             </Features>  
                     <Plugins>
                            <ext:CellEditing runat="server" ClicksToEdit="1">
+                               <Listeners>
+                                   <Edit Handler="#{uxSaveDetailLineButton}.focus();" />
+                               </Listeners>
                               </ext:CellEditing>
+                        
                                                </Plugins>
                        <Buttons>
                            <ext:Button runat="server" ID="uxSaveDetailLineButton" Text="Save" Icon="Disk" AutoFocus="true" TabIndex="2">
@@ -155,7 +160,7 @@
                 </Items>
             </ext:Viewport>
 
-        <ext:Window runat="server" Width="350" Height="150" Title="Disbursement Details" Layout="FitLayout" Header="true" Hidden="true" ID="uxDisbursementDetailsWindow" CloseAction="Hide" Closable="true" Modal="true">
+        <ext:Window runat="server" Width="350" Height="150" Title="Disbursement Details" Layout="FitLayout" Header="true" Hidden="true" ID="uxDisbursementDetailsWindow" CloseAction="Hide" Closable="true" Modal="true" DefaultButton="uxCalculate">
             <Items>
                 <ext:FormPanel ID="uxDispersementForm" runat="server" Header="false" BodyPadding="10" DefaultButton="uxAddBudgetType" Frame="true"
                     Margins="5 5 5 5" >

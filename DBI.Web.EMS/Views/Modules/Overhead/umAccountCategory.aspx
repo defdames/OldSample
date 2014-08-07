@@ -16,16 +16,9 @@
                     <TopBar>
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
-                                <ext:Button runat="server" ID="uxAssignBudgetType" Icon="ApplicationAdd" Text="New Budget Type" Disabled="true">
-                                  
+                                <ext:Button runat="server" ID="uxAssignBudgetType" Icon="ApplicationAdd" Text="Assign Category" Disabled="true"> 
                                     <ToolTips>
                                         <ext:ToolTip ID="ToolTip1" runat="server" Html="This allows you to assign a budget type to this organization" UI="Info"></ext:ToolTip>
-                                    </ToolTips>
-                                </ext:Button>
-                                <ext:Button runat="server" ID="uxDeleteBudgetType" Icon="ApplicationDelete" Text="Remove Type" Disabled="true">
-                                     
-                                      <ToolTips>
-                                        <ext:ToolTip ID="ToolTip2" runat="server" Html="This allows you to unassign a budget type from this organization" UI="Info"></ext:ToolTip>
                                     </ToolTips>
                                 </ext:Button>
                             </Items>
@@ -33,16 +26,14 @@
                     </TopBar>
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxBudgetTypeStore"
-                            AutoDataBind="true" RemoteSort="true" AutoLoad="false">
+                            ID="uxAccountCategoryStore"
+                            AutoDataBind="true" RemoteSort="true" AutoLoad="true" OnReadData="deLoadAccounts">
                             <Model>
-                                        <ext:Model ID="Model2" runat="server" IDProperty="OVERHEAD_BUDGET_TYPE_ID">
+                                        <ext:Model ID="Model2" runat="server" IDProperty="SEGMENT5">
                                             <Fields>
-                                                <ext:ModelField Name="OVERHEAD_BUDGET_TYPE_ID"  />
-                                                <ext:ModelField Name="PARENT_BUDGET_TYPE_ID"  />
-                                                <ext:ModelField Name="BUDGET_NAME" />
-                                                <ext:ModelField Name="BUDGET_DESCRIPTION" />
-                                                <ext:ModelField Name="LE_ORG_ID" />
+                                                <ext:ModelField Name="SEGMENT5_DESC"  />
+                                                <ext:ModelField Name="CATEGORY_NAME"  />
+                                                <ext:ModelField Name="CATEGORY_ID"  />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
@@ -53,8 +44,8 @@
                             </Store>
                             <ColumnModel>
                                 <Columns>
-                                    <ext:Column ID="Column2" runat="server" DataIndex="BUDGET_NAME" Text="Budget Type" Flex="1" />
-                                    <ext:Column ID="Column1" runat="server" DataIndex="BUDGET_DESCRIPTION" Text="Description" Flex="1" />
+                                    <ext:Column ID="Column2" runat="server" DataIndex="SEGMENT5_DESC" Text="Account Name" Flex="1" />
+                                    <ext:Column ID="Column1" runat="server" DataIndex="CATEGORY_NAME" Text="Category Name" Flex="1" />
                                 </Columns>
                             </ColumnModel>
                      <SelectionModel>
