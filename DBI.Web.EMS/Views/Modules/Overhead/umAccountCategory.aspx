@@ -65,7 +65,11 @@
                      <SelectionModel>
                          <ext:RowSelectionModel runat="server" Mode="Single" ID="uxAccountCategorySelectionModel" AllowDeselect="true">
                              <DirectEvents>
-                                 <Select OnEvent="deSelectCategory"></Select>
+                                 <Select OnEvent="deSelectCategory">
+                                     <ExtraParams>
+                                             <ext:Parameter Mode="Raw" Name="NAME" Value="record.data.NAME"></ext:Parameter>
+                                     </ExtraParams>
+                                 </Select>
                                  <Deselect OnEvent="deDeSelectCategory"></Deselect>
                              </DirectEvents>
                          </ext:RowSelectionModel>
@@ -83,7 +87,10 @@
                       <TopBar>
                         <ext:Toolbar ID="Toolbar2" runat="server">
                             <Items>
-                                <ext:Button runat="server" ID="uxAccountMaintenace"  Icon="Add" Text="Manage Accounts" Disabled="true"> 
+                                <ext:Button runat="server" ID="uxAccountMaintenace"  Icon="Add" Text="Manage Accounts" Disabled="true">
+                                    <Listeners>
+                                        <Click Handler="#{uxGLAccountListWindow}.show();#{uxGLAccountListStore}.reload();" />
+                                    </Listeners> 
                                 </ext:Button>
                             </Items>
                         </ext:Toolbar>
@@ -166,6 +173,56 @@
                   <ext:Button runat="server" ID="uxCancelSaveCategory" Icon="Cancel" Text="Cancel">
                       <Listeners>
                           <Click Handler="#{uxCategoryWindow}.close();"></Click>
+                      </Listeners>
+                  </ext:Button>
+            </Buttons>
+        </ext:Window>
+
+         <ext:Window runat="server" Stateful="false" Width="750" Height="650" Title="Assign Categories" Layout="FitLayout" Header="true" Resizable="false" Hidden="true" ID="uxGLAccountListWindow" CloseAction="Hide" Closable="true" Modal="true" DefaultButton="uxAssignAccountsToCategory">
+            <Items>
+                <ext:GridPanel ID="uxGLAccountListGridPanel" runat="server" Flex="1" SimpleSelect="true" Frame="true" Padding="5" Margins="5 5 5 5" Region="Center" Title="General Ledger Accounts">
+                    <Store>
+                        <ext:Store runat="server"
+                            ID="uxGLAccountListStore"
+                            AutoDataBind="true" RemoteSort="true" AutoLoad="false" OnReadData="uxGLAccountListStore_ReadData">
+                            <Model>
+                                <ext:Model ID="Model3" runat="server" IDProperty="SEGMENT5">
+                                    <Fields>
+                                        <ext:ModelField Name="SEGMENT5_DESC" />
+                                    </Fields>
+                                </ext:Model>
+                            </Model>
+                            <Proxy>
+                                <ext:PageProxy />
+                            </Proxy>
+                            <Sorters>
+                                <ext:DataSorter Direction="ASC" Property="SEGMENT5_DESC"></ext:DataSorter>
+                            </Sorters>
+                        </ext:Store>
+                    </Store>
+                    <ColumnModel>
+                        <Columns>
+                            <ext:Column ID="Column5" runat="server" DataIndex="SEGMENT5_DESC" Text="Account Description" Flex="1" />
+                        </Columns>
+                    </ColumnModel>
+                    <BottomBar>
+                        <ext:PagingToolbar ID="PagingToolbar2" runat="server" />
+                    </BottomBar>
+                    <View>
+                        <ext:GridView ID="GridView2" StripeRows="true" runat="server">
+                        </ext:GridView>
+                    </View>
+                    <SelectionModel>
+                        <ext:CheckboxSelectionModel runat="server" Mode="Simple"></ext:CheckboxSelectionModel>
+                    </SelectionModel>
+                </ext:GridPanel>
+            </Items>
+            <Buttons>
+                <ext:Button runat="server" ID="uxAssignAccountsToCategory" Icon="Accept" Text="Save">
+                </ext:Button>
+                  <ext:Button runat="server" ID="Button2" Icon="Cancel" Text="Cancel">
+                      <Listeners>
+                          <Click Handler="#{uxGLAccountListWindow}.close();"></Click>
                       </Listeners>
                   </ext:Button>
             </Buttons>

@@ -25,25 +25,12 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             }
         }
 
-        protected void deLoadAccounts(object sender, StoreReadDataEventArgs e)
+        public class ACCOUNT_CATEGORY_LIST : OVERHEAD_ACCOUNT_CATEGORY
         {
-            using (Entities _context = new Entities())
-            {
-                var _data = _context.GL_ACCOUNTS_V.Select(x => new GL_ACCOUNTS_V2 { CATEGORY_NAME = "", CATEGORY_ID = 0, SEGMENT5 = x.SEGMENT5, SEGMENT5_DESC = x.SEGMENT5_DESC }).Distinct().OrderBy(x => x.SEGMENT5_DESC).ToList();
-
-                int count;
-                uxAccountCategoryStore.DataSource = GenericData.EnumerableFilterHeader<GL_ACCOUNTS_V2>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
-                e.Total = count;
-
-             
-            }
+            public string NAME { get; set; }
+            public string ACCOUNT_SEGMENT_DESC { get; set; }
         }
 
-        public class GL_ACCOUNTS_V2 : GL_ACCOUNTS_V
-        {
-            public string CATEGORY_NAME {get; set;}
-            public long CATEGORY_ID {get; set;}
-        }
 
         protected void uxAccountCategoryStore_ReadData(object sender, StoreReadDataEventArgs e)
         {
@@ -60,7 +47,26 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         protected void uxAccountListStore_ReadData(object sender, StoreReadDataEventArgs e)
         {
+            RowSelectionModel sm = uxAccountCategorySelectionModel;
+           long _selectedRowID = long.Parse(sm.SelectedRow.RecordID);
+           string _categoryName = e.Parameters["NAME"];
+            using (Entities _context = new Entities())
+            {
+                var _data = _context.OVERHEAD_ACCOUNT_CATEGORY.Where(x => x.CATEGORY_ID == _selectedRowID).Select(x => new ACCOUNT_CATEGORY_LIST { ACCOUNT_CATEGORY_ID = x.ACCOUNT_CATEGORY_ID, CATEGORY_ID = x.CATEGORY_ID, ACCOUNT_SEGMENT = x.ACCOUNT_SEGMENT, ACCOUNT_ORDER = x.ACCOUNT_ORDER, NAME = _categoryName }).AsQueryable();
 
+                //Get the name of the category id and account segment description
+                foreach (ACCOUNT_CATEGORY_LIST _record in _data)
+                {
+                    //Return the segment description
+                    GL_ACCOUNTS_V _description = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT5 == _record.ACCOUNT_SEGMENT).Single();
+                    _record.ACCOUNT_SEGMENT_DESC = _description.SEGMENT5_DESC + " (" + _description.SEGMENT5 + ")";
+                }
+                
+                int count;
+                uxAccountListStore.DataSource = GenericData.ListFilterHeader<ACCOUNT_CATEGORY_LIST>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data.AsQueryable(), out count);
+                e.Total = count;
+
+            }
         }
 
         protected void deSelectCategory(object sender, DirectEventArgs e)
@@ -69,7 +75,19 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             if (_sm.SelectedRows.Count > 0)
             {
                 uxDeleteCategory.Enable();
-                uxAccountListStore.Reload();
+
+
+                Ext.Net.ParameterCollection ps = new Ext.Net.ParameterCollection();
+
+                Ext.Net.StoreParameter _p = new Ext.Net.StoreParameter();
+                _p.Mode = ParameterMode.Value;
+                _p.Name = "NAME";
+                _p.Value = e.ExtraParams["NAME"];
+
+                ps.Add(_p);
+
+                uxAccountListStore.Reload(ps);
+
                 uxAccountMaintenace.Enable();
             }
             else
@@ -143,6 +161,35 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             }
 
+        }
+
+        public class GL_ACCOUNTS_V2 : GL_ACCOUNTS_V
+        {
+            public string SEGMENT5 { get; set; }
+            public string SEGMENT5_DESC { get; set; }
+
+        }
+
+        protected void uxGLAccountListStore_ReadData(object sender, StoreReadDataEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                var _data = _context.GL_ACCOUNTS_V.Select(x => new GL_ACCOUNTS_V2 {SEGMENT5 = x.SEGMENT5}).Distinct().AsQueryable();
+                
+                _data = (from dups in _data
+                         where !_context.OVERHEAD_ACCOUNT_CATEGORY.Any(x => x.ACCOUNT_SEGMENT == dups.SEGMENT5)
+                         select dups);
+
+                foreach (GL_ACCOUNTS_V2 _item in _data)
+                {
+                    GL_ACCOUNTS_V _info = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT5 == _item.SEGMENT5).FirstOrDefault();
+                    _item.SEGMENT5_DESC = _info.SEGMENT5_DESC + " (" + _info.SEGMENT5 + ")";
+                }
+
+                int count;
+                uxAccountListStore.DataSource = GenericData.ListFilterHeader<GL_ACCOUNTS_V2>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data.AsQueryable(), out count);
+                e.Total = count;
+            }
         }
 
     }
