@@ -21,5 +21,6 @@ namespace DBI.Data
         public System.DateTime MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
+        public Nullable<long> ACCOUNT_ORDER { get; set; }
     }
 }

@@ -1164,6 +1164,7 @@ warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primar
           <Property Name="MODIFY_DATE" Type="date" Nullable="false" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="250" Nullable="false" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="250" Nullable="false" />
+          <Property Name="ACCOUNT_ORDER" Type="number" Precision="15" Scale="0" />
         </EntityType>
         <EntityType Name="OVERHEAD_ACCOUNT_COMMENT">
           <Key>
@@ -4651,8 +4652,8 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
             <End Role="CROSSING" EntitySet="CROSSINGS" />
             <End Role="CROSSING_SUPPLEMENTAL" EntitySet="CROSSING_SUPPLEMENTAL" />
           </AssociationSet>
-          <EntitySet Name="OVERHEAD_ACCOUNT_CATEGORY" EntityType="OracleModel.OVERHEAD_ACCOUNT_CATEGORY" />
           <EntitySet Name="OVERHEAD_CATEGORY" EntityType="OracleModel.OVERHEAD_CATEGORY" />
+          <EntitySet Name="OVERHEAD_ACCOUNT_CATEGORY" EntityType="OracleModel.OVERHEAD_ACCOUNT_CATEGORY" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -8250,18 +8251,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="OVERHEAD_ACCOUNT_CATEGORY">
-          <Key>
-            <PropertyRef Name="ACCOUNT_CATEGORY_ID" />
-          </Key>
-          <Property Name="ACCOUNT_CATEGORY_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CATEGORY_ID" Type="Int64" Nullable="false" />
-          <Property Name="ACCOUNT_SEGMENT" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="CREATE_DATE" Type="DateTime" Nullable="false" />
-          <Property Name="MODIFY_DATE" Type="DateTime" Nullable="false" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="MODIFIED_BY" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="OVERHEAD_CATEGORY">
           <Key>
             <PropertyRef Name="CATEGORY_ID" />
@@ -8273,6 +8262,19 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Property Name="MODIFY_DATE" Type="DateTime" Nullable="false" />
           <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="MODIFIED_BY" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="OVERHEAD_ACCOUNT_CATEGORY">
+          <Key>
+            <PropertyRef Name="ACCOUNT_CATEGORY_ID" />
+          </Key>
+          <Property Name="ACCOUNT_CATEGORY_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CATEGORY_ID" Type="Int64" Nullable="false" />
+          <Property Name="ACCOUNT_SEGMENT" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="CREATE_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="MODIFY_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="MODIFIED_BY" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="ACCOUNT_ORDER" Type="Int64" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -11024,19 +11026,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="OVERHEAD_ACCOUNT_CATEGORY">
-            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_ACCOUNT_CATEGORY">
-              <MappingFragment StoreEntitySet="OVERHEAD_ACCOUNT_CATEGORY">
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="ACCOUNT_SEGMENT" ColumnName="ACCOUNT_SEGMENT" />
-                <ScalarProperty Name="CATEGORY_ID" ColumnName="CATEGORY_ID" />
-                <ScalarProperty Name="ACCOUNT_CATEGORY_ID" ColumnName="ACCOUNT_CATEGORY_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="OVERHEAD_CATEGORY">
             <EntityTypeMapping TypeName="OracleModel.OVERHEAD_CATEGORY">
               <MappingFragment StoreEntitySet="OVERHEAD_CATEGORY">
@@ -11047,6 +11036,20 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
                 <ScalarProperty Name="NAME" ColumnName="NAME" />
                 <ScalarProperty Name="CATEGORY_ID" ColumnName="CATEGORY_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OVERHEAD_ACCOUNT_CATEGORY">
+            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_ACCOUNT_CATEGORY">
+              <MappingFragment StoreEntitySet="OVERHEAD_ACCOUNT_CATEGORY">
+                <ScalarProperty Name="ACCOUNT_ORDER" ColumnName="ACCOUNT_ORDER" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="ACCOUNT_SEGMENT" ColumnName="ACCOUNT_SEGMENT" />
+                <ScalarProperty Name="CATEGORY_ID" ColumnName="CATEGORY_ID" />
+                <ScalarProperty Name="ACCOUNT_CATEGORY_ID" ColumnName="ACCOUNT_CATEGORY_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

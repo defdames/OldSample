@@ -354,6 +354,9 @@
     <Compile Include="ORG_HIER_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="OVERHEAD_ACCOUNT_CATEGORY.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="OVERHEAD_ACCOUNT_COMMENT.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
@@ -361,6 +364,9 @@
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="OVERHEAD_BUDGET_TYPE.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OVERHEAD_CATEGORY.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="OVERHEAD_GL_ACCOUNT.cs">
