@@ -128,5 +128,7 @@ namespace DBI.Data
         public DbSet<OVERHEAD_BUDGET_DETAIL> OVERHEAD_BUDGET_DETAIL { get; set; }
         public DbSet<OVERHEAD_ACCOUNT_COMMENT> OVERHEAD_ACCOUNT_COMMENT { get; set; }
         public DbSet<CROSSING_SUPPLEMENTAL> CROSSING_SUPPLEMENTAL { get; set; }
+        public DbSet<OVERHEAD_ACCOUNT_CATEGORY> OVERHEAD_ACCOUNT_CATEGORY { get; set; }
+        public DbSet<OVERHEAD_CATEGORY> OVERHEAD_CATEGORY { get; set; }
     }
 }

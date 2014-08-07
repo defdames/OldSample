@@ -18,7 +18,12 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!X.IsAjaxRequest) ; 
+            if (!X.IsAjaxRequest) ;
+
+            if (uxToggleSubmitted.Checked)
+            { uxSubmitButton.Disabled = true; }
+            else
+            { uxSubmitButton.Disabled = false; }
         }
 
         protected void deGetEmployeesHourData(object sender, StoreReadDataEventArgs e)
@@ -218,7 +223,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                     var r = (from tc in _context.TIME_CLOCK
                              join ev in _context.EMPLOYEES_V on tc.PERSON_ID equals ev.PERSON_ID
                              where tc.TIME_CLOCK_ID == Submitted.TIME_CLOCK_ID
-                             select new { tc.PERSON_ID, ev.EMPLOYEE_NUMBER, ev.EMPLOYEE_NAME }).SingleOrDefault();
+                             select new { tc.PERSON_ID, ev.EMPLOYEE_NUMBER, ev.EMPLOYEE_NAME, tc.ADJUSTED_HOURS }).SingleOrDefault();
 
 
 
@@ -242,6 +247,8 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                     dtrecord.WAGE_SOURCE = "Regular";
                     dtrecord.ADJUSTMENT = "N";
                     dtrecord.FRINGE_RATE = 0;
+                    dtrecord.TOTAL_HOURS = r.ADJUSTED_HOURS;
+
                     
 
                     //Get the total hours (Time Entry Wages)
@@ -286,6 +293,8 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                     dtrecord.EFFECTIVE_START_DATE = current.GetFirstDayOfWeek().Date;
                     dtrecord.EFFECTIVE_END_DATE = current.GetLastDayOfWeek().Date;
                     GenericData.Insert<XXDBI_PAYROLL_AUDIT_V>(dtrecord);
+                    uxPayrollAuditStore.Reload();
+                    uxPayrollAuditGrid.Refresh();
                 }
 
                 }
