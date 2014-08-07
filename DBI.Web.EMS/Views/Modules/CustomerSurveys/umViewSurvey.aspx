@@ -20,8 +20,8 @@
                     <Items>
                         <ext:FormPanel runat="server" ID="uxSurveyDisplay" Layout="FormLayout" MaxWidth="1000" BodyPadding="10" Flex="500" ManageHeight="true">
                             <Items>
-                                <ext:Image ID="Image2" runat="server" ImageUrl="/Resources/Images/dbis_black_logo.png" MaxWidth="250" MaxHeight="154" StyleSpec="text-align: center" />
-                                <ext:FieldSet runat="server" Title="Form Code" Margin="5">
+                                <ext:Image ID="uxLogoImage" runat="server" ImageUrl="/Resources/Images/dbis_black_logo.png" MaxWidth="250" MaxHeight="154" StyleSpec="text-align: center" />
+                                <ext:FieldSet runat="server" Title="Form Code" Margin="5" ID="uxCodeFieldset">
                                     <Items>
                                         <ext:TextField runat="server" ID="uxFormCode" FieldLabel="Enter Form Code" AllowBlank="false" LabelWidth="150" />
                                     </Items>

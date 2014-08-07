@@ -61,6 +61,16 @@ namespace DBI.Data
                     select new CustomerSurveyQuestions { QUESTION_ID = q.QUESTION_ID, TEXT = q.TEXT, TYPE_ID = qt.TYPE_ID, QUESTION_TYPE_NAME = qt.QUESTION_TYPE_NAME, IS_REQUIRED = (q.IS_REQUIRED == "Y" ? true : false), FIELDSET_ID = fs.FIELDSET_ID, TITLE = fs.TITLE, SORT_ORDER = q.SORT_ORDER, IS_ACTIVE = (q.IS_ACTIVE == "Y" ? true: false) });
         }
 
+        public static IQueryable<CUSTOMER_SURVEY_QUESTIONS> GetFormQuestion2(decimal FormId, Entities _context)
+        {
+            return (from f in _context.CUSTOMER_SURVEY_FORMS
+                    join fs in _context.CUSTOMER_SURVEY_FIELDSETS on f.FORM_ID equals fs.FORM_ID
+                    join fsr in _context.CUSTOMER_SURVEY_RELATION on fs.FIELDSET_ID equals fsr.FIELDSET_ID
+                    join q in _context.CUSTOMER_SURVEY_QUESTIONS on fsr.QUESTION_ID equals q.QUESTION_ID
+                    where fs.FORM_ID == FormId
+                    select q);
+        }
+
         public static IQueryable<CUSTOMER_SURVEY_QUES_TYPES> GetQuestionTypes(Entities _context)
         {
             return _context.CUSTOMER_SURVEY_QUES_TYPES;
@@ -126,7 +136,7 @@ namespace DBI.Data
 
         public static IQueryable<PROJECT_CONTACTS_V> GetProjectContacts(long ProjectId, Entities _context)
         {
-            return _context.PROJECT_CONTACTS_V.Where(x => x.CUST_SURVEY_PROJECT_ID == ProjectId);
+            return _context.PROJECT_CONTACTS_V.Where(x => x.CUST_SURVEY_PROJECT_ID == ProjectId && x.CUST_SURVEY == "Y");
         }
 
         public static IQueryable<CUSTOMER_SURVEY_FORMS_COMP> GetFormCompletion(Entities _context)
@@ -137,6 +147,11 @@ namespace DBI.Data
         public static IQueryable<CUSTOMER_SURVEY_FORMS_ANS> GetFormAnswersByCompletion(decimal CompletionId, Entities _context)
         {
             return _context.CUSTOMER_SURVEY_FORMS_ANS.Where(x => x.COMPLETION_ID == CompletionId);
+        }
+
+        public static IQueryable<CUSTOMER_SURVEY_FORMS_ANS> GetFormAnswerByQuestion(decimal QuestionId, Entities _context)
+        {
+            return _context.CUSTOMER_SURVEY_FORMS_ANS.Where(x => x.QUESTION_ID == QuestionId);
         }
 
         public static IQueryable<CUSTOMER_SURVEY_RELATION> GetRelationEntries(Entities _context)
@@ -154,13 +169,14 @@ namespace DBI.Data
             return false;
         }
 
-        public static IQueryable<CustomerSurveyCompletions> GetCompletionStore(List<long> OrgsList, Entities _context)
+        public static IQueryable<CustomerSurveyCompletions> GetCompletionStore(long ProjectId, Entities _context)
         {
             return (from d in _context.CUSTOMER_SURVEY_FORMS_COMP
                     join f in _context.CUSTOMER_SURVEY_FORMS on d.FORM_ID equals f.FORM_ID
+                    join a in _context.CUSTOMER_SURVEY_FORMS_ANS on d.COMPLETION_ID equals a.COMPLETION_ID
                     join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
-                    where OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID)
-                    select new CustomerSurveyCompletions { COMPLETION_ID = d.COMPLETION_ID, LONG_NAME = p.LONG_NAME, FILLED_BY = d.FILLED_BY, FILLED_ON = d.FILLED_ON, FORMS_NAME = f.FORMS_NAME });
+                    where d.PROJECT_ID == ProjectId
+                    select new CustomerSurveyCompletions { COMPLETION_ID = d.COMPLETION_ID, LONG_NAME = p.LONG_NAME, FILLED_BY = d.FILLED_BY, FILLED_ON = d.FILLED_ON, FORMS_NAME = f.FORMS_NAME }).Distinct();
         }
 
         public class CustomerSurveyForms

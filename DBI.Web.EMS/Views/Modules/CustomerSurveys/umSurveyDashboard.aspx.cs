@@ -175,6 +175,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 {
                     NewFormToSubmit.FORM_ID = CUSTOMER_SURVEYS.GetFormIdByOrg(RowData[0].ORG_ID, _context);
                     NewFormToSubmit.PROJECT_ID = RowData[0].PROJECT_ID;
+                    NewFormToSubmit.THRESHOLD_ID = RowData[0].THRESHOLD_ID;
                     NewFormToSubmit.CREATE_DATE = DateTime.Now;
                     NewFormToSubmit.MODIFY_DATE = DateTime.Now;
                     NewFormToSubmit.CREATED_BY = User.Identity.Name;
@@ -217,8 +218,21 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
                 FormId = CUSTOMER_SURVEYS.GetFormIdByOrg(RowData[0].ORG_ID, _context);
             }
 
+            //generate code to tie back to customer
+            CUSTOMER_SURVEY_FORMS_COMP NewFormToSubmit = new CUSTOMER_SURVEY_FORMS_COMP();
+            
+            NewFormToSubmit.FORM_ID = FormId;
+            NewFormToSubmit.PROJECT_ID = RowData[0].PROJECT_ID;
+            NewFormToSubmit.THRESHOLD_ID = RowData[0].THRESHOLD_ID;
+            NewFormToSubmit.CREATE_DATE = DateTime.Now;
+            NewFormToSubmit.MODIFY_DATE = DateTime.Now;
+            NewFormToSubmit.CREATED_BY = User.Identity.Name;
+            NewFormToSubmit.MODIFIED_BY = User.Identity.Name;
+            
+
+            GenericData.Insert<CUSTOMER_SURVEY_FORMS_COMP>(NewFormToSubmit);
             //Get questions
-            byte[] PdfStream = generatePDF(FormId);
+            byte[] PdfStream = generatePDF(FormId, NewFormToSubmit.COMPLETION_ID);
 
             Response.Clear();
             Response.ClearContent();
@@ -231,7 +245,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
 
         }
 
-        protected byte[] generatePDF(decimal FormId)
+        protected byte[] generatePDF(decimal FormId, decimal CompletionId)
         {
             List<CUSTOMER_SURVEYS.CustomerSurveyQuestions> FormToGenerate;
             List<CUSTOMER_SURVEYS.CustomerSurveyFieldsets> Fieldsets;
@@ -252,9 +266,12 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
                 Font TableHeaderFont = GetTahoma();
                 TableHeaderFont.Size = 12;
                 TableHeaderFont.IsBold();
-
+                HeaderFooter Footer = new HeaderFooter(new Phrase("ID:" + CompletionId.ToString(), TableFont), false);
+                Footer.Border = HeaderFooter.NO_BORDER;
+                ExportedPDF.Footer = Footer;
 
                 ExportedPDF.Open();
+                
                 PdfPTable HeaderTable = new PdfPTable(1);
                 HeaderTable.WidthPercentage = 25;
                 
@@ -440,8 +457,11 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
                         }
                         FieldsetTable.AddCell(Table);
                     }
+
+                    
                     ExportedPDF.Add(FieldsetTable);
                 }
+                
                 ExportedPDF.Close();
                 result = PdfStream.GetBuffer();
             }
@@ -460,10 +480,23 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
                 ToAddress = CUSTOMER_SURVEYS.GetProjectContacts(RowData[0].PROJECT_ID, _context).Select(x => x.EMAIL_ADDRESS).SingleOrDefault();
             }
 
+            //generate code to tie back to customer
+            CUSTOMER_SURVEY_FORMS_COMP NewFormToSubmit = new CUSTOMER_SURVEY_FORMS_COMP();
+            
+            NewFormToSubmit.FORM_ID = FormId;
+            NewFormToSubmit.PROJECT_ID = RowData[0].PROJECT_ID;
+            NewFormToSubmit.THRESHOLD_ID = RowData[0].THRESHOLD_ID;
+            NewFormToSubmit.CREATE_DATE = DateTime.Now;
+            NewFormToSubmit.MODIFY_DATE = DateTime.Now;
+            NewFormToSubmit.CREATED_BY = User.Identity.Name;
+            NewFormToSubmit.MODIFIED_BY = User.Identity.Name;
+            
+            GenericData.Insert<CUSTOMER_SURVEY_FORMS_COMP>(NewFormToSubmit);
+
             if (ToAddress != null)
             {
                 //Get questions
-                byte[] PdfStream = generatePDF(FormId);
+                byte[] PdfStream = generatePDF(FormId, NewFormToSubmit.COMPLETION_ID);
 
                 string Subject = "Customer Satisfaction Survey";
                 string Message = "Please find attached the following Customer satisfaction survey.";

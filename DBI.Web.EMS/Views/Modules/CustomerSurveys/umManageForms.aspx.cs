@@ -370,66 +370,121 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             decimal FormId = decimal.Parse(e.ExtraParams["FormId"]);
             List<CUSTOMER_SURVEY_FORMS_COMP> FormCompletions;
             List<CUSTOMER_SURVEY_FORMS_ANS> FormAnswers;
+            CUSTOMER_SURVEY_FORMS FormToDelete;
+            bool CannotDelete = false;
             using (Entities _context = new Entities())
             {
                 FormCompletions = CUSTOMER_SURVEYS.GetFormCompletion(_context).Where(x => x.FORM_ID == FormId).ToList();
+                FormToDelete = CUSTOMER_SURVEYS.GetForms(_context).Where(x => x.FORM_ID == FormId).Single();
             }
             int count = 1;
-            foreach (CUSTOMER_SURVEY_FORMS_COMP FormCompletion in FormCompletions)
+            if (FormCompletions.Count > 0)
             {
-                using (Entities _context = new Entities())
+                foreach (CUSTOMER_SURVEY_FORMS_COMP FormCompletion in FormCompletions)
                 {
-                    FormAnswers = CUSTOMER_SURVEYS.GetFormAnswersByCompletion(FormCompletion.COMPLETION_ID, _context).ToList();
-                }
-                if (FormAnswers.Count > 0)
-                {
-                    X.Msg.Alert("Unable to delete", "This form has already been completed and cannot be deleted.").Show();
-                    break;
-                }
-                else if (count == FormCompletions.Count)
-                {
-                    List<CUSTOMER_SURVEY_FIELDSETS> Fieldsets;
-                    List<CUSTOMER_SURVEY_QUESTIONS> Questions;
-                    List<CUSTOMER_SURVEY_OPTIONS> Options;
-                    List<CUSTOMER_SURVEY_RELATION> RelationEntries;
-                    
-                    
                     using (Entities _context = new Entities())
                     {
-                        //Get Fieldsets
-                        Fieldsets = CUSTOMER_SURVEYS.GetFieldsets(_context).Where(x => x.FORM_ID == FormId).ToList();
+                        FormAnswers = CUSTOMER_SURVEYS.GetFormAnswersByCompletion(FormCompletion.COMPLETION_ID, _context).ToList();
                     }
-                    foreach (CUSTOMER_SURVEY_FIELDSETS Fieldset in Fieldsets)
+                    if (FormAnswers.Count > 0)
                     {
-                        //Get Questions
-                        using(Entities _context = new Entities())
-                        {
-                            Questions = CUSTOMER_SURVEYS.GetFieldsetQuestions(Fieldset.FIELDSET_ID, _context).ToList();
-                        }
-                        foreach (CUSTOMER_SURVEY_QUESTIONS Question in Questions)
-                        {
-                            //Get Options
-                            using (Entities _context = new Entities())
-                            {
-                                Options = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).ToList();
-                            }
-                            //Delete Options
-                            GenericData.Delete<CUSTOMER_SURVEY_OPTIONS>(Options);
-                        }
+                        X.Msg.Alert("Unable to delete", "This form has already been completed and cannot be deleted.").Show();
+                        CannotDelete = true;
+                        break;
+                    }
+                    else if (count == FormCompletions.Count)
+                    {
+                        List<CUSTOMER_SURVEY_FIELDSETS> Fieldsets;
+                        List<CUSTOMER_SURVEY_QUESTIONS> Questions;
+                        List<CUSTOMER_SURVEY_OPTIONS> Options;
+                        List<CUSTOMER_SURVEY_RELATION> RelationEntries;
+
+
                         using (Entities _context = new Entities())
                         {
-                            RelationEntries = CUSTOMER_SURVEYS.GetRelationEntries(_context).Where(x => x.FIELDSET_ID == Fieldset.FIELDSET_ID).ToList();
+                            //Get Fieldsets
+                            Fieldsets = CUSTOMER_SURVEYS.GetFieldsets(_context).Where(x => x.FORM_ID == FormId).ToList();
                         }
-                        GenericData.Delete<CUSTOMER_SURVEY_RELATION>(RelationEntries);
-                        GenericData.Delete<CUSTOMER_SURVEY_QUESTIONS>(Questions);
-                        
+                        foreach (CUSTOMER_SURVEY_FIELDSETS Fieldset in Fieldsets)
+                        {
+                            //Get Questions
+                            using (Entities _context = new Entities())
+                            {
+                                Questions = CUSTOMER_SURVEYS.GetFieldsetQuestions(Fieldset.FIELDSET_ID, _context).ToList();
+                            }
+                            foreach (CUSTOMER_SURVEY_QUESTIONS Question in Questions)
+                            {
+                                //Get Options
+                                using (Entities _context = new Entities())
+                                {
+                                    Options = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).ToList();
+                                }
+                                //Delete Options
+                                GenericData.Delete<CUSTOMER_SURVEY_OPTIONS>(Options);
+                            }
+                            using (Entities _context = new Entities())
+                            {
+                                RelationEntries = CUSTOMER_SURVEYS.GetRelationEntries(_context).Where(x => x.FIELDSET_ID == Fieldset.FIELDSET_ID).ToList();
+                            }
+                            GenericData.Delete<CUSTOMER_SURVEY_RELATION>(RelationEntries);
+                            GenericData.Delete<CUSTOMER_SURVEY_QUESTIONS>(Questions);
+
+
+                        }
+                        GenericData.Delete<CUSTOMER_SURVEY_FIELDSETS>(Fieldsets);
 
                     }
-                    GenericData.Delete<CUSTOMER_SURVEY_FIELDSETS>(Fieldsets);
-                    
+                    count++;
                 }
-                count++;
+                if (CannotDelete == false)
+                {
+                    GenericData.Delete<CUSTOMER_SURVEY_FORMS>(FormToDelete);
+
+                    uxFormsStore.Reload();
+                    uxQuestionsStore.Reload();
+                    uxFieldsetsStore.Reload();
+                    uxOptionsStore.Reload();
+                }
             }
+            else
+            {
+                List<CUSTOMER_SURVEY_FIELDSETS> Fieldsets;
+                List<CUSTOMER_SURVEY_QUESTIONS> Questions;
+                List<CUSTOMER_SURVEY_OPTIONS> Options;
+                List<CUSTOMER_SURVEY_RELATION> RelationEntries;
+
+                using (Entities _context = new Entities())
+                {
+                    Fieldsets = CUSTOMER_SURVEYS.GetFieldsets(_context).Where(x => x.FORM_ID == FormId).ToList();
+                    Questions = CUSTOMER_SURVEYS.GetFormQuestion2(FormId, _context).ToList();
+                }    
+                
+                foreach (CUSTOMER_SURVEY_QUESTIONS Question in Questions)
+                {
+                    using (Entities _context = new Entities())
+                    {
+                        Options = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).ToList();
+                    }
+                    GenericData.Delete<CUSTOMER_SURVEY_OPTIONS>(Options);
+                }
+                foreach (CUSTOMER_SURVEY_FIELDSETS Fieldset in Fieldsets)
+                {
+                    using (Entities _context = new Entities())
+                    {
+                        RelationEntries = CUSTOMER_SURVEYS.GetRelationEntries(_context).Where(x => x.FIELDSET_ID == Fieldset.FIELDSET_ID).ToList();
+                    }
+                    GenericData.Delete<CUSTOMER_SURVEY_RELATION>(RelationEntries);
+                }
+                GenericData.Delete<CUSTOMER_SURVEY_QUESTIONS>(Questions);
+                GenericData.Delete<CUSTOMER_SURVEY_FIELDSETS>(Fieldsets);
+                GenericData.Delete<CUSTOMER_SURVEY_FORMS>(FormToDelete);
+
+                uxFormsStore.Reload();
+                uxQuestionsStore.Reload();
+                uxFieldsetsStore.Reload();
+                uxOptionsStore.Reload();
+            }
+            
         }
 
         protected void deDeleteFieldset(object sender, DirectEventArgs e)

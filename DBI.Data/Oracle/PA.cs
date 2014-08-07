@@ -53,6 +53,11 @@ namespace DBI.Data
                 List<SingleCombo> data = context.Database.SqlQuery<SingleCombo>(sql).ToList();
                 return data;
             }
-        }        
+        }
+
+        public static IQueryable<PROJECTS_V> GetProjectsByOrg(List<long> OrgsList, Entities _context)
+        {
+            return _context.PROJECTS_V.Where(x => OrgsList.Contains(x.CARRYING_OUT_ORGANIZATION_ID) && x.PROJECT_TYPE == "CUSTOMER BILLING");
+        }
     }
 }

@@ -19,9 +19,16 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
         protected long GetOrgFromTree(string _selectedRecordID)
         {
-            char[] _delimiterChars = { ':' };
-            string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
-            return long.Parse(_selectedID[1].ToString());
+            if (_selectedRecordID.Contains(":"))
+            {
+                char[] _delimiterChars = { ':' };
+                string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
+                return long.Parse(_selectedID[1].ToString());
+            }
+            else
+            {
+                return long.Parse(_selectedRecordID);
+            }
         }
 
         protected long GetHierarchyFromTree(string _selectedRecordID)
@@ -125,23 +132,49 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
         protected void deReadCompletions(object sender, StoreReadDataEventArgs e)
         {
+            IQueryable<CUSTOMER_SURVEYS.CustomerSurveyCompletions> Completions;
+            using (Entities _context = new Entities())
+            {
+                long ProjectId = long.Parse(e.Parameters["ProjectId"]);
+                Completions = CUSTOMER_SURVEYS.GetCompletionStore(ProjectId, _context);
+                int count;
+                var data = GenericData.ListFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyCompletions>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], Completions, out count);
+                uxCompletedStore.DataSource = data;
+                e.Total = count;
+            }
+        }
+
+        protected void deReadProjects(object sender, StoreReadDataEventArgs e)
+        {
             string _selectedRecordID = uxCompanySelectionModel.SelectedRecordID;
             List<long> OrgsList;
             if (_selectedRecordID != string.Empty)
             {
                 long SelectedOrgId = GetOrgFromTree(_selectedRecordID);
                 long HierId = GetHierarchyFromTree(_selectedRecordID);
-                IQueryable<CUSTOMER_SURVEYS.CustomerSurveyCompletions> Completions;
                 using (Entities _context = new Entities())
                 {
                     OrgsList = HR.ActiveOrganizationsByHierarchy(HierId, SelectedOrgId, _context).Select(x => x.ORGANIZATION_ID).ToList();
-                    Completions = CUSTOMER_SURVEYS.GetCompletionStore(OrgsList, _context);
+                    IQueryable<PROJECTS_V> ProjectList = PA.GetProjectsByOrg(OrgsList, _context);
                     int count;
-                    var data = GenericData.ListFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyCompletions>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], Completions, out count);
-                    uxCompletedStore.DataSource = data;
+                    var data = GenericData.ListFilterHeader<PROJECTS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], ProjectList, out count);
+                    uxProjectStore.DataSource = data;
                     e.Total = count;
-                }   
+                }
             }
+        }
+
+        protected void deLoadForm(object sender, DirectEventArgs e)
+        {
+            decimal CompletionId = decimal.Parse(e.ExtraParams["CompletionId"]);
+            decimal FormId;
+            using (Entities _context = new Entities())
+            {
+                FormId = CUSTOMER_SURVEYS.GetFormCompletion(_context).Where(x => x.COMPLETION_ID == CompletionId).Select(x => x.FORM_ID).Single();
+            }
+            //LoadForm(FormId, CompletionId);
+            uxCompletedSurveyPanel.LoadContent(string.Format("umViewSurvey.aspx?CompletionId={0}&FormId={1}", CompletionId, FormId));
+            
         }
     }
 }
