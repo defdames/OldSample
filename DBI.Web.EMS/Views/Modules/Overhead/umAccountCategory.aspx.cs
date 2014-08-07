@@ -35,6 +35,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 uxAccountCategoryStore.DataSource = GenericData.EnumerableFilterHeader<GL_ACCOUNTS_V2>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
                 e.Total = count;
 
+             
             }
         }
 
@@ -43,5 +44,106 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             public string CATEGORY_NAME {get; set;}
             public long CATEGORY_ID {get; set;}
         }
+
+        protected void uxAccountCategoryStore_ReadData(object sender, StoreReadDataEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                var _data = _context.OVERHEAD_CATEGORY.AsQueryable();
+
+                int count;
+                uxAccountCategoryStore.DataSource = GenericData.ListFilterHeader<OVERHEAD_CATEGORY>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
+                e.Total = count;
+                uxAddCategory.Enable();
+            }
+        }
+
+        protected void uxAccountListStore_ReadData(object sender, StoreReadDataEventArgs e)
+        {
+
+        }
+
+        protected void deSelectCategory(object sender, DirectEventArgs e)
+        {
+            RowSelectionModel _sm = uxAccountCategorySelectionModel;
+            if (_sm.SelectedRows.Count > 0)
+            {
+                uxDeleteCategory.Enable();
+                uxAccountListStore.Reload();
+                uxAccountMaintenace.Enable();
+            }
+            else
+            {
+                uxDeleteCategory.Disable();
+                uxAccountMaintenace.Disable();
+            }
+
+        }
+
+        protected void deDeSelectCategory(object sender, DirectEventArgs e)
+        {
+            RowSelectionModel _sm = uxAccountCategorySelectionModel;
+            if (_sm.SelectedRows.Count > 0)
+            {
+                uxDeleteCategory.Enable();
+            }
+            else
+            {
+                uxDeleteCategory.Disable();
+                uxAccountMaintenace.Disable();
+            }
+
+        }
+
+
+
+        protected void deSaveAccountCategory(object sender, DirectEventArgs e)
+        {
+
+            if (uxCategoryName.Text == null)
+            {
+                X.Msg.Alert("Fields Missing", "Category name is required to save this record!").Show();
+            }
+            else
+            {
+                OVERHEAD_CATEGORY _record = new OVERHEAD_CATEGORY();
+                _record.NAME = uxCategoryName.Text;
+                _record.DESCRIPTION = uxCategoryDescription.Text;
+                _record.CREATE_DATE = DateTime.Now;
+                _record.MODIFY_DATE = DateTime.Now;
+                _record.CREATED_BY = User.Identity.Name;
+                _record.MODIFIED_BY = User.Identity.Name;
+                GenericData.Insert<OVERHEAD_CATEGORY>(_record);
+
+                uxCategoryWindow.Close();
+                uxAccountCategoryStore.Reload();
+            }
+        }
+
+        protected void deDeleteCategory(object sender, DirectEventArgs e)
+        {
+           RowSelectionModel sm = uxAccountCategorySelectionModel;
+           long _selectedRowID = long.Parse(sm.SelectedRow.RecordID);
+
+            //Make sure it's not in use
+            using (Entities _context = new Entities())
+            {
+                List<OVERHEAD_ACCOUNT_CATEGORY> _oac = _context.OVERHEAD_ACCOUNT_CATEGORY.Where(x => x.CATEGORY_ID == _selectedRowID).ToList();
+                if (_oac.Count > 0)
+                {
+                    X.Msg.Alert("Delete Error", "You can not delete this category as it's in use!").Show();
+                }
+                else
+                {
+                    OVERHEAD_CATEGORY _record = _context.OVERHEAD_CATEGORY.Where(x => x.CATEGORY_ID == _selectedRowID).SingleOrDefault();
+                    GenericData.Delete<OVERHEAD_CATEGORY>(_record);
+                    uxCategoryWindow.Close();
+                    uxAccountCategoryStore.Reload();
+                }
+
+            }
+
+        }
+
     }
 }
