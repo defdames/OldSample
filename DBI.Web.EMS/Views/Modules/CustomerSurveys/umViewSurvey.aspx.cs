@@ -29,9 +29,30 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 uxLogoImage.Hide();
                 uxSubmitSurveyButton.Hide();
                 uxCancelSurveyButton.Hide();
+
+                if (Request.QueryString["Print"] != "print")
+                {
+                    uxSurveyContainer.LayoutConfig.Add(new HBoxLayoutConfig { Pack = BoxPack.Center, ReserveScrollbar = true });
+                }
+                else
+                {
+                    uxSurveyDisplay.MaxWidth = 600;
+                   
+                }
             }
             uxSurveyContainer.Show();
 
+        }
+
+        protected void Page_LoadComplete(object sender, EventArgs e)
+        {
+            if (Request.QueryString["Print"] == "print")
+            {
+                if (!IsPostBack)
+                {
+                    X.Js.Call("window.print()");
+                }
+            }
         }
 
         protected void LoadForm(decimal FormId)

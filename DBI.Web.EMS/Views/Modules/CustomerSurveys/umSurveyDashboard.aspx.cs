@@ -25,9 +25,16 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
         protected long GetOrgFromTree(string _selectedRecordID)
         {
-            char[] _delimiterChars = { ':' };
-            string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
-            return long.Parse(_selectedID[1].ToString());
+            if (_selectedRecordID.Contains(":"))
+            {
+                char[] _delimiterChars = { ':' };
+                string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
+                return long.Parse(_selectedID[1].ToString());
+            }
+            else
+            {
+                return long.Parse(_selectedRecordID);
+            }
         }
 
         protected long GetHierarchyFromTree(string _selectedRecordID)

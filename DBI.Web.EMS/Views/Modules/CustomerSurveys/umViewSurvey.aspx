@@ -5,13 +5,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title></title>
+
     <style type="text/css">
         .test {
             background-color: grey;
         }
     </style>
+    
 </head>
-<body>
+<body style="overflow:visible">
     <form id="form1" runat="server">
         <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="false" />
         <ext:Viewport ID="Viewport1" runat="server" Cls="test" >
@@ -44,9 +46,6 @@
                             </Listeners>
                         </ext:FormPanel>
                     </Items>
-                    <LayoutConfig>
-                        <ext:HBoxLayoutConfig Pack="Center" ReserveScrollbar="true" />
-                    </LayoutConfig>
                 </ext:Container>
             </Items>
             <LayoutConfig>

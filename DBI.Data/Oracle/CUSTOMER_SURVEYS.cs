@@ -176,7 +176,7 @@ namespace DBI.Data
                     join a in _context.CUSTOMER_SURVEY_FORMS_ANS on d.COMPLETION_ID equals a.COMPLETION_ID
                     join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                     where d.PROJECT_ID == ProjectId
-                    select new CustomerSurveyCompletions { COMPLETION_ID = d.COMPLETION_ID, LONG_NAME = p.LONG_NAME, FILLED_BY = d.FILLED_BY, FILLED_ON = d.FILLED_ON, FORMS_NAME = f.FORMS_NAME }).Distinct();
+                    select new CustomerSurveyCompletions { COMPLETION_ID = d.COMPLETION_ID, FORM_ID = f.FORM_ID, LONG_NAME = p.LONG_NAME, FILLED_BY = d.FILLED_BY, FILLED_ON = d.FILLED_ON, FORMS_NAME = f.FORMS_NAME }).Distinct();
         }
 
         public class CustomerSurveyForms
@@ -244,6 +244,7 @@ namespace DBI.Data
         {
             public decimal COMPLETION_ID { get; set; }
             public DateTime? FILLED_ON { get; set; }
+            public decimal FORM_ID { get; set; }
             public string FORMS_NAME { get; set; }
             public string FILLED_BY { get; set; }
             public string LONG_NAME { get; set; }

@@ -5,6 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 	<title></title>
+    <script type="text/javascript">
+        function printWindow() {
+            var PrintWin = window.open("umViewSurvey.aspx?CompletionId=" + App.uxCompletedGrid.getSelectionModel().getSelection()[0].data.COMPLETION_ID + "&FormId=" + App.uxCompletedGrid.getSelectionModel().getSelection()[0].data.FORM_ID + "&Print=print");
+            
+            PrintWin.focus();
+        }
+    </script>
 </head>
 <body>
 	<form id="form1" runat="server">
@@ -95,6 +102,7 @@
 												<ext:Model ID="Model1" runat="server">
 													<Fields>
 														<ext:ModelField Name="COMPLETION_ID" />
+                                                        <ext:ModelField Name="FORM_ID" />
 														<ext:ModelField Name="FORMS_NAME" />
 														<ext:ModelField Name="FILLED_BY" />
 														<ext:ModelField Name="FILLED_ON" />
@@ -141,6 +149,17 @@
 									<Loader ID="Loader1" runat="server" Mode="Frame">
 										<LoadMask ShowMask="true" />
 									</Loader>
+									<TopBar>
+										<ext:Toolbar runat="server" ID="uxPrintToolbar">
+											<Items>
+												<ext:Button runat="server" ID="uxPrintButton" Text="Print" Icon="Printer">
+                                                    <Listeners>
+                                                        <Click Fn="printWindow" />
+                                                    </Listeners>
+												</ext:Button>
+											</Items>
+										</ext:Toolbar>
+									</TopBar>
 								</ext:Panel>
 							</Items>
 						</ext:Panel>
