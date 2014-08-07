@@ -158,7 +158,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                     if (item.TIME_OUT != null)
                     {
                         TimeSpan ts = (DateTime)item.TIME_OUT - item.TIME_IN;
-                        item.TOTAL_HOURS = ts.ToString("hh\\:mm");
+                        item.TOTAL_HOURS = ts.ToString("dd\\.hh\\:mm");
                     }                    
                 }
 

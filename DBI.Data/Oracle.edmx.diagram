@@ -83,7 +83,6 @@
         <EntityTypeShape EntityType="OracleModel.CROSSING_RAILROAD" Width="1.5" PointX="24.625" PointY="13" />
         <EntityTypeShape EntityType="OracleModel.DAILY_ACTIVITY_INVENTORY" Width="1.5" PointX="5.625" PointY="21.375" />
         <EntityTypeShape EntityType="OracleModel.JOB_COST_CLASSES" Width="1.5" PointX="13.75" PointY="15.375" />
-        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_VERSION" Width="1.5" PointX="18" PointY="25.875" />
         <AssociationConnector Association="OracleModel.FK_CONTACTS_RAILROAD_ID" />
         <AssociationConnector Association="OracleModel.FK_PROJECT_RAILROAD_ID" />
         <AssociationConnector Association="OracleModel.FK_INVENTORY_CHEMICAL_MIX_ID" />
@@ -140,15 +139,12 @@
         <EntityTypeShape EntityType="OracleModel.BUD_BID_PROJECTS" Width="1.5" PointX="19.125" PointY="85.75" />
         <AssociationConnector Association="OracleModel.FK_PROJECTS_STATUS_ID" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_APPLICATION" Width="1.5" PointX="30.125" PointY="2.625" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING_SUPPLEMENTAL" Width="1.5" PointX="29.375" PointY="12.875" />
         <AssociationConnector Association="OracleModel.FK_APPLICATION_INVOICE_ID" />
-        <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_CAT" Width="1.5" PointX="47.75" PointY="54.875" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_FORMS" Width="1.5" PointX="49.625" PointY="58.875" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_THRESH_AMT" Width="1.5" PointX="41.625" PointY="54.25" />
         <AssociationConnector Association="OracleModel.FK_FORMS_CAT_ID" />
         <AssociationConnector Association="OracleModel.FK_FIELDSETS_FORM_ID" />
-        <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="1.5" PointX="17.125" PointY="18.875" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_THRESHOLDS" Width="1.5" PointX="44" PointY="54.375" />
         <AssociationConnector Association="OracleModel.FK_THRSH_AMTS_FK" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_ADJUSTMENT" Width="1.5" PointX="21.375" PointY="14.75" />
@@ -159,9 +155,17 @@
         <AssociationConnector Association="OracleModel.FK_FORMS_ANS_COMPLETION_ID" />
         <AssociationConnector Association="OracleModel.FK_FORMS_COMP_THRESH_ID" />
         <EntityTypeShape EntityType="OracleModel.PROJECT_CONTACTS_V" Width="1.5" PointX="0.75444998068476554" PointY="22.724045793863034" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_SUPPLEMENTAL" Width="1.5" PointX="28.75" PointY="13.25" />
+        <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
         </Diagram>
       <Diagram DiagramId="e84dee89c5a844eb84c350f94a998eb6" Name="OVERHEAD" >
-        <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_RANGE" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="4.25" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_RANGE" Width="2.375" PointX="1.125" PointY="3.5" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_ORG_BUDGETS" Width="2.875" PointX="6.375" PointY="3.75" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_DETAIL" Width="1.5" PointX="6.375" PointY="7.75" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_ACCOUNT_COMMENT" Width="2.5" PointX="8.375" PointY="0.75" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_ACCOUNT_CATEGORY" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_CATEGORY" Width="1.5" PointX="2.75" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -47,17 +47,37 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<SingleCombo> AllFiscalYears()
         {
+            string sql = "SELECT DISTINCT TO_CHAR(END_DATE, 'YYYY') ID_NAME FROM APPS.PA_PERIODS_ALL ORDER BY ID_NAME";
+
+            List<SingleCombo> data;
             using (Entities context = new Entities())
-            {                    
-                string sql = "SELECT DISTINCT TO_CHAR(END_DATE, 'YYYY') ID_NAME FROM APPS.PA_PERIODS_ALL ORDER BY 1";
-                List<SingleCombo> data = context.Database.SqlQuery<SingleCombo>(sql).ToList();
-                return data;
+            {
+                data = context.Database.SqlQuery<SingleCombo>(sql).ToList();                
             }
+
+            return data;
         }
+
+        /// <summary>
+        /// Returns a list of fiscal years by GL
+        /// </summary>
+        /// <returns></returns>
+        public static List<SingleCombo> FiscalYearsGL()
+        {
+            string sql = "SELECT DISTINCT TO_CHAR(END_DATE, 'YYYY') ID_NAME FROM APPS.GL_PERIODS_V ORDER BY ID_NAME DESC";
+
+            List<SingleCombo> data;
+            using (Entities context = new Entities())
+            {
+                data = context.Database.SqlQuery<SingleCombo>(sql).ToList();
+            }
+            return data;
+        }        
 
         public static IQueryable<PROJECTS_V> GetProjectsByOrg(List<long> OrgsList, Entities _context)
         {
             return _context.PROJECTS_V.Where(x => OrgsList.Contains(x.CARRYING_OUT_ORGANIZATION_ID) && x.PROJECT_TYPE == "CUSTOMER BILLING");
         }
+
     }
 }

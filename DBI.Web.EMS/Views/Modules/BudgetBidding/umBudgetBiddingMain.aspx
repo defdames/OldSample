@@ -31,7 +31,8 @@
                     RootVisible="true"
                     SingleExpand="true"
                     Lines="false"
-                    UseArrows="true">
+                    UseArrows="true"
+                    Collapsible="true">
                     <Store>
                         <ext:TreeStore ID="TreeStore1" runat="server" OnReadData="deLoadOrgTree">
                             <Proxy>
@@ -80,9 +81,6 @@
                                     </Proxy>
                                 </ext:Store>
                             </Store>
-                            <Listeners>
-                                <Activate Handler="#{uxFiscalYearStore}.store.reload();" />
-                            </Listeners>
                             <DirectEvents>
                                 <Select OnEvent="deSelectYear">
                                 </Select>
@@ -114,9 +112,6 @@
                                     </Proxy>
                                 </ext:Store>
                             </Store>
-                            <Listeners>
-                                <Activate Handler="#{uxVersionStore}.store.reload();" />
-                            </Listeners>
                             <DirectEvents>
                                 <Select OnEvent="deSelectVersion">
                                 </Select>
@@ -129,7 +124,7 @@
 
                         <ext:ToolbarFill />
 
-                        <ext:Button ID="uxOrgSettings" runat="server" Text="Org Settings" Icon="Cog">
+                        <ext:Button ID="uxOrgSettings" runat="server" Text="Org Settings" Icon="Cog" Disabled="true">
                             <DirectEvents>
                             </DirectEvents>
                         </ext:Button>

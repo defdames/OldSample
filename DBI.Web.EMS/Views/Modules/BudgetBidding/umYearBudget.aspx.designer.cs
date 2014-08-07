@@ -190,7 +190,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column3;
+        protected global::Ext.Net.NumberColumn Column3;
         
         /// <summary>
         /// Column4 control.
@@ -199,7 +199,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column4;
+        protected global::Ext.Net.NumberColumn Column4;
         
         /// <summary>
         /// Column5 control.
@@ -208,7 +208,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column5;
+        protected global::Ext.Net.NumberColumn Column5;
         
         /// <summary>
         /// Column6 control.
@@ -217,7 +217,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column6;
+        protected global::Ext.Net.NumberColumn Column6;
         
         /// <summary>
         /// Column7 control.
@@ -226,7 +226,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column7;
+        protected global::Ext.Net.NumberColumn Column7;
         
         /// <summary>
         /// Column8 control.
@@ -235,7 +235,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column8;
+        protected global::Ext.Net.NumberColumn Column8;
         
         /// <summary>
         /// Column9 control.
@@ -244,7 +244,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column9;
+        protected global::Ext.Net.NumberColumn Column9;
         
         /// <summary>
         /// Column10 control.
@@ -262,7 +262,133 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column11;
+        protected global::Ext.Net.NumberColumn Column11;
+        
+        /// <summary>
+        /// uxTotal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer uxTotal;
+        
+        /// <summary>
+        /// DisplayField6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField DisplayField6;
+        
+        /// <summary>
+        /// DisplayField7 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField DisplayField7;
+        
+        /// <summary>
+        /// DisplayField8 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField DisplayField8;
+        
+        /// <summary>
+        /// DisplayField9 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField DisplayField9;
+        
+        /// <summary>
+        /// DisplayField10 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField DisplayField10;
+        
+        /// <summary>
+        /// uxTGrossRec control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField uxTGrossRec;
+        
+        /// <summary>
+        /// uxTMatUsage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField uxTMatUsage;
+        
+        /// <summary>
+        /// uxTGrossRev control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField uxTGrossRev;
+        
+        /// <summary>
+        /// uxTDirects control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField uxTDirects;
+        
+        /// <summary>
+        /// uxTOP control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField uxTOP;
+        
+        /// <summary>
+        /// uxTOPPerc control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField uxTOPPerc;
+        
+        /// <summary>
+        /// uxTOPPlusMinus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField uxTOPPlusMinus;
+        
+        /// <summary>
+        /// DisplayField24 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField DisplayField24;
         
         /// <summary>
         /// uxInactiveTotal control.
@@ -319,67 +445,67 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.DisplayField DisplayField5;
         
         /// <summary>
-        /// DisplayField6 control.
+        /// uxIGrossRec control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DisplayField DisplayField6;
+        protected global::Ext.Net.DisplayField uxIGrossRec;
         
         /// <summary>
-        /// DisplayField7 control.
+        /// uxIMatUsage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DisplayField DisplayField7;
+        protected global::Ext.Net.DisplayField uxIMatUsage;
         
         /// <summary>
-        /// DisplayField8 control.
+        /// uxIGrossRev control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DisplayField DisplayField8;
+        protected global::Ext.Net.DisplayField uxIGrossRev;
         
         /// <summary>
-        /// DisplayField9 control.
+        /// uxIDirects control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DisplayField DisplayField9;
+        protected global::Ext.Net.DisplayField uxIDirects;
         
         /// <summary>
-        /// DisplayField10 control.
+        /// uxIOP control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DisplayField DisplayField10;
+        protected global::Ext.Net.DisplayField uxIOP;
         
         /// <summary>
-        /// DisplayField11 control.
+        /// uxIOPPerc control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DisplayField DisplayField11;
+        protected global::Ext.Net.DisplayField uxIOPPerc;
         
         /// <summary>
-        /// DisplayField12 control.
+        /// uxIOPPlusMinus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DisplayField DisplayField12;
+        protected global::Ext.Net.DisplayField uxIOPPlusMinus;
         
         /// <summary>
         /// DisplayField13 control.
@@ -445,6 +571,267 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.DisplayField DisplayField18;
         
         /// <summary>
+        /// uxAGrossRec control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField uxAGrossRec;
+        
+        /// <summary>
+        /// uxAMatUsage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField uxAMatUsage;
+        
+        /// <summary>
+        /// uxAGrossRev control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField uxAGrossRev;
+        
+        /// <summary>
+        /// uxADirects control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField uxADirects;
+        
+        /// <summary>
+        /// uxAOP control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField uxAOP;
+        
+        /// <summary>
+        /// uxAOPPerc control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField uxAOPPerc;
+        
+        /// <summary>
+        /// uxAOPPlusMinus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField uxAOPPlusMinus;
+        
+        /// <summary>
+        /// DisplayField26 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField DisplayField26;
+        
+        /// <summary>
+        /// uxAdjustmentsGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridPanel uxAdjustmentsGrid;
+        
+        /// <summary>
+        /// uxAdjustmentGridRowModel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxAdjustmentGridRowModel;
+        
+        /// <summary>
+        /// uxAdjustmentGridStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxAdjustmentGridStore;
+        
+        /// <summary>
+        /// Model8 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model Model8;
+        
+        /// <summary>
+        /// Column15 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column15;
+        
+        /// <summary>
+        /// Column21 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column21;
+        
+        /// <summary>
+        /// Column22 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberColumn Column22;
+        
+        /// <summary>
+        /// Column23 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberColumn Column23;
+        
+        /// <summary>
+        /// Column24 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberColumn Column24;
+        
+        /// <summary>
+        /// Column25 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberColumn Column25;
+        
+        /// <summary>
+        /// NumberField2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberField NumberField2;
+        
+        /// <summary>
+        /// Column26 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberColumn Column26;
+        
+        /// <summary>
+        /// Column27 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberColumn Column27;
+        
+        /// <summary>
+        /// NumberField1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberField NumberField1;
+        
+        /// <summary>
+        /// Column28 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberColumn Column28;
+        
+        /// <summary>
+        /// Column29 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column29;
+        
+        /// <summary>
+        /// Column30 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberColumn Column30;
+        
+        /// <summary>
+        /// CellEditing1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.CellEditing CellEditing1;
+        
+        /// <summary>
+        /// uxGrandTotal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer uxGrandTotal;
+        
+        /// <summary>
+        /// DisplayField11 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField DisplayField11;
+        
+        /// <summary>
+        /// DisplayField12 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField DisplayField12;
+        
+        /// <summary>
         /// DisplayField19 control.
         /// </summary>
         /// <remarks>
@@ -472,58 +859,346 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.DisplayField DisplayField21;
         
         /// <summary>
-        /// DisplayField22 control.
+        /// uxGTGrossRec control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DisplayField DisplayField22;
+        protected global::Ext.Net.DisplayField uxGTGrossRec;
         
         /// <summary>
-        /// DisplayField23 control.
+        /// uxGTMatUsage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DisplayField DisplayField23;
+        protected global::Ext.Net.DisplayField uxGTMatUsage;
         
         /// <summary>
-        /// DisplayField24 control.
+        /// uxGTGrossRev control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DisplayField DisplayField24;
+        protected global::Ext.Net.DisplayField uxGTGrossRev;
         
         /// <summary>
-        /// DisplayField25 control.
+        /// uxGTDirects control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DisplayField DisplayField25;
+        protected global::Ext.Net.DisplayField uxGTDirects;
         
         /// <summary>
-        /// DisplayField26 control.
+        /// uxGTOP control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DisplayField DisplayField26;
+        protected global::Ext.Net.DisplayField uxGTOP;
         
         /// <summary>
-        /// uxProjectDetail control.
+        /// uxGTOPPerc control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FormPanel uxProjectDetail;
+        protected global::Ext.Net.DisplayField uxGTOPPerc;
+        
+        /// <summary>
+        /// uxGTOPPlusMinus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField uxGTOPPlusMinus;
+        
+        /// <summary>
+        /// DisplayField31 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField DisplayField31;
+        
+        /// <summary>
+        /// uxOverheadGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridPanel uxOverheadGrid;
+        
+        /// <summary>
+        /// uxOverheadGridRowModel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxOverheadGridRowModel;
+        
+        /// <summary>
+        /// uxOverheadGridStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxOverheadGridStore;
+        
+        /// <summary>
+        /// Model10 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model Model10;
+        
+        /// <summary>
+        /// Column31 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column31;
+        
+        /// <summary>
+        /// Column32 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column32;
+        
+        /// <summary>
+        /// NumberColumn1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberColumn NumberColumn1;
+        
+        /// <summary>
+        /// NumberColumn2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberColumn NumberColumn2;
+        
+        /// <summary>
+        /// NumberColumn3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberColumn NumberColumn3;
+        
+        /// <summary>
+        /// NumberColumn4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberColumn NumberColumn4;
+        
+        /// <summary>
+        /// NumberColumn5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberColumn NumberColumn5;
+        
+        /// <summary>
+        /// NumberColumn6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberColumn NumberColumn6;
+        
+        /// <summary>
+        /// uxOH control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberColumn uxOH;
+        
+        /// <summary>
+        /// Column33 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column33;
+        
+        /// <summary>
+        /// NumberColumn8 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberColumn NumberColumn8;
+        
+        /// <summary>
+        /// FieldContainer19 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer FieldContainer19;
+        
+        /// <summary>
+        /// DisplayField32 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField DisplayField32;
+        
+        /// <summary>
+        /// DisplayField33 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField DisplayField33;
+        
+        /// <summary>
+        /// DisplayField34 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField DisplayField34;
+        
+        /// <summary>
+        /// DisplayField35 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField DisplayField35;
+        
+        /// <summary>
+        /// DisplayField36 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField DisplayField36;
+        
+        /// <summary>
+        /// DisplayField37 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField DisplayField37;
+        
+        /// <summary>
+        /// DisplayField38 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField DisplayField38;
+        
+        /// <summary>
+        /// DisplayField39 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField DisplayField39;
+        
+        /// <summary>
+        /// DisplayField40 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField DisplayField40;
+        
+        /// <summary>
+        /// uxNetCont control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField uxNetCont;
+        
+        /// <summary>
+        /// DisplayField42 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField DisplayField42;
+        
+        /// <summary>
+        /// DisplayField43 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField DisplayField43;
+        
+        /// <summary>
+        /// DisplayField44 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField DisplayField44;
+        
+        /// <summary>
+        /// uxProjectInfo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FormPanel uxProjectInfo;
         
         /// <summary>
         /// FieldContainer3 control.
@@ -553,13 +1228,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.DropDownField uxProjectNum;
         
         /// <summary>
-        /// uxProjectInfo control.
+        /// uxProjectList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxProjectInfo;
+        protected global::Ext.Net.GridPanel uxProjectList;
         
         /// <summary>
         /// uxProjectNumStore control.
@@ -706,13 +1381,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label8;
         
         /// <summary>
-        /// Label9 control.
+        /// uxVersionLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Label Label9;
+        protected global::Ext.Net.Label uxVersionLabel;
         
         /// <summary>
         /// uxCompareOP control.
@@ -1156,22 +1831,22 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label35;
         
         /// <summary>
-        /// uxSummaryActions control.
+        /// uxDetailActions control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ComboBox uxSummaryActions;
+        protected global::Ext.Net.ComboBox uxDetailActions;
         
         /// <summary>
-        /// Store3 control.
+        /// uxDetailActionsStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store Store3;
+        protected global::Ext.Net.Store uxDetailActionsStore;
         
         /// <summary>
         /// Model3 control.
@@ -1243,7 +1918,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column16;
+        protected global::Ext.Net.NumberColumn Column16;
         
         /// <summary>
         /// Column17 control.
@@ -1252,7 +1927,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column17;
+        protected global::Ext.Net.NumberColumn Column17;
         
         /// <summary>
         /// Column18 control.
@@ -1261,7 +1936,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column18;
+        protected global::Ext.Net.NumberColumn Column18;
         
         /// <summary>
         /// Column19 control.
@@ -1270,7 +1945,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column19;
+        protected global::Ext.Net.NumberColumn Column19;
         
         /// <summary>
         /// Column20 control.
@@ -1279,7 +1954,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column20;
+        protected global::Ext.Net.NumberColumn Column20;
         
         /// <summary>
         /// FieldContainer15 control.
@@ -1426,94 +2101,31 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Button uxCancel;
         
         /// <summary>
-        /// uxDiagnostic control.
+        /// FormPanel1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FormPanel uxDiagnostic;
+        protected global::Ext.Net.FormPanel FormPanel1;
         
         /// <summary>
-        /// FieldContainer2 control.
+        /// FieldContainer20 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer2;
+        protected global::Ext.Net.FieldContainer FieldContainer20;
         
         /// <summary>
-        /// Label19 control.
+        /// Label39 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Label Label19;
-        
-        /// <summary>
-        /// Label22 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label Label22;
-        
-        /// <summary>
-        /// Label24 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label Label24;
-        
-        /// <summary>
-        /// Label38 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label Label38;
-        
-        /// <summary>
-        /// Label40 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label Label40;
-        
-        /// <summary>
-        /// Label33 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label Label33;
-        
-        /// <summary>
-        /// Label41 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label Label41;
-        
-        /// <summary>
-        /// FieldContainer1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer1;
+        protected global::Ext.Net.Label Label39;
         
         /// <summary>
         /// uxHidNewProject control.
@@ -1525,6 +2137,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.TextField uxHidNewProject;
         
         /// <summary>
+        /// Label42 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Label Label42;
+        
+        /// <summary>
         /// uxHidBudBidID control.
         /// </summary>
         /// <remarks>
@@ -1532,6 +2153,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.TextField uxHidBudBidID;
+        
+        /// <summary>
+        /// Label43 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Label Label43;
         
         /// <summary>
         /// uxHidProjectNumID control.
@@ -1543,6 +2173,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.TextField uxHidProjectNumID;
         
         /// <summary>
+        /// Label44 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Label Label44;
+        
+        /// <summary>
         /// uxHidType control.
         /// </summary>
         /// <remarks>
@@ -1550,6 +2189,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.TextField uxHidType;
+        
+        /// <summary>
+        /// Label45 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Label Label45;
         
         /// <summary>
         /// uxHidStatusID control.
@@ -1561,6 +2209,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.TextField uxHidStatusID;
         
         /// <summary>
+        /// Label46 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Label Label46;
+        
+        /// <summary>
         /// uxHidPrevYear control.
         /// </summary>
         /// <remarks>
@@ -1570,6 +2227,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.TextField uxHidPrevYear;
         
         /// <summary>
+        /// Label47 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Label Label47;
+        
+        /// <summary>
         /// uxHidPrevVer control.
         /// </summary>
         /// <remarks>
@@ -1577,5 +2243,95 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.TextField uxHidPrevVer;
+        
+        /// <summary>
+        /// Label19 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Label Label19;
+        
+        /// <summary>
+        /// uxHidFormEnabled control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxHidFormEnabled;
+        
+        /// <summary>
+        /// Label9 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Label Label9;
+        
+        /// <summary>
+        /// uxHidOldBudBidID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxHidOldBudBidID;
+        
+        /// <summary>
+        /// Label22 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Label Label22;
+        
+        /// <summary>
+        /// uxHidDetailSheetID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxHidDetailSheetID;
+        
+        /// <summary>
+        /// Label24 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Label Label24;
+        
+        /// <summary>
+        /// uxHidDetailSheetOrder control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxHidDetailSheetOrder;
+        
+        /// <summary>
+        /// Label33 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Label Label33;
+        
+        /// <summary>
+        /// uxHidDetailSheetName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxHidDetailSheetName;
     }
 }

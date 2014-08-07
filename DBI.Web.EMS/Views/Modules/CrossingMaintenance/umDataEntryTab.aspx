@@ -31,6 +31,8 @@
     <form id="form1" runat="server">
         <ext:ResourceManager runat="server" />
         <div></div>
+         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
+                <Items>
         <ext:GridPanel ID="uxApplicationCrossingGrid" Title="CROSSING LIST FOR APPLICATION ENTRY" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true" SelectionMemory="true" >
            
             <Store>
@@ -56,6 +58,9 @@
                     <Proxy>
                         <ext:PageProxy />
                     </Proxy>
+                    <Sorters>
+                        <ext:DataSorter Direction="ASC" Property="SERVICE_UNIT" />
+                    </Sorters>
                 </ext:Store>
             </Store>
             <ColumnModel>
@@ -79,59 +84,25 @@
                 <SelectionChange OnEvent="deLoadData"></SelectionChange>
             </DirectEvents>
 
-            <%-- <DirectEvents>
-                    <SelectionChange OnEvent="GetApplicationGridData">
-                     
-                          <ExtraParams>
-                                <ext:Parameter Name="crossingId" Value="Ext.encode(#{uxApplicationCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
-                            </ExtraParams>
-                    </SelectionChange>
-                </DirectEvents>--%>
             <BottomBar>
                 <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True">
                 </ext:PagingToolbar>
             </BottomBar>
 
         </ext:GridPanel>
-        <ext:Toolbar ID="Toolbar3" runat="server">
-            <Items>
-                <ext:Button ID="uxAddAppButton" runat="server" Text="Add Entry" Icon="ApplicationAdd" Disabled="true">
-                    <Listeners>
-                        <Click Handler="#{uxAddNewApplicationEntryWindow}.show()" />
-                    </Listeners>
-                    <%--  <DirectEvents>
-                                    <Click OnEvent="deGetRRType">
-                                     
-                                    </Click>
-                                </DirectEvents>--%>
-                </ext:Button>
-                <ext:Button ID="uxRemoveAppButton" runat="server" Text="Delete Application" Icon="ApplicationDelete" Disabled="true">
-                    <DirectEvents>
-                        <Click OnEvent="deRemoveApplicationEntry">
-                            <Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete this application entry?" />
-
-                            <ExtraParams>
-                                <ext:Parameter Name="ApplicationInfo" Value="Ext.encode(#{uxApplicationEntryGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
-                            </ExtraParams>
-                        
-                        </Click>
-                    </DirectEvents>
-
-                </ext:Button>
-            </Items>
-        </ext:Toolbar>
-        <ext:GridPanel ID="uxApplicationEntryGrid" Title="APPLICATION ENTRIES" runat="server" Region="North" Frame="false" Collapsible="true" SelectionMemory="true" >
+       
+        <ext:GridPanel ID="uxApplicationEntryGrid" Title="APPLICATION ENTRIES" runat="server" Region="Center" Frame="false" SelectionMemory="true" >
                 <SelectionModel>
                     <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" AllowDeselect="true" Mode="Single" />
                 </SelectionModel>
                 <Store>
                     <ext:Store runat="server"
-                        ID="uxApplicationStore" OnReadData="GetApplicationGridData" AutoDataBind="true" AutoLoad="false" GroupField="CROSSING_NUMBER">
+                        ID="uxApplicationStore" OnReadData="GetApplicationGridData" AutoDataBind="true" AutoLoad="false" GroupField="CROSSING_NUMBER" >
                         <%--<Parameters>
                               <ext:StoreParameter Name="crossingId" Value="Ext.encode(#{uxApplicationCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
                         </Parameters>--%>
                         <Model>
-                            <ext:Model ID="Model1" runat="server" IDProperty="CROSSING_ID">
+                            <ext:Model ID="Model1" runat="server" IDProperty="APPLICATION_ID">
                                 <Fields>
                                     <ext:ModelField Name="CROSSING_ID" />  
                                     <ext:ModelField Name="CROSSING_NUMBER" />                                
@@ -148,6 +119,9 @@
                                 </Fields>
                             </ext:Model>
                         </Model>
+                        <Proxy>
+                            <ext:PageProxy />
+                        </Proxy>
                         <Sorters>
                         <ext:DataSorter Property="APPLICATION_REQUESTED" Direction="ASC" />
 
@@ -169,6 +143,31 @@
 
                     </Columns>
                 </ColumnModel> 
+          <TopBar>
+             <ext:Toolbar ID="Toolbar3" runat="server">
+            <Items>
+                <ext:Button ID="uxAddAppButton" runat="server" Text="Add Entry" Icon="ApplicationAdd" Disabled="true">
+                    <Listeners>
+                        <Click Handler="#{uxAddNewApplicationEntryWindow}.show()" />
+                    </Listeners>
+                  
+                </ext:Button>
+                <ext:Button ID="uxRemoveAppButton" runat="server" Text="Delete Application" Icon="ApplicationDelete" Disabled="true">
+                    <DirectEvents>
+                        <Click OnEvent="deRemoveApplicationEntry">
+                            <Confirmation ConfirmRequest="true" Title="Remove?" Message="Are you sure you want to delete this application entry?" />
+
+                            <ExtraParams>
+                                <ext:Parameter Name="ApplicationInfo" Value="Ext.encode(#{uxApplicationEntryGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+                            </ExtraParams>
+                        
+                        </Click>
+                    </DirectEvents>
+
+                </ext:Button>
+            </Items>
+        </ext:Toolbar>
+              </TopBar>
             <Listeners>
                 <Select Handler="#{uxRemoveAppButton}.enable();" />
                   <Deselect Handler="#{uxRemoveAppButton}.disable();" />
@@ -217,6 +216,7 @@
                                             <Reader>
                                                 <ext:ArrayReader />
                                             </Reader>
+                                           
                                         </ext:Store>
                                     </Store>
                                 </ext:ComboBox>
@@ -376,7 +376,8 @@
 
         </ext:Window>
         <%-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------%>
-
+            </Items>
+             </ext:Viewport>
       
     </form>
 </body>

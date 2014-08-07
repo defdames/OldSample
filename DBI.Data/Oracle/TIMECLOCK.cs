@@ -100,20 +100,31 @@ namespace DBI.Data
             return _data;
 
         }
-
+        /// <summary>
+        /// Shows all records from the TIME CLOCK table under the Payroll Manager screen
+        /// </summary>
+        /// <returns></returns>
         public static List<Employee> EmployeeTimeCompletedApprovedSubmittedPayroll()
         {
             var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "Y" && x.DELETED == "N").ToList();
             return _data;
         }
-
+        /// <summary>
+        /// Returns data for Edit screen popup on both the manager and payroll screen
+        /// </summary>
+        /// <param name="tcID"></param>
+        /// <returns></returns>
         public static DateTime ManagerDateInEditScreen(decimal tcID)
         {
 
             DateTime? _data = EmployeeTime().Where(x => x.TIME_CLOCK_ID == tcID).SingleOrDefault().TIME_IN;
             return (DateTime)_data;
         }
-
+        /// <summary>
+        /// Returns data for Edit screen popup on both the manager and payroll screen
+        /// </summary>
+        /// <param name="tcID"></param>
+        /// <returns></returns>
         public static TimeSpan ManagerTimeInEditScreen(decimal tcID)
         {
 
@@ -122,14 +133,22 @@ namespace DBI.Data
 
             return ts;
         }
-
+        /// <summary>
+        /// Returns data for Edit screen popup on both the manager and payroll screen
+        /// </summary>
+        /// <param name="tcID"></param>
+        /// <returns></returns>
         public static DateTime ManagerDateOutEditScreen(decimal tcID)
         {
 
             DateTime? _data = EmployeeTime().Where(x => x.TIME_CLOCK_ID == tcID).SingleOrDefault().TIME_OUT;
             return (DateTime)_data;
         }
-
+        /// <summary>
+        /// Returns data for Edit screen popup on both the manager and payroll screen
+        /// </summary>
+        /// <param name="tcID"></param>
+        /// <returns></returns>
         public static TimeSpan ManagerTimeOutEditScreen(decimal tcID)
         {
 
@@ -212,7 +231,10 @@ namespace DBI.Data
             }
 
         }
-
+        /// <summary>
+        /// Submit selected time for payroll
+        /// </summary>
+        /// <param name="selection"></param>
         public static void EmployeeTimeSelectionSubmitted(List<TIME_CLOCK> selection)
         {
             foreach (TIME_CLOCK selected in selection)

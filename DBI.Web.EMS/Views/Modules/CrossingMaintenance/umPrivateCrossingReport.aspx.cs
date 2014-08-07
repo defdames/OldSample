@@ -47,34 +47,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string State = uxAddStateComboBox.SelectedItem.Value;
             using (Entities _context = new Entities())
             {
-                
-
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-                var allData = (from d in _context.CROSSINGS
-                        where d.RAILROAD_ID == RailroadId && d.PROPERTY_TYPE == "PRI"
-                        select new
-                        {
-                            d.CROSSING_ID,
-                            d.CROSSING_NUMBER,
-                            d.SUB_DIVISION,
-                            d.STATE,
-                            d.SERVICE_UNIT,
-                            d.COUNTY,
-                            d.CITY,
-                            d.MILE_POST,
-                            d.DOT,
-                            d.ROWNE,
-                            d.ROWNW,
-                            d.ROWSE,
-                            d.ROWSW,
-                            d.STREET,
-                            d.SUB_CONTRACTED,
-                            d.LONGITUDE,
-                            d.LATITUDE,
-                            d.SPECIAL_INSTRUCTIONS,
-                        
-                        });
 
+                IQueryable<CROSSING_MAINTENANCE.StateCrossingList> allData = CROSSING_MAINTENANCE.GetPrivateCrossings(RailroadId, _context);
+              
                 if (ServiceUnit != null)
                 {
                     allData = allData.Where(x => x.SERVICE_UNIT == ServiceUnit);
@@ -94,7 +70,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxPrivateCrossingListStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
                 e.Total = count;
               
-                //uxStateCrossingListStore.Reload();
 
             }
 

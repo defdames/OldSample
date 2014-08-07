@@ -549,8 +549,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 var returnData = (from d in _context.DAILY_ACTIVITY_HEADER
                                   join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                                  join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
                                   where d.HEADER_ID == HeaderId
-                                  select new { d.APPLICATION_TYPE, d.CONTRACTOR, d.DA_DATE, d.DENSITY, d.LICENSE, d.STATE, d.STATUS, d.SUBDIVISION, p.SEGMENT1, p.LONG_NAME, d.DA_HEADER_ID }).ToList<object>();
+                                  select new { d.APPLICATION_TYPE, d.CONTRACTOR, d.DA_DATE, d.DENSITY, e.EMPLOYEE_NAME, d.LICENSE, d.STATE, d.STATUS, d.SUBDIVISION, p.SEGMENT1, p.LONG_NAME, d.DA_HEADER_ID }).ToList<object>();
                 return returnData;
             }
         }
@@ -766,6 +767,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
 
+
             using (MemoryStream PdfStream = new MemoryStream(generatePDF(HeaderId).ToArray()))
             {
                 string Subject = "Copy of Daily Activity Report";
@@ -773,10 +775,27 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 string Message = "Please find attached the Daily Activity Report you requested.";
 
                 PdfStream.Position = 0;
+                string ProjectName;
+                using (Entities _context = new Entities())
+                {
+                    ProjectName = (from d in _context.DAILY_ACTIVITY_HEADER
+                                   join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                                   where d.HEADER_ID == HeaderId
+                                   select p.LONG_NAME).Single();
+                }
 
-                Attachment MailAttachment = new Attachment(PdfStream, HeaderId.ToString() + "-export.pdf");
+                Attachment MailAttachment = new Attachment(PdfStream, string.Format("{0}{1}-export.pdf", HeaderId.ToString(), RemoveSpecialCharacters(ProjectName)));
+                var smtp = new SmtpClient("owa.dbiservices.com");
+#if DEBUG
+                smtp.Credentials = new System.Net.NetworkCredential("gene.lapointe@dbiservices.com", "password");
+#endif
+                MailMessage EmailMessage = new MailMessage(User.Identity.Name + "@dbiservices.com", User.Identity.Name + "@dbiservices.com", Subject, Message);
+                EmailMessage.Attachments.Add(MailAttachment);
+                EmailMessage.IsBodyHtml = true;
+                //smtp.SendMessage(User.Identity.Name + "@dbiservices.com", Subject, Message, IsHtml, MailAttachment);
+                smtp.Send(EmailMessage);
+                X.Msg.Alert("Email sent", string.Format("Message has been sent to {0}@dbiservices.com", User.Identity.Name.ToLower())).Show();
 
-                Mailer.SendMessage(User.Identity.Name + "@dbiservices.com", Subject, Message, IsHtml, MailAttachment);
             }
         }
 
@@ -902,6 +921,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     {
                         Cell.Border = PdfPCell.NO_BORDER;
                     }
+                    
                     Row = new PdfPRow(Cells);
                     HeaderTable.Rows.Add(Row);
 
@@ -946,6 +966,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     }
                     Row = new PdfPRow(Cells);
                     HeaderTable.Rows.Add(Row);
+
+                    //Fourth Row
+                    Cells = new PdfPCell[]{
+                        new PdfPCell(new Phrase("Supervisor/Area Manager", HeadFootTitleFont)),
+                        new PdfPCell(new Phrase(Data.EMPLOYEE_NAME, HeadFootCellFont)),
+                        new PdfPCell(new Phrase("Contractor", HeadFootTitleFont)),
+                        new PdfPCell(new Phrase(Data.CONTRACTOR, HeadFootCellFont))
+                    };
+
+                    foreach (PdfPCell Cell in Cells)
+                    {
+                        Cell.Border = PdfPCell.NO_BORDER;
+                    }
+                    Row = new PdfPRow(Cells);
+                    HeaderTable.Rows.Add(Row);
+                    
                 }
                 ExportedPDF.Add(HeaderTable);
 
@@ -962,6 +998,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         if (roleNeeded(HeaderId))
                         {
                             EmployeeTable = new PdfPTable(13);
+                            EmployeeTable.SetWidths(new float[] { 8f, 9f, 6f, 8f, 9f, 7f, 6f, 5f, 7f, 7f, 5f, 10f, 13f });
                             Cells = new PdfPCell[]{
 						new PdfPCell(new Phrase("Truck/Equipment \n Name", HeaderFont)),
 						new PdfPCell(new Phrase("Operator(s)", HeaderFont)),
@@ -980,6 +1017,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         else
                         {
                             EmployeeTable = new PdfPTable(12);
+                            EmployeeTable.SetWidths(new float[] { 9f, 10f, 7f, 9f, 10f, 8f, 7f, 6f, 8f, 7f, 6f, 13f });
                             Cells = new PdfPCell[]{
 						new PdfPCell(new Phrase("Truck/Equipment \n Name", HeaderFont)),
 						new PdfPCell(new Phrase("Operator(s)", HeaderFont)),
@@ -1080,8 +1118,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     }
                     else
                     {
-                        PdfPTable EmployeeTable = new PdfPTable(9);
-
+                        PdfPTable EmployeeTable = new PdfPTable(10);
+                        EmployeeTable.SetWidths(new float[] { 13f, 13f, 7f, 10f, 10f, 7f, 6f, 6f, 7f, 14f });
                         Cells = new PdfPCell[]{
 						new PdfPCell(new Phrase("Truck/Equipment \n Name", HeaderFont)),
 						new PdfPCell(new Phrase("Operator(s)", HeaderFont)),
@@ -1091,6 +1129,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						new PdfPCell(new Phrase("Total\nHours", HeaderFont)),
 						new PdfPCell(new Phrase("Travel\nTime", HeaderFont)),
 						new PdfPCell(new Phrase("Per\nDiem", HeaderFont)),
+                        new PdfPCell(new Phrase("Lunch\nLength", HeaderFont)),
 						new PdfPCell(new Phrase("Comments", HeaderFont))};
 
                         Row = new PdfPRow(Cells);
@@ -1144,6 +1183,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						new PdfPCell(new Phrase(TotalHours.ToString("hh\\:mm"), CellFont)),
 						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED, CellFont)),
 						new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
+                        new PdfPCell(new Phrase(Data.LUNCH_LENGTH.ToString(), CellFont)),
 						new PdfPCell(new Phrase(Comments, CellFont))
 					};
                             Row = new PdfPRow(Cells);
@@ -1163,7 +1203,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     //Get Equipment Data
                     var EquipmentData = GetEquipment(HeaderId);
                     PdfPTable EquipmentTable = new PdfPTable(6);
-
+                    EquipmentTable.SetWidths(new int[] { 10, 10, 35, 25, 10, 10 });
                     Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase("Project Number", HeaderFont)),
 						new PdfPCell(new Phrase("Equipment Name", HeaderFont)),
@@ -1233,7 +1273,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         string WorkArea;
                         var ProductionData = GetProductionDBI(HeaderId);
                         PdfPTable ProductionTable = new PdfPTable(7);
-
+                        ProductionTable.SetWidths(new float[] { 10f, 15f, 40f, 9f, 9f, 9f, 8f });
                         Cells = new PdfPCell[]{
 							new PdfPCell(new Phrase("Task Number", HeaderFont)),
 							new PdfPCell(new Phrase("Task Name", HeaderFont)),
@@ -1295,7 +1335,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         var ProductionData = GetProductionIRM(HeaderId);
                         PdfPTable ProductionTable = new PdfPTable(9);
 
-
                         Cells = new PdfPCell[]{
 							new PdfPCell(new Phrase("Task Number", HeaderFont)),
 							new PdfPCell(new Phrase("Task Name", HeaderFont)),
@@ -1342,7 +1381,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     var WeatherData = GetWeather(HeaderId);
 
                     PdfPTable WeatherTable = new PdfPTable(6);
-
+                    WeatherTable.SetWidths(new float[] { 15f, 10f, 10f, 10f, 10f, 45f });
                     Cells = new PdfPCell[]{
 					new PdfPCell(new Phrase("Time", HeaderFont)),
 					new PdfPCell(new Phrase("Wind\nDirection", HeaderFont)),
@@ -1384,7 +1423,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         var ChemicalData = GetChemicalMix(HeaderId);
 
                         PdfPTable ChemicalTable = new PdfPTable(11);
-
+                        ChemicalTable.SetWidths(new float[] {4f, 10f, 8f, 10f, 8f, 10f, 10f, 10f, 10f, 10f, 10f });
                         Cells = new PdfPCell[]{
 					new PdfPCell(new Phrase("Mix #", HeaderFont)),
 					new PdfPCell(new Phrase("Target\nArea", HeaderFont)),
@@ -1438,7 +1477,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     {
                         var InventoryData = GetInventoryDBI(HeaderId);
                         PdfPTable InventoryTable = new PdfPTable(10);
-
+                        InventoryTable.SetWidths(new float[] {4f, 5f, 13f, 10f, 23f, 5f, 5f, 10f, 10f, 15f });
                         Cells = new PdfPCell[]{
 					new PdfPCell(new Phrase("Mix #", HeaderFont)),
                     new PdfPCell(new Phrase("Item #", HeaderFont)),
@@ -1488,6 +1527,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     {
                         var InventoryData = GetInventoryIRM(HeaderId);
                         PdfPTable InventoryTable = new PdfPTable(6);
+                        InventoryTable.SetWidths(new float[] { 15f, 15f, 15f, 35f, 10f, 10f });
 
                         Cells = new PdfPCell[]{
                             new PdfPCell(new Phrase("Item #", HeaderFont)),

@@ -16,17 +16,10 @@ namespace DBI.Data
     {
         public decimal GL_ACCOUNT_ID { get; set; }
         public decimal ORGANIZATION_ID { get; set; }
-        public string INCLUDE_EXCLUDE_FLAG { get; set; }
-        public string SEGMENT1 { get; set; }
-        public string SEGMENT2 { get; set; }
-        public string SEGMENT3 { get; set; }
-        public string SEGMENT4 { get; set; }
-        public string SEGMENT5 { get; set; }
-        public string SEGMENT6 { get; set; }
-        public string SEGMENT7 { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
+        public Nullable<long> CODE_COMBINATION_ID { get; set; }
     }
 }

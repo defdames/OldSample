@@ -52,8 +52,9 @@
       <div>
             <ext:ResourceManager ID="ResourceManager1" runat="server" />
            <ext:Hidden ID="Hidden1" runat="server" Hidden="true" />
-
-            <ext:FormPanel ID="uxFilterForm" runat="server" Margin="5" Title="Filter Inspection Date">
+           <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
+                <Items>
+            <ext:FormPanel ID="uxFilterForm" runat="server" Region="North" Margin="5" Title="Filter Inspection Date">
                 <Items>
                     <ext:FieldSet ID="FieldSet1" runat="server" Title="Filter">
                         <Items>
@@ -152,7 +153,7 @@
                                 TypeAhead="true"
                                 ForceSelection="true" TabIndex="4" EmptyText="ALL">
                                 <Store>
-                                    <ext:Store ID="uxAddStateList" runat="server" AutoDataBind="true" PageSize="20" >
+                                    <ext:Store ID="uxAddStateList" runat="server" AutoDataBind="true" PageSize="10" >
                                         <Model>
                                             <ext:Model ID="Model10" runat="server">
                                                 <Fields>
@@ -210,6 +211,7 @@
                 Icon="Report"
                 Frame="false"
                 Resizable="false"
+                Region="Center"
                 Collapsible="false" Hidden="true">
                 <Store>
                     <ext:Store ID="uxInspectDateStore"
@@ -296,6 +298,8 @@
                     <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
                 </BottomBar>
                 </ext:GridPanel>
+                    </Items>
+               </ext:Viewport>
     </div>
     </form>
 </body>

@@ -37,30 +37,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             using (Entities _context = new Entities())
             {
-
-                //Get List of all incidents open and closed 
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-                var allData = (from a in _context.CROSSING_SUPPLEMENTAL
-                               join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
-                               where d.RAILROAD_ID == RailroadId
-                               select new
-                               {
-                                   d.CROSSING_ID,
-                                   a.SUPPLEMENTAL_ID,
-                                   a.APPROVED_DATE,
-                                   d.CROSSING_NUMBER,
-                                   d.SUB_DIVISION,
-                                   d.SERVICE_UNIT,
-                                   d.STATE,
-                                   a.SERVICE_TYPE,
-                                   d.MILE_POST,
-                                   a.TRUCK_NUMBER,
-                                   a.SQUARE_FEET,
-                                   a.REMARKS,
-                               });
-
-                //filter down specific information to show the incidents needed for report
-
+                IQueryable<CROSSING_MAINTENANCE.CompletedCrossingsSupplemental> allData = CROSSING_MAINTENANCE.GetCompletedCrossingsSupplemental(RailroadId,  _context);
+              
                 if (StartDate != DateTime.MinValue)
                 {
                     allData = allData.Where(x => x.APPROVED_DATE >= StartDate);
@@ -149,38 +128,38 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
             using (Entities _context = new Entities())
             {
-
-                //Get List of all incidents open and closed 
-
-                allData = (from a in _context.CROSSING_SUPPLEMENTAL
-                           join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
-                           join v in _context.CROSSING_INVOICE on a.INVOICE_SUPP_ID equals v.INVOICE_ID
-                           where ReportList.Contains(a.SUPPLEMENTAL_ID)
-                           select new
-                           {
-                               v.INVOICE_NUMBER,
-                               v.INVOICE_DATE,
-                               d.CROSSING_ID,
-                               a.SUPPLEMENTAL_ID,
-                               a.APPROVED_DATE,
-                               d.CROSSING_NUMBER,
-                               d.SUB_DIVISION,
-                               d.SERVICE_UNIT,
-                               d.STATE,
-                               a.SERVICE_TYPE,
-                               d.MILE_POST,
-                               a.TRUCK_NUMBER,
-                               a.SQUARE_FEET,
-                             
-
-                           }).ToList<object>();
+                //IQueryable<CROSSING_MAINTENANCE.InvoicedCrossingsSupplemental> allData = CROSSING_MAINTENANCE.GetInvoicedCrossings(_context).Where(s => ReportList.Contains(s.SUPPLEMENTAL_ID));
+                    allData = (from a in _context.CROSSING_SUPPLEMENTAL
+                               join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
+                               join v in _context.CROSSING_INVOICE on a.INVOICE_SUPP_ID equals v.INVOICE_ID
+                               where ReportList.Contains(a.SUPPLEMENTAL_ID)
+                               select new
+                               {
+                                   v.INVOICE_NUMBER,
+                                   v.INVOICE_DATE,
+                                   d.CROSSING_ID,
+                                   a.SUPPLEMENTAL_ID,
+                                   a.APPROVED_DATE,
+                                   d.CROSSING_NUMBER,
+                                   d.SUB_DIVISION,
+                                   d.SERVICE_UNIT,
+                                   d.STATE,
+                                   a.SERVICE_TYPE,
+                                   d.MILE_POST,
+                                   a.TRUCK_NUMBER,
+                                   a.SQUARE_FEET,
 
 
-               
-            }
-            uxInvoiceReportStore.DataSource = allData;
-        
+                               }).ToList<object>();
 
+
+
+                }
+                uxInvoiceReportStore.DataSource = allData;
+                //int count;
+                //uxInvoiceSupplementalStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.InvoicedCrossingsSupplemental>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], allData, out count);
+                //e.Total = count;
+            
         }
         protected void deValidationInvoiceButton(object sender, DirectEventArgs e)
         {
