@@ -176,7 +176,7 @@
                         <ext:FilterHeader ID="uxGlAccountSecurityGridFilter" runat="server" Remote="true" />
                     </Plugins>
                     <SelectionModel>
-                        <ext:RowSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Multi" AllowDeselect="true">
+                        <ext:RowSelectionModel ID="uxGlAccountSecurityGridSelectionModel" runat="server" Mode="Simple" AllowDeselect="true">
                             <DirectEvents>
                                 <Select OnEvent="deSelectAccount">
                                 </Select>
