@@ -113,11 +113,10 @@
                                 </ext:Button>
                                 <ext:Button runat="server" ID="uxPrintPDFButton" Text="Print PDF" Icon="PageWhiteAcrobat">
                                     <DirectEvents>
-                                        <Click OnEvent="dePrintPDF">
+                                        <Click OnEvent="dePrintPDF" IsUpload="true">
                                             <ExtraParams>
                                                 <ext:Parameter Name="RowValues" Value="Ext.encode(#{uxDashboardGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
                                             </ExtraParams>
-                                            <EventMask ShowMask="true" />
                                         </Click>
                                     </DirectEvents>
                                 </ext:Button>
