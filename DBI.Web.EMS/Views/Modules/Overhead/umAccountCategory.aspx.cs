@@ -163,7 +163,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         }
 
-        public class GL_ACCOUNTS_V2 : GL_ACCOUNTS_V
+        public class GL_ACCOUNTS_V2 
         {
             public string SEGMENT5 { get; set; }
             public string SEGMENT5_DESC { get; set; }
@@ -174,20 +174,17 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         {
             using (Entities _context = new Entities())
             {
-                var _data = _context.GL_ACCOUNTS_V.Select(x => new GL_ACCOUNTS_V2 {SEGMENT5 = x.SEGMENT5}).Distinct().AsQueryable();
+
+
+                string sql = @" select distinct segment5 as SEGMENT5, SEGMENT5_DESC AS SEGMENT5_DESC from xxems.gl_accounts_v";
+                var _data = _context.Database.SqlQuery<GL_ACCOUNTS_V2>(sql).AsQueryable();
                 
                 _data = (from dups in _data
                          where !_context.OVERHEAD_ACCOUNT_CATEGORY.Any(x => x.ACCOUNT_SEGMENT == dups.SEGMENT5)
                          select dups);
 
-                foreach (GL_ACCOUNTS_V2 _item in _data)
-                {
-                    GL_ACCOUNTS_V _info = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT5 == _item.SEGMENT5).FirstOrDefault();
-                    _item.SEGMENT5_DESC = _info.SEGMENT5_DESC + " (" + _info.SEGMENT5 + ")";
-                }
-
                 int count;
-                uxAccountListStore.DataSource = GenericData.ListFilterHeader<GL_ACCOUNTS_V2>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data.AsQueryable(), out count);
+                uxGLAccountListStore.DataSource = GenericData.ListFilterHeader<GL_ACCOUNTS_V2>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
                 e.Total = count;
             }
         }

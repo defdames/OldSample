@@ -180,7 +180,7 @@
 
          <ext:Window runat="server" Stateful="false" Width="750" Height="650" Title="Assign Categories" Layout="FitLayout" Header="true" Resizable="false" Hidden="true" ID="uxGLAccountListWindow" CloseAction="Hide" Closable="true" Modal="true" DefaultButton="uxAssignAccountsToCategory">
             <Items>
-                <ext:GridPanel ID="uxGLAccountListGridPanel" runat="server" Flex="1" SimpleSelect="true" Frame="true" Padding="5" Margins="5 5 5 5" Region="Center" Title="General Ledger Accounts">
+                <ext:GridPanel ID="uxGLAccountListGridPanel" runat="server" Flex="1" Frame="true" Padding="5" Margins="5 5 5 5" Region="Center" Title="General Ledger Accounts">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxGLAccountListStore"
@@ -215,6 +215,9 @@
                     <SelectionModel>
                         <ext:CheckboxSelectionModel runat="server" Mode="Simple"></ext:CheckboxSelectionModel>
                     </SelectionModel>
+                     <Plugins>
+                        <ext:FilterHeader ID="uxOrganizationsGridFilter" runat="server" Remote="true" />
+                    </Plugins>
                 </ext:GridPanel>
             </Items>
             <Buttons>
