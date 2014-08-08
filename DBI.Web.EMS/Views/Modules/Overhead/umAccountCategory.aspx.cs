@@ -163,31 +163,41 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         }
 
-        public class GL_ACCOUNTS_V2 
+        protected void deLoadAccountMaintenance(object sender, DirectEventArgs e)
         {
-            public string SEGMENT5 { get; set; }
-            public string SEGMENT5_DESC { get; set; }
 
-        }
+            RowSelectionModel _sm = uxAccountCategorySelectionModel;
 
-        protected void uxGLAccountListStore_ReadData(object sender, StoreReadDataEventArgs e)
-        {
-            using (Entities _context = new Entities())
+            string url = "umAddGLAccountForCategory.aspx?category_id=" + _sm.SelectedRow.RecordID;
+
+            Window win = new Window
             {
+                ID = "uxAccountMaintenanceWindow",
+                Title = "Account List",
+                Height = 550,
+                Width = 600,
+                Modal = true,
+                Resizable = false,
+                CloseAction = CloseAction.Destroy,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
 
+            win.Listeners.Close.Handler = "#{uxAccountListGridPanel}.getStore().load();";
 
-                string sql = @" select distinct segment5 as SEGMENT5, SEGMENT5_DESC AS SEGMENT5_DESC from xxems.gl_accounts_v";
-                var _data = _context.Database.SqlQuery<GL_ACCOUNTS_V2>(sql).AsQueryable();
-                
-                _data = (from dups in _data
-                         where !_context.OVERHEAD_ACCOUNT_CATEGORY.Any(x => x.ACCOUNT_SEGMENT == dups.SEGMENT5)
-                         select dups);
-
-                int count;
-                uxGLAccountListStore.DataSource = GenericData.ListFilterHeader<GL_ACCOUNTS_V2>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
-                e.Total = count;
-            }
+            win.Render(this.Form);
+            win.Show();
         }
 
     }
 }
+
