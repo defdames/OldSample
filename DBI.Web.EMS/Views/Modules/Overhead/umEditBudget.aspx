@@ -165,7 +165,7 @@
                   </Columns>
               </ColumnModel>
                 <Features>               
-                     <ext:Summary ID="Summary1" runat="server" Dock="Bottom" />
+                     <ext:Summary ID="uxSummary" runat="server" Dock="Bottom" ShowSummaryRow="false"/>
             </Features>  
               <SelectionModel>
                         <ext:RowSelectionModel runat="server" ID="uxOrganizationAccountSelectionModel">

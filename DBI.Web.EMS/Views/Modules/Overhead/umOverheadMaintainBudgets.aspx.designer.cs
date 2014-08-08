@@ -112,6 +112,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Column Column5;
         
         /// <summary>
+        /// Column1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column1;
+        
+        /// <summary>
         /// uxGlAccountSecurityGridFilter control.
         /// </summary>
         /// <remarks>
