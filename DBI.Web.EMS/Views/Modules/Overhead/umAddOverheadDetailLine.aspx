@@ -47,7 +47,7 @@
             <Items>
                 <ext:Toolbar runat="server" Region="North" Padding="5" Margins="5 5 5 5">
                     <Items>
-                        <ext:Button runat="server" Icon="CalculatorEdit" Text="Calcuator">
+                        <ext:Button runat="server" Icon="CalculatorEdit" Text="Cost Allocation">
                             <Listeners>
                                 <Click Handler="#{uxDispersementForm}.reset();#{uxDisbursementDetailsWindow}.show();"></Click>
                             </Listeners>
@@ -175,7 +175,8 @@
                                 FieldLabel="Type" TriggerAction="All" 
                                 MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;"  >
                                 <Items>
-                                    <ext:ListItem Text="Annual" Value="A" />
+                                    <ext:ListItem Text="Annual (By Month)" Value="A" />
+                                     <ext:ListItem Text="Annual (By Week)" Value="AW" />
                                     <ext:ListItem Text="Monthly" Value="M" />
                                     <ext:ListItem Text="Weekly" Value="W" />
                                 </Items>

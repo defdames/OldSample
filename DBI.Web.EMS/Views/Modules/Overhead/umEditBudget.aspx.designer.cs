@@ -94,13 +94,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Button uxBudgetNotes;
         
         /// <summary>
-        /// uxHideBlankLinesButton control.
+        /// uxHideBlankLinesCheckbox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxHideBlankLinesButton;
+        protected global::Ext.Net.Checkbox uxHideBlankLinesCheckbox;
         
         /// <summary>
         /// uxOrganizationAccountStore control.

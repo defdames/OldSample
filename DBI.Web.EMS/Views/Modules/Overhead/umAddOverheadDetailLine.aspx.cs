@@ -27,104 +27,144 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         protected void deLoadDetailLinesStore(object sender, StoreReadDataEventArgs e)
         {
-            long _budget_id = long.Parse(Request.QueryString["budgetID"]);
-            long _account_id = long.Parse(Request.QueryString["accountID"]);
-            short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);
 
-
-            using (Entities _context = new Entities())
+            try
             {
+                long _budget_id = long.Parse(Request.QueryString["budgetID"]);
+                long _account_id = long.Parse(Request.QueryString["accountID"]);
+                short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);
 
-                List<OVERHEAD_BUDGET_DETAIL> _detail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id & x.DETAIL_TYPE == "B").OrderBy(x => x.PERIOD_NUM).ToList();
 
-                if (_detail.Count() == 0)
+                using (Entities _context = new Entities())
                 {
-                    //We need to create the budget lines in the system for each period.
-                    string sql = "select entered_period_name,period_year,period_num,period_type,start_date,end_date from gl.gl_periods where period_set_name = 'DBI Calendar' order by period_num";
-                    List<GL_PERIODS> _periodList = _context.Database.SqlQuery<GL_PERIODS>(sql).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Month").ToList();
 
-                    foreach (GL_PERIODS _period in _periodList)
+                    List<OVERHEAD_BUDGET_DETAIL> _detail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id & x.DETAIL_TYPE == "B").OrderBy(x => x.PERIOD_NUM).ToList();
+
+                    if (_detail.Count() == 0)
                     {
-                        OVERHEAD_BUDGET_DETAIL _record = new OVERHEAD_BUDGET_DETAIL();
-                        _record.ORG_BUDGET_ID = _budget_id;
-                        _record.PERIOD_NAME = _period.ENTERED_PERIOD_NAME;
-                        _record.PERIOD_NUM = _period.PERIOD_NUM;
-                        _record.DETAIL_TYPE = "B";
-                        _record.CODE_COMBINATION_ID = _account_id;
-                        _record.AMOUNT = 0;
-                        _record.CREATE_DATE = DateTime.Now;
-                        _record.MODIFY_DATE = DateTime.Now;
-                        _record.CREATED_BY = User.Identity.Name;
-                        _record.MODIFIED_BY = User.Identity.Name;
-                        GenericData.Insert<OVERHEAD_BUDGET_DETAIL>(_record);
-                    }
-
-                    _detail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id & x.DETAIL_TYPE == "B").OrderBy(x => x.PERIOD_NUM).ToList();
-                }
-
-
-                foreach (OVERHEAD_BUDGET_DETAIL _item in _detail)
-                {
-                    if (e.Parameters["DISPERSE_AMOUNT"] != null)
-                    {
-                        string _type = e.Parameters["DISPERSE_TYPE"];
-
+                        //We need to create the budget lines in the system for each period.
                         string sql = "select entered_period_name,period_year,period_num,period_type,start_date,end_date from gl.gl_periods where period_set_name = 'DBI Calendar' order by period_num";
-                        List<GL_PERIODS> _periodList = _context.Database.SqlQuery<GL_PERIODS>(sql).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Week").ToList();
+                        List<GL_PERIODS> _periodList = _context.Database.SqlQuery<GL_PERIODS>(sql).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Month").ToList();
 
-                        //Anually Disperse
-                        if (_type == "A")
+                        foreach (GL_PERIODS _period in _periodList)
                         {
-                            decimal _total = decimal.Parse(e.Parameters["DISPERSE_AMOUNT"]);
-                            decimal _distAmount = (_total / 12);
-                            _item.AMOUNT =  _distAmount;
+                            OVERHEAD_BUDGET_DETAIL _record = new OVERHEAD_BUDGET_DETAIL();
+                            _record.ORG_BUDGET_ID = _budget_id;
+                            _record.PERIOD_NAME = _period.ENTERED_PERIOD_NAME;
+                            _record.PERIOD_NUM = _period.PERIOD_NUM;
+                            _record.DETAIL_TYPE = "B";
+                            _record.CODE_COMBINATION_ID = _account_id;
+                            _record.AMOUNT = 0;
+                            _record.CREATE_DATE = DateTime.Now;
+                            _record.MODIFY_DATE = DateTime.Now;
+                            _record.CREATED_BY = User.Identity.Name;
+                            _record.MODIFIED_BY = User.Identity.Name;
+                            GenericData.Insert<OVERHEAD_BUDGET_DETAIL>(_record);
                         }
 
-                        //Monthly Disperse
-                        if (_type == "M")
-                        {
-                            decimal _total = decimal.Parse(e.Parameters["DISPERSE_AMOUNT"]);
-                            _item.AMOUNT = _total;
-                        }
+                        _detail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id & x.DETAIL_TYPE == "B").OrderBy(x => x.PERIOD_NUM).ToList();
+                    }
 
-                        //Weekly Disperse
-                        if (_type == "W")
-                        {
-                            _periodList = _periodList.Where(x => x.ENTERED_PERIOD_NAME.Contains(_item.PERIOD_NAME)).ToList();
-                            int periodCount = _periodList.Count();
-                            
-                            decimal _total = decimal.Parse(e.Parameters["DISPERSE_AMOUNT"]);
-                            decimal _distAmount = ((_total) * periodCount);
-                            _item.AMOUNT = _distAmount;
-                        }
 
-                        //Anually by 445 Disperse
-                        if (_type == "AW")
+                    foreach (OVERHEAD_BUDGET_DETAIL _item in _detail)
+                    {
+                        if (e.Parameters["DISPERSE_AMOUNT"] != null)
                         {
-                            int _periodsPerPeriod = _periodList.Count();
-                            
-                            _periodList = _periodList.Where(x => x.ENTERED_PERIOD_NAME.Contains(_item.PERIOD_NAME)).ToList();
-                            int periodCount = _periodList.Count();
+                            string _type = e.Parameters["DISPERSE_TYPE"];
 
-                            decimal _total = decimal.Parse(e.Parameters["DISPERSE_AMOUNT"]);
-                            decimal _distAmount = (_total / _periodsPerPeriod);
-                            _distAmount = ((_distAmount) * periodCount);
-                            _item.AMOUNT = _distAmount;
+                            string sql = "select entered_period_name,period_year,period_num,period_type,start_date,end_date from gl.gl_periods where period_set_name = 'DBI Calendar' order by period_num";
+                            List<GL_PERIODS> _periodList = _context.Database.SqlQuery<GL_PERIODS>(sql).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Week").ToList();
+
+                            //Anually Disperse
+                            if (_type == "A")
+                            {
+                                decimal _total = decimal.Parse(e.Parameters["DISPERSE_AMOUNT"]);
+                                decimal _distAmount = (_total / 12);
+                                _item.AMOUNT = _distAmount;
+                            }
+
+                            //Monthly Disperse
+                            if (_type == "M")
+                            {
+                                decimal _total = decimal.Parse(e.Parameters["DISPERSE_AMOUNT"]);
+                                _item.AMOUNT = _total;
+                            }
+
+                            //Weekly Disperse
+                            if (_type == "W")
+                            {
+                                _periodList = _periodList.Where(x => x.ENTERED_PERIOD_NAME.Contains(_item.PERIOD_NAME)).ToList();
+                                int periodCount = _periodList.Count();
+
+                                if (periodCount == 0)
+                                    throw new DBICustomException("There are no periods setup for this year by week, please contact finance to setup these periods. This function is disabled");
+
+                                decimal _total = decimal.Parse(e.Parameters["DISPERSE_AMOUNT"]);
+                                decimal _distAmount = ((_total) * periodCount);
+                                _item.AMOUNT = _distAmount;
+                            }
+
+                            //Anually by 445 Disperse
+                            if (_type == "AW")
+                            {
+                                int _periodsPerPeriod = _periodList.Count();
+
+                                _periodList = _periodList.Where(x => x.ENTERED_PERIOD_NAME.Contains(_item.PERIOD_NAME)).ToList();
+                                int periodCount = _periodList.Count();
+
+                                if (periodCount == 0)
+                                    throw new DBICustomException("There are no periods setup for this year by week, please contact finance to setup these periods. This function is disabled");
+
+                                decimal _total = decimal.Parse(e.Parameters["DISPERSE_AMOUNT"]);
+                                decimal _distAmount = (_total / _periodsPerPeriod);
+                                _distAmount = ((_distAmount) * periodCount);
+                                _item.AMOUNT = _distAmount;
+                            }
+
                         }
 
                     }
 
+
+                    OVERHEAD_ACCOUNT_COMMENT _commentR = _context.OVERHEAD_ACCOUNT_COMMENT.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id).SingleOrDefault();
+                    if (_commentR != null)
+                        uxAccountComments.Text = _commentR.COMMENTS;
+
+                    int count;
+                    uxDetailStore.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_BUDGET_DETAIL>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _detail, out count);
+                    e.Total = count;
+
                 }
 
+            }
+            catch (Exception error)
+            {
+                X.Mask.Hide();
 
-                OVERHEAD_ACCOUNT_COMMENT _commentR = _context.OVERHEAD_ACCOUNT_COMMENT.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id).SingleOrDefault();
-                if (_commentR != null)
-                    uxAccountComments.Text = _commentR.COMMENTS;
+                X.Msg.Show(new MessageBoxConfig
+                {
+                    Buttons = MessageBox.Button.OK,
+                    Icon = MessageBox.Icon.INFO,
+                    Title = "Error",
+                    Message = error.Message
+                });
 
-                int count;
-                uxDetailStore.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_BUDGET_DETAIL>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _detail, out count);
-                e.Total = count;
+                long _budget_id = long.Parse(Request.QueryString["budgetID"]);
+                long _account_id = long.Parse(Request.QueryString["accountID"]);
 
+                using (Entities _context = new Entities())
+                {
+
+                    List<OVERHEAD_BUDGET_DETAIL> _detail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id & x.DETAIL_TYPE == "B").OrderBy(x => x.PERIOD_NUM).ToList();
+
+                    OVERHEAD_ACCOUNT_COMMENT _commentR = _context.OVERHEAD_ACCOUNT_COMMENT.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id).SingleOrDefault();
+                    if (_commentR != null)
+                        uxAccountComments.Text = _commentR.COMMENTS;
+
+                    int count;
+                    uxDetailStore.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_BUDGET_DETAIL>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _detail, out count);
+                    e.Total = count;
+                }
             }
 
         }

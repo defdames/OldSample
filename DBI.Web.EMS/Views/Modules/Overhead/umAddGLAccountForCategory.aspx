@@ -16,10 +16,13 @@
                         <ext:Toolbar runat="server">
                             <Items>
                                 <ext:Button runat="server" ID="uxAssignAccountsToCategory" Icon="Accept" Text="Add Accounts">
+                                    <DirectEvents>
+                                        <Click OnEvent="deSaveAccountsToCategory" Success ="parent.Ext.getCmp('uxAccountMaintenanceWindow').close();"><Confirmation ConfirmRequest="true" Message="Are you sure you want to assign these accounts for this category?"></Confirmation><EventMask ShowMask="true"></EventMask></Click>
+                                    </DirectEvents>
                                 </ext:Button>
-                                <ext:Button runat="server" ID="Button2" Icon="Cancel" Text="Cancel">
+                                <ext:Button runat="server" ID="uxCloseForm" Icon="Cancel" Text="Close Form">
                                     <Listeners>
-                                        <Click Handler="#{uxGLAccountListWindow}.close();#{uxGLAccountListStore}.removeAll();"></Click>
+                                        <Click Handler="parent.Ext.getCmp('uxAccountMaintenanceWindow').close();"></Click>
                                     </Listeners>
                                 </ext:Button>
                             </Items>

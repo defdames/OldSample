@@ -20,7 +20,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 {
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
-
             }
         }
 
@@ -56,18 +55,100 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         }
 
+        public class GL_PERIODS
+        {
+            public string ENTERED_PERIOD_NAME { get; set; }
+            public short PERIOD_YEAR { get; set; }
+            public long PERIOD_NUM { get; set; }
+            public string PERIOD_TYPE { get; set; }
+            public DateTime START_DATE { get; set; }
+            public DateTime? END_DATE { get; set; }
+        }
+
         protected void deLoadOrganizationAccounts(object sender, StoreReadDataEventArgs e)
         {
 
             long _organizationID;
             bool checkOrgId = long.TryParse(Request.QueryString["orgid"], out _organizationID);
+            short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);
 
-            List<OVERHEAD_BUDGET_DETAIL_V> _accountList = new List<OVERHEAD_BUDGET_DETAIL_V>();
-
-            //First we need a list of accont ranges
 
             using (Entities _context = new Entities())
             {
+
+                string sql = "select entered_period_name,period_year,period_num,period_type,start_date,end_date from gl.gl_periods where period_set_name = 'DBI Calendar' order by period_num";
+                List<GL_PERIODS> _periodMonthList = _context.Database.SqlQuery<GL_PERIODS>(sql).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Month").ToList();
+                List<GL_PERIODS> _periodWeekList = _context.Database.SqlQuery<GL_PERIODS>(sql).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Week").ToList();
+
+                foreach (GL_PERIODS _period in _periodMonthList)
+                {
+                    if (_period.PERIOD_NUM == 1)
+                    {
+                        var _weekCount = _periodWeekList.Where(x => x.ENTERED_PERIOD_NAME.Contains(_period.ENTERED_PERIOD_NAME)).Count();
+                        Column1.Text = string.Format("{0} - ({1} Weeks)", _period.ENTERED_PERIOD_NAME, _weekCount);
+                    }
+                    if (_period.PERIOD_NUM == 2)
+                    {
+                        var _weekCount = _periodWeekList.Where(x => x.ENTERED_PERIOD_NAME.Contains(_period.ENTERED_PERIOD_NAME)).Count();
+                        Column2.Text = string.Format("{0} - ({1} Weeks)", _period.ENTERED_PERIOD_NAME, _weekCount);
+                    }
+                    if (_period.PERIOD_NUM == 3)
+                    {
+                        var _weekCount = _periodWeekList.Where(x => x.ENTERED_PERIOD_NAME.Contains(_period.ENTERED_PERIOD_NAME)).Count();
+                        Column3.Text = string.Format("{0} - ({1} Weeks)", _period.ENTERED_PERIOD_NAME, _weekCount);
+                    }
+                    if (_period.PERIOD_NUM == 4)
+                    {
+                        var _weekCount = _periodWeekList.Where(x => x.ENTERED_PERIOD_NAME.Contains(_period.ENTERED_PERIOD_NAME)).Count();
+                        Column4.Text = string.Format("{0} - ({1} Weeks)", _period.ENTERED_PERIOD_NAME, _weekCount);
+                    }
+                    if (_period.PERIOD_NUM == 5)
+                    {
+                        var _weekCount = _periodWeekList.Where(x => x.ENTERED_PERIOD_NAME.Contains(_period.ENTERED_PERIOD_NAME)).Count();
+                        Column5.Text = string.Format("{0} - ({1} Weeks)", _period.ENTERED_PERIOD_NAME, _weekCount);
+                    }
+                    if (_period.PERIOD_NUM == 6)
+                    {
+                        var _weekCount = _periodWeekList.Where(x => x.ENTERED_PERIOD_NAME.Contains(_period.ENTERED_PERIOD_NAME)).Count();
+                        Column6.Text = string.Format("{0} - ({1} Weeks)", _period.ENTERED_PERIOD_NAME, _weekCount);
+                    }
+                    if (_period.PERIOD_NUM == 7)
+                    {
+                        var _weekCount = _periodWeekList.Where(x => x.ENTERED_PERIOD_NAME.Contains(_period.ENTERED_PERIOD_NAME)).Count();
+                        Column7.Text = string.Format("{0} - ({1} Weeks)", _period.ENTERED_PERIOD_NAME, _weekCount);
+                    }
+                    if (_period.PERIOD_NUM == 8)
+                    {
+                        var _weekCount = _periodWeekList.Where(x => x.ENTERED_PERIOD_NAME.Contains(_period.ENTERED_PERIOD_NAME)).Count();
+                        Column8.Text = string.Format("{0} - ({1} Weeks)", _period.ENTERED_PERIOD_NAME, _weekCount);
+                    }
+                    if (_period.PERIOD_NUM == 9)
+                    {
+                        var _weekCount = _periodWeekList.Where(x => x.ENTERED_PERIOD_NAME.Contains(_period.ENTERED_PERIOD_NAME)).Count();
+                        Column9.Text = string.Format("{0} - ({1} Weeks)", _period.ENTERED_PERIOD_NAME, _weekCount);
+                    }
+                    if (_period.PERIOD_NUM == 10)
+                    {
+                        var _weekCount = _periodWeekList.Where(x => x.ENTERED_PERIOD_NAME.Contains(_period.ENTERED_PERIOD_NAME)).Count();
+                        Column10.Text = string.Format("{0} - ({1} Weeks)", _period.ENTERED_PERIOD_NAME, _weekCount);
+                    }
+                    if (_period.PERIOD_NUM == 11)
+                    {
+                        var _weekCount = _periodWeekList.Where(x => x.ENTERED_PERIOD_NAME.Contains(_period.ENTERED_PERIOD_NAME)).Count();
+                        Column11.Text = string.Format("{0} - ({1} Weeks)", _period.ENTERED_PERIOD_NAME, _weekCount);
+                    }
+                    if (_period.PERIOD_NUM == 12)
+                    {
+                        var _weekCount = _periodWeekList.Where(x => x.ENTERED_PERIOD_NAME.Contains(_period.ENTERED_PERIOD_NAME)).Count();
+                        Column12.Text = string.Format("{0} - ({1} Weeks)", _period.ENTERED_PERIOD_NAME, _weekCount);
+                    }
+
+                }
+
+
+                List<OVERHEAD_BUDGET_DETAIL_V> _accountList = new List<OVERHEAD_BUDGET_DETAIL_V>();
+
+                //First we need a list of accont ranges
 
                 List<GL_ACCOUNTS_V> _rangeOfAccounts = new List<GL_ACCOUNTS_V>();
 
@@ -121,59 +202,59 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 foreach (GL_ACCOUNTS_V _validAccount in _rangeOfAccounts)
                 {
 
-                        OVERHEAD_BUDGET_DETAIL_V _row = new OVERHEAD_BUDGET_DETAIL_V();
-                        _row.CODE_COMBINATION_ID = _validAccount.CODE_COMBINATION_ID;
-                        _row.ACCOUNT_DESCRIPTION = _validAccount.SEGMENT5_DESC + " (" + _validAccount.SEGMENT5 + ")";
-                        _row.AMOUNT1 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 1, "B");
-                        _row.AMOUNT2 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 2, "B");
-                        _row.AMOUNT3 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 3, "B");
-                        _row.AMOUNT4 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 4, "B");
-                        _row.AMOUNT5 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 5, "B");
-                        _row.AMOUNT6 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 6, "B");
-                        _row.AMOUNT7 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 7, "B");
-                        _row.AMOUNT8 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 8, "B");
-                        _row.AMOUNT9 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 9, "B");
-                        _row.AMOUNT10 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 10, "B");
-                        _row.AMOUNT11 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 11, "B");
-                        _row.AMOUNT12 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 12, "B");
-                        _row.TOTAL = (_row.AMOUNT1 + _row.AMOUNT2 + _row.AMOUNT3 + _row.AMOUNT4 + _row.AMOUNT5 + _row.AMOUNT6 + _row.AMOUNT7 + _row.AMOUNT8 + _row.AMOUNT9 + _row.AMOUNT10 + _row.AMOUNT11 + _row.AMOUNT12);
+                    OVERHEAD_BUDGET_DETAIL_V _row = new OVERHEAD_BUDGET_DETAIL_V();
+                    _row.CODE_COMBINATION_ID = _validAccount.CODE_COMBINATION_ID;
+                    _row.ACCOUNT_DESCRIPTION = _validAccount.SEGMENT5_DESC + " (" + _validAccount.SEGMENT5 + ")";
+                    _row.AMOUNT1 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 1, "B");
+                    _row.AMOUNT2 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 2, "B");
+                    _row.AMOUNT3 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 3, "B");
+                    _row.AMOUNT4 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 4, "B");
+                    _row.AMOUNT5 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 5, "B");
+                    _row.AMOUNT6 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 6, "B");
+                    _row.AMOUNT7 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 7, "B");
+                    _row.AMOUNT8 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 8, "B");
+                    _row.AMOUNT9 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 9, "B");
+                    _row.AMOUNT10 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 10, "B");
+                    _row.AMOUNT11 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 11, "B");
+                    _row.AMOUNT12 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 12, "B");
+                    _row.TOTAL = (_row.AMOUNT1 + _row.AMOUNT2 + _row.AMOUNT3 + _row.AMOUNT4 + _row.AMOUNT5 + _row.AMOUNT6 + _row.AMOUNT7 + _row.AMOUNT8 + _row.AMOUNT9 + _row.AMOUNT10 + _row.AMOUNT11 + _row.AMOUNT12);
 
-                        //Check toggle button if button is active, hide zero lines (zero total)
-                        if (!uxHideBlankLinesButton.Pressed)
+                    //Check toggle button if button is active, hide zero lines (zero total)
+                    if (!uxHideBlankLinesCheckbox.Checked)
+                    {
+                        _accountList.Add(_row);
+                    }
+                    else
+                    {
+
+                        if (e.Parameters["TOGGLE_ACTIVE"] == "N")
                         {
                             _accountList.Add(_row);
                         }
                         else
                         {
-
-                            if (e.Parameters["TOGGLE_ACTIVE"] == "N")
-                            {
+                            if (_row.TOTAL > 0 || _row.TOTAL < 0)
                                 _accountList.Add(_row);
-                            }
-                            else
-                            {
-                                if (_row.TOTAL > 0 || _row.TOTAL < 0)
-                                    _accountList.Add(_row);
 
-                            }
                         }
+                    }
 
                 }
 
-            }
 
-            //Quick check hide summary column
-            foreach (OVERHEAD_BUDGET_DETAIL_V _item in _accountList)
-            {
-                if (_item.TOTAL > 0)
-                    uxSummary.ToggleSummaryRow(true);
+                //Quick check hide summary column
+                foreach (OVERHEAD_BUDGET_DETAIL_V _item in _accountList)
+                {
+                    if (_item.TOTAL > 0)
+                        uxSummary.ToggleSummaryRow(true);
                     break;
-            }
+                }
 
 
             int count;
             uxOrganizationAccountStore.DataSource = GenericData.ListFilterHeader<OVERHEAD_BUDGET_DETAIL_V>(e.Start, 1000, e.Sort, e.Parameters["filterheader"], _accountList.AsQueryable(), out count);
             e.Total = count;
+            }
 
         }
 
@@ -186,7 +267,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             _p.Name = "TOGGLE_ACTIVE";
             _p.Value = "N";
 
-            if (uxHideBlankLinesButton.Pressed)
+            if (uxHideBlankLinesCheckbox.Checked)
                 _p.Value = "Y";
 
             ps.Add(_p);

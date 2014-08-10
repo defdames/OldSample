@@ -64,11 +64,11 @@
                                     </DirectEvents>
                                 </ext:Button>
                                 <ext:ToolbarSeparator runat="server"></ext:ToolbarSeparator>
-                               <ext:Button Icon="MagifierZoomOut" Text="Hide Blank Lines" runat="server" ID="uxHideBlankLinesButton" EnableToggle="true" >
-                                   <DirectEvents>
-                                       <Toggle OnEvent="deHideBlankLines"><EventMask ShowMask="true"></EventMask></Toggle>
-                                   </DirectEvents>
-                               </ext:Button>
+                                <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Hide Blank Lines" ID="uxHideBlankLinesCheckbox">
+                                    <DirectEvents>
+                                        <Change OnEvent="deHideBlankLines"><EventMask ShowMask="true"></EventMask></Change>
+                                    </DirectEvents>
+                                </ext:Checkbox>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
@@ -108,57 +108,57 @@
               <ColumnModel>
                   <Columns>
                       <ext:Column ID="Column14" runat="server" DataIndex="ACCOUNT_DESCRIPTION" Text="Account Name" Width="250" Locked="true" >
-                          <SummaryRenderer Handler="return ('Budget Totals');" />                            
+                          <SummaryRenderer Handler="return ('Totals');" />                            
                       </ext:Column>
-                      <ext:Column ID="Column54" runat="server" Text="Totals" Flex="1" Align="Center" DataIndex="TOTAL" SummaryType="Sum">
+                      <ext:Column ID="Column54" runat="server" Text="Total" Flex="1" Align="Center" DataIndex="TOTAL" SummaryType="Sum" StyleSpec="font-size:7pt;">
                           <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                           <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                      <ext:Column ID="Column1" runat="server" Text="November" Flex="1" Align="Center" DataIndex="AMOUNT1" SummaryType="Sum">
+                      <ext:Column ID="Column1" runat="server" Flex="1" Align="Center" DataIndex="AMOUNT1" SummaryType="Sum" StyleSpec="font-size:7pt;">
                               <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                           <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column2" runat="server" Text="December" Flex="1" Align="Center" DataIndex="AMOUNT2" SummaryType="Sum">
+                       <ext:Column ID="Column2" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT2" SummaryType="Sum" StyleSpec="font-size:7pt;">
                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                            <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column3" runat="server" Text="January" Flex="1" Align="Center" DataIndex="AMOUNT3" SummaryType="Sum">
+                       <ext:Column ID="Column3" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT3" SummaryType="Sum" StyleSpec="font-size:7pt;">
                               <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                            <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column4" runat="server" Text="February" Flex="1" Align="Center" DataIndex="AMOUNT4" SummaryType="Sum">
+                       <ext:Column ID="Column4" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT4" SummaryType="Sum" StyleSpec="font-size:7pt;">
                               <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                            <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column5" runat="server" Text="March" Flex="1" Align="Center" DataIndex="AMOUNT5" SummaryType="Sum">
+                       <ext:Column ID="Column5" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT5" SummaryType="Sum" StyleSpec="font-size:7pt;">
                               <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                            <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column6" runat="server" Text="April" Flex="1" Align="Center" DataIndex="AMOUNT6" SummaryType="Sum">
+                       <ext:Column ID="Column6" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT6" SummaryType="Sum" StyleSpec="font-size:7pt;">
                                 <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                            <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column7" runat="server" Text="May" Flex="1" Align="Center" DataIndex="AMOUNT7" SummaryType="Sum">
+                       <ext:Column ID="Column7" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT7" SummaryType="Sum" StyleSpec="font-size:7pt;">
                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                            <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column8" runat="server" Text="June" Flex="1" Align="Center" DataIndex="AMOUNT8" SummaryType="Sum">
+                       <ext:Column ID="Column8" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT8" SummaryType="Sum" StyleSpec="font-size:7pt;">
                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                            <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column9" runat="server" Text="July" Flex="1" Align="Center" DataIndex="AMOUNT9" SummaryType="Sum">
+                       <ext:Column ID="Column9" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT9" SummaryType="Sum" StyleSpec="font-size:7pt;">
                                 <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                            <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column10" runat="server" Text="August" Flex="1" Align="Center" DataIndex="AMOUNT10" SummaryType="Sum">
+                       <ext:Column ID="Column10" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT10" SummaryType="Sum" StyleSpec="font-size:7pt;">
                                 <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                            <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column11" runat="server" Text="September" Flex="1" Align="Center" DataIndex="AMOUNT11" SummaryType="Sum">
+                       <ext:Column ID="Column11" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT11" SummaryType="Sum" StyleSpec="font-size:7pt;">
                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                            <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column12" runat="server" Text="October" Flex="1" Align="Center" DataIndex="AMOUNT12" SummaryType="Sum"> 
+                       <ext:Column ID="Column12" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT12" SummaryType="Sum" StyleSpec="font-size:7pt;"> 
                                 <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                                 <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                       </ext:Column>
