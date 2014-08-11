@@ -126,7 +126,7 @@
                             </Proxy>
                              <Sorters>
                                      <ext:DataSorter Property="CATEGORY_NAME" Direction="ASC" />
-                                     <ext:DataSorter Property="ACCOUNT_ORDER" Direction="ASC" />
+                                     <ext:DataSorter Property="SORT_ORDER" Direction="ASC" />
                             </Sorters>
                         </ext:Store>
                     </Store>

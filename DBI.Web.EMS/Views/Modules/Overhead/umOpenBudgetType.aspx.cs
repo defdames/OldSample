@@ -117,7 +117,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                             _d.ORG_BUDGET_ID = _budgetHeader.ORG_BUDGET_ID;
                             _d.PERIOD_NAME = _line.PERIOD_NAME;
                             _d.PERIOD_NUM = _line.PERIOD_NUM;
-                            _d.DETAIL_TYPE = _line.DETAIL_TYPE;
                             _d.CODE_COMBINATION_ID = _line.CODE_COMBINATION_ID;
                             _d.AMOUNT = _line.AMOUNT;
                             GenericData.Insert<OVERHEAD_BUDGET_DETAIL>(_d);

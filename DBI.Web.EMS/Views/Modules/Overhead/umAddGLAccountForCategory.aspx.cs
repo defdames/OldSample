@@ -64,7 +64,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     OVERHEAD_ACCOUNT_CATEGORY _record = new OVERHEAD_ACCOUNT_CATEGORY();
                     _record.ACCOUNT_SEGMENT = row.RecordID;
                     _record.CATEGORY_ID = _category_id;
-                    _record.ACCOUNT_ORDER = 0;
+                    _record.SORT_ORDER = 0;
                     _record.CREATE_DATE = DateTime.Now;
                     _record.MODIFY_DATE = DateTime.Now;
                     _record.CREATED_BY = User.Identity.Name;

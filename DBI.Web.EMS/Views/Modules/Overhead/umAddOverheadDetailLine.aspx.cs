@@ -38,7 +38,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 using (Entities _context = new Entities())
                 {
 
-                    List<OVERHEAD_BUDGET_DETAIL> _detail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id & x.DETAIL_TYPE == "B").OrderBy(x => x.PERIOD_NUM).ToList();
+                    List<OVERHEAD_BUDGET_DETAIL> _detail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id).OrderBy(x => x.PERIOD_NUM).ToList();
 
                     if (_detail.Count() == 0)
                     {
@@ -52,7 +52,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                             _record.ORG_BUDGET_ID = _budget_id;
                             _record.PERIOD_NAME = _period.ENTERED_PERIOD_NAME;
                             _record.PERIOD_NUM = _period.PERIOD_NUM;
-                            _record.DETAIL_TYPE = "B";
                             _record.CODE_COMBINATION_ID = _account_id;
                             _record.AMOUNT = 0;
                             _record.CREATE_DATE = DateTime.Now;
@@ -62,7 +61,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                             GenericData.Insert<OVERHEAD_BUDGET_DETAIL>(_record);
                         }
 
-                        _detail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id & x.DETAIL_TYPE == "B").OrderBy(x => x.PERIOD_NUM).ToList();
+                        _detail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id).OrderBy(x => x.PERIOD_NUM).ToList();
                     }
 
 
@@ -155,7 +154,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 using (Entities _context = new Entities())
                 {
 
-                    List<OVERHEAD_BUDGET_DETAIL> _detail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id & x.DETAIL_TYPE == "B").OrderBy(x => x.PERIOD_NUM).ToList();
+                    List<OVERHEAD_BUDGET_DETAIL> _detail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id).OrderBy(x => x.PERIOD_NUM).ToList();
 
                     OVERHEAD_ACCOUNT_COMMENT _commentR = _context.OVERHEAD_ACCOUNT_COMMENT.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id).SingleOrDefault();
                     if (_commentR != null)
