@@ -184,6 +184,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Button uxAccountMaintenace;
         
         /// <summary>
+        /// uxUnAssignAccounts control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxUnAssignAccounts;
+        
+        /// <summary>
         /// uxAccountListStore control.
         /// </summary>
         /// <remarks>
@@ -220,13 +229,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Column Column3;
         
         /// <summary>
-        /// RowSelectionModel1 control.
+        /// uxAccountListSelectionModel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.RowSelectionModel RowSelectionModel1;
+        protected global::Ext.Net.RowSelectionModel uxAccountListSelectionModel;
         
         /// <summary>
         /// FilterHeader1 control.
