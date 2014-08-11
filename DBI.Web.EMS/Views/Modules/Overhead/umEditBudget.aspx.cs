@@ -204,7 +204,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                     OVERHEAD_BUDGET_DETAIL_V _row = new OVERHEAD_BUDGET_DETAIL_V();
                     //return category infomration 
-                    OVERHEAD_ACCOUNT_CATEGORY _accountCategory = _context.OVERHEAD_ACCOUNT_CATEGORY.Where(x => x.ACCOUNT_SEGMENT == _validAccount.SEGMENT5).SingleOrDefault();
+                    OVERHEAD_ACCOUNT_CATEGORY _accountCategory = _context.OVERHEAD_ACCOUNT_CATEGORY.Where(x => x.ACCOUNT_SEGMENT == _validAccount.SEGMENT5).OrderBy(x => x.ACCOUNT_SEGMENT).SingleOrDefault();
                     OVERHEAD_CATEGORY _category = new OVERHEAD_CATEGORY();
 
 
@@ -214,6 +214,11 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                         _row.CATEGORY_ID = _accountCategory.CATEGORY_ID;
                         _row.CATEGORY_NAME = _category.NAME;
                         _row.ACCOUNT_ORDER = _accountCategory.ACCOUNT_ORDER;
+                    }
+                    else
+                    {
+                        _row.CATEGORY_NAME = "Other";
+                        _row.ACCOUNT_ORDER = 0;
                     }
 
                     _row.CODE_COMBINATION_ID = _validAccount.CODE_COMBINATION_ID;
