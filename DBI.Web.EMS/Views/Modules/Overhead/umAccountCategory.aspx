@@ -45,6 +45,7 @@
                                             <Fields>
                                                 <ext:ModelField Name="NAME"  />
                                                 <ext:ModelField Name="DESCRIPTION"  />
+                                                <ext:ModelField Name="SORT_ORDER"  />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
@@ -58,6 +59,15 @@
                             </Store>
                             <ColumnModel>
                                 <Columns>
+                                    <ext:Column ID="Column5" runat="server" DataIndex="SORT_ORDER" Text="Sort Order" Width="125" >
+                                       <Editor>
+                                    <ext:NumberField runat="server" AllowBlank="false" ID="uxEditCategorySortOrder" SelectOnFocus="true" TabIndex="1">
+                                         <Listeners>
+                                              <Show Handler="this.el.dom.select();" Delay="150" />
+                                          </Listeners>
+                                      </ext:NumberField>
+                                </Editor>
+                                    </ext:Column>
                                     <ext:Column ID="Column2" runat="server" DataIndex="NAME" Text="Name" Flex="1" />
                                     <ext:Column ID="Column1" runat="server" DataIndex="DESCRIPTION" Text="Description" Flex="1" />
                                 </Columns>
@@ -80,7 +90,14 @@
                     <View>
                         <ext:GridView ID="uxAccountCategoryGridView" StripeRows="true" runat="server">
                         </ext:GridView>
-                    </View>                       
+                    </View>       
+                      <Plugins>
+                          <ext:CellEditing runat="server" ClicksToEdit="1">
+                              <DirectEvents>
+                                  <Edit OnEvent="deSaveSortOrder"><EventMask ShowMask="true"></EventMask></Edit>
+                              </DirectEvents>
+                          </ext:CellEditing>
+                      </Plugins>                
                         </ext:GridPanel>
 
                   <ext:GridPanel ID="uxAccountListGridPanel" runat="server" Flex="1" SimpleSelect="true" Frame="true" Padding="5" Margins="5 5 5 5" Region="South" Title="General Ledger Accounts By Category">

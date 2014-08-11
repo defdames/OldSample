@@ -39,6 +39,110 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
          
         }
 
+        protected void deImportActuals(object sender, DirectEventArgs e)
+        {
+            short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);
+            long _organizationID = long.Parse(Request.QueryString["orgid"]);
+            long _budgetid = long.Parse(Request.QueryString["budget_id"]);
+
+            using(Entities _context = new Entities())
+            {
+               
+                //First get the periods for the fiscal year
+                string sql2 = "select entered_period_name,period_year,period_num,period_type,start_date,end_date from gl.gl_periods where period_set_name = 'DBI Calendar' order by period_num";
+                List<GL_PERIODS> _periodMonthList = _context.Database.SqlQuery<GL_PERIODS>(sql2).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Month").ToList();
+
+                // Get the range of accounts
+                List<GL_ACCOUNTS_V> _rangeOfAccounts = new List<GL_ACCOUNTS_V>();
+
+                var _data = _context.OVERHEAD_GL_RANGE.Where(x => x.ORGANIZATION_ID == _organizationID);
+
+                foreach (OVERHEAD_GL_RANGE _range in _data)
+                {
+                    var _adata = _context.GL_ACCOUNTS_V.Where(x => String.Compare(x.SEGMENT1, _range.SRSEGMENT1) >= 0 && String.Compare(x.SEGMENT1, _range.ERSEGMENT1) <= 0);
+                    _adata = _adata.Where(x => String.Compare(x.SEGMENT2, _range.SRSEGMENT2) >= 0 && String.Compare(x.SEGMENT2, _range.ERSEGMENT2) <= 0);
+                    _adata = _adata.Where(x => String.Compare(x.SEGMENT3, _range.SRSEGMENT3) >= 0 && String.Compare(x.SEGMENT3, _range.ERSEGMENT3) <= 0);
+                    _adata = _adata.Where(x => String.Compare(x.SEGMENT4, _range.SRSEGMENT4) >= 0 && String.Compare(x.SEGMENT4, _range.ERSEGMENT4) <= 0);
+                    _adata = _adata.Where(x => String.Compare(x.SEGMENT5, _range.SRSEGMENT5) >= 0 && String.Compare(x.SEGMENT5, _range.ERSEGMENT5) <= 0);
+                    _adata = _adata.Where(x => String.Compare(x.SEGMENT6, _range.SRSEGMENT6) >= 0 && String.Compare(x.SEGMENT6, _range.ERSEGMENT6) <= 0);
+                    _adata = _adata.Where(x => String.Compare(x.SEGMENT7, _range.SRSEGMENT7) >= 0 && String.Compare(x.SEGMENT7, _range.ERSEGMENT7) <= 0);
+                    List<GL_ACCOUNTS_V> _accountRange = _adata.ToList();
+                    _rangeOfAccounts.AddRange(_accountRange);
+
+                }
+
+                //Exclude any accounts added to the list of excluded accounts
+                List<OVERHEAD_GL_ACCOUNT> _excludedAccounts = _context.OVERHEAD_GL_ACCOUNT.Where(x => x.ORGANIZATION_ID == _organizationID).ToList();
+
+                //Create a list of accounts matching up with GL_ACCOUNTS_V
+                List<GL_ACCOUNTS_V> _eAccountList = new List<GL_ACCOUNTS_V>();
+
+                foreach (OVERHEAD_GL_ACCOUNT _eaccount in _excludedAccounts)
+                {
+                    var _adata = _context.GL_ACCOUNTS_V.Where(x => x.CODE_COMBINATION_ID == _eaccount.CODE_COMBINATION_ID).Single();
+                    _rangeOfAccounts.Remove(_adata);
+                }
+
+                //Add total detail
+                foreach (GL_ACCOUNTS_V _validAccount in _rangeOfAccounts)
+                {
+
+                    string sql = string.Format("select period_net_dr,period_year,code_combination_id,period_num from gl.gl_balances where actual_flag = 'A' and period_year = {0} and code_combination_id = {1}", _fiscal_year, _validAccount.CODE_COMBINATION_ID);
+                    List<ACTUAL_BALANCES> _balance = _context.Database.SqlQuery<ACTUAL_BALANCES>(sql).ToList();
+
+                       foreach (GL_PERIODS _period in _periodMonthList)
+                        {
+                            List<OVERHEAD_BUDGET_DETAIL> _budgetLineList = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budgetid).ToList();
+                            OVERHEAD_BUDGET_DETAIL _line = _budgetLineList.Where(x => x.ORG_BUDGET_ID == _budgetid & x.CODE_COMBINATION_ID == _validAccount.CODE_COMBINATION_ID & x.PERIOD_NUM == _period.PERIOD_NUM).SingleOrDefault();
+                            ACTUAL_BALANCES _actualTotalLine = _balance.Where(x => x.PERIOD_NUM == _period.PERIOD_NUM).SingleOrDefault();
+                            decimal _aTotal = 0;
+
+                            if (_actualTotalLine != null)
+                                _aTotal = _actualTotalLine.PERIOD_NET_DR;
+
+
+                            if (_line == null)
+                            {
+                                //No data, create it
+                                OVERHEAD_BUDGET_DETAIL _record = new OVERHEAD_BUDGET_DETAIL();
+                                _record.ORG_BUDGET_ID = _budgetid;
+                                _record.PERIOD_NAME = _period.ENTERED_PERIOD_NAME;
+                                _record.PERIOD_NUM = _period.PERIOD_NUM;
+                                _record.CODE_COMBINATION_ID = _validAccount.CODE_COMBINATION_ID;
+                                _record.AMOUNT = _aTotal;
+                                _record.CREATE_DATE = DateTime.Now;
+                                _record.MODIFY_DATE = DateTime.Now;
+                                _record.CREATED_BY = User.Identity.Name;
+                                _record.MODIFIED_BY = User.Identity.Name;
+                                GenericData.Insert<OVERHEAD_BUDGET_DETAIL>(_record);
+                            }
+                            else
+                            {
+                                //Data update it
+                                _line.AMOUNT = _aTotal;
+                                _line.MODIFY_DATE = DateTime.Now;
+                                _line.MODIFIED_BY = User.Identity.Name;
+                                GenericData.Update<OVERHEAD_BUDGET_DETAIL>(_line);
+                            }
+                    }
+                }
+
+
+            }
+
+            uxOrganizationAccountStore.Reload();
+
+
+        }
+
+        public class ACTUAL_BALANCES
+        {
+            public decimal PERIOD_NET_DR { get; set; }
+            public short PERIOD_YEAR { get; set; }
+            public long CODE_COMBINATION_ID { get; set; }
+            public long PERIOD_NUM { get; set; }
+        }
+
         protected void deSaveBudgetNotes(object sender, DirectEventArgs e)
         {
             using (Entities _context = new Entities())
@@ -213,29 +317,29 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                         _category = _context.OVERHEAD_CATEGORY.Where(x => x.CATEGORY_ID == _accountCategory.CATEGORY_ID).SingleOrDefault();
                         _row.CATEGORY_ID = _accountCategory.CATEGORY_ID;
                         _row.CATEGORY_NAME = _category.NAME;
-                        _row.ACCOUNT_ORDER = _accountCategory.ACCOUNT_ORDER;
+                        _row.SORT_ORDER = _accountCategory.SORT_ORDER;
                     }
                     else
                     {
                         _row.CATEGORY_NAME = "Other";
-                        _row.ACCOUNT_ORDER = 0;
+                        _row.SORT_ORDER = 0;
                     }
 
                     _row.CODE_COMBINATION_ID = _validAccount.CODE_COMBINATION_ID;
                     _row.ACCOUNT_SEGMENT = _validAccount.SEGMENT5;
                     _row.ACCOUNT_DESCRIPTION = _validAccount.SEGMENT5_DESC + " (" + _validAccount.SEGMENT5 + ")";
-                    _row.AMOUNT1 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 1, "B");
-                    _row.AMOUNT2 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 2, "B");
-                    _row.AMOUNT3 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 3, "B");
-                    _row.AMOUNT4 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 4, "B");
-                    _row.AMOUNT5 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 5, "B");
-                    _row.AMOUNT6 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 6, "B");
-                    _row.AMOUNT7 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 7, "B");
-                    _row.AMOUNT8 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 8, "B");
-                    _row.AMOUNT9 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 9, "B");
-                    _row.AMOUNT10 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 10, "B");
-                    _row.AMOUNT11 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 11, "B");
-                    _row.AMOUNT12 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 12, "B");
+                    _row.AMOUNT1 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 1);
+                    _row.AMOUNT2 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 2);
+                    _row.AMOUNT3 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 3);
+                    _row.AMOUNT4 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 4);
+                    _row.AMOUNT5 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 5);
+                    _row.AMOUNT6 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 6);
+                    _row.AMOUNT7 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 7);
+                    _row.AMOUNT8 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 8);
+                    _row.AMOUNT9 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 9);
+                    _row.AMOUNT10 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 10);
+                    _row.AMOUNT11 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 11);
+                    _row.AMOUNT12 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 12);
                     _row.TOTAL = (_row.AMOUNT1 + _row.AMOUNT2 + _row.AMOUNT3 + _row.AMOUNT4 + _row.AMOUNT5 + _row.AMOUNT6 + _row.AMOUNT7 + _row.AMOUNT8 + _row.AMOUNT9 + _row.AMOUNT10 + _row.AMOUNT11 + _row.AMOUNT12);
 
                     //Check toggle button if button is active, hide zero lines (zero total)
@@ -295,11 +399,11 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         }
 
-        protected decimal ReturnLineTotal(List<OVERHEAD_BUDGET_DETAIL> budgetList, long budget_id, long code_combination_id, long period_num, string type)
+        protected decimal ReturnLineTotal(List<OVERHEAD_BUDGET_DETAIL> budgetList, long budget_id, long code_combination_id, long period_num)
         {
             decimal returnvalue = 0;
 
-                OVERHEAD_BUDGET_DETAIL _line = budgetList.Where(x => x.ORG_BUDGET_ID == budget_id & x.CODE_COMBINATION_ID == code_combination_id & x.DETAIL_TYPE == type & x.PERIOD_NUM == period_num).SingleOrDefault();
+                OVERHEAD_BUDGET_DETAIL _line = budgetList.Where(x => x.ORG_BUDGET_ID == budget_id & x.CODE_COMBINATION_ID == code_combination_id & x.PERIOD_NUM == period_num).SingleOrDefault();
                 if(_line != null)
                 {
                     returnvalue =(decimal) _line.AMOUNT; 
@@ -384,7 +488,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         public class OVERHEAD_BUDGET_DETAIL_V
         {
             public long CATEGORY_ID { get; set; }
-            public long? ACCOUNT_ORDER { get; set; }
+            public long? SORT_ORDER { get; set; }
             public string CATEGORY_NAME { get; set; }
             public long CODE_COMBINATION_ID { get; set; }
             public string ACCOUNT_SEGMENT { get; set; }

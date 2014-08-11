@@ -20,10 +20,10 @@ namespace DBI.Data
         public Nullable<long> PERIOD_NUM { get; set; }
         public Nullable<decimal> AMOUNT { get; set; }
         public Nullable<long> ORG_BUDGET_ID { get; set; }
-        public string DETAIL_TYPE { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
+        public string ACTUALS_IMPORTED_FLAG { get; set; }
     }
 }
