@@ -15,7 +15,7 @@
                     <TopBar>
                         <ext:Toolbar runat="server">
                             <Items>
-                                <ext:Button runat="server" ID="uxAssignAccountsToCategory" Icon="Accept" Text="Add Accounts">
+                                <ext:Button runat="server" ID="uxAssignAccountsToCategory" Icon="Accept" Text="Add Accounts" Disabled="true">
                                     <DirectEvents>
                                         <Click OnEvent="deSaveAccountsToCategory" Success ="parent.Ext.getCmp('uxAccountMaintenanceWindow').close();"><Confirmation ConfirmRequest="true" Message="Are you sure you want to assign these accounts for this category?"></Confirmation><EventMask ShowMask="true"></EventMask></Click>
                                     </DirectEvents>
@@ -62,7 +62,12 @@
                         </ext:GridView>
                     </View>
                     <SelectionModel>
-                        <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Simple"></ext:CheckboxSelectionModel>
+                        <ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Simple">
+                             <Listeners>
+                                 <Select Handler="if(#{CheckboxSelectionModel1}.getCount() > 0 ){#{uxAssignAccountsToCategory}.enable();}else {#{uxAssignAccountsToCategory}.disable();}"></Select>
+                                        <Deselect Handler="if(#{CheckboxSelectionModel1}.getCount() > 0 ){#{uxAssignAccountsToCategory}.enable();}else {#{uxAssignAccountsToCategory}.disable();}"></Deselect>
+                                 </Listeners>
+                        </ext:CheckboxSelectionModel>
                     </SelectionModel>
                      <Plugins>
                         <ext:FilterHeader ID="uxOrganizationsGridFilter" runat="server" Remote="true" />

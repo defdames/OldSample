@@ -203,6 +203,18 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 {
 
                     OVERHEAD_BUDGET_DETAIL_V _row = new OVERHEAD_BUDGET_DETAIL_V();
+                    //return category infomration 
+                    OVERHEAD_ACCOUNT_CATEGORY _accountCategory = _context.OVERHEAD_ACCOUNT_CATEGORY.Where(x => x.ACCOUNT_SEGMENT == _validAccount.SEGMENT5).SingleOrDefault();
+                    OVERHEAD_CATEGORY _category = new OVERHEAD_CATEGORY();
+
+
+                    if (_accountCategory != null)
+                    {
+                        _category = _context.OVERHEAD_CATEGORY.Where(x => x.CATEGORY_ID == _accountCategory.CATEGORY_ID).SingleOrDefault();
+                        _row.CATEGORY_ID = _accountCategory.CATEGORY_ID;
+                        _row.CATEGORY_NAME = _category.NAME;
+                    }
+
                     _row.CODE_COMBINATION_ID = _validAccount.CODE_COMBINATION_ID;
                     _row.ACCOUNT_DESCRIPTION = _validAccount.SEGMENT5_DESC + " (" + _validAccount.SEGMENT5 + ")";
                     _row.AMOUNT1 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 1, "B");
@@ -243,12 +255,12 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
 
                 //Quick check hide summary column
-                foreach (OVERHEAD_BUDGET_DETAIL_V _item in _accountList)
-                {
-                    if (_item.TOTAL > 0)
-                        uxSummary.ToggleSummaryRow(true);
-                    break;
-                }
+                //foreach (OVERHEAD_BUDGET_DETAIL_V _item in _accountList)
+                //{
+                //    if (_item.TOTAL > 0)
+                //        uxSummary.ToggleSummaryRow(true);
+                 //   break;
+                //}
 
 
             int count;
@@ -364,6 +376,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         public class OVERHEAD_BUDGET_DETAIL_V
         {
+            public long CATEGORY_ID { get; set; }
+            public string CATEGORY_NAME { get; set; }
             public long CODE_COMBINATION_ID { get; set; }
             public string ACCOUNT_DESCRIPTION { get; set; }
             public decimal TOTAL { get; set; }
