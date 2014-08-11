@@ -51,7 +51,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             using (Entities _context = new Entities())
             {
-                var _data = _context.OVERHEAD_ACCOUNT_CATEGORY.Where(x => x.CATEGORY_ID == _selectedRowID).Select(x => new ACCOUNT_CATEGORY_LIST { ACCOUNT_CATEGORY_ID = x.ACCOUNT_CATEGORY_ID, CATEGORY_ID = x.CATEGORY_ID, ACCOUNT_SEGMENT = x.ACCOUNT_SEGMENT, ACCOUNT_ORDER = x.ACCOUNT_ORDER }).ToList();
+                var _data = _context.OVERHEAD_ACCOUNT_CATEGORY.Where(x => x.CATEGORY_ID == _selectedRowID).Select(x => new ACCOUNT_CATEGORY_LIST { ACCOUNT_CATEGORY_ID = x.ACCOUNT_CATEGORY_ID, CATEGORY_ID = x.CATEGORY_ID, ACCOUNT_SEGMENT = x.ACCOUNT_SEGMENT, SORT_ORDER = x.SORT_ORDER }).ToList();
 
                 //Get the name of the category id and account segment description
                 foreach (ACCOUNT_CATEGORY_LIST _record in _data)
