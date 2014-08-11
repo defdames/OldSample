@@ -66,14 +66,14 @@
                          <ext:RowSelectionModel runat="server" Mode="Single" ID="uxAccountCategorySelectionModel" AllowDeselect="true">
                              <DirectEvents>
                                  <Select OnEvent="deSelectCategory">
-                                     <ExtraParams>
-                                             <ext:Parameter Mode="Raw" Name="NAME" Value="record.data.NAME"></ext:Parameter>
-                                     </ExtraParams>
                                  </Select>
                                  <Deselect OnEvent="deDeSelectCategory"></Deselect>
                              </DirectEvents>
                          </ext:RowSelectionModel>
                             </SelectionModel>
+                      <Plugins>
+                          <ext:FilterHeader runat="server" Remote="true"></ext:FilterHeader>
+                      </Plugins>
                             <BottomBar>
                                 <ext:PagingToolbar ID="uxAccountCategoryGridPageBar" runat="server" />
                             </BottomBar>   
@@ -103,7 +103,6 @@
                                         <ext:Model ID="Model1" runat="server" IDProperty="ACCOUNT_CATEGORY_ID">
                                             <Fields>
                                                 <ext:ModelField Name="CATEGORY_ID"  />
-                                                <ext:ModelField Name="NAME"  />
                                                 <ext:ModelField Name="ACCOUNT_SEGMENT"  />
                                                 <ext:ModelField Name="ACCOUNT_SEGMENT_DESC"  />
                                                 <ext:ModelField Name="ACCOUNT_ORDER"  />
@@ -114,7 +113,7 @@
                                         <ext:PageProxy />
                                     </Proxy>
                             <Sorters>
-                                <ext:DataSorter Direction="ASC" Property="NAME"></ext:DataSorter>
+                                <ext:DataSorter Direction="ASC" Property="ACCOUNT_SEGMENT"></ext:DataSorter>
                             </Sorters>
                                 </ext:Store>
                             </Store>
@@ -128,6 +127,9 @@
                          <ext:RowSelectionModel runat="server" Mode="Single" ID="RowSelectionModel1" AllowDeselect="true">
                          </ext:RowSelectionModel>
                             </SelectionModel>
+                          <Plugins>
+                          <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true"></ext:FilterHeader>
+                      </Plugins>
                             <BottomBar>
                                 <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
                             </BottomBar>   

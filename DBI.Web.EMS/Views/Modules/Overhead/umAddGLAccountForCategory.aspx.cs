@@ -52,5 +52,25 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 e.Total = count;
             }
         }
+
+        protected void deSaveAccountsToCategory(object sender, DirectEventArgs e)
+        {
+            RowSelectionModel rm = CheckboxSelectionModel1 as RowSelectionModel;
+
+            var _category_id = long.Parse(Request.QueryString["category_id"]);
+
+                foreach(SelectedRow row in rm.SelectedRows)
+                {
+                    OVERHEAD_ACCOUNT_CATEGORY _record = new OVERHEAD_ACCOUNT_CATEGORY();
+                    _record.ACCOUNT_SEGMENT = row.RecordID;
+                    _record.CATEGORY_ID = _category_id;
+                    _record.ACCOUNT_ORDER = 0;
+                    _record.CREATE_DATE = DateTime.Now;
+                    _record.MODIFY_DATE = DateTime.Now;
+                    _record.CREATED_BY = User.Identity.Name;
+                    _record.MODIFIED_BY = User.Identity.Name;
+                    GenericData.Insert<OVERHEAD_ACCOUNT_CATEGORY>(_record);
+                }
+        }
     }
 }
