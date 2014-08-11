@@ -60,7 +60,7 @@
         .x-grid-row-summary .x-grid-cell-inner {
             font-weight      : bold;
             font-size        : 11px;
-            background-color : #9EC3E8;
+            background-color : #E0E0D1;
         }
 
     </style>
@@ -103,8 +103,9 @@
                                 <ext:Model ID="Model2" runat="server" IDProperty="CODE_COMBINATION_ID">
                                     <Fields>
                                         <ext:ModelField Name="CATEGORY_NAME" />
+                                        <ext:ModelField Name="ACCOUNT_ORDER" />
                                         <ext:ModelField Name="ACCOUNT_DESCRIPTION" />
-                                          <ext:ModelField Name="TOTAL" />
+                                        <ext:ModelField Name="TOTAL" />
                                         <ext:ModelField Name="AMOUNT1" />
                                         <ext:ModelField Name="AMOUNT2" />
                                         <ext:ModelField Name="AMOUNT3" />
@@ -125,7 +126,7 @@
                             </Proxy>
                              <Sorters>
                                      <ext:DataSorter Property="CATEGORY_NAME" Direction="ASC" />
-                                <ext:DataSorter Property="ACCOUNT_DESCRIPTION" Direction="ASC" />
+                                     <ext:DataSorter Property="ACCOUNT_ORDER" Direction="ASC" />
                             </Sorters>
                         </ext:Store>
                     </Store>

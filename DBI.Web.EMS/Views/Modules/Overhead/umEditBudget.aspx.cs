@@ -213,6 +213,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                         _category = _context.OVERHEAD_CATEGORY.Where(x => x.CATEGORY_ID == _accountCategory.CATEGORY_ID).SingleOrDefault();
                         _row.CATEGORY_ID = _accountCategory.CATEGORY_ID;
                         _row.CATEGORY_NAME = _category.NAME;
+                        _row.ACCOUNT_ORDER = _accountCategory.ACCOUNT_ORDER;
                     }
 
                     _row.CODE_COMBINATION_ID = _validAccount.CODE_COMBINATION_ID;
@@ -377,6 +378,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         public class OVERHEAD_BUDGET_DETAIL_V
         {
             public long CATEGORY_ID { get; set; }
+            public long? ACCOUNT_ORDER { get; set; }
             public string CATEGORY_NAME { get; set; }
             public long CODE_COMBINATION_ID { get; set; }
             public string ACCOUNT_DESCRIPTION { get; set; }

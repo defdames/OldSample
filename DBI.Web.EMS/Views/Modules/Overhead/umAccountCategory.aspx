@@ -29,7 +29,7 @@
                                         <ext:ToolTip ID="ToolTip2" runat="server" Html="This allows you to delete an account category" UI="Info"></ext:ToolTip>
                                     </ToolTips>
                                      <DirectEvents>
-                                         <Click OnEvent="deDeleteCategory"><Confirmation Message="Are you sure you want to delete this category?" ConfirmRequest="true"></Confirmation><EventMask ShowMask="true"></EventMask></Click>
+                                         <Click OnEvent="deDeleteCategory"><Confirmation Message="Are you sure you want to delete this category? If there are any accounts assigned they will also be removed, are you sure?" ConfirmRequest="true"></Confirmation><EventMask ShowMask="true"></EventMask></Click>
                                      </DirectEvents>
                                          
                                 </ext:Button>
@@ -87,9 +87,14 @@
                       <TopBar>
                         <ext:Toolbar ID="Toolbar2" runat="server">
                             <Items>
-                                <ext:Button runat="server" ID="uxAccountMaintenace"  Icon="Add" Text="Manage Accounts" Disabled="true">
+                                <ext:Button runat="server" ID="uxAccountMaintenace"  Icon="Add" Text="Add" Disabled="true">
                                     <DirectEvents>
                                         <Click OnEvent="deLoadAccountMaintenance"></Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:Button runat="server" ID="uxUnAssignAccounts"  Icon="Delete" Text="Delete" Disabled="true">
+                                    <DirectEvents>
+                                        <Click OnEvent="deDeleteAccounts"><Confirmation Message="Are you sure you want to remove the following account(s) from the assigned category?" ConfirmRequest="true"></Confirmation><EventMask ShowMask="true"></EventMask></Click>
                                     </DirectEvents>
                                 </ext:Button>
                             </Items>
@@ -124,7 +129,11 @@
                                 </Columns>
                             </ColumnModel>
                      <SelectionModel>
-                         <ext:RowSelectionModel runat="server" Mode="Single" ID="RowSelectionModel1" AllowDeselect="true">
+                         <ext:RowSelectionModel runat="server" Mode="Simple" ID="uxAccountListSelectionModel" AllowDeselect="true">
+                              <Listeners>
+                                 <Select Handler="if(#{uxAccountListSelectionModel}.getCount() > 0){#{uxUnAssignAccounts}.enable();}else {#{uxUnAssignAccounts}.disable();}"></Select>
+                                        <Deselect Handler="if(#{uxAccountListSelectionModel}.getCount() > 0){#{uxUnAssignAccounts}.enable();}else {#{uxUnAssignAccounts}.disable();}"></Deselect>
+                                 </Listeners>
                          </ext:RowSelectionModel>
                             </SelectionModel>
                           <Plugins>

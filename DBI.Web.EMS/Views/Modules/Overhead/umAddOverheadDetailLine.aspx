@@ -33,7 +33,7 @@
         .x-grid-row-summary .x-grid-cell-inner {
             font-weight      : bold;
             font-size        : 11px;
-            background-color : #9EC3E8;
+            background-color : #E0E0D1;
         }
 
     </style>

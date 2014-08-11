@@ -66,6 +66,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 e.Total = count;
 
             }
+
         }
 
         protected void deSelectCategory(object sender, DirectEventArgs e)
@@ -75,7 +76,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
                 uxDeleteCategory.Enable();
                 uxAccountListStore.Reload();
-
                 uxAccountMaintenace.Enable();
             }
             else
@@ -100,8 +100,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             }
 
         }
-
-
 
         protected void deSaveAccountCategory(object sender, DirectEventArgs e)
         {
@@ -134,20 +132,18 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             //Make sure it's not in use
             using (Entities _context = new Entities())
             {
-                List<OVERHEAD_ACCOUNT_CATEGORY> _oac = _context.OVERHEAD_ACCOUNT_CATEGORY.Where(x => x.CATEGORY_ID == _selectedRowID).ToList();
-                if (_oac.Count > 0)
-                {
-                    X.Msg.Alert("Delete Error", "You can not delete this category as it's in use!").Show();
-                }
-                else
-                {
+                    List<OVERHEAD_ACCOUNT_CATEGORY> _oac = _context.OVERHEAD_ACCOUNT_CATEGORY.Where(x => x.CATEGORY_ID == _selectedRowID).ToList();
                     OVERHEAD_CATEGORY _record = _context.OVERHEAD_CATEGORY.Where(x => x.CATEGORY_ID == _selectedRowID).SingleOrDefault();
                     GenericData.Delete<OVERHEAD_CATEGORY>(_record);
+                    GenericData.Delete<OVERHEAD_ACCOUNT_CATEGORY>(_oac);
                     uxCategoryWindow.Close();
                     uxAccountCategoryStore.Reload();
-                }
+                    uxAccountListStore.Reload();
 
             }
+
+            uxDeleteCategory.Disable();
+            uxAccountMaintenace.Disable();
 
         }
 
@@ -184,6 +180,29 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             win.Render(this.Form);
             win.Show();
+        }
+
+        protected void deDeleteAccounts(object sender, DirectEventArgs e)
+        {
+            RowSelectionModel sm = uxAccountListSelectionModel;
+
+            foreach (SelectedRow _row in sm.SelectedRows)
+            {
+                using(Entities _context = new Entities())
+                {
+                    long _selectedRecord = long.Parse(_row.RecordID);
+                    OVERHEAD_ACCOUNT_CATEGORY _account = _context.OVERHEAD_ACCOUNT_CATEGORY.Where(x => x.ACCOUNT_CATEGORY_ID == _selectedRecord).SingleOrDefault();
+
+                    if (_account != null)
+                    {
+                        GenericData.Delete<OVERHEAD_ACCOUNT_CATEGORY>(_account);
+                    }
+                }
+
+            }
+
+            uxAccountListStore.Reload();
+
         }
 
     }
