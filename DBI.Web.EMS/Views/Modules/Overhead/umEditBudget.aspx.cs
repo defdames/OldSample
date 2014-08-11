@@ -222,6 +222,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     }
 
                     _row.CODE_COMBINATION_ID = _validAccount.CODE_COMBINATION_ID;
+                    _row.ACCOUNT_SEGMENT = _validAccount.SEGMENT5;
                     _row.ACCOUNT_DESCRIPTION = _validAccount.SEGMENT5_DESC + " (" + _validAccount.SEGMENT5 + ")";
                     _row.AMOUNT1 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 1, "B");
                     _row.AMOUNT2 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 2, "B");
@@ -386,6 +387,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             public long? ACCOUNT_ORDER { get; set; }
             public string CATEGORY_NAME { get; set; }
             public long CODE_COMBINATION_ID { get; set; }
+            public string ACCOUNT_SEGMENT { get; set; }
             public string ACCOUNT_DESCRIPTION { get; set; }
             public decimal TOTAL { get; set; }
             public decimal AMOUNT1 { get; set; }

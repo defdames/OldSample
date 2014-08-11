@@ -54,6 +54,19 @@
                 return Ext.String.format(template, (n >= 0) ? "black" : "red", r);
             };
         };
+
+        var showSummary = true;
+
+        var toggleSummary = function (b) {
+            showSummary = !showSummary;
+            var grid = b.up('uxOrganizationAccountGridPanel'),
+                view = grid.lockedGrid.getView();
+            view.getFeature('GroupingSummary1').toggleSummaryRow(showSummary);
+            view.refresh();
+            view = grid.normalGrid.getView();
+            view.getFeature('GroupingSummary1').toggleSummaryRow(showSummary);
+            view.refresh();
+        };
     </script>
 
     <style>
@@ -104,6 +117,7 @@
                                     <Fields>
                                         <ext:ModelField Name="CATEGORY_NAME" />
                                         <ext:ModelField Name="ACCOUNT_ORDER" />
+                                        <ext:ModelField Name="ACCOUNT_SEGMENT" />
                                         <ext:ModelField Name="ACCOUNT_DESCRIPTION" />
                                         <ext:ModelField Name="TOTAL" />
                                         <ext:ModelField Name="AMOUNT1" />
@@ -127,6 +141,7 @@
                              <Sorters>
                                      <ext:DataSorter Property="CATEGORY_NAME" Direction="ASC" />
                                      <ext:DataSorter Property="ACCOUNT_ORDER" Direction="ASC" />
+                                     <ext:DataSorter Property="ACCOUNT_SEGMENT" Direction="ASC" />
                             </Sorters>
                         </ext:Store>
                     </Store>
