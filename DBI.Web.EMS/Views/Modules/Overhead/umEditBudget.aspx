@@ -74,6 +74,11 @@
                     <TopBar>
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
+                                <ext:Button runat="server" icon="DatabaseCopy" Text="Import Actuals" ID="Button1">
+                                    <DirectEvents>
+                                        <Click OnEvent="deImportActuals"><Confirmation ConfirmRequest="true" Message="Are you sure you want to actuals for this budget you can not undo this task!" /><EventMask ShowMask="true"></EventMask></Click>
+                                    </DirectEvents>
+                                </ext:Button>
                                 <ext:ToolbarFill ID="ToolbarFill1" runat="server"></ext:ToolbarFill>
                                 <ext:Button runat="server" Icon="Accept" Text="Complete Budget" ID="uxCompleteBudget">
                                     <DirectEvents>
@@ -134,7 +139,7 @@
               <ColumnModel>
                   <Columns>
                       <ext:Column ID="Column14" runat="server" DataIndex="ACCOUNT_DESCRIPTION" Text="Account Name" Width="250" Locked="true" >
-                          <SummaryRenderer Handler="return ('Totals');" />                            
+                          <SummaryRenderer Handler="return ('Total');" />                            
                       </ext:Column>
                       <ext:Column ID="Column54" runat="server" Text="Total" Flex="1" Align="Center" DataIndex="TOTAL" SummaryType="Sum" StyleSpec="font-size:7pt;">
                           <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />

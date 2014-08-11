@@ -30,6 +30,11 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             public string ACCOUNT_SEGMENT_DESC { get; set; }
         }
 
+        protected void deSaveSortOrder(object sender, DirectEventArgs e)
+        {
+
+        }
+
 
         protected void uxAccountCategoryStore_ReadData(object sender, StoreReadDataEventArgs e)
         {
