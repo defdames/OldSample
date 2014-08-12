@@ -87,6 +87,11 @@
                     <TopBar>
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
+                                <ext:Button runat="server" icon="DatabaseCopy" Text="Import Actuals" ID="Button1">
+                                    <DirectEvents>
+                                        <Click OnEvent="deImportActuals"><Confirmation ConfirmRequest="true" Message="Are you sure you want to actuals for this budget you can not undo this task!" /><EventMask ShowMask="true" Msg="Importing Actuals, This might take awhile, please wait..."></EventMask></Click>
+                                    </DirectEvents>
+                                </ext:Button>
                                 <ext:ToolbarFill ID="ToolbarFill1" runat="server"></ext:ToolbarFill>
                                 <ext:Button runat="server" Icon="Accept" Text="Complete Budget" ID="uxCompleteBudget">
                                     <DirectEvents>

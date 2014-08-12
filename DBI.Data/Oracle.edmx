@@ -1189,11 +1189,11 @@ warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primar
           <Property Name="PERIOD_NUM" Type="number" Precision="15" Scale="0" />
           <Property Name="AMOUNT" Type="number" Precision="38" Scale="2" />
           <Property Name="ORG_BUDGET_ID" Type="number" Precision="15" Scale="0" />
+          <Property Name="ACTUALS_IMPORTED_FLAG" Type="varchar2" MaxLength="1" />
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
-          <Property Name="ACTUALS_IMPORTED_FLAG" Type="varchar2" MaxLength="1" />
         </EntityType>
         <EntityType Name="OVERHEAD_BUDGET_TYPE">
           <Key>
@@ -4653,8 +4653,8 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
             <End Role="CROSSING_SUPPLEMENTAL" EntitySet="CROSSING_SUPPLEMENTAL" />
           </AssociationSet>
           <EntitySet Name="OVERHEAD_ACCOUNT_CATEGORY" EntityType="OracleModel.OVERHEAD_ACCOUNT_CATEGORY" />
-          <EntitySet Name="OVERHEAD_BUDGET_DETAIL" EntityType="OracleModel.OVERHEAD_BUDGET_DETAIL" />
           <EntitySet Name="OVERHEAD_CATEGORY" EntityType="OracleModel.OVERHEAD_CATEGORY" />
+          <EntitySet Name="OVERHEAD_BUDGET_DETAIL" EntityType="OracleModel.OVERHEAD_BUDGET_DETAIL" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -8249,22 +8249,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Property Name="MODIFIED_BY" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="SORT_ORDER" Type="Int64" />
         </EntityType>
-        <EntityType Name="OVERHEAD_BUDGET_DETAIL">
-          <Key>
-            <PropertyRef Name="BUDGET_DETAIL_ID" />
-          </Key>
-          <Property Name="BUDGET_DETAIL_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CODE_COMBINATION_ID" Type="Int64" />
-          <Property Name="PERIOD_NAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="PERIOD_NUM" Type="Int64" />
-          <Property Name="AMOUNT" Type="Decimal" Precision="38" Scale="2" />
-          <Property Name="ORG_BUDGET_ID" Type="Int64" />
-          <Property Name="CREATE_DATE" Type="DateTime" />
-          <Property Name="MODIFY_DATE" Type="DateTime" />
-          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ACTUALS_IMPORTED_FLAG" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="OVERHEAD_CATEGORY">
           <Key>
             <PropertyRef Name="CATEGORY_ID" />
@@ -8277,6 +8261,22 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="MODIFIED_BY" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="SORT_ORDER" Type="Int64" />
+        </EntityType>
+        <EntityType Name="OVERHEAD_BUDGET_DETAIL">
+          <Key>
+            <PropertyRef Name="BUDGET_DETAIL_ID" />
+          </Key>
+          <Property Name="BUDGET_DETAIL_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CODE_COMBINATION_ID" Type="Int64" />
+          <Property Name="PERIOD_NAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="PERIOD_NUM" Type="Int64" />
+          <Property Name="AMOUNT" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="ORG_BUDGET_ID" Type="Int64" />
+          <Property Name="ACTUALS_IMPORTED_FLAG" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="CREATE_DATE" Type="DateTime" />
+          <Property Name="MODIFY_DATE" Type="DateTime" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -11025,23 +11025,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="OVERHEAD_BUDGET_DETAIL">
-            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_BUDGET_DETAIL">
-              <MappingFragment StoreEntitySet="OVERHEAD_BUDGET_DETAIL">
-                <ScalarProperty Name="ACTUALS_IMPORTED_FLAG" ColumnName="ACTUALS_IMPORTED_FLAG" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="ORG_BUDGET_ID" ColumnName="ORG_BUDGET_ID" />
-                <ScalarProperty Name="AMOUNT" ColumnName="AMOUNT" />
-                <ScalarProperty Name="PERIOD_NUM" ColumnName="PERIOD_NUM" />
-                <ScalarProperty Name="PERIOD_NAME" ColumnName="PERIOD_NAME" />
-                <ScalarProperty Name="CODE_COMBINATION_ID" ColumnName="CODE_COMBINATION_ID" />
-                <ScalarProperty Name="BUDGET_DETAIL_ID" ColumnName="BUDGET_DETAIL_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="OVERHEAD_CATEGORY">
             <EntityTypeMapping TypeName="OracleModel.OVERHEAD_CATEGORY">
               <MappingFragment StoreEntitySet="OVERHEAD_CATEGORY">
@@ -11053,6 +11036,23 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
                 <ScalarProperty Name="NAME" ColumnName="NAME" />
                 <ScalarProperty Name="CATEGORY_ID" ColumnName="CATEGORY_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OVERHEAD_BUDGET_DETAIL">
+            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_BUDGET_DETAIL">
+              <MappingFragment StoreEntitySet="OVERHEAD_BUDGET_DETAIL">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="ACTUALS_IMPORTED_FLAG" ColumnName="ACTUALS_IMPORTED_FLAG" />
+                <ScalarProperty Name="ORG_BUDGET_ID" ColumnName="ORG_BUDGET_ID" />
+                <ScalarProperty Name="AMOUNT" ColumnName="AMOUNT" />
+                <ScalarProperty Name="PERIOD_NUM" ColumnName="PERIOD_NUM" />
+                <ScalarProperty Name="PERIOD_NAME" ColumnName="PERIOD_NAME" />
+                <ScalarProperty Name="CODE_COMBINATION_ID" ColumnName="CODE_COMBINATION_ID" />
+                <ScalarProperty Name="BUDGET_DETAIL_ID" ColumnName="BUDGET_DETAIL_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
