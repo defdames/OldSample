@@ -4653,8 +4653,8 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
             <End Role="CROSSING_SUPPLEMENTAL" EntitySet="CROSSING_SUPPLEMENTAL" />
           </AssociationSet>
           <EntitySet Name="OVERHEAD_ACCOUNT_CATEGORY" EntityType="OracleModel.OVERHEAD_ACCOUNT_CATEGORY" />
-          <EntitySet Name="OVERHEAD_BUDGET_DETAIL" EntityType="OracleModel.OVERHEAD_BUDGET_DETAIL" />
           <EntitySet Name="OVERHEAD_CATEGORY" EntityType="OracleModel.OVERHEAD_CATEGORY" />
+          <EntitySet Name="OVERHEAD_BUDGET_DETAIL" EntityType="OracleModel.OVERHEAD_BUDGET_DETAIL" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -8249,6 +8249,19 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Property Name="MODIFIED_BY" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="SORT_ORDER" Type="Int64" />
         </EntityType>
+        <EntityType Name="OVERHEAD_CATEGORY">
+          <Key>
+            <PropertyRef Name="CATEGORY_ID" />
+          </Key>
+          <Property Name="CATEGORY_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="CREATE_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="MODIFY_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="MODIFIED_BY" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="SORT_ORDER" Type="Int64" />
+        </EntityType>
         <EntityType Name="OVERHEAD_BUDGET_DETAIL">
           <Key>
             <PropertyRef Name="BUDGET_DETAIL_ID" />
@@ -8264,19 +8277,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ACTUALS_IMPORTED_FLAG" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="OVERHEAD_CATEGORY">
-          <Key>
-            <PropertyRef Name="CATEGORY_ID" />
-          </Key>
-          <Property Name="CATEGORY_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NAME" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="DESCRIPTION" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="CREATE_DATE" Type="DateTime" Nullable="false" />
-          <Property Name="MODIFY_DATE" Type="DateTime" Nullable="false" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="MODIFIED_BY" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="SORT_ORDER" Type="Int64" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -11025,6 +11025,20 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="OVERHEAD_CATEGORY">
+            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_CATEGORY">
+              <MappingFragment StoreEntitySet="OVERHEAD_CATEGORY">
+                <ScalarProperty Name="SORT_ORDER" ColumnName="SORT_ORDER" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="CATEGORY_ID" ColumnName="CATEGORY_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="OVERHEAD_BUDGET_DETAIL">
             <EntityTypeMapping TypeName="OracleModel.OVERHEAD_BUDGET_DETAIL">
               <MappingFragment StoreEntitySet="OVERHEAD_BUDGET_DETAIL">
@@ -11039,20 +11053,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
                 <ScalarProperty Name="PERIOD_NAME" ColumnName="PERIOD_NAME" />
                 <ScalarProperty Name="CODE_COMBINATION_ID" ColumnName="CODE_COMBINATION_ID" />
                 <ScalarProperty Name="BUDGET_DETAIL_ID" ColumnName="BUDGET_DETAIL_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="OVERHEAD_CATEGORY">
-            <EntityTypeMapping TypeName="OracleModel.OVERHEAD_CATEGORY">
-              <MappingFragment StoreEntitySet="OVERHEAD_CATEGORY">
-                <ScalarProperty Name="SORT_ORDER" ColumnName="SORT_ORDER" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
-                <ScalarProperty Name="NAME" ColumnName="NAME" />
-                <ScalarProperty Name="CATEGORY_ID" ColumnName="CATEGORY_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
