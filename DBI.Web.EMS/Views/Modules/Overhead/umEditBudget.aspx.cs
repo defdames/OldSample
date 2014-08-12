@@ -97,32 +97,35 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                             ACTUAL_BALANCES _actualTotalLine = _balance.Where(x => x.PERIOD_NUM == _period.PERIOD_NUM).SingleOrDefault();
                             decimal _aTotal = 0;
 
-                            if (_actualTotalLine != null & _actualTotalLine.PERIOD_NET_DR  != 0)
+                            if (_actualTotalLine != null)
                             {
-                                _aTotal = _actualTotalLine.PERIOD_NET_DR;
+                                if (_actualTotalLine.PERIOD_NET_DR != 0)
+                                {
+                                    _aTotal = _actualTotalLine.PERIOD_NET_DR;
 
-                                if (_line == null)
-                                {
-                                    //No data, create it
-                                    OVERHEAD_BUDGET_DETAIL _record = new OVERHEAD_BUDGET_DETAIL();
-                                    _record.ORG_BUDGET_ID = _budgetid;
-                                    _record.PERIOD_NAME = _period.ENTERED_PERIOD_NAME;
-                                    _record.PERIOD_NUM = _period.PERIOD_NUM;
-                                    _record.CODE_COMBINATION_ID = _validAccount.CODE_COMBINATION_ID;
-                                    _record.AMOUNT = _aTotal;
-                                    _record.CREATE_DATE = DateTime.Now;
-                                    _record.MODIFY_DATE = DateTime.Now;
-                                    _record.CREATED_BY = User.Identity.Name;
-                                    _record.MODIFIED_BY = User.Identity.Name;
-                                    GenericData.Insert<OVERHEAD_BUDGET_DETAIL>(_record);
-                                }
-                                else
-                                {
-                                    //Data update it
-                                    _line.AMOUNT = _aTotal;
-                                    _line.MODIFY_DATE = DateTime.Now;
-                                    _line.MODIFIED_BY = User.Identity.Name;
-                                    GenericData.Update<OVERHEAD_BUDGET_DETAIL>(_line);
+                                    if (_line == null)
+                                    {
+                                        //No data, create it
+                                        OVERHEAD_BUDGET_DETAIL _record = new OVERHEAD_BUDGET_DETAIL();
+                                        _record.ORG_BUDGET_ID = _budgetid;
+                                        _record.PERIOD_NAME = _period.ENTERED_PERIOD_NAME;
+                                        _record.PERIOD_NUM = _period.PERIOD_NUM;
+                                        _record.CODE_COMBINATION_ID = _validAccount.CODE_COMBINATION_ID;
+                                        _record.AMOUNT = _aTotal;
+                                        _record.CREATE_DATE = DateTime.Now;
+                                        _record.MODIFY_DATE = DateTime.Now;
+                                        _record.CREATED_BY = User.Identity.Name;
+                                        _record.MODIFIED_BY = User.Identity.Name;
+                                        GenericData.Insert<OVERHEAD_BUDGET_DETAIL>(_record);
+                                    }
+                                    else
+                                    {
+                                        //Data update it
+                                        _line.AMOUNT = _aTotal;
+                                        _line.MODIFY_DATE = DateTime.Now;
+                                        _line.MODIFIED_BY = User.Identity.Name;
+                                        GenericData.Update<OVERHEAD_BUDGET_DETAIL>(_line);
+                                    }
                                 }
                             }
                     }

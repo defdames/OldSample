@@ -32,7 +32,18 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         protected void deSaveSortOrder(object sender, DirectEventArgs e)
         {
+            string json = e.ExtraParams["Values"];
 
+            List<OVERHEAD_CATEGORY> _gridValues = JSON.Deserialize<List<OVERHEAD_CATEGORY>>(json);
+
+            foreach (OVERHEAD_CATEGORY _detail in _gridValues)
+            {
+                _detail.MODIFIED_BY = User.Identity.Name;
+                _detail.MODIFY_DATE = DateTime.Now;
+            }
+
+            GenericData.Update<OVERHEAD_CATEGORY>(_gridValues);
+            uxAccountCategoryStore.Sync();
         }
 
 
