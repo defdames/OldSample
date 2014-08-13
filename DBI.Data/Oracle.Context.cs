@@ -69,7 +69,6 @@ namespace DBI.Data
         public DbSet<SYS_USER_PERMS> SYS_USER_PERMS { get; set; }
         public DbSet<SYS_MENU> SYS_MENU { get; set; }
         public DbSet<CROSSING_INCIDENT> CROSSING_INCIDENT { get; set; }
-        public DbSet<EMPLOYEES_V> EMPLOYEES_V { get; set; }
         public DbSet<SYS_GROUPS> SYS_GROUPS { get; set; }
         public DbSet<JOB_TITLE_V> JOB_TITLE_V { get; set; }
         public DbSet<CROSSING_RELATIONSHIP> CROSSING_RELATIONSHIP { get; set; }
@@ -130,5 +129,6 @@ namespace DBI.Data
         public DbSet<OVERHEAD_ACCOUNT_CATEGORY> OVERHEAD_ACCOUNT_CATEGORY { get; set; }
         public DbSet<OVERHEAD_CATEGORY> OVERHEAD_CATEGORY { get; set; }
         public DbSet<OVERHEAD_BUDGET_DETAIL> OVERHEAD_BUDGET_DETAIL { get; set; }
+        public DbSet<EMPLOYEES_V> EMPLOYEES_V { get; set; }
     }
 }
