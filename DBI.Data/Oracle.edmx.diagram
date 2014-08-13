@@ -60,7 +60,6 @@
         <EntityTypeShape EntityType="OracleModel.SYS_MENU" Width="1.5" PointX="30.25" PointY="23.25" />
         <AssociationConnector Association="OracleModel.FK_MENU_MODULE_ID" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_INCIDENT" Width="1.5" PointX="26.625" PointY="13.5" />
-        <EntityTypeShape EntityType="OracleModel.EMPLOYEES_V" Width="1.5" PointX="7.25" PointY="8.625" />
         <EntityTypeShape EntityType="OracleModel.SYS_GROUPS" Width="1.5" PointX="36.125" PointY="27" />
         <AssociationConnector Association="OracleModel.FK_GRP_PERMS_GROUP_ID" />
         <EntityTypeShape EntityType="OracleModel.JOB_TITLE_V" Width="1.5" PointX="15.5" PointY="20.625" />
@@ -157,6 +156,7 @@
         <EntityTypeShape EntityType="OracleModel.PROJECT_CONTACTS_V" Width="1.5" PointX="0.75444998068476554" PointY="22.724045793863034" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_SUPPLEMENTAL" Width="1.5" PointX="28.75" PointY="13.25" />
         <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
+        <EntityTypeShape EntityType="OracleModel.EMPLOYEES_V" Width="1.5" PointX="5.0377610218887039" PointY="11.013042469980681" />
         </Diagram>
       <Diagram DiagramId="e84dee89c5a844eb84c350f94a998eb6" Name="OVERHEAD" >
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="4.25" PointX="2.75" PointY="0.75" />
