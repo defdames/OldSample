@@ -223,7 +223,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                     var r = (from tc in _context.TIME_CLOCK
                              join ev in _context.EMPLOYEES_V on tc.PERSON_ID equals ev.PERSON_ID
                              where tc.TIME_CLOCK_ID == Submitted.TIME_CLOCK_ID
-                             select new { tc.PERSON_ID, ev.EMPLOYEE_NUMBER, ev.EMPLOYEE_NAME, tc.ADJUSTED_HOURS }).SingleOrDefault();
+                             select new { tc.PERSON_ID, ev.EMPLOYEE_NUMBER, ev.FULL_NAME, tc.ADJUSTED_HOURS }).SingleOrDefault();
 
 
 
@@ -231,7 +231,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                     dtrecord.PAYROLL_AUDIT_ID = generatePayrollAuditSequence();
                     //dtrecord.DA_HEADER_ID = xxdbiDailyActivityHeader.DA_HEADER_ID;
                     dtrecord.EMPLOYEE_NUMBER = r.EMPLOYEE_NUMBER;
-                    dtrecord.EMPLOYEE_NAME =  r.EMPLOYEE_NAME;
+                    dtrecord.EMPLOYEE_NAME =  r.FULL_NAME;
                     dtrecord.ELEMENT = "Time Entry Wages";
                     dtrecord.STATUS = "UNPROCESSED";
                     dtrecord.OVERTIME_STATUS = "UNPROCESSED";
