@@ -23,10 +23,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 }
 
                 //Verify that the organization is valid for budget types, if not disable the add new button and display a warning message
-                long _businessUnitId = 0;
-                    _businessUnitId = long.Parse(Request.QueryString["leid"]);
+                //long _businessUnitId = 0;
+                //    _businessUnitId = long.Parse(Request.QueryString["leid"]);
 
-                int _cnt = OVERHEAD_BUDGET_TYPE.BudgetTypes(_businessUnitId).Count();
+                //int _cnt = OVERHEAD_BUDGET_TYPE.BudgetTypes(_businessUnitId).Count();
                 
                 //if(_cnt == 0)
                 //{
@@ -36,15 +36,19 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 //    return;
                 //}
 
-                uxBudgetTypeGridPanel.GetStore().Reload();
+                //uxBudgetTypeGridPanel.GetStore().Reload();
             }
         }
 
         protected void deReadBudgetTypesByLegalEntity(object sender, StoreReadDataEventArgs e)
         {
 
-            long _organizationID;
-            Boolean check = long.TryParse(Request.QueryString["leid"], out _organizationID);
+            string _selectedRecordID = Request.QueryString["leid"];
+
+            char[] _delimiterChars = { ':' };
+            string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
+            long _hierarchyID = long.Parse(_selectedID[1].ToString());
+            long _organizationID = long.Parse(_selectedID[0].ToString());
 
             if (_organizationID > 0)
             {
@@ -73,14 +77,17 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         protected void deAddBudgetType(object sender, DirectEventArgs e)
         {
-                long _businessUnitID;
+            string _selectedRecordID = Request.QueryString["leid"];
 
-                  Boolean check = long.TryParse(Request.QueryString["leid"], out _businessUnitID);
+            char[] _delimiterChars = { ':' };
+            string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
+            long _hierarchyID = long.Parse(_selectedID[1].ToString());
+            long _organizationID = long.Parse(_selectedID[0].ToString());
 
                 string _editMode = e.ExtraParams["Edit"];
 
 
-                string url = "umAddRemoveBudgetType.aspx?buID=" + _businessUnitID;
+                string url = "umAddRemoveBudgetType.aspx?buID=" + _organizationID;
                 RowSelectionModel _recordID = uxBudgetTypeSelectionModel;
 
                 if (!string.IsNullOrEmpty(_editMode))

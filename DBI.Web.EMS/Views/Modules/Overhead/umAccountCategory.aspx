@@ -133,7 +133,9 @@
                                                 <ext:ModelField Name="CATEGORY_ID"  />
                                                 <ext:ModelField Name="ACCOUNT_SEGMENT"  />
                                                 <ext:ModelField Name="ACCOUNT_SEGMENT_DESC"  />
-                                                <ext:ModelField Name="ACCOUNT_ORDER"  />
+                                                <ext:ModelField Name="SORT_ORDER"  />
+                                                 <ext:ModelField Name="CREATE_DATE"  />
+                                                 <ext:ModelField Name="CREATED_BY"  />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
@@ -147,7 +149,15 @@
                             </Store>
                             <ColumnModel>
                                 <Columns>
-                                    <ext:Column ID="Column4" runat="server" DataIndex="ACCOUNT_ORDER" Text="Account Order" Width="150" />
+                                    <ext:Column ID="Column4" runat="server" DataIndex="SORT_ORDER" Text="Account Order" Width="150" >
+                                          <Editor>
+                                    <ext:NumberField runat="server" AllowBlank="false" ID="uxAccountSortOrderField" SelectOnFocus="true" TabIndex="1" MinValue="1" AllowDecimals="false">
+                                         <Listeners>
+                                              <Show Handler="this.el.dom.select();" Delay="150" />
+                                          </Listeners>
+                                      </ext:NumberField>
+                                </Editor>
+                                    </ext:Column>
                                     <ext:Column ID="Column3" runat="server" DataIndex="ACCOUNT_SEGMENT_DESC" Text="Account Name" Flex="1" />
                                 </Columns>
                             </ColumnModel>
@@ -168,7 +178,18 @@
                     <View>
                         <ext:GridView ID="GridView1" StripeRows="true" runat="server">
                         </ext:GridView>
-                    </View>                     
+                    </View>        
+                       <Plugins>
+                          <ext:CellEditing runat="server" ClicksToEdit="1" ID="uxCellEditor2">
+                              <DirectEvents>
+                                  <Edit OnEvent="deSaveAccountSortOrder">
+                                       <ExtraParams>
+                                             <ext:Parameter Name="Values" Value="Ext.encode(#{uxAccountListGridPanel}.getRowsValues())" Mode="Raw" />
+                                       </ExtraParams>
+                                  </Edit>
+                              </DirectEvents>
+                          </ext:CellEditing>
+                      </Plugins>                     
                         </ext:GridPanel>
 
                 </Items>

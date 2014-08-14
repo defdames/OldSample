@@ -59,6 +59,16 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             var _category_id = long.Parse(Request.QueryString["category_id"]);
 
+            long? _lastSortOrder = 0;
+            //Get max sort order
+            using (Entities _context = new Entities())
+            {
+                long? _temp = _context.OVERHEAD_ACCOUNT_CATEGORY.Select(x => x.SORT_ORDER).Max();
+                if (_temp != null)
+                    _lastSortOrder = _temp;
+            }
+
+
                 foreach(SelectedRow row in rm.SelectedRows)
                 {
                     OVERHEAD_ACCOUNT_CATEGORY _record = new OVERHEAD_ACCOUNT_CATEGORY();
@@ -69,6 +79,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     _record.MODIFY_DATE = DateTime.Now;
                     _record.CREATED_BY = User.Identity.Name;
                     _record.MODIFIED_BY = User.Identity.Name;
+                    _record.SORT_ORDER = _lastSortOrder + 1;
                     GenericData.Insert<OVERHEAD_ACCOUNT_CATEGORY>(_record);
                 }
         }
