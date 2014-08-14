@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+<head id="Head1" runat="server">
     <title></title>
     <style type="text/css">
         .activeBackground {
-            background-color: darkgreen;
+            background-color: darkolivegreen;
         }
 
         .inactiveBackground {
@@ -60,7 +60,7 @@
     </style>
     <script type="text/javascript">
         var isEditAdjustmentAllowed = function (e) {
-            if (e.originalValue == null) {
+            if (e.originalValue == 12345678910) {
                 return false;
             }
         }
@@ -69,6 +69,31 @@
                 SaveRecord.deSaveAdjustments(e.record.data.ADJ_ID, e.field, e.value);
             }
         }
+        Ext.util.Format.CurrencyFactory = function (dp, dSeparator, tSeparator, symbol, red) {
+            return function (n) {
+                if (n == 12345678910) {
+                    return " ";
+                }
+
+                var template = '<span style="color:{0};">{1}</span>';
+
+                dp = Math.abs(dp) + 1 ? dp : 2;
+                dSeparator = dSeparator || ".";
+                tSeparator = tSeparator || ",";
+
+                var m = /(\d+)(?:(\.\d+)|)/.exec(n + ""),
+                    x = m[1].length > 3 ? m[1].length % 3 : 0;
+
+
+                var r = (n < 0 ? '-' : '') // preserve minus sign
+                        + (x ? m[1].substr(0, x) + tSeparator : "")
+                        + m[1].substr(x).replace(/(\d{3})(?=\d)/g, "$1" + tSeparator)
+                        + (dp ? dSeparator + (+m[2] || 0).toFixed(dp).substr(2) : "")
+                        + symbol;
+
+                return Ext.String.format(template, (n >= 0 || red == false) ? "black" : "red", r);
+            };
+        };
     </script>
 </head>
 <body>
@@ -106,7 +131,7 @@
                             </Store>
                             <DirectEvents>
                                 <Select OnEvent="deChooseSummaryAction">
-                                    <EventMask ShowMask="true" Msg="Please wait..." />
+                                    <EventMask ShowMask="true" Msg="Processing..." />
                                 </Select>
                             </DirectEvents>
                         </ext:ComboBox>
@@ -121,8 +146,7 @@
                             EmptyText="-- Reports/Export --"
                             Editable="false">
                             <Store>
-                                <ext:Store ID="uxSummaryReportsStore" runat="server">
-                                    <%--OnReadData="deLoadReports" AutoLoad="false">--%>
+                                <ext:Store ID="uxSummaryReportsStore" runat="server" OnReadData="deLoadReports" AutoLoad="false">
                                     <Model>
                                         <ext:Model ID="Model6" runat="server">
                                             <Fields>
@@ -136,22 +160,28 @@
                                     </Proxy>
                                 </ext:Store>
                             </Store>
-                            <%--<DirectEvents>
+                            <DirectEvents>
                                 <Select OnEvent="deChooseReport">
-                                <EventMask ShowMask="true" Msg="Please wait..." />
+                                    <EventMask ShowMask="true" Msg="Processing..." />
                                 </Select>
-                            </DirectEvents>--%>
+                            </DirectEvents>
                         </ext:ComboBox>
 
                         <ext:Label ID="uxSpace2" runat="server" Width="5" />
 
-                        <ext:Button ID="uxUpdateAllActuals" runat="server" Text="Update All Actuals" Icon="BookEdit" />
+                        <ext:Button ID="uxUpdateAllActuals" runat="server" Text="Update All Actual" Icon="BookEdit">
+                            <DirectEvents>
+                                <Click OnEvent="deUpdateAllActuals">
+                                    <EventMask ShowMask="true" Msg="Processing..." />
+                                </Click>
+                            </DirectEvents>
+                        </ext:Button>
                     </Items>
                 </ext:Toolbar>
 
 
                 <%-------------------------------------------------- Top Summary Panel --------------------------------------------------%>
-                <ext:GridPanel ID="uxSummaryGrid" runat="server" Region="North" Flex="4">
+                <ext:GridPanel ID="uxSummaryGrid" runat="server" Region="North" Height="170">
                     <SelectionModel>
                         <ext:RowSelectionModel ID="uxGridRowModel" runat="server" AllowDeselect="false" Mode="Single" />
                     </SelectionModel>
@@ -191,15 +221,33 @@
                         <Columns>
                             <ext:Column ID="Column1" runat="server" DataIndex="PROJECT_NAME" Text="Project Long Name" Flex="6" />
                             <ext:Column ID="Column2" runat="server" DataIndex="STATUS" Text="Status" Flex="2" />
-                            <ext:NumberColumn ID="Column3" runat="server" DataIndex="ACRES" Text="Acres" Flex="1" Align="Right" />
-                            <ext:NumberColumn ID="Column4" runat="server" DataIndex="DAYS" Text="Days" Flex="1" Align="Right" />
-                            <ext:NumberColumn ID="Column5" runat="server" DataIndex="GROSS_REC" Text="Gross Receipts" Flex="2" Align="Right" />
-                            <ext:NumberColumn ID="Column6" runat="server" DataIndex="MAT_USAGE" Text="Material Usage" Flex="2" Align="Right" />
-                            <ext:NumberColumn ID="Column7" runat="server" DataIndex="GROSS_REV" Text="Gross Revenue" Flex="2" Align="Right" />
-                            <ext:NumberColumn ID="Column8" runat="server" DataIndex="DIR_EXP" Text="Direct Expenses" Flex="2" Align="Right" />
-                            <ext:NumberColumn ID="Column9" runat="server" DataIndex="OP" Text="OP" Flex="2" Align="Right" />
-                            <ext:Column ID="Column10" runat="server" DataIndex="OP_PERC" Text="OP %" Flex="2" Align="Right" />
-                            <ext:NumberColumn ID="Column11" runat="server" DataIndex="OP_VAR" Text="OP +/-" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="Column3" runat="server" DataIndex="ACRES" Text="Acres" Flex="1" Align="Right">
+                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                            </ext:NumberColumn>
+                            <ext:NumberColumn ID="Column4" runat="server" DataIndex="DAYS" Text="Days" Flex="1" Align="Right">
+                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                            </ext:NumberColumn>
+                            <ext:NumberColumn ID="Column5" runat="server" DataIndex="GROSS_REC" Text="Gross Receipts" Flex="2" Align="Right">
+                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                            </ext:NumberColumn>
+                            <ext:NumberColumn ID="Column6" runat="server" DataIndex="MAT_USAGE" Text="Material Usage" Flex="2" Align="Right">
+                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                            </ext:NumberColumn>
+                            <ext:NumberColumn ID="Column7" runat="server" DataIndex="GROSS_REV" Text="Gross Revenue" Flex="2" Align="Right">
+                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                            </ext:NumberColumn>
+                            <ext:NumberColumn ID="Column8" runat="server" DataIndex="DIR_EXP" Text="Direct Expenses" Flex="2" Align="Right">
+                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                            </ext:NumberColumn>
+                            <ext:NumberColumn ID="Column9" runat="server" DataIndex="OP" Text="OP" Flex="2" Align="Right">
+                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                            </ext:NumberColumn>
+                            <ext:NumberColumn ID="Column10" runat="server" DataIndex="OP_PERC" Text="OP %" Flex="2" Align="Right">
+                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','%',false)" />
+                            </ext:NumberColumn>
+                            <ext:NumberColumn ID="Column11" runat="server" DataIndex="OP_VAR" Text="OP +/-" Flex="2" Align="Right">
+                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                            </ext:NumberColumn>
                         </Columns>
                     </ColumnModel>
                     <DirectEvents>
@@ -244,7 +292,7 @@
                                 <ext:DisplayField ID="uxIGrossRev" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
                                 <ext:DisplayField ID="uxIDirects" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
                                 <ext:DisplayField ID="uxIOP" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
-                                <ext:DisplayField ID="uxIOPPerc" runat="server" Text="0.00 %" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
+                                <ext:DisplayField ID="uxIOPPerc" runat="server" Text="0.00%" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
                                 <ext:DisplayField ID="uxIOPPlusMinus" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="inactiveForeground" />
                                 <ext:DisplayField ID="DisplayField13" runat="server" Width="20" />
                             </Items>
@@ -261,7 +309,7 @@
                                 <ext:DisplayField ID="uxAGrossRev" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
                                 <ext:DisplayField ID="uxADirects" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
                                 <ext:DisplayField ID="uxAOP" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
-                                <ext:DisplayField ID="uxAOPPerc" runat="server" Text="0.00 %" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
+                                <ext:DisplayField ID="uxAOPPerc" runat="server" Text="0.00%" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
                                 <ext:DisplayField ID="uxAOPPlusMinus" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="activeForeground" />
                                 <ext:DisplayField ID="DisplayField26" runat="server" Width="20" />
                             </Items>
@@ -269,7 +317,7 @@
                     </DockedItems>
                 </ext:GridPanel>
 
-                <ext:GridPanel ID="uxAdjustmentsGrid" runat="server" Region="North" HideHeaders="true" Flex="2">
+                <ext:GridPanel ID="uxAdjustmentsGrid" runat="server" Region="North" HideHeaders="true">
                     <SelectionModel>
                         <ext:RowSelectionModel ID="uxAdjustmentGridRowModel" runat="server" AllowDeselect="false" Mode="Single" />
                     </SelectionModel>
@@ -284,8 +332,16 @@
                                     <Fields>
                                         <ext:ModelField Name="ADJ_ID" />
                                         <ext:ModelField Name="ADJUSTMENT" />
+                                        <ext:ModelField Name="BLANKCOL1" />
+                                        <ext:ModelField Name="BLANKCOL2" />
+                                        <ext:ModelField Name="BLANKCOL3" />
+                                        <ext:ModelField Name="BLANKCOL4" />
                                         <ext:ModelField Name="MAT_ADJ" />
+                                        <ext:ModelField Name="BLANKCOL5" />
                                         <ext:ModelField Name="WEATHER_ADJ" />
+                                        <ext:ModelField Name="BLANKCOL6" />
+                                        <ext:ModelField Name="BLANKCOL7" />
+                                        <ext:ModelField Name="BLANKCOL8" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -297,24 +353,26 @@
                     <ColumnModel>
                         <Columns>
                             <ext:Column ID="Column15" runat="server" DataIndex="ADJUSTMENT" Text="Adjustment" Flex="6" />
-                            <ext:Column ID="Column21" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" />
-                            <ext:NumberColumn ID="Column22" runat="server" DataIndex="BLANK" Text="Blank" Flex="1" Align="Right" />
-                            <ext:NumberColumn ID="Column23" runat="server" DataIndex="BLANK" Text="Blank" Flex="1" Align="Right" />
-                            <ext:NumberColumn ID="Column24" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
+                            <ext:Column ID="Column21" runat="server" DataIndex="BLANKCOL1" Text="Blank" Flex="2" />
+                            <ext:NumberColumn ID="Column22" runat="server" DataIndex="BLANKCOL2" Text="Blank" Flex="1" Align="Right" />
+                            <ext:NumberColumn ID="Column23" runat="server" DataIndex="BLANKCOL3" Text="Blank" Flex="1" Align="Right" />
+                            <ext:NumberColumn ID="Column24" runat="server" DataIndex="BLANKCOL4" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="Column25" runat="server" DataIndex="MAT_ADJ" Text="Material" Flex="2" Align="Right">
                                 <Editor>
-                                    <ext:NumberField ID="NumberField2" runat="server" AllowBlank="false" SelectOnFocus="true" />
+                                    <ext:NumberField ID="NumberField2" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                 </Editor>
+                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                             </ext:NumberColumn>
-                            <ext:NumberColumn ID="Column26" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="Column26" runat="server" DataIndex="BLANKCOL5" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="Column27" runat="server" DataIndex="WEATHER_ADJ" Text="Weather" Flex="2" Align="Right">
+                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                                 <Editor>
-                                    <ext:NumberField ID="NumberField1" runat="server" AllowBlank="false" SelectOnFocus="true" />
+                                    <ext:NumberField ID="NumberField1" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                 </Editor>
                             </ext:NumberColumn>
-                            <ext:NumberColumn ID="Column28" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
-                            <ext:Column ID="Column29" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
-                            <ext:NumberColumn ID="Column30" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="Column28" runat="server" DataIndex="BLANKCOL6" Text="Blank" Flex="2" Align="Right" />
+                            <ext:Column ID="Column29" runat="server" DataIndex="BLANKCOL7" Text="Blank" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="Column30" runat="server" DataIndex="BLANKCOL8" Text="Blank" Flex="2" Align="Right" />
                         </Columns>
                     </ColumnModel>
                     <Plugins>
@@ -346,7 +404,7 @@
                     </DockedItems>
                 </ext:GridPanel>
 
-                <ext:GridPanel ID="uxOverheadGrid" runat="server" Region="North" HideHeaders="true" Flex="1">
+                <ext:GridPanel ID="uxOverheadGrid" runat="server" Region="North" HideHeaders="true">
                     <SelectionModel>
                         <ext:RowSelectionModel ID="uxOverheadGridRowModel" runat="server" AllowDeselect="false" Mode="Single" />
                     </SelectionModel>
@@ -376,11 +434,9 @@
                             <ext:NumberColumn ID="NumberColumn1" runat="server" DataIndex="BLANK" Text="Blank" Flex="1" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn2" runat="server" DataIndex="BLANK" Text="Blank" Flex="1" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn3" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
-                            <ext:NumberColumn ID="NumberColumn4" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right">
-                            </ext:NumberColumn>
+                            <ext:NumberColumn ID="NumberColumn4" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn5" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
-                            <ext:NumberColumn ID="NumberColumn6" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right">
-                            </ext:NumberColumn>
+                            <ext:NumberColumn ID="NumberColumn6" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="uxOH" runat="server" DataIndex="OH" Text="Overhead" Flex="2" Align="Right" />
                             <ext:Column ID="Column33" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn8" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
@@ -412,7 +468,6 @@
                 <ext:FormPanel ID="uxProjectInfo"
                     runat="server"
                     Region="Center"
-                    Flex="12"
                     AutoScroll="true"
                     BodyPadding="20"
                     Disabled="true">
@@ -492,11 +547,11 @@
                                         <Change OnEvent="deCompareCheck" />
                                     </DirectEvents>
                                 </ext:Checkbox>
-                                <ext:Label ID="Label6" runat="server" Width="50" />
+                                <ext:Label ID="Label6" runat="server" Width="65" />
                                 <ext:Label ID="Label4" runat="server" Width="40" Text="Acres:" />
                                 <ext:TextField ID="uxAcres" runat="server" Width="110" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" SelectOnFocus="true">
                                     <Listeners>
-                                        <Focus Handler="this.setValue(this.getValue().replace(',', ''));" />
+                                        <Focus Handler="this.setValue(this.getValue().replace(/,/g, ''));" />
                                     </Listeners>
                                     <DirectEvents>
                                         <Blur OnEvent="deFormatNumber" />
@@ -510,16 +565,16 @@
                             Layout="HBoxLayout">
                             <Items>
                                 <ext:Label ID="Label7" runat="server" Width="120" Text="Project Long Name:" />
-                                <ext:TextField ID="uxProjectName" runat="server" Width="380" ReadOnly="true">
+                                <ext:TextField ID="uxProjectName" runat="server" Width="380" ReadOnly="true" SelectOnFocus="true" MaxLength="200" EnforceMaxLength="true">
                                     <DirectEvents>
                                         <Change OnEvent="deCheckAllowSave" />
                                     </DirectEvents>
                                 </ext:TextField>
                                 <ext:Label ID="Label8" runat="server" Width="30" />
-                                <ext:Label ID="uxVersionLabel" runat="server" Width="100" Text="Final Draft OP:" />
-                                <ext:TextField ID="uxCompareOP" runat="server" Width="110" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" Disabled="true">
+                                <ext:Label ID="uxVersionLabel" runat="server" Width="115" Text="Final Draft OP:" />
+                                <ext:TextField ID="uxCompareOP" runat="server" Width="110" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" Disabled="true" SelectOnFocus="true">
                                     <Listeners>
-                                        <Focus Handler="this.setValue(this.getValue().replace(',', ''));" />
+                                        <Focus Handler="this.setValue(this.getValue().replace(/,/g, ''));" />
                                     </Listeners>
                                     <DirectEvents>
                                         <Blur OnEvent="deUpdateCompareNums" />
@@ -527,9 +582,9 @@
                                 </ext:TextField>
                                 <ext:Label ID="Label10" runat="server" Width="40" />
                                 <ext:Label ID="Label11" runat="server" Width="40" Text="Days:" />
-                                <ext:TextField ID="uxDays" runat="server" Width="110" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign">
+                                <ext:TextField ID="uxDays" runat="server" Width="110" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" SelectOnFocus="true">
                                     <Listeners>
-                                        <Focus Handler="this.setValue(this.getValue().replace(',', ''));" />
+                                        <Focus Handler="this.setValue(this.getValue().replace(/,/g, ''));" />
                                     </Listeners>
                                     <DirectEvents>
                                         <Blur OnEvent="deFormatNumber" />
@@ -572,7 +627,7 @@
                                 </ext:ComboBox>
                                 <ext:Label ID="Label14" runat="server" Width="300" />
                                 <ext:Label ID="Label15" runat="server" Width="100" Text="Variance:" />
-                                <ext:Label ID="uxCompareVar" runat="server" Width="106" Text="0.00" Cls="labelRightAlign" />
+                                <ext:Label ID="uxCompareVar" runat="server" Width="121" Text="0.00" Cls="labelRightAlign" />
                                 <ext:Label ID="Label2" runat="server" Width="194" />
                             </Items>
                         </ext:FieldContainer>
@@ -582,8 +637,8 @@
                             Layout="HBoxLayout">
                             <Items>
                                 <ext:Label ID="Label18" runat="server" Width="120" Text="Comments:" />
-                                <ext:TextArea ID="uxComments" runat="server" Width="530" />
-                                <ext:Label ID="Label20" runat="server" Width="60" Text="" />
+                                <ext:TextArea ID="uxComments" runat="server" Width="530" SelectOnFocus="true" />
+                                <ext:Label ID="Label20" runat="server" Width="75" Text="" />
                                 <ext:FieldContainer ID="FieldContainer7"
                                     runat="server"
                                     Layout="VBoxLayout">
@@ -607,9 +662,9 @@
                                                             Html="Please enter any relevant notes in the comments section to the left." />
                                                     </ToolTips>
                                                 </ext:Label>
-                                                <ext:TextField ID="uxLiabilityAmount" runat="server" Width="110" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" Disabled="true">
+                                                <ext:TextField ID="uxLiabilityAmount" runat="server" Width="110" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" Disabled="true" SelectOnFocus="true">
                                                     <Listeners>
-                                                        <Focus Handler="this.setValue(this.getValue().replace(',', ''));" />
+                                                        <Focus Handler="this.setValue(this.getValue().replace(/,/g, ''));" />
                                                     </Listeners>
                                                     <DirectEvents>
                                                         <Blur OnEvent="deFormatNumber" />
@@ -622,7 +677,7 @@
                                             Layout="HBoxLayout">
                                             <Items>
                                                 <ext:Label ID="Label17" runat="server" Width="85" Text="App Type:" />
-                                                <ext:TextField ID="uxAppType" runat="server" Width="135" />
+                                                <ext:TextField ID="uxAppType" runat="server" Width="135" SelectOnFocus="true" MaxLength="50" EnforceMaxLength="true" />
                                             </Items>
                                         </ext:FieldContainer>
                                         <ext:FieldContainer ID="FieldContainer9"
@@ -630,7 +685,7 @@
                                             Layout="HBoxLayout">
                                             <Items>
                                                 <ext:Label ID="Label23" runat="server" Width="85" Text="Chemical Mix:" />
-                                                <ext:TextField ID="uxChemMix" runat="server" Width="135" />
+                                                <ext:TextField ID="uxChemMix" runat="server" Width="135" SelectOnFocus="true" MaxLength="50" EnforceMaxLength="true" />
                                             </Items>
                                         </ext:FieldContainer>
                                     </Items>
@@ -647,7 +702,7 @@
                         </ext:FieldContainer>
 
                         <%----- Begin Detail Sheet Section -----%>
-                        <ext:FieldSet runat="server" Width="930" Padding="10" Cls="detailBackground">
+                        <ext:FieldSet ID="FieldSet1" runat="server" Width="930" Padding="10" Cls="detailBackground">
                             <Items>
                                 <ext:FieldContainer ID="FieldContainer12"
                                     runat="server"
@@ -695,43 +750,35 @@
                                             </DirectEvents>
                                         </ext:ComboBox>
                                         <ext:Label ID="Label34" runat="server" Width="50" />
-                                        <ext:TextField ID="uxSGrossRec" runat="server" Width="110" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign">
+                                        <ext:TextField ID="uxSGrossRec" runat="server" Width="110" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" SelectOnFocus="true">
                                             <Listeners>
-                                                <Focus Handler="this.setValue(this.getValue().replace(',', ''));" />
+                                                <Focus Handler="this.setValue(this.getValue().replace(/,/g, ''));" />
                                             </Listeners>
                                             <DirectEvents>
                                                 <Blur OnEvent="deFormatNumber" />
                                                 <Blur OnEvent="deCalcGRandOP" />
                                             </DirectEvents>
                                         </ext:TextField>
-                                        <ext:TextField ID="uxSMatUsage" runat="server" Width="110" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign">
+                                        <ext:TextField ID="uxSMatUsage" runat="server" Width="110" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" SelectOnFocus="true">
                                             <Listeners>
-                                                <Focus Handler="this.setValue(this.getValue().replace(',', ''));" />
+                                                <Focus Handler="this.setValue(this.getValue().replace(/,/g, ''));" />
                                             </Listeners>
                                             <DirectEvents>
                                                 <Blur OnEvent="deFormatNumber" />
                                                 <Blur OnEvent="deCalcGRandOP" />
                                             </DirectEvents>
                                         </ext:TextField>
-                                        <ext:TextField ID="uxSGrossRev" runat="server" Width="110" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign">
+                                        <ext:TextField ID="uxSGrossRev" runat="server" Width="110" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" SelectOnFocus="true" TabIndex="-1" />
+                                        <ext:TextField ID="uxSDirects" runat="server" Width="110" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" SelectOnFocus="true">
                                             <Listeners>
-                                                <Focus Handler="this.setValue(this.getValue().replace(',', ''));" />
-                                            </Listeners>
-                                        </ext:TextField>
-                                        <ext:TextField ID="uxSDirects" runat="server" Width="110" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign">
-                                            <Listeners>
-                                                <Focus Handler="this.setValue(this.getValue().replace(',', ''));" />
+                                                <Focus Handler="this.setValue(this.getValue().replace(/,/g, ''));" />
                                             </Listeners>
                                             <DirectEvents>
                                                 <Blur OnEvent="deFormatNumber" />
                                                 <Blur OnEvent="deCalcGRandOP" />
                                             </DirectEvents>
                                         </ext:TextField>
-                                        <ext:TextField ID="uxSOP" runat="server" Width="110" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign">
-                                            <Listeners>
-                                                <Focus Handler="this.setValue(this.getValue().replace(',', ''));" />
-                                            </Listeners>
-                                        </ext:TextField>
+                                        <ext:TextField ID="uxSOP" runat="server" Width="110" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" SelectOnFocus="true" TabIndex="-2" />
                                         <ext:Label ID="Label35" runat="server" Width="40" />
                                         <ext:ComboBox ID="uxDetailActions"
                                             runat="server"
@@ -756,7 +803,7 @@
                                             </Store>
                                             <DirectEvents>
                                                 <Select OnEvent="deChooseDetailAction">
-                                                    <EventMask ShowMask="true" Msg="Please wait..." />
+                                                    <EventMask ShowMask="true" Msg="Processing..." />
                                                 </Select>
                                             </DirectEvents>
                                         </ext:ComboBox>
@@ -799,11 +846,21 @@
                                             <ColumnModel>
                                                 <Columns>
                                                     <ext:Column ID="Column12" runat="server" DataIndex="DETAIL_NAME" Text="Detail Sheet" Width="160" />
-                                                    <ext:NumberColumn ID="Column16" runat="server" DataIndex="GROSS_REC" Text="Gross Receipts" Width="110" Align="Right" />
-                                                    <ext:NumberColumn ID="Column17" runat="server" DataIndex="MAT_USAGE" Text="Material Usage" Width="110" Align="Right" />
-                                                    <ext:NumberColumn ID="Column18" runat="server" DataIndex="GROSS_REV" Text="Gross Revenue" Width="110" Align="Right" />
-                                                    <ext:NumberColumn ID="Column19" runat="server" DataIndex="DIR_EXP" Text="Direct Expenses" Width="110" Align="Right" />
-                                                    <ext:NumberColumn ID="Column20" runat="server" DataIndex="OP" Text="OP" Width="110" Align="Right" />
+                                                    <ext:NumberColumn ID="Column16" runat="server" DataIndex="GROSS_REC" Text="Gross Receipts" Width="110" Align="Right">
+                                                        <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                                    </ext:NumberColumn>
+                                                    <ext:NumberColumn ID="Column17" runat="server" DataIndex="MAT_USAGE" Text="Material Usage" Width="110" Align="Right">
+                                                        <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                                    </ext:NumberColumn>
+                                                    <ext:NumberColumn ID="Column18" runat="server" DataIndex="GROSS_REV" Text="Gross Revenue" Width="110" Align="Right">
+                                                        <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                                    </ext:NumberColumn>
+                                                    <ext:NumberColumn ID="Column19" runat="server" DataIndex="DIR_EXP" Text="Direct Expenses" Width="110" Align="Right">
+                                                        <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                                    </ext:NumberColumn>
+                                                    <ext:NumberColumn ID="Column20" runat="server" DataIndex="OP" Text="OP" Width="110" Align="Right">
+                                                        <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                                    </ext:NumberColumn>
                                                 </Columns>
                                             </ColumnModel>
                                             <DirectEvents>
@@ -825,11 +882,11 @@
                                     Layout="HBoxLayout">
                                     <Items>
                                         <ext:Label ID="Label32" runat="server" Width="160" />
-                                        <ext:TextField ID="uxEGrossRec" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" />
-                                        <ext:TextField ID="uxEMatUsage" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" />
-                                        <ext:TextField ID="uxEGrossRev" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" />
-                                        <ext:TextField ID="uxEDirects" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" />
-                                        <ext:TextField ID="uxEOP" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" />
+                                        <ext:TextField ID="uxEGrossRec" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" />
+                                        <ext:TextField ID="uxEMatUsage" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" />
+                                        <ext:TextField ID="uxEGrossRev" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" />
+                                        <ext:TextField ID="uxEDirects" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" />
+                                        <ext:TextField ID="uxEOP" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" />
                                     </Items>
                                 </ext:FieldContainer>
 
@@ -867,7 +924,7 @@
                                 <ext:Button ID="uxCancel" runat="server" Text="Cancel" Icon="Delete" Width="75">
                                     <DirectEvents>
                                         <Click OnEvent="deCancel">
-                                            <EventMask ShowMask="true" Msg="Please wait..." />
+                                            <EventMask ShowMask="true" Msg="Processing..." />
                                         </Click>
                                     </DirectEvents>
                                 </ext:Button>

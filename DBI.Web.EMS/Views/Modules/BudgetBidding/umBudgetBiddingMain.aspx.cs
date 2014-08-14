@@ -198,12 +198,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 string hierarchyID = selID[0].ToString();
                 string orgID = selID[1].ToString();
 
-                string orgName = uxOrgPanel.SelectedNodes[0].Text;
+                string orgName = HttpUtility.UrlEncode(uxOrgPanel.SelectedNodes[0].Text);
                 string fiscalYear = uxFiscalYear.SelectedItem.Value;
                 string verID = uxVersion.SelectedItem.Value;
-                string verName = uxVersion.SelectedItem.Text;
+                string verName = HttpUtility.UrlEncode(uxVersion.SelectedItem.Text);
 
-                url = "umYearBudget.aspx?hierID=" + hierarchyID + "&orgID=" + orgID + "&orgName=" + orgName + "&fiscalYear=" + fiscalYear + "&verID=" + verID + "&verName=" + verName;
+                //url = "umYearBudget.aspx?hierID=" + hierarchyID + "&orgID=" + orgID + "&orgName=" + orgName + "&fiscalYear=" + fiscalYear + "&verID=" + verID + "&verName=" + verName;
+                url = "umYearRollupSummary.aspx?hierID=" + hierarchyID + "&orgID=" + orgID + "&orgName=" + orgName + "&fiscalYear=" + fiscalYear + "&verID=" + verID + "&verName=" + verName;
             }
 
             else if (prevBlank == true)

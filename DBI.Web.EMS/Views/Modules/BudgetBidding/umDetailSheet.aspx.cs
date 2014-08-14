@@ -25,9 +25,9 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 string weDate = Request.QueryString["weDate"];
                 long budBidProjectID = long.Parse(Request.QueryString["projectID"]);
                 long detailSheetID = long.Parse(Request.QueryString["detailSheetID"]);
-                string projectName = RSAClass.Decrypt(Request.QueryString["projectName"]);
+                string projectName = Request.QueryString["projectName"];
                 long sheetNum = long.Parse(Request.QueryString["sheetNum"]);
-                string detailSheetName = RSAClass.Decrypt(Request.QueryString["detailSheetName"]);
+                string detailSheetName = Request.QueryString["detailSheetName"];
                 decimal sGrossRec = Convert.ToDecimal(Request.QueryString["sGrossRec"]);
                 decimal sMatUsage = Convert.ToDecimal(Request.QueryString["sMatUsage"]);
                 decimal sGrossRev = Convert.ToDecimal(Request.QueryString["sGrossRev"]);
@@ -36,11 +36,12 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 long sheetCount = BBDetail.Sheets.MaxOrder(budBidProjectID);
 
                 uxYearVersion.Text = yearID + " " + verName;
-                uxWeekEnding.Text = "Week Ending: " + weDate;
+                uxWeekEnding.Text = "Week Ending:  " + weDate;
                 uxProjectName.Text = projectName;
-                uxDetailNameLabel.Text = "Detail Sheet (" + sheetNum + " of " + sheetCount + "): ";
+                uxDetailNameLabel.Text = "Detail Sheet (" + sheetNum + " of " + sheetCount + "):";
                 detailSheetName = (detailSheetName.Length >= 10 && detailSheetName.Substring(0, 10) == "SYS_DETAIL") ? "" : detailSheetName;
                 uxDetailName.Text = detailSheetName;
+                uxComments.Text = BBDetail.Sheet.MainTabField.Comment(detailSheetID);
                 
                 if (sheetNum > 1)
                 {
@@ -58,7 +59,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 uxSDirects.Text = String.Format("{0:N2}", sDirects);
                 uxSOP.Text = String.Format("{0:N2}", sOP);
 
-                BBDetail.Sheet.MainTabField.Fields sheetMainNums = BBDetail.Sheet.MainTabField.Data(detailSheetID);
+                BBDetail.Sheet.MainTabField.Fields sheetMainNums = BBDetail.Sheet.MainTabField.NumsData(detailSheetID);
                 decimal recRemain = sheetMainNums.RECREMAIN ?? 0;
                 decimal daysRemain = sheetMainNums.DAYSREMAIN ?? 0;
                 decimal unitsRemain = sheetMainNums.UNITREMAIN ?? 0;
@@ -73,15 +74,28 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             }
         }
 
+
+
+        // Main tab
         public void deSaveMainTabField(object sender, DirectEventArgs e)
         {
             long budBidProjectID = long.Parse(Request.QueryString["projectID"]);
             long detailSheetID = long.Parse(Request.QueryString["detailSheetID"]);
             string recType = e.ExtraParams["RecType"];
-            decimal fieldText = Convert.ToDecimal(e.ExtraParams["FieldText"]);
-            BBDetail.Sheet.MainTabField.DBUpdate(budBidProjectID, detailSheetID, recType, fieldText);
-            deFormatNumber(sender, e);
-            CalulateDetailSheet();
+            string fieldText = e.ExtraParams["FieldText"];
+
+            if (recType == "COMMENTS")
+            {
+                BBDetail.Sheet.MainTabField.DBUpdateComments(detailSheetID, fieldText);
+            }
+            else
+            {
+                Ext.Net.TextField myTextField = sender as Ext.Net.TextField;
+                decimal retVal = ForceToDecimal(myTextField.Text, -9999999999.99M, 9999999999.99M);
+                myTextField.Text = String.Format("{0:N2}", retVal);
+                BBDetail.Sheet.MainTabField.DBUpdateNums(budBidProjectID, detailSheetID, recType, retVal);
+                CalulateDetailSheet();                
+            }          
         }
 
  
@@ -131,118 +145,77 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     break;
             }                
         }
-        [DirectMethod(Namespace = "SaveRecord")]
-        public void deSaveSubGridData(object recordData, long id)
+        protected void deAddNewRecord(object sender, DirectEventArgs e)
         {
             long projectID = long.Parse(Request.QueryString["projectID"]);
             long detailTaskID = long.Parse(Request.QueryString["detailSheetID"]);
-            string jsonText = recordData.ToString();
-            BB.BBSubGridV gridData = JsonConvert.DeserializeObject<BB.BBSubGridV>(jsonText);
-            string recType = ConvertSubGridNumToName(gridData.REC_TYPE);
-            string desc1 = gridData.DESC_1;
-            string desc2 = gridData.DESC_2;
-            decimal amt_1 = ConvertToDecimal(gridData.AMT_1);
-            decimal amt_2 = ConvertToDecimal(gridData.AMT_2);
-            decimal amt_3 = ConvertToDecimal(gridData.AMT_3);
-            decimal amt_4 = ConvertToDecimal(gridData.AMT_4);
-            decimal amt_5 = ConvertToDecimal(gridData.AMT_5);
-
+            string detailSheetName = e.ExtraParams["DetailSheetName"];
+            string recType = e.ExtraParams["RecordType"];
 
             BUD_BID_DETAIL_SHEET data;
-            if (id == 0)
-            {
-                data = new BUD_BID_DETAIL_SHEET();
-            }
-            else
-            {
-                using (Entities context = new Entities())
-                {
-                    data = context.BUD_BID_DETAIL_SHEET.Where(x => x.DETAIL_SHEET_ID == id).Single();
-                }
-            }
-
-            data.DESC_1 = desc1;
-            data.DESC_2 = desc2;
-            data.AMT_1 = amt_1;
-            data.AMT_2 = amt_2;
-            data.AMT_3 = amt_3;
-            data.AMT_4 = amt_4;
-            data.AMT_5 = amt_5;
-            data.TOTAL = amt_1 * amt_2;
-
-            if (id == 0)
-            {
-                data.PROJECT_ID = projectID;
-                data.DETAIL_TASK_ID = detailTaskID;
-                data.REC_TYPE = recType;
-                data.CREATE_DATE = DateTime.Now;
-                data.CREATED_BY = User.Identity.Name;
-                data.MODIFY_DATE = DateTime.Now; ;
-                data.MODIFIED_BY = "TEMP";
-                GenericData.Insert<BUD_BID_DETAIL_SHEET>(data);
-            }
-            else
-            {
-                data.MODIFY_DATE = DateTime.Now; ;
-                GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
-            }
-
-            CalulateDetailSheet();
-
+            data = new BUD_BID_DETAIL_SHEET();
+            data.DESC_1 = "[NEW]";
+            data.DESC_2 = "";
+            data.AMT_1 = 0;
+            data.AMT_2 = 0;
+            data.AMT_3 = 0;
+            data.AMT_4 = 0;
+            data.AMT_5 = 0;
+            data.TOTAL = 0;
+            data.PROJECT_ID = projectID;
+            data.DETAIL_TASK_ID = detailTaskID;
+            data.REC_TYPE = recType;
+            data.CREATE_DATE = DateTime.Now;
+            data.CREATED_BY = User.Identity.Name;
+            data.MODIFY_DATE = DateTime.Now; ;
+            data.MODIFIED_BY = "TEMP";
+            GenericData.Insert<BUD_BID_DETAIL_SHEET>(data);
             switch (recType)
             {
                 case "MATERIAL":
-                    uxMaterialGridStore.CommitChanges();
                     uxMaterialGridStore.Reload();
+                    uxHidSelMatRecID.Text = data.DETAIL_SHEET_ID.ToString();
                     break;
 
                 case "EQUIPMENT":
-                    uxEquipmentGridStore.CommitChanges();
                     uxEquipmentGridStore.Reload();
+                    uxHidSelEquipRecID.Text = data.DETAIL_SHEET_ID.ToString();
                     break;
 
                 case "PERSONNEL":
-                    uxPersonnelGridStore.CommitChanges();
                     uxPersonnelGridStore.Reload();
+                    uxHidSelPersRecID.Text = data.DETAIL_SHEET_ID.ToString();
                     break;
 
                 case "PERDIEM":
-                    uxPerDiemGridStore.CommitChanges();
                     uxPerDiemGridStore.Reload();
                     break;
 
                 case "TRAVEL":
-                    uxTravelGridStore.CommitChanges();
                     uxTravelGridStore.Reload();
                     break;
 
                 case "MOTELS":
-                    uxMotelsGridStore.CommitChanges();
                     uxMotelsGridStore.Reload();
                     break;
 
                 case "MISC":
-                    uxMiscGridStore.CommitChanges();
                     uxMiscGridStore.Reload();
                     break;
 
                 case "LUMPSUM":
-                    uxLumpSumGridStore.CommitChanges();
                     uxLumpSumGridStore.Reload();
                     break;
+            }
 
-                default:
-                    break;
-            }           
         }
         [DirectMethod(Namespace = "DeleteRecord")]
         public void deDeleteRecord(object sender, DirectEventArgs e)
         {
             long id = Convert.ToInt64(e.ExtraParams["RecordID"]);
-            if (id == 0) { return; }
 
             BBDetail.SubGrid.DeleteRecord(id);
-            uxMaterialGridStore.Reload();   // FIX THSE WITH SWITCH!
+            uxMaterialGridStore.Reload();   // FIX THESE WITH SWITCH!
             uxEquipmentGridStore.Reload();
             uxPersonnelGridStore.Reload();
             uxPerDiemGridStore.Reload();
@@ -250,10 +223,221 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxMotelsGridStore.Reload();
             uxMiscGridStore.Reload();
             uxLumpSumGridStore.Reload();
+            uxHidSelMatRecID.Text = "";
+            CalulateDetailSheet();
+        }
+        [DirectMethod(Namespace = "SaveRecord")]
+        public void deSaveSubGridData(long id, string recType, string field, string newValue)
+        {
+            BUD_BID_DETAIL_SHEET data;
+            using (Entities context = new Entities())
+            {
+                data = context.BUD_BID_DETAIL_SHEET.Where(x => x.DETAIL_SHEET_ID == id).Single();
+            }
+
+            if (field == "DESC_1") { data.DESC_1 = newValue; }
+            if (field == "DESC_2") { data.DESC_2 = newValue; }
+            if (field == "AMT_1") { data.AMT_1 = Convert.ToDecimal(newValue); }
+            if (field == "AMT_2") { data.AMT_2 = Convert.ToDecimal(newValue); }
+            if (field == "AMT_3") { data.AMT_3 = Convert.ToDecimal(newValue); }
+            if (field == "AMT_4") { data.AMT_4 = Convert.ToDecimal(newValue); }
+            if (field == "AMT_5") { data.AMT_5 = Convert.ToDecimal(newValue); }
+
+            switch (recType)
+            {
+                case "MATERIAL":
+                    data.TOTAL = data.AMT_1 * data.AMT_2;
+                    GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    uxMaterialGridStore.CommitChanges();
+                    uxMaterialGridStore.Reload();
+                    break;
+
+                case "EQUIPMENT":
+                    data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
+                    GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    uxEquipmentGridStore.CommitChanges();
+                    uxEquipmentGridStore.Reload();
+                    break;
+
+                case "PERSONNEL":
+                    data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
+                    GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    uxPersonnelGridStore.CommitChanges();
+                    uxPersonnelGridStore.Reload();
+                    break;
+
+                case "PERDIEM":
+                    data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
+                    GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    uxPerDiemGridStore.CommitChanges();
+                    uxPerDiemGridStore.Reload();
+                    break;
+
+                case "TRAVEL":
+                    data.TOTAL = data.AMT_1 * data.AMT_2;
+                    GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    uxTravelGridStore.CommitChanges();
+                    uxTravelGridStore.Reload();
+                    break;
+
+                case "MOTELS":
+                    data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
+                    GenericData.Update<BUD_BID_DETAIL_SHEET>(data);                                
+                    uxMotelsGridStore.CommitChanges();
+                    uxMotelsGridStore.Reload();
+                    break;
+
+                case "MISC":
+                    data.TOTAL = data.AMT_1 * data.AMT_2;
+                    GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    uxMiscGridStore.CommitChanges();
+                    uxMiscGridStore.Reload();
+                    break;
+
+                case "LUMPSUM":
+                    data.TOTAL = data.AMT_1 * data.AMT_2;
+                    GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    uxLumpSumGridStore.CommitChanges();
+                    uxLumpSumGridStore.Reload();
+                    break;
+
+                default:
+                    break;
+            }
+
+            CalulateDetailSheet();
         }
 
+
+
+        // Material grid - MAKE SURE TO UPDATE 'deSaveSubGridData' method above with same formula as 'deSelect...'
+        protected void deLoadMaterialDropdown(object sender, StoreReadDataEventArgs e)
+        {
+            string company = "DBI";
+            List<object> dataSource = BBDetail.Sheet.MaterialListing.Data(company).ToList<object>();
+            int count;
+
+            uxMaterialStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataSource, out count);
+            e.Total = count;
+        }
+        protected void deSelectMaterial(object sender, DirectEventArgs e)
+        {
+            long recordID = Convert.ToInt64(uxHidSelMatRecID.Text);
+            string material = e.ExtraParams["Material"];
+            string unitCost = e.ExtraParams["UnitCost"];
+            string uom = e.ExtraParams["UOM"];
+
+            uxMaterialPicker.SetValue(material);
+
+            BUD_BID_DETAIL_SHEET data;
+            using (Entities context = new Entities())
+            {
+                data = context.BUD_BID_DETAIL_SHEET.Where(x => x.DETAIL_SHEET_ID == recordID).Single();
+            }
+
+            data.DESC_1 = material;
+            data.DESC_2 = uom;
+            data.AMT_1 = Convert.ToDecimal(unitCost);
+            data.TOTAL = data.AMT_1 * data.AMT_2;
+
+            GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+            uxMaterialGridStore.CommitChanges();
+            uxMaterialGridStore.Reload();
+
+            CalulateDetailSheet();
+        }
+        protected void deGetMatRecID(object sender, DirectEventArgs e)
+        {
+            string recordID = e.ExtraParams["SelRecordID"];
+            uxHidSelMatRecID.Text = recordID;
+        }
+
+
+
+        // Equipment grid - MAKE SURE TO UPDATE 'deSaveSubGridData' method above with same formula as 'deSelect...'
+        protected void deLoadEquipmentDropdown(object sender, StoreReadDataEventArgs e)
+        {
+            string company = "DBI";
+            List<object> dataSource = BBDetail.Sheet.EquipmentListing.Data(company).ToList<object>();
+            int count;
+
+            uxEquipmentStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataSource, out count);
+            e.Total = count;
+        }
+        protected void deSelectEquipment(object sender, DirectEventArgs e)
+        {
+            long recordID = Convert.ToInt64(uxHidSelEquipRecID.Text);
+            string equipment = e.ExtraParams["Equipment"];
+            string costPerHour = e.ExtraParams["CostPerHour"];
+
+            uxEquipmentPicker.SetValue(equipment);
+
+            BUD_BID_DETAIL_SHEET data;
+            using (Entities context = new Entities())
+            {
+                data = context.BUD_BID_DETAIL_SHEET.Where(x => x.DETAIL_SHEET_ID == recordID).Single();
+            }
+
+            data.DESC_1 = equipment;
+            data.AMT_2 = Convert.ToDecimal(costPerHour);
+            data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
+
+            GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+            uxEquipmentGridStore.CommitChanges();
+            uxEquipmentGridStore.Reload();
+
+            CalulateDetailSheet();
+        }
+        protected void deGetEquipRecID(object sender, DirectEventArgs e)
+        {
+            string recordID = e.ExtraParams["SelRecordID"];
+            uxHidSelEquipRecID.Text = recordID;
+        }
+
+
+
+        // Personnel grid - MAKE SURE TO UPDATE 'deSaveSubGridData' method above with same formula as 'deSelect...'
+        protected void deLoadPersonnelDropdown(object sender, StoreReadDataEventArgs e)
+        {
+            string company = "DBI";
+            List<object> dataSource = BBDetail.Sheet.PersonnelListing.Data(company).ToList<object>();
+            int count;
+
+            uxPersonnelStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataSource, out count);
+            e.Total = count;
+        }
+        protected void deSelectPosition(object sender, DirectEventArgs e)
+        {
+            long recordID = Convert.ToInt64(uxHidSelPersRecID.Text);
+            string position = e.ExtraParams["Position"];
+            string costPerHour = e.ExtraParams["CostPerHour"];
+
+            uxPersonnelPicker.SetValue(position);
+
+            BUD_BID_DETAIL_SHEET data;
+            using (Entities context = new Entities())
+            {
+                data = context.BUD_BID_DETAIL_SHEET.Where(x => x.DETAIL_SHEET_ID == recordID).Single();
+            }
+
+            data.DESC_1 = position;
+            data.AMT_2 = Convert.ToDecimal(costPerHour);
+            data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
+
+            GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+            uxPersonnelGridStore.CommitChanges();
+            uxPersonnelGridStore.Reload();
+
+            CalulateDetailSheet();
+        }
+        protected void deGetPersRecID(object sender, DirectEventArgs e)
+        {
+            string recordID = e.ExtraParams["SelRecordID"];
+            uxHidSelPersRecID.Text = recordID;
+        }
         
 
+        
         // Calculate
         protected void deCalculate(object sender, DirectEventArgs e)
         {
@@ -298,12 +482,12 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
             // Update Sheet's Bottom Numbers
             BBDetail.Sheet.BottomNumbers.Fields bottomData = BBDetail.Sheet.BottomNumbers.Calculate(detailSheetID, sGrossRec, sMatUsage, sGrossRev, sDirects, sOP, totalDaysRemain, totalUnitsRemain, totalDaysWorked);
-            uxLaborBurden.Text = String.Format("{0:N2}", bottomData.LABOR_BURDEN.ToString());
-            uxAvgUnitsPerDay.Text = String.Format("{0:N2}", bottomData.AVG_UNITS_PER_DAY.ToString());
-            uxTotalWklyDirects.Text = String.Format("{0:N2}", bottomData.TOTAL_WKLY_DIRECTS.ToString());
-            uxTotalDirectsLeft.Text = String.Format("{0:N2}", bottomData.TOTAL_DIRECTS_LEFT.ToString());
-            uxTotalDirectsPerDay.Text = String.Format("{0:N2}", bottomData.TOTAL_DIRECTS_PER_DAY.ToString());
-            uxTotalMaterialLeft.Text = String.Format("{0:N2}", bottomData.TOTAL_MATERIAL_LEFT.ToString()); 
+            uxLaborBurden.Text = String.Format("{0:N2}", bottomData.LABOR_BURDEN);
+            uxAvgUnitsPerDay.Text = String.Format("{0:N2}", bottomData.AVG_UNITS_PER_DAY);
+            uxTotalWklyDirects.Text = String.Format("{0:N2}", bottomData.TOTAL_WKLY_DIRECTS);
+            uxTotalDirectsLeft.Text = String.Format("{0:N2}", bottomData.TOTAL_DIRECTS_LEFT);
+            uxTotalDirectsPerDay.Text = String.Format("{0:N2}", bottomData.TOTAL_DIRECTS_PER_DAY);
+            uxTotalMaterialLeft.Text = String.Format("{0:N2}", bottomData.TOTAL_MATERIAL_LEFT); 
 
             // Update End Numbers
             BBDetail.Sheet.EndNumbers.Fields endNums = BBDetail.Sheet.EndNumbers.Calculate(detailSheetID, sGrossRec, sMatUsage, sGrossRev, sDirects, sOP, recRemaining, totalDaysRemain, totalUnitsRemain, totalDaysWorked);
@@ -395,39 +579,18 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     return "";
             }
         }
-        protected decimal ConvertToDecimal(string strNumber)
+        protected decimal ForceToDecimal(string number)
         {
-            decimal converted;
-
-            try
-            {
-                converted = Convert.ToDecimal(strNumber);
-            }
-
-            catch
-            {
-                converted = 0;
-            }
-
-            return converted;
-        }
-        protected void deFormatNumber(object sender, DirectEventArgs e)
-        {
-            Ext.Net.TextField myTextField = sender as Ext.Net.TextField;
             decimal amount;
-
-            try
-            {
-                amount = Convert.ToDecimal(myTextField.Text);
-            }
-
-            catch
-            {
-                amount = 0;
-            }
-
-            string converted = String.Format("{0:N2}", amount);
-            myTextField.Text = converted;
+            decimal.TryParse(number, out amount);
+            return amount;
+        }
+        protected decimal ForceToDecimal(string number, decimal lowRange, decimal highRange)
+        {
+            decimal amount;
+            decimal.TryParse(number, out amount);
+            if (amount < lowRange || amount > highRange) { amount = 0; }
+            return amount;
         }
     }
 }
