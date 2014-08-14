@@ -8,6 +8,8 @@ using System.Web.UI.WebControls;
 using Ext.Net;
 using DBI.Data;
 using DBI.Core.Web;
+using System.Xml.Xsl;
+using System.Xml;
 
 namespace DBI.Web.EMS.Views.Modules.Overhead
 {
@@ -74,7 +76,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             public decimal DEBIT { get; set; }
             public decimal CREDIT { get; set; }
             public string CATEGORY { get; set; }
-            public DateTime EFFECTIVE_DATE { get; set; }
+            public DateTime TRANSACTION_DATE { get; set; }
+            public DateTime POSTED_DATE { get; set; }
             public decimal TOTAL { get; set; }
         }
 
@@ -108,7 +111,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 {
                     short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);
                     long _accountID = long.Parse(Request.QueryString["accountID"]);
-                    string sql2 = string.Format("select ROW_ID as ROW_ID, Line_reference_1 as LINE_REFERENCE, Line_description as LINE_DESCRIPTION, nvl(line_entered_dr,0) AS DEBIT, nvl(line_entered_cr,0) AS CREDIT, je_category AS CATEGORY, header_effective_date AS EFFECTIVE_DATE, 0 as TOTAL from APPS.GL_JE_JOURNAL_LINES_V where period_year = {0} and period_num = {1} and line_code_combination_id = {2} and set_of_books_id in (select distinct set_of_books_id from apps.hr_operating_units)", _fiscal_year, uxPeriodSelectionModel.SelectedRow.RecordID, _accountID);
+                    string sql2 = string.Format("select ROW_ID as ROW_ID, Line_reference_1 as LINE_REFERENCE, Line_description as LINE_DESCRIPTION, nvl(line_entered_dr,0) AS DEBIT, nvl(line_entered_cr,0) AS CREDIT, je_category AS CATEGORY, header_effective_date AS TRANSACTION_DATE,header_posted_date as POSTED_DATE, 0 as TOTAL from APPS.GL_JE_JOURNAL_LINES_V where period_year = {0} and period_num = {1} and line_code_combination_id = {2} and set_of_books_id in (select distinct set_of_books_id from apps.hr_operating_units)", _fiscal_year, uxPeriodSelectionModel.SelectedRow.RecordID, _accountID);
                     List<BALANCE_DETAILS> _details = _context.Database.SqlQuery<BALANCE_DETAILS>(sql2).ToList();
 
                     foreach (BALANCE_DETAILS _detail in _details)
@@ -119,6 +122,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     int count;
                     Store1.DataSource = GenericData.EnumerableFilterHeader<BALANCE_DETAILS>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _details, out count);
                     e.Total = count;
+
+                    GridPanel1.Enable();
                 }
                 catch (Exception ex)
                 {
@@ -126,6 +131,46 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 }
                
             }
+        }
+
+
+        protected void Store1_SubmitData(object sender, StoreSubmitDataEventArgs e)
+        {
+            string format = this.FormatType.Value.ToString();
+
+            XmlNode xml = e.Xml;
+
+            this.Response.Clear();
+
+            switch (format)
+            {
+                case "xml":
+                    string strXml = xml.OuterXml;
+                    this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xml");
+                    this.Response.AddHeader("Content-Length", strXml.Length.ToString());
+                    this.Response.ContentType = "application/xml";
+                    this.Response.Write(strXml);
+                    break;
+
+                case "xls":
+                    this.Response.ContentType = "application/vnd.ms-excel";
+                    this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xls");
+                    XslCompiledTransform xtExcel = new XslCompiledTransform();
+                    xtExcel.Load(Server.MapPath("Excel.xsl"));
+                    xtExcel.Transform(xml, null, Response.OutputStream);
+
+                    break;
+
+                case "csv":
+                    this.Response.ContentType = "application/octet-stream";
+                    this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.csv");
+                    XslCompiledTransform xtCsv = new XslCompiledTransform();
+                    xtCsv.Load(Server.MapPath("Csv.xsl"));
+                    xtCsv.Transform(xml, null, Response.OutputStream);
+
+                    break;
+            }
+            this.Response.End();
         }
     }
 }

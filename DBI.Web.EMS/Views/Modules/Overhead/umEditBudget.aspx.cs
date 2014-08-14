@@ -41,6 +41,16 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
          
         }
 
+        protected Field OnCreateFilterableField(object sender, ColumnBase column, Field defaultField)
+        {
+            if (column.DataIndex == "ACCOUNT_DESCRIPTION")
+            {
+                ((TextField)defaultField).Icon = Icon.Magnifier;
+            }
+
+            return defaultField;
+        }
+
         protected void deViewActuals(object sender, DirectEventArgs e)
         {
 

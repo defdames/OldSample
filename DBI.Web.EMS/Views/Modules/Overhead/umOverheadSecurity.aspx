@@ -16,9 +16,9 @@
                   <ext:TreePanel
                     ID="uxOrganizationTreePanel"
                     runat="server"
-                    Title="Business Units and Hierarchies"
+                    Title="Business Units"
                     Region="West"
-                    Width="300"
+                    Width="250"
                     AutoScroll="true"
                     RootVisible="false"
                     SingleExpand="true"
@@ -26,7 +26,7 @@
                     UseArrows="true"
                     Padding="5"
                     Scroll="Vertical"
-                    Collapsible="false">
+                    Collapsible="true">
                     <Store>
                         <ext:TreeStore ID="uxOrganizationTreeStore" runat="server" OnReadData="deLoadLegalEntities">
                             <Proxy>
