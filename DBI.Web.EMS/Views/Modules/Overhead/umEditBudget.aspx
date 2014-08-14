@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+<head id="Head1" runat="server">
     <title></title>
     <script type="text/javascript">
         Ext.util.Format.CurrencyFactory = function (dp, dSeparator, tSeparator, symbol) {
@@ -21,7 +21,7 @@
                 var m = /(\d+)(?:(\.\d+)|)/.exec(n + ""),
                     x = m[1].length > 3 ? m[1].length % 3 : 0;
 
-                
+
                 var r = (n < 0 ? '-' : '') // preserve minus sign
                         + (x ? m[1].substr(0, x) + tSeparator : "")
                         + m[1].substr(x).replace(/(\d{3})(?=\d)/g, "$1" + tSeparator)
@@ -31,6 +31,7 @@
                 return Ext.String.format(template, (n >= 0) ? "black" : "red", r);
             };
         };
+
 
         Ext.util.Format.CurrencyFactorySUM = function (dp, dSeparator, tSeparator, symbol) {
             return function (n) {
@@ -91,13 +92,13 @@
                                   </Click>
                               </DirectEvents>
                           </ext:Button>
-                          <ext:ToolbarSeparator runat="server"></ext:ToolbarSeparator>
+                          <ext:ToolbarSeparator ID="ToolbarSeparator1" runat="server"></ext:ToolbarSeparator>
                           <ext:Button runat="server" Icon="DatabaseCopy" Text="Import Actuals" ID="uxImportActualsButton">
                               <DirectEvents>
                                   <Click OnEvent="deImportActuals"></Click>
                               </DirectEvents>
                           </ext:Button>
-                          <ext:ToolbarSeparator ID="ToolbarSeparator1" runat="server"></ext:ToolbarSeparator>
+                          <ext:ToolbarSeparator ID="ToolbarSeparator2" runat="server"></ext:ToolbarSeparator>
                           <ext:Button runat="server" Icon="Accept" Text="Complete Budget" ID="uxCompleteBudget">
                               <DirectEvents>
                                   <Click OnEvent="deCompleteBudget">
@@ -118,7 +119,7 @@
                                   <Click Handler="submitValue(#{uxOrganizationAccountGridPanel}, #{FormatType}, 'xls');" />
                               </Listeners>
                           </ext:Button>
-                          <ext:ToolbarSeparator runat="server"></ext:ToolbarSeparator>
+                          <ext:ToolbarSeparator ID="ToolbarSeparator3" runat="server"></ext:ToolbarSeparator>
                           <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Hide Blank Lines" ID="uxHideBlankLinesCheckbox">
                               <DirectEvents>
                                   <Change OnEvent="deHideBlankLines">
