@@ -213,6 +213,7 @@
     <Content Include="Views\Modules\Overhead\umBudgetMain.aspx" />
     <Content Include="Views\Modules\Overhead\umEditBudget.aspx" />
     <Content Include="Views\Modules\Overhead\umImportActualsWindow.aspx" />
+    <Content Include="Views\Modules\Overhead\umMassUpdateForecast.aspx" />
     <Content Include="Views\Modules\Overhead\umOpenBudgetType.aspx" />
     <Content Include="Views\Modules\Overhead\umOverheadBudgetPeriods.aspx" />
     <Content Include="Views\Modules\Overhead\umOverheadGeneralLedger.aspx" />
@@ -801,6 +802,13 @@
     <Compile Include="Views\Modules\Overhead\umImportActualsWindow.aspx.designer.cs">
       <DependentUpon>umImportActualsWindow.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\Overhead\umMassUpdateForecast.aspx.cs">
+      <DependentUpon>umMassUpdateForecast.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umMassUpdateForecast.aspx.designer.cs">
+      <DependentUpon>umMassUpdateForecast.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\Overhead\umOpenBudgetType.aspx.cs">
       <DependentUpon>umOpenBudgetType.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1061,7 +1069,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Report1.rdlc" />
-    <EmbeddedResource Include="Views\Modules\BudgetBidding\Report1.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

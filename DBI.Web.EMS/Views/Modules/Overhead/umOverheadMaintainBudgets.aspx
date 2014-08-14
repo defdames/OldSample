@@ -18,10 +18,20 @@
                        <ext:Toolbar runat="server">
                            <Items>
                                <ext:ToolbarFill runat="server"></ext:ToolbarFill>
-                               <ext:Button Text="Forecast Maintenance" Icon="DatabaseKey" ID="uxForecastMaintenance" runat="server" hidden="true"></ext:Button>
-                                <ext:ToolbarSeparator ID="ToolbarSeparator1" runat="server"></ext:ToolbarSeparator>
-                                 <ext:Button Text="Import Actuals" Icon="DatabaseCopy" ID="uxImportActuals" runat="server" Hidden="true"></ext:Button>
-                                <ext:ToolbarSeparator ID="ToolbarSeparator2" runat="server"></ext:ToolbarSeparator>
+                               <ext:Button Text="Forecast Maintenance" Icon="DatabaseKey" ID="uxForecastMaintenance" runat="server" hidden="true">
+                                  <DirectEvents>
+                                      <Click OnEvent="deMassBudgetForecast"></Click>
+                                  </DirectEvents>
+                               </ext:Button>
+                                <ext:ToolbarSpacer runat="server"></ext:ToolbarSpacer>
+                                 <ext:Button Text="Import Actuals" Icon="DatabaseCopy" ID="uxImportActuals" runat="server" Hidden="true"></ext:Button>  
+                                <ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server"></ext:ToolbarSpacer>
+                                 <ext:Checkbox runat="server" HideLabel="true" BoxLabel="View All Budgets" ID="uxViewAllBudgets" Checked="false">
+                                    <DirectEvents>
+                                        <Change OnEvent="deViewAll"><EventMask ShowMask="true"></EventMask></Change>
+                                    </DirectEvents>
+                                </ext:Checkbox>
+                                <ext:ToolbarSpacer ID="ToolbarSpacer2" runat="server"></ext:ToolbarSpacer>
                                  <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Hide Closed Budgets" ID="uxHideClosedBudgetsCheckbox" Checked="true">
                                     <DirectEvents>
                                         <Change OnEvent="deHideClosed"><EventMask ShowMask="true"></EventMask></Change>
