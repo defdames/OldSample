@@ -46,6 +46,21 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             uxAccountCategoryStore.Sync();
         }
 
+        protected void deSaveAccountSortOrder(object sender, DirectEventArgs e)
+        {
+            string json = e.ExtraParams["Values"];
+
+            List<OVERHEAD_ACCOUNT_CATEGORY> _gridValues = JSON.Deserialize<List<OVERHEAD_ACCOUNT_CATEGORY>>(json);
+
+            foreach (OVERHEAD_ACCOUNT_CATEGORY _detail in _gridValues)
+            {
+                _detail.MODIFIED_BY = User.Identity.Name;
+                _detail.MODIFY_DATE = DateTime.Now;
+            }
+
+            GenericData.Update<OVERHEAD_ACCOUNT_CATEGORY>(_gridValues);
+            uxAccountListStore.Sync();
+        }
 
         protected void uxAccountCategoryStore_ReadData(object sender, StoreReadDataEventArgs e)
         {
@@ -67,7 +82,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             using (Entities _context = new Entities())
             {
-                var _data = _context.OVERHEAD_ACCOUNT_CATEGORY.Where(x => x.CATEGORY_ID == _selectedRowID).Select(x => new ACCOUNT_CATEGORY_LIST { ACCOUNT_CATEGORY_ID = x.ACCOUNT_CATEGORY_ID, CATEGORY_ID = x.CATEGORY_ID, ACCOUNT_SEGMENT = x.ACCOUNT_SEGMENT, SORT_ORDER = x.SORT_ORDER }).ToList();
+                var _data = _context.OVERHEAD_ACCOUNT_CATEGORY.Where(x => x.CATEGORY_ID == _selectedRowID).Select(x => new ACCOUNT_CATEGORY_LIST {ACCOUNT_CATEGORY_ID = x.ACCOUNT_CATEGORY_ID, CATEGORY_ID = x.CATEGORY_ID, ACCOUNT_SEGMENT = x.ACCOUNT_SEGMENT, SORT_ORDER = x.SORT_ORDER, CREATE_DATE = x.CREATE_DATE, CREATED_BY = x.CREATED_BY }).ToList();
 
                 //Get the name of the category id and account segment description
                 foreach (ACCOUNT_CATEGORY_LIST _record in _data)
@@ -126,6 +141,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             }
             else
             {
+                long? _lastSortOrder = 0;
+                //Get max sort order
+                using(Entities _context = new Entities())
+                {
+                    long? _temp = _context.OVERHEAD_CATEGORY.Select(x => x.SORT_ORDER).Max();
+                    if(_temp != null)
+                        _lastSortOrder = _temp;
+                }
+
                 OVERHEAD_CATEGORY _record = new OVERHEAD_CATEGORY();
                 _record.NAME = uxCategoryName.Text;
                 _record.DESCRIPTION = uxCategoryDescription.Text;
@@ -133,6 +157,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 _record.MODIFY_DATE = DateTime.Now;
                 _record.CREATED_BY = User.Identity.Name;
                 _record.MODIFIED_BY = User.Identity.Name;
+                _record.SORT_ORDER = _lastSortOrder + 1;
                 GenericData.Insert<OVERHEAD_CATEGORY>(_record);
 
                 uxCategoryWindow.Close();

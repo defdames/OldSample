@@ -247,6 +247,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Column Column4;
         
         /// <summary>
+        /// uxAccountSortOrderField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberField uxAccountSortOrderField;
+        
+        /// <summary>
         /// Column3 control.
         /// </summary>
         /// <remarks>
@@ -290,6 +299,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.GridView GridView1;
+        
+        /// <summary>
+        /// uxCellEditor2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.CellEditing uxCellEditor2;
         
         /// <summary>
         /// uxCategoryWindow control.

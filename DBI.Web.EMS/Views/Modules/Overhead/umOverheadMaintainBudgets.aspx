@@ -18,11 +18,15 @@
                        <ext:Toolbar runat="server">
                            <Items>
                                <ext:ToolbarFill runat="server"></ext:ToolbarFill>
-                               <ext:Button runat="server" Text="Hide Closed" Icon="BookMagnify" EnableToggle="true" Pressed="true" ID="uxViewAllToggleButton">
-                                   <DirectEvents>
-                                       <Toggle OnEvent="deToggleView"><EventMask ShowMask="true"></EventMask></Toggle>
-                                   </DirectEvents>
-                               </ext:Button>
+                               <ext:Button Text="Forecast Maintenance" Icon="DatabaseKey" ID="uxForecastMaintenance" runat="server" hidden="true"></ext:Button>
+                                <ext:ToolbarSeparator ID="ToolbarSeparator1" runat="server"></ext:ToolbarSeparator>
+                                 <ext:Button Text="Import Actuals" Icon="DatabaseCopy" ID="uxImportActuals" runat="server" Hidden="true"></ext:Button>
+                                <ext:ToolbarSeparator ID="ToolbarSeparator2" runat="server"></ext:ToolbarSeparator>
+                                 <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Hide Closed Budgets" ID="uxHideClosedBudgetsCheckbox" Checked="true">
+                                    <DirectEvents>
+                                        <Change OnEvent="deHideClosed"><EventMask ShowMask="true"></EventMask></Change>
+                                    </DirectEvents>
+                                </ext:Checkbox>
                            </Items>
                        </ext:Toolbar>
                    </TopBar>

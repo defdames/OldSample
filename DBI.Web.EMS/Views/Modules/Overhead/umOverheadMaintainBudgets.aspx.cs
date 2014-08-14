@@ -22,12 +22,39 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
 
+                //For Admin we need to show all organizations
+                if (validateComponentSecurity("SYS.OverheadBudget.Security"))
+                {
+                    string _selectedRecordID = Request.QueryString["orgid"];
+                    if (_selectedRecordID != null)
+                    {
+                        uxForecastMaintenance.Hidden = false;
+                        uxImportActuals.Hidden = false;
+                    }
+                }
             }
         }
 
         protected void deLoadOrganizationsForUser(object sender, StoreReadDataEventArgs e)
         {
             List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
+
+            //For Admin we need to show all organizations
+            if (validateComponentSecurity("SYS.OverheadBudget.Security"))
+            {
+                string _selectedRecordID = Request.QueryString["orgid"];
+
+                if (_selectedRecordID != null)
+                {
+
+                    char[] _delimiterChars = { ':' };
+                    string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
+                    long _hierarchyID = long.Parse(_selectedID[1].ToString());
+                    long _organizationID = long.Parse(_selectedID[0].ToString());
+
+                    OrgsList = HR.OverheadOrganizationStatusByHierarchy(_hierarchyID, _organizationID).Select(x => x.ORGANIZATION_ID).ToList();
+                }
+            }
 
             List<OVERHEAD_ORG_BUDGETS_V> _budgetsByOrganizationIDList = new List<OVERHEAD_ORG_BUDGETS_V>();
 
@@ -58,7 +85,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             }
 
-            if (uxViewAllToggleButton.Pressed)
+            if (uxHideClosedBudgetsCheckbox.Checked)
                 _budgetsByOrganizationIDList = _budgetsByOrganizationIDList.Where(x => x.BUDGET_STATUS == "Open" || x.BUDGET_STATUS == "Pending").ToList();
 
             int count;
@@ -66,7 +93,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             e.Total = count;
         }
 
-        protected void deToggleView(object sender, DirectEventArgs e)
+        protected void deHideClosed(object sender, DirectEventArgs e)
         {
             uxBudgetVersionByOrganizationStore.Reload();
         }
