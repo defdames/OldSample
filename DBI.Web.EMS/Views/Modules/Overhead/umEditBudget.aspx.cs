@@ -27,10 +27,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         protected void deEditBudgetNotes(object sender, DirectEventArgs e)
         {
-            using(Entities _context = new Entities())
+            using (Entities _context = new Entities())
             {
 
-               long _budgetid = long.Parse(Request.QueryString["budget_id"]);
+                long _budgetid = long.Parse(Request.QueryString["budget_id"]);
 
                 //pull budget detail data
                 OVERHEAD_ORG_BUDGETS _budgetDetail = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.ORG_BUDGET_ID == _budgetid).SingleOrDefault();
@@ -38,7 +38,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             }
             uxBudgetNotesWindow.Center();
             uxBudgetNotesWindow.Show();
-         
+
         }
 
         protected void deViewActuals(object sender, DirectEventArgs e)
@@ -316,8 +316,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                         _row.SORT_ORDER = 0;
 
                     }
-                    _row.CODE_COMBINATION_ID = _validAccount.CODE_COMBINATION_ID;
                     _row.ACCOUNT_SEGMENT = _validAccount.SEGMENT5;
+                    _row.CODE_COMBINATION_ID = _validAccount.CODE_COMBINATION_ID;
                     _row.ACCOUNT_DESCRIPTION = _validAccount.SEGMENT5_DESC + " (" + _validAccount.SEGMENT5 + ")";
                     _row.AMOUNT1 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 1);
                     _row.AMOUNT2 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 2);
@@ -361,13 +361,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 //{
                 //    if (_item.TOTAL > 0)
                 //        uxSummary.ToggleSummaryRow(true);
-                 //   break;
+                //   break;
                 //}
 
 
-            int count;
-            uxOrganizationAccountStore.DataSource = GenericData.ListFilterHeader<OVERHEAD_BUDGET_DETAIL_V>(e.Start, 1000, e.Sort, e.Parameters["filterheader"], _accountList.AsQueryable(), e.Parameters["group"], out count);
-            e.Total = count;
+                int count;
+                uxOrganizationAccountStore.DataSource = GenericData.ListFilterHeader<OVERHEAD_BUDGET_DETAIL_V>(e.Start, 1000, e.Sort, e.Parameters["filterheader"], _accountList.AsQueryable(), e.Parameters["group"], out count);
+                e.Total = count;
             }
 
         }
@@ -394,13 +394,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         {
             decimal returnvalue = 0;
 
-                OVERHEAD_BUDGET_DETAIL _line = budgetList.Where(x => x.ORG_BUDGET_ID == budget_id & x.CODE_COMBINATION_ID == code_combination_id & x.PERIOD_NUM == period_num).SingleOrDefault();
-                if(_line != null)
-                {
-                    returnvalue =(decimal) _line.AMOUNT; 
-                }
-                return returnvalue;
-       }
+            OVERHEAD_BUDGET_DETAIL _line = budgetList.Where(x => x.ORG_BUDGET_ID == budget_id & x.CODE_COMBINATION_ID == code_combination_id & x.PERIOD_NUM == period_num).SingleOrDefault();
+            if (_line != null)
+            {
+                returnvalue = (decimal)_line.AMOUNT;
+            }
+            return returnvalue;
+        }
 
 
         protected void deItemMaintenance(object sender, DirectEventArgs e)
@@ -481,9 +481,9 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             public long CATEGORY_ID { get; set; }
             public long CATEGORY_SORT_ORDER { get; set; }
             public long? SORT_ORDER { get; set; }
+            public string ACCOUNT_SEGMENT { get; set; }
             public string CATEGORY_NAME { get; set; }
             public long CODE_COMBINATION_ID { get; set; }
-            public string ACCOUNT_SEGMENT { get; set; }
             public string ACCOUNT_DESCRIPTION { get; set; }
             public decimal TOTAL { get; set; }
             public decimal AMOUNT1 { get; set; }
