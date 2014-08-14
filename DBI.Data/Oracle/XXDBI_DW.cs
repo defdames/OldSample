@@ -52,17 +52,18 @@ namespace DBI.Data
             JOB_COST_V data;
             using (Entities context = new Entities())
             {
-                data = context.Database.SqlQuery<JOB_COST_V>(sql).Single();                
+                data = context.Database.SqlQuery<JOB_COST_V>(sql).SingleOrDefault();                
             }
             
             if (data == null)
             {
-                data = new JOB_COST_V();
-                data.FY_GREC = 0;
-                data.FY_MU = 0;
-                data.FY_GREV = 0;
-                data.FY_TDE = 0;
-                data.FY_TOP = 0;
+                JOB_COST_V nullData = new JOB_COST_V();
+                nullData.FY_GREC = 0;
+                nullData.FY_MU = 0;
+                nullData.FY_GREV = 0;
+                nullData.FY_TDE = 0;
+                nullData.FY_TOP = 0;
+                data = nullData;
             }
 
                 return data;   
