@@ -19,7 +19,7 @@
 
       <script type="text/javascript">
           var getRowClass = function (record, rowIndex, rowParams, store) {
-              if (record.data.ORGANIZATION_STATUS == "Budgeting Allowed") {
+              if (record.data.ORGANIZATION_STATUS == "Active") {
                   return "blue-row";
               };
           }
@@ -58,11 +58,12 @@
                                 <ext:ToolbarFill runat="server">
 
                                 </ext:ToolbarFill>
-                                <ext:Button runat="server" Text="Show Active" EnableToggle="true" ID="uxActiveToggle" Icon="Find">
+                                
+                                <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Hide In-Active Organizations" ID="uxHideInActiveCheckbox" >
                                     <DirectEvents>
-                                        <Toggle OnEvent="deToggleInActive" />
+                                        <Change OnEvent="deHideInActive" />
                                     </DirectEvents>
-                                </ext:Button>
+                                </ext:Checkbox>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>

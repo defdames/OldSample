@@ -7,6 +7,8 @@ using System.Web.UI.WebControls;
 
 using Ext.Net;
 using DBI.Data;
+using System.Xml;
+using System.Xml.Xsl;
 
 namespace DBI.Web.EMS.Views.Modules.Overhead
 {
@@ -39,102 +41,84 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
          
         }
 
+        protected void deViewActuals(object sender, DirectEventArgs e)
+        {
+
+
+            short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);
+            long _organizationID = long.Parse(Request.QueryString["orgid"]);
+            long _budgetid = long.Parse(Request.QueryString["budget_id"]);
+            string _accountDescription = e.ExtraParams["ACCOUNT_DESCRIPTION"];
+            string _AccountSelectedID = uxOrganizationAccountSelectionModel.SelectedRow.RecordID;
+
+            string url = "umViewActualsWindow.aspx?budget_id=" + _budgetid + "&orgid=" + _organizationID + "&fiscalyear=" + _fiscal_year + "&accountID=" + _AccountSelectedID;
+
+            Window win = new Window
+            {
+                ID = "uxViewActualsWn",
+                Title = "View Account Actuals - " + _accountDescription + " / Fiscal Year " + _fiscal_year,
+                Height = 750,
+                Width = 900,
+                Modal = true,
+                Resizable = false,
+                CloseAction = CloseAction.Destroy,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
+
+            win.Listeners.Close.Handler = "#{uxOrganizationAccountGridPanel}.getStore().load();";
+
+            win.Render(this.Form);
+            win.Show();
+
+
+        }
+
         protected void deImportActuals(object sender, DirectEventArgs e)
         {
+
+
             short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);
             long _organizationID = long.Parse(Request.QueryString["orgid"]);
             long _budgetid = long.Parse(Request.QueryString["budget_id"]);
 
-            using(Entities _context = new Entities())
+            string url = "umImportActualsWindow.aspx?budget_id=" + _budgetid + "&orgid=" + _organizationID + "&fiscalyear=" + _fiscal_year;
+
+            Window win = new Window
             {
-               
-                //First get the periods for the fiscal year
-                string sql2 = "select entered_period_name,period_year,period_num,period_type,start_date,end_date from gl.gl_periods where period_set_name = 'DBI Calendar' order by period_num";
-                List<GL_PERIODS> _periodMonthList = _context.Database.SqlQuery<GL_PERIODS>(sql2).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Month").ToList();
-
-                // Get the range of accounts
-                List<GL_ACCOUNTS_V> _rangeOfAccounts = new List<GL_ACCOUNTS_V>();
-
-                var _data = _context.OVERHEAD_GL_RANGE.Where(x => x.ORGANIZATION_ID == _organizationID);
-
-                foreach (OVERHEAD_GL_RANGE _range in _data)
+                ID = "uxImportActualsWn",
+                Title = "Import Actuals For Selected Periods",
+                Height = 400,
+                Width = 800,
+                Modal = true,
+                Resizable = false,
+                CloseAction = CloseAction.Destroy,
+                Loader = new ComponentLoader
                 {
-                    var _adata = _context.GL_ACCOUNTS_V.Where(x => String.Compare(x.SEGMENT1, _range.SRSEGMENT1) >= 0 && String.Compare(x.SEGMENT1, _range.ERSEGMENT1) <= 0);
-                    _adata = _adata.Where(x => String.Compare(x.SEGMENT2, _range.SRSEGMENT2) >= 0 && String.Compare(x.SEGMENT2, _range.ERSEGMENT2) <= 0);
-                    _adata = _adata.Where(x => String.Compare(x.SEGMENT3, _range.SRSEGMENT3) >= 0 && String.Compare(x.SEGMENT3, _range.ERSEGMENT3) <= 0);
-                    _adata = _adata.Where(x => String.Compare(x.SEGMENT4, _range.SRSEGMENT4) >= 0 && String.Compare(x.SEGMENT4, _range.ERSEGMENT4) <= 0);
-                    _adata = _adata.Where(x => String.Compare(x.SEGMENT5, _range.SRSEGMENT5) >= 0 && String.Compare(x.SEGMENT5, _range.ERSEGMENT5) <= 0);
-                    _adata = _adata.Where(x => String.Compare(x.SEGMENT6, _range.SRSEGMENT6) >= 0 && String.Compare(x.SEGMENT6, _range.ERSEGMENT6) <= 0);
-                    _adata = _adata.Where(x => String.Compare(x.SEGMENT7, _range.SRSEGMENT7) >= 0 && String.Compare(x.SEGMENT7, _range.ERSEGMENT7) <= 0);
-                    List<GL_ACCOUNTS_V> _accountRange = _adata.ToList();
-                    _rangeOfAccounts.AddRange(_accountRange);
-
-                }
-
-                //Exclude any accounts added to the list of excluded accounts
-                List<OVERHEAD_GL_ACCOUNT> _excludedAccounts = _context.OVERHEAD_GL_ACCOUNT.Where(x => x.ORGANIZATION_ID == _organizationID).ToList();
-
-                //Create a list of accounts matching up with GL_ACCOUNTS_V
-                List<GL_ACCOUNTS_V> _eAccountList = new List<GL_ACCOUNTS_V>();
-
-                foreach (OVERHEAD_GL_ACCOUNT _eaccount in _excludedAccounts)
-                {
-                    var _adata = _context.GL_ACCOUNTS_V.Where(x => x.CODE_COMBINATION_ID == _eaccount.CODE_COMBINATION_ID).Single();
-                    _rangeOfAccounts.Remove(_adata);
-                }
-
-                //Add total detail
-                foreach (GL_ACCOUNTS_V _validAccount in _rangeOfAccounts)
-                {
-
-                    string sql = string.Format("select period_net_dr,period_year,code_combination_id,period_num from gl.gl_balances where actual_flag = 'A' and period_year = {0} and code_combination_id = {1}", _fiscal_year, _validAccount.CODE_COMBINATION_ID);
-                    List<ACTUAL_BALANCES> _balance = _context.Database.SqlQuery<ACTUAL_BALANCES>(sql).ToList();
-
-                       foreach (GL_PERIODS _period in _periodMonthList)
-                        {
-                            List<OVERHEAD_BUDGET_DETAIL> _budgetLineList = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budgetid).ToList();
-                            OVERHEAD_BUDGET_DETAIL _line = _budgetLineList.Where(x => x.ORG_BUDGET_ID == _budgetid & x.CODE_COMBINATION_ID == _validAccount.CODE_COMBINATION_ID & x.PERIOD_NUM == _period.PERIOD_NUM).SingleOrDefault();
-                            ACTUAL_BALANCES _actualTotalLine = _balance.Where(x => x.PERIOD_NUM == _period.PERIOD_NUM).SingleOrDefault();
-                            decimal _aTotal = 0;
-
-                            if (_actualTotalLine != null)
-                            {
-                                if (_actualTotalLine.PERIOD_NET_DR != 0)
-                                {
-                                    _aTotal = _actualTotalLine.PERIOD_NET_DR;
-
-                                    if (_line == null)
-                                    {
-                                        //No data, create it
-                                        OVERHEAD_BUDGET_DETAIL _record = new OVERHEAD_BUDGET_DETAIL();
-                                        _record.ORG_BUDGET_ID = _budgetid;
-                                        _record.PERIOD_NAME = _period.ENTERED_PERIOD_NAME;
-                                        _record.PERIOD_NUM = _period.PERIOD_NUM;
-                                        _record.CODE_COMBINATION_ID = _validAccount.CODE_COMBINATION_ID;
-                                        _record.AMOUNT = _aTotal;
-                                        _record.CREATE_DATE = DateTime.Now;
-                                        _record.MODIFY_DATE = DateTime.Now;
-                                        _record.CREATED_BY = User.Identity.Name;
-                                        _record.MODIFIED_BY = User.Identity.Name;
-                                        GenericData.Insert<OVERHEAD_BUDGET_DETAIL>(_record);
-                                    }
-                                    else
-                                    {
-                                        //Data update it
-                                        _line.AMOUNT = _aTotal;
-                                        _line.MODIFY_DATE = DateTime.Now;
-                                        _line.MODIFIED_BY = User.Identity.Name;
-                                        GenericData.Update<OVERHEAD_BUDGET_DETAIL>(_line);
-                                    }
-                                }
-                            }
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
                     }
                 }
+            };
 
+            win.Listeners.Close.Handler = "#{uxOrganizationAccountGridPanel}.getStore().load();";
 
-            }
-
-            uxOrganizationAccountStore.Reload();
+            win.Render(this.Form);
+            win.Show();
 
 
         }
@@ -301,6 +285,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     uxCompleteBudget.Disable();
                     uxCompleteBudget.Text = "Budget Pending";
                     uxCompleteBudget.Icon = Icon.FlagChecked;
+                    uxImportActualsButton.Disable();
                 }
 
 
@@ -322,13 +307,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                         _row.CATEGORY_ID = _accountCategory.CATEGORY_ID;
                         _row.CATEGORY_NAME = _category.NAME;
                         _row.SORT_ORDER = _accountCategory.SORT_ORDER;
+                        _row.CATEGORY_SORT_ORDER = (long)_category.SORT_ORDER;
                     }
                     else
                     {
                         _row.CATEGORY_NAME = "Other";
+                        _row.CATEGORY_SORT_ORDER = 99999;
                         _row.SORT_ORDER = 0;
-                    }
 
+                    }
                     _row.CODE_COMBINATION_ID = _validAccount.CODE_COMBINATION_ID;
                     _row.ACCOUNT_SEGMENT = _validAccount.SEGMENT5;
                     _row.ACCOUNT_DESCRIPTION = _validAccount.SEGMENT5_DESC + " (" + _validAccount.SEGMENT5 + ")";
@@ -379,7 +366,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
 
             int count;
-            uxOrganizationAccountStore.DataSource = GenericData.ListFilterHeader<OVERHEAD_BUDGET_DETAIL_V>(e.Start, 1000, e.Sort, e.Parameters["filterheader"], _accountList.AsQueryable(), out count);
+            uxOrganizationAccountStore.DataSource = GenericData.ListFilterHeader<OVERHEAD_BUDGET_DETAIL_V>(e.Start, 1000, e.Sort, e.Parameters["filterheader"], _accountList.AsQueryable(), e.Parameters["group"], out count);
             e.Total = count;
             }
 
@@ -492,6 +479,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         public class OVERHEAD_BUDGET_DETAIL_V
         {
             public long CATEGORY_ID { get; set; }
+            public long CATEGORY_SORT_ORDER { get; set; }
             public long? SORT_ORDER { get; set; }
             public string CATEGORY_NAME { get; set; }
             public long CODE_COMBINATION_ID { get; set; }
@@ -510,6 +498,46 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             public decimal AMOUNT10 { get; set; }
             public decimal AMOUNT11 { get; set; }
             public decimal AMOUNT12 { get; set; }
+        }
+
+
+        protected void deExportData(object sender, StoreSubmitDataEventArgs e)
+        {
+            string format = this.FormatType.Value.ToString();
+
+            XmlNode xml = e.Xml;
+
+            this.Response.Clear();
+
+            switch (format)
+            {
+                case "xml":
+                    string strXml = xml.OuterXml;
+                    this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xml");
+                    this.Response.AddHeader("Content-Length", strXml.Length.ToString());
+                    this.Response.ContentType = "application/xml";
+                    this.Response.Write(strXml);
+                    break;
+
+                case "xls":
+                    this.Response.ContentType = "application/vnd.ms-excel";
+                    this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xls");
+                    XslCompiledTransform xtExcel = new XslCompiledTransform();
+                    xtExcel.Load(Server.MapPath("Excel.xsl"));
+                    xtExcel.Transform(xml, null, Response.OutputStream);
+
+                    break;
+
+                case "csv":
+                    this.Response.ContentType = "application/octet-stream";
+                    this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.csv");
+                    XslCompiledTransform xtCsv = new XslCompiledTransform();
+                    xtCsv.Load(Server.MapPath("Csv.xsl"));
+                    xtCsv.Transform(xml, null, Response.OutputStream);
+
+                    break;
+            }
+            this.Response.End();
         }
     }
 }

@@ -66,6 +66,10 @@
             view = grid.normalGrid.getView();
             view.getFeature('GroupingSummary1').toggleSummaryRow(showSummary);
             view.refresh();
+
+        var submitValue = function (grid, hiddenFormat, format) {
+            hiddenFormat.setValue(format);
+            grid.submitData(false, { isUpload: true });
         };
     </script>
 
@@ -81,34 +85,58 @@
 <body>
     <form id="form1" runat="server">
           <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
+
+        <ext:Hidden ID="FormatType" runat="server" />
+
         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
             <Items>
           <ext:GridPanel ID="uxOrganizationAccountGridPanel" runat="server" Flex="1" Title="General Ledger Accounts by Budget" Header="false" Margin="5" Region="Center" Scroll="Both"  >
-                    <TopBar>
-                        <ext:Toolbar ID="Toolbar1" runat="server">
-                            <Items>
-                                <ext:Button runat="server" icon="DatabaseCopy" Text="Import Actuals" ID="Button1">
-                                    <DirectEvents>
-                                        <Click OnEvent="deImportActuals"><Confirmation ConfirmRequest="true" Message="Are you sure you want to actuals for this budget you can not undo this task!" /><EventMask ShowMask="true" Msg="Importing Actuals, This might take awhile, please wait..."></EventMask></Click>
-                                    </DirectEvents>
-                                </ext:Button>
-                                <ext:ToolbarFill ID="ToolbarFill1" runat="server"></ext:ToolbarFill>
-                                <ext:Button runat="server" Icon="Accept" Text="Complete Budget" ID="uxCompleteBudget">
-                                    <DirectEvents>
-                                        <Click OnEvent="deCompleteBudget"><Confirmation ConfirmRequest="true" Message="Are you sure you want to complete this budget? This will lock your budget for this forecast and only finance will be allowed to unlock it." /><EventMask ShowMask="true"></EventMask></Click>
-                                    </DirectEvents>
-                                </ext:Button>
-                                <ext:ToolbarSeparator ID="ToolbarSeparator1" runat="server"></ext:ToolbarSeparator>
-                                 <ext:Button runat="server" Icon="NoteEdit" Text="Budget Notes" ID="uxBudgetNotes">
-                                    <DirectEvents>
-                                        <Click OnEvent="deEditBudgetNotes"></Click>
-                                    </DirectEvents>
-                                </ext:Button>
-                                <ext:ToolbarSeparator runat="server"></ext:ToolbarSeparator>
-                                <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Hide Blank Lines" ID="uxHideBlankLinesCheckbox">
-                                    <DirectEvents>
-                                        <Change OnEvent="deHideBlankLines"><EventMask ShowMask="true"></EventMask></Change>
-                                    </DirectEvents>
+              <TopBar>
+                  <ext:Toolbar ID="Toolbar1" runat="server">
+                      <Items>
+                          <ext:Button runat="server" Icon="MagnifierZoomIn" Text="Account Inquery" ID="uxViewActuals" Disabled="true">
+                              <DirectEvents>
+                                  <Click OnEvent="deViewActuals">
+                                        <ExtraParams>
+                                <ext:Parameter Value="#{uxOrganizationAccountGridPanel}.getView().getSelectionModel().getSelection()[0].data.ACCOUNT_DESCRIPTION" Mode="Raw" Name="ACCOUNT_DESCRIPTION"></ext:Parameter>
+                            </ExtraParams>
+                                  </Click>
+                              </DirectEvents>
+                          </ext:Button>
+                          <ext:ToolbarSeparator runat="server"></ext:ToolbarSeparator>
+                          <ext:Button runat="server" Icon="DatabaseCopy" Text="Import Actuals" ID="uxImportActualsButton">
+                              <DirectEvents>
+                                  <Click OnEvent="deImportActuals"></Click>
+                              </DirectEvents>
+                          </ext:Button>
+                          <ext:ToolbarSeparator ID="ToolbarSeparator1" runat="server"></ext:ToolbarSeparator>
+                          <ext:Button runat="server" Icon="Accept" Text="Complete Budget" ID="uxCompleteBudget">
+                              <DirectEvents>
+                                  <Click OnEvent="deCompleteBudget">
+                                      <Confirmation ConfirmRequest="true" Message="Are you sure you want to complete this budget? This will lock your budget for this forecast and only finance will be allowed to unlock it." />
+                                      <EventMask ShowMask="true"></EventMask>
+                                  </Click>
+                              </DirectEvents>
+                          </ext:Button>
+                          <ext:ToolbarSeparator ID="ToolbarSeparator4" runat="server"></ext:ToolbarSeparator>
+                          <ext:Button runat="server" Icon="NoteEdit" Text="Budget Notes" ID="uxBudgetNotes">
+                              <DirectEvents>
+                                  <Click OnEvent="deEditBudgetNotes"></Click>
+                              </DirectEvents>
+                          </ext:Button>
+                          <ext:ToolbarFill ID="ToolbarFill1" runat="server"></ext:ToolbarFill>
+                          <ext:Button ID="Button3" runat="server" Text="To Excel" Icon="PageExcel">
+                              <Listeners>
+                                  <Click Handler="submitValue(#{uxOrganizationAccountGridPanel}, #{FormatType}, 'xls');" />
+                              </Listeners>
+                          </ext:Button>
+                          <ext:ToolbarSeparator runat="server"></ext:ToolbarSeparator>
+                          <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Hide Blank Lines" ID="uxHideBlankLinesCheckbox">
+                              <DirectEvents>
+                                  <Change OnEvent="deHideBlankLines">
+                                      <EventMask ShowMask="true"></EventMask>
+                                  </Change>
+                              </DirectEvents>
                                 </ext:Checkbox>
                             </Items>
                         </ext:Toolbar>
@@ -116,14 +144,16 @@
                     <Store>
                         <ext:Store runat="server"
                             ID="uxOrganizationAccountStore"
-                            AutoDataBind="true" RemoteSort="true" OnReadData="deLoadOrganizationAccounts" AutoLoad="true" GroupField="CATEGORY_NAME">
+                            AutoDataBind="true" RemoteSort="true" OnReadData="deLoadOrganizationAccounts" AutoLoad="true" GroupField="CATEGORY_NAME" RemoteGroup="true" OnSubmitData="deExportData">       
                             <Model>
                                 <ext:Model ID="Model2" runat="server" IDProperty="CODE_COMBINATION_ID">
                                     <Fields>
                                         <ext:ModelField Name="CATEGORY_NAME" />
+                                         <ext:ModelField Name="CATEGORY_SORT_ORDER" />
                                         <ext:ModelField Name="ACCOUNT_ORDER" />
                                         <ext:ModelField Name="ACCOUNT_SEGMENT" />
                                         <ext:ModelField Name="ACCOUNT_DESCRIPTION" />
+                                        <ext:ModelField Name="ACCOUNT_SEGMENT" />
                                         <ext:ModelField Name="TOTAL" />
                                         <ext:ModelField Name="AMOUNT1" />
                                         <ext:ModelField Name="AMOUNT2" />
@@ -144,8 +174,8 @@
                                 <ext:PageProxy />
                             </Proxy>
                              <Sorters>
-                                     <ext:DataSorter Property="CATEGORY_NAME" Direction="ASC" />
-                                     <ext:DataSorter Property="ACCOUNT_ORDER" Direction="ASC" />
+                                     <ext:DataSorter Property="CATEGORY_SORT_ORDER" Direction="ASC" />
+                                     <ext:DataSorter Property="SORT_ORDER" Direction="ASC" />
                                      <ext:DataSorter Property="ACCOUNT_SEGMENT" Direction="ASC" />
                             </Sorters>
                         </ext:Store>
@@ -221,6 +251,10 @@
             </Features>  
               <SelectionModel>
                         <ext:RowSelectionModel runat="server" ID="uxOrganizationAccountSelectionModel">
+                                                        <Listeners>
+                                 <Select Handler="if(#{uxOrganizationAccountSelectionModel}.getCount() > 0){#{uxViewActuals}.enable();}else {#{uxViewActuals}.disable();}"></Select>
+                                        <Deselect Handler="if(#{uxOrganizationAccountSelectionModel}.getCount() > 0){#{uxViewActuals}.enable();}else {#{uxViewActuals}.disable();}"></Deselect>
+                                 </Listeners>
                         </ext:RowSelectionModel>
                     </SelectionModel>
                     <DirectEvents>
