@@ -104,6 +104,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 AddTab(sm.SelectedRecordID + "BT", "Organization Budget Types", "umOverheadBudgetTypes.aspx?leid=" + sm.SelectedRecordID, false, true);
                 AddTab(sm.SelectedRecordID + "OS", "Security Maintenance", "umOverheadOrganizationSecurity.aspx?orgid=" + sm.SelectedRecordID, false, false);
                 AddTab(sm.SelectedRecordID + "OF", "All Organization Budget Versions", "umOverheadMaintainBudgets.aspx?orgid=" + sm.SelectedRecordID, false, false);
+                uxOrganizationTreePanel.Collapse();
 
         }
 

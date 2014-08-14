@@ -113,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\EMSDEV.pubxml" />
     <None Include="Properties\PublishProfiles\EMSV2 - Test.pubxml" />
     <None Include="Properties\PublishProfiles\EMSV2 - Development.pubxml" />
     <None Include="Properties\PublishProfiles\EMSV2 - Production.pubxml" />
@@ -138,7 +139,9 @@
     <Content Include="Views\Modules\BudgetBidding\umBlankBudget.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umBudgetBiddingMain.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umDetailSheet.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\umUpdateAllActuals.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umYearBudget.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\umYearRollupSummary.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\Csv.xsl" />
     <Content Include="Views\Modules\CrossingMaintenance\Excel.xsl" />
     <Content Include="Views\Modules\CrossingMaintenance\ManageKCS.aspx" />
@@ -210,6 +213,7 @@
     <Content Include="Views\Modules\Overhead\umBudgetMain.aspx" />
     <Content Include="Views\Modules\Overhead\umEditBudget.aspx" />
     <Content Include="Views\Modules\Overhead\umImportActualsWindow.aspx" />
+    <Content Include="Views\Modules\Overhead\umMassUpdateForecast.aspx" />
     <Content Include="Views\Modules\Overhead\umOpenBudgetType.aspx" />
     <Content Include="Views\Modules\Overhead\umOverheadBudgetPeriods.aspx" />
     <Content Include="Views\Modules\Overhead\umOverheadGeneralLedger.aspx" />
@@ -314,12 +318,26 @@
     <Compile Include="Views\Modules\BudgetBidding\umDetailSheet.aspx.designer.cs">
       <DependentUpon>umDetailSheet.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umUpdateAllActuals.aspx.cs">
+      <DependentUpon>umUpdateAllActuals.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umUpdateAllActuals.aspx.designer.cs">
+      <DependentUpon>umUpdateAllActuals.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\BudgetBidding\umYearBudget.aspx.cs">
       <DependentUpon>umYearBudget.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\Modules\BudgetBidding\umYearBudget.aspx.designer.cs">
       <DependentUpon>umYearBudget.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umYearRollupSummary.aspx.cs">
+      <DependentUpon>umYearRollupSummary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umYearRollupSummary.aspx.designer.cs">
+      <DependentUpon>umYearRollupSummary.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\ManageKCS.aspx.cs">
       <DependentUpon>ManageKCS.aspx</DependentUpon>
@@ -783,6 +801,13 @@
     </Compile>
     <Compile Include="Views\Modules\Overhead\umImportActualsWindow.aspx.designer.cs">
       <DependentUpon>umImportActualsWindow.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umMassUpdateForecast.aspx.cs">
+      <DependentUpon>umMassUpdateForecast.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umMassUpdateForecast.aspx.designer.cs">
+      <DependentUpon>umMassUpdateForecast.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\Overhead\umOpenBudgetType.aspx.cs">
       <DependentUpon>umOpenBudgetType.aspx</DependentUpon>
