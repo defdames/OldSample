@@ -67,13 +67,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Button uxImportActuals;
         
         /// <summary>
-        /// ToolbarSpacer1 control.
+        /// ToolbarFill1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer1;
+        protected global::Ext.Net.ToolbarFill ToolbarFill1;
         
         /// <summary>
         /// uxViewAllBudgets control.

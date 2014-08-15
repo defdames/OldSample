@@ -17,15 +17,14 @@
                    <TopBar>
                        <ext:Toolbar runat="server">
                            <Items>
-                               <ext:ToolbarFill runat="server"></ext:ToolbarFill>
-                               <ext:Button Text="Forecast Maintenance" Icon="DatabaseKey" ID="uxForecastMaintenance" runat="server" hidden="true">
+                               <ext:Button Text="Budget Periods" Icon="DatabaseKey" ID="uxForecastMaintenance" runat="server" hidden="true">
                                   <DirectEvents>
                                       <Click OnEvent="deMassBudgetForecast"></Click>
                                   </DirectEvents>
                                </ext:Button>
                                 <ext:ToolbarSpacer runat="server"></ext:ToolbarSpacer>
                                  <ext:Button Text="Import Actuals" Icon="DatabaseCopy" ID="uxImportActuals" runat="server" Hidden="true"></ext:Button>  
-                                <ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server"></ext:ToolbarSpacer>
+                                  <ext:ToolbarFill ID="ToolbarFill1" runat="server"></ext:ToolbarFill>
                                  <ext:Checkbox runat="server" HideLabel="true" BoxLabel="View All Budgets" ID="uxViewAllBudgets" Checked="false">
                                     <DirectEvents>
                                         <Change OnEvent="deViewAll"><EventMask ShowMask="true"></EventMask></Change>

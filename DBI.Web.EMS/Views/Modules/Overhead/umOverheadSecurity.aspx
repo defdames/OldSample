@@ -43,7 +43,11 @@
                     <SelectionModel>
                         <ext:TreeSelectionModel runat="server" Mode="Single" AllowDeselect="true">
                             <DirectEvents>
-                                <Select OnEvent="deSelectNode" ><EventMask ShowMask="true"></EventMask></Select>
+                                <Select OnEvent="deSelectNode" ><EventMask ShowMask="true"></EventMask>
+                                    <ExtraParams>
+                                        <ext:Parameter Mode="Raw" Value="record.data.text" Name="ORGANIZATION_NAME"></ext:Parameter>
+                                    </ExtraParams>
+                                </Select>
                             </DirectEvents>
                         </ext:TreeSelectionModel>
                     </SelectionModel>

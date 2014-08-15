@@ -130,15 +130,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Model Model2;
         
         /// <summary>
-        /// CommandColumn1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.CommandColumn CommandColumn1;
-        
-        /// <summary>
         /// Column2 control.
         /// </summary>
         /// <remarks>
@@ -155,6 +146,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Column Column1;
+        
+        /// <summary>
+        /// CommandColumn1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.CommandColumn CommandColumn1;
         
         /// <summary>
         /// uxOrganizationsGridFilter control.
