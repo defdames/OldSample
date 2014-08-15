@@ -59,7 +59,7 @@
 
                                 </ext:ToolbarFill>
                                 
-                                <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Hide In-Active Organizations" ID="uxHideInActiveCheckbox" >
+                                <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Show Active Organizations" ID="uxHideInActiveCheckbox" >
                                     <DirectEvents>
                                         <Change OnEvent="deHideInActive" />
                                     </DirectEvents>
@@ -88,10 +88,12 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                             <ext:CommandColumn ID="CommandColumn1" runat="server" Width="180">
+                             
+                            <ext:Column ID="Column2" runat="server" DataIndex="ORGANIZATION_NAME" Text="Name" Flex="2" />
+                            <ext:Column ID="Column1" runat="server" DataIndex="ORGANIZATION_STATUS" Text="Current Status" Flex="1" />   
+                            <ext:CommandColumn ID="CommandColumn1" runat="server" Width="180">
                                 <Commands>
-                                    <ext:GridCommand Text="Accounts" CommandName="Accounts" Icon="ReportMagnify" Cls="my-btn"></ext:GridCommand>
-                                    <ext:GridCommand Text ="Periods" CommandName="Periods" Icon="Time" Cls="my-btn"></ext:GridCommand>
+                                    <ext:GridCommand Text="Accounts" CommandName="Accounts" Icon="CalculatorEdit"></ext:GridCommand>
                                 </Commands>
                                 <DirectEvents>
                                     <Command OnEvent="deViewAccounts">
@@ -103,8 +105,6 @@
                                     </Command>
                                 </DirectEvents>
                             </ext:CommandColumn>    
-                            <ext:Column ID="Column2" runat="server" DataIndex="ORGANIZATION_NAME" Text="Name" Flex="2" />
-                            <ext:Column ID="Column1" runat="server" DataIndex="ORGANIZATION_STATUS" Text="Current Status" Flex="1" />   
                         </Columns>
                     </ColumnModel>
                     <Plugins>

@@ -152,9 +152,9 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 Window win = new Window
                 {
                     ID = "uxMassForecastUpdate",
-                    Title = "Budget Forecast Open/Close Periods",
+                    Title = "Budget Forecast and Period Maintenance",
                     Height = 700,
-                    Width = 800,
+                    Width = 975,
                     Modal = true,
                     Resizable = true,
                     CloseAction = CloseAction.Destroy,
