@@ -130,5 +130,6 @@ namespace DBI.Data
         public DbSet<OVERHEAD_CATEGORY> OVERHEAD_CATEGORY { get; set; }
         public DbSet<OVERHEAD_BUDGET_DETAIL> OVERHEAD_BUDGET_DETAIL { get; set; }
         public DbSet<EMPLOYEES_V> EMPLOYEES_V { get; set; }
+        public DbSet<CROSSING_PRICING> CROSSING_PRICING { get; set; }
     }
 }

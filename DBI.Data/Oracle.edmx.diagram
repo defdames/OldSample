@@ -157,6 +157,7 @@
         <EntityTypeShape EntityType="OracleModel.CROSSING_SUPPLEMENTAL" Width="1.5" PointX="28.75" PointY="13.25" />
         <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
         <EntityTypeShape EntityType="OracleModel.EMPLOYEES_V" Width="1.5" PointX="5.0377610218887039" PointY="11.013042469980681" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_PRICING" Width="1.5" PointX="8.875" PointY="145" />
         </Diagram>
       <Diagram DiagramId="e84dee89c5a844eb84c350f94a998eb6" Name="OVERHEAD" >
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="4.25" PointX="2.75" PointY="0.75" />
