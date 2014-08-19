@@ -13,6 +13,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
     public partial class umEditBudget {
         
         /// <summary>
+        /// Head1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlHead Head1;
+        
+        /// <summary>
         /// form1 control.
         /// </summary>
         /// <remarks>
@@ -29,6 +38,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.ResourceManager ResourceManager1;
+        
+        /// <summary>
+        /// FormatType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Hidden FormatType;
         
         /// <summary>
         /// Viewport1 control.
@@ -58,31 +76,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Toolbar Toolbar1;
         
         /// <summary>
-        /// Button1 control.
+        /// uxViewActuals control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button1;
-        
-        /// <summary>
-        /// ToolbarFill1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ToolbarFill ToolbarFill1;
-        
-        /// <summary>
-        /// uxCompleteBudget control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxCompleteBudget;
+        protected global::Ext.Net.Button uxViewActuals;
         
         /// <summary>
         /// ToolbarSeparator1 control.
@@ -94,6 +94,42 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.ToolbarSeparator ToolbarSeparator1;
         
         /// <summary>
+        /// uxImportActualsButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxImportActualsButton;
+        
+        /// <summary>
+        /// ToolbarSeparator2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ToolbarSeparator ToolbarSeparator2;
+        
+        /// <summary>
+        /// uxCompleteBudget control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxCompleteBudget;
+        
+        /// <summary>
+        /// ToolbarSeparator4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ToolbarSeparator ToolbarSeparator4;
+        
+        /// <summary>
         /// uxBudgetNotes control.
         /// </summary>
         /// <remarks>
@@ -103,6 +139,33 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Button uxBudgetNotes;
         
         /// <summary>
+        /// ToolbarFill1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ToolbarFill ToolbarFill1;
+        
+        /// <summary>
+        /// Button3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button Button3;
+        
+        /// <summary>
+        /// ToolbarSeparator3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ToolbarSeparator ToolbarSeparator3;
+        
+        /// <summary>
         /// uxHideBlankLinesCheckbox control.
         /// </summary>
         /// <remarks>
@@ -110,6 +173,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Checkbox uxHideBlankLinesCheckbox;
+        
+        /// <summary>
+        /// uxGlAccountSecurityGridFilter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FilterHeader uxGlAccountSecurityGridFilter;
         
         /// <summary>
         /// uxOrganizationAccountStore control.

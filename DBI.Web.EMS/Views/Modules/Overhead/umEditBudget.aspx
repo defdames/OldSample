@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+<head id="Head1" runat="server">
     <title></title>
     <script type="text/javascript">
         Ext.util.Format.CurrencyFactory = function (dp, dSeparator, tSeparator, symbol) {
@@ -21,7 +21,7 @@
                 var m = /(\d+)(?:(\.\d+)|)/.exec(n + ""),
                     x = m[1].length > 3 ? m[1].length % 3 : 0;
 
-                
+
                 var r = (n < 0 ? '-' : '') // preserve minus sign
                         + (x ? m[1].substr(0, x) + tSeparator : "")
                         + m[1].substr(x).replace(/(\d{3})(?=\d)/g, "$1" + tSeparator)
@@ -31,6 +31,7 @@
                 return Ext.String.format(template, (n >= 0) ? "black" : "red", r);
             };
         };
+
 
         Ext.util.Format.CurrencyFactorySUM = function (dp, dSeparator, tSeparator, symbol) {
             return function (n) {
@@ -54,6 +55,11 @@
                 return Ext.String.format(template, (n >= 0) ? "black" : "red", r);
             };
         };
+
+        var submitValue = function (grid, hiddenFormat, format) {
+            hiddenFormat.setValue(format);
+            grid.submitData(false, { isUpload: true });
+        };
     </script>
 
     <style>
@@ -68,48 +74,77 @@
 <body>
     <form id="form1" runat="server">
           <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
+
+        <ext:Hidden ID="FormatType" runat="server" />
+
         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
             <Items>
           <ext:GridPanel ID="uxOrganizationAccountGridPanel" runat="server" Flex="1" Title="General Ledger Accounts by Budget" Header="false" Margin="5" Region="Center" Scroll="Both"  >
-                    <TopBar>
-                        <ext:Toolbar ID="Toolbar1" runat="server">
-                            <Items>
-                                <ext:Button runat="server" icon="DatabaseCopy" Text="Import Actuals" ID="Button1">
-                                    <DirectEvents>
-                                        <Click OnEvent="deImportActuals"><Confirmation ConfirmRequest="true" Message="Are you sure you want to actuals for this budget you can not undo this task!" /><EventMask ShowMask="true" Msg="Importing Actuals, This might take awhile, please wait..."></EventMask></Click>
-                                    </DirectEvents>
-                                </ext:Button>
-                                <ext:ToolbarFill ID="ToolbarFill1" runat="server"></ext:ToolbarFill>
-                                <ext:Button runat="server" Icon="Accept" Text="Complete Budget" ID="uxCompleteBudget">
-                                    <DirectEvents>
-                                        <Click OnEvent="deCompleteBudget"><Confirmation ConfirmRequest="true" Message="Are you sure you want to complete this budget? This will lock your budget for this forecast and only finance will be allowed to unlock it." /><EventMask ShowMask="true"></EventMask></Click>
-                                    </DirectEvents>
-                                </ext:Button>
-                                <ext:ToolbarSeparator ID="ToolbarSeparator1" runat="server"></ext:ToolbarSeparator>
-                                 <ext:Button runat="server" Icon="NoteEdit" Text="Budget Notes" ID="uxBudgetNotes">
-                                    <DirectEvents>
-                                        <Click OnEvent="deEditBudgetNotes"></Click>
-                                    </DirectEvents>
-                                </ext:Button>
-                                <ext:ToolbarSeparator runat="server"></ext:ToolbarSeparator>
-                                <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Hide Blank Lines" ID="uxHideBlankLinesCheckbox">
-                                    <DirectEvents>
-                                        <Change OnEvent="deHideBlankLines"><EventMask ShowMask="true"></EventMask></Change>
-                                    </DirectEvents>
+              <TopBar>
+                  <ext:Toolbar ID="Toolbar1" runat="server">
+                      <Items>
+                          <ext:Button runat="server" Icon="MagnifierZoomIn" Text="Account Inquery" ID="uxViewActuals" Disabled="true">
+                              <DirectEvents>
+                                  <Click OnEvent="deViewActuals">
+                                        <ExtraParams>
+                                <ext:Parameter Value="#{uxOrganizationAccountGridPanel}.getView().getSelectionModel().getSelection()[0].data.ACCOUNT_DESCRIPTION" Mode="Raw" Name="ACCOUNT_DESCRIPTION"></ext:Parameter>
+                            </ExtraParams>
+                                  </Click>
+                              </DirectEvents>
+                          </ext:Button>
+                          <ext:ToolbarSeparator ID="ToolbarSeparator1" runat="server"></ext:ToolbarSeparator>
+                          <ext:Button runat="server" Icon="DatabaseCopy" Text="Import Actuals" ID="uxImportActualsButton">
+                              <DirectEvents>
+                                  <Click OnEvent="deImportActuals"></Click>
+                              </DirectEvents>
+                          </ext:Button>
+                          <ext:ToolbarSeparator ID="ToolbarSeparator2" runat="server"></ext:ToolbarSeparator>
+                          <ext:Button runat="server" Icon="Accept" Text="Complete Budget" ID="uxCompleteBudget">
+                              <DirectEvents>
+                                  <Click OnEvent="deCompleteBudget">
+                                      <Confirmation ConfirmRequest="true" Message="Are you sure you want to complete this budget? This will lock your budget for this forecast and only finance will be allowed to unlock it." />
+                                      <EventMask ShowMask="true"></EventMask>
+                                  </Click>
+                              </DirectEvents>
+                          </ext:Button>
+                          <ext:ToolbarSeparator ID="ToolbarSeparator4" runat="server"></ext:ToolbarSeparator>
+                          <ext:Button runat="server" Icon="NoteEdit" Text="Budget Notes" ID="uxBudgetNotes">
+                              <DirectEvents>
+                                  <Click OnEvent="deEditBudgetNotes"></Click>
+                              </DirectEvents>
+                          </ext:Button>
+                          <ext:ToolbarFill ID="ToolbarFill1" runat="server"></ext:ToolbarFill>
+                          <ext:Button ID="Button3" runat="server" Text="To Excel" Icon="PageExcel">
+                              <Listeners>
+                                  <Click Handler="submitValue(#{uxOrganizationAccountGridPanel}, #{FormatType}, 'xls');" />
+                              </Listeners>
+                          </ext:Button>
+                          <ext:ToolbarSeparator ID="ToolbarSeparator3" runat="server"></ext:ToolbarSeparator>
+                          <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Hide Blank Lines" ID="uxHideBlankLinesCheckbox">
+                              <DirectEvents>
+                                  <Change OnEvent="deHideBlankLines">
+                                      <EventMask ShowMask="true"></EventMask>
+                                  </Change>
+                              </DirectEvents>
                                 </ext:Checkbox>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
+               <Plugins>
+                        <ext:FilterHeader ID="uxGlAccountSecurityGridFilter" runat="server" Remote="true" OnCreateFilterableField="OnCreateFilterableField" />
+                    </Plugins>
                     <Store>
                         <ext:Store runat="server"
                             ID="uxOrganizationAccountStore"
-                            AutoDataBind="true" RemoteSort="true" OnReadData="deLoadOrganizationAccounts" AutoLoad="true" GroupField="CATEGORY_NAME">
+                            AutoDataBind="true" RemoteSort="true" OnReadData="deLoadOrganizationAccounts" AutoLoad="true" GroupField="CATEGORY_NAME" RemoteGroup="true" OnSubmitData="deExportData">       
                             <Model>
                                 <ext:Model ID="Model2" runat="server" IDProperty="CODE_COMBINATION_ID">
                                     <Fields>
                                         <ext:ModelField Name="CATEGORY_NAME" />
+                                         <ext:ModelField Name="CATEGORY_SORT_ORDER" />
                                         <ext:ModelField Name="ACCOUNT_ORDER" />
                                         <ext:ModelField Name="ACCOUNT_DESCRIPTION" />
+                                        <ext:ModelField Name="ACCOUNT_SEGMENT" />
                                         <ext:ModelField Name="TOTAL" />
                                         <ext:ModelField Name="AMOUNT1" />
                                         <ext:ModelField Name="AMOUNT2" />
@@ -130,66 +165,67 @@
                                 <ext:PageProxy />
                             </Proxy>
                              <Sorters>
-                                     <ext:DataSorter Property="CATEGORY_NAME" Direction="ASC" />
+                                     <ext:DataSorter Property="CATEGORY_SORT_ORDER" Direction="ASC" />
                                      <ext:DataSorter Property="SORT_ORDER" Direction="ASC" />
+                                     <ext:DataSorter Property="ACCOUNT_SEGMENT" Direction="ASC" />
                             </Sorters>
                         </ext:Store>
                     </Store>
 
               <ColumnModel>
                   <Columns>
-                      <ext:Column ID="Column14" runat="server" DataIndex="ACCOUNT_DESCRIPTION" Text="Account Name" Width="250" Locked="true" >
+                      <ext:Column ID="Column14" runat="server" DataIndex="ACCOUNT_DESCRIPTION" Text="Account Name" Width="250" Locked="true" Sortable="false" >
                           <SummaryRenderer Handler="return ('Total');" />                            
                       </ext:Column>
-                      <ext:Column ID="Column54" runat="server" Text="Total" Flex="1" Align="Center" DataIndex="TOTAL" SummaryType="Sum" StyleSpec="font-size:7pt;">
+                      <ext:Column ID="Column54" runat="server" Text="Total" Flex="1" Align="Center" DataIndex="TOTAL" SummaryType="Sum" StyleSpec="font-size:7pt;" Filterable="false" Sortable="false">
                           <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                           <SummaryRenderer Fn="Ext.util.Format.CurrencyFactorySUM(2,'.',',','')" />
                       </ext:Column>
-                      <ext:Column ID="Column1" runat="server" Flex="1" Align="Center" DataIndex="AMOUNT1" SummaryType="Sum" StyleSpec="font-size:7pt;">
+                      <ext:Column ID="Column1" runat="server" Flex="1" Align="Center" DataIndex="AMOUNT1" SummaryType="Sum" StyleSpec="font-size:7pt;" Filterable="false" Sortable="false">
                               <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                           <SummaryRenderer Fn="Ext.util.Format.CurrencyFactorySUM(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column2" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT2" SummaryType="Sum" StyleSpec="font-size:7pt;">
+                       <ext:Column ID="Column2" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT2" SummaryType="Sum" StyleSpec="font-size:7pt;" Filterable="false" Sortable="false">
                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                            <SummaryRenderer Fn="Ext.util.Format.CurrencyFactorySUM(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column3" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT3" SummaryType="Sum" StyleSpec="font-size:7pt;">
+                       <ext:Column ID="Column3" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT3" SummaryType="Sum" StyleSpec="font-size:7pt;" Filterable="false" Sortable="false">
                               <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                            <SummaryRenderer Fn="Ext.util.Format.CurrencyFactorySUM(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column4" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT4" SummaryType="Sum" StyleSpec="font-size:7pt;">
+                       <ext:Column ID="Column4" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT4" SummaryType="Sum" StyleSpec="font-size:7pt;" Filterable="false" Sortable="false">
                               <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                            <SummaryRenderer Fn="Ext.util.Format.CurrencyFactorySUM(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column5" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT5" SummaryType="Sum" StyleSpec="font-size:7pt;">
+                       <ext:Column ID="Column5" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT5" SummaryType="Sum" StyleSpec="font-size:7pt;" Filterable="false" Sortable="false">
                               <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                            <SummaryRenderer Fn="Ext.util.Format.CurrencyFactorySUM(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column6" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT6" SummaryType="Sum" StyleSpec="font-size:7pt;">
+                       <ext:Column ID="Column6" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT6" SummaryType="Sum" StyleSpec="font-size:7pt;" Filterable="false" Sortable="false">
                                 <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                            <SummaryRenderer Fn="Ext.util.Format.CurrencyFactorySUM(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column7" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT7" SummaryType="Sum" StyleSpec="font-size:7pt;">
+                       <ext:Column ID="Column7" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT7" SummaryType="Sum" StyleSpec="font-size:7pt;" Filterable="false" Sortable="false">
                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                            <SummaryRenderer Fn="Ext.util.Format.CurrencyFactorySUM(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column8" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT8" SummaryType="Sum" StyleSpec="font-size:7pt;">
+                       <ext:Column ID="Column8" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT8" SummaryType="Sum" StyleSpec="font-size:7pt;" Filterable="false" Sortable="false">
                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                            <SummaryRenderer Fn="Ext.util.Format.CurrencyFactorySUM(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column9" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT9" SummaryType="Sum" StyleSpec="font-size:7pt;">
+                       <ext:Column ID="Column9" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT9" SummaryType="Sum" StyleSpec="font-size:7pt;" Filterable="false" Sortable="false">
                                 <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                            <SummaryRenderer Fn="Ext.util.Format.CurrencyFactorySUM(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column10" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT10" SummaryType="Sum" StyleSpec="font-size:7pt;">
+                       <ext:Column ID="Column10" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT10" SummaryType="Sum" StyleSpec="font-size:7pt;" Filterable="false" Sortable="false">
                                 <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                            <SummaryRenderer Fn="Ext.util.Format.CurrencyFactorySUM(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column11" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT11" SummaryType="Sum" StyleSpec="font-size:7pt;">
+                       <ext:Column ID="Column11" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT11" SummaryType="Sum" StyleSpec="font-size:7pt;" Filterable="false" Sortable="false">
                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                            <SummaryRenderer Fn="Ext.util.Format.CurrencyFactorySUM(2,'.',',','')" />
                       </ext:Column>
-                       <ext:Column ID="Column12" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT12" SummaryType="Sum" StyleSpec="font-size:7pt;"> 
+                       <ext:Column ID="Column12" runat="server"  Flex="1" Align="Center" DataIndex="AMOUNT12" SummaryType="Sum" StyleSpec="font-size:7pt;" Filterable="false" Sortable="false"> 
                                 <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                                 <SummaryRenderer Fn="Ext.util.Format.CurrencyFactorySUM(2,'.',',','')" />
                       </ext:Column>
@@ -206,6 +242,10 @@
             </Features>  
               <SelectionModel>
                         <ext:RowSelectionModel runat="server" ID="uxOrganizationAccountSelectionModel">
+                                                        <Listeners>
+                                 <Select Handler="if(#{uxOrganizationAccountSelectionModel}.getCount() > 0){#{uxViewActuals}.enable();}else {#{uxViewActuals}.disable();}"></Select>
+                                        <Deselect Handler="if(#{uxOrganizationAccountSelectionModel}.getCount() > 0){#{uxViewActuals}.enable();}else {#{uxViewActuals}.disable();}"></Deselect>
+                                 </Listeners>
                         </ext:RowSelectionModel>
                     </SelectionModel>
                     <DirectEvents>

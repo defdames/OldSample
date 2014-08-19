@@ -87,7 +87,9 @@
                             <Proxy>
                                 <ext:PageProxy />
                             </Proxy>
-                           
+                           <Listeners>
+                               <Load Handler="#{uxGridEditor}.startEdit(0, 1);" Delay="250" />
+                           </Listeners>
                         </ext:Store>
                     </Store>                   
                     <ColumnModel>
@@ -117,7 +119,7 @@
                      <ext:Summary ID="Summary1" runat="server" Dock="Bottom" />
             </Features>  
                     <Plugins>
-                           <ext:CellEditing runat="server" ClicksToEdit="1">
+                           <ext:CellEditing runat="server" ClicksToEdit="1" ID="uxGridEditor">
                                <Listeners>
                                    <Edit Handler="#{uxSaveDetailLineButton}.focus();" />
                                </Listeners>
@@ -160,7 +162,7 @@
                 </Items>
             </ext:Viewport>
 
-        <ext:Window runat="server" Width="350" Height="150" Title="Disbursement Details" Layout="FitLayout" Header="true" Hidden="true" ID="uxDisbursementDetailsWindow" CloseAction="Hide" Closable="true" Modal="true" DefaultButton="uxCalculate">
+        <ext:Window runat="server" Width="350" Height="150" Title="Cost Allocation" Layout="FitLayout" Header="true" Hidden="true" ID="uxDisbursementDetailsWindow" CloseAction="Hide" Closable="true" Modal="true" DefaultButton="uxCalculate">
             <Items>
                 <ext:FormPanel ID="uxDispersementForm" runat="server" Header="false" BodyPadding="10" DefaultButton="uxAddBudgetType" Frame="true"
                     Margins="5 5 5 5" >
@@ -199,7 +201,7 @@
 
                     </Items>
                     <Buttons>
-                        <ext:Button runat="server" ID="uxCalculate" Text="Disperse Amount" Disabled="true" icon="CalculatorEdit">
+                        <ext:Button runat="server" ID="uxCalculate" Text="Allocate Amount" Disabled="true" icon="CalculatorEdit">
                             <DirectEvents>
                                 <Click OnEvent="deCalcuateAmount"><EventMask ShowMask="true"></EventMask></Click>
                             </DirectEvents>

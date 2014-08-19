@@ -59,6 +59,7 @@
           <EntitySet Name="CROSSING_INCIDENT" EntityType="OracleModel.Store.CROSSING_INCIDENT" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_INSPECTION" EntityType="OracleModel.Store.CROSSING_INSPECTION" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_INVOICE" EntityType="OracleModel.Store.CROSSING_INVOICE" store:Type="Tables" Schema="XXEMS" />
+          <EntitySet Name="CROSSING_PRICING" EntityType="OracleModel.Store.CROSSING_PRICING" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_PROJECT" EntityType="OracleModel.Store.CROSSING_PROJECT" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_RAILROAD" EntityType="OracleModel.Store.CROSSING_RAILROAD" store:Type="Tables" Schema="XXEMS" />
           <EntitySet Name="CROSSING_RELATIONSHIP" EntityType="OracleModel.Store.CROSSING_RELATIONSHIP" store:Type="Tables" Schema="XXEMS" />
@@ -1472,6 +1473,24 @@
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CROSSING_PRICING">
+          <Key>
+            <PropertyRef Name="PRICING_ID" />
+          </Key>
+          <Property Name="PRICING_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RAILROAD" Type="varchar2" MaxLength="50" />
+          <Property Name="STATE" Type="varchar2" MaxLength="50" />
+          <Property Name="PROJECT_NUMBER" Type="varchar2" MaxLength="50" />
+          <Property Name="PROJECT_NAME" Type="varchar2" MaxLength="250" />
+          <Property Name="SERVICE_CATEGORY" Type="varchar2" MaxLength="100" />
+          <Property Name="PRICE" Type="number" Precision="15" Scale="2" />
+          <Property Name="START_DATE" Type="date" />
+          <Property Name="END_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFY_DATE" Type="date" />
         </EntityType>
         <EntityType Name="CROSSING_PROJECT">
           <Key>
@@ -4674,6 +4693,7 @@
           <EntitySet Name="OVERHEAD_CATEGORY" EntityType="OracleModel.OVERHEAD_CATEGORY" />
           <EntitySet Name="OVERHEAD_BUDGET_DETAIL" EntityType="OracleModel.OVERHEAD_BUDGET_DETAIL" />
           <EntitySet Name="EMPLOYEES_V" EntityType="OracleModel.EMPLOYEES_V" />
+          <EntitySet Name="CROSSING_PRICING" EntityType="OracleModel.CROSSING_PRICING" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -8297,6 +8317,24 @@
           <Property Type="String" Name="ORGANIZATION_NAME" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="LAST_UPDATE_DATE" />
         </EntityType>
+        <EntityType Name="CROSSING_PRICING">
+          <Key>
+            <PropertyRef Name="PRICING_ID" />
+          </Key>
+          <Property Type="Decimal" Name="PRICING_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="RAILROAD" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STATE" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROJECT_NUMBER" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROJECT_NAME" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SERVICE_CATEGORY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="PRICE" Precision="15" Scale="2" />
+          <Property Type="DateTime" Name="START_DATE" />
+          <Property Type="DateTime" Name="END_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -11073,6 +11111,25 @@
                 <ScalarProperty Name="FULL_NAME" ColumnName="FULL_NAME" />
                 <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
                 <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CROSSING_PRICING">
+            <EntityTypeMapping TypeName="OracleModel.CROSSING_PRICING">
+              <MappingFragment StoreEntitySet="CROSSING_PRICING">
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
+                <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="SERVICE_CATEGORY" ColumnName="SERVICE_CATEGORY" />
+                <ScalarProperty Name="PROJECT_NAME" ColumnName="PROJECT_NAME" />
+                <ScalarProperty Name="PROJECT_NUMBER" ColumnName="PROJECT_NUMBER" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+                <ScalarProperty Name="RAILROAD" ColumnName="RAILROAD" />
+                <ScalarProperty Name="PRICING_ID" ColumnName="PRICING_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

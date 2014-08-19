@@ -148,6 +148,9 @@
     <Compile Include="CROSSING_INVOICE.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="CROSSING_PRICING.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="CROSSING_PROJECT.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>

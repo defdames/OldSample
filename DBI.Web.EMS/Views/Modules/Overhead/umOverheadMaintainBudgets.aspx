@@ -17,12 +17,25 @@
                    <TopBar>
                        <ext:Toolbar runat="server">
                            <Items>
-                               <ext:ToolbarFill runat="server"></ext:ToolbarFill>
-                               <ext:Button runat="server" Text="Hide Closed" Icon="BookMagnify" EnableToggle="true" Pressed="true" ID="uxViewAllToggleButton">
-                                   <DirectEvents>
-                                       <Toggle OnEvent="deToggleView"><EventMask ShowMask="true"></EventMask></Toggle>
-                                   </DirectEvents>
+                               <ext:Button Text="Budget Periods" Icon="DatabaseKey" ID="uxForecastMaintenance" runat="server" hidden="true">
+                                  <DirectEvents>
+                                      <Click OnEvent="deMassBudgetForecast"></Click>
+                                  </DirectEvents>
                                </ext:Button>
+                                <ext:ToolbarSpacer runat="server"></ext:ToolbarSpacer>
+                                 <ext:Button Text="Import Actuals" Icon="DatabaseCopy" ID="uxImportActuals" runat="server" Hidden="true"></ext:Button>  
+                                  <ext:ToolbarFill ID="ToolbarFill1" runat="server"></ext:ToolbarFill>
+                                 <ext:Checkbox runat="server" HideLabel="true" BoxLabel="View All Budgets" ID="uxViewAllBudgets" Checked="false">
+                                    <DirectEvents>
+                                        <Change OnEvent="deViewAll"><EventMask ShowMask="true"></EventMask></Change>
+                                    </DirectEvents>
+                                </ext:Checkbox>
+                                <ext:ToolbarSpacer ID="ToolbarSpacer2" runat="server"></ext:ToolbarSpacer>
+                                 <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Hide Closed Budgets" ID="uxHideClosedBudgetsCheckbox" Checked="true">
+                                    <DirectEvents>
+                                        <Change OnEvent="deHideClosed"><EventMask ShowMask="true"></EventMask></Change>
+                                    </DirectEvents>
+                                </ext:Checkbox>
                            </Items>
                        </ext:Toolbar>
                    </TopBar>

@@ -19,7 +19,7 @@
 
       <script type="text/javascript">
           var getRowClass = function (record, rowIndex, rowParams, store) {
-              if (record.data.ORGANIZATION_STATUS == "Budgeting Allowed") {
+              if (record.data.ORGANIZATION_STATUS == "Active") {
                   return "blue-row";
               };
           }
@@ -58,11 +58,12 @@
                                 <ext:ToolbarFill runat="server">
 
                                 </ext:ToolbarFill>
-                                <ext:Button runat="server" Text="Show Active" EnableToggle="true" ID="uxActiveToggle" Icon="Find">
+                                
+                                <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Show Active Organizations" ID="uxHideInActiveCheckbox" >
                                     <DirectEvents>
-                                        <Toggle OnEvent="deToggleInActive" />
+                                        <Change OnEvent="deHideInActive" />
                                     </DirectEvents>
-                                </ext:Button>
+                                </ext:Checkbox>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
@@ -87,10 +88,12 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                             <ext:CommandColumn ID="CommandColumn1" runat="server" Width="180">
+                             
+                            <ext:Column ID="Column2" runat="server" DataIndex="ORGANIZATION_NAME" Text="Name" Flex="2" />
+                            <ext:Column ID="Column1" runat="server" DataIndex="ORGANIZATION_STATUS" Text="Current Status" Flex="1" />   
+                            <ext:CommandColumn ID="CommandColumn1" runat="server" Width="180">
                                 <Commands>
-                                    <ext:GridCommand Text="Accounts" CommandName="Accounts" Icon="ReportMagnify" Cls="my-btn"></ext:GridCommand>
-                                    <ext:GridCommand Text ="Periods" CommandName="Periods" Icon="Time" Cls="my-btn"></ext:GridCommand>
+                                    <ext:GridCommand Text="Accounts" CommandName="Accounts" Icon="CalculatorEdit"></ext:GridCommand>
                                 </Commands>
                                 <DirectEvents>
                                     <Command OnEvent="deViewAccounts">
@@ -102,8 +105,6 @@
                                     </Command>
                                 </DirectEvents>
                             </ext:CommandColumn>    
-                            <ext:Column ID="Column2" runat="server" DataIndex="ORGANIZATION_NAME" Text="Name" Flex="2" />
-                            <ext:Column ID="Column1" runat="server" DataIndex="ORGANIZATION_STATUS" Text="Current Status" Flex="1" />   
                         </Columns>
                     </ColumnModel>
                     <Plugins>

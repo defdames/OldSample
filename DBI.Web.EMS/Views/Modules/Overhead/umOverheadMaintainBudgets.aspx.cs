@@ -22,12 +22,41 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
 
+                //For Admin we need to show all organizations
+                if (validateComponentSecurity("SYS.OverheadBudget.Security"))
+                {
+                    string _selectedRecordID = Request.QueryString["orgid"];
+                    if (_selectedRecordID != null)
+                    {
+                        uxForecastMaintenance.Hidden = false;
+                        uxImportActuals.Hidden = false;
+                        uxViewAllBudgets.Checked = true;
+                        uxViewAllBudgets.Hidden = true;
+                    }
+                }
             }
         }
 
         protected void deLoadOrganizationsForUser(object sender, StoreReadDataEventArgs e)
         {
             List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
+
+            //For Admin we need to show all organizations
+            if (validateComponentSecurity("SYS.OverheadBudget.Security"))
+            {
+                string _selectedRecordID = Request.QueryString["orgid"];
+
+                if (_selectedRecordID != null)
+                {
+
+                    char[] _delimiterChars = { ':' };
+                    string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
+                    long _hierarchyID = long.Parse(_selectedID[1].ToString());
+                    long _organizationID = long.Parse(_selectedID[0].ToString());
+
+                    OrgsList = HR.OverheadOrganizationStatusByHierarchy(_hierarchyID, _organizationID).Select(x => x.ORGANIZATION_ID).ToList();
+                }
+            }
 
             List<OVERHEAD_ORG_BUDGETS_V> _budgetsByOrganizationIDList = new List<OVERHEAD_ORG_BUDGETS_V>();
 
@@ -58,20 +87,30 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             }
 
-            if (uxViewAllToggleButton.Pressed)
+            if (uxHideClosedBudgetsCheckbox.Checked)
                 _budgetsByOrganizationIDList = _budgetsByOrganizationIDList.Where(x => x.BUDGET_STATUS == "Open" || x.BUDGET_STATUS == "Pending").ToList();
+
+            if (!uxViewAllBudgets.Checked)
+            {
+                long _baseOrganizationID = SYS_USER_INFORMATION.UserByUserName(User.Identity.Name).CURRENT_ORG_ID;
+                _budgetsByOrganizationIDList = _budgetsByOrganizationIDList.Where(x => x.ORGANIZATION_ID == _baseOrganizationID).ToList();
+            }
 
             int count;
             uxBudgetVersionByOrganizationStore.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_ORG_BUDGETS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _budgetsByOrganizationIDList, out count);
             e.Total = count;
         }
 
-        protected void deToggleView(object sender, DirectEventArgs e)
+        protected void deHideClosed(object sender, DirectEventArgs e)
         {
             uxBudgetVersionByOrganizationStore.Reload();
         }
 
-      
+        protected void deViewAll(object sender, DirectEventArgs e)
+        {
+            uxBudgetVersionByOrganizationStore.Reload();
+        }
+
         protected void deSelectOrganization(object sender, DirectEventArgs e)
         {
             string _organization_id = e.ExtraParams["ORGANIZATION_ID"];
@@ -95,5 +134,56 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             public DateTime END_DATE { get; set; }
         }
 
+
+        protected void deMassBudgetForecast(object sender, DirectEventArgs e)
+        {
+
+            string _selectedRecordID = Request.QueryString["orgID"];
+
+            if (_selectedRecordID != null)
+            {
+
+                char[] _delimiterChars = { ':' };
+                string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
+                long _hierarchyID = long.Parse(_selectedID[1].ToString());
+                long _organizationID = long.Parse(_selectedID[0].ToString());
+
+                string url = "/Views/Modules/Overhead/umMassUpdateForecast.aspx?orgID=" + _selectedRecordID;
+                Window win = new Window
+                {
+                    ID = "uxMassForecastUpdate",
+                    Title = "Budget Forecast and Period Maintenance",
+                    Height = 700,
+                    Width = 975,
+                    Modal = true,
+                    Resizable = true,
+                    CloseAction = CloseAction.Destroy,
+                    Loader = new ComponentLoader
+                    {
+                        Mode = LoadMode.Frame,
+                        DisableCaching = true,
+                        Url = url,
+                        AutoLoad = true,
+                        LoadMask =
+                        {
+                            ShowMask = true
+                        }
+                    }
+                };
+
+                win.Listeners.Close.Handler = "#{uxGlAccountSecurityGrid}.getStore().load();";
+
+                win.Render(this.Form);
+
+                win.Show();
+            }
+
+
+
+        }
+
     }
+
+   
+
 }
