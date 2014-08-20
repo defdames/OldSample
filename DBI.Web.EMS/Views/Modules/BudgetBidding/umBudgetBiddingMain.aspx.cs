@@ -59,7 +59,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 long hierarchyID = long.Parse(selID[0].ToString());
                 long orgID = long.Parse(selID[1].ToString());
                 var data = HR.ActiveOrganizationsByHierarchy(hierarchyID, orgID);
-                var OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID);
+                var orgsList = BB.UserAllowedOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name));
                 bool addNode;
                 bool leafNode;
                 bool colorNode;
@@ -74,14 +74,14 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                         var nextData = HR.ActiveOrganizationsByHierarchy(hierarchyID, view.ORGANIZATION_ID);
 
                         // In this org?
-                        if (SYS_USER_ORGS.IsInOrg(SYS_USER_INFORMATION.UserID(User.Identity.Name), view.ORGANIZATION_ID) == true)
+                        if (BB.IsUserOrgAndAllowed(SYS_USER_INFORMATION.UserID(User.Identity.Name), view.ORGANIZATION_ID) == true)
                         {
                             addNode = true;
                             colorNode = true;
                         }
 
                         // In next org?
-                        foreach (long allowedOrgs in OrgsList)
+                        foreach (long allowedOrgs in orgsList)
                         {
                             if (nextData.Select(x => x.ORGANIZATION_ID).Contains(allowedOrgs))
                             {
@@ -140,7 +140,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
             long orgID = long.Parse(selID[1].ToString());
             
-            if (SYS_USER_ORGS.IsInOrg(SYS_USER_INFORMATION.UserID(User.Identity.Name), orgID) == false)
+            if (BB.IsUserOrgAndAllowed(SYS_USER_INFORMATION.UserID(User.Identity.Name), orgID) == false)
             {
                 uxHidOrgOK.Text = "";
                 uxYearVersionTitle.Text = "";
@@ -203,8 +203,14 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 string verID = uxVersion.SelectedItem.Value;
                 string verName = HttpUtility.UrlEncode(uxVersion.SelectedItem.Text);
 
-                //url = "umYearBudget.aspx?hierID=" + hierarchyID + "&orgID=" + orgID + "&orgName=" + orgName + "&fiscalYear=" + fiscalYear + "&verID=" + verID + "&verName=" + verName;
-                url = "umYearRollupSummary.aspx?hierID=" + hierarchyID + "&orgID=" + orgID + "&orgName=" + orgName + "&fiscalYear=" + fiscalYear + "&verID=" + verID + "&verName=" + verName;
+                if (BB.IsRollup(Convert.ToInt64(orgID)) == false)
+                {
+                    url = "umYearBudget.aspx?hierID=" + hierarchyID + "&orgID=" + orgID + "&orgName=" + orgName + "&fiscalYear=" + fiscalYear + "&verID=" + verID + "&verName=" + verName;
+                }
+                else
+                {
+                    url = "umYearRollupSummary.aspx?hierID=" + hierarchyID + "&orgID=" + orgID + "&orgName=" + orgName + "&fiscalYear=" + fiscalYear + "&verID=" + verID + "&verName=" + verName;
+                }
             }
 
             else if (prevBlank == true)
