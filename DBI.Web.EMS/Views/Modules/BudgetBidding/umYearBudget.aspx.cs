@@ -20,8 +20,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 long yearID = long.Parse(Request.QueryString["fiscalYear"]);
                 long verID = long.Parse(Request.QueryString["verID"]);
 
-                uxHidPrevYear.Text = CalcPrevYear(yearID, verID).ToString();
-                uxHidPrevVer.Text = CalcPrevVer(yearID, verID).ToString();
+                uxHidPrevYear.Text = BB.CalcPrevYear(yearID, verID).ToString();
+                uxHidPrevVer.Text = BB.CalcPrevVer(yearID, verID).ToString();
                 uxVersionLabel.Text = GetPrevVerName(verID) + " OP:";
 
                 if (BBAdjustments.Count(orgID, yearID, verID) == 0)
@@ -1084,64 +1084,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             decimal retVal = ForceToDecimal(myTextField.Text, -9999999999.99M, 9999999999.99M);
             myTextField.Text = String.Format("{0:N2}", retVal);
         }
-        protected long CalcPrevYear(long curYear, long curVer)
-        {
-            switch (curVer)
-            {
-                case 1:  // Bid
-                    return curYear;
-
-                case 2:  // First Draft
-                    return curYear;
-
-                case 3:  // Final Draft
-                    return (curYear - 1);
-
-                case 4:  // 1st Reforecast
-                    return curYear;
-
-                case 5:  // 2nd Reforecast
-                    return curYear;
-
-                case 6:  // 3rd Reforecast
-                    return curYear;
-
-                case 7:  // 4th Reforecast
-                    return curYear;
-
-                default:
-                    return 0;
-            }
-        }
-        protected long CalcPrevVer(long curYear, long curVer)
-        {
-            switch (curVer)
-            {
-                case 1:  // Bid
-                    return 1;
-
-                case 2:  // First Draft
-                    return 1;
-
-                case 3:  // Final Draft
-                    return 2;
-
-                case 4:  // 1st Reforecast
-                    return 3;
-
-                case 5:  // 2nd Reforecast
-                    return 4;
-
-                case 6:  // 3rd Reforecast
-                    return 5;
-
-                case 7:  // 4th Reforecast
-                    return 6;
-
-                default:
-                    return 0;
-            }
-        }
         protected string GetPrevVerName(long curVer)
         {
             switch (curVer)
@@ -1303,6 +1245,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             GenericData.Update<BUD_BID_ADJUSTMENT>(data);
             uxAdjustmentGridStore.CommitChanges();
             CalcSummaryTotals();
+            StandardMsgBox("Adjustment", "The adjustment has been updated.", "INFO");
         }
         protected void LockTopSection()
         {
