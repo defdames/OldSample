@@ -1558,7 +1558,11 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             if (amount < lowRange || amount > highRange) { amount = 0; }
             return amount;
         }
+        
+        private void LoadReport()
+        {
 
+        }
 
     }
 }
