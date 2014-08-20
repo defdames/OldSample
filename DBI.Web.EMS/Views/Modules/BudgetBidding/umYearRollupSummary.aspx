@@ -5,7 +5,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title></title>
+    <style type="text/css">
+        .grandTotalBackground {
+            background-color: black;
+        }
+
+        .grandTotalForeground .x-form-display-field {
+            /*font-weight: bold;*/
+            color: white;
+        }
+    </style>
     <script type="text/javascript">
+        var isEditAdjustmentAllowed = function (e) {
+            if (e.originalValue == 12345678910) {
+                return false;
+            }
+        }
+        var editAdjustment = function (editor, e) {
+            if (e.originalValue != e.value) {
+                SaveRecord.deSaveAdjustments(e.record.data.ADJ_ID, e.field, e.value);
+            }
+        }
         Ext.util.Format.CurrencyFactory = function (dp, dSeparator, tSeparator, symbol, red) {
             return function (n) {
                 if (n == 12345678910) {
@@ -39,7 +59,7 @@
         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
             <Items>
 
-                <ext:GridPanel ID="uxSummaryGrid" runat="server" Region="Center" Height="170">
+                <ext:GridPanel ID="uxSummaryGrid" runat="server" Region="North" Height="400">
                     <SelectionModel>
                         <ext:RowSelectionModel ID="uxGridRowModel" runat="server" AllowDeselect="false" Mode="Single" />
                     </SelectionModel>
@@ -59,7 +79,10 @@
                                         <ext:ModelField Name="DIR_EXP" />
                                         <ext:ModelField Name="OP" />
                                         <ext:ModelField Name="OP_PERC" />
-                                        <ext:ModelField Name="PREV_OP" />
+                                        <ext:ModelField Name="OH" />
+                                        <ext:ModelField Name="NET_CONT" />
+                                        <ext:ModelField Name="OP_VAR" />
+                                        <ext:ModelField Name="NET_CONT_VAR" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -89,30 +112,39 @@
                             <ext:NumberColumn ID="Column10" runat="server" DataIndex="OP_PERC" Text="OP %" Flex="2" Align="Right">
                                 <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','%',false)" />
                             </ext:NumberColumn>
-                            <ext:NumberColumn ID="NumberColumn12" runat="server" DataIndex="PREV_OP" Text="Previous OP" Flex="2" Align="Right">
+                            <ext:NumberColumn ID="NumberColumn12" runat="server" DataIndex="OH" Text="Overhead" Flex="2" Align="Right">
+                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                            </ext:NumberColumn>
+                            <ext:NumberColumn ID="NumberColumn1" runat="server" DataIndex="NET_CONT" Text="Net Contribution" Flex="2" Align="Right">
+                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                            </ext:NumberColumn>
+                            <ext:NumberColumn ID="NumberColumn2" runat="server" DataIndex="OP_VAR" Text="OP +/-" Flex="2" Align="Right">
+                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                            </ext:NumberColumn>
+                            <ext:NumberColumn ID="NumberColumn7" runat="server" DataIndex="NET_CONT_VAR" Text="Net Cont. +/-" Flex="2" Align="Right">
                                 <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                             </ext:NumberColumn>
                         </Columns>
                     </ColumnModel>
-                    <%--                    <DockedItems>
+                    <DockedItems>
                         <ext:FieldContainer ID="uxTotal" runat="server" Layout="HBoxLayout" Dock="Bottom" Cls="grandTotalBackground">
                             <Items>
                                 <ext:DisplayField ID="DisplayField6" runat="server" Width="10" />
-                                <ext:DisplayField ID="DisplayField7" runat="server" Text="Total Combined:" Flex="6" Cls="grandTotalForeground" />
-                                <ext:DisplayField ID="DisplayField8" runat="server" Text="" Flex="2" />
-                                <ext:DisplayField ID="DisplayField9" runat="server" Text="" Flex="1" />
-                                <ext:DisplayField ID="DisplayField10" runat="server" Text="" Flex="1" />
+                                <ext:DisplayField ID="DisplayField7" runat="server" Text="Total:" Flex="6" Cls="grandTotalForeground" />
                                 <ext:DisplayField ID="uxTGrossRec" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
                                 <ext:DisplayField ID="uxTMatUsage" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
                                 <ext:DisplayField ID="uxTGrossRev" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
                                 <ext:DisplayField ID="uxTDirects" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
                                 <ext:DisplayField ID="uxTOP" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
                                 <ext:DisplayField ID="uxTOPPerc" runat="server" Text="0.00 %" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="uxTOH" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="uxTNetCont" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
                                 <ext:DisplayField ID="uxTOPPlusMinus" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="uxTNetContPlusMinus" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
                                 <ext:DisplayField ID="DisplayField24" runat="server" Width="20" />
                             </Items>
                         </ext:FieldContainer>
-                    </DockedItems>--%>
+                    </DockedItems>
                 </ext:GridPanel>
 
                 <%--<ext:GridPanel ID="uxAdjustmentsGrid" runat="server" Region="North" HideHeaders="true">
@@ -151,9 +183,6 @@
                     <ColumnModel>
                         <Columns>
                             <ext:Column ID="Column15" runat="server" DataIndex="ADJUSTMENT" Text="Adjustment" Flex="6" />
-                            <ext:Column ID="Column21" runat="server" DataIndex="BLANKCOL1" Text="Blank" Flex="2" />
-                            <ext:NumberColumn ID="Column22" runat="server" DataIndex="BLANKCOL2" Text="Blank" Flex="1" Align="Right" />
-                            <ext:NumberColumn ID="Column23" runat="server" DataIndex="BLANKCOL3" Text="Blank" Flex="1" Align="Right" />
                             <ext:NumberColumn ID="Column24" runat="server" DataIndex="BLANKCOL4" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="Column25" runat="server" DataIndex="MAT_ADJ" Text="Material" Flex="2" Align="Right">
                                 <Editor>
@@ -168,8 +197,11 @@
                                     <ext:NumberField ID="NumberField1" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                 </Editor>
                             </ext:NumberColumn>
+                            <ext:NumberColumn ID="Column21" runat="server" DataIndex="BLANKCOL1" Text="Blank" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="Column22" runat="server" DataIndex="BLANKCOL2" Text="Blank" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="Column23" runat="server" DataIndex="BLANKCOL3" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="Column28" runat="server" DataIndex="BLANKCOL6" Text="Blank" Flex="2" Align="Right" />
-                            <ext:Column ID="Column29" runat="server" DataIndex="BLANKCOL7" Text="Blank" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="Column29" runat="server" DataIndex="BLANKCOL7" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="Column30" runat="server" DataIndex="BLANKCOL8" Text="Blank" Flex="2" Align="Right" />
                         </Columns>
                     </ColumnModel>
@@ -186,21 +218,21 @@
                             <Items>
                                 <ext:DisplayField ID="DisplayField11" runat="server" Width="10" />
                                 <ext:DisplayField ID="DisplayField12" runat="server" Text="Grand Total:" Flex="6" Cls="grandTotalForeground" />
-                                <ext:DisplayField ID="DisplayField19" runat="server" Text="" Flex="2" />
-                                <ext:DisplayField ID="DisplayField20" runat="server" Text="" Flex="1" />
-                                <ext:DisplayField ID="DisplayField21" runat="server" Text="" Flex="1" />
                                 <ext:DisplayField ID="uxGTGrossRec" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
                                 <ext:DisplayField ID="uxGTMatUsage" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
                                 <ext:DisplayField ID="uxGTGrossRev" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
                                 <ext:DisplayField ID="uxGTDirects" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
                                 <ext:DisplayField ID="uxGTOP" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
                                 <ext:DisplayField ID="uxGTOPPerc" runat="server" Text="0.00 %" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="DisplayField5" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="DisplayField8" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
                                 <ext:DisplayField ID="uxGTOPPlusMinus" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="DisplayField4" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
                                 <ext:DisplayField ID="DisplayField31" runat="server" Width="20" />
                             </Items>
                         </ext:FieldContainer>
                     </DockedItems>
-                </ext:GridPanel>
+                </ext:GridPanel>--%>
 
                 <ext:GridPanel ID="uxOverheadGrid" runat="server" Region="North" HideHeaders="true">
                     <SelectionModel>
@@ -229,15 +261,15 @@
                         <Columns>
                             <ext:Column ID="Column31" runat="server" DataIndex="ADJUSTMENT" Text="Adjustment" Flex="6" />
                             <ext:Column ID="Column32" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" />
-                            <ext:NumberColumn ID="NumberColumn1" runat="server" DataIndex="BLANK" Text="Blank" Flex="1" Align="Right" />
-                            <ext:NumberColumn ID="NumberColumn2" runat="server" DataIndex="BLANK" Text="Blank" Flex="1" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn3" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn4" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn5" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
-                            <ext:NumberColumn ID="NumberColumn6" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="uxOH" runat="server" DataIndex="OH" Text="Overhead" Flex="2" Align="Right" />
-                            <ext:Column ID="Column33" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="NumberColumn6" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="NumberColumn61" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn8" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="NumberColumn9" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="NumberColumn10" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                         </Columns>
                     </ColumnModel>
                     <DockedItems>
@@ -246,20 +278,20 @@
                                 <ext:DisplayField ID="DisplayField32" runat="server" Width="10" />
                                 <ext:DisplayField ID="DisplayField33" runat="server" Text="Net Contribution:" Flex="6" Cls="grandTotalForeground" />
                                 <ext:DisplayField ID="DisplayField34" runat="server" Text="" Flex="2" />
-                                <ext:DisplayField ID="DisplayField35" runat="server" Text="" Flex="1" />
-                                <ext:DisplayField ID="DisplayField36" runat="server" Text="" Flex="1" />
                                 <ext:DisplayField ID="DisplayField37" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField38" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField39" runat="server" Text="" Flex="2" />
-                                <ext:DisplayField ID="DisplayField40" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="uxNetCont" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="DisplayField40" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField42" runat="server" Text="" Flex="2" />
-                                <ext:DisplayField ID="DisplayField43" runat="server" Text="" Flex="2" />
+                                <ext:DisplayField ID="DisplayField1" runat="server" Text="" Flex="2" />
+                                <ext:DisplayField ID="DisplayField2" runat="server" Text="" Flex="2" />
+                                <ext:DisplayField ID="DisplayField3" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField44" runat="server" Width="20" />
                             </Items>
                         </ext:FieldContainer>
                     </DockedItems>
-                </ext:GridPanel>--%>
+                </ext:GridPanel>
             </Items>
         </ext:Viewport>
     </form>

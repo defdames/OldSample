@@ -10,6 +10,72 @@ namespace DBI.Data
 {
     public class BB
     {
+        public static string OrgName(long orgID)
+        {
+            string sql = string.Format(@"
+                SELECT NAME
+                FROM APPS.HR_ALL_ORGANIZATION_UNITS WHERE ORGANIZATION_ID = {0}", orgID);
+
+            using (Entities context = new Entities())
+            {
+                return context.Database.SqlQuery<string>(sql).SingleOrDefault();
+            }
+        }
+        public static bool IsRollup(long orgID)
+        {
+            string profileValue;
+            using (Entities context = new Entities())
+            {
+                profileValue = context.SYS_ORG_PROFILE_OPTIONS.Where(x => x.PROFILE_OPTION_ID == 47 && x.ORGANIZATION_ID == orgID).Select(x => x.PROFILE_VALUE).SingleOrDefault();
+            }
+
+            if (profileValue == "ROLLUP")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static List<long> RollupAndLeafOrgsIsUserAndIsAllowedOrgs(long userID, long hierarchyID, long selOrg)
+        {
+            List<long> testOrgs = new List<long>();
+            List<long> showOrgs = new List<long>();
+            long rollupCount;
+            int leafCount;
+
+            List<long> levelOneOrgsBelow = HR.ActiveOrganizationsByHierarchy(hierarchyID, selOrg).Where(x => x.HIER_LEVEL == 1).Select(x => x.ORGANIZATION_ID).ToList();
+            testOrgs.AddRange(levelOneOrgsBelow);
+
+            int i = 0;
+            while (i < testOrgs.Count)
+            {
+                selOrg = testOrgs[i];
+                leafCount = HR.ActiveOrganizationsByHierarchy(hierarchyID, selOrg).Count();
+                using (Entities context = new Entities())
+                {
+                    rollupCount = context.SYS_ORG_PROFILE_OPTIONS.Where(x => x.PROFILE_OPTION_ID == 47 && x.ORGANIZATION_ID == selOrg && x.PROFILE_VALUE == "ROLLUP").Count();
+                }
+
+                if (leafCount == 0 || rollupCount != 0)
+                {
+                    if (IsUserOrgAndAllowed(userID, selOrg) == true)
+                    {
+                        showOrgs.Add(selOrg);
+                    }
+                }
+                else
+                {
+                    levelOneOrgsBelow = HR.ActiveOrganizationsByHierarchy(hierarchyID, selOrg).Where(x => x.HIER_LEVEL == 1).Select(x => x.ORGANIZATION_ID).ToList();
+                    testOrgs.AddRange(levelOneOrgsBelow);
+                }
+
+                i++;
+            }
+
+            return showOrgs;
+        }
         public static void CleanOldTempRecords(int numOfDaysOld)
         {
             DateTime delDate = DateTime.Today.AddDays(- numOfDaysOld);
@@ -34,18 +100,36 @@ namespace DBI.Data
             GenericData.Delete<BUD_BID_DETAIL_SHEET>(detailSheetData);
             GenericData.Delete<BUD_BID_DETAIL_TASK>(taskInfoData);
         }
-        public static List<OVERHEAD_BUDGET_TYPE> BudgetTypesEnteredAndAvailaible(long legalEntityOrganizationId)
+        public static List<long> UserAllowedOrgs(long userID)
+        {
+            List<long> userOrgs = SYS_USER_ORGS.GetUserOrgs(userID).Select(x => x.ORG_ID).ToList();
+            List<long> allowedOrgs;
+            using (Entities context = new Entities())
+            {
+                allowedOrgs = context.SYS_ORG_PROFILE_OPTIONS.Where(x => x.PROFILE_OPTION_ID == 48 && x.PROFILE_VALUE == "Y").Select(x => x.ORGANIZATION_ID).ToList();
+            }
+
+            return userOrgs.Intersect(allowedOrgs).ToList();
+        }
+        public static bool IsUserOrgAndAllowed(long userID, long orgID)
         {
 
-            IQueryable<OVERHEAD_BUDGET_TYPE> _data = OVERHEAD_BUDGET_TYPE.BudgetTypes(legalEntityOrganizationId).AsQueryable();
+            bool userOrgAllowed = SYS_USER_ORGS.IsInOrg(userID, orgID);
 
-            List<OVERHEAD_BUDGET_TYPE> _existingData = OVERHEAD_BUDGET_TYPE.BudgetTypes(legalEntityOrganizationId).ToList();
+            bool allowedOrgAllowed;
+            using (Entities context = new Entities())
+            {
+                allowedOrgAllowed = context.SYS_ORG_PROFILE_OPTIONS.Where(x => x.PROFILE_OPTION_ID == 48 && x.PROFILE_VALUE == "Y").Select(x => x.ORGANIZATION_ID).Contains(orgID);
+            }
 
-            _data = (from dups in _data
-                     where !_existingData.Any(x => x.PARENT_BUDGET_TYPE_ID == dups.OVERHEAD_BUDGET_TYPE_ID)
-                     select dups);
-
-            return _data.ToList();
+            if (userOrgAllowed == true && allowedOrgAllowed == true)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         public static List<DoubleComboLongID> BudgetVersions()
         {
@@ -58,6 +142,64 @@ namespace DBI.Data
             comboItem.Add(new DoubleComboLongID { ID = 6, ID_NAME = "3rd Reforecast" });
             comboItem.Add(new DoubleComboLongID { ID = 7, ID_NAME = "4th Reforecast" });
             return comboItem;
+        }
+        public static long CalcPrevYear(long curYear, long curVer)
+        {
+            switch (curVer)
+            {
+                case 1:  // Bid
+                    return curYear;
+
+                case 2:  // First Draft
+                    return curYear;
+
+                case 3:  // Final Draft
+                    return (curYear - 1);
+
+                case 4:  // 1st Reforecast
+                    return curYear;
+
+                case 5:  // 2nd Reforecast
+                    return curYear;
+
+                case 6:  // 3rd Reforecast
+                    return curYear;
+
+                case 7:  // 4th Reforecast
+                    return curYear;
+
+                default:
+                    return 0;
+            }
+        }
+        public static long CalcPrevVer(long curYear, long curVer)
+        {
+            switch (curVer)
+            {
+                case 1:  // Bid
+                    return 1;
+
+                case 2:  // First Draft
+                    return 1;
+
+                case 3:  // Final Draft
+                    return 2;
+
+                case 4:  // 1st Reforecast
+                    return 3;
+
+                case 5:  // 2nd Reforecast
+                    return 4;
+
+                case 6:  // 3rd Reforecast
+                    return 5;
+
+                case 7:  // 4th Reforecast
+                    return 6;
+
+                default:
+                    return 0;
+            }
         }
         public static List<SingleCombo> YearSummaryProjectActions()
         {
@@ -198,13 +340,116 @@ namespace DBI.Data
                 public decimal DIR_EXP { get; set; }
                 public decimal OP { get; set; }
                 public decimal OP_PERC { get; set; }
-                public decimal PREV_OP { get; set; }
+                public decimal OH { get; set; }
+                public decimal NET_CONT { get; set; }
+                public decimal OP_VAR { get; set; }
+                public decimal NET_CONT_VAR { get; set; }
             }
             #endregion
 
-            public static List<Fields> Data(long yearID, long verID, long prevYearID, long prevVerID)  //long[] orgIDs
+            public static List<Fields> Data(long userID, long hierarchyID, long orgID, long yearID, long verID, long prevYearID, long prevVerID)
+            {                
+                List<long> summaryOrgs = BB.RollupAndLeafOrgsIsUserAndIsAllowedOrgs(userID, hierarchyID, orgID);
+                List<Fields> lineDetail = new List<Fields>();
+                foreach (long summaryOrg in summaryOrgs)
+                {
+                    string orgName = BB.OrgName(summaryOrg);
+
+                    string sql1 = string.Format(@"                          
+                        WITH
+                            ORG_NAME AS(
+                                SELECT ORGANIZATION_ID, NAME
+                                FROM APPS.HR_ALL_ORGANIZATION_UNITS      
+                            ),
+                            BUDGET_LINE_AMOUNTS AS (
+                                SELECT * FROM (           
+                                    SELECT BUD_BID_BUDGET_NUM.LINE_ID, BUD_BID_BUDGET_NUM.NOV, BUD_BID_PROJECTS.ORG_ID
+                                    FROM BUD_BID_PROJECTS
+                                    LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
+                                    LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
+                                    WHERE BUD_BID_PROJECTS.YEAR_ID = {1} AND BUD_BID_PROJECTS.VER_ID = {2} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
+                                PIVOT(
+                                    SUM(NOV) FOR (LINE_ID)
+                                    IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                            ),
+                            PREV_OP AS (                         
+                                SELECT BUD_BID_PROJECTS.ORG_ID, SUM(NOV) PREV_OP                                         
+                                FROM BUD_BID_PROJECTS
+                                LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
+                                LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
+                                WHERE BUD_BID_PROJECTS.YEAR_ID = {3} AND BUD_BID_PROJECTS.VER_ID = {4} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT' AND BUD_BID_BUDGET_NUM.LINE_ID = 10                             
+                                GROUP BY BUD_BID_PROJECTS.ORG_ID         
+                            )  
+                            SELECT '{0}' NAME,
+                                SUM(NVL(GROSS_REC, 0)) GROSS_REC,                            
+                                SUM(NVL(MAT_USAGE, 0)) MAT_USAGE,
+                                SUM(NVL(GROSS_REV, 0)) GROSS_REV,
+                                SUM(NVL(DIR_EXP, 0)) DIR_EXP,
+                                SUM(NVL(OP, 0)) OP,
+                                CASE WHEN SUM(GROSS_REV) = 0 OR SUM(GROSS_REV) IS NULL THEN 0 ELSE ROUND((SUM(OP)/SUM(GROSS_REV)) * 100, 2) END OP_PERC,
+                                50000 OH,
+                                SUM(NVL(OP, 0)) - 50000 NET_CONT,                                      
+                                SUM(NVL(OP, 0)) - SUM(NVL(PREV_OP.PREV_OP, 0)) OP_VAR,
+                                (SUM(NVL(OP, 0)) - 50000) - (SUM(NVL(PREV_OP.PREV_OP, 0))) - 50000 NET_CONT_VAR                            
+                            FROM ORG_NAME
+                            LEFT OUTER JOIN BUDGET_LINE_AMOUNTS ON ORG_NAME.ORGANIZATION_ID = BUDGET_LINE_AMOUNTS.ORG_ID
+                            LEFT OUTER JOIN PREV_OP ON ORG_NAME.ORGANIZATION_ID = PREV_OP.ORG_ID", orgName, yearID, verID, prevYearID, prevVerID);                         
+
+                    List<long> whereOrgs = HR.ActiveOrganizationsByHierarchy(hierarchyID, summaryOrg).Select(x => x.ORGANIZATION_ID).ToList();                    
+                    if (whereOrgs.Count() == 0 && BB.IsUserOrgAndAllowed(userID, orgID) == true) { whereOrgs.Add(summaryOrg); }
+                    string sql2 = " WHERE ORGANIZATION_ID = ";
+                    int i = 0;
+                    foreach (long org in whereOrgs)
+                    {
+                        if (BB.IsUserOrgAndAllowed(userID, org) == true)
+                        {
+                            if (i == 0)
+                            {
+                                sql2 = sql2 + org;
+                                i = 1;
+                            }
+                            else
+                            {
+                                sql2 = sql2 + " OR ORGANIZATION_ID = " + org;
+                            }
+                        }
+                    }
+                    string sql3 = " ORDER BY NAME";
+                    string sql = sql1 + sql2 + sql3;
+
+                    List<Fields> lineData;
+                    using (Entities context = new Entities())
+                    {
+                        lineData = context.Database.SqlQuery<Fields>(sql).ToList();
+                    }                    
+                    
+                    lineDetail.AddRange(lineData);
+                }
+
+                return lineDetail;
+            }
+        }
+        public class Subtotals
+        {
+            #region Fields
+            public class Fields
             {
-                string sql = string.Format(@"
+                public decimal GROSS_REC { get; set; }
+                public decimal MAT_USAGE { get; set; }
+                public decimal GROSS_REV { get; set; }
+                public decimal DIR_EXP { get; set; }
+                public decimal OP { get; set; }
+                public decimal OP_PERC { get; set; }
+                public decimal OH { get; set; }
+                public decimal NET_CONT { get; set; }
+                public decimal OP_VAR { get; set; }
+                public decimal NET_CONT_VAR { get; set; }
+            }
+            #endregion
+
+            public static Fields Data(long userID, long hierarchyID, long orgID, long yearID, long verID, long prevYearID, long prevVerID)
+            {         
+                string sql1 = string.Format(@"
                     WITH
                         ORG_NAME AS(
                             SELECT ORGANIZATION_ID, NAME
@@ -222,35 +467,62 @@ namespace DBI.Data
                                 IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
                         ),
                         PREV_OP AS (                        
-                            SELECT BUD_BID_PROJECTS.ORG_ID, SUM(NOV) PREV_OP  
+                            SELECT BUD_BID_PROJECTS.ORG_ID, SUM(NOV) PREV_OP                                         
                             FROM BUD_BID_PROJECTS
                             LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
                             LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
                             WHERE BUD_BID_PROJECTS.YEAR_ID = {2} AND BUD_BID_PROJECTS.VER_ID = {3} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT' AND BUD_BID_BUDGET_NUM.LINE_ID = 10
-                            GROUP BY BUD_BID_PROJECTS.ORG_ID
+                            GROUP BY BUD_BID_PROJECTS.ORG_ID 
                         )  
-                        SELECT NAME,
-                        GROSS_REC,
-                        MAT_USAGE,
-                        GROSS_REV,
-                        DIR_EXP,
-                        OP,
-                        CASE WHEN BUDGET_LINE_AMOUNTS.GROSS_REV = 0 THEN 0 ELSE ROUND((BUDGET_LINE_AMOUNTS.OP/BUDGET_LINE_AMOUNTS.GROSS_REV) * 100, 2) END OP_PERC,
-                        PREV_OP.PREV_OP
+                        SELECT SUM(NVL(GROSS_REC, 0)) GROSS_REC,                            
+                            SUM(NVL(MAT_USAGE, 0)) MAT_USAGE,
+                            SUM(NVL(GROSS_REV, 0)) GROSS_REV,
+                            SUM(NVL(DIR_EXP, 0)) DIR_EXP,
+                            SUM(NVL(OP, 0)) OP,
+                            CASE WHEN SUM(GROSS_REV) = 0 OR SUM(GROSS_REV) IS NULL THEN 0 ELSE ROUND((SUM(OP)/SUM(GROSS_REV)) * 100, 2) END OP_PERC,
+                            50000 OH,
+                            SUM(NVL(OP, 0)) - 50000 NET_CONT,                                      
+                            SUM(NVL(OP, 0)) - SUM(NVL(PREV_OP.PREV_OP, 0)) OP_VAR,
+                            (SUM(NVL(OP, 0)) - 50000) - (SUM(NVL(PREV_OP.PREV_OP, 0))) - 50000 NET_CONT_VAR                            
                         FROM ORG_NAME
                         LEFT OUTER JOIN BUDGET_LINE_AMOUNTS ON ORG_NAME.ORGANIZATION_ID = BUDGET_LINE_AMOUNTS.ORG_ID
-                        LEFT OUTER JOIN PREV_OP ON ORG_NAME.ORGANIZATION_ID = PREV_OP.ORG_ID
-                        WHERE ORGANIZATION_ID = 1607 OR ORGANIZATION_ID = 1605
-                        ORDER BY NAME", yearID, verID, prevYearID, prevVerID);
+                        LEFT OUTER JOIN PREV_OP ON ORG_NAME.ORGANIZATION_ID = PREV_OP.ORG_ID", yearID, verID, prevYearID, prevVerID);
+
+                List<long> summaryOrgs = BB.RollupAndLeafOrgsIsUserAndIsAllowedOrgs(userID, hierarchyID, orgID);
+                string sql2 = " WHERE ORGANIZATION_ID = ";
+                int i = 0;
+                foreach (long summaryOrg in summaryOrgs)
+                {
+                    List<long> whereOrgs = HR.ActiveOrganizationsByHierarchy(hierarchyID, summaryOrg).Select(x => x.ORGANIZATION_ID).ToList();
+                    if (whereOrgs.Count() == 0 && BB.IsUserOrgAndAllowed(userID, orgID) == true) { whereOrgs.Add(summaryOrg); }                    
+                    foreach (long org in whereOrgs)
+                    {
+                        if (BB.IsUserOrgAndAllowed(userID, org) == true)
+                        {
+                            if (i == 0)
+                            {
+                                sql2 = sql2 + org;
+                                i = 1;
+                            }
+                            else
+                            {
+                                sql2 = sql2 + " OR ORGANIZATION_ID = " + org;
+                            }
+                        }
+                    }
+                }
+
+                string sql3 = " ORDER BY NAME";
+                string sql = sql1 + sql2 + sql3;
 
                 using (Entities context = new Entities())
                 {
-                    return context.Database.SqlQuery<Fields>(sql).ToList();
-                }
-            }
-        }        
+                    return context.Database.SqlQuery<Fields>(sql).SingleOrDefault();
+                }      
+            }        
+        } 
     }
-    
+
     public class BBSummary
     {
         public static void DBUpdateAllJCNums(string hierID, long orgID, string jcDate)
