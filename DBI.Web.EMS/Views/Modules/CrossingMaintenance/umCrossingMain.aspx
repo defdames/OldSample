@@ -145,7 +145,19 @@
                                  <BeforeActivate Handler="#{Toolbar1}.show()" />                            
                                 </Listeners>
                             </ext:Panel>
-
+                             <ext:Panel runat="server"
+                                Title="Pricing Maintenance"
+                                ID="uxPricing"
+                                Disabled="false">   
+                                                               
+                                <Loader runat="server"
+                                    ID="Loader1" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umPricing.aspx">
+                                    <LoadMask ShowMask="true" />                                
+                                </Loader>
+                             <Listeners>
+                                 <BeforeActivate Handler="#{Toolbar1}.hide()" />                            
+                             </Listeners>
+                            </ext:Panel>
                            
                          <%--   <ext:Panel runat="server"
                                 Title="Contacts"
