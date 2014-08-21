@@ -107,7 +107,9 @@
                                             </ExtraParams>
                                         </Click>
                                     </DirectEvents>
-                                    
+                                   <DirectEvents>
+                                       <Click OnEvent="deAddProject" />
+                                   </DirectEvents>
                                     <Listeners>
                                         <Click Handler="#{uxAddCrossingWindow}.show()" />
                                     </Listeners>
@@ -459,7 +461,7 @@
                                       <%-- <ext:DropDownField ID="uxAddProjectCIDropDownField" runat="server" FieldLabel="Add Project" AnchorHorizontal="100%" LabelAlign="Right" Width="475" Mode="ValueText" TabIndex="26" Editable="false">
                                                     <Component>--%>
                                          <ext:FieldSet ID="FieldSet10" runat="server" Title="Add Project(s)">
-                                    <Items>
+                                                 <Items>
                                          
                                                         <ext:GridPanel ID="uxAddProjectGrid" runat="server" Width="700" Margin="5" SelectionMemory="true">
                                                             <Store>
@@ -467,12 +469,9 @@
                                                                     ID="uxCurrentSecurityProjectStore"
                                                                     OnReadData="deAddProjectGrid"
                                                                     PageSize="5"
-                                                                    AutoLoad="true"
-                                                                    RemoteSort="true"
-                                                                    AutoDataBind="true" WarningOnDirty="false">
-                                                                     <Parameters>
-                                                                    <ext:StoreParameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                                                                     </Parameters>
+                                                                    AutoLoad="false"
+                                                                    AutoDataBind="true" WarningOnDirty="false" RemoteSort="true">
+                                                                 
                                                                     <Model>
                                                                         <ext:Model ID="Model3" runat="server" IDProperty="PROJECT_ID">
                                                                             <Fields>
@@ -507,25 +506,16 @@
                                                             <SelectionModel>
                                                                 <ext:CheckboxSelectionModel ID="CheckboxSelectionModel2" runat="server" Mode="Simple" AllowDeselect="true" />
                                                             </SelectionModel>       
-                                                                                                        
-                                                                          <%-- <DirectEvents>
-                                                             <SelectionChange OnEvent="deStoreAddProjectValue">
-                                                                  <ExtraParams>
-                                                                     <ext:Parameter Name="ProjectId"  Value="Ext.encode(#{uxAddProjectGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
-                                                                    <ext:Parameter Name="ProjectName"  Value="Ext.encode(#{uxProjectGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
-                                                                    <ext:Parameter Name="Type" Value="AddProject" />
-                                                                </ExtraParams>
-                                                            </SelectionChange>
-                                                                            </DirectEvents>--%>
+                                                                                                       
                                                                                                                                       
                                                             <BottomBar>
                                                                 <ext:PagingToolbar ID="PagingToolbar11" runat="server" HideRefresh="True">
                                                                 </ext:PagingToolbar>
                                                             </BottomBar>
                                                           
-                                                            <Listeners>
+                                                          <%--  <Listeners>
                                                                 <Select Handler="#{uxAddProjectButton}.enable()" />
-                                                            </Listeners>
+                                                            </Listeners>--%>
                                                         </ext:GridPanel>
                                                    <%-- </Component>
                                                 </ext:DropDownField>--%>
@@ -697,8 +687,10 @@
                                     </Items>
                                 </ext:FieldSet>
                             </Items>
-                            
-                            <Buttons>
+                            <BottomBar>
+                                <ext:Toolbar runat="server" >
+                            <Items>
+                         
                                 <ext:Button runat="server" ID="deAddCrossing" Text="Add" Icon="Add" Disabled="true">
                                     <DirectEvents>
                                         <Click OnEvent="deAddCrossings" />
@@ -710,10 +702,14 @@
                                         <Click Handler="#{uxAddCrossingForm}.reset();
 									#{uxAddCrossingWindow}.hide()" />
                                     </Listeners>
-
+                                    <DirectEvents>
+                                        <Click OnEvent="deValidateCancelButton" />
+                                    </DirectEvents>
                                 </ext:Button>
-                            </Buttons>
-                              
+                         
+                                </Items>
+                                    </ext:Toolbar>
+                              </BottomBar>
                               <Listeners>
                                 <ValidityChange Handler="#{deAddCrossing}.setDisabled(!valid);" />
                             </Listeners>

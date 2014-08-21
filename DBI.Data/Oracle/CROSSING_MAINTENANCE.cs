@@ -9,6 +9,7 @@ using System.Web.UI.WebControls;
 using DBI.Core.Web;
 using DBI.Data;
 using Ext.Net;
+using System.Data.Objects.SqlClient;
 
 namespace DBI.Data
 {
@@ -87,12 +88,14 @@ namespace DBI.Data
         }
         public static IQueryable<CrossingData> GetAppCrossingList(decimal RailroadId, string Application, Entities _context)
         {
+                      
             return (from d in _context.CROSSINGS
-                    join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
-                    join a in _context.CROSSING_APPLICATION on d.CROSSING_ID equals a.CROSSING_ID
+                    join a in _context.CROSSING_APPLICATION on d.CROSSING_ID equals a.CROSSING_ID into appGroup
+                    from app in appGroup.DefaultIfEmpty()
+                    join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID                
                     join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID
-                    where d.RAILROAD_ID == RailroadId && d.STATUS == "ACTIVE"
-                    select new CrossingData {APPLICATION_REQUESTED = a.APPLICATION_REQUESTED, RAILROAD_ID = d.RAILROAD_ID, CONTACT_ID = d.CONTACT_ID,CROSSING_ID = d.CROSSING_ID, STATUS = d.STATUS, STATE = d.STATE,
+                    where d.RAILROAD_ID == RailroadId && d.STATUS != "DELETED"
+                    select new CrossingData { APPLICATION_REQUESTED = (Convert.ToInt32(app.APPLICATION_REQUESTED)).ToString(), RAILROAD_ID = d.RAILROAD_ID, CONTACT_ID = d.CONTACT_ID, CROSSING_ID = d.CROSSING_ID, STATUS = d.STATUS, STATE = d.STATE,
                     CROSSING_NUMBER = d.CROSSING_NUMBER, SERVICE_UNIT = d.SERVICE_UNIT,SUB_DIVISION = d.SUB_DIVISION, CONTACT_NAME = d.CROSSING_CONTACTS.CONTACT_NAME,
                     PROJECT_TYPE = p.PROJECT_TYPE, CARRYING_OUT_ORGANIZATION_ID = p.CARRYING_OUT_ORGANIZATION_ID, PROJECT_STATUS_CODE = p.PROJECT_STATUS_CODE, TEMPLATE_FLAG = p.TEMPLATE_FLAG, PROJECT_ID = p.PROJECT_ID, ORGANIZATION_NAME = p.ORGANIZATION_NAME }).Distinct();
         }
@@ -101,7 +104,10 @@ namespace DBI.Data
             return (from d in _context.CROSSINGS
                     join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
                     join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID
+                    //where (from c in _context.CROSSINGS
+                    //       select c.CROSSING_NUMBER).Distinct()
                     where d.RAILROAD_ID == RailroadId
+
                     select new CrossingData
                     {
                         RAILROAD_ID = d.RAILROAD_ID,
@@ -119,6 +125,7 @@ namespace DBI.Data
                         STATE = d.STATE,
                         ORGANIZATION_NAME = p.ORGANIZATION_NAME
                     }).Distinct();
+                      
         }
         public static IQueryable<ApplicationList> GetApplications( Entities _context)
         {
@@ -194,7 +201,7 @@ namespace DBI.Data
           {
               return (from d in _context.CROSSINGS
                       join a in _context.CROSSING_APPLICATION on d.CROSSING_ID equals a.CROSSING_ID
-                      where d.RAILROAD_ID == RailroadId && a.APPLICATION_REQUESTED == Application
+                      where d.RAILROAD_ID == RailroadId && a.APPLICATION_REQUESTED == Application && d.STATUS != "DELETED"
                       select new StateCrossingList
                             {
                                 CROSSING_ID = d.CROSSING_ID,
@@ -210,6 +217,7 @@ namespace DBI.Data
                                 ROWSE = d.ROWSE,
                                 ROWSW = d.ROWSW,
                                 STREET = d.STREET,
+                                STATUS = d.STATUS,
                                 SUB_CONTRACTED = d.SUB_CONTRACTED,
                                 LONGITUDE = d.LONGITUDE,
                                 LATITUDE = d.LATITUDE,
@@ -471,6 +479,7 @@ namespace DBI.Data
               public string COUNTY { get; set; }
               public string CITY { get; set; }
               public string STREET { get; set; }
+              public string STATUS { get; set; }
 
           }
           public class CompletedCrossingsSupplemental

@@ -198,7 +198,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         /// <param name="e"></param>
         protected void deAddCrossings(object sender, DirectEventArgs e)
         {
-           
+            CheckboxSelectionModel sm = CheckboxSelectionModel2;
             //Do type conversions
             //string CrossingNum = uxAddCrossingNumCI.Value.ToString();
            
@@ -484,17 +484,27 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 data.STATUS = "ACTIVE";
             }
-            //if (Session["rrType"] != null)
+
+            //if (SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue") != null)
             //{
-            //    Session["rrType"] = data.RAILROAD_ID;
-            ////}
-            //if(SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue") != null)
-            //{
-            //    (SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue")) = data.RAILROAD_ID;
+            //    data.RAILROAD_ID.ToString() = (SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
             //}
             //Write to DB
             GenericData.Insert<CROSSING>(data);
+           
+            long CrossingId = data.CROSSING_ID;
+            //do type conversions
 
+            foreach (SelectedRow sr in sm.SelectedRows)
+            {
+                CROSSING_RELATIONSHIP ProjectToAdd = new CROSSING_RELATIONSHIP
+                {
+                    PROJECT_ID = long.Parse(sr.RecordID),
+                    CROSSING_ID = CrossingId,
+                };
+
+                GenericData.Insert<CROSSING_RELATIONSHIP>(ProjectToAdd);
+            }
             uxAddCrossingWindow.Hide();
             uxAddCrossingForm.Reset();
             uxCurrentCrossingStore.Reload();
@@ -511,27 +521,33 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             });
         }
-        protected void deAddProject(object sender, DirectEventArgs e)
+        protected void deValidateCancelButton(object sender, DirectEventArgs e)
         {
             CheckboxSelectionModel sm = CheckboxSelectionModel2;
+            sm.ClearSelection();
+        }
+        protected void deAddProject(object sender, DirectEventArgs e)
+        {
+            uxCurrentSecurityProjectStore.Reload();
+        //    CheckboxSelectionModel sm = CheckboxSelectionModel2;
 
-            //do type conversions
-             long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
-            foreach (SelectedRow sr in sm.SelectedRows)
-            {
+        //    //do type conversions
+        //     long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+        //    foreach (SelectedRow sr in sm.SelectedRows)
+        //    {
 
                  
-                    CROSSING_RELATIONSHIP ProjectToAdd = new CROSSING_RELATIONSHIP
-                    {
-                        PROJECT_ID = long.Parse(sr.RecordID),
-                        CROSSING_ID = CrossingId,
-                    };
+        //            CROSSING_RELATIONSHIP ProjectToAdd = new CROSSING_RELATIONSHIP
+        //            {
+        //                PROJECT_ID = long.Parse(sr.RecordID),
+        //                CROSSING_ID = CrossingId,
+        //            };
 
-                    GenericData.Insert<CROSSING_RELATIONSHIP>(ProjectToAdd);
-                }
+        //            GenericData.Insert<CROSSING_RELATIONSHIP>(ProjectToAdd);
+        //        }
 
 
-            }
+        }
         
                 
             

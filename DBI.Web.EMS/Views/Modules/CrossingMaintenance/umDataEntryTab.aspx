@@ -83,6 +83,8 @@
                                 <ext:ModelField Name="SERVICE_UNIT" />
                                 <ext:ModelField Name="SUB_DIVISION" />
                                 <ext:ModelField Name="CONTACT_NAME" />
+                                <ext:ModelField Name="APPLICATION_ID" />
+                                <ext:ModelField Name="APPLICATION_REQUESTED" />
 
                             </Fields>
                         </ext:Model>
@@ -102,7 +104,7 @@
                     <ext:Column ID="Column12" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
                     <ext:Column ID="uxSubDiv" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
                     <ext:Column ID="uxMTM" runat="server" DataIndex="CONTACT_NAME" Text="Manager" Flex="1" />
-
+                      <ext:Column ID="Column4" runat="server" DataIndex="APPLICATION_REQUESTED" Text="App Req" Flex="1" />
                 </Columns>
             </ColumnModel>
             <Plugins>

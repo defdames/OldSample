@@ -12,7 +12,7 @@ using DBI.Data.GMS;
 using DBI.Data.DataFactory;
 using DBI.Core.Security;
 using System.Security.Claims;
-
+using System.Data.Objects.SqlClient;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
@@ -43,11 +43,35 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 {
                     long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                     string Application = ComboBox1.SelectedItem.Value;
+                    
                     List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
-                    IQueryable<CROSSING_MAINTENANCE.CrossingData> data = CROSSING_MAINTENANCE.GetAppCrossingList(RailroadId, Application, _context).Where(v => v.PROJECT_TYPE == "CUSTOMER BILLING" && v.STATUS == "ACTIVE" && v.TEMPLATE_FLAG == "N" && v.PROJECT_STATUS_CODE == "APPROVED" && v.ORGANIZATION_NAME.Contains(" RR") && OrgsList.Contains(v.CARRYING_OUT_ORGANIZATION_ID));
+                    IQueryable<CROSSING_MAINTENANCE.CrossingData> allData = CROSSING_MAINTENANCE.GetAppCrossingList(RailroadId, Application, _context).Where(v => v.PROJECT_TYPE == "CUSTOMER BILLING" && v.STATUS == "ACTIVE" && v.TEMPLATE_FLAG == "N" && v.PROJECT_STATUS_CODE == "APPROVED" && v.ORGANIZATION_NAME.Contains(" RR") && OrgsList.Contains(v.CARRYING_OUT_ORGANIZATION_ID));
+
+                    //int count;
+                    //uxAppEntryCrossingStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.CrossingData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                    //e.Total = count;
+              
+
+                    if (Application == "1")
+                    {
+                        allData = allData.Where(x => x.APPLICATION_REQUESTED == null);
+                    }
+
+                    if (Application == "2")
+                    
+                    {
+                        allData = allData.Where(x => x.APPLICATION_REQUESTED != null && x.APPLICATION_REQUESTED.Max() == 1);
+                    }
+
+                    if (Application == "3")
+                    {
+                        allData = allData.Where(x => x.APPLICATION_REQUESTED == "2" );
+                    }
+                    List<object> _data = allData.ToList<object>();
+
 
                     int count;
-                    uxAppEntryCrossingStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.CrossingData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                    uxAppEntryCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
                     e.Total = count;
                 }
             }
