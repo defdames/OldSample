@@ -23,28 +23,32 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 }
 
                 //Verify that the organization is valid for budget types, if not disable the add new button and display a warning message
-                long _businessUnitId = 0;
-                    _businessUnitId = long.Parse(Request.QueryString["leid"]);
+                //long _businessUnitId = 0;
+                //    _businessUnitId = long.Parse(Request.QueryString["leid"]);
 
-                int _cnt = OVERHEAD_BUDGET_TYPE.BudgetTypes(_businessUnitId).Count();
+                //int _cnt = OVERHEAD_BUDGET_TYPE.BudgetTypes(_businessUnitId).Count();
                 
-                if(_cnt == 0)
-                {
-                    HR.ORGANIZATION _orgInfo = HR.Organization(_businessUnitId);
-                    X.Msg.Alert("Invalid business unit", string.Format("The {0} busineess unit is not vaild and does not have any oracle budget types assigned. You will not be able to complete the setup of this organization until a budget type is created.", _orgInfo.ORGANIZATION_NAME)).Show();
-                    uxBudgetTypeGridPanel.Disabled = true;
-                    return;
-                }
+                //if(_cnt == 0)
+                //{
+                //    HR.ORGANIZATION _orgInfo = HR.Organization(_businessUnitId);
+                //    X.Msg.Alert("Invalid business unit", string.Format("The {0} busineess unit is not vaild and does not have any oracle budget types assigned. You will not be able to complete the setup of this organization until a budget type is created.", _orgInfo.ORGANIZATION_NAME)).Show();
+                //    uxBudgetTypeGridPanel.Disabled = true;
+                //    return;
+                //}
 
-                uxBudgetTypeGridPanel.GetStore().Reload();
+                //uxBudgetTypeGridPanel.GetStore().Reload();
             }
         }
 
         protected void deReadBudgetTypesByLegalEntity(object sender, StoreReadDataEventArgs e)
         {
 
-            long _organizationID;
-            Boolean check = long.TryParse(Request.QueryString["leid"], out _organizationID);
+            string _selectedRecordID = Request.QueryString["leid"];
+
+            char[] _delimiterChars = { ':' };
+            string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
+            long _hierarchyID = long.Parse(_selectedID[1].ToString());
+            long _organizationID = long.Parse(_selectedID[0].ToString());
 
             if (_organizationID > 0)
             {
@@ -73,14 +77,17 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         protected void deAddBudgetType(object sender, DirectEventArgs e)
         {
-                long _businessUnitID;
+            string _selectedRecordID = Request.QueryString["leid"];
 
-                  Boolean check = long.TryParse(Request.QueryString["leid"], out _businessUnitID);
+            char[] _delimiterChars = { ':' };
+            string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
+            long _hierarchyID = long.Parse(_selectedID[1].ToString());
+            long _organizationID = long.Parse(_selectedID[0].ToString());
 
                 string _editMode = e.ExtraParams["Edit"];
 
 
-                string url = "umAddRemoveBudgetType.aspx?buID=" + _businessUnitID;
+                string url = "umAddRemoveBudgetType.aspx?buID=" + _organizationID;
                 RowSelectionModel _recordID = uxBudgetTypeSelectionModel;
 
                 if (!string.IsNullOrEmpty(_editMode))
@@ -92,7 +99,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 {
                     ID = "uxAddEditBudgetType",
                     Title = "Budget Types",
-                    Height = 250,
+                    Height = 350,
                     Width = 550,
                     Modal = true,
                     Resizable = false,

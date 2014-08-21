@@ -69,7 +69,6 @@ namespace DBI.Data
         public DbSet<SYS_USER_PERMS> SYS_USER_PERMS { get; set; }
         public DbSet<SYS_MENU> SYS_MENU { get; set; }
         public DbSet<CROSSING_INCIDENT> CROSSING_INCIDENT { get; set; }
-        public DbSet<EMPLOYEES_V> EMPLOYEES_V { get; set; }
         public DbSet<SYS_GROUPS> SYS_GROUPS { get; set; }
         public DbSet<JOB_TITLE_V> JOB_TITLE_V { get; set; }
         public DbSet<CROSSING_RELATIONSHIP> CROSSING_RELATIONSHIP { get; set; }
@@ -113,7 +112,6 @@ namespace DBI.Data
         public DbSet<CUSTOMER_SURVEY_QUESTIONS> CUSTOMER_SURVEY_QUESTIONS { get; set; }
         public DbSet<BUD_BID_PROJECTS> BUD_BID_PROJECTS { get; set; }
         public DbSet<CROSSING_APPLICATION> CROSSING_APPLICATION { get; set; }
-        public DbSet<CROSSING_SUPPLEMENTAL> CROSSING_SUPPLEMENTAL { get; set; }
         public DbSet<CUSTOMER_SURVEY_CAT> CUSTOMER_SURVEY_CAT { get; set; }
         public DbSet<CUSTOMER_SURVEY_FORMS> CUSTOMER_SURVEY_FORMS { get; set; }
         public DbSet<CUSTOMER_SURVEY_THRESH_AMT> CUSTOMER_SURVEY_THRESH_AMT { get; set; }
@@ -123,9 +121,15 @@ namespace DBI.Data
         public DbSet<JOB_COST> JOB_COST { get; set; }
         public DbSet<CUSTOMER_SURVEY_FORMS_COMP> CUSTOMER_SURVEY_FORMS_COMP { get; set; }
         public DbSet<PROJECT_CONTACTS_V> PROJECT_CONTACTS_V { get; set; }
-        public DbSet<OVERHEAD_ORG_BUDGETS> OVERHEAD_ORG_BUDGETS { get; set; }
-        public DbSet<OVERHEAD_BUDGET_DETAIL> OVERHEAD_BUDGET_DETAIL { get; set; }
         public DbSet<OVERHEAD_GL_ACCOUNT> OVERHEAD_GL_ACCOUNT { get; set; }
         public DbSet<OVERHEAD_GL_RANGE> OVERHEAD_GL_RANGE { get; set; }
+        public DbSet<OVERHEAD_ORG_BUDGETS> OVERHEAD_ORG_BUDGETS { get; set; }
+        public DbSet<OVERHEAD_ACCOUNT_COMMENT> OVERHEAD_ACCOUNT_COMMENT { get; set; }
+        public DbSet<CROSSING_SUPPLEMENTAL> CROSSING_SUPPLEMENTAL { get; set; }
+        public DbSet<OVERHEAD_ACCOUNT_CATEGORY> OVERHEAD_ACCOUNT_CATEGORY { get; set; }
+        public DbSet<OVERHEAD_CATEGORY> OVERHEAD_CATEGORY { get; set; }
+        public DbSet<OVERHEAD_BUDGET_DETAIL> OVERHEAD_BUDGET_DETAIL { get; set; }
+        public DbSet<EMPLOYEES_V> EMPLOYEES_V { get; set; }
+        public DbSet<CROSSING_PRICING> CROSSING_PRICING { get; set; }
     }
 }

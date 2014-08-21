@@ -648,7 +648,7 @@ namespace DBI.Data
                                          join h in _context.DAILY_ACTIVITY_HEADER on i.HEADER_ID equals h.HEADER_ID
                                          join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                          join iv in _context.INVENTORY_V on new { JoinProperty1 = (decimal)i.ITEM_ID, JoinProperty2 = (long)i.SUB_INVENTORY_ORG_ID } equals new { JoinProperty1 = iv.ITEM_ID, JoinProperty2 = iv.ORGANIZATION_ID }
-                                         where (i.HEADER_ID == HeaderId && i.CONTRACTOR_SUPPLIED != "Y")
+                                         where (i.HEADER_ID == HeaderId && (i.CONTRACTOR_SUPPLIED != "Y" || i.CONTRACTOR_SUPPLIED == null))
                                          select new { i, iv, p.ORG_ID, h.PROJECT_ID }).ToList();
 
 

@@ -37,7 +37,7 @@
                     <Store>
                         <ext:Store runat="server"
                             ID="uxBudgetTypeStore"
-                            AutoDataBind="true" RemoteSort="true" AutoLoad="false" OnReadData="deReadBudgetTypesByLegalEntity">
+                            AutoDataBind="true" RemoteSort="true" AutoLoad="true" OnReadData="deReadBudgetTypesByLegalEntity">
                             <Model>
                                         <ext:Model ID="Model2" runat="server" IDProperty="OVERHEAD_BUDGET_TYPE_ID">
                                             <Fields>

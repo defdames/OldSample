@@ -186,12 +186,6 @@
   <data name="loginButtonResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="loginButtonResource1.ToolTipType" type="Ext.Net.ToolTipType, Ext.Net">
-    <value>Qtip</value>
-  </data>
-  <data name="loginButtonResource1.Type" type="Ext.Net.ButtonType, Ext.Net">
-    <value>Button</value>
-  </data>
   <data name="loginFormPanelResource1.FieldDefaults.BlankText" xml:space="preserve">
     <value />
   </data>

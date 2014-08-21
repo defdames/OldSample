@@ -490,6 +490,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Model Model2;
         
         /// <summary>
+        /// Column10 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column10;
+        
+        /// <summary>
         /// Column9 control.
         /// </summary>
         /// <remarks>
@@ -499,13 +508,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Column Column9;
         
         /// <summary>
-        /// Column10 control.
+        /// Column4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column10;
+        protected global::Ext.Net.Column Column4;
         
         /// <summary>
         /// DateColumn2 control.
@@ -524,6 +533,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.DateColumn DateColumn3;
+        
+        /// <summary>
+        /// Column5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column5;
         
         /// <summary>
         /// Column11 control.
@@ -884,6 +902,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Model Model6;
+        
+        /// <summary>
+        /// Column6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column6;
         
         /// <summary>
         /// uxInventoryToolbar control.

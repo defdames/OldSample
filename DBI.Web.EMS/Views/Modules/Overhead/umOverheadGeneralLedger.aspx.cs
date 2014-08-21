@@ -107,15 +107,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     uxDeleteGLRangeDelete.Disable();
                 }
 
-                Ext.Net.ParameterCollection ps = new Ext.Net.ParameterCollection();
-
-                Ext.Net.StoreParameter _p = new Ext.Net.StoreParameter();
-                _p.Mode = ParameterMode.Value;
-                _p.Name = "INCLUDE_EXCLUDE";
-                _p.Value = e.ExtraParams["INCLUDE_EXCLUDE"];
-                ps.Add(_p);
-
-                uxGlAccountSecurityStore.Reload(ps);
+                uxGlAccountSecurityStore.Reload();
             }
 
             protected void deDeSelectRange(object sender, DirectEventArgs e)
@@ -130,10 +122,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 using(Entities _context = new Entities())
                 {
                     List<OVERHEAD_GL_ACCOUNT> _acc = _context.OVERHEAD_GL_ACCOUNT.Where(a => a.ORGANIZATION_ID == organizationID && a.CODE_COMBINATION_ID == code_combination_id).ToList();
-                    string _returnValue = "Included";
+                    string _returnValue = "I";
                     
                     if(_acc.Count() > 0)
-                        _returnValue = "Excluded";
+                        _returnValue = "E";
 
                     return _returnValue;
 
@@ -165,8 +157,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                         List<GL_ACCOUNTS_V> _temp = _data.ToList();
                         List<GL_ACCOUNTS_V2> _newTemp = new List<GL_ACCOUNTS_V2>();
-
-                        string IncludeExclude = e.Parameters["INCLUDE_EXCLUDE"];
 
                         foreach (GL_ACCOUNTS_V _acc in _temp)
                         {
@@ -219,6 +209,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                      _data.MODIFIED_BY = User.Identity.Name;
                      _data.CREATE_DATE = DateTime.Now;
                      _data.MODIFY_DATE = DateTime.Now;
+                     _data.ORGANIZATION_ID = _organizationID;
                      GenericData.Insert<OVERHEAD_GL_ACCOUNT>(_data);
 
                  }

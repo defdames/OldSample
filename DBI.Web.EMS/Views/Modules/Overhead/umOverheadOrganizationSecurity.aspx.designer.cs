@@ -76,6 +76,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.ToolTip ToolTip1;
         
         /// <summary>
+        /// ToolbarSeparator1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ToolbarSeparator ToolbarSeparator1;
+        
+        /// <summary>
         /// uxDisableOrganizationButton control.
         /// </summary>
         /// <remarks>
@@ -94,13 +103,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.ToolTip ToolTip2;
         
         /// <summary>
-        /// uxActiveToggle control.
+        /// uxHideInActiveCheckbox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxActiveToggle;
+        protected global::Ext.Net.Checkbox uxHideInActiveCheckbox;
         
         /// <summary>
         /// uxOrganizationSecurityStore control.
@@ -163,7 +172,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.CheckboxSelectionModel uxOrganizationsGridSelectionModel;
+        protected global::Ext.Net.RowSelectionModel uxOrganizationsGridSelectionModel;
         
         /// <summary>
         /// uxOrganizationGridPageBar control.

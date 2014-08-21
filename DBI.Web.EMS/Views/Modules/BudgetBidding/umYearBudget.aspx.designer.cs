@@ -13,6 +13,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
     public partial class umYearBudget {
         
         /// <summary>
+        /// Head1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlHead Head1;
+        
+        /// <summary>
         /// form1 control.
         /// </summary>
         /// <remarks>
@@ -253,7 +262,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column10;
+        protected global::Ext.Net.NumberColumn Column10;
         
         /// <summary>
         /// Column11 control.
@@ -1660,6 +1669,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label36;
         
         /// <summary>
+        /// FieldSet1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldSet FieldSet1;
+        
+        /// <summary>
         /// FieldContainer12 control.
         /// </summary>
         /// <remarks>
@@ -2101,67 +2119,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Button uxCancel;
         
         /// <summary>
-        /// FormPanel1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FormPanel FormPanel1;
-        
-        /// <summary>
-        /// FieldContainer20 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer20;
-        
-        /// <summary>
-        /// Label39 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label Label39;
-        
-        /// <summary>
-        /// uxHidNewProject control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxHidNewProject;
-        
-        /// <summary>
-        /// Label42 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label Label42;
-        
-        /// <summary>
         /// uxHidBudBidID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxHidBudBidID;
-        
-        /// <summary>
-        /// Label43 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label Label43;
+        protected global::Ext.Net.Hidden uxHidBudBidID;
         
         /// <summary>
         /// uxHidProjectNumID control.
@@ -2170,16 +2134,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxHidProjectNumID;
-        
-        /// <summary>
-        /// Label44 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label Label44;
+        protected global::Ext.Net.Hidden uxHidProjectNumID;
         
         /// <summary>
         /// uxHidType control.
@@ -2188,16 +2143,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxHidType;
-        
-        /// <summary>
-        /// Label45 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label Label45;
+        protected global::Ext.Net.Hidden uxHidType;
         
         /// <summary>
         /// uxHidStatusID control.
@@ -2206,16 +2152,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxHidStatusID;
-        
-        /// <summary>
-        /// Label46 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label Label46;
+        protected global::Ext.Net.Hidden uxHidStatusID;
         
         /// <summary>
         /// uxHidPrevYear control.
@@ -2224,16 +2161,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxHidPrevYear;
-        
-        /// <summary>
-        /// Label47 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label Label47;
+        protected global::Ext.Net.Hidden uxHidPrevYear;
         
         /// <summary>
         /// uxHidPrevVer control.
@@ -2242,16 +2170,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxHidPrevVer;
-        
-        /// <summary>
-        /// Label19 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label Label19;
+        protected global::Ext.Net.Hidden uxHidPrevVer;
         
         /// <summary>
         /// uxHidFormEnabled control.
@@ -2260,16 +2179,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxHidFormEnabled;
-        
-        /// <summary>
-        /// Label9 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label Label9;
+        protected global::Ext.Net.Hidden uxHidFormEnabled;
         
         /// <summary>
         /// uxHidOldBudBidID control.
@@ -2278,16 +2188,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxHidOldBudBidID;
-        
-        /// <summary>
-        /// Label22 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label Label22;
+        protected global::Ext.Net.Hidden uxHidOldBudBidID;
         
         /// <summary>
         /// uxHidDetailSheetID control.
@@ -2296,16 +2197,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxHidDetailSheetID;
-        
-        /// <summary>
-        /// Label24 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label Label24;
+        protected global::Ext.Net.Hidden uxHidDetailSheetID;
         
         /// <summary>
         /// uxHidDetailSheetOrder control.
@@ -2314,16 +2206,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxHidDetailSheetOrder;
-        
-        /// <summary>
-        /// Label33 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Label Label33;
+        protected global::Ext.Net.Hidden uxHidDetailSheetOrder;
         
         /// <summary>
         /// uxHidDetailSheetName control.
@@ -2332,6 +2215,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxHidDetailSheetName;
+        protected global::Ext.Net.Hidden uxHidDetailSheetName;
     }
 }

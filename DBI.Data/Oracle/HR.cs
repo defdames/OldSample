@@ -153,7 +153,7 @@ namespace DBI.Data
                     List<HR.ORGANIZATION_V1> _data = ActiveOrganizationsByHierarchy(hierarchyId, organizationId);
                     foreach (var view in _data)
                     {
-                        view.ORGANIZATION_STATUS = (SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetOrganization", view.ORGANIZATION_ID) == "Y" ? "Budgeting Allowed" : "Not Active");
+                        view.ORGANIZATION_STATUS = (SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetOrganization", view.ORGANIZATION_ID) == "Y" ? "Active" : "Inactive");
                     }
                     return _data;
         }

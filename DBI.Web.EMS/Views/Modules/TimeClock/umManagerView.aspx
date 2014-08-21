@@ -32,6 +32,24 @@
 		    }
 		    return value;
 		};
+
+		
+
+		var onShow = function (toolTip, grid) {
+		        var view = grid.getView(),
+                store = grid.getStore(),
+                record = view.getRecord(view.findItemByChild(toolTip.triggerElement)),
+                data = record.data.ACTUAL_HOURS;
+                
+		    if (data >= 12) {
+
+		        toolTip.update("OVER 12 HOURS");
+		    } else {
+
+		        return false;
+		    }
+		    
+		};
 	</script>
 </head>
 <body>
@@ -153,6 +171,7 @@
 						</Items>
 				</ext:Toolbar>
 			</TopBar>
+            
 			<Features>
 				<ext:Grouping
 					runat="server"
@@ -163,7 +182,20 @@
 			<SelectionModel>
 				<ext:CheckboxSelectionModel ID="uxTimeClockSelectionModel" runat="server" Mode="Multi"/>
 			</SelectionModel>
+            <View>
+                <ext:GridView ID="GridView1" runat="server" StripeRows="true" TrackOver="true" />
+            </View>
 		</ext:GridPanel>
+           <ext:ToolTip
+               ID="ToolTip1" 
+            runat="server" 
+            Target="={#{uxEmployeeHoursGrid}.getView().el}"
+            Delegate=".x-grid-cell"
+            TrackMouse="true">
+            <Listeners>
+                <BeforeShow Handler="return onShow(this, #{uxEmployeeHoursGrid});" />
+            </Listeners>
+        </ext:ToolTip>
 		   </Items>
 		</ext:viewport>
 		</form>

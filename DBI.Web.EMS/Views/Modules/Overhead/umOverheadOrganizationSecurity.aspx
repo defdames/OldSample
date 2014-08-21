@@ -11,14 +11,15 @@
 		}
 
         .my-btn .x-btn-inner {
-            color: blue;
+            color: #0042A3;
+            text-decoration: underline;
             }
 
 	</style>
 
       <script type="text/javascript">
           var getRowClass = function (record, rowIndex, rowParams, store) {
-              if (record.data.ORGANIZATION_STATUS == "Budgeting Allowed") {
+              if (record.data.ORGANIZATION_STATUS == "Active") {
                   return "blue-row";
               };
           }
@@ -41,6 +42,8 @@
                                         <Click OnEvent="deEnableOrganization"><Confirmation Message="Are you sure you want to enable these organizations for use in the overhead budget system?" ConfirmRequest="true"></Confirmation></Click>
                                     </DirectEvents>
                                 </ext:Button>
+                                
+                                <ext:ToolbarSeparator ID="ToolbarSeparator1" runat="server"></ext:ToolbarSeparator>
                                   <ext:Button runat="server" Text="Disable" icon="Decline" ID="uxDisableOrganizationButton" Disabled="true" >
                                     <ToolTips>
                                         <ext:ToolTip ID="ToolTip2" runat="server" UI="Info" Html="Disables an organization so that it can't be used for the budget overhead system."></ext:ToolTip>
@@ -49,14 +52,18 @@
                                         <Click OnEvent="deDisableOrganization"><Confirmation Message="Are you sure you want to disable these organizations for use in the overhead budget system?" ConfirmRequest="true"></Confirmation></Click>
                                     </DirectEvents>
                                 </ext:Button>
+                                <ext:ToolbarSeparator runat="server">
+                                </ext:ToolbarSeparator>
+                                
                                 <ext:ToolbarFill runat="server">
 
                                 </ext:ToolbarFill>
-                                <ext:Button runat="server" Text="Hide InActive" EnableToggle="true" ID="uxActiveToggle" Icon="FolderMagnify">
+                                
+                                <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Show Active Organizations" ID="uxHideInActiveCheckbox" >
                                     <DirectEvents>
-                                        <Toggle OnEvent="deToggleInActive" />
+                                        <Change OnEvent="deHideInActive" />
                                     </DirectEvents>
-                                </ext:Button>
+                                </ext:Checkbox>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
@@ -81,12 +88,12 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column2" runat="server" DataIndex="ORGANIZATION_NAME" Text="Name" Flex="3" />
+                             
+                            <ext:Column ID="Column2" runat="server" DataIndex="ORGANIZATION_NAME" Text="Name" Flex="2" />
                             <ext:Column ID="Column1" runat="server" DataIndex="ORGANIZATION_STATUS" Text="Current Status" Flex="1" />   
-                             <ext:CommandColumn ID="CommandColumn1" runat="server" Width="250">
+                            <ext:CommandColumn ID="CommandColumn1" runat="server" Width="180">
                                 <Commands>
-                                    <ext:GridCommand Text="Ledger Accounts" CommandName="Accounts" Icon="BookMagnify" Cls="my-btn"></ext:GridCommand>
-                                    <ext:GridCommand Text ="Forecast Periods" CommandName="Periods" Icon="BookMagnify" Cls="my-btn"></ext:GridCommand>
+                                    <ext:GridCommand Text="Accounts" CommandName="Accounts" Icon="CalculatorEdit"></ext:GridCommand>
                                 </Commands>
                                 <DirectEvents>
                                     <Command OnEvent="deViewAccounts">
@@ -97,19 +104,19 @@
                                         </ExtraParams>
                                     </Command>
                                 </DirectEvents>
-                            </ext:CommandColumn>     
+                            </ext:CommandColumn>    
                         </Columns>
                     </ColumnModel>
                     <Plugins>
                         <ext:FilterHeader ID="uxOrganizationsGridFilter" runat="server" Remote="true" />
                     </Plugins>
                     <SelectionModel>
-                        <ext:CheckboxSelectionModel runat="server" Mode="Simple" ID="uxOrganizationsGridSelectionModel" AllowDeselect="true">
+                        <ext:RowSelectionModel runat="server" Mode="Multi" ID="uxOrganizationsGridSelectionModel" AllowDeselect="true">
                             <DirectEvents>
                                 <Select OnEvent="deSelectOrganization"></Select>
                                 <Deselect OnEvent="deSelectOrganization"></Deselect>
                             </DirectEvents>
-                        </ext:CheckboxSelectionModel>
+                        </ext:RowSelectionModel>
                     </SelectionModel>
                     <BottomBar>
                         <ext:PagingToolbar ID="uxOrganizationGridPageBar" runat="server" />

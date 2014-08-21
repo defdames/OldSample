@@ -16,10 +16,11 @@ namespace DBI.Data
     {
         public long BUDGET_DETAIL_ID { get; set; }
         public Nullable<long> CODE_COMBINATION_ID { get; set; }
-        public string PERIOD { get; set; }
+        public string PERIOD_NAME { get; set; }
+        public Nullable<long> PERIOD_NUM { get; set; }
         public Nullable<decimal> AMOUNT { get; set; }
         public Nullable<long> ORG_BUDGET_ID { get; set; }
-        public string DETAIL_TYPE { get; set; }
+        public string ACTUALS_IMPORTED_FLAG { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }

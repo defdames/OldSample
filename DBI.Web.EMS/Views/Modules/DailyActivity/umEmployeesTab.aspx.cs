@@ -251,5 +251,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public decimal? LUNCH_LENGTH { get; set; }
         public DateTime? DA_DATE { get; set; }
         public int? STATUS { get; set; }
+        public string TOTAL_HOURS { get; set; }
     }
 }

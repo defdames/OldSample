@@ -16,9 +16,9 @@
                   <ext:TreePanel
                     ID="uxOrganizationTreePanel"
                     runat="server"
-                    Title="Business Units and Hierarchies"
+                    Title="Business Units"
                     Region="West"
-                    Width="300"
+                    Width="250"
                     AutoScroll="true"
                     RootVisible="false"
                     SingleExpand="true"
@@ -26,7 +26,7 @@
                     UseArrows="true"
                     Padding="5"
                     Scroll="Vertical"
-                    Collapsible="false">
+                    Collapsible="true">
                     <Store>
                         <ext:TreeStore ID="uxOrganizationTreeStore" runat="server" OnReadData="deLoadLegalEntities">
                             <Proxy>
@@ -43,7 +43,11 @@
                     <SelectionModel>
                         <ext:TreeSelectionModel runat="server" Mode="Single" AllowDeselect="true">
                             <DirectEvents>
-                                <Select OnEvent="deSelectNode" ><EventMask ShowMask="true"></EventMask></Select>
+                                <Select OnEvent="deSelectNode" ><EventMask ShowMask="true"></EventMask>
+                                    <ExtraParams>
+                                        <ext:Parameter Mode="Raw" Value="record.data.text" Name="ORGANIZATION_NAME"></ext:Parameter>
+                                    </ExtraParams>
+                                </Select>
                             </DirectEvents>
                         </ext:TreeSelectionModel>
                     </SelectionModel>
@@ -54,7 +58,10 @@
                 </ext:TreePanel>
 
                 <ext:TabPanel runat="server" DeferredRender="true" Region="Center" ID="uxCenterTabPanel" Padding="5" >
-
+                    <Items>
+                        <ext:Panel runat="server" Title="Dashboard" Html="This is for a future release that allows a dashboard view for the system admin. Uncompleted budgets, notifications etc.">
+                        </ext:Panel>
+                    </Items>
                 </ext:TabPanel>
                 
             </Items>
