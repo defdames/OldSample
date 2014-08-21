@@ -335,6 +335,7 @@
                                         <ext:ModelField Name="FOREMAN_LICENSE" />
                                         <ext:ModelField Name="ROLE_TYPE" />
 										<ext:ModelField Name="COMMENTS" />
+                                        <ext:ModelField Name="TOTAL_HOURS" />
 									</Fields>
 								</ext:Model>
 							</Model>
@@ -342,18 +343,19 @@
 					</Store>
 					<ColumnModel>
 						<Columns>
-							<ext:Column ID="Column9" runat="server" DataIndex="EMPLOYEE_NAME" Text="Employee Name" Flex="10" />
-							<ext:Column ID="Column10" runat="server" DataIndex="NAME" Text="Equipment Name" Flex="9" />
-							<ext:DateColumn ID="DateColumn2" runat="server" DataIndex="TIME_IN" Text="Time In" Format="M/d/yyyy h:mm tt" Flex="9" />
-							<ext:DateColumn ID="DateColumn3" runat="server" DataIndex="TIME_OUT" Text="Time Out" Format="M/d/yyyy h:mm tt" Flex="10" />
+                            <ext:Column ID="Column10" runat="server" DataIndex="NAME" Text="Equipment Name" Flex="8" />
+							<ext:Column ID="Column9" runat="server" DataIndex="EMPLOYEE_NAME" Text="Employee Name" Flex="9" />
+                            <ext:Column ID="Column4" runat="server" DataIndex="FOREMAN_LICENSE" Text="License" Flex="6" />
+							<ext:DateColumn ID="DateColumn2" runat="server" DataIndex="TIME_IN" Text="Time In" Format="M/d/yyyy h:mm tt" Flex="8" />
+							<ext:DateColumn ID="DateColumn3" runat="server" DataIndex="TIME_OUT" Text="Time Out" Format="M/d/yyyy h:mm tt" Flex="9" />
+                            <ext:Column ID="Column5" runat="server" DataIndex="TOTAL_HOURS" Text="Total Hours" Flex="7" />
 							<ext:Column ID="Column11" runat="server" DataIndex="TRAVEL_TIME_FORMATTED" Text="Travel Time" Flex="6" />
 							<ext:Column ID="Column12" runat="server" DataIndex="DRIVE_TIME_FORMATTED" Text="Drive Time" Flex="5" />
 							<ext:Column runat="server" DataIndex="SHOPTIME_AM_FORMATTED" Text="Shoptime AM" Flex="7" />
 							<ext:Column runat="server" DataIndex="SHOPTIME_PM_FORMATTED" Text="Shoptime PM" Flex="7" />
 							<ext:Column ID="Column13" runat="server" DataIndex="PER_DIEM" Text="Per Diem" Flex="5" />
-                            <ext:Column runat="server" DataIndex="FOREMAN_LICENSE" Text="License" Flex="7" />
                             <ext:Column runat="server" ID="uxRoleTypeColumn" DataIndex="ROLE_TYPE" Text="Role Type" Flex="10" />
-							<ext:Column ID="Column14" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="15" />
+							<ext:Column ID="Column14" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="13" />
 						</Columns>
 					</ColumnModel>
 					<TopBar>
@@ -625,9 +627,9 @@
 					</Store>
 					<ColumnModel>
 						<Columns>
+                            <ext:Column ID="Column6" runat="server" DataIndex="SEGMENT1" Text="Item ID" Flex="15" />
 							<ext:Column runat="server" DataIndex="INV_NAME" Text="Inventory Org" Flex="15" />
 							<ext:Column runat="server" DataIndex="SUB_INVENTORY_SECONDARY_NAME" Text="Sub-Inv Name" Flex="15" />
-							<ext:Column runat="server" DataIndex="SEGMENT1" Text="Item ID" Flex="15" />
 							<ext:Column runat="server" DataIndex="DESCRIPTION" Text="Item" Flex="35" />
 							<ext:Column runat="server" DataIndex="RATE" Text="Quantity" Flex="10" />
                             <ext:Column runat="server" DataIndex="UNIT_OF_MEASURE"	Text="Unit" Flex="10" />

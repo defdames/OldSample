@@ -32,6 +32,22 @@
 		    }
 		    return value;
 		};
+
+		var onShow = function (toolTip, grid) {
+		    var view = grid.getView(),
+            store = grid.getStore(),
+            record = view.getRecord(view.findItemByChild(toolTip.triggerElement)),
+            data = record.data.ACTUAL_HOURS;
+
+		    if (data >= 12) {
+
+		        toolTip.update("OVER 12 HOURS");
+		    } else {
+
+		        return false;
+		    }
+
+		};
 	</script>
 </head>
 <body>
@@ -168,6 +184,16 @@
 					<ext:CheckboxSelectionModel ID="CheckboxSelectionModel1" runat="server" Mode="Multi" />
 				</SelectionModel>                
 			</ext:GridPanel>
+            <ext:ToolTip
+               ID="ToolTip1" 
+            runat="server" 
+            Target="={#{uxPayrollAuditGrid}.getView().el}"
+            Delegate=".x-grid-cell"
+            TrackMouse="true">
+            <Listeners>
+                <BeforeShow Handler="return onShow(this, #{uxPayrollAuditGrid});" />
+            </Listeners>
+        </ext:ToolTip>
 		</Items>
 	</ext:Viewport>
 	</form>

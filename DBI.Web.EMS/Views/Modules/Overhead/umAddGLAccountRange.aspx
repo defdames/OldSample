@@ -46,7 +46,7 @@
                     </Defaults>
                     <Items>
                                 <ext:ComboBox FieldLabel="Company" runat="server" ID="uxSRSegment1" Editable="true" TypeAhead="true"
-                                     AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                     AnchorHorizontal="-5" DisplayField="ID_NAME" ValueField="ID"
                                     MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
                                     <Triggers>
                                         <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
@@ -60,6 +60,7 @@
                                                 <ext:Model ID="Model1" runat="server" IDProperty="ID">
                                                     <Fields>
                                                         <ext:ModelField Name="ID" />
+                                                        <ext:ModelField Name="ID_NAME" />
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>
@@ -119,7 +120,7 @@
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Location" runat="server" ID="uxSRSegment2" Editable="true" TypeAhead="true" Disabled="true"
-                                     AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                     AnchorHorizontal="-5" DisplayField="ID_NAME" ValueField="ID"
                                     MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
                                     <Triggers>
                                         <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
@@ -133,6 +134,7 @@
                                                 <ext:Model ID="Model3" runat="server" IDProperty="ID">
                                                     <Fields>
                                                         <ext:ModelField Name="ID" />
+                                                             <ext:ModelField Name="ID_NAME" />
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>
@@ -182,7 +184,7 @@
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Division" runat="server" ID="uxSRSegment3" Editable="true" TypeAhead="true" Disabled="true"
-                                     AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                     AnchorHorizontal="-5" DisplayField="ID_NAME" ValueField="ID"
                                     MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
                                     <Triggers>
                                         <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
@@ -196,6 +198,7 @@
                                                 <ext:Model ID="Model5" runat="server" IDProperty="ID">
                                                     <Fields>
                                                         <ext:ModelField Name="ID" />
+                                                             <ext:ModelField Name="ID_NAME" />
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>
@@ -241,8 +244,8 @@
                                             " />
                                     </Listeners>
                                 </ext:ComboBox>
-                                <ext:ComboBox FieldLabel="Branch" runat="server" ID="uxSRSegment4" Editable="true" TypeAhead="true" Disabled="true"
-                                     AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                <ext:ComboBox FieldLabel="Department" runat="server" ID="uxSRSegment4" Editable="true" TypeAhead="true" Disabled="true"
+                                     AnchorHorizontal="-5" DisplayField="ID_NAME" ValueField="ID"
                                     MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
                                     <Triggers>
                                         <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
@@ -256,6 +259,7 @@
                                                 <ext:Model ID="Model6" runat="server" IDProperty="ID">
                                                     <Fields>
                                                         <ext:ModelField Name="ID" />
+                                                             <ext:ModelField Name="ID_NAME" />
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>
@@ -299,7 +303,7 @@
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Account" runat="server" ID="uxSRSegment5" Editable="true" TypeAhead="true" Disabled="true"
-                                    AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                    AnchorHorizontal="-5" DisplayField="ID_NAME" ValueField="ID"
                                     MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
                                     <Triggers>
                                         <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
@@ -313,6 +317,7 @@
                                                 <ext:Model ID="Model7" runat="server" IDProperty="ID">
                                                     <Fields>
                                                         <ext:ModelField Name="ID" />
+                                                             <ext:ModelField Name="ID_NAME" />
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>
@@ -353,7 +358,7 @@
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Type" runat="server" ID="uxSRSegment6" Editable="true" TypeAhead="true" Disabled="true"
-                                   AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                   AnchorHorizontal="-5" DisplayField="ID_NAME" ValueField="ID"
                                     MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
                                     <Triggers>
                                         <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
@@ -367,6 +372,7 @@
                                                 <ext:Model ID="Model8" runat="server" IDProperty="ID">
                                                     <Fields>
                                                         <ext:ModelField Name="ID" />
+                                                             <ext:ModelField Name="ID_NAME" />
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>
@@ -404,7 +410,7 @@
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Future" runat="server" ID="uxSRSegment7" Editable="true" TypeAhead="true" Disabled="true"
-                                     AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                     AnchorHorizontal="-5" DisplayField="ID_NAME" ValueField="ID"
                                     TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
                                     <Triggers>
                                         <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
@@ -418,6 +424,7 @@
                                                 <ext:Model ID="Model9" runat="server" IDProperty="ID">
                                                     <Fields>
                                                         <ext:ModelField Name="ID" />
+                                                             <ext:ModelField Name="ID_NAME" />
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>
@@ -464,7 +471,7 @@
                     </Defaults>
                     <Items>
                                 <ext:ComboBox FieldLabel="Company" runat="server" ID="uxERSegment1" Editable="true" TypeAhead="true" Disabled="true" AlwaysMergeItems="false"
-                                     AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                     AnchorHorizontal="-5" DisplayField="ID_NAME" ValueField="ID"
                                     MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
                                     <Triggers>
                                         <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
@@ -478,6 +485,7 @@
                                                 <ext:Model ID="Model2" runat="server" IDProperty="ID">
                                                     <Fields>
                                                         <ext:ModelField Name="ID" />
+                                                             <ext:ModelField Name="ID_NAME" />
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>
@@ -509,7 +517,7 @@
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Location" runat="server" ID="uxERSegment2" Editable="true" TypeAhead="true" Disabled="true"
-                                     AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                     AnchorHorizontal="-5" DisplayField="ID_NAME" ValueField="ID"
                                     MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
                                     <Triggers>
                                         <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
@@ -523,6 +531,7 @@
                                                 <ext:Model ID="Model4" runat="server" IDProperty="ID">
                                                     <Fields>
                                                         <ext:ModelField Name="ID" />
+                                                             <ext:ModelField Name="ID_NAME" />
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>
@@ -533,7 +542,7 @@
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Division" runat="server" ID="uxERSegment3" Editable="true" TypeAhead="true" Disabled="true"
-                                     AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                     AnchorHorizontal="-5" DisplayField="ID_NAME" ValueField="ID"
                                     MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
                                     <Triggers>
                                         <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
@@ -547,6 +556,7 @@
                                                 <ext:Model ID="Model10" runat="server" IDProperty="ID">
                                                     <Fields>
                                                         <ext:ModelField Name="ID" />
+                                                             <ext:ModelField Name="ID_NAME" />
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>
@@ -556,8 +566,8 @@
                                         <Select Handler="#{uxGlAccountSecurityStore}.removeAll();#{uxERSegment4}.enable();#{uxERSegment5}.disable();#{uxERSegment6}.disable();#{uxERSegment7}.disable();#{uxERSegment4}.clearValue();#{uxERSegment4Store}.removeAll(true);#{uxERSegment4Store}.reload();#{uxERSegment5}.clearValue();#{uxERSegment5Store}.removeAll(true);#{uxERSegment6}.clearValue();#{uxERSegment6Store}.removeAll(true);#{uxERSegment7}.clearValue();#{uxERSegment7Store}.removeAll(true);#{uxIncludeExcludeFlag}.disable();" />
                                     </Listeners>
                                 </ext:ComboBox>
-                                <ext:ComboBox FieldLabel="Branch" runat="server" ID="uxERSegment4" Editable="true" TypeAhead="true" Disabled="true"
-                                     AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                <ext:ComboBox FieldLabel="Department" runat="server" ID="uxERSegment4" Editable="true" TypeAhead="true" Disabled="true"
+                                     AnchorHorizontal="-5" DisplayField="ID_NAME" ValueField="ID"
                                     MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
                                     <Triggers>
                                         <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
@@ -571,6 +581,7 @@
                                                 <ext:Model ID="Model11" runat="server" IDProperty="ID">
                                                     <Fields>
                                                         <ext:ModelField Name="ID" />
+                                                             <ext:ModelField Name="ID_NAME" />
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>
@@ -581,7 +592,7 @@
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Account" runat="server" ID="uxERSegment5" Editable="true" TypeAhead="true" Disabled="true"
-                                    AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                    AnchorHorizontal="-5" DisplayField="ID_NAME" ValueField="ID"
                                     MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
                                     <Triggers>
                                         <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
@@ -595,6 +606,7 @@
                                                 <ext:Model ID="Model12" runat="server" IDProperty="ID">
                                                     <Fields>
                                                         <ext:ModelField Name="ID" />
+                                                             <ext:ModelField Name="ID_NAME" />
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>
@@ -605,7 +617,7 @@
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Type" runat="server" ID="uxERSegment6" Editable="true" TypeAhead="true" Disabled="true"
-                                   AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                   AnchorHorizontal="-5" DisplayField="ID_NAME" ValueField="ID"
                                     MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
                                     <Triggers>
                                         <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
@@ -619,6 +631,7 @@
                                                 <ext:Model ID="Model13" runat="server" IDProperty="ID">
                                                     <Fields>
                                                         <ext:ModelField Name="ID" />
+                                                             <ext:ModelField Name="ID_NAME" />
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>
@@ -629,7 +642,7 @@
                                     </Listeners>
                                 </ext:ComboBox>
                                 <ext:ComboBox FieldLabel="Future" runat="server" ID="uxERSegment7" Editable="true" TypeAhead="true" Disabled="true"
-                                     AnchorHorizontal="-5" DisplayField="ID" ValueField="ID"
+                                     AnchorHorizontal="-5" DisplayField="ID_NAME" ValueField="ID"
                                     TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" ForceSelection="true">
                                     <Triggers>
                                         <ext:FieldTrigger Icon="Clear" HideTrigger="true" />
@@ -643,13 +656,14 @@
                                                 <ext:Model ID="Model14" runat="server" IDProperty="ID">
                                                     <Fields>
                                                         <ext:ModelField Name="ID" />
+                                                             <ext:ModelField Name="ID_NAME" />
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>
                                         </ext:Store>
                                     </Store>
                                     <Listeners>
-                                        <Select Handler="#{uxIncludeExcludeFlag}.enable();"></Select>
+                                        <Select Handler="#{uxAddRange}.enable();#{uxGlAccountSecurityStore}.reload();"></Select>
                                     </Listeners>
                                 </ext:ComboBox>
 
@@ -662,7 +676,7 @@
                             runat="server"
                             Border="false"
                             ColumnWidth=".5"
-                            MarginSpec="0 0 0 10">
+                            MarginSpec="0 0 0 10" Hidden="true">
                             <Defaults>
                                 <ext:Parameter Name="Width" Value="250" />
                                 <ext:Parameter Name="LabelWidth" Value="90" />
@@ -677,7 +691,7 @@
                             runat="server"
                             Title="Include / Exclude Toggle"
                             ColumnWidth=".5"
-                            MarginSpec="0 0 0 10">
+                            MarginSpec="0 0 0 10" Hidden="true">
                             <Defaults>
                                 <ext:Parameter Name="Width" Value="250" />
                                 <ext:Parameter Name="LabelWidth" Value="90" />
@@ -724,7 +738,6 @@
                                              #{uxSRSegment6}.disable();
                                              #{uxSRSegment7}.disable();
                                        #{uxAddRange}.disable();
-                                       #{uxIncludeExcludeFlag}.disable();
                                        #{uxGlAccountSecurityStore}.removeAll();"></Click></Listeners>
                                    </ext:Button>
                 <ext:Button ID="uxCloseForm" runat="server" Text="Close Form" >

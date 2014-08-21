@@ -40,20 +40,6 @@ namespace DBI.Data
         }
     }
   
-
-    public class OVERHEAD_GL_RANGE_V : OVERHEAD_GL_RANGE
-        {
-            public string SRSEGMENTS { get; set; }
-            public string ERSEGMENTS { get; set; }
-        }
-
-    public class OVERHEAD_ORG_BUDGETS_V : OVERHEAD_ORG_BUDGETS
-    {
-        public string BUDGET_DESCRIPTION { get; set; }
-        public string BUDGET_STATUS { get; set; }
-    }
-
-
     public partial class OVERHEAD_GL_RANGE
     {
 
@@ -93,16 +79,18 @@ namespace DBI.Data
     {
         public static IQueryable<OVERHEAD_ORG_BUDGETS_V> BudgetListByOrganizationID(long organizationID, Entities context)
         {
-            var data = context.OVERHEAD_ORG_BUDGETS.Where(x => x.ORGANIZATION_ID == organizationID);
+            var data = context.OVERHEAD_ORG_BUDGETS.Where(x => x.ORGANIZATION_ID == organizationID).ToList();
             List<OVERHEAD_ORG_BUDGETS_V> _rdata = new List<OVERHEAD_ORG_BUDGETS_V>();
 
             foreach (OVERHEAD_ORG_BUDGETS _budget in data)
             {
                 OVERHEAD_ORG_BUDGETS_V _r = new OVERHEAD_ORG_BUDGETS_V();
                 _r.BUDGET_DESCRIPTION = OVERHEAD_BUDGET_TYPE.GetDescriptionByTypeId(_budget.OVERHEAD_BUDGET_TYPE_ID);
+                _r.OVERHEAD_BUDGET_TYPE_ID = _budget.OVERHEAD_BUDGET_TYPE_ID;
                 _r.BUDGET_STATUS = (_budget.STATUS == "O") ? "Open" : (_budget.STATUS == "C") ? "Closed" : (_budget.STATUS == "P") ? "Pending" : "Never Opened";
                 _r.ORG_BUDGET_ID = _budget.ORG_BUDGET_ID;
                 _r.ORGANIZATION_ID = _budget.ORGANIZATION_ID;
+                _r.ORGANIZATION_NAME = HR.Organization(_budget.ORGANIZATION_ID).ORGANIZATION_NAME;
                 _r.FISCAL_YEAR = _budget.FISCAL_YEAR;
                 _rdata.Add(_r);
             }
@@ -130,5 +118,30 @@ namespace DBI.Data
         }
     }
 
+
+    public class OVERHEAD_GL_RANGE_V : OVERHEAD_GL_RANGE
+    {
+        public string SRSEGMENTS { get; set; }
+        public string ERSEGMENTS { get; set; }
+        public string INCLUDE_EXCLUDE { get; set; }
+    }
+
+    public class OVERHEAD_ORG_BUDGETS_V : OVERHEAD_ORG_BUDGETS
+    {
+        public string BUDGET_DESCRIPTION { get; set; }
+        public string BUDGET_STATUS { get; set; }
+        public string ORGANIZATION_NAME { get; set; }
+        public string ACCOUNT_RANGE { get; set; }
+    }
+
+    public class GL_PERIODS_V
+    {
+        public string ENTERED_PERIOD_NAME { get; set; }
+        public short PERIOD_YEAR { get; set; }
+        public short PERIOD_NUM { get; set; }
+        public string PERIOD_TYPE { get; set; }
+        public DateTime START_DATE { get; set; }
+        public DateTime END_DATE { get; set; }
+    }
 
 }

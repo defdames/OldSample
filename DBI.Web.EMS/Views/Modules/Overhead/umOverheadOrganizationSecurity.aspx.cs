@@ -64,6 +64,9 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                 var data = HR.OverheadOrganizationStatusByHierarchy(_hierarchyID, _organizationID);
 
+                if (e.Parameters["TOGGLE_ACTIVE"] == "Y")
+                    data = data.Where(x => x.ORGANIZATION_STATUS == "Active").ToList();
+            
                 int count;
                 uxOrganizationSecurityStore.DataSource = GenericData.EnumerableFilterHeader<HR.ORGANIZATION_V1>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 e.Total = count;
@@ -116,11 +119,35 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             }
         }
 
-        protected void deToggleInActive(object sender, DirectEventArgs e)
+        protected void deHideInActive(object sender, DirectEventArgs e)
         {
+            if (uxHideInActiveCheckbox.Checked)
+            {
+                Ext.Net.ParameterCollection ps = new Ext.Net.ParameterCollection();
 
+                Ext.Net.StoreParameter _p = new Ext.Net.StoreParameter();
+                _p.Mode = ParameterMode.Value;
+                _p.Name = "TOGGLE_ACTIVE";
+                _p.Value = "Y";
+                ps.Add(_p);
 
+                uxOrganizationSecurityStore.Reload(ps);
+            }
+            else
+            {
+                Ext.Net.ParameterCollection ps = new Ext.Net.ParameterCollection();
+
+                Ext.Net.StoreParameter _p = new Ext.Net.StoreParameter();
+                _p.Mode = ParameterMode.Value;
+                _p.Name = "TOGGLE_ACTIVE";
+                _p.Value = "N";
+                ps.Add(_p);
+
+                uxOrganizationSecurityStore.Reload(ps);
+            }
         }
+
+       
 
     }
 }
