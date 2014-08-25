@@ -16,16 +16,13 @@
                     Region="North"
                     Margins="5 5 5 5"
                     Title="Information" 
-                    Height="175" 
+                    Height="75" 
                     BodyPadding="5"
                     Frame="true" 
                     Icon="Information">
                     <Content>
                         <b>Open Periods</b>
-                        <p>Allows you to select a range of organizations and open the period that's selected. NOTE: All open periods other then the one selected will be closed in the same fiscal year!</p>
-                        </br>
                         <b>Edit Periods</b>
-                        <p>Allows you to open and close forecast budgets on a single organization. </p>
                     </Content>
                 </ext:Panel>
 
@@ -33,7 +30,17 @@
                      <TopBar>
                          <ext:Toolbar runat="server">
                              <Items>
-                                 <ext:Button runat="server" Text="Open Periods" Icon="FolderMagnify" ID="uxMassEdit" Disabled="true">
+                                 <ext:Button runat="server" Text="Open" Icon="FolderMagnify" ID="uxMassEdit" Disabled="true">
+                                     <Listeners>
+                                         <Click Handler="#{FormPanel1}.reset();#{uxOpenCloseBudget}.show();"></Click>
+                                     </Listeners>
+                                 </ext:Button>
+                                 <ext:Button runat="server" Text="Close" Icon="Cancel" ID="uxClose" Disabled="true">
+                                     <Listeners>
+                                         <Click Handler="#{FormPanel1}.reset();#{uxOpenCloseBudget}.show();"></Click>
+                                     </Listeners>
+                                 </ext:Button>
+                                  <ext:Button runat="server" Text="Lock" Icon="Lock" ID="uxPending" Disabled="true">
                                      <Listeners>
                                          <Click Handler="#{FormPanel1}.reset();#{uxOpenCloseBudget}.show();"></Click>
                                      </Listeners>
