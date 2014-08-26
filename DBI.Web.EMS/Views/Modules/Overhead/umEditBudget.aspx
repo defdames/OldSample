@@ -22,11 +22,11 @@
                     x = m[1].length > 3 ? m[1].length % 3 : 0;
 
 
-                var r = (n < 0 ? '-' : '') // preserve minus sign
+                var r = (n < 0 ? '(' : '') // preserve minus sign
                         + (x ? m[1].substr(0, x) + tSeparator : "")
                         + m[1].substr(x).replace(/(\d{3})(?=\d)/g, "$1" + tSeparator)
                         + (dp ? dSeparator + (+m[2] || 0).toFixed(dp).substr(2) : "")
-                        + " " + symbol;
+                        + (n < 0 ? ')' : '') + " " + symbol;
 
                 return Ext.String.format(template, (n >= 0) ? "black" : "red", r);
             };
@@ -46,11 +46,11 @@
                     x = m[1].length > 3 ? m[1].length % 3 : 0;
 
 
-                var r = (n < 0 ? '-' : '') // preserve minus sign
+                var r = (n < 0 ? '(' : '') // preserve minus sign
                         + (x ? m[1].substr(0, x) + tSeparator : "")
                         + m[1].substr(x).replace(/(\d{3})(?=\d)/g, "$1" + tSeparator)
                         + (dp ? dSeparator + (+m[2] || 0).toFixed(dp).substr(2) : "")
-                        + " " + symbol;
+                        + (n < 0 ? ')' : '') + " " + symbol;
 
                 return Ext.String.format(template, (n >= 0) ? "black" : "red", r);
             };

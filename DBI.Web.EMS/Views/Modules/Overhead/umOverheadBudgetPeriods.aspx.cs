@@ -69,8 +69,35 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             uxForecastPeriodsByOrganizationSelectionModel.DeselectAll(true);
             uxOpenPeriod.Disable();
             uxClosePeriod.Disable();
+            uxLockPeriod.Disable();
 
-        }       
+        }
+
+        protected void deLockPeriod(object sender, DirectEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                foreach (SelectedRow row in uxForecastPeriodsByOrganizationSelectionModel.SelectedRows)
+                {
+                    long _budgetID = long.Parse(row.RecordID);
+
+                    OVERHEAD_ORG_BUDGETS _budget = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.ORG_BUDGET_ID == _budgetID).SingleOrDefault();
+
+                    if (_budget != null)
+                    {
+                            _budget.STATUS = "L";
+                            GenericData.Update<OVERHEAD_ORG_BUDGETS>(_budget);
+                    }
+                }
+            }
+
+            uxForecastPeriodsByOrganization.Reload();
+            uxForecastPeriodsByOrganizationSelectionModel.DeselectAll(true);
+            uxOpenPeriod.Disable();
+            uxClosePeriod.Disable();
+            uxLockPeriod.Disable();
+
+        }    
 
         protected void deClosePeriod(object sender, DirectEventArgs e)
         {
@@ -98,6 +125,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             uxForecastPeriodsByOrganizationSelectionModel.DeselectAll(true);
             uxOpenPeriod.Disable();
             uxClosePeriod.Disable();
+            uxLockPeriod.Disable();
         }       
 
 
@@ -145,11 +173,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
                 uxOpenPeriod.Enable();
                 uxClosePeriod.Enable();
+                uxLockPeriod.Enable();
             }
             else
             {
                 uxOpenPeriod.Disable();
                 uxClosePeriod.Disable();
+                uxLockPeriod.Disable();
             }
 
         }
