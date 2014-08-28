@@ -314,6 +314,51 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         // Reports
         protected void deLoadReports(object sender, StoreReadDataEventArgs e)
         {
+
+                long orgID = long.Parse(Request.QueryString["OrgID"]);
+                string strOrgID = Request.QueryString["OrgID"];
+                string orgName = Request.QueryString["orgName"];
+                long yearID = long.Parse(Request.QueryString["fiscalYear"]);
+                string strYearID = Request.QueryString["fiscalYear"];
+                long verID = long.Parse(Request.QueryString["verID"]);
+                string strVerID = Request.QueryString["verID"];
+
+                long prevYearID = Convert.ToInt64(uxHidPrevYear.Text);
+                string strPrevYearID = uxHidPrevYear.Text;
+                long prevVerID = Convert.ToInt64(uxHidPrevVer.Text);
+                string strPrevVerID = uxHidPrevVer.Text;
+
+                string url = "/Views/Modules/BudgetBidding/Reports/umReport1.aspx?orgName=" + orgName + "strOrgID=" + strOrgID + "strYearID=" + strYearID + "strVerID=" + strVerID + "strPrevYearID=" + strPrevYearID + "strPrevVerID=" + strPrevVerID;
+
+                Window win = new Window
+                {
+                    ID = "uxReport",
+                    Title = "Report",
+                    Height = 350,
+                    Width = 500,
+                    Modal = true,
+                    Resizable = true,
+                    CloseAction = CloseAction.Destroy,
+                    Loader = new ComponentLoader
+                    {
+                        Mode = LoadMode.Frame,
+                        DisableCaching = true,
+                        Url = url,
+                        AutoLoad = true,
+                        LoadMask =
+                        {
+                            ShowMask = true
+                        }
+                    }
+
+
+                };
+                //win.Listeners.Close.Handler = "#{uxPayrollAuditGrid}.getStore().load();";
+
+                win.Render(this.Form);
+                win.Show();
+        
+            
            
         }
         protected void deChooseReport(object sender, DirectEventArgs e)
@@ -1504,7 +1549,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         
         private void LoadReport()
         {
-
+            
         }
 
     }
