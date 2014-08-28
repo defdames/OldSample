@@ -101,7 +101,7 @@
                             <ext:StoreParameter Name="CrossingId" Value="#{uxCrossingIncidentGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
                         </Parameters>
                         <Model>
-                            <ext:Model ID="Model1" runat="server">
+                            <ext:Model ID="Model1" runat="server" >
                                 <Fields>
 
 

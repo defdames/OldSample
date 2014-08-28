@@ -156,9 +156,7 @@
                             <ExtraParams>
                                 <ext:Parameter Name="SupplementalInfo" Value="Ext.encode(#{uxSupplementalGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
                             </ExtraParams>
-                          <%--    <ExtraParams>
-                                    <ext:Parameter Name="SupplementalId" Value="#{uxSupplementalCrossingGrid}.getSelectionModel().getSelection()[0].data.SUPPLEMENTAL_ID" Mode="Raw" />
-                                </ExtraParams>--%>
+                       
                         </Click>
                     </DirectEvents>
 
@@ -192,6 +190,7 @@
                         <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                             <Items>
                                 <ext:DateField ID="uxAddApprovedDateField" runat="server" FieldLabel="Approved Date" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" Editable="false"/>
+                                <ext:DateField ID="uxAddCutDateField" runat="server" FieldLabel="Cut Date" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" Editable="false"/>
 
                                 <ext:ComboBox ID="uxAddServiceType"
                                     runat="server"
@@ -234,7 +233,65 @@
 
                             </Items>
                         </ext:FieldContainer> 
+                        
 
+                        
+                           <ext:DropDownField ID="uxAddProjectDropDownField" runat="server" FieldLabel="Choose Project" AnchorHorizontal="100%" LabelAlign="Right" Width="475" Mode="ValueText" Editable="false">
+                                                    <Component>
+                                                        <ext:GridPanel runat="server"
+                                                            ID="uxAddProject"
+                                                            Layout="HBoxLayout">
+                                                            <Store>
+                                                                <ext:Store runat="server"
+                                                                    ID="uxSupplementalProjectStore"
+                                                                    PageSize="10"
+                                                                    RemoteSort="true"
+                                                                    OnReadData="deAddProjectGrid">
+                                                                    <Model>
+                                                                        <ext:Model ID="Model6" runat="server">
+                                                                            <Fields>
+                                                                                <ext:ModelField Name="PROJECT_ID" />
+                                                                                <ext:ModelField Name="LONG_NAME" />
+                                                                                <ext:ModelField Name="SEGMENT1" />
+                                                                                <ext:ModelField Name="ORGANIZATION_NAME" />
+                                                                            </Fields>
+                                                                        </ext:Model>
+                                                                    </Model>
+                                                                    <Proxy>
+                                                                        <ext:PageProxy />
+                                                                    </Proxy>
+                                                      
+                                                                </ext:Store>
+                                                            </Store>
+                                                            <ColumnModel>
+                                                                <Columns>
+                                                                    <ext:Column ID="Column11" runat="server" DataIndex="SEGMENT1" Text="Project" Flex="1" />
+                                                                    <ext:Column ID="Column4" runat="server" DataIndex="LONG_NAME" Text="Project Name" Flex="2" />
+                                                                    <ext:Column ID="Column14" runat="server" DataIndex="ORGANIZATION_NAME" Text="Organization Name" Flex="1" />
+                                                                </Columns>
+                                                            </ColumnModel>
+                                                            <BottomBar>
+                                                                <ext:PagingToolbar ID="PagingToolbar3" runat="server" />
+                                                            </BottomBar>
+                                                            <SelectionModel>
+                                                                <ext:RowSelectionModel ID="RowSelectionModel3" runat="server" Mode="Single" />
+                                                            </SelectionModel>
+                                                            <DirectEvents>
+                                                                <SelectionChange OnEvent="deAddProjectValue">
+                                                                    <ExtraParams>
+                                                                        <ext:Parameter Name="ProjectId" Value="#{uxAddProject}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
+                                                                        <ext:Parameter Name="ProjectName" Value="#{uxAddProject}.getSelectionModel().getSelection()[0].data.SEGMENT1" Mode="Raw" />
+                                                                        <ext:Parameter Name="Type" Value="Add" />
+                                                                    </ExtraParams>
+                                                                </SelectionChange>
+                                                            </DirectEvents>
+                                                            <Plugins>
+                                                                <ext:FilterHeader runat="server" ID="uxAddProjectFilter" Remote="true" />
+                                                            </Plugins>
+                                                        </ext:GridPanel>
+                                                    </Component>
+                                                </ext:DropDownField>
+                         
 
                         <ext:TextArea ID="uxAddRemarks" runat="server" FieldLabel="Remarks" AnchorHorizontal="92%" LabelAlign="Right" />
                     </Items>

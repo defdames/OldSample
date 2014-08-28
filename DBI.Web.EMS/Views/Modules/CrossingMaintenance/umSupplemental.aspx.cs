@@ -136,10 +136,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             //do type conversions
             DateTime ApprovedDate = (DateTime)uxAddApprovedDateField.Value;
+            DateTime CutDate = (DateTime)uxAddCutDateField.Value;
             decimal SquareFeet = Convert.ToDecimal(uxAddSquareFeet.Value);
             //string TruckNumber = uxAddEquipmentDropDown.Value.ToString();
             string ServiceType = uxAddServiceType.Value.ToString();
             string Recurring = uxAddRecurringBox.Value.ToString();
+            long ProjectName = Convert.ToInt64(uxAddProjectDropDownField.Value);
+
 
             if (uxAddRecurringBox.Checked)
             {
@@ -166,6 +169,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     CREATED_BY = User.Identity.Name,
                     MODIFIED_BY = User.Identity.Name,
                     CROSSING_ID = CrossingId,
+                    CUT_TIME = CutDate,
+                    PROJECT_ID = ProjectName,
                 };
             }
             try
@@ -198,104 +203,36 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             });
         }
-        //protected void deEditSupplementalForm(object sender, DirectEventArgs e)
-        //{
-        //    string json = e.ExtraParams["SupplementalInfo"];
-        //    List<SupplementalDetails> SupplementalList = JSON.Deserialize<List<SupplementalDetails>>(json);
-        //    foreach (SupplementalDetails Supplemental in SupplementalList)
-        //    {
-
-        //        uxEditApprovedDateField.SetValue(Supplemental.APPROVED_DATE);
-        //        uxEditSquareFeet.SetValue(Supplemental.SQUARE_FEET);
-        //        uxEditServiceTypes.SetValue(Supplemental.SERVICE_TYPE);
-        //        uxEditTruckNumber.SetValue(Supplemental.TRUCK_NUMBER);
-        //        uxEditRecurringBox.SetValue(Supplemental.RECURRING);
-        //        uxEditRemarks.SetValue(Supplemental.REMARKS);
 
 
-        //        if (Supplemental.RECURRING == "Y")
-        //        {
-        //            uxEditRecurringBox.Checked = true;
-        //        }
-        //    }
+        protected void deAddProjectValue(object sender, DirectEventArgs e)
+        {
+            switch (e.ExtraParams["Type"])
+            {
+                case "Add":
+                    uxAddProjectDropDownField.SetValue(e.ExtraParams["ProjectId"], e.ExtraParams["ProjectName"]);
+                    uxAddProjectFilter.ClearFilter();
+                    break;
 
-        //}
-
-
-
-
-
-        //protected void deEditSupplemental(object sender, DirectEventArgs e)
-        //{
-        //    CROSSING_SUPPLEMENTAL data;
-
-        //    //Do type conversions
-        //    DateTime ApprovedDate = (DateTime)uxEditApprovedDateField.Value;
-        //    decimal SquareFeet = Convert.ToDecimal(uxEditSquareFeet.Value);
-        //    string ServiceType = uxEditServiceTypes.Value.ToString();
-        //    string TruckNumber = uxEditTruckNumber.Value.ToString();
-        //    string Recurring = uxEditRecurringBox.Value.ToString();
-        //    string Remarks = uxEditRemarks.Value.ToString();
-
-        //    if (uxEditRecurringBox.Checked)
-        //    {
-        //        Recurring = "Y";
-        //    }
-        //    else
-        //    {
-        //        Recurring = "N";
-        //    }
+            }
+        }
+        protected void deAddProjectGrid(object sender, StoreReadDataEventArgs e)
+        {
 
 
-        //    //Get record to be edited
-        //    using (Entities _context = new Entities())
-        //    {
-        //        var SupplementalId = long.Parse(e.ExtraParams["SupplementalId"]);
-        //        data = (from d in _context.CROSSING_SUPPLEMENTAL                   
-        //                where d.SUPPLEMENTAL_ID == SupplementalId
+            long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+            List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
+            using (Entities _context = new Entities())
+            {
+                IQueryable<CROSSING_MAINTENANCE.ProjectList> data = CROSSING_MAINTENANCE.GetCrossingSecurityProjectList(RailroadId, _context).Where(v => v.PROJECT_TYPE == "CUSTOMER BILLING" && v.TEMPLATE_FLAG == "N" && v.PROJECT_STATUS_CODE == "APPROVED" && v.ORGANIZATION_NAME.Contains(" RR") && OrgsList.Contains(v.CARRYING_OUT_ORGANIZATION_ID) && RailroadId != null);
 
-        //                select d).Single();
-        //    }
+                int count;
+                uxSupplementalProjectStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.ProjectList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                e.Total = count;
 
-        //            data.APPROVED_DATE = ApprovedDate;
-        //            //data.COMPLETED_DATE = CompletedDate;
-        //            data.SQUARE_FEET = SquareFeet;
-        //            data.TRUCK_NUMBER = TruckNumber;
-        //            data.SERVICE_TYPE = ServiceType;
-        //            data.RECURRING = Recurring;
-        //            data.REMARKS = Remarks;
-
-        //        //Write to DB
-        //        GenericData.Update<CROSSING_SUPPLEMENTAL>(data);
-
-
-        //        uxEditSupplementalWindow.Hide();
-        //        uxEditSupplementalForm.Reset();
-        //        uxSupplementalStore.Reload();
-
-        //        Notification.Show(new NotificationConfig()
-        //        {
-        //            Title = "Success",
-        //            Html = "Supplemental Edited Successfully",
-        //            HideDelay = 1000,
-        //            AlignCfg = new NotificationAlignConfig
-        //            {
-        //                ElementAnchor = AnchorPoint.Center,
-        //                TargetAnchor = AnchorPoint.Center
-        //            }
-        //        });
-        //    }
-        //protected void deStoreGridValue(object sender, DirectEventArgs e)
-        //{
-        //    if (e.ExtraParams["Form"] == "Add")
-        //    {
-        //        //Set value and text for equipment
-        //        uxAddEquipmentDropDown.SetValue(e.ExtraParams["EquipmentName"], e.ExtraParams["EquipmentName"]);
-
-        //        //Clear existing filters
-        //        uxAddEquipmentFilter.ClearFilter();
-        //    }
-        //}
+            }
+        }
+               
        
         public class CrossingForSupplementalDetails
         {
@@ -360,7 +297,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                         TargetAnchor = AnchorPoint.Center
                     }
                 });
-            }
+            } 
         }
     }
 }

@@ -60,12 +60,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     if (Application == "2")
                     
                     {
-                        allData = allData.Where(x => x.APPLICATION_REQUESTED != null && x.APPLICATION_REQUESTED.Max() == 1);
+                       // allData = allData.Where(x => x.APPLICATION_REQUESTED != null && x.APPLICATION_REQUESTED == 1).OrderByDescending(x => x.APPLICATION_REQUESTED).Take(1).Any(x => x.APPLICATION_REQUESTED == 1);//Where(x => x.APPLICATION_REQUESTED != null && x.APPLICATION_REQUESTED == 1);
+                       
                     }
 
                     if (Application == "3")
                     {
-                        allData = allData.Where(x => x.APPLICATION_REQUESTED == "2" );
+                        allData = allData.Where(x => x.APPLICATION_REQUESTED == "2");
                     }
                     List<object> _data = allData.ToList<object>();
 
@@ -76,7 +77,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             }
         }
-
+      
         protected void deLoadData(object sender, DirectEventArgs e)
         {
             uxApplicationStore.Reload();
