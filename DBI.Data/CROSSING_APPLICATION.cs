@@ -17,7 +17,7 @@ namespace DBI.Data
         public long APPLICATION_ID { get; set; }
         public decimal APPLICATION_NUMBER { get; set; }
         public long CROSSING_ID { get; set; }
-        public string APPLICATION_REQUESTED { get; set; }
+        public Nullable<decimal> APPLICATION_REQUESTED { get; set; }
         public Nullable<System.DateTime> APPLICATION_DATE { get; set; }
         public string RAILROAD { get; set; }
         public string SERVICE_UNIT { get; set; }
