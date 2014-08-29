@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DBI.Data.Generic;
 using System.Web.UI;
+using System.Web;
 using System.Web.UI.WebControls;
 using DBI.Core.Web;
 using DBI.Data;
@@ -98,19 +99,72 @@ namespace DBI.Data
             return (from d in _context.CROSSING_SERVICE_UNIT
                     select new ServiceUnitList { SERVICE_UNIT_ID = d.SERVICE_UNIT_ID, SERVICE_UNIT_NAME = d.SERVICE_UNIT_NAME });
         }
-        public static IQueryable<CrossingData> GetAppCrossingList(decimal RailroadId, string Application, Entities _context)
-        {
-                      
-            return (from d in _context.CROSSINGS
-                    join a in _context.CROSSING_APPLICATION on d.CROSSING_ID equals a.CROSSING_ID into appGroup
-                    from app in appGroup.DefaultIfEmpty()
-                    join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID                
-                    join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID
-                    where d.RAILROAD_ID == RailroadId && d.STATUS != "DELETED"
-                    select new CrossingData { APPLICATION_REQUESTED = app.APPLICATION_REQUESTED, RAILROAD_ID = d.RAILROAD_ID, CONTACT_ID = d.CONTACT_ID, CROSSING_ID = d.CROSSING_ID, STATUS = d.STATUS, STATE = d.STATE,
-                    CROSSING_NUMBER = d.CROSSING_NUMBER, SERVICE_UNIT = d.SERVICE_UNIT,SUB_DIVISION = d.SUB_DIVISION, CONTACT_NAME = d.CROSSING_CONTACTS.CONTACT_NAME,
-                    PROJECT_TYPE = p.PROJECT_TYPE, CARRYING_OUT_ORGANIZATION_ID = p.CARRYING_OUT_ORGANIZATION_ID, PROJECT_STATUS_CODE = p.PROJECT_STATUS_CODE, TEMPLATE_FLAG = p.TEMPLATE_FLAG, PROJECT_ID = p.PROJECT_ID, ORGANIZATION_NAME = p.ORGANIZATION_NAME }).Distinct();
+        public static List<CrossingData1> GetAppCrossingList(decimal RailroadId, decimal UserId)
+        {            
+            string sql = string.Format(@"                           
+               WITH
+ALLOWED_RECORDS AS (
+  SELECT a.RAILROAD_ID,
+    a.CONTACT_ID,
+    a.CROSSING_ID,
+    a.STATUS,
+    a.STATE,
+    a.CROSSING_NUMBER,
+    a.SERVICE_UNIT,
+    a.SUB_DIVISION   
+  FROM CROSSINGS a
+  INNER JOIN CROSSING_RELATIONSHIP b ON a.CROSSING_ID = b.CROSSING_ID
+  INNER JOIN PROJECTS_V c ON b.PROJECT_ID = c.PROJECT_ID
+  INNER JOIN SYS_USER_ORGS d ON c.CARRYING_OUT_ORGANIZATION_ID = d.ORG_ID
+  WHERE d.USER_ID = {1}
+)
+SELECT MAX(CROSSING_APPLICATION.APPLICATION_REQUESTED) APPLICATION_REQUESTED,
+                      ALLOWED_RECORDS.RAILROAD_ID,
+                      ALLOWED_RECORDS.CONTACT_ID,
+                      ALLOWED_RECORDS.CROSSING_ID,
+                      ALLOWED_RECORDS.STATUS,
+                      ALLOWED_RECORDS.STATE,
+                      ALLOWED_RECORDS.CROSSING_NUMBER,
+                      ALLOWED_RECORDS.SERVICE_UNIT,
+                      ALLOWED_RECORDS.SUB_DIVISION,
+                      PROJECTS_V.PROJECT_TYPE                      
+                    FROM (ALLOWED_RECORDS
+                    LEFT JOIN CROSSING_APPLICATION ON ALLOWED_RECORDS.CROSSING_ID = CROSSING_APPLICATION.CROSSING_ID
+                    LEFT JOIN CROSSING_RELATIONSHIP ON ALLOWED_RECORDS.CROSSING_ID = CROSSING_RELATIONSHIP.CROSSING_ID)
+                    LEFT JOIN PROJECTS_V ON CROSSING_RELATIONSHIP.PROJECT_ID = PROJECTS_V.PROJECT_ID
+                    WHERE ALLOWED_RECORDS.RAILROAD_ID = {0} AND ALLOWED_RECORDS.STATUS <> 'DELETED'  AND PROJECTS_V.PROJECT_TYPE = 'CUSTOMER BILLING' AND PROJECTS_V.TEMPLATE_FLAG = 'N' AND PROJECTS_V.PROJECT_STATUS_CODE = 'APPROVED'
+                    GROUP BY ALLOWED_RECORDS.RAILROAD_ID,
+                      ALLOWED_RECORDS.CONTACT_ID,
+                      ALLOWED_RECORDS.CROSSING_ID,
+                      ALLOWED_RECORDS.STATUS,
+                      ALLOWED_RECORDS.STATE,
+                      ALLOWED_RECORDS.CROSSING_NUMBER,
+                      ALLOWED_RECORDS.SERVICE_UNIT,
+                      ALLOWED_RECORDS.SUB_DIVISION,
+                      PROJECTS_V.PROJECT_TYPE    
+
+                   ", RailroadId, UserId);
+
+            using (Entities context = new Entities())
+            {
+                return context.Database.SqlQuery<CrossingData1>(sql).ToList();
+            }
         }
+
+        //public static IQueryable<CrossingData> GetAppCrossingList(decimal RailroadId, decimal Application, Entities _context)
+        //{
+
+                      
+        //    return (from d in _context.CROSSINGS
+        //          join a in _context.CROSSING_APPLICATION on d.CROSSING_ID equals a.CROSSING_ID into appGroup
+        //           from app in appGroup.DefaultIfEmpty()
+        //           join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID                
+        //           join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID
+        //           where d.RAILROAD_ID == RailroadId && d.STATUS != "DELETED"
+        //          select new CrossingData { APPLICATION_REQUESTED = app.APPLICATION_REQUESTED, RAILROAD_ID = d.RAILROAD_ID, CONTACT_ID = d.CONTACT_ID, CROSSING_ID = d.CROSSING_ID, STATUS = d.STATUS, STATE = d.STATE,
+        //           CROSSING_NUMBER = d.CROSSING_NUMBER, SERVICE_UNIT = d.SERVICE_UNIT,SUB_DIVISION = d.SUB_DIVISION, CONTACT_NAME = d.CROSSING_CONTACTS.CONTACT_NAME,
+        //           PROJECT_TYPE = p.PROJECT_TYPE, CARRYING_OUT_ORGANIZATION_ID = p.CARRYING_OUT_ORGANIZATION_ID, PROJECT_STATUS_CODE = p.PROJECT_STATUS_CODE, TEMPLATE_FLAG = p.TEMPLATE_FLAG, PROJECT_ID = p.PROJECT_ID, ORGANIZATION_NAME = p.ORGANIZATION_NAME }).Distinct();
+        //}
         public static IQueryable<CrossingData> GetSuppCrossingList(decimal RailroadId, Entities _context)
         {
             return (from d in _context.CROSSINGS
@@ -166,7 +220,7 @@ namespace DBI.Data
                       DATE_REPORTED = i.DATE_REPORTED, DATE_CLOSED = i.DATE_CLOSED, SLOW_ORDER = i.SLOW_ORDER, REMARKS = i.REMARKS });
 
           }
-          public static IQueryable<CompletedCrossings> GetCompletedCrossings(decimal RailroadId, string Application, Entities _context)
+          public static IQueryable<CompletedCrossings> GetCompletedCrossings(decimal RailroadId, decimal Application, Entities _context)
           {
               return (from a in _context.CROSSING_APPLICATION
                       join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
@@ -209,7 +263,7 @@ namespace DBI.Data
                       });
 
           }
-          public static IQueryable<StateCrossingList> GetStateCrossingList(decimal RailroadId, string Application, Entities _context)
+          public static IQueryable<StateCrossingList> GetStateCrossingList(decimal RailroadId, decimal Application, Entities _context)
           {
               return (from d in _context.CROSSINGS
                       join a in _context.CROSSING_APPLICATION on d.CROSSING_ID equals a.CROSSING_ID
@@ -241,7 +295,7 @@ namespace DBI.Data
                                 APPLICATION_REQUESTED = a.APPLICATION_REQUESTED
                             });
           }
-          public static IQueryable<ApplicationDateList> GetAppDate(decimal RailroadId, string Application, Entities _context)
+          public static IQueryable<ApplicationDateList> GetAppDate(decimal RailroadId, decimal Application, Entities _context)
           {
               return (from d in _context.CROSSING_APPLICATION
                       join c in _context.CROSSINGS on d.CROSSING_ID equals c.CROSSING_ID
@@ -261,7 +315,7 @@ namespace DBI.Data
                          APPLICATION_REQUESTED = d.APPLICATION_REQUESTED,
                       });
           }
-          public static IQueryable<ApplicationDateList> GetInspections(decimal RailroadId, string Application, Entities _context)
+          public static IQueryable<ApplicationDateList> GetInspections(decimal RailroadId, decimal Application, Entities _context)
           {
               return (from d in _context.CROSSING_APPLICATION
                       join c in _context.CROSSINGS on d.CROSSING_ID equals c.CROSSING_ID
@@ -458,7 +512,7 @@ namespace DBI.Data
               public string CROSSING_NUMBER { get; set; }
               public long APPLICATION_ID { get; set; }
               public long CROSSING_ID { get; set; }
-              public string APPLICATION_REQUESTED { get; set; }
+              public decimal? APPLICATION_REQUESTED { get; set; }
               public DateTime? APPLICATION_DATE { get; set; }
               public string SERVICE_UNIT { get; set; }
               public string SUB_DIVISION { get; set; }
@@ -487,7 +541,7 @@ namespace DBI.Data
               public decimal? LONGITUDE { get; set; }
               public decimal? LATITUDE { get; set; }
               public string SPECIAL_INSTRUCTIONS { get; set; }
-              public string APPLICATION_REQUESTED { get; set; }
+              public decimal? APPLICATION_REQUESTED { get; set; }
               public string COUNTY { get; set; }
               public string CITY { get; set; }
               public string STREET { get; set; }
@@ -514,7 +568,7 @@ namespace DBI.Data
               public string CROSSING_NUMBER { get; set; }
               public long APPLICATION_ID { get; set; }
               public long CROSSING_ID { get; set; }
-              public string APPLICATION_REQUESTED { get; set; }
+              public decimal? APPLICATION_REQUESTED { get; set; }
               public DateTime? APPLICATION_DATE { get; set; }
               public string SERVICE_UNIT { get; set; }
               public string SUB_DIVISION { get; set; }
@@ -539,7 +593,7 @@ namespace DBI.Data
             public long CROSSING_ID { get; set; }
             public string CROSSING_NUMBER { get; set; }
             public decimal APPLICATION_NUMBER { get; set; }
-            public string APPLICATION_REQUESTED { get; set; }
+            public decimal? APPLICATION_REQUESTED { get; set; }
             public DateTime? APPLICATION_DATE { get; set; }
             public string TRUCK_NUMBER { get; set; }
             public long FISCAL_YEAR { get; set; }
@@ -642,7 +696,26 @@ namespace DBI.Data
             public string ORGANIZATION_NAME { get; set; }
             public string STATUS { get; set; }
             public long CARRYING_OUT_ORGANIZATION_ID { get; set; }
-            public string APPLICATION_REQUESTED { get; set; }
+            public decimal? APPLICATION_REQUESTED { get; set; }
+        }
+        public class CrossingData1
+        {
+            public decimal? APPLICATION_REQUESTED { get; set; }
+            public decimal? RAILROAD_ID { get; set; }
+            public decimal? CONTACT_ID { get; set; }
+            public long CROSSING_ID { get; set; }
+            public string STATUS { get; set; }
+            public string STATE { get; set; }
+            public string CROSSING_NUMBER { get; set; }
+            public string SERVICE_UNIT { get; set; }
+            public string SUB_DIVISION { get; set; }
+            public string PROPERTY_TYPE { get; set; }
+            public long CARRYING_OUT_ORGANIZATION_ID { get; set; }
+            public string PROJECT_STATUS_CODE { get; set; }
+            public string TEMPLATE_FLAG { get; set; }
+            public long? PROJECT_ID { get; set; }
+            public string ORGANIZATION_NAME { get; set; }
+            public string PROJECT_TYPE { get; set; }
         }
     }
 }

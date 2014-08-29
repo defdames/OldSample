@@ -44,7 +44,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             
             DateTime StartDate = uxStartDate.SelectedDate;
             DateTime EndDate = uxEndDate.SelectedDate;
-            string Application = uxAddAppReqeusted.SelectedItem.Value;
+            decimal Application = Convert.ToDecimal(uxAddAppReqeusted.SelectedItem.Value);
             string ServiceUnit = uxAddServiceUnit.SelectedItem.Value;
             string SubDiv = uxAddSubDiv.SelectedItem.Value;
             string State = uxAddStateComboBox.SelectedItem.Value;
