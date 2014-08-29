@@ -166,6 +166,7 @@
     <Content Include="Views\Modules\CrossingMaintenance\umInspectionReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umInvoiceReview.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umMissingROW.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umPricing.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umPrivateCrossingReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umRailRoadProject.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umRailroadToolbar.aspx" />
@@ -174,6 +175,7 @@
     <Content Include="Views\Modules\CrossingMaintenance\umSuppBillingReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umSupplemental.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umSupplementalBilling.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umViewCrossings.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umWeeklyWorkActivity.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umCopyExisting.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umManageForms.aspx" />
@@ -364,6 +366,12 @@
     <Compile Include="Views\Modules\CrossingMaintenance\ManageKCS.aspx.designer.cs">
       <DependentUpon>ManageKCS.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\StateCrossingList.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StateCrossingList.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umAppDate.aspx.cs">
       <DependentUpon>umAppDate.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -476,6 +484,13 @@
     <Compile Include="Views\Modules\CrossingMaintenance\umMissingROW.aspx.designer.cs">
       <DependentUpon>umMissingROW.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umPricing.aspx.cs">
+      <DependentUpon>umPricing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umPricing.aspx.designer.cs">
+      <DependentUpon>umPricing.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umPrivateCrossingReport.aspx.cs">
       <DependentUpon>umPrivateCrossingReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -531,6 +546,13 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umSupplementalBilling.aspx.designer.cs">
       <DependentUpon>umSupplementalBilling.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umViewCrossings.aspx.cs">
+      <DependentUpon>umViewCrossings.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umViewCrossings.aspx.designer.cs">
+      <DependentUpon>umViewCrossings.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umWeeklyWorkActivity.aspx.cs">
       <DependentUpon>umWeeklyWorkActivity.aspx</DependentUpon>
@@ -1092,6 +1114,10 @@
       <LastGenOutput>CrystalReport1.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Modules\BudgetBidding\Reports\Report1.rdlc" />
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\StateCrossingList.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>StateCrossingList.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />

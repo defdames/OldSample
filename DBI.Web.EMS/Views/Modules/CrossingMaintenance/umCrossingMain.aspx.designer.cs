@@ -166,13 +166,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Panel uxCrossingSecurity;
         
         /// <summary>
-        /// uxContactsTab control.
+        /// uxPricing control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxContactsTab;
+        protected global::Ext.Net.Panel uxPricing;
         
         /// <summary>
         /// uxManageKCS control.

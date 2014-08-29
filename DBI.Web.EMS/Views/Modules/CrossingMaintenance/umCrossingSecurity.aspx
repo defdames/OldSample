@@ -162,7 +162,7 @@
 
                         <Items>
 
-          <ext:GridPanel ID="uxSubDivGrid" runat="server" Title="Select Subdivision" Margin="5" Flex="1" >
+          <ext:GridPanel ID="uxSubDivGrid" runat="server" Title="Select State" Margin="5" Flex="1" >
             <Store>
                 <ext:Store runat="server"
                     ID="uxSubDivStore" OnReadData="deReadSubDiv" AutoDataBind="true" PageSize="20"
@@ -172,7 +172,7 @@
                         <ext:Model ID="Model4" runat="server">
                             <Fields>
                                 
-                                <ext:ModelField Name="SUB_DIVISION" />
+                                <ext:ModelField Name="STATE" />
 
                             </Fields>
                         </ext:Model>
@@ -181,13 +181,13 @@
                        <ext:PageProxy />
                      </Proxy>
                     <Sorters>
-                        <ext:DataSorter Direction="ASC" Property="SUB_DIVISION" /> 
+                        <ext:DataSorter Direction="ASC" Property="STATE" /> 
                     </Sorters>
                 </ext:Store>
             </Store>
             <ColumnModel>
                 <Columns>
-                    <ext:Column ID="Column14" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
+                    <ext:Column ID="Column14" runat="server" DataIndex="STATE" Text="State" Flex="1" />
 
                 </Columns>
             </ColumnModel>
@@ -207,14 +207,14 @@
         </ext:GridPanel>  
               
                 
-        <ext:GridPanel ID="uxCrossingGrid" runat="server" Title="Apply Selected Crossing to Project" Flex="2" Margin="5" >
+        <ext:GridPanel ID="uxCrossingGrid" runat="server" Title="Apply Selected Crossing to Project" Flex="3" Margin="5" >
             <Store>
                 <ext:Store runat="server"
                     ID="uxCurrentSecurityCrossingStore"
                     WarningOnDirty="false" AutoLoad="false" OnReadData="deSecurityCrossingGridData" AutoDataBind="true">
                     <Parameters>                           
                         <ext:StoreParameter Name="ProjectId" Value="#{uxProjectGrid}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
-                         <ext:StoreParameter Name="SubDiv" Value="#{uxSubDivGrid}.getSelectionModel().getSelection()[0].data.SUB_DIVISION" Mode="Raw" />
+                         <ext:StoreParameter Name="State" Value="#{uxSubDivGrid}.getSelectionModel().getSelection()[0].data.STATE" Mode="Raw" />
                     </Parameters>
                     <Model>
                         <ext:Model ID="Model1" runat="server">
