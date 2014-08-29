@@ -36,7 +36,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
            
             DateTime StartDate = uxStartDate.SelectedDate;
             DateTime EndDate = uxEndDate.SelectedDate;
-            string Application = uxAddAppReqeusted.SelectedItem.Value;
+            decimal Application = Convert.ToDecimal(uxAddAppReqeusted.SelectedItem.Value);
             using (Entities _context = new Entities())
             {
 
