@@ -28,8 +28,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     string _selectedRecordID = Request.QueryString["orgid"];
                     if (_selectedRecordID != null)
                     {
-                        uxForecastMaintenance.Hidden = false;
-                        uxImportActuals.Hidden = false;
                         uxViewAllBudgets.Checked = true;
                         uxViewAllBudgets.Hidden = true;
                     }

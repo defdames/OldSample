@@ -144,6 +144,10 @@
                                     </Fields>
                                 </ext:Model>
                             </Model>
+                            <Sorters>
+                                <ext:DataSorter Property="TRANSACTION_DATE"></ext:DataSorter>
+                                 <ext:DataSorter Property="POSTED_DATE"></ext:DataSorter>
+                            </Sorters>
                             <Proxy>
                                 <ext:PageProxy />
                             </Proxy>     
@@ -151,6 +155,10 @@
                     </Store>                   
                     <ColumnModel>
                        <Columns>
+                           <ext:DateColumn ID="Column6" runat="server" DataIndex="TRANSACTION_DATE" Text="Transaction Date" Flex="1" Format="MM-dd-yyyy"  >
+                            </ext:DateColumn>
+                           <ext:DateColumn ID="Column11" runat="server" DataIndex="POSTED_DATE" Text="Posted Date" Flex="1" Format="MM-dd-yyyy"  >
+                            </ext:DateColumn>
                             <ext:Column ID="Column1" runat="server" DataIndex="LINE_REFERENCE" Text="Reference" Flex="1"  >
                                   <SummaryRenderer Handler="return ('Total');" />  
                             </ext:Column>
@@ -158,10 +166,6 @@
                             </ext:Column>
                            <ext:Column ID="Column7" runat="server" DataIndex="CATEGORY" Text="Category" Flex="1"  >
                             </ext:Column>
-                           <ext:DateColumn ID="Column6" runat="server" DataIndex="TRANSACTION_DATE" Text="Transaction Date" Flex="1" Format="MM-dd-yyyy"  >
-                            </ext:DateColumn>
-                           <ext:DateColumn ID="Column11" runat="server" DataIndex="POSTED_DATE" Text="Posted Date" Flex="1" Format="MM-dd-yyyy"  >
-                            </ext:DateColumn>
                            <ext:Column ID="Column8" runat="server" DataIndex="DEBIT" Text="Debit" Flex="1" SummaryType="Sum" >
                                 <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                                 <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />

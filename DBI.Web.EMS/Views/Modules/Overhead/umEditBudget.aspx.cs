@@ -85,7 +85,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 }
             };
 
-            win.Listeners.Close.Handler = "#{uxOrganizationAccountGridPanel}.getStore().load();";
+            //win.Listeners.Close.Handler = "#{uxOrganizationAccountGridPanel}.getStore().load();";
 
             win.Render(this.Form);
             win.Show();
@@ -125,7 +125,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 }
             };
 
-            win.Listeners.Close.Handler = "#{uxOrganizationAccountGridPanel}.getStore().load();";
+            //win.Listeners.Close.Handler = "#{uxOrganizationAccountGridPanel}.getStore().load();";
 
             win.Render(this.Form);
             win.Show();
@@ -290,30 +290,33 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 //pull budget detail data
                 OVERHEAD_ORG_BUDGETS _budgetDetail = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.ORG_BUDGET_ID == _budgetid).SingleOrDefault();
 
-                if (_budgetDetail.STATUS == "P")
+                if (_budgetDetail.STATUS == "L")
                 {
                     uxCompleteBudget.Disable();
-                    uxCompleteBudget.Text = "Budget Pending";
-                    uxCompleteBudget.Icon = Icon.FlagChecked;
+                    uxCompleteBudget.Text = "Budget Locked";
+                    uxCompleteBudget.Icon = Icon.Lock;
                     uxImportActualsButton.Disable();
                 }
 
 
                 //pull budget detail data
                 List<OVERHEAD_BUDGET_DETAIL> _budgetLineList = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budgetid).ToList();
+                List<OVERHEAD_ACCOUNT_CATEGORY> _accountCategoryList = _context.OVERHEAD_ACCOUNT_CATEGORY.ToList();
+                List<OVERHEAD_CATEGORY> _categoryList = _context.OVERHEAD_CATEGORY.ToList();
 
                 foreach (GL_ACCOUNTS_V _validAccount in _rangeOfAccounts)
                 {
 
                     OVERHEAD_BUDGET_DETAIL_V _row = new OVERHEAD_BUDGET_DETAIL_V();
                     //return category infomration 
-                    OVERHEAD_ACCOUNT_CATEGORY _accountCategory = _context.OVERHEAD_ACCOUNT_CATEGORY.Where(x => x.ACCOUNT_SEGMENT == _validAccount.SEGMENT5).OrderBy(x => x.ACCOUNT_SEGMENT).SingleOrDefault();
+                    OVERHEAD_ACCOUNT_CATEGORY _accountCategory = _accountCategoryList.Where(x => x.ACCOUNT_SEGMENT == _validAccount.SEGMENT5).OrderBy(x => x.ACCOUNT_SEGMENT).SingleOrDefault();
                     OVERHEAD_CATEGORY _category = new OVERHEAD_CATEGORY();
 
+                    Console.Write(_validAccount.SEGMENT5.ToString());
 
                     if (_accountCategory != null)
                     {
-                        _category = _context.OVERHEAD_CATEGORY.Where(x => x.CATEGORY_ID == _accountCategory.CATEGORY_ID).SingleOrDefault();
+                        _category = _categoryList.Where(x => x.CATEGORY_ID == _accountCategory.CATEGORY_ID).SingleOrDefault();
                         _row.CATEGORY_ID = _accountCategory.CATEGORY_ID;
                         _row.CATEGORY_NAME = _category.NAME;
                         _row.SORT_ORDER = _accountCategory.SORT_ORDER;
@@ -329,18 +332,18 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     _row.ACCOUNT_SEGMENT = _validAccount.SEGMENT5;
                     _row.CODE_COMBINATION_ID = _validAccount.CODE_COMBINATION_ID;
                     _row.ACCOUNT_DESCRIPTION = _validAccount.SEGMENT5_DESC + " (" + _validAccount.SEGMENT5 + ")";
-                    _row.AMOUNT1 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 1);
-                    _row.AMOUNT2 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 2);
-                    _row.AMOUNT3 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 3);
-                    _row.AMOUNT4 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 4);
-                    _row.AMOUNT5 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 5);
-                    _row.AMOUNT6 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 6);
-                    _row.AMOUNT7 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 7);
-                    _row.AMOUNT8 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 8);
-                    _row.AMOUNT9 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 9);
-                    _row.AMOUNT10 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 10);
-                    _row.AMOUNT11 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 11);
-                    _row.AMOUNT12 = ReturnLineTotal(_budgetLineList, _budgetid, _validAccount.CODE_COMBINATION_ID, 12);
+                    _row.AMOUNT1 = ReturnLineTotal(_budgetLineList, _validAccount.CODE_COMBINATION_ID, 1);
+                    _row.AMOUNT2 = ReturnLineTotal(_budgetLineList, _validAccount.CODE_COMBINATION_ID, 2);
+                    _row.AMOUNT3 = ReturnLineTotal(_budgetLineList,_validAccount.CODE_COMBINATION_ID, 3);
+                    _row.AMOUNT4 = ReturnLineTotal(_budgetLineList, _validAccount.CODE_COMBINATION_ID, 4);
+                    _row.AMOUNT5 = ReturnLineTotal(_budgetLineList,_validAccount.CODE_COMBINATION_ID, 5);
+                    _row.AMOUNT6 = ReturnLineTotal(_budgetLineList, _validAccount.CODE_COMBINATION_ID, 6);
+                    _row.AMOUNT7 = ReturnLineTotal(_budgetLineList,_validAccount.CODE_COMBINATION_ID, 7);
+                    _row.AMOUNT8 = ReturnLineTotal(_budgetLineList, _validAccount.CODE_COMBINATION_ID, 8);
+                    _row.AMOUNT9 = ReturnLineTotal(_budgetLineList, _validAccount.CODE_COMBINATION_ID, 9);
+                    _row.AMOUNT10 = ReturnLineTotal(_budgetLineList,  _validAccount.CODE_COMBINATION_ID, 10);
+                    _row.AMOUNT11 = ReturnLineTotal(_budgetLineList, _validAccount.CODE_COMBINATION_ID, 11);
+                    _row.AMOUNT12 = ReturnLineTotal(_budgetLineList,  _validAccount.CODE_COMBINATION_ID, 12);
                     _row.TOTAL = (_row.AMOUNT1 + _row.AMOUNT2 + _row.AMOUNT3 + _row.AMOUNT4 + _row.AMOUNT5 + _row.AMOUNT6 + _row.AMOUNT7 + _row.AMOUNT8 + _row.AMOUNT9 + _row.AMOUNT10 + _row.AMOUNT11 + _row.AMOUNT12);
 
                     //Check toggle button if button is active, hide zero lines (zero total)
@@ -400,11 +403,11 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         }
 
-        protected decimal ReturnLineTotal(List<OVERHEAD_BUDGET_DETAIL> budgetList, long budget_id, long code_combination_id, long period_num)
+        protected decimal ReturnLineTotal(List<OVERHEAD_BUDGET_DETAIL> budgetList, long code_combination_id, long period_num)
         {
             decimal returnvalue = 0;
 
-            OVERHEAD_BUDGET_DETAIL _line = budgetList.Where(x => x.ORG_BUDGET_ID == budget_id & x.CODE_COMBINATION_ID == code_combination_id & x.PERIOD_NUM == period_num).SingleOrDefault();
+            OVERHEAD_BUDGET_DETAIL _line = budgetList.Where(x => x.CODE_COMBINATION_ID == code_combination_id & x.PERIOD_NUM == period_num).SingleOrDefault();
             if (_line != null)
             {
                 returnvalue = (decimal)_line.AMOUNT;
@@ -440,7 +443,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
                 ID = "uxDetailLineMaintenance",
                 Title = "Account Details - " + _accountDescription,
-                Height = 450,
+                Height = 465,
                 Width = 850,
                 Modal = true,
                 Resizable = false,
@@ -458,7 +461,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 }
             };
 
-            win.Listeners.Close.Handler = "#{uxOrganizationAccountGridPanel}.getStore().load();";
+            //win.Listeners.Close.Handler = "#{uxOrganizationAccountGridPanel}.getStore().load();";
 
             win.Render(this.Form);
             win.Show();

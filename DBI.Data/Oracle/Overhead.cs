@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -115,6 +116,12 @@ namespace DBI.Data
                 var _rdata = _data.OrderBy(x => x.LE_ORG_ID).Take(1).ToList();
                 return _rdata;
             }
+        }
+
+        public DataSet test()
+        {
+            DataSet _t = new DataSet();
+            return _t;
         }
     }
 

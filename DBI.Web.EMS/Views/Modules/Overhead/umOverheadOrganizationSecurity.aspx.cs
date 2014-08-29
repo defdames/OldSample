@@ -72,21 +72,28 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 e.Total = count;
         }
 
-        protected void deViewAccounts(object sender, DirectEventArgs e)
+        protected void deViewPeriods(object sender, DirectEventArgs e)
         {
             string organizationName = e.ExtraParams["Name"];
             string organizationID = e.ExtraParams["ID"];
-            string command = e.ExtraParams["command"];
 
             string _selectedRecordID = Request.QueryString["orgid"];
             char[] _delimiterChars = { ':' };
             string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
 
-            if(command == "Accounts")
-                X.Js.Call("parent.App.direct.AddTabPanel", "gla_" + organizationID, organizationName + " - " +"General Ledger Accounts", "~/Views/Modules/Overhead/umOverheadGeneralLedger.aspx?orgID=" + organizationID);
+            X.Js.Call("parent.App.direct.AddTabPanel", "vp_" + organizationID, organizationName + " - " + "Budget Versions", "~/Views/Modules/Overhead/umOverheadBudgetPeriods.aspx?orgID=" + organizationID + "&leID=" + _selectedID[0].ToString());  
+        }
 
-            if (command == "Periods")
-                X.Js.Call("parent.App.direct.AddTabPanel", "orgp_" + organizationID, organizationName + " - " + "Budget Periods", "~/Views/Modules/Overhead/umOverheadBudgetPeriods.aspx?orgID=" + organizationID + "&leID=" + _selectedID[0].ToString());  
+        protected void deViewAccounts(object sender, DirectEventArgs e)
+        {
+            string organizationName = e.ExtraParams["Name"];
+            string organizationID = e.ExtraParams["ID"];
+
+            string _selectedRecordID = Request.QueryString["orgid"];
+            char[] _delimiterChars = { ':' };
+            string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
+
+            X.Js.Call("parent.App.direct.AddTabPanel", "gla_" + organizationID, organizationName + " - " +"General Ledger Accounts", "~/Views/Modules/Overhead/umOverheadGeneralLedger.aspx?orgID=" + organizationID);  
         }
 
         protected void deSelectOrganization(object sender, DirectEventArgs e)
@@ -96,11 +103,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
                 uxEnableOrganizationButton.Enable();
                 uxDisableOrganizationButton.Enable();
+                uxGeneralLedger.Enable();
+                uxOpenPeriod.Enable();
             }
             else
             {
                 uxEnableOrganizationButton.Disable();
                 uxDisableOrganizationButton.Disable();
+                uxGeneralLedger.Disable();
+                uxOpenPeriod.Disable();
             }
 
         }
@@ -111,11 +122,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
                 uxEnableOrganizationButton.Enable();
                 uxDisableOrganizationButton.Enable();
+                uxGeneralLedger.Enable();
+                uxOpenPeriod.Enable();
             }
             else
             {
                 uxEnableOrganizationButton.Disable();
                 uxDisableOrganizationButton.Disable();
+                uxGeneralLedger.Disable();
+                uxOpenPeriod.Disable();
             }
         }
 

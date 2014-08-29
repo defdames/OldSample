@@ -34,17 +34,16 @@
                     <TopBar>
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
-                                <ext:Button runat="server" Text="Enable" icon="Add" ID="uxEnableOrganizationButton" Disabled="true" >
+                                <ext:Button runat="server" Text="Enable Organization" icon="Add" ID="uxEnableOrganizationButton" Disabled="true" >
                                     <ToolTips>
                                         <ext:ToolTip ID="ToolTip1" runat="server" UI="Info" Html="Enables an organization so it can be used for the budget overhead system."></ext:ToolTip>
                                     </ToolTips>
                                     <DirectEvents>
                                         <Click OnEvent="deEnableOrganization"><Confirmation Message="Are you sure you want to enable these organizations for use in the overhead budget system?" ConfirmRequest="true"></Confirmation></Click>
                                     </DirectEvents>
-                                </ext:Button>
-                                
+                                </ext:Button>              
                                 <ext:ToolbarSeparator ID="ToolbarSeparator1" runat="server"></ext:ToolbarSeparator>
-                                  <ext:Button runat="server" Text="Disable" icon="Decline" ID="uxDisableOrganizationButton" Disabled="true" >
+                                  <ext:Button runat="server" Text="Disable Organization" icon="Decline" ID="uxDisableOrganizationButton" Disabled="true" >
                                     <ToolTips>
                                         <ext:ToolTip ID="ToolTip2" runat="server" UI="Info" Html="Disables an organization so that it can't be used for the budget overhead system."></ext:ToolTip>
                                     </ToolTips>
@@ -54,7 +53,28 @@
                                 </ext:Button>
                                 <ext:ToolbarSeparator runat="server">
                                 </ext:ToolbarSeparator>
-                                
+                                <ext:Button runat="server" Text="General Ledger Accounts" Icon="CalculatorEdit" Disabled="true" ID="uxGeneralLedger">
+                                    <DirectEvents>
+                                        <Click OnEvent="deViewAccounts">
+                                            <ExtraParams>
+                                                <ext:Parameter Mode="Raw" Name="Name" Value="#{uxOrganizationsGrid}.getView().getSelectionModel().getSelection()[0].data.ORGANIZATION_NAME"></ext:Parameter>
+                                                <ext:Parameter Mode="Raw" Name="ID" Value="#{uxOrganizationsGrid}.getView().getSelectionModel().getSelection()[0].data.ORGANIZATION_ID"></ext:Parameter>
+                                            </ExtraParams>
+                                        </Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:ToolbarSeparator ID="ToolbarSeparator2" runat="server"></ext:ToolbarSeparator>
+                                <ext:Button runat="server" Text="Budget Versions" Icon="BookEdit" Disabled="true" ID="uxOpenPeriod">
+                                    <DirectEvents>
+                                    <Click OnEvent="deViewPeriods">
+                                        <ExtraParams>
+                                                <ext:Parameter Mode="Raw" Name="Name" Value="#{uxOrganizationsGrid}.getView().getSelectionModel().getSelection()[0].data.ORGANIZATION_NAME"></ext:Parameter>
+                                                <ext:Parameter Mode="Raw" Name="ID" Value="#{uxOrganizationsGrid}.getView().getSelectionModel().getSelection()[0].data.ORGANIZATION_ID"></ext:Parameter>
+                                        </ExtraParams>
+                                    </Click>
+                                </DirectEvents>
+                                </ext:Button>
+                               
                                 <ext:ToolbarFill runat="server">
 
                                 </ext:ToolbarFill>
@@ -87,36 +107,21 @@
                         </ext:Store>
                     </Store>
                     <ColumnModel>
-                        <Columns>
-                             
+                        <Columns>        
                             <ext:Column ID="Column2" runat="server" DataIndex="ORGANIZATION_NAME" Text="Name" Flex="2" />
                             <ext:Column ID="Column1" runat="server" DataIndex="ORGANIZATION_STATUS" Text="Current Status" Flex="1" />   
-                            <ext:CommandColumn ID="CommandColumn1" runat="server" Width="180">
-                                <Commands>
-                                    <ext:GridCommand Text="Accounts" CommandName="Accounts" Icon="CalculatorEdit"></ext:GridCommand>
-                                </Commands>
-                                <DirectEvents>
-                                    <Command OnEvent="deViewAccounts">
-                                        <ExtraParams>
-                                            <ext:Parameter Mode="Raw" Name="Name" Value="record.data.ORGANIZATION_NAME"></ext:Parameter>
-                                            <ext:Parameter Mode="Raw" Name="ID" Value="record.data.ORGANIZATION_ID"></ext:Parameter>
-                                            <ext:Parameter Name="command" Value="command" Mode="Raw" />
-                                        </ExtraParams>
-                                    </Command>
-                                </DirectEvents>
-                            </ext:CommandColumn>    
                         </Columns>
                     </ColumnModel>
                     <Plugins>
                         <ext:FilterHeader ID="uxOrganizationsGridFilter" runat="server" Remote="true" />
                     </Plugins>
                     <SelectionModel>
-                        <ext:RowSelectionModel runat="server" Mode="Multi" ID="uxOrganizationsGridSelectionModel" AllowDeselect="true">
+                        <ext:CheckboxSelectionModel runat="server" Mode="Single" ID="uxOrganizationsGridSelectionModel" AllowDeselect="true">
                             <DirectEvents>
                                 <Select OnEvent="deSelectOrganization"></Select>
                                 <Deselect OnEvent="deSelectOrganization"></Deselect>
                             </DirectEvents>
-                        </ext:RowSelectionModel>
+                        </ext:CheckboxSelectionModel>
                     </SelectionModel>
                     <BottomBar>
                         <ext:PagingToolbar ID="uxOrganizationGridPageBar" runat="server" />

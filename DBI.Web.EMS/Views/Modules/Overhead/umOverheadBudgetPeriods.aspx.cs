@@ -70,6 +70,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             uxOpenPeriod.Disable();
             uxClosePeriod.Disable();
             uxLockPeriod.Disable();
+            uxDelete.Disable();
+            uxImportActuals.Disable();
 
         }
 
@@ -96,8 +98,78 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             uxOpenPeriod.Disable();
             uxClosePeriod.Disable();
             uxLockPeriod.Disable();
+            uxDelete.Disable();
+            uxImportActuals.Disable();
 
-        }    
+        }
+
+        protected void deDeletePeriod(object sender, DirectEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                foreach (SelectedRow row in uxForecastPeriodsByOrganizationSelectionModel.SelectedRows)
+                {
+                    long _budgetID = long.Parse(row.RecordID);
+
+                    OVERHEAD_ORG_BUDGETS _budget = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.ORG_BUDGET_ID == _budgetID).SingleOrDefault();
+
+                    if (_budget != null)
+                    {
+                        //First get all the details and remove them, then delete the actual budget
+                        List<OVERHEAD_BUDGET_DETAIL> _detail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budgetID).ToList();
+                        GenericData.Delete<OVERHEAD_BUDGET_DETAIL>(_detail);
+                        GenericData.Delete<OVERHEAD_ORG_BUDGETS>(_budget);
+                    }
+                }
+            }
+
+            uxForecastPeriodsByOrganization.Reload();
+            uxForecastPeriodsByOrganizationSelectionModel.DeselectAll(true);
+            uxOpenPeriod.Disable();
+            uxClosePeriod.Disable();
+            uxLockPeriod.Disable();
+            uxDelete.Disable();
+            uxImportActuals.Disable();
+
+        }
+
+        protected void deImportActuals(object sender, DirectEventArgs e)
+        {
+
+            short _fiscal_year = short.Parse(e.ExtraParams["FISCAL_YEAR"]);
+            long _organizationID = long.Parse(Request.QueryString["orgid"]);
+            long _budgetid = long.Parse(e.ExtraParams["ORG_BUDGET_ID"]);
+
+            string url = "umImportActualsWindow.aspx?budget_id=" + _budgetid + "&orgid=" + _organizationID + "&fiscalyear=" + _fiscal_year;
+
+            Window win = new Window
+            {
+                ID = "uxImportActualsWn",
+                Title = "Import Actuals from General Ledger",
+                Height = 400,
+                Width = 800,
+                Modal = true,
+                Resizable = false,
+                CloseAction = CloseAction.Destroy,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
+
+            //win.Listeners.Close.Handler = "#{uxOrganizationAccountGridPanel}.getStore().load();";
+
+            win.Render(this.Form);
+            win.Show();
+
+        }
 
         protected void deClosePeriod(object sender, DirectEventArgs e)
         {
@@ -126,6 +198,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             uxOpenPeriod.Disable();
             uxClosePeriod.Disable();
             uxLockPeriod.Disable();
+            uxDelete.Disable();
+            uxImportActuals.Disable();
         }       
 
 
@@ -174,12 +248,16 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 uxOpenPeriod.Enable();
                 uxClosePeriod.Enable();
                 uxLockPeriod.Enable();
+                uxDelete.Enable();
+                uxImportActuals.Enable();
             }
             else
             {
                 uxOpenPeriod.Disable();
                 uxClosePeriod.Disable();
                 uxLockPeriod.Disable();
+                uxDelete.Disable();
+                uxImportActuals.Disable();
             }
 
         }
@@ -190,11 +268,17 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
                 uxOpenPeriod.Enable();
                 uxClosePeriod.Enable();
+                uxLockPeriod.Enable();
+                uxDelete.Enable();
+                uxImportActuals.Enable();
             }
             else
             {
                 uxOpenPeriod.Disable();
                 uxClosePeriod.Disable();
+                uxLockPeriod.Disable();
+                uxDelete.Disable();
+                uxImportActuals.Disable();
             }
         }
     }

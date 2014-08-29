@@ -21,7 +21,14 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
 
-                uxAccountComments.Text = "IMPORTANT, PLEASE READ!! This area allows you to pull in actuals that have been applied to your gl account in oracle but not yet closed by finance. It will overwrite your totals for the selected months you are importing. There is no going back to your old numbers after this process has been run!";
+                if (validateComponentSecurity("SYS.OverheadBudget.Security"))
+                {
+                    uxInformationPanel.Html = "This will allow you to import actuals into a budget version. Once the data has been imported it will lock those imported columns for that budget version. It will also override all their data with actuals. There is no way to go roll this back. You can import actuals as many times as you need.";
+                }
+                else
+                {
+                    uxInformationPanel.Html = "This will allow you to import actuals into a budget version. This process will overwrite all period data for which you are importing and you will not be able to go back after this step. You can import actuals as many times as you need.";
+                }
             }
         }
 
@@ -50,6 +57,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);
             long _organizationID = long.Parse(Request.QueryString["orgid"]);
             long _budgetid = long.Parse(Request.QueryString["budget_id"]);
+
+            string _lockImported = "N";
+
+            if (validateComponentSecurity("SYS.OverheadBudget.Security"))
+            {
+                _lockImported = "Y";
+            }
 
             using(Entities _context = new Entities())
             {
@@ -110,8 +124,12 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                             if (_actualTotalLine != null)
                             {
-
                                 _aTotal = _actualTotalLine.PERIOD_NET_DR + Decimal.Negate(_actualTotalLine.PERIOD_NET_CR);
+                            }
+                            else
+                            {
+                                _aTotal = 0;
+                            }
 
                                     if (_line == null)
                                     {
@@ -126,6 +144,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                                         _record.MODIFY_DATE = DateTime.Now;
                                         _record.CREATED_BY = User.Identity.Name;
                                         _record.MODIFIED_BY = User.Identity.Name;
+                                        _record.ACTUALS_IMPORTED_FLAG = _lockImported;
                                         GenericData.Insert<OVERHEAD_BUDGET_DETAIL>(_record);
                                     }
                                     else
@@ -134,9 +153,9 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                                         _line.AMOUNT = _aTotal;
                                         _line.MODIFY_DATE = DateTime.Now;
                                         _line.MODIFIED_BY = User.Identity.Name;
+                                        _line.ACTUALS_IMPORTED_FLAG = _lockImported;
                                         GenericData.Update<OVERHEAD_BUDGET_DETAIL>(_line);
                                     }
-                            }
                     }
                 }
 
