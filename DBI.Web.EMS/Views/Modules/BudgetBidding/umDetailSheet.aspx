@@ -112,7 +112,7 @@
                             Layout="HBoxLayout">
                             <Items>
                                 <ext:Label ID="uxDetailNameLabel" runat="server" Width="140" Text="Detail Sheet (1 of 1): " />
-                                <ext:TextField ID="uxDetailName" runat="server" Width="480" ReadOnly="false" Text="" SelectOnFocus="true" MaxLength="200" EnforceMaxLength="true">
+                                <ext:TextField ID="uxDetailName" runat="server" Width="480" ReadOnly="false" Text="" SelectOnFocus="true" MaxLength="200" EnforceMaxLength="true" TabIndex="1">
                                     <DirectEvents>
                                         <Change OnEvent="deCheckAllowDetailSave" />
                                     </DirectEvents>
@@ -147,11 +147,11 @@
                                     Layout="HBoxLayout">
                                     <Items>
                                         <ext:Label ID="Label9" runat="server" Width="77" />
-                                        <ext:TextField ID="uxSGrossRec" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" />
-                                        <ext:TextField ID="uxSMatUsage" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" />
-                                        <ext:TextField ID="uxSGrossRev" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" />
-                                        <ext:TextField ID="uxSDirects" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" />
-                                        <ext:TextField ID="uxSOP" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" />
+                                        <ext:TextField ID="uxSGrossRec" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-1" />
+                                        <ext:TextField ID="uxSMatUsage" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-2" />
+                                        <ext:TextField ID="uxSGrossRev" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-3" />
+                                        <ext:TextField ID="uxSDirects" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-4"/>
+                                        <ext:TextField ID="uxSOP" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-5" />
                                         <ext:Label ID="Label10" runat="server" Width="77" />
                                     </Items>
                                 </ext:FieldContainer>
@@ -189,7 +189,7 @@
                                             Layout="HBoxLayout">
                                             <Items>
                                                 <ext:Label ID="Label6" runat="server" Width="180" Text="Total Receipts Remaining:" />
-                                                <ext:TextField ID="uxRecRemaining" runat="server" Width="100" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" SelectOnFocus="true">
+                                                <ext:TextField ID="uxRecRemaining" runat="server" Width="100" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" SelectOnFocus="true" TabIndex="2">
                                                     <DirectEvents>
                                                         <Blur OnEvent="deSaveMainTabField">
                                                             <ExtraParams>
@@ -202,7 +202,7 @@
                                                 </ext:TextField>
                                                 <ext:Label ID="Label29" runat="server" Width="35" />
                                                 <ext:Label ID="Label32" runat="server" Width="250" Text="Total Days Remaining (including resprays):" />
-                                                <ext:TextField ID="uxDaysRemaining" runat="server" Width="100" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" SelectOnFocus="true">
+                                                <ext:TextField ID="uxDaysRemaining" runat="server" Width="100" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" SelectOnFocus="true" TabIndex="3">
                                                     <DirectEvents>
                                                         <Blur OnEvent="deSaveMainTabField">
                                                             <ExtraParams>
@@ -220,7 +220,7 @@
                                             Layout="HBoxLayout">
                                             <Items>
                                                 <ext:Label ID="Label44" runat="server" Width="180" Text="Total Days Per Week Worked:" />
-                                                <ext:TextField ID="uxDaysWorked" runat="server" Width="100" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" SelectOnFocus="true">
+                                                <ext:TextField ID="uxDaysWorked" runat="server" Width="100" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" SelectOnFocus="true" TabIndex="4"> 
                                                     <DirectEvents>
                                                         <Blur OnEvent="deSaveMainTabField">
                                                             <ExtraParams>
@@ -233,7 +233,7 @@
                                                 </ext:TextField>
                                                 <ext:Label ID="Label35" runat="server" Width="35" />
                                                 <ext:Label ID="Label33" runat="server" Width="250" Text="Total Units Remaining (including resprays):" />
-                                                <ext:TextField ID="uxUnitsRemaining" runat="server" Width="100" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" SelectOnFocus="true">
+                                                <ext:TextField ID="uxUnitsRemaining" runat="server" Width="100" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" SelectOnFocus="true" TabIndex="5">
                                                     <DirectEvents>
                                                         <Blur OnEvent="deSaveMainTabField">
                                                             <ExtraParams>
@@ -264,7 +264,7 @@
                                             runat="server"
                                             Layout="HBoxLayout">
                                             <Items>
-                                                <ext:TextArea ID="uxComments" runat="server" Height="40" Width="665" ReadOnly="false" SelectOnFocus="true">
+                                                <ext:TextArea ID="uxComments" runat="server" Height="40" Width="665" ReadOnly="false" SelectOnFocus="true" TabIndex="6">
                                                     <DirectEvents>
                                                         <Blur OnEvent="deSaveMainTabField">
                                                             <ExtraParams>
@@ -345,7 +345,7 @@
                                                                                     <ext:Model ID="Model9" runat="server">
                                                                                         <Fields>
                                                                                             <ext:ModelField Name="DESCRIPTION" />
-                                                                                            <ext:ModelField Name="UOM" />
+                                                                                            <ext:ModelField Name="UOM_CODE" />
                                                                                             <ext:ModelField Name="ITEM_COST" />
                                                                                         </Fields>
                                                                                     </ext:Model>
@@ -359,7 +359,7 @@
                                                                             <Columns>
                                                                                 <ext:Column ID="Column20" runat="server" Text="Material" DataIndex="DESCRIPTION" Flex="4" />
                                                                                 <ext:Column ID="Column21" runat="server" Text="Unit Cost" DataIndex="ITEM_COST" Flex="1" />
-                                                                                <ext:Column ID="Column22" runat="server" Text="UOM" DataIndex="UOM" Flex="1" />
+                                                                                <ext:Column ID="Column22" runat="server" Text="UOM" DataIndex="UOM_CODE" Flex="1" />
                                                                             </Columns>
                                                                         </ColumnModel>
                                                                         <BottomBar>
@@ -373,7 +373,7 @@
                                                                                 <ExtraParams>
                                                                                     <ext:Parameter Name="Material" Value="#{uxMaterialList}.getSelectionModel().getSelection()[0].data.DESCRIPTION" Mode="Raw" />
                                                                                     <ext:Parameter Name="UnitCost" Value="#{uxMaterialList}.getSelectionModel().getSelection()[0].data.ITEM_COST" Mode="Raw" />
-                                                                                    <ext:Parameter Name="UOM" Value="#{uxMaterialList}.getSelectionModel().getSelection()[0].data.UOM" Mode="Raw" />
+                                                                                    <ext:Parameter Name="UOM" Value="#{uxMaterialList}.getSelectionModel().getSelection()[0].data.UOM_CODE" Mode="Raw" />
                                                                                 </ExtraParams>
                                                                             </SelectionChange>
                                                                         </DirectEvents>
@@ -387,18 +387,18 @@
                                                     </ext:Column>
                                                     <ext:NumberColumn ID="NumberField4" runat="server" DataIndex="AMT_1" Text="Unit Cost" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:NumberField ID="NumberField2" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
+                                                            <ext:NumberField ID="uxMaterialUnitCost" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
                                                         <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                                                     </ext:NumberColumn>
                                                     <ext:Column ID="NumberField5" runat="server" DataIndex="DESC_2" Text="UOM" Flex="1">
                                                         <Editor>
-                                                            <ext:TextField ID="TextField8" runat="server" SelectOnFocus="true" MaxLength="200" EnforceMaxLength="true" />
+                                                            <ext:TextField ID="uxMaterialUOM" runat="server" SelectOnFocus="true" MaxLength="200" EnforceMaxLength="true" />
                                                         </Editor>
                                                     </ext:Column>
                                                     <ext:NumberColumn ID="Column3" runat="server" DataIndex="AMT_2" Text="Qty" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:NumberField ID="NumberField1" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
+                                                            <ext:NumberField ID="uxMaterialQuantity" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
                                                         <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                                                     </ext:NumberColumn>
@@ -509,7 +509,7 @@
                                                 <Columns>
                                                     <ext:NumberColumn ID="NumberColumn1" runat="server" DataIndex="AMT_1" Text="Qty" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:NumberField ID="NumberField3" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
+                                                            <ext:NumberField ID="uxEquipmentQuantity" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
                                                         <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                                                     </ext:NumberColumn>
@@ -535,8 +535,8 @@
                                                                                 <Model>
                                                                                     <ext:Model ID="Model10" runat="server">
                                                                                         <Fields>
-                                                                                            <ext:ModelField Name="EQUIP_TYPE" />
-                                                                                            <ext:ModelField Name="COST_PER_HR" />
+                                                                                            <ext:ModelField Name="EXPENDITURE_TYPE" />
+                                                                                            <ext:ModelField Name="COST_RATE" />
                                                                                         </Fields>
                                                                                     </ext:Model>
                                                                                 </Model>
@@ -547,8 +547,8 @@
                                                                         </Store>
                                                                         <ColumnModel>
                                                                             <Columns>
-                                                                                <ext:Column ID="Column2" runat="server" Text="Equipment" DataIndex="EQUIP_TYPE" Flex="4" />
-                                                                                <ext:Column ID="Column6" runat="server" Text="Cost per Hour" DataIndex="COST_PER_HR" Flex="1" />
+                                                                                <ext:Column ID="Column2" runat="server" Text="Equipment" DataIndex="EXPENDITURE_TYPE" Flex="4" />
+                                                                                <ext:Column ID="Column6" runat="server" Text="Cost per Hour" DataIndex="COST_RATE" Flex="1" />
                                                                             </Columns>
                                                                         </ColumnModel>
                                                                         <BottomBar>
@@ -560,8 +560,8 @@
                                                                         <DirectEvents>
                                                                             <SelectionChange OnEvent="deSelectEquipment">
                                                                                 <ExtraParams>
-                                                                                    <ext:Parameter Name="Equipment" Value="#{uxEquipmentList}.getSelectionModel().getSelection()[0].data.EQUIP_TYPE" Mode="Raw" />
-                                                                                    <ext:Parameter Name="CostPerHour" Value="#{uxEquipmentList}.getSelectionModel().getSelection()[0].data.COST_PER_HR" Mode="Raw" />
+                                                                                    <ext:Parameter Name="Equipment" Value="#{uxEquipmentList}.getSelectionModel().getSelection()[0].data.EXPENDITURE_TYPE" Mode="Raw" />
+                                                                                    <ext:Parameter Name="CostPerHour" Value="#{uxEquipmentList}.getSelectionModel().getSelection()[0].data.COST_RATE" Mode="Raw" />
                                                                                 </ExtraParams>
                                                                             </SelectionChange>
                                                                         </DirectEvents>
@@ -575,13 +575,13 @@
                                                     </ext:Column>
                                                     <ext:NumberColumn ID="NumberColumn2" runat="server" DataIndex="AMT_2" Text="Hours" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:NumberField ID="NumberField6" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
+                                                            <ext:NumberField ID="uxEquipmentHours" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
                                                         <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                                                     </ext:NumberColumn>
                                                     <ext:NumberColumn ID="NumberColumn22" runat="server" DataIndex="AMT_3" Text="Cost per Hour" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:NumberField ID="NumberField7" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
+                                                            <ext:NumberField ID="uxEquipmentCostPerHour" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
                                                         <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                                                     </ext:NumberColumn>
@@ -610,7 +610,7 @@
                                             <TopBar>
                                                 <ext:Toolbar ID="Toolbar1" runat="server" Region="North">
                                                     <Items>
-                                                        <ext:Button ID="Button1" runat="server" Text="Add New" Icon="Add">
+                                                        <ext:Button ID="uxAddNewEquipment" runat="server" Text="Add New" Icon="Add">
                                                             <DirectEvents>
                                                                 <Click OnEvent="deAddNewRecord">
                                                                     <ExtraParams>
@@ -619,7 +619,7 @@
                                                                 </Click>
                                                             </DirectEvents>
                                                         </ext:Button>
-                                                        <ext:Button ID="Button2" runat="server" Text="Delete Selected" Icon="Delete">
+                                                        <ext:Button ID="uxDeleteEquipment" runat="server" Text="Delete Selected" Icon="Delete">
                                                             <DirectEvents>
                                                                 <Click OnEvent="deDeleteRecord">
                                                                     <ExtraParams>
@@ -692,7 +692,7 @@
                                                 <Columns>
                                                     <ext:NumberColumn ID="NumberColumn4" runat="server" DataIndex="AMT_1" Text="Qty" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:NumberField ID="NumberField8" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
+                                                            <ext:NumberField ID="uxPersonnelQuantity" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
                                                         <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                                                     </ext:NumberColumn>
@@ -758,13 +758,13 @@
                                                     </ext:Column>
                                                     <ext:NumberColumn ID="NumberColumn5" runat="server" DataIndex="AMT_2" Text="Hours" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:NumberField ID="NumberField9" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
+                                                            <ext:NumberField ID="uxPersonnelHours" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
                                                         <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                                                     </ext:NumberColumn>
                                                     <ext:NumberColumn ID="NumberColumn6" runat="server" DataIndex="AMT_3" Text="Cost per Hour" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:NumberField ID="NumberField10" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
+                                                            <ext:NumberField ID="uxPersonnelCostPerHour" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
                                                         <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                                                     </ext:NumberColumn>
@@ -793,7 +793,7 @@
                                             <TopBar>
                                                 <ext:Toolbar ID="Toolbar3" runat="server" Region="North">
                                                     <Items>
-                                                        <ext:Button ID="Button3" runat="server" Text="Add New" Icon="Add">
+                                                        <ext:Button ID="uxAddNewPersonnel" runat="server" Text="Add New" Icon="Add">
                                                             <DirectEvents>
                                                                 <Click OnEvent="deAddNewRecord">
                                                                     <ExtraParams>
@@ -802,7 +802,7 @@
                                                                 </Click>
                                                             </DirectEvents>
                                                         </ext:Button>
-                                                        <ext:Button ID="Button4" runat="server" Text="Delete Selected" Icon="Delete">
+                                                        <ext:Button ID="uxDeletePersonnel" runat="server" Text="Delete Selected" Icon="Delete">
                                                             <DirectEvents>
                                                                 <Click OnEvent="deDeleteRecord">
                                                                     <ExtraParams>
@@ -874,19 +874,19 @@
                                                 <Columns>
                                                     <ext:NumberColumn ID="NumberColumn7" runat="server" DataIndex="AMT_1" Text="Rate" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:NumberField ID="NumberField11" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
+                                                            <ext:NumberField ID="uxPerDiemRate" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
                                                         <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                                                     </ext:NumberColumn>
                                                     <ext:NumberColumn ID="NumberColumn8" runat="server" DataIndex="AMT_2" Text="# of Days" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:NumberField ID="NumberField12" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
+                                                            <ext:NumberField ID="uxPerDiemNumOfDays" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
                                                         <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                                                     </ext:NumberColumn>
                                                     <ext:NumberColumn ID="NumberColumn9" runat="server" DataIndex="AMT_3" Text="# of Per Diems" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:NumberField ID="NumberField13" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
+                                                            <ext:NumberField ID="uxPerDiemNumOfPerDiems" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
                                                         <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                                                     </ext:NumberColumn>
@@ -908,7 +908,7 @@
                                             <TopBar>
                                                 <ext:Toolbar ID="Toolbar4" runat="server" Region="North">
                                                     <Items>
-                                                        <ext:Button ID="Button5" runat="server" Text="Add New" Icon="Add">
+                                                        <ext:Button ID="uxAddNewPerDiem" runat="server" Text="Add New" Icon="Add">
                                                             <DirectEvents>
                                                                 <Click OnEvent="deAddNewRecord">
                                                                     <ExtraParams>
@@ -917,7 +917,7 @@
                                                                 </Click>
                                                             </DirectEvents>
                                                         </ext:Button>
-                                                        <ext:Button ID="Button6" runat="server" Text="Delete Selected" Icon="Delete">
+                                                        <ext:Button ID="uxDeletePerDiem" runat="server" Text="Delete Selected" Icon="Delete">
                                                             <DirectEvents>
                                                                 <Click OnEvent="deDeleteRecord">
                                                                     <ExtraParams>
@@ -988,13 +988,13 @@
                                                 <Columns>
                                                     <ext:NumberColumn ID="NumberColumn10" runat="server" DataIndex="AMT_1" Text="Travel Pay" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:NumberField ID="NumberField14" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
+                                                            <ext:NumberField ID="uxTravelPay" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
                                                         <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                                                     </ext:NumberColumn>
                                                     <ext:NumberColumn ID="NumberColumn11" runat="server" DataIndex="AMT_2" Text="Hours" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:NumberField ID="NumberField15" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
+                                                            <ext:NumberField ID="uxTravelHours" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
                                                         <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                                                     </ext:NumberColumn>
@@ -1016,7 +1016,7 @@
                                             <TopBar>
                                                 <ext:Toolbar ID="Toolbar5" runat="server" Region="North">
                                                     <Items>
-                                                        <ext:Button ID="Button7" runat="server" Text="Add New" Icon="Add">
+                                                        <ext:Button ID="uxAddNewTravel" runat="server" Text="Add New" Icon="Add">
                                                             <DirectEvents>
                                                                 <Click OnEvent="deAddNewRecord">
                                                                     <ExtraParams>
@@ -1025,7 +1025,7 @@
                                                                 </Click>
                                                             </DirectEvents>
                                                         </ext:Button>
-                                                        <ext:Button ID="Button8" runat="server" Text="Delete Selected" Icon="Delete">
+                                                        <ext:Button ID="uxDeleteTravel" runat="server" Text="Delete Selected" Icon="Delete">
                                                             <DirectEvents>
                                                                 <Click OnEvent="deDeleteRecord">
                                                                     <ExtraParams>
@@ -1097,19 +1097,19 @@
                                                 <Columns>
                                                     <ext:NumberColumn ID="NumberColumn12" runat="server" DataIndex="AMT_1" Text="Rate" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:NumberField ID="NumberField16" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
+                                                            <ext:NumberField ID="uxMotelRate" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
                                                         <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                                                     </ext:NumberColumn>
                                                     <ext:NumberColumn ID="NumberColumn13" runat="server" DataIndex="AMT_2" Text="# of Days" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:NumberField ID="NumberField17" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
+                                                            <ext:NumberField ID="uxMotelNumOfDays" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
                                                         <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                                                     </ext:NumberColumn>
                                                     <ext:NumberColumn ID="NumberColumn14" runat="server" DataIndex="AMT_3" Text="# of Rooms" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:NumberField ID="NumberField18" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
+                                                            <ext:NumberField ID="uxMotelNumOfRooms" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
                                                         <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                                                     </ext:NumberColumn>
@@ -1131,7 +1131,7 @@
                                             <TopBar>
                                                 <ext:Toolbar ID="Toolbar6" runat="server" Region="North">
                                                     <Items>
-                                                        <ext:Button ID="Button9" runat="server" Text="Add New" Icon="Add">
+                                                        <ext:Button ID="uxAddNewMotel" runat="server" Text="Add New" Icon="Add">
                                                             <DirectEvents>
                                                                 <Click OnEvent="deAddNewRecord">
                                                                     <ExtraParams>
@@ -1140,7 +1140,7 @@
                                                                 </Click>
                                                             </DirectEvents>
                                                         </ext:Button>
-                                                        <ext:Button ID="Button10" runat="server" Text="Delete Selected" Icon="Delete">
+                                                        <ext:Button ID="uxDeleteMotel" runat="server" Text="Delete Selected" Icon="Delete">
                                                             <DirectEvents>
                                                                 <Click OnEvent="deDeleteRecord">
                                                                     <ExtraParams>
@@ -1212,18 +1212,18 @@
                                                 <Columns>
                                                     <ext:Column ID="Column16" runat="server" DataIndex="DESC_1" Text="Description" Flex="2">
                                                         <Editor>
-                                                            <ext:TextField ID="TextField25" runat="server" MaxLength="200" EnforceMaxLength="true" SelectOnFocus="true" />
+                                                            <ext:TextField ID="uxMiscDesc" runat="server" MaxLength="200" EnforceMaxLength="true" SelectOnFocus="true" />
                                                         </Editor>
                                                     </ext:Column>
                                                     <ext:NumberColumn ID="NumberColumn16" runat="server" DataIndex="AMT_1" Text="Qty" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:NumberField ID="NumberField19" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
+                                                            <ext:NumberField ID="uxMiscQuantity" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
                                                         <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                                                     </ext:NumberColumn>
                                                     <ext:NumberColumn ID="NumberColumn17" runat="server" DataIndex="AMT_2" Text="Cost" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:NumberField ID="NumberField20" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
+                                                            <ext:NumberField ID="uxMiscCost" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
                                                         <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                                                     </ext:NumberColumn>
@@ -1245,7 +1245,7 @@
                                             <TopBar>
                                                 <ext:Toolbar ID="Toolbar7" runat="server" Region="North">
                                                     <Items>
-                                                        <ext:Button ID="Button11" runat="server" Text="Add New" Icon="Add">
+                                                        <ext:Button ID="uxAddNewMisc" runat="server" Text="Add New" Icon="Add">
                                                             <DirectEvents>
                                                                 <Click OnEvent="deAddNewRecord">
                                                                     <ExtraParams>
@@ -1254,7 +1254,7 @@
                                                                 </Click>
                                                             </DirectEvents>
                                                         </ext:Button>
-                                                        <ext:Button ID="Button12" runat="server" Text="Delete Selected" Icon="Delete">
+                                                        <ext:Button ID="uxDeleteMisc" runat="server" Text="Delete Selected" Icon="Delete">
                                                             <DirectEvents>
                                                                 <Click OnEvent="deDeleteRecord">
                                                                     <ExtraParams>
@@ -1326,18 +1326,18 @@
                                                 <Columns>
                                                     <ext:Column ID="Column10" runat="server" DataIndex="DESC_1" Text="Description" Flex="2">
                                                         <Editor>
-                                                            <ext:TextField ID="TextField1" runat="server" MaxLength="200" EnforceMaxLength="true" SelectOnFocus="true" />
+                                                            <ext:TextField ID="uxLumpSumDesc" runat="server" MaxLength="200" EnforceMaxLength="true" SelectOnFocus="true" />
                                                         </Editor>
                                                     </ext:Column>
                                                     <ext:NumberColumn ID="NumberColumn19" runat="server" DataIndex="AMT_1" Text="Qty" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:NumberField ID="NumberField21" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
+                                                            <ext:NumberField ID="uxLumpSumQuantity" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
                                                         <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                                                     </ext:NumberColumn>
                                                     <ext:NumberColumn ID="NumberColumn20" runat="server" DataIndex="AMT_2" Text="Cost" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:NumberField ID="NumberField22" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
+                                                            <ext:NumberField ID="uxLumpSumCost" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
                                                         <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                                                     </ext:NumberColumn>
@@ -1359,7 +1359,7 @@
                                             <TopBar>
                                                 <ext:Toolbar ID="Toolbar8" runat="server" Region="North">
                                                     <Items>
-                                                        <ext:Button ID="Button13" runat="server" Text="Add New" Icon="Add">
+                                                        <ext:Button ID="uxAddNewLumpSum" runat="server" Text="Add New" Icon="Add">
                                                             <DirectEvents>
                                                                 <Click OnEvent="deAddNewRecord">
                                                                     <ExtraParams>
@@ -1368,7 +1368,7 @@
                                                                 </Click>
                                                             </DirectEvents>
                                                         </ext:Button>
-                                                        <ext:Button ID="Button14" runat="server" Text="Delete Selected" Icon="Delete">
+                                                        <ext:Button ID="uxDeleteLumpSum" runat="server" Text="Delete Selected" Icon="Delete">
                                                             <DirectEvents>
                                                                 <Click OnEvent="deDeleteRecord">
                                                                     <ExtraParams>
@@ -1415,11 +1415,11 @@
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
-                                <ext:Label ID="Label21" runat="server" Width="180" Text="Labor Burden @ 40%:" />
-                                <ext:TextField ID="uxLaborBurden" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" />
+                                <ext:Label ID="uxLaborBurdenLabel" runat="server" Width="180" Text="Labor Burden @ XX.XX%:" />
+                                <ext:TextField ID="uxLaborBurden" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-6" />
                                 <ext:Label ID="Label22" runat="server" Width="105" />
                                 <ext:Label ID="Label23" runat="server" Width="180" Text="Average Units per Day:" />
-                                <ext:TextField ID="uxAvgUnitsPerDay" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" />
+                                <ext:TextField ID="uxAvgUnitsPerDay" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-7"/>
                             </Items>
                         </ext:FieldContainer>
                         <ext:FieldContainer ID="FieldContainer11"
@@ -1427,10 +1427,10 @@
                             Layout="HBoxLayout">
                             <Items>
                                 <ext:Label ID="Label24" runat="server" Width="180" Text="Total Weekly Direct Expense:" />
-                                <ext:TextField ID="uxTotalWklyDirects" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" />
+                                <ext:TextField ID="uxTotalWklyDirects" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-8"/>
                                 <ext:Label ID="Label38" runat="server" Width="105" />
                                 <ext:Label ID="Label39" runat="server" Width="180" Text="Total Direct Expenses Left:" />
-                                <ext:TextField ID="uxTotalDirectsLeft" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" />
+                                <ext:TextField ID="uxTotalDirectsLeft" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-9"/>
                             </Items>
                         </ext:FieldContainer>
                         <ext:FieldContainer ID="FieldContainer14"
@@ -1438,10 +1438,10 @@
                             Layout="HBoxLayout">
                             <Items>
                                 <ext:Label ID="Label25" runat="server" Width="180" Text="Total Direct Expenses per Day:" />
-                                <ext:TextField ID="uxTotalDirectsPerDay" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" />
+                                <ext:TextField ID="uxTotalDirectsPerDay" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-10"/>
                                 <ext:Label ID="Label41" runat="server" Width="105" />
                                 <ext:Label ID="Label42" runat="server" Width="180" Text="Total Material Expense Left:" />
-                                <ext:TextField ID="uxTotalMaterialLeft" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" />
+                                <ext:TextField ID="uxTotalMaterialLeft" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-11"/>
                             </Items>
                         </ext:FieldContainer>
                         <ext:FieldContainer ID="FieldContainer16"
@@ -1473,11 +1473,11 @@
                                     Layout="HBoxLayout">
                                     <Items>
                                         <ext:Label ID="Label19" runat="server" Width="77" />
-                                        <ext:TextField ID="uxEGrossRec" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" />
-                                        <ext:TextField ID="uxEMatUsage" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" />
-                                        <ext:TextField ID="uxEGrossRev" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" />
-                                        <ext:TextField ID="uxEDirects" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" />
-                                        <ext:TextField ID="uxEOP" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" />
+                                        <ext:TextField ID="uxEGrossRec" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-12"/>
+                                        <ext:TextField ID="uxEMatUsage" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-13"/>
+                                        <ext:TextField ID="uxEGrossRev" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-14"/>
+                                        <ext:TextField ID="uxEDirects" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-15"/>
+                                        <ext:TextField ID="uxEOP" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-16"/>
                                         <ext:Label ID="Label20" runat="server" Width="77" />
                                     </Items>
                                 </ext:FieldContainer>

@@ -97,7 +97,7 @@ namespace DBI.Data
         /// Returns a list of loaded job cost week ending dates in EMS
         /// </summary>
         /// <param name="hierarchyId"></param>
-        /// <param name="organizationId"></param>
+        /// <param name="optionalsortDescending"></param>
         /// <param name="optionalNumOfReturnRecords"></param>
         /// <returns></returns>
         public static List<SingleCombo> LoadedJCWeDates(long hierarchyId, bool optionalsortDescending = false, long optionalNumOfReturnRecords = long.MaxValue)
@@ -110,13 +110,10 @@ namespace DBI.Data
                 FROM (SELECT DISTINCT JC_WK_DATE FROM APPS.XX_JOBCOST_DATES_MV WHERE HIERARCHY_ID = {0} ORDER BY JC_WK_DATE {1}) JC_DATES
                 WHERE ROWNUM <= {2}", hierarchyId, sortOrder, optionalNumOfReturnRecords);
 
-            List<SingleCombo> data;
             using (Entities context = new Entities())
             {
-                data = context.Database.SqlQuery<SingleCombo>(sql).ToList();                           
+                return context.Database.SqlQuery<SingleCombo>(sql).ToList();                           
             }
-
-            return data;
         }              
 
         public class JOB_COST_V
