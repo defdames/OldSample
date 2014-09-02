@@ -755,8 +755,9 @@
                                                 <Focus Handler="this.setValue(this.getValue().replace(/,/g, ''));" />
                                             </Listeners>
                                             <DirectEvents>
-                                                <Blur OnEvent="deFormatNumber" />
-                                                <Blur OnEvent="deCalcGRandOP" />
+                                                <Blur OnEvent="deCalcGRandOP">
+                                                    <EventMask ShowMask="true" Msg="Processing..." />
+                                                </Blur>
                                             </DirectEvents>
                                         </ext:TextField>
                                         <ext:TextField ID="uxSMatUsage" runat="server" Width="110" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" SelectOnFocus="true">
@@ -764,8 +765,9 @@
                                                 <Focus Handler="this.setValue(this.getValue().replace(/,/g, ''));" />
                                             </Listeners>
                                             <DirectEvents>
-                                                <Blur OnEvent="deFormatNumber" />
-                                                <Blur OnEvent="deCalcGRandOP" />
+                                                <Blur OnEvent="deCalcGRandOP">
+                                                    <EventMask ShowMask="true" Msg="Processing..." />
+                                                </Blur>
                                             </DirectEvents>
                                         </ext:TextField>
                                         <ext:TextField ID="uxSGrossRev" runat="server" Width="110" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" SelectOnFocus="true" TabIndex="-1" />
@@ -774,8 +776,9 @@
                                                 <Focus Handler="this.setValue(this.getValue().replace(/,/g, ''));" />
                                             </Listeners>
                                             <DirectEvents>
-                                                <Blur OnEvent="deFormatNumber" />
-                                                <Blur OnEvent="deCalcGRandOP" />
+                                                <Blur OnEvent="deCalcGRandOP">
+                                                    <EventMask ShowMask="true" Msg="Processing..." />
+                                                </Blur>
                                             </DirectEvents>
                                         </ext:TextField>
                                         <ext:TextField ID="uxSOP" runat="server" Width="110" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" SelectOnFocus="true" TabIndex="-2" />
@@ -882,11 +885,11 @@
                                     Layout="HBoxLayout">
                                     <Items>
                                         <ext:Label ID="Label32" runat="server" Width="160" />
-                                        <ext:TextField ID="uxEGrossRec" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" />
-                                        <ext:TextField ID="uxEMatUsage" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" />
-                                        <ext:TextField ID="uxEGrossRev" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" />
-                                        <ext:TextField ID="uxEDirects" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" />
-                                        <ext:TextField ID="uxEOP" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" />
+                                        <ext:TextField ID="uxEGrossRec" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" TabIndex="-3"/>
+                                        <ext:TextField ID="uxEMatUsage" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" TabIndex="-4"/>
+                                        <ext:TextField ID="uxEGrossRev" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" TabIndex="-5"/>
+                                        <ext:TextField ID="uxEDirects" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" TabIndex="-6"/>
+                                        <ext:TextField ID="uxEOP" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" TabIndex="-7"/>
                                     </Items>
                                 </ext:FieldContainer>
 
@@ -935,7 +938,7 @@
 
                 <%-------------------------------------------------- Diagnostic Panel --------------------------------------------------%>
                 <%-- Uncomment to Use --%>
-                <%--<ext:FormPanel ID="FormPanel1"
+                <ext:FormPanel ID="FormPanel1"
                     runat="server"
                     Region="East"
                     Width="130"
@@ -971,11 +974,11 @@
                             </Items>
                         </ext:FieldContainer>
                     </Items>
-                </ext:FormPanel>--%>
+                </ext:FormPanel>
                 <%-- Uncomment to Use --%>
 
                 <%-- Uncomment to Use --%>
-                <ext:Hidden ID="uxHidBudBidID" runat="server" />
+                <%--<ext:Hidden ID="uxHidBudBidID" runat="server" />
                 <ext:Hidden ID="uxHidProjectNumID" runat="server" />
                 <ext:Hidden ID="uxHidType" runat="server" />
                 <ext:Hidden ID="uxHidStatusID" runat="server" />
@@ -985,7 +988,7 @@
                 <ext:Hidden ID="uxHidOldBudBidID" runat="server" />
                 <ext:Hidden ID="uxHidDetailSheetID" runat="server" />
                 <ext:Hidden ID="uxHidDetailSheetOrder" runat="server" />
-                <ext:Hidden ID="uxHidDetailSheetName" runat="server" />
+                <ext:Hidden ID="uxHidDetailSheetName" runat="server" />--%>
                 <%-- Uncomment to Use --%>
                 <%-------------------------------------------------- Diagnostic Panel --------------------------------------------------%>
             </Items>
