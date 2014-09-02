@@ -295,6 +295,7 @@
                                                         <ext:ModelField Name="FIELDSET_ID" Type="Int" />
                                                         <ext:ModelField Name="TITLE" Type="String" />
                                                         <ext:ModelField Name="IS_REQUIRED" Type="Boolean" />
+                                                        <ext:ModelField Name="IS_ACTIVE" Type="Boolean" />
                                                         <ext:ModelField Name="SORT_ORDER" Type="Int" />
                                                     </Fields>
                                                 </ext:Model>
@@ -370,8 +371,9 @@
                                                     </ext:ComboBox>
                                                 </Editor>
                                             </ext:Column>
-                                            <ext:CheckColumn runat="server" DataIndex="IS_REQUIRED" Text="Required" Editable="true" Flex="10" />
-                                            <ext:Column runat="server" DataIndex="SORT_ORDER" Text="Sort Order" Flex="10">
+                                            <ext:CheckColumn runat="server" DataIndex="IS_REQUIRED" Text="Required" Editable="true" Flex="8" />
+                                            <ext:CheckColumn runat="server" DataIndex="IS_ACTIVE" Text="Active" Editable="true" Flex="8" />
+                                            <ext:Column runat="server" DataIndex="SORT_ORDER" Text="Sort Order" Flex="8">
                                                 <Editor>
                                                     <ext:NumberField runat="server" AllowBlank="false" />
                                                 </Editor>

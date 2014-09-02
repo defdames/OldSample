@@ -42,7 +42,7 @@ namespace DBI.Web.EMS.PublicPages
 
                 foreach (CUSTOMER_SURVEYS.CustomerSurveyFieldsets Fieldset in Fieldsets)
                 {
-                    var QuestionQuery = CUSTOMER_SURVEYS.GetFieldsetQuestionsForGrid(Fieldset.FIELDSET_ID, _context).OrderBy(x => x.SORT_ORDER);
+                    var QuestionQuery = CUSTOMER_SURVEYS.GetFieldsetQuestionsForGrid(Fieldset.FIELDSET_ID, _context).Where(x => x.IS_ACTIVE == true).OrderBy(x => x.SORT_ORDER);
                     List<CUSTOMER_SURVEYS.CustomerSurveyQuestions> Questions = QuestionQuery.ToList();
                     if (Questions.Count > 0)
                     {
@@ -81,7 +81,7 @@ namespace DBI.Web.EMS.PublicPages
                                     Combobox.TypeAhead = true;
                                     Combobox.ForceSelection = true;
                                     Combobox.QueryMode = DataLoadMode.Local;
-                                    List<CUSTOMER_SURVEY_OPTIONS> ComboOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
+                                    List<CUSTOMER_SURVEY_OPTIONS> ComboOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).Where(x => x.IS_ACTIVE == "Y").OrderBy(x => x.SORT_ORDER).ToList();
                                     foreach (CUSTOMER_SURVEY_OPTIONS Option in ComboOptions)
                                     {
                                         Combobox.Items.Add(new Ext.Net.ListItem
@@ -101,7 +101,7 @@ namespace DBI.Web.EMS.PublicPages
                                     RadioQuestion.AllowBlank = !Question.IS_REQUIRED;
                                     RadioQuestion.LabelWidth = 150;
                                     RadioQuestion.ColumnsNumber = 1;
-                                    List<CUSTOMER_SURVEY_OPTIONS> RadioOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
+                                    List<CUSTOMER_SURVEY_OPTIONS> RadioOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).Where(x => x.IS_ACTIVE == "Y").OrderBy(x => x.SORT_ORDER).ToList();
                                     foreach (CUSTOMER_SURVEY_OPTIONS Option in RadioOptions)
                                     {
                                         RadioQuestion.Items.Add(new Radio
@@ -125,7 +125,7 @@ namespace DBI.Web.EMS.PublicPages
                                     CheckQuestion.LabelWidth = 150;
                                     CheckQuestion.AllowBlank = !Question.IS_REQUIRED;
                                     CheckQuestion.ColumnsNumber = 1;
-                                    List<CUSTOMER_SURVEY_OPTIONS> CheckOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
+                                    List<CUSTOMER_SURVEY_OPTIONS> CheckOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).Where(x => x.IS_ACTIVE == "Y").OrderBy(x => x.SORT_ORDER).ToList();
                                     foreach (CUSTOMER_SURVEY_OPTIONS Option in CheckOptions)
                                     {
                                         CheckQuestion.Add(new Checkbox
@@ -139,6 +139,15 @@ namespace DBI.Web.EMS.PublicPages
                                         });
                                     }
                                     NewFieldset.Items.Add(CheckQuestion);
+                                    break;
+                                case 21:
+                                    DateField DateQuestion = new DateField();
+                                    DateQuestion.ID = "question" + Question.QUESTION_ID;
+                                    DateQuestion.FieldLabel = Question.TEXT;
+                                    DateQuestion.LabelWidth = 150;
+                                    DateQuestion.AllowBlank = !Question.IS_REQUIRED;
+
+                                    NewFieldset.Items.Add(DateQuestion);
                                     break;
                             }
                         }

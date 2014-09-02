@@ -32,7 +32,8 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             {
                 IQueryable<CUSTOMER_SURVEY_FORMS> FormData = CUSTOMER_SURVEYS.GetForms(_context);
                 int count;
-                IQueryable<CUSTOMER_SURVEYS.CustomerSurveyForms> AllData = FormData.Select(x => new CUSTOMER_SURVEYS.CustomerSurveyForms { FORM_ID = x.FORM_ID, FORMS_NAME = x.FORMS_NAME, ORG_ID = x.ORG_ID, CATEGORY_ID = x.CATEGORY_ID });
+                List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
+                IQueryable<CUSTOMER_SURVEYS.CustomerSurveyForms> AllData = FormData.Where(x => OrgsList.Contains((long)x.ORG_ID)).Select(x => new CUSTOMER_SURVEYS.CustomerSurveyForms { FORM_ID = x.FORM_ID, FORMS_NAME = x.FORMS_NAME, ORG_ID = x.ORG_ID, CATEGORY_ID = x.CATEGORY_ID });
                 List<CUSTOMER_SURVEYS.CustomerSurveyForms> Data = GenericData.ListFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyForms>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], AllData, out count);
                 foreach (CUSTOMER_SURVEYS.CustomerSurveyForms ThisForm in Data)
                 {
@@ -103,10 +104,11 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
         protected void deReadOrgs(object sender, StoreReadDataEventArgs e)
         {
+            List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
             using (Entities _context = new Entities())
             {
-                uxAddFormOrgStore.DataSource = _context.ORG_HIER_V.Distinct().ToList();
-                uxCopyFormOrgStore.DataSource = _context.ORG_HIER_V.Distinct().ToList();
+                uxAddFormOrgStore.DataSource = _context.ORG_HIER_V.Distinct().Where(x => OrgsList.Contains(x.ORG_ID)).ToList();
+                uxCopyFormOrgStore.DataSource = _context.ORG_HIER_V.Distinct().Where(x => OrgsList.Contains(x.ORG_ID)).ToList();
             }
         }
         protected void deReadQuestionTypes(object sender, StoreReadDataEventArgs e)
