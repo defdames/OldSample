@@ -113,12 +113,6 @@
     <Compile Include="BUD_BID_LINES.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
-    <Compile Include="BUD_BID_LOCKED.cs">
-      <DependentUpon>Oracle.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BUD_BID_ORGS.cs">
-      <DependentUpon>Oracle.tt</DependentUpon>
-    </Compile>
     <Compile Include="BUD_BID_PROJECTS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
