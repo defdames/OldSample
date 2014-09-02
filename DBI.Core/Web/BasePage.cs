@@ -223,6 +223,7 @@ namespace DBI.Core.Web
             script.Append(@"}");
 
             return script.ToString();
+
         }
     }
 }
