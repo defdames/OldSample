@@ -87,8 +87,6 @@
         <AssociationConnector Association="OracleModel.FK_INVENTORY_CHEMICAL_MIX_ID" />
         <AssociationConnector Association="OracleModel.FK_INVENTORY_HEADER_ID" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_LINES" Width="1.5" PointX="24" PointY="91.25" />
-        <EntityTypeShape EntityType="OracleModel.BUD_BID_LOCKED" Width="1.5" PointX="26.75" PointY="86.875" />
-        <EntityTypeShape EntityType="OracleModel.BUD_BID_ORGS" Width="1.5" PointX="21.875" PointY="89" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_STATUS" Width="1.5" PointX="21.875" PointY="86.125" />
         <EntityTypeShape EntityType="OracleModel.SYS_MODULE_PROFILE_OPTIONS" Width="1.5" PointX="29.375" PointY="32.75" />
         <EntityTypeShape EntityType="OracleModel.SYS_PROFILE_OPTIONS" Width="1.5" PointX="31.875" PointY="34.25" />
@@ -115,11 +113,9 @@
         <EntityTypeShape EntityType="OracleModel.BUD_BID_BUDGET_NUM" Width="1.5" PointX="32" PointY="83.5" />
         <AssociationConnector Association="OracleModel.FK_ACTUAL_NUM_LINES_ID" />
         <AssociationConnector Association="OracleModel.FK_BUDGET_NUM_LINES_ID" />
-        <EntityTypeShape EntityType="OracleModel.BUD_BID_DETAIL_SHEET" Width="1.5" PointX="31.625" PointY="90.625" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_DETAIL_TASK" Width="1.5" PointX="23.5" PointY="86.25" />
         <AssociationConnector Association="OracleModel.FK_ACTUAL_NUM_DETAIL_TASK_ID" />
         <AssociationConnector Association="OracleModel.FK_BUDGET_NUM_DETAIL_TASK_ID" />
-        <AssociationConnector Association="OracleModel.FK_DETAIL_DETAIL_TASK_ID" />
         <EntityTypeShape EntityType="OracleModel.SYS_ORG_PROFILE_OPTIONS" Width="1.5" PointX="19.125" PointY="20.25" />
         <EntityTypeShape EntityType="OracleModel.CROSSING" Width="1.5" PointX="26.875" PointY="0.625" />
         <AssociationConnector Association="OracleModel.FK_CROSSINGS_CONTACT_ID" />
@@ -130,13 +126,6 @@
         <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="0.625" PointY="31" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_INVOICE" Width="1.5" PointX="32.5" PointY="2.25" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_SUPP_INVOICE" Width="1.5" PointX="35.5" PointY="3.75" />
-        <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_QUESTIONS" Width="1.5" PointX="40.375" PointY="62.5" />
-        <AssociationConnector Association="OracleModel.FK_FORMS_ANSWER_QUESTION_ID" />
-        <AssociationConnector Association="OracleModel.FK_OPTION_QUES_ID" />
-        <AssociationConnector Association="OracleModel.FK_QUESTION_TYPE_ID" />
-        <AssociationConnector Association="OracleModel.FK_RELATION_QUESTION_ID" />
-        <EntityTypeShape EntityType="OracleModel.BUD_BID_PROJECTS" Width="1.5" PointX="19.125" PointY="85.75" />
-        <AssociationConnector Association="OracleModel.FK_PROJECTS_STATUS_ID" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_CAT" Width="1.5" PointX="47.75" PointY="54.875" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_FORMS" Width="1.5" PointX="49.625" PointY="58.875" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_THRESH_AMT" Width="1.5" PointX="41.625" PointY="54.25" />
@@ -158,6 +147,17 @@
         <EntityTypeShape EntityType="OracleModel.CROSSING_PRICING" Width="1.5" PointX="8.875" PointY="145" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_APPLICATION" Width="1.5" PointX="30.625" PointY="2.375" />
         <AssociationConnector Association="OracleModel.FK_APPLICATION_INVOICE_ID" />
+        <EntityTypeShape EntityType="OracleModel.BUD_BID_DETAIL_SHEET" Width="1.5" PointX="18.25" PointY="87.5" />
+        <EntityTypeShape EntityType="OracleModel.BUD_BID_PROJECTS" Width="1.5" PointX="20.5" PointY="89.375" />
+        <AssociationConnector Association="OracleModel.FK_DETAIL_DETAIL_TASK_ID" />
+        <AssociationConnector Association="OracleModel.FK_PROJECTS_STATUS_ID" />
+        <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_QUES_CAT" Width="1.5" PointX="57.75" PointY="61.5" />
+        <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_QUESTIONS" Width="1.5" PointX="40.25" PointY="63" />
+        <AssociationConnector Association="OracleModel.FK_FORMS_ANSWER_QUESTION_ID" />
+        <AssociationConnector Association="OracleModel.FK_OPTION_QUES_ID" />
+        <AssociationConnector Association="OracleModel.FK_QUES_CAT_QUES" />
+        <AssociationConnector Association="OracleModel.FK_QUESTION_TYPE_ID" />
+        <AssociationConnector Association="OracleModel.FK_RELATION_QUESTION_ID" />
         </Diagram>
       <Diagram DiagramId="e84dee89c5a844eb84c350f94a998eb6" Name="OVERHEAD" >
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="4.25" PointX="2.75" PointY="0.75" />

@@ -144,6 +144,7 @@
     <Content Include="Views\Modules\BudgetBidding\umBlankBudget.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umBudgetBiddingMain.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umDetailSheet.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\umReorderDetailSheets.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umUpdateAllActuals.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umYearBudget.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umYearRollupSummary.aspx" />
@@ -356,6 +357,13 @@
     </Compile>
     <Compile Include="Views\Modules\BudgetBidding\umDetailSheet.aspx.designer.cs">
       <DependentUpon>umDetailSheet.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umReorderDetailSheets.aspx.cs">
+      <DependentUpon>umReorderDetailSheets.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umReorderDetailSheets.aspx.designer.cs">
+      <DependentUpon>umReorderDetailSheets.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\BudgetBidding\umUpdateAllActuals.aspx.cs">
       <DependentUpon>umUpdateAllActuals.aspx</DependentUpon>
@@ -1112,6 +1120,9 @@
       <LastGenOutput>CrystalReport1.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Modules\BudgetBidding\Reports\Report1.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />

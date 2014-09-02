@@ -112,24 +112,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Model Model2;
         
         /// <summary>
-        /// Column5 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column Column5;
-        
-        /// <summary>
-        /// uxEditCategorySortOrder control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.NumberField uxEditCategorySortOrder;
-        
-        /// <summary>
         /// Column2 control.
         /// </summary>
         /// <remarks>
@@ -157,15 +139,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.RowSelectionModel uxAccountCategorySelectionModel;
         
         /// <summary>
-        /// uxAccountCategoryGridPageBar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.PagingToolbar uxAccountCategoryGridPageBar;
-        
-        /// <summary>
         /// uxAccountCategoryGridView control.
         /// </summary>
         /// <remarks>
@@ -175,13 +148,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.GridView uxAccountCategoryGridView;
         
         /// <summary>
-        /// uxCellEditor control.
+        /// GridDragDrop1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.CellEditing uxCellEditor;
+        protected global::Ext.Net.GridDragDrop GridDragDrop1;
         
         /// <summary>
         /// uxAccountListGridPanel control.
@@ -238,24 +211,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Model Model1;
         
         /// <summary>
-        /// Column4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column Column4;
-        
-        /// <summary>
-        /// uxAccountSortOrderField control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.NumberField uxAccountSortOrderField;
-        
-        /// <summary>
         /// Column3 control.
         /// </summary>
         /// <remarks>
@@ -274,24 +229,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.RowSelectionModel uxAccountListSelectionModel;
         
         /// <summary>
-        /// FilterHeader1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FilterHeader FilterHeader1;
-        
-        /// <summary>
-        /// PagingToolbar1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.PagingToolbar PagingToolbar1;
-        
-        /// <summary>
         /// GridView1 control.
         /// </summary>
         /// <remarks>
@@ -301,13 +238,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.GridView GridView1;
         
         /// <summary>
-        /// uxCellEditor2 control.
+        /// GridDragDrop2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.CellEditing uxCellEditor2;
+        protected global::Ext.Net.GridDragDrop GridDragDrop2;
         
         /// <summary>
         /// uxCategoryWindow control.

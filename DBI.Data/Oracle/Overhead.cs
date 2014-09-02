@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -87,7 +88,7 @@ namespace DBI.Data
                 OVERHEAD_ORG_BUDGETS_V _r = new OVERHEAD_ORG_BUDGETS_V();
                 _r.BUDGET_DESCRIPTION = OVERHEAD_BUDGET_TYPE.GetDescriptionByTypeId(_budget.OVERHEAD_BUDGET_TYPE_ID);
                 _r.OVERHEAD_BUDGET_TYPE_ID = _budget.OVERHEAD_BUDGET_TYPE_ID;
-                _r.BUDGET_STATUS = (_budget.STATUS == "O") ? "Open" : (_budget.STATUS == "C") ? "Closed" : (_budget.STATUS == "P") ? "Pending" : "Never Opened";
+                _r.BUDGET_STATUS = (_budget.STATUS == "O") ? "Open" : (_budget.STATUS == "C") ? "Closed" : (_budget.STATUS == "L") ? "Locked" : "Never Opened";
                 _r.ORG_BUDGET_ID = _budget.ORG_BUDGET_ID;
                 _r.ORGANIZATION_ID = _budget.ORGANIZATION_ID;
                 _r.ORGANIZATION_NAME = HR.Organization(_budget.ORGANIZATION_ID).ORGANIZATION_NAME;
@@ -115,6 +116,12 @@ namespace DBI.Data
                 var _rdata = _data.OrderBy(x => x.LE_ORG_ID).Take(1).ToList();
                 return _rdata;
             }
+        }
+
+        public DataSet test()
+        {
+            DataSet _t = new DataSet();
+            return _t;
         }
     }
 

@@ -102,6 +102,110 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         }
 
+        protected void deOpenPeriod(object sender, DirectEventArgs e)
+        {
+            short _fiscalYear = short.Parse(uxFiscalYear.SelectedItem.Value);
+
+            using (Entities _context = new Entities())
+            {
+                RowSelectionModel _rsm = uxOrganizationSelectionModel;
+
+                foreach (SelectedRow _row in _rsm.SelectedRows)
+                {
+                    long _businessUnitId = 0;
+                    _businessUnitId = long.Parse(_row.RecordID);
+
+                    //find all budgets for the same year and organization and close them
+                    List<OVERHEAD_ORG_BUDGETS> _organizationBudgets = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.ORGANIZATION_ID == _businessUnitId & x.FISCAL_YEAR == _fiscalYear & x.STATUS != "C").ToList();
+
+                    foreach (OVERHEAD_ORG_BUDGETS _budget in _organizationBudgets)
+                    {
+                        _budget.STATUS = "C";
+                        _budget.MODIFY_DATE = DateTime.Now;
+                        _budget.MODIFIED_BY = User.Identity.Name;
+                    }
+
+                    GenericData.Update<OVERHEAD_ORG_BUDGETS>(_organizationBudgets);
+
+                    //Create the new budget for the selected type.
+                    OVERHEAD_ORG_BUDGETS _newBudget = new OVERHEAD_ORG_BUDGETS();
+                    _newBudget.ORGANIZATION_ID = _businessUnitId;
+                    _newBudget.STATUS = "O";
+                    _newBudget.OVERHEAD_BUDGET_TYPE_ID = long.Parse(uxBudgetName.SelectedItem.Value);
+                    _newBudget.CREATE_DATE = DateTime.Now;
+                    _newBudget.MODIFY_DATE = DateTime.Now;
+                    _newBudget.CREATED_BY = User.Identity.Name;
+                    _newBudget.MODIFIED_BY = User.Identity.Name;
+                    _newBudget.FISCAL_YEAR = short.Parse(uxFiscalYear.SelectedItem.Value);
+                    GenericData.Insert<OVERHEAD_ORG_BUDGETS>(_newBudget);
+
+                    long _leID = 0;
+
+                    string _selectedRecordID = Request.QueryString["orgid"];
+                    char[] _delimiterChars = { ':' };
+                    string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
+                    _leID = long.Parse( _selectedID[0].ToString());
+
+                    OVERHEAD_BUDGET_TYPE _budgetTypeData = OVERHEAD_BUDGET_TYPE.BudgetTypes(_leID).Where(x => x.OVERHEAD_BUDGET_TYPE_ID == _newBudget.OVERHEAD_BUDGET_TYPE_ID).SingleOrDefault();
+
+                    if (_budgetTypeData != null)
+                    {
+                        //Allow Copy of data since there is a parent
+
+                        //Copy data from old budget to new budget
+
+                        //Old Budget Data
+                        OVERHEAD_ORG_BUDGETS _budgetHeader = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.FISCAL_YEAR == _fiscalYear & x.ORGANIZATION_ID == _businessUnitId & x.OVERHEAD_BUDGET_TYPE_ID == _budgetTypeData.PARENT_BUDGET_TYPE_ID).SingleOrDefault();
+
+
+                        List<OVERHEAD_BUDGET_DETAIL> _budgetDetail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budgetHeader.ORG_BUDGET_ID).ToList();
+
+                        foreach (OVERHEAD_BUDGET_DETAIL _line in _budgetDetail)
+                        {
+                            OVERHEAD_BUDGET_DETAIL _d = new OVERHEAD_BUDGET_DETAIL();
+                            _d.CREATE_DATE = DateTime.Now;
+                            _d.MODIFY_DATE = DateTime.Now;
+                            _d.CREATED_BY = User.Identity.Name;
+                            _d.MODIFIED_BY = User.Identity.Name;
+                            _d.ORG_BUDGET_ID = _budgetHeader.ORG_BUDGET_ID;
+                            _d.PERIOD_NAME = _line.PERIOD_NAME;
+                            _d.PERIOD_NUM = _line.PERIOD_NUM;
+                            _d.CODE_COMBINATION_ID = _line.CODE_COMBINATION_ID;
+                            _d.AMOUNT = _line.AMOUNT;
+                            GenericData.Insert<OVERHEAD_BUDGET_DETAIL>(_d);
+                        }
+
+                        List<OVERHEAD_ACCOUNT_COMMENT> _comments = _context.OVERHEAD_ACCOUNT_COMMENT.Where(x => x.ORG_BUDGET_ID == _budgetHeader.ORG_BUDGET_ID).ToList();
+
+                        foreach (OVERHEAD_ACCOUNT_COMMENT _comment in _comments)
+                        {
+                            OVERHEAD_ACCOUNT_COMMENT _c = new OVERHEAD_ACCOUNT_COMMENT();
+                            _c.CODE_COMBINATION_ID = _comment.CODE_COMBINATION_ID;
+                            _c.COMMENTS = _comment.COMMENTS;
+                            _c.CREATE_DATE = DateTime.Now;
+                            _c.MODIFY_DATE = DateTime.Now;
+                            _c.CREATED_BY = User.Identity.Name;
+                            _c.MODIFIED_BY = User.Identity.Name;
+                            _c.ORG_BUDGET_ID = _budgetHeader.ORG_BUDGET_ID;
+                            GenericData.Insert<OVERHEAD_ACCOUNT_COMMENT>(_c);
+                        }
+
+
+                    }
+
+
+                }
+
+
+               
+
+
+            }
+
+
+
+        }
+
         protected void uxBudgetVersionByOrganizationStore_ReadData(object sender, StoreReadDataEventArgs e)
         {
             List<long> OrgsList = new List<long>();

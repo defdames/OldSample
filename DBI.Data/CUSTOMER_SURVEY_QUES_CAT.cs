@@ -12,15 +12,16 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class BUD_BID_ORGS
+    public partial class CUSTOMER_SURVEY_QUES_CAT
     {
-        public decimal BUD_ORG_ID { get; set; }
-        public Nullable<long> ORG_ID { get; set; }
-        public string SETTING { get; set; }
-        public string ORG_VALUE { get; set; }
-        public Nullable<System.DateTime> CREATE_DATE { get; set; }
-        public string CREATED_BY { get; set; }
-        public Nullable<System.DateTime> MODIFY_DATE { get; set; }
-        public string MODIFIED_BY { get; set; }
+        public CUSTOMER_SURVEY_QUES_CAT()
+        {
+            this.CUSTOMER_SURVEY_QUESTIONS = new HashSet<CUSTOMER_SURVEY_QUESTIONS>();
+        }
+    
+        public decimal CATEGORY_ID { get; set; }
+        public string CATEGORY_NAME { get; set; }
+    
+        public virtual ICollection<CUSTOMER_SURVEY_QUESTIONS> CUSTOMER_SURVEY_QUESTIONS { get; set; }
     }
 }

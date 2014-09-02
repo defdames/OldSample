@@ -30,8 +30,7 @@
                                     </ToolTips>
                                      <DirectEvents>
                                          <Click OnEvent="deDeleteCategory"><Confirmation Message="Are you sure you want to delete this category? If there are any accounts assigned they will also be removed, are you sure?" ConfirmRequest="true"></Confirmation><EventMask ShowMask="true"></EventMask></Click>
-                                     </DirectEvents>
-                                         
+                                     </DirectEvents>       
                                 </ext:Button>
                             </Items>
                         </ext:Toolbar>
@@ -39,7 +38,7 @@
                     <Store>
                         <ext:Store runat="server"
                             ID="uxAccountCategoryStore"
-                            AutoDataBind="true" RemoteSort="true" AutoLoad="true" OnReadData="uxAccountCategoryStore_ReadData" >
+                            AutoDataBind="true" RemoteSort="true" AutoLoad="true" OnReadData="uxAccountCategoryStore_ReadData"  >
                             <Model>
                                         <ext:Model ID="Model2" runat="server" IDProperty="CATEGORY_ID">
                                             <Fields>
@@ -55,21 +54,12 @@
                                         <ext:PageProxy />
                                     </Proxy>
                             <Sorters>
-                                <ext:DataSorter Direction="ASC" Property="NAME"></ext:DataSorter>
+                                <ext:DataSorter Direction="ASC" Property="SORT_ORDER"></ext:DataSorter>
                             </Sorters>
                                 </ext:Store>
                             </Store>
                             <ColumnModel>
                                 <Columns>
-                                    <ext:Column ID="Column5" runat="server" DataIndex="SORT_ORDER" Text="Sort Order" Width="125" >
-                                       <Editor>
-                                    <ext:NumberField runat="server" AllowBlank="false" ID="uxEditCategorySortOrder" SelectOnFocus="true" TabIndex="1" MinValue="1" AllowDecimals="false">
-                                         <Listeners>
-                                              <Show Handler="this.el.dom.select();" Delay="150" />
-                                          </Listeners>
-                                      </ext:NumberField>
-                                </Editor>
-                                    </ext:Column>
                                     <ext:Column ID="Column2" runat="server" DataIndex="NAME" Text="Name" Flex="1" />
                                     <ext:Column ID="Column1" runat="server" DataIndex="DESCRIPTION" Text="Description" Flex="1" />
                                 </Columns>
@@ -83,28 +73,24 @@
                              </DirectEvents>
                          </ext:RowSelectionModel>
                             </SelectionModel>
-                      <Plugins>
-                          <ext:FilterHeader runat="server" Remote="true"></ext:FilterHeader>
-                      </Plugins>
-                            <BottomBar>
-                                <ext:PagingToolbar ID="uxAccountCategoryGridPageBar" runat="server" />
-                            </BottomBar>   
                     <View>
                         <ext:GridView ID="uxAccountCategoryGridView" StripeRows="true" runat="server">
-                        </ext:GridView>
-                    </View>       
-                      <Plugins>
-                          <ext:CellEditing runat="server" ClicksToEdit="1" ID="uxCellEditor">
-                              <DirectEvents>
-                                  <Edit OnEvent="deSaveSortOrder">
-                                       <ExtraParams>
+                            <Plugins>
+                                 <ext:GridDragDrop ID="GridDragDrop1" runat="server" DragText="Drag and drop to reorganize" DDGroup="AccountCategory">
+                                 </ext:GridDragDrop>
+                             </Plugins>
+                            <DirectEvents>
+                                <Drop OnEvent="deSaveSortOrder">
+                                     <ExtraParams>
                                              <ext:Parameter Name="Values" Value="Ext.encode(#{uxAccountCategoryGridPanel}.getRowsValues())" Mode="Raw" />
                                        </ExtraParams>
-                                  </Edit>
-                              </DirectEvents>
-                          </ext:CellEditing>
-                      </Plugins>                
+                                </Drop>
+                            </DirectEvents>
+                        </ext:GridView>
+                    </View>    
                         </ext:GridPanel>
+                
+
 
                   <ext:GridPanel ID="uxAccountListGridPanel" runat="server" Flex="1" SimpleSelect="true" Frame="true" Padding="5" Margins="5 5 5 5" Region="South" Title="General Ledger Accounts By Category">
                       <TopBar>
@@ -143,21 +129,12 @@
                                         <ext:PageProxy />
                                     </Proxy>
                             <Sorters>
-                                <ext:DataSorter Direction="ASC" Property="ACCOUNT_SEGMENT"></ext:DataSorter>
+                                <ext:DataSorter Direction="ASC" Property="SORT_ORDER"></ext:DataSorter>
                             </Sorters>
                                 </ext:Store>
                             </Store>
                             <ColumnModel>
                                 <Columns>
-                                    <ext:Column ID="Column4" runat="server" DataIndex="SORT_ORDER" Text="Account Order" Width="150" >
-                                          <Editor>
-                                    <ext:NumberField runat="server" AllowBlank="false" ID="uxAccountSortOrderField" SelectOnFocus="true" TabIndex="1" MinValue="1" AllowDecimals="false">
-                                         <Listeners>
-                                              <Show Handler="this.el.dom.select();" Delay="150" />
-                                          </Listeners>
-                                      </ext:NumberField>
-                                </Editor>
-                                    </ext:Column>
                                     <ext:Column ID="Column3" runat="server" DataIndex="ACCOUNT_SEGMENT_DESC" Text="Account Name" Flex="1" />
                                 </Columns>
                             </ColumnModel>
@@ -169,27 +146,21 @@
                                  </Listeners>
                          </ext:RowSelectionModel>
                             </SelectionModel>
-                          <Plugins>
-                          <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true"></ext:FilterHeader>
-                      </Plugins>
-                            <BottomBar>
-                                <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
-                            </BottomBar>   
                     <View>
                         <ext:GridView ID="GridView1" StripeRows="true" runat="server">
-                        </ext:GridView>
-                    </View>        
-                       <Plugins>
-                          <ext:CellEditing runat="server" ClicksToEdit="1" ID="uxCellEditor2">
-                              <DirectEvents>
-                                  <Edit OnEvent="deSaveAccountSortOrder">
-                                       <ExtraParams>
+                             <Plugins>
+                                 <ext:GridDragDrop ID="GridDragDrop2" runat="server" DragText="Drag and drop to reorganize" DDGroup="AccountList">
+                                 </ext:GridDragDrop>
+                             </Plugins>
+                            <DirectEvents>
+                                <Drop OnEvent="deSaveAccountSortOrder">
+                                     <ExtraParams>
                                              <ext:Parameter Name="Values" Value="Ext.encode(#{uxAccountListGridPanel}.getRowsValues())" Mode="Raw" />
                                        </ExtraParams>
-                                  </Edit>
-                              </DirectEvents>
-                          </ext:CellEditing>
-                      </Plugins>                     
+                                </Drop>
+                            </DirectEvents>
+                        </ext:GridView>
+                    </View>                  
                         </ext:GridPanel>
 
                 </Items>

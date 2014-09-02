@@ -42,20 +42,17 @@ namespace DBI.Data
         }
 
         /// <summary>
-        /// Returns a list of loaded job cost week ending dates in EMS
+        /// Returns a list of week ending dates from Oracle
         /// </summary>
         /// <returns></returns>
         public static List<SingleCombo> AllFiscalYears()
         {
             string sql = "SELECT DISTINCT TO_CHAR(END_DATE, 'YYYY') ID_NAME FROM APPS.PA_PERIODS_ALL ORDER BY ID_NAME";
 
-            List<SingleCombo> data;
             using (Entities context = new Entities())
             {
-                data = context.Database.SqlQuery<SingleCombo>(sql).ToList();                
+                return context.Database.SqlQuery<SingleCombo>(sql).ToList();                
             }
-
-            return data;
         }
 
         /// <summary>
