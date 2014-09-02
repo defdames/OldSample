@@ -688,13 +688,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.NumberColumn NumberField4;
         
         /// <summary>
-        /// NumberField2 control.
+        /// uxMaterialUnitCost control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField NumberField2;
+        protected global::Ext.Net.NumberField uxMaterialUnitCost;
         
         /// <summary>
         /// NumberField5 control.
@@ -706,13 +706,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Column NumberField5;
         
         /// <summary>
-        /// TextField8 control.
+        /// uxMaterialUOM control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField TextField8;
+        protected global::Ext.Net.TextField uxMaterialUOM;
         
         /// <summary>
         /// Column3 control.
@@ -724,13 +724,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.NumberColumn Column3;
         
         /// <summary>
-        /// NumberField1 control.
+        /// uxMaterialQuantity control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField NumberField1;
+        protected global::Ext.Net.NumberField uxMaterialQuantity;
         
         /// <summary>
         /// Column5 control.
@@ -913,13 +913,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.NumberColumn NumberColumn1;
         
         /// <summary>
-        /// NumberField3 control.
+        /// uxEquipmentQuantity control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField NumberField3;
+        protected global::Ext.Net.NumberField uxEquipmentQuantity;
         
         /// <summary>
         /// Column1 control.
@@ -1021,13 +1021,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.NumberColumn NumberColumn2;
         
         /// <summary>
-        /// NumberField6 control.
+        /// uxEquipmentHours control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField NumberField6;
+        protected global::Ext.Net.NumberField uxEquipmentHours;
         
         /// <summary>
         /// NumberColumn22 control.
@@ -1039,13 +1039,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.NumberColumn NumberColumn22;
         
         /// <summary>
-        /// NumberField7 control.
+        /// uxEquipmentCostPerHour control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField NumberField7;
+        protected global::Ext.Net.NumberField uxEquipmentCostPerHour;
         
         /// <summary>
         /// NumberColumn3 control.
@@ -1084,22 +1084,22 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Toolbar Toolbar1;
         
         /// <summary>
-        /// Button1 control.
+        /// uxAddNewEquipment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button1;
+        protected global::Ext.Net.Button uxAddNewEquipment;
         
         /// <summary>
-        /// Button2 control.
+        /// uxDeleteEquipment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button2;
+        protected global::Ext.Net.Button uxDeleteEquipment;
         
         /// <summary>
         /// FieldContainer15 control.
@@ -1228,13 +1228,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.NumberColumn NumberColumn4;
         
         /// <summary>
-        /// NumberField8 control.
+        /// uxPersonnelQuantity control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField NumberField8;
+        protected global::Ext.Net.NumberField uxPersonnelQuantity;
         
         /// <summary>
         /// Column7 control.
@@ -1336,13 +1336,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.NumberColumn NumberColumn5;
         
         /// <summary>
-        /// NumberField9 control.
+        /// uxPersonnelHours control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField NumberField9;
+        protected global::Ext.Net.NumberField uxPersonnelHours;
         
         /// <summary>
         /// NumberColumn6 control.
@@ -1354,13 +1354,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.NumberColumn NumberColumn6;
         
         /// <summary>
-        /// NumberField10 control.
+        /// uxPersonnelCostPerHour control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField NumberField10;
+        protected global::Ext.Net.NumberField uxPersonnelCostPerHour;
         
         /// <summary>
         /// NumberColumn23 control.
@@ -1399,22 +1399,22 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Toolbar Toolbar3;
         
         /// <summary>
-        /// Button3 control.
+        /// uxAddNewPersonnel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button3;
+        protected global::Ext.Net.Button uxAddNewPersonnel;
         
         /// <summary>
-        /// Button4 control.
+        /// uxDeletePersonnel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button4;
+        protected global::Ext.Net.Button uxDeletePersonnel;
         
         /// <summary>
         /// FieldContainer19 control.
@@ -1543,13 +1543,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.NumberColumn NumberColumn7;
         
         /// <summary>
-        /// NumberField11 control.
+        /// uxPerDiemRate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField NumberField11;
+        protected global::Ext.Net.NumberField uxPerDiemRate;
         
         /// <summary>
         /// NumberColumn8 control.
@@ -1561,13 +1561,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.NumberColumn NumberColumn8;
         
         /// <summary>
-        /// NumberField12 control.
+        /// uxPerDiemNumOfDays control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField NumberField12;
+        protected global::Ext.Net.NumberField uxPerDiemNumOfDays;
         
         /// <summary>
         /// NumberColumn9 control.
@@ -1579,13 +1579,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.NumberColumn NumberColumn9;
         
         /// <summary>
-        /// NumberField13 control.
+        /// uxPerDiemNumOfPerDiems control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField NumberField13;
+        protected global::Ext.Net.NumberField uxPerDiemNumOfPerDiems;
         
         /// <summary>
         /// NumberColumn24 control.
@@ -1624,22 +1624,22 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Toolbar Toolbar4;
         
         /// <summary>
-        /// Button5 control.
+        /// uxAddNewPerDiem control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button5;
+        protected global::Ext.Net.Button uxAddNewPerDiem;
         
         /// <summary>
-        /// Button6 control.
+        /// uxDeletePerDiem control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button6;
+        protected global::Ext.Net.Button uxDeletePerDiem;
         
         /// <summary>
         /// FieldContainer21 control.
@@ -1768,13 +1768,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.NumberColumn NumberColumn10;
         
         /// <summary>
-        /// NumberField14 control.
+        /// uxTravelPay control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField NumberField14;
+        protected global::Ext.Net.NumberField uxTravelPay;
         
         /// <summary>
         /// NumberColumn11 control.
@@ -1786,13 +1786,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.NumberColumn NumberColumn11;
         
         /// <summary>
-        /// NumberField15 control.
+        /// uxTravelHours control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField NumberField15;
+        protected global::Ext.Net.NumberField uxTravelHours;
         
         /// <summary>
         /// NumberColumn25 control.
@@ -1831,22 +1831,22 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Toolbar Toolbar5;
         
         /// <summary>
-        /// Button7 control.
+        /// uxAddNewTravel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button7;
+        protected global::Ext.Net.Button uxAddNewTravel;
         
         /// <summary>
-        /// Button8 control.
+        /// uxDeleteTravel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button8;
+        protected global::Ext.Net.Button uxDeleteTravel;
         
         /// <summary>
         /// FieldContainer23 control.
@@ -1975,13 +1975,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.NumberColumn NumberColumn12;
         
         /// <summary>
-        /// NumberField16 control.
+        /// uxMotelRate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField NumberField16;
+        protected global::Ext.Net.NumberField uxMotelRate;
         
         /// <summary>
         /// NumberColumn13 control.
@@ -1993,13 +1993,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.NumberColumn NumberColumn13;
         
         /// <summary>
-        /// NumberField17 control.
+        /// uxMotelNumOfDays control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField NumberField17;
+        protected global::Ext.Net.NumberField uxMotelNumOfDays;
         
         /// <summary>
         /// NumberColumn14 control.
@@ -2011,13 +2011,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.NumberColumn NumberColumn14;
         
         /// <summary>
-        /// NumberField18 control.
+        /// uxMotelNumOfRooms control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField NumberField18;
+        protected global::Ext.Net.NumberField uxMotelNumOfRooms;
         
         /// <summary>
         /// NumberColumn15 control.
@@ -2056,22 +2056,22 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Toolbar Toolbar6;
         
         /// <summary>
-        /// Button9 control.
+        /// uxAddNewMotel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button9;
+        protected global::Ext.Net.Button uxAddNewMotel;
         
         /// <summary>
-        /// Button10 control.
+        /// uxDeleteMotel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button10;
+        protected global::Ext.Net.Button uxDeleteMotel;
         
         /// <summary>
         /// FieldContainer25 control.
@@ -2200,13 +2200,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Column Column16;
         
         /// <summary>
-        /// TextField25 control.
+        /// uxMiscDesc control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField TextField25;
+        protected global::Ext.Net.TextField uxMiscDesc;
         
         /// <summary>
         /// NumberColumn16 control.
@@ -2218,13 +2218,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.NumberColumn NumberColumn16;
         
         /// <summary>
-        /// NumberField19 control.
+        /// uxMiscQuantity control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField NumberField19;
+        protected global::Ext.Net.NumberField uxMiscQuantity;
         
         /// <summary>
         /// NumberColumn17 control.
@@ -2236,13 +2236,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.NumberColumn NumberColumn17;
         
         /// <summary>
-        /// NumberField20 control.
+        /// uxMiscCost control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField NumberField20;
+        protected global::Ext.Net.NumberField uxMiscCost;
         
         /// <summary>
         /// NumberColumn18 control.
@@ -2281,22 +2281,22 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Toolbar Toolbar7;
         
         /// <summary>
-        /// Button11 control.
+        /// uxAddNewMisc control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button11;
+        protected global::Ext.Net.Button uxAddNewMisc;
         
         /// <summary>
-        /// Button12 control.
+        /// uxDeleteMisc control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button12;
+        protected global::Ext.Net.Button uxDeleteMisc;
         
         /// <summary>
         /// FieldContainer27 control.
@@ -2425,13 +2425,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Column Column10;
         
         /// <summary>
-        /// TextField1 control.
+        /// uxLumpSumDesc control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField TextField1;
+        protected global::Ext.Net.TextField uxLumpSumDesc;
         
         /// <summary>
         /// NumberColumn19 control.
@@ -2443,13 +2443,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.NumberColumn NumberColumn19;
         
         /// <summary>
-        /// NumberField21 control.
+        /// uxLumpSumQuantity control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField NumberField21;
+        protected global::Ext.Net.NumberField uxLumpSumQuantity;
         
         /// <summary>
         /// NumberColumn20 control.
@@ -2461,13 +2461,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.NumberColumn NumberColumn20;
         
         /// <summary>
-        /// NumberField22 control.
+        /// uxLumpSumCost control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.NumberField NumberField22;
+        protected global::Ext.Net.NumberField uxLumpSumCost;
         
         /// <summary>
         /// NumberColumn21 control.
@@ -2506,22 +2506,22 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Toolbar Toolbar8;
         
         /// <summary>
-        /// Button13 control.
+        /// uxAddNewLumpSum control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button13;
+        protected global::Ext.Net.Button uxAddNewLumpSum;
         
         /// <summary>
-        /// Button14 control.
+        /// uxDeleteLumpSum control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button14;
+        protected global::Ext.Net.Button uxDeleteLumpSum;
         
         /// <summary>
         /// FieldContainer29 control.
@@ -2614,13 +2614,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.FieldContainer FieldContainer10;
         
         /// <summary>
-        /// Label21 control.
+        /// uxLaborBurdenLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Label Label21;
+        protected global::Ext.Net.Label uxLaborBurdenLabel;
         
         /// <summary>
         /// uxLaborBurden control.
