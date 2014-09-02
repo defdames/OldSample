@@ -938,7 +938,7 @@
 
                 <%-------------------------------------------------- Diagnostic Panel --------------------------------------------------%>
                 <%-- Uncomment to Use --%>
-                <ext:FormPanel ID="FormPanel1"
+                <%--<ext:FormPanel ID="FormPanel1"
                     runat="server"
                     Region="East"
                     Width="130"
@@ -974,11 +974,11 @@
                             </Items>
                         </ext:FieldContainer>
                     </Items>
-                </ext:FormPanel>
+                </ext:FormPanel>--%>
                 <%-- Uncomment to Use --%>
 
                 <%-- Uncomment to Use --%>
-                <%--<ext:Hidden ID="uxHidBudBidID" runat="server" />
+                <ext:Hidden ID="uxHidBudBidID" runat="server" />
                 <ext:Hidden ID="uxHidProjectNumID" runat="server" />
                 <ext:Hidden ID="uxHidType" runat="server" />
                 <ext:Hidden ID="uxHidStatusID" runat="server" />
@@ -988,7 +988,7 @@
                 <ext:Hidden ID="uxHidOldBudBidID" runat="server" />
                 <ext:Hidden ID="uxHidDetailSheetID" runat="server" />
                 <ext:Hidden ID="uxHidDetailSheetOrder" runat="server" />
-                <ext:Hidden ID="uxHidDetailSheetName" runat="server" />--%>
+                <ext:Hidden ID="uxHidDetailSheetName" runat="server" />
                 <%-- Uncomment to Use --%>
                 <%-------------------------------------------------- Diagnostic Panel --------------------------------------------------%>
             </Items>
