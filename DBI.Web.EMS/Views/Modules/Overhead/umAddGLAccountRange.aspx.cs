@@ -32,13 +32,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                if (_storeDetails.ID == "uxSRSegment1Store")
                {
-                   IQueryable<object> _data = _context.GL_ACCOUNTS_V.Select(x => new { ID = x.SEGMENT1 }).Distinct().OrderBy(x => x.ID);
+                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT1_DESC }).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT1, ID_NAME = x.Key.SEGMENT1 + " (" + x.Key.SEGMENT1_DESC + ")" }).OrderBy(x => x.ID);
                    uxSRSegment1Store.DataSource = _data.ToList();
                }
 
                if (_storeDetails.ID == "uxSRSegment2Store")
                {
-                   IQueryable<object> _data = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT1 == uxSRSegment1.SelectedItem.Value).Select(x => new { ID = x.SEGMENT2 }).Distinct().OrderBy(x => x.ID);
+                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT2_DESC }).Where(x => x.Key.SEGMENT1 == uxSRSegment1.SelectedItem.Value).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT2, ID_NAME = x.Key.SEGMENT2 + " (" + x.Key.SEGMENT2_DESC + ")" }).Distinct().OrderBy(x => x.ID);
                    uxSRSegment2Store.DataSource = _data.ToList();
                    if (_data.Count() == 1)
                    {
@@ -48,7 +48,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                if (_storeDetails.ID == "uxSRSegment3Store")
                {
-                   IQueryable<object> _data = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT1 == uxSRSegment1.SelectedItem.Value && x.SEGMENT2 == uxSRSegment2.SelectedItem.Value).Select(x => new { ID = x.SEGMENT3 }).Distinct().OrderBy(x => x.ID);
+                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2,x.SEGMENT3, x.SEGMENT3_DESC }).Where(x => x.Key.SEGMENT1 == uxSRSegment1.SelectedItem.Value && x.Key.SEGMENT2 == uxSRSegment2.SelectedItem.Value).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT3, ID_NAME = x.Key.SEGMENT3 + " (" + x.Key.SEGMENT3_DESC + ")" }).Distinct().OrderBy(x => x.ID);
                    uxSRSegment3Store.DataSource = _data.ToList();
                    if (_data.Count() == 1)
                    {
@@ -58,7 +58,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                if (_storeDetails.ID == "uxSRSegment4Store")
                {
-                   IQueryable<object> _data = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT1 == uxSRSegment1.SelectedItem.Value && x.SEGMENT2 == uxSRSegment2.SelectedItem.Value && x.SEGMENT3 == uxSRSegment3.SelectedItem.Value).Select(x => new { ID = x.SEGMENT4 }).Distinct().OrderBy(x => x.ID);
+                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3,x.SEGMENT4, x.SEGMENT4_DESC }).Where(x => x.Key.SEGMENT1 == uxSRSegment1.SelectedItem.Value && x.Key.SEGMENT2 == uxSRSegment2.SelectedItem.Value && x.Key.SEGMENT3 == uxSRSegment3.SelectedItem.Value).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT4, ID_NAME = x.Key.SEGMENT4 + " (" + x.Key.SEGMENT4_DESC + ")" }).Distinct().OrderBy(x => x.ID);
                    uxSRSegment4Store.DataSource = _data.ToList();
                    if (_data.Count() == 1)
                    {
@@ -69,7 +69,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                if (_storeDetails.ID == "uxSRSegment5Store")
                {
-                   IQueryable<object> _data = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT1 == uxSRSegment1.SelectedItem.Value && x.SEGMENT2 == uxSRSegment2.SelectedItem.Value && x.SEGMENT3 == uxSRSegment3.SelectedItem.Value && x.SEGMENT4 == uxSRSegment4.SelectedItem.Value).Select(x => new { ID = x.SEGMENT5 }).Distinct().OrderBy(x => x.ID);
+                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT4,x.SEGMENT5, x.SEGMENT5_DESC }).Where(x => x.Key.SEGMENT1 == uxSRSegment1.SelectedItem.Value && x.Key.SEGMENT2 == uxSRSegment2.SelectedItem.Value && x.Key.SEGMENT3 == uxSRSegment3.SelectedItem.Value && x.Key.SEGMENT4 == uxSRSegment4.SelectedItem.Value).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT5, ID_NAME = x.Key.SEGMENT5 + " (" + x.Key.SEGMENT5_DESC + ")" }).Distinct().OrderBy(x => x.ID);
                    uxSRSegment5Store.DataSource = _data.ToList();
                    if (_data.Count() == 1)
                    {
@@ -79,7 +79,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                if (_storeDetails.ID == "uxSRSegment6Store")
                {
-                   IQueryable<object> _data = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT1 == uxSRSegment1.SelectedItem.Value && x.SEGMENT2 == uxSRSegment2.SelectedItem.Value && x.SEGMENT3 == uxSRSegment3.SelectedItem.Value && x.SEGMENT4 == uxSRSegment4.SelectedItem.Value && x.SEGMENT5 == uxSRSegment5.SelectedItem.Value).Select(x => new { ID = x.SEGMENT6 }).Distinct().OrderBy(x => x.ID);
+                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new {x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT4,x.SEGMENT5, x.SEGMENT6, x.SEGMENT6_DESC }).Where(x => x.Key.SEGMENT1 == uxSRSegment1.SelectedItem.Value && x.Key.SEGMENT2 == uxSRSegment2.SelectedItem.Value && x.Key.SEGMENT3 == uxSRSegment3.SelectedItem.Value && x.Key.SEGMENT4 == uxSRSegment4.SelectedItem.Value && x.Key.SEGMENT5 == uxSRSegment5.SelectedItem.Value).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT6, ID_NAME = x.Key.SEGMENT6 + " (" + x.Key.SEGMENT6_DESC + ")" }).Distinct().OrderBy(x => x.ID);
                    uxSRSegment6Store.DataSource = _data.ToList();
                    if (_data.Count() == 1)
                    {
@@ -89,52 +89,50 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                if (_storeDetails.ID == "uxSRSegment7Store")
                {
-                   IQueryable<object> _data = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT1 == uxSRSegment1.SelectedItem.Value && x.SEGMENT2 == uxSRSegment2.SelectedItem.Value && x.SEGMENT3 == uxSRSegment3.SelectedItem.Value && x.SEGMENT4 == uxSRSegment4.SelectedItem.Value && x.SEGMENT5 == uxSRSegment5.SelectedItem.Value && x.SEGMENT6 == uxSRSegment6.SelectedItem.Value).Select(x => new { ID = x.SEGMENT7 }).Distinct().OrderBy(x => x.ID);
+                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT4, x.SEGMENT5, x.SEGMENT6,x.SEGMENT7, x.SEGMENT7_DESC }).Where(x => x.Key.SEGMENT1 == uxSRSegment1.SelectedItem.Value && x.Key.SEGMENT2 == uxSRSegment2.SelectedItem.Value && x.Key.SEGMENT3 == uxSRSegment3.SelectedItem.Value && x.Key.SEGMENT4 == uxSRSegment4.SelectedItem.Value && x.Key.SEGMENT5 == uxSRSegment5.SelectedItem.Value && x.Key.SEGMENT6 == uxSRSegment6.SelectedItem.Value).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT7, ID_NAME = x.Key.SEGMENT7 + " (" + x.Key.SEGMENT7_DESC + ")" }).Distinct().OrderBy(x => x.ID);
                    uxSRSegment7Store.DataSource = _data.ToList();
                }
 
                if (_storeDetails.ID == "uxERSegment1Store")
                {
 
-                   IQueryable<object> _data = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT1 == uxSRSegment1.SelectedItem.Value).Select(x => new { ID = x.SEGMENT1 }).Distinct().OrderBy(x => x.ID);
+                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT1_DESC }).Where(x => x.Key.SEGMENT1 == uxSRSegment1.SelectedItem.Value).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT1, ID_NAME = x.Key.SEGMENT1 + " (" + x.Key.SEGMENT1_DESC + ")" }).Distinct().OrderBy(x => x.ID);
                    uxERSegment1Store.DataSource = _data.ToList();
                }
 
                if (_storeDetails.ID == "uxERSegment2Store")
                {
-                   IQueryable<object> _data = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT1 == uxERSegment1.SelectedItem.Value && String.Compare(x.SEGMENT2, uxSRSegment2.SelectedItem.Value) >= 0).Select(x => new { ID = x.SEGMENT2 }).Distinct().OrderBy(x => x.ID);
+                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT2_DESC }).Where(x => x.Key.SEGMENT1 == uxERSegment1.SelectedItem.Value && String.Compare(x.Key.SEGMENT2, uxSRSegment2.SelectedItem.Value) >= 0).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT2, ID_NAME = x.Key.SEGMENT2 + " (" + x.Key.SEGMENT2_DESC + ")" }).Distinct().OrderBy(x => x.ID);
                    uxERSegment2Store.DataSource = _data.ToList();
-                   _context.Dispose();
                }
 
                if (_storeDetails.ID == "uxERSegment3Store")
                {
-                   IQueryable<object> _data = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT1 == uxERSegment1.SelectedItem.Value && x.SEGMENT2 == uxERSegment2.SelectedItem.Value && String.Compare(x.SEGMENT3, uxSRSegment3.SelectedItem.Value) >= 0).Select(x => new { ID = x.SEGMENT3 }).Distinct().OrderBy(x => x.ID);
+                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT3_DESC }).Where(x => x.Key.SEGMENT1 == uxERSegment1.SelectedItem.Value && x.Key.SEGMENT2 == uxERSegment2.SelectedItem.Value && String.Compare(x.Key.SEGMENT3, uxSRSegment3.SelectedItem.Value) >= 0).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT3, ID_NAME = x.Key.SEGMENT3 + " (" + x.Key.SEGMENT3_DESC + ")" }).Distinct().OrderBy(x => x.ID);
                    uxERSegment3Store.DataSource = _data.ToList();
                }
 
                if (_storeDetails.ID == "uxERSegment4Store")
                {
-                   IQueryable<object> _data = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT1 == uxERSegment1.SelectedItem.Value && x.SEGMENT2 == uxERSegment2.SelectedItem.Value && x.SEGMENT3 == uxERSegment3.SelectedItem.Value && String.Compare(x.SEGMENT4, uxSRSegment4.SelectedItem.Value) >= 0).Select(x => new { ID = x.SEGMENT4 }).Distinct().OrderBy(x => x.ID);
+                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT4, x.SEGMENT4_DESC }).Where(x => x.Key.SEGMENT1 == uxERSegment1.SelectedItem.Value && x.Key.SEGMENT2 == uxERSegment2.SelectedItem.Value && x.Key.SEGMENT3 == uxERSegment3.SelectedItem.Value && String.Compare(x.Key.SEGMENT4, uxSRSegment4.SelectedItem.Value) >= 0).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT4, ID_NAME = x.Key.SEGMENT4 + " (" + x.Key.SEGMENT4_DESC + ")" }).Distinct().OrderBy(x => x.ID);
                    uxERSegment4Store.DataSource = _data.ToList();
                }
 
                if (_storeDetails.ID == "uxERSegment5Store")
                {
-                   IQueryable<object> _data = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT1 == uxERSegment1.SelectedItem.Value && x.SEGMENT2 == uxERSegment2.SelectedItem.Value && x.SEGMENT3 == uxERSegment3.SelectedItem.Value && x.SEGMENT4 == uxERSegment4.SelectedItem.Value && String.Compare(x.SEGMENT5, uxSRSegment5.SelectedItem.Value) >= 0).Select(x => new { ID = x.SEGMENT5 }).Distinct().OrderBy(x => x.ID);
+                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT4,x.SEGMENT5, x.SEGMENT5_DESC }).Where(x => x.Key.SEGMENT1 == uxERSegment1.SelectedItem.Value && x.Key.SEGMENT2 == uxERSegment2.SelectedItem.Value && x.Key.SEGMENT3 == uxERSegment3.SelectedItem.Value && x.Key.SEGMENT4 == uxERSegment4.SelectedItem.Value && String.Compare(x.Key.SEGMENT5, uxSRSegment5.SelectedItem.Value) >= 0).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT5, ID_NAME = x.Key.SEGMENT5 + " (" + x.Key.SEGMENT5_DESC + ")" }).Distinct().OrderBy(x => x.ID);
                    uxERSegment5Store.DataSource = _data.ToList();
                }
 
                if (_storeDetails.ID == "uxERSegment6Store")
                {
-                   IQueryable<object> _data = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT1 == uxERSegment1.SelectedItem.Value && x.SEGMENT2 == uxERSegment2.SelectedItem.Value && x.SEGMENT3 == uxERSegment3.SelectedItem.Value && x.SEGMENT4 == uxERSegment4.SelectedItem.Value && x.SEGMENT5 == uxERSegment5.SelectedItem.Value && String.Compare(x.SEGMENT6, uxSRSegment6.SelectedItem.Value) >= 0).Select(x => new { ID = x.SEGMENT6 }).Distinct().OrderBy(x => x.ID);
+                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT4, x.SEGMENT5, x.SEGMENT6, x.SEGMENT6_DESC }).Where(x => x.Key.SEGMENT1 == uxERSegment1.SelectedItem.Value && x.Key.SEGMENT2 == uxERSegment2.SelectedItem.Value && x.Key.SEGMENT3 == uxERSegment3.SelectedItem.Value && x.Key.SEGMENT4 == uxERSegment4.SelectedItem.Value && x.Key.SEGMENT5 == uxERSegment5.SelectedItem.Value && String.Compare(x.Key.SEGMENT6, uxSRSegment6.SelectedItem.Value) >= 0).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT6, ID_NAME = x.Key.SEGMENT6 + " (" + x.Key.SEGMENT6_DESC + ")" }).Distinct().OrderBy(x => x.ID);
                    uxERSegment6Store.DataSource = _data.ToList();
-                   _context.Dispose();
                }
 
                if (_storeDetails.ID == "uxERSegment7Store")
                {
-                   IQueryable<object> _data = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT1 == uxERSegment1.SelectedItem.Value && x.SEGMENT2 == uxERSegment2.SelectedItem.Value && x.SEGMENT3 == uxERSegment3.SelectedItem.Value && x.SEGMENT4 == uxERSegment4.SelectedItem.Value && x.SEGMENT5 == uxERSegment5.SelectedItem.Value && x.SEGMENT6 == uxERSegment6.SelectedItem.Value && String.Compare(x.SEGMENT7, uxSRSegment7.SelectedItem.Value) >= 0).Select(x => new { ID = x.SEGMENT7 }).Distinct().OrderBy(x => x.ID);
+                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT4, x.SEGMENT5, x.SEGMENT6, x.SEGMENT7, x.SEGMENT7_DESC }).Where(x => x.Key.SEGMENT1 == uxERSegment1.SelectedItem.Value && x.Key.SEGMENT2 == uxERSegment2.SelectedItem.Value && x.Key.SEGMENT3 == uxERSegment3.SelectedItem.Value && x.Key.SEGMENT4 == uxERSegment4.SelectedItem.Value && x.Key.SEGMENT5 == uxERSegment5.SelectedItem.Value && x.Key.SEGMENT6 == uxERSegment6.SelectedItem.Value && String.Compare(x.Key.SEGMENT7, uxSRSegment7.SelectedItem.Value) >= 0).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT7, ID_NAME = x.Key.SEGMENT7 + " (" + x.Key.SEGMENT7_DESC + ")" }).Distinct().OrderBy(x => x.ID);
                    uxERSegment7Store.DataSource = _data.ToList();
                }
         }

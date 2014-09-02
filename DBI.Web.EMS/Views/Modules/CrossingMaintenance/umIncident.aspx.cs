@@ -30,11 +30,12 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 //List<object> data;
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-                IQueryable<CROSSING_MAINTENANCE.CrossingList> data = CROSSING_MAINTENANCE.GetCrossingProjectList(RailroadId, _context);
+                IQueryable<CROSSING_MAINTENANCE.CrossingList> data = CROSSING_MAINTENANCE.GetCrossingProjectListIncidents(RailroadId, _context);
               
                 int count;
                 uxCurrentCrossingStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.CrossingList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 e.Total = count;
+              
             }
         }
         protected void GetIncidentGridData(object sender, StoreReadDataEventArgs e)

@@ -34,50 +34,63 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             //Load LEs
             if (e.NodeID == "0")
             {
+
                 var data = HR.LegalEntityHierarchies().Select(a => new { a.ORGANIZATION_ID, a.ORGANIZATION_NAME }).Distinct().ToList();
 
+            
                 //Build the treepanel
                 foreach (var view in data)
                 {
 
-                    //Check for incomplete setup 
-                    int _cnt = OVERHEAD_BUDGET_TYPE.BudgetTypes(view.ORGANIZATION_ID).Count();
+                    //Only show for the profile option OverheadBudgetHierarchy
+
+                    string _profileValue = SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetHierarchy", view.ORGANIZATION_ID);
+
+                    if (_profileValue.Length > 0)
+                    {
+                        long _profileLong = long.Parse(_profileValue);
+                        var _hierData = HR.LegalEntityHierarchies().Where(a => a.ORGANIZATION_ID == view.ORGANIZATION_ID & a.ORGANIZATION_STRUCTURE_ID == _profileLong).ToList();
+
+                        //Check for incomplete setup 
+                        int _cnt = OVERHEAD_BUDGET_TYPE.BudgetTypes(view.ORGANIZATION_ID).Count();
 
 
-                    //Create the Hierarchy Levels
-                    Node node = new Node();
-                    node.Text = view.ORGANIZATION_NAME;
-                    node.NodeID = view.ORGANIZATION_ID.ToString();
-                    if (_cnt > 0)
-                    {
-                        node.Icon = Icon.BulletGreen;
-                    }
-                    else
-                    {
-                        node.Icon = Icon.BulletRed;
-                    }
-                    e.Nodes.Add(node);
+                        //Create the Hierarchy Levels
+                        Node node = new Node();
+                        node.Text = view.ORGANIZATION_NAME;
+                        node.NodeID = string.Format("{0}:{1}", view.ORGANIZATION_ID.ToString(), _profileValue.ToString());
+                        if (_cnt > 0)
+                        {
+                            node.Icon = Icon.BulletGreen;
+                        }
+                        else
+                        {
+                            node.Icon = Icon.BulletRed;                  
+                        }
+                        node.Leaf = true;
+                        e.Nodes.Add(node);
+                    }     
                 }
             }
-            else
-            {
-                long nodeID = long.Parse(e.NodeID);
+            //else
+            //{
+            //    long nodeID = long.Parse(e.NodeID);
 
-                //Load Hierarchies for LE
-                var data = HR.LegalEntityHierarchies().Where(a => a.ORGANIZATION_ID == nodeID).ToList();
+            //    //Load Hierarchies for LE
+            //    var data = HR.LegalEntityHierarchies().Where(a => a.ORGANIZATION_ID == nodeID).ToList();
 
-                //Build the treepanel
-                foreach (var view in data)
-                {
-                    //Create the Hierarchy Levels
-                    Node node = new Node();
-                    node.Icon = Icon.BulletMagnify;
-                    node.Text = view.HIERARCHY_NAME;
-                    node.NodeID = string.Format("{0}:{1}", view.ORGANIZATION_ID.ToString(), view.ORGANIZATION_STRUCTURE_ID.ToString());
-                    node.Leaf = true;
-                    e.Nodes.Add(node);
-                }
-            }
+            //    //Build the treepanel
+            //    foreach (var view in data)
+            //    {
+            //        //Create the Hierarchy Levels
+            //        Node node = new Node();
+            //        node.Icon = Icon.BulletMagnify;
+            //        node.Text = view.HIERARCHY_NAME;
+            //        node.NodeID = string.Format("{0}:{1}", view.ORGANIZATION_ID.ToString(), view.ORGANIZATION_STRUCTURE_ID.ToString());
+            //        node.Leaf = true;
+            //        e.Nodes.Add(node);
+            //    }
+            //}
 
         }
 
@@ -86,17 +99,14 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         protected void deSelectNode(object sender, DirectEventArgs e)
         {
             TreeSelectionModel sm = uxOrganizationTreePanel.GetSelectionModel() as TreeSelectionModel;
+            string _nodeText = e.ExtraParams["ORGANIZATION_NAME"];
 
-            uxCenterTabPanel.RemoveAll();
+                uxCenterTabPanel.RemoveAll();
+                AddTab(sm.SelectedRecordID + "OF", _nodeText + " - Budget Versions", "umOverheadMaintainBudgets.aspx?orgid=" + sm.SelectedRecordID, false, true);
+                AddTab(sm.SelectedRecordID + "OS", _nodeText + " - Organization Security", "umOverheadOrganizationSecurity.aspx?orgid=" + sm.SelectedRecordID, false, false);
+                AddTab(sm.SelectedRecordID + "BT", _nodeText + " - Budget Types", "umOverheadBudgetTypes.aspx?leid=" + sm.SelectedRecordID, false, false);
+                uxOrganizationTreePanel.Collapse();
 
-            if (!sm.SelectedRecordID.Contains(":"))
-            {
-                AddTab(sm.SelectedRecordID + "BT", "Budget Types", "umOverheadBudgetTypes.aspx?leid=" + sm.SelectedRecordID, false, true);
-            }
-            else
-            {
-                AddTab(sm.SelectedRecordID, "Organization Security / Account Maintenance", "umOverheadOrganizationSecurity.aspx?orgid=" + sm.SelectedRecordID, false, true);
-            }
         }
 
         /// <summary>

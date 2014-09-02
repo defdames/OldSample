@@ -31,7 +31,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         protected void deApplicationReviewGrid(object sender, StoreReadDataEventArgs e)
         {
             string Invoice = uxInvoiceChoice.SelectedItem.Value;
-            string Application = uxInvoiceChoice.SelectedItem.Value;
+            decimal Application = Convert.ToDecimal(uxInvoiceChoice.SelectedItem.Value);
 
             List<object> appData;
 

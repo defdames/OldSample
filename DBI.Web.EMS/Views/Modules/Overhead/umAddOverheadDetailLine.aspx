@@ -18,16 +18,31 @@
                      x = m[1].length > 3 ? m[1].length % 3 : 0;
 
 
-                 var r = (n < 0 ? '-' : '') // preserve minus sign
+                 var r = (n < 0 ? '(' : '') // preserve minus sign
                          + (x ? m[1].substr(0, x) + tSeparator : "")
                          + m[1].substr(x).replace(/(\d{3})(?=\d)/g, "$1" + tSeparator)
                          + (dp ? dSeparator + (+m[2] || 0).toFixed(dp).substr(2) : "")
-                         + " " + symbol;
+                         + (n < 0 ? ')' : '') + " " + symbol;
 
                  return Ext.String.format(template, (n >= 0) ? "black" : "red", r);
              };
          };
+
+         var beforeCellEditHandler = function (e) {
+             if (e.record.data.ACTUALS_IMPORTED_FLAG == "Y") {
+                 return false;
+             }
+         }
     </script>
+
+    <style>
+        .x-grid-row-summary .x-grid-cell-inner {
+            font-weight      : bold;
+            font-size        : 11px;
+            background-color : #E0E0D1;
+        }
+
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -38,7 +53,7 @@
             <Items>
                 <ext:Toolbar runat="server" Region="North" Padding="5" Margins="5 5 5 5">
                     <Items>
-                        <ext:Button runat="server" Icon="CalculatorEdit" Text="Calcuator">
+                        <ext:Button runat="server" Icon="CalculatorEdit" Text="Cost Allocation">
                             <Listeners>
                                 <Click Handler="#{uxDispersementForm}.reset();#{uxDisbursementDetailsWindow}.show();"></Click>
                             </Listeners>
@@ -70,29 +85,35 @@
                                         <ext:ModelField Name="PERIOD_NUM"></ext:ModelField>
                                         <ext:ModelField Name="ORG_BUDGET_ID"></ext:ModelField>
                                         <ext:ModelField Name="DETAIL_TYPE"></ext:ModelField>
-                                         <ext:ModelField Name="CREATED_BY"></ext:ModelField>
+                                        <ext:ModelField Name="CREATED_BY"></ext:ModelField>
                                         <ext:ModelField Name="CREATE_DATE"></ext:ModelField>
+                                        <ext:ModelField Name="ACTUALS_IMPORTED_FLAG"></ext:ModelField>
                                     </Fields>
                                 </ext:Model>
                             </Model>
                             <Proxy>
                                 <ext:PageProxy />
                             </Proxy>
-                           
+                           <Listeners>
+                               <Load Handler="#{uxGridEditor}.startEdit(0, 1);" Delay="250" />
+                           </Listeners>
                         </ext:Store>
                     </Store>                   
                     <ColumnModel>
                        <Columns>
-                            <ext:Column ID="Column116" runat="server" DataIndex="PERIOD_NAME" Text="Period" Flex="1" />
-                            <ext:Column ID="Column117" runat="server" DataIndex="AMOUNT" Text="Amount" Flex="1" >
+                            <ext:Column ID="Column116" runat="server" DataIndex="PERIOD_NAME" Text="Period" Flex="1"  >
+                                <SummaryRenderer Handler="return ('Total');" />  
+                            </ext:Column>
+                            <ext:Column ID="Column117" runat="server" DataIndex="AMOUNT" Text="Amount" Flex="1" SummaryType="Sum" Align="Right" >
                                 <Editor>
-                                    <ext:NumberField runat="server" AllowBlank="false" ID="uxEditAmount" SelectOnFocus="true" TabIndex="1">
+                                    <ext:NumberField runat="server" AllowBlank="false" ID="uxEditAmount" SelectOnFocus="true" TabIndex="1" KeyNavEnabled="false" HideTrigger="true">
                                          <Listeners>
                                               <Show Handler="this.el.dom.select();" Delay="150" />
                                           </Listeners>
                                       </ext:NumberField>
                                 </Editor>
                                 <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
+                                <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                             </ext:Column>
                         </Columns>
                     </ColumnModel>
@@ -100,14 +121,23 @@
                         <ext:GridView ID="GridView4" StripeRows="true" runat="server" TrackOver="true">
                         </ext:GridView>
                     </View> 
+                    
+                    <Features>               
+                     <ext:Summary ID="Summary1" runat="server" Dock="Bottom" />
+            </Features>  
                     <Plugins>
-                           <ext:CellEditing runat="server" ClicksToEdit="1">
+                           <ext:CellEditing runat="server" ClicksToEdit="1" ID="uxGridEditor">
+                               <Listeners>
+                                   <Edit Handler="#{uxSaveDetailLineButton}.focus();" />
+                                   <BeforeEdit Handler="return beforeCellEditHandler(e);"></BeforeEdit>
+                               </Listeners>
                               </ext:CellEditing>
+                        
                                                </Plugins>
                        <Buttons>
                            <ext:Button runat="server" ID="uxSaveDetailLineButton" Text="Save" Icon="Disk" AutoFocus="true" TabIndex="2">
                                        <DirectEvents>
-                                           <Click OnEvent="deSaveDetailLine" Success="parent.Ext.getCmp('uxDetailLineMaintenance').close();"><Confirmation ConfirmRequest="true" Message="Are you sure you want to save this detail line?"></Confirmation><EventMask ShowMask="true"></EventMask>
+                                           <Click OnEvent="deSaveDetailLine" Success="parent.Ext.getCmp('uxOrganizationAccountGridPanel').getStore().load();parent.Ext.getCmp('uxDetailLineMaintenance').close();"><Confirmation ConfirmRequest="true" Message="Are you sure you want to save this detail line?"></Confirmation><EventMask ShowMask="true"></EventMask>
                                                <ExtraParams>
                                                     <ext:Parameter Name="Values" Value="Ext.encode(#{GridPanel3}.getRowsValues())" Mode="Raw" />
                                              </ExtraParams>
@@ -140,7 +170,7 @@
                 </Items>
             </ext:Viewport>
 
-        <ext:Window runat="server" Width="350" Height="150" Title="Disbursement Details" Layout="FitLayout" Header="true" Hidden="true" ID="uxDisbursementDetailsWindow" CloseAction="Hide" Closable="true" Modal="true">
+        <ext:Window runat="server" Width="350" Height="150" Title="Cost Allocation" Layout="FitLayout" Header="true" Hidden="true" ID="uxDisbursementDetailsWindow" CloseAction="Hide" Closable="true" Modal="true" DefaultButton="uxCalculate">
             <Items>
                 <ext:FormPanel ID="uxDispersementForm" runat="server" Header="false" BodyPadding="10" DefaultButton="uxAddBudgetType" Frame="true"
                     Margins="5 5 5 5" >
@@ -156,7 +186,7 @@
                                 MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;"  >
                                 <Items>
                                     <ext:ListItem Text="Annual (By Month)" Value="A" />
-                                    <ext:ListItem Text="Annual (By Week)" Value="AW" />
+                                     <ext:ListItem Text="Annual (By Week)" Value="AW" />
                                     <ext:ListItem Text="Monthly" Value="M" />
                                     <ext:ListItem Text="Weekly" Value="W" />
                                 </Items>
@@ -179,7 +209,7 @@
 
                     </Items>
                     <Buttons>
-                        <ext:Button runat="server" ID="uxCalculate" Text="Disperse Amount" Disabled="true" icon="CalculatorEdit">
+                        <ext:Button runat="server" ID="uxCalculate" Text="Allocate Amount" Disabled="true" icon="CalculatorEdit">
                             <DirectEvents>
                                 <Click OnEvent="deCalcuateAmount"><EventMask ShowMask="true"></EventMask></Click>
                             </DirectEvents>

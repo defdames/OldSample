@@ -17,12 +17,18 @@
                    <TopBar>
                        <ext:Toolbar runat="server">
                            <Items>
-                               <ext:ToolbarFill runat="server"></ext:ToolbarFill>
-                               <ext:Button runat="server" Text="Hide Closed" Icon="BookMagnify" EnableToggle="true" Pressed="true" ID="uxViewAllToggleButton">
-                                   <DirectEvents>
-                                       <Toggle OnEvent="deToggleView"><EventMask ShowMask="true"></EventMask></Toggle>
-                                   </DirectEvents>
-                               </ext:Button>
+                                  <ext:ToolbarFill ID="ToolbarFill1" runat="server"></ext:ToolbarFill>
+                                 <ext:Checkbox runat="server" HideLabel="true" BoxLabel="View All Budgets" ID="uxViewAllBudgets" Checked="false">
+                                    <DirectEvents>
+                                        <Change OnEvent="deViewAll"><EventMask ShowMask="true"></EventMask></Change>
+                                    </DirectEvents>
+                                </ext:Checkbox>
+                                <ext:ToolbarSpacer ID="ToolbarSpacer2" runat="server"></ext:ToolbarSpacer>
+                                 <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Hide Closed Budgets" ID="uxHideClosedBudgetsCheckbox" Checked="true">
+                                    <DirectEvents>
+                                        <Change OnEvent="deHideClosed"><EventMask ShowMask="true"></EventMask></Change>
+                                    </DirectEvents>
+                                </ext:Checkbox>
                            </Items>
                        </ext:Toolbar>
                    </TopBar>
@@ -36,6 +42,7 @@
                                         <ext:ModelField Name="FISCAL_YEAR" />
                                         <ext:ModelField Name="BUDGET_DESCRIPTION" />
                                         <ext:ModelField Name="BUDGET_STATUS" />
+                                        <ext:ModelField Name="ACCOUNT_RANGE" />
                                         <ext:ModelField Name="ORGANIZATION_NAME" />
                                         <ext:ModelField Name="ORGANIZATION_ID" />
                                     </Fields>
@@ -54,6 +61,7 @@
                             <ext:Column ID="Column4" runat="server" DataIndex="FISCAL_YEAR" Text="Fiscal Year" Flex="1" />
                             <ext:Column ID="Column3" runat="server" DataIndex="BUDGET_DESCRIPTION" Text="Budget Draft" Flex="1" />
                              <ext:Column ID="Column5" runat="server" DataIndex="BUDGET_STATUS" Text="Status" Flex="1" />
+                            <ext:Column ID="Column1" runat="server" DataIndex="ACCOUNT_RANGE" Text="Account Range" Flex="1" />
                         </Columns>
                     </ColumnModel>
                     <Plugins>
@@ -68,6 +76,7 @@
                                          <ext:Parameter Mode="Raw" Name="FISCAL_YEAR" Value="record.data.FISCAL_YEAR"></ext:Parameter>
                                         <ext:Parameter Mode="Raw" Name="ORGANIZATION_NAME" Value="record.data.ORGANIZATION_NAME"></ext:Parameter>
                                         <ext:Parameter Mode="Raw" Name="BUDGET_DESCRIPTION" Value="record.data.BUDGET_DESCRIPTION"></ext:Parameter>
+                                         <ext:Parameter Mode="Raw" Name="ACCOUNT_RANGE" Value="record.data.ACCOUNT_RANGE"></ext:Parameter>
                                     </ExtraParams>
                                 </Select>
                             </DirectEvents>

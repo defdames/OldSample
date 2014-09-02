@@ -103,13 +103,40 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.ToolTip ToolTip2;
         
         /// <summary>
-        /// uxActiveToggle control.
+        /// uxGeneralLedger control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxActiveToggle;
+        protected global::Ext.Net.Button uxGeneralLedger;
+        
+        /// <summary>
+        /// ToolbarSeparator2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ToolbarSeparator ToolbarSeparator2;
+        
+        /// <summary>
+        /// uxOpenPeriod control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxOpenPeriod;
+        
+        /// <summary>
+        /// uxHideInActiveCheckbox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Checkbox uxHideInActiveCheckbox;
         
         /// <summary>
         /// uxOrganizationSecurityStore control.
@@ -128,15 +155,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Model Model2;
-        
-        /// <summary>
-        /// CommandColumn1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.CommandColumn CommandColumn1;
         
         /// <summary>
         /// Column2 control.
@@ -172,7 +190,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.RowSelectionModel uxOrganizationsGridSelectionModel;
+        protected global::Ext.Net.CheckboxSelectionModel uxOrganizationsGridSelectionModel;
         
         /// <summary>
         /// uxOrganizationGridPageBar control.
