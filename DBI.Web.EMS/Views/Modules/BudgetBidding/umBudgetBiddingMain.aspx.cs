@@ -28,12 +28,34 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 if (e.NodeID == "0")
                 {
                     var data = HR.LegalEntityHierarchies().Select(a => new { a.ORGANIZATION_ID, a.ORGANIZATION_NAME }).Distinct().ToList();
+                    bool exitHeirarchyForEach = false;
                     foreach (var view in data)
-                    {
-                        Node node = new Node();
-                        node.Text = view.ORGANIZATION_NAME;
-                        node.NodeID = view.ORGANIZATION_ID.ToString();
-                        e.Nodes.Add(node);
+                    {                        
+                        var heirarchyData = HR.LegalEntityHierarchies().Where(a => a.ORGANIZATION_ID == view.ORGANIZATION_ID);
+                        var orgsList = BB.UserAllowedOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name));
+                        foreach (var heirarchy in heirarchyData)
+                        {
+                            var nextData = HR.ActiveOrganizationsByHierarchy(heirarchy.ORGANIZATION_STRUCTURE_ID, heirarchy.ORGANIZATION_ID);
+
+                            // In next org?
+                            foreach (long allowedOrgs in orgsList)
+                            {
+                                if (nextData.Select(x => x.ORGANIZATION_ID).Contains(allowedOrgs))
+                                {
+                                    Node node = new Node();
+                                    node.Text = view.ORGANIZATION_NAME;
+                                    node.NodeID = view.ORGANIZATION_ID.ToString();
+                                    e.Nodes.Add(node);
+                                    exitHeirarchyForEach = true;
+                                    break;
+                                }
+                            }
+                            if (exitHeirarchyForEach == true)
+                            {
+                                exitHeirarchyForEach = false;
+                                break;
+                            }
+                        }
                     }
                 }
                 else
@@ -54,7 +76,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                                 node.Text = view.HIERARCHY_NAME;
                                 node.NodeID = string.Format("{0}:{1}", view.ORGANIZATION_STRUCTURE_ID.ToString(), view.ORGANIZATION_ID.ToString());
                                 e.Nodes.Add(node);
-                                //break;
+                                break;
                             }
                         }
                     }
