@@ -5,6 +5,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    <script>
+        var getRowClass = function (record, index) {
+            if (record.data.ACTUALS_IMPORTED_FLAG == "Y" && record.data.ADMIN == "N") {
+                return "my-disabled";
+            }
+        }
+
+        var editAllowed = function (record) {
+            if (record.data.ACTUALS_IMPORTED_FLAG == "Y" && record.data.ADMIN == "N") {
+                return false;
+            }
+        }
+    </script>
+  
+    <style>
+        .my-disabled .x-grid-row-checker {
+            filter: alpha(opacity=60);
+            opacity: 0.6;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -32,6 +52,8 @@
                                     <Fields>
                                         <ext:ModelField Name="ENTERED_PERIOD_NAME"></ext:ModelField>
                                         <ext:ModelField Name="PERIOD_NUM"></ext:ModelField>
+                                        <ext:ModelField Name="ACTUALS_IMPORTED_FLAG"></ext:ModelField>
+                                          <ext:ModelField Name="ADMIN"></ext:ModelField>
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -49,13 +71,15 @@
                     </ColumnModel>
                     <View>
                         <ext:GridView ID="GridView4" StripeRows="true" runat="server" TrackOver="true">
+                            <GetRowClass Fn="getRowClass" />
                         </ext:GridView>
                     </View> 
                     <SelectionModel>
                         <ext:CheckboxSelectionModel runat="server" Mode="Simple" AllowDeselect="true" ID="uxPeriodSelectionModel">
                              <Listeners>
                                  <Select Handler="if(#{uxPeriodSelectionModel}.getCount() > 0){#{uxImportSelected}.enable();}else {#{uxImportSelected}.disable();}"></Select>
-                                        <Deselect Handler="if(#{uxPeriodSelectionModel}.getCount() > 0){#{uxImportSelected}.enable();}else {#{uxImportSelected}.disable();}"></Deselect>
+                                  <Deselect Handler="if(#{uxPeriodSelectionModel}.getCount() > 0){#{uxImportSelected}.enable();}else {#{uxImportSelected}.disable();}"></Deselect>
+                                     <BeforeSelect Handler="return editAllowed(record);"></BeforeSelect>
                                  </Listeners>
                         </ext:CheckboxSelectionModel>
                     </SelectionModel>

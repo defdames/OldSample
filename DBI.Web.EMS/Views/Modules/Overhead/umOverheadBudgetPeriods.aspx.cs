@@ -140,7 +140,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             long _organizationID = long.Parse(Request.QueryString["orgid"]);
             long _budgetid = long.Parse(e.ExtraParams["ORG_BUDGET_ID"]);
 
-            string url = "umImportActualsWindow.aspx?budget_id=" + _budgetid + "&orgid=" + _organizationID + "&fiscalyear=" + _fiscal_year;
+            string url = "umImportActualsWindow.aspx?AdminImport=Y&budget_id=" + _budgetid + "&orgid=" + _organizationID + "&fiscalyear=" + _fiscal_year;
 
             Window win = new Window
             {

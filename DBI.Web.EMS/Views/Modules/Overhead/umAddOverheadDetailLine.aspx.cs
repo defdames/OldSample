@@ -52,8 +52,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                         string sql = "select entered_period_name,period_year,period_num,period_type,start_date,end_date from gl.gl_periods where period_set_name = 'DBI Calendar' order by period_num";
                         List<GL_PERIODS> _periodList = _context.Database.SqlQuery<GL_PERIODS>(sql).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Month" & (!_periodString.Contains(x.PERIOD_NUM.ToString()))).ToList();
 
-                        _periodListCount = _periodList.Count();
-
                         foreach (GL_PERIODS _period in _periodList)
                         {
                             OVERHEAD_BUDGET_DETAIL _record = new OVERHEAD_BUDGET_DETAIL();
@@ -73,11 +71,14 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                         _detail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budget_id & x.CODE_COMBINATION_ID == _account_id).OrderBy(x => x.PERIOD_NUM).ToList();
                     }
 
+                    if (!(e.Parameters["DISPERSE_AMOUNT"] == null))
+                    {
+
+                    //Count unlocked months
+                        _periodListCount = _detail.Where(x => x.ACTUALS_IMPORTED_FLAG == "N").Count();
 
                     foreach (OVERHEAD_BUDGET_DETAIL _item in _detail)
                     {
-                        if (e.Parameters["DISPERSE_AMOUNT"] != null)
-                        {
                             if (_item.ACTUALS_IMPORTED_FLAG == "N")
                             {
                                 string _type = e.Parameters["DISPERSE_TYPE"];

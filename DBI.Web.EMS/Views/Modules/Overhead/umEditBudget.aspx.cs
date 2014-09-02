@@ -471,8 +471,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         protected void deCompleteBudget(object sender, DirectEventArgs e)
         {
             uxCompleteBudget.Disable();
-            uxCompleteBudget.Text = "Budget Pending";
-            uxCompleteBudget.Icon = Icon.FlagChecked;
+            uxCompleteBudget.Text = "Budget Locked";
+            uxCompleteBudget.Icon = Icon.Lock;
 
             using (Entities _context = new Entities())
             {
@@ -480,7 +480,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 //pull budget detail data
                 OVERHEAD_ORG_BUDGETS _budgetDetail = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.ORG_BUDGET_ID == _budgetSelectedID).SingleOrDefault();
 
-                _budgetDetail.STATUS = "P";
+                _budgetDetail.STATUS = "L";
                 GenericData.Update<OVERHEAD_ORG_BUDGETS>(_budgetDetail);
             }
 
