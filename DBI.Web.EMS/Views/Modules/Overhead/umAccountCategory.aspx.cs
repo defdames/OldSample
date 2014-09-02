@@ -35,15 +35,19 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             string json = e.ExtraParams["Values"];
 
             List<OVERHEAD_CATEGORY> _gridValues = JSON.Deserialize<List<OVERHEAD_CATEGORY>>(json);
+            int sort = 0;
 
             foreach (OVERHEAD_CATEGORY _detail in _gridValues)
             {
                 _detail.MODIFIED_BY = User.Identity.Name;
                 _detail.MODIFY_DATE = DateTime.Now;
+                _detail.SORT_ORDER = sort + 1;
+                sort = (int)_detail.SORT_ORDER;
             }
 
             GenericData.Update<OVERHEAD_CATEGORY>(_gridValues);
             uxAccountCategoryStore.Sync();
+            uxAccountCategoryStore.Reload();
         }
 
         protected void deSaveAccountSortOrder(object sender, DirectEventArgs e)
@@ -51,15 +55,19 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             string json = e.ExtraParams["Values"];
 
             List<OVERHEAD_ACCOUNT_CATEGORY> _gridValues = JSON.Deserialize<List<OVERHEAD_ACCOUNT_CATEGORY>>(json);
+            int sort = 0;
 
             foreach (OVERHEAD_ACCOUNT_CATEGORY _detail in _gridValues)
             {
                 _detail.MODIFIED_BY = User.Identity.Name;
                 _detail.MODIFY_DATE = DateTime.Now;
+                _detail.SORT_ORDER = sort + 1;
+                sort = (int)_detail.SORT_ORDER;
             }
 
             GenericData.Update<OVERHEAD_ACCOUNT_CATEGORY>(_gridValues);
             uxAccountListStore.Sync();
+            uxAccountListStore.Reload();
         }
 
         protected void uxAccountCategoryStore_ReadData(object sender, StoreReadDataEventArgs e)
@@ -135,7 +143,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         protected void deSaveAccountCategory(object sender, DirectEventArgs e)
         {
 
-            if (uxCategoryName.Text == null)
+            if (uxCategoryName.Text == null || uxCategoryName.Text.Length <= 1)
             {
                 X.Msg.Alert("Fields Missing", "Category name is required to save this record!").Show();
             }

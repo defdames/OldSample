@@ -11,29 +11,11 @@
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" Namespace="App" ClientIDMode="Static" />         
         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
             <Items>
-                 <ext:Panel ID="Panel1" 
-                    runat="server" 
-                    Region="North"
-                    Margins="5 5 5 5"
-                    Title="Information" 
-                    Height="175" 
-                    BodyPadding="5"
-                    Frame="true" 
-                    Icon="Information">
-                    <Content>
-                        <b>Open Periods</b>
-                        <p>Allows you to select a range of organizations and open the period that's selected. NOTE: All open periods other then the one selected will be closed in the same fiscal year!</p>
-                        </br>
-                        <b>Edit Periods</b>
-                        <p>Allows you to open and close forecast budgets on a single organization. </p>
-                    </Content>
-                </ext:Panel>
-
                  <ext:GridPanel ID="uxGlAccountSecurityGrid" runat="server" Flex="1" Header="false" Title="Budget Versions By Organization" Region="Center" CollapseDirection="Top"  Margin="5" SelectionMemory="true" >
                      <TopBar>
                          <ext:Toolbar runat="server">
                              <Items>
-                                 <ext:Button runat="server" Text="Open Periods" Icon="FolderMagnify" ID="uxMassEdit" Disabled="true">
+                                 <ext:Button runat="server" Text="Add Budget Period" Icon="Add" ID="uxAddBudget" Disabled="true">
                                      <Listeners>
                                          <Click Handler="#{FormPanel1}.reset();#{uxOpenCloseBudget}.show();"></Click>
                                      </Listeners>
@@ -88,8 +70,8 @@
                     <SelectionModel>
                         <ext:CheckboxSelectionModel runat="server" AllowDeselect="true" Mode="Simple" ID="uxOrganizationSelectionModel">
                             <Listeners>
-                               <Select Handler="if(#{uxOrganizationSelectionModel}.getCount() > 0){#{uxMassEdit}.enable();}else {#{uxMassEdit}.disable();}"></Select>
-                                        <Deselect Handler="if(#{uxOrganizationSelectionModel}.getCount() > 0){#{uxMassEdit}.enable();}else {#{uxMassEdit}.disable();}"></Deselect>
+                               <Select Handler="if(#{uxOrganizationSelectionModel}.getCount() > 0){#{uxAddBudget}.enable();}else {#{uxAddBudget}.disable();}"></Select>
+                                        <Deselect Handler="if(#{uxOrganizationSelectionModel}.getCount() > 0){#{uxAddBudget}.enable();}else {#{uxAddBudget}.disable();}"></Deselect>
                             </Listeners>
                         </ext:CheckboxSelectionModel>
                     </SelectionModel>
@@ -104,7 +86,7 @@
                 </Items>
             </ext:Viewport>
 
-        <ext:Window runat="server" Resizable="false" Title="Open Forecast Periods" Width="400" Height="200" Layout="FitLayout" Hidden="true" CloseAction="Hide" Closable="true" ID="uxOpenCloseBudget">
+        <ext:Window runat="server" Resizable="false" Title="Add Budget Period" Width="400" Height="200" Layout="FitLayout" Hidden="true" CloseAction="Hide" Closable="true" ID="uxOpenCloseBudget">
             <Items>
                 <ext:FormPanel ID="FormPanel1" runat="server" Header="false" BodyPadding="10" DefaultButton="uxAddBudgetType"
                     Margins="5 5 5 5" >
@@ -174,7 +156,10 @@
                 </ext:FormPanel>
             </Items>
              <Buttons>
-                        <ext:Button runat="server" ID="uxOpenPeriod" Text="Open Period" Disabled="true" icon="ApplicationAdd">
+                        <ext:Button runat="server" ID="uxOpenPeriod" Text="Add Period" Disabled="true" icon="ApplicationAdd">
+                            <DirectEvents>
+                                <Click OnEvent="deOpenPeriod"><Confirmation Message="This will open or create a budget forecast for the selected budget fiscal year and type. All open periods other then the one selected for this fiscal year will be closed, are you sure?" ConfirmRequest="true"></Confirmation><EventMask ShowMask="true"></EventMask></Click>
+                            </DirectEvents>
                         </ext:Button>
                         <ext:Button ID="uxCloseButton" runat="server" Text="Close Form"><Listeners><Click Handler="#{uxOpenCloseBudget}.close();"></Click></Listeners></ext:Button>
                     </Buttons>

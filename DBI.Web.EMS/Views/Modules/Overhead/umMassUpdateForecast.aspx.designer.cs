@@ -40,15 +40,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Viewport Viewport1;
         
         /// <summary>
-        /// Panel1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel Panel1;
-        
-        /// <summary>
         /// uxGlAccountSecurityGrid control.
         /// </summary>
         /// <remarks>
@@ -58,13 +49,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.GridPanel uxGlAccountSecurityGrid;
         
         /// <summary>
-        /// uxMassEdit control.
+        /// uxAddBudget control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxMassEdit;
+        protected global::Ext.Net.Button uxAddBudget;
         
         /// <summary>
         /// uxBudgetVersionByOrganizationStore control.
