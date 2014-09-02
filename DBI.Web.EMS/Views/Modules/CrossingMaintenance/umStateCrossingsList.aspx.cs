@@ -44,7 +44,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
         protected void deStateCrossingListGrid(object sender, StoreReadDataEventArgs e)
         {
-            string Application = uxAddAppReqeusted.SelectedItem.Value;
+            decimal Application = Convert.ToDecimal(uxAddAppReqeusted.SelectedItem.Value);
             string ServiceUnit = uxAddServiceUnit.SelectedItem.Value;
             string SubDiv = uxAddSubDiv.SelectedItem.Value;
             string State = uxAddStateComboBox.SelectedItem.Value;

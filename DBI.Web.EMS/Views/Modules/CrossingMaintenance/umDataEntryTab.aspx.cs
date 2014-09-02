@@ -12,7 +12,7 @@ using DBI.Data.GMS;
 using DBI.Data.DataFactory;
 using DBI.Core.Security;
 using System.Security.Claims;
-
+using System.Data.Objects.SqlClient;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
@@ -28,6 +28,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             if (!X.IsAjaxRequest)
             {
                 uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
+                Store1.Data = StaticLists.ApplicationRequested;
                 CheckboxSelectionModel sm = CheckboxSelectionModel1;
                 sm.ClearSelection();
             }
@@ -35,23 +36,40 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         protected void deApplicationGridData(object sender, StoreReadDataEventArgs e)
         {
+            decimal Application = Convert.ToDecimal(ComboBox1.SelectedItem.Value);
+            long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+      
+            decimal UserId = SYS_USER_INFORMATION.UserID(User.Identity.Name);
+           
+            List<CROSSING_MAINTENANCE.CrossingData1> dataSource = CROSSING_MAINTENANCE.GetAppCrossingList(RailroadId, UserId).ToList();
 
-            using (Entities _context = new Entities())
+            int count;
+
+            if (Application == 1)
             {
-                if (validateComponentSecurity("SYS.CrossingMaintenance.DataEntryView"))
-                {
-                    long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-
-                    List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
-                    IQueryable<CROSSING_MAINTENANCE.CrossingData> data = CROSSING_MAINTENANCE.GetCrossingList(RailroadId, _context).Where(v => v.PROJECT_TYPE == "CUSTOMER BILLING" && v.TEMPLATE_FLAG == "N" && v.PROJECT_STATUS_CODE == "APPROVED" && v.ORGANIZATION_NAME.Contains(" RR") && OrgsList.Contains(v.CARRYING_OUT_ORGANIZATION_ID));
-
-                    int count;
-                    uxAppEntryCrossingStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.CrossingData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-                    e.Total = count;
-                }
+                dataSource = dataSource.Where(x => x.APPLICATION_REQUESTED == null).ToList();
             }
-        }
 
+            if (Application == 2)
+            {
+                dataSource = dataSource.Where(x => x.APPLICATION_REQUESTED == 1).ToList();
+
+            }
+
+            if (Application == 3)
+            {
+                dataSource = dataSource.Where(x => x.APPLICATION_REQUESTED == 2).ToList();
+            }
+            List<object> _data = dataSource.ToList<object>();
+            uxAppEntryCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
+            e.Total = count;
+
+
+
+          
+            
+        }
+      
         protected void deLoadData(object sender, DirectEventArgs e)
         {
             uxApplicationStore.Reload();
@@ -119,7 +137,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                 //do type conversions
                 DateTime Date = (DateTime)uxAddEntryDate.Value;
-                string AppRequested = uxAddAppReqeusted.Value.ToString();
+                decimal AppRequested = Convert.ToDecimal(uxAddAppReqeusted.Value);
                 string TruckNumber = uxAddEquipmentDropDown.Value.ToString();
                 string Spray = uxAddEntrySprayBox.Value.ToString();
                 string Cut = uxAddEntryCutBox.Value.ToString();
@@ -291,7 +309,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         public class AppNumber
         {
-            public string APPLICATION_REQUESTED { get; set; }
+            public decimal? APPLICATION_REQUESTED { get; set; }
         }
 
         public class ApplicationDetails
@@ -299,7 +317,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             public long APPLICATION_ID { get; set; }
             public long CROSSING_ID { get; set; }
             public Int64 APPLICATION_NUMBER { get; set; }
-            public string APPLICATION_REQUESTED { get; set; }
+            public decimal? APPLICATION_REQUESTED { get; set; }
             public DateTime APPLICATION_DATE { get; set; }
             public string TRUCK_NUMBER { get; set; }
             public long FISCAL_YEAR { get; set; }

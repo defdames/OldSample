@@ -95,7 +95,17 @@
                          </Loader>
                     </ext:Panel>--%>
                     <ext:TabPanel ID="uxCrossingTab" runat="server" Region="Center">
-                        <Items>                       
+                        <Items>
+                             <ext:Panel runat="server"
+                                Title="View Specific Crossings"
+                                ID="uxViewCrossings"
+                                Disabled="false" >
+                                <Loader runat="server"
+                                    ID="Loader2" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umViewCrossings.aspx">
+                                    <LoadMask ShowMask="true" />
+                                </Loader>
+                              
+                            </ext:Panel>                       
                             <ext:Panel runat="server"
                                 Title="Application Entry"
                                 ID="uxDataEntryTab"

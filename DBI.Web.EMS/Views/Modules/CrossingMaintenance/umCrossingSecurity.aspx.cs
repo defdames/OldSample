@@ -46,10 +46,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
              long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
              using (Entities _context = new Entities())
              {
-                 IQueryable<CROSSING_MAINTENANCE.SubDivisionList> data = CROSSING_MAINTENANCE.GetSubDivison(RailroadId, _context);
+                 IQueryable<CROSSING_MAINTENANCE.StateList> data = CROSSING_MAINTENANCE.GetState(RailroadId, _context);
                
                  int count;
-                 uxSubDivStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.SubDivisionList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                 uxSubDivStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.StateList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                  e.Total = count;
                         
              }
@@ -60,7 +60,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
               //long RailroadId = long.Parse(Session["rrType"].ToString());
               long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
               long ProjectId = long.Parse(e.Parameters["ProjectId"]);
-              string SubDiv = (e.Parameters["SubDiv"]);
+              string State = (e.Parameters["State"]);
               List<object> data;
             using (Entities _context = new Entities())
             {
@@ -70,7 +70,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                                 where d.CROSSING_ID == r.CROSSING_ID && r.PROJECT_ID == ProjectId
                                  select r.CROSSING_ID)
                                  .Contains(d.CROSSING_ID)
-                                 where d.RAILROAD_ID == RailroadId && d.SUB_DIVISION == SubDiv
+                                 where d.RAILROAD_ID == RailroadId && d.STATE == State
                      select new { d.CROSSING_ID, d.CROSSING_NUMBER, i.RAILROAD, d.SERVICE_UNIT, d.PROJECT_ID, d.SUB_DIVISION }).ToList<object>();
                 uxCurrentSecurityCrossingStore.DataSource = data;
             //int count;
@@ -190,7 +190,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 public string SEGMENT1 { get; set; }              
                 public string ORANGANIZATION_NAME { get; set; }
                 public string LONG_NAME { get; set; }
-                public string CROSSING_ID { get; set; }
+                public long CROSSING_ID { get; set; }
             }
    
     }
