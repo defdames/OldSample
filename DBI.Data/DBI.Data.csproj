@@ -188,6 +188,9 @@
     <Compile Include="CUSTOMER_SURVEY_QUESTIONS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="CUSTOMER_SURVEY_QUES_CAT.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="CUSTOMER_SURVEY_QUES_TYPES.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
