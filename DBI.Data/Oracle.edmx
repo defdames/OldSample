@@ -2446,19 +2446,20 @@
           <Property Name="PERSON_ID" Type="number" Nullable="false" />
           <Property Name="TIME_IN" Type="date" />
           <Property Name="TIME_OUT" Type="date" />
+          <Property Name="MODIFIED_TIME_IN" Type="date" />
+          <Property Name="MODIFIED_TIME_OUT" Type="date" />
+          <Property Name="ACTUAL_HOURS" Type="number" Precision="15" Scale="4" />
+          <Property Name="ADJUSTED_HOURS" Type="number" Precision="15" Scale="4" />
+          <Property Name="ADJUSTED_LUNCH" Type="number" Precision="15" Scale="4" />
+          <Property Name="DAY_OF_WEEK" Type="varchar2" MaxLength="20" />
           <Property Name="SUBMITTED" Type="char" Nullable="false" MaxLength="1" />
           <Property Name="APPROVED" Type="char" Nullable="false" MaxLength="1" />
           <Property Name="COMPLETED" Type="char" Nullable="false" MaxLength="1" />
-          <Property Name="ACTUAL_HOURS" Type="number" Precision="15" Scale="4" />
-          <Property Name="ADJUSTED_HOURS" Type="number" Precision="15" Scale="4" />
-          <Property Name="SUPERVISOR_ID" Type="number" Precision="10" />
-          <Property Name="DAY_OF_WEEK" Type="varchar2" MaxLength="20" />
-          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
-          <Property Name="MODIFY_DATE" Type="date" />
-          <Property Name="MODIFIED_TIME_IN" Type="date" />
-          <Property Name="MODIFIED_TIME_OUT" Type="date" />
           <Property Name="DELETED" Type="char" MaxLength="1" />
           <Property Name="DELETED_COMMENTS" Type="varchar2" MaxLength="500" />
+          <Property Name="SUPERVISOR_ID" Type="number" Precision="10" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFY_DATE" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'APPS.PA_LOCATIONS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -4604,7 +4605,6 @@
             <End Role="CROSSING" EntitySet="CROSSINGS" />
           </AssociationSet>
           <EntitySet Name="OVERHEAD_BUDGET_TYPE" EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" />
-          <EntitySet Name="TIME_CLOCK" EntityType="OracleModel.TIME_CLOCK" />
           <EntitySet Name="CROSSING_INVOICE" EntityType="OracleModel.CROSSING_INVOICE" />
           <EntitySet Name="CROSSING_SUPP_INVOICE" EntityType="OracleModel.CROSSING_SUPP_INVOICE" />
           <EntitySet Name="CUSTOMER_SURVEY_CAT" EntityType="OracleModel.CUSTOMER_SURVEY_CAT" />
@@ -4691,6 +4691,7 @@
             <End Role="CUSTOMER_SURVEY_QUESTIONS" EntitySet="CUSTOMER_SURVEY_QUESTIONS" />
             <End Role="CUSTOMER_SURVEY_RELATION" EntitySet="CUSTOMER_SURVEY_RELATION" />
           </AssociationSet>
+          <EntitySet Name="TIME_CLOCK" EntityType="OracleModel.TIME_CLOCK" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -7485,28 +7486,6 @@
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="Int64" Name="PARENT_BUDGET_TYPE_ID" />
         </EntityType>
-        <EntityType Name="TIME_CLOCK">
-          <Key>
-            <PropertyRef Name="TIME_CLOCK_ID" />
-          </Key>
-          <Property Type="Decimal" Name="TIME_CLOCK_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Decimal" Name="PERSON_ID" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="DateTime" Name="TIME_IN" />
-          <Property Type="DateTime" Name="TIME_OUT" />
-          <Property Type="String" Name="SUBMITTED" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="APPROVED" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="COMPLETED" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="Decimal" Name="ACTUAL_HOURS" Precision="15" Scale="4" />
-          <Property Type="Decimal" Name="ADJUSTED_HOURS" Precision="15" Scale="4" />
-          <Property Type="Int32" Name="SUPERVISOR_ID" />
-          <Property Type="String" Name="DAY_OF_WEEK" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="DateTime" Name="MODIFIED_TIME_IN" />
-          <Property Type="DateTime" Name="MODIFIED_TIME_OUT" />
-          <Property Type="String" Name="DELETED" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="DELETED_COMMENTS" MaxLength="500" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="CROSSING_INVOICE">
           <Key>
             <PropertyRef Name="INVOICE_ID" />
@@ -8325,6 +8304,29 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="TIME_CLOCK">
+          <Key>
+            <PropertyRef Name="TIME_CLOCK_ID" />
+          </Key>
+          <Property Type="Decimal" Name="TIME_CLOCK_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="PERSON_ID" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="TIME_IN" />
+          <Property Type="DateTime" Name="TIME_OUT" />
+          <Property Type="DateTime" Name="MODIFIED_TIME_IN" />
+          <Property Type="DateTime" Name="MODIFIED_TIME_OUT" />
+          <Property Type="Decimal" Name="ACTUAL_HOURS" Precision="15" Scale="4" />
+          <Property Type="Decimal" Name="ADJUSTED_HOURS" Precision="15" Scale="4" />
+          <Property Type="Decimal" Name="ADJUSTED_LUNCH" Precision="15" Scale="4" />
+          <Property Type="String" Name="DAY_OF_WEEK" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SUBMITTED" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="APPROVED" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="COMPLETED" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="DELETED" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="DELETED_COMMENTS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="SUPERVISOR_ID" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -10443,29 +10445,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TIME_CLOCK">
-            <EntityTypeMapping TypeName="OracleModel.TIME_CLOCK">
-              <MappingFragment StoreEntitySet="TIME_CLOCK">
-                <ScalarProperty Name="DELETED_COMMENTS" ColumnName="DELETED_COMMENTS" />
-                <ScalarProperty Name="DELETED" ColumnName="DELETED" />
-                <ScalarProperty Name="MODIFIED_TIME_OUT" ColumnName="MODIFIED_TIME_OUT" />
-                <ScalarProperty Name="MODIFIED_TIME_IN" ColumnName="MODIFIED_TIME_IN" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="DAY_OF_WEEK" ColumnName="DAY_OF_WEEK" />
-                <ScalarProperty Name="SUPERVISOR_ID" ColumnName="SUPERVISOR_ID" />
-                <ScalarProperty Name="ADJUSTED_HOURS" ColumnName="ADJUSTED_HOURS" />
-                <ScalarProperty Name="ACTUAL_HOURS" ColumnName="ACTUAL_HOURS" />
-                <ScalarProperty Name="COMPLETED" ColumnName="COMPLETED" />
-                <ScalarProperty Name="APPROVED" ColumnName="APPROVED" />
-                <ScalarProperty Name="SUBMITTED" ColumnName="SUBMITTED" />
-                <ScalarProperty Name="TIME_OUT" ColumnName="TIME_OUT" />
-                <ScalarProperty Name="TIME_IN" ColumnName="TIME_IN" />
-                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
-                <ScalarProperty Name="TIME_CLOCK_ID" ColumnName="TIME_CLOCK_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CROSSING_INVOICE">
             <EntityTypeMapping TypeName="OracleModel.CROSSING_INVOICE">
               <MappingFragment StoreEntitySet="CROSSING_INVOICE">
@@ -11098,6 +11077,30 @@
                 <ScalarProperty Name="TEXT" ColumnName="TEXT" />
                 <ScalarProperty Name="TYPE_ID" ColumnName="TYPE_ID" />
                 <ScalarProperty Name="QUESTION_ID" ColumnName="QUESTION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TIME_CLOCK">
+            <EntityTypeMapping TypeName="OracleModel.TIME_CLOCK">
+              <MappingFragment StoreEntitySet="TIME_CLOCK">
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="SUPERVISOR_ID" ColumnName="SUPERVISOR_ID" />
+                <ScalarProperty Name="DELETED_COMMENTS" ColumnName="DELETED_COMMENTS" />
+                <ScalarProperty Name="DELETED" ColumnName="DELETED" />
+                <ScalarProperty Name="COMPLETED" ColumnName="COMPLETED" />
+                <ScalarProperty Name="APPROVED" ColumnName="APPROVED" />
+                <ScalarProperty Name="SUBMITTED" ColumnName="SUBMITTED" />
+                <ScalarProperty Name="DAY_OF_WEEK" ColumnName="DAY_OF_WEEK" />
+                <ScalarProperty Name="ADJUSTED_LUNCH" ColumnName="ADJUSTED_LUNCH" />
+                <ScalarProperty Name="ADJUSTED_HOURS" ColumnName="ADJUSTED_HOURS" />
+                <ScalarProperty Name="ACTUAL_HOURS" ColumnName="ACTUAL_HOURS" />
+                <ScalarProperty Name="MODIFIED_TIME_OUT" ColumnName="MODIFIED_TIME_OUT" />
+                <ScalarProperty Name="MODIFIED_TIME_IN" ColumnName="MODIFIED_TIME_IN" />
+                <ScalarProperty Name="TIME_OUT" ColumnName="TIME_OUT" />
+                <ScalarProperty Name="TIME_IN" ColumnName="TIME_IN" />
+                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
+                <ScalarProperty Name="TIME_CLOCK_ID" ColumnName="TIME_CLOCK_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

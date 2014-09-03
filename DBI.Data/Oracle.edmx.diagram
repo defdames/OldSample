@@ -123,7 +123,6 @@
         <AssociationConnector Association="OracleModel.FK_INCIDENT_CROSSING_ID" />
         <AssociationConnector Association="OracleModel.FK_CROSSINGS_RAILROAD_ID" />
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" Width="1.5" PointX="15.625" PointY="0.875" />
-        <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="0.625" PointY="31" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_INVOICE" Width="1.5" PointX="32.5" PointY="2.25" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_SUPP_INVOICE" Width="1.5" PointX="35.5" PointY="3.75" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_CAT" Width="1.5" PointX="47.75" PointY="54.875" />
@@ -158,6 +157,7 @@
         <AssociationConnector Association="OracleModel.FK_QUES_CAT_QUES" />
         <AssociationConnector Association="OracleModel.FK_QUESTION_TYPE_ID" />
         <AssociationConnector Association="OracleModel.FK_RELATION_QUESTION_ID" />
+        <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="7.0014169714420191" PointY="10.70302919051751" />
         </Diagram>
       <Diagram DiagramId="e84dee89c5a844eb84c350f94a998eb6" Name="OVERHEAD" >
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="4.25" PointX="2.75" PointY="0.75" />
