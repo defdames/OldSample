@@ -26,6 +26,7 @@ namespace DBI.Data
                                  TIME_CLOCK_ID = tc.TIME_CLOCK_ID,
                                  ADJUSTED_HOURS = tc.ADJUSTED_HOURS,
                                  ACTUAL_HOURS = tc.ACTUAL_HOURS,
+                                 ADJUSTED_LUNCH = tc.ADJUSTED_LUNCH,
                                  SUBMITTED = tc.SUBMITTED,
                                  APPROVED = tc.APPROVED,
                                  COMPLETED = tc.COMPLETED,
@@ -174,15 +175,19 @@ namespace DBI.Data
             {
                 TimeSpan ts = newTimeOut - newTimeIn;
                 decimal adjts = ConvertTimeToOraclePayrollFormat(ts);
+                decimal lcts = GetLunchTime(ts);
+                
 
 
                 _data = _context.TIME_CLOCK.Where(x => x.TIME_CLOCK_ID == tcID).SingleOrDefault();
                 _data.ACTUAL_HOURS = (decimal)ts.TotalHours;
                 _data.ADJUSTED_HOURS = adjts;
+                _data.ADJUSTED_LUNCH = lcts;
                 _data.MODIFIED_TIME_IN = newTimeIn;
                 _data.MODIFIED_TIME_OUT = newTimeOut;
                 _data.MODIFIED_BY = personName;
                 _data.MODIFY_DATE = DateTime.Now;
+                
 
             }
 
@@ -265,8 +270,34 @@ namespace DBI.Data
                          : 0;
 
             decimal fixedtime = adjts.Hours + (decimal)adjtime;
+
+
             return fixedtime;
         }
+
+        protected static decimal GetLunchTime(TimeSpan lcts)
+        {
+            if  (lcts.TotalMinutes >=300 && lcts.TotalMinutes < 730)
+            {
+                double lunchded = lcts.TotalMinutes - 30;
+                decimal lunchtime = (decimal)lunchded / 60;
+                return lunchtime;
+            }
+            else if (lcts.TotalMinutes < 300)
+            {
+                double lunchded = lcts.TotalMinutes;
+                decimal lunchtime = (decimal)lunchded / 60;
+                return lunchtime;
+            }
+            else
+            {
+                double lunchded = lcts.TotalMinutes - 60;
+                decimal lunchtime = (decimal)lunchded / 60;
+                return lunchtime;
+            }
+        }
+            
+        
 
         public class Employee : TIME_CLOCK
         {
@@ -275,10 +306,12 @@ namespace DBI.Data
             public DateTime? TIME_IN { get; set; }
             public DateTime? TIME_OUT { get; set; }
             public string ADJUSTED_HOURS_GRID { get; set; }
+            public string ADJUSTED_LUNCH_GRID { get; set; }
             public string DAY_OF_WEEK { get; set; }
             public string ACTUAL_HOURS_GRID { get; set; }
             public decimal? ACTUAL_HOURS { get; set; }
             public decimal? ADJUSTED_HOURS { get; set; }
+            public decimal? ADJUSTED_LUNCH { get; set; }
             public string APPROVED { get; set; }
             public string SUBMITTED { get; set; }
             public int SUPERVISOR_ID { get; set; }
