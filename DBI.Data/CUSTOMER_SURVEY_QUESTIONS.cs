@@ -35,7 +35,6 @@ namespace DBI.Data
     
         public virtual ICollection<CUSTOMER_SURVEY_FORMS_ANS> CUSTOMER_SURVEY_FORMS_ANS { get; set; }
         public virtual ICollection<CUSTOMER_SURVEY_OPTIONS> CUSTOMER_SURVEY_OPTIONS { get; set; }
-        public virtual CUSTOMER_SURVEY_QUES_CAT CUSTOMER_SURVEY_QUES_CAT { get; set; }
         public virtual CUSTOMER_SURVEY_QUES_TYPES CUSTOMER_SURVEY_QUES_TYPES { get; set; }
         public virtual ICollection<CUSTOMER_SURVEY_RELATION> CUSTOMER_SURVEY_RELATION { get; set; }
     }

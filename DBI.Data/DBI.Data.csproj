@@ -182,6 +182,9 @@
     <Compile Include="CUSTOMER_SURVEY_FORMS_COMP.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="CUSTOMER_SURVEY_FORM_TYPES.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="CUSTOMER_SURVEY_OPTIONS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>

@@ -54,7 +54,6 @@ namespace DBI.Data
         public DbSet<XXDBI_TRUCK_EQUIP_USAGE_V> XXDBI_TRUCK_EQUIP_USAGE_V { get; set; }
         public DbSet<PA_TRANSACTION_INT_V> PA_TRANSACTION_INT_V { get; set; }
         public DbSet<DAILY_ACTIVITY_IMPORT> DAILY_ACTIVITY_IMPORT { get; set; }
-        public DbSet<CUSTOMER_SURVEY_FIELDSETS> CUSTOMER_SURVEY_FIELDSETS { get; set; }
         public DbSet<CUSTOMER_SURVEY_FORMS_ANS> CUSTOMER_SURVEY_FORMS_ANS { get; set; }
         public DbSet<CUSTOMER_SURVEY_QUES_TYPES> CUSTOMER_SURVEY_QUES_TYPES { get; set; }
         public DbSet<CUSTOMER_SURVEY_RELATION> CUSTOMER_SURVEY_RELATION { get; set; }
@@ -106,7 +105,6 @@ namespace DBI.Data
         public DbSet<CROSSING_INVOICE> CROSSING_INVOICE { get; set; }
         public DbSet<CROSSING_SUPP_INVOICE> CROSSING_SUPP_INVOICE { get; set; }
         public DbSet<CUSTOMER_SURVEY_CAT> CUSTOMER_SURVEY_CAT { get; set; }
-        public DbSet<CUSTOMER_SURVEY_FORMS> CUSTOMER_SURVEY_FORMS { get; set; }
         public DbSet<CUSTOMER_SURVEY_THRESH_AMT> CUSTOMER_SURVEY_THRESH_AMT { get; set; }
         public DbSet<CUSTOMER_SURVEY_THRESHOLDS> CUSTOMER_SURVEY_THRESHOLDS { get; set; }
         public DbSet<BUD_BID_ADJUSTMENT> BUD_BID_ADJUSTMENT { get; set; }
@@ -128,7 +126,10 @@ namespace DBI.Data
         public DbSet<BUD_BID_DETAIL_SHEET> BUD_BID_DETAIL_SHEET { get; set; }
         public DbSet<BUD_BID_PROJECTS> BUD_BID_PROJECTS { get; set; }
         public DbSet<CUSTOMER_SURVEY_QUES_CAT> CUSTOMER_SURVEY_QUES_CAT { get; set; }
-        public DbSet<CUSTOMER_SURVEY_QUESTIONS> CUSTOMER_SURVEY_QUESTIONS { get; set; }
         public DbSet<TIME_CLOCK> TIME_CLOCK { get; set; }
+        public DbSet<CUSTOMER_SURVEY_FIELDSETS> CUSTOMER_SURVEY_FIELDSETS { get; set; }
+        public DbSet<CUSTOMER_SURVEY_FORM_TYPES> CUSTOMER_SURVEY_FORM_TYPES { get; set; }
+        public DbSet<CUSTOMER_SURVEY_FORMS> CUSTOMER_SURVEY_FORMS { get; set; }
+        public DbSet<CUSTOMER_SURVEY_QUESTIONS> CUSTOMER_SURVEY_QUESTIONS { get; set; }
     }
 }
