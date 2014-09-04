@@ -8,7 +8,7 @@
     <script>
         var getRowClass = function (record, index) {
             if (record.data.ACTUALS_IMPORTED_FLAG == "Y" && record.data.ADMIN == "N") {
-                return "my-disabled";
+                return "red-row";
             }
         }
 
@@ -17,13 +17,21 @@
                 return false;
             }
         }
+
     </script>
   
     <style>
-        .my-disabled .x-grid-row-checker {
+        .my-disabled .x-grid-row-checker  {
             filter: alpha(opacity=60);
             opacity: 0.6;
         }
+
+        .red-row .x-grid-cell, .red-row .x-grid-row-checker .red-row .x-grid-rowwrap-div .red-row .myBoldClass.x-grid3-row td  {
+            color: red !important;
+             filter: alpha(opacity=60);
+            opacity: 0.6;
+		}
+
     </style>
 </head>
 <body>
@@ -75,7 +83,7 @@
                         </ext:GridView>
                     </View> 
                     <SelectionModel>
-                        <ext:CheckboxSelectionModel runat="server" Mode="Simple" AllowDeselect="true" ID="uxPeriodSelectionModel">
+                        <ext:CheckboxSelectionModel runat="server" Mode="Simple" AllowDeselect="true" ID="uxPeriodSelectionModel" >
                              <Listeners>
                                  <Select Handler="if(#{uxPeriodSelectionModel}.getCount() > 0){#{uxImportSelected}.enable();}else {#{uxImportSelected}.disable();}"></Select>
                                   <Deselect Handler="if(#{uxPeriodSelectionModel}.getCount() > 0){#{uxImportSelected}.enable();}else {#{uxImportSelected}.disable();}"></Deselect>

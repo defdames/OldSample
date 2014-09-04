@@ -15,7 +15,7 @@ namespace DBI.Data
         /// <param name="organizationID"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static IQueryable<OVERHEAD_GL_RANGE_V> OverheadGLRangeByOrganizationId(long organizationID, Entities context)
+    public static IQueryable<OVERHEAD_GL_RANGE_V> OverheadGLRangeByOrganizationId(long organizationID, Entities context)
         {
             var _data = context.OVERHEAD_GL_RANGE.Where(x => x.ORGANIZATION_ID == organizationID)
                 .Select(x => new OVERHEAD_GL_RANGE_V
@@ -125,7 +125,6 @@ namespace DBI.Data
         }
     }
 
-
     public class OVERHEAD_GL_RANGE_V : OVERHEAD_GL_RANGE
     {
         public string SRSEGMENTS { get; set; }
@@ -150,5 +149,84 @@ namespace DBI.Data
         public DateTime START_DATE { get; set; }
         public DateTime END_DATE { get; set; }
     }
+
+
+
+
+
+    public class OVERHEAD_BUDGET_FORECAST
+    {
+        #region umAccountCategory
+
+        /// <summary>
+        /// Returns a list of Overhead Categories that can be queried
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static IQueryable<OVERHEAD_CATEGORY> CategoryAsQueryable(Entities context)
+        {
+            var _data = context.OVERHEAD_CATEGORY.AsQueryable();
+            return _data;
+        }
+
+        /// <summary>
+        /// Returns a Overhead Category by ID
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        public static OVERHEAD_CATEGORY CategoryByID(Entities context, long ID)
+        {
+            var _data = CategoryAsQueryable(context).Where(x => x.CATEGORY_ID == ID).SingleOrDefault();
+            return _data;
+        }
+
+        /// <summary>
+        /// Returns a list of accounts by category Id
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="categoryID"></param>
+        /// <returns></returns>
+        public static IQueryable<OVERHEAD_ACCOUNT_CATEGORY> AccountCategoriesByCategoryID(Entities context, long categoryID)
+        {
+            var _data = context.OVERHEAD_ACCOUNT_CATEGORY.Where(x => x.CATEGORY_ID == categoryID);
+            return _data;
+        }
+
+        /// <summary>
+        /// Returns an account category by account category ID
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        public static OVERHEAD_ACCOUNT_CATEGORY AccountCategoryByID(Entities context, long ID)
+        {
+            var _data = AccountAsQueryable(context).Where(x => x.ACCOUNT_CATEGORY_ID == ID).SingleOrDefault();
+            return _data;
+        }
+
+        /// <summary>
+        /// Returns a list of account categories as queryable.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static IQueryable<OVERHEAD_ACCOUNT_CATEGORY> AccountAsQueryable(Entities context)
+        {
+            var _data = context.OVERHEAD_ACCOUNT_CATEGORY.AsQueryable();
+            return _data;
+        }
+
+
+        public class ACCOUNT_CATEGORY_LIST : OVERHEAD_ACCOUNT_CATEGORY
+        {
+            public string ACCOUNT_SEGMENT_DESC { get; set; }
+        }
+
+
+        #endregion  
+
+    }
+
+
 
 }

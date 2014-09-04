@@ -134,16 +134,16 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             }
         }
 
-        protected void deHideInActive(object sender, DirectEventArgs e)
+        protected void deShowAllOrganizations(object sender, DirectEventArgs e)
         {
-            if (uxHideInActiveCheckbox.Checked)
+            if (uxShowAllOrganizationsCheckBox.Checked)
             {
                 Ext.Net.ParameterCollection ps = new Ext.Net.ParameterCollection();
 
                 Ext.Net.StoreParameter _p = new Ext.Net.StoreParameter();
                 _p.Mode = ParameterMode.Value;
                 _p.Name = "TOGGLE_ACTIVE";
-                _p.Value = "Y";
+                _p.Value = "N";
                 ps.Add(_p);
 
                 uxOrganizationSecurityStore.Reload(ps);
@@ -155,7 +155,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 Ext.Net.StoreParameter _p = new Ext.Net.StoreParameter();
                 _p.Mode = ParameterMode.Value;
                 _p.Name = "TOGGLE_ACTIVE";
-                _p.Value = "N";
+                _p.Value = "Y";
                 ps.Add(_p);
 
                 uxOrganizationSecurityStore.Reload(ps);

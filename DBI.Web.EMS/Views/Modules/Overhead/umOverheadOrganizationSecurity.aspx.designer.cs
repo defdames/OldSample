@@ -130,13 +130,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Button uxOpenPeriod;
         
         /// <summary>
-        /// uxHideInActiveCheckbox control.
+        /// uxShowAllOrganizationsCheckBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Checkbox uxHideInActiveCheckbox;
+        protected global::Ext.Net.Checkbox uxShowAllOrganizationsCheckBox;
         
         /// <summary>
         /// uxOrganizationSecurityStore control.
