@@ -30,8 +30,8 @@ namespace DBI.Data
         public Nullable<decimal> THRESHOLD_ID { get; set; }
         public Nullable<long> PROJECT_ID { get; set; }
     
-        public virtual CUSTOMER_SURVEY_FORMS CUSTOMER_SURVEY_FORMS { get; set; }
         public virtual ICollection<CUSTOMER_SURVEY_FORMS_ANS> CUSTOMER_SURVEY_FORMS_ANS { get; set; }
         public virtual CUSTOMER_SURVEY_THRESHOLDS CUSTOMER_SURVEY_THRESHOLDS { get; set; }
+        public virtual CUSTOMER_SURVEY_FORMS CUSTOMER_SURVEY_FORMS { get; set; }
     }
 }

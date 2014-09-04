@@ -537,6 +537,57 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
             }
             return FontFactory.GetFont(fontName, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
         }
+
+        protected void deReadProjects(object sender, StoreReadDataEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
+                int count;
+                uxProjectsStore.DataSource = GenericData.ListFilterHeader(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], PA.GetProjectsByOrg(OrgsList, _context), out count);
+                e.Total = count;
+            }
+        }
+        protected void deLoadPanel(object sender, DirectEventArgs e)
+        {
+            //Get Form Id
+            long OrgId = long.Parse(e.ExtraParams["OrgId"]);
+            decimal FormId;
+            using (Entities _context = new Entities())
+            {
+                FormId = CUSTOMER_SURVEYS.GetFormIdByOrg(OrgId, _context);
+            }
+            Ext.Net.Panel uxSurveyPanel = new Ext.Net.Panel();
+            uxSurveyPanel.ID = "uxSurveyPanel";
+            uxSurveyPanel.Layout = "Fit";
+            uxSurveyPanel.Closable = true;
+            uxSurveyPanel.Title = "Preview Survey";
+            uxSurveyPanel.Loader = new ComponentLoader
+            {
+                Url = "/Views/Modules/CustomerSurveys/umViewSurvey.aspx?FormId=" + FormId,
+                Mode = LoadMode.Frame,
+                AutoLoad = true
+            };
+
+            uxSurveyPanel.AddTo(this.uxTabPanel);
+            uxTabPanel.SetActiveTab(uxSurveyPanel);
+            uxChooseProjectWindow.Hide();
+        }
+        protected Window CreateWindow()
+        {
+            return new Window()
+            {
+                ID = "uxPlaceholderWindow",
+
+                Modal = true,
+                Resizable = false,
+                AutoRender = false,
+                Y = 15,
+                Constrain = false,
+                CloseAction = CloseAction.Destroy,
+                
+            };
+        }
     }
 
     public class ChildFieldEvent : IPdfPCellEvent

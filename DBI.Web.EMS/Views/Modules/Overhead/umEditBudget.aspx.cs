@@ -9,6 +9,7 @@ using Ext.Net;
 using DBI.Data;
 using System.Xml;
 using System.Xml.Xsl;
+using System.Reflection;
 
 namespace DBI.Web.EMS.Views.Modules.Overhead
 {
@@ -133,14 +134,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         }
 
-        public class ACTUAL_BALANCES
-        {
-            public decimal PERIOD_NET_DR { get; set; }
-            public short PERIOD_YEAR { get; set; }
-            public long CODE_COMBINATION_ID { get; set; }
-            public long PERIOD_NUM { get; set; }
-        }
-
         protected void deSaveBudgetNotes(object sender, DirectEventArgs e)
         {
             using (Entities _context = new Entities())
@@ -157,19 +150,12 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         }
 
-        public class GL_PERIODS
-        {
-            public string ENTERED_PERIOD_NAME { get; set; }
-            public short PERIOD_YEAR { get; set; }
-            public long PERIOD_NUM { get; set; }
-            public string PERIOD_TYPE { get; set; }
-            public DateTime START_DATE { get; set; }
-            public DateTime? END_DATE { get; set; }
-        }
-
         protected void deLoadOrganizationAccounts(object sender, StoreReadDataEventArgs e)
         {
+            try
+            {
 
+           
             long _organizationID;
             bool checkOrgId = long.TryParse(Request.QueryString["orgid"], out _organizationID);
             short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);
@@ -178,11 +164,11 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             using (Entities _context = new Entities())
             {
 
-                string sql = "select entered_period_name,period_year,period_num,period_type,start_date,end_date from gl.gl_periods where period_set_name = 'DBI Calendar' order by period_num";
-                List<GL_PERIODS> _periodMonthList = _context.Database.SqlQuery<GL_PERIODS>(sql).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Month").ToList();
-                List<GL_PERIODS> _periodWeekList = _context.Database.SqlQuery<GL_PERIODS>(sql).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Week").ToList();
+                string sql = "select ENTERED_PERIOD_NAME,PERIOD_YEAR,PERIOD_NUM,PERIOD_TYPE,START_DATE,END_DATE from gl.gl_periods where period_set_name = 'DBI Calendar' order by period_num";
+                List<GL_PERIOD_LIST> _periodMonthList = _context.Database.SqlQuery<GL_PERIOD_LIST>(sql).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Month").ToList();
+                List<GL_PERIOD_LIST> _periodWeekList = _context.Database.SqlQuery<GL_PERIOD_LIST>(sql).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Week").ToList();
 
-                foreach (GL_PERIODS _period in _periodMonthList)
+                foreach (GL_PERIOD_LIST _period in _periodMonthList)
                 {
                     if (_period.PERIOD_NUM == 1)
                     {
@@ -381,6 +367,17 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 int count;
                 uxOrganizationAccountStore.DataSource = GenericData.ListFilterHeader<OVERHEAD_BUDGET_DETAIL_V>(e.Start, 1000, e.Sort, e.Parameters["filterheader"], _accountList.AsQueryable(), e.Parameters["group"], out count);
                 e.Total = count;
+
+            }
+            }
+            catch (Exception ex)
+            {
+                if (ex is System.Reflection.ReflectionTypeLoadException)
+                {
+                    var typeLoadException = ex as ReflectionTypeLoadException;
+                    var loaderExceptions = typeLoadException.LoaderExceptions;
+                    X.Msg.Alert("Error", typeLoadException.ToString()).Show();
+                }
             }
 
         }
@@ -414,7 +411,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             }
             return returnvalue;
         }
-
 
         protected void deItemMaintenance(object sender, DirectEventArgs e)
         {
@@ -488,32 +484,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         }
 
-
-        public class OVERHEAD_BUDGET_DETAIL_V
-        {
-            public long CATEGORY_ID { get; set; }
-            public long CATEGORY_SORT_ORDER { get; set; }
-            public long? SORT_ORDER { get; set; }
-            public string ACCOUNT_SEGMENT { get; set; }
-            public string CATEGORY_NAME { get; set; }
-            public long CODE_COMBINATION_ID { get; set; }
-            public string ACCOUNT_DESCRIPTION { get; set; }
-            public decimal TOTAL { get; set; }
-            public decimal AMOUNT1 { get; set; }
-            public decimal AMOUNT2 { get; set; }
-            public decimal AMOUNT3 { get; set; }
-            public decimal AMOUNT4 { get; set; }
-            public decimal AMOUNT5 { get; set; }
-            public decimal AMOUNT6 { get; set; }
-            public decimal AMOUNT7 { get; set; }
-            public decimal AMOUNT8 { get; set; }
-            public decimal AMOUNT9 { get; set; }
-            public decimal AMOUNT10 { get; set; }
-            public decimal AMOUNT11 { get; set; }
-            public decimal AMOUNT12 { get; set; }
-        }
-
-
         protected void deExportData(object sender, StoreSubmitDataEventArgs e)
         {
             string format = this.FormatType.Value.ToString();
@@ -552,5 +522,49 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             }
             this.Response.End();
         }
+
+        public class OVERHEAD_BUDGET_DETAIL_V
+        {
+            public long CATEGORY_ID { get; set; }
+            public long CATEGORY_SORT_ORDER { get; set; }
+            public long? SORT_ORDER { get; set; }
+            public string ACCOUNT_SEGMENT { get; set; }
+            public string CATEGORY_NAME { get; set; }
+            public long CODE_COMBINATION_ID { get; set; }
+            public string ACCOUNT_DESCRIPTION { get; set; }
+            public decimal TOTAL { get; set; }
+            public decimal AMOUNT1 { get; set; }
+            public decimal AMOUNT2 { get; set; }
+            public decimal AMOUNT3 { get; set; }
+            public decimal AMOUNT4 { get; set; }
+            public decimal AMOUNT5 { get; set; }
+            public decimal AMOUNT6 { get; set; }
+            public decimal AMOUNT7 { get; set; }
+            public decimal AMOUNT8 { get; set; }
+            public decimal AMOUNT9 { get; set; }
+            public decimal AMOUNT10 { get; set; }
+            public decimal AMOUNT11 { get; set; }
+            public decimal AMOUNT12 { get; set; }
+        }
+
+        public class GL_PERIOD_LIST
+        {
+            public string ENTERED_PERIOD_NAME { get; set; }
+            public short PERIOD_YEAR { get; set; }
+            public long PERIOD_NUM { get; set; }
+            public string PERIOD_TYPE { get; set; }
+            public DateTime START_DATE { get; set; }
+            public DateTime END_DATE { get; set; }
+        }
+
+        public class ACTUAL_BALANCES
+        {
+            public decimal PERIOD_NET_DR { get; set; }
+            public long PERIOD_YEAR { get; set; }
+            public long CODE_COMBINATION_ID { get; set; }
+            public long PERIOD_NUM { get; set; }
+        }
     }
 }
+
+

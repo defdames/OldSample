@@ -33,6 +33,13 @@
                  return false;
              }
          }
+
+         var getRowClass = function (record, rowIndex, rowParams, store) {
+             if (record.data.ACTUALS_IMPORTED_FLAG == "Y") {
+                 return "red-row";
+             }
+         }
+
     </script>
 
     <style>
@@ -42,7 +49,12 @@
             background-color : #E0E0D1;
         }
 
+        .red-row .x-grid-cell, .red-row .x-grid-rowwrap-div .red-row .myBoldClass.x-grid3-row td  {
+            color: red !important;
+		}
+
     </style>
+
 </head>
 <body>
     <form id="form1" runat="server">
@@ -119,6 +131,7 @@
                     </ColumnModel>
                     <View>
                         <ext:GridView ID="GridView4" StripeRows="true" runat="server" TrackOver="true">
+                            <GetRowClass Fn="getRowClass"></GetRowClass>
                         </ext:GridView>
                     </View> 
                     

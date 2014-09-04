@@ -27,6 +27,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 LoadForm(FormId, CompletionId);
                 uxCodeFieldset.Hide();
                 uxLogoImage.Hide();
+                uxLogoContainer.Hide();
                 uxSubmitSurveyButton.Hide();
                 uxCancelSurveyButton.Hide();
 
@@ -63,7 +64,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
                 foreach (CUSTOMER_SURVEYS.CustomerSurveyFieldsets Fieldset in Fieldsets)
                 {
-                    var QuestionQuery = CUSTOMER_SURVEYS.GetFieldsetQuestionsForGrid(Fieldset.FIELDSET_ID, _context).OrderBy(x => x.SORT_ORDER);
+                    var QuestionQuery = CUSTOMER_SURVEYS.GetFieldsetQuestionsForGrid(Fieldset.FIELDSET_ID, _context).Where(x => x.IS_ACTIVE == true).OrderBy(x => x.SORT_ORDER);
                     List<CUSTOMER_SURVEYS.CustomerSurveyQuestions> Questions = QuestionQuery.ToList();
                     if (Questions.Count > 0)
                     {
@@ -81,7 +82,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     TextField.ID = "question" + Question.QUESTION_ID.ToString();
                                     TextField.AllowBlank = !Question.IS_REQUIRED;
                                     TextField.FieldLabel = Question.TEXT;
-                                    TextField.LabelWidth = 150;
+                                    TextField.LabelWidth = 250;
+                                    TextField.Width = 600;
+                                    TextField.InvalidCls = "empty";
+                                    if (Question.IS_REQUIRED)
+                                    {
+                                        TextField.MsgTarget = MessageTarget.Side;
+                                        TextField.FieldCls = "allowBlank";
+                                    }
+                                    TextField.ValidateBlank = true;
                                     NewFieldset.Items.Add(TextField);
                                     break;
                                 case 2:
@@ -89,19 +98,33 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     TextArea.ID = "question" + Question.QUESTION_ID.ToString();
                                     TextArea.AllowBlank = !Question.IS_REQUIRED;
                                     TextArea.FieldLabel = Question.TEXT;
-                                    TextArea.LabelWidth = 150;
+                                    TextArea.LabelWidth = 250;
+                                    if (Question.IS_REQUIRED)
+                                    {
+                                        TextArea.IndicatorIcon = Icon.BulletRed;
+                                        TextArea.MsgTarget = MessageTarget.Side;
+                                    }
+                                    TextArea.Width = 600;
+                                    TextArea.InvalidCls = "allowBlank";
                                     NewFieldset.Items.Add(TextArea);
                                     break;
                                 case 5:
                                     ComboBox Combobox = new ComboBox();
                                     Combobox.ID = "question" + Question.QUESTION_ID;
                                     Combobox.FieldLabel = Question.TEXT;
-                                    Combobox.LabelWidth = 150;
+                                    Combobox.LabelWidth = 250;
+                                    Combobox.Width = 600;
                                     Combobox.AllowBlank = !Question.IS_REQUIRED;
+                                    Combobox.InvalidCls = "allowBlank";
+                                    if (Question.IS_REQUIRED)
+                                    {
+                                        Combobox.IndicatorIcon = Icon.BulletRed;
+                                        Combobox.MsgTarget = MessageTarget.Side;
+                                    }
                                     Combobox.TypeAhead = true;
                                     Combobox.ForceSelection = true;
                                     Combobox.QueryMode = DataLoadMode.Local;
-                                    List<CUSTOMER_SURVEY_OPTIONS> ComboOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
+                                    List<CUSTOMER_SURVEY_OPTIONS> ComboOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).Where(x => x.IS_ACTIVE == "Y").OrderBy(x => x.SORT_ORDER).ToList();
                                     foreach (CUSTOMER_SURVEY_OPTIONS Option in ComboOptions)
                                     {
                                         Combobox.Items.Add(new Ext.Net.ListItem
@@ -117,9 +140,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     RadioQuestion.ID = "question" + Question.QUESTION_ID;
                                     RadioQuestion.FieldLabel = Question.TEXT;
                                     RadioQuestion.AllowBlank = !Question.IS_REQUIRED;
-                                    RadioQuestion.LabelWidth = 150;
+                                    RadioQuestion.InvalidCls = "allowBlank";
+                                    if (Question.IS_REQUIRED)
+                                    {
+                                        RadioQuestion.IndicatorIcon = Icon.BulletRed;
+                                        RadioQuestion.MsgTarget = MessageTarget.Side;
+                                    }
+                                    RadioQuestion.LabelWidth = 250;
                                     
-                                    List<CUSTOMER_SURVEY_OPTIONS> RadioOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
+                                    List<CUSTOMER_SURVEY_OPTIONS> RadioOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).Where(x => x.IS_ACTIVE == "Y").OrderBy(x => x.SORT_ORDER).ToList();
                                     RadioQuestion.ColumnsNumber = RadioOptions.Count;
                                     foreach (CUSTOMER_SURVEY_OPTIONS Option in RadioOptions)
                                     {
@@ -138,10 +167,16 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     CheckboxGroup CheckQuestion = new CheckboxGroup();
                                     CheckQuestion.ID = "question" + Question.QUESTION_ID;
                                     CheckQuestion.FieldLabel = Question.TEXT;
-                                    CheckQuestion.LabelWidth = 150;
+                                    CheckQuestion.LabelWidth = 250;
+                                    CheckQuestion.InvalidCls = "allowBlank";
+                                    if (Question.IS_REQUIRED)
+                                    {
+                                        CheckQuestion.IndicatorIcon = Icon.BulletRed;
+                                        CheckQuestion.MsgTarget = MessageTarget.Side;
+                                    }
                                     CheckQuestion.AllowBlank = !Question.IS_REQUIRED;
-                                    
-                                    List<CUSTOMER_SURVEY_OPTIONS> CheckOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
+
+                                    List<CUSTOMER_SURVEY_OPTIONS> CheckOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).Where(x => x.IS_ACTIVE == "Y").OrderBy(x => x.SORT_ORDER).ToList();
                                     CheckQuestion.ColumnsNumber = CheckOptions.Count;
 
                                     foreach (CUSTOMER_SURVEY_OPTIONS Option in CheckOptions)
@@ -159,9 +194,14 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     DateField DateQuestion = new DateField();
                                     DateQuestion.ID = "question" + Question.QUESTION_ID;
                                     DateQuestion.FieldLabel = Question.TEXT;
-                                    DateQuestion.LabelWidth = 150;
+                                    DateQuestion.LabelWidth = 250;
                                     DateQuestion.AllowBlank = !Question.IS_REQUIRED;
-
+                                    DateQuestion.InvalidCls = "allowBlank";
+                                    if (Question.IS_REQUIRED)
+                                    {
+                                        DateQuestion.IndicatorIcon = Icon.BulletRed;
+                                        DateQuestion.MsgTarget = MessageTarget.Side;
+                                    }
                                     NewFieldset.Items.Add(DateQuestion);
                                     break;
                             }
@@ -200,7 +240,8 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     TextField.AllowBlank = !Question.IS_REQUIRED;
                                     TextField.FieldLabel = Question.TEXT;
                                     TextField.ReadOnly = true;
-                                    TextField.LabelWidth = 150;
+                                    TextField.LabelWidth = 250;
+                                    TextField.Width = 600;
                                     try
                                     {
                                         TextField.Value = Answer.ANSWER;
@@ -220,6 +261,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     TextArea.FieldLabel = Question.TEXT;
                                     TextArea.ReadOnly = true;
                                     TextArea.LabelWidth = 150;
+                                    TextArea.Width = 600;
                                     try
                                     {
                                         TextArea.Value = Answer.ANSWER;
@@ -232,6 +274,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     Combobox.ID = "question" + Question.QUESTION_ID;
                                     Combobox.FieldLabel = Question.TEXT;
                                     Combobox.LabelWidth = 150;
+                                    Combobox.Width = 600;
                                     Combobox.AllowBlank = !Question.IS_REQUIRED;
                                     Combobox.TypeAhead = true;
                                     Combobox.ForceSelection = true;
@@ -336,6 +379,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     DateQuestion.ID = "question" + Question.QUESTION_ID;
                                     DateQuestion.FieldLabel = Question.TEXT;
                                     DateQuestion.LabelWidth = 150;
+                                    DateQuestion.Width = 600;
                                     DateQuestion.AllowBlank = !Question.IS_REQUIRED;
                                     try
                                     {
@@ -444,6 +488,33 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             else
             {
                 X.Msg.Alert("Form does not exist", "The Form Code you've entered does not exist");
+            }
+        }
+
+        protected void deLoadCustomer(object sender, DirectEventArgs e)
+        {
+
+            decimal CompletionId = 0;
+            if (uxFormCode.Value != null)
+            {
+                CompletionId = decimal.Parse(uxFormCode.Value.ToString());
+            }
+            PROJECT_CONTACTS_V Contact;
+            string ProjectName = null;
+            using (Entities _context = new Entities()){
+                long ProjectID = _context.CUSTOMER_SURVEY_FORMS_COMP.Where(x => x.COMPLETION_ID == CompletionId).Select(x => (long)x.PROJECT_ID).SingleOrDefault();
+                if (ProjectID != null)
+                {
+                    ProjectName = _context.PROJECTS_V.Where(x => x.PROJECT_ID == ProjectID).Select(x => x.LONG_NAME).SingleOrDefault();
+                }
+            }
+            if (ProjectName != null)
+            {
+                uxCustomerField.Text = ProjectName;
+            }
+            else
+            {
+                uxCustomerField.Text = "";
             }
         }
     }

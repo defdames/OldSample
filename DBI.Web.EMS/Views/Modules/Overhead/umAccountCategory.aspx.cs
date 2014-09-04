@@ -24,13 +24,36 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             }
         }
+        
 
-        public class ACCOUNT_CATEGORY_LIST : OVERHEAD_ACCOUNT_CATEGORY
+
+        protected void deleteCategory(object sender, DirectEventArgs e)
         {
-            public string ACCOUNT_SEGMENT_DESC { get; set; }
+            RowSelectionModel sm = uxAccountCategorySelectionModel;
+            long _selectedRowID = long.Parse(sm.SelectedRow.RecordID);
+
+            //Make sure it's not in use
+            using (Entities _context = new Entities())
+            {
+
+                OVERHEAD_CATEGORY _category = OVERHEAD_BUDGET_FORECAST.CategoryByID(_context, _selectedRowID);
+                List<OVERHEAD_ACCOUNT_CATEGORY> _accounts = OVERHEAD_BUDGET_FORECAST.AccountCategoriesByCategoryID(_context, _selectedRowID).ToList();
+
+                GenericData.Delete<OVERHEAD_CATEGORY>(_category);
+                GenericData.Delete<OVERHEAD_ACCOUNT_CATEGORY>(_accounts);
+                
+                uxCategoryWindow.Close();
+                uxAccountCategoryStore.Reload();
+                uxAccountListStore.Reload();
+
+            }
+
+            uxDeleteCategory.Disable();
+            uxAccountMaintenace.Disable();
+
         }
 
-        protected void deSaveSortOrder(object sender, DirectEventArgs e)
+        protected void saveAccountCategorySortOrder(object sender, DirectEventArgs e)
         {
             string json = e.ExtraParams["Values"];
 
@@ -50,62 +73,16 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             uxAccountCategoryStore.Reload();
         }
 
-        protected void deSaveAccountSortOrder(object sender, DirectEventArgs e)
-        {
-            string json = e.ExtraParams["Values"];
-
-            List<OVERHEAD_ACCOUNT_CATEGORY> _gridValues = JSON.Deserialize<List<OVERHEAD_ACCOUNT_CATEGORY>>(json);
-            int sort = 0;
-
-            foreach (OVERHEAD_ACCOUNT_CATEGORY _detail in _gridValues)
-            {
-                _detail.MODIFIED_BY = User.Identity.Name;
-                _detail.MODIFY_DATE = DateTime.Now;
-                _detail.SORT_ORDER = sort + 1;
-                sort = (int)_detail.SORT_ORDER;
-            }
-
-            GenericData.Update<OVERHEAD_ACCOUNT_CATEGORY>(_gridValues);
-            uxAccountListStore.Sync();
-            uxAccountListStore.Reload();
-        }
-
         protected void uxAccountCategoryStore_ReadData(object sender, StoreReadDataEventArgs e)
         {
             using (Entities _context = new Entities())
             {
-                var _data = _context.OVERHEAD_CATEGORY.AsQueryable();
-
+                var _data = OVERHEAD_BUDGET_FORECAST.CategoryAsQueryable(_context);
                 int count;
                 uxAccountCategoryStore.DataSource = GenericData.ListFilterHeader<OVERHEAD_CATEGORY>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
                 e.Total = count;
                 uxAddCategory.Enable();
             }
-        }
-
-        protected void uxAccountListStore_ReadData(object sender, StoreReadDataEventArgs e)
-        {
-           RowSelectionModel sm = uxAccountCategorySelectionModel;
-           long _selectedRowID = long.Parse(sm.SelectedRow.RecordID);
-
-            using (Entities _context = new Entities())
-            {
-                var _data = _context.OVERHEAD_ACCOUNT_CATEGORY.Where(x => x.CATEGORY_ID == _selectedRowID).Select(x => new ACCOUNT_CATEGORY_LIST {ACCOUNT_CATEGORY_ID = x.ACCOUNT_CATEGORY_ID, CATEGORY_ID = x.CATEGORY_ID, ACCOUNT_SEGMENT = x.ACCOUNT_SEGMENT, SORT_ORDER = x.SORT_ORDER, CREATE_DATE = x.CREATE_DATE, CREATED_BY = x.CREATED_BY }).ToList();
-
-                //Get the name of the category id and account segment description
-                foreach (ACCOUNT_CATEGORY_LIST _record in _data)
-                {
-                    //Return the segment description
-                    GL_ACCOUNTS_V _description = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT5 == _record.ACCOUNT_SEGMENT).First();
-                    _record.ACCOUNT_SEGMENT_DESC = _description.SEGMENT5_DESC + " (" + _description.SEGMENT5 + ")";
-                }
-                
-                int count;
-                uxAccountListStore.DataSource = GenericData.EnumerableFilterHeader<ACCOUNT_CATEGORY_LIST>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
-                e.Total = count;
-
-            }
-
         }
 
         protected void deSelectCategory(object sender, DirectEventArgs e)
@@ -125,78 +102,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         }
 
-        protected void deDeSelectCategory(object sender, DirectEventArgs e)
-        {
-            RowSelectionModel _sm = uxAccountCategorySelectionModel;
-            if (_sm.SelectedRows.Count > 0)
-            {
-                uxDeleteCategory.Enable();
-            }
-            else
-            {
-                uxDeleteCategory.Disable();
-                uxAccountMaintenace.Disable();
-            }
 
-        }
-
-        protected void deSaveAccountCategory(object sender, DirectEventArgs e)
-        {
-
-            if (uxCategoryName.Text == null || uxCategoryName.Text.Length <= 1)
-            {
-                X.Msg.Alert("Fields Missing", "Category name is required to save this record!").Show();
-            }
-            else
-            {
-                long? _lastSortOrder = 0;
-                //Get max sort order
-                using(Entities _context = new Entities())
-                {
-                    long? _temp = _context.OVERHEAD_CATEGORY.Select(x => x.SORT_ORDER).Max();
-                    if(_temp != null)
-                        _lastSortOrder = _temp;
-                }
-
-                OVERHEAD_CATEGORY _record = new OVERHEAD_CATEGORY();
-                _record.NAME = uxCategoryName.Text;
-                _record.DESCRIPTION = uxCategoryDescription.Text;
-                _record.CREATE_DATE = DateTime.Now;
-                _record.MODIFY_DATE = DateTime.Now;
-                _record.CREATED_BY = User.Identity.Name;
-                _record.MODIFIED_BY = User.Identity.Name;
-                _record.SORT_ORDER = _lastSortOrder + 1;
-                GenericData.Insert<OVERHEAD_CATEGORY>(_record);
-
-                uxCategoryWindow.Close();
-                uxAccountCategoryStore.Reload();
-            }
-        }
-
-        protected void deDeleteCategory(object sender, DirectEventArgs e)
-        {
-           RowSelectionModel sm = uxAccountCategorySelectionModel;
-           long _selectedRowID = long.Parse(sm.SelectedRow.RecordID);
-
-            //Make sure it's not in use
-            using (Entities _context = new Entities())
-            {
-                    List<OVERHEAD_ACCOUNT_CATEGORY> _oac = _context.OVERHEAD_ACCOUNT_CATEGORY.Where(x => x.CATEGORY_ID == _selectedRowID).ToList();
-                    OVERHEAD_CATEGORY _record = _context.OVERHEAD_CATEGORY.Where(x => x.CATEGORY_ID == _selectedRowID).SingleOrDefault();
-                    GenericData.Delete<OVERHEAD_CATEGORY>(_record);
-                    GenericData.Delete<OVERHEAD_ACCOUNT_CATEGORY>(_oac);
-                    uxCategoryWindow.Close();
-                    uxAccountCategoryStore.Reload();
-                    uxAccountListStore.Reload();
-
-            }
-
-            uxDeleteCategory.Disable();
-            uxAccountMaintenace.Disable();
-
-        }
-
-        protected void deLoadAccountMaintenance(object sender, DirectEventArgs e)
+        protected void deAddAccountToCategory(object sender, DirectEventArgs e)
         {
 
             RowSelectionModel _sm = uxAccountCategorySelectionModel;
@@ -231,16 +138,16 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             win.Show();
         }
 
-        protected void deDeleteAccounts(object sender, DirectEventArgs e)
+        protected void deleteCategoryAccount(object sender, DirectEventArgs e)
         {
             RowSelectionModel sm = uxAccountListSelectionModel;
 
             foreach (SelectedRow _row in sm.SelectedRows)
             {
-                using(Entities _context = new Entities())
+                using (Entities _context = new Entities())
                 {
                     long _selectedRecord = long.Parse(_row.RecordID);
-                    OVERHEAD_ACCOUNT_CATEGORY _account = _context.OVERHEAD_ACCOUNT_CATEGORY.Where(x => x.ACCOUNT_CATEGORY_ID == _selectedRecord).SingleOrDefault();
+                    OVERHEAD_ACCOUNT_CATEGORY _account = OVERHEAD_BUDGET_FORECAST.AccountCategoryByID(_context, _selectedRecord);
 
                     if (_account != null)
                     {
@@ -251,9 +158,69 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             }
 
             uxAccountListStore.Reload();
+        }
+
+        protected void uxAccountListStore_ReadData(object sender, StoreReadDataEventArgs e)
+        {
+           //RowSelectionModel sm = uxAccountCategorySelectionModel;
+           //long _selectedRowID = long.Parse(sm.SelectedRow.RecordID);
+
+           // using (Entities _context = new Entities())
+           // {
+           //     var _data = _context.OVERHEAD_ACCOUNT_CATEGORY.Where(x => x.CATEGORY_ID == _selectedRowID).Select(x => new ACCOUNT_CATEGORY_LIST {ACCOUNT_CATEGORY_ID = x.ACCOUNT_CATEGORY_ID, CATEGORY_ID = x.CATEGORY_ID, ACCOUNT_SEGMENT = x.ACCOUNT_SEGMENT, SORT_ORDER = x.SORT_ORDER, CREATE_DATE = x.CREATE_DATE, CREATED_BY = x.CREATED_BY }).ToList();
+
+           //     //Get the name of the category id and account segment description
+           //     foreach (ACCOUNT_CATEGORY_LIST _record in _data)
+           //     {
+           //         //Return the segment description
+           //         GL_ACCOUNTS_V _description = _context.GL_ACCOUNTS_V.Where(x => x.SEGMENT5 == _record.ACCOUNT_SEGMENT).First();
+           //         _record.ACCOUNT_SEGMENT_DESC = _description.SEGMENT5_DESC + " (" + _description.SEGMENT5 + ")";
+           //     }
+                
+           //     int count;
+           //     uxAccountListStore.DataSource = GenericData.EnumerableFilterHeader<ACCOUNT_CATEGORY_LIST>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
+           //     e.Total = count;
+
+           // }
 
         }
 
+
+
+        protected void deSaveAccountCategory(object sender, DirectEventArgs e)
+        {
+
+            if (uxCategoryName.Text == null || uxCategoryName.Text.Length <= 1)
+            {
+                X.Msg.Alert("Fields Missing", "Category name is required to save this record!").Show();
+            }
+            else
+            {
+                long? _lastSortOrder = 0;
+                //Get max sort order
+                using (Entities _context = new Entities())
+                {
+                    long? _temp = _context.OVERHEAD_CATEGORY.Select(x => x.SORT_ORDER).Max();
+                    if (_temp != null)
+                        _lastSortOrder = _temp;
+                }
+
+                OVERHEAD_CATEGORY _record = new OVERHEAD_CATEGORY();
+                _record.NAME = uxCategoryName.Text;
+                _record.DESCRIPTION = uxCategoryDescription.Text;
+                _record.CREATE_DATE = DateTime.Now;
+                _record.MODIFY_DATE = DateTime.Now;
+                _record.CREATED_BY = User.Identity.Name;
+                _record.MODIFIED_BY = User.Identity.Name;
+                _record.SORT_ORDER = _lastSortOrder + 1;
+                GenericData.Insert<OVERHEAD_CATEGORY>(_record);
+
+                uxCategoryWindow.Close();
+                uxAccountCategoryStore.Reload();
+            }
+        }
+
+  
     }
 }
 
