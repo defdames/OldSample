@@ -821,8 +821,8 @@ namespace DBI.Data
                 {
                     _context.Set<T>().Attach(item);
                     _context.Set<T>().Remove(item);
-                    _context.SaveChanges();
                 }
+                _context.SaveChanges();
             }
         }
 
@@ -839,8 +839,8 @@ namespace DBI.Data
                 {
                     _context.Set<T>().Attach(item);
                     _context.Entry(item).State = System.Data.EntityState.Modified;
-                    _context.SaveChanges();
                 }
+                _context.SaveChanges();
             }
         }
 
@@ -856,8 +856,8 @@ namespace DBI.Data
                 foreach (T item in entityCollection)
                 {
                     _context.Set<T>().Add(item);
-                    _context.SaveChanges();
                 }
+                _context.SaveChanges();
             }
         }
 
