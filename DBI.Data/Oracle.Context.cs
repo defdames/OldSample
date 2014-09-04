@@ -85,8 +85,6 @@ namespace DBI.Data
         public DbSet<DAILY_ACTIVITY_INVENTORY> DAILY_ACTIVITY_INVENTORY { get; set; }
         public DbSet<JOB_COST_CLASSES> JOB_COST_CLASSES { get; set; }
         public DbSet<BUD_BID_LINES> BUD_BID_LINES { get; set; }
-        public DbSet<BUD_BID_LOCKED> BUD_BID_LOCKED { get; set; }
-        public DbSet<BUD_BID_ORGS> BUD_BID_ORGS { get; set; }
         public DbSet<BUD_BID_STATUS> BUD_BID_STATUS { get; set; }
         public DbSet<SYS_MODULE_PROFILE_OPTIONS> SYS_MODULE_PROFILE_OPTIONS { get; set; }
         public DbSet<SYS_PROFILE_OPTIONS> SYS_PROFILE_OPTIONS { get; set; }
@@ -101,16 +99,12 @@ namespace DBI.Data
         public DbSet<CROSSING_SUB_DIVISION> CROSSING_SUB_DIVISION { get; set; }
         public DbSet<BUD_BID_ACTUAL_NUM> BUD_BID_ACTUAL_NUM { get; set; }
         public DbSet<BUD_BID_BUDGET_NUM> BUD_BID_BUDGET_NUM { get; set; }
-        public DbSet<BUD_BID_DETAIL_SHEET> BUD_BID_DETAIL_SHEET { get; set; }
         public DbSet<BUD_BID_DETAIL_TASK> BUD_BID_DETAIL_TASK { get; set; }
         public DbSet<SYS_ORG_PROFILE_OPTIONS> SYS_ORG_PROFILE_OPTIONS { get; set; }
         public DbSet<CROSSING> CROSSINGS { get; set; }
         public DbSet<OVERHEAD_BUDGET_TYPE> OVERHEAD_BUDGET_TYPE { get; set; }
-        public DbSet<TIME_CLOCK> TIME_CLOCK { get; set; }
         public DbSet<CROSSING_INVOICE> CROSSING_INVOICE { get; set; }
         public DbSet<CROSSING_SUPP_INVOICE> CROSSING_SUPP_INVOICE { get; set; }
-        public DbSet<CUSTOMER_SURVEY_QUESTIONS> CUSTOMER_SURVEY_QUESTIONS { get; set; }
-        public DbSet<BUD_BID_PROJECTS> BUD_BID_PROJECTS { get; set; }
         public DbSet<CUSTOMER_SURVEY_CAT> CUSTOMER_SURVEY_CAT { get; set; }
         public DbSet<CUSTOMER_SURVEY_FORMS> CUSTOMER_SURVEY_FORMS { get; set; }
         public DbSet<CUSTOMER_SURVEY_THRESH_AMT> CUSTOMER_SURVEY_THRESH_AMT { get; set; }
@@ -131,5 +125,10 @@ namespace DBI.Data
         public DbSet<EMPLOYEES_V> EMPLOYEES_V { get; set; }
         public DbSet<CROSSING_PRICING> CROSSING_PRICING { get; set; }
         public DbSet<CROSSING_APPLICATION> CROSSING_APPLICATION { get; set; }
+        public DbSet<BUD_BID_DETAIL_SHEET> BUD_BID_DETAIL_SHEET { get; set; }
+        public DbSet<BUD_BID_PROJECTS> BUD_BID_PROJECTS { get; set; }
+        public DbSet<CUSTOMER_SURVEY_QUES_CAT> CUSTOMER_SURVEY_QUES_CAT { get; set; }
+        public DbSet<CUSTOMER_SURVEY_QUESTIONS> CUSTOMER_SURVEY_QUESTIONS { get; set; }
+        public DbSet<TIME_CLOCK> TIME_CLOCK { get; set; }
     }
 }

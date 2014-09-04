@@ -23,10 +23,8 @@ namespace DBI.Data
         public Nullable<decimal> STATUS_ID { get; set; }
         public Nullable<decimal> ACRES { get; set; }
         public Nullable<decimal> DAYS { get; set; }
-        public Nullable<decimal> OH_ID { get; set; }
         public string APP_TYPE { get; set; }
         public string CHEMICAL_MIX { get; set; }
-        public string COMMENTS { get; set; }
         public Nullable<System.DateTime> WE_DATE { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public string CREATED_BY { get; set; }
@@ -38,6 +36,7 @@ namespace DBI.Data
         public string COMPARE_PRJ_OVERRIDE { get; set; }
         public Nullable<decimal> COMPARE_PRJ_AMOUNT { get; set; }
         public string WE_OVERRIDE { get; set; }
+        public string COMMENTS { get; set; }
     
         public virtual BUD_BID_STATUS BUD_BID_STATUS { get; set; }
     }

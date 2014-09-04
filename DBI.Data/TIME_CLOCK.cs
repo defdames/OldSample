@@ -18,18 +18,19 @@ namespace DBI.Data
         public decimal PERSON_ID { get; set; }
         public Nullable<System.DateTime> TIME_IN { get; set; }
         public Nullable<System.DateTime> TIME_OUT { get; set; }
+        public Nullable<System.DateTime> MODIFIED_TIME_IN { get; set; }
+        public Nullable<System.DateTime> MODIFIED_TIME_OUT { get; set; }
+        public Nullable<decimal> ACTUAL_HOURS { get; set; }
+        public Nullable<decimal> ADJUSTED_HOURS { get; set; }
+        public Nullable<decimal> ADJUSTED_LUNCH { get; set; }
+        public string DAY_OF_WEEK { get; set; }
         public string SUBMITTED { get; set; }
         public string APPROVED { get; set; }
         public string COMPLETED { get; set; }
-        public Nullable<decimal> ACTUAL_HOURS { get; set; }
-        public Nullable<decimal> ADJUSTED_HOURS { get; set; }
-        public Nullable<int> SUPERVISOR_ID { get; set; }
-        public string DAY_OF_WEEK { get; set; }
-        public string MODIFIED_BY { get; set; }
-        public Nullable<System.DateTime> MODIFY_DATE { get; set; }
-        public Nullable<System.DateTime> MODIFIED_TIME_IN { get; set; }
-        public Nullable<System.DateTime> MODIFIED_TIME_OUT { get; set; }
         public string DELETED { get; set; }
         public string DELETED_COMMENTS { get; set; }
+        public Nullable<int> SUPERVISOR_ID { get; set; }
+        public string MODIFIED_BY { get; set; }
+        public Nullable<System.DateTime> MODIFY_DATE { get; set; }
     }
 }

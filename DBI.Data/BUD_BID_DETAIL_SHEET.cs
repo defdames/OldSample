@@ -16,7 +16,6 @@ namespace DBI.Data
     {
         public decimal DETAIL_SHEET_ID { get; set; }
         public Nullable<long> PROJECT_ID { get; set; }
-        public Nullable<decimal> DETAIL_ID { get; set; }
         public string REC_TYPE { get; set; }
         public string DESC_1 { get; set; }
         public string DESC_2 { get; set; }
