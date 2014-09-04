@@ -329,6 +329,16 @@ namespace DBI.Web.EMS.Views
                     Value = MenuItem.ITEM_URL + "/Redirect.aspx?user=" + EncodedUser
                 });
             }
+            else if (MenuItem.ITEM_URL == "http://emstest.dbiservices.com")
+            {
+                byte[] UserArray = System.Text.ASCIIEncoding.ASCII.GetBytes(User.Identity.Name.ToUpper());
+                string EncodedUser = Convert.ToBase64String(UserArray);
+                AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+                {
+                    Name = "Page",
+                    Value = MenuItem.ITEM_URL + "/Redirect.aspx?user=" + EncodedUser
+                });
+            }
             else
             {
                 AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
