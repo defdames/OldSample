@@ -165,10 +165,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
 
                 string sql = "select ENTERED_PERIOD_NAME,PERIOD_YEAR,PERIOD_NUM,PERIOD_TYPE,START_DATE,END_DATE from gl.gl_periods where period_set_name = 'DBI Calendar' order by period_num";
-                List<GL_PERIODS> _periodMonthList = _context.Database.SqlQuery<GL_PERIODS>(sql).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Month").ToList();
-                List<GL_PERIODS> _periodWeekList = _context.Database.SqlQuery<GL_PERIODS>(sql).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Week").ToList();
+                List<GL_PERIOD_LIST> _periodMonthList = _context.Database.SqlQuery<GL_PERIOD_LIST>(sql).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Month").ToList();
+                List<GL_PERIOD_LIST> _periodWeekList = _context.Database.SqlQuery<GL_PERIOD_LIST>(sql).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Week").ToList();
 
-                foreach (GL_PERIODS _period in _periodMonthList)
+                foreach (GL_PERIOD_LIST _period in _periodMonthList)
                 {
                     if (_period.PERIOD_NUM == 1)
                     {
@@ -547,10 +547,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             public decimal AMOUNT12 { get; set; }
         }
 
-        public class GL_PERIODS
+        public class GL_PERIOD_LIST
         {
             public string ENTERED_PERIOD_NAME { get; set; }
-            public long PERIOD_YEAR { get; set; }
+            public short PERIOD_YEAR { get; set; }
             public long PERIOD_NUM { get; set; }
             public string PERIOD_TYPE { get; set; }
             public DateTime START_DATE { get; set; }
