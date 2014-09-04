@@ -216,6 +216,25 @@ namespace DBI.Data
             return _data;
         }
 
+        /// <summary>
+        /// Gets the description of an account by segment number and position
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="segmentPosition"></param>
+        /// <param name="segmentCode"></param>
+        /// <returns></returns>
+        public static string AccountDescriptionBySegment(Entities context, long segmentPosition, string segmentCode)
+        {
+            string _sql = string.Format("select XXEMS.GET_GL_ACCOUNT_DESCRIPTION (50328,{0},{1}) from dual", segmentPosition, segmentCode);
+            string _accountDescription = context.Database.SqlQuery<string>(_sql).FirstOrDefault();
+            return _accountDescription;
+        }
+
+
+
+
+
+
 
         public class ACCOUNT_CATEGORY_LIST : OVERHEAD_ACCOUNT_CATEGORY
         {
