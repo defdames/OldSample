@@ -159,7 +159,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             // Net contribution
             BBOH.Subtotal.Fields ohData = BBOH.Subtotal.Data(orgID, yearID, verID);
             decimal oh = ohData.OH;
-            decimal netCont = tOP - oh;
+            decimal netCont = tNetCont - oh;
             uxNetCont.Text = String.Format("{0:N2}", netCont);
         }
 

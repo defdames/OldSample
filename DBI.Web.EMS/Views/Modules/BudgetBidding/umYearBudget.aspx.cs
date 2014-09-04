@@ -20,9 +20,19 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 long yearID = long.Parse(Request.QueryString["fiscalYear"]);
                 long verID = long.Parse(Request.QueryString["verID"]);
 
+                if (BB.IsReadOnly(orgID, yearID, verID) == true)
+                {
+                    uxUpdateAllActuals.Disable();
+                    StandardMsgBox("Read Only", "This budget is currently read only.  No changes can be made.", "INFO");
+                }
+                else
+                {
+                    uxUpdateAllActuals.Enable();
+                }
+
                 uxHidPrevYear.Text = BB.CalcPrevYear(yearID, verID).ToString();
                 uxHidPrevVer.Text = BB.CalcPrevVer(yearID, verID).ToString();
-                uxVersionLabel.Text = GetPrevVerName(verID) + " OP:";
+                uxVersionLabel.Text = BB.GetPrevVerName(verID) + " OP:";
 
                 if (BBAdjustments.Count(orgID, yearID, verID) == 0)
                 {
@@ -42,9 +52,9 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             string orgName = Request.QueryString["orgName"];
             long yearID = long.Parse(Request.QueryString["fiscalYear"]);
             long verID = long.Parse(Request.QueryString["verID"]);
-
             long prevYearID = Convert.ToInt64(uxHidPrevYear.Text);
             long prevVerID = Convert.ToInt64(uxHidPrevVer.Text);
+
             uxSummaryGridStore.DataSource = BBSummary.Grid.Data(orgName, orgID, yearID, verID, prevYearID, prevVerID);
         }                         
         protected void deReadAdjustmentGridData(object sender, StoreReadDataEventArgs e)
@@ -69,7 +79,11 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         // Summary Actions                          
         protected void deLoadSummaryActions(object sender, StoreReadDataEventArgs e)
         {
-            uxActionsStore.DataSource = BB.YearSummaryProjectActions();
+            long orgID = long.Parse(Request.QueryString["OrgID"]);
+            long yearID = long.Parse(Request.QueryString["fiscalYear"]);
+            long verID = long.Parse(Request.QueryString["verID"]);
+
+            uxActionsStore.DataSource = BB.YearSummaryProjectActions(orgID, yearID, verID);
         }
         protected void deChooseSummaryAction(object sender, DirectEventArgs e)
         {
@@ -79,6 +93,10 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             {
                 case "Add a New Project":
                     AddNewProject();
+                    break;
+
+                case "View Selected Project":
+                    EditSelectedProject();
                     break;
 
                 case "Edit Selected Project":
@@ -121,15 +139,34 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         }                                    
         protected void EditSelectedProject()
         {
+            long orgID = long.Parse(Request.QueryString["OrgID"]);
+            long yearID = long.Parse(Request.QueryString["fiscalYear"]);
+            long verID = long.Parse(Request.QueryString["verID"]);
+
             if (uxHidBudBidID.Text == "")
             {
-                StandardMsgBox("Edit", "A project must be selected before it can be edited.", "INFO");
+                if (BB.IsReadOnly(orgID, yearID, verID) == true)
+                {
+                    StandardMsgBox("View", "A project must be selected before it can be viewed.", "INFO");
+                    return;
+                }
+                else
+                {
+                    StandardMsgBox("Edit", "A project must be selected before it can be edited.", "INFO");
+                    return;
+                }
+            }
+
+            long budBidID = Convert.ToInt64(uxHidBudBidID.Text);            
+
+            if (BB.ProjectStillExists(budBidID) == false)
+            {
+                StandardMsgBox("Edit", "Project has been deleted or has changed.  Please refresh summary", "INFO");
                 return;
             }
 
             LockTopSection();
-            
-            long budBidID = Convert.ToInt64(uxHidBudBidID.Text);
+
             long newBudBidID = BB.CopyAllProjectDataAsTemp(budBidID);
 
             uxHidBudBidID.Text = newBudBidID.ToString();
@@ -140,13 +177,20 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
             uxProjectInfo.Enable();
 
-            if (uxJCDate.Text != "" && uxJCDate.Text != "-- OVERRIDE --")
+            if (BB.IsReadOnly(orgID, yearID, verID) == true)
             {
-                X.MessageBox.Confirm("Actuals", "Would you like to refresh the job cost start numbers in case they have changed?", new MessageBoxButtonsConfig
+                LockProjectInfo();
+            }
+            else
+            {
+                if (uxJCDate.Text != "" && uxJCDate.Text != "-- OVERRIDE --")
                 {
-                    Yes = new MessageBoxButtonConfig { Handler = "App.direct.EditSelectedProjectContinued()", Text = "Yes" },
-                    No = new MessageBoxButtonConfig { Text = "No" }
-                }).Show();
+                    X.MessageBox.Confirm("Actuals", "Would you like to refresh the job cost start numbers in case they have changed?", new MessageBoxButtonsConfig
+                    {
+                        Yes = new MessageBoxButtonConfig { Handler = "App.direct.EditSelectedProjectContinued()", Text = "Yes" },
+                        No = new MessageBoxButtonConfig { Text = "No" }
+                    }).Show();
+                }
             }
         }
         [DirectMethod]
@@ -276,7 +320,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             Window win = new Window
             {
                 ID = "uxUpdateAllActualsForm",
-                Height = 180,
+                Height = 210,
                 Width = 400,
                 Title = "Update All Actuals",
                 Modal = true,
@@ -350,6 +394,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             string type = e.ExtraParams["Type"];
             string projectNum = e.ExtraParams["ProjectNum"];
             string projectName = e.ExtraParams["ProjectName"];
+
+            if (BB.ProjectStillExists(Convert.ToInt64(budBidprojectID)) == false)
+            {
+                StandardMsgBox("Select", "Project has been deleted or has changed.  Please refresh summary", "INFO");
+                return;
+            }
+
             BBProject.Detail.Fields data = BBProject.Detail.Data(Convert.ToInt64(budBidprojectID));
             string weOverride = data.WE_OVERRIDE;
 
@@ -469,7 +520,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     long orgID = long.Parse(Request.QueryString["orgID"]);
                     long prevYear = Convert.ToInt64(uxHidPrevYear.Text);
                     long prevVer = Convert.ToInt64(uxHidPrevVer.Text);
-                    long projectNumID = Convert.ToInt64(uxHidProjectNumID.Text);
+                    string projectNumID = uxHidProjectNumID.Text;
 
                     BBProject.OP.Fields dataPrevOP = BBProject.OP.Data(orgID, prevYear, prevVer, projectNumID);
                     prevOP = dataPrevOP.OP ?? 0;
@@ -781,7 +832,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 data.STATUS_ID = Convert.ToInt64(uxHidStatusID.Text);
                 data.ACRES = ForceToDecimal(uxAcres.Text, -9999999999.99M, 9999999999.99M);
                 data.DAYS = ForceToDecimal(uxDays.Text, -9999999999.99M, 9999999999.99M);
-                data.OH_ID = 0;
                 data.APP_TYPE = uxAppType.Text;
                 data.CHEMICAL_MIX = uxChemMix.Text;
                 data.COMMENTS = uxComments.Text;
@@ -1027,7 +1077,354 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
 
 
-        // Other                                    
+        // Detail                                   
+        protected void deLoadDetailActions(object sender, StoreReadDataEventArgs e)
+        {
+            long orgID = long.Parse(Request.QueryString["OrgID"]);
+            long yearID = long.Parse(Request.QueryString["fiscalYear"]);
+            long verID = long.Parse(Request.QueryString["verID"]);
+
+            uxDetailActionsStore.DataSource = BB.YearSummaryDetailActions(orgID, yearID, verID);
+        }
+        protected void deChooseDetailAction(object sender, DirectEventArgs e)
+        {
+            string selectedAction = uxDetailActions.Text;
+
+            switch (selectedAction)
+            {
+                case "Add a New Sheet":
+                    AddNewDetailSheet();
+                    break;
+
+                case "View Selected Sheet":
+                    LoadDetailSheet();
+                    break;
+
+                case "Edit Selected Sheet":
+                    LoadDetailSheet();
+                    break;
+
+                case "Copy Selected Sheet":
+                    CopyDetailSheet();
+                    break;
+
+                case "Delete Selected Sheet":
+                    DeleteDetailSheet();
+                    break;
+
+                case "Reorder Sheets":
+                    ReorderSheets();
+                    break;
+
+                case "Print All Sheets":
+                    break;
+            }
+
+            uxDetailActions.Clear();
+        }
+        protected void AddNewDetailSheet()
+        {
+            if (uxHidBudBidID.Text == "")
+            {
+                StandardMsgBox("Save", "The project must be saved first before you can create detail sheets.  Please save the project to continue.", "INFO");
+                return;
+            }
+
+            long budBidProjectID = Convert.ToInt64(uxHidBudBidID.Text);
+            long newOrder = BBDetail.Sheets.MaxOrder(budBidProjectID) + 1;
+            uxHidDetailSheetID.Text = BBDetail.Sheet.DBAdd(budBidProjectID, newOrder).ToString();
+            uxHidDetailSheetOrder.Text = newOrder.ToString();
+            uxHidDetailSheetName.Text = "SYS_DETAIL_" + newOrder;
+            LoadDetailSheet();
+        }
+        protected void DeleteDetailSheet()
+        {
+            if (uxHidDetailSheetID.Text == "")
+            {
+                StandardMsgBox("Delete", "A detail sheet must be selected before it can be deleted.", "INFO");
+                return;
+            }
+
+            X.MessageBox.Confirm("Delete", "Are you sure you want to delete the selected detail sheet? Once it's been deleted it cannot be retrieved.", new MessageBoxButtonsConfig
+            {
+                Yes = new MessageBoxButtonConfig { Handler = "App.direct.DeleteDetailSheetContiued()", Text = "Yes" },
+                No = new MessageBoxButtonConfig { Text = "No" }
+            }).Show();
+        }
+        [DirectMethod]
+        public void DeleteDetailSheetContiued()
+        {
+            long detailSheetID = Convert.ToInt64(uxHidDetailSheetID.Text);
+            long budBidProjectID = Convert.ToInt64(uxHidBudBidID.Text);
+
+            BBDetail.Sheet.DBDelete(detailSheetID);
+            BBDetail.Sheets.DBResetOrder(budBidProjectID);
+
+            uxHidDetailSheetID.Text = "";
+            uxHidDetailSheetOrder.Text = "";
+            uxHidDetailSheetName.Text = "";
+
+            PopulateProjectEndNumbers();
+            uxSummaryDetailStore.Reload();
+        }
+        protected void CopyDetailSheet()
+        {
+            if (uxHidDetailSheetID.Text == "")
+            {
+                StandardMsgBox("Copy", "A detail sheet must be selected before it can be copied.", "INFO");
+                return;
+            }
+
+            X.MessageBox.Confirm("Copy", "Are you sure you want to copy the selected detail sheet?", new MessageBoxButtonsConfig
+            {
+                Yes = new MessageBoxButtonConfig { Handler = "App.direct.CopyDetailSheetContinued()", Text = "Yes" },
+                No = new MessageBoxButtonConfig { Text = "No" }
+            }).Show();
+        }
+        [DirectMethod]
+        public void CopyDetailSheetContinued()
+        {
+            long detailSheetID = Convert.ToInt64(uxHidDetailSheetID.Text);
+            long copiedSheetID = BBDetail.Sheet.DBCopy(detailSheetID);
+
+            uxHidDetailSheetID.Text = "";
+            uxHidDetailSheetOrder.Text = "";
+            uxHidDetailSheetName.Text = "";
+
+            PopulateProjectEndNumbers();
+            uxSummaryDetailStore.Reload();
+        }
+        protected void deSelectDetailSheet(object sender, DirectEventArgs e)
+        {
+            string detailSheetID = e.ExtraParams["DetailSheetID"];
+            string detailSheetOrder = e.ExtraParams["DetailSheetOrder"];
+            string detailSheetName = e.ExtraParams["DetailSheetName"];
+
+            uxHidDetailSheetID.Text = detailSheetID;
+            uxHidDetailSheetOrder.Text = detailSheetOrder;
+            uxHidDetailSheetName.Text = detailSheetName;
+        }
+        protected void LoadDetailSheet()
+        {
+            long orgID = long.Parse(Request.QueryString["OrgID"]);
+            long yearID = long.Parse(Request.QueryString["fiscalYear"]);
+            long verID = long.Parse(Request.QueryString["verID"]);
+
+            if (uxHidDetailSheetID.Text == "")
+            {
+                if (BB.IsReadOnly(orgID, yearID, verID) == true)
+                {
+                    StandardMsgBox("View", "A detail sheet must be selected before it can be viewed.", "INFO");
+                    return;
+                }
+                else
+                {
+                    StandardMsgBox("Edit", "A detail sheet must be selected before it can be edited.", "INFO");
+                    return;
+                }
+            }
+
+            string budBidProjectID = uxHidBudBidID.Text;
+            string detailSheetID = uxHidDetailSheetID.Text;
+            string verName = HttpUtility.UrlEncode(Request.QueryString["verName"]);
+            string weDate = uxJCDate.Text;
+            string projectName = HttpUtility.UrlEncode(uxProjectName.Text);
+            string sheetNum = uxHidDetailSheetOrder.Text;
+            string detailSheetName = HttpUtility.UrlEncode(uxHidDetailSheetName.Text);
+            string sGrossRec = uxSGrossRec.Text;
+            string sMatUsage = uxSMatUsage.Text;
+            string sGrossRev = uxSGrossRev.Text;
+            string sDirects = uxSDirects.Text;
+            string sOP = uxSOP.Text;
+
+            string url = "/Views/Modules/BudgetBidding/umDetailSheet.aspx?projectID=" + budBidProjectID + "&detailSheetID=" + detailSheetID + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID +
+                "&verName=" + verName + "&weDate=" + weDate + "&projectName=" + projectName + "&sheetNum=" + sheetNum + "&detailSheetName=" + detailSheetName +
+                "&sGrossRec=" + sGrossRec + "&sMatUsage=" + sMatUsage + "&sGrossRev=" + sGrossRev + "&sDirects=" + sDirects + "&sOP=" + sOP;
+
+            Window win = new Window
+            {
+                ID = "uxAddEditDetailSheet",
+                Height = 700,
+                Width = 700,
+                Modal = true,
+                Resizable = false,
+                CloseAction = CloseAction.Destroy,
+                Closable = false,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
+            win.Render(this.Form);
+            win.Show();
+        }
+        [DirectMethod]
+        public void CloseDetailWindow(string sheetName)
+        {
+            long detailSheetID = Convert.ToInt64(uxHidDetailSheetID.Text);
+            BBDetail.Sheet.DBUpdateName(detailSheetID, sheetName);
+
+            uxHidDetailSheetID.Text = "";
+            uxHidDetailSheetOrder.Text = "";
+            uxHidDetailSheetName.Text = "";
+
+            PopulateProjectEndNumbers();
+            uxSummaryDetailStore.Reload();
+        }
+        protected void PopulateProjectEndNumbers()
+        {
+            long budBidProjectID = uxHidBudBidID.Text == "" ? 0 : Convert.ToInt64(uxHidBudBidID.Text);
+
+            decimal sGrossRec = ForceToDecimal(uxSGrossRec.Text, -9999999999.99M, 9999999999.99M);
+            decimal sMatUsage = ForceToDecimal(uxSMatUsage.Text, -9999999999.99M, 9999999999.99M);
+            decimal sGrossRev = ForceToDecimal(uxSGrossRev.Text);
+            decimal sDirects = ForceToDecimal(uxSDirects.Text, -9999999999.99M, 9999999999.99M);
+            decimal sOP = ForceToDecimal(uxSOP.Text);
+
+
+            BBDetail.Sheets.EndNumbers.DBCalculate(budBidProjectID, sGrossRec, sMatUsage, sGrossRev, sDirects, sOP);
+
+            long maxOrder = BBDetail.Sheets.MaxOrder(budBidProjectID);
+            decimal eGrossRec;
+            decimal eMatUsage;
+            decimal eGrossRev;
+            decimal eDirects;
+            decimal eOP;
+            if (maxOrder == 0)
+            {
+                eGrossRec = sGrossRec;
+                eMatUsage = sMatUsage;
+                eGrossRev = sGrossRev;
+                eDirects = sDirects;
+                eOP = sOP;
+                uxEGrossRec.Text = String.Format("{0:N2}", eGrossRec);
+                uxEMatUsage.Text = String.Format("{0:N2}", eMatUsage);
+                uxEGrossRev.Text = String.Format("{0:N2}", eGrossRev);
+                uxEDirects.Text = String.Format("{0:N2}", eDirects);
+                uxEOP.Text = String.Format("{0:N2}", eOP);
+            }
+            else
+            {
+                long lastID = BBDetail.Sheet.ID(budBidProjectID, maxOrder);
+                BBDetail.Sheet.EndNumbers.Fields data = BBDetail.Sheet.EndNumbers.Get(lastID);
+                eGrossRec = data.GROSS_REC;
+                eMatUsage = data.MAT_USAGE;
+                eGrossRev = data.GROSS_REV;
+                eDirects = data.DIR_EXP;
+                eOP = data.OP;
+
+                BBProject.EndNumbersW0.DBUpdate(budBidProjectID, eGrossRec, eMatUsage, eGrossRev, eDirects, eOP);
+
+                BBProject.EndNumbersW0.Fields dataEnd = BBProject.EndNumbersW0.Data(budBidProjectID);
+                uxEGrossRec.Text = String.Format("{0:N2}", dataEnd.GROSS_REC);
+                uxEMatUsage.Text = String.Format("{0:N2}", dataEnd.MAT_USAGE);
+                uxEGrossRev.Text = String.Format("{0:N2}", dataEnd.GROSS_REV);
+                uxEDirects.Text = String.Format("{0:N2}", dataEnd.DIR_EXP);
+                uxEOP.Text = String.Format("{0:N2}", dataEnd.OP);
+            }
+        }
+        protected void ReorderSheets()
+        {
+            long budBidProjectID = Convert.ToInt64(uxHidBudBidID.Text);
+
+            if (BBDetail.Sheets.MaxOrder(budBidProjectID) == 0)
+            {
+                StandardMsgBox("Reorder Detail Sheets", "There are no detail sheets to reorder.", "INFO");
+                return;
+            }
+
+            string url = "/Views/Modules/BudgetBidding/umReorderDetailSheets.aspx?projectID=" + budBidProjectID;
+
+            Window win = new Window
+            {
+                ID = "uxReorderDetailSheetsForm",
+                Height = 400,
+                Width = 400,
+                Title = "Reorder Sheets",
+                Modal = true,
+                Resizable = false,
+                CloseAction = CloseAction.Destroy,
+                Closable = false,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
+            win.Render(this.Form);
+            win.Show();
+        }
+
+        // Other     
+        protected void LockTopSection()
+        {
+            uxActions.Disable();
+            uxSummaryReports.Disable();
+            uxUpdateAllActuals.Disable();
+            uxGridRowModel.ClearSelection();
+            uxSummaryGrid.Disable();
+            uxAdjustmentGridRowModel.ClearSelection();
+            uxAdjustmentsGrid.Disable();
+            uxOverheadGridRowModel.ClearSelection();
+            uxOverheadGrid.Disable();
+        }
+        protected void UnlockTopSection()
+        {
+            long orgID = long.Parse(Request.QueryString["OrgID"]);
+            long yearID = long.Parse(Request.QueryString["fiscalYear"]);
+            long verID = long.Parse(Request.QueryString["verID"]);
+
+            uxActions.Enable();
+            uxSummaryReports.Enable();
+            if (BB.IsReadOnly(orgID, yearID, verID) == true)
+            {
+                uxUpdateAllActuals.Disable();
+            }
+            else
+            {
+                uxUpdateAllActuals.Enable();
+            }
+            uxSummaryGrid.Enable();
+            uxAdjustmentsGrid.Enable();
+            uxOverheadGrid.Enable();
+        }
+        protected void ResetProjectForm()
+        {
+            uxProjectInfo.Reset();
+            uxSummaryDetailStore.RemoveAll();
+            uxProjectName.ReadOnly = true;
+            uxJCDate.Enable();
+            uxSGrossRec.ReadOnly = true;
+            uxSMatUsage.ReadOnly = true;
+            uxSDirects.ReadOnly = true;
+            uxSave.Disable();
+        }
+        protected decimal ForceToDecimal(string number)
+        {
+            decimal amount;
+            decimal.TryParse(number, out amount);
+            return amount;
+        }
+        protected decimal ForceToDecimal(string number, decimal lowRange, decimal highRange)
+        {
+            decimal amount;
+            decimal.TryParse(number, out amount);
+            if (amount < lowRange || amount > highRange) { amount = 0; }
+            return amount;
+        }
         protected void deCancel(object sender, DirectEventArgs e)
         {
             uxProjectInfo.Disable();
@@ -1084,37 +1481,10 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             decimal retVal = ForceToDecimal(myTextField.Text, -9999999999.99M, 9999999999.99M);
             myTextField.Text = String.Format("{0:N2}", retVal);
         }
-        protected string GetPrevVerName(long curVer)
-        {
-            switch (curVer)
-            {
-                case 1:  // Bid
-                    return "Bid";
-
-                case 2:  // First Draft
-                    return "Bid";
-
-                case 3:  // Final Draft
-                    return "First Draft";
-
-                case 4:  // 1st Reforecast
-                    return "Final Draft";
-
-                case 5:  // 2nd Reforecast
-                    return "1st Reforecast";
-
-                case 6:  // 3rd Reforecast
-                    return "2nd Reforecast";
-
-                case 7:  // 4th Reforecast
-                    return "3rd Reforecast";
-
-                default:
-                    return "";
-            }
-        }
         protected void deCalcGRandOP(object sender, DirectEventArgs e)
         {
+            deFormatNumber(sender, e);
+
             decimal sGrossRec = ForceToDecimal(uxSGrossRec.Text, -9999999999.99M, 9999999999.99M);
             decimal sMatUsage = ForceToDecimal(uxSMatUsage.Text, -9999999999.99M, 9999999999.99M);
             decimal sGrossRev = sGrossRec - sMatUsage;
@@ -1247,261 +1617,36 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             CalcSummaryTotals();
             StandardMsgBox("Adjustment", "The adjustment has been updated.", "INFO");
         }
-        protected void LockTopSection()
+        protected void LockProjectInfo()
         {
-            uxActions.Disable();
-            uxSummaryReports.Disable();
-            uxUpdateAllActuals.Disable();
-            uxGridRowModel.ClearSelection();
-            uxSummaryGrid.Disable();
-            uxAdjustmentGridRowModel.ClearSelection();
-            uxAdjustmentsGrid.Disable();
-            uxOverheadGridRowModel.ClearSelection();
-            uxOverheadGrid.Disable();
-        }
-        protected void UnlockTopSection()
-        {
-            uxActions.Enable();
-            uxSummaryReports.Enable();
-            uxUpdateAllActuals.Enable();
-            uxSummaryGrid.Enable();
-            uxAdjustmentsGrid.Enable();
-            uxOverheadGrid.Enable();
-        }
-        protected void ResetProjectForm()
-        {
-            uxProjectInfo.Reset();
-            uxSummaryDetailStore.RemoveAll();
+            uxProjectNum.ReadOnly = true;
             uxProjectName.ReadOnly = true;
-            uxJCDate.Enable();
+            uxStatus.ReadOnly = true;
+            uxComments.ReadOnly = true;
+            uxCompareOverride.ReadOnly = true;
+            uxCompareOP.ReadOnly = true;
+            uxAcres.ReadOnly = true;
+            uxDays.ReadOnly = true;
+            uxLiabilityCheckbox.ReadOnly = true;
+            uxLiabilityAmount.ReadOnly = true;
+            uxAppType.ReadOnly = true;
+            uxChemMix.ReadOnly = true;
+            uxJCDate.ReadOnly = true;
             uxSGrossRec.ReadOnly = true;
             uxSMatUsage.ReadOnly = true;
             uxSDirects.ReadOnly = true;
             uxSave.Disable();
         }
 
-
-        // Detail                                   
-        protected void deLoadDetailActions(object sender, StoreReadDataEventArgs e)
-        {
-            uxDetailActionsStore.DataSource = BB.YearSummaryDetailActions();
-        }
-        protected void deChooseDetailAction(object sender, DirectEventArgs e)
-        {
-            string selectedAction = uxDetailActions.Text;
-
-            switch (selectedAction)
-            {
-                case "Add a New Sheet":
-                    AddNewDetailSheet();
-                    break;
-
-                case "Edit Selected Sheet":
-                    LoadDetailSheet();
-                    break;
-
-                case "Copy Selected Sheet":
-                    break;
-
-                case "Delete Selected Sheet":
-                    DeleteDetailSheet();
-                    break;
-
-                case "Reorder Sheets":
-                    break;
-
-                case "Print All Sheets":
-                    break;
-            }
-
-            uxDetailActions.Clear();
-        }
-        protected void AddNewDetailSheet()
-        {
-            if (uxHidBudBidID.Text == "")
-            {
-                StandardMsgBox("Save", "The project must be saved first before you can create detail sheets.  Please save the project to continue.", "INFO");
-                 return;
-            }
-
-            long budBidProjectID = Convert.ToInt64(uxHidBudBidID.Text);
-            long newOrder = BBDetail.Sheets.MaxOrder(budBidProjectID) + 1;
-            uxHidDetailSheetID.Text = BBDetail.Sheet.DBAdd(budBidProjectID, newOrder).ToString();
-            uxHidDetailSheetOrder.Text = newOrder.ToString();
-            uxHidDetailSheetName.Text = "SYS_DETAIL_" + newOrder;
-            LoadDetailSheet();
-        }
-        protected void DeleteDetailSheet()
-        {
-            if (uxHidDetailSheetID.Text == "")
-            {
-                StandardMsgBox("Delete", "A detail sheet must be selected before it can be deleted.", "INFO");
-                return;
-            }
-
-            X.MessageBox.Confirm("Delete", "Are you sure you want to delete the selected detail sheet? Once it's been deleted it cannot be retrieved.", new MessageBoxButtonsConfig
-            {
-                Yes = new MessageBoxButtonConfig { Handler = "App.direct.DeleteDetailSheetContiued()", Text = "Yes" },
-                No = new MessageBoxButtonConfig { Text = "No" }
-            }).Show();
-        }
         [DirectMethod]
-        public void DeleteDetailSheetContiued()
+        public void CloseReorderDetailSheetsWindow()
         {
-            long detailSheetID = Convert.ToInt64(uxHidDetailSheetID.Text);
-            long budBidProjectID = Convert.ToInt64(uxHidBudBidID.Text);
-
-            BBDetail.Sheet.DBDelete(detailSheetID);
-            BBDetail.Sheets.DBResetOrder(budBidProjectID);
-
-            uxHidDetailSheetID.Text = "";
-            uxHidDetailSheetOrder.Text = "";
-            uxHidDetailSheetName.Text = "";            
-
-            PopulateProjectEndNumbers();
-            uxSummaryDetailStore.Reload();            
-        }
-        protected void deSelectDetailSheet(object sender, DirectEventArgs e)
-        {
-            string detailSheetID = e.ExtraParams["DetailSheetID"];
-            string detailSheetOrder = e.ExtraParams["DetailSheetOrder"];
-            string detailSheetName = e.ExtraParams["DetailSheetName"];
-
-            uxHidDetailSheetID.Text = detailSheetID;
-            uxHidDetailSheetOrder.Text = detailSheetOrder;
-            uxHidDetailSheetName.Text = detailSheetName;
-        }
-        protected void LoadDetailSheet()
-        {
-            if (uxHidDetailSheetID.Text == "")
-            {
-                StandardMsgBox("Edit", "A detail sheet must be selected before it can be edited.", "INFO");
-                return;
-            }
-
-            string budBidProjectID = uxHidBudBidID.Text;
-            string detailSheetID = uxHidDetailSheetID.Text;
-            string yearID = Request.QueryString["fiscalYear"];
-            string verName = HttpUtility.UrlEncode(Request.QueryString["verName"]);
-            string weDate = uxJCDate.Text;
-            string projectName = HttpUtility.UrlEncode(uxProjectName.Text);
-            string sheetNum = uxHidDetailSheetOrder.Text;
-            string detailSheetName = HttpUtility.UrlEncode(uxHidDetailSheetName.Text);
-            string sGrossRec = uxSGrossRec.Text;
-            string sMatUsage = uxSMatUsage.Text;
-            string sGrossRev = uxSGrossRev.Text;
-            string sDirects = uxSDirects.Text;
-            string sOP = uxSOP.Text;
-
-            string url = "/Views/Modules/BudgetBidding/umDetailSheet.aspx?projectID=" + budBidProjectID + "&detailSheetID=" + detailSheetID + "&yearID=" + yearID +
-                "&verName=" + verName + "&weDate=" + weDate + "&projectName=" + projectName + "&sheetNum=" + sheetNum + "&detailSheetName=" + detailSheetName + 
-                "&sGrossRec=" + sGrossRec + "&sMatUsage=" + sMatUsage + "&sGrossRev=" + sGrossRev + "&sDirects=" + sDirects + "&sOP=" + sOP;
-
-            Window win = new Window
-            {
-                ID = "uxAddEditDetailSheet",
-                Height = 700,
-                Width = 700,
-                Modal = true,
-                Resizable = false,
-                CloseAction = CloseAction.Destroy,
-                Closable = false,
-                Loader = new ComponentLoader
-                {
-                    Mode = LoadMode.Frame,
-                    DisableCaching = true,
-                    Url = url,
-                    AutoLoad = true,
-                    LoadMask =
-                    {
-                        ShowMask = true
-                    }
-                }
-            };
-            win.Render(this.Form);
-            win.Show();
-        }
-        [DirectMethod]
-        public void CloseDetailWindow(string sheetName)
-        {
-            long detailSheetID = Convert.ToInt64(uxHidDetailSheetID.Text);
-            BBDetail.Sheet.DBUpdateName(detailSheetID, sheetName);
-
             uxHidDetailSheetID.Text = "";
             uxHidDetailSheetOrder.Text = "";
             uxHidDetailSheetName.Text = "";
 
             PopulateProjectEndNumbers();
-            uxSummaryDetailStore.Reload();  
+            uxSummaryDetailStore.Reload();
         }
-        protected void PopulateProjectEndNumbers()
-        {
-            long budBidProjectID = uxHidBudBidID.Text == "" ? 0 :Convert.ToInt64(uxHidBudBidID.Text);
-
-            decimal sGrossRec = ForceToDecimal(uxSGrossRec.Text, -9999999999.99M, 9999999999.99M);
-            decimal sMatUsage = ForceToDecimal(uxSMatUsage.Text, -9999999999.99M, 9999999999.99M);
-            decimal sGrossRev = ForceToDecimal(uxSGrossRev.Text);
-            decimal sDirects = ForceToDecimal(uxSDirects.Text, -9999999999.99M, 9999999999.99M);
-            decimal sOP = ForceToDecimal(uxSOP.Text);
-
-
-            BBDetail.Sheets.EndNumbers.DBCalculate(budBidProjectID, sGrossRec, sMatUsage, sGrossRev, sDirects, sOP);
-
-            long maxOrder = BBDetail.Sheets.MaxOrder(budBidProjectID);
-            decimal eGrossRec;
-            decimal eMatUsage;
-            decimal eGrossRev;
-            decimal eDirects;
-            decimal eOP;
-            if (maxOrder == 0)
-            {
-                eGrossRec = sGrossRec;
-                eMatUsage = sMatUsage;
-                eGrossRev = sGrossRev;
-                eDirects = sDirects;
-                eOP = sOP;
-                uxEGrossRec.Text = String.Format("{0:N2}", eGrossRec);
-                uxEMatUsage.Text = String.Format("{0:N2}", eMatUsage);
-                uxEGrossRev.Text = String.Format("{0:N2}", eGrossRev);
-                uxEDirects.Text = String.Format("{0:N2}", eDirects);
-                uxEOP.Text = String.Format("{0:N2}", eOP);
-            }
-            else
-            {
-                long lastID = BBDetail.Sheet.ID(budBidProjectID, maxOrder);
-                BBDetail.Sheet.EndNumbers.Fields data = BBDetail.Sheet.EndNumbers.Get(lastID);
-                eGrossRec = data.GROSS_REC;
-                eMatUsage = data.MAT_USAGE;
-                eGrossRev = data.GROSS_REV;
-                eDirects = data.DIR_EXP;
-                eOP = data.OP;
-
-                BBProject.EndNumbersW0.DBUpdate(budBidProjectID, eGrossRec, eMatUsage, eGrossRev, eDirects, eOP);
-
-                BBProject.EndNumbersW0.Fields dataEnd = BBProject.EndNumbersW0.Data(budBidProjectID);
-                uxEGrossRec.Text = String.Format("{0:N2}", dataEnd.GROSS_REC);
-                uxEMatUsage.Text = String.Format("{0:N2}", dataEnd.MAT_USAGE);
-                uxEGrossRev.Text = String.Format("{0:N2}", dataEnd.GROSS_REV);
-                uxEDirects.Text = String.Format("{0:N2}", dataEnd.DIR_EXP);
-                uxEOP.Text = String.Format("{0:N2}", dataEnd.OP);
-            }
-        }
-
-
-        protected decimal ForceToDecimal(string number)
-        {
-            decimal amount;
-            decimal.TryParse(number, out amount);
-            return amount;
-        }
-        protected decimal ForceToDecimal(string number, decimal lowRange, decimal highRange)
-        {
-            decimal amount;
-            decimal.TryParse(number, out amount);
-            if (amount < lowRange || amount > highRange) { amount = 0; }
-            return amount;
-        }
-
-
     }
 }

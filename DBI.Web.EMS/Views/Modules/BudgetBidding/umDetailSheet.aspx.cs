@@ -17,10 +17,21 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!X.IsAjaxRequest)
-            {
-                uxCloseDetailSheet.Disable();
+            {                
+                long orgID = long.Parse(Request.QueryString["orgID"]);
+                long yearID = long.Parse(Request.QueryString["yearID"]);
+                long verID = long.Parse(Request.QueryString["verID"]);
 
-                string yearID = Request.QueryString["yearID"];
+                if (BB.IsReadOnly(orgID, yearID, verID) == true)
+                {
+                    uxCloseDetailSheet.Enable();
+                    LockDetailSheet();
+                }
+                else
+                {
+                    uxCloseDetailSheet.Disable();
+                }
+
                 string verName = Request.QueryString["verName"];
                 string weDate = Request.QueryString["weDate"];
                 long budBidProjectID = long.Parse(Request.QueryString["projectID"]);
@@ -69,7 +80,11 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 uxUnitsRemaining.Text = String.Format("{0:N2}", unitsRemain);
                 uxDaysWorked.Text = String.Format("{0:N2}", daysWorked);
 
-                CalulateDetailSheet(); 
+                decimal laborBurden = BB.LaborBurdenRate() * 100;
+                uxLaborBurdenLabel.Text = "Labor Burden @ " + (String.Format("{0:N2}", laborBurden)) + "%:";
+
+                CalulateDetailSheet(true);
+
                 CheckAllowDetailSave();
             }
         }
@@ -313,8 +328,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         // Material grid - MAKE SURE TO UPDATE 'deSaveSubGridData' method above with same formula as 'deSelect...'
         protected void deLoadMaterialDropdown(object sender, StoreReadDataEventArgs e)
         {
-            string company = "DBI";
-            List<object> dataSource = BBDetail.Sheet.MaterialListing.Data(company).ToList<object>();
+            long orgID = long.Parse(Request.QueryString["OrgID"]);
+            List<object> dataSource = BBDetail.Sheet.MaterialListing.Data(orgID).ToList<object>();
             int count;
 
             uxMaterialStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataSource, out count);
@@ -357,8 +372,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         // Equipment grid - MAKE SURE TO UPDATE 'deSaveSubGridData' method above with same formula as 'deSelect...'
         protected void deLoadEquipmentDropdown(object sender, StoreReadDataEventArgs e)
         {
-            string company = "DBI";
-            List<object> dataSource = BBDetail.Sheet.EquipmentListing.Data(company).ToList<object>();
+            long orgID = long.Parse(Request.QueryString["OrgID"]);
+            List<object> dataSource = BBDetail.Sheet.EquipmentListing.Data(orgID).ToList<object>();
             int count;
 
             uxEquipmentStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataSource, out count);
@@ -379,7 +394,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             }
 
             data.DESC_1 = equipment;
-            data.AMT_2 = Convert.ToDecimal(costPerHour);
+            data.AMT_3 = Convert.ToDecimal(costPerHour);
             data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
 
             GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
@@ -443,8 +458,14 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         {
             CalulateDetailSheet();
         }
-        protected void CalulateDetailSheet()
+        protected void CalulateDetailSheet(bool pageLoad = false)
         {
+            long orgID = long.Parse(Request.QueryString["OrgID"]);
+            long yearID = long.Parse(Request.QueryString["yearID"]);
+            long verID = long.Parse(Request.QueryString["verID"]);
+
+            if (pageLoad == false && BB.IsReadOnly(orgID, yearID, verID) == true) { return; }
+
             long budBidProjectID = long.Parse(Request.QueryString["projectID"]);
             long detailSheetID = long.Parse(Request.QueryString["detailSheetID"]);
 
@@ -487,7 +508,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxTotalWklyDirects.Text = String.Format("{0:N2}", bottomData.TOTAL_WKLY_DIRECTS);
             uxTotalDirectsLeft.Text = String.Format("{0:N2}", bottomData.TOTAL_DIRECTS_LEFT);
             uxTotalDirectsPerDay.Text = String.Format("{0:N2}", bottomData.TOTAL_DIRECTS_PER_DAY);
-            uxTotalMaterialLeft.Text = String.Format("{0:N2}", bottomData.TOTAL_MATERIAL_LEFT); 
+            uxTotalMaterialLeft.Text = String.Format("{0:N2}", bottomData.TOTAL_MATERIAL_LEFT);
 
             // Update End Numbers
             BBDetail.Sheet.EndNumbers.Fields endNums = BBDetail.Sheet.EndNumbers.Calculate(detailSheetID, sGrossRec, sMatUsage, sGrossRev, sDirects, sOP, recRemaining, totalDaysRemain, totalUnitsRemain, totalDaysWorked);
@@ -591,6 +612,67 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             decimal.TryParse(number, out amount);
             if (amount < lowRange || amount > highRange) { amount = 0; }
             return amount;
+        }
+
+        protected void LockDetailSheet()
+        {
+            uxAddNewMaterial.Disable();
+            uxDeleteMaterial.Disable();
+            uxAddNewEquipment.Disable();
+            uxDeleteEquipment.Disable();
+            uxAddNewPersonnel.Disable();
+            uxDeletePersonnel.Disable();
+            uxAddNewPerDiem.Disable();
+            uxDeletePerDiem.Disable();
+            uxAddNewTravel.Disable();
+            uxDeleteTravel.Disable();
+            uxAddNewMotel.Disable();
+            uxDeleteMotel.Disable();
+            uxAddNewMisc.Disable();
+            uxDeleteMisc.Disable();
+            uxAddNewLumpSum.Disable();
+            uxDeleteLumpSum.Disable();
+
+            uxDetailName.ReadOnly = true;
+            uxRecRemaining.ReadOnly = true;
+            uxDaysWorked.ReadOnly = true;
+            uxDaysRemaining.ReadOnly = true;
+            uxUnitsRemaining.ReadOnly = true;
+            uxComments.ReadOnly = true;
+
+            uxMaterialPicker.ReadOnly = true;
+            uxMaterialUnitCost.ReadOnly = true;
+            uxMaterialUOM.ReadOnly = true;
+            uxMaterialQuantity.ReadOnly = true;
+
+            uxEquipmentQuantity.ReadOnly = true;
+            uxEquipmentPicker.ReadOnly = true;
+            uxEquipmentHours.ReadOnly = true;
+            uxEquipmentCostPerHour.ReadOnly = true;
+
+            uxPersonnelQuantity.ReadOnly = true;
+            uxPersonnelPicker.ReadOnly = true;
+            uxPersonnelHours.ReadOnly = true;
+            uxPersonnelCostPerHour.ReadOnly = true;
+
+            uxPerDiemRate.ReadOnly = true;
+            uxPerDiemNumOfDays.ReadOnly = true;
+            uxPerDiemNumOfPerDiems.ReadOnly = true;
+
+            uxTravelPay.ReadOnly = true;
+            uxTravelHours.ReadOnly = true;
+
+            uxMotelRate.ReadOnly = true;
+            uxMotelNumOfDays.ReadOnly = true;
+            uxMotelNumOfRooms.ReadOnly = true;
+
+            uxMiscDesc.ReadOnly = true;
+            uxMiscQuantity.ReadOnly = true;
+            uxMiscCost.ReadOnly = true;
+
+            uxLumpSumDesc.ReadOnly = true;
+            uxLumpSumQuantity.ReadOnly = true;
+            uxLumpSumCost.ReadOnly = true;
         }
     }
 }

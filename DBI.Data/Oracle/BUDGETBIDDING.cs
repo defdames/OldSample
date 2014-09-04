@@ -10,6 +10,259 @@ namespace DBI.Data
 {
     public class BB
     {
+        public static void CleanOldTempRecords(int numOfDaysOld)
+        {
+            DateTime delDate = DateTime.Today.AddDays(-numOfDaysOld);
+
+            // Delete old temp tasks and associated records
+            List<decimal> detailIDs;
+            using (Entities context = new Entities())
+            {
+                detailIDs = context.BUD_BID_DETAIL_TASK.Where(x => x.MODIFIED_BY == "TEMP" && x.MODIFY_DATE <= delDate).Select(x => x.DETAIL_TASK_ID).ToList();
+            }
+
+            foreach (long detailID in detailIDs)
+            {
+                List<BUD_BID_ACTUAL_NUM> actualData1;
+                List<BUD_BID_BUDGET_NUM> budgetData1;
+                List<BUD_BID_DETAIL_SHEET> detailSheetData1;
+                List<BUD_BID_DETAIL_TASK> taskInfoData1;
+                using (Entities context = new Entities())
+                {
+                    actualData1 = context.BUD_BID_ACTUAL_NUM.Where(x => x.DETAIL_TASK_ID == detailID).ToList();
+                    budgetData1 = context.BUD_BID_BUDGET_NUM.Where(x => x.DETAIL_TASK_ID == detailID).ToList();
+                    detailSheetData1 = context.BUD_BID_DETAIL_SHEET.Where(x => x.DETAIL_TASK_ID == detailID).ToList();
+                    taskInfoData1 = context.BUD_BID_DETAIL_TASK.Where(x => x.DETAIL_TASK_ID == detailID).ToList();
+                }
+
+                GenericData.Delete<BUD_BID_ACTUAL_NUM>(actualData1);
+                GenericData.Delete<BUD_BID_BUDGET_NUM>(budgetData1);
+                GenericData.Delete<BUD_BID_DETAIL_SHEET>(detailSheetData1);
+                GenericData.Delete<BUD_BID_DETAIL_TASK>(taskInfoData1);
+            }
+
+            // Delete old temp projects and associated records
+            List<decimal> projectIDs;
+            using (Entities context = new Entities())
+            {
+                projectIDs = context.BUD_BID_PROJECTS.Where(x => x.MODIFIED_BY == "TEMP" && x.MODIFY_DATE <= delDate).Select(x => x.BUD_BID_PROJECTS_ID).ToList();
+            }
+
+            foreach (long projectID in projectIDs)
+            {
+                List<BUD_BID_ACTUAL_NUM> actualData2;
+                List<BUD_BID_BUDGET_NUM> budgetData2;
+                List<BUD_BID_DETAIL_SHEET> detailSheetData2;
+                List<BUD_BID_DETAIL_TASK> taskInfoData2;
+                List<BUD_BID_PROJECTS> projectData2;
+
+                using (Entities context = new Entities())
+                {
+                    actualData2 = context.BUD_BID_ACTUAL_NUM.Where(x => x.PROJECT_ID == projectID).ToList();
+                    budgetData2 = context.BUD_BID_BUDGET_NUM.Where(x => x.PROJECT_ID == projectID).ToList();
+                    detailSheetData2 = context.BUD_BID_DETAIL_SHEET.Where(x => x.PROJECT_ID == projectID).ToList();
+                    taskInfoData2 = context.BUD_BID_DETAIL_TASK.Where(x => x.PROJECT_ID == projectID).ToList();
+                    taskInfoData2 = context.BUD_BID_DETAIL_TASK.Where(x => x.PROJECT_ID == projectID).ToList();
+                    projectData2 = context.BUD_BID_PROJECTS.Where(x => x.BUD_BID_PROJECTS_ID == projectID).ToList();
+                }
+
+                GenericData.Delete<BUD_BID_ACTUAL_NUM>(actualData2);
+                GenericData.Delete<BUD_BID_BUDGET_NUM>(budgetData2);
+                GenericData.Delete<BUD_BID_DETAIL_SHEET>(detailSheetData2);
+                GenericData.Delete<BUD_BID_DETAIL_TASK>(taskInfoData2);
+                GenericData.Delete<BUD_BID_PROJECTS>(projectData2);
+            }
+
+
+            // Delete remianing lower level old temp records
+            List<BUD_BID_ACTUAL_NUM> actualData3;
+            List<BUD_BID_BUDGET_NUM> budgetData3;
+            List<BUD_BID_DETAIL_SHEET> detailSheetData3;
+
+            using (Entities context = new Entities())
+            {
+                actualData3 = context.BUD_BID_ACTUAL_NUM.Where(x => x.MODIFIED_BY == "TEMP" && x.MODIFY_DATE <= delDate).ToList();
+                budgetData3 = context.BUD_BID_BUDGET_NUM.Where(x => x.MODIFIED_BY == "TEMP" && x.MODIFY_DATE <= delDate).ToList();
+                detailSheetData3 = context.BUD_BID_DETAIL_SHEET.Where(x => x.MODIFIED_BY == "TEMP" && x.MODIFY_DATE <= delDate).ToList();
+            }
+
+            GenericData.Delete<BUD_BID_ACTUAL_NUM>(actualData3);
+            GenericData.Delete<BUD_BID_BUDGET_NUM>(budgetData3);
+            GenericData.Delete<BUD_BID_DETAIL_SHEET>(detailSheetData3);
+        }
+        public static List<DoubleComboLongID> BudgetVersions()
+        {
+            List<DoubleComboLongID> comboItem = new List<DoubleComboLongID>();
+            comboItem.Add(new DoubleComboLongID { ID = 1, ID_NAME = "Bid" });
+            comboItem.Add(new DoubleComboLongID { ID = 2, ID_NAME = "First Draft" });
+            comboItem.Add(new DoubleComboLongID { ID = 3, ID_NAME = "Final Draft" });
+            comboItem.Add(new DoubleComboLongID { ID = 4, ID_NAME = "1st Reforecast" });
+            comboItem.Add(new DoubleComboLongID { ID = 5, ID_NAME = "2nd Reforecast" });
+            comboItem.Add(new DoubleComboLongID { ID = 6, ID_NAME = "3rd Reforecast" });
+            comboItem.Add(new DoubleComboLongID { ID = 7, ID_NAME = "4th Reforecast" });
+            return comboItem;
+        }
+        public static bool IsUserOrgAndAllowed(long userID, long orgID)
+        {
+            bool userOrgAllowed = SYS_USER_ORGS.IsInOrg(userID, orgID);
+
+            bool allowedOrgAllowed;
+            using (Entities context = new Entities())
+            {
+                allowedOrgAllowed = context.SYS_ORG_PROFILE_OPTIONS.Where(x => x.PROFILE_OPTION_ID == 48 && x.PROFILE_VALUE == "Y").Select(x => x.ORGANIZATION_ID).Contains(orgID);
+            }
+
+            if (userOrgAllowed == true && allowedOrgAllowed == true)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static bool IsReadOnly(long orgID, long yearID, long verID)
+        {
+            string lookupValue = orgID + ":" + yearID + ":" + verID + ":Y";
+
+            using (Entities context = new Entities())
+            {
+                return context.SYS_MODULE_PROFILE_OPTIONS.Where(x => x.PROFILE_OPTION_ID == 49 && x.PROFILE_VALUE.Contains(lookupValue)).Select(x => x.PROFILE_VALUE).Contains(lookupValue);
+            }
+        }
+        public static long CalcPrevYear(long curYear, long curVer)
+        {
+            switch (curVer)
+            {
+                case 1:  // Bid
+                    return curYear;
+
+                case 2:  // First Draft
+                    return curYear;
+
+                case 3:  // Final Draft
+                    return (curYear - 1);
+
+                case 4:  // 1st Reforecast
+                    return curYear;
+
+                case 5:  // 2nd Reforecast
+                    return curYear;
+
+                case 6:  // 3rd Reforecast
+                    return curYear;
+
+                case 7:  // 4th Reforecast
+                    return curYear;
+
+                default:
+                    return curYear;
+            }
+        }
+        public static long CalcPrevVer(long curYear, long curVer)
+        {
+            switch (curVer)
+            {
+                case 1:  // Bid
+                    return 1;
+
+                case 2:  // First Draft
+                    return 1;
+
+                case 3:  // Final Draft
+                    return 2;
+
+                case 4:  // 1st Reforecast
+                    return 3;
+
+                case 5:  // 2nd Reforecast
+                    return 4;
+
+                case 6:  // 3rd Reforecast
+                    return 5;
+
+                case 7:  // 4th Reforecast
+                    return 6;
+
+                default:
+                    return curVer;
+            }
+        }
+        public static string GetPrevVerName(long curVer)
+        {
+            switch (curVer)
+            {
+                case 1:  // Bid
+                    return "Bid";
+
+                case 2:  // First Draft
+                    return "Bid";
+
+                case 3:  // Final Draft
+                    return "First Draft";
+
+                case 4:  // 1st Reforecast
+                    return "Final Draft";
+
+                case 5:  // 2nd Reforecast
+                    return "1st Reforecast";
+
+                case 6:  // 3rd Reforecast
+                    return "2nd Reforecast";
+
+                case 7:  // 4th Reforecast
+                    return "3rd Reforecast";
+
+                default:
+                    return "";
+            }
+        }
+        public static List<SingleCombo> YearSummaryProjectActions(long orgID, long yearID, long verID)
+        {
+            List<SingleCombo> comboItems = new List<SingleCombo>();
+            bool readOnly = BB.IsReadOnly(orgID, yearID, verID);
+
+            if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Add a New Project" }); }
+
+            if (readOnly == false)
+            {
+                comboItems.Add(new SingleCombo { ID_NAME = "Edit Selected Project" });
+            }
+            else
+            {
+                comboItems.Add(new SingleCombo { ID_NAME = "View Selected Project" });
+            }
+
+            if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Copy Selected Project" }); }
+
+            if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Delete Selected Project" }); }
+
+            comboItems.Add(new SingleCombo { ID_NAME = "Refresh Data" });
+
+            return comboItems;
+        }
+        public static bool ProjectStillExists(long budBidProjectID)
+        {
+            decimal returnedID;
+            using (Entities context = new Entities())
+            {
+                returnedID = context.BUD_BID_PROJECTS.Where(x => x.BUD_BID_PROJECTS_ID == budBidProjectID).Select(x => x.BUD_BID_PROJECTS_ID).SingleOrDefault();
+            }
+
+            if (returnedID != 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }        
+        
+        public static decimal LaborBurdenRate()
+        {
+            return .40M;
+        }
         public static string OrgName(long orgID)
         {
             string sql = string.Format(@"
@@ -76,30 +329,6 @@ namespace DBI.Data
 
             return showOrgs;
         }
-        public static void CleanOldTempRecords(int numOfDaysOld)
-        {
-            DateTime delDate = DateTime.Today.AddDays(- numOfDaysOld);
-            List<BUD_BID_PROJECTS> projectData;
-            List<BUD_BID_ACTUAL_NUM> actualData;
-            List<BUD_BID_BUDGET_NUM> budgetData;
-            List<BUD_BID_DETAIL_SHEET> detailSheetData;
-            List<BUD_BID_DETAIL_TASK> taskInfoData;
-
-            using (Entities context = new Entities())
-            {
-                projectData = context.BUD_BID_PROJECTS.Where(x => x.MODIFIED_BY == "TEMP" && x.MODIFY_DATE <= delDate).ToList();
-                actualData = context.BUD_BID_ACTUAL_NUM.Where(x => x.MODIFIED_BY == "TEMP" && x.MODIFY_DATE <= delDate).ToList();
-                budgetData = context.BUD_BID_BUDGET_NUM.Where(x => x.MODIFIED_BY == "TEMP" && x.MODIFY_DATE <= delDate).ToList();
-                detailSheetData = context.BUD_BID_DETAIL_SHEET.Where(x => x.MODIFIED_BY == "TEMP" && x.MODIFY_DATE <= delDate).ToList();
-                taskInfoData = context.BUD_BID_DETAIL_TASK.Where(x => x.MODIFIED_BY == "TEMP" && x.MODIFY_DATE <= delDate).ToList();
-            }
-
-            GenericData.Delete<BUD_BID_PROJECTS>(projectData);
-            GenericData.Delete<BUD_BID_ACTUAL_NUM>(actualData);
-            GenericData.Delete<BUD_BID_BUDGET_NUM>(budgetData);
-            GenericData.Delete<BUD_BID_DETAIL_SHEET>(detailSheetData);
-            GenericData.Delete<BUD_BID_DETAIL_TASK>(taskInfoData);
-        }
         public static List<long> UserAllowedOrgs(long userID)
         {
             List<long> userOrgs = SYS_USER_ORGS.GetUserOrgs(userID).Select(x => x.ORG_ID).ToList();
@@ -111,116 +340,25 @@ namespace DBI.Data
 
             return userOrgs.Intersect(allowedOrgs).ToList();
         }
-        public static bool IsUserOrgAndAllowed(long userID, long orgID)
+
+        public static List<SingleCombo> YearSummaryDetailActions(long orgID, long yearID, long verID)
         {
-
-            bool userOrgAllowed = SYS_USER_ORGS.IsInOrg(userID, orgID);
-
-            bool allowedOrgAllowed;
-            using (Entities context = new Entities())
+            List<SingleCombo> comboItems = new List<SingleCombo>();
+            bool readOnly = BB.IsReadOnly(orgID, yearID, verID);
+            if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Add a New Sheet" }); }
+            if (readOnly == false)
             {
-                allowedOrgAllowed = context.SYS_ORG_PROFILE_OPTIONS.Where(x => x.PROFILE_OPTION_ID == 48 && x.PROFILE_VALUE == "Y").Select(x => x.ORGANIZATION_ID).Contains(orgID);
-            }
-
-            if (userOrgAllowed == true && allowedOrgAllowed == true)
-            {
-                return true;
+                comboItems.Add(new SingleCombo { ID_NAME = "Edit Selected Sheet" });
             }
             else
             {
-                return false;
+                comboItems.Add(new SingleCombo { ID_NAME = "View Selected Sheet" });
             }
-        }
-        public static List<DoubleComboLongID> BudgetVersions()
-        {
-            List<DoubleComboLongID> comboItem = new List<DoubleComboLongID>();
-            comboItem.Add(new DoubleComboLongID { ID = 1, ID_NAME = "Bid" });
-            comboItem.Add(new DoubleComboLongID { ID = 2, ID_NAME = "First Draft" });
-            comboItem.Add(new DoubleComboLongID { ID = 3, ID_NAME = "Final Draft" });
-            comboItem.Add(new DoubleComboLongID { ID = 4, ID_NAME = "1st Reforecast" });
-            comboItem.Add(new DoubleComboLongID { ID = 5, ID_NAME = "2nd Reforecast" });
-            comboItem.Add(new DoubleComboLongID { ID = 6, ID_NAME = "3rd Reforecast" });
-            comboItem.Add(new DoubleComboLongID { ID = 7, ID_NAME = "4th Reforecast" });
-            return comboItem;
-        }
-        public static long CalcPrevYear(long curYear, long curVer)
-        {
-            switch (curVer)
-            {
-                case 1:  // Bid
-                    return curYear;
-
-                case 2:  // First Draft
-                    return curYear;
-
-                case 3:  // Final Draft
-                    return (curYear - 1);
-
-                case 4:  // 1st Reforecast
-                    return curYear;
-
-                case 5:  // 2nd Reforecast
-                    return curYear;
-
-                case 6:  // 3rd Reforecast
-                    return curYear;
-
-                case 7:  // 4th Reforecast
-                    return curYear;
-
-                default:
-                    return 0;
-            }
-        }
-        public static long CalcPrevVer(long curYear, long curVer)
-        {
-            switch (curVer)
-            {
-                case 1:  // Bid
-                    return 1;
-
-                case 2:  // First Draft
-                    return 1;
-
-                case 3:  // Final Draft
-                    return 2;
-
-                case 4:  // 1st Reforecast
-                    return 3;
-
-                case 5:  // 2nd Reforecast
-                    return 4;
-
-                case 6:  // 3rd Reforecast
-                    return 5;
-
-                case 7:  // 4th Reforecast
-                    return 6;
-
-                default:
-                    return 0;
-            }
-        }
-        public static List<SingleCombo> YearSummaryProjectActions()
-        {
-            List<SingleCombo> comboItems = new List<SingleCombo>();
-            comboItems.Add(new SingleCombo { ID_NAME = "Add a New Project" });
-            comboItems.Add(new SingleCombo { ID_NAME = "Edit Selected Project" });
-            comboItems.Add(new SingleCombo { ID_NAME = "Copy Selected Project" });
-            comboItems.Add(new SingleCombo { ID_NAME = "Delete Selected Project" });
-            comboItems.Add(new SingleCombo { ID_NAME = "Refresh Data" });
+            if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Copy Selected Sheet" }); }
+            if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Delete Selected Sheet" }); }
+            if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Reorder Sheets" }); }
+            //comboItems.Add(new SingleCombo { ID_NAME = "Print All Sheets" });
             return comboItems;
-        }
-        public static List<SingleCombo> YearSummaryDetailActions()
-        {
-            List<SingleCombo> comboItem = new List<SingleCombo>();
-            comboItem.Add(new SingleCombo { ID_NAME = "Add a New Sheet" });
-            comboItem.Add(new SingleCombo { ID_NAME = "Edit Selected Sheet" });
-            comboItem.Add(new SingleCombo { ID_NAME = "Copy Selected Sheet" });
-            comboItem.Add(new SingleCombo { ID_NAME = "Delete Selected Sheet" });
-            comboItem.Add(new SingleCombo { ID_NAME = "Reorder Sheets" });
-            comboItem.Add(new SingleCombo { ID_NAME = "Print All Sheets" });
-            return comboItem;
         }
         public static long CopyAllProjectDataAsTemp(long budBidID)
         {
@@ -324,6 +462,71 @@ namespace DBI.Data
                 return context.BUD_BID_PROJECTS.Where(x => x.ORG_ID == orgID && x.YEAR_ID == yearID && x.VER_ID == verID && x.MODIFIED_BY != "TEMP").Count();
             }
         }
+        public static string BudBidVerToOHBudVer(long verID)
+        {
+            switch (verID)
+            {
+                case 1:  // Bid
+                    return "";  //  FIX???
+
+                case 2:  // First Draft
+                    return "1ST DRAFT_11";
+
+                case 3:  // Final Draft
+                    return "FINAL DRAFT_11";
+
+                case 4:  // 1st Reforecast
+                    return "1ST REFORE_11";
+
+                case 5:  // 2nd Reforecast
+                    return "2ND REFORE_11";
+
+                case 6:  // 3rd Reforecast
+                    return "3RD REFORE_11";
+
+                case 7:  // 4th Reforecast
+                    return "4TH REFORE_11";
+
+                default:
+                    return "";
+            }
+        }
+        public static long InventoryOrg(long orgID)
+        {
+            string profileValue;
+            using (Entities context = new Entities())
+            {
+                profileValue = context.SYS_ORG_PROFILE_OPTIONS.Where(x => x.PROFILE_OPTION_ID == 50 && x.ORGANIZATION_ID == orgID).Select(x => x.PROFILE_VALUE).SingleOrDefault();
+            }
+
+            
+            if (profileValue == "")
+            {
+                return 0;
+            }
+            else
+            {
+                return Convert.ToInt64(profileValue);
+            }
+        }
+        public static long EquipmentOrg(long orgID)
+        {
+            string profileValue;
+            using (Entities context = new Entities())
+            {
+                profileValue = context.SYS_ORG_PROFILE_OPTIONS.Where(x => x.PROFILE_OPTION_ID == 51 && x.ORGANIZATION_ID == orgID).Select(x => x.PROFILE_VALUE).SingleOrDefault();
+            }
+
+
+            if (profileValue == "")
+            {
+                return 0;
+            }
+            else
+            {
+                return Convert.ToInt64(profileValue);
+            }
+        }
     }
 
     public class BBSummaryRollup
@@ -348,7 +551,8 @@ namespace DBI.Data
             #endregion
 
             public static List<Fields> Data(long userID, long hierarchyID, long orgID, long yearID, long verID, long prevYearID, long prevVerID)
-            {                
+            {
+                string ohVersion = BB.BudBidVerToOHBudVer(verID);
                 List<long> summaryOrgs = BB.RollupAndLeafOrgsIsUserAndIsAllowedOrgs(userID, hierarchyID, orgID);
                 List<Fields> lineDetail = new List<Fields>();
                 foreach (long summaryOrg in summaryOrgs)
@@ -379,7 +583,25 @@ namespace DBI.Data
                                 LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
                                 WHERE BUD_BID_PROJECTS.YEAR_ID = {3} AND BUD_BID_PROJECTS.VER_ID = {4} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT' AND BUD_BID_BUDGET_NUM.LINE_ID = 10                             
                                 GROUP BY BUD_BID_PROJECTS.ORG_ID         
-                            )  
+                            ),
+                            OVERHEAD AS (
+                                SELECT OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID,
+                                    NVL(SUM(AMOUNT), 0) OH
+                                FROM OVERHEAD_ORG_BUDGETS
+                                LEFT JOIN OVERHEAD_BUDGET_TYPE ON OVERHEAD_ORG_BUDGETS.OVERHEAD_BUDGET_TYPE_ID = OVERHEAD_BUDGET_TYPE.OVERHEAD_BUDGET_TYPE_ID
+                                LEFT JOIN OVERHEAD_BUDGET_DETAIL ON OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID = OVERHEAD_BUDGET_DETAIL.ORG_BUDGET_ID 
+                                WHERE OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {1} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{5}'
+                                GROUP BY OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID
+                            ),
+                            PREV_OVERHEAD AS (
+                                SELECT OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID PREV_ORG_BUDGET_ID,
+                                    NVL(SUM(AMOUNT), 0) PREV_OH
+                                FROM OVERHEAD_ORG_BUDGETS
+                                LEFT JOIN OVERHEAD_BUDGET_TYPE ON OVERHEAD_ORG_BUDGETS.OVERHEAD_BUDGET_TYPE_ID = OVERHEAD_BUDGET_TYPE.OVERHEAD_BUDGET_TYPE_ID
+                                LEFT JOIN OVERHEAD_BUDGET_DETAIL ON OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID = OVERHEAD_BUDGET_DETAIL.ORG_BUDGET_ID 
+                                WHERE OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {3} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{5}'
+                                GROUP BY OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID
+                            )
                             SELECT '{0}' NAME,
                                 SUM(NVL(GROSS_REC, 0)) GROSS_REC,                            
                                 SUM(NVL(MAT_USAGE, 0)) MAT_USAGE,
@@ -387,13 +609,15 @@ namespace DBI.Data
                                 SUM(NVL(DIR_EXP, 0)) DIR_EXP,
                                 SUM(NVL(OP, 0)) OP,
                                 CASE WHEN SUM(GROSS_REV) = 0 OR SUM(GROSS_REV) IS NULL THEN 0 ELSE ROUND((SUM(OP)/SUM(GROSS_REV)) * 100, 2) END OP_PERC,
-                                50000 OH,
-                                SUM(NVL(OP, 0)) - 50000 NET_CONT,                                      
+                                SUM(NVL(OH, 0)) OH,
+                                SUM(NVL(OP, 0)) - SUM(NVL(OH, 0)) NET_CONT,                              
                                 SUM(NVL(OP, 0)) - SUM(NVL(PREV_OP.PREV_OP, 0)) OP_VAR,
-                                (SUM(NVL(OP, 0)) - 50000) - (SUM(NVL(PREV_OP.PREV_OP, 0))) - 50000 NET_CONT_VAR                            
+                                (SUM(NVL(OP, 0)) - SUM(NVL(OH, 0))) - (SUM(NVL(PREV_OP.PREV_OP, 0))) - SUM(NVL(PREV_OH, 0)) NET_CONT_VAR                 
                             FROM ORG_NAME
                             LEFT OUTER JOIN BUDGET_LINE_AMOUNTS ON ORG_NAME.ORGANIZATION_ID = BUDGET_LINE_AMOUNTS.ORG_ID
-                            LEFT OUTER JOIN PREV_OP ON ORG_NAME.ORGANIZATION_ID = PREV_OP.ORG_ID", orgName, yearID, verID, prevYearID, prevVerID);                         
+                            LEFT OUTER JOIN PREV_OP ON ORG_NAME.ORGANIZATION_ID = PREV_OP.ORG_ID
+                            LEFT OUTER JOIN OVERHEAD ON ORG_NAME.ORGANIZATION_ID = OVERHEAD.ORG_BUDGET_ID
+                            LEFT OUTER JOIN PREV_OVERHEAD ON ORG_NAME.ORGANIZATION_ID = PREV_OVERHEAD.PREV_ORG_BUDGET_ID", orgName, yearID, verID, prevYearID, prevVerID, ohVersion);                         
 
                     List<long> whereOrgs = HR.ActiveOrganizationsByHierarchy(hierarchyID, summaryOrg).Select(x => x.ORGANIZATION_ID).ToList();                    
                     if (whereOrgs.Count() == 0 && BB.IsUserOrgAndAllowed(userID, orgID) == true) { whereOrgs.Add(summaryOrg); }
@@ -448,7 +672,8 @@ namespace DBI.Data
             #endregion
 
             public static Fields Data(long userID, long hierarchyID, long orgID, long yearID, long verID, long prevYearID, long prevVerID)
-            {         
+            {
+                string ohVersion = BB.BudBidVerToOHBudVer(verID);
                 string sql1 = string.Format(@"
                     WITH
                         ORG_NAME AS(
@@ -473,20 +698,40 @@ namespace DBI.Data
                             LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
                             WHERE BUD_BID_PROJECTS.YEAR_ID = {2} AND BUD_BID_PROJECTS.VER_ID = {3} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT' AND BUD_BID_BUDGET_NUM.LINE_ID = 10
                             GROUP BY BUD_BID_PROJECTS.ORG_ID 
-                        )  
+                        ),
+                        OVERHEAD AS (
+                            SELECT OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID,
+                                NVL(SUM(AMOUNT), 0) OH
+                            FROM OVERHEAD_ORG_BUDGETS
+                            LEFT JOIN OVERHEAD_BUDGET_TYPE ON OVERHEAD_ORG_BUDGETS.OVERHEAD_BUDGET_TYPE_ID = OVERHEAD_BUDGET_TYPE.OVERHEAD_BUDGET_TYPE_ID
+                            LEFT JOIN OVERHEAD_BUDGET_DETAIL ON OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID = OVERHEAD_BUDGET_DETAIL.ORG_BUDGET_ID 
+                            WHERE OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {0} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{4}'
+                            GROUP BY OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID
+                        ),
+                        PREV_OVERHEAD AS (
+                            SELECT OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID PREV_ORG_BUDGET_ID,
+                                NVL(SUM(AMOUNT), 0) PREV_OH
+                            FROM OVERHEAD_ORG_BUDGETS
+                            LEFT JOIN OVERHEAD_BUDGET_TYPE ON OVERHEAD_ORG_BUDGETS.OVERHEAD_BUDGET_TYPE_ID = OVERHEAD_BUDGET_TYPE.OVERHEAD_BUDGET_TYPE_ID
+                            LEFT JOIN OVERHEAD_BUDGET_DETAIL ON OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID = OVERHEAD_BUDGET_DETAIL.ORG_BUDGET_ID 
+                            WHERE OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {2} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{4}'
+                            GROUP BY OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID
+                        )
                         SELECT SUM(NVL(GROSS_REC, 0)) GROSS_REC,                            
                             SUM(NVL(MAT_USAGE, 0)) MAT_USAGE,
                             SUM(NVL(GROSS_REV, 0)) GROSS_REV,
                             SUM(NVL(DIR_EXP, 0)) DIR_EXP,
                             SUM(NVL(OP, 0)) OP,
                             CASE WHEN SUM(GROSS_REV) = 0 OR SUM(GROSS_REV) IS NULL THEN 0 ELSE ROUND((SUM(OP)/SUM(GROSS_REV)) * 100, 2) END OP_PERC,
-                            50000 OH,
-                            SUM(NVL(OP, 0)) - 50000 NET_CONT,                                      
+                            SUM(NVL(OH, 0)) OH,
+                            SUM(NVL(OP, 0)) - SUM(NVL(OH, 0)) NET_CONT,                                
                             SUM(NVL(OP, 0)) - SUM(NVL(PREV_OP.PREV_OP, 0)) OP_VAR,
-                            (SUM(NVL(OP, 0)) - 50000) - (SUM(NVL(PREV_OP.PREV_OP, 0))) - 50000 NET_CONT_VAR                            
+                            (SUM(NVL(OP, 0)) - SUM(NVL(OH, 0))) - (SUM(NVL(PREV_OP.PREV_OP, 0))) - SUM(NVL(PREV_OH, 0)) NET_CONT_VAR                          
                         FROM ORG_NAME
                         LEFT OUTER JOIN BUDGET_LINE_AMOUNTS ON ORG_NAME.ORGANIZATION_ID = BUDGET_LINE_AMOUNTS.ORG_ID
-                        LEFT OUTER JOIN PREV_OP ON ORG_NAME.ORGANIZATION_ID = PREV_OP.ORG_ID", yearID, verID, prevYearID, prevVerID);
+                        LEFT OUTER JOIN PREV_OP ON ORG_NAME.ORGANIZATION_ID = PREV_OP.ORG_ID
+                        LEFT OUTER JOIN OVERHEAD ON ORG_NAME.ORGANIZATION_ID = OVERHEAD.ORG_BUDGET_ID
+                        LEFT OUTER JOIN PREV_OVERHEAD ON ORG_NAME.ORGANIZATION_ID = PREV_OVERHEAD.PREV_ORG_BUDGET_ID", yearID, verID, prevYearID, prevVerID, ohVersion);
 
                 List<long> summaryOrgs = BB.RollupAndLeafOrgsIsUserAndIsAllowedOrgs(userID, hierarchyID, orgID);
                 string sql2 = " WHERE ORGANIZATION_ID = ";
@@ -630,7 +875,7 @@ namespace DBI.Data
                 string sql = string.Format(@"
                     WITH
                         CUR_PROJECT_INFO_WITH_STATUS AS(
-                            SELECT BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID, BUD_BID_PROJECTS.PROJECT_ID, BUD_BID_PROJECTS.TYPE, BUD_BID_PROJECTS.PRJ_NAME, BUD_BID_STATUS.STATUS,
+                            SELECT BUD_BID_STATUS.STATUS_ID, BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID, BUD_BID_PROJECTS.PROJECT_ID, BUD_BID_PROJECTS.TYPE, BUD_BID_PROJECTS.PRJ_NAME, BUD_BID_STATUS.STATUS,
                                 BUD_BID_PROJECTS.ACRES, BUD_BID_PROJECTS.DAYS, BUD_BID_PROJECTS.COMPARE_PRJ_OVERRIDE, BUD_BID_PROJECTS.COMPARE_PRJ_AMOUNT
                             FROM BUD_BID_PROJECTS
                             INNER JOIN BUD_BID_STATUS
@@ -673,7 +918,8 @@ namespace DBI.Data
                             LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
                             WHERE BUD_BID_PROJECTS.ORG_ID = {1} AND BUD_BID_PROJECTS.YEAR_ID = {4} AND BUD_BID_PROJECTS.VER_ID = {5} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT' AND BUD_BID_BUDGET_NUM.LINE_ID = 10        
                         ) 
-                    SELECT CUR_PROJECT_INFO_WITH_STATUS.BUD_BID_PROJECTS_ID,
+                    SELECT CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.STATUS_ID = 45 THEN 'Z' ELSE 'A' END PROJECT_SORT,
+                        CUR_PROJECT_INFO_WITH_STATUS.BUD_BID_PROJECTS_ID,
                         CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID, 
                         CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'OVERRIDE' THEN '-- OVERRIDE --'
                             WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'ORG' THEN 'N/A'
@@ -699,7 +945,7 @@ namespace DBI.Data
                     LEFT OUTER JOIN ORACLE_PROJECT_NAMES ON CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID = ORACLE_PROJECT_NAMES.PROJECT_ID AND CUR_PROJECT_INFO_WITH_STATUS.TYPE = ORACLE_PROJECT_NAMES.TYPE
                     LEFT OUTER JOIN BUDGET_LINE_AMOUNTS ON CUR_PROJECT_INFO_WITH_STATUS.BUD_BID_PROJECTS_ID = BUDGET_LINE_AMOUNTS.PROJECT_ID
                     LEFT OUTER JOIN PREV_OP ON CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID = PREV_OP.PROJECT_ID
-                    ORDER BY LOWER(PROJECT_NAME)", orgName, orgID, yearID, verID, prevYearID, prevVerID);
+                    ORDER BY PROJECT_SORT, LOWER(PROJECT_NAME)", orgName, orgID, yearID, verID, prevYearID, prevVerID);
 
                 using (Entities context = new Entities())
                 {
@@ -881,10 +1127,14 @@ namespace DBI.Data
 
         public static List<Fields> Data(long orgID, long yearID, long verID)
         {
+            string ohVer = BB.BudBidVerToOHBudVer(verID);
             string sql = string.Format(@"
                 SELECT 'Overhead' ADJUSTMENT,
-                    50000 OH
-                FROM DUAL", orgID, yearID, verID);
+                    NVL(SUM(AMOUNT), 0) OH
+                FROM OVERHEAD_ORG_BUDGETS
+                LEFT JOIN OVERHEAD_BUDGET_TYPE ON OVERHEAD_ORG_BUDGETS.OVERHEAD_BUDGET_TYPE_ID = OVERHEAD_BUDGET_TYPE.OVERHEAD_BUDGET_TYPE_ID
+                LEFT JOIN OVERHEAD_BUDGET_DETAIL ON OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID = OVERHEAD_BUDGET_DETAIL.ORG_BUDGET_ID 
+                WHERE OVERHEAD_ORG_BUDGETS.ORGANIZATION_ID = {0} AND OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {1} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{2}'", orgID, yearID, ohVer);
 
             using (Entities context = new Entities())
             {
@@ -904,10 +1154,14 @@ namespace DBI.Data
 
             public static Fields Data(long orgID, long yearID, long verID)
             {
+                string ohVer = BB.BudBidVerToOHBudVer(verID);
                 string sql = string.Format(@"
                     SELECT 'Overhead' ADJUSTMENT,
-                        50000 OH
-                    FROM DUAL", orgID, yearID, verID);
+                        NVL(SUM(AMOUNT), 0) OH
+                    FROM OVERHEAD_ORG_BUDGETS
+                    LEFT JOIN OVERHEAD_BUDGET_TYPE ON OVERHEAD_ORG_BUDGETS.OVERHEAD_BUDGET_TYPE_ID = OVERHEAD_BUDGET_TYPE.OVERHEAD_BUDGET_TYPE_ID
+                    LEFT JOIN OVERHEAD_BUDGET_DETAIL ON OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID = OVERHEAD_BUDGET_DETAIL.ORG_BUDGET_ID 
+                    WHERE OVERHEAD_ORG_BUDGETS.ORGANIZATION_ID = {0} AND OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {1} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{2}'", orgID, yearID, ohVer);
 
                 using (Entities context = new Entities())
                 {
@@ -1149,6 +1403,17 @@ namespace DBI.Data
 
         public class EndNumbersW0
         {
+            #region Fields
+            public class Fields
+            {
+                public decimal GROSS_REC { get; set; }
+                public decimal MAT_USAGE { get; set; }
+                public decimal GROSS_REV { get; set; }
+                public decimal DIR_EXP { get; set; }
+                public decimal OP { get; set; }
+            }
+            #endregion
+
             public static Fields Data(long budBidProjectID)
             {
                 string sql = string.Format(@"
@@ -1206,17 +1471,6 @@ namespace DBI.Data
 
                 GenericData.Update<BUD_BID_BUDGET_NUM>(data);
             }
-
-            #region Fields
-            public class Fields
-            {
-                public decimal GROSS_REC { get; set; }
-                public decimal MAT_USAGE { get; set; }
-                public decimal GROSS_REV { get; set; }
-                public decimal DIR_EXP { get; set; }
-                public decimal OP { get; set; }
-            }
-            #endregion
         }
 
         public class Listing
@@ -1271,14 +1525,14 @@ namespace DBI.Data
             }
             #endregion
 
-            public static Fields Data(long orgID, long prevYearID, long prevVerID, long projectID)
+            public static Fields Data(long orgID, long prevYearID, long prevVerID, string projectID)
             {
                 string sql = string.Format(@"
                     SELECT NOV OP 
                     FROM BUD_BID_PROJECTS
                     LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
                     LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
-                    WHERE BUD_BID_PROJECTS.ORG_ID = {0} AND BUD_BID_PROJECTS.YEAR_ID = {1} AND BUD_BID_PROJECTS.VER_ID = {2} AND BUD_BID_PROJECTS.PROJECT_ID = {3} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT' AND BUD_BID_BUDGET_NUM.LINE_ID = 10", orgID, prevYearID, prevVerID, projectID);
+                    WHERE BUD_BID_PROJECTS.ORG_ID = {0} AND BUD_BID_PROJECTS.YEAR_ID = {1} AND BUD_BID_PROJECTS.VER_ID = {2} AND BUD_BID_PROJECTS.PROJECT_ID = '{3}' AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT' AND BUD_BID_BUDGET_NUM.LINE_ID = 10", orgID, prevYearID, prevVerID, projectID);
 
                 Fields data;
                 using (Entities context = new Entities())
@@ -1528,9 +1782,71 @@ namespace DBI.Data
 
                 GenericData.Update<BUD_BID_DETAIL_TASK>(data);
             }
+            public static long DBCopy(long detailTaskID)
+            {             
+                // Task
+                BUD_BID_DETAIL_TASK taskData;
+                using (Entities context = new Entities())
+                {
+                    taskData = context.BUD_BID_DETAIL_TASK.Where(x => x.DETAIL_TASK_ID == detailTaskID).SingleOrDefault();
+                }
+
+                long budBidID = taskData.PROJECT_ID;
+                taskData.SHEET_ORDER = BBDetail.Sheets.MaxOrder(budBidID) + 1;
+                string origTaskName = taskData.DETAIL_NAME;
+                taskData.DETAIL_NAME = "* " + (origTaskName.Length >= 20 ? origTaskName.Substring(0, 20) : origTaskName) + " (COPIED: " + DateTime.Now + ")";
+                taskData.CREATE_DATE = DateTime.Now;
+                taskData.CREATED_BY = HttpContext.Current.User.Identity.Name;
+                taskData.MODIFY_DATE = DateTime.Now;
+                GenericData.Insert<BUD_BID_DETAIL_TASK>(taskData);
+                decimal newDetailTaskID = taskData.DETAIL_TASK_ID;
+
+                // Budgets
+                List<BUD_BID_BUDGET_NUM> budgetData;
+                using (Entities context = new Entities())
+                {
+                    budgetData = context.BUD_BID_BUDGET_NUM.Where(x => x.PROJECT_ID == budBidID && x.DETAIL_TASK_ID == detailTaskID).ToList();
+                }
+                foreach (BUD_BID_BUDGET_NUM budgetField in budgetData)
+                {
+                    budgetField.PROJECT_ID = Convert.ToInt64(budBidID);
+                    budgetField.DETAIL_TASK_ID = newDetailTaskID;
+                    budgetField.CREATE_DATE = DateTime.Now;
+                    budgetField.CREATED_BY = HttpContext.Current.User.Identity.Name;
+                    budgetField.MODIFY_DATE = DateTime.Now;
+                }
+                GenericData.Insert<BUD_BID_BUDGET_NUM>(budgetData);
+
+                // Detail sheets
+                List<BUD_BID_DETAIL_SHEET> sheetData;
+                using (Entities context = new Entities())
+                {
+                    sheetData = context.BUD_BID_DETAIL_SHEET.Where(x => x.PROJECT_ID == budBidID && x.DETAIL_TASK_ID == detailTaskID).ToList();
+                }
+                foreach (BUD_BID_DETAIL_SHEET detailField in sheetData)
+                {
+                    detailField.PROJECT_ID = Convert.ToInt64(budBidID);
+                    detailField.DETAIL_TASK_ID = newDetailTaskID;
+                    detailField.CREATE_DATE = DateTime.Now;
+                    detailField.CREATED_BY = HttpContext.Current.User.Identity.Name;
+                    detailField.MODIFY_DATE = DateTime.Now;
+                }
+                GenericData.Insert<BUD_BID_DETAIL_SHEET>(sheetData);
+
+                return Convert.ToInt64(newDetailTaskID);
+            }
 
             public class MainTabField
             {
+                #region Fields
+                public class Fields
+                {
+                    public decimal? RECREMAIN { get; set; }
+                    public decimal? DAYSREMAIN { get; set; }
+                    public decimal? UNITREMAIN { get; set; }
+                    public decimal? DAYSWORKED { get; set; }
+                }
+                #endregion
 
                 public static Fields NumsData(long detailSheetID)
                 {
@@ -1620,19 +1936,23 @@ namespace DBI.Data
                     data.COMMENTS = comment;
                     GenericData.Update<BUD_BID_DETAIL_TASK>(data);
                 }
-                #region Fields
-                public class Fields
-                {
-                    public decimal? RECREMAIN { get; set; }
-                    public decimal? DAYSREMAIN { get; set; }
-                    public decimal? UNITREMAIN { get; set; }
-                    public decimal? DAYSWORKED { get; set; }
-                }
-                #endregion
             }
 
             public class Subtotals
             {
+                #region Fields
+                public class Fields
+                {
+                    public decimal? MATERIAL { get; set; }
+                    public decimal? EQUIPMENT { get; set; }
+                    public decimal? PERSONNEL { get; set; }
+                    public decimal? PERDIEM { get; set; }
+                    public decimal? TRAVEL { get; set; }
+                    public decimal? MOTELS { get; set; }
+                    public decimal? MISC { get; set; }
+                    public decimal? LUMPSUM { get; set; }
+                }
+                #endregion
 
                 public static Fields Get(long detailSheetID)
                 {
@@ -1668,24 +1988,22 @@ namespace DBI.Data
 
                     return data;
                 }
-
-                #region Fields
-                public class Fields
-                {
-                    public decimal? MATERIAL { get; set; }
-                    public decimal? EQUIPMENT { get; set; }
-                    public decimal? PERSONNEL { get; set; }
-                    public decimal? PERDIEM { get; set; }
-                    public decimal? TRAVEL { get; set; }
-                    public decimal? MOTELS { get; set; }
-                    public decimal? MISC { get; set; }
-                    public decimal? LUMPSUM { get; set; }
-                }
-                #endregion
             }
 
             public class BottomNumbers
             {
+                #region Fields
+                public class Fields
+                {
+                    public decimal LABOR_BURDEN { get; set; }
+                    public decimal TOTAL_WKLY_DIRECTS { get; set; }
+                    public decimal TOTAL_DIRECTS_PER_DAY { get; set; }
+                    public decimal AVG_UNITS_PER_DAY { get; set; }
+                    public decimal TOTAL_DIRECTS_LEFT { get; set; }
+                    public decimal TOTAL_MATERIAL_LEFT { get; set; }
+                }
+                #endregion
+
                 public static Fields Calculate(long detailSheetID, decimal sGrossRec, decimal sMaterial, decimal sGrossRev, decimal sDirects, decimal sOP, decimal totalDaysRemain, 
                     decimal totalUnitsRemain, decimal totalDaysWorked)
                 {
@@ -1699,7 +2017,7 @@ namespace DBI.Data
                     decimal totalMisc = subtotal.MISC ?? 0;
                     decimal totalLumpSum = subtotal.LUMPSUM ?? 0;
 
-                    decimal laborBurdenRate = .40M;  //FIX
+                    decimal laborBurdenRate = BB.LaborBurdenRate();
                     decimal laborBurden = (totalPersonnel + totalTravel) * laborBurdenRate;
                     decimal totalWklyDirects = totalEquipment + totalPersonnel + totalPerDiem + totalTravel + totalMotels + totalMisc + laborBurden;
                     decimal totalDirectsPerDay = totalDaysWorked == 0 ? 0 : totalWklyDirects / totalDaysWorked;
@@ -1716,22 +2034,21 @@ namespace DBI.Data
                     returnData.TOTAL_MATERIAL_LEFT = totalMaterialLeft;
                     return returnData;
                 }
-
-                #region Fields
-                public class Fields
-                {
-                    public decimal LABOR_BURDEN { get; set; }
-                    public decimal TOTAL_WKLY_DIRECTS { get; set; }
-                    public decimal TOTAL_DIRECTS_PER_DAY { get; set; }
-                    public decimal AVG_UNITS_PER_DAY { get; set; }
-                    public decimal TOTAL_DIRECTS_LEFT { get; set; }
-                    public decimal TOTAL_MATERIAL_LEFT { get; set; }
-                }
-                #endregion
             }
 
             public class EndNumbers
             {
+                #region Fields
+                public class Fields
+                {
+                    public decimal GROSS_REC { get; set; }
+                    public decimal MAT_USAGE { get; set; }
+                    public decimal GROSS_REV { get; set; }
+                    public decimal DIR_EXP { get; set; }
+                    public decimal OP { get; set; }
+                }
+                #endregion
+
                 public static Fields Get(long detailSheetID)
                 {
                     string sql = string.Format(@"
@@ -1804,18 +2121,7 @@ namespace DBI.Data
                     endNums.DIR_EXP = eDirects;
                     endNums.OP = eOP;
                     return endNums;
-                }
-                
-                #region Fields
-                public class Fields
-                {
-                    public decimal GROSS_REC { get; set; }
-                    public decimal MAT_USAGE { get; set; }
-                    public decimal GROSS_REV { get; set; }
-                    public decimal DIR_EXP { get; set; }
-                    public decimal OP { get; set; }
-                }
-                #endregion
+                }              
             }
 
             public class MaterialListing
@@ -1823,52 +2129,22 @@ namespace DBI.Data
                 #region Fields
                 public class Fields
                 {
-                    public string ORG { get; set; }
-                    public string ITEM_NUMBER { get; set; }
                     public string DESCRIPTION { get; set; }
-                    public string UOM { get; set; }  
+                    public string UOM_CODE { get; set; }  
                     public decimal? ITEM_COST { get; set; }                                      
                 }
                 #endregion
 
-                public static List<Fields> Data(string company)
+                public static List<Fields> Data(long orgID)
                 {
-                    string sql = "";
-
-                    switch (company)
-                    {
-                        case "DBI":
-                            sql = string.Format(@"
-                                WITH
-                                    DBI_ORACLE_MATERIAL AS (
-                                    select      haou.organization_id,
-                                                haou.name,
-                                                cict.item_number,
-                                                cict.description,
-                                                cict.primary_uom_code,
-                                                cict.item_cost
-                                    from        apps.CST_ITEM_COST_TYPE_V cict
-                                    inner join  apps.MTL_SYSTEM_ITEMS_FVL msif on msif.inventory_item_id = cict.inventory_item_id
-                                    inner join  hr.hr_all_organization_units haou on haou.organization_id = cict.organization_id
-                                    where       cict.cost_type = 'Frozen'
-                                    and         cict.organization_id not in (198,272)
-                                    and         msif.inventory_item_status_code = 'Active'
-                                    group by    cict.item_number, 
-                                                cict.description, 
-                                                cict.primary_uom_code, 
-                                                cict.item_cost, 
-                                                haou.organization_id, 
-                                                haou.name
-                                    order by    haou.organization_id,
-                                                cict.item_number)
-                                SELECT NAME ORG,
-                                    DESCRIPTION,
-                                    PRIMARY_UOM_CODE UOM,
-                                    ITEM_COST
-                                FROM DBI_ORACLE_MATERIAL
-                                WHERE NAME LIKE 'DBI %' AND NAME <> 'DBI Services LLC (DBS)' AND NAME <> 'DBI UK Inventory Org'");
-                            break;
-                    }
+                    long invOrgID = BB.InventoryOrg(orgID);
+                    string sql = string.Format(@"
+                        SELECT DESCRIPTION,
+                            UOM_CODE,
+                            ITEM_COST 
+                        FROM XXEMS.INVENTORY_V
+                        WHERE INV_LOCATION = {0}
+                        ORDER BY DESCRIPTION", invOrgID);             
 
                     using (Entities context = new Entities())
                     {
@@ -1882,26 +2158,23 @@ namespace DBI.Data
                 #region Fields
                 public class Fields
                 {
-                    public string COMPANY { get; set; }
-                    public string EQUIP_TYPE { get; set; }
-                    public decimal? COST_PER_HR { get; set; }
+                    public string EXPENDITURE_TYPE { get; set; }
+                    public decimal? COST_RATE { get; set; }
                 }
                 #endregion
 
-                public static List<Fields> Data(string company)
+                public static List<Fields> Data(long orgID)
                 {
-                    string sql = "";
-
-                    switch (company)
-                    {
-                        case "DBI":
-                            sql = string.Format(@"
-                                SELECT 'DBI' COMPANY,
-                                    '4X4 PICKUP GROUP' EQUIP_TYPE,
-                                    20 COST_PER_HR
-                                FROM DUAL");
-                         break;
-                    }
+                    long equipOrgID = BB.EquipmentOrg(orgID);
+                    string sql = string.Format(@"                           
+                        SELECT EXPENDITURE_TYPE,
+                            COST_RATE                        
+                        FROM APPS.PA_EXPENDITURE_COST_RATES_ALL
+                        WHERE ORG_ID = 121 AND 
+                            SYSDATE BETWEEN START_DATE_ACTIVE
+                            AND NVL (END_DATE_ACTIVE, '31-DEC-4712')
+                            GROUP BY EXPENDITURE_TYPE, COST_RATE
+                        ORDER BY EXPENDITURE_TYPE", equipOrgID);
 
                     using (Entities context = new Entities())
                     {
@@ -2024,8 +2297,30 @@ namespace DBI.Data
                 GenericData.Delete<BUD_BID_DETAIL_TASK>(taskInfoData);
             }
 
+            public class SheetOrder
+            {
+                public static List<BUD_BID_DETAIL_TASK> Data(long budBidProjectID)
+                {
+                    using (Entities context = new Entities())
+                    {
+                        return context.BUD_BID_DETAIL_TASK.Where(x => x.PROJECT_ID == budBidProjectID && x.SHEET_ORDER != 0).OrderBy(x => x.SHEET_ORDER).ToList();
+                    }
+                }
+            }
+
             public class EndNumbers
             {
+                #region Fields
+                public class Fields
+                {
+                    public decimal GROSS_REC { get; set; }
+                    public decimal MAT_USAGE { get; set; }
+                    public decimal GROSS_REV { get; set; }
+                    public decimal DIR_EXP { get; set; }
+                    public decimal OP { get; set; }
+                }
+                #endregion
+
                 public static void DBCalculate(long budBidProjectID, decimal sGrossRec, decimal sMaterial, decimal sGrossRev, decimal sDirects, decimal sOP)
                 {
                     List<BUD_BID_DETAIL_TASK> data;
@@ -2068,16 +2363,6 @@ namespace DBI.Data
 
                     BBProject.EndNumbersW0.DBUpdate(budBidProjectID, eGrossRec, eMatUsage, eGrossRev, eDirects, eOP);
                 }
-                #region Fields
-                public class Fields
-                {
-                    public decimal GROSS_REC { get; set; }
-                    public decimal MAT_USAGE { get; set; }
-                    public decimal GROSS_REV { get; set; }
-                    public decimal DIR_EXP { get; set; }
-                    public decimal OP { get; set; }
-                }
-                #endregion
             }
         }
 
@@ -2097,6 +2382,24 @@ namespace DBI.Data
 
             public class Data
             {
+                #region Fields
+                public class Fields
+                {
+                    public long DETAIL_SHEET_ID { get; set; }
+                    public long PROJECT_ID { get; set; }
+                    public long DETAIL_TASK_ID { get; set; }
+                    public string REC_TYPE { get; set; }
+                    public string DESC_1 { get; set; }
+                    public string DESC_2 { get; set; }
+                    public decimal? AMT_1 { get; set; }
+                    public decimal? AMT_2 { get; set; }
+                    public decimal? AMT_3 { get; set; }
+                    public decimal? AMT_4 { get; set; }
+                    public decimal? AMT_5 { get; set; }
+                    public decimal? TOTAL { get; set; }
+                }
+                #endregion
+
                 public static List<Fields> Get(long projectID, long detailSheetID, string recType)
                 {
                     string sql = string.Format(@"
@@ -2124,25 +2427,7 @@ namespace DBI.Data
 
                     return data;
                 }
-                #region Fields
-                public class Fields
-                {
-                    public long DETAIL_SHEET_ID { get; set; }
-                    public long PROJECT_ID { get; set; }
-                    public long DETAIL_TASK_ID { get; set; }
-                    public string REC_TYPE { get; set; }
-                    public string DESC_1 { get; set; }
-                    public string DESC_2 { get; set; }
-                    public decimal? AMT_1 { get; set; }
-                    public decimal? AMT_2 { get; set; }
-                    public decimal? AMT_3 { get; set; }
-                    public decimal? AMT_4 { get; set; }
-                    public decimal? AMT_5 { get; set; }
-                    public decimal? TOTAL { get; set; }
-                }
-                #endregion
             }
-
         }
     }
 }

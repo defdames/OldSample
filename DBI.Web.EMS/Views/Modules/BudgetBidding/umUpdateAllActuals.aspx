@@ -67,7 +67,7 @@
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
-                                <ext:Label ID="Label4" runat="server" Width="360" Height="60" />
+                                <ext:Label ID="Label4" runat="server" Width="360" Height="90" />
                             </Items>
                         </ext:FieldContainer>
 

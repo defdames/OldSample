@@ -151,6 +151,7 @@
     <Content Include="Views\Modules\BudgetBidding\umBlankBudget.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umBudgetBiddingMain.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umDetailSheet.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\umReorderDetailSheets.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umUpdateAllActuals.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umYearBudget.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umYearRollupSummary.aspx" />
@@ -325,6 +326,13 @@
     </Compile>
     <Compile Include="Views\Modules\BudgetBidding\umDetailSheet.aspx.designer.cs">
       <DependentUpon>umDetailSheet.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umReorderDetailSheets.aspx.cs">
+      <DependentUpon>umReorderDetailSheets.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umReorderDetailSheets.aspx.designer.cs">
+      <DependentUpon>umReorderDetailSheets.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\BudgetBidding\umUpdateAllActuals.aspx.cs">
       <DependentUpon>umUpdateAllActuals.aspx</DependentUpon>

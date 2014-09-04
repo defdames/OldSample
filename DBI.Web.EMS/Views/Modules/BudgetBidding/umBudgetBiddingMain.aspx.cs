@@ -27,26 +27,58 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             {
                 if (e.NodeID == "0")
                 {
-                    var data = HR.ActiveOverheadBudgetLegalEntities();
+                    var data = HR.LegalEntityHierarchies().Select(a => new { a.ORGANIZATION_ID, a.ORGANIZATION_NAME }).Distinct().ToList();
+                    bool exitHeirarchyForEach = false;
                     foreach (var view in data)
-                    {
-                        Node node = new Node();
-                        node.Text = view.ORGANIZATION_NAME;
-                        node.NodeID = view.ORGANIZATION_ID.ToString();
-                        e.Nodes.Add(node);
+                    {                        
+                        var heirarchyData = HR.LegalEntityHierarchies().Where(a => a.ORGANIZATION_ID == view.ORGANIZATION_ID);
+                        var orgsList = BB.UserAllowedOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name));
+                        foreach (var heirarchy in heirarchyData)
+                        {
+                            var nextData = HR.ActiveOrganizationsByHierarchy(heirarchy.ORGANIZATION_STRUCTURE_ID, heirarchy.ORGANIZATION_ID);
+
+                            // In next org?
+                            foreach (long allowedOrgs in orgsList)
+                            {
+                                if (nextData.Select(x => x.ORGANIZATION_ID).Contains(allowedOrgs))
+                                {
+                                    Node node = new Node();
+                                    node.Text = view.ORGANIZATION_NAME;
+                                    node.NodeID = view.ORGANIZATION_ID.ToString();
+                                    e.Nodes.Add(node);
+                                    exitHeirarchyForEach = true;
+                                    break;
+                                }
+                            }
+                            if (exitHeirarchyForEach == true)
+                            {
+                                exitHeirarchyForEach = false;
+                                break;
+                            }
+                        }
                     }
                 }
-
                 else
                 {
                     long nodeID = long.Parse(e.NodeID);
                     var data = HR.LegalEntityHierarchies().Where(a => a.ORGANIZATION_ID == nodeID);
+                    var orgsList = BB.UserAllowedOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name));
                     foreach (var view in data)
                     {
-                        Node node = new Node();
-                        node.Text = view.HIERARCHY_NAME;
-                        node.NodeID = string.Format("{0}:{1}", view.ORGANIZATION_STRUCTURE_ID.ToString(), view.ORGANIZATION_ID.ToString());
-                        e.Nodes.Add(node);
+                        var nextData = HR.ActiveOrganizationsByHierarchy(view.ORGANIZATION_STRUCTURE_ID, view.ORGANIZATION_ID);
+
+                        // In next org?
+                        foreach (long allowedOrgs in orgsList)
+                        {
+                            if (nextData.Select(x => x.ORGANIZATION_ID).Contains(allowedOrgs))
+                            {
+                                Node node = new Node();
+                                node.Text = view.HIERARCHY_NAME;
+                                node.NodeID = string.Format("{0}:{1}", view.ORGANIZATION_STRUCTURE_ID.ToString(), view.ORGANIZATION_ID.ToString());
+                                e.Nodes.Add(node);
+                                break;
+                            }
+                        }
                     }
                 }
             }
@@ -99,7 +131,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                             node.Leaf = leafNode;
                             if (colorNode == true)
                             {
-                                node.Icon = Icon.Tick;
+                                node.Icon = Icon.Accept;
                             }
                             else
                             {
@@ -147,7 +179,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 DisableToolbar();
                 LoadBudget(prevBlank);
             }
-
             else
             {
                 uxHidOrgOK.Text = "Y";
@@ -196,14 +227,14 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 char[] delimChars = { ':' };
                 string[] selID = nodeID.Split(delimChars);
                 string hierarchyID = selID[0].ToString();
-                string orgID = selID[1].ToString();
+                long orgID = Convert.ToInt64(selID[1].ToString());
 
                 string orgName = HttpUtility.UrlEncode(uxOrgPanel.SelectedNodes[0].Text);
-                string fiscalYear = uxFiscalYear.SelectedItem.Value;
-                string verID = uxVersion.SelectedItem.Value;
+                long fiscalYear = Convert.ToInt64(uxFiscalYear.SelectedItem.Value);
+                long verID = Convert.ToInt64(uxVersion.SelectedItem.Value);
                 string verName = HttpUtility.UrlEncode(uxVersion.SelectedItem.Text);
 
-                if (BB.IsRollup(Convert.ToInt64(orgID)) == false)
+                if (BB.IsRollup(orgID) == false)
                 {
                     url = "umYearBudget.aspx?hierID=" + hierarchyID + "&orgID=" + orgID + "&orgName=" + orgName + "&fiscalYear=" + fiscalYear + "&verID=" + verID + "&verName=" + verName;
                 }
@@ -229,7 +260,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         {
             uxFiscalYear.Enable();
             uxVersion.Enable();
-            uxOrgSettings.Enable();
+            uxOrgSettings.Disable();  // FIX
         }
 
         protected void DisableToolbar()
@@ -237,6 +268,18 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxFiscalYear.Disable();
             uxVersion.Disable();
             uxOrgSettings.Disable();
+        }
+
+        protected void StandardMsgBox(string title, string msg, string msgIcon)
+        {
+            // msgIcon can be:  ERROR, INFO, QUESTION, WARNING
+            X.Msg.Show(new MessageBoxConfig()
+            {
+                Title = title,
+                Message = msg,
+                Buttons = MessageBox.Button.OK,
+                Icon = (MessageBox.Icon)Enum.Parse(typeof(MessageBox.Icon), msgIcon)
+            });
         }
     }
 }
