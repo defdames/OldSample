@@ -540,7 +540,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                     AdditionalInformation = string.Format("{0} has no lunch entered on {1}", Employee.EMPLOYEE_NAME, Employee.DA_DATE)
                                 });
                             }
-                            else
+                            else if(LoggedLunches == 1)
                             {
                                 var LunchLength = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                                    join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
@@ -571,6 +571,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                     }
                                 }
                             }
+
                         }
                     }
 
@@ -613,7 +614,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             AdditionalInformation = string.Format("{0} has no lunch entered on {1}", Employee, HeaderDate.ToString("MM-dd-yyyy"))
                         };
                     }
-                    else
+                    else if(LoggedLunches == 1)
                     {
                         var LunchLength = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                            join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID

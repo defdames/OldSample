@@ -5,13 +5,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title></title>
-
+   
     <style type="text/css">
         .test {
             background-color: grey;
         }
+        .allowBlank-field {
+            background-color: #EFF7FF !important;
+            background-image: none;
+        }
+        .testing {
+            background-color: #EFF7FF !important;
+            background-image: none;
+        }
     </style>
-    
 </head>
 <body style="overflow:visible">
     <form id="form1" runat="server">
@@ -20,12 +27,21 @@
             <Items>
                 <ext:Container runat="server" AutoScroll="true" ID="uxSurveyContainer" Hidden="true">
                     <Items>
-                        <ext:FormPanel runat="server" ID="uxSurveyDisplay" Layout="FormLayout" MaxWidth="1000" BodyPadding="10" Flex="500" ManageHeight="true">
+                        <ext:Container runat="server" Width="1000" StyleSpec="background-color: white" Padding="10" Border="false" Layout="FormLayout" ID="uxLogoContainer">
                             <Items>
-                                <ext:Image ID="uxLogoImage" runat="server" ImageUrl="/Resources/Images/dbis_black_logo.png" MaxWidth="250" MaxHeight="154" StyleSpec="text-align: center" />
+                                <ext:Image ID="uxLogoImage" runat="server" ImageUrl="/Resources/Images/dbis_black_logo.png" Width="250" MaxWidth="250" MaxHeight="154" StyleSpec="text-align: center" />
+                            </Items>
+                        </ext:Container>
+                        <ext:FormPanel runat="server" ID="uxSurveyDisplay" Layout="FormLayout" MaxWidth="1000" BodyPadding="10" Flex="500" ManageHeight="true" Border="false" >
+                            <Items>
                                 <ext:FieldSet runat="server" Title="Form Code" Margin="5" ID="uxCodeFieldset">
                                     <Items>
-                                        <ext:TextField runat="server" ID="uxFormCode" FieldLabel="Enter Form Code" AllowBlank="false" LabelWidth="150" />
+                                        <ext:TextField runat="server" ID="uxFormCode" FieldLabel="Enter Form Code" AllowBlank="false" InvalidCls="allowBlank" LabelWidth="150" MsgTarget="Side" IndicatorIcon="BulletRed">
+                                            <DirectEvents>
+                                                <Blur OnEvent="deLoadCustomer" />
+                                            </DirectEvents>
+                                        </ext:TextField>
+                                        <ext:DisplayField runat="server" ID="uxCustomerField" />
                                     </Items>
                                 </ext:FieldSet>
                             </Items>
