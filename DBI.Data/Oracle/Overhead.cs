@@ -617,6 +617,45 @@ namespace DBI.Data
 
         #endregion
 
+        #region Import Actuals Window
+
+
+        /// <summary>
+        /// Returns actual balance from gl system by code combination id and period year. 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="periodYear"></param>
+        /// <param name="codeCombinationID"></param>
+        /// <returns></returns>
+        public static List<GL_ACTUALS> ActualsByYearAndAccountCodeAndPeriodNumber(Entities context, short periodYear, long codeCombinationID, long periodNum)
+        {
+            string sql = string.Format("select period_net_dr, period_net_cr,period_year,code_combination_id,period_num from gl.gl_balances where actual_flag = 'A' and period_year = {0} and code_combination_id = {1} and period_num = {2} and set_of_books_id in (select distinct set_of_books_id from apps.hr_operating_units)", periodYear, codeCombinationID, periodNum);
+            List<GL_ACTUALS> _data = context.Database.SqlQuery<GL_ACTUALS>(sql).ToList();
+            return _data;
+        }
+
+        public static Boolean ImportActualForBudgetVersion(Entities context, List<string> periodsToImport, long budgetid)
+        {
+            OVERHEAD_ORG_BUDGETS _budgetHeader = BudgetByID(context, budgetid);
+
+
+
+
+            return true;
+
+        }
+
+        public class GL_ACTUALS
+        {
+            public decimal PERIOD_NET_DR { get; set; }
+            public decimal PERIOD_NET_CR { get; set; }
+            public short PERIOD_YEAR { get; set; }
+            public long CODE_COMBINATION_ID { get; set; }
+            public long PERIOD_NUM { get; set; }
+        }
+
+        #endregion
+
     }
 }
 
