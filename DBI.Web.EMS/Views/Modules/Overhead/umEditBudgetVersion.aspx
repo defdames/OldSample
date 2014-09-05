@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umEditBudget.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.Overhead.umEditBudget" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umEditBudgetVersion.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.Overhead.umEditBudgetVersion" %>
 
 <!DOCTYPE html>
 
@@ -85,7 +85,7 @@
                             <Items>
                                 <ext:Button runat="server" Icon="MagnifierZoomIn" Text="Account Inquery" ID="uxViewActuals" Disabled="true">
                                     <DirectEvents>
-                                        <Click OnEvent="deViewActuals">
+                                        <Click OnEvent="viewActuals">
                                             <ExtraParams>
                                                 <ext:Parameter Value="#{uxOrganizationAccountGridPanel}.getView().getSelectionModel().getSelection()[0].data.ACCOUNT_DESCRIPTION" Mode="Raw" Name="ACCOUNT_DESCRIPTION"></ext:Parameter>
                                             </ExtraParams>
@@ -95,13 +95,13 @@
                                 <ext:ToolbarSeparator ID="ToolbarSeparator1" runat="server"></ext:ToolbarSeparator>
                                 <ext:Button runat="server" Icon="DatabaseCopy" Text="Import Actuals" ID="uxImportActualsButton">
                                     <DirectEvents>
-                                        <Click OnEvent="deImportActuals"></Click>
+                                        <Click OnEvent="importActuals"></Click>
                                     </DirectEvents>
                                 </ext:Button>
                                 <ext:ToolbarSeparator ID="ToolbarSeparator4" runat="server"></ext:ToolbarSeparator>
                                 <ext:Button runat="server" Icon="NoteEdit" Text="Budget Notes" ID="uxBudgetNotes">
                                     <DirectEvents>
-                                        <Click OnEvent="deEditBudgetNotes"></Click>
+                                        <Click OnEvent="editBudgetNotes"></Click>
                                     </DirectEvents>
                                 </ext:Button>
                                 <ext:ToolbarSeparator ID="ToolbarSeparator2" runat="server"></ext:ToolbarSeparator>
@@ -136,7 +136,7 @@
                     <Store>
                         <ext:Store runat="server"
                             ID="uxOrganizationAccountStore"
-                            AutoDataBind="true" RemoteSort="true" OnReadData="deLoadOrganizationAccounts" AutoLoad="true" GroupField="CATEGORY_NAME" RemoteGroup="true" OnSubmitData="deExportData">
+                            AutoDataBind="true" RemoteSort="true" OnReadData="loadBudgetDetails" AutoLoad="true" GroupField="CATEGORY_NAME" RemoteGroup="true" OnSubmitData="deExportData">
                             <Model>
                                 <ext:Model ID="Model2" runat="server" IDProperty="CODE_COMBINATION_ID">
                                     <Fields>
@@ -284,7 +284,7 @@
             <Buttons>
                 <ext:Button runat="server" ID="uxSaveBudgetNote" Icon="Accept" Text="Save">
                     <DirectEvents>
-                        <Click OnEvent="deSaveBudgetNotes">
+                        <Click OnEvent="saveBudgetNotes">
                             <EventMask ShowMask="true"></EventMask>
                         </Click>
                     </DirectEvents>

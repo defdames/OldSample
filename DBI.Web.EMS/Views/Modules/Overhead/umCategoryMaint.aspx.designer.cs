@@ -10,7 +10,7 @@
 namespace DBI.Web.EMS.Views.Modules.Overhead {
     
     
-    public partial class umAccountCategory {
+    public partial class umCategoryMaint {
         
         /// <summary>
         /// form1 control.
