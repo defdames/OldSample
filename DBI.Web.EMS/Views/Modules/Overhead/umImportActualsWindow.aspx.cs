@@ -73,58 +73,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 CheckboxSelectionModel _csm = uxPeriodSelectionModel;
 
                 List<string> _periodsToImport = _csm.SelectedRows.Select(x => x.RecordID).ToList();
-                List<OVERHEAD_BUDGET_FORECAST.GL_PERIOD> _periodList = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(_context).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Month" & _periodsToImport.Contains(x.PERIOD_NUM.ToString())).ToList();
-                var _validAccounts = OVERHEAD_BUDGET_FORECAST.AccountListValidByOrganizationID(_context, _organizationID);
-
-              
-                //Add total detail
-                foreach (GL_ACCOUNTS_V _validAccount in _validAccounts)
-                {
-
-                    foreach (OVERHEAD_BUDGET_FORECAST.GL_PERIOD _period in _periodList)
-                        {
-                          OVERHEAD_BUDGET_DETAIL _line = OVERHEAD_BUDGET_FORECAST.BudgetDetailByBudgetID(_context,_budgetid).Where(x => x.ORG_BUDGET_ID == _budgetid & x.CODE_COMBINATION_ID == _validAccount.CODE_COMBINATION_ID & x.PERIOD_NUM == _period.PERIOD_NUM).SingleOrDefault();
-                          OVERHEAD_BUDGET_FORECAST.GL_ACTUALS _actualTotalLine = OVERHEAD_BUDGET_FORECAST.ActualsByYearAndAccountCodeAndPeriodNumber(_context, _fiscal_year, _validAccount.CODE_COMBINATION_ID, _period.PERIOD_NUM).SingleOrDefault();
-                            decimal _aTotal = 0;
-
-                            if (_actualTotalLine != null)
-                            {
-                                _aTotal = _actualTotalLine.PERIOD_NET_DR + Decimal.Negate(_actualTotalLine.PERIOD_NET_CR);
-                            }
-                            else
-                            {
-                                _aTotal = 0;
-                            }
-
-                                    if (_line == null)
-                                    {
-                                        //No data, create it
-                                        OVERHEAD_BUDGET_DETAIL _record = new OVERHEAD_BUDGET_DETAIL();
-                                        _record.ORG_BUDGET_ID = _budgetid;
-                                        _record.PERIOD_NAME = _period.ENTERED_PERIOD_NAME;
-                                        _record.PERIOD_NUM = _period.PERIOD_NUM;
-                                        _record.CODE_COMBINATION_ID = _validAccount.CODE_COMBINATION_ID;
-                                        _record.AMOUNT = _aTotal;
-                                        _record.CREATE_DATE = DateTime.Now;
-                                        _record.MODIFY_DATE = DateTime.Now;
-                                        _record.CREATED_BY = User.Identity.Name;
-                                        _record.MODIFIED_BY = User.Identity.Name;
-                                        _record.ACTUALS_IMPORTED_FLAG = _lockImported;
-                                        GenericData.Insert<OVERHEAD_BUDGET_DETAIL>(_record);
-                                    }
-                                    else
-                                    {
-                                        //Data update it
-                                        _line.AMOUNT = _aTotal;
-                                        _line.MODIFY_DATE = DateTime.Now;
-                                        _line.MODIFIED_BY = User.Identity.Name;
-                                        _line.ACTUALS_IMPORTED_FLAG = _lockImported;
-                                        GenericData.Update<OVERHEAD_BUDGET_DETAIL>(_line);
-                                    }
-                    }
-                }
-
-
+                OVERHEAD_BUDGET_FORECAST.ImportActualForBudgetVersion(_context, _periodsToImport, _budgetid, User.Identity.Name, _lockImported);
             }
         }
 

@@ -629,17 +629,67 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<GL_ACTUALS> ActualsByYearAndAccountCodeAndPeriodNumber(Entities context, short periodYear, long codeCombinationID, long periodNum)
         {
-            string sql = string.Format("select period_net_dr, period_net_cr,period_year,code_combination_id,period_num from gl.gl_balances where actual_flag = 'A' and period_year = {0} and code_combination_id = {1} and period_num = {2} and set_of_books_id in (select distinct set_of_books_id from apps.hr_operating_units)", periodYear, codeCombinationID, periodNum);
+            string sql = string.Format("select period_net_dr, period_net_cr,period_year,code_combination_id,period_num from gl.gl_balances where actual_flag = 'A' and period_year = {0} and code_combination_id = {1} and period_num = {2} and set_of_books_id in (select set_of_books_id from apps.hr_operating_units group by set_of_books_id)", periodYear, codeCombinationID, periodNum);
             List<GL_ACTUALS> _data = context.Database.SqlQuery<GL_ACTUALS>(sql).ToList();
             return _data;
         }
 
-        public static Boolean ImportActualForBudgetVersion(Entities context, List<string> periodsToImport, long budgetid)
+        public static Boolean ImportActualForBudgetVersion(Entities context, List<string> periodsToImport, long budgetid, string loggedInUser, string lockImportData = "N")
         {
             OVERHEAD_ORG_BUDGETS _budgetHeader = BudgetByID(context, budgetid);
+            List<OVERHEAD_BUDGET_FORECAST.GL_PERIOD> _periodList = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(context).Where(x => x.PERIOD_YEAR == _budgetHeader.FISCAL_YEAR & x.PERIOD_TYPE == "Month" & periodsToImport.Contains(x.PERIOD_NUM.ToString())).ToList();
+            var _accountList = OVERHEAD_BUDGET_FORECAST.AccountListValidByOrganizationID(context, _budgetHeader.ORGANIZATION_ID);
+            List<OVERHEAD_BUDGET_DETAIL> _insertData = new List<OVERHEAD_BUDGET_DETAIL>();
+            List<OVERHEAD_BUDGET_DETAIL> _updateData = new List<OVERHEAD_BUDGET_DETAIL>();
 
+            foreach (var _account in _accountList)
+            {
+                 foreach (OVERHEAD_BUDGET_FORECAST.GL_PERIOD _period in _periodList)
+                        {
+                          OVERHEAD_BUDGET_DETAIL _line = OVERHEAD_BUDGET_FORECAST.BudgetDetailByBudgetID(context,budgetid).Where(x => x.CODE_COMBINATION_ID == _account.CODE_COMBINATION_ID & x.PERIOD_NUM == _period.PERIOD_NUM).SingleOrDefault();
+                          GL_ACTUALS _actualTotalLine = OVERHEAD_BUDGET_FORECAST.ActualsByYearAndAccountCodeAndPeriodNumber(context, _budgetHeader.FISCAL_YEAR, _account.CODE_COMBINATION_ID, _period.PERIOD_NUM).SingleOrDefault();
+                            
+                            decimal _aTotal = 0;
 
+                            if (_actualTotalLine != null)
+                            {
+                                _aTotal = _actualTotalLine.PERIOD_NET_DR + Decimal.Negate(_actualTotalLine.PERIOD_NET_CR);
+                            }
+                            else
+                            {
+                                _aTotal = 0;
+                            }
 
+                                    if (_line == null & _aTotal > 0)
+                                    {
+                                        //No data, create it
+                                        OVERHEAD_BUDGET_DETAIL _record = new OVERHEAD_BUDGET_DETAIL();
+                                        _record.ORG_BUDGET_ID = budgetid;
+                                        _record.PERIOD_NAME = _period.ENTERED_PERIOD_NAME;
+                                        _record.PERIOD_NUM = _period.PERIOD_NUM;
+                                        _record.CODE_COMBINATION_ID = _account.CODE_COMBINATION_ID;
+                                        _record.AMOUNT = _aTotal;
+                                        _record.CREATE_DATE = DateTime.Now;
+                                        _record.MODIFY_DATE = DateTime.Now;
+                                        _record.CREATED_BY = loggedInUser;
+                                        _record.MODIFIED_BY = loggedInUser;
+                                        _record.ACTUALS_IMPORTED_FLAG = lockImportData;
+                                        _insertData.Add(_record);
+                                    }
+                                    else if(_line != null)
+                                    {
+                                        //Data update it
+                                        _line.AMOUNT = _aTotal;
+                                        _line.MODIFY_DATE = DateTime.Now;
+                                        _line.MODIFIED_BY = loggedInUser;
+                                        _line.ACTUALS_IMPORTED_FLAG = lockImportData;
+                                        _updateData.Add(_line);
+                                    }
+                    }
+                }
+
+            GenericData.Insert<OVERHEAD_BUDGET_DETAIL>(_insertData);
+            GenericData.Update<OVERHEAD_BUDGET_DETAIL>(_updateData);
 
             return true;
 
