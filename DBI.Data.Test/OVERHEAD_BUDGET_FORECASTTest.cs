@@ -77,5 +77,44 @@ namespace DBI.Data.Test
             List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> actual;
             actual = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(context, budgetID, organizationID);
         }
+
+        /// <summary>
+        ///A test for ImportActualForBudgetVersion
+        ///</summary>
+        [TestMethod()]
+        public void ImportActualForBudgetVersionTest2()
+        {
+            Entities context = new Entities(); // TODO: Initialize to an appropriate value
+            List<string> periodsToImport = new List<string>();
+            string monthToTest1 = "1";
+            string monthToTest2 = "2";
+            string monthToTest3 = "3";
+            string monthToTest4 = "4";
+            string monthToTest5 = "5";
+            string monthToTest6 = "6";
+            string monthToTest7 = "7";
+            string monthToTest8 = "8";
+            string monthToTest9 = "9";
+            string monthToTest10 = "10";
+            string monthToTest11 = "11";
+            string monthToTest12 = "12";
+            periodsToImport.Add(monthToTest1);
+            periodsToImport.Add(monthToTest2);
+            periodsToImport.Add(monthToTest3);
+            periodsToImport.Add(monthToTest4);
+            periodsToImport.Add(monthToTest5);
+            periodsToImport.Add(monthToTest6);
+            periodsToImport.Add(monthToTest7);
+            periodsToImport.Add(monthToTest8);
+            periodsToImport.Add(monthToTest9);
+            periodsToImport.Add(monthToTest10);
+            periodsToImport.Add(monthToTest11);
+            periodsToImport.Add(monthToTest12);
+            long budgetid = 187; // TODO: Initialize to an appropriate value
+            string lockImportData = "Y";
+            string loggedInUser = "LJANKOWSKI";// TODO: Initialize to an appropriate value
+            bool actual;
+            actual = OVERHEAD_BUDGET_FORECAST.ImportActualForBudgetVersion(context, periodsToImport, budgetid, loggedInUser, lockImportData);
+        }
     }
 }
