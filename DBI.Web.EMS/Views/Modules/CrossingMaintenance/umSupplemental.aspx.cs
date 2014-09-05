@@ -64,21 +64,31 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         protected void deSupplementalGridData(object sender, StoreReadDataEventArgs e)
         {
 
-            using (Entities _context = new Entities())
-            {
-                if (validateComponentSecurity("SYS.CrossingMaintenance.DataEntryView"))
-                {
+            //using (Entities _context = new Entities())
+            //{
+               
                     long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-                    List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
-                    IQueryable<CROSSING_MAINTENANCE.CrossingData> data = CROSSING_MAINTENANCE.GetSuppCrossingList(RailroadId, _context).Where(v => v.PROJECT_TYPE == "CUSTOMER BILLING" && v.TEMPLATE_FLAG == "N" && v.PROJECT_STATUS_CODE == "APPROVED" && v.ORGANIZATION_NAME.Contains(" RR") && OrgsList.Contains(v.CARRYING_OUT_ORGANIZATION_ID)).Distinct();
+                    //List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
+                    decimal UserId = SYS_USER_INFORMATION.UserID(User.Identity.Name);
 
-                    int count;
-                    uxSupplementalCrossingStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.CrossingData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-                    e.Total = count;
+                 List<CROSSING_MAINTENANCE.CrossingData1> dataSource = CROSSING_MAINTENANCE.GetSuppCrossingList(RailroadId, UserId).ToList();
+
+                 List<object> _data = dataSource.ToList<object>();
+                 int count = 0;
+                 uxSupplementalCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
+                 e.Total = count;      
+                    //IQueryable<CROSSING_MAINTENANCE.CrossingData> data = CROSSING_MAINTENANCE.GetSuppCrossingList(RailroadId, _context).Where(v => v.PROJECT_TYPE == "CUSTOMER BILLING" && v.TEMPLATE_FLAG == "N" && v.PROJECT_STATUS_CODE == "APPROVED" && v.ORGANIZATION_NAME.Contains(" RR") && OrgsList.Contains(v.CARRYING_OUT_ORGANIZATION_ID)).Distinct();
+
+                    //int count;
+                    //uxSupplementalCrossingStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.CrossingData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                    //e.Total = count;
                 }
-            }
-        }
-        
+            //}
+       // }
+        //protected void deReloadStore(object sender, DirectEventArgs e)
+        //{
+        //    uxSupplementalProjectStore.Reload();
+        //}
         protected void GetSupplementalGridData(object sender, StoreReadDataEventArgs e)
         {
             //Get Supplemental data and set datasource
@@ -138,7 +148,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             DateTime ApprovedDate = (DateTime)uxAddApprovedDateField.Value;
             DateTime CutDate = (DateTime)uxAddCutDateField.Value;
             decimal SquareFeet = Convert.ToDecimal(uxAddSquareFeet.Value);
-            //string TruckNumber = uxAddEquipmentDropDown.Value.ToString();
             string ServiceType = uxAddServiceType.Value.ToString();
             string Recurring = uxAddRecurringBox.Value.ToString();
             long ProjectName = Convert.ToInt64(uxAddProjectDropDownField.Value);
@@ -161,7 +170,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                     APPROVED_DATE = ApprovedDate,
                     SERVICE_TYPE = ServiceType,
-                    //TRUCK_NUMBER = TruckNumber,
                     SQUARE_FEET = SquareFeet,
                     RECURRING = Recurring,
                     CREATE_DATE = DateTime.Now,
@@ -219,15 +227,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         protected void deAddProjectGrid(object sender, StoreReadDataEventArgs e)
         {
 
-
-            long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-            List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
+            long CrossingId = long.Parse(e.Parameters["CrossingId"]);
+            //long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+           // List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
             using (Entities _context = new Entities())
             {
-                IQueryable<CROSSING_MAINTENANCE.ProjectList> data = CROSSING_MAINTENANCE.GetCrossingSecurityProjectList(RailroadId, _context).Where(v => v.PROJECT_TYPE == "CUSTOMER BILLING" && v.TEMPLATE_FLAG == "N" && v.PROJECT_STATUS_CODE == "APPROVED" && v.ORGANIZATION_NAME.Contains(" RR") && OrgsList.Contains(v.CARRYING_OUT_ORGANIZATION_ID) && RailroadId != null);
+                List<CROSSING_MAINTENANCE.CrossingProject> data = CROSSING_MAINTENANCE.CrossingsProjectList(CrossingId);//.Where(v => v.PROJECT_TYPE == "CUSTOMER BILLING" && v.TEMPLATE_FLAG == "N" && v.PROJECT_STATUS_CODE == "APPROVED" && v.ORGANIZATION_NAME.Contains(" RR") && OrgsList.Contains(v.CARRYING_OUT_ORGANIZATION_ID) && RailroadId != null);
 
                 int count;
-                uxSupplementalProjectStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.ProjectList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                uxSupplementalProjectStore.DataSource = GenericData.EnumerableFilterHeader<CROSSING_MAINTENANCE.CrossingProject>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 e.Total = count;
 
             }

@@ -55,6 +55,9 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
                         TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
                         item.ACTUAL_HOURS_GRID = actualhours.ToString("dd\\.hh\\:mm");
+
+                        TimeSpan adjustedlunch = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_LUNCH.Value));
+                        item.ADJUSTED_LUNCH_GRID = adjustedlunch.ToString("dd\\.hh\\:mm");
                        
 
 
@@ -77,6 +80,10 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
                         TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
                         item.ACTUAL_HOURS_GRID = actualhours.ToString("dd\\.hh\\:mm");
+
+                        TimeSpan adjustedlunch = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_LUNCH.Value));
+                        item.ADJUSTED_LUNCH_GRID = adjustedlunch.ToString("dd\\.hh\\:mm");
+                       
 
 
 
@@ -101,6 +108,10 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                         TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
                         item.ACTUAL_HOURS_GRID = actualhours.ToString("dd\\.hh\\:mm");
 
+                        TimeSpan adjustedlunch = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_LUNCH.Value));
+                        item.ADJUSTED_LUNCH_GRID = adjustedlunch.ToString("dd\\.hh\\:mm");
+                       
+
 
                     }
                     uxEmployeeHoursStore.DataSource = data;
@@ -122,6 +133,10 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
                         TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
                         item.ACTUAL_HOURS_GRID = actualhours.ToString("dd\\.hh\\:mm");
+
+                        TimeSpan adjustedlunch = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_LUNCH.Value));
+                        item.ADJUSTED_LUNCH_GRID = adjustedlunch.ToString("dd\\.hh\\:mm");
+                       
                         
 
                     }
@@ -286,6 +301,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
         public DateTime TIME_IN { get; set; }
         public DateTime TIME_OUT { get; set; }
         public string ADJUSTED_HOURS_GRID { get; set; }
+        public string ADJUSTED_LUNCH_GRID { get; set; }
         public string DAY_OF_WEEK { get; set; }
         public string ACTUAL_HOURS_GRID { get; set; }
         public decimal? ACTUAL_HOURS { get; set; }
