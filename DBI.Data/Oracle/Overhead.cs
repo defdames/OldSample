@@ -380,11 +380,10 @@ namespace DBI.Data
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static List<GL_PERIOD> GeneralLedgerPeriods(Entities context)
+        public static IQueryable<GL_PERIOD> GeneralLedgerPeriods(Entities context)
         {
             string sql = "select ENTERED_PERIOD_NAME,PERIOD_YEAR,PERIOD_NUM,PERIOD_TYPE,START_DATE,END_DATE from gl.gl_periods where period_set_name = 'DBI Calendar' order by period_num";
-            var _data = context.Database.SqlQuery<GL_PERIOD>(sql).ToList();
-            return _data;
+            return context.Database.SqlQuery<GL_PERIOD>(sql).AsQueryable();
         }
 
         /// <summary>
@@ -627,16 +626,17 @@ namespace DBI.Data
         /// <param name="periodYear"></param>
         /// <param name="codeCombinationID"></param>
         /// <returns></returns>
-        public static List<GL_ACTUALS> ActualsByYearAndAccountCodeAndPeriodNumber(Entities context, short periodYear, long codeCombinationID, long periodNum)
+        public static IQueryable<GL_ACTUALS> ActualsByYearAndAccountCodeAndPeriodNumber(Entities context, short periodYear, long codeCombinationID, long periodNum)
         {
-            string sql = string.Format("select period_net_dr, period_net_cr,period_year,code_combination_id,period_num from gl.gl_balances where actual_flag = 'A' and period_year = {0} and code_combination_id = {1} and period_num = {2} and set_of_books_id in (select set_of_books_id from apps.hr_operating_units group by set_of_books_id)", periodYear, codeCombinationID, periodNum);
-            List<GL_ACTUALS> _data = context.Database.SqlQuery<GL_ACTUALS>(sql).ToList();
+            string sql = string.Format("select period_net_dr, period_net_cr,period_year,code_combination_id,period_num from gl.gl_balances where actual_flag = 'A' and period_year = {0} and code_combination_id = {1} and period_num = {2} and (Period_net_dr <> 0 or period_net_cr <> 0) and set_of_books_id in (select set_of_books_id from apps.hr_operating_units group by set_of_books_id)", periodYear, codeCombinationID, periodNum);
+            IQueryable<GL_ACTUALS> _data = context.Database.SqlQuery<GL_ACTUALS>(sql).AsQueryable();
             return _data;
         }
 
         public static Boolean ImportActualForBudgetVersion(Entities context, List<string> periodsToImport, long budgetid, string loggedInUser, string lockImportData = "N")
         {
             OVERHEAD_ORG_BUDGETS _budgetHeader = BudgetByID(context, budgetid);
+            IQueryable<OVERHEAD_BUDGET_DETAIL> _budgetDetail = OVERHEAD_BUDGET_FORECAST.BudgetDetailByBudgetID(context, budgetid);
             List<OVERHEAD_BUDGET_FORECAST.GL_PERIOD> _periodList = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(context).Where(x => x.PERIOD_YEAR == _budgetHeader.FISCAL_YEAR & x.PERIOD_TYPE == "Month" & periodsToImport.Contains(x.PERIOD_NUM.ToString())).ToList();
             var _accountList = OVERHEAD_BUDGET_FORECAST.AccountListValidByOrganizationID(context, _budgetHeader.ORGANIZATION_ID);
             List<OVERHEAD_BUDGET_DETAIL> _insertData = new List<OVERHEAD_BUDGET_DETAIL>();
@@ -646,7 +646,7 @@ namespace DBI.Data
             {
                  foreach (OVERHEAD_BUDGET_FORECAST.GL_PERIOD _period in _periodList)
                         {
-                          OVERHEAD_BUDGET_DETAIL _line = OVERHEAD_BUDGET_FORECAST.BudgetDetailByBudgetID(context,budgetid).Where(x => x.CODE_COMBINATION_ID == _account.CODE_COMBINATION_ID & x.PERIOD_NUM == _period.PERIOD_NUM).SingleOrDefault();
+                          OVERHEAD_BUDGET_DETAIL _line = _budgetDetail.Where(x => x.CODE_COMBINATION_ID == _account.CODE_COMBINATION_ID & x.PERIOD_NUM == _period.PERIOD_NUM).SingleOrDefault();
                           GL_ACTUALS _actualTotalLine = OVERHEAD_BUDGET_FORECAST.ActualsByYearAndAccountCodeAndPeriodNumber(context, _budgetHeader.FISCAL_YEAR, _account.CODE_COMBINATION_ID, _period.PERIOD_NUM).SingleOrDefault();
                             
                             decimal _aTotal = 0;
@@ -660,7 +660,7 @@ namespace DBI.Data
                                 _aTotal = 0;
                             }
 
-                                    if (_line == null & _aTotal > 0)
+                                    if (_line == null)
                                     {
                                         //No data, create it
                                         OVERHEAD_BUDGET_DETAIL _record = new OVERHEAD_BUDGET_DETAIL();
