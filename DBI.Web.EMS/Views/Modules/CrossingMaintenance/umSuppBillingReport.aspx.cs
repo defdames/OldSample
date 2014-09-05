@@ -139,6 +139,19 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         {
             GridPanel1.Show();
         }
+        protected void GetAdditionalData(object sender, DirectEventArgs e)
+        {
+            List<object> data;
+
+
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.CROSSINGS
+
+                        select new { d.SPECIAL_INSTRUCTIONS }).ToList<object>();
+            }
+
+        }
         protected void ToXml(object sender, EventArgs e)
         {
             string json = this.Hidden1.Value.ToString();
