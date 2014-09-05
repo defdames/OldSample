@@ -11,7 +11,7 @@ using Ext.Net;
 
 namespace DBI.Web.EMS.Views.Modules.Overhead
 {
-    public partial class umAccountCategory : BasePage
+    public partial class umCategoryMaint : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -44,6 +44,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 
                 uxCategoryWindow.Close();
                 uxAccountCategoryStore.Reload();
+                uxUnAssignAccounts.Disable();
                 uxAccountListStore.Reload();
 
             }
@@ -53,7 +54,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         }
 
-        protected void saveAccountCategorySortOrder(object sender, DirectEventArgs e)
+        protected void saveCategorySortOrder(object sender, DirectEventArgs e)
         {
             string json = e.ExtraParams["Values"];
 
@@ -157,6 +158,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             }
 
+            uxUnAssignAccounts.Disable();
             uxAccountListStore.Reload();
         }
 
@@ -185,6 +187,25 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         }
 
+        protected void saveAccountCategorySortOrder(object sender, DirectEventArgs e)
+        {
+            string json = e.ExtraParams["Values"];
+
+            List<OVERHEAD_ACCOUNT_CATEGORY> _gridValues = JSON.Deserialize<List<OVERHEAD_ACCOUNT_CATEGORY>>(json);
+            int sort = 0;
+
+            foreach (OVERHEAD_ACCOUNT_CATEGORY _detail in _gridValues)
+            {
+                _detail.MODIFIED_BY = User.Identity.Name;
+                _detail.MODIFY_DATE = DateTime.Now;
+                _detail.SORT_ORDER = sort + 1;
+                sort = (int)_detail.SORT_ORDER;
+            }
+
+            GenericData.Update<OVERHEAD_ACCOUNT_CATEGORY>(_gridValues);
+            uxAccountListStore.Sync();
+            uxAccountListStore.Reload();
+        }
 
 
         protected void saveAccountCategory(object sender, DirectEventArgs e)

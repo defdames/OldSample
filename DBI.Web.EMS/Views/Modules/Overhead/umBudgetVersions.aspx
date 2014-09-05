@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umOverheadMaintainBudgets.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.Overhead.umOverheadMaintainBudgets" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umBudgetVersions.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.Overhead.umBudgetVersions" %>
 
 <!DOCTYPE html>
 
@@ -19,15 +19,15 @@
                            <Items>
                                   <ext:ToolbarFill ID="ToolbarFill1" runat="server"></ext:ToolbarFill>
                                  <ext:Checkbox runat="server" HideLabel="true" BoxLabel="View All Budgets" ID="uxViewAllBudgets" Checked="false">
-                                    <DirectEvents>
-                                        <Change OnEvent="deViewAll"><EventMask ShowMask="true"></EventMask></Change>
-                                    </DirectEvents>
+                                    <Listeners>
+                                        <Change Handler="#{uxBudgetVersionByOrganizationStore}.reload();"></Change>
+                                    </Listeners>
                                 </ext:Checkbox>
                                 <ext:ToolbarSpacer ID="ToolbarSpacer2" runat="server"></ext:ToolbarSpacer>
                                  <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Hide Closed Budgets" ID="uxHideClosedBudgetsCheckbox" Checked="true">
-                                    <DirectEvents>
-                                        <Change OnEvent="deHideClosed"><EventMask ShowMask="true"></EventMask></Change>
-                                    </DirectEvents>
+                                    <Listeners>
+                                        <Change Handler="#{uxBudgetVersionByOrganizationStore}.reload();"></Change>
+                                    </Listeners>
                                 </ext:Checkbox>
                            </Items>
                        </ext:Toolbar>
@@ -35,7 +35,7 @@
                      <Store>
                         <ext:Store runat="server"
                             ID="uxBudgetVersionByOrganizationStore"
-                            AutoDataBind="true" RemoteSort="true"  AutoLoad="true" OnReadData="deLoadOrganizationsForUser">
+                            AutoDataBind="true" RemoteSort="true"  AutoLoad="true" OnReadData="loadBudgetsForUser">
                             <Model>
                                 <ext:Model ID="Model1" runat="server" IDProperty="ORG_BUDGET_ID">
                                     <Fields>
@@ -70,7 +70,7 @@
                     <SelectionModel>
                         <ext:RowSelectionModel runat="server" AllowDeselect="true" Mode="Single" ID="uxBudgetVersionByOrganizationSelectionModel">
                             <DirectEvents>
-                                <Select OnEvent="deSelectOrganization">
+                                <Select OnEvent="selectOrganization">
                                     <ExtraParams>
                                         <ext:Parameter Mode="Raw" Name="ORGANIZATION_ID" Value="record.data.ORGANIZATION_ID"></ext:Parameter>
                                          <ext:Parameter Mode="Raw" Name="FISCAL_YEAR" Value="record.data.FISCAL_YEAR"></ext:Parameter>
