@@ -28,6 +28,7 @@ namespace DBI.Data
                                  ACTUAL_HOURS = tc.ACTUAL_HOURS,
                                  ADJUSTED_LUNCH = tc.ADJUSTED_LUNCH,
                                  SUBMITTED = tc.SUBMITTED,
+                                 PERSON_ID = tc.PERSON_ID,
                                  APPROVED = tc.APPROVED,
                                  COMPLETED = tc.COMPLETED,
                                  SUPERVISOR_ID = (int)tc.SUPERVISOR_ID,
@@ -175,7 +176,7 @@ namespace DBI.Data
             {
                 TimeSpan ts = newTimeOut - newTimeIn;
                 decimal adjts = ConvertTimeToOraclePayrollFormat(ts);
-                decimal lcts = GetLunchTime(ts);
+                decimal lcts = GetLunchTime(adjts);
                 
 
 
@@ -275,27 +276,49 @@ namespace DBI.Data
             return fixedtime;
         }
 
-        protected static decimal GetLunchTime(TimeSpan lcts)
+        protected static decimal GetLunchTime(decimal lcts)
         {
-            if  (lcts.TotalMinutes >=300 && lcts.TotalMinutes < 730)
+
+            if (lcts >= 5 && lcts < 12)
             {
-                double lunchded = lcts.TotalMinutes - 30;
-                decimal lunchtime = (decimal)lunchded / 60;
-                return lunchtime;
+                decimal lunchded = lcts - .5m;
+                //decimal lunchtime = (decimal)lunchded / 60;
+                return lunchded;
             }
-            else if (lcts.TotalMinutes < 300)
+            else if (lcts < 5)
             {
-                double lunchded = lcts.TotalMinutes;
-                decimal lunchtime = (decimal)lunchded / 60;
-                return lunchtime;
+                decimal lunchded = lcts;
+                //decimal lunchtime = (decimal)lunchded / 60;
+                return lunchded;
             }
             else
             {
-                double lunchded = lcts.TotalMinutes - 60;
-                decimal lunchtime = (decimal)lunchded / 60;
-                return lunchtime;
+                decimal lunchded = lcts - 1m;
+                //decimal lunchtime = (decimal)lunchded / 60;
+                return lunchded;
             }
         }
+        //protected static decimal GetLunchTime(TimeSpan lcts)
+        //{
+        //    if  (lcts.TotalMinutes >=300 && lcts.TotalMinutes < 790)
+        //    {
+        //        double lunchded = lcts.TotalMinutes - 30;
+        //        decimal lunchtime = (decimal)lunchded / 60;
+        //        return lunchtime;
+        //    }
+        //    else if (lcts.TotalMinutes < 300)
+        //    {
+        //        double lunchded = lcts.TotalMinutes;
+        //        decimal lunchtime = (decimal)lunchded / 60;
+        //        return lunchtime;
+        //    }
+        //    else
+        //    {
+        //        double lunchded = lcts.TotalMinutes - 60;
+        //        decimal lunchtime = (decimal)lunchded / 60;
+        //        return lunchtime;
+        //    }
+        //}
             
         
 

@@ -99,8 +99,9 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                 time.ACTUAL_HOURS = (decimal)ts.TotalHours;
                 decimal adjts = GetAdjustedHours((TimeSpan)ts);
                 time.ADJUSTED_HOURS = adjts;
-                decimal lcts = GetLunchTime(ts);
+                decimal lcts = GetLunchTime(adjts);
                 time.ADJUSTED_LUNCH = lcts;
+               
                 
 
 
@@ -185,25 +186,26 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
         }
 
-        protected static decimal GetLunchTime(TimeSpan lcts)
+        protected static decimal GetLunchTime(decimal lcts)
         {
-            if (lcts.TotalMinutes >= 300 && lcts.TotalMinutes < 730)
+            
+            if (lcts >= 5 && lcts < 12)
             {
-                double lunchded = lcts.TotalMinutes - 30;
-                decimal lunchtime = (decimal)lunchded / 60;
-                return lunchtime;
+                decimal lunchded = lcts - .5m;
+                //decimal lunchtime = (decimal)lunchded / 60;
+                return lunchded;
             }
-            else if (lcts.TotalMinutes < 300)
+            else if (lcts < 5)
             {
-                double lunchded = lcts.TotalMinutes;
-                decimal lunchtime = (decimal)lunchded / 60;
-                return lunchtime;
+                decimal lunchded = lcts;
+                //decimal lunchtime = (decimal)lunchded / 60;
+                return lunchded;
             }
             else
             {
-                double lunchded = lcts.TotalMinutes - 60;
-                decimal lunchtime = (decimal)lunchded / 60;
-                return lunchtime;
+                decimal lunchded = lcts - 1m;
+                //decimal lunchtime = (decimal)lunchded / 60;
+                return lunchded;
             }
         }
     }
